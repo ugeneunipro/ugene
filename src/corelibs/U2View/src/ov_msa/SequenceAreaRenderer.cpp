@@ -140,7 +140,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
     bool isReferenceRow = referenceMaRowIndex == maRowIndex;
     bool hasReference = referenceMaRowIndex >= 0;
 
-    qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen() - 1);
+    qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen());
     const MultipleAlignmentRow& maRow = ma->getRow(maRowIndex);
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
@@ -148,7 +148,8 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
     int viewRowIndex = editor->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 
     painter.save();
-    for (int column = columns.startPos; column <= regionEnd; column++) {
+    // regionEnd equals startPos + length, so we use '<' instead of '<='
+    for (int column = columns.startPos; column < regionEnd; column++) {
         if (!drawLeadingAndTrailingGaps && (column < maRow->getCoreStart() || column > maRow->getCoreStart() + maRow->getCoreLength() - 1)) {
             xStart += baseWidth;
             continue;

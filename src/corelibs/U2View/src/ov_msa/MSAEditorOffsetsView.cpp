@@ -183,7 +183,12 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
-    int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
+    bool countClippedBase = showStartPos
+                                ? COUNT_FIRST_CLIPPED_BASE
+                                : COUNT_LAST_CLIPPED_BASE;
+    int pos = showStartPos
+                  ? ui->getScrollController()->getFirstVisibleBase(countClippedBase)
+                  : ui->getScrollController()->getLastVisibleBase(seqArea->width(), countClippedBase);
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
@@ -193,13 +198,11 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
 
     foreach (const int rowNumber, visibleRows) {
         const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(rowNumber);
-        int offs = getBaseCounts(rowNumber, pos, !showStartPos);
-        int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
+        int offs = getBaseCounts(rowNumber, pos, !showStartPos ? countClippedBase : false);
+        int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, countClippedBase);
         QString offset = offs + 1 > seqSize
-                             ? QString::number(seqSize)
-                             : showStartPos
-                                   ? QString::number(offs + 1)
-                                   : QString::number(offs);
+                             ? QString::number(seqSize + 1)
+                             : QString::number(offs + 1);
         if (showStartPos && offs == 0) {
             painter.setPen(Qt::black);
             QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
@@ -214,7 +217,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
                 drawRefSequence(painter, rbr);
             }
             painter.drawText(rbr, Qt::AlignTop, "]");
-            offset = QString::number(offs);
+            //offset = QString::number(offs);
         } else {
             painter.setPen(dg);
         }
