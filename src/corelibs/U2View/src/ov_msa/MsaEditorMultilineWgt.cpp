@@ -252,7 +252,7 @@ MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
 
 void MsaEditorMultilineWgt::addPhylTreeWidget(QWidget *multiTreeViewer) {
     treeSplitter->insertWidget(0, multiTreeViewer);
-    treeSplitter->setSizes(QList<int>({200, 600}));
+    treeSplitter->setSizes(QList<int>({500, 600}));
     treeSplitter->setStretchFactor(0, 1);
     treeSplitter->setStretchFactor(1, 3);
 

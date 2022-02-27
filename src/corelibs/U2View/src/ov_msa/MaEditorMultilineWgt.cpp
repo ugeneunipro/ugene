@@ -107,6 +107,7 @@ void MaEditorMultilineWgt::initWidgets() {
     scrollArea->setWidget(uiChildrenArea);
 
     treeSplitter = new QSplitter(Qt::Horizontal, this);
+    treeSplitter->setObjectName("maeditor_multilinewgt_phyltree_splitter");
     treeSplitter->setContentsMargins(0, 0, 0, 0);
 
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
