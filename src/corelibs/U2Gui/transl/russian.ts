@@ -1752,22 +1752,22 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateObjectRelationDialogController</name>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="51"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="52"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="52"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="73"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="74"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="73"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="74"/>
         <source>Found annotations that are out of the sequence range, continue?</source>
         <translation>Найдены аннотации, выходящие за границы последовательности. Продолжить?</translation>
     </message>
@@ -3396,7 +3396,7 @@ check connection settings</translation>
 <context>
     <name>U2::WidgetScreenshotImageExportController</name>
     <message>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="108"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="111"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
     </message>

@@ -95,7 +95,7 @@
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="270"/>
-        <location filename="../src/FastaFormat.cpp" line="300"/>
+        <location filename="../src/FastaFormat.cpp" line="301"/>
         <location filename="../src/FastqFormat.cpp" line="414"/>
         <source>Document sequences were merged</source>
         <translation>Последовательности были соединены</translation>
@@ -931,7 +931,7 @@
     <name>U2::Document</name>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
-        <location filename="../src/FastaFormat.cpp" line="276"/>
+        <location filename="../src/FastaFormat.cpp" line="277"/>
         <location filename="../src/FastqFormat.cpp" line="400"/>
         <location filename="../src/PDWFormat.cpp" line="152"/>
         <source>Document is empty.</source>
@@ -1334,28 +1334,28 @@
         <translation>The file format is invalid.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="282"/>
+        <location filename="../src/FastaFormat.cpp" line="283"/>
         <source>Loaded sequences: %1. 
 </source>
         <translation>Loaded sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="283"/>
+        <location filename="../src/FastaFormat.cpp" line="284"/>
         <source>Skipped sequences: %1. 
 </source>
         <translation>Skipped sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="284"/>
+        <location filename="../src/FastaFormat.cpp" line="285"/>
         <source>The following sequences are empty: 
 %1</source>
         <translation>The following sequences are empty: 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="467"/>
+        <location filename="../src/FastaFormat.cpp" line="468"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Неиспользуемая последовательность в начале образцов: %1</translation>
     </message>

@@ -64,12 +64,12 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="635"/>
+        <location filename="../src/datatype/Annotation.cpp" line="568"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="640"/>
+        <location filename="../src/datatype/Annotation.cpp" line="576"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -563,35 +563,44 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="43"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="147"/>
         <source>Add sequences to alignment task</source>
         <translation>Add sequences to alignment task</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="57"/>
         <source>Object is empty.</source>
-        <translation>Объект пуст.</translation>
+        <translation type="vanished">Объект пуст.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="62"/>
         <source>Object is locked for modifications.</source>
-        <translation>Объект заблокирован для редактирования.</translation>
+        <translation type="vanished">Объект заблокирован для редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="172"/>
         <source>Some sequences have wrong alphabet: </source>
-        <translation>Некоторые последовательности имеют неправильный алфавит: </translation>
+        <translation type="vanished">Некоторые последовательности имеют неправильный алфавит: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="175"/>
         <source> and others</source>
-        <translation> и другие</translation>
+        <translation type="vanished"> и другие</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AddSequenceObjectsToAlignmentUtils</name>
+    <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="113"/>
+        <source>Object is locked for modifications.</source>
+        <translation type="unfinished">Объект заблокирован для редактирования.</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="118"/>
+        <source>Failed to derive common alphabet</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::AddSequencesFromFilesToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="190"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="176"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
@@ -1227,65 +1236,65 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DatatypeSerializers</name>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="213"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="215"/>
         <source>Invalid tree topology</source>
         <translation>Invalid tree topology</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="319"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="321"/>
         <source>Incorrect tree parsing state</source>
         <translation>Incorrect tree parsing state</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="322"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="324"/>
         <source>Unexpected weight: %1</source>
         <translation>Неожиданный вес: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="326"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="328"/>
         <source>Error parsing weight: %1</source>
         <translation>Ошибка парсинга веса: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="333"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="354"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="335"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="356"/>
         <source>Tree node stack is empty</source>
         <translation>Tree node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="345"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="347"/>
         <source>Error parsing nodeValue: %1</source>
         <translation>Error parsing nodeValue: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="355"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="373"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="357"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="375"/>
         <source>Branch node stack is empty</source>
         <translation>Branch node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="357"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="359"/>
         <source>Unexpected new sibling %1</source>
         <translation>Неожиданный новый родственник %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="370"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="372"/>
         <source>Unexpected closing bracket :%1</source>
         <translation>Неожиданные закрывающие скобки: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="378"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="401"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="380"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="403"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="413"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="415"/>
         <source>Empty file</source>
         <translation>Пустой файл</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="435"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="437"/>
         <source>Unexpected count of trees objects in input: %1</source>
         <translation>Unexpected count of trees objects in input: %1</translation>
     </message>
@@ -1398,32 +1407,37 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Внешний иструмент отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="110"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="65"/>
+        <source>External tool &apos;%1&apos; doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="112"/>
         <source>Can not run %1 tool.</source>
         <translation>Невозможно запустить %1 инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="112"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="114"/>
         <source>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="121"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="123"/>
         <source>Tool %1 is cancelled</source>
         <translation>Tool %1 is cancelled</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="132"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="134"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
         <translation>%1 tool exited with the following error: %2 (Code: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="143"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="145"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="145"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="147"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1431,47 +1445,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="331"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="333"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="337"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="339"/>
         <source>Can not remove files from temporary folder.</source>
         <translation>Невозможно удалить файлы из временной папку.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="342"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="344"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Невозможно удалить папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="355"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="357"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="386"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="388"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="402"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="404"/>
         <source>A tool with the ID %1 is absent</source>
         <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="406"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="408"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="450"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="452"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="456"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="458"/>
         <source>Launching %1 tool: %2</source>
         <translation>Запуск инструмента %1: %2 {1 ?}</translation>
     </message>
@@ -2107,24 +2121,40 @@ The session database file is removed after closing of UGENE.</source>
         <translation>IO адаптер NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="256"/>
         <source>The fileURL  to load is empty</source>
-        <translation>The fileURL  to load is empty</translation>
+        <translation type="vanished">The fileURL  to load is empty</translation>
+    </message>
+    <message>
+        <source>Cannot get an IO file adapter factory for the file URL: %1</source>
+        <translation type="vanished">Cannot get an IO file adapter factory for the file URL: %1</translation>
+    </message>
+    <message>
+        <source>Cannot detect the file format: %1</source>
+        <translation type="vanished">Cannot detect the file format: %1</translation>
+    </message>
+    <message>
+        <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
+        <translation type="vanished">Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="256"/>
+        <source>The file path is empty</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="259"/>
-        <source>Cannot get an IO file adapter factory for the file URL: %1</source>
-        <translation>Cannot get an IO file adapter factory for the file URL: %1</translation>
+        <source>Cannot get an IO file adapter factory for the file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
-        <source>Cannot detect the file format: %1</source>
-        <translation>Cannot detect the file format: %1</translation>
+        <source>Cannot detect file format: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="265"/>
-        <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
-        <translation>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
+        <source>Document format is unknown (format: &apos;%1&apos;, file path: &apos;%2&apos;)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="420"/>
@@ -2869,7 +2899,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiUtils</name>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="52"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="49"/>
         <source>Feature is not supported: %1, dbi: %2</source>
         <translation>Функция не поддерживается: %1, dbi: %2</translation>
     </message>
