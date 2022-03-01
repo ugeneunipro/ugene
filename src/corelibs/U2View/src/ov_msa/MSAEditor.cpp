@@ -64,6 +64,8 @@
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "overview/MaGraphOverview.h"
+#include "overview/MaSimpleOverview.h"
 #include "ov_msa/MaEditorConsensusArea.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
@@ -516,6 +518,15 @@ void MSAEditor::initChildrenActionsAndSignals() {
 
         new MoveToObjectMaController(this, child);
         initDragAndDropSupport(child);
+
+        MSAEditorOverviewArea *overview = qobject_cast<MSAEditorOverviewArea *>(
+            getUI()->getOverviewArea());
+        if (overview != nullptr) {
+            connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()),
+                    overview->getSimpleOverview(), SLOT(sl_highlightingChanged()));
+            connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()),
+                    overview->getGraphOverview(), SLOT(sl_highlightingChanged()));
+        }
     }
 }
 

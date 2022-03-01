@@ -191,10 +191,12 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     sl_sync();
 
-    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString&)));
-    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString&)));
-    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
+    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)),
+            msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)),
+            msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
 
+    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
     MsaColorSchemeRegistry* msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
@@ -345,7 +347,12 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, highlightingThresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    seqArea->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
+
+    MaEditorMultilineWgt *mui = msa->getMaEditorMultilineWgt();
+    for (uint i = 0; i < mui->getChildrenCount(); i++) {
+        MaEditorSequenceArea *sequence = msa->getMaEditorWgt(i)->getSequenceArea();
+        sequence->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
+    }
 }
 
 void MSAHighlightingTab::sl_refreshSchemes() {
