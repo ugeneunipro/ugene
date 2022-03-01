@@ -78,11 +78,7 @@ public:
 
         *str = textEdit->toPlainText();
 
-        QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", widget));
-        GT_CHECK(box != nullptr, "buttonBox is NULL");
-        QPushButton* button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != nullptr, "cancel button is NULL");
-        GTWidget::click(os, button);
+        GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
     }
 
 private:

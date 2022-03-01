@@ -716,12 +716,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
             radioButton = dialog->findChild<QRadioButton*>("currentViewButton");
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is hidden");
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 

@@ -468,7 +468,7 @@ GUI_TEST_CLASS_DEFINITION(test_4045) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -564,10 +564,7 @@ GUI_TEST_CLASS_DEFINITION(test_4064) {
             CHECK_SET_ERR(label != nullptr, "indexNotAvailableLabel not found");
             CHECK_SET_ERR(label->isVisible() == warningExistence, "Warning message is shown");
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
 
     private:

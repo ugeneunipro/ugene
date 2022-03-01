@@ -286,12 +286,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
                     CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
                     break;
             }
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
 
         static void runScenario(HI::GUITestOpStatus& os, int scenario) {

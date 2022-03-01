@@ -931,7 +931,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             GTWidget::click(os, GTWidget::findWidget(os, "containsButton", dialog));
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "containsEdit"), "1");
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -952,7 +952,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             GTUtilsDialog::waitForDialog(os, new CreateMarkerDialogFiller(os));
             GTWidget::click(os, GTWidget::findWidget(os, "addButton", dialog));
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -1241,7 +1241,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
             GTKeyboardDriver::keySequence("0.001");
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -2455,11 +2455,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
             CHECK_SET_ERR(lineEdit != nullptr, "fileNameEdit not found");
             CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extension");
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -2500,12 +2496,7 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
 
             CHECK_SET_ERR(index != -1, QString("item \"SAM\" in combobox not found"));
             GTComboBox::selectItemByIndex(os, comboBox, index);
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -2922,10 +2913,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
             QLineEdit* saveLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1295.nwk");
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            QPushButton* button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "Ok button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -4095,13 +4083,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
             GTUtilsDialog::waitForDialog(os, ob);
             GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-
-            // GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Start"));
-            QPushButton* okButton = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(okButton != nullptr, "ok button is NULL");
-            GTWidget::click(os, okButton);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -4130,7 +4112,7 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
             : Filler(_os, "EditMarkerGroupDialog") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
@@ -4612,7 +4594,7 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
             CHECK_SET_ERR(selection.contains(murine), "Wrong selection");
             CHECK_SET_ERR(1 == selection.size(), "Wrong selection size");
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os, new Scenario()));

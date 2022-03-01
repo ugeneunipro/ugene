@@ -3891,11 +3891,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
             GTComboBox::selectItemByText(os, formatsBox, "JPG");
             CHECK_SET_ERR(spin->isVisible(), "Quality spin box not visible!");
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -4189,9 +4185,7 @@ GUI_TEST_CLASS_DEFINITION(test_2762) {
         }
         virtual void run() {
 #ifdef Q_OS_DARWIN
-            QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
-            QAbstractButton* cancel = buttonBox->button(QDialogButtonBox::Cancel);
-            GTWidget::click(os, cancel);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
 #else
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 #endif
@@ -4465,7 +4459,7 @@ GUI_TEST_CLASS_DEFINITION(test_2808) {
             : Filler(_os, "EditMarkerGroupDialog") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
@@ -4512,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_2809) {
             : Filler(_os, "EditMarkerGroupDialog") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));

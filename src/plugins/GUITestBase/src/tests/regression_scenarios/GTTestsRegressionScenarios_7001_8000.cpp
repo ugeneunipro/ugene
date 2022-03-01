@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
             CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "python"),
                           "Python module is expected to be invalid, but in fact it is valid")
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -432,7 +432,7 @@ GUI_TEST_CLASS_DEFINITION(test_7128) {
             toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
             bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, "MAFFT");
             CHECK_SET_ERR(isValid, QString("MAFFT with path '%1' is expected to be valid, but in fact it is invalid").arg(toolPath));
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
 
     private:
@@ -1038,7 +1038,7 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
             CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"),
                           "SPAdes is expected to be invalid, but in fact it is valid");
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 

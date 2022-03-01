@@ -528,7 +528,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "AA (Fwd)"));
             GTWidget::click(os, GTWidget::findWidget(os, "editFragmentButton"));
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
@@ -2622,7 +2622,7 @@ GUI_TEST_CLASS_DEFINITION(test_0928) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 

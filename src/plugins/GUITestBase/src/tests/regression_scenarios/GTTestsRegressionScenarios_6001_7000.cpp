@@ -661,7 +661,7 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
     class NoButtonClickScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -6024,7 +6024,7 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/workflow/custom tools configs/my_custom_tool.xml"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbImport"));
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -6038,7 +6038,7 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
             CHECK_SET_ERR(itemNames.length() == 1, "Expected to have 1 item in the tree, got: " + QString::number(itemNames.length()));
             CHECK_SET_ERR(itemNames.first() == "My custom tool", "Expected to find 'My custom tool' in the list, got: " + itemNames.first());
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 

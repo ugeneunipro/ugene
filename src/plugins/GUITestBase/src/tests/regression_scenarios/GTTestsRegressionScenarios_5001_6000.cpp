@@ -1404,7 +1404,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
             auto linEdit = GTWidget::findLineEdit(os, "filePathEdit");
             GTLineEdit::setText(os, linEdit, QFileInfo(sandBoxDir + "test_5377").absoluteFilePath());
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 

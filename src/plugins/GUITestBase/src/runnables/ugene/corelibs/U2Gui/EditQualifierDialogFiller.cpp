@@ -54,11 +54,7 @@ void EditQualifierFiller::commonScenario() {
     if (!valueName.isEmpty()) {
         GTTextEdit::setText(os, valueEdit, valueName);
     }
-
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton* button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 
     if (closeErrormessageBox) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
