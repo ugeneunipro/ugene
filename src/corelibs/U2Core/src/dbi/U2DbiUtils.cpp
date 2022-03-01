@@ -208,8 +208,9 @@ bool U2DbiUtils::isDbiReadOnly(const U2DbiRef& dbiRef) {
 
 Version U2DbiUtils::getDbMinRequiredVersion(const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
-    CHECK_OP(os, Version());
+    CHECK_OP(os, {});
     QString minCompatibleVersionFromDb = con.dbi->getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os);
+    CHECK_OP(os, {});
     return Version::parseVersion(minCompatibleVersionFromDb);
 }
 

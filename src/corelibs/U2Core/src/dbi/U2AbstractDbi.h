@@ -145,6 +145,7 @@ public:
         std::sort(upgraders.begin(), upgraders.end());
         for (const U2DbiUpgrader* upgrader : qAsConst(upgraders)) {
             Version dbVersion = Version::parseVersion(getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "0.0.0", os));
+            CHECK_OP(os, );
             if (upgrader->isApplicable(dbVersion)) {
                 upgrader->upgrade(os);
                 CHECK_OP(os, );
