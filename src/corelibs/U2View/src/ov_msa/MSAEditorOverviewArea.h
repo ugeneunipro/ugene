@@ -45,6 +45,9 @@ public:
 
     void setVisible(bool isVisible) override;
 
+    MaGraphOverview *getGraphOverview() { return graphOverview; }
+    MaSimpleOverview *getSimpleOverview() { return simpleOverview; }
+
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 

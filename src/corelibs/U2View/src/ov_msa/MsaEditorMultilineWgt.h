@@ -55,6 +55,9 @@ public:
 
 private slots:
 
+public slots:
+    void sl_changeColorSchemeOutside(const QString& id);
+
 protected:
     void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
     void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;

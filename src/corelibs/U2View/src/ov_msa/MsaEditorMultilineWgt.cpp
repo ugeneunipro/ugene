@@ -23,6 +23,7 @@
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
+#include "MaEditorSequenceArea.h"
 #include "MSAEditor.h"
 #include "MSAEditorOverviewArea.h"
 #include "MsaEditorStatusBar.h"
@@ -257,6 +258,13 @@ void MsaEditorMultilineWgt::addPhylTreeWidget(QWidget *multiTreeViewer) {
     treeSplitter->setStretchFactor(1, 3);
 
     treeView = true;
+}
+
+void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        sequence->sl_changeColorSchemeOutside(id);
+    }
 }
 
 }  // namespace U2
