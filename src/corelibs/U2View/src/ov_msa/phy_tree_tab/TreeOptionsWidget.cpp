@@ -302,13 +302,16 @@ void TreeOptionsWidget::updateFormatSettings() {
 
 TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     SAFE_POINT(editor != nullptr || treeViewer != nullptr, QString("Invalid parameter in constructor TreeOptionsWidget"), nullptr);
-    MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI(0));
-    MSAEditorTreeViewer *currentTree = msaEditorUi->getCurrentTree();
-    return treeViewer != nullptr
-               ? treeViewer
-               : currentTree != nullptr
-                     ? currentTree->getTreeViewerUI()
-                     : nullptr;
+
+    if (treeViewer != nullptr) {
+        return treeViewer;
+    } else {
+        MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(editor->getUI());
+        MSAEditorTreeViewer *currentTree = mui->getCurrentTree();
+        return currentTree != nullptr
+                   ? currentTree->getTreeViewerUI()
+                   : nullptr;
+    }
 }
 
 void TreeOptionsWidget::sl_fontTypeChanged() {

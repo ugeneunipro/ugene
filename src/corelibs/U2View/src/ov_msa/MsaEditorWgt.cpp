@@ -41,7 +41,6 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
                            MaEditorOverviewArea *overview,
                            MaEditorStatusBar *statusbar)
     : MaEditorWgt(editor),
-      multiTreeViewer(nullptr),
       similarityStatistics(nullptr)
 {
     overviewArea = overview;
@@ -69,8 +68,7 @@ MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        delete multiTreeViewer;
-        multiTreeViewer = nullptr;
+        qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI())->delPhylTreeWidget();
         emit si_hideTreeOP();
     }
 }
@@ -84,16 +82,18 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    if (multiTreeViewer == nullptr) {
-        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+    MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI());
 
-        getEditor()->getUI()->addPhylTreeWidget(multiTreeViewer);
+    if (mui->getPhylTreeWidget() == nullptr) {
+        MSAEditorMultiTreeViewer *multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+
+        mui->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);
         multiTreeViewer->setMinimumWidth(250);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
     } else {
-        multiTreeViewer->addTreeView(treeView);
+        mui->getPhylTreeWidget()->addTreeView(treeView);
     }
 }
 
@@ -155,19 +155,8 @@ void MsaEditorWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
     statusBar = _statusBar;
 }
 
-MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
-    if (nullptr == multiTreeViewer) {
-        return nullptr;
-    }
-    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
-    if (nullptr == page) {
-        return nullptr;
-    }
-    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
-}
-
 MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() {
-    return multiTreeViewer;
+    return qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI())->getPhylTreeWidget();
 }
 
 QSize MsaEditorWgt::sizeHint() const
