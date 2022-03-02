@@ -2304,7 +2304,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_COI"));
     GTMouseDriver::doubleClick();
-    GTWidget::findWidget(os, "msa_editor_dt0002_COI");
+    GTWidget::findWidget(os, "msa_editor_dt0002_COI_0");
     CHECK_OP(os, );
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_dir"));
@@ -2313,7 +2313,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
 
     QWidget* seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == seqView, "Sequence view is not closed");
-    QWidget* msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
+    QWidget* msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == msaView, "MSA Editor is not closed");
 
     const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
@@ -2415,7 +2415,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0003) {
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0003_alignment.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTWidget::findWidget(os, "msa_editor_et0003_alignment");
+    GTWidget::findWidget(os, "msa_editor_et0003_alignment_0");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }

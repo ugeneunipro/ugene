@@ -33,12 +33,16 @@
 #include "ScrollController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 #include "phy_tree/MsaEditorTreeTabArea.h"
+#include "phy_tree/MSAEditorTreeViewer.h"
 #include <U2Gui/GScrollBar.h>
 
 namespace U2 {
 
 MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
-    : MaEditorMultilineWgt(editor) {
+    : MaEditorMultilineWgt(editor),
+      multiTreeViewer(nullptr),
+      treeViewer(nullptr)
+{
     initActions();
     initWidgets();
 
@@ -251,13 +255,32 @@ MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
                : qobject_cast<MsaEditorWgt *>(uiChild[index]);
 }
 
-void MsaEditorMultilineWgt::addPhylTreeWidget(QWidget *multiTreeViewer) {
+void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer) {
+    this->multiTreeViewer = multiTreeViewer;
     treeSplitter->insertWidget(0, multiTreeViewer);
     treeSplitter->setSizes(QList<int>({500, 600}));
     treeSplitter->setStretchFactor(0, 1);
     treeSplitter->setStretchFactor(1, 3);
 
     treeView = true;
+}
+
+void MsaEditorMultilineWgt::delPhylTreeWidget() {
+    if (multiTreeViewer != nullptr) {
+        delete multiTreeViewer;
+        multiTreeViewer = nullptr;
+    }
+}
+
+MSAEditorTreeViewer* MsaEditorMultilineWgt::getCurrentTree() const {
+    if (nullptr == multiTreeViewer) {
+        return nullptr;
+    }
+    GObjectViewWindow* page = qobject_cast<GObjectViewWindow *>(multiTreeViewer->getCurrentWidget());
+    if (nullptr == page) {
+        return nullptr;
+    }
+    return qobject_cast<MSAEditorTreeViewer *>(page->getObjectView());
 }
 
 void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {

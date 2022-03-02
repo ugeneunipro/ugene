@@ -51,7 +51,12 @@ public:
 
     MaEditorWgt *getUI(uint index = 0) const override;
 
-    void addPhylTreeWidget(QWidget *multiTreeViewer) override;
+    void addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer);
+    void delPhylTreeWidget();
+    MSAEditorMultiTreeViewer *getPhylTreeWidget() const {
+        return multiTreeViewer;
+    };
+    MSAEditorTreeViewer* getCurrentTree() const;
 
 private slots:
 
@@ -73,6 +78,8 @@ protected:
     bool updateChildrenCount() override;
 
 private:
+    MSAEditorMultiTreeViewer *multiTreeViewer;
+    MSAEditorTreeViewer* treeViewer;
 
 };
 
