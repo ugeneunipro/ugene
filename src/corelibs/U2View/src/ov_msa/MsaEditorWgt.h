@@ -64,8 +64,6 @@ public:
 
     const MsaEditorAlignmentDependentWidget* getSimilarityWidget();
 
-    MSAEditorTreeViewer* getCurrentTree() const;
-
     MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
     void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
@@ -87,9 +85,7 @@ protected:
 
 private:
     MsaEditorSimilarityColumn* dataList;
-    MSAEditorMultiTreeViewer* multiTreeViewer;
     MsaEditorAlignmentDependentWidget* similarityStatistics;
-    MSAEditorTreeViewer* treeViewer;
 };
 
 }  // namespace U2

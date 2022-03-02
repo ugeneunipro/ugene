@@ -364,9 +364,9 @@ void MSAEditorTreeManager::sl_onWindowClosed(GObjectViewWindow* viewWindow) {
 
 MSAEditorMultiTreeViewer* MSAEditorTreeManager::getMultiTreeViewer() const {
     SAFE_POINT(editor != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
-    MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI());
-    SAFE_POINT(msaEditorUi != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
-    return msaEditorUi->getMultiTreeViewer();
+    MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(editor->getUI());
+    SAFE_POINT(mui != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
+    return mui->getPhylTreeWidget();
 }
 
 }  // namespace U2

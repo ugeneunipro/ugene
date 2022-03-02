@@ -130,10 +130,6 @@ public:
     MaEditorWgt *getActiveChild();
     void setActiveChild(MaEditorWgt *child);
 
-    virtual void addPhylTreeWidget(QWidget *multiTreeViewer) {
-        Q_UNUSED(multiTreeViewer);
-    };
-
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);

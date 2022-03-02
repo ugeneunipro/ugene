@@ -101,9 +101,10 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, con
     QWidget* activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 
-    const int posX = static_cast<int>(msaEditArea->getEditor()->getUI()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(msaEditArea->getEditor()->getUI()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
-    return msaEditArea->mapToGlobal(QPoint(posX, posY));
+    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI());
+    int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
+    int posY = (int)ui->getRowHeightController()->getScreenYRegionByViewRowIndex(p.y()).center();
+    return msaEditArea->mapToGlobal({posX, posY});
 }
 #undef GT_METHOD_NAME
 

@@ -1750,7 +1750,7 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 
-    // Overview is s not visible for too big size
+    // Overview is not visible for too big size
     // See MSAEditor::initActions()
     // Click the "Overview" button on the main toolbar
     // Expected state: the overview is shown.
