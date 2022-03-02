@@ -34,7 +34,7 @@ public:
     virtual ~U2DbiUpgrader();
 
     virtual void upgrade(U2OpStatus& os) const = 0;
-    bool isAppliable(const Version& dbVersion) const;
+    bool isApplicable(const Version& dbVersion) const;
     bool operator<(const U2DbiUpgrader& other) const;
 
 protected:
