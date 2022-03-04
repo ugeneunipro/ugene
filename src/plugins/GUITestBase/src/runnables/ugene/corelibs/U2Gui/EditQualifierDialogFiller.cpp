@@ -54,7 +54,6 @@ void EditQualifierFiller::commonScenario() {
     if (!valueName.isEmpty()) {
         GTTextEdit::setText(os, valueEdit, valueName);
     }
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 
     if (closeErrormessageBox) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
