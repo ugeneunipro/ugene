@@ -407,6 +407,11 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaR
 
     QList<int> excludeListRowIds;
     MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    if (msaObject->getRowCount() == msaRowIndexes.count()) {
+        // TODO: support empty MSA for all file formats.
+        QMessageBox::critical(this, L10N::warningTitle(), tr("Multiple alignment must keep at least one row"));
+        return;
+    }
     for (int msaRowIndex : qAsConst(msaRowIndexes)) {
         excludeListRowIds << addMsaRowEntry(msaObject->getRow(msaRowIndex));
     }
