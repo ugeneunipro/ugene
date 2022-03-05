@@ -257,6 +257,20 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
     }
 }
 
+void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
+    int visibleLength = ui->getSequenceAreaBaseLen(0);
+    if (!ui->getMultilineMode()) {
+        if (ui->getUI(0) != nullptr) {
+            ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
+        }
+    } else {
+        int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
+        ui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
+        ui->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
+        //hScrollBar->setValue(x);
+    }
+}
+
 void MultilineScrollController::setFirstVisibleViewRow(int viewRowIndex) {
     if (!ui->getMultilineMode()) {
         ui->getUI(0)->getScrollController()->setFirstVisibleViewRow(viewRowIndex);
