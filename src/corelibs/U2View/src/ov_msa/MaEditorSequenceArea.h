@@ -161,7 +161,8 @@ public slots:
 
 protected slots:
     void sl_changeColorScheme();
-    void sl_fillCurrentSelectionWithGaps();
+    void sl_insertGaps();
+    void sl_replaceWithGaps();
 
     void sl_alignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
 
@@ -230,7 +231,7 @@ protected:
      * If -1 == @countOfGaps then the inserting region width is equal to
      * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
      */
-    void insertGapsBeforeSelection(int countOfGaps = -1);
+    void insertGapsBeforeSelection(int countOfGaps = -1, bool moveSelectedRect = true);
 
     /**
      * Reverse operation for @insertGapsBeforeSelection( ),
@@ -335,7 +336,8 @@ protected:
     qint64 lengthOnMousePress;
 
     QAction* replaceCharacterAction = nullptr;
-    QAction* fillWithGapsinsSymAction = nullptr;
+    QAction* insertGapsAction = nullptr;
+    QAction* replaceWithGapsAction = nullptr;
 
 public:
     QAction* useDotsAction;

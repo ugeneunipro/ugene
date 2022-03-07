@@ -108,7 +108,7 @@ void test_3(HI::GUITestOpStatus& os, int i = 0, QString expectedSec = "") {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, i));
 
     QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "fill_selection_with_gaps"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "insert_gaps"}));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(14, i));
@@ -863,6 +863,54 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0016_1) {
+    // 1. Open document "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    static constexpr QPoint TOP_LEFT = QPoint(0, 0);
+    static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);
+
+    //2. Select area from (0, 0) to (10, 10)
+    GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
+
+    // 3. Click "Replace with gaps" with popup menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "MSAE_MENU_EDIT", "replace_with_gaps" }));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+
+    // Expected: selection hasn't been changed
+    auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    auto tl = selectedRect.topLeft();
+    CHECK_SET_ERR(tl == TOP_LEFT, QString("Expected top-left selection: 0, 0; current: %1, %2").arg(tl.x()).arg(tl.y()));
+
+    auto br = selectedRect.bottomRight();
+    CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_2) {
+    // 1. Open document "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    static constexpr QPoint TOP_LEFT = QPoint(0, 0);
+    static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);
+
+    // 2. Select area from (0, 0) to (10, 10)
+    GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
+
+    // 3. Click "Replace with gaps" with shortcut
+    GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::ControlModifier);
+
+    // Expected: selection hasn't been changed
+    auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    auto tl = selectedRect.topLeft();
+    CHECK_SET_ERR(tl == TOP_LEFT, QString("Expected top-left selection: 0, 0; current: %1, %2").arg(tl.x()).arg(tl.y()));
+
+    auto br = selectedRect.bottomRight();
+    CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
+}
+
 
 }  // namespace GUITest_common_scenarios_msa_editor_edit
 }  // namespace U2

@@ -2513,6 +2513,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0015);
 
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0016_1);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0016_2);
+
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/replace_character
     /////////////////////////////////////////////////////////////////////////
