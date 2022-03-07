@@ -230,6 +230,10 @@ protected:
      *
      * If -1 == @countOfGaps then the inserting region width is equal to
      * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     *
+     * If @moveSelectedRect is true, then selection will be moved to the right to the selection length
+     * and won't be moved otherwise.
+     *
      */
     void insertGapsBeforeSelection(int countOfGaps = -1, bool moveSelectedRect = true);
 
