@@ -666,7 +666,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4774,7 +4774,7 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
             GTLineEdit::setText(os, endLineEdit, "50");
 
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
 

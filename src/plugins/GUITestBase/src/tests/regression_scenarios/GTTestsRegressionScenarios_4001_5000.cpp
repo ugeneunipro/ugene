@@ -980,7 +980,7 @@ GUI_TEST_CLASS_DEFINITION(test_4100) {
 GUI_TEST_CLASS_DEFINITION(test_4104) {
     GTLogTracer l;
     // 1. Open the attached workflow file.
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4104/test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2082,7 +2082,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209) {
     // Run a task with 10k reads to align (total run time is 20-30 minutes).
     // Check that the task runs correctly.
     // Cancel the task: check that UI is not frozen and the task can be canceled correctly.
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));  // Workflow dir selector.
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));  // Workflow dir selector.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
@@ -2103,7 +2103,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209_1) {
     // Check that the task finishes with no errors.
     GTLogTracer logTracer;
 
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/crash.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
@@ -2127,7 +2127,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_4218) {
     // Check that "Write Annotations" worker takes into account object names of incoming annotation tables
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/4218/test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2146,7 +2146,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218) {
 
 GUI_TEST_CLASS_DEFINITION(test_4218_1) {
     // Check that an output annotation object has a default name if incoming annotation objects have different names
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/4218/test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -118,7 +118,6 @@ void GTUtilsProject::openFilesDrop(HI::GUITestOpStatus& os, const QList<QUrl>& u
 }
 
 void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus& os, const QList<QUrl>& urls) {
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new GTSequenceReadingModeDialogUtils(os));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, QUrl::toStringList(urls)));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open...");
@@ -257,9 +256,6 @@ void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path)
 
 #define GT_METHOD_NAME "closeProjectDeprecated"
 void GTUtilsProject::closeProject(HI::GUITestOpStatus& os) {
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AppCloseMessageBoxDialogFiller(os));
-    GTGlobals::sleep(500);
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 }

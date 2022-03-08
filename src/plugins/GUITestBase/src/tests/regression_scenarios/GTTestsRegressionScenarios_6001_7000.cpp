@@ -1297,7 +1297,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     };
     // 2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
     // 3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
 
@@ -6004,7 +6004,7 @@ GUI_TEST_CLASS_DEFINITION(test_6924) {
         }
     };
     // Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
     // Expected: The dashboard appears

@@ -2449,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
 
     GTFileDialogUtils* ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc");
     GTUtilsDialog::waitForDialog(os, ob);
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
 
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
@@ -3200,7 +3200,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
 
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), algorithm);
 
             //    4. Press "Start prediction".

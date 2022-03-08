@@ -781,7 +781,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

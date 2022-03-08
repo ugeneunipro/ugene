@@ -102,7 +102,6 @@ void GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(HI::GUITestOpS
 #define GT_METHOD_NAME "openWorkflowDesigner"
 void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os) {
     StartupDialogFiller* filler = new StartupDialogFiller(os);
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
     checkWorkflowDesignerWindowIsActive(os);

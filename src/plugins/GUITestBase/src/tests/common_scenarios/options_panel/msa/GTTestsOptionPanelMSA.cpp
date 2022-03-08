@@ -1396,7 +1396,7 @@ void setOutputPath(HI::GUITestOpStatus& os, const QString& path, const QString& 
     expandOutputSettings(os);
     QWidget* outputFileSelectButton = GTWidget::findWidget(os, "outputFileSelectButton");
     CHECK_SET_ERR(outputFileSelectButton != nullptr, "outputFileSelectButton not found");
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name, GTFileDialogUtils::Save));
     GTWidget::click(os, outputFileSelectButton);
 }

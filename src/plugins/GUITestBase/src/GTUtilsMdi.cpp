@@ -168,7 +168,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
             const QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
             foreach (QMdiSubWindow* mdiWindow, mdiWindows) {
                 MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
                 mdiWindow->close();
                 GTGlobals::sleep(100);
                 GTUtilsDialog::removeRunnable(filler);
@@ -194,7 +193,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
         prevWindow = mdiWindow;
 
         MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
 
         if (!tabbedView) {
             QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);

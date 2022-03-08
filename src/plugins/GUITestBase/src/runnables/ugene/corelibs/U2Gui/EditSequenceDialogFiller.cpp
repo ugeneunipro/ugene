@@ -129,7 +129,6 @@ void InsertSequenceFiller::commonScenario() {
     }
 
     if (wrongInput) {
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
