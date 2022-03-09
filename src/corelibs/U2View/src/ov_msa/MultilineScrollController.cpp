@@ -264,7 +264,7 @@ void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
             ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
         }
     } else {
-        int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
+        //int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
         ui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
         ui->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
         //hScrollBar->setValue(x);
