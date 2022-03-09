@@ -471,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<QLabel*> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");

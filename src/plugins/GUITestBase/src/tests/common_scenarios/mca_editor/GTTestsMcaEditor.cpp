@@ -2018,7 +2018,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     // Expected state: Frame is vanished and error notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023_2) {
@@ -2063,7 +2063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     // Expected state: Frame is vanished and error notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023_3) {
@@ -2105,7 +2105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     // Expected state: Frame is vanished and error notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_1) {
@@ -2406,7 +2406,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025_2) {
@@ -2449,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     // Expected state: Frame is vanished and error notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025_3) {
@@ -2491,7 +2491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     // Expected state: Frame is vanished and error notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {

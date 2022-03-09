@@ -3053,7 +3053,7 @@ GUI_TEST_CLASS_DEFINITION(test_4434) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Close the project.
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Open the saved project.
@@ -5450,7 +5450,7 @@ GUI_TEST_CLASS_DEFINITION(test_4885_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    4. Close the project.
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Open the saved project.

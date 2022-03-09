@@ -254,17 +254,13 @@ void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeProjectDeprecated"
-void GTUtilsProject::closeProject(HI::GUITestOpStatus& os) {
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "closeProject"
-void GTUtilsProject::closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog) {
+void GTUtilsProject::closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog, bool isExpectAppMessageBox) {
     if (isExpectSaveProjectDialog) {
         GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    }
+    if (isExpectAppMessageBox) {
+        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
     }
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }

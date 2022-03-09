@@ -1777,7 +1777,7 @@ GUI_TEST_CLASS_DEFINITION(test_6314) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, {"File", "Save all"}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 
     // 4. Open the file again
     GTFileDialog::openFile(os, filePath);
@@ -2505,7 +2505,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
     //         Open "empty_mult_seq.fa".
     //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
@@ -2551,7 +2551,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Expected result : sequences realigned.
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 
     //     Open �protein.aln�.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "protein.aln");
@@ -2572,7 +2572,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Expected result : sequences realigned.
     undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
 
     //     Open �RAW.aln�.Select any sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
@@ -3139,7 +3139,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 3. Close the project and open it again
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3188,7 +3188,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_2) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 4. Close the project and open it again
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3229,7 +3229,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close the project and open it again
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3261,7 +3261,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_4) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close the project and open it again
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3285,7 +3285,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_5) {
     GTWidget::click(os, GTAction::button(os, destGraph));
 
     // 3. Close the project and open it again
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
