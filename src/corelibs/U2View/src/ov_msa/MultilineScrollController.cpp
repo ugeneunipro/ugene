@@ -39,6 +39,8 @@
 #include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MsaMultilineScrollArea.h"
 
+#include <QWheelEvent>
+
 namespace U2 {
 
 MultilineScrollController::MultilineScrollController(MaEditor *maEditor, MaEditorMultilineWgt *maEditorUi)
