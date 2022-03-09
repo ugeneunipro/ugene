@@ -104,13 +104,13 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     insertGapsAction = new QAction(tr("Insert gaps"), this);
     insertGapsAction->setObjectName("insert_gaps");
     insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
-    connect(insertGapsAction, SIGNAL(triggered()), SLOT(sl_insertGaps()));
+    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
     addAction(insertGapsAction);
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
     replaceWithGapsAction->setObjectName("replace_with_gaps");
     replaceWithGapsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Space));
-    connect(replaceWithGapsAction, SIGNAL(triggered()), SLOT(sl_replaceWithGaps()));
+    connect(replaceWithGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_replaceSelectionWithGaps);
     addAction(replaceWithGapsAction);
 
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
@@ -621,23 +621,22 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMaChanging(true);
 }
 
-void MaEditorSequenceArea::sl_insertGaps() {
+void MaEditorSequenceArea::sl_insertGaps2SelectedArea() {
     GCounter::increment("Insert gaps", editor->getFactoryId());
-    if (!isAlignmentLocked()) {
-        emit si_startMaChanging();
-        insertGapsBeforeSelection();
-        emit si_stopMaChanging(true);
-    }
+    CHECK(!isAlignmentLocked(), );
+
+    emit si_startMaChanging();
+    insertGapsBeforeSelection();
+    emit si_stopMaChanging(true);
 }
 
-void U2::MaEditorSequenceArea::sl_replaceWithGaps() {
+void U2::MaEditorSequenceArea::sl_replaceSelectionWithGaps() {
     GCounter::increment("Replace with gaps", editor->getFactoryId());
-    if (!isAlignmentLocked()) {
-        const MaEditorSelection& selection = editor->getSelection();
-        emit si_startMaChanging();
-        insertGapsBeforeSelection(-1, false);
-        emit si_stopMaChanging(true);
-    }
+    CHECK(!isAlignmentLocked(), );
+
+    emit si_startMaChanging();
+    insertGapsBeforeSelection(-1, false);
+    emit si_stopMaChanging(true);
 }
 
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {

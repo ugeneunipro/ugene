@@ -886,6 +886,11 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     auto br = selectedRect.bottomRight();
     CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
+
+    GTKeyboardUtils::copy();
+    auto cp = GTClipboard::text(os);
+    static constexpr char* EXPECTED_CLIPBOARD = "-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------";
+    CHECK_SET_ERR(cp == EXPECTED_CLIPBOARD, QString("Expected selection: %1; current: %2").arg(EXPECTED_CLIPBOARD).arg(cp));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -909,6 +914,11 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 
     auto br = selectedRect.bottomRight();
     CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
+
+    GTKeyboardUtils::copy();
+    auto cp = GTClipboard::text(os);
+    static constexpr char* EXPECTED_CLIPBOARD = "-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------";
+    CHECK_SET_ERR(cp == EXPECTED_CLIPBOARD, QString("Expected selection: %1; current: %2").arg(EXPECTED_CLIPBOARD).arg(cp));
 }
 
 

@@ -161,8 +161,8 @@ public slots:
 
 protected slots:
     void sl_changeColorScheme();
-    void sl_insertGaps();
-    void sl_replaceWithGaps();
+    void sl_insertGaps2SelectedArea();
+    void sl_replaceSelectionWithGaps();
 
     void sl_alignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
 
