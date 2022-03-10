@@ -1265,7 +1265,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
         }
     };
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1080", "blast+marker_new.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1632,7 +1632,7 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     // 4. Run the schema.
     // Expected state: UGENE not crashed
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1155", "crash.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
@@ -3646,12 +3646,12 @@ GUI_TEST_CLASS_DEFINITION(test_1365) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, {"File", "Save all"}, GTGlobals::UseKey);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, {"File", "Save all"}, GTGlobals::UseKey);
 }
 
@@ -7381,7 +7381,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     QDir workflowOutputDir(workflowOutputDirPath);
 
     // 1. Open WD
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os, workflowOutputDir.absolutePath()));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, workflowOutputDir.absolutePath()));
     GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
     GTUtilsMdi::checkWindowIsActive(os, "Workflow Designer");
 

@@ -1297,7 +1297,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     };
     // 2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
     // 3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
 
@@ -2505,7 +2505,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
     //         Open "empty_mult_seq.fa".
     //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
-    GTUtilsProject::closeProject(os, true);
+    GTUtilsProject::closeProject(os, true, true);
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
@@ -2551,7 +2551,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Expected result : sequences realigned.
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-    GTUtilsProject::closeProject(os, true);
+    GTUtilsProject::closeProject(os, true, true);
 
     //     Open �protein.aln�.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "protein.aln");
@@ -2572,7 +2572,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Expected result : sequences realigned.
     undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-    GTUtilsProject::closeProject(os, true);
+    GTUtilsProject::closeProject(os, true, true);
 
     //     Open �RAW.aln�.Select any sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
@@ -6004,7 +6004,7 @@ GUI_TEST_CLASS_DEFINITION(test_6924) {
         }
     };
     // Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
     // Expected: The dashboard appears

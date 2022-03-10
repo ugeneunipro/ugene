@@ -459,7 +459,7 @@ GUI_TEST_CLASS_DEFINITION(write_gui_test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(open_uwl_gui_test_0001) {
     GTLogTracer l;
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "shared_db_objects_input.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
@@ -467,7 +467,7 @@ GUI_TEST_CLASS_DEFINITION(open_uwl_gui_test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(open_uwl_gui_test_0002) {
     GTLogTracer l;
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "shared_db_folders_input.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
@@ -475,7 +475,7 @@ GUI_TEST_CLASS_DEFINITION(open_uwl_gui_test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(open_uwl_gui_test_0003) {
     GTLogTracer l;
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "shared_db_output.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
@@ -527,7 +527,7 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_1) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "read_from_shared_db_no_credentials.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -545,7 +545,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_1) {
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_2) {
     GTLogTracer l;
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "read_from_shared_db_no_credentials.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -560,7 +560,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0002) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "read_from_inaccessible_shared_db.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -633,7 +633,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0004) {
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_1) {
     GTLogTracer l;
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "write_to_shared_db_no_credentials.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -648,7 +648,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_2) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "write_to_shared_db_no_credentials.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -664,7 +664,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0006) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "write_to_inaccessible_shared_db.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

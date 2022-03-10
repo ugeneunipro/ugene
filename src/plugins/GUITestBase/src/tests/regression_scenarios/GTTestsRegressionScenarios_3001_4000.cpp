@@ -2899,7 +2899,7 @@ GUI_TEST_CLASS_DEFINITION(test_3477) {
 
 GUI_TEST_CLASS_DEFINITION(test_3480) {
     GTLogTracer l;
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     GTFileDialog::openFile(os, testDir + "_common_data/bwa/workflow/", "bwa-mem.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5360,7 +5360,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/bwa/workflow/bwa-mem.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 

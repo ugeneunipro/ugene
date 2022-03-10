@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     //    1. Start UGENE. Open workflow schema file from \common data\workflow\remoteDBReaderTest.uws
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/", "remoteDBReaderTest.uws");
     GTUtilsTaskTreeView::waitTaskFinished(os);

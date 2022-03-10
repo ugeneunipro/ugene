@@ -238,7 +238,7 @@ static QString getQuotedString(const QString& string) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/external_tools_free_worfklow.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/external_tools_free_worfklow.uwl");
@@ -262,7 +262,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
@@ -286,7 +286,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0003) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
@@ -342,7 +342,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/samtools_clustulo_clustalw.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/samtools_clustulo_clustalw.uwl");
@@ -566,7 +566,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
@@ -619,7 +619,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
@@ -674,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
@@ -744,7 +744,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Open "_common_data/workflow/dashboard/clustulo_clustalw.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo_clustalw.uwl");
@@ -872,7 +872,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0002) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Ensure that "ClustalO" tool doesn't contain spaces in its paths.
     const QString toolName = "ClustalO";
@@ -933,7 +933,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Copy external tool "ClustalO" to a folder with spaces in its path.
     //    2. Set the copied "ClustalO" in the "Application Settings".
@@ -996,7 +996,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Ensure that neither "python" nor "cutadapt" contain spaces in their paths.
     const QString pythonToolName = "python";
@@ -1072,7 +1072,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Copy external tool "python" to a folder with spaces in its path.
     //    2. Set the copied "python" in the "Application Settings".
@@ -1134,7 +1134,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Copy external tool "cutadapt" to a folder with spaces in its path.
     //    2. Set the copied "cutadapt" in the "Application Settings".
@@ -1196,7 +1196,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Copy external tool "python" to a folder with spaces in its path.
     //    2. Copy external tool "cutadapt" to a folder with spaces in its path.
@@ -1275,7 +1275,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0008) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Ensure that file "data/samples/FASTQ/eas.fastq' is in the folder without spaces in the path.
     QString inputFileUrl = QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath();
@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0009) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Copy "data/samples/FASTQ/eas.fastq" to a folder with spaces in its path.
     QString inputFileUrl = QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath();
@@ -1385,7 +1385,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0010) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_no_output.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
@@ -1436,7 +1436,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0010) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0011) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
@@ -1496,7 +1496,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0011) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0012) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
@@ -1556,7 +1556,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0012) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_and_stderr.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
@@ -1636,7 +1636,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
@@ -1723,7 +1723,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
