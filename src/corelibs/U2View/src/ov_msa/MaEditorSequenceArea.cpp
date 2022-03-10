@@ -109,7 +109,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
     replaceWithGapsAction->setObjectName("replace_with_gaps");
-    replaceWithGapsAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Space));
+    replaceWithGapsAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Space));
     connect(replaceWithGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_replaceSelectionWithGaps);
     addAction(replaceWithGapsAction);
 

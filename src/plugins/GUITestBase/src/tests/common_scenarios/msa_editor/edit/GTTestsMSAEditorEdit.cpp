@@ -905,7 +905,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
 
     // 3. Click "Replace with gaps" with shortcut
-    GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::ControlModifier);
+    GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::ShiftModifier);
 
     // Expected: selection hasn't been changed
     auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
