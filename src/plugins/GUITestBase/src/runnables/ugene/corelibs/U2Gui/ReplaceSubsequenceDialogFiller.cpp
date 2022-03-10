@@ -64,6 +64,7 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

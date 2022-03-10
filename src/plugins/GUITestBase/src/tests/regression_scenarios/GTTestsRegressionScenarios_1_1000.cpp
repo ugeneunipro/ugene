@@ -2991,17 +2991,17 @@ GUI_TEST_CLASS_DEFINITION(test_0981_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Runnable* filler1 = new InsertSequenceFiller(os,
-                                                 "qweqwea",
-                                                 InsertSequenceFiller::Resize,
-                                                 1,
-                                                 "",
-                                                 InsertSequenceFiller::FASTA,
-                                                 false,
-                                                 false,
-                                                 GTGlobals::UseMouse,
-                                                 true);
-    GTUtilsDialog::waitForDialog(os, filler1);
+    GTUtilsDialog::waitForDialog(os,
+                                 new InsertSequenceFiller(os,
+                                                          "qweqwea",
+                                                          InsertSequenceFiller::Resize,
+                                                          1,
+                                                          "",
+                                                          InsertSequenceFiller::FASTA,
+                                                          false,
+                                                          false,
+                                                          GTGlobals::UseMouse,
+                                                          true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 }
 
