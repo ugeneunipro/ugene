@@ -117,9 +117,9 @@ void GTUtilsProject::openFilesDrop(HI::GUITestOpStatus& os, const QList<QUrl>& u
     GTGlobals::sendEvent(widget, dropEvent);
 }
 
-void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus& os, const QList<QUrl>&) {
-    GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
-    //ggg GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, QUrl::toStringList(urls)));
+void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus& os, const QList<QUrl>& urls) {
+    //ggg GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, QUrl::toStringList(urls)));
     GTMenu::clickMainMenuItem(os, {"File", "Open..."});
     GTGlobals::sleep(2000);
     GTUtilsTaskTreeView::waitTaskFinished(os);

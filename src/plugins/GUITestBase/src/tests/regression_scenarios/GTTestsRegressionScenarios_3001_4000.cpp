@@ -2317,7 +2317,7 @@ GUI_TEST_CLASS_DEFINITION(test_3379) {
 
     // 5. Try to launch Export dialog using context menu
     GTUtilsDialog::waitForDialog(os, new CircularViewExportImage(os, testDir + "_common_data/scenarios/sandbox/image.jpg"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "Save circular view as image", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "Save circular view as image"}, GTGlobals::UseMouse));
 
     GTWidget::click(os, circularView, Qt::RightButton);
 }
