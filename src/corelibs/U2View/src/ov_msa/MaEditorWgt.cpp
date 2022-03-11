@@ -102,7 +102,7 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setMinimumSize(300, 200);
+    setMinimumSize(300, 100);
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
@@ -116,7 +116,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
 
     initSeqArea(shBar, cvBar);
     scrollController->init(shBar, cvBar);
-    sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     initNameList(nameListHorizontalScrollBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
@@ -126,8 +126,8 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     initStatusBar(statusBar);
 
     offsetsViewController = new MSAEditorOffsetsViewController(this, editor, sequenceArea);
-    offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    offsetsViewController->rightWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    offsetsViewController->rightWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     seqAreaHeader = new QWidget(this);
     seqAreaHeader->setObjectName("alignment_header_widget");

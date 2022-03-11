@@ -23,6 +23,7 @@
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
+#include "MaEditorNameList.h"
 #include "MaEditorSequenceArea.h"
 #include "MSAEditor.h"
 #include "MSAEditorOverviewArea.h"
@@ -126,8 +127,6 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
 
 void MsaEditorMultilineWgt::createChildren()
 {
-    // TODO:ichebyki
-    // calculate needed count
     uint childrenCount = getMultilineMode() ? 3 : 1;
 
     MaEditorOverviewArea *overviewArea = this->getOverviewArea();
@@ -137,6 +136,12 @@ void MsaEditorMultilineWgt::createChildren()
         child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
+
+        // recalculate count
+        if (i == 0 && getMultilineMode()) {
+            QSize s = child->minimumSizeHint();
+            childrenCount = height() / s.height() + 3;
+        }
     }
 }
 
@@ -253,6 +258,21 @@ MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
     return !(index < uiChildCount)
                ? nullptr
                : qobject_cast<MsaEditorWgt *>(uiChild[index]);
+}
+
+void MsaEditorMultilineWgt::updateSize(bool recurse)
+{
+    if (recurse) {
+        for (uint i = 0; i < getChildrenCount(); i++) {
+            MaEditorWgt *w = getUI(i);
+            QSize s = w->getSequenceArea()->minimumSizeHint();
+
+            w->getEditorNameList()->setMinimumSize(s);
+            w->getSequenceArea()->setMinimumSize(s);
+            w->setMinimumSize(w->minimumSizeHint());
+        }
+    }
+    updateGeometry();
 }
 
 void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer) {

@@ -102,6 +102,10 @@ public:
         return 0;
     }
 
+    virtual void updateSize(bool recurse = true) {
+        Q_UNUSED(recurse);
+    }
+
     int getSequenceAreaWidth(uint index = 0) const;       // pixels
     int getFirstVisibleBase(uint index = 0) const;
     int getLastVisibleBase(uint index = 0) const;
