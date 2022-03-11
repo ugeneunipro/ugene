@@ -2625,6 +2625,26 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5640) {
+    // 1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Set "Strict" consensus algorithm.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTComboBox::selectItemByText(os, "consensusType", nullptr, "Strict");
+
+    // 3. Set threshold to 1 % .
+    GTSpinBox::setValue(os, "thresholdSpinBox", 1, GTGlobals::UseKeyBoard);
+
+    // 4. Remove the last sequence from the MSA.
+    GTUtilsMSAEditorSequenceArea::removeSequence(os, "Hetrodes_pupus_EF540832");
+
+    // Expected state : consensus characters in the columns, that consist of gaps, are also gaps.
+    auto expectedData = GTFile::readAll(os, testDir + "_common_data/scenarios/_regression/5640/res.txt");
+    GTUtilsMSAEditorSequenceArea::checkConsensus(os, expectedData);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5657) {
     // 1. Open _common_data/clustal/COI_sub_asterisks.aln
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_sub_asterisks.aln");
