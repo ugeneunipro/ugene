@@ -47,7 +47,7 @@ private slots:
     void sl_showOffsets(bool);
 
 private:
-    void updateOffsets();
+    void updateOffsets(bool show);
 
     MaEditorSequenceArea *seqArea;
     MaEditor *editor;

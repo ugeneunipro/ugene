@@ -81,6 +81,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     : MaEditorSequenceArea(_ui, hb, vb) {
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
+    setMinimumSize(minimumSizeHint());
 
     initRenderer();
 
@@ -174,6 +175,19 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
     const DNAAlphabet* alphabet = maObj->getAlphabet();
     SAFE_POINT(maObj != nullptr, "DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()", false);
     return DNAAlphabet_AMINO == alphabet->getType();
+}
+
+QSize MSAEditorSequenceArea::sizeHint() const
+{
+    QSize s = QWidget::sizeHint();
+    return QSize(s.width(), minimumSizeHint().height() + 2);
+}
+
+QSize MSAEditorSequenceArea::minimumSizeHint() const
+{
+    QSize s = QWidget::minimumSizeHint();
+    int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
+    return QSize(s.width(), newHeight);
 }
 
 void MSAEditorSequenceArea::focusInEvent(QFocusEvent* fe) {

@@ -492,6 +492,8 @@ QWidget *MSAEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
 
     ui = new MsaEditorMultilineWgt(this, multilineMode);
+    new MoveToObjectMaController(this, ui);
+
     multilineViewAction->setChecked(multilineMode);
     initActions();
     initChildrenActionsAndSignals();
@@ -516,7 +518,6 @@ void MSAEditor::initChildrenActionsAndSignals() {
         connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
         connect(child, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
 
-        new MoveToObjectMaController(this, child);
         initDragAndDropSupport(child);
 
         MSAEditorOverviewArea *overview = qobject_cast<MSAEditorOverviewArea *>(

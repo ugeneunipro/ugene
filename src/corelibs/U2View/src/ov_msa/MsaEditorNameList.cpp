@@ -59,4 +59,17 @@ MSAEditor* MsaEditorNameList::getEditor() const {
     return qobject_cast<MSAEditor*>(editor);
 }
 
+QSize MsaEditorNameList::sizeHint() const
+{
+    QSize s = QWidget::sizeHint();
+    return QSize(s.width(), minimumSizeHint().height());
+}
+
+QSize MsaEditorNameList::minimumSizeHint() const
+{
+    QSize s = QWidget::minimumSizeHint();
+    int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
+    return QSize(s.width(), newHeight);
+}
+
 }  // namespace U2
