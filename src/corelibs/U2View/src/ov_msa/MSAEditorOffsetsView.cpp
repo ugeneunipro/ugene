@@ -70,37 +70,40 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     toggleColumnsViewAction->setObjectName("show_offsets");
     toggleColumnsViewAction->setCheckable(true);
     toggleColumnsViewAction->setChecked(showOffsets);
-    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
+
+    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), editor->getUI(), SIGNAL(si_showOffsets(bool)));
+    connect(editor->getUI(), SIGNAL(si_showOffsets(bool)), SLOT(sl_showOffsets(bool)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
-    updateOffsets();
+
+    updateOffsets(toggleColumnsViewAction->isChecked());
 }
 
 void MSAEditorOffsetsViewController::sl_updateOffsets() {
-    updateOffsets();
+    updateOffsets(toggleColumnsViewAction->isChecked());
 }
 
 bool MSAEditorOffsetsViewController::eventFilter(QObject* o, QEvent* e) {
     if (o == seqArea) {
         if (e->type() == QEvent::Resize || e->type() == QEvent::Show) {
-            updateOffsets();
+            updateOffsets(toggleColumnsViewAction->isChecked());
         }
     }
     return false;
 }
 
 void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
-    updateOffsets();
+    updateOffsets(show);
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext settings is NULL", );
     s->setValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, show);
 }
 
-void MSAEditorOffsetsViewController::updateOffsets() {
+void MSAEditorOffsetsViewController::updateOffsets(bool show) {
     if (leftWidget->parentWidget() != nullptr) {
-        const bool vis = toggleColumnsViewAction->isChecked();
-        leftWidget->setVisible(vis);
-        rightWidget->setVisible(vis);
+        toggleColumnsViewAction->setChecked(show);
+        leftWidget->setVisible(show);
+        rightWidget->setVisible(show);
     }
 
     leftWidget->updateView();
@@ -166,7 +169,10 @@ int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclA
 
 void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QLinearGradient gradient(0, 0, width(), 0);
-    QColor lg(0xDA, 0xDA, 0xDA);
+    // ichebyki: if you want gradient border just change the lg value
+    // QColor lg(0xDA, 0xDA, 0xDA);
+    QColor lg = Qt::white;
+
     QColor dg(0x4A, 0x4A, 0x4A);
     gradient.setColorAt(0.00, lg);
     gradient.setColorAt(0.25, Qt::white);
@@ -202,7 +208,9 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
         int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, countClippedBase);
         QString offset = offs + 1 > seqSize
                              ? QString::number(seqSize + 1)
-                             : QString::number(offs + 1);
+                             : showStartPos
+                                   ? QString::number(offs + 1) + " "
+                                   : " " + QString::number(offs + 1);
         if (showStartPos && offs == 0) {
             painter.setPen(Qt::black);
             QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
@@ -221,11 +229,16 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
         } else {
             painter.setPen(dg);
         }
-        QRect tr(OFFS_WIDGET_BORDER + (showStartPos ? lbw : 0), yRange.startPos, widgetWidth - 2 * OFFS_WIDGET_BORDER - (showStartPos ? lbw : rbw), yRange.length);
+        QRect tr(OFFS_WIDGET_BORDER + (showStartPos ? lbw : 0),
+                 yRange.startPos, widgetWidth - 2 * OFFS_WIDGET_BORDER - (showStartPos ? lbw : rbw), yRange.length);
         if (rowNumber == refSeq) {
             drawRefSequence(painter, tr);
         }
-        painter.drawText(tr, Qt::AlignRight | Qt::AlignTop, offset);
+        painter.drawText(tr,
+                         showStartPos
+                             ? Qt::AlignRight | Qt::AlignTop
+                             : Qt::AlignLeft | Qt::AlignTop,
+                         offset);
     }
 }
 
