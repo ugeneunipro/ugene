@@ -38,7 +38,7 @@ class GObjectView;
 class MoveToObjectMaController : public QObject, public MaEditorContext {
     Q_OBJECT
 public:
-    MoveToObjectMaController(MaEditor *maEditor, MaEditorWgt *wgt);
+    MoveToObjectMaController(MaEditor *maEditor, QWidget *wgt);
 
 private slots:
     /** Shows moveSelectionToAnotherObject at cursor position. */

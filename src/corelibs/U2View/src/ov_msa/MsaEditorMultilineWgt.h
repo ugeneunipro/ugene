@@ -50,6 +50,7 @@ public:
     MaEditorStatusBar *getStatusBar();
 
     MaEditorWgt *getUI(uint index = 0) const override;
+    void updateSize(bool recurse = true) override;
 
     void addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer);
     void delPhylTreeWidget();
@@ -58,7 +59,8 @@ public:
     };
     MSAEditorTreeViewer* getCurrentTree() const;
 
-private slots:
+signals:
+    void si_showOffsets(bool);
 
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);

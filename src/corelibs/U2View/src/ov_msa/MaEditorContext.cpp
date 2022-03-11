@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MaEditorContext::MaEditorContext(MaEditor *maEditor, MaEditorWgt *wgt)
+MaEditorContext::MaEditorContext(MaEditor *maEditor, QWidget *wgt)
     : editor(maEditor),
       maObject(maEditor->getMaObject()),
       ui(wgt),

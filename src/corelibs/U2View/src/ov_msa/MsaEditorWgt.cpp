@@ -54,7 +54,7 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
     eventFilter = new MaEditorWgtEventFilter(this, this);
     this->installEventFilter(eventFilter);
 
-    setMinimumSize(sizeHint());
+    setMinimumSize(minimumSizeHint());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 }
 
@@ -167,12 +167,12 @@ QSize MsaEditorWgt::sizeHint() const
 
 QSize MsaEditorWgt::minimumSizeHint() const
 {
-    QSize s = QWidget::sizeHint();
+    QSize s = QWidget::minimumSizeHint();
     int newHeight = consensusArea->size().height() +
-                    /*sequenceArea->size().height() +*/
-                    rowHeightController->getTotalAlignmentHeight() +
-                    scrollController->getHorizontalScrollBar()->size().height() +
-                    2;
+                    qMax(qMax(sequenceArea->minimumSizeHint().height(),
+                              nameList->minimumSizeHint().height()),
+                         (editor->getSequenceRowHeight() + 1)) +
+                    5;
     return QSize(s.width(), newHeight);
 }
 
