@@ -887,10 +887,24 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     auto br = selectedRect.bottomRight();
     CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
 
-    GTKeyboardUtils::copy();
-    auto cp = GTClipboard::text(os);
-    static constexpr char* EXPECTED_CLIPBOARD = "-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------";
-    CHECK_SET_ERR(cp == EXPECTED_CLIPBOARD, QString("Expected selection: %1; current: %2").arg(EXPECTED_CLIPBOARD).arg(cp));
+    static const QStringList GAPPED_DATA = {
+        "-----------TAAGACTTC",
+        "-----------TAAGCTTAC",
+        "-----------TTAGTTTAT",
+        "-----------TCAGTCTAT",
+        "-----------TCAGTTTAT",
+        "-----------TTAGTCTAC",
+        "-----------TCAGATTAT",
+        "-----------TTAGATTGC",
+        "-----------TTAGATTAT",
+        "-----------TAAGTCTAT",
+        "-----------TTAGCTTAT"
+    };
+
+    for (int i = 0; i < 11; i++) {
+        auto data = GTUtilsMSAEditorSequenceArea::getSequenceData(os, i);
+        CHECK_SET_ERR(data.startsWith(GAPPED_DATA[i]), QString("Expected sequence beginning: %1; current: %2").arg(GAPPED_DATA[i]).arg(data.left(20)));
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -915,10 +929,24 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     auto br = selectedRect.bottomRight();
     CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
 
-    GTKeyboardUtils::copy();
-    auto cp = GTClipboard::text(os);
-    static constexpr char* EXPECTED_CLIPBOARD = "-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------\n-----------";
-    CHECK_SET_ERR(cp == EXPECTED_CLIPBOARD, QString("Expected selection: %1; current: %2").arg(EXPECTED_CLIPBOARD).arg(cp));
+    static const QStringList GAPPED_DATA = {
+        "-----------TAAGACTTC",
+        "-----------TAAGCTTAC",
+        "-----------TTAGTTTAT",
+        "-----------TCAGTCTAT",
+        "-----------TCAGTTTAT",
+        "-----------TTAGTCTAC",
+        "-----------TCAGATTAT",
+        "-----------TTAGATTGC",
+        "-----------TTAGATTAT",
+        "-----------TAAGTCTAT",
+        "-----------TTAGCTTAT"
+    };
+
+    for (int i = 0; i < 11; i++) {
+        auto data = GTUtilsMSAEditorSequenceArea::getSequenceData(os, i);
+        CHECK_SET_ERR(data.startsWith(GAPPED_DATA[i]), QString("Expected sequence beginning: %1; current: %2").arg(GAPPED_DATA[i]).arg(data.left(20)));
+    }
 }
 
 
