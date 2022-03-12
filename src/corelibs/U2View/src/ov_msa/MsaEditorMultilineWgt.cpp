@@ -52,6 +52,10 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
     this->setMultilineMode(multiline);
 
     createChildren();
+
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+        this->updateSize();
+    });
 }
 
 MaEditorWgt *MsaEditorMultilineWgt::createChild(MaEditor *editor,
