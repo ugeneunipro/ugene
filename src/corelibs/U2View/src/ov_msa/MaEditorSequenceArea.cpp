@@ -660,8 +660,6 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const M
 
     editor->updateReference();
     sl_completeUpdate();
-
-    editor->getMaEditorMultilineWgt()->updateSize();
 }
 
 void MaEditorSequenceArea::sl_completeUpdate() {
