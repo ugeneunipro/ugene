@@ -3013,7 +3013,9 @@ GUI_TEST_CLASS_DEFINITION(test_0981_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
     Runnable* filler1 = new ReplaceSubsequenceDialogFiller(os,
-                                                           "qweqwea");
+                                                           "qweqwea",
+                                                           false,
+                                                           true);
     GTUtilsDialog::waitForDialog(os, filler1);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);

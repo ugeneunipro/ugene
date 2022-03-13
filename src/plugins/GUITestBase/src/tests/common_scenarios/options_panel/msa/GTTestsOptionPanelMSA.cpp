@@ -1392,11 +1392,13 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_3) {
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 1), QPoint(14, 1), "AAG-CTTACT---AA");
 }
 namespace {
-void setOutputPath(HI::GUITestOpStatus& os, const QString& path, const QString& name) {
+void setOutputPath(HI::GUITestOpStatus& os, const QString& path, const QString& name, bool clickYes = true) {
     expandOutputSettings(os);
     QWidget* outputFileSelectButton = GTWidget::findWidget(os, "outputFileSelectButton");
     CHECK_SET_ERR(outputFileSelectButton != nullptr, "outputFileSelectButton not found");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    if (clickYes) {
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    }
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name, GTFileDialogUtils::Save));
     GTWidget::click(os, outputFileSelectButton);
 }
@@ -1486,7 +1488,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
 
     const QString filePath = dirPath + "/" + fileName;
 
-    setOutputPath(os, dirPath, fileName);
+    setOutputPath(os, dirPath, fileName, false);
     align(os);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getJoinedErrorString();

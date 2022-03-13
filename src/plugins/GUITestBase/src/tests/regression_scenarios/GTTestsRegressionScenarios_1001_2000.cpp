@@ -2905,7 +2905,6 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algorithmBox", dialog));
             GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
@@ -5055,7 +5054,6 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new Scenario));
     GTWidget::click(os, GTUtilsMsaEditor::getNameListArea(os), Qt::RightButton);
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new PopupChecker(os, new Scenario));
     GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new RenameSequenceFiller(os, "test_1551"));
     GTMouseDriver::click(Qt::RightButton);
 }

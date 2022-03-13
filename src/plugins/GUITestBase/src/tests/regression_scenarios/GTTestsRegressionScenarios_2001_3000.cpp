@@ -4257,7 +4257,6 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //ggg GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/translateTest.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
