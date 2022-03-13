@@ -55,6 +55,7 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
@@ -284,6 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
+    GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
     GTUtilsProject::openFiles(os, QList<QUrl>() << dataDir + "samples/Genbank/murine.gb" << dataDir + "samples/Genbank/sars.gb" << dataDir + "samples/Genbank/CVU55762.gb");
     GTUtilsDocument::checkDocument(os, "murine.gb");
     GTUtilsDocument::checkDocument(os, "sars.gb");
