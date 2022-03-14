@@ -73,7 +73,7 @@ void ProjectImpl::makeClean() {
 
 void ProjectImpl::sl_removeAllrelationsWithObject(GObject* obj) {
     QList<GObject*> allObjs;
-    for (Document *d : getDocuments()) {
+    for (Document *d : qAsConst(getDocuments())) {
         allObjs << d->getObjects();
     }
     for (GObject* object : qAsConst(allObjs)) {
@@ -136,7 +136,7 @@ void ProjectImpl::addDocument(Document* d) {
 
     connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
     connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
-    connect(d, SIGNAL(si_removeRelations(GObject*)), SLOT(sl_removeAllrelationsWithObject(GObject*)));
+    connect(d, &Document::si_beforeObjectRemoved, this, &ProjectImpl::sl_removeAllrelationsWithObject);
     foreach (GObject* obj, d->getObjects()) {
         sl_onObjectAdded(obj);
     }
