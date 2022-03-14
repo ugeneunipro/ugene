@@ -71,8 +71,8 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     toggleColumnsViewAction->setCheckable(true);
     toggleColumnsViewAction->setChecked(showOffsets);
 
-    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), editor->getUI(), SIGNAL(si_showOffsets(bool)));
-    connect(editor->getUI(), SIGNAL(si_showOffsets(bool)), SLOT(sl_showOffsets(bool)));
+    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), editor, SIGNAL(si_showOffsets(bool)));
+    connect(editor, SIGNAL(si_showOffsets(bool)), SLOT(sl_showOffsets(bool)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
 
