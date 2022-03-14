@@ -104,7 +104,7 @@ private slots:
     void sl_onMdiWindowAdded(MWMDIWindow* w);
     void sl_onMdiWindowClosing(MWMDIWindow* w);
     void sl_onViewRenamed(const QString& oldName);
-    void sl_removeAllRelationsWithObject(GObject* obj);
+    void sl_removeAllrelationsWithObject(GObject* obj);
 
 private:
     void addState(GObjectViewState* s);

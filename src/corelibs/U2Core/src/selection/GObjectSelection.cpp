@@ -106,5 +106,29 @@ void GObjectSelection::removeFromSelection(const QList<GObject*>& obj) {
         emit si_selectionChanged(this, emptyObjs, tmpRemoved);
     }
 }
+/*
+//////////////////////////////////////////////////////////////////////////
+/// GDocumentObjectSelection
+
+void GDocumentObjectSelection::_append(GObject* o) {
+    Document* d = o->getDocument();
+    assert(d!=NULL);
+    connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(void sl_onObjectRemoved(GObject*)));
+    GObjectSelection::_append(o);
+}
+
+void GDocumentObjectSelection::_remove(GObject* o) {
+    o->disconnect(this);
+    GObjectSelection::_remove(o);
+}
+
+void GDocumentObjectSelection::sl_onObjectRemoved(GObject* o) {
+    remove(o);
+}
+
+//////////////////////////////////////////////////////////////////////////
+/// GProjectObjectSelection
+
+*/
 
 }  // namespace U2
