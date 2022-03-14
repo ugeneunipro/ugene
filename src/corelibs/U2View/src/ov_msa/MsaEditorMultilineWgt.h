@@ -60,7 +60,6 @@ public:
     MSAEditorTreeViewer* getCurrentTree() const;
 
 signals:
-    void si_showOffsets(bool);
 
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
