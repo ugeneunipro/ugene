@@ -234,6 +234,7 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint& cursorPosition);
+    void si_showOffsets(bool);
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint& pos) = 0;
