@@ -45,37 +45,53 @@
 <context>
     <name>U2::TestRunnerPlugin</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
-        <source>test_runner_plug_name</source>
-        <translation>test_çalıştırıcısı_eklenti_adı</translation>
+        <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
+        <source>Test Runner</source>
+        <translation>Test Çalıştırıcısı</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
-        <source>test_runner_desc</source>
-        <translation>test_çalıştırıcısı_azalan</translation>
+        <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
+        <source>Support for running runs XML tests from GUI &amp; console interfaces.</source>
+        <translation>Arayüz ve konsol arayüzlerinden XML testleri çalıştırma desteği.</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="96"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="107"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="103"/>
         <source>Can&apos;t load suite %1</source>
         <translation>%1 paketi yüklenemiyor</translation>
+    </message>
+    <message>
+        <location filename="../src/TestRunnerPlugin.cpp" line="115"/>
+        <source>Can&apos;t load suite %1, errors: %2</source>
+        <translation>%1 paketi yüklenemiyor, hatalar: %2</translation>
+    </message>
+    <message>
+        <source>test_runner_plug_name</source>
+        <translation type="vanished">test_çalıştırıcısı_eklenti_adı</translation>
+    </message>
+    <message>
+        <source>test_runner_desc</source>
+        <translation type="vanished">test_çalıştırıcısı_azalan</translation>
     </message>
 </context>
 <context>
     <name>U2::TestRunnerService</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="138"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="167"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="146"/>
         <source>Test runner</source>
         <translation>Test Çalıştırıcısı</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="138"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="146"/>
         <source>Service to support UGENE embedded testing</source>
-        <translation>UGENE yerleşik testini destekleme hizmeti</translation>
+        <translation>UGENE yerleşik testini destekleyen hizmet</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="277"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="175"/>
+        <source>XML Test runner</source>
+        <translation>XML Test Çalıştırıcısı</translation>
+    </message>
+    <message>
+        <location filename="../src/TestRunnerPlugin.cpp" line="287"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>%1 kaynağından test paketi okunurken hata oluştu. Hata: %2</translation>
     </message>
@@ -85,48 +101,48 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="432"/>
         <location filename="../src/TestViewController.cpp" line="471"/>
-        <location filename="../src/TestViewController.cpp" line="779"/>
-        <location filename="../src/TestViewController.cpp" line="798"/>
+        <location filename="../src/TestViewController.cpp" line="774"/>
+        <location filename="../src/TestViewController.cpp" line="793"/>
         <source>error</source>
         <translation>hata</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="930"/>
+        <location filename="../src/TestViewController.cpp" line="925"/>
         <source>info</source>
         <translation>bilgi</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="937"/>
+        <location filename="../src/TestViewController.cpp" line="932"/>
         <source>env_mb_title</source>
         <translation>env_mb_başlığı</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1142"/>
+        <location filename="../src/TestViewController.cpp" line="1137"/>
         <source>passed</source>
         <translation>geçti</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1145"/>
+        <location filename="../src/TestViewController.cpp" line="1140"/>
         <source>failed</source>
         <translation>başarısız</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1147"/>
+        <location filename="../src/TestViewController.cpp" line="1142"/>
         <source>not_run</source>
         <translation>çalıştır_ma</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1180"/>
+        <location filename="../src/TestViewController.cpp" line="1175"/>
         <source>state: </source>
         <translation>durum: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1182"/>
+        <location filename="../src/TestViewController.cpp" line="1177"/>
         <source>fail_desc: </source>
         <translation>başarısız_azalma: </translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="1185"/>
+        <location filename="../src/TestViewController.cpp" line="1180"/>
         <source>source_file:</source>
         <translation>kaynak_dosyası:</translation>
     </message>
@@ -178,7 +194,7 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="118"/>
         <source>Select All</source>
-        <translation>Tümünü seç</translation>
+        <translation>Tümünü Seç</translation>
     </message>
     <message>
         <location filename="../src/TestViewController.cpp" line="124"/>
@@ -220,13 +236,13 @@
         <translation>Test paketi okunurken hata oluştu: %1</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="779"/>
-        <location filename="../src/TestViewController.cpp" line="798"/>
+        <location filename="../src/TestViewController.cpp" line="774"/>
+        <location filename="../src/TestViewController.cpp" line="793"/>
         <source>Not all environment variables set</source>
         <translation>Tüm ortam değişkenleri ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/TestViewController.cpp" line="930"/>
+        <location filename="../src/TestViewController.cpp" line="925"/>
         <source>No environment variables found</source>
         <translation>Ortam değişkeni bulunamadı</translation>
     </message>

@@ -98,7 +98,7 @@
         <translation>Pattern length (%1) is longer than search sequence length (%2).</translation>
     </message>
     <message>
-        <location filename="../src/sw_cuda_cpp.cpp" line="214"/>
+        <location filename="../src/sw_cuda_cpp.cpp" line="212"/>
         <source>CUDA malloc error</source>
         <translation>CUDA malloc error</translation>
     </message>
@@ -406,32 +406,32 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="551"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="549"/>
         <source>Substitution matrix is empty</source>
         <translation>Substitution matrix is empty</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="761"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="759"/>
         <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
         <translation>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="764"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="762"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="796"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="794"/>
         <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
         <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="801"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="799"/>
         <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="856"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="854"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>
@@ -618,27 +618,27 @@
 <context>
     <name>U2::SWAlgorithmTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="197"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="195"/>
         <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
         <translation>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="200"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="198"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="215"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="213"/>
         <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
         <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="220"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="218"/>
         <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="415"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="413"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>

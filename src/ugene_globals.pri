@@ -107,6 +107,8 @@ linux-g++ {
         QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
         QMAKE_LFLAGS += -lgcov --coverage
     }
+    # Check for undefined symbols during the build.
+    QMAKE_LFLAGS += "-Wl,--no-undefined"
 }
 
 isEmpty(PREFIX): PREFIX  = dist/ugene-$${UGENE_VERSION}

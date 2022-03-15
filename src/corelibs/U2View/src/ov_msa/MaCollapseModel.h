@@ -105,10 +105,10 @@ public:
      * If 'includeChildRowsForCollapsedGroups' is true adds all MA rows in the group
      * for every viewRow that is a header of the collapsed group.
      */
-    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups = false);
+    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups = false) const;
 
     /** Returns list of MA row indexes for the given view row indexes. */
-    QList<int> getMaRowIndexesByViewRowIndexes(const QList<int>& viewRowIndexes, bool includeChildRowsForCollapsedGroups = false);
+    QList<int> getMaRowIndexesByViewRowIndexes(const QList<int>& viewRowIndexes, bool includeChildRowsForCollapsedGroups = false) const;
 
     /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
     QList<int> getMaRowsIndexesWithViewRowIndexes() const;
@@ -157,7 +157,8 @@ public:
     QSet<qint64> getAllRowIds() const;
 
     /** Returns list of maRowIndexes for all rows in the selection. Asserts that all rows are mapped. */
-    QList<int> getMaRowIndexesFromSelectionRects(const QList<QRect>& selectionRects) const;
+    QList<int> getMaRowIndexesFromSelectionRects(const QList<QRect>& selectionRects,
+                                                 bool includeChildRowsForCollapsedGroups = false) const;
 
 signals:
     void si_aboutToBeToggled();

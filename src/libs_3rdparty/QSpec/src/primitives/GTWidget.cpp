@@ -26,8 +26,12 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
+#include <QMdiArea>
 #include <QScrollBar>
 #include <QStyle>
+#include <QTextBrowser>
+#include <QDialogButtonBox>
+#include <QProgressBar>
 
 #include "drivers/GTMouseDriver.h"
 #include "utils/GTThread.h"
@@ -203,6 +207,30 @@ QSplitter* GTWidget::findSplitter(GUITestOpStatus& os, const QString& widgetName
 
 QLabel* GTWidget::findLabel(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     return findExactWidget<QLabel*>(os, widgetName, parentWidget, options);
+}
+
+QMdiArea* GTWidget::findMdiArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QMdiArea*>(os, widgetName, parentWidget, options);
+}
+
+QScrollArea* GTWidget::findScrollArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QScrollArea*>(os, widgetName, parentWidget, options);
+}
+
+QTextBrowser* GTWidget::findTextBrowser(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTextBrowser*>(os, widgetName, parentWidget, options);
+}
+
+QTableView* GTWidget::findTableView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTableView*>(os, widgetName, parentWidget, options);
+}
+
+QDialogButtonBox* GTWidget::findDialogButtonBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QDialogButtonBox*>(os, widgetName, parentWidget, options);
+}
+
+QProgressBar* GTWidget::findProgressBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QProgressBar*>(os, widgetName, parentWidget, options);
 }
 
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {

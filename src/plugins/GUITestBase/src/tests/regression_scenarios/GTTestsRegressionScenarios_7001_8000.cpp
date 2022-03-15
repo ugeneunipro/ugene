@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <cmath>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -84,6 +85,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
@@ -93,6 +95,7 @@
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -121,7 +124,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
             CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "python"),
                           "Python module is expected to be invalid, but in fact it is valid")
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -344,10 +347,10 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
         void run(GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            auto currentCombobox = GTWidget::findExactWidget<QComboBox*>(os, "algorithmBox", dialog);
+            auto currentCombobox = GTWidget::findComboBox(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
 
-            currentCombobox = GTWidget::findExactWidget<QComboBox*>(os, "subModelCombo", dialog);
+            currentCombobox = GTWidget::findComboBox(os, "subModelCombo", dialog);
             GTComboBox::selectItemByText(os, currentCombobox, "CpREV");
 
             GTWidget::click(os, GTWidget::findButtonByText(os, "Save Settings", dialog));
@@ -405,6 +408,54 @@ GUI_TEST_CLASS_DEFINITION(test_7127) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7128) {
+    // Copy mafft folder in sandbox_dir.
+    // Open UGENE, open Preferences...->External Tools.
+    // Set MAFFT path as "sandbox_dir/mafft/mafft.bat", wait for validating, click OK.
+    // Remove "sandbox_dir/mafft/".
+    // Open COI.aln and Align with MAFFT.
+    // Expected: the log contains errors like "file "sandbox_dir/mafft/mafft.bat" doesn't exist".
+
+    QString mafftDirToRemove = sandBoxDir + "mafft";
+    QString mafftPathToRemove = mafftDirToRemove + "/mafft.bat";
+
+    class SetMafft : public CustomScenario {
+    public:
+        SetMafft(const QString& mafftDir, const QString& mafftPath)
+            : mafftDir(mafftDir), mafftPath(mafftPath) {
+        }
+        void run(GUITestOpStatus& os) override {
+            QString toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
+            GTFile::copyDir(os, toolPath.remove("mafft.bat"), mafftDir);
+            AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", QFileInfo(mafftPath).absoluteFilePath());
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
+            bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, "MAFFT");
+            CHECK_SET_ERR(isValid, QString("MAFFT with path '%1' is expected to be valid, but in fact it is invalid").arg(toolPath));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+
+    private:
+        QString mafftDir;
+        QString mafftPath;
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetMafft(mafftDirToRemove, mafftPathToRemove)));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTLogTracer logTracer;
+    GTFile::removeDir(mafftDirToRemove);
+    GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+
+    GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7151) {
     // Open data/samples/ACE/BL060C3.ace as MSA.
     // Close project, don't save. These steps are required for BL060C3.ace to appear in the Recent Files.
@@ -421,7 +472,7 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<QLabel*> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
@@ -532,8 +583,8 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "bothStrandsButton", dialog));
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "translateButton", dialog), true);
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "bothStrandsButton", dialog));
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "translateButton", dialog), true);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -557,6 +608,27 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     // 5. Push Export button in the dialog.
     // 6. Repeat steps 2-5 8 times
     // Expected state: UGENE is not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7191) {
+    /*
+    * 1. Open data/samples/sars.gb
+    * 2. Delete sequence object
+    * 3. Export annotation object
+    * Expected state: there is no errors in the log
+    */
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::click(os, "NC_004718");
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
+    GTMouseDriver::click(Qt::RightButton);
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb, os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export annotations..."}));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_004718 features");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193) {
@@ -756,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit*>(os, "previewEdit", dialog);
+            auto textEdit = GTWidget::findPlainTextEdit(os, "previewEdit", dialog);
             QString previewText = textEdit->toPlainText();
             CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -772,7 +844,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit*>(os, "previewEdit", dialog);
+            auto textEdit = GTWidget::findPlainTextEdit(os, "previewEdit", dialog);
             QString previewText = textEdit->toPlainText();
             CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -812,10 +884,10 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
 
         void run(GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), pattern);
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), pattern);
             GTRadioButton::click(os, "radioTranslation", dialog);
             GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog), region);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "comboRealization", dialog), "CUDA");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "comboRealization", dialog), "CUDA");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
@@ -988,7 +1060,7 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
             CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"),
                           "SPAdes is expected to be invalid, but in fact it is valid");
 
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -1208,6 +1280,50 @@ GUI_TEST_CLASS_DEFINITION(test_7410) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Invalid number of sequence in the alignment");
 
     GTUtilsProjectTreeView::checkItem(os, "test_7410.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7413) {
+    // Check that the distribution is uniform by the Kolmogorov-Smirnov test.
+    // https://colab.research.google.com/drive/1-F4pAh-n0BMXeZczQY-te-UcEJeUSP8Y?usp=sharing
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7413.fa");
+    model.percentA = 99;
+    model.percentC = 1;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.length = 10000;
+
+    auto checkUniformDistribution = [&model, &os]() {
+        GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+        GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+        GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+        QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+        QVector<int> empiricalSum;
+        int sumNumSeq = 0;
+        for (QChar c : qAsConst(sequence)) {
+            sumNumSeq += c == 'C' ? 1 : 0;
+            empiricalSum << sumNumSeq;
+        }
+        CHECK_SET_ERR_RESULT(sumNumSeq > 0, "Invalid base content: there is no letter C in the sequence", false);
+
+        double maxDifference = 0;
+        for (int i = 0; i < model.length; i++) {
+            maxDifference = std::max<double>(maxDifference, std::abs((double(i) + 1) / model.length - double(empiricalSum[i]) / sumNumSeq));
+        }
+
+        // https://drive.google.com/file/d/1YFIm8SXb3e-W0JKWWmiTXXh4BU2unHEm/view?usp=sharing
+        // 1.61 is the constant from the table for alpha value 0.01.
+        return maxDifference < 1.61 / std::sqrt(sumNumSeq);
+    };
+
+    for (int i = 0; i < 10; ++i) {
+        if (checkUniformDistribution()) {
+            return;
+        }
+        model.url = sandBoxDir + QString("/test_7413_%1.fa").arg(i);
+    }
+    CHECK_SET_ERR(false, "The generated sequences are not uniform distributed")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7414) {
@@ -1560,7 +1676,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
             // 4. Select "AaaI" and click "Add---->"
             // 5. Go to the "Conserved annotations" tab
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
+            auto availableEnzymeWidget = GTWidget::findListWidget(os, "availableEnzymeWidget", dialog);
             QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
 

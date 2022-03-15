@@ -1625,8 +1625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {  // DIFFERENCE: Line label is tested
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
 
     // Expected state: Statistics "Seq" in right bottom is "Seq 1 / 10"
-    QLabel* lineLabel = GTWidget::findExactWidget<QLabel*>(os, "Line");
-    CHECK_SET_ERR(lineLabel, "Line label not found");
+    auto lineLabel = GTWidget::findLabel(os, "Line");
     CHECK_SET_ERR(lineLabel->text() == "Seq 1 / 10", "Expected text: Seq 1 / 10. Found: " + lineLabel->text());
 
     // 3. Select and delete 5 lines
@@ -3180,7 +3179,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* filepathEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filepathEdit", dialog);
+            auto filepathEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
             GTLineEdit::setText(os, filepathEdit, dataDir + "samples/CLUSTALW/COI.aln");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3205,10 +3204,10 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* fileNameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, fileNameEdit, sandBoxDir + "murine.aln");
 
-            QCheckBox* genbankBox = GTWidget::findExactWidget<QCheckBox*>(os, "genbankBox", dialog);
+            auto genbankBox = GTWidget::findCheckBox(os, "genbankBox", dialog);
             GTCheckBox::setChecked(os, genbankBox, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3231,11 +3230,11 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* join2alignmentMode = GTWidget::findExactWidget<QRadioButton*>(os, "join2alignmentMode", dialog);
+            auto join2alignmentMode = GTWidget::findRadioButton(os, "join2alignmentMode", dialog);
             GTRadioButton::click(os, join2alignmentMode);
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
-            QLineEdit* newDocUrl = GTWidget::findExactWidget<QLineEdit*>(os, "newDocUrl", dialog);
+            auto newDocUrl = GTWidget::findLineEdit(os, "newDocUrl", dialog);
             GTLineEdit::setText(os, newDocUrl, sandBoxDir + "test_0057.aln");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3334,10 +3333,10 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* schemeName = GTWidget::findExactWidget<QLineEdit*>(os, "schemeName", dialog);
+            auto schemeName = GTWidget::findLineEdit(os, "schemeName", dialog);
             GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0059_scheme");
 
-            QComboBox* alphabetComboBox = (GTWidget::findExactWidget<QComboBox*>(os, "alphabetComboBox", dialog));
+            auto alphabetComboBox = (GTWidget::findComboBox(os, "alphabetComboBox", dialog));
             GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new customColorSelector()));
@@ -3403,7 +3402,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* colorsDirEdit = GTWidget::findExactWidget<QLineEdit*>(os, "colorsDirEdit", dialog);
+            auto colorsDirEdit = GTWidget::findLineEdit(os, "colorsDirEdit", dialog);
             QString path = colorsDirEdit->text();
             CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color folder: " + path);
 
@@ -3440,8 +3439,8 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLabel* validLabel = GTWidget::findExactWidget<QLabel*>(os, "validLabel", dialog);
-            QLineEdit* schemeName = GTWidget::findExactWidget<QLineEdit*>(os, "schemeName", dialog);
+            auto validLabel = GTWidget::findLabel(os, "validLabel", dialog);
+            auto schemeName = GTWidget::findLineEdit(os, "schemeName", dialog);
 
             GTLineEdit::setText(os, schemeName, "   ");
             CHECK_SET_ERR(validLabel->text() == "Warning: Name can't contain only spaces.", "unexpected hint: " + validLabel->text());
@@ -3452,7 +3451,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
             GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0061");
             CHECK_SET_ERR(validLabel->text() == "Warning: Color scheme with the same name already exists.", "unexpected hint: " + validLabel->text());
 
-            QComboBox* alphabetComboBox = (GTWidget::findExactWidget<QComboBox*>(os, "alphabetComboBox", dialog));
+            auto alphabetComboBox = (GTWidget::findComboBox(os, "alphabetComboBox", dialog));
             GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -3492,7 +3491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit* filepathEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filepathEdit", dialog);
+            auto filepathEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
             //    Check wrong parameters:
             //    Dir to save does not exists
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "some_dir/subalignment.aln");
@@ -3522,9 +3521,9 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             //    Start pos > end pos
-            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
+            auto startLineEdit = GTWidget::findLineEdit(os, "startLineEdit", dialog);
             GTLineEdit::setText(os, startLineEdit, "50");
-            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
+            auto endLineEdit = GTWidget::findLineEdit(os, "endLineEdit", dialog);
             GTLineEdit::setText(os, endLineEdit, "40");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal column range!"));
@@ -3609,7 +3608,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 
     //    Click "Show distance column". Check state
-    QCheckBox* showDistancesColumnCheck = GTWidget::findExactWidget<QCheckBox*>(os, "showDistancesColumnCheck");
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     QString val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     QString val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
@@ -3668,8 +3667,8 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
 
     //    Press on some sequence in nameList
     GTUtilsMsaEditor::clickSequence(os, 2);
-    QScrollBar* hscroll = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll");
-    QScrollBar* vscroll = GTWidget::findExactWidget<QScrollBar*>(os, "vertical_sequence_scroll");
+    auto hscroll = GTWidget::findScrollBar(os, "horizontal_names_scroll");
+    auto vscroll = GTWidget::findScrollBar(os, "vertical_sequence_scroll");
 
     //    Check keys:
     //    right,
@@ -3771,7 +3770,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
     GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
     //    end
-    QScrollBar* hbar = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_sequence_scroll");
+    auto hbar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End);
     CHECK_SET_ERR(hbar->value() == hbar->maximum(), QString("end key scrollbar value: %1").arg(hbar->value()))
     //    home
@@ -3784,7 +3783,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     CHECK_SET_ERR(hbar->value() == 0, QString("page down key works wrong. Scrollbar value: %1").arg(hbar->value()))
     //  end+shift
-    QScrollBar* vbar = GTWidget::findExactWidget<QScrollBar*>(os, "vertical_sequence_scroll");
+    auto vbar = GTWidget::findScrollBar(os, "vertical_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ShiftModifier);
     CHECK_SET_ERR(vbar->value() == vbar->maximum(), QString("shift + end key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  home+shift

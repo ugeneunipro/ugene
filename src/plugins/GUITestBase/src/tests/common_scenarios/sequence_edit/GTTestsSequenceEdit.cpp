@@ -40,6 +40,7 @@
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"

@@ -79,45 +79,42 @@ void openFileAndCallSmithWatermanDialog(HI::GUITestOpStatus& os, const QString& 
 }
 
 void setSmithWatermanPatternAndOpenLastTab(HI::GUITestOpStatus& os, QWidget* dialog, const QString& pattern = "AGGAAAAAATGCTAAGGGCAGC") {
-    GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), pattern);
-    GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+    GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), pattern);
+    GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 }
 
 void openFileOpenSearchTabAndSetPattern(HI::GUITestOpStatus& os, const QString& filePath, const QString& pattern = "GCCCATCAGACTAACAG") {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "textPattern"), pattern);
+    GTTextEdit::setText(os, GTWidget::findTextEdit(os, "textPattern"), pattern);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 QString getTypeFromFullWidget(HI::GUITestOpStatus& os, QWidget* dialog) {
-    QListWidget* lwAnnotationType = GTWidget::findExactWidget<QListWidget*>(os, "lwAnnotationType", dialog);
-    CHECK_SET_ERR_RESULT(nullptr != lwAnnotationType, "lwAnnotationType is NULL", "");
+    auto lwAnnotationType = GTWidget::findListWidget(os, "lwAnnotationType", dialog);
     return lwAnnotationType->currentItem()->text();
 }
 
 void setTypeInFullWidget(HI::GUITestOpStatus& os, const QString& type, QWidget* dialog) {
-    GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwAnnotationType", dialog), type);
+    GTListWidget::click(os, GTWidget::findListWidget(os, "lwAnnotationType", dialog), type);
 }
 
 bool checkTypePresenceInFullWidget(HI::GUITestOpStatus& os, const QString& type, QWidget* dialog) {
-    return GTListWidget::getItems(os, GTWidget::findExactWidget<QListWidget*>(os, "lwAnnotationType", dialog)).contains(type);
+    return GTListWidget::getItems(os, GTWidget::findListWidget(os, "lwAnnotationType", dialog)).contains(type);
 }
 
 QString getTypeFromNormalWidget(HI::GUITestOpStatus& os, QWidget* dialog) {
-    QComboBox* cbAnnotationType = GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType", dialog);
-    CHECK_SET_ERR_RESULT(nullptr != cbAnnotationType, "cbAnnotationType is NULL", "");
+    auto cbAnnotationType = GTWidget::findComboBox(os, "cbAnnotationType", dialog);
     return cbAnnotationType->currentText();
 }
 
 void setTypeInNormalWidget(HI::GUITestOpStatus& os, const QString& type, QWidget* dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType", dialog), type, GTGlobals::UseMouse);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbAnnotationType", dialog), type, GTGlobals::UseMouse);
 }
 
 bool checkTypePresenceInNormalWidget(HI::GUITestOpStatus& os, const QString& type, QWidget* dialog) {
-    QComboBox* cbAnnotationType = GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType", dialog);
-    CHECK_SET_ERR_RESULT(nullptr != cbAnnotationType, "cbAnnotationType is NULL", "");
+    auto cbAnnotationType = GTWidget::findComboBox(os, "cbAnnotationType", dialog);
     for (int i = 0; i < cbAnnotationType->count(); i++) {
         if (type == cbAnnotationType->itemText(i)) {
             return true;
@@ -128,20 +125,18 @@ bool checkTypePresenceInNormalWidget(HI::GUITestOpStatus& os, const QString& typ
 
 QString getTypeFromOptionsPanelWidget(HI::GUITestOpStatus& os) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
-    QComboBox* cbAnnotationType = GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType");
-    CHECK_SET_ERR_RESULT(nullptr != cbAnnotationType, "cbAnnotationType is NULL", "");
+    auto cbAnnotationType = GTWidget::findComboBox(os, "cbAnnotationType");
     return cbAnnotationType->currentText();
 }
 
 void setTypeInOptionsPanelWidget(HI::GUITestOpStatus& os, const QString& type) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType"), type, GTGlobals::UseMouse);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbAnnotationType"), type, GTGlobals::UseMouse);
 }
 
 bool checkTypePresenceInOptionsPanelWidget(HI::GUITestOpStatus& os, const QString& type) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
-    QComboBox* cbAnnotationType = GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType");
-    CHECK_SET_ERR_RESULT(nullptr != cbAnnotationType, "cbAnnotationType is NULL", "");
+    auto cbAnnotationType = GTWidget::findComboBox(os, "cbAnnotationType");
     for (int i = 0; i < cbAnnotationType->count(); i++) {
         if (type == cbAnnotationType->itemText(i)) {
             return true;
@@ -151,11 +146,11 @@ bool checkTypePresenceInOptionsPanelWidget(HI::GUITestOpStatus& os, const QStrin
 }
 
 void setGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leGroupName", dialog), name);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), name);
 }
 
 void checkGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::checkText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leGroupName", dialog), name);
+    GTLineEdit::checkText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), name);
 }
 
 void clickSelectGroupButton(HI::GUITestOpStatus& os, QWidget* dialog = nullptr) {
@@ -163,33 +158,33 @@ void clickSelectGroupButton(HI::GUITestOpStatus& os, QWidget* dialog = nullptr) 
 }
 
 void setAnnotationName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog), name);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName", dialog), name);
 }
 
 void setSimpleLocation(HI::GUITestOpStatus& os, int startPos, int endPos, bool complement, QWidget* dialog) {
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbSimpleFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leRegionStart", dialog), QString::number(startPos));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leRegionEnd", dialog), QString::number(endPos));
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbComplement", dialog), complement);
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbSimpleFormat", dialog));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leRegionStart", dialog), QString::number(startPos));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leRegionEnd", dialog), QString::number(endPos));
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbComplement", dialog), complement);
     GTThread::waitForMainThread();
 }
 
 void setGenbankLocation(HI::GUITestOpStatus& os, const QString& locationString, QWidget* dialog) {
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbGenbankFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog), locationString);
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leLocation", dialog), locationString);
 }
 
 void setExistingTable(HI::GUITestOpStatus& os, QWidget* dialog = nullptr, const QString& tableName = "") {
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog));
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbExistingTable", dialog));
     if (!tableName.isEmpty()) {
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog), tableName);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExistingTable", dialog), tableName);
     }
 }
 
 void setNewTable(HI::GUITestOpStatus& os, QWidget* dialog = nullptr, const QString& tablePath = "") {
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog));
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable", dialog));
     if (!tablePath.isEmpty()) {
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog), tablePath);
+        GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leNewTablePath", dialog), tablePath);
     }
 }
 
@@ -527,10 +522,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 
             //    5. Click to the annotation type combobox. Enter "tel". Click "Enter".
-            GTWidget::click(os, GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType", dialog));
+            GTWidget::click(os, GTWidget::findComboBox(os, "cbAnnotationType", dialog));
             GTKeyboardDriver::keySequence("tel");
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
@@ -554,7 +549,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     //    7. Click to the annotation type combobox. Enter "tel". Click "Enter".
     //    Expected state: "telomere" type is selected. Cancel the dialog.
-    GTWidget::click(os, GTWidget::findExactWidget<QComboBox*>(os, "cbAnnotationType"));
+    GTWidget::click(os, GTWidget::findComboBox(os, "cbAnnotationType"));
     GTKeyboardDriver::keySequence("tel");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
@@ -2094,7 +2089,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
             //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
             const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-            const QString actualPath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog)->text();
+            const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath", dialog)->text();
             CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                           QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2167,7 +2162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
             //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
             const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-            const QString actualPath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog)->text();
+            const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath", dialog)->text();
             CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                           QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2234,7 +2229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 
     //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
     const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-    const QString actualPath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath")->text();
+    const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath")->text();
     CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                   QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2286,10 +2281,10 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 
             //    3. Select "Use auto-annotations table" option. Accept the dialog.
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable", dialog));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbUseAutoTable", dialog));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2320,7 +2315,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
             //    3. Check "Use pattern names" checkbox state.
             //    Expected state: it is invisible.
-            QCheckBox* usePatternNames = GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames", dialog);
+            auto usePatternNames = GTWidget::findCheckBox(os, "chbUsePatternNames", dialog);
             CHECK_SET_ERR(!usePatternNames->isVisible(), "usePatternNames is unexpectedly visible");
 
             //    4. Check if location widgets are enabled or disabled.
@@ -2332,25 +2327,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        genbank radio button - enabled
             //        genbank lineedit - disabled
             //        genbank complementary button - disabled
-            QRadioButton* rbSimpleFormat = GTWidget::findExactWidget<QRadioButton*>(os, "rbSimpleFormat", dialog);
+            auto rbSimpleFormat = GTWidget::findRadioButton(os, "rbSimpleFormat", dialog);
             CHECK_SET_ERR(rbSimpleFormat->isEnabled(), "1. rbSimpleFormat is unexpectedly disabled");
 
-            QLineEdit* leRegionStart = GTWidget::findExactWidget<QLineEdit*>(os, "leRegionStart", dialog);
+            auto leRegionStart = GTWidget::findLineEdit(os, "leRegionStart", dialog);
             CHECK_SET_ERR(leRegionStart->isEnabled(), "2. leRegionStart is unexpectedly disabled");
 
-            QLineEdit* leRegionEnd = GTWidget::findExactWidget<QLineEdit*>(os, "leRegionEnd", dialog);
+            auto leRegionEnd = GTWidget::findLineEdit(os, "leRegionEnd", dialog);
             CHECK_SET_ERR(leRegionEnd->isEnabled(), "3. leRegionEnd is unexpectedly disabled");
 
-            QCheckBox* chbComplement = GTWidget::findExactWidget<QCheckBox*>(os, "chbComplement", dialog);
+            auto chbComplement = GTWidget::findCheckBox(os, "chbComplement", dialog);
             CHECK_SET_ERR(chbComplement->isEnabled(), "4. chbComplement is unexpectedly disabled");
 
-            QRadioButton* rbGenbankFormat = GTWidget::findExactWidget<QRadioButton*>(os, "rbGenbankFormat", dialog);
+            auto rbGenbankFormat = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
             CHECK_SET_ERR(rbGenbankFormat->isEnabled(), "5. rbGenbankFormat is unexpectedly disabled");
 
-            QLineEdit* leLocation = GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog);
+            auto leLocation = GTWidget::findLineEdit(os, "leLocation", dialog);
             CHECK_SET_ERR(!leLocation->isEnabled(), "6. leLocation is unexpectedly enabled");
 
-            QToolButton* tbDoComplement = GTWidget::findExactWidget<QToolButton*>(os, "tbDoComplement", dialog);
+            auto tbDoComplement = GTWidget::findToolButton(os, "tbDoComplement", dialog);
             CHECK_SET_ERR(!tbDoComplement->isEnabled(), "7. tbDoComplement is unexpectedly enabled");
 
             //    5. Check boundaries for simple location widgets.
@@ -2589,25 +2584,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        New table lineedit - enabled
             //        New table browse button - enabled
             //        Auto table radio button - not visible
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog);
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(!rbExistingTable->isEnabled(), "69. rbExistingTable is unexpectedly enabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog);
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable", dialog);
             CHECK_SET_ERR(!cbExistingTable->isEnabled(), "70. cbExistingTable is unexpectedly enabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable", dialog);
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable", dialog);
             CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "71. tbBrowseExistingTable is unexpectedly enabled");
 
-            QRadioButton* rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog);
+            auto rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "72. rbCreateNewTable is unexpectedly disabled");
 
-            QLineEdit* leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog);
+            auto leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "73. leNewTablePath is unexpectedly disabled");
 
-            QToolButton* tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable", dialog);
+            auto tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable", dialog);
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "74. tbBrowseNewTable is unexpectedly disabled");
 
-            QRadioButton* rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable", dialog);
+            auto rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "75. rbUseAutoTable is unexpectedly visible");
 
             //    25. Cancel the dialog.
@@ -2637,25 +2632,25 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        New table lineedit - disabled
             //        New table browse button - disabled
             //        Auto table radio button - not visible
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog);
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog);
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable", dialog);
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable", dialog);
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable", dialog);
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
 
-            QRadioButton* rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog);
+            auto rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
 
-            QLineEdit* leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog);
+            auto leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
 
-            QToolButton* tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable", dialog);
+            auto tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable", dialog);
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
 
-            QRadioButton* rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable", dialog);
+            auto rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             //    28. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
@@ -2730,32 +2725,25 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             //        New table lineedit - enabled
             //        New table browse button - enabled
             //        Auto table radio button - disabled
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable", dialog);
             CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable", dialog);
             CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
 
-            QRadioButton* rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog);
-            CHECK_SET_ERR(nullptr != rbCreateNewTable, "rbCreateNewTable is NULL");
+            auto rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
 
-            QLineEdit* leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog);
-            CHECK_SET_ERR(nullptr != leNewTablePath, "leNewTablePath is NULL");
+            auto leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
 
-            QToolButton* tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable", dialog);
-            CHECK_SET_ERR(nullptr != tbBrowseNewTable, "tbBrowseNewTable is NULL");
+            auto tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable", dialog);
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
 
-            QRadioButton* rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable", dialog);
-            CHECK_SET_ERR(nullptr != rbUseAutoTable, "rbUseAutoTable is NULL");
+            auto rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2784,32 +2772,25 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             //        New table lineedit - disabled
             //        New table browse button - disabled
             //        Auto table radio button - disabled
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable", dialog);
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable", dialog);
-            CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable", dialog);
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
 
-            QRadioButton* rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog);
-            CHECK_SET_ERR(nullptr != rbCreateNewTable, "rbCreateNewTable is NULL");
+            auto rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
 
-            QLineEdit* leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog);
-            CHECK_SET_ERR(nullptr != leNewTablePath, "leNewTablePath is NULL");
+            auto leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
 
-            QToolButton* tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable", dialog);
-            CHECK_SET_ERR(nullptr != tbBrowseNewTable, "tbBrowseNewTable is NULL");
+            auto tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable", dialog);
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
 
-            QRadioButton* rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable", dialog);
-            CHECK_SET_ERR(nullptr != rbUseAutoTable, "rbUseAutoTable is NULL");
+            auto rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             //    7. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
@@ -2852,8 +2833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
             //    9. Check "Use pattern name" checkbox state.
             //    Expected state: it is invisible.
-            QCheckBox* chbUsePatternNames = GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames", dialog);
-            CHECK_SET_ERR(nullptr != chbUsePatternNames, "chbUsePatternNames is NULL");
+            auto chbUsePatternNames = GTWidget::findCheckBox(os, "chbUsePatternNames", dialog);
             CHECK_SET_ERR(!chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly visible");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2882,40 +2862,32 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     //        New table lineedit - enabled
     //        New table browse button - enabled
     //        Auto table radio button - invisible
-    QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable");
-    CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+    auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable");
     CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled for human_T1");
 
-    QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable");
-    CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+    auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable");
     CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled for human_T1");
 
-    QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable");
-    CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+    auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable");
     CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled for human_T1");
 
-    QRadioButton* rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
-    CHECK_SET_ERR(nullptr != rbCreateNewTable, "rbCreateNewTable is NULL");
+    auto rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable");
     CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for human_T1");
 
-    QLineEdit* leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
-    CHECK_SET_ERR(nullptr != leNewTablePath, "leNewTablePath is NULL");
+    auto leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath");
     CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled for human_T1");
 
-    QToolButton* tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable");
-    CHECK_SET_ERR(nullptr != tbBrowseNewTable, "tbBrowseNewTable is NULL");
+    auto tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable");
     CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled for human_T1");
 
-    QRadioButton* rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable");
-    CHECK_SET_ERR(nullptr != rbUseAutoTable, "rbUseAutoTable is NULL");
+    auto rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable");
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible for human_T1");
 
     //    4. Open "Annotation parameters" group. Check "Use pattern name" checkbox state.
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
 
     //    Expected state: it is visible and enabled.
-    QCheckBox* chbUsePatternNames = GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames");
-    CHECK_SET_ERR(nullptr != chbUsePatternNames, "chbUsePatternNames is NULL");
+    auto chbUsePatternNames = GTWidget::findCheckBox(os, "chbUsePatternNames");
     CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible for human_T1");
     CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled for human_T1");
 
@@ -2936,37 +2908,37 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     //        New table lineedit - disabled
     //        New table browse button - disabled
     //        Auto table radio button - invisible
-    rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable");
+    rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable");
     CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
     CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled for murine_1");
 
-    cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable");
+    cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable");
     CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
     CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled for murine_1");
 
-    tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable");
+    tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable");
     CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
     CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled for murine_1");
 
-    rbCreateNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
+    rbCreateNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable");
     CHECK_SET_ERR(nullptr != rbCreateNewTable, "rbCreateNewTable is NULL");
     CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for murine_1");
 
-    leNewTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
+    leNewTablePath = GTWidget::findLineEdit(os, "leNewTablePath");
     CHECK_SET_ERR(nullptr != leNewTablePath, "leNewTablePath is NULL");
     CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled for murine_1");
 
-    tbBrowseNewTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseNewTable");
+    tbBrowseNewTable = GTWidget::findToolButton(os, "tbBrowseNewTable");
     CHECK_SET_ERR(nullptr != tbBrowseNewTable, "tbBrowseNewTable is NULL");
     CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled for murine_1");
 
-    rbUseAutoTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbUseAutoTable");
+    rbUseAutoTable = GTWidget::findRadioButton(os, "rbUseAutoTable");
     CHECK_SET_ERR(nullptr != rbUseAutoTable, "rbUseAutoTable is NULL");
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
     //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
     // GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable"));
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable"));
 
     //    Expected state:
     //        Existing table radio button - enabled
@@ -2985,7 +2957,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible for murine_2");
 
     //    9. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable"));
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbExistingTable"));
 
     //    Expected state:
     //        Existing table radio button - enabled
@@ -3007,7 +2979,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
 
     //    Expected state: it is visible and enabled.
-    chbUsePatternNames = GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames");
+    chbUsePatternNames = GTWidget::findCheckBox(os, "chbUsePatternNames");
     CHECK_SET_ERR(nullptr != chbUsePatternNames, "chbUsePatternNames is NULL");
     CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible for murine");
     CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled for murine");
@@ -3027,7 +2999,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
             setAnnotationName(os, "test_0041_1", dialog);
             setGenbankLocation(os, "1..100", dialog);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leDescription", dialog), "");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3050,7 +3022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             setAnnotationName(os, "test_0041_2", dialog);
             setGenbankLocation(os, "100..200", dialog);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leDescription", dialog), "test_0041_2 description");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "test_0041_2 description");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3085,7 +3057,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
             //    3. Ensure that description field is empty. Accept the dialog.
             setAnnotationName(os, "test_0042_1", dialog);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leDescription", dialog), "");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3111,7 +3083,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
             //    5. Enter any description. Accept the dialog.
             setAnnotationName(os, "test_0042_2", dialog);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leDescription", dialog), "test_0042_2 description");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "test_0042_2 description");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3179,16 +3151,13 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 
             setAnnotationName(os, "test_0044", dialog);
             setGenbankLocation(os, "10..20", dialog);
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable");
-            CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable");
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable");
-            CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable");
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable");
-            CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable");
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
 
             CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
@@ -3222,16 +3191,13 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
             setAnnotationName(os, annotationName, dialog);
             setGenbankLocation(os, "10..20", dialog);
-            QRadioButton* rbExistingTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable");
-            CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+            auto rbExistingTable = GTWidget::findRadioButton(os, "rbExistingTable");
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
-            QComboBox* cbExistingTable = GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable");
-            CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+            auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable");
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
 
-            QToolButton* tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton*>(os, "tbBrowseExistingTable");
-            CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable");
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
 
             CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");

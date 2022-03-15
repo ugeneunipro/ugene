@@ -164,11 +164,11 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
 #ifndef Q_OS_DARWIN
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             const QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
-            foreach (QMdiSubWindow* mdiWindow, mdiWindows) {
-                MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
+            for (QMdiSubWindow* mdiWindow: qAsConst(mdiWindows)) {
+                auto filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
+                GTUtilsDialog::waitForDialog(os, filler);
                 mdiWindow->close();
                 GTGlobals::sleep(100);
                 GTUtilsDialog::removeRunnable(filler);
@@ -194,7 +194,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
         prevWindow = mdiWindow;
 
         MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
 
         if (!tabbedView) {
             QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
@@ -216,7 +215,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
 bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus& os) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == NULL", false);
-    QMdiArea* mdiArea = GTWidget::findExactWidget<QMdiArea*>(os, "MDI_Area", mainWindow->getQMainWindow());
+    auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
     GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == NULL", false);
     return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
@@ -390,8 +389,7 @@ QTabBar* GTUtilsMdi::getTabBar(HI::GUITestOpStatus& os) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", nullptr);
 
-    QMdiArea* mdiArea = GTWidget::findExactWidget<QMdiArea*>(os, "MDI_Area", mainWindow->getQMainWindow());
-    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == nullptr", nullptr);
+    auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
 
     QTabBar* tabBar = mdiArea->findChild<QTabBar*>("", Qt::FindDirectChildrenOnly);
     GT_CHECK_RESULT(tabBar != nullptr, "MDI tabbar not found", nullptr);

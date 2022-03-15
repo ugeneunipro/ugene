@@ -102,7 +102,7 @@ void GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(HI::GUITestOpS
 #define GT_METHOD_NAME "openWorkflowDesigner"
 void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os) {
     StartupDialogFiller* filler = new StartupDialogFiller(os);
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
+    GTUtilsDialog::waitForDialog(os, filler);
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
     checkWorkflowDesignerWindowIsActive(os);
@@ -560,7 +560,7 @@ WorkflowProcessItem* GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus& os,
     // Wait for the item up to GT_OP_WAIT_MILLIS.
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        auto sceneView = GTWidget::findExactWidget<QGraphicsView*>(os, "sceneView", wdWindow);
+        auto sceneView = GTWidget::findGraphicsView(os, "sceneView", wdWindow);
         QList<QGraphicsItem*> items = sceneView->items();
         for (QGraphicsItem* item : qAsConst(items)) {
             QGraphicsObject* graphicsObject = item->toGraphicsObject();
@@ -1205,7 +1205,7 @@ void GTUtilsWorkflowDesigner::scrollInputPortsWidgetToTableRow(GUITestOpStatus& 
         return;
     }
 
-    QScrollArea* inputScrollArea = GTWidget::findExactWidget<QScrollArea*>(os, "inputScrollArea", inputPortBox);
+    auto inputScrollArea = GTWidget::findScrollArea(os, "inputScrollArea", inputPortBox);
     QScrollBar* scrollBar = inputScrollArea->verticalScrollBar();
     GTScrollBar::moveSliderWithMouseToValue(os, scrollBar, itemPortWidgetRect.center().y());
 }

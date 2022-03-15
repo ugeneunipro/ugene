@@ -39,7 +39,7 @@ MysqlUpgraderFrom_1_24_To_1_25::MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi* dbi)
 void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus& os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
 
-    dropOldPrecedure(os, dbi->getDbRef());
+    dropOldProcedure(os, dbi->getDbRef());
     CHECK_OP(os, );
 
     upgradeCoverageAttribute(os);
@@ -48,7 +48,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus& os) const {
     dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus& os, MysqlDbRef* dbRef) const {
+void MysqlUpgraderFrom_1_24_To_1_25::dropOldProcedure(U2OpStatus& os, MysqlDbRef* dbRef) const {
     U2OpStatus2Log nonCriticalOs;
     U2SqlQuery("DROP PROCEDURE IF EXISTS CreateIndex", dbRef, nonCriticalOs).execute();
 

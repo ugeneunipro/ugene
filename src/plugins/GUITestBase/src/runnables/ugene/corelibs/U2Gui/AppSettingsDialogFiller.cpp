@@ -186,7 +186,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
         if (item->text(0) == toolName) {
             GTTreeWidget::click(os, item);
             GTMouseDriver::doubleClick();
-            QTextBrowser* descriptionTextBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
+            auto descriptionTextBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
     }
@@ -223,7 +223,7 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
 
     clickOnTool(os, toolName);
 
-    QTextBrowser* textBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
+    auto textBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
     GT_CHECK_RESULT(textBrowser, "textBrowser is NULL", false);
 
     QString plainText = textBrowser->toPlainText();
@@ -408,11 +408,7 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
 
     GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os));
 
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton* button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Go to Start page.
     //    Expected state: project is added to "Resent files" list
     //    Close project
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, false);
     //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
     //    Click project name in "Resent projects" list

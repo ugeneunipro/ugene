@@ -74,8 +74,7 @@ namespace {
 
 QListWidgetItem* getConnectionItem(HI::GUITestOpStatus& os, const QString& connectionName) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QListWidget* list = GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog);
-    CHECK_SET_ERR_RESULT(nullptr != list, "Connections list widget is NULL", nullptr);
+    auto list = GTWidget::findListWidget(os, "lwConnections", dialog);
     const QList<QListWidgetItem*> items = list->findItems(connectionName, Qt::MatchExactly);
     CHECK_SET_ERR_RESULT(1 == items.size(), QString("List item '%1'' not found").arg(connectionName), nullptr);
 
@@ -84,7 +83,7 @@ QListWidgetItem* getConnectionItem(HI::GUITestOpStatus& os, const QString& conne
 
 void checkButtonStateForConnectionItem(HI::GUITestOpStatus& os, const QString& connectionName, const QString& buttonText, bool isEnabled) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog), connectionName);
+    GTListWidget::click(os, GTWidget::findListWidget(os, "lwConnections", dialog), connectionName);
 
     QWidget* button = GTWidget::findButtonByText(os, buttonText, dialog);
     CHECK_SET_ERR(nullptr != button, "Button is NULL");
@@ -402,7 +401,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog), "cm_test_0006: uninitialized database");
+            GTListWidget::click(os, GTWidget::findListWidget(os, "lwConnections", dialog), "cm_test_0006: uninitialized database");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "is not initialized"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));

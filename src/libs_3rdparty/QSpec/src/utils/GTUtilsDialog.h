@@ -157,8 +157,6 @@ public:
 
     static void waitForDialogWhichMustNotBeRun(GUITestOpStatus& os, Runnable* r);
 
-    static void waitForDialogWhichMayRunOrNot(GUITestOpStatus& os, Runnable* r);
-
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
     static void checkNoActiveWaiters(GUITestOpStatus& os, int timeoutMillis = 30000);
 

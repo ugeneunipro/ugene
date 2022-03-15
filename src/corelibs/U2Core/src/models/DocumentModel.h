@@ -532,6 +532,7 @@ signals:
     void si_urlChanged();
     void si_nameChanged();
     void si_objectAdded(GObject* o);
+    void si_beforeObjectRemoved(GObject* o);
     void si_objectRemoved(GObject* o);
     void si_loadedStateChanged();
 };

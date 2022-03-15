@@ -19,27 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MYSQL_UPGRADE_TASK_H_
-#define _U2_MYSQL_UPGRADE_TASK_H_
+#ifndef _U2_MYSQL_UPGRADER_FROM_1_25_UNKNOWN_TO_1_25_H_
+#define _U2_MYSQL_UPGRADER_FROM_1_25_UNKNOWN_TO_1_25_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/U2Type.h>
+#include "MysqlUpgrader.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT MysqlUpgradeTask : public Task {
-    Q_OBJECT
+class MysqlDbRef;
+
+class MysqlUpgraderFrom_1_25_unknown_To_1_25 : public MysqlUpgrader {
 public:
-    MysqlUpgradeTask(const U2DbiRef& dbiRef);
+    MysqlUpgraderFrom_1_25_unknown_To_1_25(MysqlDbi* dbi);
 
-    void run() override;
-
-    const U2DbiRef& getDbiRef() const;
-
-private:
-    const U2DbiRef dbiRef;
+    void upgrade(U2OpStatus& os) const override;
 };
 
 }  // namespace U2
 
-#endif  // _U2_MYSQL_UPGRADE_TASK_H_
+#endif  // _U2_MYSQL_UPGRADER_FROM_1_25_UNKNOWN_TO_1_25_H_

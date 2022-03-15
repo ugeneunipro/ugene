@@ -313,6 +313,8 @@ void Document::_addObject(GObject* obj) {
 bool Document::removeObject(GObject* obj, DocumentObjectRemovalMode removalMode) {
     SAFE_POINT(df->isObjectOpSupported(this, DocumentFormat::DocObjectOp_Remove, obj->getGObjectType()), "Unsupported format operation", false);
 
+    emit si_beforeObjectRemoved(obj);
+
     switch (removalMode) {
         case DocumentObjectRemovalMode_Deallocate:
             return _removeObject(obj, true);

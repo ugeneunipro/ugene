@@ -586,8 +586,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "reverseComplementButton", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
 
-    QLineEdit* primerLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
-    CHECK_SET_ERR(primerLineEdit != nullptr, "Forward primerEdit is NULL");
+    auto primerLineEdit = GTWidget::findLineEdit(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
 
     CHECK_SET_ERR(primerLineEdit->text() == "XNVHDBMRSWYKACGT", "Incorrect reverse-complement primer translation");
 }

@@ -1734,10 +1734,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7125);
     REGISTER_TEST(GUITest_regression_scenarios::test_7126);
     REGISTER_TEST(GUITest_regression_scenarios::test_7127);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7128);
     REGISTER_TEST(GUITest_regression_scenarios::test_7151);
     REGISTER_TEST(GUITest_regression_scenarios::test_7152);
     REGISTER_TEST(GUITest_regression_scenarios::test_7161);
     REGISTER_TEST(GUITest_regression_scenarios::test_7183);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7191);
     REGISTER_TEST(GUITest_regression_scenarios::test_7193);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7212);
@@ -1764,6 +1766,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7405);
     REGISTER_TEST(GUITest_regression_scenarios::test_7407);
     REGISTER_TEST(GUITest_regression_scenarios::test_7410);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7413);
     REGISTER_TEST(GUITest_regression_scenarios::test_7414);
     REGISTER_TEST(GUITest_regression_scenarios::test_7415_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_7415_2);
@@ -2399,6 +2402,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0009);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment

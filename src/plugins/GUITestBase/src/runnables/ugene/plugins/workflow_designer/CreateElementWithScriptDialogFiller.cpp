@@ -70,14 +70,7 @@ void ScriptEditorDialogFiller::commonScenario() {
         GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
-
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-
-    QPushButton* button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "Ok button is NULL");
-    GT_CHECK(button->isEnabled(), "Ok button is not enabled");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -101,12 +94,7 @@ void ScriptEditorDialogSyntaxChecker::commonScenario() {
 
     GTGlobals::sleep(1000);
 
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton* button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GT_CHECK(button->isEnabled(), "Ok button is not enabled");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

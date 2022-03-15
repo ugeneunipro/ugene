@@ -58,6 +58,7 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
@@ -462,6 +463,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     files << testDir + "_common_data/fasta/DNA.fa";
     files << testDir + "_common_data/fasta/DNA_1_seq.fa";
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Merge;
+    GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
     GTUtilsProject::openFiles(os, files);
 
     int length = GTUtilsSequenceView::getLengthOfSequence(os);
@@ -716,12 +718,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
             radioButton = dialog->findChild<QRadioButton*>("currentViewButton");
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is hidden");
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -1482,7 +1479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal annotation name"));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog);
+            auto nameEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
             GTLineEdit::setText(os, nameEdit, "//");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
@@ -1498,7 +1495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
             CHECK_SET_ERR(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
             GTRadioButton::click(os, gbFormatLocation);
 
-            QLineEdit* locationEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog);
+            auto locationEdit = GTWidget::findLineEdit(os, "leLocation", dialog);
             GTLineEdit::clear(os, locationEdit);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
@@ -1535,7 +1532,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050_1) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Genes", "promoter"}));
             GTWidget::click(os, GTWidget::findWidget(os, "showNameGroupsButton", dialog));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
+            auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
             CHECK_SET_ERR(nameEdit->text() == "promoter", "unexpected name: " + nameEdit->text());
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1713,7 +1710,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff range"));
 
-            auto minmaxGroup = GTWidget::findExactWidget<QGroupBox*>(os, "minmaxGroup", dialog);
+            auto minmaxGroup = GTWidget::findGroupBox(os, "minmaxGroup", dialog);
             GTGroupBox::setChecked(os, minmaxGroup);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2353,12 +2350,10 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
             QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
             CHECK_SET_ERR(regionSelector != nullptr, "region_selector_with_excluded not found");
 
-            QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
-            CHECK_SET_ERR(start != nullptr, "startLineEdit of 'Search In' region not found");
+            auto start = GTWidget::findLineEdit(os, "startLineEdit", regionSelector);
             GTLineEdit::setText(os, start, "5000");
 
-            QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
-            CHECK_SET_ERR(end != nullptr, "endLineEdit of 'Search In' region not found");
+            auto end = GTWidget::findLineEdit(os, "endLineEdit", regionSelector);
             GTLineEdit::setText(os, end, "1000");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -2366,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
             GTLineEdit::setText(os, start, "1");
 
-            QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
+            auto exclude = GTWidget::findCheckBox(os, "excludeCheckBox");
             GTCheckBox::setChecked(os, exclude);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));

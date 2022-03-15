@@ -408,14 +408,10 @@ void CircularViewRenderArea::paintContent(QPainter& p, bool paintSelection, bool
 }
 
 void CircularViewRenderArea::paintContent(QPainter& p, int w, int h, bool paintSelection, bool paintMarker) {
-    qreal scaleCoeff;
-    if (w <= h) {
-        scaleCoeff = (qreal)w / width();
-        p.translate(0, (h - scaleCoeff * height()) / 2);
-    } else {
-        scaleCoeff = (qreal)h / height();
-        p.translate((w - scaleCoeff * width()) / 2, 0);
-    }
+    double widthAsDouble = w;
+    double heightAsDouble = h;
+    qreal scaleCoeff = std::min(heightAsDouble / height(), widthAsDouble / width());
+    p.translate((widthAsDouble - width() * scaleCoeff) / 2, (heightAsDouble - height() * scaleCoeff) / 2);
     p.save();
     p.scale(scaleCoeff, scaleCoeff);
     paintContent(p, paintSelection, paintMarker);

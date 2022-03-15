@@ -143,8 +143,10 @@ public:
 
     virtual void upgrade(U2OpStatus& os) {
         std::sort(upgraders.begin(), upgraders.end());
-        foreach (const U2DbiUpgrader* upgrader, upgraders) {
-            if (upgrader->isAppliable(Version::parseVersion(getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "0.0.0", os)))) {
+        for (const U2DbiUpgrader* upgrader : qAsConst(upgraders)) {
+            Version dbVersion = Version::parseVersion(getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "0.0.0", os));
+            CHECK_OP(os, );
+            if (upgrader->isApplicable(dbVersion)) {
                 upgrader->upgrade(os);
                 CHECK_OP(os, );
             }

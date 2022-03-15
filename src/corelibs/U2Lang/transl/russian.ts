@@ -705,383 +705,383 @@
 <context>
     <name>U2::HRSchemaSerializer</name>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="86"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="87"/>
         <source>Parameter &apos;%1&apos; undefined for element &apos;%2&apos;</source>
         <translation>Параметр &apos;%1&apos; не определен для элемента &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="90"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="91"/>
         <source>Cannot parse value from &apos;%1&apos;: no value factory</source>
         <translation>Cannot parse value from &apos;%1&apos;: no value factory</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="95"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="96"/>
         <source>Cannot parse value from &apos;%1&apos;</source>
         <translation>Cannot parse value from &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="157"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="303"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="160"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="306"/>
         <source>Bad header: expected &apos;%1&apos;, got &apos;%2&apos;</source>
         <translation>Bad header: expected &apos;%1&apos;, got &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="381"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="383"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="385"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="397"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="399"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="443"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="384"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="386"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="388"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="400"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="402"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="446"/>
         <source>Database select definition: &apos;%1&apos; expected but not found</source>
         <translation>Database select definition: &apos;%1&apos; expected but not found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="389"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="392"/>
         <source>Database select definition: invalid DB object URL</source>
         <translation>Database select definition: invalid DB object URL</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="404"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="407"/>
         <source>Database select definition: invalid DB folder URL</source>
         <translation>Database select definition: invalid DB folder URL</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="445"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="448"/>
         <source>Database select definition: expected either object or folder definition but both found</source>
         <translation>Database select definition: expected either object or folder definition but both found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="456"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="459"/>
         <source>Database select definition: &apos;%1&apos; or &apos;%2&apos; expected but neither found</source>
         <translation>Database select definition: &apos;%1&apos; or &apos;%2&apos; expected but neither found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="459"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="462"/>
         <source>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</source>
         <translation>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="484"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="487"/>
         <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
         <translation>назначение папки: ожидается &apos;%1&apos; или &apos;%2&apos;, найдено &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="493"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="496"/>
         <source>Element name cannot contain whitespaces: &apos;%1&apos;</source>
         <translation>Имя элемента не может содержать пробелы: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="496"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="499"/>
         <source>Element name cannot contain dots: &apos;%1&apos;</source>
         <translation>Имя элемента не может содержать точки: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="499"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="502"/>
         <source>Element &apos;%1&apos; already defined</source>
         <translation>Element &apos;%1&apos; already defined</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="505"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="508"/>
         <source>Type attribute not set for %1 element</source>
         <translation>Type attribute not set for %1 element</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="513"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="516"/>
         <source>Unknown type of %1 element: %2</source>
         <translation>Unknown type of %1 element: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="522"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="525"/>
         <source>Name attribute not set for %1 element</source>
         <translation>Name attribute not set for %1 element</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="565"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="568"/>
         <source>Unexpected actor attribute: %1</source>
         <translation>Unexpected actor attribute: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="588"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="591"/>
         <source>No validator type</source>
         <translation>No validator type</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="596"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="599"/>
         <source>Script validator has not a script</source>
         <translation>Script validator has not a script</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="602"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="605"/>
         <source>Too many blocks in validator definition</source>
         <translation>Too many blocks in validator definition</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="617"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="620"/>
         <source>Grouper out slot action: empty type</source>
         <translation>Grouper out slot action: empty type</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="619"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="622"/>
         <source>Grouper out slot action: invalid type: %1</source>
         <translation>Grouper out slot action: invalid type: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="628"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="631"/>
         <source>Grouper out slot action: invalid parameter: %1</source>
         <translation>Grouper out slot action: invalid parameter: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="640"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="643"/>
         <source>Grouper out slot action: bad int &apos;%1&apos; at parameter %2</source>
         <translation>Grouper out slot action: bad int &apos;%1&apos; at parameter %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="652"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="655"/>
         <source>Grouper out slot action: bad bool &apos;%1&apos; at parameter %2</source>
         <translation>Grouper out slot action: bad bool &apos;%1&apos; at parameter %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="688"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="691"/>
         <source>Grouper out slot: duplicated slot name: %1</source>
         <translation>Grouper out slot: duplicated slot name: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="694"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="697"/>
         <source>Grouper out slot: unknown attribute: %1</source>
         <translation>Grouper out slot: unknown attribute: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="698"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="701"/>
         <source>Grouper out slot: unknown block definition: &apos;%1&apos;. %2 expected</source>
         <translation>Grouper out slot: unknown block definition: &apos;%1&apos;. %2 expected</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="702"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="705"/>
         <source>Grouper out slot: unknown token: &apos;%1&apos;. %2 or %3 expected</source>
         <translation>Grouper out slot: unknown token: &apos;%1&apos;. %2 or %3 expected</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="707"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="710"/>
         <source>Grouper out slot: empty slot name</source>
         <translation>Grouper out slot: empty slot name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="710"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="713"/>
         <source>Grouper out slot: empty in-slot</source>
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1734"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1737"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2129"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2132"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2153"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2156"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2156"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2159"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2163"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2166"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="814"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="817"/>
         <source>Links list is not empty. Maybe .meta is defined earlier than actor-bindings</source>
         <translation>Links list is not empty. Maybe .meta is defined earlier than actor-bindings</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="859"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="955"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="862"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="958"/>
         <source>%1 element is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 element is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="866"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="869"/>
         <source>%1 parameter is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 parameter is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="878"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="881"/>
         <source>Duplicate parameter alias &quot;%1&quot;</source>
         <translation>Duplicate parameter alias &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="888"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="891"/>
         <source>Empty parameter alias block: &quot;%1&quot;</source>
         <translation>Empty parameter alias block: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="897"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="900"/>
         <source>Duplicate parameter alias name &quot;%1&quot; at &quot;%2&quot;</source>
         <translation>Duplicate parameter alias name &quot;%1&quot; at &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="915"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="918"/>
         <source>No other blocks allowed in alias block</source>
         <translation>No other blocks allowed in alias block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1095"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1098"/>
         <source>Undefined actor id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined actor id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="850"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="853"/>
         <source>Validating actor bindings graph failed: &apos;%1&apos;</source>
         <translation>Validating actor bindings graph failed: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="758"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="761"/>
         <source>%1 definition expected at .iterations block</source>
         <translation>%1 definition expected at .iterations block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="765"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="768"/>
         <source>Cannot parse integer from &apos;%1&apos;: iteration id</source>
         <translation>Cannot parse integer from &apos;%1&apos;: iteration id</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="772"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="775"/>
         <source>Element id &apos;%1&apos; undefined in .iteration block</source>
         <translation>Element id &apos;%1&apos; undefined in .iteration block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="921"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="924"/>
         <source>%1 element undefined in aliases block</source>
         <translation>%1 element undefined in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="925"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="928"/>
         <source>%1 has no parameter %2: in aliases block</source>
         <translation>%1 has no parameter %2: in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="934"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="937"/>
         <source>No other blocks allowed in help block</source>
         <translation>No other blocks allowed in help block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="941"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="944"/>
         <source>Undefined parameter alias used in help block: &apos;%1&apos;</source>
         <translation>Undefined parameter alias used in help block: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="962"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="965"/>
         <source>%1 port is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 port is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="974"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="977"/>
         <source>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</source>
         <translation>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="985"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="988"/>
         <source>Duplicate port alias &quot;%1&quot;</source>
         <translation>Duplicate port alias &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="996"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="999"/>
         <source>Empty port aliases are not allowed: %1</source>
         <translation>Empty port aliases are not allowed: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1005"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1008"/>
         <source>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</source>
         <translation>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1025"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1028"/>
         <source>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</source>
         <translation>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1037"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1061"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1040"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1064"/>
         <source>Undefined element id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined element id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1052"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1076"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1055"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1079"/>
         <source>Undefined slot id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined slot id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1066"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1069"/>
         <source>Undefined port id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined port id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1069"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1072"/>
         <source>Destination port should be input: %1</source>
         <translation>Destination port should be input: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="822"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="835"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="825"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="838"/>
         <source>Undefined element id: &apos;%1&apos;</source>
         <translation>Undefined element id: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="155"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="158"/>
         <source>XML workflow format is obsolete and not supported</source>
         <translation>XML workflow format is obsolete and not supported</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="211"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="214"/>
         <source>The included file &apos;%1&apos; doesn&apos;t exists</source>
         <translation>The included file &apos;%1&apos; doesn&apos;t exists</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="220"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="223"/>
         <source>Can&apos;t open &apos;%1&apos;</source>
         <translation>Can&apos;t open &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="240"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="243"/>
         <source>File &apos;%1&apos; contains mistakes</source>
         <translation>File &apos;%1&apos; contains mistakes</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="252"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="255"/>
         <source>There is recursive including of the file: &apos;%1&apos;</source>
         <translation>There is recursive including of the file: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="276"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="279"/>
         <source>Unknown file format: &apos;%1&apos;</source>
         <translation>Unknown file format: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="308"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="311"/>
         <source>Workflow name not specified</source>
         <translation>Workflow name not specified</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="361"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="364"/>
         <source>Url definition does not contain dataset name</source>
         <translation>Url definition does not contain dataset name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="827"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="840"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="830"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="843"/>
         <source>Cannot find &apos;%1&apos; port at &apos;%2&apos;</source>
         <translation>Cannot find &apos;%1&apos; port at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="805"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="808"/>
         <source>Cannot bind %1:%2 to %3:%4</source>
         <translation>Cannot bind %1:%2 to %3:%4</translation>
     </message>

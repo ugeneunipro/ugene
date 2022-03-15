@@ -72,12 +72,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
 
     private:
@@ -125,12 +120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
-
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != nullptr, "buttonBox is NULL");
-            QPushButton* button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
 
     private:

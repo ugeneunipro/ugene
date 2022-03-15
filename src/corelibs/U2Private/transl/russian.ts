@@ -44,47 +44,47 @@
 <context>
     <name>U2::AddPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="345"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="342"/>
         <source>Add plugin task: %1</source>
         <translation>Загрузка внешнего модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="359"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="356"/>
         <source>Plugin is already loaded: %1</source>
         <translation>Модуль уже загружен: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="367"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="364"/>
         <source>Plugin %1 depends on %2 which is not loaded</source>
         <translation>Модуль %1 зависит от модуля %2, который не был загружен</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="371"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="368"/>
         <source>Plugin %1 depends on %2 which is available, but the version is too old</source>
         <translation>Модуль %1 зависит от модуля %2, который доступен, но версия которого устарела</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="382"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="379"/>
         <source>Plugin loading error: %1, Error string %2</source>
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="388"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="385"/>
         <source>Settings is NULL</source>
         <translation>Settings is NULL</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="443"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="440"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Plugin loading error: %1. Verification failed.</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="463"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="460"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Не найдена входная функция библиотеки модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="469"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="466"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Ошибка инициализации модуля: %1</translation>
     </message>
@@ -152,27 +152,27 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::DisableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="275"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="277"/>
         <source>Disable &apos;%1&apos; service</source>
         <translation>Остановка сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="288"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="290"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="289"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="291"/>
         <source>Service is not enabled</source>
         <translation>Сервис недоступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="295"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="297"/>
         <source>Active top-level task name: %1</source>
         <translation>Активная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="297"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="299"/>
         <source>Active task was found</source>
         <translation>Имеются неоконченные задачи</translation>
     </message>
@@ -188,27 +188,27 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::EnableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="214"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="216"/>
         <source>Service is enabled</source>
         <translation>Сервис доступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="215"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="217"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="220"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="222"/>
         <source>Circular service dependency: %1</source>
         <translation>Циркулярная зависимость модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="226"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="228"/>
         <source>Required services are not enabled: %1</source>
         <translation>Необходимые сервисы недоступны: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="174"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="176"/>
         <source>Enable &apos;%1&apos; service</source>
         <translation>Запуск сервиса: %1</translation>
     </message>
@@ -216,17 +216,17 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::LoadAllPluginsTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="79"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="78"/>
         <source>Loading start up plugins</source>
         <translation>Загрузка подключаемых модулей</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="109"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="108"/>
         <source>File not found: %1</source>
         <translation>Не найден внешний модуль: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="114"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="113"/>
         <source>Invalid file format: %1</source>
         <translation>Некорректный файл библиотеки: %1</translation>
     </message>
@@ -305,22 +305,22 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::RegisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="147"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="149"/>
         <source>Register &apos;%1&apos; service</source>
         <translation>Регистрация сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="152"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="154"/>
         <source>Service has already registered</source>
         <translation>Сервис уже зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="153"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="155"/>
         <source>Illegal service state: %1</source>
         <translation>Ошибка сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="157"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="159"/>
         <source>Only one service of specified type is allowed: %1</source>
         <translation>Разрешён только один экземпляр сервиса: %1</translation>
     </message>
@@ -329,120 +329,120 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <name>U2::TaskSchedulerImpl</name>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="694"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="658"/>
         <source>New</source>
         <translation>Новая</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="696"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="660"/>
         <source>Prepared</source>
         <translation>Инициализирована</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="698"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="662"/>
         <source>Running</source>
         <translation>Выполняется</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="700"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="664"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="96"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="95"/>
         <source>Canceling task: %1</source>
         <translation>Отменяется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="113"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="111"/>
         <source>There is not enough memory to finish the task.</source>
         <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="135"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="132"/>
         <source>Subtask {%1} is failed: %2</source>
         <translation>Подзадача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="376"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="374"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2</source>
         <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="401"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="399"/>
         <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
         <translation>Не достаточно ресурсов для выполнения задачи: &apos;%1&apos; макс: %2%3	запрошено: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="413"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="411"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
         <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2%3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="547"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="537"/>
         <source>Registering new task: %1</source>
         <translation>Добавлена задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="704"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="668"/>
         <source>Invalid name</source>
         <translation>Неизвестное состояние</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="926"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="886"/>
         <source>Deleting task: %1</source>
         <translation>Удаляется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="778"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="735"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>Задача {%1} %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="127"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="124"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Подзадача {%1} отменена %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="393"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="391"/>
         <source>No required resources for the task, resource id: &apos;%1&apos;</source>
         <translation>No required resources for the task, resource id: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="394"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="392"/>
         <source>Unable to run test because required resource not found</source>
         <translation>Unable to run test because required resource not found</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="613"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="598"/>
         <source>Unregistering task: %1</source>
         <translation>Незарегистрированная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="780"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="737"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>Задача {%1} %2; ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="790"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="747"/>
         <source>Starting {%1} task</source>
         <translation>Старт задачи {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="818"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="775"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>Задача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="821"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="778"/>
         <source>Task {%1} canceled</source>
         <translation>Отменяется задача {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="824"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="781"/>
         <source>Task {%1} finished</source>
         <translation>Задача {%1} завершена</translation>
     </message>
@@ -450,12 +450,12 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::UnregisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="250"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="252"/>
         <source>Unregister &apos;%1&apos; service</source>
         <translation>Дерегистрация сервиса &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="255"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="257"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
@@ -463,7 +463,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="496"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="493"/>
         <source>Verify plugin task: %1</source>
         <translation>Задача верификации модуля: %1</translation>
     </message>
