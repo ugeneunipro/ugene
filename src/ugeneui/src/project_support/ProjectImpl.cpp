@@ -79,7 +79,7 @@ void ProjectImpl::sl_removeAllrelationsWithObject(GObject* obj) {
     for (GObject* object : qAsConst(allObjs)) {
         if (object != obj) {
             const QList<GObjectRelation> relationList = object->getObjectRelations();
-            for (const GObjectRelation& rel : relationList) {
+            for (const GObjectRelation& rel : qAsConst(relationList)) {
                 if (rel.ref.entityRef == obj->getEntityRef()) {
                     object->removeObjectRelation(rel);
                 }
