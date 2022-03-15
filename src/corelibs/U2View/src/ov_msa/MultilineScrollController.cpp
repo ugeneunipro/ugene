@@ -79,7 +79,7 @@ void MultilineScrollController::init(GScrollBar *hScrollBar,
 // TODO: new vertical scrollbar mode
 bool MultilineScrollController::eventFilter(QObject *object, QEvent *event)
 {
-    if (event->type() == QEvent::Wheel && ui->getMultilineMode()) {
+    if (event->type() == QEvent::Wheel && maEditor->getMultilineMode()) {
         if (object == vScrollBar) {
             //return vertEventFilter((QWheelEvent *) event);
             return true;
@@ -91,7 +91,7 @@ bool MultilineScrollController::eventFilter(QObject *object, QEvent *event)
 
 bool MultilineScrollController::vertEventFilter(QWheelEvent *event)
 {
-    if (ui->getMultilineMode()) {
+    if (maEditor->getMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0
@@ -135,7 +135,7 @@ void MultilineScrollController::vertScroll(const Directions &directions, bool by
     ui->setUpdatesEnabled(false);
     ui->updateChildrenCount();
 
-    if (ui->getMultilineMode()) {
+    if (maEditor->getMultilineMode()) {
         MsaMultilineScrollArea *scroller = qobject_cast<MsaMultilineScrollArea *>(
             childrenScrollArea);
         CHECK(scroller != nullptr, );
@@ -155,7 +155,7 @@ void MultilineScrollController::sl_hScrollValueChanged()
     ui->setUpdatesEnabled(false);
 
     int h = hScrollBar->value();
-    if (ui->getMultilineMode()) {
+    if (maEditor->getMultilineMode()) {
         setMultilineVScrollbarValue(h);
 
         const int columnWidth = maEditor->getColumnWidth();
@@ -183,7 +183,7 @@ void MultilineScrollController::sl_hScrollValueChanged()
 
 void MultilineScrollController::sl_vScrollValueChanged()
 {
-    if (ui->getMultilineMode()) {
+    if (maEditor->getMultilineMode()) {
         //int v = vScrollBar->value();
         //setMultilineHScrollbarValue(v);
     } else {
@@ -249,7 +249,7 @@ void MultilineScrollController::setMultilineVScrollbarValue(int value) {
 }
 
 void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
-    if (!ui->getMultilineMode()) {
+    if (!maEditor->getMultilineMode()) {
         if (ui->getUI(0) != nullptr) {
             ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase);
         }
@@ -261,7 +261,7 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
 
 void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
     int visibleLength = ui->getSequenceAreaBaseLen(0);
-    if (!ui->getMultilineMode()) {
+    if (!maEditor->getMultilineMode()) {
         if (ui->getUI(0) != nullptr) {
             ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
         }
@@ -274,13 +274,13 @@ void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
 }
 
 void MultilineScrollController::setFirstVisibleViewRow(int viewRowIndex) {
-    if (!ui->getMultilineMode()) {
+    if (!maEditor->getMultilineMode()) {
         ui->getUI(0)->getScrollController()->setFirstVisibleViewRow(viewRowIndex);
     }
 }
 
 void MultilineScrollController::setFirstVisibleMaRow(int maRowIndex) {
-    if (!ui->getMultilineMode()) {
+    if (!maEditor->getMultilineMode()) {
         ui->getUI(0)->getScrollController()->setFirstVisibleMaRow(maRowIndex);
     }
 }
@@ -382,7 +382,7 @@ int MultilineScrollController::getFirstVisibleBase(bool countClipped) const {
         return 0;
     }
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
-    const int firstVisibleBase = ui->getMultilineMode()
+    const int firstVisibleBase = maEditor->getMultilineMode()
                                      ? ui->getUI(0)->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0)
                                      : ui->getUI(0)->getScrollController()->getFirstVisibleBase(countClipped);
     assert(firstVisibleBase < maEditor->getAlignmentLen());
@@ -391,7 +391,7 @@ int MultilineScrollController::getFirstVisibleBase(bool countClipped) const {
 
 int MultilineScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
     const bool removeClippedBase = !countClipped && ((hScrollBar->value() + widgetWidth) % maEditor->getColumnWidth() != 0);
-    const int lastVisibleBase = ui->getMultilineMode()
+    const int lastVisibleBase = maEditor->getMultilineMode()
                                     ? ui->getUI(0)->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value() + widgetWidth - 1) - (removeClippedBase ? 1 : 0)
                                     : ui->getUI(0)->getScrollController()->getLastVisibleBase(widgetWidth, countClipped);
     return qMin(lastVisibleBase, maEditor->getAlignmentLen() - 1);
@@ -399,7 +399,7 @@ int MultilineScrollController::getLastVisibleBase(int widgetWidth, bool countCli
 
 int MultilineScrollController::getFirstVisibleMaRowIndex(bool countClipped) const {
     const bool removeClippedRow = !(countClipped || getAdditionalYOffset() == 0);
-    return ui->getMultilineMode()
+    return maEditor->getMultilineMode()
                ? ui->getUI(0)->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value()) + (removeClippedRow ? 1 : 0)
                : ui->getUI(0)->getScrollController()->getFirstVisibleMaRowIndex(countClipped);
 }
@@ -410,7 +410,7 @@ int MultilineScrollController::getFirstVisibleViewRowIndex(bool countClipped) co
 }
 
 int MultilineScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
-    int lastVisibleViewRow = ui->getUI(0)->getRowHeightController()->getViewRowIndexByGlobalYPosition(ui->getMultilineMode() ? vScrollBar->value() + widgetHeight : ui->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped));
+    int lastVisibleViewRow = ui->getUI(0)->getRowHeightController()->getViewRowIndexByGlobalYPosition(maEditor->getMultilineMode() ? vScrollBar->value() + widgetHeight : ui->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped));
     if (lastVisibleViewRow < 0) {
         lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
@@ -477,7 +477,7 @@ void MultilineScrollController::updateHorizontalScrollBarPrivate() {
 
     QSplitter *splitter = qobject_cast<QSplitter *>(hScrollBar->parent());
     if (splitter != nullptr) {
-        if (ui->getMultilineMode()) {
+        if (maEditor->getMultilineMode()) {
             const int vScrollBarWidth = vScrollBar->width();
             const int nameListWidth = ui->getUI(ui->getChildrenCount() - 1)->getEditorNameList()->width() + 2;
             splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -494,7 +494,7 @@ void MultilineScrollController::updateHorizontalScrollBarPrivate() {
     hScrollBar->setPageStep(sequenceAreaWidth);
 
     // don't show horz scrollbar
-    hScrollBar->setVisible(ui->getMultilineMode());
+    hScrollBar->setVisible(maEditor->getMultilineMode());
 }
 
 void MultilineScrollController::updateVerticalScrollBarPrivate() {
@@ -527,7 +527,7 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setPageStep(sequenceAreaWidth);
 
     // don't show vert scrollbar in non-multiline mode
-    vScrollBar->setVisible(ui->getMultilineMode());
+    vScrollBar->setVisible(maEditor->getMultilineMode());
 }
 
 }  // namespace U2

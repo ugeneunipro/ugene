@@ -162,18 +162,24 @@ MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() {
 QSize MsaEditorWgt::sizeHint() const
 {
     QSize s = QWidget::sizeHint();
-    return QSize(s.width(), minimumSizeHint().height());
+    if (editor->getMultilineMode()) {
+        return QSize(s.width(), minimumSizeHint().height());
+    }
+    return s;
 }
 
 QSize MsaEditorWgt::minimumSizeHint() const
 {
     QSize s = QWidget::minimumSizeHint();
-    int newHeight = consensusArea->size().height() +
-                    qMax(qMax(sequenceArea->minimumSizeHint().height(),
-                              nameList->minimumSizeHint().height()),
-                         (editor->getSequenceRowHeight() + 1)) +
-                    5;
-    return QSize(s.width(), newHeight);
+    if (editor->getMultilineMode()) {
+        int newHeight = consensusArea->size().height()
+                        + qMax(qMax(sequenceArea->minimumSizeHint().height(),
+                                    nameList->minimumSizeHint().height()),
+                               (editor->getSequenceRowHeight() + 1))
+                        + 5;
+        return QSize(s.width(), newHeight);
+    }
+    return s;
 }
 
 }  // namespace U2

@@ -196,6 +196,11 @@ protected slots:
 
     void sl_multilineViewAction() override;
 
+    bool setMultilineMode(bool newmode) override {
+        multilineMode = newmode;
+        return getUI()->setMultilineMode(multilineMode);
+    }
+
 protected:
     QWidget *createWidget() override;
 
@@ -297,8 +302,6 @@ private:
     QToolBar *staticToolBar;
     QMenu *staticMenu;
     QString staticMenuType;
-
-    bool multilineMode = false;
 };
 
 /** Set of custom menu actions in MSA editor. */

@@ -122,7 +122,7 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
 
 void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
 {
-    if (maEditorUi->getMultilineMode()) {
+    if (maEditor->getMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0
