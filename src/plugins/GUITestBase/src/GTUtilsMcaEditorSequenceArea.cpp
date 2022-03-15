@@ -55,9 +55,7 @@ using namespace HI;
 #define GT_METHOD_NAME "getSequenceArea"
 McaEditorSequenceArea* GTUtilsMcaEditorSequenceArea::getSequenceArea(GUITestOpStatus& os) {
     QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
-    McaEditorSequenceArea* result = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area", activeWindow));
-    GT_CHECK_RESULT(nullptr != result, "MsaEditorSequenceArea is not found", nullptr);
-    return result;
+    return GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", activeWindow);
 }
 #undef GT_METHOD_NAME
 
@@ -147,8 +145,7 @@ void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus& os, int positio
 
 #define GT_METHOD_NAME "clickCollapseTriangle"
 void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QString rowName, bool showChromatogram) {
-    McaEditorSequenceArea* mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK(mcaEditArea != nullptr, "McaEditorSequenceArea not found");
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
 
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
@@ -168,8 +165,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
 #define GT_METHOD_NAME "isChromatogramShown"
 bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus& os, QString rowName) {
     GTThread::waitForMainThread();
-    McaEditorSequenceArea* mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorSequenceArea not found", false);
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
     int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
@@ -212,7 +208,7 @@ void GTUtilsMcaEditorSequenceArea::moveTo(GUITestOpStatus& os, const QPoint& p) 
 #define GT_METHOD_NAME "convertCoordinates"
 QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, const QPoint p) {
     QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
-    McaEditorSequenceArea* mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area", activeWindow));
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", activeWindow);
 
     const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
     const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
@@ -303,8 +299,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(GUITestOpStatus& 
 
 #define GT_METHOD_NAME "getSelectedRect"
 QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus& os) {
-    McaEditorSequenceArea* mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorSequenceArea not found", QRect());
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
 
     return mcaEditArea->getEditor()->getSelection().toRect();
 }
@@ -453,8 +448,7 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus&
 
 #define GT_METHOD_NAME "getReferenceSelection"
 U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus& os) {
-    McaEditorReferenceArea* mcaEditArea = qobject_cast<McaEditorReferenceArea*>(GTWidget::findWidget(os, "mca_editor_reference_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorReferenceArea not found", U2Region());
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorReferenceArea*>(os, "mca_editor_reference_area");
 
     SequenceObjectContext* seqContext = mcaEditArea->getSequenceContext();
     GT_CHECK_RESULT(seqContext != nullptr, "SequenceObjectContext not found", U2Region());

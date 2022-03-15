@@ -77,7 +77,7 @@ const QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequ
 #define GT_METHOD_NAME "enterPattern"
 
 void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus& os, QString pattern, bool useCopyPaste) {
-    QTextEdit* patternEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "textPattern"));
+    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     if (!patternEdit->toPlainText().isEmpty()) {
@@ -136,7 +136,7 @@ void GTUtilsOptionPanelSequenceView::checkTabIsOpened(HI::GUITestOpStatus& os, G
 bool GTUtilsOptionPanelSequenceView::checkResultsText(HI::GUITestOpStatus& os, QString expectedText) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* label = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto label = GTWidget::findLabel(os, "resultLabel");
     return label->text() == expectedText;
 }
 
@@ -151,7 +151,7 @@ void GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(HI::GUITestOpSt
 #define GT_METHOD_NAME "clickNext"
 
 void GTUtilsOptionPanelSequenceView::clickNext(HI::GUITestOpStatus& os) {
-    QPushButton* next = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "nextPushButton"));
+    auto next = GTWidget::findPushButton(os, "nextPushButton");
     GTWidget::click(os, next);
 }
 
@@ -160,7 +160,7 @@ void GTUtilsOptionPanelSequenceView::clickNext(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "clickPrev"
 
 void GTUtilsOptionPanelSequenceView::clickPrev(HI::GUITestOpStatus& os) {
-    QPushButton* prev = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "prevPushButton"));
+    auto prev = GTWidget::findPushButton(os, "prevPushButton");
     GTWidget::click(os, prev);
 }
 
@@ -169,7 +169,7 @@ void GTUtilsOptionPanelSequenceView::clickPrev(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "clickGetAnnotation"
 
 void GTUtilsOptionPanelSequenceView::clickGetAnnotation(HI::GUITestOpStatus& os) {
-    QPushButton* getAnnotations = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
+    auto getAnnotations = GTWidget::findPushButton(os, "getAnnotationsPushButton");
     GTWidget::click(os, getAnnotations);
     GTThread::waitForMainThread();
 }
@@ -179,8 +179,8 @@ void GTUtilsOptionPanelSequenceView::clickGetAnnotation(HI::GUITestOpStatus& os)
 #define GT_METHOD_NAME "isPrevNextEnabled"
 
 bool GTUtilsOptionPanelSequenceView::isPrevNextEnabled(HI::GUITestOpStatus& os) {
-    QPushButton* next = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "nextPushButton"));
-    QPushButton* prev = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "prevPushButton"));
+    auto next = GTWidget::findPushButton(os, "nextPushButton");
+    auto prev = GTWidget::findPushButton(os, "prevPushButton");
     return prev->isEnabled() && next->isEnabled();
 }
 
@@ -188,7 +188,7 @@ bool GTUtilsOptionPanelSequenceView::isPrevNextEnabled(HI::GUITestOpStatus& os) 
 
 #define GT_METHOD_NAME "isGetAnnotationsEnabled"
 bool GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled(HI::GUITestOpStatus& os) {
-    QPushButton* getAnnotations = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
+    auto getAnnotations = GTWidget::findPushButton(os, "getAnnotationsPushButton");
     return getAnnotations->isEnabled();
 }
 #undef GT_METHOD_NAME
@@ -258,8 +258,7 @@ void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(HI::GUITestOpSta
 #define GT_METHOD_NAME "productsCount"
 int GTUtilsOptionPanelSequenceView::productsCount(HI::GUITestOpStatus& os) {
     openTab(os, InSilicoPcr);
-    QTableWidget* tableWidget = qobject_cast<QTableWidget*>(GTWidget::findWidget(os, "productsTable"));
-    GT_CHECK_RESULT(nullptr != tableWidget, "In Silico PCR Products Table is not found", -1);
+    auto tableWidget = GTWidget::findTableWidget(os, "productsTable");
 
     return tableWidget->rowCount();
 }
@@ -276,8 +275,7 @@ void GTUtilsOptionPanelSequenceView::showPrimersDetails(HI::GUITestOpStatus& os)
 #define GT_METHOD_NAME "pressFindProducts"
 void GTUtilsOptionPanelSequenceView::pressFindProducts(HI::GUITestOpStatus& os) {
     openTab(os, InSilicoPcr);
-    QPushButton* findProducts = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "findProductButton"));
-    GT_CHECK(nullptr != findProducts, "Find Product(s) buttons is not found");
+    auto findProducts = GTWidget::findPushButton(os, "findProductButton");
 
     GTWidget::click(os, findProducts);
 }
@@ -286,8 +284,7 @@ void GTUtilsOptionPanelSequenceView::pressFindProducts(HI::GUITestOpStatus& os) 
 #define GT_METHOD_NAME "pressExtractProduct"
 void GTUtilsOptionPanelSequenceView::pressExtractProduct(HI::GUITestOpStatus& os) {
     openTab(os, InSilicoPcr);
-    QPushButton* extractProduct = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "extractProductButton"));
-    GT_CHECK(nullptr != extractProduct, "Extract Product buttons is not found");
+    auto extractProduct = GTWidget::findPushButton(os, "extractProductButton");
     GT_CHECK(extractProduct->isEnabled(), "Extract Product buttons is unexpectably disabled");
 
     GTWidget::click(os, extractProduct);
@@ -376,7 +373,7 @@ void GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(HI::
 #define GT_METHOD_NAME "toggleInputFromFilePattern"
 
 void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(HI::GUITestOpStatus& os) {
-    QRadioButton* loadFromFile = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "usePatternFromFileRadioButton"));
+    auto loadFromFile = GTWidget::findRadioButton(os, "usePatternFromFileRadioButton");
     GTWidget::click(os, loadFromFile);
     // kinda hack for QGroupBox should be rewriten
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -387,7 +384,7 @@ void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(HI::GUITestOpSta
 #define GT_METHOD_NAME "toggleSaveAnnotationsTo"
 
 void GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo(HI::GUITestOpStatus& os) {
-    QLabel* obj = qobject_cast<QLabel*>(GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
+    auto obj = GTWidget::findLabel(os, "ArrowHeader_Save annotation(s) to");
     GTWidget::click(os, obj);
 }
 
@@ -399,7 +396,7 @@ void GTUtilsOptionPanelSequenceView::enterPatternFromFile(HI::GUITestOpStatus& o
     GTFileDialogUtils* ob = new GTFileDialogUtils(os, filePathStr, fileName, GTFileDialogUtils::Open);
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QToolButton* browse = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "loadFromFileToolButton"));
+    auto browse = GTWidget::findToolButton(os, "loadFromFileToolButton");
     GTWidget::click(os, browse);
     GTGlobals::sleep(2500);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -410,8 +407,7 @@ void GTUtilsOptionPanelSequenceView::enterPatternFromFile(HI::GUITestOpStatus& o
 #define GT_METHOD_NAME "setStrand"
 
 void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus& os, QString strandStr) {
-    QComboBox* strand = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxStrand", nullptr, {false}));
-    GT_CHECK(strand != nullptr, "combobox is NULL");
+    auto strand = GTWidget::findComboBox(os, "boxStrand", nullptr, {false});
 
     if (!strand->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -438,8 +434,7 @@ void GTUtilsOptionPanelSequenceView::setRegion(HI::GUITestOpStatus& os, int from
 
 #define GT_METHOD_NAME "enterFilepathForSavingAnnotations"
 void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(HI::GUITestOpStatus& os, QString filepath) {
-    QLineEdit* leFilePath = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leNewTablePath"));
-    GT_CHECK(leFilePath != nullptr, "File path line edit is NULL");
+    auto leFilePath = GTWidget::findLineEdit(os, "leNewTablePath");
     QDir().mkpath(QFileInfo(filepath).dir().absolutePath());
     GTLineEdit::setText(os, leFilePath, filepath);
 }
@@ -448,8 +443,7 @@ void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(HI::GUITe
 
 #define GT_METHOD_NAME "setAlgorithm"
 void GTUtilsOptionPanelSequenceView::setAlgorithm(HI::GUITestOpStatus& os, QString algorithm) {
-    QComboBox* algoBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GT_CHECK(algoBox != nullptr, "algoBox is NULL");
+    auto algoBox = GTWidget::findComboBox(os, "boxAlgorithm");
 
     if (!algoBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
@@ -461,8 +455,7 @@ void GTUtilsOptionPanelSequenceView::setAlgorithm(HI::GUITestOpStatus& os, QStri
 
 #define GT_METHOD_NAME "getMatchPercentage"
 int GTUtilsOptionPanelSequenceView::getMatchPercentage(HI::GUITestOpStatus& os) {
-    QSpinBox* spinMatchBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinBoxMatch"));
-    GT_CHECK_RESULT(nullptr != spinMatchBox, "Match percentage spinbox is NULL", -1);
+    auto spinMatchBox = GTWidget::findSpinBox(os, "spinBoxMatch");
     return spinMatchBox->value();
 }
 #undef GT_METHOD_NAME
@@ -502,7 +495,7 @@ const QString GTUtilsOptionPanelSequenceView::getHintText(HI::GUITestOpStatus& o
 
 #define GT_METHOD_NAME "setMatchPercentage"
 void GTUtilsOptionPanelSequenceView::setMatchPercentage(HI::GUITestOpStatus& os, int percentage) {
-    QSpinBox* spinMatchBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinBoxMatch"));
+    auto spinMatchBox = GTWidget::findSpinBox(os, "spinBoxMatch");
 
     GTSpinBox::setValue(os, spinMatchBox, percentage, GTGlobals::UseKeyBoard);
     GTGlobals::sleep(2500);
@@ -518,8 +511,7 @@ void GTUtilsOptionPanelSequenceView::setUsePatternName(HI::GUITestOpStatus& os, 
 
 #define GT_METHOD_NAME "setSearchInTranslation"
 void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus& os, bool inTranslation /* = true*/) {
-    QComboBox* searchIn = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxSeqTransl", nullptr, {false}));
-    GT_CHECK(searchIn != nullptr, "combobox is NULL");
+    auto searchIn = GTWidget::findComboBox(os, "boxSeqTransl", nullptr, {false});
 
     if (!searchIn->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -535,8 +527,7 @@ void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus&
 
 #define GT_METHOD_NAME "setSearchInLocation"
 void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus& os, QString locationStr) {
-    QComboBox* region = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxRegion", nullptr, {false}));
-    GT_CHECK(region != nullptr, "combobox is NULL");
+    auto region = GTWidget::findComboBox(os, "boxRegion", nullptr, {false});
 
     if (!region->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));

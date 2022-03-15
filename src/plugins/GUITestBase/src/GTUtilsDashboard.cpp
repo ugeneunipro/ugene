@@ -59,9 +59,7 @@ ExternalToolsDashboardWidget* GTUtilsDashboard::getExternalToolsWidget(GUITestOp
 #define GT_METHOD_NAME "getExternalToolNode"
 ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNode(GUITestOpStatus& os, const QString& nodeId) {
     ExternalToolsDashboardWidget* widget = getExternalToolsWidget(os);
-    ExternalToolsTreeNode* node = qobject_cast<ExternalToolsTreeNode*>(GTWidget::findWidget(os, nodeId, widget));
-    GT_CHECK_RESULT(node != nullptr, "External tool node not found: " + nodeId, nullptr);
-    return node;
+    return GTWidget::findExactWidget<ExternalToolsTreeNode*>(os, nodeId, widget);
 }
 #undef GT_METHOD_NAME
 
@@ -190,8 +188,8 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus& os, const
 #define GT_METHOD_NAME "getNotifications"
 QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus& os) {
     const QString notificationsWidgetName = "NotificationsDashboardWidget";
-    QWidget* const notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
-    const auto tableLayout = qobject_cast<QGridLayout*>(notificationsWidget->layout());
+    QWidget* notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
+    auto tableLayout = qobject_cast<QGridLayout*>(notificationsWidget->layout());
     QList<Notification> notifications;
 
     GT_CHECK_RESULT(tableLayout != nullptr && tableLayout->columnCount() == 3,

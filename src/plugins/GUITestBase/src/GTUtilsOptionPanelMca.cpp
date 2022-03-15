@@ -103,8 +103,7 @@ QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getHeight"
 int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus& os) {
-    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
-    GT_CHECK_RESULT(alignmentHeightLabel != nullptr, "alignmentHeightLabel not found", -1);
+    auto alignmentHeightLabel = GTWidget::findLabel(os, "seqNumLabel");
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok == true, "label text is not int", -1);
@@ -114,8 +113,7 @@ int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getLength"
 int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus& os) {
-    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lengthLabel"));
-    GT_CHECK_RESULT(alignmentLengthLabel != nullptr, "alignmentLengthLabel not found", -1);
+    auto alignmentLengthLabel = GTWidget::findLabel(os, "lengthLabel");
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok == true, "label text is not int", -1);

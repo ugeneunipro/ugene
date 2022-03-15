@@ -50,15 +50,14 @@ const QString GTUtilsAnnotHighlightingTreeView::widgetName = "OP_ANNOT_HIGHLIGHT
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget* GTUtilsAnnotHighlightingTreeView::getTreeWidget(HI::GUITestOpStatus& os) {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, widgetName, nullptr, false));
+    auto treeWidget = GTWidget::findTreeWidget(os, widgetName, nullptr, false);
 
-    if (!treeWidget) {
+    if (treeWidget == nullptr) {
         GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));
         GTGlobals::sleep(3000);
     }
 
-    treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, widgetName));
-    return treeWidget;
+    return GTWidget::findTreeWidget(os, widgetName);
 }
 #undef GT_METHOD_NAME
 
