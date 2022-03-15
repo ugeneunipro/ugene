@@ -62,14 +62,20 @@ MSAEditor* MsaEditorNameList::getEditor() const {
 QSize MsaEditorNameList::sizeHint() const
 {
     QSize s = QWidget::sizeHint();
-    return QSize(s.width(), minimumSizeHint().height());
+    if (editor->getMultilineMode()) {
+        return QSize(s.width(), minimumSizeHint().height());
+    }
+    return s;
 }
 
 QSize MsaEditorNameList::minimumSizeHint() const
 {
     QSize s = QWidget::minimumSizeHint();
-    int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
-    return QSize(s.width(), newHeight);
+    if (editor->getMultilineMode()) {
+        int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
+        return QSize(s.width(), newHeight);
+    }
+    return s;
 }
 
 }  // namespace U2

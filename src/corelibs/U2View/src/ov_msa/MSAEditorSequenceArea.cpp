@@ -180,14 +180,20 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
 QSize MSAEditorSequenceArea::sizeHint() const
 {
     QSize s = QWidget::sizeHint();
-    return QSize(s.width(), minimumSizeHint().height() + 2);
+    if (editor->getMultilineMode()) {
+        return QSize(s.width(), minimumSizeHint().height() + 2);
+    }
+    return s;
 }
 
 QSize MSAEditorSequenceArea::minimumSizeHint() const
 {
     QSize s = QWidget::minimumSizeHint();
-    int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
-    return QSize(s.width(), newHeight);
+    if (editor->getMultilineMode()) {
+        int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
+        return QSize(s.width(), newHeight);
+    }
+    return s;
 }
 
 void MSAEditorSequenceArea::focusInEvent(QFocusEvent* fe) {
@@ -202,7 +208,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::wheelEvent(QWheelEvent *we) {
-    if (!editor->getMaEditorMultilineWgt()->getMultilineMode()) {
+    if (!editor->getMultilineMode()) {
         MaEditorSequenceArea::wheelEvent(we);
     }
 }

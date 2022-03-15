@@ -1008,7 +1008,7 @@ void MSAEditor::sl_exportImage() {
 }
 
 void MSAEditor::sl_multilineViewAction() {
-    bool childrenChanged = getUI()->setMultilineMode(multilineViewAction->isChecked());
+    bool childrenChanged = setMultilineMode(multilineViewAction->isChecked());
 
     if (childrenChanged) {
         initChildrenActionsAndSignals();
