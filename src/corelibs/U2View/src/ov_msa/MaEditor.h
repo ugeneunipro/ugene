@@ -226,6 +226,16 @@ public:
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
+
+    virtual bool getMultilineMode() const {
+        return multilineMode;
+    }
+
+    virtual bool setMultilineMode(bool newmode) {
+        Q_UNUSED(newmode);
+        return false;
+    }
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -324,6 +334,8 @@ protected:
 
     /** Undo-redo support. */
     MaUndoRedoFramework* undoRedoFramework = nullptr;
+
+    bool multilineMode = false;
 
 public:
     QAction* saveAlignmentAction = nullptr;
