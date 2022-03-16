@@ -58,8 +58,8 @@ char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, 
     // use gap is top char frequency is lower than threshold
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     int currentThreshold = getThreshold();
-    int cntToUseGap = int(currentThreshold / 100.0 * nSeq);
-    int topFreq = freqsByChar[topChar];
+    double cntToUseGap = currentThreshold / 100.0 * nSeq;
+    double topFreq = freqsByChar[topChar];
     char res = topFreq < cntToUseGap ? U2Msa::GAP_CHAR : (char)topChar;
     return res;
 }
