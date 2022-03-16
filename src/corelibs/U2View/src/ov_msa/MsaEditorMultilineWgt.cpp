@@ -145,6 +145,11 @@ void MsaEditorMultilineWgt::createChildren()
         if (i == 0 && getMultilineMode()) {
             QSize s = child->minimumSizeHint();
             childrenCount = height() / s.height() + 3;
+            uint l = editor->getAlignmentLen();
+            uint b = getSequenceAreaBaseLen(0);
+            if (b * childrenCount > l) {
+                childrenCount = l / b + (l % b > 0 ? 1 : 0);
+            }
         }
     }
 }
@@ -160,6 +165,12 @@ bool MsaEditorMultilineWgt::updateChildrenCount()
         int headHeight = getUI(0)->getHeaderWidget()->height();
         int childrenAreaHeight = getChildrenScrollArea()->height();
         uint wantCount = childrenAreaHeight / (rowCount * rowHeight + headHeight) + 2;
+
+        uint l = editor->getAlignmentLen();
+        uint b = getSequenceAreaBaseLen(0);
+        if (b * wantCount > l) {
+            wantCount = l / b + (l % b > 0 ? 1 : 0);
+        }
 
         if (getChildrenCount() < wantCount) {
             while (getChildrenCount() <= 8 && getChildrenCount() < wantCount) {
@@ -311,6 +322,13 @@ void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {
     for (uint i = 0; i < getChildrenCount(); i++) {
         MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(id);
+    }
+}
+
+void MsaEditorMultilineWgt::sl_changeColorScheme(const QString &id) {
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        sequence->applyColorScheme(id);
     }
 }
 

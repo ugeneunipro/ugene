@@ -422,7 +422,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     const int columnWidth = maEditor->getColumnWidth();
     const int sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth;
 
-    maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth * 3);
+    maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth);
 
     hScrollBar->setMinimum(0);
     hScrollBar->setMaximum(qMax(0, alignmentLength * columnWidth - sequenceAreaWidth));
