@@ -24,6 +24,7 @@
 
 #include <QAction>
 #include <QList>
+#include <QSignalMapper>
 
 #include <U2Core/global.h>
 
@@ -58,6 +59,8 @@ private:
 
     static void fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory*>& colorSchemesFactories, QList<QAction*>& actions, const QString& alphName, MaEditorSequenceArea* actionsParent);
     static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory*>& highlightSchemesFactories, QList<QAction*>& actions, const QString&, MaEditorSequenceArea* actionsParent);
+
+    static QSignalMapper *signalMapper;
 };
 
 }  // namespace U2

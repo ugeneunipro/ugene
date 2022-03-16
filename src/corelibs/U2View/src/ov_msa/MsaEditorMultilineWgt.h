@@ -62,7 +62,8 @@ public:
 signals:
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString& id);
+    void sl_changeColorSchemeOutside(const QString & id);
+    void sl_changeColorScheme(const QString & id);
 
 protected:
     void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
