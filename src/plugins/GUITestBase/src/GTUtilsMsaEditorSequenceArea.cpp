@@ -458,8 +458,6 @@ void GTUtilsMSAEditorSequenceArea::checkConsensus(GUITestOpStatus& os, QString c
 
 #define GT_METHOD_NAME "selectSequence"
 void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const QString& seqName) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
-
     QStringList names = getVisibleNames(os);
     int row = 0;
     while (names[row] != seqName) {
@@ -471,7 +469,7 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const QSt
 
 #define GT_METHOD_NAME "selectSequence"
 void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const int row) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
 
     click(os, QPoint(-5, row));
 }
@@ -480,7 +478,6 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const int
 #define GT_METHOD_NAME "isSequenceSelected"
 bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus& os, const QString& seqName) {
     MSAEditor* editor = GTUtilsMsaEditor::getEditor(os);
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
 
     // Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
