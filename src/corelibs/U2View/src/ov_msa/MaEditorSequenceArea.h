@@ -156,6 +156,8 @@ public:
 
     QAction* getReplaceCharacterAction() const;
 
+    void applyColorScheme(const QString& id);
+
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
     void sl_delCurrentSelection();
@@ -276,7 +278,6 @@ protected:
     MsaHighlightingSchemeFactory* getDefaultHighlightingSchemeFactory() const;
 
     virtual void getColorAndHighlightingIds(QString& csid, QString& hsid);
-    void applyColorScheme(const QString& id);
 
     void processCharacterInEditMode(QKeyEvent* e);
     void processCharacterInEditMode(char newCharacter);
