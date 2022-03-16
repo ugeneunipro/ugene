@@ -2356,6 +2356,39 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
     GTUtilsMsaEditor::getTreeView(os);  // Check that tree view is opened.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7572) {
+    // 1. Open HIV-1.aln                       
+    // 2. Click the "Build Tree" button on the toolbar.
+    // 3. Start building tree with Likelihood algorithm
+    // 4. Cancel Tree building task
+    // Expected state: no message about QProcess destructor in details log
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class PhyMLMaximumLikelihoodScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_7572.nwk", dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new PhyMLMaximumLikelihoodScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    QString taskName = "Calculating Phylogenetic Tree";
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, taskName);
+    QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
+    CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
+    GTLogTracer l;
+    GTUtilsTaskTreeView::cancelTask(os, taskName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //We cant put it in macro because it will be autotriggered by log message from macro itself
+    bool messageNotFound = !l.checkMessage("QProcess: Destroyed while process");
+    CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

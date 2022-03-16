@@ -50,7 +50,7 @@ namespace U2 {
 #define START_WAIT_MSEC 3000
 
 ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringList& _arguments, ExternalToolLogParser* _logParser, 
-                                         const QString& _workingDirectory, const QStringList& _additionalPaths, bool parseOutputFile, bool startAsDetached)
+                                         const QString& _workingDirectory, const QStringList& _additionalPaths, bool parseOutputFile, bool startAsDetached_)
     : Task(AppContext::getExternalToolRegistry()->getToolNameById(_toolId) + tr(" tool"), TaskFlag_None),
       arguments(_arguments),
       logParser(_logParser),
