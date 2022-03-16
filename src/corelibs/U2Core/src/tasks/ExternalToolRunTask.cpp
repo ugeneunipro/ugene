@@ -49,7 +49,8 @@ namespace U2 {
 #define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
 
-ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringList& _arguments, ExternalToolLogParser* _logParser, const QString& _workingDirectory, const QStringList& _additionalPaths, bool parseOutputFile)
+ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringList& _arguments, ExternalToolLogParser* _logParser, 
+                                         const QString& _workingDirectory, const QStringList& _additionalPaths, bool parseOutputFile, bool startAsDetached)
     : Task(AppContext::getExternalToolRegistry()->getToolNameById(_toolId) + tr(" tool"), TaskFlag_None),
       arguments(_arguments),
       logParser(_logParser),
@@ -59,7 +60,8 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       externalToolProcess(nullptr),
       helper(nullptr),
       listener(nullptr),
-      parseOutputFile(parseOutputFile) {
+      parseOutputFile(parseOutputFile),
+      startAsDetached(startAsDetached_) {
     CHECK_EXT(AppContext::getExternalToolRegistry()->getById(toolId) != nullptr, stateInfo.setError(tr("External tool is absent")), );
     QString toolPath = AppContext::getExternalToolRegistry()->getById(toolId)->getPath();
     CHECK_EXT(QFile::exists(toolPath), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(toolPath)), )
@@ -102,9 +104,15 @@ void ExternalToolRunTask::run() {
     if (listener != nullptr) {
         helper->addOutputListener(listener);
     }
-
-    externalToolProcess->start(pRun.program, pRun.arguments);
-    bool started = externalToolProcess->waitForStarted(START_WAIT_MSEC);
+    bool started = false;
+    qint64 detachedPID = 0;
+    if (startAsDetached) {
+        started = externalToolProcess->startDetached(pRun.program, pRun.arguments, QString(), &detachedPID);
+    } else {
+        externalToolProcess->start(pRun.program, pRun.arguments);
+        started = externalToolProcess->waitForStarted(START_WAIT_MSEC);
+    }
+    
 
     if (!started) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
@@ -119,8 +127,12 @@ void ExternalToolRunTask::run() {
     }
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
-            killProcess(externalToolProcess);
-            algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
+            if (startAsDetached) {
+                CmdlineTaskRunner::killProcessTree(detachedPID);
+            } else {
+                killProcess(externalToolProcess);
+                algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
+            }
             return;
         }
     }

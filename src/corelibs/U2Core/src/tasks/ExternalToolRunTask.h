@@ -53,7 +53,9 @@ public:
     /**
      * Don't delete logParser, it will be deleted automatically.
      */
-    ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser, const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), bool parseOutputFile = false);
+    ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser, 
+                        const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), 
+                        bool parseOutputFile = false, bool startAsDetached = false);
     ~ExternalToolRunTask();
 
     void addOutputListener(ExternalToolListener* outputListener);
@@ -91,6 +93,7 @@ private:
     ExternalToolListener* listener;
     QString additionalProcessToKill;
     bool parseOutputFile;
+    bool startAsDetached;
 };
 
 class U2CORE_EXPORT ExternalToolSupportTask : public Task {

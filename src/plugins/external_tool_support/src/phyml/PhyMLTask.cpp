@@ -131,7 +131,7 @@ QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask) {
         arguments << tmpPhylipFile;
         arguments << "--no_memory_check";
         arguments << settings.extToolArguments;
-        phyMlTask = new ExternalToolRunTask(PhyMLSupport::PHYML_ID, arguments, new PhyMLLogParser(this, sequencesNumber));
+        phyMlTask = new ExternalToolRunTask(PhyMLSupport::PHYML_ID, arguments, new PhyMLLogParser(this, sequencesNumber), "", QStringList(), false, true);
         phyMlTask->setSubtaskProgressWeight(95);
         res.append(phyMlTask);
     } else if (subTask == phyMlTask) {
