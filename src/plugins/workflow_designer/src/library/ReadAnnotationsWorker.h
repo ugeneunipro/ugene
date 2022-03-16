@@ -44,7 +44,9 @@ class ReadAnnotationsWorker : public GenericDocReader {
 public:
     ReadAnnotationsWorker(Actor* p);
     virtual void init();
-    Task* tick() override;
+
+protected slots:
+    virtual void sl_datasetEnded();
 
 protected:
     virtual void onTaskFinished(Task* task);
@@ -92,26 +94,6 @@ private:
     QString mergedAnnTableName;
     WorkflowContext* context;
 
-    QList<QVariantMap> results;
-};
-
-// If the ReadAnnotationsProto::MERGE_FILES mode is selected, then after reading all files, merges all annotation tables
-// into one.
-class MergeAnnotationsTask : public Task {
-    Q_OBJECT
-public:
-    // datasetData is a list of SharedDbiDataHandlers. These tables will be deleted from the db at the end of the run
-    // method. tableName and storage must be non-null.
-    MergeAnnotationsTask(const QList<QVariantMap>& datasetData,
-                         const QString& mergedAnnTableName,
-                         DbiDataStorage* storage);
-    void run() override;
-    QList<QVariantMap> takeResults() const;
-
-private:
-    QList<QVariantMap> datasetData;
-    QString mergedAnnTableName;
-    DbiDataStorage* storage;
     QList<QVariantMap> results;
 };
 
