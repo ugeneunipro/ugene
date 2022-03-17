@@ -64,8 +64,7 @@ void FindQualifierFiller::commonScenario() {
         GTRadioButton::click(os, containsButton);
     }
 
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
+    auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
     if (settings.expectTheEndOfTree) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "The end of the annotation tree has been reached. Would you like to start the search from the beginning?"));

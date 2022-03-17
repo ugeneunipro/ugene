@@ -539,8 +539,7 @@ void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus& os
 
 #define GT_METHOD_NAME "setSetMaxResults"
 void GTUtilsOptionPanelSequenceView::setSetMaxResults(HI::GUITestOpStatus& os, int maxResults) {
-    QSpinBox* limit = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "boxMaxResult", nullptr, {false}));
-    GT_CHECK(limit != nullptr, "spinbox is NULL");
+    auto limit = GTWidget::findSpinBox(os, "boxMaxResult", nullptr, {false});
 
     if (!limit->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));

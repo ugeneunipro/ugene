@@ -52,7 +52,7 @@ void GTUtilsQueryDesigner::openQueryDesigner(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "findTreeItem"
 QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, QString itemName) {
     QTreeWidgetItem* foundItem = nullptr;
-    QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "palette"));
+    auto w = GTWidget::findTreeWidget(os, "palette");
 
     QList<QTreeWidgetItem*> outerList = w->findItems("", Qt::MatchContains);
 
@@ -115,7 +115,7 @@ int GTUtilsQueryDesigner::getItemBottom(HI::GUITestOpStatus& os, QString itemNam
 }
 
 QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus& os, QString itemName) {
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
 
     foreach (QGraphicsItem* it, items) {

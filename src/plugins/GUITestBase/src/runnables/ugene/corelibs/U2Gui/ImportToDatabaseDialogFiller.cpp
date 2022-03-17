@@ -278,8 +278,7 @@ void ImportToDatabaseDialogFiller::cancel(const Action& action) {
 
 #define GT_METHOD_NAME "getItemCenter"
 QPoint ImportToDatabaseDialogFiller::getItemCenter(const QString& text) {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "twOrders", dialog));
-    GT_CHECK_RESULT(nullptr != treeWidget, "treeWidget is NULL", QPoint());
+    auto treeWidget = GTWidget::findTreeWidget(os, "twOrders", dialog);
 
     QTreeWidgetItem* item = findItem(text);
     CHECK_OP(os, QPoint());
@@ -291,8 +290,7 @@ QPoint ImportToDatabaseDialogFiller::getItemCenter(const QString& text) {
 
 #define GT_METHOD_NAME "getFolderColumnCenter"
 QPoint ImportToDatabaseDialogFiller::getFolderColumnCenter(const QString& text) {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "twOrders", dialog));
-    GT_CHECK_RESULT(nullptr != treeWidget, "treeWidget is NULL", QPoint());
+    auto treeWidget = GTWidget::findTreeWidget(os, "twOrders", dialog);
 
     const QPoint itemCenter = treeWidget->mapFromGlobal(getItemCenter(text));
     const QPoint columnCenter(treeWidget->columnViewportPosition(1) + treeWidget->columnWidth(1) / 2, itemCenter.y());
@@ -302,8 +300,7 @@ QPoint ImportToDatabaseDialogFiller::getFolderColumnCenter(const QString& text) 
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* ImportToDatabaseDialogFiller::findItem(const QString& text) {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "twOrders", dialog));
-    GT_CHECK_RESULT(nullptr != treeWidget, "treeWidget is NULL", nullptr);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twOrders", dialog);
 
     QList<QTreeWidgetItem*> items = treeWidget->findItems(text, Qt::MatchFlags(Qt::MatchExactly | Qt::MatchRecursive));
     GT_CHECK_RESULT(!items.isEmpty(), "Item was not found", nullptr);

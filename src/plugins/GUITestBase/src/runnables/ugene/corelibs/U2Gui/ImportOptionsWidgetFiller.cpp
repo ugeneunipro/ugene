@@ -68,8 +68,7 @@ void ImportOptionsWidgetFiller::setDestinationFolder(HI::GUITestOpStatus& os, Im
 #define GT_METHOD_NAME "setKeepFoldersStructure"
 void ImportOptionsWidgetFiller::setKeepFoldersStructure(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::KEEP_FOLDERS_STRUCTURE), );
-    QCheckBox* keepStructure = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "cbKeepStructure", optionsWidget));
-    GT_CHECK(nullptr != keepStructure, "keepStructure is NULL");
+    auto keepStructure = GTWidget::findCheckBox(os, "cbKeepStructure", optionsWidget);
     GTCheckBox::setChecked(os, keepStructure, data.value(ImportToDatabaseOptions::KEEP_FOLDERS_STRUCTURE).toBool());
 }
 #undef GT_METHOD_NAME
@@ -113,21 +112,18 @@ void ImportOptionsWidgetFiller::setMultiSequencePolicy(HI::GUITestOpStatus& os, 
     ImportToDatabaseOptions::MultiSequencePolicy policy = static_cast<ImportToDatabaseOptions::MultiSequencePolicy>(data.value(ImportToDatabaseOptions::MULTI_SEQUENCE_POLICY).toInt());
     switch (policy) {
         case ImportToDatabaseOptions::SEPARATE: {
-            QRadioButton* separate = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbSeparate", optionsWidget));
-            GT_CHECK(nullptr != separate, "separate is NULL");
+            auto separate = GTWidget::findRadioButton(os, "rbSeparate", optionsWidget);
             GTRadioButton::click(os, separate);
             break;
         }
         case ImportToDatabaseOptions::MERGE: {
-            QRadioButton* merge = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbMerge", optionsWidget));
-            GT_CHECK(nullptr != merge, "merge is NULL");
+            auto merge = GTWidget::findRadioButton(os, "rbMerge", optionsWidget);
             GTRadioButton::click(os, merge);
             setMergeMultiSequencePolicySeparatorSize(os, optionsWidget, data);
             break;
         }
         case ImportToDatabaseOptions::MALIGNMENT: {
-            QRadioButton* malignment = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbMalignment", optionsWidget));
-            GT_CHECK(nullptr != malignment, "malignment is NULL");
+            auto malignment = GTWidget::findRadioButton(os, "rbMalignment", optionsWidget);
             GTRadioButton::click(os, malignment);
             break;
         }
@@ -142,12 +138,10 @@ void ImportOptionsWidgetFiller::setAceFormatPolicy(HI::GUITestOpStatus& os, Impo
     const QStringList preferredFormats = data.value(ImportToDatabaseOptions::PREFERRED_FORMATS).toStringList();
 
     if (preferredFormats.contains(BaseDocumentFormats::ACE)) {
-        QRadioButton* rbAceAsMalignment = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbAceAsMalignment", optionsWidget));
-        GT_CHECK(nullptr != rbAceAsMalignment, "rbAceAsMalignment is NULL");
+        auto rbAceAsMalignment = GTWidget::findRadioButton(os, "rbAceAsMalignment", optionsWidget);
         GTRadioButton::click(os, rbAceAsMalignment);
     } else if (preferredFormats.contains(AceImporter::ID)) {
-        QRadioButton* rbAceAsAssembly = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbAceAsAssembly", optionsWidget));
-        GT_CHECK(nullptr != rbAceAsAssembly, "rbAceAsAssembly is NULL");
+        auto rbAceAsAssembly = GTWidget::findRadioButton(os, "rbAceAsAssembly", optionsWidget);
         GTRadioButton::click(os, rbAceAsAssembly);
     }
 }

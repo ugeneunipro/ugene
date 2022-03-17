@@ -403,8 +403,7 @@ QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus& os, int number) {
 #define GT_METHOD_NAME "getSeqName"
 QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
     GT_CHECK_RESULT(nullptr != seqWidget, "Sequence widget is NULL!", "");
-    QLabel* nameLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "nameLabel", seqWidget));
-    GT_CHECK_RESULT(nullptr != nameLabel, "Name label is NULL!", "");
+    auto nameLabel = GTWidget::findLabel(os, "nameLabel", seqWidget);
 
     QString labelText = nameLabel->text();
     QString result = labelText.left(labelText.indexOf("[") - 1);  // detachment of name from label text
