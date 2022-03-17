@@ -178,7 +178,6 @@ private slots:
 
     void sl_addSequencesToAlignmentFinished(Task* task);
     void sl_delCol();
-    void sl_goto();
     void sl_removeAllGaps();
 
     /**

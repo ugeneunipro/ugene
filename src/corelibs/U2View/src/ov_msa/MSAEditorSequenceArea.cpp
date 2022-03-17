@@ -157,8 +157,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), SLOT(sl_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)));
 
-    connect(getEditor()->gotoAction, &QAction::triggered, this, &MSAEditorSequenceArea::sl_goto);
-
     setMouseTracking(true);
 
     updateColorAndHighlightSchemes();
@@ -401,15 +399,6 @@ void MSAEditorSequenceArea::sl_delCol() {
         SAFE_POINT_OP(os, );
         msaObj->deleteColumnsWithGaps(os, gapCount);
     }
-}
-
-void MSAEditorSequenceArea::sl_goto() {
-    QDialog gotoDialog(this);
-    gotoDialog.setModal(true);
-    gotoDialog.setWindowTitle(tr("Go to Position"));
-    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
-    connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
-    gotoDialog.exec();
 }
 
 void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
