@@ -91,7 +91,6 @@ void GTUtilsCv::cvBtn::click(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* s
 #define GT_METHOD_NAME "commonCvBtn::mustExist"
 void GTUtilsCv::commonCvBtn::mustExist(HI::GUITestOpStatus& os) {
     GTWidget::findWidget(os, "globalToggleViewAction_widget");
-    CHECK_OP_SET_ERR(os, "Error getting global CV button!");
 }
 #undef GT_METHOD_NAME
 

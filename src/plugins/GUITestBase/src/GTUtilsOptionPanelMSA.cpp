@@ -160,8 +160,7 @@ QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getLength"
 int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus& os) {
-    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "alignmentLength"));
-    GT_CHECK_RESULT(alignmentLengthLabel != nullptr, "alignmentLengthLabel not found", -1);
+    auto alignmentLengthLabel = GTWidget::findLabel(os, "alignmentLength");
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok, "label text is not int", -1);
@@ -171,8 +170,7 @@ int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getHeight"
 int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus& os) {
-    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "alignmentHeight"));
-    GT_CHECK_RESULT(alignmentHeightLabel != nullptr, "alignmentHeightLabel not found", -1);
+    auto alignmentHeightLabel = GTWidget::findLabel(os, "alignmentHeight");
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok, "label text is not int", -1);
@@ -183,8 +181,7 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "copySelection"
 void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFormat format) {
     openTab(os, General);
-    QComboBox* copyType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "copyType"));
-    GT_CHECK_RESULT(copyType != nullptr, "copyType not found", );
+    auto copyType = GTWidget::findComboBox(os, "copyType");
 
     QString stringFormat;
     switch (format) {
@@ -222,8 +219,7 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFor
     }
     GTComboBox::selectItemByText(os, copyType, stringFormat);
 
-    QToolButton* copyButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "copyButton"));
-    GT_CHECK_RESULT(copyButton != nullptr, "copyType not found", );
+    auto copyButton = GTWidget::findToolButton(os, "copyButton");
 
     GTWidget::click(os, copyButton);
 }
@@ -427,8 +423,7 @@ QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "setAlgorithm"
 void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus& os, QString algorithm) {
-    QComboBox* algoBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GT_CHECK(algoBox != nullptr, "algoBox is NULL");
+    auto algoBox = GTWidget::findComboBox(os, "boxAlgorithm");
 
     if (!algoBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
@@ -440,7 +435,7 @@ void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus& os, QString algori
 
 #define GT_METHOD_NAME "setMatchPercentage"
 void GTUtilsOptionPanelMsa::setMatchPercentage(HI::GUITestOpStatus& os, int percentage) {
-    QSpinBox* spinMatchBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinBoxMatch"));
+    auto spinMatchBox = GTWidget::findSpinBox(os, "spinBoxMatch");
 
     GTSpinBox::setValue(os, spinMatchBox, percentage, GTGlobals::UseKeyBoard);
     GTGlobals::sleep(2500);
@@ -449,8 +444,7 @@ void GTUtilsOptionPanelMsa::setMatchPercentage(HI::GUITestOpStatus& os, int perc
 
 #define GT_METHOD_NAME "setCheckedRemoveOverlappedResults"
 void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatus& os, bool setChecked) {
-    QCheckBox* overlapsBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "removeOverlapsBox"));
-    GT_CHECK(overlapsBox != nullptr, "overlapsBox is NULL");
+    auto overlapsBox = GTWidget::findCheckBox(os, "removeOverlapsBox");
 
     if (!overlapsBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
@@ -462,7 +456,7 @@ void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatu
 #define GT_METHOD_NAME "checkResultsText"
 void GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus& os, QString expectedText) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QLabel* label = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto label = GTWidget::findLabel(os, "resultLabel");
     QString actualText = label->text();
     CHECK_SET_ERR(actualText == expectedText, QString("Wrong result. Expected: %1, got: %2").arg(expectedText).arg(actualText));
 }
@@ -471,7 +465,7 @@ void GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus& os, QString ex
 #define GT_METHOD_NAME "clickNext"
 
 void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus& os) {
-    QPushButton* next = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "nextPushButton"));
+    auto next = GTWidget::findPushButton(os, "nextPushButton");
     GTWidget::click(os, next);
 }
 
@@ -479,7 +473,7 @@ void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "clickPrev"
 void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus& os) {
-    QPushButton* prev = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "prevPushButton"));
+    auto prev = GTWidget::findPushButton(os, "prevPushButton");
     GTWidget::click(os, prev);
 }
 #undef GT_METHOD_NAME
@@ -524,8 +518,7 @@ void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus& os, int from, int to)
 
 #define GT_METHOD_NAME "setSearchContext"
 void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus& os, const QString& context) {
-    QComboBox* searchContextBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "searchContextComboBox"));
-    GT_CHECK(searchContextBox != nullptr, "searchContextBox is NULL");
+    auto searchContextBox = GTWidget::findComboBox(os, "searchContextComboBox");
     GTComboBox::selectItemByText(os, searchContextBox, context);
 }
 #undef GT_METHOD_NAME
