@@ -637,7 +637,7 @@ WorkflowPortItem* GTUtilsWorkflowDesigner::getPortById(HI::GUITestOpStatus& os, 
 #define GT_METHOD_NAME "getPorts"
 QList<WorkflowPortItem*> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus& os, WorkflowProcessItem* worker) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    auto sceneView = GTWidget::findGraphicsView(os, "sceneView", wdWindow);
+    GTWidget::findGraphicsView(os, "sceneView", wdWindow);
     return worker->getPortItems();
 }
 #undef GT_METHOD_NAME
