@@ -266,4 +266,13 @@ void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)
     }
 }
 
+void MaEditorMultilineWgt::sl_goto() {
+    QDialog gotoDialog(this);
+    gotoDialog.setModal(true);
+    gotoDialog.setWindowTitle(tr("Go to Position"));
+    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
+    connect(ps, SIGNAL(si_positionChanged(int)), getUI(0)->getSequenceArea(), SLOT(sl_onPosChangeRequest(int)));
+    gotoDialog.exec();
+}
+
 }  // namespace U2
