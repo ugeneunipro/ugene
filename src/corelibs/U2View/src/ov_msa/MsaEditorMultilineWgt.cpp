@@ -35,6 +35,7 @@
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 #include "phy_tree/MsaEditorTreeTabArea.h"
 #include "phy_tree/MSAEditorTreeViewer.h"
+
 #include <U2Gui/GScrollBar.h>
 
 namespace U2 {

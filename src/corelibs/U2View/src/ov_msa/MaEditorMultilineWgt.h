@@ -28,8 +28,10 @@
 #include <QWidget>
 
 #include <U2Core/global.h>
+#include <U2Gui/PositionSelector.h>
 
 #include "MaEditorUtils.h"
+
 
 class QGridLayout;
 class QGroupBox;
@@ -142,6 +144,7 @@ signals:
 public slots:
     /** Switches between Original and Sequence row orders. */
     void sl_toggleSequenceRowOrder(bool isOrderBySequence);
+    void sl_goto();
 
 private slots:
 

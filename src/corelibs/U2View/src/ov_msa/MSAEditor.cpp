@@ -495,7 +495,7 @@ QWidget *MSAEditor::createWidget() {
     new MoveToObjectMaController(this, ui);
 
     multilineViewAction->setChecked(multilineMode);
-    initActions();
+    initActions(); // one time exec
     initChildrenActionsAndSignals();
     updateActions();
 
@@ -505,16 +505,9 @@ QWidget *MSAEditor::createWidget() {
 void MSAEditor::initChildrenActionsAndSignals() {
     MaEditorWgt *child;
     
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
-    
     for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
         child = getUI()->getUI(i);
         connect(child, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
-        connect(gotoAction, SIGNAL(triggered()), child->getSequenceArea(), SLOT(sl_goto()));
         connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
         connect(child, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
 
@@ -581,6 +574,8 @@ void MSAEditor::initActions() {
     connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_updateRealignAction()));
+
+    connect(gotoAction, &QAction::triggered, getMaEditorMultilineWgt(), &MaEditorMultilineWgt::sl_goto);
 
     qDeleteAll(filters);
 
