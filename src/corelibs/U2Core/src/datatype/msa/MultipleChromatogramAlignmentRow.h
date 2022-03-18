@@ -40,22 +40,22 @@ class U2OpStatus;
 class U2CORE_EXPORT MultipleChromatogramAlignmentRow : public MultipleAlignmentRow {
 public:
     MultipleChromatogramAlignmentRow();
-    MultipleChromatogramAlignmentRow(const MultipleAlignmentRow &maRow);
-    MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData);
+    MultipleChromatogramAlignmentRow(const MultipleAlignmentRow& maRow);
+    MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData* mcaRowData);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &rawData, MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRow(const U2McaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
-    MultipleChromatogramAlignmentRowData *data() const;
+    MultipleChromatogramAlignmentRowData* data() const;
 
-    MultipleChromatogramAlignmentRowData &operator*();
-    const MultipleChromatogramAlignmentRowData &operator*() const;
+    MultipleChromatogramAlignmentRowData& operator*();
+    const MultipleChromatogramAlignmentRowData& operator*() const;
 
-    MultipleChromatogramAlignmentRowData *operator->();
-    const MultipleChromatogramAlignmentRowData *operator->() const;
+    MultipleChromatogramAlignmentRowData* operator->();
+    const MultipleChromatogramAlignmentRowData* operator->() const;
 
     MultipleChromatogramAlignmentRow clone() const;
 
@@ -76,28 +76,28 @@ class U2CORE_EXPORT MultipleChromatogramAlignmentRowData : public MultipleAlignm
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData = nullptr);
+    MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData* mcaData = nullptr);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &rawData, MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRowData(const U2McaRow& rowInDb, const QString& rowName, const DNAChromatogram& chromatogram, const QByteArray& rawData, MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow& row, MultipleChromatogramAlignmentData* mcaData);
 
 public:
     /** Name of the row (equals to the sequence name), can be empty */
     QString getName() const;
-    void setName(const QString &name);
+    void setName(const QString& name);
 
     /** Returns the list of gaps for the row */
-    inline const QList<U2MsaGap> &getGapModel() const;
+    inline const QVector<U2MsaGap>& getGaps() const;
 
     /** Careful, the new gap model is not validated! */
-    void setGapModel(const QList<U2MsaGap> &newGapModel);
+    void setGapModel(const QVector<U2MsaGap>& newGapModel);
 
     /** Returns the row sequence (without gaps) */
-    inline const DNASequence &getSequence() const;
+    inline const DNASequence& getSequence() const;
 
-    const DNAChromatogram &getChromatogram() const;
+    const DNAChromatogram& getChromatogram() const;
     DNAChromatogram getGappedChromatogram() const;
 
     /** Returns the position of @pos, including gaps */
@@ -108,20 +108,20 @@ public:
 
     void setRowId(qint64 rowId);
 
-    void setSequenceId(const U2DataId &sequenceId);
+    void setSequenceId(const U2DataId& sequenceId);
 
     /** Returns ID of the row sequence in the database. */
     U2McaRow getRowDbInfo() const;
 
     /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2McaRow &dbRow);
+    void setRowDbInfo(const U2McaRow& dbRow);
 
     /**
      * The length must be greater or equal to the row length.
      * When the specified length is greater, an appropriate number of
      * trailing gaps are appended to the end of the byte array.
      */
-    QByteArray toByteArray(U2OpStatus &os, qint64 length) const;
+    QByteArray toByteArray(U2OpStatus& os, qint64 length) const;
 
     /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
     int getRowLength() const;
@@ -148,28 +148,28 @@ public:
     inline bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleChromatogramAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
-    void append(const MultipleChromatogramAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os);
+    void append(const MultipleChromatogramAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
+    void append(const MultipleChromatogramAlignmentRowData& anotherRow, int lengthBefore, U2OpStatus& os);
 
     /**
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
+    void setRowContent(const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel, U2OpStatus& os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
      * If position is bigger than the row length or negative, does nothing.
      * Returns incorrect status if 'count' is negative.
      */
-    void insertGaps(int pos, int count, U2OpStatus &os);
+    void insertGaps(int pos, int count, U2OpStatus& os);
 
     /**
      * Removes up to 'count' characters starting from the specified position
      * If position is bigger than the row length, does nothing.
      * Returns incorrect status if 'pos' or 'count' is negative.
      */
-    void removeChars(int pos, int count, U2OpStatus &os);
+    void removeChars(int pos, int count, U2OpStatus& os);
 
     /**
      * Returns a character in row at the specified position.
@@ -194,32 +194,32 @@ public:
     qint64 getBaseCount(qint64 before) const;
 
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool &hasTwoPeaks) const;
+    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const;
 
     /** Adds sequence chromatogram equality check to the base MultipleAlignmentRowData::isEqualCore method. */
-    bool isEqualCore(const MultipleAlignmentRowData &other) const override;
+    bool isEqualCore(const MultipleAlignmentRowData& other) const override;
 
     bool isDefault() const override;
 
     /** Checks that 'other' is MultipleChromatogramAlignmentRowData and calls the MCA version of the method. */
-    bool isEqual(const MultipleAlignmentRowData &other) const override;
+    bool isEqual(const MultipleAlignmentRowData& other) const override;
 
     /** Compares 2 rows. Rows are equal if their names, sequences, no-leading-gap models and chromatograms are equal. */
-    bool isEqual(const MultipleChromatogramAlignmentRowData &other) const;
+    bool isEqual(const MultipleChromatogramAlignmentRowData& other) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    void crop(U2OpStatus &os, qint64 startPosition, qint64 count) override;
+    void crop(U2OpStatus& os, qint64 startPosition, qint64 count) override;
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
+    MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
     /** Converts the row sequence to upper case */
     void toUpperCase();
@@ -229,13 +229,13 @@ public:
      * The 'origChar' must be a non-gap character.
      * The 'resultChar' can be a gap, gaps model is recalculated in this case.
      */
-    void replaceChars(char origChar, char resultChar, U2OpStatus &os);
+    void replaceChars(char origChar, char resultChar, U2OpStatus& os);
 
     MultipleChromatogramAlignmentRow getExplicitCopy() const;
 
-    MultipleAlignmentData *getMultipleAlignmentData() const override;
+    MultipleAlignmentData* getMultipleAlignmentData() const override;
 
-    void setAdditionalInfo(const QVariantMap &additionalInfo);
+    void setAdditionalInfo(const QVariantMap& additionalInfo);
     QVariantMap getAdditionalInfo() const;
 
     McaRowMemoryData getRowMemoryData() const;
@@ -249,13 +249,13 @@ public:
 
 private:
     /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);
+    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QVector<U2MsaGap>& gapModel);
 
     /**
      * Add "offset" of gaps to the beginning of the row
      * Warning: it is not verified that the row sequence is not empty.
      */
-    static void addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset);
+    static void addOffsetToGapModel(QVector<U2MsaGap>& gapModel, int offset);
 
     /** Gets the length of all gaps */
     inline int getGapsLength() const;
@@ -272,15 +272,15 @@ private:
      * Calculates start and end position in the sequence,
      * depending on the start position in the row and the 'count' character from it
      */
-    void getStartAndEndSequencePositions(int pos, int count, int &startPosInSeq, int &endPosInSeq);
+    void getStartAndEndSequencePositions(int pos, int count, int& startPosInSeq, int& endPosInSeq);
 
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
-    void removeGapsFromGapModel(U2OpStatus &os, int pos, int count);
+    void removeGapsFromGapModel(U2OpStatus& os, int pos, int count);
 
-    void setParentAlignment(const MultipleChromatogramAlignment &msa);
-    void setParentAlignment(MultipleChromatogramAlignmentData *mcaData);
+    void setParentAlignment(const MultipleChromatogramAlignment& msa);
+    void setParentAlignment(MultipleChromatogramAlignmentData* mcaData);
 
-    MultipleChromatogramAlignmentData *alignment;
+    MultipleChromatogramAlignmentData* alignment;
 
     DNAChromatogram chromatogram;
 
@@ -290,11 +290,11 @@ private:
     QVariantMap additionalInfo;
 };
 
-inline const QList<U2MsaGap> &MultipleChromatogramAlignmentRowData::getGapModel() const {
+inline const QVector<U2MsaGap>& MultipleChromatogramAlignmentRowData::getGaps() const {
     return gaps;
 }
 
-inline const DNASequence &MultipleChromatogramAlignmentRowData::getSequence() const {
+inline const DNASequence& MultipleChromatogramAlignmentRowData::getSequence() const {
     return sequence;
 }
 
@@ -322,22 +322,22 @@ inline int MultipleChromatogramAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
 }
 
-inline bool operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) {
+inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRowData* ptr2) {
     return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator==(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+inline bool operator==(const MultipleChromatogramAlignmentRowData* ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRowData* ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignmentRowData* ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
 }
 

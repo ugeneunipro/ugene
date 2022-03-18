@@ -54,7 +54,7 @@ namespace U2 {
 #define MR_BAYES_TEMPR "/mb_tempr"
 #define MR_BAYES_SEED "/mb_seed"
 
-MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
+MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     setupUi(this);
     DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
@@ -68,7 +68,7 @@ MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *paren
         modelTypeCombo->addItems(MrBayesModelTypes::getAAModelTypes());
     }
 
-    connect(rateVariationCombo, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onRateChanged(const QString &)));
+    connect(rateVariationCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onRateChanged(const QString&)));
     rateVariationCombo->addItems(MrBayesVariationTypes::getVariationTypes());
 
     seedSpin->setValue(getRandomSeed());
@@ -88,7 +88,7 @@ MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *paren
     setComboText(rateVariationCombo, comboText);
 }
 
-void MrBayesWidget::sl_onRateChanged(const QString &modelName) {
+void MrBayesWidget::sl_onRateChanged(const QString& modelName) {
     if (modelName == MrBayesVariationTypes::equal || modelName == MrBayesVariationTypes::propinv) {
         gammaCategoriesSpin->setEnabled(false);
     } else {
@@ -96,7 +96,7 @@ void MrBayesWidget::sl_onRateChanged(const QString &modelName) {
     }
 }
 
-void MrBayesWidget::fillSettings(CreatePhyTreeSettings &settings) {
+void MrBayesWidget::fillSettings(CreatePhyTreeSettings& settings) {
     settings.mb_ngen = ngenSpin->value();
     settings.mrBayesSettingsScript = generateMrBayesSettingsScript();
     displayOptions->fillSettings(settings);
@@ -138,7 +138,7 @@ void MrBayesWidget::restoreDefault() {
     displayOptions->restoreDefault();
 }
 
-void MrBayesWidget::setComboText(QComboBox *combo, const QString &text) {
+void MrBayesWidget::setComboText(QComboBox* combo, const QString& text) {
     for (int i = 0; i < combo->count(); i++) {
         if (combo->itemText(i) == text) {
             combo->setCurrentIndex(i);
@@ -165,13 +165,13 @@ int MrBayesWidget::getRandomSeed() {
     return seed;
 }
 
-bool MrBayesWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
+bool MrBayesWidget::checkSettings(QString& message, const CreatePhyTreeSettings& settings) {
     // Check that MrBayes and temporary folder path defined
-    ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
-    ExternalTool *mb = reg->getById(MrBayesSupport::ET_MRBAYES_ID);
+    ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
+    ExternalTool* mb = reg->getById(MrBayesSupport::ET_MRBAYES_ID);
     assert(mb);
-    const QString &path = mb->getPath();
-    const QString &name = mb->getName();
+    const QString& path = mb->getPath();
+    const QString& name = mb->getName();
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);

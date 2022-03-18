@@ -33,19 +33,19 @@ class DNAAlphabet;
 
 class U2CORE_EXPORT DNASequence {
 public:
-    DNASequence(const QString &name, const QByteArray &s = QByteArray(), const DNAAlphabet *a = nullptr);
-    DNASequence(const QByteArray &s = QByteArray(), const DNAAlphabet *a = nullptr);
+    DNASequence(const QString& name, const QByteArray& s = QByteArray(), const DNAAlphabet* a = nullptr);
+    DNASequence(const QByteArray& s = QByteArray(), const DNAAlphabet* a = nullptr);
 
     QVariantMap info;
     QByteArray seq;
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     bool circular;
     DNAQuality quality;
 
     QString getName() const {
         return DNAInfo::getName(info);
     }
-    void setName(const QString &name);
+    void setName(const QString& name);
     bool isNull() const {
         return !alphabet && seq.length() == 0;
     }
@@ -55,10 +55,10 @@ public:
     bool hasQualityScores() const {
         return (!quality.isEmpty());
     }
-    const char *constData() const {
+    const char* constData() const {
         return seq.constData();
     }
-    const QByteArray &constSequence() const {
+    const QByteArray& constSequence() const {
         return seq;
     }
 };

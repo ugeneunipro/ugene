@@ -29,7 +29,7 @@ namespace BAM {
 
 class InvalidFormatException : public Exception {
 public:
-    InvalidFormatException(const QString &message);
+    InvalidFormatException(const QString& message);
 };
 
 }  // namespace BAM

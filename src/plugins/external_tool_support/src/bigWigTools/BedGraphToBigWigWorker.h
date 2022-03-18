@@ -36,20 +36,20 @@ typedef PrompterBase<BedGraphToBigWigPrompter> BedGraphToBigWigBase;
 class BedGraphToBigWigPrompter : public BedGraphToBigWigBase {
     Q_OBJECT
 public:
-    BedGraphToBigWigPrompter(Actor *p = 0)
+    BedGraphToBigWigPrompter(Actor* p = 0)
         : BedGraphToBigWigBase(p) {
     }
 
 protected:
     QString composeRichDoc();
-};    //BedGraphToBigWigPrompter
+};  // BedGraphToBigWigPrompter
 
 class BedGraphToBigWigWorker : public BaseWorker {
     Q_OBJECT
 public:
-    BedGraphToBigWigWorker(Actor *a);
+    BedGraphToBigWigWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
     static const QString INPUT_PORT;
@@ -69,18 +69,18 @@ protected:
     }
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QStringList outUrls;
 
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    QString getTargetName(const QString &fileUrl, const QString &outDir);
-    void sendResult(const QString &url);
-};    //BedGraphToBigWigWorker
+    QString getTargetName(const QString& fileUrl, const QString& outDir);
+    void sendResult(const QString& url);
+};  // BedGraphToBigWigWorker
 
 class BedGraphToBigWigFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -90,12 +90,12 @@ public:
     BedGraphToBigWigFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new BedGraphToBigWigWorker(a);
     }
-};    //RmdupBamWorkerFactory
+};  // RmdupBamWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_BED_GRAPH_TO_BIGWIG_WORKER_H_
+#endif  //_U2_BED_GRAPH_TO_BIGWIG_WORKER_H_

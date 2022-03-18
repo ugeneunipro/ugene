@@ -34,23 +34,23 @@
 
 namespace U2 {
 
-MaOverview::MaOverview(MaEditorWgt *ui)
+MaOverview::MaOverview(MaEditorWgt* ui)
     : QWidget(ui),
       editor(ui->getEditor()),
       ui(ui),
-      sequenceArea(ui->getSequenceArea()),
       stepX(0),
       stepY(0) {
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_redraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
 }
 
-MaEditor *MaOverview::getEditor() const {
+MaEditor* MaOverview::getEditor() const {
     return editor;
 }
 
@@ -65,7 +65,7 @@ void MaOverview::sl_redraw() {
     update();
 }
 
-void MaOverview::mousePressEvent(QMouseEvent *me) {
+void MaOverview::mousePressEvent(QMouseEvent* me) {
     if (!isValid()) {
         return;
     }
@@ -78,7 +78,7 @@ void MaOverview::mousePressEvent(QMouseEvent *me) {
     QWidget::mousePressEvent(me);
 }
 
-void MaOverview::mouseMoveEvent(QMouseEvent *me) {
+void MaOverview::mouseMoveEvent(QMouseEvent* me) {
     if (!isValid()) {
         return;
     }
@@ -89,7 +89,7 @@ void MaOverview::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void MaOverview::mouseReleaseEvent(QMouseEvent *me) {
+void MaOverview::mouseReleaseEvent(QMouseEvent* me) {
     if (!isValid()) {
         return;
     }

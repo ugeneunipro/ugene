@@ -32,12 +32,12 @@ namespace U2 {
 
 const QString WormsGLRenderer::ID(QObject::tr("Worms"));
 
-WormsGLRenderer::WormsGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings)
+WormsGLRenderer::WormsGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings)
     : BioStruct3DGLRenderer(struc, s, shownModels, settings) {
     create();
 }
 
-bool WormsGLRenderer::isAvailableFor(const BioStruct3D &bioStruct) {
+bool WormsGLRenderer::isAvailableFor(const BioStruct3D& bioStruct) {
     // Try to construct objects to draw
     QMap<int, BioPolymer> bioPolymerMap;
     createBioPolymerMap(bioStruct.moleculeMap, bioPolymerMap);
@@ -49,8 +49,8 @@ bool WormsGLRenderer::isAvailableFor(const BioStruct3D &bioStruct) {
         int chainId = ss->chainIndex;
         Q_ASSERT(chainId != 0);
         if (bioPolymerMap.contains(chainId)) {
-            const BioPolymer &bpolymer = bioPolymerMap.value(chainId);
-            foreach (const BioPolymerModel &bpModel, bpolymer.bpModels.values()) {
+            const BioPolymer& bpolymer = bioPolymerMap.value(chainId);
+            foreach (const BioPolymerModel& bpModel, bpolymer.bpModels.values()) {
                 if (bpModel.monomerMap.contains(startId) && bpModel.monomerMap.contains(endId)) {
                     if (ss->type == SecondaryStructure::Type_AlphaHelix) {
                         return true;
@@ -73,7 +73,7 @@ void WormsGLRenderer::create() {
 }
 
 void WormsGLRenderer::drawWorms() {
-    GLUquadricObj *pObj;  // Quadric Object
+    GLUquadricObj* pObj;  // Quadric Object
 
     // Draw atoms as spheres
     pObj = gluNewQuadric();
@@ -84,7 +84,7 @@ void WormsGLRenderer::drawWorms() {
     foreach (int chainId, wormMap.keys()) {
         const Worm worm = wormMap.value(chainId);
         foreach (int index, shownModels) {
-            const WormModel &model = worm.models.at(index);
+            const WormModel& model = worm.models.at(index);
             // Draw worm bodies (let the bodies set the scene!!!)
             const AtomsVector wormCoords = model.atoms;
             int size = wormCoords.size();
@@ -126,7 +126,7 @@ void WormsGLRenderer::drawWorms() {
 
             // Draw 3d objects
             if (shownModels.count() == 1) {
-                foreach (Object3D *obj, model.objects) {
+                foreach (Object3D* obj, model.objects) {
                     obj->draw(settings->detailLevel);
                 }
             }
@@ -142,10 +142,10 @@ void WormsGLRenderer::drawBioStruct3D() {
 
 void WormsGLRenderer::updateColorScheme() {
     foreach (int id, wormMap.keys()) {
-        Worm &worm = wormMap[id];
+        Worm& worm = wormMap[id];
         int numModels = worm.models.count();
         for (int i = 0; i < numModels; ++i) {
-            WormModel &model = worm.models[i];
+            WormModel& model = worm.models[i];
             qDeleteAll(model.objects);
             model.objects.clear();
         }
@@ -170,11 +170,11 @@ void WormsGLRenderer::createObjects3D() {
         int chainId = ss->chainIndex;
         Q_ASSERT(chainId != 0);
         if (bioPolymerMap.contains(chainId)) {
-            const BioPolymer &bpolymer = bioPolymerMap.value(chainId);
+            const BioPolymer& bpolymer = bioPolymerMap.value(chainId);
             int modelId = 0;
-            foreach (const BioPolymerModel &bpModel, bpolymer.bpModels.values()) {
+            foreach (const BioPolymerModel& bpModel, bpolymer.bpModels.values()) {
                 if (bpModel.monomerMap.contains(startId) && bpModel.monomerMap.contains(endId)) {
-                    Object3D *obj = nullptr;
+                    Object3D* obj = nullptr;
                     if (ss->type == SecondaryStructure::Type_AlphaHelix) {
                         obj = createHelix3D(startId, endId, bpModel);
                     } else if (ss->type == SecondaryStructure::Type_BetaStrand) {
@@ -196,8 +196,8 @@ void WormsGLRenderer::createWorms() {
     while (i.hasNext()) {
         i.next();
         Worm worm;
-        const BioPolymer &bioPolymer = i.value();
-        foreach (const BioPolymerModel &bpModel, bioPolymer.bpModels.values()) {
+        const BioPolymer& bioPolymer = i.value();
+        foreach (const BioPolymerModel& bpModel, bioPolymer.bpModels.values()) {
             const QMap<int, Monomer> monomers = bpModel.monomerMap;
             SAFE_POINT(monomers.size() != 0, "Cannot create worms - no monomers!", );
 
@@ -220,8 +220,8 @@ void WormsGLRenderer::createWorms() {
             b = (r2 - r1) / 100.f;
             wormModel.closingAtom = a + b * (-10.f);
             // Add worm-building atom coords
-            foreach (const Monomer &monomer, monomers) {
-                const SharedAtom &atom = monomer.alphaCarbon;
+            foreach (const Monomer& monomer, monomers) {
+                const SharedAtom& atom = monomer.alphaCarbon;
                 wormModel.atoms.append(atom);
             }
             worm.models.append(wormModel);
@@ -232,9 +232,9 @@ void WormsGLRenderer::createWorms() {
     createObjects3D();
 }
 
-void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &moleculeMap, QMap<int, BioPolymer> &bioPolymerMap) {
-    const char *alphaCarbonTag = "CA";
-    const char *carbonylOxygenTag = "O";
+void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule>& moleculeMap, QMap<int, BioPolymer>& bioPolymerMap) {
+    const char* alphaCarbonTag = "CA";
+    const char* carbonylOxygenTag = "O";
 
     QMapIterator<int, SharedMolecule> i(moleculeMap);
     while (i.hasNext()) {
@@ -243,10 +243,10 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &molec
         BioPolymer bioPolymer;
         QList<int> modelIds = mol->models.keys();
         for (int modelId : qAsConst(modelIds)) {
-            const Molecule3DModel &model = mol->models.value(modelId);
-            BioPolymerModel &bpModel = bioPolymer.bpModels[modelId];
+            const Molecule3DModel& model = mol->models.value(modelId);
+            BioPolymerModel& bpModel = bioPolymer.bpModels[modelId];
             QHash<int, Monomer> monomerByResideMap;
-            for (const SharedAtom &atom : qAsConst(model.atoms)) {
+            for (const SharedAtom& atom : qAsConst(model.atoms)) {
                 if (atom->name == alphaCarbonTag || atom->name == carbonylOxygenTag) {
                     int residueIdx = atom->residueIndex.toInt();
                     if (!monomerByResideMap.contains(residueIdx)) {
@@ -262,7 +262,7 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &molec
             // Register complete monomers in the model.
             QList<int> linkResideIndexes = monomerByResideMap.keys();
             for (int residueIdx : qAsConst(linkResideIndexes)) {
-                const Monomer &monomer = monomerByResideMap[residueIdx];
+                const Monomer& monomer = monomerByResideMap[residueIdx];
                 if (monomer.alphaCarbon.data() != nullptr && monomer.carbonylOxygen.data() != nullptr) {
                     bpModel.monomerMap[residueIdx] = monomer;
                 }
@@ -285,12 +285,12 @@ WormsGLRenderer::~WormsGLRenderer() {
     }
 }
 
-const float *WormsGLRenderer::getAtomColor(const SharedAtom &atom) {
+const float* WormsGLRenderer::getAtomColor(const SharedAtom& atom) {
     atomColor = colorScheme->getAtomColor(atom);
     return atomColor.getConstData();
 }
 
-Object3D *WormsGLRenderer::createHelix3D(int startId, int endId, const BioPolymerModel &bpModel) {
+Object3D* WormsGLRenderer::createHelix3D(int startId, int endId, const BioPolymerModel& bpModel) {
     static float radius = 1.5f;
     QVector<Vector3D> helixPoints;
     Color4f color(0, 0, 0, 0);
@@ -316,7 +316,7 @@ Object3D *WormsGLRenderer::createHelix3D(int startId, int endId, const BioPolyme
     return new Helix3D(color, axis.first, axis.second, radius);
 }
 
-Object3D *WormsGLRenderer::createStrand3D(int startId, int endId, const BioPolymerModel &bpModel) {
+Object3D* WormsGLRenderer::createStrand3D(int startId, int endId, const BioPolymerModel& bpModel) {
     QVector<Vector3D> arrowPoints;
     Color4f color(0, 0, 0, 0);
 

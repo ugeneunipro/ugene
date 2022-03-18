@@ -49,11 +49,11 @@ AnnotatedRegion::AnnotatedRegion()
     : annotation(nullptr), regionIdx(-1) {
 }
 
-AnnotatedRegion::AnnotatedRegion(Annotation *annotation, int regionIdx)
+AnnotatedRegion::AnnotatedRegion(Annotation* annotation, int regionIdx)
     : annotation(annotation), regionIdx(regionIdx) {
 }
 
-QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const U2Region &region2Remove, qint64 region2InsertLength, const QVector<U2Region> &original, AnnotationStrategyForResize s) {
+QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const U2Region& region2Remove, qint64 region2InsertLength, const QVector<U2Region>& original, AnnotationStrategyForResize s) {
     QList<QVector<U2Region>> res;
     const qint64 dLen = region2InsertLength - region2Remove.length;
     if (AnnotationStrategyForResize_Resize == s) {
@@ -63,7 +63,7 @@ QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const 
         }
     }
     res << QVector<U2Region>();
-    QVector<U2Region> &updated = res[0];
+    QVector<U2Region>& updated = res[0];
 
     foreach (U2Region r, original) {
         // if location ends before modification
@@ -136,19 +136,19 @@ QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const 
     return res;
 }
 
-int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand &strand, bool order, int region, const QVector<U2Region> &location) {
+int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand& strand, bool order, int region, const QVector<U2Region>& location) {
     int frame = 0;
-    const U2Region &r = location.at(region);
-    if (strand.isCompementary()) {
+    const U2Region& r = location.at(region);
+    if (strand.isComplementary()) {
         frame = (sequenceLen - r.endPos()) % 3;
     } else {
         frame = r.startPos % 3;
     }
     if (!order) {  // join -> need to join region with prev regions to derive frame
-        if (strand.isCompementary()) {
+        if (strand.isComplementary()) {
             int offset = 0;
             for (int i = location.size(); --i > region;) {
-                const U2Region &rb = location.at(i);
+                const U2Region& rb = location.at(i);
                 offset += rb.length;
             }
             int dFrame = offset % 3;
@@ -156,7 +156,7 @@ int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand &strand, b
         } else {
             int offset = 0;
             for (int i = 0; i < region; i++) {
-                const U2Region &rb = location.at(i);
+                const U2Region& rb = location.at(i);
                 offset += rb.length;
             }
             int dFrame = offset % 3;
@@ -166,7 +166,7 @@ int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand &strand, b
     return frame;
 }
 
-bool U1AnnotationUtils::isSplitted(const U2Location &location, const U2Region &seqRange) {
+bool U1AnnotationUtils::isSplitted(const U2Location& location, const U2Region& seqRange) {
     QVector<U2Region> regions = location->regions;
     if (2 != regions.size()) {
         return false;
@@ -177,7 +177,7 @@ bool U1AnnotationUtils::isSplitted(const U2Location &location, const U2Region &s
     return false;
 }
 
-bool findCaseRegion(const char *data, int dataLen, int startFrom, int globalOffset, U2Region &reg, bool &unfinished, bool isLowerCaseSearching) {
+bool findCaseRegion(const char* data, int dataLen, int startFrom, int globalOffset, U2Region& reg, bool& unfinished, bool isLowerCaseSearching) {
     bool foundStart = false;
     int strIdx = startFrom;
     unfinished = false;
@@ -220,7 +220,7 @@ bool findCaseRegion(const char *data, int dataLen, int startFrom, int globalOffs
     return foundStart;
 }
 
-QList<SharedAnnotationData> U1AnnotationUtils::getCaseAnnotations(const char *data, int dataLen, int globalOffset, bool &isUnfinishedRegion, U2Region &unfinishedRegion, bool isLowerCaseSearching) {
+QList<SharedAnnotationData> U1AnnotationUtils::getCaseAnnotations(const char* data, int dataLen, int globalOffset, bool& isUnfinishedRegion, U2Region& unfinishedRegion, bool isLowerCaseSearching) {
     QList<SharedAnnotationData> result;
 
     U2Region reg;
@@ -246,7 +246,7 @@ QList<SharedAnnotationData> U1AnnotationUtils::getCaseAnnotations(const char *da
     return result;
 }
 
-QList<SharedAnnotationData> U1AnnotationUtils::finalizeUnfinishedRegion(bool isUnfinishedRegion, U2Region &unfinishedRegion, bool isLowerCaseSearching) {
+QList<SharedAnnotationData> U1AnnotationUtils::finalizeUnfinishedRegion(bool isUnfinishedRegion, U2Region& unfinishedRegion, bool isLowerCaseSearching) {
     QList<SharedAnnotationData> result;
 
     if (isUnfinishedRegion) {
@@ -260,7 +260,7 @@ QList<SharedAnnotationData> U1AnnotationUtils::finalizeUnfinishedRegion(bool isU
     return result;
 }
 
-void U1AnnotationUtils::addAnnotations(QList<GObject *> &objects, const QList<SharedAnnotationData> &annList, const GObjectReference &sequenceRef, AnnotationTableObject *annotationsObject, const QVariantMap &hints) {
+void U1AnnotationUtils::addAnnotations(QList<GObject*>& objects, const QList<SharedAnnotationData>& annList, const GObjectReference& sequenceRef, AnnotationTableObject* annotationsObject, const QVariantMap& hints) {
     U2OpStatusImpl os;
     if (!annList.isEmpty()) {
         if (nullptr == annotationsObject) {
@@ -286,9 +286,9 @@ void U1AnnotationUtils::addAnnotations(QList<GObject *> &objects, const QList<Sh
     }
 }
 
-QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceObject *so,
-                                                              const QList<GObject *> &anns) {
-    QList<GObject *> aos;
+QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceObject* so,
+                                                              const QList<GObject*>& anns) {
+    QList<GObject*> aos;
     if (nullptr != so->getDocument()) {
         aos = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, anns, UOF_LoadedOnly);
     } else {
@@ -297,9 +297,9 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 
     QList<U2Region> lowerCaseRegs;
     QList<U2Region> upperCaseRegs;
-    for (GObject *o : qAsConst(aos)) {
-        auto ato = dynamic_cast<AnnotationTableObject *>(o);
-        foreach (Annotation *a, ato->getAnnotations()) {
+    for (GObject* o : qAsConst(aos)) {
+        auto ato = dynamic_cast<AnnotationTableObject*>(o);
+        foreach (Annotation* a, ato->getAnnotations()) {
             if (a->getName() == lowerCaseAnnotationName) {
                 lowerCaseRegs << a->getRegions().toList();
             } else if (a->getName() == upperCaseAnnotationName) {
@@ -316,7 +316,7 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     std::stable_sort(upperCaseRegs.begin(), upperCaseRegs.end());
 
     qint64 nextStartPos = 0;
-    foreach (const U2Region &reg, upperCaseRegs) {
+    foreach (const U2Region& reg, upperCaseRegs) {
         if (reg.startPos > nextStartPos) {
             lowerCaseRegs.append(U2Region(nextStartPos, reg.startPos - nextStartPos));
         }
@@ -329,16 +329,16 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     return lowerCaseRegs;
 }
 
-bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const Annotation *annotation,
+bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const Annotation* annotation,
                                                           const qint64 sequenceLength) {
-    const QList<RegionsPair> mergedRegions = mergeAnnotatiedRegionsAroundJunctionPoint(annotation->getRegions(),
-                                                                                       sequenceLength);
+    const QList<RegionsPair> mergedRegions = mergeAnnotatedRegionsAroundJunctionPoint(annotation->getRegions(),
+                                                                                      sequenceLength);
     return isAnnotationContainsJunctionPoint(mergedRegions);
 }
 
-bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const QList<RegionsPair> &mergedRegions) {
+bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const QList<RegionsPair>& mergedRegions) {
     bool result = false;
-    foreach (const RegionsPair &pair, mergedRegions) {
+    foreach (const RegionsPair& pair, mergedRegions) {
         CHECK_CONTINUE(!pair.second.isEmpty());
         result = true;
         break;
@@ -346,8 +346,8 @@ bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const QList<RegionsPai
     return result;
 }
 
-QList<RegionsPair> U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions,
-                                                                                const qint64 sequenceLength) {
+QList<RegionsPair> U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(const QVector<U2Region>& regions,
+                                                                               const qint64 sequenceLength) {
     QList<RegionsPair> result;
 
     for (int i = 0; i < regions.size(); i++) {
@@ -374,10 +374,10 @@ QList<RegionsPair> U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(
     return result;
 }
 
-char *U1AnnotationUtils::applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs) {
+char* U1AnnotationUtils::applyLowerCaseRegions(char* seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region>& regs) {
     const U2Region seqRegion(first + globalOffset, len);
-    foreach (const U2Region &reg, regs) {
-        const U2Region &intersection = seqRegion.intersect(reg);
+    foreach (const U2Region& reg, regs) {
+        const U2Region& intersection = seqRegion.intersect(reg);
 
         TextUtils::translate(TextUtils::LOWER_CASE_MAP, seq + intersection.startPos - globalOffset, intersection.length);
     }
@@ -385,13 +385,13 @@ char *U1AnnotationUtils::applyLowerCaseRegions(char *seq, qint64 first, qint64 l
     return seq;
 }
 
-QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, const DNAAlphabet *al) {
-    DNATranslation *res = nullptr;
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
+QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject* ao, const DNAAlphabet* al) {
+    DNATranslation* res = nullptr;
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
 
     if (nullptr != ao && nullptr != al) {
         if (al->isNucleic()) {
-            foreach (Annotation *ann, ao->getAnnotationsByName("CDS")) {
+            foreach (Annotation* ann, ao->getAnnotationsByName("CDS")) {
                 QList<U2Qualifier> ql;
                 ann->findQualifiers("transl_table", ql);
                 if (!ql.isEmpty()) {
@@ -407,12 +407,12 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, cons
     return "";
 }
 
-QList<AnnotatedRegion> U1AnnotationUtils::getAnnotatedRegionsByStartPos(QList<AnnotationTableObject *> annotationObjects, qint64 startPos) {
+QList<AnnotatedRegion> U1AnnotationUtils::getAnnotatedRegionsByStartPos(QList<AnnotationTableObject*> annotationObjects, qint64 startPos) {
     QList<AnnotatedRegion> result;
-    for (AnnotationTableObject *annObject : qAsConst(annotationObjects)) {
-        QList<Annotation *> annots = annObject->getAnnotationsByRegion(U2Region(startPos, 1));
-        for (Annotation *a : qAsConst(annots)) {
-            const QVector<U2Region> &regions = a->getRegions();
+    for (AnnotationTableObject* annObject : qAsConst(annotationObjects)) {
+        QList<Annotation*> annots = annObject->getAnnotationsByRegion(U2Region(startPos, 1));
+        for (Annotation* a : qAsConst(annots)) {
+            const QVector<U2Region>& regions = a->getRegions();
             for (int i = 0; i < regions.size(); i++) {
                 if (regions[i].startPos == startPos) {
                     AnnotatedRegion ar(a, i);
@@ -424,17 +424,17 @@ QList<AnnotatedRegion> U1AnnotationUtils::getAnnotatedRegionsByStartPos(QList<An
     return result;
 }
 
-void U1AnnotationUtils::addDescriptionQualifier(QList<SharedAnnotationData> &annotations, const QString &description) {
+void U1AnnotationUtils::addDescriptionQualifier(QList<SharedAnnotationData>& annotations, const QString& description) {
     for (int i = 0; i < annotations.size(); i++) {
         addDescriptionQualifier(annotations[i], description);
     }
 }
 
-void U1AnnotationUtils::addDescriptionQualifier(SharedAnnotationData &annotationData, const QString &description) {
+void U1AnnotationUtils::addDescriptionQualifier(SharedAnnotationData& annotationData, const QString& description) {
     CHECK(!description.isEmpty(), );
 
     for (int i = 0; i < annotationData->qualifiers.size(); i++) {
-        U2Qualifier &qualifier = annotationData->qualifiers[i];
+        U2Qualifier& qualifier = annotationData->qualifiers[i];
         if (GBFeatureUtils::QUALIFIER_NOTE == qualifier.name) {
             qualifier.value = description;
             return;
@@ -444,8 +444,8 @@ void U1AnnotationUtils::addDescriptionQualifier(SharedAnnotationData &annotation
     annotationData->qualifiers << U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, description);
 }
 
-bool U1AnnotationUtils::containsQualifier(const QList<U2Qualifier> &qualifiers, const QString &qualifierName) {
-    foreach (const U2Qualifier &qualifier, qualifiers) {
+bool U1AnnotationUtils::containsQualifier(const QList<U2Qualifier>& qualifiers, const QString& qualifierName) {
+    foreach (const U2Qualifier& qualifier, qualifiers) {
         if (qualifier.name == qualifierName) {
             return true;
         }
@@ -453,7 +453,7 @@ bool U1AnnotationUtils::containsQualifier(const QList<U2Qualifier> &qualifiers, 
     return false;
 }
 
-void U1AnnotationUtils::removeAllQualifier(SharedAnnotationData &annotationData, const QString &qualifierName) {
+void U1AnnotationUtils::removeAllQualifier(SharedAnnotationData& annotationData, const QString& qualifierName) {
     QMutableVectorIterator<U2Qualifier> i(annotationData->qualifiers);
     while (i.hasNext()) {
         if (i.next().name == qualifierName) {
@@ -462,8 +462,8 @@ void U1AnnotationUtils::removeAllQualifier(SharedAnnotationData &annotationData,
     }
 }
 
-QString U1AnnotationUtils::buildLocationString(const U2LocationData &location) {
-    bool complement = location.strand.isCompementary();
+QString U1AnnotationUtils::buildLocationString(const U2LocationData& location) {
+    bool complement = location.strand.isComplementary();
     bool multi = location.regions.size() > 1;
     QString locationStr = complement ? "complement(" : "";
     if (!location.regions.empty()) {
@@ -481,33 +481,33 @@ QString U1AnnotationUtils::buildLocationString(const U2LocationData &location) {
     return locationStr;
 }
 
-QString U1AnnotationUtils::buildLocationString(const SharedAnnotationData &d) {
+QString U1AnnotationUtils::buildLocationString(const SharedAnnotationData& d) {
     return buildLocationString(*d->location);
 }
 
-QString U1AnnotationUtils::buildLocationString(const QVector<U2Region> &regions) {
+QString U1AnnotationUtils::buildLocationString(const QVector<U2Region>& regions) {
     QString locationStr;
     for (int i = 0, n = regions.size(); i < n; ++i) {
-        const U2Region &r = regions[i];
+        const U2Region& r = regions[i];
         locationStr = locationStr % QString::number(r.startPos + 1) % ".." % QString::number(r.endPos()) % ",";
     }
     locationStr.chop(1);
     return locationStr;
 }
 
-U2Location U1AnnotationUtils::shiftLocation(const U2Location &location, qint64 shift, qint64 sequenceLength) {
-    const QVector<U2Region> &oldRegions = location->regions;
+U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 shift, qint64 sequenceLength) {
+    const QVector<U2Region>& oldRegions = location->regions;
     if (shift == 0 || oldRegions.isEmpty()) {
         return location;
     }
     U2Location newLocation(location);
-    QVector<U2Region> &newRegions = newLocation->regions;
+    QVector<U2Region>& newRegions = newLocation->regions;
     newRegions.clear();
 
     // Check merge location either with the left or the right neighbour on the overflow.
     QVector<int> mergeIndexes;
     for (int i = 0; i < oldRegions.size(); i++) {
-        const U2Region &oldRegion = oldRegions[i];
+        const U2Region& oldRegion = oldRegions[i];
         U2Region shiftedRegion(oldRegion.startPos + (shift % sequenceLength), oldRegion.length);
         if (shiftedRegion.startPos >= 0 && shiftedRegion.endPos() <= sequenceLength) {  // no overflow.
             newRegions.append(shiftedRegion);
@@ -552,8 +552,8 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location &location, qint64 s
     for (int i = mergeIndexes.size(); --i >= 0;) {
         int mergeIndex = mergeIndexes[i];
         Q_ASSERT(mergeIndex + 1 < newRegions.size());
-        U2Region &region0 = newRegions[mergeIndex];
-        U2Region &region1 = newRegions[mergeIndex + 1];
+        U2Region& region0 = newRegions[mergeIndex];
+        U2Region& region1 = newRegions[mergeIndex + 1];
         Q_ASSERT(region0.endPos() == region1.startPos);
         region0.length += region1.length;
         newRegions.removeAt(mergeIndex + 1);
@@ -561,13 +561,13 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location &location, qint64 s
     return newLocation;
 }
 
-QMap<Annotation *, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus *os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, QList<Document *> docs) {
+QMap<Annotation*, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, QList<Document*> docs) {
     FixAnnotationsUtils fixer(os, seqObj, regionToReplace, sequence2Insert, recalculateQualifiers, str, docs);
     fixer.fixAnnotations();
     return fixer.annotationForReport;
 }
 
-FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus *os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, QList<Document *> docs)
+FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, QList<Document*> docs)
     : recalculateQualifiers(recalculateQualifiers),
       strat(str),
       docs(docs),
@@ -578,13 +578,13 @@ FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus *os, U2SequenceObject *seqOb
 }
 
 void FixAnnotationsUtils::fixAnnotations() {
-    QList<GObject *> annotationTablesList;
+    QList<GObject*> annotationTablesList;
     if (AppContext::getProject() != nullptr) {
         annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
     } else {
-        for (Document *d : qAsConst(docs)) {
-            QList<GObject *> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            for (GObject *table : qAsConst(allAnnotationTables)) {
+        for (Document* d : qAsConst(docs)) {
+            QList<GObject*> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+            for (GObject* table : qAsConst(allAnnotationTables)) {
                 if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
                     annotationTablesList.append(table);
                 }
@@ -592,23 +592,23 @@ void FixAnnotationsUtils::fixAnnotations() {
         }
     }
 
-    for (GObject *table : qAsConst(annotationTablesList)) {
-        auto ato = qobject_cast<AnnotationTableObject *>(table);
+    for (GObject* table : qAsConst(annotationTablesList)) {
+        auto ato = qobject_cast<AnnotationTableObject*>(table);
         if (ato != nullptr) {
             QMap<QString, QList<SharedAnnotationData>> group2AnnotationsToAdd;
-            QList<Annotation *> annotationToRemove;
-            QList<Annotation *> annotations = ato->getAnnotations();
-            for (Annotation *an : qAsConst(annotations)) {
+            QList<Annotation*> annotationToRemove;
+            QList<Annotation*> annotations = ato->getAnnotations();
+            for (Annotation* an : qAsConst(annotations)) {
                 bool annIsToBeRemoved = false;
                 QMap<QString, QList<SharedAnnotationData>> newAnnotations = fixAnnotation(an, annIsToBeRemoved);
-                foreach (const QString &groupName, newAnnotations.keys()) {
+                foreach (const QString& groupName, newAnnotations.keys()) {
                     group2AnnotationsToAdd[groupName].append(newAnnotations[groupName]);
                 }
                 if (annIsToBeRemoved) {
                     annotationToRemove.append(an);
                 }
             }
-            foreach (const QString &groupName, group2AnnotationsToAdd.keys()) {
+            foreach (const QString& groupName, group2AnnotationsToAdd.keys()) {
                 ato->addAnnotations(group2AnnotationsToAdd[groupName], groupName);
             }
             ato->removeAnnotations(annotationToRemove);
@@ -619,10 +619,10 @@ void FixAnnotationsUtils::fixAnnotations() {
     }
 }
 
-QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(Annotation *an, bool &annIsRemoved) {
+QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(Annotation* an, bool& annIsRemoved) {
     QMap<QString, QList<SharedAnnotationData>> result;
     SAFE_POINT(nullptr != an, L10N::nullPointerError("Annotation"), result);
-    AnnotationTableObject *ato = an->getGObject();
+    AnnotationTableObject* ato = an->getGObject();
     SAFE_POINT(nullptr != ato, L10N::nullPointerError("Annotation table object"), result);
 
     QList<QVector<U2Region>> newRegions = U1AnnotationUtils::fixLocationsForReplacedRegion(regionToReplace,
@@ -648,11 +648,11 @@ QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(An
     return result;
 }
 
-void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
+void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation* an) {
     CHECK(recalculateQualifiers, );
 
     QRegExp locationMatcher("(\\d+)\\.\\.(\\d+)");
-    foreach (const U2Qualifier &qual, an->getQualifiers()) {
+    foreach (const U2Qualifier& qual, an->getQualifiers()) {
         QString newQualifierValue = qual.value;
 
         int lastModifiedPos = 0;
@@ -671,7 +671,7 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
 
                 if (!newRegions.isEmpty() && !newRegions[0].empty()) {
                     QString newRegionsStr;
-                    for (const U2Region &region : qAsConst(newRegions[0])) {
+                    for (const U2Region& region : qAsConst(newRegions[0])) {
                         newRegionsStr += QString("%1..%2,").arg(region.startPos + 1).arg(region.endPos());  // position starts with 1
                     }
                     newRegionsStr.chop(1);  // remove last comma
@@ -696,7 +696,7 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
     }
 }
 
-void FixAnnotationsUtils::fixTranslationQualifier(SharedAnnotationData &ad) {
+void FixAnnotationsUtils::fixTranslationQualifier(SharedAnnotationData& ad) {
     CHECK(recalculateQualifiers, );
 
     const U2Qualifier translQual = getFixedTranslationQualifier(ad);
@@ -713,7 +713,7 @@ void FixAnnotationsUtils::fixTranslationQualifier(SharedAnnotationData &ad) {
     ad->qualifiers.append(translQual);
 }
 
-void FixAnnotationsUtils::fixTranslationQualifier(Annotation *an) {
+void FixAnnotationsUtils::fixTranslationQualifier(Annotation* an) {
     CHECK(recalculateQualifiers, );
 
     const U2Qualifier newTranslQual = getFixedTranslationQualifier(an->getData());
@@ -725,20 +725,20 @@ void FixAnnotationsUtils::fixTranslationQualifier(Annotation *an) {
     an->addQualifier(newTranslQual);
 }
 
-U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnotationData &ad) {
+U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnotationData& ad) {
     QVector<U2Qualifier> translationQuals;
     ad->findQualifiers(GBFeatureUtils::QUALIFIER_TRANSLATION, translationQuals);
     CHECK(!translationQuals.empty(), U2Qualifier());
 
-    DNATranslation *aminoTranslation = GObjectUtils::findAminoTT(seqObj, false);
+    DNATranslation* aminoTranslation = GObjectUtils::findAminoTT(seqObj, false);
     SAFE_POINT(nullptr != aminoTranslation, L10N::nullPointerError("Amino translation"), U2Qualifier());
 
     QString completeTranslation;
-    foreach (const U2Region &r, ad->getRegions()) {
+    foreach (const U2Region& r, ad->getRegions()) {
         const QByteArray annotatedData = seqObj->getSequenceData(r, *stateInfo);
         CHECK(!stateInfo->isCoR(), U2Qualifier());
 
-        const DNAAlphabet *dstAlphabet = aminoTranslation->getDstAlphabet();
+        const DNAAlphabet* dstAlphabet = aminoTranslation->getDstAlphabet();
         QByteArray transContent(annotatedData.size() / 3, dstAlphabet->getDefaultSymbol());
 
         aminoTranslation->translate(annotatedData.constData(), annotatedData.length(), transContent.data(), transContent.length());
@@ -748,7 +748,7 @@ U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnota
     return (completeTranslation != translationQuals.first().value) ? U2Qualifier(GBFeatureUtils::QUALIFIER_TRANSLATION, completeTranslation) : U2Qualifier();
 }
 
-bool FixAnnotationsUtils::isRegionValid(const U2Region &region) const {
+bool FixAnnotationsUtils::isRegionValid(const U2Region& region) const {
     return region.length > 0 && region.startPos < seqObj->getSequenceLength() - 1;
 }
 

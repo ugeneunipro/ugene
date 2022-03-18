@@ -46,7 +46,7 @@
 namespace U2 {
 ////////////////////////////////////////
 // RangeSelectorWidget
-RegionSelector::RegionSelector(QWidget *p, qint64 len, bool isVertical, DNASequenceSelection *selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions)
+RegionSelector::RegionSelector(QWidget* p, qint64 len, bool isVertical, DNASequenceSelection* selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions)
     : QWidget(p),
       maxLen(len),
       startEdit(nullptr),
@@ -60,7 +60,7 @@ RegionSelector::RegionSelector(QWidget *p, qint64 len, bool isVertical, DNASeque
     connect(controller, SIGNAL(si_regionChanged(U2Region)), this, SIGNAL(si_regionChanged(U2Region)));
 }
 
-U2Region RegionSelector::getRegion(bool *_ok) const {
+U2Region RegionSelector::getRegion(bool* _ok) const {
     return controller->getRegion(_ok);
 }
 
@@ -68,7 +68,7 @@ bool RegionSelector::isWholeSequenceSelected() const {
     return controller->getPresetName() == RegionPreset::WHOLE_SEQUENCE();
 }
 
-void RegionSelector::setCustomRegion(const U2Region &value) {
+void RegionSelector::setCustomRegion(const U2Region& value) {
     controller->setRegion(value);
 }
 
@@ -76,7 +76,7 @@ void RegionSelector::setWholeRegionSelected() {
     controller->setPreset(RegionPreset::WHOLE_SEQUENCE());
 }
 
-void RegionSelector::setCurrentPreset(const QString &presetName) {
+void RegionSelector::setCurrentPreset(const QString& presetName) {
     controller->setPreset(presetName);
 }
 
@@ -84,7 +84,7 @@ void RegionSelector::reset() {
     controller->reset();
 }
 
-void RegionSelector::removePreset(const QString &itemName) {
+void RegionSelector::removePreset(const QString& itemName) {
     controller->removePreset(itemName);
 }
 
@@ -113,10 +113,10 @@ void RegionSelector::initLayout() {
     endEdit->setAlignment(Qt::AlignRight);
 
     if (isVertical) {
-        QGroupBox *gb = new QGroupBox(this);
+        QGroupBox* gb = new QGroupBox(this);
         gb->setTitle(tr("Region"));
 
-        QGridLayout *l = new QGridLayout(gb);
+        QGridLayout* l = new QGridLayout(gb);
         l->setSizeConstraint(QLayout::SetMinAndMaxSize);
         gb->setLayout(l);
 
@@ -126,17 +126,17 @@ void RegionSelector::initLayout() {
         l->addWidget(endEdit, 1, 2);
         l->addWidget(new QLabel(" ", gb), 2, 0);
 
-        QVBoxLayout *rootLayout = new QVBoxLayout(this);
+        QVBoxLayout* rootLayout = new QVBoxLayout(this);
         rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
         rootLayout->setMargin(0);
         setLayout(rootLayout);
         rootLayout->addWidget(gb);
     } else {
-        QHBoxLayout *l = new QHBoxLayout(this);
+        QHBoxLayout* l = new QHBoxLayout(this);
         l->setMargin(0);
         setLayout(l);
 
-        QLabel *rangeLabel = new QLabel(tr("Region"), this);
+        QLabel* rangeLabel = new QLabel(tr("Region"), this);
         rangeLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
         l->addWidget(rangeLabel);
@@ -155,7 +155,7 @@ void RegionSelector::initLayout() {
 ///////////////////////////////////////
 //! RegionLineEdit
 //! only for empty field highlight
-void RegionLineEdit::focusOutEvent(QFocusEvent *event) {
+void RegionLineEdit::focusOutEvent(QFocusEvent* event) {
     bool ok = false;
     text().toInt(&ok);
     if (!ok) {
@@ -165,9 +165,9 @@ void RegionLineEdit::focusOutEvent(QFocusEvent *event) {
     }
     QLineEdit::focusOutEvent(event);
 }
-void RegionLineEdit::contextMenuEvent(QContextMenuEvent *event) {
-    QMenu *menu = createStandardContextMenu();
-    QAction *setDefaultValue = new QAction(actionName, this);
+void RegionLineEdit::contextMenuEvent(QContextMenuEvent* event) {
+    QMenu* menu = createStandardContextMenu();
+    QAction* setDefaultValue = new QAction(actionName, this);
     connect(setDefaultValue, SIGNAL(triggered()), this, SLOT(sl_onSetMinMaxValue()));
     menu->insertSeparator(menu->actions().first());
     menu->insertAction(menu->actions().first(), setDefaultValue);

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-SetParametersDialogController::SetParametersDialogController(QWidget *w)
+SetParametersDialogController::SetParametersDialogController(QWidget* w)
     : QDialog(w) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930906");
@@ -39,7 +39,7 @@ SetParametersDialogController::SetParametersDialogController(QWidget *w)
     QStringList algo = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmIds();
     algorithmComboBox->addItems(algo);
 
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onOkButton()));
     connect(scoreSlider, SIGNAL(valueChanged(int)), SLOT(sl_onSliderMoved(int)));
 }

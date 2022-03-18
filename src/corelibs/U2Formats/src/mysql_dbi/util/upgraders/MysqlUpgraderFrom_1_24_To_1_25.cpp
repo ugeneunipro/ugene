@@ -32,39 +32,39 @@
 
 namespace U2 {
 
-MysqlUpgraderFrom_1_24_To_1_25::MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi *dbi)
+MysqlUpgraderFrom_1_24_To_1_25::MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi* dbi)
     : MysqlUpgrader(Version::parseVersion("1.24.0"), Version::parseVersion("1.25.0"), dbi) {
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
+void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus& os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
 
-    dropOldPrecedure(os, dbi->getDbRef());
+    dropOldProcedure(os, dbi->getDbRef());
     CHECK_OP(os, );
 
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const {
+void MysqlUpgraderFrom_1_24_To_1_25::dropOldProcedure(U2OpStatus& os, MysqlDbRef* dbRef) const {
     U2OpStatus2Log nonCriticalOs;
     U2SqlQuery("DROP PROCEDURE IF EXISTS CreateIndex", dbRef, nonCriticalOs).execute();
 
     CHECK_OP(os, );
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
+void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus& os) const {
     // get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );
     CHECK(!assemblyIds.isEmpty(), );
 
-    U2AttributeDbi *attributeDbi = dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = dbi->getAttributeDbi();
     CHECK_EXT(attributeDbi != nullptr, os.setError("Attribute dbi is NULL"), );
 
-    foreach (const U2DataId &id, assemblyIds) {
+    foreach (const U2DataId& id, assemblyIds) {
         // find and remove coverage attribute from ByteArrayAttribute table
         U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, id, U2BaseAttributeName::coverage_statistics, os);
 
@@ -73,7 +73,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
         }
 
         // calculate new coverage
-        U2AssemblyDbi *assemblyDbi = dbi->getAssemblyDbi();
+        U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
         CHECK_EXT(attributeDbi != nullptr, os.setError("Assembly dbi is NULL"), );
         U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
         CHECK_OP(os, );

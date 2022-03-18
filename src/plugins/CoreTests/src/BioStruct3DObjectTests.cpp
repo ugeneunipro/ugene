@@ -41,7 +41,7 @@ namespace U2 {
 #define CHAIN_IND_ATTR "chain-index"
 #define MOL_NAME_ATTR "molecule-name"
 
-void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat*, const QDomElement& el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -62,13 +62,13 @@ void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *, const QDomElement &el
 }
 
 Task::ReportResult GTest_BioStruct3DNumberOfAtoms::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -85,7 +85,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfAtoms::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat*, const QDomElement& el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -106,13 +106,13 @@ void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat *, const QDomElement &e
 }
 
 Task::ReportResult GTest_BioStruct3DNumberOfChains::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -129,7 +129,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfChains::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat*, const QDomElement& el) {
     modelId = -1;
 
     objContextName = el.attribute(OBJ_ATTR);
@@ -197,13 +197,13 @@ void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *, const QDomElement &
 }
 
 Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -232,7 +232,7 @@ Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat*, const QDomElement& el) {
     modelId = -1;
 
     objContextName = el.attribute(OBJ_ATTR);
@@ -276,13 +276,13 @@ void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *, const QDomElement &e
 }
 
 Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -308,7 +308,7 @@ Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat*, const QDomElement& el) {
     // default model id
     modelId = -1;
 
@@ -349,19 +349,19 @@ void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *, const QDomElement &
 }
 
 Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
 
-    const BioStruct3D &bioStruct = biostructObj->getBioStruct3D();
+    const BioStruct3D& bioStruct = biostructObj->getBioStruct3D();
 
     if (modelId == -1) {
         modelId = bioStruct.modelMap.keys().first();
@@ -385,7 +385,7 @@ Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BioStruct3DMoleculeName::init(XMLTestFormat*, const QDomElement& el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -410,13 +410,13 @@ void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *, const QDomElement &el)
 }
 
 Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
-    GObject *obj = getContext<GObject>(this, objContextName);
+    GObject* obj = getContext<GObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -441,7 +441,7 @@ Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
 
 #define PDB_DIR_NAME_ENV "DIR_WITH_PDB_FILES"
 
-void GTest_PDBFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
+void GTest_PDBFormatStressTest::init(XMLTestFormat*, const QDomElement&) {
     QString dirName = getEnv()->getVar(PDB_DIR_NAME_ENV);
 
     QDir dir(dirName);
@@ -459,19 +459,19 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
     }
 
     IOAdapterId ioId(BaseIOAdapters::LOCAL_FILE);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     DocumentFormatId format = BaseDocumentFormats::PLAIN_PDB;
 
     for (int i = 0; i < fileList.size(); ++i) {
         QFileInfo fileInfo = fileList.at(i);
-        LoadDocumentTask *task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
+        LoadDocumentTask* task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
         addSubTask(task);
         fileNames.insert(task, fileInfo.fileName());
     }
 }
 
 Task::ReportResult GTest_PDBFormatStressTest::report() {
-    foreach (const QPointer<Task> &task, getSubtasks()) {
+    foreach (const QPointer<Task>& task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError() + fileNames.value(task) + "(" + task->getError() + ");   ");
         }
@@ -480,9 +480,9 @@ Task::ReportResult GTest_PDBFormatStressTest::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> GTest_PDBFormatStressTest::onSubTaskFinished(Task *subTask) {
+QList<Task*> GTest_PDBFormatStressTest::onSubTaskFinished(Task* subTask) {
     subTask->cleanup();
-    QList<Task *> lst;
+    QList<Task*> lst;
     return lst;
 }
 
@@ -490,7 +490,7 @@ QList<Task *> GTest_PDBFormatStressTest::onSubTaskFinished(Task *subTask) {
 
 #define ASN_DIR_NAME_ENV "DIR_WITH_ASN_FILES"
 
-void GTest_ASNFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
+void GTest_ASNFormatStressTest::init(XMLTestFormat*, const QDomElement&) {
     QString dirName = getEnv()->getVar(ASN_DIR_NAME_ENV);
 
     if (dirName.isEmpty()) {
@@ -513,19 +513,19 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
     }
 
     IOAdapterId ioId(BaseIOAdapters::LOCAL_FILE);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     DocumentFormatId format = BaseDocumentFormats::PLAIN_ASN;
 
     for (int i = 0; i < fileList.size(); ++i) {
         QFileInfo fileInfo = fileList.at(i);
-        LoadDocumentTask *task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
+        LoadDocumentTask* task = new LoadDocumentTask(format, fileInfo.absoluteFilePath(), iof);
         addSubTask(task);
         fileNames.insert(task, fileInfo.fileName());
     }
 }
 
 Task::ReportResult GTest_ASNFormatStressTest::report() {
-    foreach (const QPointer<Task> &task, getSubtasks()) {
+    foreach (const QPointer<Task>& task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError() + fileNames.value(task) + "(" + task->getError() + ");   ");
         }
@@ -534,15 +534,15 @@ Task::ReportResult GTest_ASNFormatStressTest::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> GTest_ASNFormatStressTest::onSubTaskFinished(Task *subTask) {
+QList<Task*> GTest_ASNFormatStressTest::onSubTaskFinished(Task* subTask) {
     subTask->cleanup();
-    QList<Task *> lst;
+    QList<Task*> lst;
     return lst;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-QList<XMLTestFactory *> BioStruct3DObjectTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> BioStruct3DObjectTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_BioStruct3DNumberOfAtoms::createFactory());
     res.append(GTest_BioStruct3DNumberOfChains::createFactory());
     res.append(GTest_BioStruct3DAtomCoordinates::createFactory());

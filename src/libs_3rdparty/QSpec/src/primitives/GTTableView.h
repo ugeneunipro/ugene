@@ -30,15 +30,15 @@ namespace HI {
 
 class HI_EXPORT GTTableView {
 public:
-    static QPoint getCellPosition(GUITestOpStatus &os, QTableView *table, int column, int row);
+    static QPoint getCellPosition(GUITestOpStatus& os, QTableView* table, int column, int row);
 
-    static QPoint getCellPoint(GUITestOpStatus &os, QTableView *table, int row, int column);
+    static QPoint getCellPoint(GUITestOpStatus& os, QTableView* table, int row, int column);
 
-    static int rowCount(GUITestOpStatus &os, QTableView *table);
+    static int rowCount(GUITestOpStatus& os, QTableView* table);
 
-    static QString data(GUITestOpStatus &os, QTableView *table, int row, int column);
+    static QString data(GUITestOpStatus& os, QTableView* table, int row, int column);
 
-    static void scrollTo(GUITestOpStatus &os, QTableView *table, const QModelIndex &index);
+    static void scrollTo(GUITestOpStatus& os, QTableView* table, const QModelIndex& index);
 };
 
 }  // namespace HI

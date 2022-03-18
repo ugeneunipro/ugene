@@ -32,24 +32,24 @@ namespace U2 {
 
 class WizardPage;
 
-class U2LANG_EXPORT Wizard {
+class U2LANG_EXPORT Wizard : public QObject {
 public:
-    Wizard(const QString &name, const QList<WizardPage *> &pages, const QString &helpPageId);
+    Wizard(const QString& name, const QList<WizardPage*>& pages, const QString& helpPageId);
     virtual ~Wizard();
 
-    void validate(const Workflow::Schema *schema, U2OpStatus &os) const;
-    void addVariable(const Variable &v);
+    void validate(const Workflow::Schema* schema, U2OpStatus& os) const;
+    void addVariable(const Variable& v);
     QMap<QString, Variable> getVariables() const;
-    QString getResult(const QMap<QString, Variable> &vars) const;
+    QString getResult(const QMap<QString, Variable>& vars) const;
 
-    const QString &getName() const;
-    const QList<WizardPage *> &getPages() const;
+    const QString& getName() const;
+    const QList<WizardPage*>& getPages() const;
 
-    void addResult(const QList<Predicate> &preds, const QString &result);
+    void addResult(const QList<Predicate>& preds, const QString& result);
     QMap<QString, QList<Predicate>> getResults() const;
 
     QString getFinishLabel() const;
-    void setFinishLabel(const QString &value);
+    void setFinishLabel(const QString& value);
 
     bool isAutoRun() const;
     void setAutoRun(bool value);
@@ -66,7 +66,7 @@ public:
 
 private:
     QString name;
-    QList<WizardPage *> pages;
+    QList<WizardPage*> pages;
     QMap<QString, Variable> vars;
     bool autoRun;
     bool withRunButton;

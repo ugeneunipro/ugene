@@ -53,8 +53,8 @@ using namespace Workflow;
 static const int KEY_COLUMN = 0;
 static const int VALUE_COLUMN = 1;
 
-MapDatatypeEditor::MapDatatypeEditor(Configuration *cfg,
-                                     const QString &prop,
+MapDatatypeEditor::MapDatatypeEditor(Configuration* cfg,
+                                     const QString& prop,
                                      DataTypePtr from,
                                      DataTypePtr to)
     : ConfigurationEditor(),
@@ -66,13 +66,13 @@ MapDatatypeEditor::MapDatatypeEditor(Configuration *cfg,
       doc(nullptr) {
 }
 
-QWidget *MapDatatypeEditor::getWidget() {
+QWidget* MapDatatypeEditor::getWidget() {
     return createGUI(from, to);
 }
 
 namespace {
 
-int getMinimumHeight(QTableWidget *table) {
+int getMinimumHeight(QTableWidget* table) {
     int totalHeight = 2;  // a magic number to make vertical scrollbar not visible on Linux
 
     // Rows height
@@ -98,7 +98,7 @@ int getMinimumHeight(QTableWidget *table) {
 
 }  // namespace
 
-QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
+QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     if (!from || !to || !from->isMap() || !to->isMap()) {
         assert(false);
         return nullptr;
@@ -129,7 +129,7 @@ QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     table->setCornerButtonEnabled(false);
 
     int rowHeight = QFontMetrics(QFont()).height() + 6;
-    const QList<Descriptor> &keys = to->getAllDescriptors();
+    const QList<Descriptor>& keys = to->getAllDescriptors();
     QMap<QString, QString> bindingsMap = getBindingsMap();
     table->setRowCount(keys.size());
 
@@ -138,7 +138,7 @@ QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         Descriptor key = keys.at(i);
 
         // set key item
-        QTableWidgetItem *keyItem = new QTableWidgetItem(key.getDisplayName());
+        QTableWidgetItem* keyItem = new QTableWidgetItem(key.getDisplayName());
         keyItem->setToolTip(to->getDatatypeByDescriptor(key)->getDisplayName());
         keyItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(key));
         keyItem->setFlags(Qt::ItemIsSelectable);
@@ -154,7 +154,7 @@ QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         QList<Descriptor> candidates = WorkflowUtils::findMatchingCandidates(from, to, key);
         Descriptor current = WorkflowUtils::getCurrentMatchingDescriptor(candidates, to, key, bindingsMap);
 
-        QTableWidgetItem *valueItem = new QTableWidgetItem(current.getDisplayName());
+        QTableWidgetItem* valueItem = new QTableWidgetItem(current.getDisplayName());
         valueItem->setData(Qt::UserRole, qVariantFromValue<Descriptor>(current));
         valueItem->setData(Qt::UserRole + 1, qVariantFromValue<QList<Descriptor>>(candidates));
         if (elementDatatype->isList()) {
@@ -175,16 +175,16 @@ QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
     mainWidget->setSizePolicy(sizePolicy1);
-    connect(mainWidget, SIGNAL(destroyed(QObject *)), SLOT(sl_widgetDestroyed()));
+    connect(mainWidget, SIGNAL(destroyed(QObject*)), SLOT(sl_widgetDestroyed()));
 
-    QVBoxLayout *verticalLayout = new QVBoxLayout(mainWidget);
+    QVBoxLayout* verticalLayout = new QVBoxLayout(mainWidget);
     verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
     verticalLayout->setSpacing(0);
     verticalLayout->setMargin(0);
 
     const QString title = getTitle();
     if (!title.isEmpty()) {
-        QLabel *titleLabel = new QLabel(title);
+        QLabel* titleLabel = new QLabel(title);
         titleLabel->setContentsMargins(0, 4, 0, 0);
         titleLabel->setAlignment(Qt::AlignHCenter);
         verticalLayout->addWidget(titleLabel);
@@ -207,14 +207,14 @@ int MapDatatypeEditor::getOptimalHeight() {
     return nullptr != table ? table->minimumHeight() : 0;
 }
 
-static QString formatDoc(const Descriptor &s, const Descriptor &d) {
+static QString formatDoc(const Descriptor& s, const Descriptor& d) {
     return U2::MapDatatypeEditor::tr("The input slot <b>%1</b><br>is bound to<br>the bus slot <b>%2</b>")
         .arg(s.getDisplayName())
         .arg(d.getDisplayName());
 }
 
 void MapDatatypeEditor::sl_showDoc() {
-    QList<QTableWidgetItem *> list = table->selectedItems();
+    QList<QTableWidgetItem*> list = table->selectedItems();
     QString text = "";
     if (list.size() == 1) {
         if (isInfoMode()) {
@@ -255,14 +255,14 @@ void MapDatatypeEditor::commit() {
 /*******************************
  * BusPortEditor
  *******************************/
-BusPortEditor::BusPortEditor(IntegralBusPort *p)
+BusPortEditor::BusPortEditor(IntegralBusPort* p)
     : MapDatatypeEditor(p, IntegralBusPort::BUS_MAP_ATTR_ID, DataTypePtr(), DataTypePtr()), port(p) {
     to = WorkflowUtils::getToDatatypeForBusport(p);
     from = WorkflowUtils::getFromDatatypeForBusport(p, to);
 }
 
-QWidget *BusPortEditor::createGUI(DataTypePtr from, DataTypePtr to) {
-    QWidget *w = MapDatatypeEditor::createGUI(from, to);
+QWidget* BusPortEditor::createGUI(DataTypePtr from, DataTypePtr to) {
+    QWidget* w = MapDatatypeEditor::createGUI(from, to);
     if (table && port->getWidth() == 0) {
         /*if (port->isInput()) {
             table->setHorizontalHeaderLabels((QStringList() << U2::MapDatatypeEditor::tr("Accepted inputs")));
@@ -271,7 +271,7 @@ QWidget *BusPortEditor::createGUI(DataTypePtr from, DataTypePtr to) {
             table->setHorizontalHeaderLabels((QStringList() << U2::MapDatatypeEditor::tr("Provided outputs")));
         }*/
     } else if (table) {
-        connect(table->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(handleDataChanged(const QModelIndex &, const QModelIndex &)));
+        connect(table->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(handleDataChanged(const QModelIndex&, const QModelIndex&)));
     }
     connect(port, SIGNAL(si_enabledChanged(bool)), w, SLOT(setVisible(bool)));
     return w;
@@ -281,7 +281,7 @@ QString BusPortEditor::getTitle() const {
     return port->getDisplayName();
 }
 
-void BusPortEditor::handleDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+void BusPortEditor::handleDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight) {
     Q_UNUSED(topLeft);
     Q_UNUSED(bottomRight);
     commit();
@@ -299,7 +299,7 @@ void BusPortEditor::commit() {
             QString val = table->item(i, VALUE_COLUMN)->data(Qt::UserRole).value<Descriptor>().getId();
 
             QStringList srcs;
-            foreach (const QString &src, val.split(";")) {
+            foreach (const QString& src, val.split(";")) {
                 BusMap::parseSource(src, srcId, path);
                 srcs << srcId;
 
@@ -336,21 +336,21 @@ bool BusPortEditor::isEmpty() const {
 /*******************************
  * DescriptorListEditorDelegate
  *******************************/
-QWidget *DescriptorListEditorDelegate::createEditor(QWidget *parent,
-                                                    const QStyleOptionViewItem & /* option */,
-                                                    const QModelIndex & /* index */) const {
-    QComboBox *editor = new QComboBox(parent);
+QWidget* DescriptorListEditorDelegate::createEditor(QWidget* parent,
+                                                    const QStyleOptionViewItem& /* option */,
+                                                    const QModelIndex& /* index */) const {
+    QComboBox* editor = new QComboBox(parent);
     editor->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
     connect(editor, SIGNAL(currentIndexChanged(int)), SLOT(sl_commitData()));
     return editor;
 }
 
 namespace {
-static int addItems(QStandardItemModel *cm, const QList<Descriptor> &list, bool isList, const QString &currentValue, int startIdx = 0) {
+static int addItems(QStandardItemModel* cm, const QList<Descriptor>& list, bool isList, const QString& currentValue, int startIdx = 0) {
     int currentIdx = -1;
     int idx = startIdx;
-    foreach (const Descriptor &d, list) {
-        QStandardItem *item = new QStandardItem(d.getDisplayName());
+    foreach (const Descriptor& d, list) {
+        QStandardItem* item = new QStandardItem(d.getDisplayName());
         item->setData(qVariantFromValue<Descriptor>(d));
         item->setToolTip(d.getDisplayName());
         if (isList) {
@@ -381,25 +381,25 @@ static QString getAddionalLabel() {
     return QObject::tr("Additional");
 }
 
-static void addSeparator(QStandardItemModel *cm) {
-    QStandardItem *item = new QStandardItem(getAddionalLabel());
+static void addSeparator(QStandardItemModel* cm) {
+    QStandardItem* item = new QStandardItem(getAddionalLabel());
     item->setFont(getAdditionalFont());
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     cm->appendRow(item);
 }
 }  // namespace
 
-void DescriptorListEditorDelegate::setEditorData(QWidget *editor,
-                                                 const QModelIndex &index) const {
+void DescriptorListEditorDelegate::setEditorData(QWidget* editor,
+                                                 const QModelIndex& index) const {
     QList<Descriptor> list = index.model()->data(index, Qt::UserRole + 1).value<QList<Descriptor>>();
     Descriptor toDesc = index.model()->data(index, Qt::UserRole + 4).value<Descriptor>();
     QString typeId = index.model()->data(index, Qt::UserRole + 3).toString();
     DataTypePtr type = WorkflowEnv::getDataTypeRegistry()->getById(typeId);
     IntegralBusUtils::SplitResult r = IntegralBusUtils::splitCandidates(list, toDesc, type);
 
-    QComboBox *combo = static_cast<QComboBox *>(editor);
+    QComboBox* combo = static_cast<QComboBox*>(editor);
     combo->setItemDelegate(new ItemDelegateForHeaders());
-    QStandardItemModel *cm = qobject_cast<QStandardItemModel *>(combo->model());
+    QStandardItemModel* cm = qobject_cast<QStandardItemModel*>(combo->model());
     combo->clear();
     bool isList = index.model()->data(index, Qt::UserRole + 2).toBool();
 
@@ -412,7 +412,7 @@ void DescriptorListEditorDelegate::setEditorData(QWidget *editor,
     }
 
     if (isList) {
-        QListView *vw = new QListView(combo);
+        QListView* vw = new QListView(combo);
         vw->setModel(cm);
         combo->setView(vw);
     } else {
@@ -420,11 +420,11 @@ void DescriptorListEditorDelegate::setEditorData(QWidget *editor,
     }
 }
 
-void DescriptorListEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    QComboBox *combo = static_cast<QComboBox *>(editor);
+void DescriptorListEditorDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
+    QComboBox* combo = static_cast<QComboBox*>(editor);
     QVariant value;
     if (index.model()->data(index, Qt::UserRole + 2).toBool()) {
-        QStandardItemModel *cm = qobject_cast<QStandardItemModel *>(combo->model());
+        QStandardItemModel* cm = qobject_cast<QStandardItemModel*>(combo->model());
         Descriptor res;
         QStringList ids;
         for (int i = 0; i < cm->rowCount(); ++i) {
@@ -448,17 +448,17 @@ void DescriptorListEditorDelegate::setModelData(QWidget *editor, QAbstractItemMo
 }
 
 void DescriptorListEditorDelegate::sl_commitData() {
-    commitData(qobject_cast<QWidget *>(sender()));
+    commitData(qobject_cast<QWidget*>(sender()));
 }
 
 /************************************************************************/
 /* ItemDelegateForHeaders */
 /************************************************************************/
-ItemDelegateForHeaders::ItemDelegateForHeaders(QObject *parent)
+ItemDelegateForHeaders::ItemDelegateForHeaders(QObject* parent)
     : QItemDelegate(parent) {
 }
 
-void ItemDelegateForHeaders::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
+void ItemDelegateForHeaders::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     if (index.model()->flags(index).testFlag(Qt::ItemIsEnabled)) {
         QItemDelegate::paint(painter, option, index);
         return;

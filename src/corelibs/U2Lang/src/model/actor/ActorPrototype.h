@@ -45,47 +45,47 @@ class Prompter;
 class U2LANG_EXPORT ActorPrototype : public QObject, public VisualDescriptor {
     Q_OBJECT
 public:
-    ActorPrototype(const Descriptor &desc,
-                   const QList<PortDescriptor *> &ports = QList<PortDescriptor *>(),
-                   const QList<Attribute *> &attrs = QList<Attribute *>());
+    ActorPrototype(const Descriptor& desc,
+                   const QList<PortDescriptor*>& ports = QList<PortDescriptor*>(),
+                   const QList<Attribute*>& attrs = QList<Attribute*>());
     virtual ~ActorPrototype();
 
-    QList<PortDescriptor *> getPortDesciptors() const;
+    QList<PortDescriptor*> getPortDesciptors() const;
 
-    QList<Attribute *> getAttributes() const;
-    Attribute *getAttribute(const QString &id) const;
-    void addAttribute(Attribute *a);
-    int removeAttribute(Attribute *attr);
+    QList<Attribute*> getAttributes() const;
+    Attribute* getAttribute(const QString& id) const;
+    void addAttribute(Attribute* a);
+    int removeAttribute(Attribute* attr);
 
-    void setEditor(ConfigurationEditor *e);
-    ConfigurationEditor *getEditor() const;
+    void setEditor(ConfigurationEditor* e);
+    ConfigurationEditor* getEditor() const;
 
     // validator has setter but no getter
-    void setValidator(ConfigurationValidator *v);
+    void setValidator(ConfigurationValidator* v);
 
     // prompter has no getter
-    void setPrompter(Prompter *p);
+    void setPrompter(Prompter* p);
 
     // port validators has no getters
     // all validators will be used as validator in corresponding port
     // see createInstance()
-    void setPortValidator(const QString &id, ConfigurationValidator *v);
+    void setPortValidator(const QString& id, ConfigurationValidator* v);
 
     // for drag'n'drop purposes
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap * = nullptr) const;
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap* = nullptr) const;
 
-    virtual Actor *createInstance(const ActorId &actorId, AttributeScript *script = nullptr, const QVariantMap &params = QVariantMap());
+    virtual Actor* createInstance(const ActorId& actorId, AttributeScript* script = nullptr, const QVariantMap& params = QVariantMap());
 
-    void setDisplayName(const QString &n) override;
+    void setDisplayName(const QString& n) override;
 
-    void setDocumentation(const QString &d) override;
+    void setDocumentation(const QString& d) override;
 
     void setScriptFlag(bool flag = true);
     bool isScriptFlagSet() {
         return isScript;
     }
-    void setSchema(const QString &path);
-    void setNonStandard(const QString &path);
+    void setSchema(const QString& path);
+    void setNonStandard(const QString& path);
     bool isStandardFlagSet() {
         return isStandard;
     }
@@ -113,8 +113,8 @@ public:
         influenceOnPathFlag = value;
     }
 
-    void addExternalTool(const QString &toolId, const QString &paramId = "");
-    const StrStrMap &getExternalTools() const;
+    void addExternalTool(const QString& toolId, const QString& paramId = "");
+    const StrStrMap& getExternalTools() const;
     void clearExternalTools();
     int getUsageCounter() const;
 
@@ -125,25 +125,25 @@ signals:
 protected:
     // create port and sets p as owner of new port
     // caller should add created port to actor's ports see createInstance
-    virtual Port *createPort(const PortDescriptor &d, Actor *p);
+    virtual Port* createPort(const PortDescriptor& d, Actor* p);
 
 protected:
     // list of attributes
     // can be changed via addAttribute and removeAttribute
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     // list of port's
     // real Port's are created via createPort
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     // controller for actor's configuration editor
-    ConfigurationEditor *ed;
+    ConfigurationEditor* ed;
     // makes any non-trivial validations
-    ConfigurationValidator *val;
+    ConfigurationValidator* val;
     // some realization of Prompter (e.g. PrompterBaseImpl)
-    Prompter *prompter;
+    Prompter* prompter;
     // as if each port is configuration
     // we need port validators
     // QString here - id of corresponding PortDescriptor
-    QMap<QString, ConfigurationValidator *> portValidators;
+    QMap<QString, ConfigurationValidator*> portValidators;
     // actor can be written on a script by user
     // in such case user can define attributes and input, output ports of actor
     bool isScript;

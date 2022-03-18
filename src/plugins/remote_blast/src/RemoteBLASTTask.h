@@ -54,8 +54,8 @@ struct RemoteBLASTTaskSettings {
     QString dbChoosen;
     QString params;
     int retries;
-    DNATranslation *aminoT;
-    DNATranslation *complT;
+    DNATranslation* aminoT;
+    DNATranslation* complT;
     QByteArray query;
     bool isCircular;
     int filterResult;
@@ -69,16 +69,16 @@ struct RemoteBLASTTaskSettings {
 class RemoteBLASTToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    RemoteBLASTToAnnotationsTask(const RemoteBLASTTaskSettings &cfg, int qoffs, AnnotationTableObject *ao, const QString &url, const QString &group, const QString &annDescription);
+    RemoteBLASTToAnnotationsTask(const RemoteBLASTTaskSettings& cfg, int qoffs, AnnotationTableObject* ao, const QString& url, const QString& group, const QString& annDescription);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     int offsInGlobalSeq;
     QPointer<AnnotationTableObject> aobj;
     QString group;
     const QString annDescription;
-    Task *queryTask;
+    Task* queryTask;
     QString url;
 };
 
@@ -88,24 +88,24 @@ class RemoteBlastHttpRequestTask;
 class RemoteBLASTTask : public Task {
     Q_OBJECT
 public:
-    RemoteBLASTTask(const RemoteBLASTTaskSettings &cfg);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    RemoteBLASTTask(const RemoteBLASTTaskSettings& cfg);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     QByteArray getOutputFile() const;
 
-    const QList<SharedAnnotationData> &getResultedAnnotations() const;
+    const QList<SharedAnnotationData>& getResultedAnnotations() const;
 
 private:
     RemoteBLASTTaskSettings cfg;
-    RemoteBlastHttpRequestTask *httpBlastTask;
-    CreateAnnotationsFromHttpBlastResultTask *createAnnotTask;
+    RemoteBlastHttpRequestTask* httpBlastTask;
+    CreateAnnotationsFromHttpBlastResultTask* createAnnotTask;
     QList<SharedAnnotationData> resultAnnotations;
 };
 
 class RemoteBlastHttpRequestTask : public Task {
     Q_OBJECT
 public:
-    RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings &cfg);
+    RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings& cfg);
     void prepare();
     void run();
 
@@ -131,16 +131,16 @@ public:
         int offs;  // translation frame offset
     };
     struct HttpBlastRequestTaskResult {
-        HttpBlastRequestTaskResult(HttpRequest *r,
-                                   Query &q)
+        HttpBlastRequestTaskResult(HttpRequest* r,
+                                   Query& q)
             : request(r),
               query(q) {
         }
-        HttpRequest *request;
+        HttpRequest* request;
         Query query;
     };
 
-    const QList<HttpBlastRequestTaskResult> &getResults() const {
+    const QList<HttpBlastRequestTaskResult>& getResults() const {
         return resultList;
     }
     bool isTimeOut() const {
@@ -158,7 +158,7 @@ private:
     RemoteBLASTTaskSettings cfg;
 
     QList<Query> queries;
-    QList<HttpRequest *> httpRequest;
+    QList<HttpRequest*> httpRequest;
 
     QList<HttpBlastRequestTaskResult> resultList;
     QTimer timer;
@@ -168,8 +168,8 @@ private:
 class CheckNCBISequenceCircularityTask : public Task {
     Q_OBJECT
 public:
-    CheckNCBISequenceCircularityTask(const QString &id);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    CheckNCBISequenceCircularityTask(const QString& id);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     bool getResult() const {
         return result;
@@ -177,7 +177,7 @@ public:
 
 private:
     QString seqId;
-    Task *loadTask;
+    Task* loadTask;
     QString tempUrl;
     bool result;
 };
@@ -185,41 +185,41 @@ private:
 class CreateAnnotationsFromHttpBlastResultTask : public Task {
     Q_OBJECT
 public:
-    CreateAnnotationsFromHttpBlastResultTask(const RemoteBLASTTaskSettings &cfg,
-                                             const QList<RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult> &results);
+    CreateAnnotationsFromHttpBlastResultTask(const RemoteBLASTTaskSettings& cfg,
+                                             const QList<RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult>& results);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    const QList<SharedAnnotationData> &getResultedAnnotations() const {
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    const QList<SharedAnnotationData>& getResultedAnnotations() const {
         return resultAnnotations;
     }
 
 private:
-    void createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult &result);
-    QList<SharedAnnotationData> filterAnnotations(QList<SharedAnnotationData> &annotations);
+    void createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult& result);
+    QList<SharedAnnotationData> filterAnnotations(QList<SharedAnnotationData>& annotations);
 
     void mergeNeighbourResults();
 
-    SharedAnnotationData merge(const SharedAnnotationData &start, const SharedAnnotationData &end);
-    static bool annotationsReferToTheSameSeq(const SharedAnnotationData &start, const SharedAnnotationData &end);
-    bool annotationsAreNeighbours(SharedAnnotationData &start, SharedAnnotationData &end);
-    void orderNeighbors(SharedAnnotationData &start, SharedAnnotationData &end);
-    void createCheckTask(const SharedAnnotationData &start, const SharedAnnotationData &end);
+    SharedAnnotationData merge(const SharedAnnotationData& start, const SharedAnnotationData& end);
+    static bool annotationsReferToTheSameSeq(const SharedAnnotationData& start, const SharedAnnotationData& end);
+    bool annotationsAreNeighbours(SharedAnnotationData& start, SharedAnnotationData& end);
+    void orderNeighbors(SharedAnnotationData& start, SharedAnnotationData& end);
+    void createCheckTask(const SharedAnnotationData& start, const SharedAnnotationData& end);
 
     RemoteBLASTTaskSettings cfg;
     int seqLen;
     QList<SharedAnnotationData> resultAnnotations;
 
     QList<RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult> httpBlastResults;
-    QVector<CheckNCBISequenceCircularityTask *> circCheckTasks;
+    QVector<CheckNCBISequenceCircularityTask*> circCheckTasks;
     QVector<QPair<SharedAnnotationData, SharedAnnotationData>> mergeCandidates;
 };
 
 // used by CDSearchWorker
 class RemoteCDSearch : public CDSearchResultListener {
 public:
-    RemoteCDSearch(const CDSearchSettings &settings);
+    RemoteCDSearch(const CDSearchSettings& settings);
 
-    virtual Task *getTask() const {
+    virtual Task* getTask() const {
         return task;
     }
     virtual QList<SharedAnnotationData> getCDSResults() const {
@@ -227,11 +227,11 @@ public:
     }
 
 private:
-    RemoteBLASTTask *task;
+    RemoteBLASTTask* task;
 };
 
 class RemoteCDSearchFactory : public CDSearchFactory {
-    virtual CDSearchResultListener *createCDSearch(const CDSearchSettings &settings) const {
+    virtual CDSearchResultListener* createCDSearch(const CDSearchSettings& settings) const {
         return new RemoteCDSearch(settings);
     }
 };
@@ -239,16 +239,16 @@ class RemoteCDSearchFactory : public CDSearchFactory {
 class Merge : public QObject {
     Q_OBJECT
 public:
-    static U2Qualifier equalQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second);
+    static U2Qualifier equalQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second);
 
-    static U2Qualifier percentQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second);
+    static U2Qualifier percentQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second);
 
-    static U2Qualifier hitFromQualifier(const SharedAnnotationData &first, const SharedAnnotationData &second);
-    static U2Qualifier hitToQualifier(const SharedAnnotationData &first, const SharedAnnotationData &second);
+    static U2Qualifier hitFromQualifier(const SharedAnnotationData& first, const SharedAnnotationData& second);
+    static U2Qualifier hitToQualifier(const SharedAnnotationData& first, const SharedAnnotationData& second);
 
-    static U2Qualifier sumQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second);
+    static U2Qualifier sumQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second);
 
-    static U2Qualifier eValueQualifier(int seqLen, const SharedAnnotationData &first, const SharedAnnotationData &second);
+    static U2Qualifier eValueQualifier(int seqLen, const SharedAnnotationData& first, const SharedAnnotationData& second);
 };
 
 }  // namespace U2

@@ -71,7 +71,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
+    QWidget* window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
     GTWidget::click(os, window);
     // 2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
@@ -85,12 +85,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
     // Expected state: coordinates is not negative
     // CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
-    QWidget *assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
+    QWidget* assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
 
-    QObject *l = assRuler->findChild<QObject *>("start position");
+    QObject* l = assRuler->findChild<QObject*>("start position");
     CHECK_SET_ERR(l != nullptr, "first QObject for taking cursor name not found");
 
-    QObject *startPositionObject = l->findChild<QObject *>();
+    QObject* startPositionObject = l->findChild<QObject*>();
     CHECK_SET_ERR(startPositionObject != nullptr, "second QObject for taking cursor name not found");
 
     QString coordinate = startPositionObject->objectName();
@@ -401,12 +401,12 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     QString outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
     QString formatValue = GTUtilsWorkflowDesigner::getParameter(os, "Format");
     QString thresholdValue = GTUtilsWorkflowDesigner::getParameter(os, "Threshold");
-    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
-    CHECK_SET_ERR("Bedgraph" == formatValue, QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
-    CHECK_SET_ERR("1" == thresholdValue, QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
+    CHECK_SET_ERR(outputFileValue == "assembly_coverage.bedgraph", QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
+    CHECK_SET_ERR(formatValue == "Bedgraph", QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
+    CHECK_SET_ERR(thresholdValue == "1", QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
 
     GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    QSpinBox *sbThreshold = qobject_cast<QSpinBox *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox *>());
+    auto sbThreshold = qobject_cast<QSpinBox*>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox*>());
     GTSpinBox::checkLimits(os, sbThreshold, 0, 65535);
 
     //    5. Set format "Histogram".
@@ -501,30 +501,30 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     // 4. Right click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 5. Click "Set reference sequence".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"setReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 6. Right click on the reference area.
     // Expected: "Unassociate" is enabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 7. Click "Unassociate".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"unassociateReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 8. Right click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
 namespace {
-void prepareBigFasta(const QString &url, HI::GUITestOpStatus &os) {
+void prepareBigFasta(const QString& url, HI::GUITestOpStatus& os) {
     QFile file(url);
     bool opened = file.open(QIODevice::WriteOnly);
     if (!opened) {
@@ -567,18 +567,16 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // 8. Right click on the reference area while the file is loading.
     // Expected: "Unassociate" and "Set reference sequence" are disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
+    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction" , PopupChecker::IsDisabled));
+    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     // GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 9. Right click on the reference area after loading.
     // Expected: "Unassociate" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference"
-                                                                                             << "Unassociate",
-                                                            PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), {"Set reference", "Unassociate"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
@@ -602,8 +600,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     // 5. Click the "Set reference sequence" actions menu item.
     // Expected: it becomes reference.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 
     // 6. Add the "human_T1" object to the selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -613,8 +610,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 7. Click the "Set reference sequence" actions menu item.
     // Expected: message box about two sequences appears.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You have more than one sequence"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 
     // 8. Click the "chrM.fa" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM.fa");
@@ -622,8 +618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 9. Click the "Set reference sequence" actions menu item.
     // Expected: file dialog appears.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
@@ -755,11 +750,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
-    QAbstractButton *button = GTAction::button(os, "ExtractAssemblyRegion");
+    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -780,11 +775,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
-    QAbstractButton *button = GTAction::button(os, "ExtractAssemblyRegion");
+    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -806,7 +801,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -903,7 +898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    2. Click "zoom to reads" link
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    Check zoom
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Export"));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Export"}));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -931,7 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change reads highlighting to "strand direction" and "complement"
-    QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
+    auto box = GTWidget::findComboBox(os, "READS_HIGHLIGHTNING_COMBO");
     GTComboBox::selectItemByText(os, box, "Strand direction");
     GTComboBox::selectItemByText(os, box, "Paired reads");
 }
@@ -945,7 +940,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change consensus algorithm
-    QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "consensusAlgorithmCombo");
+    auto box = GTWidget::findComboBox(os, "consensusAlgorithmCombo");
     GTComboBox::selectItemByText(os, box, "SAMtools");
 }
 
@@ -959,10 +954,10 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit *filepathLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathLineEdit", dialog);
+            auto filepathLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -970,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     };
     //    Export consensus
     GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export consensus variations..."}));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
 
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "chrM.snp"), "chrM.snp is not found");
@@ -987,8 +982,8 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
 
-    QScrollBar *vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
-    QScrollBar *hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
+    QScrollBar* vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
+    QScrollBar* hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
 
     int vScrollBarValue = vScrollBar->value();
     for (int i = 0; i < 3; i++) {
@@ -1037,7 +1032,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTUtilsAssemblyBrowser::goToPosition(os, 5000);
 
     // Copy read information and check that it is valid.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "copy_read_information", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"copy_read_information"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     QString clipboard = GTClipboard::text(os);
     CHECK_SET_ERR(clipboard.startsWith('>') && clipboard.contains("From") &&
@@ -1046,7 +1041,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
                   "Unexpected clipboard: " + clipboard)
 
     // Check that read position is copied as a number.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy current position to clipboard", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy current position to clipboard"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     clipboard = GTClipboard::text(os);
     bool ok;

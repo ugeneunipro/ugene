@@ -53,24 +53,24 @@ class DotPlotWidget : public ADVSplitWidget {
     friend class DotPlotImageExportController;
 
 public:
-    DotPlotWidget(AnnotatedDNAView *dnaView);
+    DotPlotWidget(AnnotatedDNAView* dnaView);
     ~DotPlotWidget();
 
-    virtual bool acceptsGObject(GObject *) {
+    virtual bool acceptsGObject(GObject*) {
         return false;
     }
-    virtual void updateState(const QVariantMap &) {
+    virtual void updateState(const QVariantMap&) {
     }
-    virtual void saveState(QVariantMap &) {
+    virtual void saveState(QVariantMap&) {
     }
 
-    void buildPopupMenu(QMenu *) const;
+    void buildPopupMenu(QMenu*) const;
 
-    AnnotatedDNAView *getDnaView() const {
+    AnnotatedDNAView* getDnaView() const {
         return dnaView;
     }
 
-    void setShiftZoom(ADVSequenceObjectContext *, ADVSequenceObjectContext *, float, float, const QPointF &);
+    void setShiftZoom(ADVSequenceObjectContext*, ADVSequenceObjectContext*, float, float, const QPointF&);
     bool hasSelection() const;
     bool hasSelectedArea() const;
 
@@ -88,13 +88,13 @@ public:
     QString getXSequenceName();
     QString getYSequenceName();
 
-    void setSequences(U2SequenceObject *seqX, U2SequenceObject *seqY);
+    void setSequences(U2SequenceObject* seqX, U2SequenceObject* seqY);
 
     virtual bool onCloseEvent();
 
 signals:
     void si_removeDotPlot();
-    void si_dotPlotChanged(ADVSequenceObjectContext *, ADVSequenceObjectContext *, float, float, QPointF);
+    void si_dotPlotChanged(ADVSequenceObjectContext*, ADVSequenceObjectContext*, float, float, QPointF);
     void si_dotPlotSelecting();
 
 public slots:
@@ -110,26 +110,26 @@ private slots:
     bool sl_showSaveFileDialog();
     bool sl_showLoadFileDialog();
 
-    void sl_onSequenceSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &);
+    void sl_onSequenceSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&);
 
-    void sl_sequenceWidgetRemoved(ADVSequenceWidget *);
+    void sl_sequenceWidgetRemoved(ADVSequenceWidget*);
     void sl_panViewChanged();
     void sl_timer();
 
 protected:
-    void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *);
+    void paintEvent(QPaintEvent*);
+    void resizeEvent(QResizeEvent*);
 
-    void wheelEvent(QWheelEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void focusInEvent(QFocusEvent *fe);
-    void focusOutEvent(QFocusEvent *fe);
-    bool event(QEvent *event);
+    void wheelEvent(QWheelEvent*);
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void focusInEvent(QFocusEvent* fe);
+    void focusOutEvent(QFocusEvent* fe);
+    bool event(QEvent* event);
 
 private:
-    AnnotatedDNAView *dnaView;
+    AnnotatedDNAView* dnaView;
 
     QCursor cursor;
 
@@ -145,28 +145,28 @@ private:
     bool pixMapUpdateNeeded, deleteDotPlotFlag, filtration;
     bool dotPlotIsCalculating;
 
-    Task *dotPlotTask;
-    QPixmap *pixMap;
-    DotPlotMiniMap *miniMap;
+    Task* dotPlotTask;
+    QPixmap* pixMap;
+    DotPlotMiniMap* miniMap;
 
-    const DotPlotResults *nearestRepeat;
+    const DotPlotResults* nearestRepeat;
 
-    QTimer *timer;
-    QToolButton *exitButton;
+    QTimer* timer;
+    QToolButton* exitButton;
 
     QPointF clickedFirst, clickedSecond;
 
-    DotPlotResultsListener *dpDirectResultListener;
-    DotPlotRevComplResultsListener *dpRevComplResultsListener;
+    DotPlotResultsListener* dpDirectResultListener;
+    DotPlotRevComplResultsListener* dpRevComplResultsListener;
     QSharedPointer<QList<DotPlotResults>> dpFilteredResults;
     QSharedPointer<QList<DotPlotResults>> dpFilteredResultsRevCompl;
 
-    QAction *showSettingsDialogAction;
-    QAction *saveImageAction;
-    QAction *saveDotPlotAction;
-    QAction *loadDotPlotAction;
-    QAction *deleteDotPlotAction;
-    QAction *filterDotPlotAction;
+    QAction* showSettingsDialogAction;
+    QAction* saveImageAction;
+    QAction* saveDotPlotAction;
+    QAction* loadDotPlotAction;
+    QAction* deleteDotPlotAction;
+    QAction* filterDotPlotAction;
     
     bool deleteDialogWasShownAndNotCancelled = false;
 
@@ -189,26 +189,26 @@ private:
     void initActionsAndSignals();
     void connectSequenceSelectionSignals();
 
-    void drawAll(QPainter &p, QSize &size, qreal fontScale, DotPlotImageExportSettings &exportSettings);
-    void drawAll(QPainter &p, qreal rulerFontScale = 1, bool drawFocus = true, bool drawAreaSelection = true, bool drawRepeatSelection = true);
-    void drawNames(QPainter &) const;
-    void drawAxises(QPainter &) const;
-    void drawDots(QPainter &);
-    void drawSelection(QPainter &) const;
-    void drawRulers(QPainter &, qreal fontScale = 1) const;
-    void drawMiniMap(QPainter &) const;
-    void drawNearestRepeat(QPainter &) const;
-    void drawFocus(QPainter &p) const;
+    void drawAll(QPainter& p, QSize& size, qreal fontScale, DotPlotImageExportSettings& exportSettings);
+    void drawAll(QPainter& p, qreal rulerFontScale = 1, bool drawFocus = true, bool drawAreaSelection = true, bool drawRepeatSelection = true);
+    void drawNames(QPainter&) const;
+    void drawAxises(QPainter&) const;
+    void drawDots(QPainter&);
+    void drawSelection(QPainter&) const;
+    void drawRulers(QPainter&, qreal fontScale = 1) const;
+    void drawMiniMap(QPainter&) const;
+    void drawNearestRepeat(QPainter&) const;
+    void drawFocus(QPainter& p) const;
 
-    void sequencesMouseSelection(const QPointF &, const QPointF &);
-    void sequencesCoordsSelection(const QPointF &, const QPointF &);
+    void sequencesMouseSelection(const QPointF&, const QPointF&);
+    void sequencesCoordsSelection(const QPointF&, const QPointF&);
     void sequenceClearSelection();
     void clearRepeatSelection();
 
-    void selectNearestRepeat(const QPointF &);
-    const DotPlotResults *findNearestRepeat(const QPoint &);  // sets nearestInverted
+    void selectNearestRepeat(const QPointF&);
+    const DotPlotResults* findNearestRepeat(const QPoint&);  // sets nearestInverted
 
-    void calcZooming(const QPointF &oldzoom, const QPointF &newzoom, const QPoint &p, bool emitSignal = true);
+    void calcZooming(const QPointF& oldzoom, const QPointF& newzoom, const QPoint& p, bool emitSignal = true);
     void multZooming(float multzoom);
 
     void resetZooming();
@@ -218,22 +218,22 @@ private:
 
     QString makeToolTipText() const;
 
-    QPointF zoomTo(Qt::Axis axis, const U2Region &lr, bool emitSignal = true);
+    QPointF zoomTo(Qt::Axis axis, const U2Region& lr, bool emitSignal = true);
     U2Region getVisibleRange(Qt::Axis axis);
-    int getLrDifference(const U2Region &a, const U2Region &b);
+    int getLrDifference(const U2Region& a, const U2Region& b);
 
     void miniMapShift();
 
-    void drawRectCorrect(QPainter &p, QRectF rect) const;
+    void drawRectCorrect(QPainter& p, QRectF rect) const;
 
     QPoint toInnerCoords(int x, int y) const;
-    QPoint toInnerCoords(const QPoint &p) const;
+    QPoint toInnerCoords(const QPoint& p) const;
 
-    QPointF unshiftedUnzoomed(const QPointF &p) const;
-    QPoint sequenceCoords(const QPointF &c) const;
+    QPointF unshiftedUnzoomed(const QPointF& p) const;
+    QPoint sequenceCoords(const QPointF& c) const;
 
-    QString getRoundedText(QPainter &p, int num, int size) const;
-    bool getLineToDraw(const DotPlotResults &r, QLine *line, float ratioX, float ratioY, bool invert = false) const;
+    QString getRoundedText(QPainter& p, int num, int size) const;
+    bool getLineToDraw(const DotPlotResults& r, QLine* line, float ratioX, float ratioY, bool invert = false) const;
 
     void cancelRepeatFinderTask();
 };

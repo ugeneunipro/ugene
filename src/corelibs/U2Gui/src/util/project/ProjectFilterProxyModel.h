@@ -31,19 +31,19 @@ namespace U2 {
 class ProjectFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    ProjectFilterProxyModel(const ProjectTreeControllerModeSettings &settings, QObject *p = nullptr);
+    ProjectFilterProxyModel(const ProjectTreeControllerModeSettings& settings, QObject* p = nullptr);
 
-    ProjectViewModel *sourceModel() const;
+    ProjectViewModel* sourceModel() const;
 
-    void updateSettings(const ProjectTreeControllerModeSettings &settings);
+    void updateSettings(const ProjectTreeControllerModeSettings& settings);
     // wraps the ProjectViewModel's method with the same name
-    QModelIndex getIndexForDoc(Document *doc) const;
+    QModelIndex getIndexForDoc(Document* doc) const;
 
 protected:
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
 
 private:
-    bool filterAcceptsFolder(const Folder *folder) const;
+    bool filterAcceptsFolder(const Folder* folder) const;
 
     ProjectTreeControllerModeSettings settings;
 };

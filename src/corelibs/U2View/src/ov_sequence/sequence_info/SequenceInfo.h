@@ -49,21 +49,21 @@ class Annotation;
 class U2VIEW_EXPORT SequenceInfo : public QWidget {
     Q_OBJECT
 public:
-    SequenceInfo(AnnotatedDNAView *);
+    SequenceInfo(AnnotatedDNAView*);
 
 private slots:
-    void sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &);
-    void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &);
+    void sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&);
     void sl_onAminoTranslationChanged();
 
     /** Updates sequence info to match active sequence. */
-    void sl_onActiveSequenceChanged(ADVSequenceWidget *oldSequenceWidget, ADVSequenceWidget *newSequenceWidget);
+    void sl_onActiveSequenceChanged(ADVSequenceWidget* oldSequenceWidget, ADVSequenceWidget* newSequenceWidget);
 
     /** A sequence part was added, removed or replaced */
     void sl_onSequenceModified();
 
     /** A sequence object has been added */
-    void sl_onSequenceAdded(ADVSequenceObjectContext *);
+    void sl_onSequenceAdded(ADVSequenceObjectContext*);
 
     /** Update calculated info */
     void sl_updateCharOccurData();
@@ -72,9 +72,9 @@ private slots:
     void sl_updateStatData();
 
     /** A subgroup (e.g. characters occurrence subgroup) has been opened/closed */
-    void sl_subgroupStateChanged(const QString &subgroupId);
+    void sl_subgroupStateChanged(const QString& subgroupId);
 
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
 private:
     /** Initializes the whole layout of the widget */
@@ -88,20 +88,20 @@ private:
 
     void updateData();
     void updateCommonStatisticsData();
-    void updateCommonStatisticsData(const DNAStatistics &commonStatistics);
+    void updateCommonStatisticsData(const DNAStatistics& commonStatistics);
     void updateCharactersOccurrenceData();
-    void updateCharactersOccurrenceData(const CharactersOccurrence &charactersOccurrence);
+    void updateCharactersOccurrenceData(const CharactersOccurrence& charactersOccurrence);
     void updateDinucleotidesOccurrenceData();
-    void updateDinucleotidesOccurrenceData(const DinucleotidesOccurrence &dinucleotidesOccurrence);
+    void updateDinucleotidesOccurrenceData(const DinucleotidesOccurrence& dinucleotidesOccurrence);
 
     /** Updates codon occurrence data from cache if available or re-launch the update task if the cached data does not match current selection state. */
     void updateCodonsOccurrenceData();
 
     /** Updates codon occurrence label from the 'codonStatList'. */
-    void updateCodonsOccurrenceData(const QMap<QByteArray, qint64> &codonStatsMap);
+    void updateCodonsOccurrenceData(const QMap<QByteArray, qint64>& codonStatsMap);
 
     /**  Listen when something has been changed in the AnnotatedDNAView or in the Options Panel */
-    void connectSlotsForSeqContext(ADVSequenceObjectContext *);
+    void connectSlotsForSeqContext(ADVSequenceObjectContext*);
     void connectSlots();
 
     /**
@@ -117,38 +117,38 @@ private:
      * The subgroupId parameter is used to skip unnecessary calculation when a subgroup signal has come.
      * Empty subgroupId means that the signal has come from other place and all required calculation should be re-done.
      */
-    void launchCalculations(const QString &subgroupId = "");
+    void launchCalculations(const QString& subgroupId = "");
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
-    QString formTableRow(const QString &caption, const QString &value, int availableSpace) const;
+    QString formTableRow(const QString& caption, const QString& value, int availableSpace) const;
 
-    StatisticsCache<DNAStatistics> *getCommonStatisticsCache() const;
-    StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache() const;
-    StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache() const;
-    StatisticsCache<QMap<QByteArray, qint64>> *getCodonsOccurrenceCache() const;
+    StatisticsCache<DNAStatistics>* getCommonStatisticsCache() const;
+    StatisticsCache<CharactersOccurrence>* getCharactersOccurrenceCache() const;
+    StatisticsCache<DinucleotidesOccurrence>* getDinucleotidesOccurrenceCache() const;
+    StatisticsCache<QMap<QByteArray, qint64>>* getCodonsOccurrenceCache() const;
 
-    AnnotatedDNAView *annotatedDnaView;
+    AnnotatedDNAView* annotatedDnaView;
 
-    ShowHideSubgroupWidget *statsWidget = nullptr;
-    QLabel *statisticLabel = nullptr;
+    ShowHideSubgroupWidget* statsWidget = nullptr;
+    QLabel* statisticLabel = nullptr;
     BackgroundTaskRunner<DNAStatistics> dnaStatisticsTaskRunner;
     DNAStatistics currentCommonStatistics;
 
-    ShowHideSubgroupWidget *charOccurWidget = nullptr;
-    QLabel *charOccurLabel = nullptr;
+    ShowHideSubgroupWidget* charOccurWidget = nullptr;
+    QLabel* charOccurLabel = nullptr;
     BackgroundTaskRunner<CharactersOccurrence> charOccurTaskRunner;
 
-    ShowHideSubgroupWidget *dinuclWidget = nullptr;
-    QLabel *dinuclLabel = nullptr;
+    ShowHideSubgroupWidget* dinuclWidget = nullptr;
+    QLabel* dinuclLabel = nullptr;
     BackgroundTaskRunner<DinucleotidesOccurrence> dinuclTaskRunner;
 
-    ShowHideSubgroupWidget *codonWidget = nullptr;
-    QLabel *codonLabel = nullptr;
+    ShowHideSubgroupWidget* codonWidget = nullptr;
+    QLabel* codonLabel = nullptr;
     BackgroundTaskRunner<QMap<QByteArray, qint64>> codonTaskRunner;
 
-    ShowHideSubgroupWidget *aminoAcidWidget = nullptr;
-    QLabel *aminoAcidLabel = nullptr;
+    ShowHideSubgroupWidget* aminoAcidWidget = nullptr;
+    QLabel* aminoAcidLabel = nullptr;
 
     QVector<U2Region> currentRegions;
 

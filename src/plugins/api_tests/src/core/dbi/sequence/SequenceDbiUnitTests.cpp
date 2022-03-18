@@ -30,16 +30,16 @@
 
 namespace U2 {
 
-const QString &INVALID_SEQUENCE_ID = "invalid_seq_id";
-const QString &GET_SEQUENCE_IN = "get_seq_in";
-const QString &GET_SEQUENCE_OUT = "get_seq_out";
-const QString &GET_SEQUENCE_DATA_ID = "get_seq_data_id";
-const QString &GET_SEQUENCE_DATA_REGION = "get_seq_data_region";
-const QString &GET_SEQUENCE_DATA_OUT = "get_seq_data_out";
+const QString& INVALID_SEQUENCE_ID = "invalid_seq_id";
+const QString& GET_SEQUENCE_IN = "get_seq_in";
+const QString& GET_SEQUENCE_OUT = "get_seq_out";
+const QString& GET_SEQUENCE_DATA_ID = "get_seq_data_id";
+const QString& GET_SEQUENCE_DATA_REGION = "get_seq_data_region";
+const QString& GET_SEQUENCE_DATA_OUT = "get_seq_data_out";
 
-const QString &SequenceTestData::SEQ_DB_URL("sequence-dbi.ugenedb");
-QList<U2DataId> *SequenceTestData::sequences = nullptr;
-U2SequenceDbi *SequenceTestData::sequenceDbi = nullptr;
+const QString& SequenceTestData::SEQ_DB_URL("sequence-dbi.ugenedb");
+QList<U2DataId>* SequenceTestData::sequences = nullptr;
+U2SequenceDbi* SequenceTestData::sequenceDbi = nullptr;
 TestDbiProvider SequenceTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -62,8 +62,8 @@ bool SequenceTestData::registerTest = registerTests();
 void SequenceTestData::init() {
     bool ok = dbiProvider.init(SEQ_DB_URL, false);
     SAFE_POINT(ok, "dbi provider failed to initialize", );
-    U2Dbi *dbi = dbiProvider.getDbi();
-    U2ObjectDbi *objDbi = dbi->getObjectDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
+    U2ObjectDbi* objDbi = dbi->getObjectDbi();
     U2OpStatusImpl opStatus;
 
     sequenceDbi = dbi->getSequenceDbi();
@@ -73,7 +73,7 @@ void SequenceTestData::init() {
     SAFE_POINT_OP(opStatus, );
 }
 
-U2SequenceDbi *SequenceTestData::getSequenceDbi() {
+U2SequenceDbi* SequenceTestData::getSequenceDbi() {
     if (sequenceDbi == nullptr) {
         SequenceTestData::init();
     }
@@ -89,7 +89,7 @@ void SequenceTestData::shutdown() {
     }
 }
 
-bool SequenceTestData::compareSequences(const U2Sequence &s1, const U2Sequence &s2) {
+bool SequenceTestData::compareSequences(const U2Sequence& s1, const U2Sequence& s2) {
     if (s1.id == s2.id && s1.alphabet.id == s2.alphabet.id &&
         s1.circular == s2.circular && s1.length == s2.length) {
         return true;
@@ -97,9 +97,9 @@ bool SequenceTestData::compareSequences(const U2Sequence &s1, const U2Sequence &
     return false;
 }
 
-void SequenceTestData::checkUpdateSequence(UnitTest *t, const UpdateSequenceArgs &args) {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
-    const U2DataId &id = sequences->at(args.sequenceId);
+void SequenceTestData::checkUpdateSequence(UnitTest* t, const UpdateSequenceArgs& args) {
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
+    const U2DataId& id = sequences->at(args.sequenceId);
 
     for (int j = 0, max = args.regionsToReplace.size(); j < max; j++) {
         U2Region regionToReplace = args.regionsToReplace.at(j);
@@ -110,7 +110,7 @@ void SequenceTestData::checkUpdateSequence(UnitTest *t, const UpdateSequenceArgs
 
         {
             U2OpStatusImpl os;
-            const U2Sequence &so = sequenceDbi->getSequenceObject(id, os);
+            const U2Sequence& so = sequenceDbi->getSequenceObject(id, os);
             CHECK_OP(os, );
             originalLen = so.length;
         }
@@ -135,19 +135,19 @@ void SequenceTestData::checkUpdateSequence(UnitTest *t, const UpdateSequenceArgs
         qint64 updatedLen(0);
         {
             U2OpStatusImpl os;
-            const U2Sequence &so = sequenceDbi->getSequenceObject(id, os);
+            const U2Sequence& so = sequenceDbi->getSequenceObject(id, os);
             CHECK_OP(os, );
 
             updatedLen = so.length;
             qint64 expectedLen = 0;
-            const U2Region &intersection = U2Region(0, originalLen).intersect(regionToReplace);
+            const U2Region& intersection = U2Region(0, originalLen).intersect(regionToReplace);
             expectedLen = originalLen - intersection.length + dataToInsert.length();
             CHECK_EXT(expectedLen == updatedLen, t->SetError("incorrect updated sequence length"), );
         }
 
         {
             U2OpStatusImpl os;
-            const QByteArray &actualSeq = sequenceDbi->getSequenceData(id, U2Region(0, updatedLen), os);
+            const QByteArray& actualSeq = sequenceDbi->getSequenceData(id, U2Region(0, updatedLen), os);
             CHECK_OP(os, );
             QByteArray expectedSeq;
             replaceRegion(t, originalSequence, dataToInsert, regionToReplace, expectedSeq);
@@ -156,7 +156,7 @@ void SequenceTestData::checkUpdateSequence(UnitTest *t, const UpdateSequenceArgs
     }
 }
 
-void SequenceTestData::replaceRegion(UnitTest *t, const QByteArray &originalSequence, const QByteArray &dataToInsert, const U2Region &region, QByteArray &resultSequence) {
+void SequenceTestData::replaceRegion(UnitTest* t, const QByteArray& originalSequence, const QByteArray& dataToInsert, const U2Region& region, QByteArray& resultSequence) {
     U2Region regionToReplace = U2Region(0, originalSequence.length()).intersect(region);
     if (regionToReplace.length == 0) {
         if (region.startPos == originalSequence.length()) {
@@ -172,7 +172,7 @@ void SequenceTestData::replaceRegion(UnitTest *t, const QByteArray &originalSequ
 }
 
 void SequenceDbiUnitTests_getSequenceObject::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
 
     APITestData testData;
     testData.addValue(GET_SEQUENCE_IN, 1);
@@ -190,39 +190,39 @@ void SequenceDbiUnitTests_getSequenceObject::Test() {
     expected.id = id;
 
     U2OpStatusImpl os;
-    const U2Sequence &actual = sequenceDbi->getSequenceObject(id, os);
+    const U2Sequence& actual = sequenceDbi->getSequenceObject(id, os);
     CHECK_NO_ERROR(os);
     CHECK_EXT(SequenceTestData::compareSequences(actual, expected), SetError("incorrect expected sequence"), );
 }
 
 void SequenceDbiUnitTests_getSequenceObjectInvalid::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
     APITestData testData;
     testData.addValue<QByteArray>(INVALID_SEQUENCE_ID, "anmr%");
 
-    const U2DataId &invalidId = testData.getValue<U2DataId>(INVALID_SEQUENCE_ID);
+    const U2DataId& invalidId = testData.getValue<U2DataId>(INVALID_SEQUENCE_ID);
     CHECK_EXT(!SequenceTestData::getSequences()->contains(invalidId), SetError("invalid id should not be in sequences"), );
     U2OpStatusImpl os;
-    const U2Sequence &seq = sequenceDbi->getSequenceObject(invalidId, os);
+    const U2Sequence& seq = sequenceDbi->getSequenceObject(invalidId, os);
     CHECK_OP(os, );
     CHECK_EXT(os.hasError(), SetError("error should be thrown"), );
     CHECK_EXT(seq.id.isEmpty(), SetError("sequence id shuld be empty"), );
 }
 
 void SequenceDbiUnitTests_getAllSequenceObjects::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
 
     for (int i = 0; i < SequenceTestData::getSequences()->size(); i++) {
         U2OpStatusImpl os;
-        const U2DataId &id = SequenceTestData::getSequences()->at(i);
-        const U2Sequence &seq = sequenceDbi->getSequenceObject(id, os);
+        const U2DataId& id = SequenceTestData::getSequences()->at(i);
+        const U2Sequence& seq = sequenceDbi->getSequenceObject(id, os);
         CHECK_OP(os, );
         CHECK_EXT(id == seq.id, SetError("incorrect expected sequence id"), );
     }
 }
 
 void SequenceDbiUnitTests_createSequenceObject::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
 
     U2Sequence seq;
     seq.circular = true;
@@ -232,7 +232,7 @@ void SequenceDbiUnitTests_createSequenceObject::Test() {
     sequenceDbi->createSequenceObject(seq, "/", os);
     CHECK_OP(os, );
 
-    const U2Sequence &actual = sequenceDbi->getSequenceObject(seq.id, os);
+    const U2Sequence& actual = sequenceDbi->getSequenceObject(seq.id, os);
     CHECK_OP(os, );
     CHECK_EXT(!seq.id.isEmpty(), SetError("sequence id should not be empty"), );
     CHECK_EXT(seq.alphabet.id == actual.alphabet.id, SetError("incorrect expected sequence alphabet"), );
@@ -240,7 +240,7 @@ void SequenceDbiUnitTests_createSequenceObject::Test() {
 }
 
 void SequenceDbiUnitTests_getSequenceData::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
     APITestData testData;
 
     testData.addValue(GET_SEQUENCE_DATA_ID, 5);
@@ -248,19 +248,19 @@ void SequenceDbiUnitTests_getSequenceData::Test() {
     testData.addValue<QByteArray>(GET_SEQUENCE_DATA_OUT, "AAGTGATCGTCCTACGATCG");
 
     int i = testData.getValue<int>(GET_SEQUENCE_DATA_ID);
-    const U2DataId &id = SequenceTestData::getSequences()->at(i);
-    const U2Region &region = testData.getValue<U2Region>(GET_SEQUENCE_DATA_REGION);
+    const U2DataId& id = SequenceTestData::getSequences()->at(i);
+    const U2Region& region = testData.getValue<U2Region>(GET_SEQUENCE_DATA_REGION);
     U2OpStatusImpl os;
 
-    const QByteArray &expected = testData.getValue<QByteArray>(GET_SEQUENCE_DATA_OUT);
-    const QByteArray &actual = sequenceDbi->getSequenceData(id, region, os);
+    const QByteArray& expected = testData.getValue<QByteArray>(GET_SEQUENCE_DATA_OUT);
+    const QByteArray& actual = sequenceDbi->getSequenceData(id, region, os);
     CHECK_OP(os, );
 
     CHECK_EXT(expected == actual, SetError("incorrect expected sequence data"), );
 }
 
 void SequenceDbiUnitTests_getLongSequenceData::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
     APITestData testData;
 
     testData.addValue(GET_SEQUENCE_DATA_ID, 10);
@@ -268,26 +268,26 @@ void SequenceDbiUnitTests_getLongSequenceData::Test() {
     testData.addValue<QByteArray>(GET_SEQUENCE_DATA_OUT, QByteArray(1048570, 'A'));
 
     int i = testData.getValue<int>(GET_SEQUENCE_DATA_ID);
-    const U2DataId &id = SequenceTestData::getSequences()->at(i);
-    const U2Region &region = testData.getValue<U2Region>(GET_SEQUENCE_DATA_REGION);
+    const U2DataId& id = SequenceTestData::getSequences()->at(i);
+    const U2Region& region = testData.getValue<U2Region>(GET_SEQUENCE_DATA_REGION);
     U2OpStatusImpl os;
 
-    const QByteArray &expected = testData.getValue<QByteArray>(GET_SEQUENCE_DATA_OUT);
-    const QByteArray &actual = sequenceDbi->getSequenceData(id, region, os);
+    const QByteArray& expected = testData.getValue<QByteArray>(GET_SEQUENCE_DATA_OUT);
+    const QByteArray& actual = sequenceDbi->getSequenceData(id, region, os);
     CHECK_OP(os, );
 
     CHECK_EXT(expected == actual, SetError("incorrect expected sequence data"), );
 }
 
 void SequenceDbiUnitTests_getSequenceDataInvalid::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
     APITestData testData;
     testData.addValue<QByteArray>(INVALID_SEQUENCE_ID, "anmr%");
-    const U2DataId &invalidId = testData.getValue<U2DataId>(INVALID_SEQUENCE_ID);
+    const U2DataId& invalidId = testData.getValue<U2DataId>(INVALID_SEQUENCE_ID);
 
     U2OpStatusImpl os;
 
-    const QByteArray &res = sequenceDbi->getSequenceData(invalidId, U2Region(0, 10), os);
+    const QByteArray& res = sequenceDbi->getSequenceData(invalidId, U2Region(0, 10), os);
 
     CHECK_EXT(res.isEmpty(), SetError("sequence data should be empty"), );
 };
@@ -328,7 +328,7 @@ void SequenceDbiUnitTests_updateSequencesData::Test() {
 };
 
 void SequenceDbiUnitTests_updateSequenceObject::Test() {
-    U2SequenceDbi *sequenceDbi = SequenceTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SequenceTestData::getSequenceDbi();
 
     U2Sequence seq;
     seq.circular = true;
@@ -338,7 +338,7 @@ void SequenceDbiUnitTests_updateSequenceObject::Test() {
     sequenceDbi->createSequenceObject(seq, "/", os);
     CHECK_OP(os, );
 
-    const U2Sequence &actual = sequenceDbi->getSequenceObject(seq.id, os);
+    const U2Sequence& actual = sequenceDbi->getSequenceObject(seq.id, os);
     CHECK_OP(os, );
     CHECK_EXT(!seq.id.isEmpty(), SetError("sequence id should not be empty"), );
     CHECK_EXT(seq.alphabet.id == actual.alphabet.id, SetError("incorrect expected sequence alphabet"), );
@@ -350,7 +350,7 @@ void SequenceDbiUnitTests_updateSequenceObject::Test() {
     sequenceDbi->updateSequenceObject(seq, os);
     CHECK_OP(os, );
 
-    const U2Sequence &updated = sequenceDbi->getSequenceObject(seq.id, os);
+    const U2Sequence& updated = sequenceDbi->getSequenceObject(seq.id, os);
     CHECK_OP(os, );
     CHECK_EXT(seq.id == updated.id, SetError("ids should be the same"), );
     CHECK_EXT(seq.alphabet.id == updated.alphabet.id, SetError("incorrect updated sequence alphabet"), );

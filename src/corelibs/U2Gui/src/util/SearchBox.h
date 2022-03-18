@@ -35,29 +35,29 @@ namespace U2 {
 class U2GUI_EXPORT SearchBox : public QLineEdit {
     Q_OBJECT
 public:
-    SearchBox(QWidget *p);
+    SearchBox(QWidget* p);
 
 public slots:
     void sl_filteringStarted();
     void sl_filteringFinished();
 
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent* event);
+    void paintEvent(QPaintEvent* event);
 
 private slots:
     void sl_filterCleared();
-    void sl_textChanged(const QString &text);
+    void sl_textChanged(const QString& text);
 
 private:
     void initStyle();
     void updateInternalControlsPosition();
 
     bool firstShow;
-    QLabel *progressLabel;
-    QMovie *progressMovie;
-    QLabel *searchIconLabel;
-    QToolButton *clearButton;
+    QLabel* progressLabel;
+    QMovie* progressMovie;
+    QLabel* searchIconLabel;
+    QToolButton* clearButton;
 };
 
 }  // namespace U2

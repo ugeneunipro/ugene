@@ -41,33 +41,33 @@ class ProjectViewFilterModel : public QAbstractItemModel {
     Q_OBJECT
     Q_DISABLE_COPY(ProjectViewFilterModel)
 public:
-    ProjectViewFilterModel(ProjectViewModel *srcModel, const ProjectTreeControllerModeSettings &settings, QObject *p = nullptr);
+    ProjectViewFilterModel(ProjectViewModel* srcModel, const ProjectTreeControllerModeSettings& settings, QObject* p = nullptr);
     ~ProjectViewFilterModel();
 
-    void updateSettings(const ProjectTreeControllerModeSettings &settings);
+    void updateSettings(const ProjectTreeControllerModeSettings& settings);
 
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QMimeData *mimeData(const QModelIndexList &indexes) const;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const;
+    QModelIndex parent(const QModelIndex& index) const;
+    int rowCount(const QModelIndex& parent) const;
+    int columnCount(const QModelIndex& parent) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    QVariant data(const QModelIndex& index, int role) const;
+    QMimeData* mimeData(const QModelIndexList& indexes) const;
     QStringList mimeTypes() const;
 
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+    QModelIndex mapToSource(const QModelIndex& proxyIndex) const;
 
-    static bool isObject(const QModelIndex &index);
+    static bool isObject(const QModelIndex& index);
 
 signals:
-    void si_filterGroupAdded(const QModelIndex &groupIndex);
+    void si_filterGroupAdded(const QModelIndex& groupIndex);
     void si_filteringStarted();
     void si_filteringFinished();
 
 private slots:
-    void sl_objectsFiltered(const QString &groupName, const QList<QPointer<GObject>> &objs);
-    void sl_rowsAboutToBeRemoved(const QModelIndex &parent, int first, int last);
-    void sl_dataChanged(const QModelIndex &before, const QModelIndex &after);
+    void sl_objectsFiltered(const QString& groupName, const QList<QPointer<GObject>>& objs);
+    void sl_rowsAboutToBeRemoved(const QModelIndex& parent, int first, int last);
+    void sl_dataChanged(const QModelIndex& before, const QModelIndex& after);
 
 private:
     enum ItemType {
@@ -75,29 +75,29 @@ private:
         OBJECT
     };
 
-    static ItemType getType(const QModelIndex &index);
-    static QObject *toQObject(const QModelIndex &index);
-    static FilteredProjectGroup *toGroup(const QModelIndex &index);
-    static WrappedObject *toObject(const QModelIndex &index);
+    static ItemType getType(const QModelIndex& index);
+    static QObject* toQObject(const QModelIndex& index);
+    static FilteredProjectGroup* toGroup(const QModelIndex& index);
+    static WrappedObject* toObject(const QModelIndex& index);
 
-    void addFilteredObject(const QString &filterGroupName, GObject *obj);
+    void addFilteredObject(const QString& filterGroupName, GObject* obj);
 
-    QModelIndex getIndexForGroup(FilteredProjectGroup *group) const;
-    QModelIndex getIndexForObject(const QString &groupName, GObject *obj) const;
+    QModelIndex getIndexForGroup(FilteredProjectGroup* group) const;
+    QModelIndex getIndexForObject(const QString& groupName, GObject* obj) const;
 
-    QVariant getGroupData(const QModelIndex &index, int role) const;
-    QVariant getObjectData(const QModelIndex &index, int role) const;
-    QString getStyledObjectName(GObject *obj, FilteredProjectGroup *group) const;
+    QVariant getGroupData(const QModelIndex& index, int role) const;
+    QVariant getObjectData(const QModelIndex& index, int role) const;
+    QString getStyledObjectName(GObject* obj, FilteredProjectGroup* group) const;
 
-    bool hasFilterGroup(const QString &name) const;
-    void addFilterGroup(const QString &name);
-    FilteredProjectGroup *findFilterGroup(const QString &groupName) const;
+    bool hasFilterGroup(const QString& name) const;
+    void addFilterGroup(const QString& name);
+    FilteredProjectGroup* findFilterGroup(const QString& groupName) const;
     void clearFilterGroups();
 
     ProjectTreeControllerModeSettings settings;
     ProjectFilteringController filterController;
-    ProjectViewModel *srcModel;
-    QList<FilteredProjectGroup *> filterGroups;
+    ProjectViewModel* srcModel;
+    QList<FilteredProjectGroup*> filterGroups;
 };
 
 }  // namespace U2

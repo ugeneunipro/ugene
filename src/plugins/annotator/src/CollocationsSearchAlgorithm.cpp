@@ -21,19 +21,21 @@
 
 #include "CollocationsSearchAlgorithm.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
-void CollocationsAlgorithm::find(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const CollocationsAlgorithmSettings &cfg) {
+void CollocationsAlgorithm::find(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const CollocationsAlgorithmSettings& cfg) {
     cfg.st == NormalSearch ? findN(items, si, l, cfg.searchRegion, cfg.distance) : findP(items, si, l, cfg.searchRegion, cfg.distance);
 }
 
-void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
+void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance) {
     // todo: progress
 
     qint64 i = searchRegion.endPos();
-    foreach (const CollocationsAlgorithmItem &item, items) {
-        foreach (const U2Region &r, item.regions) {
-            assert(searchRegion.contains(r));
+    foreach (const CollocationsAlgorithmItem& item, items) {
+        foreach (const U2Region& r, item.regions) {
+            SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             i = qMin(i, r.startPos);
         }
     }
@@ -47,10 +49,10 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
         U2Region currentRegion(i, qMin(i + distance, searchRegion.endPos()) - i);
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem &item, items) {
+        foreach (const CollocationsAlgorithmItem& item, items) {
             bool foundItem = false;
             qint64 nextItemStart = currentRegion.endPos();
-            foreach (const U2Region &r, item.regions) {
+            foreach (const U2Region& r, item.regions) {
                 if (r.startPos > currentRegion.startPos) {
                     nextItemStart = qMin(nextItemStart, r.startPos);
                 }
@@ -63,23 +65,21 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
             onResult = onResult && foundItem;
         }
         if (onResult && res.startPos == i) {
-            assert(res.length > 0);
-            if (prevResult.contains(res)) {
-                // nothing to do;
-            } else {
-                assert(!res.contains(prevResult) || prevResult.length == 0);
-                assert(prevResult.endPos() < res.endPos());
+            SAFE_POINT(res.length > 0, "Result region have zero length.", );
+            if (!prevResult.contains(res)) {
+                SAFE_POINT(!res.contains(prevResult) || prevResult.length == 0, "Region nested with other.", );
+                SAFE_POINT(prevResult.endPos() < res.endPos(), "Result regions order violated.", );
                 l->onResult(res);
                 prevResult = res;
             }
         }
-        assert(nextI > i);
+        SAFE_POINT(nextI > i, "Regions order are violated.", );
         i = nextI;
         si.progress = int(100 * float(i - searchRegion.startPos) / searchRegion.length);
     } while (i + distance < searchRegion.endPos());
 }
 
-void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint64 distance, const U2Region &searchRegion) {
+void averagingRes(U2Region& res, const U2Region& min, const U2Region& max, qint64 distance, const U2Region& searchRegion) {
     //?
     if (!min.intersects(max)) {
         res.startPos = min.endPos() - 1;
@@ -95,7 +95,6 @@ void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint6
     res.length = distance;
     if (res.endPos() > searchRegion.endPos()) {
         res.startPos -= (res.endPos() - searchRegion.endPos());
-        // res.len = (searchRegion.endPos() - res.startPos);
     }
     if (res.endPos() > max.endPos()) {
         res.startPos -= (res.endPos() - max.endPos());
@@ -104,13 +103,11 @@ void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint6
         res.startPos = 0;
 }
 
-void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
-    // printf("partial_search!\n");
-
+void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance) {
     qint64 i = searchRegion.endPos();
-    foreach (const CollocationsAlgorithmItem &item, items) {
-        foreach (const U2Region &r, item.regions) {
-            assert(searchRegion.contains(r));
+    foreach (const CollocationsAlgorithmItem& item, items) {
+        foreach (const U2Region& r, item.regions) {
+            SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             if (i > r.endPos() - 1) {
                 i = r.endPos() - 1;
             }
@@ -120,6 +117,7 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
         return;
     }
     U2Region prevMax;
+    U2Region prevResult;
     do {
         U2Region res;
         U2Region currentRegion(i, qMin(i + distance, searchRegion.endPos()) - i);
@@ -128,10 +126,10 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
         max.startPos = 0;
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem &item, items) {
+        foreach (const CollocationsAlgorithmItem& item, items) {
             bool foundItem = false;
             qint64 nextItemEnd = searchRegion.endPos();
-            foreach (const U2Region &r, item.regions) {
+            foreach (const U2Region& r, item.regions) {
                 if (r.endPos() <= searchRegion.endPos() && r.endPos() - 1 > currentRegion.startPos && nextItemEnd > r.endPos() - 1) {
                     nextItemEnd = r.endPos() - 1;
                 }
@@ -148,18 +146,20 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
             onResult = onResult && foundItem;
         }
         // error mb use list of prev included anno?
-        //
         if (onResult && prevMax != max) {
             prevMax = max;
 
             if (res.length > distance) {
                 averagingRes(res, min, max, distance, searchRegion);
             }
-
-            assert(res.length > 0);
-            l->onResult(res);
+            if (!prevResult.contains(res)) {
+                SAFE_POINT(!res.contains(prevResult) || prevResult.length == 0, "Region nested with other.", );
+                SAFE_POINT(prevResult.endPos() < res.endPos(), "Result regions order violated.", );
+                l->onResult(res);
+                prevResult = res;
+            }
         }
-        assert(nextI > i);
+        SAFE_POINT(nextI > i, "Regions order are violated.", );
         i = nextI;
         si.progress = int(100 * float(i - searchRegion.startPos) / searchRegion.length);
     } while (i < searchRegion.endPos());

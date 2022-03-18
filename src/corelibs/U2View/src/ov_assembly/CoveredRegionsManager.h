@@ -33,7 +33,7 @@ namespace U2 {
  * intersecting the region.
  */
 struct CoveredRegion {
-    CoveredRegion(const U2Region &region_, qint64 coverage_)
+    CoveredRegion(const U2Region& region_, qint64 coverage_)
         : region(region_), coverage(coverage_) {
     }
     U2Region region;
@@ -47,7 +47,7 @@ class CoveredRegionsManager {
 public:
     CoveredRegionsManager() {
     }
-    CoveredRegionsManager(const U2Region &visibleRegion_, const U2AssemblyCoverageStat &coverageInfo_);
+    CoveredRegionsManager(const U2Region& visibleRegion_, const U2AssemblyCoverageStat& coverageInfo_);
 
     inline bool isEmpty() const {
         return allRegions.empty();

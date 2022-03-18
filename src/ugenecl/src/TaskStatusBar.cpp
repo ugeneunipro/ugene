@@ -62,9 +62,9 @@ TaskStatusBarCon::TaskStatusBarCon() {
 
     setTSBSettings();
 
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     if (settings->getValue(TSB_SETTINGS_ROOT + "showTaskStatusBar", false).toBool()) {
-        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
+        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
         updateState();
     }
 }
@@ -73,10 +73,10 @@ void TaskStatusBarCon::setTSBCmdlineHelp() {
     assert(!helpRegistered);
     helpRegistered = true;
 
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *noTSBSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* noTSBSection = new CMDLineHelpProvider(
         NO_TASK_STATUS_BAR_CMD_OPTION,
         tr("Specifies not to show the task progress."),
         tr("A task progress is shown by default when a task is running."
@@ -121,7 +121,7 @@ void TaskStatusBarCon::updateState() {
     }
 
     QByteArray ba = taskToTrack->getTaskName().toLocal8Bit();
-    char *buf = ba.data();
+    char* buf = ba.data();
 #ifdef Q_OS_WIN32
     // a bit of magic to workaround Windows console encoding issues
     CharToOemA(buf, buf);
@@ -179,12 +179,12 @@ void TaskStatusBarCon::updateState() {
     }
 }
 
-void TaskStatusBarCon::sl_taskStateChanged(Task *t) {
+void TaskStatusBarCon::sl_taskStateChanged(Task* t) {
     assert(taskToTrack == nullptr);
     if (t->isFinished()) {
         return;
     }
-    WorkflowRunTask *workflowTask = qobject_cast<WorkflowRunTask *>(t);
+    WorkflowRunTask* workflowTask = qobject_cast<WorkflowRunTask*>(t);
     if (workflowTask == nullptr) {  // track progress only for workflow tasks
         return;
     }
@@ -192,7 +192,7 @@ void TaskStatusBarCon::sl_taskStateChanged(Task *t) {
     AppContext::getTaskScheduler()->disconnect(this);
 }
 
-void TaskStatusBarCon::setTaskToTrack(Task *t) {
+void TaskStatusBarCon::setTaskToTrack(Task* t) {
     assert(taskToTrack == nullptr);
     taskToTrack = t;
     connect(taskToTrack, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
@@ -210,14 +210,14 @@ void TaskStatusBarCon::sl_taskStateChanged() {
     taskToTrack->disconnect(this);
     taskToTrack = nullptr;
 
-    foreach (Task *newT, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    foreach (Task* newT, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (!newT->isFinished()) {
             setTaskToTrack(newT);
             break;
         }
     }
     if (taskToTrack == nullptr) {
-        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
+        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
     }
     updateState();
 }

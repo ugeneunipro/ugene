@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-GObjectType U2ObjectTypeUtils::toGObjectType(const U2DataType &dbType) {
+GObjectType U2ObjectTypeUtils::toGObjectType(const U2DataType& dbType) {
     GObjectType result = GObjectTypes::UNKNOWN;
     if (U2Type::Sequence == dbType) {
         result = GObjectTypes::SEQUENCE;
@@ -54,7 +54,7 @@ GObjectType U2ObjectTypeUtils::toGObjectType(const U2DataType &dbType) {
     return result;
 }
 
-U2DataType U2ObjectTypeUtils::toDataType(const GObjectType &gType) {
+U2DataType U2ObjectTypeUtils::toDataType(const GObjectType& gType) {
     U2DataType result = U2Type::Unknown;
     if (GObjectTypes::SEQUENCE == gType) {
         result = U2Type::Sequence;

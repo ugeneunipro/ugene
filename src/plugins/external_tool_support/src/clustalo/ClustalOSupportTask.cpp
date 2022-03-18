@@ -49,9 +49,9 @@ ClustalOSupportTaskSettings::ClustalOSupportTaskSettings() {
 }
 
 /** Name prefix for the sequences in the temporary MSA object created by the task. */
-static constexpr const char *const INDEX_NAME_PREFIX = "EvaUX7cAm";
+static constexpr const char* const INDEX_NAME_PREFIX = "EvaUX7cAm";
 
-ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const ClustalOSupportTaskSettings &_settings)
+ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask(tr("ClustalO alignment task"), TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
@@ -63,10 +63,10 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_input
     resultMsa->setAlphabet(inputMsa->getAlphabet());
 }
 
-ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_inputMsa,
-                                         const GObjectReference &_objRef,
-                                         const QString &_secondAlignmentFileUrl,
-                                         const ClustalOSupportTaskSettings &_settings)
+ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa,
+                                         const GObjectReference& _objRef,
+                                         const QString& _secondAlignmentFileUrl,
+                                         const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask(tr("ClustalO add sequences to alignment task"), TaskFlags_NR_FOSCOE), inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
@@ -80,7 +80,7 @@ ClustalOSupportTask::~ClustalOSupportTask() {
     }
 }
 
-const MultipleSequenceAlignment &ClustalOSupportTask::getResultAlignment() const {
+const MultipleSequenceAlignment& ClustalOSupportTask::getResultAlignment() const {
     return resultMsa;
 }
 
@@ -88,17 +88,17 @@ void ClustalOSupportTask::prepare() {
     algoLog.info(tr("ClustalO alignment started"));
 
     if (objRef.isValid()) {
-        GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+        GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalO");
             alObj->lockState(lock);
         }
     }
 
-    //Add new subdir for temporary files
-    //Folder name is ExternalToolName + CurrentDate + CurrentTime
+    // Add new subdir for temporary files
+    // Folder name is ExternalToolName + CurrentDate + CurrentTime
     QString tmpDirName = "ClustalO_" + QString::number(this->getTaskId()) + "_" +
                          QDate::currentDate().toString("dd.MM.yyyy") + "_" +
                          QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
@@ -108,10 +108,10 @@ void ClustalOSupportTask::prepare() {
     inputMsaTmpFileUrl = taskTmpDir + "tmp.aln";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(inputMsaTmpFileUrl));
 
-    //Check and remove subdir for temporary files
+    // Check and remove subdir for temporary files
     QDir tmpDir(taskTmpDir);
     if (tmpDir.exists()) {
-        foreach (const QString &file, tmpDir.entryList()) {
+        foreach (const QString& file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
         if (!tmpDir.rmdir(tmpDir.absolutePath())) {
@@ -130,8 +130,8 @@ void ClustalOSupportTask::prepare() {
     addSubTask(saveTemporaryDocumentTask);
 }
 
-QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -176,7 +176,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
         res.append(clustalOTask);
     } else if (subTask == clustalOTask) {
         if (!QFileInfo(outputUrl).exists()) {
-            ExternalTool *clustalOTool = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID);
+            ExternalTool* clustalOTool = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID);
             if (clustalOTool->isValid()) {
                 stateInfo.setError(tr("Output file %1 not found").arg(outputUrl));
             } else {
@@ -188,7 +188,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
             return res;
         }
         ioLog.details(tr("Loading output file '%1'").arg(outputUrl));
-        IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         loadTemporaryDocumentTask = new LoadDocumentTask(BaseDocumentFormats::CLUSTAL_ALN, outputUrl, ioFactory);
         loadTemporaryDocumentTask->setSubtaskProgressWeight(5);
         res.append(loadTemporaryDocumentTask);
@@ -198,7 +198,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(tmpDoc->getObjects().length() == 1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
-        auto tmpMsaObject = qobject_cast<MultipleSequenceAlignmentObject *>(tmpDoc->getObjects().first());
+        auto tmpMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(tmpMsaObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMsa = tmpMsaObject->getMsaCopy();
@@ -207,9 +207,9 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
-            GObject *dstObject = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+            GObject* dstObject = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (dstObject != nullptr) {
-                auto dstMsaObject = dynamic_cast<MultipleSequenceAlignmentObject *>(dstObject);
+                auto dstMsaObject = dynamic_cast<MultipleSequenceAlignmentObject*>(dstObject);
                 SAFE_POINT(dstMsaObject != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalO results!", res);
 
                 QList<int> removedRowIndexes;
@@ -256,10 +256,10 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
                         dstMsaObject->updateCachedMultipleAlignment(mi);
                     }
 
-                    QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-                    for (int i = 0, n = resultMsa->getNumRows(); i < n; ++i) {
+                    QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+                    for (int i = 0, n = resultMsa->getRowCount(); i < n; ++i) {
                         qint64 rowId = resultMsa->getMsaRow(i)->getRowDbInfo().rowId;
-                        const QList<U2MsaGap> &newGapModel = resultMsa->getMsaRow(i)->getGapModel();
+                        const QVector<U2MsaGap>& newGapModel = resultMsa->getMsaRow(i)->getGaps();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 
@@ -273,7 +273,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
                     }
                 }
 
-                Document *currentDocument = dstMsaObject->getDocument();
+                Document* currentDocument = dstMsaObject->getDocument();
                 SAFE_POINT(currentDocument != nullptr, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
@@ -283,7 +283,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         algoLog.info(tr("ClustalO alignment successfully finished"));
-        //new document deleted in destructor of LoadDocumentTask
+        // new document deleted in destructor of LoadDocumentTask
     }
     return res;
 }
@@ -309,9 +309,9 @@ void ClustalOSupportTask::unlockMsaObject() {
     if (lock.isNull() || !objRef.isValid()) {
         return;
     }
-    GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+    GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
     if (obj != nullptr) {
-        auto msaObject = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+        auto msaObject = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
         if (msaObject != nullptr && msaObject->isStateLocked()) {
             msaObject->unlockState(lock);
         }
@@ -321,8 +321,8 @@ void ClustalOSupportTask::unlockMsaObject() {
 }
 
 ////////////////////////////////////////
-//ClustalOWithExtFileSpecifySupportTask
-ClustalOWithExtFileSpecifySupportTask::ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings &_settings)
+// ClustalOWithExtFileSpecifySupportTask
+ClustalOWithExtFileSpecifySupportTask::ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings& _settings)
     : Task("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
     GCOUNTER(cvar, "ClustalOSupportTask");
@@ -348,14 +348,14 @@ void ClustalOWithExtFileSpecifySupportTask::prepare() {
     if (alnFormat == BaseDocumentFormats::FASTA) {
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
     }
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
     loadDocumentTask = new LoadDocumentTask(alnFormat, settings.inputFilePath, iof, hints);
 
     addSubTask(loadDocumentTask);
 }
 
-QList<Task *> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -368,7 +368,7 @@ QList<Task *> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
 
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
@@ -376,7 +376,7 @@ QList<Task *> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
         res.append(clustalOSupportTask);
     } else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(clustalOSupportTask->getResultAlignment()->getMsaRows());
 
@@ -386,7 +386,7 @@ QList<Task *> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
                                                 settings.outputFilePath);
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
+        Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
         if (openTask != nullptr) {
             res << openTask;
         }
@@ -399,11 +399,11 @@ Task::ReportResult ClustalOWithExtFileSpecifySupportTask::report() {
 }
 
 ////////////////////////////////////////
-//ClustalOLogParser
+// ClustalOLogParser
 ClustalOLogParser::ClustalOLogParser()
     : ExternalToolLogParser() {
 }
-void ClustalOLogParser::parseOutput(const QString &partOfLog) {
+void ClustalOLogParser::parseOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QChar('\r'));
     lastPartOfLog.first() = lastLine + lastPartOfLog.first();
     lastLine = lastPartOfLog.takeLast();
@@ -418,21 +418,21 @@ void ClustalOLogParser::parseOutput(const QString &partOfLog) {
 int ClustalOLogParser::getProgress() {
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
-        //0..10% progress
+        // 0..10% progress
         if (lastMessage.contains(QRegExp("Pairwise distance calculation progress: \\d+ %"))) {
             QRegExp rx("Pairwise distance calculation progress: (\\d+) %");
             rx.indexIn(lastMessage);
             CHECK(rx.captureCount() > 0, 0);
             return rx.cap(1).toInt() / 10;
         }
-        //10..20% progress
+        // 10..20% progress
         if (lastMessage.contains(QRegExp("Distance calculation within sub-clusters: \\d+ %"))) {
             QRegExp rx("Distance calculation within sub-clusters: (\\d+) %");
             rx.indexIn(lastMessage);
             CHECK(rx.captureCount() > 0, 0);
             return rx.cap(1).toInt() / 10 + 10;
         }
-        //20..100% progress
+        // 20..100% progress
         if (lastMessage.contains(QRegExp("Progressive alignment progress: (\\d+) %"))) {
             QRegExp rx("Progressive alignment progress: (\\d+) %");
             rx.indexIn(lastMessage);
@@ -442,4 +442,4 @@ int ClustalOLogParser::getProgress() {
     }
     return 0;
 }
-}    // namespace U2
+}  // namespace U2

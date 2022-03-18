@@ -41,15 +41,15 @@ class MSAConsensusAlgorithm;
 class OpenMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMaEditorTask(MultipleAlignmentObject *obj, GObjectViewFactoryId fid, GObjectType type);
-    OpenMaEditorTask(UnloadedObject *obj, GObjectViewFactoryId fid, GObjectType type);
-    OpenMaEditorTask(Document *doc, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(MultipleAlignmentObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
     virtual void open();
 
-    static void updateTitle(MSAEditor *msaEd);
+    static void updateTitle(MSAEditor* msaEd);
 
-    virtual MaEditor *getEditor(const QString &viewName, GObject *obj) = 0;
+    virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
 
 protected:
     GObjectType type;
@@ -63,11 +63,11 @@ protected:
 class OpenMsaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMsaEditorTask(MultipleAlignmentObject *obj);
-    OpenMsaEditorTask(UnloadedObject *obj);
-    OpenMsaEditorTask(Document *doc);
+    OpenMsaEditorTask(MultipleAlignmentObject* obj);
+    OpenMsaEditorTask(UnloadedObject* obj);
+    OpenMsaEditorTask(Document* doc);
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj);
+    MaEditor* getEditor(const QString& viewName, GObject* obj);
 };
 
 /*!
@@ -76,29 +76,29 @@ public:
 class OpenMcaEditorTask : public OpenMaEditorTask {
     Q_OBJECT
 public:
-    OpenMcaEditorTask(MultipleAlignmentObject *obj);
-    OpenMcaEditorTask(UnloadedObject *obj);
-    OpenMcaEditorTask(Document *doc);
+    OpenMcaEditorTask(MultipleAlignmentObject* obj);
+    OpenMcaEditorTask(UnloadedObject* obj);
+    OpenMcaEditorTask(Document* doc);
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj);
+    MaEditor* getEditor(const QString& viewName, GObject* obj);
 };
 
 class OpenSavedMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedMaEditorTask(GObjectType type, MaEditorFactory *factory, const QString &viewName, const QVariantMap &stateData);
+    OpenSavedMaEditorTask(GObjectType type, MaEditorFactory* factory, const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
-    static void updateRanges(const QVariantMap &stateData, MaEditor *ctx);
+    static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
 
 private:
     GObjectType type;
-    MaEditorFactory *factory;
+    MaEditorFactory* factory;
 };
 
 class UpdateMaEditorTask : public ObjectViewTask {
 public:
-    UpdateMaEditorTask(GObjectView *v, const QString &stateName, const QVariantMap &stateData);
+    UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
 
     virtual void update();
 };
@@ -108,45 +108,45 @@ public:
     ExportMaConsensusTaskSettings();
 
     bool keepGaps;
-    MaEditor *ma;
+    MaEditor* ma;
     QString url;
     DocumentFormatId format;
     QString name;
-    MSAConsensusAlgorithm *algorithm;
+    MSAConsensusAlgorithm* algorithm;
 };
 
 class ExtractConsensusTask : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTask(bool keepGaps, MaEditor *ma, MSAConsensusAlgorithm *algorithm);
+    ExtractConsensusTask(bool keepGaps, MaEditor* ma, MSAConsensusAlgorithm* algorithm);
     ~ExtractConsensusTask();
     void run();
-    const QByteArray &getExtractedConsensus() const;
+    const QByteArray& getExtractedConsensus() const;
 
 private:
     bool keepGaps;
-    MaEditor *ma;
+    MaEditor* ma;
     QByteArray filteredConsensus;
-    MSAConsensusAlgorithm *algorithm;
+    MSAConsensusAlgorithm* algorithm;
 };
 
 class ExportMaConsensusTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMaConsensusTask(const ExportMaConsensusTaskSettings &s);
+    ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s);
 
     void prepare() override;
 
-    const QString &getConsensusUrl() const;
+    const QString& getConsensusUrl() const;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    Document *createDocument();
+    Document* createDocument();
 
     ExportMaConsensusTaskSettings settings;
-    ExtractConsensusTask *extractConsensus;
+    ExtractConsensusTask* extractConsensus;
     QByteArray filteredConsensus;
 };
 

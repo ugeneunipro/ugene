@@ -38,7 +38,7 @@ namespace U2 {
 
 #define LAST_DIR QString("workflowview/lastdir")
 
-WorkflowMetaDialog::WorkflowMetaDialog(QWidget *p, const Metadata &meta)
+WorkflowMetaDialog::WorkflowMetaDialog(QWidget* p, const Metadata& meta)
     : QDialog(p),
       meta(meta),
       saveController(nullptr) {
@@ -54,8 +54,8 @@ WorkflowMetaDialog::WorkflowMetaDialog(QWidget *p, const Metadata &meta)
 
     connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onSave()));
-    connect(urlEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_onURLChanged(const QString &)));
-    connect(urlEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_onURLChanged(const QString &)));
+    connect(urlEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onURLChanged(const QString&)));
+    connect(urlEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_onURLChanged(const QString&)));
 
     okButton->setDisabled(meta.url.isEmpty());
     nameEdit->setText(meta.name);
@@ -66,7 +66,7 @@ void WorkflowMetaDialog::sl_onSave() {
     assert(!WorkflowUtils::WD_FILE_EXTENSIONS.isEmpty());
     QString url = saveController->getSaveFileName();
     bool endsWithWDExt = false;
-    foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+    foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         assert(!ext.isEmpty());
         if (url.endsWith(ext)) {
             endsWithWDExt = true;
@@ -81,7 +81,7 @@ void WorkflowMetaDialog::sl_onSave() {
     accept();
 }
 
-void WorkflowMetaDialog::sl_onURLChanged(const QString &text) {
+void WorkflowMetaDialog::sl_onURLChanged(const QString& text) {
     okButton->setDisabled(text.isEmpty());
 }
 

@@ -30,15 +30,15 @@
 namespace U2 {
 using namespace HI;
 
-PrimerLibrarySelectorFiller::PrimerLibrarySelectorFiller(HI::GUITestOpStatus &os, int number, bool doubleClick)
+PrimerLibrarySelectorFiller::PrimerLibrarySelectorFiller(HI::GUITestOpStatus& os, int number, bool doubleClick)
     : Filler(os, "PrimerLibrarySelector"), number(number), doubleClick(doubleClick) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimerLibrarySelectorFiller"
 #define GT_METHOD_NAME "run"
 void PrimerLibrarySelectorFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    QAbstractButton *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QAbstractButton* okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
     CHECK_SET_ERR(!okButton->isEnabled(), "the OK button is enabled, but is expected to be disabled");
 
     int librarySize = GTUtilsPrimerLibrary::librarySize(os);

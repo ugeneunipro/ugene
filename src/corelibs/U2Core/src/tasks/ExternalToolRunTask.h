@@ -39,7 +39,7 @@ class ExternalToolListener;
 
 class U2CORE_EXPORT ProcessRun {
 public:
-    QProcess *process;
+    QProcess* process;
     QString program;
     QStringList arguments;
 };
@@ -53,32 +53,32 @@ public:
     /**
      * Don't delete logParser, it will be deleted automatically.
      */
-    ExternalToolRunTask(const QString &toolId, const QStringList &arguments, ExternalToolLogParser *logParser, const QString &workingDirectory = "", const QStringList &additionalPaths = QStringList(), bool parseOutputFile = false);
+    ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser, const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), bool parseOutputFile = false);
     ~ExternalToolRunTask();
 
-    void addOutputListener(ExternalToolListener *outputListener);
+    void addOutputListener(ExternalToolListener* outputListener);
 
     void run();
 
-    void setStandartInputFile(const QString &file) {
+    void setStandartInputFile(const QString& file) {
         inputFile = file;
     }
-    void setStandartOutputFile(const QString &file) {
+    void setStandartOutputFile(const QString& file) {
         outputFile = file;
     }
-    void setAdditionalEnvVariables(const QMap<QString, QString> &envVariable) {
+    void setAdditionalEnvVariables(const QMap<QString, QString>& envVariable) {
         additionalEnvVariables = envVariable;
     }
 
-    static void killProcess(QProcess *process);
+    static void killProcess(QProcess* process);
 
 private:
     static QList<long> getChildPidsRecursive(long parentPid);
     QString parseStandartOutputFile() const;
-    void parseError(const QString &error) const;
+    void parseError(const QString& error) const;
 
     QStringList arguments;
-    ExternalToolLogParser *logParser;
+    ExternalToolLogParser* logParser;
     const QString toolId;
     QString toolName;
     QString workingDirectory;
@@ -86,46 +86,46 @@ private:
     QString outputFile;
     QStringList additionalPaths;
     QMap<QString, QString> additionalEnvVariables;
-    QProcess *externalToolProcess;
+    QProcess* externalToolProcess;
     QScopedPointer<ExternalToolRunTaskHelper> helper;
-    ExternalToolListener *listener;
+    ExternalToolListener* listener;
     QString additionalProcessToKill;
     bool parseOutputFile;
 };
 
 class U2CORE_EXPORT ExternalToolSupportTask : public Task {
 public:
-    ExternalToolSupportTask(const QString &_name, TaskFlags f)
+    ExternalToolSupportTask(const QString& _name, TaskFlags f)
         : Task(_name, f) {
     }
     virtual ~ExternalToolSupportTask() {
     }
 
-    void addListeners(const QList<ExternalToolListener *> &_listeners) {
+    void addListeners(const QList<ExternalToolListener*>& _listeners) {
         listeners.append(_listeners);
     }
-    const QList<ExternalToolListener *> &getListeners() const {
+    const QList<ExternalToolListener*>& getListeners() const {
         return listeners;
     }
 
-    ExternalToolListener *getListener(int listenerNumber);
+    ExternalToolListener* getListener(int listenerNumber);
 
 protected:
-    virtual void setListenerForTask(ExternalToolRunTask *runTask, int listenerNumber = 0);
-    virtual void setListenerForHelper(ExternalToolRunTaskHelper *helper, int listenerNumber = 0);
+    virtual void setListenerForTask(ExternalToolRunTask* runTask, int listenerNumber = 0);
+    virtual void setListenerForHelper(ExternalToolRunTaskHelper* helper, int listenerNumber = 0);
 
 private:
-    QList<ExternalToolListener *> listeners;
+    QList<ExternalToolListener*> listeners;
 };
 
 /** Part of ExternalToolRunTask that belongs to task run  thread -> get signals from that thread directly */
 class U2CORE_EXPORT ExternalToolRunTaskHelper : public QObject {
     Q_OBJECT
 public:
-    ExternalToolRunTaskHelper(ExternalToolRunTask *t);
-    ExternalToolRunTaskHelper(QProcess *process, ExternalToolLogParser *logParser, U2OpStatus &os);
+    ExternalToolRunTaskHelper(ExternalToolRunTask* t);
+    ExternalToolRunTaskHelper(QProcess* process, ExternalToolLogParser* logParser, U2OpStatus& os);
 
-    void addOutputListener(ExternalToolListener *listener);
+    void addOutputListener(ExternalToolListener* listener);
 
 public slots:
     void sl_onReadyToReadLog();
@@ -136,27 +136,27 @@ protected:
 
 private:
     QMutex logMutex;
-    U2OpStatus &os;
-    ExternalToolLogParser *logParser;
-    QProcess *process;
+    U2OpStatus& os;
+    ExternalToolLogParser* logParser;
+    QProcess* process;
     QByteArray logData;
-    ExternalToolListener *listener;
+    ExternalToolListener* listener;
 };
 
 class U2CORE_EXPORT ExternalToolSupportUtils : public QObject {
     Q_OBJECT
 public:
-    static void removeTmpDir(const QString &absoulutePath, U2OpStatus &os);
-    static QString createTmpDir(const QString &domain, U2OpStatus &os);
+    static void removeTmpDir(const QString& absoulutePath, U2OpStatus& os);
+    static QString createTmpDir(const QString& domain, U2OpStatus& os);
     /**
      * Creates a new folder: prePath/domain/tmp_dir_name
      */
-    static QString createTmpDir(const QString &prePath, const QString &domain, U2OpStatus &os);
-    static void appendExistingFile(const QString &path, QStringList &files);
-    static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
-    static ProcessRun prepareProcess(const QString &toolName, const QStringList &arguments, const QString &workingDirectory, const QStringList &additionalPaths, U2OpStatus &os, ExternalToolListener *listener);
-    static QString prepareArgumentsForCmdLine(const QStringList &arguments);
-    static QStringList splitCmdLineArguments(const QString &execString);
+    static QString createTmpDir(const QString& prePath, const QString& domain, U2OpStatus& os);
+    static void appendExistingFile(const QString& path, QStringList& files);
+    static bool startExternalProcess(QProcess* process, const QString& program, const QStringList& arguments);
+    static ProcessRun prepareProcess(const QString& toolName, const QStringList& arguments, const QString& workingDirectory, const QStringList& additionalPaths, U2OpStatus& os, ExternalToolListener* listener);
+    static QString prepareArgumentsForCmdLine(const QStringList& arguments);
+    static QStringList splitCmdLineArguments(const QString& execString);
     static QVariantMap getScoresGapDependencyMap();
 };
 
@@ -167,17 +167,17 @@ public:
     virtual int getProgress() {
         return progress;
     }
-    virtual void parseOutput(const QString &partOfLog);
-    virtual void parseErrOutput(const QString &partOfLog);
+    virtual void parseOutput(const QString& partOfLog);
+    virtual void parseErrOutput(const QString& partOfLog);
     QString getLastError() const {
         return lastError;
     }
 
 protected:
-    virtual void processLine(const QString &line);
-    virtual void processErrLine(const QString &line);
-    virtual bool isError(const QString &line) const;
-    virtual void setLastError(const QString &value);
+    virtual void processLine(const QString& line);
+    virtual void processErrLine(const QString& line);
+    virtual bool isError(const QString& line) const;
+    virtual void setLastError(const QString& value);
 
 private:
     /* If any error occurred, this variable will be non-empty */
@@ -205,7 +205,7 @@ class U2CORE_EXPORT ExternalToolLogProcessor {
 public:
     virtual ~ExternalToolLogProcessor();
 
-    virtual void processLogMessage(const QString &message) = 0;
+    virtual void processLogMessage(const QString& message) = 0;
 };
 
 class U2CORE_EXPORT ExternalToolListener {
@@ -216,17 +216,17 @@ public:
         PROGRAM_WITH_ARGUMENTS = 2
     };
 
-    ExternalToolListener(ExternalToolLogProcessor *logProcessor = nullptr);
+    ExternalToolListener(ExternalToolLogProcessor* logProcessor = nullptr);
     virtual ~ExternalToolListener();
 
-    virtual void addNewLogMessage(const QString &message, int messageType) = 0;
+    virtual void addNewLogMessage(const QString& message, int messageType) = 0;
 
-    virtual void setToolName(const QString &toolName);
-    void setLogProcessor(ExternalToolLogProcessor *logProcessor);
-    const QString &getToolName() const;
+    virtual void setToolName(const QString& toolName);
+    void setLogProcessor(ExternalToolLogProcessor* logProcessor);
+    const QString& getToolName() const;
 
 protected:
-    ExternalToolLogProcessor *logProcessor;
+    ExternalToolLogProcessor* logProcessor;
 
 private:
     QString toolName;

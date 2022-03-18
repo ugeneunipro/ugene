@@ -31,7 +31,7 @@ namespace U2 {
 class AddReadsToDocumentTask : public Task {
     Q_OBJECT
 public:
-    AddReadsToDocumentTask(const QList<U2AssemblyRead> &reads, const QPointer<Document> &doc);
+    AddReadsToDocumentTask(const QList<U2AssemblyRead>& reads, const QPointer<Document>& doc);
 
     void run();
     ReportResult report();

@@ -32,15 +32,15 @@
 
 namespace U2 {
 
-CudaSupportSettingsPageController::CudaSupportSettingsPageController(const QString &_displayMsg, QObject *p /* = 0 */)
+CudaSupportSettingsPageController::CudaSupportSettingsPageController(const QString& _displayMsg, QObject* p /* = 0 */)
     : AppSettingsGUIPageController(tr("CUDA"), CudaSupportSettingsPageId, p), displayMsg(_displayMsg) {
 }
 
 const QString CudaSupportSettingsPageController::helpPageId = QString("444");
 
-AppSettingsGUIPageState *CudaSupportSettingsPageController::getSavedState() {
-    QList<CudaGpuModel *> registeredGpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
-    CudaSupportSettingsPageState *s = new CudaSupportSettingsPageState(registeredGpus.size());
+AppSettingsGUIPageState* CudaSupportSettingsPageController::getSavedState() {
+    QList<CudaGpuModel*> registeredGpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
+    CudaSupportSettingsPageState* s = new CudaSupportSettingsPageState(registeredGpus.size());
     for (int i = 0, end = s->enabledGpus.size(); i < end; ++i) {
         s->enabledGpus[i] = registeredGpus.at(i)->isEnabled();
     }
@@ -48,9 +48,9 @@ AppSettingsGUIPageState *CudaSupportSettingsPageController::getSavedState() {
     return s;
 }
 
-void CudaSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s) {
-    QList<CudaGpuModel *> registeredGpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
-    CudaSupportSettingsPageState *s = qobject_cast<CudaSupportSettingsPageState *>(_s);
+void CudaSupportSettingsPageController::saveState(AppSettingsGUIPageState* _s) {
+    QList<CudaGpuModel*> registeredGpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
+    CudaSupportSettingsPageState* s = qobject_cast<CudaSupportSettingsPageState*>(_s);
 
     // saving state of enabled/disabled GPUs into registry
     for (int i = 0, end = s->enabledGpus.size(); i < end; ++i) {
@@ -59,14 +59,14 @@ void CudaSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s) {
 
     // increasing/decreasing maxuse of according resource
     int totalEnabled = s->enabledGpus.count(true);
-    AppResourceSemaphore *gpuResource = dynamic_cast<AppResourceSemaphore *>(AppResourcePool::instance()->getResource(RESOURCE_CUDA_GPU));
+    AppResourceSemaphore* gpuResource = dynamic_cast<AppResourceSemaphore*>(AppResourcePool::instance()->getResource(RESOURCE_CUDA_GPU));
     if (gpuResource) {
         gpuResource->setMaxUse(totalEnabled);
     }  // else - resource was not registered, nothing to do.
 }
 
-AppSettingsGUIPageWidget *CudaSupportSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
-    CudaSupportSettingsPageWidget *w = new CudaSupportSettingsPageWidget(displayMsg, this);
+AppSettingsGUIPageWidget* CudaSupportSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+    CudaSupportSettingsPageWidget* w = new CudaSupportSettingsPageWidget(displayMsg, this);
     w->setState(state);
     return w;
 }
@@ -76,18 +76,18 @@ CudaSupportSettingsPageState::CudaSupportSettingsPageState(int num_gpus) {
     enabledGpus.resize(num_gpus);
 }
 
-const static char *gpusDiscoveredText =
+const static char* gpusDiscoveredText =
     "The following CUDA-enabled GPUs are detected.<br>\
     Check the GPUs to use for accelerating algorithms computations.";
 
-const static char *noGpusDiscoveredText = "No CUDA-enabled GPU detected.";
+const static char* noGpusDiscoveredText = "No CUDA-enabled GPU detected.";
 
-CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString &_msg, CudaSupportSettingsPageController * /*ctrl*/)
+CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString& _msg, CudaSupportSettingsPageController* /*ctrl*/)
     : onlyMsg(_msg) {
     if (!onlyMsg.isEmpty()) {
         // just display the centered warning message
-        QHBoxLayout *hLayout = new QHBoxLayout(this);
-        QLabel *msgLabel = new QLabel(onlyMsg, this);
+        QHBoxLayout* hLayout = new QHBoxLayout(this);
+        QLabel* msgLabel = new QLabel(onlyMsg, this);
         msgLabel->setAlignment(Qt::AlignLeft);
 
         hLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -97,19 +97,19 @@ CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString &_msg
     } else {
         // everything is OK - adding info about all available GPUs
 
-        QVBoxLayout *vLayout = new QVBoxLayout(this);
+        QVBoxLayout* vLayout = new QVBoxLayout(this);
 
-        QList<CudaGpuModel *> gpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
-        const QString &actualText = gpus.empty() ? tr(noGpusDiscoveredText) : tr(gpusDiscoveredText);
-        QLabel *gpusDiscoveredLabel = new QLabel(actualText, this);
+        QList<CudaGpuModel*> gpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
+        const QString& actualText = gpus.empty() ? tr(noGpusDiscoveredText) : tr(gpusDiscoveredText);
+        QLabel* gpusDiscoveredLabel = new QLabel(actualText, this);
         vLayout->addWidget(gpusDiscoveredLabel);
 
-        foreach (CudaGpuModel *m, gpus) {
+        foreach (CudaGpuModel* m, gpus) {
             vLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-            QHBoxLayout *hLayout = new QHBoxLayout(this);
+            QHBoxLayout* hLayout = new QHBoxLayout(this);
 
             QString gpuText = m->getName() + " " + QString::number(m->getGlobalMemorySizeBytes() / (1024 * 1024)) + " Mb";
-            QCheckBox *check = new QCheckBox(gpuText, this);
+            QCheckBox* check = new QCheckBox(gpuText, this);
 
             check->setChecked(true);
 
@@ -121,8 +121,8 @@ CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString &_msg
     }
 }
 
-void CudaSupportSettingsPageWidget::setState(AppSettingsGUIPageState *_state) {
-    CudaSupportSettingsPageState *state = qobject_cast<CudaSupportSettingsPageState *>(_state);
+void CudaSupportSettingsPageWidget::setState(AppSettingsGUIPageState* _state) {
+    CudaSupportSettingsPageState* state = qobject_cast<CudaSupportSettingsPageState*>(_state);
     assert(state->enabledGpus.size() == gpuEnableChecks.size());
 
     for (int i = 0, end = state->enabledGpus.size(); i < end; ++i) {
@@ -130,8 +130,8 @@ void CudaSupportSettingsPageWidget::setState(AppSettingsGUIPageState *_state) {
     }
 }
 
-AppSettingsGUIPageState *CudaSupportSettingsPageWidget::getState(QString & /*err*/) const {
-    CudaSupportSettingsPageState *state = new CudaSupportSettingsPageState(gpuEnableChecks.size());
+AppSettingsGUIPageState* CudaSupportSettingsPageWidget::getState(QString& /*err*/) const {
+    CudaSupportSettingsPageState* state = new CudaSupportSettingsPageState(gpuEnableChecks.size());
 
     assert(state->enabledGpus.size() == gpuEnableChecks.size());
     for (int i = 0, end = state->enabledGpus.size(); i < end; ++i) {

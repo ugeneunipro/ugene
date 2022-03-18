@@ -70,7 +70,7 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
         // Worm building atom coords
         AtomsVector atoms;
         // Objects representing secondary structure
-        QVector<Object3D *> objects;
+        QVector<Object3D*> objects;
     };
 
     struct Worm {
@@ -81,17 +81,17 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
     Color4f atomColor;
 
     void createObjects3D();
-    Object3D *createStrand3D(int startId, int endId, const BioPolymerModel &bpModel);
-    Object3D *createHelix3D(int startId, int endId, const BioPolymerModel &bpModel);
+    Object3D* createStrand3D(int startId, int endId, const BioPolymerModel& bpModel);
+    Object3D* createHelix3D(int startId, int endId, const BioPolymerModel& bpModel);
     void createWorms();
     void drawWorms();
-    const float *getAtomColor(const SharedAtom &atom);
+    const float* getAtomColor(const SharedAtom& atom);
 
 private:
-    static void createBioPolymerMap(const QMap<int, SharedMolecule> &moleculeMap, QMap<int, BioPolymer> &bioPolymerMap);
+    static void createBioPolymerMap(const QMap<int, SharedMolecule>& moleculeMap, QMap<int, BioPolymer>& bioPolymerMap);
 
 protected:
-    WormsGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings);
+    WormsGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings);
 
 public:
     virtual ~WormsGLRenderer();
@@ -104,7 +104,7 @@ public:
     virtual void updateSettings();
 
 public:
-    static bool isAvailableFor(const BioStruct3D &);
+    static bool isAvailableFor(const BioStruct3D&);
 
     RENDERER_FACTORY(WormsGLRenderer)
 };

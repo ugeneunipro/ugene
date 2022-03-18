@@ -27,10 +27,10 @@
 
 namespace U2 {
 
-ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView *v, const QIcon &icon, const QString &text, int ps, ADVGlobalActionFlags fl)
+ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QIcon& icon, const QString& text, int ps, ADVGlobalActionFlags fl)
     : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
     setIcon(icon);
-    connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
     updateState();
     v->addADVAction(this);
 }
@@ -40,10 +40,10 @@ void ADVGlobalAction::sl_activeSequenceChanged() {
 }
 
 void ADVGlobalAction::updateState() {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(getObjectView());
-    ADVSequenceWidget *w = av->getActiveSequenceWidget();
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(getObjectView());
+    ADVSequenceWidget* w = av->getActiveSequenceWidget();
     bool enabled = w != nullptr;
-    if (enabled && flags.testFlag(ADVGlobalActionFlag_SingleSequenceOnly) && qobject_cast<ADVSingleSequenceWidget *>(w) == nullptr) {
+    if (enabled && flags.testFlag(ADVGlobalActionFlag_SingleSequenceOnly) && qobject_cast<ADVSingleSequenceWidget*>(w) == nullptr) {
         enabled = false;
     }
     if (enabled && !alphabetFilter.isEmpty()) {

@@ -41,7 +41,7 @@ class FindHighFlexRegionsListener {
 public:
     virtual ~FindHighFlexRegionsListener() {
     }
-    virtual void onResult(const HighFlexResult &result) = 0;
+    virtual void onResult(const HighFlexResult& result) = 0;
 };
 
 /**
@@ -52,13 +52,13 @@ class FindHighFlexRegions : public Task, public FindHighFlexRegionsListener {
     Q_OBJECT
 
 public:
-    FindHighFlexRegions(const DNASequence &sequence,
-                        const HighFlexSettings &settings);
+    FindHighFlexRegions(const DNASequence& sequence,
+                        const HighFlexSettings& settings);
 
     void run();
     QList<HighFlexResult> getResults() const;
 
-    virtual void onResult(const HighFlexResult &result);
+    virtual void onResult(const HighFlexResult& result);
 
 private:
     const DNASequence sequence;

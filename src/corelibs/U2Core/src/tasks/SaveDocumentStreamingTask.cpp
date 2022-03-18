@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document *d, IOAdapter *i)
+SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document* d, IOAdapter* i)
     : Task(tr("Save document"), TaskFlags(TaskFlag_None)), lock(nullptr), doc(d), io(i) {
     if (nullptr == doc) {
         stateInfo.setError(L10N::badArgument("doc"));
@@ -56,7 +56,7 @@ void SaveDocumentStreamingTask::run() {
     if (stateInfo.hasError()) {
         return;
     }
-    DocumentFormat *df = doc->getDocumentFormat();
+    DocumentFormat* df = doc->getDocumentFormat();
     df->storeDocument(doc, io, stateInfo);
 }
 
@@ -72,7 +72,7 @@ Task::ReportResult SaveDocumentStreamingTask::report() {
     return ReportResult_Finished;
 }
 
-Document *SaveDocumentStreamingTask::getDocument() const {
+Document* SaveDocumentStreamingTask::getDocument() const {
     return doc;
 }
 

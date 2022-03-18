@@ -22,28 +22,28 @@
 #ifndef _U2_RESOURCE_SETTINGS_GUI_CONTROLLER_H_
 #define _U2_RESOURCE_SETTINGS_GUI_CONTROLLER_H_
 
-#include <ui_ResourceSettingsWidget.h>
-
 #include <QUrl>
 
 #include <U2Core/NetworkConfiguration.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 
+#include <ui_ResourceSettingsWidget.h>
+
 namespace U2 {
 
 class ResourceSettingsGUIPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    ResourceSettingsGUIPageController(QObject *p = nullptr);
+    ResourceSettingsGUIPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -65,11 +65,11 @@ public:
 class ResourceSettingsGUIPageWidget : public AppSettingsGUIPageWidget, public Ui_ResourceSettingsWidget {
     Q_OBJECT
 public:
-    ResourceSettingsGUIPageWidget(ResourceSettingsGUIPageController *ctrl);
+    ResourceSettingsGUIPageWidget(ResourceSettingsGUIPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_threadsCountChanged(int n);

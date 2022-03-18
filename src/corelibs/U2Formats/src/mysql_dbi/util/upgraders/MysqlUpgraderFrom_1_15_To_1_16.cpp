@@ -38,20 +38,20 @@
 
 namespace U2 {
 
-MysqlUpgraderFrom_1_15_To_1_16::MysqlUpgraderFrom_1_15_To_1_16(MysqlDbi *dbi)
+MysqlUpgraderFrom_1_15_To_1_16::MysqlUpgraderFrom_1_15_To_1_16(MysqlDbi* dbi)
     : MysqlUpgrader(Version::parseVersion("1.15.0"), Version::parseVersion("1.16.0"), dbi) {
 }
 
-void MysqlUpgraderFrom_1_15_To_1_16::upgrade(U2OpStatus &os) const {
+void MysqlUpgraderFrom_1_15_To_1_16::upgrade(U2OpStatus& os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
 
     upgradeFeatureDbi(os, dbi->getDbRef());
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
-void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const {
+void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus& os, MysqlDbRef* dbRef) const {
     const bool featureClassFieldExist = (1 == U2SqlQuery(QString("SELECT count(*) FROM information_schema.COLUMNS WHERE "
                                                                  "TABLE_SCHEMA = '%1' AND TABLE_NAME = 'Feature' "
                                                                  "AND COLUMN_NAME = 'class'")
@@ -72,10 +72,10 @@ void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRe
         return;
     }
 
-    U2FeatureDbi *featureDbi = dbi->getFeatureDbi();
+    U2FeatureDbi* featureDbi = dbi->getFeatureDbi();
     SAFE_POINT_EXT(nullptr != featureDbi, os.setError(L10N::nullPointerError("feature dbi")), );
 
-    U2DbiIterator<U2Feature> *dbIterator = featureDbi->getFeatures(FeatureQuery(), os);
+    U2DbiIterator<U2Feature>* dbIterator = featureDbi->getFeatures(FeatureQuery(), os);
     CHECK_OP(os, );
 
     while (dbIterator->hasNext()) {

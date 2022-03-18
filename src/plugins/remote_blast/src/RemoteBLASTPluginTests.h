@@ -39,8 +39,8 @@ public:
     Task::ReportResult report();
 
 private:
-    AnnotationTableObject *ao;
-    RemoteBLASTToAnnotationsTask *task;
+    AnnotationTableObject* ao;
+    RemoteBLASTToAnnotationsTask* task;
     int minLength;
     int maxLength;
     QString index;

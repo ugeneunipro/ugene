@@ -28,11 +28,11 @@ class MultipleAlignmentData;
 
 class MaStateCheck {
 public:
-    MaStateCheck(const MultipleAlignmentData *maData);
+    MaStateCheck(const MultipleAlignmentData* maData);
     ~MaStateCheck();
 
 private:
-    const MultipleAlignmentData *maData;
+    const MultipleAlignmentData* maData;
 };
 
 }  // namespace U2

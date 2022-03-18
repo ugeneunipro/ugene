@@ -29,7 +29,7 @@ using namespace HI;
 
 class SpadesGenomeAssemblyDialogFiller : public Filler {
 public:
-    SpadesGenomeAssemblyDialogFiller(HI::GUITestOpStatus &os, QString _library, QStringList _leftReads, QStringList _rightReads, QString _output, QString _datasetType = "", QString _runningMode = "", QString _kmerSizes = "", int _numThreads = 0, int _memLimit = 0)
+    SpadesGenomeAssemblyDialogFiller(HI::GUITestOpStatus& os, QString _library, QStringList _leftReads, QStringList _rightReads, QString _output, QString _datasetType = "", QString _runningMode = "", QString _kmerSizes = "", int _numThreads = 0, int _memLimit = 0)
         : Filler(os, "GenomeAssemblyDialog"),
           library(_library),
           leftReads(_leftReads),

@@ -31,9 +31,9 @@ namespace U2 {
 
 class U2FORMATS_EXPORT SNPDatabaseUtils {
 public:
-    static Database *openDatabase(const QString &path);
+    static Database* openDatabase(const QString& path);
 
-    static U2DataId getSequenceId(const QString &sequenceName, U2ObjectDbi *objectDbi);
+    static U2DataId getSequenceId(const QString& sequenceName, U2ObjectDbi* objectDbi);
 };
 
 }  // namespace U2

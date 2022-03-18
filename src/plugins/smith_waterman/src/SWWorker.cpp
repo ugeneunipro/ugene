@@ -79,11 +79,11 @@ void SWAlgoEditor::populate() {
     if (algoLst.isEmpty()) {
         return;
     }
-    foreach (const QString &n, algoLst) {
+    foreach (const QString& n, algoLst) {
         comboItems.append(qMakePair(n, n));
     }
-    QList<Attribute *> lst = proto->getAttributes();
-    foreach (Attribute *a, lst) {
+    QList<Attribute*> lst = proto->getAttributes();
+    foreach (Attribute* a, lst) {
         if (a->getId() == ALGO_ATTR) {
             a->setAttributeValue(algoLst.first());
             break;
@@ -92,7 +92,7 @@ void SWAlgoEditor::populate() {
 }
 
 void SWWorkerFactory::init() {
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor patd(PATTERN_PORT,
                         SWWorker::tr("Pattern Data"),
@@ -121,7 +121,7 @@ void SWWorkerFactory::init() {
 
     QStringList filterLst = AppContext::getSWResultFilterRegistry()->getFiltersIds();
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor nd(NAME_ATTR,
                       SWWorker::tr("Annotate as"),
@@ -189,9 +189,9 @@ void SWWorkerFactory::init() {
                                  " the well-known Smith-Waterman algorithm for performing local"
                                  " sequence alignment."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     // delegates
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = 1;
@@ -210,7 +210,7 @@ void SWWorkerFactory::init() {
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
     {
         QVariantMap m;
-        foreach (const QString &n, filterLst) {
+        foreach (const QString& n, filterLst) {
             m.insert(n, n);
         }
         delegates[FILTER_ATTR] = new ComboBoxDelegate(m);
@@ -219,13 +219,13 @@ void SWWorkerFactory::init() {
         QVariantMap m;
         m.insert(SWWorker::tr("Auto"), QString("Auto"));
         QStringList lst = AppContext::getSubstMatrixRegistry()->getMatrixNames();
-        foreach (const QString &n, lst) {
+        foreach (const QString& n, lst) {
             m.insert(n, n);
         }
         delegates[MATRIX_ATTR] = new ComboBoxDelegate(m);
     }
 
-    SWAlgoEditor *aled = new SWAlgoEditor(proto);
+    SWAlgoEditor* aled = new SWAlgoEditor(proto);
     aled->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(populate()));
     delegates[ALGO_ATTR] = aled;
     proto->setEditor(new DelegateEditor(delegates));
@@ -233,11 +233,11 @@ void SWWorkerFactory::init() {
     proto->setPrompter(new SWPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SWWorkerFactory());
 }
 
-static StrandOption getStrand(const QString &s) {
+static StrandOption getStrand(const QString& s) {
     QString str = s.toLower();
     if (BaseAttributes::STRAND_BOTH().startsWith(str)) {
         return StrandOption_Both;
@@ -260,10 +260,10 @@ static StrandOption getStrand(const QString &s) {
  * SWPrompter
  **************************/
 QString SWPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    IntegralBusPort *patternPort = qobject_cast<IntegralBusPort *>(target->getPort(PATTERN_PORT));
-    Actor *ptrnProducer = patternPort->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
+    Actor* ptrnProducer = patternPort->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
     QString seqName;
@@ -320,7 +320,7 @@ QString SWPrompter::composeRichDoc() {
 /**************************
  * SWWorker
  **************************/
-SWWorker::SWWorker(Actor *a)
+SWWorker::SWWorker(Actor* a)
     : BaseWorker(a, false), input(nullptr), output(nullptr) {
 }
 
@@ -344,7 +344,7 @@ bool SWWorker::isReady() const {
     return patternHasMes || (patternEnded && (inputHasMes || inputEnded));
 }
 
-Task *SWWorker::tick() {
+Task* SWWorker::tick() {
     while (patternPort->hasMessage()) {
         SharedDbiDataHandler ptrnId = patternPort->get().getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> ptrnObj(StorageUtils::getSequenceObject(context->getDataStorage(), ptrnId));
@@ -446,7 +446,7 @@ Task *SWWorker::tick() {
         // translations
         cfg.strand = getStrand(actor->getParameter(BaseAttributes::STRAND_ATTRIBUTE().getId())->getAttributeValue<QString>(context));
         if (cfg.strand != StrandOption_DirectOnly) {
-            DNATranslation *compTT = nullptr;
+            DNATranslation* compTT = nullptr;
             if (seq.alphabet->isNucleic()) {
                 compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
             }
@@ -459,7 +459,7 @@ Task *SWWorker::tick() {
         }
         if (actor->getParameter(AMINO_ATTR)->getAttributeValue<bool>(context)) {
             DNATranslationType tt = seq.alphabet->getType() == DNAAlphabet_NUCL ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
-            QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(seq.alphabet, tt);
+            QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(seq.alphabet, tt);
             if (!TTs.isEmpty()) {  // FIXME let user choose or use hints ?
                 cfg.aminoTT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(seq.alphabet);
             }
@@ -467,7 +467,7 @@ Task *SWWorker::tick() {
 
         // algorithm
         QString algName = actor->getParameter(ALGO_ATTR)->getAttributeValue<QString>(context);
-        SmithWatermanTaskFactory *algo = AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(algName);
+        SmithWatermanTaskFactory* algo = AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(algName);
         if (!algo) {
             return new FailTask(tr("SmithWaterman algorithm not found: %1").arg(algName));
         }
@@ -477,7 +477,7 @@ Task *SWWorker::tick() {
             algoLog.error(tr("Incorrect value: search pattern, pattern is empty"));
             return new FailTask(tr("Incorrect value: search pattern, pattern is empty"));
         }
-        QList<Task *> subs;
+        QList<Task*> subs;
         foreach (QByteArray p, patternList) {
             if (!cfg.pSm.getAlphabet()->containsAll(p.constData(), p.length())) {
                 algoLog.error(tr("Incorrect value: pattern alphabet doesn't match sequence alphabet "));
@@ -492,20 +492,20 @@ Task *SWWorker::tick() {
                                          ->getAttributeValue<bool>(context)
                                      ? patternNames.value(p, defaultName)
                                      : defaultName;
-            SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(
+            SmithWatermanReportCallbackAnnotImpl* rcb = new SmithWatermanReportCallbackAnnotImpl(
                 nullptr, U2FeatureTypes::MiscFeature, resultName, QString(), "", false);
             config.resultCallback = rcb;
             config.resultListener = new SmithWatermanResultListener();
 
-            Task *swTask = algo->getTaskInstance(config, tr("smith_waterman_task"));
+            Task* swTask = algo->getTaskInstance(config, tr("smith_waterman_task"));
             callbacks.insert(swTask, rcb);
             patterns.insert(swTask, config.ptrn);
             subs << swTask;
         }
         assert(!subs.isEmpty());
 
-        MultiTask *multiSw = new MultiTask(tr("Smith waterman subtasks"), subs);
-        connect(new TaskSignalMapper(multiSw), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        MultiTask* multiSw = new MultiTask(tr("Smith waterman subtasks"), subs);
+        connect(new TaskSignalMapper(multiSw), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return multiSw;
     } else if (input->isEnded()) {
         setDone();
@@ -514,19 +514,19 @@ Task *SWWorker::tick() {
     return nullptr;
 }
 
-void SWWorker::sl_taskFinished(Task *t) {
+void SWWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> annData;
-    MultiTask *multiSw = qobject_cast<MultiTask *>(t);
+    MultiTask* multiSw = qobject_cast<MultiTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
-    QList<Task *> subs = multiSw->getTasks();
+    QList<Task*> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );
     QStringList ptrns;
-    foreach (Task *sub, subs) {
+    foreach (Task* sub, subs) {
         SAFE_POINT(nullptr != sub, "Invalid task is encountered", );
         if (sub->isCanceled()) {
             return;
         }
-        SmithWatermanReportCallbackAnnotImpl *rcb = callbacks.take(sub);
+        SmithWatermanReportCallbackAnnotImpl* rcb = callbacks.take(sub);
         assert(rcb != nullptr);
         if (rcb) {
             // crop long names

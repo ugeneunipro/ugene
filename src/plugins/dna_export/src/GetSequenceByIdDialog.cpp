@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-GetSequenceByIdDialog::GetSequenceByIdDialog(QWidget *w)
+GetSequenceByIdDialog::GetSequenceByIdDialog(QWidget* w)
     : QDialog(w) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930717");

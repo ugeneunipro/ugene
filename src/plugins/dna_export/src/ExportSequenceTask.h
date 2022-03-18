@@ -36,31 +36,31 @@ class U2Sequence;
 class ExportSequenceItem {
 public:
     ExportSequenceItem();
-    ExportSequenceItem(const ExportSequenceItem &other);
+    ExportSequenceItem(const ExportSequenceItem& other);
 
     ~ExportSequenceItem();
 
-    void setOwnershipOverSeq(const U2Sequence &seq, const U2DbiRef &dbiRef);
-    void setSequenceInfo(U2SequenceObject *seqObj);
+    void setOwnershipOverSeq(const U2Sequence& seq, const U2DbiRef& dbiRef);
+    void setSequenceInfo(U2SequenceObject* seqObj);
 
     // after calling this method the client code takes responsibility for correct release the sequence from the database
-    U2SequenceObject *takeOwnedSeq();
+    U2SequenceObject* takeOwnedSeq();
     bool ownsSeq() const;
     bool isEmpty() const;
 
-    ExportSequenceItem &operator=(const ExportSequenceItem &other);
-    bool operator==(const ExportSequenceItem &other) const;
+    ExportSequenceItem& operator=(const ExportSequenceItem& other);
+    bool operator==(const ExportSequenceItem& other) const;
 
     U2EntityRef seqRef;  // sequence to copy
     QString name;
     bool circular;
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     qint64 length;
 
     QList<SharedAnnotationData> annotations;  // annotations to copy
-    const DNATranslation *complTT;  // complement translations for a sequence. Used only if 'strand' is 'compl' or 'both'
-    const DNATranslation *aminoTT;  // amino translation for a sequence. If not NULL -> sequence is translated
-    const DNATranslation *backTT;  // nucleic translation for a sequence. If not NULL -> sequence is back translated
+    const DNATranslation* complTT;  // complement translations for a sequence. Used only if 'strand' is 'compl' or 'both'
+    const DNATranslation* aminoTT;  // amino translation for a sequence. If not NULL -> sequence is translated
+    const DNATranslation* backTT;  // nucleic translation for a sequence. If not NULL -> sequence is back translated
 
 private:
     void startSeqOwnership();
@@ -101,13 +101,13 @@ public:
 class ExportSequenceTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportSequenceTask(const ExportSequenceTaskSettings &s);
+    ExportSequenceTask(const ExportSequenceTaskSettings& s);
 
     void run() override;
 
-    static ExportSequenceItem mergedCircularItem(const ExportSequenceItem &first,
-                                                 const ExportSequenceItem &second,
-                                                 U2OpStatus &os);
+    static ExportSequenceItem mergedCircularItem(const ExportSequenceItem& first,
+                                                 const ExportSequenceItem& second,
+                                                 U2OpStatus& os);
 
 private:
     ExportSequenceTaskSettings config;
@@ -122,8 +122,8 @@ public:
 
     QPointer<U2SequenceObject> sequence;  // sequence
     QList<SharedAnnotationData> annotations;  // annotated regions to be exported
-    const DNATranslation *aminoTT;  // if not null -> sequence regions will be translated (0-frame only)
-    const DNATranslation *complTT;  // if not null & annotation location is on complement strand - it will be rev-complemented
+    const DNATranslation* aminoTT;  // if not null -> sequence regions will be translated (0-frame only)
+    const DNATranslation* complTT;  // if not null & annotation location is on complement strand - it will be rev-complemented
 };
 
 class ExportAnnotationSequenceTaskSettings {
@@ -135,26 +135,26 @@ public:
 class ExportAnnotationSequenceSubTask : public Task {
     Q_OBJECT
 public:
-    ExportAnnotationSequenceSubTask(ExportAnnotationSequenceTaskSettings &s);
+    ExportAnnotationSequenceSubTask(ExportAnnotationSequenceTaskSettings& s);
 
     void run();
 
 private:
-    U2Sequence importAnnotatedSeq2Dbi(const SharedAnnotationData &ad, const ExportSequenceAItem &ei, const U2DbiRef &resultDbiRef, QVector<U2Region> &resultRegions, U2OpStatus &os);
-    ExportAnnotationSequenceTaskSettings &config;
+    U2Sequence importAnnotatedSeq2Dbi(const SharedAnnotationData& ad, const ExportSequenceAItem& ei, const U2DbiRef& resultDbiRef, QVector<U2Region>& resultRegions, U2OpStatus& os);
+    ExportAnnotationSequenceTaskSettings& config;
 };
 
 class ExportAnnotationSequenceTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings &s);
+    ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings& s);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     ExportAnnotationSequenceTaskSettings config;
-    ExportAnnotationSequenceSubTask *extractSubTask;
-    ExportSequenceTask *exportSubTask;
+    ExportAnnotationSequenceSubTask* extractSubTask;
+    ExportSequenceTask* exportSubTask;
 };
 
 }  // namespace U2

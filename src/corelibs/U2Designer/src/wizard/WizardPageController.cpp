@@ -30,22 +30,22 @@
 
 namespace U2 {
 
-WizardPageController::WizardPageController(WizardController *wc, WizardPage *page)
+WizardPageController::WizardPageController(WizardController* wc, WizardPage* page)
     : wPage(nullptr), wc(wc), page(page) {
 }
 
 WizardPageController::~WizardPageController() {
 }
 
-void WizardPageController::setQtPage(WDWizardPage *value) {
+void WizardPageController::setQtPage(WDWizardPage* value) {
     wPage = value;
 }
 
-WDWizardPage *WizardPageController::getQtPage() const {
+WDWizardPage* WizardPageController::getQtPage() const {
     return wPage;
 }
 
-WizardPage *WizardPageController::getPage() const {
+WizardPage* WizardPageController::getPage() const {
     return page;
 }
 
@@ -53,7 +53,7 @@ void WizardPageController::applyLayout() {
     wc->clearControllers();
     qDeleteAll(controllers);
     controllers.clear();
-    QLayout *old = wPage->layout();
+    QLayout* old = wPage->layout();
     removeLayout(old);
 
     U2OpStatusImpl os;
@@ -77,9 +77,9 @@ void WizardPageController::applyLayout() {
     wPage->setFinalPage(page->isFinal());
 }
 
-void WizardPageController::setError(WDWizardPage *wPage) {
+void WizardPageController::setError(WDWizardPage* wPage) {
     wc->setBroken();
-    QLayout *l = new QHBoxLayout(wPage);
+    QLayout* l = new QHBoxLayout(wPage);
     QString text = QObject::tr("The page is broken. Please, close the wizard and report us the error: ugene@unipro.ru");
     wPage->setFinalPage(true);
     l->addWidget(new QLabel(text));
@@ -87,11 +87,11 @@ void WizardPageController::setError(WDWizardPage *wPage) {
 }
 
 namespace {
-QList<QLayout *> removeOneLayoutContent(QLayout *l) {
-    QList<QLayout *> result;
+QList<QLayout*> removeOneLayoutContent(QLayout* l) {
+    QList<QLayout*> result;
 
     while (l->count() > 0) {
-        QLayoutItem *item = l->takeAt(0);
+        QLayoutItem* item = l->takeAt(0);
         if (nullptr != item->widget()) {
             item->widget()->setParent(nullptr);
             delete item;
@@ -105,22 +105,22 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
 }
 }  // namespace
 
-void WizardPageController::removeLayout(QLayout *layoutToRemove) {
+void WizardPageController::removeLayout(QLayout* layoutToRemove) {
     CHECK(layoutToRemove != nullptr, );
-    QList<QLayout *> layouts;
-    QList<QLayout *> layoutStack;
+    QList<QLayout*> layouts;
+    QList<QLayout*> layoutStack;
     layouts << layoutToRemove;
     layoutStack << layoutToRemove;
 
     while (!layouts.isEmpty()) {
-        QLayout *current = layouts.takeFirst();
-        QList<QLayout *> innerLayouts = removeOneLayoutContent(current);
+        QLayout* current = layouts.takeFirst();
+        QList<QLayout*> innerLayouts = removeOneLayoutContent(current);
         layouts << innerLayouts;
         layoutStack << innerLayouts;
     }
 
     while (!layoutStack.isEmpty()) {
-        QLayout *l = layoutStack.takeLast();
+        QLayout* l = layoutStack.takeLast();
         delete l;
     }
 }

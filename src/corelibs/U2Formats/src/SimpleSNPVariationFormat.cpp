@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-SimpleSNPVariationFormat::SimpleSNPVariationFormat(QObject *p)
+SimpleSNPVariationFormat::SimpleSNPVariationFormat(QObject* p)
     : AbstractVariationFormat(p, BaseDocumentFormats::SNP, {"snp"}) {
     formatName = "SimpleSNP";
 

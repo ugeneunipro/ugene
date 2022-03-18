@@ -34,24 +34,25 @@
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 const QString QUALIFIER_NAME_CIGAR = "cigar";
 const QString QUALIFIER_NAME_SUBJECT = "subj_seq";
 
 namespace U2 {
 
-Annotation::Annotation(const U2DataId &featureId, const SharedAnnotationData &data, AnnotationGroup *parentGroup, AnnotationTableObject *parentObject)
+Annotation::Annotation(const U2DataId& featureId, const SharedAnnotationData& data, AnnotationGroup* parentGroup, AnnotationTableObject* parentObject)
     : U2Entity(featureId), parentObject(parentObject), data(data), group(parentGroup) {
     SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("Annotation group"), );
     SAFE_POINT(nullptr != parentObject, L10N::nullPointerError("Annotation table object"), );
     SAFE_POINT(hasValidId(), "Invalid DB reference", );
 }
 
-AnnotationTableObject *Annotation::getGObject() const {
+AnnotationTableObject* Annotation::getGObject() const {
     return parentObject;
 }
 
-const SharedAnnotationData &Annotation::getData() const {
+const SharedAnnotationData& Annotation::getData() const {
     return data;
 }
 
@@ -63,7 +64,7 @@ U2FeatureType Annotation::getType() const {
     return data->type;
 }
 
-void Annotation::setName(const QString &name) {
+void Annotation::setName(const QString& name) {
     SAFE_POINT(!name.isEmpty(), "Attempting to set an empty name for an annotation!", );
     CHECK(name != data->name, );
 
@@ -108,7 +109,7 @@ U2Strand Annotation::getStrand() const {
     return data->getStrand();
 }
 
-void Annotation::setStrand(const U2Strand &strand) {
+void Annotation::setStrand(const U2Strand& strand) {
     CHECK(strand != data->location->strand, );
 
     U2Location newLocation = data->location;
@@ -150,7 +151,7 @@ U2Location Annotation::getLocation() const {
     return data->location;
 }
 
-void Annotation::setLocation(const U2Location &location) {
+void Annotation::setLocation(const U2Location& location) {
     CHECK(*(data->location) != *location, );
 
     U2OpStatusImpl os;
@@ -164,19 +165,19 @@ void Annotation::setLocation(const U2Location &location) {
     parentObject->emit_onAnnotationsModified(md);
 }
 
-const QVector<U2Region> &Annotation::getRegions() const {
+const QVector<U2Region>& Annotation::getRegions() const {
     return data->getRegions();
 }
 
 qint64 Annotation::getRegionsLen() const {
     qint64 len = 0;
-    foreach (const U2Region &region, getRegions()) {
+    foreach (const U2Region& region, getRegions()) {
         len += region.length;
     }
     return len;
 }
 
-void Annotation::updateRegions(const QVector<U2Region> &regions) {
+void Annotation::updateRegions(const QVector<U2Region>& regions) {
     SAFE_POINT(!regions.isEmpty(), "Attempting to assign the annotation to an empty region!", );
     CHECK(regions != data->location->regions, );
 
@@ -194,7 +195,7 @@ void Annotation::updateRegions(const QVector<U2Region> &regions) {
     parentObject->emit_onAnnotationsModified(md);
 }
 
-void Annotation::addLocationRegion(const U2Region &reg) {
+void Annotation::addLocationRegion(const U2Region& reg) {
     SAFE_POINT(!reg.isEmpty(), "Attempting to annotate an empty region!", );
     CHECK(!data->location->regions.contains(reg), );
 
@@ -216,7 +217,7 @@ QVector<U2Qualifier> Annotation::getQualifiers() const {
     return data->qualifiers;
 }
 
-void Annotation::addQualifier(const U2Qualifier &q) {
+void Annotation::addQualifier(const U2Qualifier& q) {
     SAFE_POINT(q.isValid(), "Invalid annotation qualifier detected!", );
 
     U2OpStatusImpl os;
@@ -230,7 +231,7 @@ void Annotation::addQualifier(const U2Qualifier &q) {
     parentObject->emit_onAnnotationsModified(md);
 }
 
-void Annotation::removeQualifier(const U2Qualifier &q) {
+void Annotation::removeQualifier(const U2Qualifier& q) {
     SAFE_POINT(q.isValid(), "Invalid annotation qualifier detected!", );
 
     U2OpStatusImpl os;
@@ -267,11 +268,11 @@ void Annotation::setCaseAnnotation(bool caseAnnotation) {
     data->caseAnnotation = caseAnnotation;
 }
 
-AnnotationGroup *Annotation::getGroup() const {
+AnnotationGroup* Annotation::getGroup() const {
     return group;
 }
 
-void Annotation::setGroup(AnnotationGroup *newGroup) {
+void Annotation::setGroup(AnnotationGroup* newGroup) {
     CHECK(newGroup != group, );
     SAFE_POINT(nullptr != newGroup, L10N::nullPointerError("annotation group"), );
     SAFE_POINT(parentObject == newGroup->getGObject(), "Illegal object!", );
@@ -283,20 +284,20 @@ void Annotation::setGroup(AnnotationGroup *newGroup) {
     group = newGroup;
 }
 
-void Annotation::findQualifiers(const QString &name, QList<U2Qualifier> &res) const {
+void Annotation::findQualifiers(const QString& name, QList<U2Qualifier>& res) const {
     SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", );
 
-    foreach (const U2Qualifier &qual, data->qualifiers) {
+    foreach (const U2Qualifier& qual, data->qualifiers) {
         if (name == qual.name) {
             res << qual;
         }
     }
 }
 
-QString Annotation::findFirstQualifierValue(const QString &name) const {
+QString Annotation::findFirstQualifierValue(const QString& name) const {
     SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", QString());
 
-    foreach (const U2Qualifier &qual, data->qualifiers) {
+    foreach (const U2Qualifier& qual, data->qualifiers) {
         if (name == qual.name) {
             return qual.value;
         }
@@ -304,34 +305,34 @@ QString Annotation::findFirstQualifierValue(const QString &name) const {
     return QString();
 }
 
-bool Annotation::annotationLessThan(Annotation *first, Annotation *second) {
+bool Annotation::annotationLessThan(Annotation* first, Annotation* second) {
     SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
 
-    AnnotationGroup *firstGroup = first->getGroup();
+    AnnotationGroup* firstGroup = first->getGroup();
     SAFE_POINT(nullptr != firstGroup, L10N::nullPointerError("annotation group"), false);
-    AnnotationGroup *secondGroup = second->getGroup();
+    AnnotationGroup* secondGroup = second->getGroup();
     SAFE_POINT(nullptr != secondGroup, L10N::nullPointerError("annotation group"), false);
 
     return firstGroup->getName() < secondGroup->getName();
 }
 
-bool Annotation::annotationLessThanByRegion(Annotation *first, Annotation *second) {
+bool Annotation::annotationLessThanByRegion(Annotation* first, Annotation* second) {
     SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
 
     const U2Location firstLocation = first->getLocation();
     const U2Location secondLocation = second->getLocation();
     SAFE_POINT(!firstLocation->isEmpty() && !secondLocation->isEmpty(), "Invalid annotation's location detected!", false);
 
-    const U2Region &r1 = firstLocation->regions.first();
-    const U2Region &r2 = secondLocation->regions.first();
+    const U2Region& r1 = firstLocation->regions.first();
+    const U2Region& r2 = secondLocation->regions.first();
     return r1 < r2;
 }
 
-bool Annotation::isValidQualifierName(const QString &name) {
+bool Annotation::isValidQualifierName(const QString& name) {
     return U2Qualifier::isValidQualifierName(name);
 }
 
-bool Annotation::isValidQualifierValue(const QString &value) {
+bool Annotation::isValidQualifierValue(const QString& value) {
     return U2Qualifier::isValidQualifierValue(value);
 }
 
@@ -379,7 +380,7 @@ QBitArray getValidAnnotationChars() {
 
 }  // namespace
 
-bool Annotation::isValidAnnotationName(const QString &n) {
+bool Annotation::isValidAnnotationName(const QString& n) {
     if (n.isEmpty() || ANNOTATION_NAME_MAX_LENGTH < n.length()) {
         return false;
     }
@@ -396,7 +397,7 @@ bool Annotation::isValidAnnotationName(const QString &n) {
     return true;
 }
 
-QString Annotation::produceValidAnnotationName(const QString &name) {
+QString Annotation::produceValidAnnotationName(const QString& name) {
     QString result = name.trimmed();
     if (result.isEmpty()) {
         return U2FeatureTypes::getVisualName(U2FeatureTypes::MiscFeature);
@@ -418,7 +419,7 @@ QString Annotation::produceValidAnnotationName(const QString &name) {
     return result;
 }
 
-static QList<U2CigarToken> parseCigar(const QString &cigar) {
+static QList<U2CigarToken> parseCigar(const QString& cigar) {
     QList<U2CigarToken> cigarTokens;
 
     QRegExp rx("(\\d+)(\\w)");
@@ -449,7 +450,7 @@ static QList<U2CigarToken> parseCigar(const QString &cigar) {
     return cigarTokens;
 }
 
-static QString getAlignmentTip(const QString &ref, const QList<U2CigarToken> &tokens, int maxVisibleSymbols) {
+static QString getAlignmentTip(const QString& ref, const QList<U2CigarToken>& tokens, int maxVisibleSymbols) {
     QString alignmentTip;
 
     if (tokens.isEmpty()) {
@@ -458,7 +459,7 @@ static QString getAlignmentTip(const QString &ref, const QList<U2CigarToken> &to
 
     int cigarPos = 0;
     QList<int> mismatchPositions;
-    for (const U2CigarToken &t : qAsConst(tokens)) {
+    for (const U2CigarToken& t : qAsConst(tokens)) {
         if (t.op == U2CigarOp_M) {
             alignmentTip += ref.midRef(cigarPos, t.count);
             cigarPos += t.count;
@@ -492,19 +493,19 @@ static QString getAlignmentTip(const QString &ref, const QList<U2CigarToken> &to
     return alignmentTip;
 }
 
-QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRows, U2SequenceObject *seqObj, DNATranslation *complTT, DNATranslation *aminoTT) {
+QString Annotation::getQualifiersTip(const SharedAnnotationData& data, int maxRows, U2SequenceObject* seqObj, DNATranslation* complTT, DNATranslation* aminoTT) {
     SAFE_POINT(0 < maxRows, "Invalid maximum row count parameter passed!", QString());
     QString tip;
 
     int rows = 0;
-    const qint64 QUALIFIER_VALUE_CUT = 40;
+    static constexpr qint64 MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP = 40;
 
     QString cigar;
     QString ref;
     if (!data->qualifiers.isEmpty()) {
         tip += "<nobr>";
         bool first = true;
-        foreach (const U2Qualifier &q, data->qualifiers) {
+        foreach (const U2Qualifier& q, data->qualifiers) {
             if (++rows > maxRows) {
                 break;
             }
@@ -515,8 +516,8 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                 continue;
             }
             QString val = q.value;
-            if (val.length() > QUALIFIER_VALUE_CUT) {
-                val = val.left(QUALIFIER_VALUE_CUT) + " ...";
+            if (val.length() > MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP) {
+                val = val.left(MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP) + " ...";
             }
             if (first) {
                 first = false;
@@ -530,114 +531,50 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
 
     if (!cigar.isEmpty() && !ref.isEmpty()) {
         const QList<U2CigarToken> tokens = parseCigar(cigar);
-        const QString alignmentTip = getAlignmentTip(ref, tokens, QUALIFIER_VALUE_CUT);
+        const QString alignmentTip = getAlignmentTip(ref, tokens, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP);
         tip += "<br><b>Reference</b> = " + alignmentTip;
         rows++;
     }
 
-    bool canShowSeq = true;
-    const int seqLen = (nullptr != seqObj) ? seqObj->getSequenceLength() : 0;
-    foreach (const U2Region &r, data->location->regions) {
-        if (r.endPos() > seqLen) {
-            canShowSeq = false;
-        }
-    }
+    qint64 sequenceLength = seqObj != nullptr ? seqObj->getSequenceLength() : 0;
 
-    if (nullptr != seqObj && rows <= maxRows && (data->location->strand.isCompementary() || complTT != nullptr) && canShowSeq) {
-        QVector<U2Region> loc = data->location->regions;
-        QString seqVal;
-        QString aminoVal;
-        bool complete = true;
-        QList<RegionsPair> merged = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(loc, seqLen);
-        bool isComplementary = data->location->strand.isCompementary() && nullptr != complTT;
-        if (isComplementary) {
-            std::reverse(merged.begin(), merged.end());
-        }
-        bool hasAnnotatiedRegionsContainJunctionPoint = seqObj->isCircular() && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged);
-        foreach (const RegionsPair &pair, merged) {
-            if (!seqVal.isEmpty()) {
-                seqVal += "^";
+    // Sequence is shown only if sequence object is present and location is valid.
+    QVector<U2Region> regions = data->location->regions;
+    U2Region wholeSequenceRegion(0, sequenceLength);
+    bool showSequence = seqObj != nullptr && rows <= maxRows && (!data->location->strand.isComplementary() || complTT != nullptr) &&
+                        std::all_of(regions.begin(), regions.end(), [&wholeSequenceRegion](const U2Region& region) {
+                            return region.length > 0 && wholeSequenceRegion.contains(region);
+                        });
+    if (showSequence) {
+        QVector<U2Region> tooltipRegions = data->location->strand.isComplementary()
+                                               ? U2Region::tailOf(regions, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP)
+                                               : U2Region::headOf(regions, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP);
+        auto effectiveComplTT = data->location->strand.isComplementary() ? complTT : nullptr;
+        const U2EntityRef& sequenceRef = seqObj->getEntityRef();
+        U2OpStatus2Log os;
+        QByteArray seqVal = U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, nullptr, data->isJoin(), os).join("^");
+        QByteArray aminoVal = os.hasError() || aminoTT == nullptr
+                                  ? ""
+                                  : U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, aminoTT, data->isJoin(), os).join("^");
+        if (!os.hasError() && seqVal.length() > 0) {
+            if (!tip.isEmpty()) {
+                tip += "<br>";
             }
-            if (!aminoVal.isEmpty()) {
-                aminoVal += "^";
-            }
-            qint64 firstRegionLength = qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - seqVal.length());
-            qint64 secondPartRegionLength = 0;
-            if (firstRegionLength != pair.first.length) {
-                complete = false;
-            }
-            U2Region firstRegion;
-            U2Region secondRegion;
-            if (hasAnnotatiedRegionsContainJunctionPoint && !pair.second.isEmpty()) {
-                if (isComplementary) {
-                    /*
-                     * If the sequence is circular and the annotation is complementary the region from 0 to N should be shown first from N to 0 and the region from M to 'sequeceLength' should be shown second from 'sequeceLength' to M
-                     */
-                    firstRegionLength = qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - seqVal.length());
-                    if (firstRegionLength != pair.second.length) {
-                        complete = false;
-                    }
-                    firstRegion = U2Region((pair.second.endPos() - firstRegionLength), firstRegionLength);
-                    secondPartRegionLength = qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegionLength));
-                    if (secondPartRegionLength != pair.first.length) {
-                        complete = false;
-                    }
-                    secondRegion = U2Region((pair.first.endPos() - secondPartRegionLength), secondPartRegionLength);
-                } else {
-                    firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                    secondPartRegionLength = qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegion.length));
-                    if (secondPartRegionLength != pair.second.length) {
-                        complete = false;
-                    }
-                    secondRegion = U2Region(pair.second.startPos, secondPartRegionLength);
-                }
-            } else {
-                if (isComplementary) {
-                    firstRegion = U2Region((pair.first.endPos() - firstRegionLength), firstRegionLength);
-                } else {
-                    firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                }
-            }
-            QByteArray first = seqObj->getSequenceData(firstRegion);
-            if (isComplementary) {
-                complTT->translate(first.data(), firstRegionLength);
-                TextUtils::reverse(first.data(), firstRegionLength);
-            }
-            QByteArray second;
-            if (!secondRegion.isEmpty()) {
-                second = seqObj->getSequenceData(secondRegion);
-                if (isComplementary) {
-                    complTT->translate(second.data(), secondPartRegionLength);
-                    TextUtils::reverse(second.data(), secondPartRegionLength);
-                }
-            }
-            QByteArray resultSequenceTip = first + second;
-            seqVal += QString::fromLocal8Bit(resultSequenceTip);
-            if (nullptr != aminoTT) {
-                const int aminoLen = aminoTT->translate(resultSequenceTip.data(), firstRegionLength + secondPartRegionLength);
-                aminoVal += QString::fromLocal8Bit(resultSequenceTip, aminoLen);
-            }
-            if (seqVal.length() >= QUALIFIER_VALUE_CUT) {
-                complete = complete && merged.last() == pair;
-                break;
-            }
-        }
-        if (!complete || seqVal.length() > QUALIFIER_VALUE_CUT) {
-            seqVal = seqVal.left(QUALIFIER_VALUE_CUT) + " ...";
-        }
-        if (!complete || aminoVal.length() > QUALIFIER_VALUE_CUT) {
-            aminoVal = aminoVal.left(QUALIFIER_VALUE_CUT) + " ...";
-        }
-        if (!tip.isEmpty()) {
-            tip += "<br>";
-        }
-        SAFE_POINT(!seqVal.isEmpty(), "Empty sequence detected!", QString());
-        tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped() + "</nobr>";
-        rows++;
 
-        if (rows <= maxRows && nullptr != aminoTT) {
-            tip += "<br>";
-            tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + aminoVal.toHtmlEscaped() + "</nobr>";
+            bool isTruncated = tooltipRegions != regions;
+            if (isTruncated) {
+                seqVal += " ...";
+            }
+            tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + QString::fromLocal8Bit(seqVal).toHtmlEscaped() + "</nobr>";
+            rows++;
+
+            if (rows <= maxRows && !aminoVal.isEmpty()) {
+                if (isTruncated) {
+                    aminoVal += " ...";
+                }
+                tip += "<br>";
+                tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + QString::fromLocal8Bit(aminoVal).toHtmlEscaped() + "</nobr>";
+            }
         }
     }
     return tip;

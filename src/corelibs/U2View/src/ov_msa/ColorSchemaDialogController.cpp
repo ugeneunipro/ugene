@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor> &colors)
+ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor>& colors)
     : QDialog(),
       alphabetColorsView(nullptr),
       newColors(colors),
@@ -66,7 +66,7 @@ ColorSchemaDialogController::~ColorSchemaDialogController() {
     delete alphabetColorsView;
 }
 
-void ColorSchemaDialogController::paintEvent(QPaintEvent *) {
+void ColorSchemaDialogController::paintEvent(QPaintEvent*) {
     QPainter dialogPainter(this);
     const int columns = 6;
 
@@ -155,7 +155,7 @@ void ColorSchemaDialogController::sl_onRestore() {
     update();
 }
 
-void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
+void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent* event) {
     QMapIterator<char, QRect> it(charsPlacement);
 
     while (it.hasNext()) {
@@ -183,7 +183,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
 
 /*Create MSA scheme dialog*/
 
-CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData *_newSchema, QStringList _usedNames)
+CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QStringList _usedNames)
     : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929623");
@@ -199,25 +199,25 @@ CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData *_newSchema, QS
     validLabel->setVisible(false);
     adjustSize();
 
-    connect(schemeName, SIGNAL(textEdited(const QString &)), SLOT(sl_schemaNameEdited(const QString &)));
+    connect(schemeName, SIGNAL(textEdited(const QString&)), SLOT(sl_schemaNameEdited(const QString&)));
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    QPushButton *createButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* createButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(createButton, SIGNAL(clicked()), this, SLOT(sl_createSchema()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(sl_cancel()));
 
     QSet<QString> excluded;
-    foreach (const QString &usedName, usedNames) {
+    foreach (const QString& usedName, usedNames) {
         excluded.insert(usedName);
     }
     schemeName->setText(GUrlUtils::rollFileName("Custom color scheme", excluded));
 }
 
-bool CreateColorSchemaDialog::isNameExist(const QString &text) {
-    foreach (const QString &usedName, usedNames) {
+bool CreateColorSchemaDialog::isNameExist(const QString& text) {
+    foreach (const QString& usedName, usedNames) {
         if (usedName == text) {
             return true;
         }
@@ -225,7 +225,7 @@ bool CreateColorSchemaDialog::isNameExist(const QString &text) {
     return false;
 }
 
-bool CreateColorSchemaDialog::isSchemaNameValid(const QString &text, QString &description) {
+bool CreateColorSchemaDialog::isSchemaNameValid(const QString& text, QString& description) {
     if (text.isEmpty()) {
         description = tr("Name of scheme is empty.");
         return false;
@@ -254,7 +254,7 @@ bool CreateColorSchemaDialog::isSchemaNameValid(const QString &text, QString &de
     return true;
 }
 
-void CreateColorSchemaDialog::sl_schemaNameEdited(const QString &text) {
+void CreateColorSchemaDialog::sl_schemaNameEdited(const QString& text) {
     QString description;
     const bool isNameValid = isSchemaNameValid(text, description);
     validLabel->setVisible(!isNameValid);
@@ -332,7 +332,7 @@ void CreateColorSchemaDialog::sl_cancel() {
     reject();
 }
 
-ColorSchemaSettingsPageWidget::ColorSchemaSettingsPageWidget(ColorSchemaSettingsPageController *) {
+ColorSchemaSettingsPageWidget::ColorSchemaSettingsPageWidget(ColorSchemaSettingsPageController*) {
     setupUi(this);
 
     connect(colorsDirButton, SIGNAL(clicked()), SLOT(sl_onColorsDirButton()));
@@ -344,20 +344,20 @@ ColorSchemaSettingsPageWidget::ColorSchemaSettingsPageWidget(ColorSchemaSettings
     sl_schemaChanged(colorSchemas->currentRow());
 }
 
-void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    ColorSchemaSettingsPageState *state = qobject_cast<ColorSchemaSettingsPageState *>(s);
+void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
     colorsDirEdit->setText(state->colorsDir);
     customSchemas = state->customSchemas;
     removedCustomSchemas = state->removedCustomSchemas;
     colorSchemas->clear();
 
-    foreach (const ColorSchemeData &customSchema, customSchemas) {
+    foreach (const ColorSchemeData& customSchema, customSchemas) {
         colorSchemas->addItem(new QListWidgetItem(customSchema.name, colorSchemas));
     }
     update();
 }
 
-AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &err) const {
+AppSettingsGUIPageState* ColorSchemaSettingsPageWidget::getState(QString& err) const {
     QString colorsDir = colorsDirEdit->text();
     U2OpStatusImpl os;
     GUrlUtils::prepareDirLocation(colorsDir, os);
@@ -365,7 +365,7 @@ AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &err) c
         err = os.getError();
         return nullptr;
     }
-    ColorSchemaSettingsPageState *state = new ColorSchemaSettingsPageState();
+    ColorSchemaSettingsPageState* state = new ColorSchemaSettingsPageState();
     state->colorsDir = colorsDir;
     state->customSchemas = customSchemas;
     state->removedCustomSchemas = removedCustomSchemas;
@@ -404,7 +404,7 @@ void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
 
 void ColorSchemaSettingsPageWidget::sl_onAddColorSchema() {
     QStringList usedNames;
-    foreach (const ColorSchemeData &customScheme, customSchemas) {
+    foreach (const ColorSchemeData& customScheme, customSchemas) {
         usedNames << customScheme.name;
     }
     ColorSchemeData schema;
@@ -424,14 +424,14 @@ void ColorSchemaSettingsPageWidget::sl_onAddColorSchema() {
 void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
     QMap<char, QColor> alpColors;
 
-    QListWidgetItem *item = colorSchemas->currentItem();
+    QListWidgetItem* item = colorSchemas->currentItem();
     if (item == nullptr) {
         return;
     }
 
     QString schemaName = item->text();
     for (int i = 0; i < customSchemas.size(); ++i) {
-        ColorSchemeData &customSchema = customSchemas[i];
+        ColorSchemeData& customSchema = customSchemas[i];
         if (customSchema.name == schemaName) {
             alpColors = customSchema.alpColors;
             QObjectScopedPointer<ColorSchemaDialogController> controller = new ColorSchemaDialogController(alpColors);
@@ -453,12 +453,12 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
 }
 
 void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema() {
-    QListWidgetItem *item = colorSchemas->currentItem();
+    QListWidgetItem* item = colorSchemas->currentItem();
     SAFE_POINT(item != nullptr, "current item for deletion is NULL", );
 
     QString schemaName = item->text();
     for (int i = 0; i < customSchemas.size(); ++i) {
-        ColorSchemeData &customSchema = customSchemas[i];
+        ColorSchemeData& customSchema = customSchemas[i];
         if (customSchema.name == schemaName) {
             removedCustomSchemas.append(customSchemas[i]);
             customSchemas.removeAt(i);

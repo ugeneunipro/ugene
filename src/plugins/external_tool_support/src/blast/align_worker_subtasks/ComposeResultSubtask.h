@@ -28,6 +28,8 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/DbiDataStorage.h>
 
+#include "BlastAlignToReferenceTask.h"
+
 namespace U2 {
 
 class MultipleChromatogramAlignment;
@@ -36,44 +38,44 @@ class MultipleChromatogramAlignmentRow;
 
 namespace Workflow {
 
-class BlastAndSwReadTask;
+class BlastAlignToReferenceTask;
 
 class ComposeResultSubtask : public Task {
     Q_OBJECT
 public:
-    ComposeResultSubtask(const SharedDbiDataHandler &reference,
-                         const QList<SharedDbiDataHandler> &reads,
-                         const QList<BlastAndSwReadTask *> subTasks,
-                         DbiDataStorage *storage);
+    ComposeResultSubtask(const SharedDbiDataHandler& reference,
+                         const QList<AlignToReferenceResult>& pairwiseAlignments,
+                         DbiDataStorage* storage);
 
     void prepare() override;
     void run() override;
 
-    const SharedDbiDataHandler &getAnnotations() const;
+    const SharedDbiDataHandler& getAnnotations() const;
 
-    U2SequenceObject *takeReferenceSequenceObject();
-    MultipleChromatogramAlignmentObject *takeMcaObject();
+    U2SequenceObject* takeReferenceSequenceObject();
+    MultipleChromatogramAlignmentObject* takeMcaObject();
 
 private:
-    BlastAndSwReadTask *getBlastSwTask(int readNum);
-    DNASequence getReadSequence(int readNum);
-    DNAChromatogram getReadChromatogram(int readNum);
-    QList<U2MsaGap> getReferenceGaps();
-    QList<U2MsaGap> getShiftedGaps(int rowNum);
+    /** Merges reference gaps from all pairwise alignments. */
+    QVector<U2MsaGap> getReferenceGaps() const;
+
+    static QVector<U2MsaGap> getShiftedGaps(const QVector<U2MsaGap>& gaps);
     void insertShiftedGapsIntoReference();
-    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps);
+    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment& alignment,
+                                   int mcaRowIndex,
+                                   const AlignToReferenceResult& alignResult,
+                                   const QVector<U2MsaGap>& mergedReferenceGaps);
     void createAlignmentAndAnnotations();
     void enlargeReferenceByGaps();
-    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const;
-    U2Location getLocation(const U2Region &region, bool isComplement);
+    U2Region getReadRegion(const MultipleChromatogramAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const;
+    U2Location getLocation(const U2Region& region, bool isComplement);
 
 private:
     const SharedDbiDataHandler reference;
-    const QList<SharedDbiDataHandler> reads;
-    const QList<BlastAndSwReadTask *> subTasks;
-    DbiDataStorage *storage = nullptr;
-    MultipleChromatogramAlignmentObject *mcaObject = nullptr;
-    U2SequenceObject *referenceSequenceObject = nullptr;
+    const QList<AlignToReferenceResult> pairwiseAlignments;
+    DbiDataStorage* storage = nullptr;
+    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    U2SequenceObject* referenceSequenceObject = nullptr;
     SharedDbiDataHandler annotationsDataHandler;
 };
 

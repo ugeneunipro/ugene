@@ -34,12 +34,12 @@ namespace U2 {
 // Maybe this class must be merged with BioStruct3DChainSelection
 class U2ALGORITHM_EXPORT BioStruct3DReference {
 public:
-    BioStruct3DReference(const BioStruct3DObject *_obj, int _chainId, const U2Region &_chainRegion, int _modelId)
+    BioStruct3DReference(const BioStruct3DObject* _obj, int _chainId, const U2Region& _chainRegion, int _modelId)
         : obj(_obj), chains(), chainRegion(_chainRegion), modelId(_modelId) {
         chains << _chainId;
     }
 
-    BioStruct3DReference(const BioStruct3DObject *_obj, const QList<int> &_chains, int _modelId)
+    BioStruct3DReference(const BioStruct3DObject* _obj, const QList<int>& _chains, int _modelId)
         : obj(_obj), chains(_chains), chainRegion(), modelId(_modelId) {
         assert(obj);
         // if one chain selected set region from start to end
@@ -53,7 +53,7 @@ public:
     /** Pretty print structure reference description */
     QString print() const;
 
-    const BioStruct3DObject *obj;
+    const BioStruct3DObject* obj;
     QList<int> chains;
 
     // when more than one chain selected, region ignored
@@ -64,7 +64,7 @@ public:
 
 class U2ALGORITHM_EXPORT StructuralAlignmentTaskSettings {
 public:
-    StructuralAlignmentTaskSettings(const BioStruct3DReference &_ref, const BioStruct3DReference &_alt)
+    StructuralAlignmentTaskSettings(const BioStruct3DReference& _ref, const BioStruct3DReference& _alt)
         : ref(_ref), alt(_alt) {
     }
     BioStruct3DReference ref, alt;
@@ -89,8 +89,8 @@ public:
     /** Test settings for algorithm specific constraints.
      * @returns "" on ok and error descripton on fail
      */
-    virtual QString validate(const StructuralAlignmentTaskSettings &settings) = 0;
-    virtual StructuralAlignment align(const StructuralAlignmentTaskSettings &settings, TaskStateInfo &state) = 0;
+    virtual QString validate(const StructuralAlignmentTaskSettings& settings) = 0;
+    virtual StructuralAlignment align(const StructuralAlignmentTaskSettings& settings, TaskStateInfo& state) = 0;
 };  // class StructuralAlignmentAlgorithm
 
 /** Task wrapper for structural alignment algorithm */
@@ -98,7 +98,7 @@ class U2ALGORITHM_EXPORT StructuralAlignmentTask : public Task {
     Q_OBJECT
 
 public:
-    StructuralAlignmentTask(StructuralAlignmentAlgorithm *algorithm, const StructuralAlignmentTaskSettings &settings);
+    StructuralAlignmentTask(StructuralAlignmentAlgorithm* algorithm, const StructuralAlignmentTaskSettings& settings);
 
     virtual void run();
     Task::ReportResult report();

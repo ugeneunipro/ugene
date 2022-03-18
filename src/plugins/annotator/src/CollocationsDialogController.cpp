@@ -43,7 +43,7 @@ class U2SequenceObject;
 
 // TODO: support results separation on complement and direct strands
 
-CollocationsDialogController::CollocationsDialogController(QStringList _names, ADVSequenceObjectContext *_ctx)
+CollocationsDialogController::CollocationsDialogController(QStringList _names, ADVSequenceObjectContext* _ctx)
     : allNames(_names), ctx(_ctx) {
     task = nullptr;
     std::sort(allNames.begin(), allNames.end());
@@ -54,7 +54,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
 
     QStringList list;
     list.append(tr("<<click '+' button to add new annotation>>"));
-    QTreeWidgetItem *item = new QTreeWidgetItem(annotationsTree, list);
+    QTreeWidgetItem* item = new QTreeWidgetItem(annotationsTree, list);
     plusButton = new QToolButton(annotationsTree);
     plusButton->setText("+");
     annotationsTree->addTopLevelItem(item);
@@ -73,10 +73,10 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_cancelClicked()));
     connect(clearResultsButton, SIGNAL(clicked()), SLOT(sl_clearClicked()));
     connect(saveResultsButton, SIGNAL(clicked()), SLOT(sl_saveClicked()));
-    connect(resultsList, SIGNAL(itemActivated(QListWidgetItem *)), SLOT(sl_onResultActivated(QListWidgetItem *)));
+    connect(resultsList, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(sl_onResultActivated(QListWidgetItem*)));
 
     timer = new QTimer(this);
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_onTaskFinished(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_onTaskFinished(Task*)));
     connect(timer, SIGNAL(timeout()), SLOT(sl_onTimer()));
 
     updateState();
@@ -111,13 +111,13 @@ void CollocationsDialogController::sl_plusClicked() {
         return;
     }
     QMenu m;
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    foreach (const QString &name, allNames) {
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+    foreach (const QString& name, allNames) {
         if (usedNames.contains(name)) {
             continue;
         }
         QColor c = asr->getAnnotationSettings(name)->color;
-        QAction *a = m.addAction(GUIUtils::createSquareIcon(c, 10), name, this, SLOT(sl_addName()));
+        QAction* a = m.addAction(GUIUtils::createSquareIcon(c, 10), name, this, SLOT(sl_addName()));
         assert(a->parent() == &m);
         Q_UNUSED(a);
     }
@@ -128,7 +128,7 @@ void CollocationsDialogController::sl_plusClicked() {
 }
 
 void CollocationsDialogController::sl_addName() {
-    QString name = ((QAction *)sender())->text();
+    QString name = ((QAction*)sender())->text();
     assert(allNames.contains(name));
     assert(!usedNames.contains(name));
 
@@ -138,13 +138,13 @@ void CollocationsDialogController::sl_addName() {
         remove = true;
 
     usedNames.insert(name);
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     QColor c = asr->getAnnotationSettings(name)->color;
 
-    QTreeWidgetItem *item = new QTreeWidgetItem();
+    QTreeWidgetItem* item = new QTreeWidgetItem();
     item->setText(0, name);
     item->setIcon(0, GUIUtils::createSquareIcon(c, 10));
-    QToolButton *minusButton = new QToolButton(annotationsTree);
+    QToolButton* minusButton = new QToolButton(annotationsTree);
     minusButton->setMinimumSize(plusButton->size());
     minusButton->setText("-");
     minusButton->setObjectName(name);
@@ -153,7 +153,7 @@ void CollocationsDialogController::sl_addName() {
 
     // UGENE-2318
     if (remove) {
-        QTreeWidgetItem *ii = new QTreeWidgetItem();
+        QTreeWidgetItem* ii = new QTreeWidgetItem();
         int index = annotationsTree->topLevelItemCount() - 1;
         annotationsTree->insertTopLevelItem(index, ii);
         annotationsTree->takeTopLevelItem(index);
@@ -169,13 +169,13 @@ void CollocationsDialogController::sl_minusClicked() {
         return;
     }
 
-    QObject *o = sender();
+    QObject* o = sender();
     QString name = o->objectName();
 
     assert(usedNames.contains(name));
     usedNames.remove(name);
     for (int i = 0, n = annotationsTree->topLevelItemCount(); i < n; i++) {
-        QTreeWidgetItem *item = annotationsTree->topLevelItem(i);
+        QTreeWidgetItem* item = annotationsTree->topLevelItem(i);
         if (item->text(0) == name) {
             annotationsTree->takeTopLevelItem(i);
             delete item;
@@ -191,7 +191,7 @@ void CollocationsDialogController::sl_searchClicked() {
     CollocationsAlgorithmSettings cfg;
     cfg.distance = regionSpin->value();
     assert(task == nullptr);
-    const QList<AnnotationTableObject *> &aObjects = ctx->getAnnotationObjects().toList();
+    const QList<AnnotationTableObject*>& aObjects = ctx->getAnnotationObjects().toList();
     cfg.searchRegion = U2Region(0, ctx->getSequenceLength());
     if (!wholeAnnotationsBox->isChecked()) {
         cfg.st = CollocationsAlgorithm::PartialSearch;
@@ -237,7 +237,7 @@ void CollocationsDialogController::sl_saveClicked() {
     }
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsList->count(); i < n; ++i) {
-        CDCResultItem *item = static_cast<CDCResultItem *>(resultsList->item(i));
+        CDCResultItem* item = static_cast<CDCResultItem*>(resultsList->item(i));
         SharedAnnotationData data = m.data;
         data->location->regions.append(item->r);
         data->setStrand(U2Strand::Direct);
@@ -245,7 +245,7 @@ void CollocationsDialogController::sl_saveClicked() {
         list.append(data);
     }
 
-    ADVCreateAnnotationsTask *t = new ADVCreateAnnotationsTask(ctx->getAnnotatedDNAView(), m.getAnnotationObject(), m.groupName, list);
+    ADVCreateAnnotationsTask* t = new ADVCreateAnnotationsTask(ctx->getAnnotatedDNAView(), m.getAnnotationObject(), m.groupName, list);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -261,7 +261,7 @@ void CollocationsDialogController::sl_onTimer() {
     updateState();
 }
 
-void CollocationsDialogController::sl_onTaskFinished(Task *t) {
+void CollocationsDialogController::sl_onTaskFinished(Task* t) {
     if (t != task || t->getState() != Task::State_Finished) {
         return;
     }
@@ -278,11 +278,11 @@ void CollocationsDialogController::importResults() {
 
     QVector<U2Region> newResults = task->popResults();
 
-    foreach (const U2Region &r, newResults) {
-        CDCResultItem *item = new CDCResultItem(r);
+    foreach (const U2Region& r, newResults) {
+        CDCResultItem* item = new CDCResultItem(r);
         bool inserted = false;
         for (int i = 0, n = resultsList->count(); i < n; i++) {
-            CDCResultItem *tmp = static_cast<CDCResultItem *>(resultsList->item(i));
+            CDCResultItem* tmp = static_cast<CDCResultItem*>(resultsList->item(i));
             assert(!tmp->r.contains(r) && !r.contains(tmp->r));
             if (tmp->r.startPos > r.startPos) {
                 resultsList->insertItem(i, item);
@@ -295,41 +295,41 @@ void CollocationsDialogController::importResults() {
     }
 }
 
-void CollocationsDialogController::sl_onResultActivated(QListWidgetItem *item) {
+void CollocationsDialogController::sl_onResultActivated(QListWidgetItem* item) {
     assert(item != nullptr);
-    CDCResultItem *ri = static_cast<CDCResultItem *>(item);
+    CDCResultItem* ri = static_cast<CDCResultItem*>(item);
     Q_UNUSED(ri);
     // todo: add to selection?
     // ctx->getPanView()->setVisibleRange(ri->r);
     // ctx->getDetView()->setCenterPos(ri->r.startPos);
 }
 
-CDCResultItem::CDCResultItem(const U2Region &_r)
+CDCResultItem::CDCResultItem(const U2Region& _r)
     : r(_r) {
     setText(QString("[%1, %2]").arg(QString::number(r.startPos + 1)).arg(r.endPos()));
 }
 
 //////////////////////////////////////////////////////////////////////////
 // task
-CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject *> &table, const QSet<QString> &names, const CollocationsAlgorithmSettings &cfg)
+CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject*>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg)
     : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(false) {
     GCOUNTER(cvar, "CollocationSearchTask");
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
-    foreach (const QString &name, names) {
+    foreach (const QString& name, names) {
         getItem(name);
     }
-    foreach (AnnotationTableObject *ao, table) {
-        foreach (Annotation *a, ao->getAnnotations()) {
-            const QString &name = a->getName();
+    foreach (AnnotationTableObject* ao, table) {
+        foreach (Annotation* a, ao->getAnnotations()) {
+            const QString& name = a->getName();
             if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
-                (a->getStrand().isCompementary() && cfg.strand == StrandOption_DirectOnly)) {
+                (a->getStrand().isComplementary() && cfg.strand == StrandOption_DirectOnly)) {
                 items.remove(name);
                 continue;
             }
             if (names.contains(name)) {
-                CollocationsAlgorithmItem &item = getItem(name);
-                foreach (const U2Region &r, a->getRegions()) {
+                CollocationsAlgorithmItem& item = getItem(name);
+                foreach (const U2Region& r, a->getRegions()) {
                     if (cfg.searchRegion.intersects(r)) {
                         item.regions.append(r);
                     }
@@ -339,24 +339,24 @@ CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject *
     }
 }
 
-CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData> &table, const QSet<QString> &names, const CollocationsAlgorithmSettings &cfg, bool _keepSourceAnns)
+CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData>& table, const QSet<QString>& names, const CollocationsAlgorithmSettings& cfg, bool _keepSourceAnns)
     : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(_keepSourceAnns) {
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
-    foreach (const QString &name, names) {
+    foreach (const QString& name, names) {
         getItem(name);
     }
-    foreach (const SharedAnnotationData &a, table) {
-        const QString &name = a->name;
+    foreach (const SharedAnnotationData& a, table) {
+        const QString& name = a->name;
         if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
-            (a->getStrand().isCompementary() && cfg.strand == StrandOption_DirectOnly)) {
+            (a->getStrand().isComplementary() && cfg.strand == StrandOption_DirectOnly)) {
             items.remove(name);
             continue;
         }
         if (names.contains(name)) {
-            CollocationsAlgorithmItem &item = getItem(name);
+            CollocationsAlgorithmItem& item = getItem(name);
             bool hasRegions = false;
-            foreach (const U2Region &r, a->location->regions) {
+            foreach (const U2Region& r, a->location->regions) {
                 if (cfg.searchRegion.intersects(r)) {
                     hasRegions = true;
                     item.regions.append(r);
@@ -369,7 +369,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData> &
     }
 }
 
-CollocationsAlgorithmItem &CollocationSearchTask::getItem(const QString &name) {
+CollocationsAlgorithmItem& CollocationSearchTask::getItem(const QString& name) {
     if (!items.contains(name)) {
         items[name] = CollocationsAlgorithmItem(name);
     }
@@ -380,7 +380,7 @@ void CollocationSearchTask::run() {
     CollocationsAlgorithm::find(items.values(), stateInfo, this, cfg);
 }
 
-void CollocationSearchTask::onResult(const U2Region &r) {
+void CollocationSearchTask::onResult(const U2Region& r) {
     QMutexLocker locker(&lock);
     results.append(r);
 }
@@ -399,9 +399,9 @@ QList<SharedAnnotationData> CollocationSearchTask::popResultAnnotations() {
     QList<SharedAnnotationData> result;
     if (keepSourceAnns) {
         for (int i = 0; i < sourceAnns.size(); ++i) {
-            SharedAnnotationData &a = sourceAnns[i];
+            SharedAnnotationData& a = sourceAnns[i];
             QVector<U2Region> resRegs;
-            foreach (const U2Region &r, a->location->regions) {
+            foreach (const U2Region& r, a->location->regions) {
                 if (isSuitableRegion(r, res)) {
                     resRegs << r;
                 }
@@ -412,7 +412,7 @@ QList<SharedAnnotationData> CollocationSearchTask::popResultAnnotations() {
             }
         }
     } else {
-        foreach (const U2Region &r, res) {
+        foreach (const U2Region& r, res) {
             SharedAnnotationData data(new AnnotationData);
             if (cfg.includeBoundaries) {
                 data->location->regions.append(r);
@@ -428,12 +428,12 @@ QList<SharedAnnotationData> CollocationSearchTask::popResultAnnotations() {
     return result;
 }
 
-U2Region CollocationSearchTask::cutResult(const U2Region &res) const {
+U2Region CollocationSearchTask::cutResult(const U2Region& res) const {
     qint64 left = res.endPos();
     qint64 right = res.startPos;
 
-    foreach (const CollocationsAlgorithmItem &item, items) {
-        foreach (const U2Region &r, item.regions) {
+    foreach (const CollocationsAlgorithmItem& item, items) {
+        foreach (const U2Region& r, item.regions) {
             if (r.startPos == res.startPos) {
                 if (r.endPos() < left) {
                     left = r.endPos();
@@ -452,8 +452,8 @@ U2Region CollocationSearchTask::cutResult(const U2Region &res) const {
     return res;
 }
 
-bool CollocationSearchTask::isSuitableRegion(const U2Region &r, const QVector<U2Region> &resultRegions) const {
-    foreach (const U2Region &res, resultRegions) {
+bool CollocationSearchTask::isSuitableRegion(const U2Region& r, const QVector<U2Region>& resultRegions) const {
+    foreach (const U2Region& res, resultRegions) {
         if (CollocationsAlgorithm::NormalSearch == cfg.st) {
             if (res.contains(r)) {
                 return true;

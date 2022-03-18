@@ -22,8 +22,8 @@
 #ifndef _U2_EDIT_SEQUENCE_TESTS_H_
 #define _U2_EDIT_SEQUENCE_TESTS_H_
 
-#include <QObject>
 #include <QDomElement>
+#include <QObject>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
@@ -54,7 +54,7 @@ private:
     QString annotationName;
     QString expectedSequence;
     QVector<U2Region> expectedRegions;
-    U2SequenceObject *dnaso;
+    U2SequenceObject* dnaso;
 };
 
 class GTest_AddPartToSequenceTask : public XmlTest {
@@ -75,7 +75,7 @@ private:
     QString annotationName;
     QString expectedSequence;
     QVector<U2Region> expectedRegions;
-    U2SequenceObject *dnaso;
+    U2SequenceObject* dnaso;
 };
 
 class GTest_ReplacePartOfSequenceTask : public XmlTest {
@@ -97,12 +97,12 @@ private:
     QString annotationName;
     QString expectedSequence;
     QVector<U2Region> expectedRegions;
-    U2SequenceObject *dnaso;
+    U2SequenceObject* dnaso;
 };
 
 class EditSequenceTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 }  // namespace U2
 #endif

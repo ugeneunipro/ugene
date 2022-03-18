@@ -35,13 +35,13 @@ public:
     ~UserAppsSettings();
 
     QString getWebBrowserURL() const;
-    void setWebBrowserURL(const QString &url);
+    void setWebBrowserURL(const QString& url);
 
     bool useDefaultWebBrowser() const;
     void setUseDefaultWebBrowser(bool state);
 
     QString getTranslationFile() const;
-    void setTranslationFile(const QString &fn);
+    void setTranslationFile(const QString& fn);
 
     bool openLastProjectAtStartup() const;
     void setOpenLastProjectAtStartup(bool v);
@@ -51,34 +51,34 @@ public:
 
     // a style selected by user
     QString getVisualStyle() const;
-    void setVisualStyle(const QString &newStyle);
+    void setVisualStyle(const QString& newStyle);
 
     // specify dir for downloaded files
     QString getDownloadDirPath() const;
-    void setDownloadDirPath(const QString &newPath) const;
+    void setDownloadDirPath(const QString& newPath) const;
 
     // storage dir for custom external tool config files
     QString getCustomToolsConfigsDirPath() const;
-    void setCustomToolsConfigsDirPath(const QString &newPath) const;
+    void setCustomToolsConfigsDirPath(const QString& newPath) const;
 
     // recently downloaded file names
     QStringList getRecentlyDownloadedFileNames() const;
-    void setRecentlyDownloadedFileNames(const QStringList &fileNames) const;
+    void setRecentlyDownloadedFileNames(const QStringList& fileNames) const;
 
     // temporary dir path as specified by user
     QString getUserTemporaryDirPath() const;
-    void setUserTemporaryDirPath(const QString &newPath);
+    void setUserTemporaryDirPath(const QString& newPath);
 
     // temporary dir for the current process: userTemporaryDirPath + "ugene_tmp/p" + processId + "/domain"
     // domain is used here to avoid collision between different algorithms
-    QString getCurrentProcessTemporaryDirPath(const QString &domain = QString()) const;
+    QString getCurrentProcessTemporaryDirPath(const QString& domain = QString()) const;
 
     // returns the temropary path: userTemporaryDirPath + "ugene_tmp/p" + processId + "/domain/" + tmpSubDir
-    QString createCurrentProcessTemporarySubDir(U2OpStatus &os, const QString &domain = QString()) const;
+    QString createCurrentProcessTemporarySubDir(U2OpStatus& os, const QString& domain = QString()) const;
 
     // default UGENE data dir
     QString getDefaultDataDirPath() const;
-    void setDefaultDataDirPath(const QString &newPath);
+    void setDefaultDataDirPath(const QString& newPath);
 
     bool isStatisticsCollectionEnabled() const;
     void setEnableCollectingStatistics(bool b);
@@ -90,13 +90,13 @@ public:
     void setResetSettings(bool b);
 
     QString getFileStorageDir() const;
-    void setFileStorageDir(const QString &newPath);
+    void setFileStorageDir(const QString& newPath);
 
     bool updatesEnabled() const;
     void setUpdatesEnabled(bool value);
 
-    bool isUpdateSkipped(const QString &versionString) const;
-    void skipUpdate(const QString &versionString);
+    bool isUpdateSkipped(const QString& versionString) const;
+    void skipUpdate(const QString& versionString);
 
 signals:
     void si_temporaryPathChanged();

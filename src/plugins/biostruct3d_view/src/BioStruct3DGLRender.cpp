@@ -38,12 +38,12 @@ const QList<QString> BioStruct3DGLRendererRegistry::factoriesNames() {
     return getInstance()->factories.keys();
 }
 
-const BioStruct3DGLRendererFactory *BioStruct3DGLRendererRegistry::getFactory(const QString &name) {
+const BioStruct3DGLRendererFactory* BioStruct3DGLRendererRegistry::getFactory(const QString& name) {
     return getInstance()->factories.value(name, 0);
 }
 
-BioStruct3DGLRenderer *BioStruct3DGLRendererRegistry::createRenderer(const QString &name, const BioStruct3D &bs, const BioStruct3DColorScheme *s, const QList<int> &sm, const BioStruct3DRendererSettings *settings) {
-    const BioStruct3DGLRendererFactory *fact = getFactory(name);
+BioStruct3DGLRenderer* BioStruct3DGLRendererRegistry::createRenderer(const QString& name, const BioStruct3D& bs, const BioStruct3DColorScheme* s, const QList<int>& sm, const BioStruct3DRendererSettings* settings) {
+    const BioStruct3DGLRendererFactory* fact = getFactory(name);
 
     if (fact) {
         return fact->createInstance(bs, s, sm, settings);
@@ -56,13 +56,13 @@ BioStruct3DGLRendererRegistry::BioStruct3DGLRendererRegistry() {
     registerFactories();
 }
 
-BioStruct3DGLRendererRegistry *BioStruct3DGLRendererRegistry::getInstance() {
-    static BioStruct3DGLRendererRegistry *reg = new BioStruct3DGLRendererRegistry();
+BioStruct3DGLRendererRegistry* BioStruct3DGLRendererRegistry::getInstance() {
+    static BioStruct3DGLRendererRegistry* reg = new BioStruct3DGLRendererRegistry();
     return reg;
 }
 
-bool BioStruct3DGLRendererRegistry::isAvailableFor(const QString &name, const BioStruct3D &biostruct) {
-    const BioStruct3DGLRendererFactory *fact = getFactory(name);
+bool BioStruct3DGLRendererRegistry::isAvailableFor(const QString& name, const BioStruct3D& biostruct) {
+    const BioStruct3DGLRendererFactory* fact = getFactory(name);
     return fact->isAvailableFor(biostruct);
 }
 
@@ -70,11 +70,11 @@ const QString BioStruct3DGLRendererFactory::getName() const {
     return name;
 }
 
-QList<QString> BioStruct3DGLRendererRegistry::getRenderersAvailableFor(const BioStruct3D &biostruct) {
-    BioStruct3DGLRendererRegistry *reg = getInstance();
+QList<QString> BioStruct3DGLRendererRegistry::getRenderersAvailableFor(const BioStruct3D& biostruct) {
+    BioStruct3DGLRendererRegistry* reg = getInstance();
 
     QList<QString> ret;
-    foreach (const BioStruct3DGLRendererFactory *fact, reg->factories) {
+    foreach (const BioStruct3DGLRendererFactory* fact, reg->factories) {
         if (fact->isAvailableFor(biostruct)) {
             ret.append(fact->getName());
         }
@@ -92,28 +92,28 @@ void BioStruct3DGLRendererRegistry::registerFactories() {
 }
 
 /* class BioStruct3DGLRenderer */
-BioStruct3DGLRenderer::BioStruct3DGLRenderer(const BioStruct3D &_bioStruct, const BioStruct3DColorScheme *_s, const QList<int> &_shownModels, const BioStruct3DRendererSettings *_settings)
+BioStruct3DGLRenderer::BioStruct3DGLRenderer(const BioStruct3D& _bioStruct, const BioStruct3DColorScheme* _s, const QList<int>& _shownModels, const BioStruct3DRendererSettings* _settings)
     : bioStruct(_bioStruct), colorScheme(_s), shownModels(_shownModels), settings(_settings) {
 }
 
-void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme *s) {
+void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme* s) {
     colorScheme = s;
     updateColorScheme();
 }
 
-const BioStruct3DColorScheme *BioStruct3DGLRenderer::getColorScheme() const {
+const BioStruct3DColorScheme* BioStruct3DGLRenderer::getColorScheme() const {
     return colorScheme;
 }
 
-const QList<int> &BioStruct3DGLRenderer::getShownModelsIndexes() const {
+const QList<int>& BioStruct3DGLRenderer::getShownModelsIndexes() const {
     return shownModels;
 }
 
-void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int> &_shownModels) {
+void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int>& _shownModels) {
     shownModels = _shownModels;
 }
 
-bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D &) {
+bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D&) {
     return true;
 }
 

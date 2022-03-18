@@ -33,7 +33,7 @@ class SaveDocumentController;
 class ExportMca2MsaDialog : public QDialog, public Ui_ExportMca2MsaDialog {
     Q_OBJECT
 public:
-    ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent);
+    ExportMca2MsaDialog(const QString& defaultFilePath, QWidget* parent);
 
     QString getSavePath() const;
     QString getFormatId() const;
@@ -41,10 +41,10 @@ public:
     bool getIncludeReferenceOption() const;
 
 private:
-    void initSaveController(const QString &defaultFilePath);
+    void initSaveController(const QString& defaultFilePath);
 
     const QString defaultFilePath;
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

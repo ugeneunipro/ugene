@@ -195,13 +195,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom region");
 
-    QLineEdit *regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd", nullptr, GTGlobals::FindOptions(false)));
+    QLineEdit* regLE = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd", nullptr, {false}));
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "40000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/12"), "Results string not match");
 
     regLE = nullptr;
-    regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart", nullptr, GTGlobals::FindOptions(false)));
+    regLE = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart", nullptr, {false}));
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "9000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/10"), "Results string not match");

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MaEditorContext::MaEditorContext(MaEditor *maEditor)
+MaEditorContext::MaEditorContext(MaEditor* maEditor)
     : editor(maEditor),
       maObject(maEditor->getMaObject()),
       ui(maEditor->getUI()),
@@ -41,7 +41,7 @@ MaEditorContext::MaEditorContext(MaEditor *maEditor)
     SAFE_POINT(collapseModel != nullptr, "collapseModel is null", );
 }
 
-const MaEditorSelection &MaEditorContext::getSelection() const {
+const MaEditorSelection& MaEditorContext::getSelection() const {
     return selectionController->getSelection();
 }
 

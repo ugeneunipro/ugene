@@ -31,12 +31,12 @@ namespace U2 {
 class U2LANG_EXPORT QDActorPrototypeRegistry : public QObject, public IdRegistry<QDActorPrototype> {
     Q_OBJECT
 public:
-    void registerProto(QDActorPrototype *_factory);
-    QDActorPrototype *unregisterProto(const QString &id);
-    QList<QDActorPrototype *> getProtos() {
+    void registerProto(QDActorPrototype* _factory);
+    QDActorPrototype* unregisterProto(const QString& id);
+    QList<QDActorPrototype*> getProtos() {
         return IdRegistry<QDActorPrototype>::getAllEntries();
     }
-    QDActorPrototype *getProto(const QString &id) {
+    QDActorPrototype* getProto(const QString& id) {
         return IdRegistry<QDActorPrototype>::getById(id);
     }
 signals:

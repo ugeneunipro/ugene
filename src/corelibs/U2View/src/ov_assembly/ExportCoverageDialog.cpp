@@ -35,12 +35,12 @@ namespace U2 {
 
 const QString ExportCoverageDialog::DIR_HELPER_NAME = "export_assembly_coverage";
 
-ExportCoverageDialog::ExportCoverageDialog(const QString &assemblyName, QWidget *parent)
+ExportCoverageDialog::ExportCoverageDialog(const QString& assemblyName, QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     initLayout();
     init(assemblyName);
-    connect(cbFormat, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(cbFormat, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
 }
 
 ExportCoverageSettings::Format ExportCoverageDialog::getFormat() const {
@@ -87,7 +87,7 @@ void ExportCoverageDialog::accept() {
     QDialog::accept();
 }
 
-void ExportCoverageDialog::sl_formatChanged(const QString &format) {
+void ExportCoverageDialog::sl_formatChanged(const QString& format) {
     gbAdditionalOptions->setVisible(ExportCoverageSettings::PER_BASE == format);
     adjustSize();
 }

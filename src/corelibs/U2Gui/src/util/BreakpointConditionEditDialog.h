@@ -40,11 +40,11 @@ enum HitCondition {
 class U2GUI_EXPORT BreakpointConditionEditDialog : public QDialog {
     Q_OBJECT
 public:
-    BreakpointConditionEditDialog(QWidget *parent, const QString &variablesText, bool conditionEnabled = true, const QString &conditionText = QString(), HitCondition initCondition = CONDITION_IS_TRUE);
+    BreakpointConditionEditDialog(QWidget* parent, const QString& variablesText, bool conditionEnabled = true, const QString& conditionText = QString(), HitCondition initCondition = CONDITION_IS_TRUE);
     ~BreakpointConditionEditDialog();
 
 signals:
-    void si_conditionTextChanged(const QString &text);
+    void si_conditionTextChanged(const QString& text);
     void si_conditionParameterChanged(HitCondition newCondition);
     void si_conditionSwitched(bool enabled);
 
@@ -54,8 +54,8 @@ private slots:
 private:
     const HitCondition initHitCondition;
 
-    ScriptEditorWidget *scriptEdit;
-    Ui_BreakpointConditionEditDialog *ui;
+    ScriptEditorWidget* scriptEdit;
+    Ui_BreakpointConditionEditDialog* ui;
 };
 
 }  // namespace U2

@@ -35,20 +35,20 @@ namespace U2 {
 /************************************************************************/
 /* MSAEditorConsensusArea */
 /************************************************************************/
-MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
+MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt* ui)
     : MaEditorConsensusArea(ui) {
     initCache();
     initRenderer();
     setupFontAndHeight();
 
-    connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
+    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
 }
 
 QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
     return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
 }
 
-void MSAEditorConsensusArea::sl_buildMenu(GObjectView * /*view*/, QMenu *menu, const QString &menuType) {
+void MSAEditorConsensusArea::sl_buildMenu(GObjectView* /*view*/, QMenu* menu, const QString& menuType) {
     if (menuType == MsaEditorMenuType::CONTEXT || menuType == MsaEditorMenuType::STATIC) {
         buildMenu(menu);
     }
@@ -59,14 +59,14 @@ void MSAEditorConsensusArea::initRenderer() {
 }
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
-    const DNAAlphabet *al = editor->getMaObject()->getAlphabet();
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     SAFE_POINT(al != nullptr, "Alphabet is NULL", "");
-    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic"
+    const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic"
                                                                       : "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 
-void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
+void MSAEditorConsensusArea::buildMenu(QMenu* menu) {
     menu->addAction(configureConsensusAction);
 }
 

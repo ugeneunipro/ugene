@@ -60,17 +60,17 @@ public:
     void clear();
     bool isEmpty() const;
 
-    bool validateGraph(QString &message) const;
-    bool addBinding(Port *source, Port *dest);
-    bool contains(Port *source, Port *dest) const;
-    void removeBinding(Port *source, Port *dest);
-    const QMap<Port *, QList<Port *>> &getBindings() const;
-    QMap<Port *, QList<Port *>> &getBindings();
-    QMap<int, QList<Actor *>> getTopologicalSortedGraph(QList<Actor *> actors) const;
-    QList<Link *> getFlows() const;
+    bool validateGraph(QString& message) const;
+    bool addBinding(Port* source, Port* dest);
+    bool contains(Port* source, Port* dest) const;
+    void removeBinding(Port* source, Port* dest);
+    const QMap<Port*, QList<Port*>>& getBindings() const;
+    QMap<Port*, QList<Port*>>& getBindings();
+    QMap<int, QList<Actor*>> getTopologicalSortedGraph(QList<Actor*> actors) const;
+    QList<Link*> getFlows() const;
 
 private:
-    QMap<Port *, QList<Port *>> bindings;
+    QMap<Port*, QList<Port*>> bindings;
 };  // ActorBindingsGraph
 
 /**
@@ -81,58 +81,58 @@ class U2LANG_EXPORT Schema {
 public:
     Schema();
     virtual ~Schema();
-    Schema(const Schema &other);
-    Schema &operator=(const Schema &other);
+    Schema(const Schema& other);
+    Schema& operator=(const Schema& other);
 
     void reset();
     void update();
     /** The actors' aliases of @other can be removed in case of duplication */
-    void merge(Schema &other);
+    void merge(Schema& other);
 
-    Actor *actorById(ActorId) const;
-    QList<Actor *> actorsByOwnerId(ActorId) const;
+    Actor* actorById(ActorId) const;
+    QList<Actor*> actorsByOwnerId(ActorId) const;
 
     QString getDomain() const;
-    void setDomain(const QString &d);
+    void setDomain(const QString& d);
 
-    const ActorBindingsGraph &getActorBindingsGraph() const;
+    const ActorBindingsGraph& getActorBindingsGraph() const;
 
-    const QList<Actor *> &getProcesses() const;
-    void addProcess(Actor *actor);
-    void removeProcess(Actor *actor);
-    void renameProcess(const ActorId &oldId, const ActorId &newId);
-    void replaceProcess(Actor *oldActor, Actor *newActor, const QList<PortMapping> &mappings);
+    const QList<Actor*>& getProcesses() const;
+    void addProcess(Actor* actor);
+    void removeProcess(Actor* actor);
+    void renameProcess(const ActorId& oldId, const ActorId& newId);
+    void replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings);
 
-    void applyConfiguration(const QMap<ActorId, QVariantMap> &cfg);
+    void applyConfiguration(const QMap<ActorId, QVariantMap>& cfg);
 
-    QList<Link *> getFlows() const;
-    void addFlow(Link *l);
-    void removeFlow(Link *l);
+    QList<Link*> getFlows() const;
+    void addFlow(Link* l);
+    void removeFlow(Link* l);
 
     void setDeepCopyFlag(bool flag);
 
     bool hasParamAliases() const;
     bool hasAliasHelp() const;
     bool hasPortAliases() const;
-    const QList<PortAlias> &getPortAliases() const;
-    bool addPortAlias(const PortAlias &alias);
-    void setPortAliases(const QList<PortAlias> &aliases);
+    const QList<PortAlias>& getPortAliases() const;
+    bool addPortAlias(const PortAlias& alias);
+    void setPortAliases(const QList<PortAlias>& aliases);
 
     // replaces dummy processes (schema-processes) by his schemas and set up correct links
     bool expand();
 
     QString getTypeName() const;
-    void setTypeName(const QString &typeName);
+    void setTypeName(const QString& typeName);
 
-    const QList<Wizard *> &getWizards() const;
-    void setWizards(const QList<Wizard *> &value);
-    QList<Wizard *> takeWizards();
+    const QList<Wizard*>& getWizards() const;
+    void setWizards(const QList<Wizard*>& value);
+    QList<Wizard*> takeWizards();
 
-    static ActorId uniqueActorId(const QString &id, const QList<Actor *> &procs);
+    static ActorId uniqueActorId(const QString& id, const QList<Actor*>& procs);
 
 private:
     // set of actors
-    QList<Actor *> procs;
+    QList<Actor*> procs;
     // name of domain in which we work now
     // default is LocalDomainFactory::ID
     QString domain;
@@ -146,40 +146,40 @@ private:
     QList<PortAlias> portAliases;
     // if you include this schema to another schema then here is new type name
     QString includedTypeName;
-    QList<Wizard *> wizards;
+    QList<Wizard*> wizards;
 
 private:
-    void setAliasedAttributes(Actor *proc, Actor *subProc);
-    void replaceInLinksAndSlots(Actor *proc, const PortAlias &portAlias);
-    void replaceOutLinks(Actor *proc, const PortAlias &portAlias);
-    void replaceOutSlots(Actor *proc, const PortAlias &portAlias);
-    void replacePortAliases(const PortAlias &subPortAlias);
+    void setAliasedAttributes(Actor* proc, Actor* subProc);
+    void replaceInLinksAndSlots(Actor* proc, const PortAlias& portAlias);
+    void replaceOutLinks(Actor* proc, const PortAlias& portAlias);
+    void replaceOutSlots(Actor* proc, const PortAlias& portAlias);
+    void replacePortAliases(const PortAlias& subPortAlias);
 
-    bool recursiveExpand(QList<QString> &schemaIds);
-    void update(const QMap<ActorId, ActorId> &actorsMapping);
+    bool recursiveExpand(QList<QString>& schemaIds);
+    void update(const QMap<ActorId, ActorId>& actorsMapping);
 
 };  // Schema
 
 class U2LANG_EXPORT ActorVisualData {
 public:
     ActorVisualData();
-    ActorVisualData(const ActorId &actorId);
+    ActorVisualData(const ActorId& actorId);
     ActorId getActorId() const;
-    void setActorId(const ActorId &value);
+    void setActorId(const ActorId& value);
 
-    QPointF getPos(bool &contains) const;
-    QString getStyle(bool &contains) const;
-    QColor getColor(bool &contains) const;
-    QFont getFont(bool &contains) const;
-    QRectF getRect(bool &contains) const;
-    qreal getPortAngle(const QString &portId, bool &contains) const;
+    QPointF getPos(bool& contains) const;
+    QString getStyle(bool& contains) const;
+    QColor getColor(bool& contains) const;
+    QFont getFont(bool& contains) const;
+    QRectF getRect(bool& contains) const;
+    qreal getPortAngle(const QString& portId, bool& contains) const;
 
-    void setPos(const QPointF &value);
-    void setStyle(const QString &value);
-    void setColor(const QColor &value);
-    void setFont(const QFont &value);
-    void setRect(const QRectF &value);
-    void setPortAngle(const QString &portId, qreal value);
+    void setPos(const QPointF& value);
+    void setStyle(const QString& value);
+    void setColor(const QColor& value);
+    void setFont(const QFont& value);
+    void setRect(const QRectF& value);
+    void setPortAngle(const QString& portId, qreal value);
 
     QMap<QString, qreal> getAngleMap() const;
 
@@ -214,18 +214,18 @@ public:
 
     void reset();
     void resetVisual();
-    void mergeVisual(const Metadata &other);
+    void mergeVisual(const Metadata& other);
 
-    ActorVisualData getActorVisualData(const ActorId &actorId, bool &contains) const;
-    void setActorVisualData(const ActorVisualData &data);
+    ActorVisualData getActorVisualData(const ActorId& actorId, bool& contains) const;
+    void setActorVisualData(const ActorVisualData& data);
 
-    QPointF getTextPos(const ActorId &srcActorId, const QString &srcPortId, const ActorId &dstActorId, const QString &dstPortId, bool &contains) const;
+    QPointF getTextPos(const ActorId& srcActorId, const QString& srcPortId, const ActorId& dstActorId, const QString& dstPortId, bool& contains) const;
 
-    void setTextPos(const ActorId &srcActorId, const QString &srcPortId, const ActorId &dstActorId, const QString &dstPortId, const QPointF &value);
+    void setTextPos(const ActorId& srcActorId, const QString& srcPortId, const ActorId& dstActorId, const QString& dstPortId, const QPointF& value);
 
-    void removeActorMeta(const ActorId &actorId);
-    void renameActors(const QMap<ActorId, ActorId> &actorsMapping);
-    void replaceProcess(const ActorId &oldId, const ActorId &newId, const QList<PortMapping> &mappings);
+    void removeActorMeta(const ActorId& actorId);
+    void renameActors(const QMap<ActorId, ActorId>& actorsMapping);
+    void replaceProcess(const ActorId& oldId, const ActorId& newId, const QList<PortMapping>& mappings);
 
     QList<ActorVisualData> getActorsVisual() const;
     QMap<QString, QPointF> getTextPosMap() const;
@@ -247,12 +247,12 @@ private:
     QMap<QString, QPointF> textPosMap;  // actorId.portId->actorId.portId <-> textPos
 
 private:
-    QString getPortString(const ActorId &actorId, const QString &portId) const;
-    ActorId getActorId(const QString &portStr) const;
-    QString getLinkString(const ActorId &srcActorId, const QString &srcPortId, const ActorId &dstActorId, const QString &dstPortId) const;
-    bool isActorLinked(const ActorId &actorId, const QString &linkStr) const;
-    QString renameLink(const QString &linkStr, const QMap<ActorId, ActorId> &actorsMapping) const;
-    QString renameLink(const QString &linkStr, const ActorId &oldId, const ActorId &newId, const QList<PortMapping> &mappings) const;
+    QString getPortString(const ActorId& actorId, const QString& portId) const;
+    ActorId getActorId(const QString& portStr) const;
+    QString getLinkString(const ActorId& srcActorId, const QString& srcPortId, const ActorId& dstActorId, const QString& dstPortId) const;
+    bool isActorLinked(const ActorId& actorId, const QString& linkStr) const;
+    QString renameLink(const QString& linkStr, const QMap<ActorId, ActorId>& actorsMapping) const;
+    QString renameLink(const QString& linkStr, const ActorId& oldId, const ActorId& newId, const QList<PortMapping>& mappings) const;
 };  // Metadata
 
 }  // namespace Workflow

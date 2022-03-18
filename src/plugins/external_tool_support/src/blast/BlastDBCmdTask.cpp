@@ -40,7 +40,7 @@ void BlastDBCmdSupportTaskSettings::reset() {
     addToProject = false;
 }
 
-BlastDBCmdTask::BlastDBCmdTask(const BlastDBCmdSupportTaskSettings &_settings)
+BlastDBCmdTask::BlastDBCmdTask(const BlastDBCmdSupportTaskSettings& _settings)
     : Task("Run NCBI BlastDBCmd task", TaskFlags_NR_FOSCOE), settings(_settings) {
     GCOUNTER(cvar, "BlastDBCmdSupportTask");
     blastDBCmdTask = nullptr;
@@ -61,11 +61,11 @@ void BlastDBCmdTask::prepare() {
     addSubTask(blastDBCmdTask);
 }
 
-QList<Task *> BlastDBCmdTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> BlastDBCmdTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK(subTask == blastDBCmdTask, res);
     if (settings.addToProject) {
-        IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         auto loadTask = new LoadDocumentTask(BaseDocumentFormats::FASTA, settings.outputPath, ioFactory);
         res.append(new AddDocumentAndOpenViewTask(loadTask));
     }

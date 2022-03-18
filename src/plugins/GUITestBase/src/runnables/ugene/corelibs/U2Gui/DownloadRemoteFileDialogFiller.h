@@ -48,35 +48,35 @@ public:
 
     typedef QPair<ActionType, QVariant> Action;
 
-    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
-    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
+    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
-    void setResourceIds(const QVariant &actionData);
-    void setDatabase(const QVariant &actionData);
-    void enterSaveToDirectoryPath(const QVariant &actionData);
-    void selectSaveToDirectoryPath(const QVariant &actionData);
-    void setOutputFormat(const QVariant &actionData);
-    void setForceSequenceDownload(const QVariant &actionData);
-    void checkDatabase(const QVariant &actionData);
-    void checkDatabasesCount(const QVariant &actionData);
-    void checkOutputFormatVisibility(const QVariant &actionData);
-    void checkOutputFormat(const QVariant &actionData);
-    void checkForceSequenceDownloadVisibility(const QVariant &actionData);
-    void checkForceSequenceDownload(const QVariant &actionData);
+    void setResourceIds(const QVariant& actionData);
+    void setDatabase(const QVariant& actionData);
+    void enterSaveToDirectoryPath(const QVariant& actionData);
+    void selectSaveToDirectoryPath(const QVariant& actionData);
+    void setOutputFormat(const QVariant& actionData);
+    void setForceSequenceDownload(const QVariant& actionData);
+    void checkDatabase(const QVariant& actionData);
+    void checkDatabasesCount(const QVariant& actionData);
+    void checkOutputFormatVisibility(const QVariant& actionData);
+    void checkOutputFormat(const QVariant& actionData);
+    void checkForceSequenceDownloadVisibility(const QVariant& actionData);
+    void checkForceSequenceDownload(const QVariant& actionData);
     void clickOk();
     void clickCancel();
 
     const QList<Action> actions;
-    QWidget *dialog;
+    QWidget* dialog = nullptr;
 };
 
 // Use DownloadRemoteFileDialogFiller instead
 class RemoteDBDialogFillerDeprecated : public Filler {
 public:
-    RemoteDBDialogFillerDeprecated(HI::GUITestOpStatus &_os, const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
+    RemoteDBDialogFillerDeprecated(HI::GUITestOpStatus& _os, const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
         : Filler(_os, "DownloadRemoteFileDialog"),
           resID(_resID),
           DBItemNum(_DBItemNum),

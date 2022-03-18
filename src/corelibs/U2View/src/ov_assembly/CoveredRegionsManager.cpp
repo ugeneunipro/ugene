@@ -27,7 +27,7 @@ namespace U2 {
 
 const int CoveredRegionsManager::DESIRED_REGION_LENGTH = 100;
 
-CoveredRegionsManager::CoveredRegionsManager(const U2Region &visibleRegion_, const U2AssemblyCoverageStat &coverageInfo)
+CoveredRegionsManager::CoveredRegionsManager(const U2Region& visibleRegion_, const U2AssemblyCoverageStat& coverageInfo)
     : visibleRegion(visibleRegion_) {
     assert(!coverageInfo.empty());
     assert(!visibleRegion.isEmpty());
@@ -71,7 +71,7 @@ QList<CoveredRegion> CoveredRegionsManager::getTopCoveredRegions(int topMax, qin
     QMultiMap<qint64, CoveredRegion> topCovered;
 
     for (int i = 0; i < allRegions.size(); ++i) {
-        const CoveredRegion &cr = allRegions.at(i);
+        const CoveredRegion& cr = allRegions.at(i);
         if (cr.coverage >= coverageLevel) {
             topCovered.insert(cr.coverage, cr);
         }

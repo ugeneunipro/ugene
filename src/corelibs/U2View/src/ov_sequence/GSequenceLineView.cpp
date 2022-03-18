@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-GSequenceLineView::GSequenceLineView(QWidget *p, SequenceObjectContext *_ctx)
+GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
     : WidgetWithLocalToolbar(p),
       ctx(_ctx),
       renderArea(nullptr),
@@ -60,14 +60,14 @@ GSequenceLineView::GSequenceLineView(QWidget *p, SequenceObjectContext *_ctx)
     scrollBar = new GScrollBar(Qt::Horizontal, this);
 
     connect(ctx->getSequenceSelection(),
-            SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)),
-            SLOT(sl_onDNASelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)));
+            SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
+            SLOT(sl_onDNASelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
 
     connect(ctx->getSequenceGObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_sequenceChanged()));
 }
 
 void GSequenceLineView::pack() {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea);
@@ -77,7 +77,7 @@ void GSequenceLineView::pack() {
     setMinimumHeight(layout->minimumSize().height());
 }
 
-void GSequenceLineView::resizeEvent(QResizeEvent *e) {
+void GSequenceLineView::resizeEvent(QResizeEvent* e) {
     updateScrollBar();
     addUpdateFlags(GSLV_UF_ViewResized);
     QWidget::resizeEvent(e);
@@ -134,19 +134,19 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
     }
 }
 
-void GSequenceLineView::setSelection(const U2Region &r) {
+void GSequenceLineView::setSelection(const U2Region& r) {
     SAFE_POINT(r.startPos >= 0 && r.endPos() <= seqLen, QString("Selection is out of range! [%2, len: %3]").arg(r.startPos).arg(r.length), );
     ctx->getSequenceSelection()->setRegion(r);
 }
 
-void GSequenceLineView::addSelection(const U2Region &r) {
+void GSequenceLineView::addSelection(const U2Region& r) {
     SAFE_POINT(r.startPos >= 0 && r.endPos() <= seqLen, QString("Selection is out of range! [%2, len: %3]").arg(r.startPos).arg(r.length), );
     if (r.length != 0) {
         ctx->getSequenceSelection()->addRegion(r);
     }
 }
 
-void GSequenceLineView::mousePressEvent(QMouseEvent *me) {
+void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     setFocus();
     isSelectionResizing = true;
 
@@ -180,7 +180,7 @@ void GSequenceLineView::mousePressEvent(QMouseEvent *me) {
     QWidget::mousePressEvent(me);
 }
 
-void GSequenceLineView::mouseReleaseEvent(QMouseEvent *me) {
+void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
     setFocus();
 
     if (!ignoreMouseSelectionEvents) {
@@ -206,7 +206,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent *me) {
     QWidget::mouseReleaseEvent(me);
 }
 
-void GSequenceLineView::mouseMoveEvent(QMouseEvent *me) {
+void GSequenceLineView::mouseMoveEvent(QMouseEvent* me) {
     if (!me->buttons()) {
         updateCursorShapeOnMouseMove(me->pos());
     }
@@ -233,7 +233,7 @@ void GSequenceLineView::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void GSequenceLineView::mouseDoubleClickEvent(QMouseEvent *me) {
+void GSequenceLineView::mouseDoubleClickEvent(QMouseEvent* me) {
     QPoint areaPoint = toRenderAreaPoint(me->pos());
     if (renderArea->rect().contains(areaPoint)) {
         qint64 pos = renderArea->coordToPos(areaPoint);
@@ -242,10 +242,10 @@ void GSequenceLineView::mouseDoubleClickEvent(QMouseEvent *me) {
     QWidget::mouseDoubleClickEvent(me);
 }
 
-void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
+void GSequenceLineView::keyPressEvent(QKeyEvent* e) {
     int key = e->key();
     bool accepted = false;
-    GSequenceLineView *view = coherentRangeView == nullptr ? this : coherentRangeView;
+    GSequenceLineView* view = coherentRangeView == nullptr ? this : coherentRangeView;
     switch (key) {
         case Qt::Key_Left:
         case Qt::Key_Up:
@@ -286,7 +286,7 @@ U2Region GSequenceLineView::getCapturingRenderAreaYRegionForPos(qint64) const {
     return U2Region(0, height());
 }
 
-void GSequenceLineView::updateCursorShapeOnMouseMove(const QPoint &p) {
+void GSequenceLineView::updateCursorShapeOnMouseMove(const QPoint& p) {
     QPoint renderAreaPoint = toRenderAreaPoint(p);
     int capturingDistance = SelectionModificationHelper::PIXEL_OFFSET_FOR_BORDER_POINTING;
     // On screen 'capturing' X-region around the cursor in pixels.
@@ -302,7 +302,7 @@ void GSequenceLineView::updateCursorShapeOnMouseMove(const QPoint &p) {
     };
     Qt::CursorShape shape = Qt::ArrowCursor;
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
-    for (const U2Region &region : qAsConst(regions)) {
+    for (const U2Region& region : qAsConst(regions)) {
         if (isCaptured(region.startPos) || isCaptured(region.endPos())) {
             shape = Qt::SizeHorCursor;
             break;
@@ -340,12 +340,12 @@ void GSequenceLineView::onVisibleRangeChanged(bool signal) {
     update();
 }
 
-QPoint GSequenceLineView::toRenderAreaPoint(const QPoint &p) const {
+QPoint GSequenceLineView::toRenderAreaPoint(const QPoint& p) const {
     assert(contentWidget);
     return p - contentWidget->pos();
 }
 
-void GSequenceLineView::wheelEvent(QWheelEvent *we) {
+void GSequenceLineView::wheelEvent(QWheelEvent* we) {
     bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
@@ -356,22 +356,22 @@ void GSequenceLineView::wheelEvent(QWheelEvent *we) {
     if (we->modifiers() == 0) {
         scrollBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     } else if (we->modifiers() & Qt::SHIFT) {
-        GSequenceLineView *moveView = coherentRangeView == nullptr ? this : coherentRangeView;
+        GSequenceLineView* moveView = coherentRangeView == nullptr ? this : coherentRangeView;
         if (toMin && visibleRange.startPos > 0) {
             moveView->setStartPos(visibleRange.startPos - 1);
         } else if (!toMin && visibleRange.endPos() < seqLen) {
             moveView->setStartPos(visibleRange.startPos + 1);
         }
     } else if (we->modifiers() & Qt::ALT) {
-        QAction *zoomAction = toMin ? getZoomInAction() : getZoomOutAction();
+        QAction* zoomAction = toMin ? getZoomInAction() : getZoomOutAction();
         if (zoomAction != nullptr) {
             zoomAction->activate(QAction::Trigger);
         }
     }
 }
 
-void GSequenceLineView::sl_onDNASelectionChanged(LRegionsSelection *, const QVector<U2Region> &added, const QVector<U2Region> &removed) {
-    QWidget *prevFocusedWidget = QApplication::focusWidget();
+void GSequenceLineView::sl_onDNASelectionChanged(LRegionsSelection*, const QVector<U2Region>& added, const QVector<U2Region>& removed) {
+    QWidget* prevFocusedWidget = QApplication::focusWidget();
     if (QApplication::focusWidget() != this) {
         setFocus();
         if (prevFocusedWidget != nullptr) {
@@ -384,17 +384,17 @@ void GSequenceLineView::sl_onDNASelectionChanged(LRegionsSelection *, const QVec
     }
 }
 
-void GSequenceLineView::focusInEvent(QFocusEvent *fe) {
+void GSequenceLineView::focusInEvent(QFocusEvent* fe) {
     addUpdateFlags(GSLV_UF_FocusChanged);
     QWidget::focusInEvent(fe);
 }
 
-void GSequenceLineView::focusOutEvent(QFocusEvent *fe) {
+void GSequenceLineView::focusOutEvent(QFocusEvent* fe) {
     addUpdateFlags(GSLV_UF_FocusChanged);
     QWidget::focusOutEvent(fe);
 }
 
-bool GSequenceLineView::eventFilter(QObject *object, QEvent *event) {
+bool GSequenceLineView::eventFilter(QObject* object, QEvent* event) {
     if (object == frameView) {
         // show-hide frame on frameView show/hide event
         if ((isVisible() && event->type() == QEvent::Show) || event->type() == QEvent::Hide) {
@@ -407,7 +407,7 @@ bool GSequenceLineView::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 
-void GSequenceLineView::setFrameView(GSequenceLineView *_frameView) {
+void GSequenceLineView::setFrameView(GSequenceLineView* _frameView) {
     SAFE_POINT((frameView == nullptr) != (_frameView == nullptr), "Failed to set frame view!", );
 
     if (_frameView == nullptr) {
@@ -421,7 +421,7 @@ void GSequenceLineView::setFrameView(GSequenceLineView *_frameView) {
     connect(frameView, SIGNAL(si_visibleRangeChanged()), SLOT(sl_onFrameRangeChanged()));
 }
 
-void GSequenceLineView::setCoherentRangeView(GSequenceLineView *_rangeView) {
+void GSequenceLineView::setCoherentRangeView(GSequenceLineView* _rangeView) {
     SAFE_POINT((coherentRangeView == nullptr) != (_rangeView == nullptr), "Failed to set coherent view!", );
     if (_rangeView == nullptr) {
         coherentRangeView->disconnect(this);
@@ -446,7 +446,7 @@ void GSequenceLineView::sl_onFrameRangeChanged() {
     }
     // TODO: optimize and do not redraw frame if visual coords of the frame are not changed!
 #ifdef _DEBUG
-    const U2Region &newRange = frameView->getVisibleRange();
+    const U2Region& newRange = frameView->getVisibleRange();
     assert(newRange.startPos >= 0 && newRange.endPos() <= ctx->getSequenceLength() && newRange.length >= 0);
 #endif
     addUpdateFlags(GSLV_UF_FrameChanged);
@@ -454,7 +454,7 @@ void GSequenceLineView::sl_onFrameRangeChanged() {
 }
 
 void GSequenceLineView::sl_onCoherentRangeViewRangeChanged() {
-    const U2Region &newRange = coherentRangeView->getVisibleRange();
+    const U2Region& newRange = coherentRangeView->getVisibleRange();
     if (newRange == visibleRange) {
         return;
     }
@@ -465,7 +465,7 @@ void GSequenceLineView::sl_onLocalCenteringRequest(qint64 pos) {
     setCenterPos(pos);
 }
 
-void GSequenceLineView::setVisibleRange(const U2Region &newRange, bool signal) {
+void GSequenceLineView::setVisibleRange(const U2Region& newRange, bool signal) {
     SAFE_POINT(newRange.startPos >= 0 && newRange.endPos() <= seqLen, "Failed to update visible range. Range is out of the sequence range!", );
 
     if (newRange == visibleRange) {
@@ -479,7 +479,7 @@ void GSequenceLineView::setVisibleRange(const U2Region &newRange, bool signal) {
     }
 }
 
-U2SequenceObject *GSequenceLineView::getSequenceObject() const {
+U2SequenceObject* GSequenceLineView::getSequenceObject() const {
     return ctx->getSequenceObject();
 }
 
@@ -494,13 +494,13 @@ void GSequenceLineView::sl_sequenceChanged() {
     completeUpdate();
 }
 
-void GSequenceLineView::moveBorder(const QPoint &p) {
+void GSequenceLineView::moveBorder(const QPoint& p) {
     QPoint areaPoint = toRenderAreaPoint(p);
     autoScrolling(areaPoint);
     resizeSelection(areaPoint);
 }
 
-void GSequenceLineView::autoScrolling(const QPoint &areaPoint) {
+void GSequenceLineView::autoScrolling(const QPoint& areaPoint) {
     if (areaPoint.x() > width()) {
         scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
     } else if (areaPoint.x() <= 0) {
@@ -515,7 +515,7 @@ void GSequenceLineView::cancelSelectionResizing() {
     scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
 }
 
-void GSequenceLineView::resizeSelection(const QPoint &areaPoint) {
+void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
     qint64 pos = renderArea->coordToPos(areaPoint);
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
     std::sort(regions.begin(), regions.end());
@@ -555,7 +555,7 @@ void GSequenceLineView::resizeSelection(const QPoint &areaPoint) {
     U2Region newSelection(selStart, selLen);
 
     if (!resizableRegion.isEmpty()) {
-        foreach (const U2Region &reg, regions) {
+        foreach (const U2Region& reg, regions) {
             if (!reg.intersect(newSelection).isEmpty()) {
                 newSelection = U2Region::join(QVector<U2Region>() << newSelection << reg).first();
                 if (!overlappedRegions.contains(reg)) {
@@ -571,14 +571,14 @@ void GSequenceLineView::resizeSelection(const QPoint &areaPoint) {
         overlappedSelection << newSelection;
         overlappedSelection = U2Region::join(overlappedSelection);
         if (!overlappedSelection.isEmpty()) {
-            foreach (const U2Region &sel, overlappedSelection) {
+            foreach (const U2Region& sel, overlappedSelection) {
                 if (sel.contains(newSelection)) {
                     newSelection = sel;
                 } else {
                     regions << sel;
                 }
             }
-            foreach (const U2Region &reg, regions) {
+            foreach (const U2Region& reg, regions) {
                 if (overlappedRegions.contains(reg)) {
                     overlappedRegions.removeOne(reg);
                 }
@@ -589,13 +589,13 @@ void GSequenceLineView::resizeSelection(const QPoint &areaPoint) {
     changeSelection(regions, newSelection);
 }
 
-void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region &newSelection) {
+void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region& newSelection) {
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
     regions.removeOne(resizableRegion);
     changeSelection(regions, newSelection);
 }
 
-void GSequenceLineView::changeSelection(QVector<U2Region> &regions, const U2Region &newSelection) {
+void GSequenceLineView::changeSelection(QVector<U2Region>& regions, const U2Region& newSelection) {
     resizableRegion = newSelection;
     regions << newSelection;
     std::sort(regions.begin(), regions.end());
@@ -605,7 +605,7 @@ void GSequenceLineView::changeSelection(QVector<U2Region> &regions, const U2Regi
 //////////////////////////////////////////////////////////////////////////
 /// GSequenceLineViewRenderArea
 
-GSequenceLineViewRenderArea::GSequenceLineViewRenderArea(GSequenceLineView *v)
+GSequenceLineViewRenderArea::GSequenceLineViewRenderArea(GSequenceLineView* v)
     : QWidget(v), cachedView(new QPixmap()) {
     view = v;
 
@@ -632,21 +632,21 @@ void GSequenceLineViewRenderArea::updateFontMetrics() {
     smallCharWidth = fms.boundingRect('W').width();
 }
 
-void GSequenceLineViewRenderArea::drawFocus(QPainter &p) {
+void GSequenceLineViewRenderArea::drawFocus(QPainter& p) {
     p.setPen(QPen(Qt::black, 1, Qt::DotLine));
     p.drawRect(0, 0, width() - 1, height() - 1);
 }
 
-void GSequenceLineViewRenderArea::drawFrame(QPainter &p) {
-    GSequenceLineView *frameView = view->getFrameView();
+void GSequenceLineViewRenderArea::drawFrame(QPainter& p) {
+    GSequenceLineView* frameView = view->getFrameView();
     if (frameView == nullptr || !frameView->isVisible()) {
         return;
     }
-    const U2Region &frameRange = frameView->getVisibleRange();
+    const U2Region& frameRange = frameView->getVisibleRange();
     if (frameRange.length == 0) {
         return;
     }
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     U2Region visibleFrameRange = visibleRange.intersect(frameRange);
     if (visibleFrameRange.isEmpty()) {
         return;
@@ -659,7 +659,7 @@ void GSequenceLineViewRenderArea::drawFrame(QPainter &p) {
     p.drawRect(xStart, 0, xLen, height());
 }
 
-void GSequenceLineViewRenderArea::paintEvent(QPaintEvent *e) {
+void GSequenceLineViewRenderArea::paintEvent(QPaintEvent* e) {
     QSize cachedViewSize = cachedView->size() * devicePixelRatio();
     QSize currentSize = size() * devicePixelRatio();
     if (cachedViewSize != currentSize) {
@@ -679,16 +679,16 @@ double GSequenceLineViewRenderArea::getCurrentScale() const {
     return width() / (double)view->getVisibleRange().length;
 }
 
-qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &coord) const {
+qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint& coord) const {
     int x = qBound(0, coord.x(), width());
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     double scale = getCurrentScale();
     qint64 pos = qRound64((double)visibleRange.startPos + x / scale);
     return qBound(visibleRange.startPos, pos, visibleRange.endPos());
 }
 
 int GSequenceLineViewRenderArea::posToCoord(qint64 pos, bool useVirtualSpace) const {
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     bool isInVisibleRange = visibleRange.contains(pos) || pos == visibleRange.endPos();
     if (!isInVisibleRange && !useVirtualSpace) {
         return -1;

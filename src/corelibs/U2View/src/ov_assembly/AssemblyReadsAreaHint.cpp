@@ -34,7 +34,7 @@ namespace U2 {
 const QPoint AssemblyReadsAreaHint::OFFSET_FROM_CURSOR(13, 13);
 static const int HINT_MAX_WIDTH = 200;
 
-AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget *parent)
+AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     : QFrame(parent), label(new QLabel(this)) {
     auto top = new QVBoxLayout(this);
     top->setMargin(2);
@@ -66,7 +66,7 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget *parent)
     setObjectName("AssemblyReadsAreaHint");
 }
 
-static QString getCigarString(const QString &ci) {
+static QString getCigarString(const QString& ci) {
     if (ci.isEmpty()) {
         return QObject::tr("no information");
     }
@@ -83,7 +83,7 @@ static QString getCigarString(const QString &ci) {
     return cigar;
 }
 
-QString getReadSequence(const QByteArray &bytes) {
+QString getReadSequence(const QByteArray& bytes) {
     QString ret(bytes);
     if (ret.size() < AssemblyReadsAreaHint::LETTER_MAX_COUNT) {
         return ret;
@@ -91,7 +91,7 @@ QString getReadSequence(const QByteArray &bytes) {
     return ret.mid(0, AssemblyReadsAreaHint::LETTER_MAX_COUNT) + "...";
 }
 
-QString AssemblyReadsAreaHint::getReadDataAsString(const U2AssemblyRead &r) {
+QString AssemblyReadsAreaHint::getReadDataAsString(const U2AssemblyRead& r) {
     QString ret;
     ret += QString("> %1\n").arg(QString(r->name));
     ret += QString("%1\n\n").arg(QString(r->readSequence));
@@ -180,10 +180,10 @@ void AssemblyReadsAreaHint::setData(U2AssemblyRead r, QList<U2AssemblyRead> mate
     setMaximumHeight(layout()->minimumSize().height());
 }
 
-bool AssemblyReadsAreaHint::eventFilter(QObject *, QEvent *event) {
-    QMouseEvent *e = dynamic_cast<QMouseEvent *>(event);
+bool AssemblyReadsAreaHint::eventFilter(QObject*, QEvent* event) {
+    QMouseEvent* e = dynamic_cast<QMouseEvent*>(event);
     if (e != nullptr) {
-        QWidget *p = qobject_cast<QWidget *>(parent());
+        QWidget* p = qobject_cast<QWidget*>(parent());
         QMouseEvent eventToParent(e->type(), p->mapFromGlobal(QCursor::pos()), e->button(), e->buttons(), e->modifiers());
         QApplication::sendEvent(p, &eventToParent);
         return true;
@@ -192,16 +192,16 @@ bool AssemblyReadsAreaHint::eventFilter(QObject *, QEvent *event) {
     }
 }
 
-void AssemblyReadsAreaHint::leaveEvent(QEvent *) {
-    AssemblyReadsArea *p = qobject_cast<AssemblyReadsArea *>(parent());
+void AssemblyReadsAreaHint::leaveEvent(QEvent*) {
+    AssemblyReadsArea* p = qobject_cast<AssemblyReadsArea*>(parent());
     QPoint curInParentCoords = p->mapFromGlobal(QCursor::pos());
     if (!p->rect().contains(curInParentCoords)) {
         p->sl_hideHint();
     }
 }
 
-void AssemblyReadsAreaHint::mouseMoveEvent(QMouseEvent *e) {
-    AssemblyReadsArea *p = qobject_cast<AssemblyReadsArea *>(parent());
+void AssemblyReadsAreaHint::mouseMoveEvent(QMouseEvent* e) {
+    AssemblyReadsArea* p = qobject_cast<AssemblyReadsArea*>(parent());
     p->sl_hideHint();
     QFrame::mouseMoveEvent(e);
 }

@@ -34,12 +34,12 @@
 
 namespace U2 {
 
-MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString &title, MSAEditor *msaEditor)
+MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString& title, MSAEditor* msaEditor)
     : editor(msaEditor) {
     treeTabArea = new MsaEditorTreeTabArea(editor, this);
     titleWidget = msaEditor->getUI()->createHeaderLabelWidget(title);
 
-    auto maUtilsWidget = dynamic_cast<MaUtilsWidget *>(titleWidget);
+    auto maUtilsWidget = dynamic_cast<MaUtilsWidget*>(titleWidget);
     maUtilsWidget->setHeightMargin(-55);
 
     auto treeAreaLayout = new QVBoxLayout(this);
@@ -55,29 +55,29 @@ MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString &title, MSAEdit
     setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void MSAEditorMultiTreeViewer::addTreeView(GObjectViewWindow *treeView) {
+void MSAEditorMultiTreeViewer::addTreeView(GObjectViewWindow* treeView) {
     treeTabArea->addTab(treeView, treeView->getViewName(), true);
     treeViewList.append(treeView);
 
-    const QList<GObject *> &objects = treeView->getObjects();
-    for (GObject *obj : qAsConst(objects)) {
+    const QList<GObject*>& objects = treeView->getObjects();
+    for (GObject* obj : qAsConst(objects)) {
         if (obj->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE) {
             tabsNameList.append(obj->getDocument()->getName());
         }
     }
 }
 
-QWidget *MSAEditorMultiTreeViewer::getCurrentWidget() const {
+QWidget* MSAEditorMultiTreeViewer::getCurrentWidget() const {
     return treeTabArea->getCurrentWidget();
 }
 
-MsaEditorTreeTab *MSAEditorMultiTreeViewer::getCurrentTabWidget() const {
+MsaEditorTreeTab* MSAEditorMultiTreeViewer::getCurrentTabWidget() const {
     return treeTabArea->getCurrentTabWidget();
 }
 
-void MSAEditorMultiTreeViewer::sl_onTabCloseRequested(QWidget *page) {
+void MSAEditorMultiTreeViewer::sl_onTabCloseRequested(QWidget* page) {
     treeViewList.removeOne(page);
-    auto viewWindow = qobject_cast<GObjectViewWindow *>(page);
+    auto viewWindow = qobject_cast<GObjectViewWindow*>(page);
     CHECK(viewWindow != nullptr, );
 
     int tabIndex = tabsNameList.indexOf(viewWindow->getViewName());
@@ -86,7 +86,7 @@ void MSAEditorMultiTreeViewer::sl_onTabCloseRequested(QWidget *page) {
     emit si_tabsCountChanged(tabsNameList.count());
 }
 
-const QStringList &MSAEditorMultiTreeViewer::getTreeNames() const {
+const QStringList& MSAEditorMultiTreeViewer::getTreeNames() const {
     return tabsNameList;
 }
 

@@ -32,18 +32,18 @@ public:
     GTestFormatRegistry();
     ~GTestFormatRegistry();
 
-    bool registerTestFormat(GTestFormat *f);
+    bool registerTestFormat(GTestFormat* f);
 
-    bool unregisterTestFormat(GTestFormat *f);
+    bool unregisterTestFormat(GTestFormat* f);
 
-    QList<GTestFormat *> getFormats() const {
+    QList<GTestFormat*> getFormats() const {
         return formats;
     }
 
-    GTestFormat *findFormat(const GTestFormatId &id);
+    GTestFormat* findFormat(const GTestFormatId& id);
 
 private:
-    QList<GTestFormat *> formats;
+    QList<GTestFormat*> formats;
 };
 
 class U2TEST_EXPORT TestFramework {
@@ -57,7 +57,7 @@ private:
 
 public:
     TestFramework();
-    GTestFormatRegistry *getTestFormatRegistry() {
+    GTestFormatRegistry* getTestFormatRegistry() {
         return &formatRegistry;
     }
 

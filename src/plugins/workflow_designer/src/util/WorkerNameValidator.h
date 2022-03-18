@@ -33,8 +33,8 @@ namespace U2 {
  */
 class DeprecatedWorkerNameValidator : public QValidator {
 public:
-    DeprecatedWorkerNameValidator(QObject *parent = nullptr);
-    State validate(QString &input, int &pos) const override;
+    DeprecatedWorkerNameValidator(QObject* parent = nullptr);
+    State validate(QString& input, int& pos) const override;
 };
 
 }  // namespace U2

@@ -35,7 +35,7 @@ struct U2PRIVATE_EXPORT LoggerSettings {
         std::fill(activeLevelFlag, activeLevelFlag + LogLevel_NumLevels, 0);
     }
 
-    bool operator==(const LoggerSettings &other) const {
+    bool operator==(const LoggerSettings& other) const {
         return categoryName == other.categoryName && activeLevelFlag == other.activeLevelFlag;
     }
 
@@ -59,17 +59,17 @@ class U2PRIVATE_EXPORT LogSettings {
 public:
     LogSettings();
 
-    void removeCategory(const QString &name);
+    void removeCategory(const QString& name);
 
-    void addCategory(const LoggerSettings &newcs);
+    void addCategory(const LoggerSettings& newcs);
 
-    const LoggerSettings &getLoggerSettings(const QString &cName);
+    const LoggerSettings& getLoggerSettings(const QString& cName);
 
     const QHash<QString, LoggerSettings> getLoggerSettings() const {
         return categories;
     }
 
-    bool operator==(const LogSettings &other) const;
+    bool operator==(const LogSettings& other) const;
 
     void save();
 
@@ -93,11 +93,11 @@ public:
 
 class U2PRIVATE_EXPORT LogSettingsHolder {
 public:
-    const LogSettings &getSettings() const {
+    const LogSettings& getSettings() const {
         return settings;
     }
 
-    virtual void setSettings(const LogSettings &s);
+    virtual void setSettings(const LogSettings& s);
 
 protected:
     mutable LogSettings settings;

@@ -31,18 +31,18 @@ namespace U2 {
 
 class GenbankLocationValidator : public QValidator {
 public:
-    GenbankLocationValidator(QPushButton *okButton, int length, bool isCircular, QLineEdit *le);
+    GenbankLocationValidator(QPushButton* okButton, int length, bool isCircular, QLineEdit* le);
     ~GenbankLocationValidator();
 
-    State validate(QString &str, int &ii) const;
+    State validate(QString& str, int& ii) const;
 
 private:
     State failValidate() const;
 
-    QPushButton *okButton;
+    QPushButton* okButton;
     bool isCircular;
     int seqLen;
-    QLineEdit *le;
+    QLineEdit* le;
 };
 
 }  // namespace U2

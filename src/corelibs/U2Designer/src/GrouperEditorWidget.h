@@ -34,15 +34,15 @@ class GrouperSlotsCfgModel;
 class GrouperEditorWidget : public QWidget, public Ui_GrouperEditorWidget {
     Q_OBJECT
 public:
-    GrouperEditorWidget(GrouperSlotsCfgModel *gouperModel, Workflow::Actor *grouper, QWidget *parent = nullptr);
+    GrouperEditorWidget(GrouperSlotsCfgModel* gouperModel, Workflow::Actor* grouper, QWidget* parent = nullptr);
 
 signals:
     void si_grouperCfgChanged();
 
 private:
-    GrouperSlotsCfgModel *grouperModel;
-    Workflow::Actor *grouper;
-    Workflow::Port *inPort;
+    GrouperSlotsCfgModel* grouperModel;
+    Workflow::Actor* grouper;
+    Workflow::Port* inPort;
 
 private slots:
     void sl_onAddButtonClicked();
@@ -51,38 +51,38 @@ private slots:
 
     void sl_onGroupSlotChanged(int idx);
     void sl_onGroupOpChanged(int idx);
-    void sl_onItemSelected(const QModelIndex &idx);
-    void sl_onItemEntered(const QModelIndex &idx);
+    void sl_onItemSelected(const QModelIndex& idx);
+    void sl_onItemEntered(const QModelIndex& idx);
 
 private:
-    void setupGroupOpBox(int slotIdx, const QString &groupOp, const QMap<Descriptor, DataTypePtr> &busMap);
+    void setupGroupOpBox(int slotIdx, const QString& groupOp, const QMap<Descriptor, DataTypePtr>& busMap);
 };
 
 class GrouperSlotsCfgModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    GrouperSlotsCfgModel(QObject *parent, QList<GrouperOutSlot> &outSlots);
+    GrouperSlotsCfgModel(QObject* parent, QList<GrouperOutSlot>& outSlots);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex &) const;
-    int rowCount(const QModelIndex &) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    int columnCount(const QModelIndex&) const;
+    int rowCount(const QModelIndex&) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
 
     QStringList getMergeSeqSlotsNames() const;
-    GrouperSlotAction *getSlotAction(const QString &outSlotName) const;
-    void addGrouperSlot(const GrouperOutSlot &newSlot);
-    void setNewAction(const QString &outSlotName, const GrouperSlotAction &action);
+    GrouperSlotAction* getSlotAction(const QString& outSlotName) const;
+    void addGrouperSlot(const GrouperOutSlot& newSlot);
+    void setNewAction(const QString& outSlotName, const GrouperSlotAction& action);
 
 signals:
-    void si_actionEdited(const GrouperOutSlot &outSlot);
-    void si_slotAdded(const GrouperOutSlot &outSlot);
-    void si_slotRemoved(const QString &outSlotName);
+    void si_actionEdited(const GrouperOutSlot& outSlot);
+    void si_slotAdded(const GrouperOutSlot& outSlot);
+    void si_slotRemoved(const QString& outSlotName);
 
 private:
-    QList<GrouperOutSlot> &outSlots;
+    QList<GrouperOutSlot>& outSlots;
 };
 
 }  // namespace U2

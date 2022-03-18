@@ -54,42 +54,42 @@ class SequenceAreaRenderer;
 class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
-    MaEditorWgt(MaEditor *editor);
+    MaEditorWgt(MaEditor* editor);
 
-    QWidget *createHeaderLabelWidget(const QString &text = QString(),
+    QWidget* createHeaderLabelWidget(const QString& text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,
-                                     QWidget *heightTarget = nullptr,
+                                     QWidget* heightTarget = nullptr,
                                      bool proxyMouseEventsToNameList = true);
 
     /** Returns MA editor instance. The instance is always defined and is never null. */
-    MaEditor *getEditor() const;
+    MaEditor* getEditor() const;
 
-    MaEditorSequenceArea *getSequenceArea() const;
+    MaEditorSequenceArea* getSequenceArea() const;
 
-    MaEditorNameList *getEditorNameList() const;
+    MaEditorNameList* getEditorNameList() const;
 
-    MaEditorConsensusArea *getConsensusArea() const;
+    MaEditorConsensusArea* getConsensusArea() const;
 
-    MaEditorOverviewArea *getOverviewArea() const;
+    MaEditorOverviewArea* getOverviewArea() const;
 
-    MSAEditorOffsetsViewController *getOffsetsViewController() const;
+    MSAEditorOffsetsViewController* getOffsetsViewController() const;
 
-    MaEditorStatusBar *getStatusBar() const;
+    MaEditorStatusBar* getStatusBar() const;
 
-    ScrollController *getScrollController() const;
+    ScrollController* getScrollController() const;
 
-    BaseWidthController *getBaseWidthController() const;
+    BaseWidthController* getBaseWidthController() const;
 
-    RowHeightController *getRowHeightController() const;
+    RowHeightController* getRowHeightController() const;
 
-    DrawHelper *getDrawHelper() const;
+    DrawHelper* getDrawHelper() const;
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const;
 
-    QWidget *getHeaderWidget() const;
+    QWidget* getHeaderWidget() const;
 
-    QSplitter *getMainSplitter() const;
+    QSplitter* getMainSplitter() const;
 
 signals:
     void si_startMaChanging();
@@ -100,47 +100,47 @@ protected:
     virtual void initWidgets();
     virtual void initActions();
 
-    virtual void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) = 0;
+    virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
     virtual void initOverviewArea() = 0;
-    virtual void initNameList(QScrollBar *nhBar) = 0;
+    virtual void initNameList(QScrollBar* nhBar) = 0;
     virtual void initConsensusArea() = 0;
     virtual void initStatusBar() = 0;
 
 protected:
-    MaEditor *const editor;
-    MaEditorSequenceArea *sequenceArea;
-    MaEditorNameList *nameList;
-    MaEditorConsensusArea *consensusArea;
-    MaEditorOverviewArea *overviewArea;
-    MSAEditorOffsetsViewController *offsetsViewController;
-    MaEditorStatusBar *statusBar;
+    MaEditor* const editor;
+    MaEditorSequenceArea* sequenceArea;
+    MaEditorNameList* nameList;
+    MaEditorConsensusArea* consensusArea;
+    MaEditorOverviewArea* overviewArea;
+    MSAEditorOffsetsViewController* offsetsViewController;
+    MaEditorStatusBar* statusBar;
 
     /** Horizontal splitter in the main layout.  Separates main widgets (NameList + SequenceArea), Exclude List and Overview. */
-    QSplitter *mainSplitter = nullptr;
+    QSplitter* mainSplitter = nullptr;
 
-    QWidget *nameAreaContainer;
-    QWidget *seqAreaHeader;
-    QVBoxLayout *seqAreaHeaderLayout;
+    QWidget* nameAreaContainer;
+    QWidget* seqAreaHeader;
+    QVBoxLayout* seqAreaHeaderLayout;
 
-    QGridLayout *seqAreaLayout;
-    QVBoxLayout *nameAreaLayout;
+    QGridLayout* seqAreaLayout;
+    QVBoxLayout* nameAreaLayout;
 
     /** Vertical splitter with NameList & SequenceArea stacked horizontally. */
-    QSplitter *nameAndSequenceAreasSplitter = nullptr;
+    QSplitter* nameAndSequenceAreasSplitter = nullptr;
 
     bool enableCollapsingOfSingleRowGroups;
-    ScrollController *scrollController;
-    BaseWidthController *baseWidthController;
-    RowHeightController *rowHeightController;
-    DrawHelper *drawHelper;
+    ScrollController* scrollController;
+    BaseWidthController* baseWidthController;
+    RowHeightController* rowHeightController;
+    DrawHelper* drawHelper;
 
 public:
-    QAction *delSelectionAction;
-    QAction *copySelectionAction;
-    QAction *copyFormattedSelectionAction;
-    QAction *pasteAction;
-    QAction *pasteBeforeAction;
-    QAction *cutSelectionAction;
+    QAction* delSelectionAction;
+    QAction* copySelectionAction;
+    QAction* copyFormattedSelectionAction;
+    QAction* pasteAction;
+    QAction* pasteBeforeAction;
+    QAction* cutSelectionAction;
 };
 
 }  // namespace U2

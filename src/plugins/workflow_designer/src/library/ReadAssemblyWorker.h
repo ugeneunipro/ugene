@@ -36,15 +36,15 @@ namespace LocalWorkflow {
 class ReadAssemblyWorker : public GenericDocReader {
     Q_OBJECT
 public:
-    ReadAssemblyWorker(Actor *p);
+    ReadAssemblyWorker(Actor* p);
     virtual void init();
 
 protected:
-    virtual void onTaskFinished(Task *task);
-    virtual QString addReadDbObjectToData(const QString &objUrl, QVariantMap &data);
+    virtual void onTaskFinished(Task* task);
+    virtual QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data);
 
 protected:
-    virtual Task *createReadTask(const QString &url, const QString &datasetName);
+    virtual Task* createReadTask(const QString& url, const QString& datasetName);
 };  // ReadAssemblyWorker
 
 class ReadAssemblyProto : public GenericReadDocProto {
@@ -60,7 +60,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // ReadAssemblyWorkerFactory
 

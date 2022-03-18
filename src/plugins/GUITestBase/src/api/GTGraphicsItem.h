@@ -33,8 +33,8 @@ using namespace HI;
 
 class GTGraphicsItem {
 public:
-    static QRect getGraphicsItemRect(HI::GUITestOpStatus &os, QGraphicsItem *it);
-    static QPoint getItemCenter(HI::GUITestOpStatus &os, QGraphicsItem *it);
+    static QRect getGraphicsItemRect(HI::GUITestOpStatus& os, QGraphicsItem* it);
+    static QPoint getItemCenter(HI::GUITestOpStatus& os, QGraphicsItem* it);
 };
 
 }  // namespace U2

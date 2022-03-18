@@ -46,8 +46,8 @@ const QString HmmerBuildDialog::MA_FILES_DIR_ID = "uhmmer3_build_ma_files_dir";
 const QString HmmerBuildDialog::HMM_FILES_DIR_ID = "uhmmer3_build_hmm_files_dir";
 
 void HmmerBuildDialog::setSignalsAndSlots() {
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(maOpenFileButton, SIGNAL(clicked()), SLOT(sl_maOpenFileButtonClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_buildButtonClicked()));
@@ -89,7 +89,7 @@ void HmmerBuildDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatsInfo, this);
 }
 
-HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget *parent)
+HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment& ma, QWidget* parent)
     : QDialog(parent),
       saveController(nullptr) {
     initialize();
@@ -202,7 +202,7 @@ void HmmerBuildDialog::sl_buildButtonClicked() {
         return;
     }
 
-    Task *buildTask = nullptr;
+    Task* buildTask = nullptr;
     if (model.alignmentUsing) {
         buildTask = new HmmerBuildFromMsaTask(model.buildSettings, model.alignment);
     } else {

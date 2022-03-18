@@ -29,7 +29,7 @@ namespace BAM {
 
 class CancelledException : public Exception {
 public:
-    CancelledException(const QString &message);
+    CancelledException(const QString& message);
 };
 
 }  // namespace BAM

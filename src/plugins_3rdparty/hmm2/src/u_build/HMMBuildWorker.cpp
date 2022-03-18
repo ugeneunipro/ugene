@@ -70,13 +70,13 @@ static const QString SEED_ATTR("seed");
 
 static const QString HMM_PROFILE_DEFAULT_NAME("hmm_profile");
 
-static bool isDefaultCfg(PrompterBaseImpl *actor) {
+static bool isDefaultCfg(PrompterBaseImpl* actor) {
     return int(P7_LS_CONFIG) == actor->getParameter(MODE_ATTR).toInt() && 5000 == actor->getParameter(NUM_ATTR).toInt() && 0 == actor->getParameter(SEED_ATTR).toInt() && 0 == actor->getParameter(FIXEDLEN_ATTR).toInt() && 325 == actor->getParameter(LENMEAN_ATTR).toInt() && double(200) == actor->getParameter(LENDEV_ATTR).toDouble();
 }
 
 void HMMBuildWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor id(BasePorts::IN_MSA_PORT_ID(), HMMBuildWorker::tr("Input MSA"), HMMBuildWorker::tr("Input multiple sequence alignment for building statistical model."));
         Descriptor od(OUT_HMM_PORT_ID, HMMBuildWorker::tr("HMM profile"), HMMBuildWorker::tr("Produced HMM profile"));
@@ -137,8 +137,8 @@ void HMMBuildWorkerFactory::init() {
     Descriptor desc(HMMBuildWorkerFactory::ACTOR, HMMBuildWorker::tr("HMM2 Build"), HMMBuildWorker::tr("Builds a HMM profile from a multiple sequence alignment."
                                                                                                        "<p>The HMM profile is a statistical model which captures position-specific information"
                                                                                                        " about how conserved each column of the alignment is, and which residues are likely."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap lenMap;
@@ -190,13 +190,13 @@ void HMMBuildWorkerFactory::init() {
     proto->setPrompter(new HMMBuildPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(HMMLib::HMM_CATEGORY(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new HMMBuildWorkerFactory());
 }
 
 void HMMBuildWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     delete localDomain->unregisterEntry(ACTOR);
 }
 
@@ -204,8 +204,8 @@ void HMMBuildWorkerFactory::cleanup() {
  * HMMBuildPrompter
  ******************************/
 QString HMMBuildPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
 
     QString msaName = msaProducer ? tr("For each MSA from <u>%1</u>,").arg(msaProducer->getLabel()) : "";
 
@@ -226,7 +226,7 @@ QString HMMBuildPrompter::composeRichDoc() {
 /******************************
  * HMMBuildWorker
  ******************************/
-HMMBuildWorker::HMMBuildWorker(Actor *a)
+HMMBuildWorker::HMMBuildWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr), calibrate(false), nextTick(nullptr) {
 }
 
@@ -242,14 +242,14 @@ bool HMMBuildWorker::isReady() const {
     return nextTick || input->hasMessage() || input->isEnded();
 }
 
-Task *HMMBuildWorker::tick() {
+Task* HMMBuildWorker::tick() {
     if (calSettings.seed < 0) {
         algoLog.error(tr("Incorrect value for seed parameter"));
         return new FailTask(tr("Incorrect value for seed parameter"));
     }
 
     if (nextTick) {  // calibrate task
-        Task *t = nextTick;
+        Task* t = nextTick;
         nextTick = nullptr;
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
@@ -280,8 +280,8 @@ Task *HMMBuildWorker::tick() {
             SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
             const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-            Task *t = new HMMBuildTask(cfg, msa);
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            Task* t = new HMMBuildTask(cfg, msa);
+            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         } else if (input->isEnded()) {
             setDone();
@@ -292,7 +292,7 @@ Task *HMMBuildWorker::tick() {
 }
 
 void HMMBuildWorker::sl_taskFinished() {
-    Task *t = qobject_cast<Task *>(sender());
+    Task* t = qobject_cast<Task*>(sender());
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
@@ -303,13 +303,13 @@ void HMMBuildWorker::sl_taskFinished() {
     sl_taskFinished(t);
 }
 
-void HMMBuildWorker::sl_taskFinished(Task *t) {
-    HMMBuildTask *build = qobject_cast<HMMBuildTask *>(t);
+void HMMBuildWorker::sl_taskFinished(Task* t) {
+    HMMBuildTask* build = qobject_cast<HMMBuildTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
-    plan7_s *hmm = nullptr;
+    plan7_s* hmm = nullptr;
     if (build) {
         assert(!nextTick);
         hmm = build->getHMM();
@@ -322,14 +322,14 @@ void HMMBuildWorker::sl_taskFinished(Task *t) {
                 nextTick = new HMMCalibrateParallelTask(hmm, calSettings);
             }
         } else {  // do not calibrate -> put hmm to output
-            output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s *>(hmm)));
+            output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s*>(hmm)));
         }
         algoLog.info(tr("Built HMM profile"));
     } else {
-        HMMCalibrateAbstractTask *calibrate = qobject_cast<HMMCalibrateAbstractTask *>(sender());
+        HMMCalibrateAbstractTask* calibrate = qobject_cast<HMMCalibrateAbstractTask*>(sender());
         assert(calibrate);
         hmm = calibrate->getHMM();
-        output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s *>(hmm)));
+        output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s*>(hmm)));
         algoLog.info(tr("Calibrated HMM profile"));
     }
 }

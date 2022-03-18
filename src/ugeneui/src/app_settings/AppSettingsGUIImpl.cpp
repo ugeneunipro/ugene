@@ -37,12 +37,12 @@
 
 namespace U2 {
 
-AppSettingsGUIImpl::AppSettingsGUIImpl(QObject *p)
+AppSettingsGUIImpl::AppSettingsGUIImpl(QObject* p)
     : AppSettingsGUI(p) {
     registerBuiltinPages();
-    QMenu *m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
+    QMenu* m = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_SETTINGS);
 
-    QAction *settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
+    QAction* settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
 #ifdef Q_OS_DARWIN
@@ -55,18 +55,18 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject *p)
 }
 
 AppSettingsGUIImpl::~AppSettingsGUIImpl() {
-    foreach (AppSettingsGUIPageController *page, pages) {
+    foreach (AppSettingsGUIPageController* page, pages) {
         delete page;
     }
 }
 
-bool AppSettingsGUIImpl::registerPage(AppSettingsGUIPageController *page, const QString &beforePage) {
-    AppSettingsGUIPageController *c = findPageById(page->getPageId());
+bool AppSettingsGUIImpl::registerPage(AppSettingsGUIPageController* page, const QString& beforePage) {
+    AppSettingsGUIPageController* c = findPageById(page->getPageId());
     if (c != nullptr) {
         return false;
     }
     if (!beforePage.isEmpty()) {
-        AppSettingsGUIPageController *before = findPageById(beforePage);
+        AppSettingsGUIPageController* before = findPageById(beforePage);
         if (before != nullptr) {
             int i = pages.indexOf(before);
             pages.insert(i, page);
@@ -77,8 +77,8 @@ bool AppSettingsGUIImpl::registerPage(AppSettingsGUIPageController *page, const 
     return true;
 }
 
-bool AppSettingsGUIImpl::unregisterPage(AppSettingsGUIPageController *page) {
-    AppSettingsGUIPageController *c = findPageById(page->getPageId());
+bool AppSettingsGUIImpl::unregisterPage(AppSettingsGUIPageController* page) {
+    AppSettingsGUIPageController* c = findPageById(page->getPageId());
     if (c == nullptr) {
         return false;
     }
@@ -86,14 +86,14 @@ bool AppSettingsGUIImpl::unregisterPage(AppSettingsGUIPageController *page) {
     return true;
 }
 
-void AppSettingsGUIImpl::showSettingsDialog(const QString &pageId) const {
-    QWidget *p = (QWidget *)(AppContext::getMainWindow()->getQMainWindow());
+void AppSettingsGUIImpl::showSettingsDialog(const QString& pageId) const {
+    QWidget* p = (QWidget*)(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<AppSettingsDialogController> c = new AppSettingsDialogController(pageId, p);
     c->exec();
 }
 
-AppSettingsGUIPageController *AppSettingsGUIImpl::findPageById(const QString &pageId) const {
-    foreach (AppSettingsGUIPageController *page, pages) {
+AppSettingsGUIPageController* AppSettingsGUIImpl::findPageById(const QString& pageId) const {
+    foreach (AppSettingsGUIPageController* page, pages) {
         if (page->getPageId() == pageId) {
             return page;
         }

@@ -50,7 +50,7 @@ static const QString URL_ATTR("url-in");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-GetFileListWorker::GetFileListWorker(Actor *p)
+GetFileListWorker::GetFileListWorker(Actor* p)
     : BaseWorker(p), outChannel(nullptr), files(nullptr) {
 }
 
@@ -61,7 +61,7 @@ void GetFileListWorker::init() {
     files = new DatasetFilesIterator(sets);
 }
 
-Task *GetFileListWorker::tick() {
+Task* GetFileListWorker::tick() {
     if (files->hasNext()) {
         QVariantMap m;
         QString url = files->getNextFile();
@@ -86,7 +86,7 @@ void GetFileListWorker::cleanup() {
 /* Factory */
 /************************************************************************/
 void GetFileListWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> outTypeMap;
         outTypeMap[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -96,7 +96,7 @@ void GetFileListWorkerFactory::init() {
         portDescs << new PortDescriptor(Descriptor(OUT_PORT_ID, GetFileListWorker::tr("Output URL"), GetFileListWorker::tr("Paths read by the element.")), outTypeSet, false, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor inUrl(URL_ATTR,
                          GetFileListWorker::tr("Input URL"),
@@ -109,8 +109,8 @@ void GetFileListWorkerFactory::init() {
                          GetFileListWorker::tr("Read File URL(s)"),
                          GetFileListWorker::tr("Input one or several files in any format. The element outputs the file(s) URL(s)."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     proto->setPrompter(new GetFileListPrompter());
     proto->setValidator(new DatasetValidator());
     if (AppContext::isGUIMode()) {
@@ -121,7 +121,7 @@ void GetFileListWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetFileListWorkerFactory());
 }
 
-Worker *GetFileListWorkerFactory::createWorker(Actor *a) {
+Worker* GetFileListWorkerFactory::createWorker(Actor* a) {
     return new GetFileListWorker(a);
 }
 

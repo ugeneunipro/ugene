@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-void ChromatogramUtils::append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram) {
+void ChromatogramUtils::append(DNAChromatogram chromatogram, const DNAChromatogram& appendedChromatogram) {
     chromatogram.traceLength += appendedChromatogram.traceLength;
     chromatogram.seqLength += appendedChromatogram.seqLength;
     chromatogram.baseCalls += appendedChromatogram.baseCalls;  // TODO: recalculte appended positions
@@ -47,7 +47,7 @@ void ChromatogramUtils::append(DNAChromatogram chromatogram, const DNAChromatogr
     chromatogram.hasQV &= appendedChromatogram.hasQV;
 }
 
-void ChromatogramUtils::removeBaseCalls(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos) {
+void ChromatogramUtils::removeBaseCalls(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos) {
     if ((endPos <= startPos) || (startPos < 0) || (endPos > chromatogram.seqLength)) {
         coreLog.trace(L10N::internalError("incorrect parameters was passed to ChromatogramUtils::removeBaseCalls, "
                                           "startPos '%1', endPos '%2', chromatogram sequence length '%3'")
@@ -67,7 +67,7 @@ void ChromatogramUtils::removeBaseCalls(U2OpStatus &os, DNAChromatogram &chromat
     chromatogram.prob_T.remove(startPos, regionLength);
 }
 
-void ChromatogramUtils::removeRegion(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos) {
+void ChromatogramUtils::removeRegion(U2OpStatus& os, DNAChromatogram& chromatogram, int startPos, int endPos) {
     if ((endPos <= startPos) || (startPos < 0) || (endPos > chromatogram.seqLength)) {
         coreLog.trace(L10N::internalError("incorrect parameters were passed to ChromatogramUtils::removeRegion, "
                                           "startPos '%1', endPos '%2', chromatogram sequence length '%3'")
@@ -102,7 +102,7 @@ void ChromatogramUtils::removeRegion(U2OpStatus &os, DNAChromatogram &chromatogr
     chromatogram.prob_T.remove(startPos, regionLength);
 }
 
-bool ChromatogramUtils::areEqual(const DNAChromatogram &first, const DNAChromatogram &second) {
+bool ChromatogramUtils::areEqual(const DNAChromatogram& first, const DNAChromatogram& second) {
     return first.traceLength == second.traceLength &&
            first.seqLength == second.seqLength &&
            first.baseCalls == second.baseCalls &&
@@ -120,7 +120,7 @@ bool ChromatogramUtils::areEqual(const DNAChromatogram &first, const DNAChromato
 namespace {
 
 template<class T>
-void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
+void zeroEndingCrop(QVector<T>& data, int startPos, int length) {
     data = data.mid(startPos, length);
     if (data.size() == startPos + length + 1) {
         data << 0;
@@ -129,7 +129,7 @@ void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
 
 }  // namespace
 
-void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
+void ChromatogramUtils::crop(DNAChromatogram& chromatogram, int startPos, int length) {
     const U2Region traceRegion = sequenceRegion2TraceRegion(chromatogram, U2Region(startPos, length));
     const ushort baseCallOffset = traceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[startPos - 1];
     if (traceRegion.startPos > 0) {
@@ -151,7 +151,7 @@ void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int le
     zeroEndingCrop(chromatogram.prob_T, startPos, length);
 }
 
-U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram) {
+U2EntityRef ChromatogramUtils::import(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, const DNAChromatogram& chromatogram) {
     U2Chromatogram dbChromatogram(dbiRef);
     dbChromatogram.visualName = chromatogram.name;
     dbChromatogram.serializer = DNAChromatogramSerializer::ID;
@@ -166,7 +166,7 @@ U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, co
     return entityRef;
 }
 
-DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus& os, const U2EntityRef& chromatogramRef) {
     const QString serializer = RawDataUdrSchema::getObject(chromatogramRef, os).serializer;
     CHECK_OP(os, DNAChromatogram());
     SAFE_POINT_EXT(DNAChromatogramSerializer::ID == serializer, os.setError(QString("Unknown serializer id: %1").arg(serializer)), DNAChromatogram());
@@ -175,29 +175,29 @@ DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus &os, const U2En
     return DNAChromatogramSerializer::deserialize(data, os);
 }
 
-U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus& os, const U2EntityRef& chromatogramRef) {
     return RawDataUdrSchema::getObject(chromatogramRef, os);
 }
 
-qint64 ChromatogramUtils::getChromatogramLength(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+qint64 ChromatogramUtils::getChromatogramLength(U2OpStatus& os, const U2EntityRef& chromatogramRef) {
     return exportChromatogram(os, chromatogramRef).traceLength;
 }
 
-void ChromatogramUtils::updateChromatogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram) {
+void ChromatogramUtils::updateChromatogramData(U2OpStatus& os, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram) {
     const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
     RawDataUdrSchema::writeContent(data, chromatogramRef, os);
 
     CHECK_OP(os, );
 }
 
-void ChromatogramUtils::updateChromatogramData(U2OpStatus &os, const U2DataId &masterId, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram) {
+void ChromatogramUtils::updateChromatogramData(U2OpStatus& os, const U2DataId& masterId, const U2EntityRef& chromatogramRef, const DNAChromatogram& chromatogram) {
     const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
     RawDataUdrSchema::writeContent(masterId, data, chromatogramRef, os);
 
     CHECK_OP(os, );
 }
 
-U2EntityRef ChromatogramUtils::getChromatogramIdByRelatedSequenceId(U2OpStatus &os, const U2EntityRef &sequenceRef) {
+U2EntityRef ChromatogramUtils::getChromatogramIdByRelatedSequenceId(U2OpStatus& os, const U2EntityRef& sequenceRef) {
     DbiConnection connection(sequenceRef.dbiRef, os);
     CHECK_OP(os, U2EntityRef());
 
@@ -205,7 +205,7 @@ U2EntityRef ChromatogramUtils::getChromatogramIdByRelatedSequenceId(U2OpStatus &
     CHECK_OP(os, U2EntityRef());
 
     QList<U2DataId> chromatogramsIds;
-    foreach (const U2DataId &dataId, relatedObjects) {
+    foreach (const U2DataId& dataId, relatedObjects) {
         if (U2Type::Chromatogram != U2DbiUtils::toType(dataId)) {
             continue;
         }
@@ -217,7 +217,7 @@ U2EntityRef ChromatogramUtils::getChromatogramIdByRelatedSequenceId(U2OpStatus &
     return U2EntityRef(sequenceRef.dbiRef, chromatogramsIds.first());
 }
 
-QString ChromatogramUtils::getChromatogramName(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+QString ChromatogramUtils::getChromatogramName(U2OpStatus& os, const U2EntityRef& chromatogramRef) {
     DbiConnection connection(chromatogramRef.dbiRef, os);
     CHECK_OP(os, QString());
 
@@ -227,7 +227,7 @@ QString ChromatogramUtils::getChromatogramName(U2OpStatus &os, const U2EntityRef
     return object.visualName;
 }
 
-DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram &chromatogram) {
+DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram& chromatogram) {
     DNAChromatogram reversedChromatogram = chromatogram;
 
     reversedChromatogram.baseCalls.clear();
@@ -260,7 +260,7 @@ DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram &chromatogram) 
     return reversedChromatogram;
 }
 
-DNAChromatogram ChromatogramUtils::complement(const DNAChromatogram &chromatogram) {
+DNAChromatogram ChromatogramUtils::complement(const DNAChromatogram& chromatogram) {
     DNAChromatogram complementedChromatogram = chromatogram;
     complementedChromatogram.A = chromatogram.T;
     complementedChromatogram.C = chromatogram.G;
@@ -273,11 +273,11 @@ DNAChromatogram ChromatogramUtils::complement(const DNAChromatogram &chromatogra
     return complementedChromatogram;
 }
 
-DNAChromatogram ChromatogramUtils::reverseComplement(const DNAChromatogram &chromatogram) {
+DNAChromatogram ChromatogramUtils::reverseComplement(const DNAChromatogram& chromatogram) {
     return reverse(complement(chromatogram));
 }
 
-U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion) {
+U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram& chromatogram, const U2Region& sequenceRegion) {
     CHECK(sequenceRegion.startPos <= chromatogram.baseCalls.length() && sequenceRegion.endPos() <= chromatogram.baseCalls.length() && 0 < sequenceRegion.length, U2Region());
 
     const int traceStartPos = sequenceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[sequenceRegion.startPos - 1];
@@ -285,13 +285,13 @@ U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &ch
     return U2Region(traceStartPos, traceLength);
 }
 
-void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngapped, const QList<U2MsaGap> &gapModel, int posWithGaps) {
+void ChromatogramUtils::insertBase(DNAChromatogram& chromatogram, int posUngapped, const QVector<U2MsaGap>& gapModel, int posWithGaps) {
     SAFE_POINT(posUngapped >= 0 && posUngapped < chromatogram.seqLength,
                QString("Invalid parameters for ChromatogramUtils::insertBase: pos - %1, chrom.sequence len - %2")
                    .arg(posUngapped)
                    .arg(chromatogram.seqLength), );
-    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().offset == 0 ? gapModel.first().gap
-                                                                           : 0;
+    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().startPos == 0 ? gapModel.first().length
+                                                                             : 0;
     DNAChromatogram gappedChrom = getGappedChromatogram(chromatogram, gapModel);
 
     // when you try to insert a character before the first symbol of the row,
@@ -315,30 +315,30 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
     chromatogram.seqLength += 1;
 }
 
-DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram &chromatogram, const QList<U2MsaGap> &gapModel) {
+DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram& chromatogram, const QVector<U2MsaGap>& gapModel) {
     DNAChromatogram gappedChromatogram = chromatogram;
-    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().offset == 0 ? gapModel.first()
-                                                                                               : U2MsaGap();
-    foreach (const U2MsaGap &gap, gapModel) {
-        if (gap.offset == 0) {
+    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().startPos == 0 ? gapModel.first()
+                                                                                                 : U2MsaGap();
+    foreach (const U2MsaGap& gap, gapModel) {
+        if (gap.startPos == 0) {
             continue;
         }
 
-        const int startBaseCallIndex = gap.offset - leadingGap.gap - 1;
+        const int startBaseCallIndex = gap.startPos - leadingGap.length - 1;
         const int endBaseCallIndex = startBaseCallIndex + 1;
         SAFE_POINT(endBaseCallIndex <= gappedChromatogram.baseCalls.size(), "Gap is out of the chromatgoram range", DNAChromatogram());
 
         const ushort startBaseCall = gappedChromatogram.baseCalls[startBaseCallIndex];
         const ushort endBaseCall = gappedChromatogram.baseCalls[endBaseCallIndex];
-        const double step = ((double)endBaseCall - startBaseCall) / (gap.gap + 1);
-        for (int i = 0; i < gap.gap; i++) {
+        const double step = ((double)endBaseCall - startBaseCall) / (gap.length + 1);
+        for (int i = 0; i < gap.length; i++) {
             gappedChromatogram.baseCalls.insert(startBaseCallIndex + i + 1, (ushort)(startBaseCall + step * (i + 1)));
-            gappedChromatogram.prob_A.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_C.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_G.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_T.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_A.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_C.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_G.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_T.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
         }
-        gappedChromatogram.seqLength += gap.gap;
+        gappedChromatogram.seqLength += gap.length;
     }
     return gappedChromatogram;
 }

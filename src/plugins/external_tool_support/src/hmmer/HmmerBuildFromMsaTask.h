@@ -31,13 +31,13 @@ namespace U2 {
 class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa);
+    HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const MultipleSequenceAlignment& msa);
 
-    const QString &getHmmUrl() const;
+    const QString& getHmmUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QString generateReport() const;
 
     void prepareWorkingDir();
@@ -46,11 +46,11 @@ private:
     HmmerBuildSettings settings;
     const MultipleSequenceAlignment msa;
 
-    SaveAlignmentTask *saveTask;
-    HmmerBuildTask *hmmerTask;
+    SaveAlignmentTask* saveTask;
+    HmmerBuildTask* hmmerTask;
     bool removeWorkingDir;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_BUILD_FROM_MSA_TASK_H_
+#endif  // _U2_HMMER_BUILD_FROM_MSA_TASK_H_

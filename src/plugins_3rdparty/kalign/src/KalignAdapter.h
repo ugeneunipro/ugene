@@ -33,10 +33,10 @@ class TaskStateInfo;
 class KalignAdapter : public QObject {
     Q_OBJECT
 public:
-    static void align(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti);
+    static void align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 
 private:
-    static void alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti);
+    static void alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 };
 
 }  // namespace U2

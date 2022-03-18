@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-HMMCalibrateDialogController::HMMCalibrateDialogController(QWidget *w)
+HMMCalibrateDialogController::HMMCalibrateDialogController(QWidget* w)
     : QDialog(w),
       saveController(NULL) {
     task = NULL;
@@ -128,13 +128,13 @@ void HMMCalibrateDialogController::sl_okButtonClicked() {
 }
 
 void HMMCalibrateDialogController::sl_onStateChanged() {
-    Task *t = qobject_cast<Task *>(sender());
+    Task* t = qobject_cast<Task*>(sender());
     assert(task != NULL);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
     task->disconnect(this);
-    const TaskStateInfo &si = task->getStateInfo();
+    const TaskStateInfo& si = task->getStateInfo();
     if (si.hasError()) {
         statusLabel->setText(tr("Calibration finished with errors: %1").arg(si.getError()));
     } else if (task->isCanceled()) {

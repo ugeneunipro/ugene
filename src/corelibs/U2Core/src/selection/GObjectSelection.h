@@ -33,9 +33,9 @@ class GObject;
 class U2CORE_EXPORT GObjectSelection : public GSelection {
     Q_OBJECT
 public:
-    GObjectSelection(QObject *p = nullptr);
+    GObjectSelection(QObject* p = nullptr);
 
-    const QList<GObject *> &getSelectedObjects() const {
+    const QList<GObject*>& getSelectedObjects() const {
         return selectedObjects;
     }
 
@@ -45,33 +45,33 @@ public:
 
     virtual void clear();
 
-    void setSelection(const QList<GObject *> &objs);
+    void setSelection(const QList<GObject*>& objs);
 
-    void addToSelection(const QList<GObject *> &obj);
+    void addToSelection(const QList<GObject*>& obj);
 
-    void addToSelection(GObject *obj);
+    void addToSelection(GObject* obj);
 
-    void removeFromSelection(GObject *obj);
+    void removeFromSelection(GObject* obj);
 
-    void removeFromSelection(const QList<GObject *> &obj);
+    void removeFromSelection(const QList<GObject*>& obj);
 
-    bool contains(GObject *obj) const {
+    bool contains(GObject* obj) const {
         return selectedObjects.contains(obj);
     }
 
 signals:
-    void si_selectionChanged(GObjectSelection *thiz, const QList<GObject *> &objectsAdded, const QList<GObject *> &objectsRemoved);
+    void si_selectionChanged(GObjectSelection* thiz, const QList<GObject*>& objectsAdded, const QList<GObject*>& objectsRemoved);
 
 protected:
-    virtual void _append(GObject *o) {
+    virtual void _append(GObject* o) {
         selectedObjects.append(o);
     }
-    virtual void _remove(GObject *o) {
+    virtual void _remove(GObject* o) {
         selectedObjects.removeAll(o);
     };
 
 private:
-    QList<GObject *> selectedObjects;
+    QList<GObject*> selectedObjects;
 };
 
 /*

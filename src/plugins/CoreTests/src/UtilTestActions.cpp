@@ -38,7 +38,7 @@ const QString GTest_CopyFile::FROM_URL_ATTR = "from";
 const QString GTest_CopyFile::TO_URL_ATTR = "to";
 const QString GTest_CopyFile::IS_DIRECTORY = "is_dir";
 
-void GTest_CopyFile::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CopyFile::init(XMLTestFormat*, const QDomElement& el) {
     fromUrl = el.attribute(FROM_URL_ATTR);
     toUrl = el.attribute(TO_URL_ATTR);
     isDir = el.attribute(IS_DIRECTORY) == "true";
@@ -59,11 +59,11 @@ Task::ReportResult GTest_CopyFile::report() {
     return ReportResult_Finished;
 }
 
-bool GTest_CopyFile::copyDirectry(const QString &from, const QString &to) {
+bool GTest_CopyFile::copyDirectry(const QString& from, const QString& to) {
     QDir dirFrom(from);
 
     QStringList foldersList = dirFrom.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    foreach (const QString &folder, foldersList) {
+    foreach (const QString& folder, foldersList) {
         QString subfolder = to + QDir::separator() + folder;
         dirFrom.mkpath(subfolder);
         bool copied = copyDirectry(from + QDir::separator() + folder, subfolder);
@@ -71,7 +71,7 @@ bool GTest_CopyFile::copyDirectry(const QString &from, const QString &to) {
     }
 
     QStringList filesList = dirFrom.entryList(QDir::Files);
-    foreach (const QString &file, filesList) {
+    foreach (const QString& file, filesList) {
         bool copied = QFile::copy(from + QDir::separator() + file, to + QDir::separator() + file);
         CHECK(copied, false);
     }
@@ -89,7 +89,7 @@ const QString GTest_AddSharedDbUrl::USER_NAME_ATTR = "user";
 const QString GTest_AddSharedDbUrl::PASSWORD_ATTR = "password";
 const QString GTest_AddSharedDbUrl::CUSTOM_DB_NAME = "custom-db-name";
 
-void GTest_AddSharedDbUrl::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_AddSharedDbUrl::init(XMLTestFormat*, const QDomElement& el) {
     const QString url = el.attribute(URL_ATTR);
     CHECK_EXT(!url.isEmpty(), failMissingValue(URL_ATTR), );
     const QString portStr = el.attribute(PORT_ATTR);
@@ -110,13 +110,13 @@ void GTest_AddSharedDbUrl::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_AddSharedDbUrl::report() {
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     CHECK_EXT(nullptr != settings, stateInfo.setError("Invalid application settings"), ReportResult_Finished);
     const QString fullDbUrl = U2DbiUtils::createFullDbiUrl(userName, dbUrl);
     settings->setValue("/shared_database/recent_connections/" + customDbName, fullDbUrl);
 
     if (passwordIsSet) {
-        PasswordStorage *passStorage = AppContext::getPasswordStorage();
+        PasswordStorage* passStorage = AppContext::getPasswordStorage();
         CHECK_EXT(nullptr != passStorage, stateInfo.setError("Invalid shared DB passwords storage"), ReportResult_Finished);
         passStorage->addEntry(fullDbUrl, password, true);
     }
@@ -127,8 +127,8 @@ Task::ReportResult GTest_AddSharedDbUrl::report() {
 /*******************************
  * GUrlTests
  *******************************/
-QList<XMLTestFactory *> UtilTestActions::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> UtilTestActions::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_CopyFile::createFactory());
     res.append(GTest_AddSharedDbUrl::createFactory());
     return res;

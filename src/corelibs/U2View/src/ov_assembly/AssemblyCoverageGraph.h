@@ -35,14 +35,14 @@ class AssemblyBrowser;
 class AssemblyCoverageGraph : public QWidget {
     Q_OBJECT
 public:
-    AssemblyCoverageGraph(AssemblyBrowserUi *ui);
+    AssemblyCoverageGraph(AssemblyBrowserUi* ui);
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
 signals:
-    void si_mouseMovedToPos(const QPoint &);
+    void si_mouseMovedToPos(const QPoint&);
 
 private slots:
     void sl_coverageReady();
@@ -53,10 +53,10 @@ private:
     void connectSlots();
     void doRedraw();
     void drawAll();
-    void drawGraph(QPainter &p, const CoverageInfo &ci, int alpha = 255);
+    void drawGraph(QPainter& p, const CoverageInfo& ci, int alpha = 255);
 
-    AssemblyBrowserUi *ui;
-    AssemblyBrowser *browser;
+    AssemblyBrowserUi* ui;
+    AssemblyBrowser* browser;
     QSharedPointer<AssemblyModel> model;
 
     QPixmap cachedView;

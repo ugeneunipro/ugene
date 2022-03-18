@@ -38,7 +38,7 @@ namespace U2 {
 #define REGION_HEIGHT "height"
 #define REGION_WIDTH "width"
 
-void GTest_CreateSubalignimentTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CreateSubalignimentTask::init(XMLTestFormat*, const QDomElement& el) {
     QString buf = el.attribute(DOC_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(GTest::tr("value not set %1").arg(DOC_ATTR));
@@ -93,42 +93,42 @@ void GTest_CreateSubalignimentTask::init(XMLTestFormat *, const QDomElement &el)
 }
 
 void GTest_CreateSubalignimentTask::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    Document *expectedDoc = getContext<Document>(this, expectedDocName);
+    Document* expectedDoc = getContext<Document>(this, expectedDocName);
     if (expectedDoc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(expectedDocName));
         return;
     }
 
-    QList<GObject *> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MultipleSequenceAlignmentObject *)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MultipleSequenceAlignmentObject *)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
     QMap<QString, qint64> rowIdByRowName;
-    for (int i = 0; i < maobj->getNumRows(); i++) {
-        const MultipleAlignmentRow &row = maobj->getRow(i);
+    for (int i = 0; i < maobj->getRowCount(); i++) {
+        const MultipleAlignmentRow& row = maobj->getRow(i);
         rowIdByRowName.insert(row->getName(), row->getRowId());
     }
 
     QList<qint64> rowIds;
-    for (const QString &seqName : seqNames) {
+    for (const QString& seqName : seqNames) {
         if (!rowIdByRowName.contains(seqName)) {
             stateInfo.setError("Row not found: " + seqName);
             return;
@@ -160,7 +160,7 @@ Task::ReportResult GTest_CreateSubalignimentTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_RemoveAlignmentRegion::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_RemoveAlignmentRegion::init(XMLTestFormat*, const QDomElement& el) {
     // Doc name
 
     QString buf = el.attribute(DOC_ATTR);
@@ -241,33 +241,33 @@ void GTest_RemoveAlignmentRegion::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_RemoveAlignmentRegion::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    Document *expectedDoc = getContext<Document>(this, expectedDocName);
+    Document* expectedDoc = getContext<Document>(this, expectedDocName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(expectedDocName));
         return;
     }
 
-    QList<GObject *> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MultipleSequenceAlignmentObject *)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MultipleSequenceAlignmentObject *)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 }
 
 Task::ReportResult GTest_RemoveAlignmentRegion::report() {
@@ -285,7 +285,7 @@ Task::ReportResult GTest_RemoveAlignmentRegion::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_AddSequenceToAlignment::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_AddSequenceToAlignment::init(XMLTestFormat*, const QDomElement& el) {
     // Doc before name
 
     QString buf = el.attribute(DOC_ATTR);
@@ -315,32 +315,32 @@ void GTest_AddSequenceToAlignment::init(XMLTestFormat *, const QDomElement &el) 
 }
 
 void GTest_AddSequenceToAlignment::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    Document *expectedDoc = getContext<Document>(this, expectedDocName);
+    Document* expectedDoc = getContext<Document>(this, expectedDocName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(expectedDocName));
         return;
     }
 
-    QList<GObject *> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MultipleSequenceAlignmentObject *)expList.first();
-    maobj = (MultipleSequenceAlignmentObject *)list.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
     if (seqFileName.isEmpty()) {
         stateInfo.setError(GTest::tr("File with sequences has empty name"));
@@ -367,7 +367,7 @@ Task::ReportResult GTest_AddSequenceToAlignment::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_RemoveColumnsOfGaps::init(XMLTestFormat * /* tf */, const QDomElement &el) {
+void GTest_RemoveColumnsOfGaps::init(XMLTestFormat* /* tf */, const QDomElement& el) {
     inputDocCtxName = el.attribute(IN_FILE_NAME_ATTR);
     if (inputDocCtxName.isEmpty()) {
         failMissingValue(IN_FILE_NAME_ATTR);
@@ -376,26 +376,26 @@ void GTest_RemoveColumnsOfGaps::init(XMLTestFormat * /* tf */, const QDomElement
 }
 
 void GTest_RemoveColumnsOfGaps::prepare() {
-    Document *doc = getContext<Document>(this, inputDocCtxName);
+    Document* doc = getContext<Document>(this, inputDocCtxName);
     if (nullptr == doc) {
         stateInfo.setError(GTest::tr("context not found %1").arg(inputDocCtxName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (nullptr == obj) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     assert(nullptr != obj);
 
-    MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (nullptr == maObj) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -406,8 +406,8 @@ void GTest_RemoveColumnsOfGaps::prepare() {
 
 //////////////////////////////////////////////////////////////////////////
 
-QList<XMLTestFactory *> CreateSubalignimentTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> CreateSubalignimentTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_CreateSubalignimentTask::createFactory());
     res.append(GTest_RemoveAlignmentRegion::createFactory());
     res.append(GTest_AddSequenceToAlignment::createFactory());

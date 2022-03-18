@@ -29,17 +29,17 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowContext.h>
 
-const char *ALIGNMENT_NAME_LABEL = "Name: ";
-const char *EMPTY_ALIGNMENT_NAME_LABEL = "(empty)";
-const char *ALIGNMENT_LENGTH_LABEL = " Length: ";
-const char *COUNT_OF_ROWS_LABEL = " Count of rows: ";
-const char *ROW_NAMES_LABEL = " Row names: ";
+const char* ALIGNMENT_NAME_LABEL = "Name: ";
+const char* EMPTY_ALIGNMENT_NAME_LABEL = "(empty)";
+const char* ALIGNMENT_LENGTH_LABEL = " Length: ";
+const char* COUNT_OF_ROWS_LABEL = " Count of rows: ";
+const char* ROW_NAMES_LABEL = " Row names: ";
 
 namespace U2 {
 
 using namespace Workflow;
 
-MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVariant &atomicMessage, WorkflowContext *initContext)
+MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVariant& atomicMessage, WorkflowContext* initContext)
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>();
@@ -55,7 +55,7 @@ QString MultipleAlignmentMessageTranslator::getTranslation() const {
 
     QString result = QObject::tr(ALIGNMENT_NAME_LABEL) + displayingName + INFO_TAGS_SEPARATOR;
     result += QObject::tr(ALIGNMENT_LENGTH_LABEL) + QString::number(malignment->getLength()) + INFO_TAGS_SEPARATOR;
-    result += QObject::tr(COUNT_OF_ROWS_LABEL) + QString::number(malignment->getNumRows()) + INFO_TAGS_SEPARATOR;
+    result += QObject::tr(COUNT_OF_ROWS_LABEL) + QString::number(malignment->getRowCount()) + INFO_TAGS_SEPARATOR;
     result += QObject::tr(ROW_NAMES_LABEL) + "'" + malignment->getRowNames().join("', '") + "'";
 
     return result;

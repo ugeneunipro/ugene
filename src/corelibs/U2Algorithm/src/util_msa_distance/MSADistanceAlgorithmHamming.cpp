@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MSADistanceAlgorithmFactoryHamming::MSADistanceAlgorithmFactoryHamming(QObject *p)
+MSADistanceAlgorithmFactoryHamming::MSADistanceAlgorithmFactoryHamming(QObject* p)
     : MSADistanceAlgorithmFactory(BuiltInDistanceAlgorithms::HAMMING_ALGO, DistanceAlgorithmFlags_NuclAmino, p) {
 }
 
@@ -37,8 +37,8 @@ QString MSADistanceAlgorithmFactoryHamming::getName() const {
     return tr("Hamming dissimilarity");
 }
 
-MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MultipleSequenceAlignment &ma, QObject *) {
-    MSADistanceAlgorithm *res = new MSADistanceAlgorithmHamming(this, ma);
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MultipleSequenceAlignment& ma, QObject*) {
+    MSADistanceAlgorithm* res = new MSADistanceAlgorithmHamming(this, ma);
     if (flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)) {
         res->setExcludeGaps(true);
     } else {
@@ -51,7 +51,7 @@ MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHamming::createAlgorithm(const 
 // Algorithm
 
 void MSADistanceAlgorithmHamming::run() {
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;

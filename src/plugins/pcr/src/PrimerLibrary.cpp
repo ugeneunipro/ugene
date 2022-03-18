@@ -36,7 +36,6 @@
 #include <U2Core/UdrSchemaRegistry.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-
 namespace U2 {
 
 QScopedPointer<PrimerLibrary> PrimerLibrary::instance(nullptr);
@@ -50,7 +49,7 @@ const int GC_FILED = 2;
 const int TM_FILED = 3;
 }  // namespace
 
-PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
+PrimerLibrary* PrimerLibrary::getInstance(U2OpStatus& os) {
     QMutexLocker lock(&mutex);
     if (instance.data() != nullptr) {
         return instance.data();
@@ -59,7 +58,7 @@ PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
     initPrimerUdr(os);
     CHECK_OP(os, nullptr);
 
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
     SAFE_POINT_EXT(settings != nullptr, os.setError(L10N::nullPointerError("UserAppsSettings")), nullptr);
 
     // open DBI connection
@@ -94,7 +93,7 @@ void PrimerLibrary::release() {
     delete instance.take();
 }
 
-PrimerLibrary::PrimerLibrary(DbiConnection *connection)
+PrimerLibrary::PrimerLibrary(DbiConnection* connection)
     : connection(connection), udrDbi(nullptr) {
     udrDbi = connection->dbi->getUdrDbi();
 }
@@ -103,7 +102,7 @@ PrimerLibrary::~PrimerLibrary() {
     delete connection;
 }
 
-void PrimerLibrary::initPrimerUdr(U2OpStatus &os) {
+void PrimerLibrary::initPrimerUdr(U2OpStatus& os) {
     CHECK(nullptr == AppContext::getUdrSchemaRegistry()->getSchemaById(PRIMER_UDR_ID), );
 
     UdrSchema::FieldDesc name("name", UdrSchema::STRING);
@@ -124,7 +123,7 @@ void PrimerLibrary::initPrimerUdr(U2OpStatus &os) {
     }
 }
 
-void PrimerLibrary::addPrimer(const Primer &primer, U2OpStatus &os) {
+void PrimerLibrary::addPrimer(const Primer& primer, U2OpStatus& os) {
     QList<UdrValue> values;
     values << UdrValue(primer.name);
     values << UdrValue(primer.sequence);
@@ -136,7 +135,7 @@ void PrimerLibrary::addPrimer(const Primer &primer, U2OpStatus &os) {
     emit si_primerAdded(record.getRecordId());
 }
 
-void PrimerLibrary::updatePrimer(const Primer &primer, U2OpStatus &os) {
+void PrimerLibrary::updatePrimer(const Primer& primer, U2OpStatus& os) {
     QList<UdrValue> values;
     values << UdrValue(primer.name);
     values << UdrValue(primer.sequence);
@@ -148,7 +147,7 @@ void PrimerLibrary::updatePrimer(const Primer &primer, U2OpStatus &os) {
     emit si_primerChanged(primer.id);
 }
 
-Primer PrimerLibrary::getPrimer(const U2DataId &primerId, U2OpStatus &os) const {
+Primer PrimerLibrary::getPrimer(const U2DataId& primerId, U2OpStatus& os) const {
     Primer result;
 
     const UdrRecord record = udrDbi->getRecord(UdrRecordId(PRIMER_UDR_ID, primerId), os);
@@ -164,13 +163,13 @@ Primer PrimerLibrary::getPrimer(const U2DataId &primerId, U2OpStatus &os) const 
     return result;
 }
 
-QList<Primer> PrimerLibrary::getPrimers(U2OpStatus &os) const {
+QList<Primer> PrimerLibrary::getPrimers(U2OpStatus& os) const {
     QList<Primer> result;
 
     QList<UdrRecord> records = udrDbi->getRecords(PRIMER_UDR_ID, os);
     CHECK_OP(os, result);
 
-    foreach (const UdrRecord &record, records) {
+    foreach (const UdrRecord& record, records) {
         Primer primer;
         primer.id = record.getId().getRecordId();
         primer.name = record.getString(NAME_FILED, os);
@@ -184,23 +183,23 @@ QList<Primer> PrimerLibrary::getPrimers(U2OpStatus &os) const {
     return result;
 }
 
-void PrimerLibrary::removePrimer(const Primer &primer, U2OpStatus &os) {
+void PrimerLibrary::removePrimer(const Primer& primer, U2OpStatus& os) {
     emit si_primerRemoved(primer.id);
     UdrRecordId recordId(PRIMER_UDR_ID, primer.id);
     udrDbi->removeRecord(recordId, os);
 }
 
-void PrimerLibrary::addRawPrimer(Primer primer, U2OpStatus &os) {
+void PrimerLibrary::addRawPrimer(Primer primer, U2OpStatus& os) {
     setTmAndGcOfPrimer(primer);
     addPrimer(primer, os);
 }
 
-void PrimerLibrary::updateRawPrimer(Primer primer, U2OpStatus &os) {
+void PrimerLibrary::updateRawPrimer(Primer primer, U2OpStatus& os) {
     setTmAndGcOfPrimer(primer);
     updatePrimer(primer, os);
 }
 
-void PrimerLibrary::setTmAndGcOfPrimer(Primer &primer) {
+void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
     if (PrimerStatistics::validate(primer.sequence)) {
         PrimerStatisticsCalculator calc(primer.sequence.toLocal8Bit());
         primer.gc = calc.getGC();

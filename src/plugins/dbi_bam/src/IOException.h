@@ -29,7 +29,7 @@ namespace BAM {
 
 class IOException : public Exception {
 public:
-    IOException(const QString &message);
+    IOException(const QString& message);
 };
 
 }  // namespace BAM

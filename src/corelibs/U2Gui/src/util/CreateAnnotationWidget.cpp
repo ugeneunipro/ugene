@@ -33,12 +33,12 @@
 
 namespace U2 {
 
-CreateAnnotationWidget::CreateAnnotationWidget(QWidget *parent)
+CreateAnnotationWidget::CreateAnnotationWidget(QWidget* parent)
     : QWidget(parent) {
 }
 
-QPair<QWidget *, QWidget *> CreateAnnotationWidget::getTabOrderEntryAndExitPoints() const {
-    return QPair<QWidget *, QWidget *>(nullptr, nullptr);
+QPair<QWidget*, QWidget*> CreateAnnotationWidget::getTabOrderEntryAndExitPoints() const {
+    return QPair<QWidget*, QWidget*>(nullptr, nullptr);
 }
 
 void CreateAnnotationWidget::sl_selectExistingTableRequest() {
@@ -70,7 +70,7 @@ QStringList CreateAnnotationWidget::getFeatureTypes(bool useAminoAnnotationTypes
     return featureTypes;
 }
 
-bool CreateAnnotationWidget::caseInsensitiveLessThan(const QString &first, const QString &second) {
+bool CreateAnnotationWidget::caseInsensitiveLessThan(const QString& first, const QString& second) {
     return QString::compare(first, second, Qt::CaseInsensitive) < 0;
 }
 
@@ -85,21 +85,21 @@ void CreateAnnotationWidget::sl_complementLocation() {
     setLocation(parseGenbankLocationString(locationString));
 }
 
-QString CreateAnnotationWidget::getGenbankLocationString(const U2Location &location) {
+QString CreateAnnotationWidget::getGenbankLocationString(const U2Location& location) {
     QString locationString = U1AnnotationUtils::buildLocationString(location->regions);
-    if (location->strand.isCompementary()) {
+    if (location->strand.isComplementary()) {
         locationString = "complement(" + locationString + ")";
     }
     return locationString;
 }
 
-U2Location CreateAnnotationWidget::parseGenbankLocationString(const QString &locationString) {
+U2Location CreateAnnotationWidget::parseGenbankLocationString(const QString& locationString) {
     U2Location location;
     Genbank::LocationParser::parseLocation(locationString.toLatin1().constData(), locationString.length(), location);
     return location;
 }
 
-bool CreateAnnotationWidget::isComplementLocation(const QString &locationString) {
+bool CreateAnnotationWidget::isComplementLocation(const QString& locationString) {
     return locationString.startsWith("complement(") && locationString.endsWith(")");
 }
 

@@ -36,6 +36,22 @@ class DNASequence;
 class U2MsaDbi;
 class U2UseCommonUserModStep;
 
+/** Utility methods used by the AddSequenceObjectsToAlignment tasks family. */
+
+class U2CORE_EXPORT AddSequenceObjectsToAlignmentUtils : public QObject {
+    Q_OBJECT
+public:
+    /**
+     * Adds sequences to the MSA object. Changes MSA alphabet if needed.
+     * Returns the result as a MaModificationInfo data structure.
+     */
+    static MaModificationInfo addObjectsToAlignment(U2OpStatus& os,
+                                                    MultipleSequenceAlignmentObject* obj,
+                                                    const QList<DNASequence>& sequenceList,
+                                                    int insertRowIndex,
+                                                    bool recheckNewSequenceAlphabetOnMismatch);
+};
+
 class U2CORE_EXPORT AddSequenceObjectsToAlignmentTask : public Task {
     Q_OBJECT
 public:
@@ -44,27 +60,17 @@ public:
      * For example insertRowIndex = 0 pre-appends sequences to the alignment.
      * If insertRowIndex < 0 or insertRowIndex >= row count - appends sequences to the end of the alignment rows.
      */
-    AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                      const QList<DNASequence> &sequenceList,
+    AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+                                      const QList<DNASequence>& sequenceList,
                                       int insertRowIndex = -1,
                                       bool recheckNewSequenceAlphabetOnMismatch = false);
 
     /** Runs addSequencesToAlignment to process sequence list. */
     void run() override;
 
-    const MaModificationInfo &getMaModificationInfo() const {
-        return mi;
-    }
+    const MaModificationInfo& getMaModificationInfo() const;
 
 protected:
-    /**
-     * Check all sequences from the sequenceList and returns a list of sequences can be safely added into the alignment.
-     * Updates 'msaAlphabet' field to fit sequences from the old and new alignments.
-     * Rolls result sequence names to avoid name duplicate.
-     * Does not change existing sequences in the alignment.
-     */
-    QList<DNASequence> prepareResultSequenceList();
-
     /** Original list of sequences to add into the alignment. */
     QList<DNASequence> sequenceList;
 
@@ -74,9 +80,7 @@ protected:
     QPointer<MultipleSequenceAlignmentObject> maObj;
 
 private:
-    StateLock *stateLock = nullptr;
-    const DNAAlphabet *msaAlphabet = nullptr;
-    QStringList errorList;
+    StateLock* stateLock = nullptr;
     MaModificationInfo mi;
 
     /*
@@ -86,50 +90,33 @@ private:
      * Example: paste symbol 'T' to amino alignment: 'T' is detected as Nucleic while it is also valid for Amino!
      */
     bool recheckNewSequenceAlphabetOnMismatch = false;
-
-    static const int maxErrorListSize;
-
-    /**
-     * Converts input sequence list into msa-row list.
-     * Returns the max length of the rows including trailing gaps.
-     */
-    qint64 createMsaRowsFromResultSequenceList(const QList<DNASequence> &inputSequenceList, QList<U2MsaRow> &resultRowList);
-
-    /** Adds rows into the result alignment. */
-    void addRowsToAlignment(U2MsaDbi *msaDbi, QList<U2MsaRow> &rows, qint64 maxLength);
-
-    /** Sets MSA object alphabet to 'msaAlphabet' if it is not equal. */
-    void updateAlphabet(U2MsaDbi *msaDbi);
-
-    /** Sets up detailed error message using errorList messages. */
-    void setupError();
 };
 
 class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertMaRowIndex);
+    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, int insertMaRowIndex);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private slots:
     void sl_onCancel();
 
 private:
     QStringList urlList;
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask* loadTask;
 };
 
 class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, int insertMaRowIndex, bool recheckNewSequenceAlphabets);
+    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<Document*>& docs, int insertMaRowIndex, bool recheckNewSequenceAlphabets);
 
     void prepare() override;
 
 private:
-    QList<Document *> docs;
+    QList<Document*> docs;
 };
 
 }  // namespace U2

@@ -33,7 +33,7 @@ class MultiTask;
 class BwaBuildIndexTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BwaBuildIndexTask(const QString &referencePath, const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
+    BwaBuildIndexTask(const QString& referencePath, const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
 
     void prepare();
 
@@ -42,8 +42,8 @@ private:
     public:
         LogParser();
 
-        void parseOutput(const QString &partOfLog);
-        void parseErrOutput(const QString &partOfLog);
+        void parseOutput(const QString& partOfLog);
+        void parseErrOutput(const QString& partOfLog);
     };
 
     QString referencePath;
@@ -54,37 +54,37 @@ private:
 class BwaAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BwaAlignTask(const QString &indexPath, const QList<ShortReadSet> &shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings);
+    BwaAlignTask(const QString& indexPath, const QList<ShortReadSet>& shortReadSets, const QString& resultPath, const DnaAssemblyToRefTaskSettings& settings);
     void prepare();
 
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
-        void parseOutput(const QString &partOfLog);
-        void parseErrOutput(const QString &partOfLog);
+        void parseOutput(const QString& partOfLog);
+        void parseErrOutput(const QString& partOfLog);
     };
 
 protected slots:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QList<ShortReadSet> downStreamList;
     QList<ShortReadSet> upStreamList;
-    MultiTask *samMultiTask;
+    MultiTask* samMultiTask;
     QStringList urlsToMerge;
-    MultiTask *alignMultiTask;
-    Task *mergeTask;
+    MultiTask* alignMultiTask;
+    Task* mergeTask;
     QString indexPath;
     QList<ShortReadSet> readSets;
     QString resultPath;
     DnaAssemblyToRefTaskSettings settings;
-    inline QString getSAIPath(const QString &pathToReads);
+    inline QString getSAIPath(const QString& pathToReads);
 };
 
 class BwaSwAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BwaSwAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
+    BwaSwAlignTask(const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
     void prepare();
 
 private:
@@ -95,15 +95,15 @@ private:
 class BwaMemAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
+    BwaMemAlignTask(const QString& indexPath, const DnaAssemblyToRefTaskSettings& settings);
     void prepare();
 
 protected slots:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultiTask *alignMultiTask;
-    Task *mergeTask;
+    MultiTask* alignMultiTask;
+    Task* mergeTask;
     const QString indexPath;
     QString resultPath;
     QStringList bamUrlstoMerge;
@@ -114,12 +114,12 @@ class BwaTask : public DnaAssemblyToReferenceTask {
     Q_OBJECT
     DNA_ASSEMBLEY_TO_REF_TASK_FACTORY(BwaTask)
 public:
-    BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
+    BwaTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
     void prepare();
     ReportResult report();
 protected slots:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 public:
     static const QString OPTION_INDEX_ALGORITHM;
@@ -145,7 +145,7 @@ public:
     static const QString OPTION_PREFER_HARD_CLIPPING;
     static const QString ALGORITHM_BWA_ALN, ALGORITHM_BWA_SW, ALGORITHM_BWA_MEM;
 
-    //bwa-mem
+    // bwa-mem
     static const QString OPTION_THREADS;
     static const QString OPTION_MIN_SEED;
     static const QString OPTION_BAND_WIDTH;
@@ -196,17 +196,17 @@ public:
     */
 
 private:
-    BwaBuildIndexTask *buildIndexTask;
-    ExternalToolSupportTask *alignTask;
+    BwaBuildIndexTask* buildIndexTask;
+    ExternalToolSupportTask* alignTask;
 };
 
 class BwaTaskFactory : public DnaAssemblyToRefTaskFactory {
 public:
-    DnaAssemblyToReferenceTask *createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
+    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
 protected:
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BWA_TASK_H_
+#endif  // _U2_BWA_TASK_H_

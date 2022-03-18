@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-ConnectionHelper::ConnectionHelper(const U2DbiRef &dbiRef, U2OpStatus &os)
+ConnectionHelper::ConnectionHelper(const U2DbiRef& dbiRef, U2OpStatus& os)
     : con(nullptr), dbi(nullptr), oDbi(nullptr) {
     con = new DbiConnection(dbiRef, os);
     CHECK_OP(os, );

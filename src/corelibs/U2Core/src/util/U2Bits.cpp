@@ -34,7 +34,7 @@ static int getLenBitsSize(int len) {
                                      : 32;
 }
 
-static void writeLength(uchar *bits, int len, int lenBitsLen) {
+static void writeLength(uchar* bits, int len, int lenBitsLen) {
     if (lenBitsLen == 8) {  // 00
         U2Bits::writeInt8(bits, 2, (qint8)len);
     } else if (lenBitsLen == 16) {  // 01
@@ -49,7 +49,7 @@ static void writeLength(uchar *bits, int len, int lenBitsLen) {
     }
 }
 
-static int readLength(const uchar *bits, int &nBits) {
+static int readLength(const uchar* bits, int& nBits) {
     bool b0 = U2Bits::getBit(bits, 0);
     bool b1 = U2Bits::getBit(bits, 1);
     if (b0 == b1) {
@@ -68,7 +68,7 @@ static int readLength(const uchar *bits, int &nBits) {
     }
 }
 
-QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSize, const int *alphabetCharNums, U2OpStatus &os) {
+QByteArray U2BitCompression::compress(const char* text, int len, int alphabetSize, const int* alphabetCharNums, U2OpStatus& os) {
     // algorithm:
     // 1. compute chars freq -> derive number of bits per char
     // 2. assign bit masks per char. Do not assign any bit masks for non-used alphabet chars
@@ -84,7 +84,7 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
 
     // find all used chars in text
     QVector<bool> visitVector(alphabetSize, false);
-    bool *visited = visitVector.data();
+    bool* visited = visitVector.data();
     for (int i = 0; i < len; i++) {
         uchar c = text[i];
         int n = alphabetCharNums[c];
@@ -99,7 +99,7 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
 
     // assign sequential bit-mask for all used chars
     QVector<uchar> maskVector(alphabetSize, 0);
-    uchar *mask = maskVector.data();
+    uchar* mask = maskVector.data();
     uchar visitedCharBitMask = 0;
     for (int i = 0; i < alphabetSize; i++) {
         if (visited[i]) {
@@ -114,7 +114,7 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
     int headerSizeBits = 2 + lenBits + alphabetSize;
     int resultSizeBits = headerSizeBits + compressedBitSize;
     QByteArray bitSet = U2Bits::allocateBits(resultSizeBits);
-    uchar *bits = (uchar *)bitSet.data();
+    uchar* bits = (uchar*)bitSet.data();
     writeLength(bits, len, lenBits);
     int pos = 2 + lenBits;
     for (; pos < alphabetSize; pos++) {
@@ -131,22 +131,22 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
     return bitSet;
 }
 
-QByteArray U2BitCompression::uncompress(const char *data, const QByteArray &alphabetChars, U2OpStatus &) {
+QByteArray U2BitCompression::uncompress(const char* data, const QByteArray& alphabetChars, U2OpStatus&) {
     // algorithm
     // 1. Derive all chars from header
     // 2. Assign bit masks per chars that have signed bit in header
     // 3. Unpack value
 
     int alphabetSize = alphabetChars.size();
-    const char *aChars = alphabetChars.data();
-    const uchar *bits = (const uchar *)data;
+    const char* aChars = alphabetChars.data();
+    const uchar* bits = (const uchar*)data;
 
     int alphaMaskOffset = 0;
     int len = readLength(bits, alphaMaskOffset);
 
     // restore bit masks
     QVector<bool> visitVector(alphabetSize, false);
-    bool *visited = visitVector.data();
+    bool* visited = visitVector.data();
     int nChars = 0;
     for (int i = 0; i < alphabetSize; i++) {
         if (U2Bits::getBit(bits, i + alphaMaskOffset)) {
@@ -166,7 +166,7 @@ QByteArray U2BitCompression::uncompress(const char *data, const QByteArray &alph
     }
     int pos = alphaMaskOffset + alphabetSize;
     QByteArray result(len, Qt::Uninitialized);
-    char *res = result.data();
+    char* res = result.data();
     for (int i = 0; i < len; i++, pos += bitsPerChar) {
         int bitsAsInt32 = U2Bits::bitsRange2Int32(bits, pos, bitsPerChar);
         char c = mask2Char[bitsAsInt32];
@@ -192,14 +192,14 @@ QByteArray U2Bits::allocateBits(int nBits) {
     return QByteArray(nBytes, Qt::Uninitialized);
 }
 
-void U2Bits::setBits(uchar *dstBits, int pos, const uchar *srcBits, int nBits) {
+void U2Bits::setBits(uchar* dstBits, int pos, const uchar* srcBits, int nBits) {
     // TODO: optimize
     for (int i = 0; i < nBits; i++) {
         bool val = getBit(srcBits, i);
         setBit(dstBits, i + pos, val);
     }
 }
-int U2Bits::bitsRange2Int32(const uchar *bits, int pos, int len) {
+int U2Bits::bitsRange2Int32(const uchar* bits, int pos, int len) {
     // TODO: optimize
     assert(len <= 32);
     int res = 0;
@@ -212,7 +212,7 @@ int U2Bits::bitsRange2Int32(const uchar *bits, int pos, int len) {
     return res;
 }
 
-qint8 U2Bits::readInt8(const uchar *bits, int pos) {
+qint8 U2Bits::readInt8(const uchar* bits, int pos) {
     int res = 0;
     for (int i = 0; i < 8; i++) {
         res = res << 1;
@@ -223,8 +223,8 @@ qint8 U2Bits::readInt8(const uchar *bits, int pos) {
     return qint8(res);
 }
 
-void U2Bits::writeInt8(uchar *bits, int pos, qint8 val) {
-    const uchar *data = (const uchar *)&val;
+void U2Bits::writeInt8(uchar* bits, int pos, qint8 val) {
+    const uchar* data = (const uchar*)&val;
     for (int i = 0; i < 8; i++) {
         if (U2Bits::getBit(data, i)) {
             U2Bits::setBit(bits, pos + i);
@@ -234,22 +234,22 @@ void U2Bits::writeInt8(uchar *bits, int pos, qint8 val) {
     }
 }
 
-qint8 U2Bits::readInt16(const uchar *bits, int pos) {
+qint8 U2Bits::readInt16(const uchar* bits, int pos) {
     int res = (readInt8(bits, pos) << 8) + readInt8(bits, pos + 8);
     return qint16(res);
 }
 
-void U2Bits::writeInt16(uchar *bits, int pos, qint16 val) {
+void U2Bits::writeInt16(uchar* bits, int pos, qint16 val) {
     writeInt8(bits, pos + 8, qint8(val));
     writeInt8(bits, pos, qint8(val >> 8));
 }
 
-qint8 U2Bits::readInt32(const uchar *bits, int pos) {
+qint8 U2Bits::readInt32(const uchar* bits, int pos) {
     int res = (readInt8(bits, pos) << 24) + (readInt8(bits, pos + 8) << 16) + (readInt8(bits, pos + 16) << 8) + readInt8(bits, pos + 24);
     return qint16(res);
 }
 
-void U2Bits::writeInt32(uchar *bits, int pos, qint32 val) {
+void U2Bits::writeInt32(uchar* bits, int pos, qint32 val) {
     writeInt8(bits, pos + 24, qint8(val));
     writeInt8(bits, pos + 16, qint8(val >> 8));
     writeInt8(bits, pos + 8, qint8(val >> 16));

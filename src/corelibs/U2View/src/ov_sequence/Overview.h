@@ -42,32 +42,33 @@ class ADVSingleSequenceWidget;
 class U2VIEW_EXPORT Overview : public GSequenceLineView {
     Q_OBJECT
 public:
-    Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx);
+    Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx);
 
 protected slots:
     void sl_visibleRangeChanged();
     void sl_graphActionTriggered();
-    void sl_annotationsAdded(const QList<Annotation *> &a);
-    void sl_annotationsRemoved(const QList<Annotation *> &a);
-    void sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
-    void sl_annotationsModified(const QList<AnnotationModification> &annotationModifications);
-    void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
-    void sl_annotationObjectAdded(AnnotationTableObject *obj);
-    void sl_annotationObjectRemoved(AnnotationTableObject *obj);
+    void sl_annotationsAdded(const QList<Annotation*>& a);
+    void sl_annotationsRemoved(const QList<Annotation*>& a);
+    void sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*);
+    void sl_annotationsModified(const QList<AnnotationModification>& annotationModifications);
+    void sl_onAnnotationSettingsChanged(const QStringList& changedSettings);
+    void sl_annotationObjectAdded(AnnotationTableObject* obj);
+    void sl_annotationObjectRemoved(AnnotationTableObject* obj);
     void sl_sequenceChanged();
 
 protected:
     void pack();
-    virtual bool event(QEvent *e);
-    void mousePressEvent(QMouseEvent *me);
-    void mouseMoveEvent(QMouseEvent *me);
-    void mouseDoubleClickEvent(QMouseEvent *me);
-    void mouseReleaseEvent(QMouseEvent *me);
-    void wheelEvent(QWheelEvent *we);
+    virtual bool event(QEvent* e);
+    void mousePressEvent(QMouseEvent* me);
+    void mouseMoveEvent(QMouseEvent* me);
+    void mouseDoubleClickEvent(QMouseEvent* me);
+    void mouseReleaseEvent(QMouseEvent* me);
+    void wheelEvent(QWheelEvent* we);
 
-    QString createToolTip(QHelpEvent *he);
-    PanView *getPan() const;
-    DetView *getDet() const;
+    /** Creates a tool tip string for the given 'X' offset in the render area. */
+    QString createToolTip(int renderAreaXOffset);
+    PanView* getPan() const;
+    DetView* getDet() const;
 
     bool panSliderClicked;
     bool detSliderClicked;
@@ -77,16 +78,16 @@ protected:
     qint64 offset;
 
 private:
-    void connectAnnotationTableObject(AnnotationTableObject *object);
+    void connectAnnotationTableObject(AnnotationTableObject* object);
     void setGraphActionVisible(const bool setVisible);
 
-    PanView *panView;
-    DetView *detView;
+    PanView* panView;
+    DetView* detView;
     QPoint mousePosToSlider;
-    ADVSingleSequenceWidget *seqWidget;
+    ADVSingleSequenceWidget* seqWidget;
 
     /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
-    OverviewRenderArea *overviewRenderArea;
+    OverviewRenderArea* overviewRenderArea;
 
     static const QString ANNOTATION_GRAPH_STATE;
 
@@ -96,7 +97,7 @@ private:
 class OverviewRenderArea : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
-    OverviewRenderArea(Overview *p);
+    OverviewRenderArea(Overview* p);
 
     const QRectF getPanSlider() const;
     const QRectF getDetSlider() const;
@@ -115,15 +116,15 @@ public:
     }
 
 protected:
-    void drawAll(QPaintDevice *pd);
+    void drawAll(QPaintDevice* pd);
 
 private:
-    void drawRuler(QPainter &p);
-    void drawSelection(QPainter &p);
-    void drawSlider(QPainter &p, QRectF rect, QColor col);
-    void drawArrow(QPainter &p, QRectF rect, QColor col);
+    void drawRuler(QPainter& p);
+    void drawSelection(QPainter& p);
+    void drawSlider(QPainter& p, QRectF rect, QColor col);
+    void drawArrow(QPainter& p, QRectF rect, QColor col);
     void setAnnotationsOnPos();
-    void drawGraph(QPainter &p);
+    void drawGraph(QPainter& p);
     QColor getUnitColor(int count);
 
     QRectF panSlider;

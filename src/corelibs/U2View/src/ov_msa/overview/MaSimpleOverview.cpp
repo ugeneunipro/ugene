@@ -42,7 +42,7 @@
 
 namespace U2 {
 
-MaSimpleOverview::MaSimpleOverview(MaEditorWgt *ui)
+MaSimpleOverview::MaSimpleOverview(MaEditorWgt* ui)
     : MaOverview(ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
@@ -80,7 +80,7 @@ void MaSimpleOverview::sl_highlightingChanged() {
     update();
 }
 
-void MaSimpleOverview::paintEvent(QPaintEvent *e) {
+void MaSimpleOverview::paintEvent(QPaintEvent* e) {
     if (!isValid()) {
         QPainter messagePainter(this);
         GUIUtils::showMessage(this, messagePainter, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
@@ -107,24 +107,25 @@ void MaSimpleOverview::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
 }
 
-void MaSimpleOverview::resizeEvent(QResizeEvent *e) {
+void MaSimpleOverview::resizeEvent(QResizeEvent* e) {
     redrawMsaOverview = true;
     redrawSelection = true;
     QWidget::resizeEvent(e);
 }
 
-void MaSimpleOverview::drawOverview(QPainter &p) {
+void MaSimpleOverview::drawOverview(QPainter& p) {
     p.fillRect(cachedMSAOverview.rect(), Qt::white);
     CHECK(!editor->isAlignmentEmpty(), );
 
     recalculateScale();
 
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
-    MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();
+    MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, tr("Incorrect multiple alignment object!"), );
 
-    const MultipleAlignment &ma = mAlignmentObj->getMultipleAlignment();
+    const MultipleAlignment& ma = mAlignmentObj->getMultipleAlignment();
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
@@ -167,7 +168,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 
-void MaSimpleOverview::drawVisibleRange(QPainter &p) {
+void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -188,11 +189,11 @@ void MaSimpleOverview::drawVisibleRange(QPainter &p) {
     p.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
 }
 
-void MaSimpleOverview::drawSelection(QPainter &p) {
-    const MaEditorSelection &selection = editor->getSelection();
+void MaSimpleOverview::drawSelection(QPainter& p) {
+    const MaEditorSelection& selection = editor->getSelection();
 
     QList<QRect> selectedRects = selection.getRectList();
-    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+    for (const QRect& selectedRect : qAsConst(selectedRects)) {
         U2Region columnRange = ui->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
         U2Region sequenceViewYRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);

@@ -40,7 +40,7 @@ namespace U2 {
 
 class StrandContext;
 
-FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings &s)
+FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
     : Task(tr("Find in sequence task"), TaskFlag_None), config(s) {
     if (s.countTask) {
         GCOUNTER(cvar, "FindAlgorithmTask");
@@ -54,7 +54,7 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings &s)
 }
 
 void FindAlgorithmTask::run() {
-    FindAlgorithm::find(dynamic_cast<FindAlgorithmResultsListener *>(this),
+    FindAlgorithm::find(dynamic_cast<FindAlgorithmResultsListener*>(this),
                         config.proteinTT,
                         config.complementTT,
                         config.strand,
@@ -73,7 +73,7 @@ void FindAlgorithmTask::run() {
                         stateInfo.progress);
 }
 
-void FindAlgorithmTask::onResult(const FindAlgorithmResult &r) {
+void FindAlgorithmTask::onResult(const FindAlgorithmResult& r) {
     if (r.err == FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR) {
         stateInfo.cancelFlag = true;
         const QString error = "Pattern is too big. Not enough memory.";
@@ -102,11 +102,11 @@ QList<FindAlgorithmResult> FindAlgorithmTask::popResults() {
 
 //////////////////////////////////////////////////////////////////////////
 // LoadPatternsFileTask
-LoadPatternsFileTask::LoadPatternsFileTask(const QString &_filePath, const QString &_annotationName)
+LoadPatternsFileTask::LoadPatternsFileTask(const QString& _filePath, const QString& _annotationName)
     : Task(tr("Load pattern from file"), TaskFlag_None), filePath(_filePath), isRawSequence(false), annotationName(_annotationName) {
 }
 
-Document *LoadPatternsFileTask::getDocumentFromFilePath() {
+Document* LoadPatternsFileTask::getDocumentFromFilePath() {
     // loading new document here and not reusing any loaded from the project
     // because a document in the project may be opened in 'merge' mode.
 
@@ -116,7 +116,7 @@ Document *LoadPatternsFileTask::getDocumentFromFilePath() {
         return nullptr;
     }
 
-    DocumentFormat *format = formats.first().format;
+    DocumentFormat* format = formats.first().format;
     if (format->getFormatId() == BaseDocumentFormats::RAW_DNA_SEQUENCE) {
         isRawSequence = true;
         return nullptr;
@@ -124,10 +124,10 @@ Document *LoadPatternsFileTask::getDocumentFromFilePath() {
     Q_ASSERT(format);
 
     GUrl fileUrl(filePath);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileUrl));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileUrl));
 
     QVariantMap hints;
-    Document *doc = format->loadDocument(iof, fileUrl, hints, stateInfo);
+    Document* doc = format->loadDocument(iof, fileUrl, hints, stateInfo);
 
     CHECK_OP(stateInfo, nullptr);
 
@@ -137,12 +137,12 @@ Document *LoadPatternsFileTask::getDocumentFromFilePath() {
 void LoadPatternsFileTask::run() {
     typedef QPair<QString, QString> NamePattern;
 
-    Document *doc = getDocumentFromFilePath();
+    Document* doc = getDocumentFromFilePath();
     if (doc != nullptr && !isRawSequence) {
-        const QList<GObject *> &objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+        const QList<GObject*>& objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
-        foreach (GObject *object, objectsFromDoc) {
-            U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject *>(object);
+        foreach (GObject* object, objectsFromDoc) {
+            U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
             assert(sequenceObject != nullptr);
             QByteArray sequence = sequenceObject->getWholeSequenceData(stateInfo);
             CHECK_OP(stateInfo, );
@@ -168,7 +168,7 @@ void LoadPatternsFileTask::run() {
             QString pattern = stream.readLine();
             if (!pattern.isEmpty()) {
                 bool contains = false;
-                foreach (const NamePattern &namePattern, namesPatterns) {
+                foreach (const NamePattern& namePattern, namesPatterns) {
                     if (namePattern.second == pattern) {
                         contains = true;
                         break;

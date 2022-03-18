@@ -39,22 +39,22 @@ class Task;
 class U2CORE_EXPORT TaskWatchdog : public QObject {
     Q_OBJECT
 public:
-    TaskWatchdog(QObject *resource, Task *task);
+    TaskWatchdog(QObject* resource, Task* task);
 
-    void setCancelError(const QString &errorMessage);
+    void setCancelError(const QString& errorMessage);
 
     // Cancels the task if the resource is destroyed.
-    static void trackResourceExistence(QObject *resource, Task *task);
+    static void trackResourceExistence(QObject* resource, Task* task);
 
     // Cancels the task and set the error to the task if the resource is destroyed.
-    static void trackResourceExistence(QObject *resource, Task *task, const QString &errorMessage);
+    static void trackResourceExistence(QObject* resource, Task* task, const QString& errorMessage);
 
 private slots:
     void sl_onResourceDestroyed();
 
 private:
-    const QObject *resource;
-    Task *task;
+    const QObject* resource;
+    Task* task;
     bool cancelWithError;
     QString errorMessage;
 };

@@ -34,7 +34,7 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
-ExportChromatogramFiller::ExportChromatogramFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method)
+ExportChromatogramFiller::ExportChromatogramFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler(_os, "ExportChromatogramDialog"), name(_name), useMethod(method), format(_format), reversed(reversed),
       complement(complement), addDocumentToProject(addDocumentToProject) {
     path = _path;
@@ -43,15 +43,14 @@ ExportChromatogramFiller::ExportChromatogramFiller(HI::GUITestOpStatus &_os, con
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportChromatogramFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
 
     GTLineEdit::setText(os, lineEdit, path + name);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>();
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
@@ -59,17 +58,17 @@ void ExportChromatogramFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     if (addDocumentToProject) {
-        QCheckBox *checkBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectBox"));
+        QCheckBox* checkBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectBox"));
         GTCheckBox::setChecked(os, checkBox, addDocumentToProject);
     }
 
     if (reversed) {
-        QCheckBox *checkBoxReversed = dialog->findChild<QCheckBox *>(QString::fromUtf8("reverseBox"));
+        QCheckBox* checkBoxReversed = dialog->findChild<QCheckBox*>(QString::fromUtf8("reverseBox"));
         GTCheckBox::setChecked(os, checkBoxReversed, reversed);
     }
 
     if (complement) {
-        QCheckBox *checkBoxComplement = dialog->findChild<QCheckBox *>(QString::fromUtf8("complementBox"));
+        QCheckBox* checkBoxComplement = dialog->findChild<QCheckBox*>(QString::fromUtf8("complementBox"));
         GTCheckBox::setChecked(os, checkBoxComplement, complement);
     }
 

@@ -27,11 +27,11 @@
 
 namespace U2 {
 
-MysqlAttributeDbi::MysqlAttributeDbi(MysqlDbi *dbi)
+MysqlAttributeDbi::MysqlAttributeDbi(MysqlDbi* dbi)
     : U2AttributeDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlAttributeDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlAttributeDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // object attribute main table
@@ -82,13 +82,13 @@ void MysqlAttributeDbi::initSqlSchema(U2OpStatus &os) {
 }
 
 /** Returns all attribute names available in the database */
-QStringList MysqlAttributeDbi::getAvailableAttributeNames(U2OpStatus &os) {
+QStringList MysqlAttributeDbi::getAvailableAttributeNames(U2OpStatus& os) {
     static const QString queryString = "SELECT DISTINCT name FROM Attribute";
     return U2SqlQuery(queryString, db, os).selectStrings();
 }
 
 /** Returns all attribute ids for the given object */
-QList<U2DataId> MysqlAttributeDbi::getObjectAttributes(const U2DataId &objectId, const QString &name, U2OpStatus &os) {
+QList<U2DataId> MysqlAttributeDbi::getObjectAttributes(const U2DataId& objectId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = :object ORDER BY id");
         U2SqlQuery q(queryString, db, os);
@@ -104,7 +104,7 @@ QList<U2DataId> MysqlAttributeDbi::getObjectAttributes(const U2DataId &objectId,
 }
 
 /** Returns all attribute ids for the given object */
-QList<U2DataId> MysqlAttributeDbi::getObjectPairAttributes(const U2DataId &objectId, const U2DataId &childId, const QString &name, U2OpStatus &os) {
+QList<U2DataId> MysqlAttributeDbi::getObjectPairAttributes(const U2DataId& objectId, const U2DataId& childId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = :object AND child = :child ORDER BY id");
         U2SqlQuery q(queryString, db, os);
@@ -122,7 +122,7 @@ QList<U2DataId> MysqlAttributeDbi::getObjectPairAttributes(const U2DataId &objec
 }
 
 /** Loads int64 attribute by id */
-U2IntegerAttribute MysqlAttributeDbi::getIntegerAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2IntegerAttribute MysqlAttributeDbi::getIntegerAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("IntegerAttribute"));
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", attributeId);
@@ -137,7 +137,7 @@ U2IntegerAttribute MysqlAttributeDbi::getIntegerAttribute(const U2DataId &attrib
 }
 
 /** Loads real64 attribute by id */
-U2RealAttribute MysqlAttributeDbi::getRealAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2RealAttribute MysqlAttributeDbi::getRealAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("RealAttribute"));
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", attributeId);
@@ -152,7 +152,7 @@ U2RealAttribute MysqlAttributeDbi::getRealAttribute(const U2DataId &attributeId,
 }
 
 /** Loads String attribute by id */
-U2StringAttribute MysqlAttributeDbi::getStringAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2StringAttribute MysqlAttributeDbi::getStringAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("StringAttribute"));
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", attributeId);
@@ -167,7 +167,7 @@ U2StringAttribute MysqlAttributeDbi::getStringAttribute(const U2DataId &attribut
 }
 
 /** Loads byte attribute by id */
-U2ByteArrayAttribute MysqlAttributeDbi::getByteArrayAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2ByteArrayAttribute MysqlAttributeDbi::getByteArrayAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("ByteArrayAttribute"));
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", attributeId);
@@ -182,7 +182,7 @@ U2ByteArrayAttribute MysqlAttributeDbi::getByteArrayAttribute(const U2DataId &at
 }
 
 /** Sorts all objects in database according to U2DbiSortConfig provided  */
-QList<U2DataId> MysqlAttributeDbi::sort(const U2DbiSortConfig &, qint64, qint64, U2OpStatus &os) {
+QList<U2DataId> MysqlAttributeDbi::sort(const U2DbiSortConfig&, qint64, qint64, U2OpStatus& os) {
     os.setError("not implemented");
     return QList<U2DataId>();
 }
@@ -191,7 +191,7 @@ QList<U2DataId> MysqlAttributeDbi::sort(const U2DbiSortConfig &, qint64, qint64,
 Removes attribute from database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2OpStatus &os) {
+void MysqlAttributeDbi::removeAttributes(const QList<U2DataId>& attributeIds, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString mainQueryStr("DELETE FROM Attribute WHERE id = :attribute");
@@ -203,7 +203,7 @@ void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2
     static const QString bytearrayAttrString = "ByteArrayAttribute";
 
     QString tableName;
-    foreach (const U2DataId &id, attributeIds) {
+    foreach (const U2DataId& id, attributeIds) {
         U2DataType type = U2DbiUtils::toType(id);
         switch (type) {
             case U2Type::AttributeInteger:
@@ -235,7 +235,7 @@ void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2
     }
 }
 
-void MysqlAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpStatus &os) {
+void MysqlAttributeDbi::removeObjectAttributes(const U2DataId& objectId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     QList<U2DataId> attributes = getObjectAttributes(objectId, "", os);
@@ -249,7 +249,7 @@ void MysqlAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpSta
  * Creates int64 attribute in database. ObjectId must be already set in attribute and present in the same database
  * Requires U2DbiFeature_WriteAttribute feature support
  */
-void MysqlAttributeDbi::createIntegerAttribute(U2IntegerAttribute &a, U2OpStatus &os) {
+void MysqlAttributeDbi::createIntegerAttribute(U2IntegerAttribute& a, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     qint64 id = createAttribute(a, U2Type::AttributeInteger, os);
@@ -267,7 +267,7 @@ void MysqlAttributeDbi::createIntegerAttribute(U2IntegerAttribute &a, U2OpStatus
 Creates real64 attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void MysqlAttributeDbi::createRealAttribute(U2RealAttribute &a, U2OpStatus &os) {
+void MysqlAttributeDbi::createRealAttribute(U2RealAttribute& a, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     qint64 id = createAttribute(a, U2Type::AttributeReal, os);
@@ -285,7 +285,7 @@ void MysqlAttributeDbi::createRealAttribute(U2RealAttribute &a, U2OpStatus &os) 
 Creates String attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void MysqlAttributeDbi::createStringAttribute(U2StringAttribute &a, U2OpStatus &os) {
+void MysqlAttributeDbi::createStringAttribute(U2StringAttribute& a, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     qint64 id = createAttribute(a, U2Type::AttributeString, os);
@@ -303,7 +303,7 @@ void MysqlAttributeDbi::createStringAttribute(U2StringAttribute &a, U2OpStatus &
 Creates Byte attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpStatus &os) {
+void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     qint64 id = createAttribute(a, U2Type::AttributeByteArray, os);
@@ -317,7 +317,7 @@ void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpSt
     q.execute();
 }
 
-qint64 MysqlAttributeDbi::createAttribute(U2Attribute &attr, U2DataType type, U2OpStatus &os) {
+qint64 MysqlAttributeDbi::createAttribute(U2Attribute& attr, U2DataType type, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString("INSERT INTO Attribute(type, object, child, otype, ctype, oextra, cextra, version, name) "
@@ -337,13 +337,13 @@ qint64 MysqlAttributeDbi::createAttribute(U2Attribute &attr, U2DataType type, U2
     return q.insert();
 }
 
-QString MysqlAttributeDbi::buildSelectAttributeQuery(const QString &attributeTable) {
+QString MysqlAttributeDbi::buildSelectAttributeQuery(const QString& attributeTable) {
     return "SELECT t.value, a.id, a.type, '', a.object, a.otype, a.oextra, a.child, a.ctype, a.cextra, a.version, a.name "
            " FROM Attribute AS a, " +
            attributeTable + " AS t WHERE a.id = :id AND t.attribute = a.id";
 }
 
-void MysqlAttributeDbi::readAttribute(U2SqlQuery &q, U2Attribute &attr) {
+void MysqlAttributeDbi::readAttribute(U2SqlQuery& q, U2Attribute& attr) {
     if (!q.step()) {
         if (!q.hasError()) {
             q.setError(U2DbiL10n::tr("Required attribute is not found"));

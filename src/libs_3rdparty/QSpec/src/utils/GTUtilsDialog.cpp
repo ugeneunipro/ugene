@@ -39,7 +39,7 @@ namespace HI {
 
 #define GT_CLASS_NAME "GUIDialogWaiter"
 
-GUIDialogWaiter::GUIDialogWaiter(GUITestOpStatus &_os, Runnable *_r, const WaitSettings &_settings)
+GUIDialogWaiter::GUIDialogWaiter(GUITestOpStatus& _os, Runnable* _r, const WaitSettings& _settings)
     : isFinished(false), waiterId(-1), os(_os), runnable(_r), settings(_settings), timer(NULL), waitingTime(0) {
     static int totalWaiterCount = 0;
     waiterId = totalWaiterCount++;
@@ -67,7 +67,7 @@ void GUIDialogWaiter::stopTimer() {
     }
 }
 
-bool GUIDialogWaiter::isExpectedName(const QString &widgetObjectName, const QString &expectedObjectName) {
+bool GUIDialogWaiter::isExpectedName(const QString& widgetObjectName, const QString& expectedObjectName) {
     if (expectedObjectName.isNull()) {
         qWarning("GT_DEBUG_MESSAGE GUIDialogWaiter Warning!! Checking name, widget name '%s', but expected any, saying it's expected", widgetObjectName.toLocal8Bit().constData());
         return true;
@@ -80,7 +80,7 @@ bool GUIDialogWaiter::isExpectedName(const QString &widgetObjectName, const QStr
 #define GT_METHOD_NAME "checkDialog"
 void GUIDialogWaiter::checkDialog() {
     try {
-        QWidget *widget = NULL;
+        QWidget* widget = NULL;
         GT_CHECK_NO_MESSAGE(runnable != NULL, "Runnable is NULL");
 
         switch (settings.dialogType) {
@@ -108,14 +108,14 @@ void GUIDialogWaiter::checkDialog() {
                 GTThread::waitForMainThread();
                 runnable->run();
                 isFinished = true;
-            } catch (GUITestOpStatus *) {
-                QWidget *popupWidget = QApplication::activePopupWidget();
+            } catch (GUITestOpStatus*) {
+                QWidget* popupWidget = QApplication::activePopupWidget();
                 while (popupWidget != NULL) {
                     GTWidget::close(os, popupWidget);
                     popupWidget = QApplication::activePopupWidget();
                 }
 
-                QWidget *modalWidget = QApplication::activeModalWidget();
+                QWidget* modalWidget = QApplication::activeModalWidget();
                 while (modalWidget != NULL) {
                     GTWidget::close(os, modalWidget);
                     modalWidget = QApplication::activeModalWidget();
@@ -129,11 +129,11 @@ void GUIDialogWaiter::checkDialog() {
                 qDebug("-------------------------");
 
                 finishWaiting();
-                GT_CHECK(false, "TIMEOUT, waiterId = " + QString::number(waiterId));
+                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId), );
             }
         }
 
-    } catch (GUITestOpStatus *) {
+    } catch (GUITestOpStatus*) {
     }
 }
 #undef GT_METHOD_NAME
@@ -142,7 +142,7 @@ void GUIDialogWaiter::checkDialog() {
 
 #define GT_CLASS_NAME "GTUtilsDialog"
 
-HangChecker::HangChecker(GUITestOpStatus &_os)
+HangChecker::HangChecker(GUITestOpStatus& _os)
     : os(_os), mightHung(false) {
     timer = new QTimer();
 }
@@ -154,11 +154,11 @@ void HangChecker::startChecking() {
 
 #define GT_METHOD_NAME "sl_check"
 void HangChecker::sl_check() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     try {
         if (dialog != NULL) {
             bool found = false;
-            foreach (GUIDialogWaiter *waiter, GTUtilsDialog::pool) {
+            foreach (GUIDialogWaiter* waiter, GTUtilsDialog::pool) {
                 if (!waiter->isFinished && waiter->isExpectedName(dialog->objectName(), waiter->getSettings().objectName)) {
                     found = true;
                     mightHung = false;
@@ -167,7 +167,7 @@ void HangChecker::sl_check() {
 
             if (!found) {
                 if (mightHung) {
-                    GT_CHECK(false, "dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up");
+                    GT_FAIL("dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up", );
                 }
             }
 
@@ -181,9 +181,9 @@ void HangChecker::sl_check() {
         } else {
             mightHung = false;
         }
-    } catch (GUITestOpStatus *) {
+    } catch (GUITestOpStatus*) {
         GTGlobals::takeScreenShot(os, GUITest::screenshotDir + QDateTime::currentDateTime().toString() + ".jpg");
-        QWidget *w = QApplication::activeModalWidget();
+        QWidget* w = QApplication::activeModalWidget();
         while (w != NULL) {
             w->close();
             w = QApplication::activeModalWidget();
@@ -201,10 +201,10 @@ void HangChecker::sl_check() {
 
 #define GT_CLASS_NAME "GTUtilsDialog"
 
-QList<GUIDialogWaiter *> GTUtilsDialog::pool = QList<GUIDialogWaiter *>();
-HangChecker *GTUtilsDialog::hangChecker = NULL;
+QList<GUIDialogWaiter*> GTUtilsDialog::pool = QList<GUIDialogWaiter*>();
+HangChecker* GTUtilsDialog::hangChecker = NULL;
 
-void GTUtilsDialog::startHangChecking(GUITestOpStatus &os) {
+void GTUtilsDialog::startHangChecking(GUITestOpStatus& os) {
     hangChecker = new HangChecker(os);
     hangChecker->startChecking();
 }
@@ -216,21 +216,21 @@ void GTUtilsDialog::stopHangChecking() {
 }
 
 #define GT_METHOD_NAME "buttonBox"
-QDialogButtonBox *GTUtilsDialog::buttonBox(GUITestOpStatus &os, QWidget *dialog) {
-    return qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+QDialogButtonBox* GTUtilsDialog::buttonBox(GUITestOpStatus& os, QWidget* dialog) {
+    return qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickButtonBox"
-void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QDialogButtonBox::StandardButton button) {
+void GTUtilsDialog::clickButtonBox(GUITestOpStatus& os, QDialogButtonBox::StandardButton button) {
     clickButtonBox(os, QApplication::activeModalWidget(), button);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickButtonBox"
-void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialogButtonBox::StandardButton button) {
+void GTUtilsDialog::clickButtonBox(GUITestOpStatus& os, QWidget* dialog, QDialogButtonBox::StandardButton button) {
 #ifdef Q_OS_DARWIN
-    QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
+    QMessageBox* mbox = qobject_cast<QMessageBox*>(dialog);
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
     if (mbox != NULL && (button == QDialogButtonBox::Yes || button == QDialogButtonBox::No || button == QDialogButtonBox::NoToAll)) {
@@ -238,33 +238,33 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialog
             button == QDialogButtonBox::Yes       ? QMessageBox::Yes
             : button == QDialogButtonBox::NoToAll ? QMessageBox::NoToAll
                                                   : QMessageBox::No;
-        QAbstractButton *pushButton = mbox->button(btn);
+        QAbstractButton* pushButton = mbox->button(btn);
         GT_CHECK(pushButton != NULL, "pushButton is NULL");
         GTWidget::click(os, pushButton);
     } else {
-        QDialogButtonBox *box = buttonBox(os, dialog);
+        QDialogButtonBox* box = buttonBox(os, dialog);
         GT_CHECK(box != NULL, "buttonBox is NULL");
-        QPushButton *pushButton = box->button(button);
+        QPushButton* pushButton = box->button(button);
         GT_CHECK(pushButton != NULL, "pushButton is NULL");
         GTWidget::click(os, pushButton);
     }
 #else
-    QDialogButtonBox *box = buttonBox(os, dialog);
-    GT_CHECK(box != NULL, "buttonBox is NULL");
-    QPushButton *pushButton = box->button(button);
-    GT_CHECK(pushButton != NULL, "pushButton is NULL");
+    QDialogButtonBox* box = buttonBox(os, dialog);
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
+    QPushButton* pushButton = box->button(button);
+    GT_CHECK(pushButton != nullptr, "pushButton is NULL");
     GTWidget::click(os, pushButton);
 #endif
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsDialog::waitForDialog(GUITestOpStatus &os, Runnable *r, const GUIDialogWaiter::WaitSettings &settings) {
+void GTUtilsDialog::waitForDialog(GUITestOpStatus& os, Runnable* r, const GUIDialogWaiter::WaitSettings& settings) {
     pool.prepend(new GUIDialogWaiter(os, r, settings));
 }
 
-void GTUtilsDialog::waitForDialog(GUITestOpStatus &os, Runnable *r, int timeout) {
+void GTUtilsDialog::waitForDialog(GUITestOpStatus& os, Runnable* r, int timeout) {
     GUIDialogWaiter::WaitSettings settings;
-    Filler *f = dynamic_cast<Filler *>(r);
+    Filler* f = dynamic_cast<Filler*>(r);
     if (f) {
         settings = f->getSettings();
         if (timeout > 0) {
@@ -274,9 +274,9 @@ void GTUtilsDialog::waitForDialog(GUITestOpStatus &os, Runnable *r, int timeout)
     waitForDialog(os, r, settings);
 }
 
-void GTUtilsDialog::waitForDialogWhichMustNotBeRun(GUITestOpStatus &os, Runnable *r) {
+void GTUtilsDialog::waitForDialogWhichMustNotBeRun(GUITestOpStatus& os, Runnable* r) {
     GUIDialogWaiter::WaitSettings settings;
-    Filler *f = dynamic_cast<Filler *>(r);
+    Filler* f = dynamic_cast<Filler*>(r);
     if (f) {
         settings = f->getSettings();
     }
@@ -285,25 +285,13 @@ void GTUtilsDialog::waitForDialogWhichMustNotBeRun(GUITestOpStatus &os, Runnable
     waitForDialog(os, r, settings);
 }
 
-void GTUtilsDialog::waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable *r) {
-    GUIDialogWaiter::WaitSettings settings;
-    Filler *f = dynamic_cast<Filler *>(r);
-    if (f) {
-        settings = f->getSettings();
-    }
-
-    settings.destiny = GUIDialogWaiter::NoMatter;
-    settings.timeout = 480000;
-    waitForDialog(os, r, settings);
-}
-
 #define GT_METHOD_NAME "checkNoActiveWaiters"
-void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis) {
+void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus& os, int timeoutMillis) {
     bool isAllFinished = pool.isEmpty();
     for (int time = 0; time < timeoutMillis && !isAllFinished; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
         isAllFinished = true;
-        foreach (GUIDialogWaiter *waiter, pool) {
+        foreach (GUIDialogWaiter* waiter, pool) {
             if (!waiter->isFinished && waiter->getSettings().destiny == GUIDialogWaiter::MustBeRun) {
                 isAllFinished = false;
                 break;
@@ -311,8 +299,8 @@ void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis)
         }
     }
     if (!isAllFinished && !os.hasError()) {
-        GUIDialogWaiter *nonFinishedWaiter = nullptr;
-        foreach (GUIDialogWaiter *waiter, pool) {
+        GUIDialogWaiter* nonFinishedWaiter = nullptr;
+        foreach (GUIDialogWaiter* waiter, pool) {
             if (!waiter->isFinished && waiter->getSettings().destiny == GUIDialogWaiter::MustBeRun) {
                 nonFinishedWaiter = waiter;
                 break;
@@ -325,8 +313,8 @@ void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis)
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsDialog::removeRunnable(Runnable *runnable) {
-    for (GUIDialogWaiter *waiter : qAsConst(pool)) {
+void GTUtilsDialog::removeRunnable(Runnable* runnable) {
+    for (GUIDialogWaiter* waiter : qAsConst(pool)) {
         if (waiter->getRunnable() == runnable) {
             pool.removeOne(waiter);
             delete waiter;
@@ -336,13 +324,13 @@ void GTUtilsDialog::removeRunnable(Runnable *runnable) {
 }
 
 #define GT_METHOD_NAME "cleanup"
-void GTUtilsDialog::cleanup(GUITestOpStatus &os, CleanupSettings s) {
-    for (GUIDialogWaiter *waiter : qAsConst(pool)) {
+void GTUtilsDialog::cleanup(GUITestOpStatus& os, CleanupSettings s) {
+    for (GUIDialogWaiter* waiter : qAsConst(pool)) {
         waiter->stopTimer();
     }
 
     if (s == FailOnUnfinished) {
-        for (GUIDialogWaiter *waiter : qAsConst(pool)) {
+        for (GUIDialogWaiter* waiter : qAsConst(pool)) {
             GT_CHECK(waiter != nullptr, "GUIDialogWaiter is null");
             switch (waiter->getSettings().destiny) {
                 case GUIDialogWaiter::MustBeRun:
@@ -366,11 +354,11 @@ void GTUtilsDialog::cleanup(GUITestOpStatus &os, CleanupSettings s) {
 
 #undef GT_CLASS_NAME
 
-Filler::Filler(GUITestOpStatus &os, const GUIDialogWaiter::WaitSettings &settings, CustomScenario *scenario)
+Filler::Filler(GUITestOpStatus& os, const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario)
     : os(os), settings(settings), scenario(scenario) {
 }
 
-Filler::Filler(GUITestOpStatus &os, const QString &objectName, CustomScenario *scenario)
+Filler::Filler(GUITestOpStatus& os, const QString& objectName, CustomScenario* scenario)
     : os(os), settings(GUIDialogWaiter::WaitSettings(objectName)), scenario(scenario) {
 }
 

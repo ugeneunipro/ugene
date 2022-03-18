@@ -36,18 +36,18 @@ DinucleotitePropertyRegistry::DinucleotitePropertyRegistry() {
 }
 
 DinucleotitePropertyRegistry::~DinucleotitePropertyRegistry() {
-    foreach (DiPropertySitecon *d, props) {
+    foreach (DiPropertySitecon* d, props) {
         delete d;
     }
 }
 
-static void normalize(DiPropertySitecon *p);
+static void normalize(DiPropertySitecon* p);
 
-void DinucleotitePropertyRegistry::registerProperty(const QString &str) {
+void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
     QMap<QString, QString> keys;
     float data[16];
     float defVal = -100000;
-    std::fill((float *)data, data + 16, defVal);
+    std::fill((float*)data, data + 16, defVal);
 
     QStringList lines = str.split('\n', QString::SkipEmptyParts);
     bool dimode = false;
@@ -78,16 +78,16 @@ void DinucleotitePropertyRegistry::registerProperty(const QString &str) {
         }
     }
 
-    assert(std::count((float *)data, data + 16, defVal) == 0);
+    assert(std::count((float*)data, data + 16, defVal) == 0);
 
-    DiPropertySitecon *p = new DiPropertySitecon();
+    DiPropertySitecon* p = new DiPropertySitecon();
     p->keys = keys;
-    std::copy((float *)data, data + 16, (float *)p->original);
+    std::copy((float*)data, data + 16, (float*)p->original);
     normalize(p);
     props.append(p);
 }
 
-static void normalize(DiPropertySitecon *p) {
+static void normalize(DiPropertySitecon* p) {
     float average = 0;
     for (int i = 0; i < 16; i++) {
         average += p->original[i];

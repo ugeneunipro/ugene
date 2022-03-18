@@ -37,7 +37,7 @@ namespace U2 {
 /************************************************************************/
 /* SimpleAddToAlignmentTask */
 /************************************************************************/
-SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings)
+SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
     : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE), settings(settings) {
     GCOUNTER(cvar, "SimpleAddToAlignmentTask");
 
@@ -50,31 +50,31 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 void SimpleAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with UGENE started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
-    foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
+    foreach (const U2EntityRef& sequence, settings.addedSequencesRefs) {
         if (hasError() || isCanceled()) {
             return;
         }
-        BestPositionFindTask *findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), settings.referenceRowId);
+        BestPositionFindTask* findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), settings.referenceRowId);
         findTask->setSubtaskProgressWeight(100.0 / settings.addedSequencesRefs.size());
         addSubTask(findTask);
     }
 }
 
-QList<Task *> SimpleAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    BestPositionFindTask *findTask = qobject_cast<BestPositionFindTask *>(subTask);
+QList<Task*> SimpleAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
+    BestPositionFindTask* findTask = qobject_cast<BestPositionFindTask*>(subTask);
     sequencePositions[findTask->getSequenceId()] = findTask->getPosition();
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 Task::ReportResult SimpleAddToAlignmentTask::report() {
     CHECK(!hasError() && !isCanceled(), ReportResult_Finished);
     U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
-    U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
-    int posInMsa = inputMsa->getNumRows();
+    U2MsaDbi* dbi = modStep.getDbi()->getMsaDbi();
+    int posInMsa = inputMsa->getRowCount();
     bool hasDbiUpdates = false;
 
     U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
@@ -88,11 +88,11 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
-    const QList<QList<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
-    for (int i = 0; i < inputMsa->getNumRows(); i++) {
+    const QList<QVector<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
+    for (int i = 0; i < inputMsa->getRowCount(); i++) {
         U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
-        QList<U2MsaGap> modelToChop(msaGapModel[i]);
+        QVector<U2MsaGap> modelToChop(msaGapModel[i]);
         MsaRowUtils::chopGapModel(modelToChop, row.length);
         CHECK_CONTINUE(modelToChop != row.gaps);
 
@@ -102,7 +102,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     }
 
     QStringList unalignedSequences;
-    foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
+    foreach (const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
         U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
@@ -115,7 +115,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
             posInMsa++;
 
             if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-                QList<U2MsaGap> gapModel;
+                QVector<U2MsaGap> gapModel;
                 gapModel << U2MsaGap(0, sequencePositions[seqName]);
                 U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
                 CHECK_OP(stateInfo, ReportResult_Finished);
@@ -149,7 +149,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 /* BestPositionFindTask */
 /************************************************************************/
 
-BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment &alignment, const U2EntityRef &sequenceRef, const QString &sequenceId, int referenceRowId)
+BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
     : Task(tr("Best position find task"), TaskFlag_None), inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
 }
 void BestPositionFindTask::run() {
@@ -165,7 +165,7 @@ void BestPositionFindTask::run() {
         sequence = sequence.toUpper();
     }
     const int aliLen = inputMsa->getLength();
-    const int nSeq = inputMsa->getNumRows();
+    const int nSeq = inputMsa->getRowCount();
 
     int similarity = 0;
 
@@ -184,7 +184,7 @@ void BestPositionFindTask::run() {
         }
     } else {
         int processedRows = 0;
-        foreach (const MultipleSequenceAlignmentRow &row, inputMsa->getMsaRows()) {
+        foreach (const MultipleSequenceAlignmentRow& row, inputMsa->getMsaRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < (aliLen - sequence.length() + 1); p++) {
                 char c = row->charAt(p);
@@ -203,12 +203,12 @@ void BestPositionFindTask::run() {
 int BestPositionFindTask::getPosition() const {
     return bestPosition;
 }
-const QString &BestPositionFindTask::getSequenceId() const {
+const QString& BestPositionFindTask::getSequenceId() const {
     return sequenceId;
 }
 
-AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
-    AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
+AbstractAlignmentTask* SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
+    AlignSequencesToAlignmentTaskSettings* addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
     SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
                nullptr);

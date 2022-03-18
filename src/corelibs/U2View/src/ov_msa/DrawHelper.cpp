@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-DrawHelper::DrawHelper(MaEditor *_editor)
+DrawHelper::DrawHelper(MaEditor* _editor)
     : editor(_editor) {
 }
 
@@ -63,7 +63,7 @@ int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase
     return getVisibleBases(widgetWidth, countFirstClippedBase, countLastClippedBase).length;
 }
 
-QRect DrawHelper::getScreenRect(const QRect &columnsAndRowsRect) const {
+QRect DrawHelper::getScreenRect(const QRect& columnsAndRowsRect) const {
     CHECK(!columnsAndRowsRect.isEmpty(), QRect());
 
     U2Region xRange = editor->getUI()->getBaseWidthController()->getBasesScreenRange(U2Region::fromXRange(columnsAndRowsRect));

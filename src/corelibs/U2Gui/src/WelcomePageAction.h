@@ -28,12 +28,12 @@ namespace U2 {
 
 class U2GUI_EXPORT WelcomePageAction {
 public:
-    WelcomePageAction(const QString &id);
+    WelcomePageAction(const QString& id);
 
     virtual ~WelcomePageAction();
     virtual void perform() = 0;
 
-    const QString &getId() const;
+    const QString& getId() const;
 
 private:
     QString id;

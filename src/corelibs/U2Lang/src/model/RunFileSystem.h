@@ -41,65 +41,65 @@ class U2LANG_EXPORT FSItem {
 
 public:
     FSItem();
-    FSItem(const QString &name, bool isDirectory, FSItem *parent = nullptr);
+    FSItem(const QString& name, bool isDirectory, FSItem* parent = nullptr);
     ~FSItem();
 
-    FSItem *parent() const;
-    QVector<FSItem *> children() const;
-    FSItem *child(int pos) const;
+    FSItem* parent() const;
+    QVector<FSItem*> children() const;
+    FSItem* child(int pos) const;
     int row() const;
 
     bool isDir() const;
     QString name() const;
-    bool contains(const QString &name) const;
+    bool contains(const QString& name) const;
 
-    void rename(const QString &newName);
-    void addChild(FSItem *item);
-    int posToInsert(FSItem *item) const;
-    void removeChild(const QString &name, U2OpStatus &os);
+    void rename(const QString& newName);
+    void addChild(FSItem* item);
+    int posToInsert(FSItem* item) const;
+    void removeChild(const QString& name, U2OpStatus& os);
     void noChildren();
 
-    static FSItem *getItem(const QVector<FSItem *> &items, const QString &name);
+    static FSItem* getItem(const QVector<FSItem*>& items, const QString& name);
 
 private:
-    FSItem *parentItem;
+    FSItem* parentItem;
     QString itemName;
     bool dir;
-    QVector<FSItem *> items;
+    QVector<FSItem*> items;
 };
 
 class U2LANG_EXPORT RunFileSystem : public QObject {
     Q_OBJECT
 public:
-    RunFileSystem(QObject *parent = nullptr);
+    RunFileSystem(QObject* parent = nullptr);
     ~RunFileSystem();
 
-    bool contains(const QString &path);
-    bool canAdd(const QString &path, bool isDirectory);
-    void addItem(const QString &path, bool isDirectory, U2OpStatus &os);
-    void removeItem(const QString &path, U2OpStatus &os);
+    bool contains(const QString& path);
+    bool canAdd(const QString& path, bool isDirectory);
+    void addItem(const QString& path, bool isDirectory, U2OpStatus& os);
+    void removeItem(const QString& path, U2OpStatus& os);
     void reset();
 
-    FSItem *getRoot();
+    FSItem* getRoot();
 
-    void test(const QString &file);
-
-private:
-    FSItem *root;
+    void test(const QString& file);
 
 private:
-    QStringList getPath(const QString &pathStr) const;
-    bool getPath(const QString &pathStr, QStringList &parentPath, QString &name) const;
-    FSItem *find(const QStringList &path, bool &found);
-    FSItem *createPath(const QStringList &path, U2OpStatus &os);
-    QStringList test(FSItem &root);
+    FSItem* root;
+
+private:
+    QStringList getPath(const QString& pathStr) const;
+    bool getPath(const QString& pathStr, QStringList& parentPath, QString& name) const;
+    FSItem* find(const QStringList& path, bool& found);
+    FSItem* createPath(const QStringList& path, U2OpStatus& os);
+    QStringList test(FSItem& root);
 };
 
 class U2LANG_EXPORT RFSUtils {
 public:
-    static void initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actors, SchemaConfig *cfg);
-    static bool isCorrectUrl(const QString &url);
-    static bool isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &dir);
+    static void initRFS(RunFileSystem& rfs, const QList<Workflow::Actor*>& actors, SchemaConfig* cfg);
+    static bool isCorrectUrl(const QString& url);
+    static bool isOutUrlAttribute(Attribute* attr, Workflow::Actor* actor, bool& dir);
 };
 
 }  // namespace U2

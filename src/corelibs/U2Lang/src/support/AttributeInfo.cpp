@@ -31,12 +31,12 @@ const QString AttributeInfo::DEFAULT("default");
 const QString AttributeInfo::DATASETS("datasets");
 const QString AttributeInfo::LABEL("label");
 
-AttributeInfo::AttributeInfo(const QString &_actorId, const QString &_attrId, const QVariantMap &_hints)
+AttributeInfo::AttributeInfo(const QString& _actorId, const QString& _attrId, const QVariantMap& _hints)
     : actorId(_actorId), attrId(_attrId), hints(_hints) {
 }
 
-void AttributeInfo::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
-    Workflow::Actor *actor = WorkflowUtils::actorById(actors, actorId);
+void AttributeInfo::validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const {
+    Workflow::Actor* actor = WorkflowUtils::actorById(actors, actorId);
     if (nullptr == actor) {
         os.setError(QObject::tr("Actor is not found, id: %1").arg(actorId));
         return;
@@ -47,7 +47,7 @@ void AttributeInfo::validate(const QList<Workflow::Actor *> &actors, U2OpStatus 
     }
 }
 
-bool AttributeInfo::operator==(const AttributeInfo &other) const {
+bool AttributeInfo::operator==(const AttributeInfo& other) const {
     return toString() == other.toString();
 }
 
@@ -55,7 +55,7 @@ QString AttributeInfo::toString() const {
     return actorId + ":" + attrId;
 }
 
-AttributeInfo AttributeInfo::fromString(const QString &value, U2OpStatus &os) {
+AttributeInfo AttributeInfo::fromString(const QString& value, U2OpStatus& os) {
     QStringList tokens = value.split(":");
     if (2 != tokens.size()) {
         os.setError("Bad attribute value: " + value);

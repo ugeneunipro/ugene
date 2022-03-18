@@ -45,38 +45,38 @@ class SamReader;
 class ConvertToSQLiteTask : public Task {
     Q_OBJECT
 public:
-    ConvertToSQLiteTask(const GUrl &sourceUrl, const U2DbiRef &dstDbiRef, BAMInfo &bamInfo, bool sam);
+    ConvertToSQLiteTask(const GUrl& sourceUrl, const U2DbiRef& dstDbiRef, BAMInfo& bamInfo, bool sam);
     virtual void run();
 
     GUrl getDestinationUrl() const;
     QList<U2Assembly> getAssemblies() const;
 
 private:
-    bool isSorted(Reader *reader) const;
+    bool isSorted(Reader* reader) const;
 
     qint64 importReads();
     void packReads();
     void updateAttributes();
 
-    qint64 importSortedReads(SamReader *samReader, BamReader *bamReader, Reader *reader, IOAdapter *ioAdapter);
-    qint64 importMappedSortedReads(BamReader *bamReader, Reader *reader, Iterator *iterator, IOAdapter *ioAdapter);
-    qint64 importUnmappedSortedReads(BamReader *bamReader, Reader *reader, QScopedPointer<Iterator> &iterator, IOAdapter *ioAdapter);
+    qint64 importSortedReads(SamReader* samReader, BamReader* bamReader, Reader* reader, IOAdapter* ioAdapter);
+    qint64 importMappedSortedReads(BamReader* bamReader, Reader* reader, Iterator* iterator, IOAdapter* ioAdapter);
+    qint64 importUnmappedSortedReads(BamReader* bamReader, Reader* reader, QScopedPointer<Iterator>& iterator, IOAdapter* ioAdapter);
 
-    qint64 importUnsortedReads(SamReader *samReader, BamReader *bamReader, Reader *reader, QMap<int, U2::U2AssemblyReadsImportInfo> &importInfos);
-    void createAssemblyObjectForUnsortedReads(int referenceId, Reader *reader, QMap<int, U2::U2AssemblyReadsImportInfo> &importInfos);
-    qint64 importReadsSequentially(Iterator *iterator);
-    void flushReads(const QMap<int, QList<U2AssemblyRead>> &reads);
+    qint64 importUnsortedReads(SamReader* samReader, BamReader* bamReader, Reader* reader, QMap<int, U2::U2AssemblyReadsImportInfo>& importInfos);
+    void createAssemblyObjectForUnsortedReads(int referenceId, Reader* reader, QMap<int, U2::U2AssemblyReadsImportInfo>& importInfos);
+    qint64 importReadsSequentially(Iterator* iterator);
+    void flushReads(const QMap<int, QList<U2AssemblyRead>>& reads);
 
-    void updateReferenceLengthAttribute(int length, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
-    void updateReferenceMd5Attribute(const QByteArray &md5, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
-    void updateReferenceSpeciesAttribute(const QByteArray &species, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
-    void updateReferenceUriAttribute(const QString &uri, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
+    void updateReferenceLengthAttribute(int length, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
+    void updateReferenceMd5Attribute(const QByteArray& md5, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
+    void updateReferenceSpeciesAttribute(const QByteArray& species, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
+    void updateReferenceUriAttribute(const QString& uri, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
 
-    void updateImportInfoMaxProwAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
-    void updateImportInfoReadsCountAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
-    void updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi);
+    void updateImportInfoMaxProwAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
+    void updateImportInfoReadsCountAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
+    void updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi);
 
-    IOAdapter *prepareIoAdapter();
+    IOAdapter* prepareIoAdapter();
 
     const GUrl sourceUrl;
     const U2DbiRef dstDbiRef;
@@ -86,7 +86,7 @@ private:
 
     QList<Header::Reference> references;
     QMap<int, U2AssemblyReadsImportInfo> importInfos;
-    QMap<int, AssemblyImporter *> importers;
+    QMap<int, AssemblyImporter*> importers;
     QList<U2Assembly> importedAssemblies;
 };
 
@@ -101,7 +101,7 @@ public:
 
     virtual void skip() = 0;
 
-    virtual const U2AssemblyRead &peek() = 0;
+    virtual const U2AssemblyRead& peek() = 0;
 
     virtual int peekReferenceId() = 0;
 };

@@ -38,7 +38,7 @@ namespace U2 {
 QScopedPointer<UgeneUpdater> UgeneUpdater::instance(nullptr);
 QMutex UgeneUpdater::mutex;
 
-UgeneUpdater *UgeneUpdater::getInstance() {
+UgeneUpdater* UgeneUpdater::getInstance() {
     QMutexLocker lock(&mutex);
     if (nullptr != instance.data()) {
         return instance.data();
@@ -68,7 +68,7 @@ void UgeneUpdater::update() {
         setUpdateOnClose(true);
         emit si_update();
     } else {
-        GUIUtils::runWebBrowser("http://ugene.net/download.html");
+        GUIUtils::runWebBrowser("https://ugene.net/download.html");
     }
 }
 
@@ -80,23 +80,23 @@ bool UgeneUpdater::isUpdateOnClose() const {
     return updateOnClose;
 }
 
-bool UgeneUpdater::isUpdateSkipped(const Version &version) {
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    return settings->isUpdateSkipped(version.text);
+bool UgeneUpdater::isUpdateSkipped(const Version& version) {
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
+    return settings->isUpdateSkipped(version.toString());
 }
 
-void UgeneUpdater::skipUpdate(const Version &version) {
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    settings->skipUpdate(version.text);
+void UgeneUpdater::skipUpdate(const Version& version) {
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
+    settings->skipUpdate(version.toString());
 }
 
 bool UgeneUpdater::isEnabled() {
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
     return settings->updatesEnabled();
 }
 
 void UgeneUpdater::setEnabled(bool value) {
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
     settings->setUpdatesEnabled(value);
 }
 

@@ -50,7 +50,7 @@ const QList<char> ExportCoverageTask::EXTENDED_CHARACTERS = QList<char>() << 'W'
 void GetAssemblyVisibleNameTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = con.dbi->getAssemblyDbi();
     SAFE_POINT_EXT(nullptr != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
 
     const U2Assembly assembly = assemblyDbi->getAssemblyObject(assemblyId, stateInfo);
@@ -58,7 +58,7 @@ void GetAssemblyVisibleNameTask::run() {
     assemblyName = assembly.visualName;
 }
 
-ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags)
+ExportCoverageTask::ExportCoverageTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings, TaskFlags flags)
     : Task(tr("Export assembly coverage per base"), flags),
       dbiRef(dbiRef),
       assemblyId(assemblyId),
@@ -79,13 +79,13 @@ void ExportCoverageTask::prepare() {
 
     QDir().mkpath(QFileInfo(settings.url).absoluteDir().absolutePath());
     if (settings.compress) {
-        IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::GZIPPED_LOCAL_FILE);
+        IOAdapterFactory* ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::GZIPPED_LOCAL_FILE);
         SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(tr("Can't write the compressed file: IOAdapterFactory is NULL")), );
         ioAdapter.reset(ioAdapterFactory->createIOAdapter());
         bool isSuccess = ioAdapter->open(settings.url, IOAdapterMode_Write);
         CHECK_EXT(isSuccess, setError(L10N::errorOpeningFileWrite(settings.url)), );
     } else {
-        IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
         SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(tr("Can't write the file: IOAdapterFactory is NULL")), );
         ioAdapter.reset(ioAdapterFactory->createIOAdapter());
         bool isSuccess = ioAdapter->open(settings.url, IOAdapterMode_Write);
@@ -98,11 +98,11 @@ void ExportCoverageTask::prepare() {
     addSubTask(calculateTask);
 }
 
-QList<Task *> ExportCoverageTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> ExportCoverageTask::onSubTaskFinished(Task* subTask) {
     if (subTask == getAssemblyNameTask) {
         assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 Task::ReportResult ExportCoverageTask::report() {
     if (nullptr != calculateTask) {
@@ -111,13 +111,13 @@ Task::ReportResult ExportCoverageTask::report() {
     return ReportResult_Finished;
 }
 
-const QString &ExportCoverageTask::getUrl() const {
+const QString& ExportCoverageTask::getUrl() const {
     return settings.url;
 }
 
 void ExportCoverageTask::sl_regionIsProcessed(qint64 startPos) {
     if (alreadyProcessed == startPos) {
-        QVector<CoveragePerBaseInfo> *regionCoverage = calculateTask->takeResult(startPos);
+        QVector<CoveragePerBaseInfo>* regionCoverage = calculateTask->takeResult(startPos);
         if (startPos == 0) {
             identifyAlphabet(regionCoverage);
             writeHeader();
@@ -131,9 +131,9 @@ void ExportCoverageTask::sl_regionIsProcessed(qint64 startPos) {
         }
     }
 }
-void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo> *regionCoverage) {
+void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo>* regionCoverage) {
     CHECK(alphabetChars.size() == 4, );
-    foreach (const CoveragePerBaseInfo &info, *regionCoverage) {
+    foreach (const CoveragePerBaseInfo& info, *regionCoverage) {
         QList<char> chars = info.basesCount.keys();
         foreach (char curChar, chars) {
             if (EXTENDED_CHARACTERS.contains(curChar)) {
@@ -147,12 +147,12 @@ void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo> *regionCo
 void ExportCoverageTask::writeHeader() {
 }
 
-void ExportCoverageTask::write(const QByteArray &dataToWrite) {
+void ExportCoverageTask::write(const QByteArray& dataToWrite) {
     qint64 bytesWritten = ioAdapter->writeBlock(dataToWrite);
     CHECK_EXT(bytesWritten == dataToWrite.length(), setError(L10N::errorWritingFile(ioAdapter->getURL())), );
 }
 
-ExportCoverageHistogramTask::ExportCoverageHistogramTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
+ExportCoverageHistogramTask::ExportCoverageHistogramTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings, TaskFlags_FOSE_COSC) {
     GCOUNTER(c, "ExportCoverageHistogramTask");
 }
@@ -160,7 +160,7 @@ ExportCoverageHistogramTask::ExportCoverageHistogramTask(const U2DbiRef &dbiRef,
 void ExportCoverageHistogramTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    U2AttributeDbi *attributeDbi = con.dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = con.dbi->getAttributeDbi();
     SAFE_POINT_EXT(nullptr != attributeDbi, setError(tr("Attribute DBI is NULL")), );
 
     const U2IntegerAttribute lengthAttribute = U2AttributeUtils::findIntegerAttribute(attributeDbi, assemblyId, U2BaseAttributeName::reference_length, stateInfo);
@@ -178,8 +178,8 @@ void ExportCoverageHistogramTask::run() {
     }
 }
 
-void ExportCoverageHistogramTask::processRegion(const QVector<CoveragePerBaseInfo> *regionCoverage) {
-    foreach (const CoveragePerBaseInfo &info, *regionCoverage) {
+void ExportCoverageHistogramTask::processRegion(const QVector<CoveragePerBaseInfo>* regionCoverage) {
+    foreach (const CoveragePerBaseInfo& info, *regionCoverage) {
         histogramData[info.coverage] = histogramData.value(info.coverage, 0) + 1;
         alreadyProcessed++;
     }
@@ -193,12 +193,12 @@ QByteArray ExportCoverageHistogramTask::toByteArray(int coverage, qint64 assembl
            SEPARATOR + QByteArray::number((double)histogramData.value(coverage, 0) / assemblyLength) + "\n";
 }
 
-ExportCoveragePerBaseTask::ExportCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
+ExportCoveragePerBaseTask::ExportCoveragePerBaseTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings) {
     GCOUNTER(c, "ExportCoveragePerBaseTask");
 }
 
-void ExportCoveragePerBaseTask::processRegion(const QVector<CoveragePerBaseInfo> *regionCoverage) {
+void ExportCoveragePerBaseTask::processRegion(const QVector<CoveragePerBaseInfo>* regionCoverage) {
     writeResult(regionCoverage);
 }
 
@@ -218,7 +218,7 @@ void ExportCoveragePerBaseTask::writeHeader() {
     write(comments + "\n");
 }
 
-QByteArray ExportCoveragePerBaseTask::toByteArray(const CoveragePerBaseInfo &info, int pos) const {
+QByteArray ExportCoveragePerBaseTask::toByteArray(const CoveragePerBaseInfo& info, int pos) const {
     QByteArray result = assemblyName.toLocal8Bit() + SEPARATOR + QByteArray::number(pos);
 
     if (settings.exportCoverage) {
@@ -234,10 +234,10 @@ QByteArray ExportCoveragePerBaseTask::toByteArray(const CoveragePerBaseInfo &inf
     return result + "\n";
 }
 
-void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo> *data) {
+void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo>* data) {
     CHECK(nullptr != data, );
 
-    foreach (const CoveragePerBaseInfo &info, *data) {
+    foreach (const CoveragePerBaseInfo& info, *data) {
         alreadyProcessed++;
 
         const bool coverageSatisfy = settings.exportCoverage && (settings.threshold <= info.coverage);
@@ -255,24 +255,24 @@ void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo> *
     }
 }
 
-ExportCoverageBedgraphTask::ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
+ExportCoverageBedgraphTask::ExportCoverageBedgraphTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings),
       currentCoverage(U2Region(), -1) {
     GCOUNTER(c, "ExportCoverageBedgraphTask");
 }
 
-QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *subTask) {
-    CHECK_OP(stateInfo, QList<Task *>());
+QList<Task*> ExportCoverageBedgraphTask::onSubTaskFinished(Task* subTask) {
+    CHECK_OP(stateInfo, QList<Task*>());
     if (subTask == getAssemblyNameTask) {
         assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
     } else {
         writeRegion();
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
-void ExportCoverageBedgraphTask::processRegion(const QVector<CoveragePerBaseInfo> *regionCoverage) {
-    foreach (const CoveragePerBaseInfo &info, *regionCoverage) {
+void ExportCoverageBedgraphTask::processRegion(const QVector<CoveragePerBaseInfo>* regionCoverage) {
+    foreach (const CoveragePerBaseInfo& info, *regionCoverage) {
         if (currentCoverage.second == info.coverage) {
             currentCoverage.first.length++;
         } else {

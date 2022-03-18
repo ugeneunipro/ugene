@@ -35,7 +35,7 @@ class TopHatPrompter : public PrompterBase<TopHatPrompter> {
     Q_OBJECT
 
 public:
-    TopHatPrompter(Actor *parent = 0);
+    TopHatPrompter(Actor* parent = 0);
 
 protected:
     QString composeRichDoc();
@@ -45,18 +45,18 @@ class TopHatWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    TopHatWorker(Actor *actor);
+    TopHatWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
     void sl_topHatTaskFinished();
 
 protected:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
     TopHatInputData data;
     TopHatSettings settings;
 
@@ -72,9 +72,9 @@ private:
     void initPathes();
     void initSamples();
 
-    QList<Actor *> getProducers(const QString &slotId) const;
-    QString getSampleName(const QString &datasetName) const;
-    Task *runTophat();
+    QList<Actor*> getProducers(const QString& slotId) const;
+    QString getSampleName(const QString& datasetName) const;
+    Task* runTophat();
 };
 
 class TopHatWorkerFactory : public DomainFactory {
@@ -84,7 +84,7 @@ public:
     TopHatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *actor) {
+    virtual Worker* createWorker(Actor* actor) {
         return new TopHatWorker(actor);
     }
 
@@ -122,39 +122,39 @@ public:
 
 class InputSlotsValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const;
 };
 
 class BowtieToolsValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const;
 
 private:
-    bool validateSamples(const Actor *actor, NotificationsList &notificationList) const;
+    bool validateSamples(const Actor* actor, NotificationsList& notificationList) const;
 };
 
 class BowtieFilesRelation : public AttributeRelation {
 public:
-    BowtieFilesRelation(const QString &indexNameAttrId);
+    BowtieFilesRelation(const QString& indexNameAttrId);
 
-    QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *depTags) const;
+    QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
     RelationType getType() const;
-    BowtieFilesRelation *clone() const;
+    BowtieFilesRelation* clone() const;
 
-    static QString getBowtie1IndexName(const QString &dir, const QString &fileName);
-    static QString getBowtie2IndexName(const QString &dir, const QString &fileName);
+    static QString getBowtie1IndexName(const QString& dir, const QString& fileName);
+    static QString getBowtie2IndexName(const QString& dir, const QString& fileName);
 };
 
 class BowtieVersionRelation : public AttributeRelation {
 public:
-    BowtieVersionRelation(const QString &bwtVersionAttrId);
+    BowtieVersionRelation(const QString& bwtVersionAttrId);
 
-    QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *depTags) const;
+    QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
     RelationType getType() const;
-    BowtieVersionRelation *clone() const;
+    BowtieVersionRelation* clone() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

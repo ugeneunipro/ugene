@@ -45,22 +45,22 @@ class U2CORE_EXPORT MultipleAlignmentRow {
     friend class MultipleAlignmentData;
 
 protected:
-    MultipleAlignmentRow(MultipleAlignmentRowData *maRowData);
+    MultipleAlignmentRow(MultipleAlignmentRowData* maRowData);
 
 public:
     virtual ~MultipleAlignmentRow() = default;
 
-    MultipleAlignmentRowData *data() const;
+    MultipleAlignmentRowData* data() const;
     template<class Derived>
     inline Derived dynamicCast() const;
     template<class Derived>
-    inline Derived dynamicCast(U2OpStatus &os) const;
+    inline Derived dynamicCast(U2OpStatus& os) const;
 
-    MultipleAlignmentRowData &operator*();
-    const MultipleAlignmentRowData &operator*() const;
+    MultipleAlignmentRowData& operator*();
+    const MultipleAlignmentRowData& operator*() const;
 
-    MultipleAlignmentRowData *operator->();
-    const MultipleAlignmentRowData *operator->() const;
+    MultipleAlignmentRowData* operator->();
+    const MultipleAlignmentRowData* operator->() const;
 
 protected:
     QSharedPointer<MultipleAlignmentRowData> maRowData;
@@ -72,7 +72,7 @@ Derived MultipleAlignmentRow::dynamicCast() const {
 }
 
 template<class Derived>
-Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
+Derived MultipleAlignmentRow::dynamicCast(U2OpStatus& os) const {
     Derived derived(*this);
     if (nullptr == derived.maRowData) {
         assert(false);
@@ -90,8 +90,8 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
-    MultipleAlignmentRowData(const MultipleAlignmentDataType &type);
-    MultipleAlignmentRowData(const MultipleAlignmentDataType &type, const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+    MultipleAlignmentRowData(const MultipleAlignmentDataType& type);
+    MultipleAlignmentRowData(const MultipleAlignmentDataType& type, const DNASequence& sequence, const QVector<U2MsaGap>& gaps);
     virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
@@ -102,21 +102,21 @@ public:
      * Otherwise returns '-1'.
      */
     int getUngappedPosition(int pos) const;
-    U2Region getGapped(const U2Region &region);
+    U2Region getGapped(const U2Region& region);
 
     bool isTrailingOrLeadingGap(qint64 position) const;
 
     U2Region getCoreRegion() const;
-    U2Region getUngappedRegion(const U2Region &gappedRegion) const;
+    U2Region getUngappedRegion(const U2Region& gappedRegion) const;
     DNASequence getUngappedSequence() const;
 
     /** Returns the list of gaps for the row */
-    virtual const QList<U2MsaGap> &getGapModel() const = 0;
-    virtual void removeChars(int pos, int count, U2OpStatus &os) = 0;
+    virtual const QVector<U2MsaGap>& getGaps() const = 0;
+    virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
 
     /** Name of the row, can be empty */
     virtual QString getName() const = 0;
-    virtual void setName(const QString &name) = 0;
+    virtual void setName(const QString& name) = 0;
 
     /** Returns ID of the row in the database. */
     virtual qint64 getRowId() const = 0;
@@ -126,7 +126,7 @@ public:
     virtual bool isGap(qint64 position) const = 0;
     virtual bool isLeadingOrTrailingGap(qint64 position) const = 0;
 
-    virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
+    virtual QByteArray toByteArray(U2OpStatus& os, qint64 length) const = 0;
 
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
     virtual int getCoreStart() const = 0;
@@ -134,7 +134,7 @@ public:
     virtual qint64 getCoreLength() const = 0;
     virtual qint64 getBaseCount(qint64 beforePosition) const = 0;
 
-    virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count) = 0;
+    virtual void crop(U2OpStatus& os, qint64 startPosition, qint64 count) = 0;
 
     virtual bool isDefault() const = 0;
 
@@ -143,28 +143,28 @@ public:
      * Only rows of the same 'MultipleAlignmentDataType' can be equal.
      * For the equality method details see comments for the implementation.
      */
-    virtual bool isEqual(const MultipleAlignmentRowData &other) const = 0;
+    virtual bool isEqual(const MultipleAlignmentRowData& other) const = 0;
 
     /** Calls isEqual() method. */
-    bool operator==(const MultipleAlignmentRowData &other) const;
+    bool operator==(const MultipleAlignmentRowData& other) const;
 
     /** Returns !isEqual() method result. */
-    bool operator!=(const MultipleAlignmentRowData &other) const;
+    bool operator!=(const MultipleAlignmentRowData& other) const;
 
     /* Compares sequences of 2 rows ignoring gaps. */
-    static bool isEqualIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
+    static bool isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2);
 
     /**
      * Compares whole gapped sequences (with inner gaps) but with leading gaps removed.
      * This method method may be overriden to compare other sequence related properties (like chromatogram in MCA).
      */
-    virtual bool isEqualCore(const MultipleAlignmentRowData &other) const;
+    virtual bool isEqualCore(const MultipleAlignmentRowData& other) const;
 
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
 
     /** Returns whole alignment data. */
-    virtual MultipleAlignmentData *getMultipleAlignmentData() const = 0;
+    virtual MultipleAlignmentData* getMultipleAlignmentData() const = 0;
 
     /**
      * Returns true if the row sequence should be read in the reversed direction
@@ -184,29 +184,29 @@ protected:
      * There should be no trailing gaps!
      * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
      */
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
 };
 
 inline int MultipleAlignmentRowData::getUngappedLength() const {
     return sequence.length();
 }
 
-inline bool operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) {
+inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) {
+inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRowData* ptr2) {
     return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator==(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) {
+inline bool operator==(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
     return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) {
+inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) {
+inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRowData* ptr2) {
     return !(ptr1 == ptr2);
 }
-inline bool operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) {
+inline bool operator!=(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);
 }
 

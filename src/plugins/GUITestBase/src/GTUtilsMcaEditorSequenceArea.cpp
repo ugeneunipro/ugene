@@ -53,18 +53,16 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsMcaEditorSequenceArea"
 
 #define GT_METHOD_NAME "getSequenceArea"
-McaEditorSequenceArea *GTUtilsMcaEditorSequenceArea::getSequenceArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
-    McaEditorSequenceArea *result = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area", activeWindow));
-    GT_CHECK_RESULT(nullptr != result, "MsaEditorSequenceArea is not found", nullptr);
-    return result;
+McaEditorSequenceArea* GTUtilsMcaEditorSequenceArea::getSequenceArea(GUITestOpStatus& os) {
+    QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
+    return GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVisibleNames"
-QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
-    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
-    McaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
+QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus& os) {
+    McaEditor* editor = GTUtilsMcaEditor::getEditor(os);
+    McaEditorNameList* nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(nullptr != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
     const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
@@ -79,15 +77,15 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowHeight"
-int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumber) {
-    McaEditorWgt *ui = GTUtilsMcaEditor::getEditorUi(os);
+int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus& os, int rowNumber) {
+    McaEditorWgt* ui = GTUtilsMcaEditor::getEditorUi(os);
     return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickToPosition"
-void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
-    McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
+    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -98,8 +96,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
 
-    BaseWidthController *widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
-    RowHeightController *heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
+    BaseWidthController* widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
+    RowHeightController* heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
     QPoint positionCenter(widthController->getBaseScreenCenter(globalMaPosition.x()),
                           heightController->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -110,8 +108,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToPosition"
-void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
-    McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const QPoint& position) {
+    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -137,8 +135,8 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToBase"
-void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
-    BaseWidthController *widthController = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController();
+void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus& os, int position) {
+    BaseWidthController* widthController = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController();
     int scrollBarValue = widthController->getBaseGlobalRange(position).center() -
                          GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
     GTScrollBar::moveSliderWithMouseToValue(os, GTUtilsMcaEditor::getHorizontalScrollBar(os), scrollBarValue);
@@ -146,14 +144,13 @@ void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int positio
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCollapseTriangle"
-void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QString rowName, bool showChromatogram) {
-    McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK(mcaEditArea != nullptr, "McaEditorSequenceArea not found");
+void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QString rowName, bool showChromatogram) {
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
 
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
-    QWidget *nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
+    QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
+    RowHeightController* rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
     int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
@@ -166,10 +163,9 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isChromatogramShown"
-bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QString rowName) {
+bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus& os, QString rowName) {
     GTThread::waitForMainThread();
-    McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorSequenceArea not found", false);
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
     int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
@@ -179,9 +175,9 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameList"
-QStringList GTUtilsMcaEditorSequenceArea::getNameList(GUITestOpStatus &os) {
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    McaEditor *editor = mw->findChild<McaEditor *>();
+QStringList GTUtilsMcaEditorSequenceArea::getNameList(GUITestOpStatus& os) {
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    McaEditor* editor = mw->findChild<McaEditor*>();
     CHECK_SET_ERR_RESULT(editor != nullptr, "MsaEditor not found", QStringList());
 
     QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
@@ -191,7 +187,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getNameList(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "callContextMenu"
-void GTUtilsMcaEditorSequenceArea::callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords) {
+void GTUtilsMcaEditorSequenceArea::callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords) {
     if (innerCoords.isNull()) {
         GTWidget::click(os, getSequenceArea(os), Qt::RightButton);
     } else {
@@ -202,7 +198,7 @@ void GTUtilsMcaEditorSequenceArea::callContextMenu(GUITestOpStatus &os, const QP
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveTo"
-void GTUtilsMcaEditorSequenceArea::moveTo(GUITestOpStatus &os, const QPoint &p) {
+void GTUtilsMcaEditorSequenceArea::moveTo(GUITestOpStatus& os, const QPoint& p) {
     QPoint convP = convertCoordinates(os, p);
 
     GTMouseDriver::moveTo(convP);
@@ -210,9 +206,9 @@ void GTUtilsMcaEditorSequenceArea::moveTo(GUITestOpStatus &os, const QPoint &p) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "convertCoordinates"
-QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, const QPoint p) {
-    QWidget *activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
-    McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area", activeWindow));
+QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, const QPoint p) {
+    QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", activeWindow);
 
     const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
     const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
@@ -221,9 +217,9 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceReg"
-QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int num, int length) {
-    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
-    MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
+QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus& os, int num, int length) {
+    McaEditor* editor = GTUtilsMcaEditor::getEditor(os);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2OpStatus2Log status;
@@ -235,9 +231,9 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int n
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedReferenceReg"
-QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus &os) {
-    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
-    MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
+QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus& os) {
+    McaEditor* editor = GTUtilsMcaEditor::getEditor(os);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
@@ -252,7 +248,7 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus &o
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveTheBorderBetweenAlignmentAndRead"
-void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift) {
+void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus& os, int shift) {
     QStringList visible = getVisibleNames(os);
     GT_CHECK_RESULT(visible.size() != 0, "No visible reads", );
     QString firstVisible = visible.first();
@@ -267,7 +263,7 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint p) {
+void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus& /*os*/, const QPoint p) {
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
     GTMouseDriver::press(Qt::LeftButton);
@@ -278,17 +274,17 @@ void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus & /*os*/, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedRowsNum"
-U2Region GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus &os) {
-    McaEditor *mcaEditor = GTUtilsMcaEditor::getEditor(os);
+U2Region GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus& os) {
+    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor(os);
     CHECK_SET_ERR_RESULT(mcaEditor != nullptr, "McaEditor not found", U2Region());
 
-    const MaEditorSelection &selection = mcaEditor->getSelection();
+    const MaEditorSelection& selection = mcaEditor->getSelection();
     return U2Region::fromYRange(selection.toRect());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedRowsNames"
-QStringList GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(GUITestOpStatus &os) {
+QStringList GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(GUITestOpStatus& os) {
     U2Region sel = getSelectedRowsNum(os);
     QStringList names = getNameList(os);
 
@@ -302,17 +298,16 @@ QStringList GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(GUITestOpStatus &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedRect"
-QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
-    McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorSequenceArea not found", QRect());
+QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus& os) {
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
 
     return mcaEditArea->getEditor()->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPositionRect"
-QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int rowIndex, int referenceBaseIndex) {
-    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getUI();
+QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus& os, int rowIndex, int referenceBaseIndex) {
+    McaEditorWgt* mcaWidget = getSequenceArea(os)->getEditor()->getUI();
 
     U2Region xRegion = mcaWidget->getBaseWidthController()->getBaseScreenRange(referenceBaseIndex);
     U2Region yRegion = mcaWidget->getRowHeightController()->getScreenYRegionByMaRowIndex(rowIndex);
@@ -325,16 +320,16 @@ QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int row
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickToReferencePositionCenter"
-void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &clickPointAdjustment) {
+void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus& os, qint64 position, const QPoint& clickPointAdjustment) {
     moveCursorToReferencePositionCenter(os, position, clickPointAdjustment);
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveCursorToReferencePositionCenter"
-void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &movePointAdjustment) {
+void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOpStatus& os, qint64 position, const QPoint& movePointAdjustment) {
     QPoint selectedPoint(position, 2);
-    McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(selectedPoint.x())
@@ -344,40 +339,40 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
 
     scrollToPosition(os, selectedPoint);
 
-    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getUI();
+    McaEditorWgt* mcaWidget = mcaSeqArea->getEditor()->getUI();
     int centerX = mcaWidget->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
     int centerY = mcaWidget->getRowHeightController()->getSingleRowHeight() / 2;
     QPoint cursorPosition(centerX + movePointAdjustment.x(), centerY + movePointAdjustment.y());
     GT_CHECK(mcaSeqArea->rect().contains(cursorPosition, false), "Position is not visible");
 
-    QWidget *refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
+    QWidget* refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
     GTMouseDriver::moveTo(refSeqView->mapToGlobal(cursorPosition));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCharacterModificationMode"
-short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus &os) {
-    McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus& os) {
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
     return (short)mcaSeqArea->getMode();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedChar"
-char GTUtilsMcaEditorSequenceArea::getSelectedReadChar(GUITestOpStatus &os) {
+char GTUtilsMcaEditorSequenceArea::getSelectedReadChar(GUITestOpStatus& os) {
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
     GT_CHECK_RESULT(selection.width() > 0 && selection.height() > 0, "There is no selection", U2Mca::INVALID_CHAR);
     GT_CHECK_RESULT(selection.width() <= 1 && selection.height() <= 1, "The selection is too big", U2Mca::INVALID_CHAR);
     int rowNum = selection.y();
     qint64 pos = selection.x();
 
-    McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
 
-    McaEditor *mcaEditor = mcaSeqArea->getEditor();
+    McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Mca::INVALID_CHAR);
 
-    MultipleChromatogramAlignmentObject *mcaObj = mcaEditor->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Mca::INVALID_CHAR);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(rowNum);
@@ -388,17 +383,17 @@ char GTUtilsMcaEditorSequenceArea::getSelectedReadChar(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadCharByPos"
-char GTUtilsMcaEditorSequenceArea::getReadCharByPos(GUITestOpStatus &os, const QPoint p) {
+char GTUtilsMcaEditorSequenceArea::getReadCharByPos(GUITestOpStatus& os, const QPoint p) {
     int rowNum = p.y();
     qint64 pos = p.x();
 
-    McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
 
-    McaEditor *mcaEditor = mcaSeqArea->getEditor();
+    McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", U2Mca::INVALID_CHAR);
 
-    MultipleChromatogramAlignmentObject *mcaObj = mcaEditor->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", U2Mca::INVALID_CHAR);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(rowNum);
@@ -409,14 +404,14 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(GUITestOpStatus &os, const Q
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowLength"
-qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus &os, const int numRow) {
-    McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus& os, const int numRow) {
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", 0);
 
-    McaEditor *mcaEditor = mcaSeqArea->getEditor();
+    McaEditor* mcaEditor = mcaSeqArea->getEditor();
     GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor is not found", 0);
 
-    MultipleChromatogramAlignmentObject *mcaObj = mcaEditor->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(mcaObj != nullptr, "MCA Object is not found", 0);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(numRow);
@@ -427,9 +422,9 @@ qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus &os, const int
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLength"
-qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
-    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
-    MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
+qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus& os) {
+    McaEditor* editor = GTUtilsMcaEditor::getEditor(os);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", 0);
 
     U2OpStatus2Log status;
@@ -440,9 +435,9 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLengthWithGaps"
-qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus &os) {
-    McaEditor *editor = GTUtilsMcaEditor::getEditor(os);
-    MultipleChromatogramAlignmentObject *obj = editor->getMaObject();
+qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus& os) {
+    McaEditor* editor = GTUtilsMcaEditor::getEditor(os);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != nullptr, "MultipleChromatogramAlignmentObject not found", 0);
 
     int length = obj->getReferenceLengthWithGaps();
@@ -452,14 +447,13 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceSelection"
-U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus &os) {
-    McaEditorReferenceArea *mcaEditArea = qobject_cast<McaEditorReferenceArea *>(GTWidget::findWidget(os, "mca_editor_reference_area"));
-    GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorReferenceArea not found", U2Region());
+U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus& os) {
+    auto mcaEditArea = GTWidget::findExactWidget<McaEditorReferenceArea*>(os, "mca_editor_reference_area");
 
-    SequenceObjectContext *seqContext = mcaEditArea->getSequenceContext();
+    SequenceObjectContext* seqContext = mcaEditArea->getSequenceContext();
     GT_CHECK_RESULT(seqContext != nullptr, "SequenceObjectContext not found", U2Region());
 
-    DNASequenceSelection *dnaSel = seqContext->getSequenceSelection();
+    DNASequenceSelection* dnaSel = seqContext->getSequenceSelection();
     GT_CHECK_RESULT(dnaSel != nullptr, "DNASequenceSelection not found", U2Region());
 
     QVector<U2Region> region = dnaSel->getSelectedRegions();
@@ -473,8 +467,8 @@ U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus &os
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedConsensusReg"
-QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(GUITestOpStatus &os) {
-    McaEditorConsensusArea *consArea = GTUtilsMcaEditor::getConsensusArea(os);
+QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(GUITestOpStatus& os) {
+    McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea(os);
     GT_CHECK_RESULT(consArea != nullptr, "Consensus area not found", QString());
 
     QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();
@@ -494,8 +488,8 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(GUITestOpStatus &o
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusStringByPos"
-QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg) {
-    McaEditorConsensusArea *consArea = GTUtilsMcaEditor::getConsensusArea(os);
+QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(GUITestOpStatus& os, const U2Region reg) {
+    McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea(os);
     GT_CHECK_RESULT(consArea != nullptr, "Consensus area not found", QString());
 
     QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();

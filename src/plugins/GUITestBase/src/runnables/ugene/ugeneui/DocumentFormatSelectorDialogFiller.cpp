@@ -34,24 +34,23 @@ namespace U2 {
 #define GT_CLASS_NAME "DocumentFormatSelectorDialogFiller"
 
 #define GT_METHOD_NAME "getButton"
-QRadioButton *DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus &os) {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, GTGlobals::FindOptions(false));
+QRadioButton* DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus& os) {
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    return GTWidget::findRadioButton(os, format, dialog, {false});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "run"
 void DocumentFormatSelectorDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep(500);
 
-    QRadioButton *radio = getButton(os);
+    QRadioButton* radio = getButton(os);
     if (radio != nullptr) {
         if (score != -1) {
             GT_CHECK(formatLineLable != -1, "line is not defined");
 
-            QLabel *label = GTWidget::findExactWidget<QLabel *>(os, QString("label_%1").arg(formatLineLable), dialog);
+            auto label = GTWidget::findLabel(os, QString("label_%1").arg(formatLineLable), dialog);
             QString sign = label->text();
             QRegExp regExp(QString("<b>%1</b> format. Score: (\\d+)").arg(format));
             regExp.indexIn(sign);
@@ -61,11 +60,11 @@ void DocumentFormatSelectorDialogFiller::commonScenario() {
 
         GTRadioButton::click(os, radio);
     } else {
-        QRadioButton *chooseFormatManuallyRadio = GTWidget::findExactWidget<QRadioButton *>(os, "chooseFormatManuallyRadio", dialog);
+        auto chooseFormatManuallyRadio = GTWidget::findRadioButton(os, "chooseFormatManuallyRadio", dialog);
         GTRadioButton::click(os, chooseFormatManuallyRadio);
         GTGlobals::sleep();
 
-        QComboBox *userSelectedFormat = GTWidget::findExactWidget<QComboBox *>(os, "userSelectedFormat", dialog);
+        auto userSelectedFormat = GTWidget::findComboBox(os, "userSelectedFormat", dialog);
         GTComboBox::selectItemByText(os, userSelectedFormat, format, GTGlobals::UseMouse);
     }
 

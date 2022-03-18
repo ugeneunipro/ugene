@@ -50,11 +50,11 @@ MaxInfoStep::MaxInfoStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *MaxInfoStep::createWidget() const {
+TrimmomaticStepSettingsWidget* MaxInfoStep::createWidget() const {
     return new MaxInfoSettingsWidget();
 }
 
-QString MaxInfoStep::serializeState(const QVariantMap &widgetState) const {
+QString MaxInfoStep::serializeState(const QVariantMap& widgetState) const {
     QString serializedState;
     if (widgetState.contains(MaxInfoSettingsWidget::TARGET_LENGTH)) {
         serializedState += QString::number(widgetState.value(MaxInfoSettingsWidget::TARGET_LENGTH).toInt());
@@ -66,7 +66,7 @@ QString MaxInfoStep::serializeState(const QVariantMap &widgetState) const {
     return serializedState;
 }
 
-QVariantMap MaxInfoStep::parseState(const QString &command) const {
+QVariantMap MaxInfoStep::parseState(const QString& command) const {
     QVariantMap state;
     QRegExp regExp(id + ":" + "(\\d*)" + ":" + "((0|1)(\\.|,)\\d*)");
 
@@ -111,7 +111,7 @@ QVariantMap MaxInfoSettingsWidget::getState() const {
     return state;
 }
 
-void MaxInfoSettingsWidget::setState(const QVariantMap &state) {
+void MaxInfoSettingsWidget::setState(const QVariantMap& state) {
     bool contains = state.contains(TARGET_LENGTH);
     bool valid = false;
     const int targetLength = state[TARGET_LENGTH].toInt(&valid);
@@ -130,9 +130,9 @@ MaxInfoStepFactory::MaxInfoStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-MaxInfoStep *MaxInfoStepFactory::createStep() const {
+MaxInfoStep* MaxInfoStepFactory::createStep() const {
     return new MaxInfoStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

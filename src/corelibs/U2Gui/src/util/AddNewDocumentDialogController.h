@@ -29,7 +29,7 @@ namespace U2 {
 
 class U2GUI_EXPORT AddNewDocumentDialogModel {
 public:
-    AddNewDocumentDialogModel(const QString &_url = QString(), const DocumentFormatId &_format = DocumentFormatId())
+    AddNewDocumentDialogModel(const QString& _url = QString(), const DocumentFormatId& _format = DocumentFormatId())
         : url(_url), format(_format), successful(false) {
     }
 
@@ -41,7 +41,7 @@ public:
 
 class U2GUI_EXPORT AddNewDocumentDialogController {
 public:
-    static void run(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c);
+    static void run(QWidget* p, AddNewDocumentDialogModel& m, const DocumentFormatConstraints& c);
 };
 
 }  // namespace U2

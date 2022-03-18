@@ -30,9 +30,12 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
-    RollingMatrix(int _n, int _m)
-        : n(_n), m(_m), column0(0) {
-        data = new int[n * m];
+    RollingMatrix(int _sizeX, int _sizeY)
+        : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
+        // TODO: check memory overflow on the client side!
+        U2_ASSERT(sizeX >= 0 && sizeY >= 0);
+        U2_ASSERT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX);
+        data = new int[sizeX * sizeY];
     }
 
     virtual ~RollingMatrix() {
@@ -55,44 +58,44 @@ public:
 
     void dump() const {
         printf("----------------\n");
-        for (int j = 0; j < m; j++) {
-            for (int i = 0; i < n; i++) {
-                printf("%x ", get(i, j));
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++) {
+                printf("%x ", get(x, y));
             }
             printf("\n");
         }
     }
 
     void shiftColumn() {
-        if (++column0 == n) {
+        if (++column0 == sizeX) {
             column0 = 0;
         }
     }
 
-    static quint64 getMatrixSizeInBytes(const int _n, const int _m) {
-        return _n * _m * sizeof(int);
+    static qint64 getMatrixSizeInBytes(int sizeX, int sizeY) {
+        return (qint64)sizeX * sizeY * (int)sizeof(int);
     }
 
 private:
     int getIdx(int x, int y) const {
-        assert(x >= 0 && y >= 0 && x < n && y < m);
-        return x * m + y;
+        U2_ASSERT(x >= 0 && y >= 0 && x < sizeX && y < sizeY);
+        return x * sizeY + y;
     }
 
     int transposeX(int x) const {
-        assert(x >= 0 && x < n);
-        return (column0 + x) % n;
+        U2_ASSERT(x >= 0 && x < sizeX);
+        return (column0 + x) % sizeX;
     }
 
     int transposeY(int y) const {
-        assert(y >= 0 && y < m);
+        U2_ASSERT(y >= 0 && y < sizeY);
         return y;
     }
 
 protected:
-    int n;
-    int m;
-    int *data;
+    const int sizeX;
+    const int sizeY;
+    int* data = nullptr;
     int column0;
 };
 

@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-CloneObjectTask::CloneObjectTask(GObject *srcObj, Document *dstDoc, const QString &dstFolder)
+CloneObjectTask::CloneObjectTask(GObject* srcObj, Document* dstDoc, const QString& dstFolder)
     : Task(tr("Copy object"), TaskFlag_None),
       srcObj(srcObj),
       dstDoc(dstDoc),
@@ -43,7 +43,7 @@ CloneObjectTask::CloneObjectTask(GObject *srcObj, Document *dstDoc, const QStrin
     tpm = Progress_Manual;
 }
 
-CloneObjectTask::CloneObjectTask(GObject *srcObj, const U2DbiRef &dstDbiRef, const QString &dstFolder)
+CloneObjectTask::CloneObjectTask(GObject* srcObj, const U2DbiRef& dstDbiRef, const QString& dstFolder)
     : Task(tr("Copy object %1").arg(nullptr != srcObj ? srcObj->getGObjectName() : ""), TaskFlag_None),
       srcObj(srcObj),
       dstDbiRef(dstDbiRef),
@@ -71,21 +71,21 @@ void CloneObjectTask::run() {
     dstObj->moveToThread(QCoreApplication::instance()->thread());
 }
 
-GObject *CloneObjectTask::takeResult() {
-    GObject *result = dstObj;
+GObject* CloneObjectTask::takeResult() {
+    GObject* result = dstObj;
     dstObj = nullptr;
     return result;
 }
 
-const QString &CloneObjectTask::getFolder() const {
+const QString& CloneObjectTask::getFolder() const {
     return dstFolder;
 }
 
-GObject *CloneObjectTask::getSourceObject() const {
+GObject* CloneObjectTask::getSourceObject() const {
     return srcObj.data();
 }
 
-Document *CloneObjectTask::getDocument() const {
+Document* CloneObjectTask::getDocument() const {
     return dstDoc.data();
 }
 

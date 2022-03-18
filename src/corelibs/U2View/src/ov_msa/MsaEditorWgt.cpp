@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor *editor)
+MsaEditorWgt::MsaEditorWgt(MSAEditor* editor)
     : MaEditorWgt(editor),
       multiTreeViewer(nullptr),
       similarityStatistics(nullptr) {
@@ -45,12 +45,12 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor)
     initWidgets();
 }
 
-MSAEditor *MsaEditorWgt::getEditor() const {
-    return qobject_cast<MSAEditor *>(editor);
+MSAEditor* MsaEditorWgt::getEditor() const {
+    return qobject_cast<MSAEditor*>(editor);
 }
 
-MSAEditorSequenceArea *MsaEditorWgt::getSequenceArea() const {
-    return qobject_cast<MSAEditorSequenceArea *>(sequenceArea);
+MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
+    return qobject_cast<MSAEditorSequenceArea*>(sequenceArea);
 }
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
@@ -61,19 +61,20 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     }
 }
 
-void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix *matrix) {
+void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
     dataList->setMatrix(matrix);
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    MsaEditorAlignmentDependentWidget *statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
+    MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
 
     MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, statisticsWidget, 0.04, nameAreaContainer, 1);
 }
 
-void MsaEditorWgt::addTreeView(GObjectViewWindow *treeView) {
+void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
     if (multiTreeViewer == nullptr) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
         MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, multiTreeViewer, 0.41, nameAreaContainer);  // Tree will occupy 41% of the current view.
         multiTreeViewer->addTreeView(treeView);
+        multiTreeViewer->setMinimumWidth(250);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
     } else {
@@ -81,7 +82,7 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow *treeView) {
     }
 }
 
-void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings *settings) {
+void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
     similarityStatistics->setSettings(settings);
 }
 
@@ -113,11 +114,11 @@ void MsaEditorWgt::hideSimilarity() {
     }
 }
 
-const MsaEditorAlignmentDependentWidget *MsaEditorWgt::getSimilarityWidget() {
+const MsaEditorAlignmentDependentWidget* MsaEditorWgt::getSimilarityWidget() {
     return similarityStatistics;
 }
 
-void MsaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {
+void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
@@ -125,7 +126,7 @@ void MsaEditorWgt::initOverviewArea() {
     overviewArea = new MSAEditorOverviewArea(this);
 }
 
-void MsaEditorWgt::initNameList(QScrollBar *nhBar) {
+void MsaEditorWgt::initNameList(QScrollBar* nhBar) {
     nameList = new MsaEditorNameList(this, nhBar);
 }
 
@@ -137,18 +138,18 @@ void MsaEditorWgt::initStatusBar() {
     statusBar = new MsaEditorStatusBar(getEditor());
 }
 
-MSAEditorTreeViewer *MsaEditorWgt::getCurrentTree() const {
+MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
     if (nullptr == multiTreeViewer) {
         return nullptr;
     }
-    GObjectViewWindow *page = qobject_cast<GObjectViewWindow *>(multiTreeViewer->getCurrentWidget());
+    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
     if (nullptr == page) {
         return nullptr;
     }
-    return qobject_cast<MSAEditorTreeViewer *>(page->getObjectView());
+    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
 }
 
-MSAEditorMultiTreeViewer *MsaEditorWgt::getMultiTreeViewer() {
+MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() {
     return multiTreeViewer;
 }
 

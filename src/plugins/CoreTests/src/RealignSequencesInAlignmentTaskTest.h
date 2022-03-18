@@ -45,15 +45,15 @@ public:
 
 private:
     QString inputObjectName;
-    MultipleSequenceAlignmentObject *msaObj = nullptr;
+    MultipleSequenceAlignmentObject* msaObj = nullptr;
     QList<int> rowsIndexesToAlign;
-    Document *doc = nullptr;
-    RealignSequencesInAlignmentTask *realignTask = nullptr;
+    Document* doc = nullptr;
+    RealignSequencesInAlignmentTask* realignTask = nullptr;
 };
 
 class RealignTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

@@ -28,19 +28,19 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false) {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_resetMap()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_resetMap()));
 }
 
-void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeConservation::process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const {
     if (!msaCharCountMap.contains(refCharColumn)) {
         calculateStatisticForColumn(refCharColumn);
     }
 
-    int neededThr = (int)((float)(threshold * maObj->getNumRows()) / 100.0 + 0.5);
+    int neededThr = (int)((float)(threshold * maObj->getRowCount()) / 100.0 + 0.5);
     if (lessThenThreshold) {
         highlight = (msaCharCountMap[refCharColumn][seqChar] <= neededThr);
     } else {
@@ -52,7 +52,7 @@ void MsaHighlightingSchemeConservation::process(const char refChar, char &seqCha
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-void MsaHighlightingSchemeConservation::applySettings(const QVariantMap &settings) {
+void MsaHighlightingSchemeConservation::applySettings(const QVariantMap& settings) {
     QVariant thresholdQVar = settings.value(THRESHOLD_PARAMETER_NAME);
     if (!thresholdQVar.isNull()) {
         bool ok;
@@ -78,7 +78,7 @@ void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharC
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
     const MultipleAlignment ma = maObj->getMultipleAlignment();
-    for (int row = ma->getNumRows() - 1; row >= 0; row--) {
+    for (int row = ma->getRowCount() - 1; row >= 0; row--) {
         char seqChar = ma->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
             columnStatistic[seqChar] += 1;
@@ -89,11 +89,11 @@ void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharC
     msaCharCountMap[refCharColumn] = columnStatistic;
 }
 
-MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true, true) {
 }
 
-MsaHighlightingScheme *MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeConservationFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

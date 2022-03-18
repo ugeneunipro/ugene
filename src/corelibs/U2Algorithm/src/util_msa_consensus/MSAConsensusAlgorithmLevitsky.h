@@ -35,9 +35,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryLevitsky(QObject *p = nullptr);
+    MSAConsensusAlgorithmFactoryLevitsky(QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -67,11 +67,11 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky *f, const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *p = nullptr);
+    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
 
-    virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual MSAConsensusAlgorithmLevitsky *clone() const;
+    virtual MSAConsensusAlgorithmLevitsky* clone() const;
 
 private:
     QVarLengthArray<int> globalFreqs;

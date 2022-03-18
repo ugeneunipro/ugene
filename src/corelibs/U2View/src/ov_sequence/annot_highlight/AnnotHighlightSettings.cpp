@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-AnnotHighlightSettingsWidget::AnnotHighlightSettingsWidget(QWidget *parent) {
+AnnotHighlightSettingsWidget::AnnotHighlightSettingsWidget(QWidget* parent) {
     Q_UNUSED(parent);
     setupUi(this);
 
@@ -41,10 +41,10 @@ AnnotHighlightSettingsWidget::AnnotHighlightSettingsWidget(QWidget *parent) {
     connect(checkShowHideAnnots, SIGNAL(stateChanged(int)), SLOT(sl_onShowHideChanged(int)));
     connect(checkShowOnTranslation, SIGNAL(stateChanged(int)), SLOT(sl_onShowOnTranslationChanged(int)));
     connect(checkVisualQualifier, SIGNAL(stateChanged(int)), SLOT(sl_onShowQualifierChanged(int)));
-    connect(editQualifiers, SIGNAL(textChanged(const QString &)), SLOT(sl_onEditQualifiersChanged(const QString &)));
+    connect(editQualifiers, SIGNAL(textChanged(const QString&)), SLOT(sl_onEditQualifiersChanged(const QString&)));
 }
 
-void AnnotHighlightSettingsWidget::setSettings(AnnotationSettings *annotSettings, bool disableShowTranslations) {
+void AnnotHighlightSettingsWidget::setSettings(AnnotationSettings* annotSettings, bool disableShowTranslations) {
     SAFE_POINT(0 != annotSettings, "Annotation settings equals to NULL!", );
 
     currentSettings = annotSettings;
@@ -78,7 +78,7 @@ void AnnotHighlightSettingsWidget::sl_onShowQualifierChanged(int checkedState) {
     emit si_annotSettingsChanged(currentSettings);
 }
 
-void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString &inputNameQuals) {
+void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inputNameQuals) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
     QStringList qualifierNames = inputNameQuals.split(',', QString::SkipEmptyParts);
 

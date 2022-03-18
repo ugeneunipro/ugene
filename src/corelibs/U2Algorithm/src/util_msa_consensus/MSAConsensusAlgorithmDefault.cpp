@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault(QObject *p)
+MSAConsensusAlgorithmFactoryDefault::MSAConsensusAlgorithmFactoryDefault(QObject* p)
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO, ConsensusAlgorithmFlags_NuclAmino | ConsensusAlgorithmFlag_SupportThreshold, p) {
 }
 
@@ -39,24 +39,24 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
     return tr("Default");
 }
 
-MSAConsensusAlgorithm *MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment &, bool ignoreTrailingLeadingGaps, QObject *p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
     return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
 }
 
-U2::MSAConsensusAlgorithmDefault *MSAConsensusAlgorithmDefault::clone() const {
+U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
     return new MSAConsensusAlgorithmDefault(*this);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment &msa, int pos, int &cnt, QVector<int> seqIdx) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
 
     // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
     int ch = U2Msa::GAP_CHAR;
-    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
                                      pos);

@@ -31,11 +31,11 @@ public:
     TrimmomaticLogParser();
 
 private:
-    bool isError(const QString &line) const;
+    bool isError(const QString& line) const;
 
     static const QStringList wellKnownErrors;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_LOG_PARSER_H_
+#endif  // _U2_TRIMMOMATIC_LOG_PARSER_H_

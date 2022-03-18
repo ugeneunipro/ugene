@@ -98,8 +98,8 @@ namespace U2 {
 static void setDataSearchPaths() {
     // set search paths for data files
     QStringList dataSearchPaths;
-    const char *relativeDataDir = "/data";
-    const char *relativeDevDataDir = "/../../data";
+    const char* relativeDataDir = "/data";
+    const char* relativeDevDataDir = "/../../data";
 
     if (QDir(AppContext::getWorkingDirectoryPath() + relativeDataDir).exists()) {
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDataDir);
@@ -127,7 +127,7 @@ static void setSearchPaths() {
     setDataSearchPaths();
 }
 
-UgeneContextWrapper::UgeneContextWrapper(const QString &workingDirectoryPath)
+UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
     : app(ARGC, nullptr) {
     if (!Version::checkBuildAndRuntimeVersions()) {
         return;
@@ -414,11 +414,11 @@ UgeneContextWrapper::~UgeneContextWrapper() {
     delete alignmentAlgorithmRegistry;
 }
 
-int UgeneContextWrapper::processTask(Task *task) {
+int UgeneContextWrapper::processTask(Task* task) {
     coreLog.info(QObject::tr("%1-bit version of UGENE started")
                      .arg(Version::appArchitecture));
     ts->registerTopLevelTask(task);
-    QObject::connect(ts, SIGNAL(si_topLevelTaskUnregistered(Task *)), &app, SLOT(quit()));
+    QObject::connect(ts, SIGNAL(si_topLevelTaskUnregistered(Task*)), &app, SLOT(quit()));
     return app.exec();
 }
 

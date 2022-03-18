@@ -43,32 +43,32 @@ public:
     virtual ~AppSettings() {
     }
 
-    NetworkConfiguration *getNetworkConfiguration() const {
+    NetworkConfiguration* getNetworkConfiguration() const {
         return nc;
     }
 
-    UserAppsSettings *getUserAppsSettings() const {
+    UserAppsSettings* getUserAppsSettings() const {
         return userAppsSettings;
     }
 
-    AppResourcePool *getAppResourcePool() const {
+    AppResourcePool* getAppResourcePool() const {
         return ri;
     }
 
-    TestRunnerSettings *getTestRunnerSettings() const {
+    TestRunnerSettings* getTestRunnerSettings() const {
         return trs;
     }
 
-    FormatAppsSettings *getFormatAppsSettings() const {
+    FormatAppsSettings* getFormatAppsSettings() const {
         return formatSettings;
     }
 
 protected:
-    NetworkConfiguration *nc;
-    UserAppsSettings *userAppsSettings;
-    AppResourcePool *ri;
-    TestRunnerSettings *trs;
-    FormatAppsSettings *formatSettings;
+    NetworkConfiguration* nc;
+    UserAppsSettings* userAppsSettings;
+    AppResourcePool* ri;
+    TestRunnerSettings* trs;
+    FormatAppsSettings* formatSettings;
 };
 
 }  // namespace U2

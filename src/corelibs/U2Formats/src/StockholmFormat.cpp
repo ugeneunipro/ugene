@@ -84,7 +84,7 @@ enum AnnotationType {
 
 /** Internal representation of the annotation used internally during parsing. */
 struct StockholmAnnotation {
-    StockholmAnnotation(const AnnotationType &_type, const AnnotationTag &_tag, const QString &_value)
+    StockholmAnnotation(const AnnotationType& _type, const AnnotationTag& _tag, const QString& _value)
         : type(_type), tag(_tag), value(_value) {
     }
     const AnnotationType type;
@@ -98,7 +98,7 @@ struct StockholmAnnotation {
  */
 class AnnotationBank {
 public:
-    void add(StockholmAnnotation *newAnnotation) {
+    void add(StockholmAnnotation* newAnnotation) {
         CHECK(newAnnotation != nullptr, );
         if (newAnnotation->type == COLUMN_ANNOTATION && (newAnnotation->tag == SS_CONS || newAnnotation->tag == RF)) {
             auto existingAnnotation = findAnnotation(COLUMN_ANNOTATION, newAnnotation->tag);
@@ -112,8 +112,8 @@ public:
     }
 
     /** Finds annotations by the type & tag pair. */
-    StockholmAnnotation *findAnnotation(const AnnotationType &type, const AnnotationTag &tag = NO_TAG) const {
-        for (StockholmAnnotation *annotation : qAsConst(annotationsList.qlist)) {
+    StockholmAnnotation* findAnnotation(const AnnotationType& type, const AnnotationTag& tag = NO_TAG) const {
+        for (StockholmAnnotation* annotation : qAsConst(annotationsList.qlist)) {
             if (annotation->type == type && (annotation->tag == tag || tag == NO_TAG)) {
                 return annotation;
             }
@@ -124,7 +124,7 @@ public:
     /** Returns map of annotation values by name. */
     QHash<QString, QString> createValueByNameMap() const {
         QHash<QString, QString> valueByName;
-        for (StockholmAnnotation *annotation : qAsConst(annotationsList.qlist)) {
+        for (StockholmAnnotation* annotation : qAsConst(annotationsList.qlist)) {
             QString name = getGenbankAnnotationName(annotation);
             valueByName[name] = annotation->value;
         }
@@ -132,7 +132,7 @@ public:
     }
 
     /** Derives Genbank annotation name from the given Stockholm annotation. */
-    static QString getGenbankAnnotationName(StockholmAnnotation *annotation) {
+    static QString getGenbankAnnotationName(StockholmAnnotation* annotation) {
         switch (annotation->type) {
             case UNI_ANNOTATION:
                 return StockholmFormat::UNI_ANNOTATION_MARK;
@@ -176,7 +176,7 @@ private:
 };  // AnnotationBank
 
 /** Parses annotation from the given line. Returns nullptr if annotation can't be parsed. */
-static StockholmAnnotation *parseAnnotation(const QString &lineText) {
+static StockholmAnnotation* parseAnnotation(const QString& lineText) {
     QString line = lineText.trimmed();
 
     if (line.startsWith(StockholmFormat::FILE_ANNOTATION_ID)) {
@@ -210,19 +210,19 @@ static StockholmAnnotation *parseAnnotation(const QString &lineText) {
 }
 
 /** Returns MSA object name using ID annotation value or returns an empty string if no ID annotation has been found. */
-static QString getMsaNameFromFileAnnotation(const AnnotationBank &annotationBank) {
+static QString getMsaNameFromFileAnnotation(const AnnotationBank& annotationBank) {
     auto annotation = annotationBank.findAnnotation(FILE_ANNOTATION, ID);
     return annotation == nullptr ? "" : annotation->value;
 }
 
 /** Returns 'true' if the file was created by UGENE: the annotations list has an annotation with a special UGENE mark. */
-static bool hasCreatedByUGENEMarker(const AnnotationBank &annotationBank) {
+static bool hasCreatedByUGENEMarker(const AnnotationBank& annotationBank) {
     auto annotation = annotationBank.findAnnotation(UNI_ANNOTATION);
     return annotation != nullptr && annotation->value == StockholmFormat::UNI_ANNOTATION_MARK;
 }
 
 /** Skips comment of markup blocks. Returns true if the whole line was skipped. */
-static bool skipCommentOrMarkup(IOAdapterReader &reader, U2OpStatus &os, AnnotationBank &annotationBank) {
+static bool skipCommentOrMarkup(IOAdapterReader& reader, U2OpStatus& os, AnnotationBank& annotationBank) {
     CHECK(!reader.atEnd(), false);
     QString firstChar;
     reader.read(os, firstChar, 1);
@@ -238,7 +238,7 @@ static bool skipCommentOrMarkup(IOAdapterReader &reader, U2OpStatus &os, Annotat
 }
 
 /** Skips blank lines in the input. Returns number of lines skipped. */
-static int skipBlankLines(IOAdapterReader &reader, U2OpStatus &os) {
+static int skipBlankLines(IOAdapterReader& reader, U2OpStatus& os) {
     int lineCount = 0;
     while (!reader.atEnd()) {
         QString line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
@@ -253,7 +253,7 @@ static int skipBlankLines(IOAdapterReader &reader, U2OpStatus &os) {
 }
 
 /** Skips all comments and unsupported markup tokens. */
-static void skipCommentsAndBlankLines(IOAdapterReader &reader, U2OpStatus &os, AnnotationBank &annotationBank) {
+static void skipCommentsAndBlankLines(IOAdapterReader& reader, U2OpStatus& os, AnnotationBank& annotationBank) {
     QString ch;
     while (!reader.atEnd()) {
         reader.read(os, ch, 1);
@@ -280,7 +280,7 @@ static void skipCommentsAndBlankLines(IOAdapterReader &reader, U2OpStatus &os, A
  * Returns true if the next line in the input is a Stockholm's end-of-msa marker line.
  * Does not advance reader position.
  */
-static bool isEndOfMsaLine(IOAdapterReader &reader, U2OpStatus &os) {
+static bool isEndOfMsaLine(IOAdapterReader& reader, U2OpStatus& os) {
     CHECK(!reader.atEnd(), false);
 
     QString line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
@@ -296,20 +296,20 @@ static bool isEndOfMsaLine(IOAdapterReader &reader, U2OpStatus &os) {
  * Returns true if the reader is at the end position of the MSA object: >1 of blank lines or 'end of MSA' line.
  * Advances reader to the first non-blank line in the input (may be 'end of MSA' line).
  */
-static bool isEndOfMsaBlock(IOAdapterReader &reader, U2OpStatus &os) {
+static bool isEndOfMsaBlock(IOAdapterReader& reader, U2OpStatus& os) {
     int lineCount = skipBlankLines(reader, os);
     CHECK_OP(os, false);
     return lineCount > 0 || isEndOfMsaLine(reader, os);
 }
 
 /** Returns true if there is a row in the 'msa' with the given name. */
-static bool hasRowWithName(const MultipleSequenceAlignment &msa, const QString &name) {
-    const QList<MultipleAlignmentRow> &rows = msa->getRows();
-    return std::any_of(rows.begin(), rows.end(), [name](auto &row) { return row->getName() == name; });
+static bool hasRowWithName(const MultipleSequenceAlignment& msa, const QString& name) {
+    const QList<MultipleAlignmentRow>& rows = msa->getRows();
+    return std::any_of(rows.begin(), rows.end(), [name](auto& row) { return row->getName() == name; });
 }
 
 /** Loads a single MSA object data and related annotations. */
-static void loadOneMsa(IOAdapterReader &reader, U2OpStatus &os, MultipleSequenceAlignment &msa, AnnotationBank &annotationBank) {
+static void loadOneMsa(IOAdapterReader& reader, U2OpStatus& os, MultipleSequenceAlignment& msa, AnnotationBank& annotationBank) {
     skipBlankLines(reader, os);
     CHECK_OP(os, );
 
@@ -389,16 +389,16 @@ static void loadOneMsa(IOAdapterReader &reader, U2OpStatus &os, MultipleSequence
     skipBlankLines(reader, os);
     CHECK_OP(os, );
 
-    CHECK_EXT(msa->getNumRows() > 0, os.setError(StockholmFormat::tr("invalid file: empty sequence alignment")), );
+    CHECK_EXT(msa->getRowCount() > 0, os.setError(StockholmFormat::tr("invalid file: empty sequence alignment")), );
 
     U2AlphabetUtils::assignAlphabet(msa);
     CHECK_EXT(msa->getAlphabet() != nullptr, os.setError(StockholmFormat::tr("invalid file: unknown alphabet")), )
 }
 
-static void setMsaInfoCutoffs(QVariantMap &info,
-                              const QString &string,
-                              const MultipleAlignmentInfo::Cutoffs &cof1,
-                              const MultipleAlignmentInfo::Cutoffs &cof2) {
+static void setMsaInfoCutoffs(QVariantMap& info,
+                              const QString& string,
+                              const MultipleAlignmentInfo::Cutoffs& cof1,
+                              const MultipleAlignmentInfo::Cutoffs& cof2) {
     QByteArray str = string.toLatin1();
     QTextStream txtStream(str);
     float val1 = .0f;
@@ -408,7 +408,7 @@ static void setMsaInfoCutoffs(QVariantMap &info,
     MultipleAlignmentInfo::setCutoff(info, cof2, val2);
 }
 
-static void setMsaInfo(const QHash<QString, QString> &annMap, MultipleSequenceAlignment &ma) {
+static void setMsaInfo(const QHash<QString, QString>& annMap, MultipleSequenceAlignment& ma) {
     QVariantMap info = ma->getInfo();
 
     if (annMap.contains(StockholmFormat::FILE_ANNOTATION_AC)) {
@@ -436,7 +436,7 @@ static void setMsaInfo(const QHash<QString, QString> &annMap, MultipleSequenceAl
 }
 
 /** Loads list of MSA objects from the given 'reader'. Adds all loaded objects into the 'objectList'. */
-static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objectList, const QVariantMap &hints, U2OpStatus &os, bool &isCreatedByUGENE) {
+static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objectList, const QVariantMap& hints, U2OpStatus& os, bool& isCreatedByUGENE) {
     QSet<QString> objectNameList;
     QString baseFileName = reader.getURL().baseFileName();
     while (!reader.atEnd()) {
@@ -464,15 +464,15 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject 
 }
 
 /** Returns maximum row name length in the msa. */
-static int getMaxNameLen(const MultipleSequenceAlignment &msa) {
-    const QList<MultipleAlignmentRow> &rows = msa->getRows();
+static int getMaxNameLen(const MultipleSequenceAlignment& msa) {
+    const QList<MultipleAlignmentRow>& rows = msa->getRows();
     CHECK(rows.isEmpty(), 0);
-    auto it = std::max_element(rows.begin(), rows.end(), [](auto &r1, auto &r2) { return r1->getName().length() < r2->getName().length(); });
+    auto it = std::max_element(rows.begin(), rows.end(), [](auto& r1, auto& r2) { return r1->getName().length() < r2->getName().length(); });
     return (*it)->getName().length();
 }
 
 /** Saves all objects in 'msa' into the 'writer' stream. */
-static void save(IOAdapterWriter &writer, const MultipleSequenceAlignment &msa, const QString &name, U2OpStatus &os) {
+static void save(IOAdapterWriter& writer, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus& os) {
     writer.write(os, HEADER);
     CHECK_OP(os, );
 
@@ -487,7 +487,7 @@ static void save(IOAdapterWriter &writer, const MultipleSequenceAlignment &msa, 
     int maxNameLength = getMaxNameLen(msa);
     int remainingSequenceLength = msa->getLength();
     MultipleSequenceAlignmentWalker walker(msa);
-    const QList<MultipleAlignmentRow> &rows = msa->getRows();
+    const QList<MultipleAlignmentRow>& rows = msa->getRows();
     while (remainingSequenceLength > 0) {
         // Write a block.
         int blockLength = qMin(remainingSequenceLength, WRITE_BLOCK_LENGTH);
@@ -495,7 +495,7 @@ static void save(IOAdapterWriter &writer, const MultipleSequenceAlignment &msa, 
         CHECK_OP(os, );
         SAFE_POINT(sequences.size() == rows.size(), "Sequences and rows counts do not match!", );
         for (int i = 0; i < rows.size(); i++) {
-            const MultipleAlignmentRow &row = rows[i];
+            const MultipleAlignmentRow& row = rows[i];
             QByteArray safeRowName = row->getName().toLatin1();
             TextUtils::replace(safeRowName.data(), safeRowName.length(), TextUtils::WHITES, '_');
             writer.write(os, safeRowName);
@@ -515,7 +515,7 @@ static void save(IOAdapterWriter &writer, const MultipleSequenceAlignment &msa, 
     writer.write(os, END_OF_MSA_OBJECT_TOKEN + "\n");
 }
 
-StockholmFormat::StockholmFormat(QObject *obj)
+StockholmFormat::StockholmFormat(QObject* obj)
     : TextDocumentFormat(obj,
                          BaseDocumentFormats::STOCKHOLM,
                          DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE,
@@ -525,8 +525,8 @@ StockholmFormat::StockholmFormat(QObject *obj)
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-Document *StockholmFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    QList<GObject *> objects;
+Document* StockholmFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    QList<GObject*> objects;
     bool isCreatedByUGENE = false;
     load(reader, dbiRef, objects, hints, os, isCreatedByUGENE);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
@@ -536,21 +536,21 @@ Document *StockholmFormat::loadTextDocument(IOAdapterReader &reader, const U2Dbi
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints, lockReason);
 }
 
-void StockholmFormat::storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) {
-    QList<GObject *> objects = doc->getObjects();
-    for (GObject *obj : qAsConst(objects)) {
-        auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject *>(obj);
+void StockholmFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) {
+    QList<GObject*> objects = doc->getObjects();
+    for (GObject* obj : qAsConst(objects)) {
+        auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
         SAFE_POINT_EXT(alnObj != nullptr, os.setError(tr("Not an alignment object: ") + obj->getGObjectName()), );
         save(writer, alnObj->getMultipleAlignment(), alnObj->getGObjectName(), os);
         CHECK_OP(os, );
     }
 }
 
-FormatCheckResult StockholmFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+FormatCheckResult StockholmFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     return dataPrefix.startsWith(HEADER_PREFIX) ? FormatDetection_VeryHighSimilarity : FormatDetection_NotMatched;
 }
 
-bool StockholmFormat::isObjectOpSupported(const Document *, DocObjectOp, GObjectType type) const {
+bool StockholmFormat::isObjectOpSupported(const Document*, DocObjectOp, GObjectType type) const {
     return type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 

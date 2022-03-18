@@ -30,7 +30,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTLineEdit"
 
 #define GT_METHOD_NAME "setText"
-void GTLineEdit::setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &text, bool noCheck /* = false*/, bool useCopyPaste) {
+void GTLineEdit::setText(GUITestOpStatus& os, QLineEdit* lineEdit, const QString& text, bool noCheck /* = false*/, bool useCopyPaste) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
     if (lineEdit->text() == text) {
@@ -64,26 +64,26 @@ void GTLineEdit::setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setText"
-void GTLineEdit::setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget *parent, bool noCheck, bool useCopyPaste) {
+void GTLineEdit::setText(GUITestOpStatus& os, const QString& lineEditName, const QString& text, QWidget* parent, bool noCheck, bool useCopyPaste) {
     setText(os, GTWidget::findLineEdit(os, lineEditName, parent), text, noCheck, useCopyPaste);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getText"
-QString GTLineEdit::getText(GUITestOpStatus &os, QLineEdit *lineEdit) {
+QString GTLineEdit::getText(GUITestOpStatus& os, QLineEdit* lineEdit) {
     GT_CHECK_RESULT(lineEdit != nullptr, "lineEdit is NULL", "");
     return lineEdit->text();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getText"
-QString GTLineEdit::getText(GUITestOpStatus &os, const QString &lineEditName, QWidget *parent) {
+QString GTLineEdit::getText(GUITestOpStatus& os, const QString& lineEditName, QWidget* parent) {
     return getText(os, GTWidget::findLineEdit(os, lineEditName, parent));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clear"
-void GTLineEdit::clear(GUITestOpStatus &os, QLineEdit *lineEdit) {
+void GTLineEdit::clear(GUITestOpStatus& os, QLineEdit* lineEdit) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
 
@@ -106,7 +106,7 @@ void GTLineEdit::clear(GUITestOpStatus &os, QLineEdit *lineEdit) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "pasteClipboard"
-void GTLineEdit::pasteClipboard(GUITestOpStatus &os, QLineEdit *lineEdit, PasteMethod pasteMethod) {
+void GTLineEdit::pasteClipboard(GUITestOpStatus& os, QLineEdit* lineEdit, PasteMethod pasteMethod) {
     clear(os, lineEdit);
     switch (pasteMethod) {
         case Mouse:
@@ -124,27 +124,27 @@ void GTLineEdit::pasteClipboard(GUITestOpStatus &os, QLineEdit *lineEdit, PasteM
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkText"
-void GTLineEdit::checkText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &expectedText) {
+void GTLineEdit::checkText(GUITestOpStatus& os, QLineEdit* lineEdit, const QString& expectedText) {
     GT_CHECK(lineEdit != nullptr, "Line edit is NULL");
     GT_CHECK(expectedText == lineEdit->text(), QString("The text differs: expect '%1', got '%2'").arg(expectedText).arg(lineEdit->text()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkText"
-void GTLineEdit::checkText(GUITestOpStatus &os, const QString &lineEditName, QWidget *parent, const QString &expectedText) {
+void GTLineEdit::checkText(GUITestOpStatus& os, const QString& lineEditName, QWidget* parent, const QString& expectedText) {
     checkText(os, GTWidget::findLineEdit(os, lineEditName, parent), expectedText);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "copyText"
-QString GTLineEdit::copyText(GUITestOpStatus &os, QLineEdit *lineEdit) {
+QString GTLineEdit::copyText(GUITestOpStatus& os, QLineEdit* lineEdit) {
     GT_CHECK_RESULT(lineEdit != nullptr, "lineEdit is NULL", QString());
     return lineEdit->text();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "tryToSetText"
-bool GTLineEdit::tryToSetText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &text) {
+bool GTLineEdit::tryToSetText(GUITestOpStatus& os, QLineEdit* lineEdit, const QString& text) {
     clear(os, lineEdit);
 
     GTKeyboardDriver::keySequence(text);

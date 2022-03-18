@@ -37,5 +37,5 @@ public:
     static const QString ADAPTERS_DATA_NAME;
 };
 
-}    // namespace U2
-#endif    // _U2_CUTADAPT_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_CUTADAPT_SUPPORT_H_

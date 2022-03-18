@@ -42,7 +42,7 @@ namespace U2 {
 
 const QPoint MaAmbiguousCharactersController::INVALID_POINT = QPoint(-1, -1);
 
-MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *maEditorWgt)
+MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* maEditorWgt)
     : QObject(maEditorWgt),
       maEditor(nullptr != maEditorWgt ? maEditorWgt->getEditor() : nullptr),
       maEditorWgt(maEditorWgt),
@@ -67,11 +67,11 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
     connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
 }
 
-QAction *MaAmbiguousCharactersController::getPreviousAction() const {
+QAction* MaAmbiguousCharactersController::getPreviousAction() const {
     return previousAction;
 }
 
-QAction *MaAmbiguousCharactersController::getNextAction() const {
+QAction* MaAmbiguousCharactersController::getNextAction() const {
     return nextAction;
 }
 
@@ -101,7 +101,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
 }
 
 QPoint MaAmbiguousCharactersController::getStartPosition() const {
-    const MaEditorSelection &selection = maEditorWgt->getEditor()->getSelection();
+    const MaEditorSelection& selection = maEditorWgt->getEditor()->getSelection();
     if (!selection.isEmpty()) {
         return selection.toRect().topLeft();
     }
@@ -140,7 +140,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
     return INVALID_POINT;
 }
 
-void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direction, const QPoint &startPosition) const {
+void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direction, const QPoint& startPosition) const {
     if (nullptr == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,

@@ -21,6 +21,7 @@
 
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -29,7 +30,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
-EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
+EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus& _os,
                                                    AnnotationPolicy _policy,
                                                    bool _recalculateQualifiers)
     : Filler(_os, "EditSettingDialogForm"),
@@ -39,8 +40,7 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QString radioButtonName;
     switch (policy) {
@@ -57,7 +57,7 @@ void EditSettingsDialogFiller::commonScenario() {
             radioButtonName = "split_separateRadioButton";
             break;
         default:
-            GT_CHECK(false, "An unexpected AnnotationPolicy");
+            GT_FAIL("An unexpected AnnotationPolicy", );
     }
 
     GTRadioButton::click(os, radioButtonName, dialog);

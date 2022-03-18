@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class KalignPrompter : public PrompterBase<KalignPrompter> {
     Q_OBJECT
 public:
-    KalignPrompter(Actor *p = 0)
+    KalignPrompter(Actor* p = 0)
         : PrompterBase<KalignPrompter>(p) {
     }
 
@@ -45,10 +45,10 @@ protected:
 class KalignWorker : public BaseWorker {
     Q_OBJECT
 public:
-    KalignWorker(Actor *a);
+    KalignWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -60,7 +60,7 @@ private:
     KalignTaskSettings cfg;
 
 private:
-    void send(const MultipleSequenceAlignment &msa);
+    void send(const MultipleSequenceAlignment& msa);
 };
 
 class KalignWorkerFactory : public DomainFactory {
@@ -70,7 +70,7 @@ public:
     KalignWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new KalignWorker(a);
     }
 };

@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-ScriptHighlighter::ScriptHighlighter(QTextDocument *parent)
+ScriptHighlighter::ScriptHighlighter(QTextDocument* parent)
     : QSyntaxHighlighter(parent) {
     HighlightingRule rule;
 
@@ -43,7 +43,7 @@ ScriptHighlighter::ScriptHighlighter(QTextDocument *parent)
                     << "\\bbreak\\b"
                     << "\\bwhile\\b";
 
-    foreach (const QString &pattern, keywordPatterns) {
+    foreach (const QString& pattern, keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
         highlightingRules.append(rule);
@@ -83,8 +83,8 @@ ScriptHighlighter::ScriptHighlighter(QTextDocument *parent)
     commentEndExpression = QRegExp("\\*/");
 }
 
-void ScriptHighlighter::highlightBlock(const QString &text) {
-    foreach (const HighlightingRule &rule, highlightingRules) {
+void ScriptHighlighter::highlightBlock(const QString& text) {
+    foreach (const HighlightingRule& rule, highlightingRules) {
         QRegExp expression(rule.pattern);
         int index = expression.indexIn(text);
         while (index >= 0) {

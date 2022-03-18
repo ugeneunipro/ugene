@@ -64,7 +64,7 @@ const int FindPatternMsaWidget::REG_EXP_MAX_RESULT_SINGLE_STEP = 20;
 
 class PatternWalker {
 public:
-    PatternWalker(const QString &patternsString, int cursor = 0)
+    PatternWalker(const QString& patternsString, int cursor = 0)
         : patternsString(patternsString.toLatin1()), cursor(cursor), current(-1) {
     }
 
@@ -131,7 +131,7 @@ private:
 /** Last used search mode. Stored per session only. */
 static int isSearchInNamesModeByDefault = false;
 
-FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, TriState isSearchInNamesModeTriState)
+FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor* msaEditor, TriState isSearchInNamesModeTriState)
     : msaEditor(msaEditor),
       currentResultIndex(-1),
       searchTask(nullptr),
@@ -285,13 +285,13 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout *layoutUseMaxResultLen = new QHBoxLayout();
+    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel *labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);
@@ -322,9 +322,9 @@ void FindPatternMsaWidget::connectSlots() {
     connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
-    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_onMsaModified()));
-    connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), this, SLOT(sl_onMsaModified()));
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
+    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_onMsaModified()));
+    connect(msaObject, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), this, SLOT(sl_onMsaModified()));
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaStateChanged()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
@@ -332,8 +332,8 @@ void FindPatternMsaWidget::connectSlots() {
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_validateStateAndStartNewSearch()));
 
     connect(msaEditor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
-            SLOT(sl_onSelectedRegionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
+            SLOT(sl_onSelectedRegionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(searchContextComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_searchModeChanged()));
 }
@@ -374,7 +374,7 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
 }
 
 void FindPatternMsaWidget::updateActions() {
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     groupResultsButton->setEnabled(!msaObject->isStateLocked());
 }
 
@@ -417,7 +417,7 @@ void FindPatternMsaWidget::updateLayout() {
     }
 }
 
-void FindPatternMsaWidget::setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg) {
+void FindPatternMsaWidget::setMessageFlag(const MessageFlag& messageFlag, bool show, const QString& additionalMsg) {
     if (show) {
         messageFlagMap.insert(messageFlag, additionalMsg);
     } else {
@@ -430,7 +430,7 @@ void FindPatternMsaWidget::updateErrorLabelState() {
     QString text = "";
     QList<MessageFlag> messageFlags = messageFlagMap.keys();
 
-    for (const MessageFlag &flag : qAsConst(messageFlags)) {
+    for (const MessageFlag& flag : qAsConst(messageFlags)) {
         QString customErrorMessage = messageFlagMap[flag];
         text += text.isEmpty() ? "" : "<br>";
         switch (flag) {
@@ -688,19 +688,19 @@ U2Region FindPatternMsaWidget::getSearchRegion() const {
     return resultRegion;
 }
 
-int FindPatternMsaWidget::getMaxError(const QString &pattern) const {
+int FindPatternMsaWidget::getMaxError(const QString& pattern) const {
     if (selectedAlgorithm == FindAlgorithmPatternSettings_Exact) {
         return 0;
     }
     return int((float)(1 - float(spinMatch->value()) / 100) * pattern.length());
 }
 
-QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus &os) const {
+QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus& os) const {
     QString inputText = textPattern->toPlainText();
     QList<NamePattern> nameList = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
     if (!nameList.isEmpty()) {
         QStringList result;
-        foreach (const NamePattern &namePattern, nameList) {
+        foreach (const NamePattern& namePattern, nameList) {
             result << namePattern.second;
         }
         return result;
@@ -710,7 +710,7 @@ QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus &os
 
 #define FIND_PATTER_LAST_DIR "Find_msa_pattern_last_dir"
 
-void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns) {
+void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList& patterns) {
     currentSearchPatternList = patterns;
     CHECK(!patterns.isEmpty(), );
 
@@ -720,7 +720,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
     }
 
     FindPatternMsaSettings settings;
-    foreach (const QString &pattern, patterns) {
+    foreach (const QString& pattern, patterns) {
         settings.patterns << NamePattern("", pattern);
     }
 
@@ -775,7 +775,7 @@ void FindPatternMsaWidget::sl_searchModeChanged() {
 }
 
 void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
-    FindPatternMsaTask *findTask = static_cast<FindPatternMsaTask *>(sender());
+    FindPatternMsaTask* findTask = static_cast<FindPatternMsaTask*>(sender());
     CHECK(findTask != nullptr, );
     if (findTask != searchTask) {
         return;
@@ -784,9 +784,9 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
         return;
     }
     allSearchResults.clear();
-    const QList<FindPatternInMsaResult> &findTaskResultList = findTask->getResults();
+    const QList<FindPatternInMsaResult>& findTaskResultList = findTask->getResults();
     for (int i = 0; i < findTaskResultList.size(); i++) {
-        const FindPatternInMsaResult &findTaskResult = findTaskResultList[i];
+        const FindPatternInMsaResult& findTaskResult = findTaskResultList[i];
         for (int j = 0; j < findTaskResult.regions.length(); j++) {
             allSearchResults << FindPatternWidgetResult(findTaskResult.rowId, -1, findTaskResult.regions[j]);
         }
@@ -812,8 +812,8 @@ void FindPatternMsaWidget::postProcessAllSearchResults() {
     }
 }
 
-bool FindPatternMsaWidget::checkAlphabet(const QString &pattern) {
-    const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
+bool FindPatternMsaWidget::checkAlphabet(const QString& pattern) {
+    const DNAAlphabet* alphabet = msaEditor->getMaObject()->getAlphabet();
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         return true;
     }
@@ -832,7 +832,7 @@ QString FindPatternMsaWidget::checkSearchRegion() const {
     CHECK(!patternLines.isEmpty(), "");
 
     int minPatternLength = INT_MAX;
-    for (const QString &line : qAsConst(patternLines)) {
+    for (const QString& line : qAsConst(patternLines)) {
         minPatternLength = qMin(minPatternLength, line.length());
     }
     if (region.length < minPatternLength) {
@@ -841,7 +841,7 @@ QString FindPatternMsaWidget::checkSearchRegion() const {
     return "";
 }
 
-void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection &currentSelection, const MaEditorSelection &prev) {
+void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection& currentSelection, const MaEditorSelection& prev) {
     Q_UNUSED(prev);
     int boxRegionData = boxRegion->itemData(boxRegion->currentIndex()).toInt();
     bool isSearchInSelectionOn = boxRegionData == RegionSelectionIndex_CurrentSelectedRegion;
@@ -882,25 +882,25 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
     setCorrectPatternsString();
 }
 
-void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList &patterns) {
+void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList& patterns) {
     currentSearchPatternList = patterns;
 
-    const MultipleAlignment &multipleAlignment = msaEditor->getMaObject()->getMultipleAlignment();
+    const MultipleAlignment& multipleAlignment = msaEditor->getMaObject()->getMultipleAlignment();
     U2Region wholeRowRegion(0, msaEditor->getAlignmentLen());
     QSet<int> resultRowIndexSet;
-    foreach (const QString &pattern, currentSearchPatternList) {
+    foreach (const QString& pattern, currentSearchPatternList) {
         if (pattern.isEmpty()) {
             continue;
         }
-        for (int i = 0, n = multipleAlignment->getNumRows(); i < n; i++) {
-            const MultipleAlignmentRow &row = multipleAlignment->getRow(i);
+        for (int i = 0, n = multipleAlignment->getRowCount(); i < n; i++) {
+            const MultipleAlignmentRow& row = multipleAlignment->getRow(i);
             if (row->getName().contains(pattern, Qt::CaseInsensitive)) {
                 resultRowIndexSet << i;
             }
         }
     }
     foreach (int rowIndex, resultRowIndexSet) {
-        const MultipleAlignmentRow &row = multipleAlignment->getRow(rowIndex);
+        const MultipleAlignmentRow& row = multipleAlignment->getRow(rowIndex);
         allSearchResults << FindPatternWidgetResult(row->getRowId(), -1, wholeRowRegion);
     }
     postProcessAllSearchResults();
@@ -930,8 +930,8 @@ void FindPatternMsaWidget::sl_nextButtonClicked() {
 
 void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
-    const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
-    MaEditorSequenceArea *seqArea = msaEditor->getUI()->getSequenceArea();
+    const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
+    MaEditorSequenceArea* seqArea = msaEditor->getUI()->getSequenceArea();
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
     seqArea->setSelectionRect(selection);
     seqArea->centerPos(selection.topLeft());
@@ -988,16 +988,16 @@ void FindPatternMsaWidget::startProgressAnimation() {
 }
 
 struct SearchResultsComparator {
-    bool operator()(const FindPatternWidgetResult &r1, const FindPatternWidgetResult &r2) const {
+    bool operator()(const FindPatternWidgetResult& r1, const FindPatternWidgetResult& r2) const {
         return r1.viewRowIndex != r2.viewRowIndex ? r1.viewRowIndex < r2.viewRowIndex : r1.region.startPos < r2.region.startPos;
     }
 };
 
 void FindPatternMsaWidget::resortResultsByViewState() {
-    MaCollapseModel *collapseModel = msaEditor->getCollapseModel();
+    MaCollapseModel* collapseModel = msaEditor->getCollapseModel();
     visibleSearchResults.clear();
     for (int i = 0; i < allSearchResults.size(); i++) {
-        FindPatternWidgetResult &result = allSearchResults[i];
+        FindPatternWidgetResult& result = allSearchResults[i];
         result.viewRowIndex = collapseModel->getViewRowIndexByMaRowId(result.rowId);
         if (result.viewRowIndex >= 0) {
             visibleSearchResults << result;
@@ -1008,14 +1008,14 @@ void FindPatternMsaWidget::resortResultsByViewState() {
 }
 
 int FindPatternMsaWidget::findCurrentResultIndexFromSelection() const {
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     QRect selectionRect = selection.toRect();
     if (visibleSearchResults.isEmpty() || selection.isEmpty() || selectionRect.height() != 1) {
         return -1;
     }
     U2Region selectedXRegion = U2Region::fromXRange(selectionRect);
     for (int i = 0; i < visibleSearchResults.size(); i++) {
-        const FindPatternWidgetResult &result = visibleSearchResults[i];
+        const FindPatternWidgetResult& result = visibleSearchResults[i];
         if (result.viewRowIndex == selectionRect.y() && result.region == selectedXRegion) {
             return i;
         }
@@ -1027,12 +1027,12 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
     int resultsCount = visibleSearchResults.size();
     CHECK(resultsCount > 0, -1);
 
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     CHECK(!selection.isEmpty(), 0);
 
     int resultIndex = 0;
     for (; resultIndex < resultsCount; resultIndex++) {
-        const FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
+        const FindPatternWidgetResult& result = visibleSearchResults[resultIndex];
         QRect selectionRect = selection.toRect();
         bool inTheNextRow = result.viewRowIndex > selectionRect.y();
         bool inTheSameRowAndNext = result.viewRowIndex == selectionRect.y() && result.region.startPos >= selectionRect.x();
@@ -1048,12 +1048,12 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
 }
 
 bool FindPatternMsaWidget::isResultSelected() const {
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     QRect selectionRect = selection.toRect();
     if (selectionRect.height() != 1 || currentResultIndex < 0 || currentResultIndex >= visibleSearchResults.size()) {
         return false;
     }
-    const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
+    const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
     return selectionRect.y() == result.viewRowIndex && result.region == U2Region(selectionRect.x(), selectionRect.width());
 }
 
@@ -1068,14 +1068,14 @@ void FindPatternMsaWidget::updateCurrentResultLabel() {
 
 void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!allSearchResults.isEmpty(), )
-    MultipleSequenceAlignmentObject *maObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* maObject = msaEditor->getMaObject();
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.
     msaEditor->getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
 
     QSet<qint64> resultUidSet;
-    for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {
+    for (const FindPatternWidgetResult& result : qAsConst(allSearchResults)) {
         resultUidSet << result.rowId;
     }
     const QList<qint64> allRowIds = msaEditor->getMaRowIds();
@@ -1118,7 +1118,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
 }
 
 bool FindPatternMsaWidget::isAmino() const {
-    const DNAAlphabet *alphabet = msaEditor->getMaObject()->getAlphabet();
+    const DNAAlphabet* alphabet = msaEditor->getMaObject()->getAlphabet();
     return alphabet->isAmino();
 }
 
@@ -1126,7 +1126,7 @@ void FindPatternMsaWidget::sl_msaStateChanged() {
     updateActions();
 }
 
-FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region &region)
+FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex, const U2Region& region)
     : rowId(rowId), viewRowIndex(viewRowIndex), region(region) {
 }
 

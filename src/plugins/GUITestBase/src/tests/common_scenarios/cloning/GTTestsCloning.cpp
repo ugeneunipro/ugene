@@ -56,21 +56,16 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "SacII"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"SacII"}));
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *fr1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
-    CHECK_SET_ERR(fr1 != nullptr, "Fragment 1 annotation not found");
-
-    QTreeWidgetItem *fr2 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 2");
-    CHECK_SET_ERR(fr2 != nullptr, "Fragment 2 annotation not found");
+    QTreeWidgetItem* fr1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
+    QTreeWidgetItem* fr2 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 2");
 
     GTTreeWidget::expand(os, fr1);
     GTUtilsAnnotationsTreeView::findItem(os, "left_end_seq", fr1);

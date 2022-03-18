@@ -33,9 +33,9 @@ public:
      * Initialize the default filler scenario for the dialog.
      * If 'useDefaultSequenceSelection' is 'true' ignores 'selectedSequenceNameList' values and re-uses currently checked values by MSA editor.
      */
-    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os,
-                                     const QString &filepath,
-                                     const QStringList &selectedSequenceNameList = QStringList(),
+    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus& os,
+                                     const QString& filepath,
+                                     const QStringList& selectedSequenceNameList = QStringList(),
                                      int from = 0,
                                      int to = 0,
                                      bool addToProj = true,
@@ -43,14 +43,14 @@ public:
                                      bool allButtonPress = false,
                                      bool noneButtonPress = false,
                                      bool dontCheckFilepath = false,
-                                     const QString &format = "",
+                                     const QString& format = "",
                                      bool useDefaultSequenceSelectionFlag = false);
 
-    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
+    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
 
     void commonScenario() override;
 
-    static QStringList getSequences(HI::GUITestOpStatus &os, bool selected = true);
+    static QStringList getSequences(HI::GUITestOpStatus& os, bool selected = true);
 
     void setUseDefaultSequenceSelection(bool flag);
 

@@ -57,7 +57,7 @@ public:
     }
 };
 
-static TaskFlags flagsFromString(QString str, bool *ok = nullptr) {
+static TaskFlags flagsFromString(QString str, bool* ok = nullptr) {
     TaskFlags taskFlags = TaskFlags(TaskFlag_None);
     if (ok != nullptr)
         *ok = false;
@@ -86,7 +86,7 @@ static TaskFlags flagsFromString(QString str, bool *ok = nullptr) {
     return taskFlags;
 }
 
-static Task::State stateFromString(QString str, bool *ok = nullptr) {
+static Task::State stateFromString(QString str, bool* ok = nullptr) {
     Task::State taskState = Task::State_New;
     if (ok != nullptr)
         *ok = false;
@@ -129,7 +129,7 @@ DestructorCleanupTask::~DestructorCleanupTask() {
     cleanup();
 }
 
-StateOrderTestTask::StateOrderTestTask(StateOrderTestTaskCallback *ptr, TaskFlags _f)
+StateOrderTestTask::StateOrderTestTask(StateOrderTestTaskCallback* ptr, TaskFlags _f)
     : Task("calback_test_task", _f) {
     callback = ptr;
     step = 0;
@@ -149,7 +149,7 @@ StateOrderTestTask::~StateOrderTestTask() {
     callback->func(this, StateOrder_Done);
 }
 
-void GTest_TaskCreateTest::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskCreateTest::init(XMLTestFormat*, const QDomElement& el) {
     deleteTask = false;
 
     resultContextName = el.attribute(INDEX_ATTR);
@@ -216,7 +216,7 @@ void GTest_TaskCreateTest::cleanup() {
     XmlTest::cleanup();
 }
 
-void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat*, const QDomElement& el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -230,13 +230,13 @@ void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *, const QDomElement &el) 
 }
 
 Task::ReportResult GTest_TaskAddSubtaskTest::report() {
-    Task *task = getContext<Task>(this, taskContextName);
+    Task* task = getContext<Task>(this, taskContextName);
     if (task == nullptr) {
         stateInfo.setError(QString("invalid context: %1").arg(taskContextName));
         return ReportResult_Finished;
     }
 
-    Task *subtask = getContext<Task>(this, subtaskContextName);
+    Task* subtask = getContext<Task>(this, subtaskContextName);
     if (subtask == nullptr) {
         stateInfo.setError(QString("invalid context: %1").arg(subtaskContextName));
         return ReportResult_Finished;
@@ -255,7 +255,7 @@ Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCancelTest::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskCancelTest::init(XMLTestFormat*, const QDomElement& el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -264,13 +264,13 @@ void GTest_TaskCancelTest::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_TaskCancelTest::report() {
-    QObject *obj = getContext(objContextName);
+    QObject* obj = getContext(objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
     }
     assert(obj != nullptr);
-    Task *task = qobject_cast<Task *>(obj);
+    Task* task = qobject_cast<Task*>(obj);
     task->cancel();
     if (!task->getStateInfo().cancelFlag) {
         stateInfo.setError(QString("task state flag not matched: %1, expected %2 ").arg(task->getStateInfo().cancelFlag).arg(true));
@@ -279,7 +279,7 @@ Task::ReportResult GTest_TaskCancelTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCheckFlag::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskCheckFlag::init(XMLTestFormat*, const QDomElement& el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -299,13 +299,13 @@ void GTest_TaskCheckFlag::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_TaskCheckFlag::report() {
-    QObject *obj = getContext(taskContextName);
+    QObject* obj = getContext(taskContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
     }
     assert(obj != nullptr);
-    Task *task = qobject_cast<Task *>(obj);
+    Task* task = qobject_cast<Task*>(obj);
     if (task->getFlags().operator&(flag) == 0) {
         stateInfo.setError(QString("task flags not matched %1, expected %2").arg(task->getFlags()).arg(flag));
         return ReportResult_Finished;
@@ -313,7 +313,7 @@ Task::ReportResult GTest_TaskCheckFlag::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCheckState::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskCheckState::init(XMLTestFormat*, const QDomElement& el) {
     checkState = false;
     checkProgress = false;
     checkCancelFlag = false;
@@ -360,7 +360,7 @@ void GTest_TaskCheckState::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_TaskCheckState::report() {
-    Task *task = getContext<Task>(this, taskContextName);
+    Task* task = getContext<Task>(this, taskContextName);
     if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(taskContextName));
         return ReportResult_Finished;
@@ -386,7 +386,7 @@ Task::ReportResult GTest_TaskCheckState::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskExec::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskExec::init(XMLTestFormat*, const QDomElement& el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -395,7 +395,7 @@ void GTest_TaskExec::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_TaskExec::prepare() {
-    Task *task = getContext<Task>(this, taskContextName);
+    Task* task = getContext<Task>(this, taskContextName);
     if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(taskContextName));
         return;
@@ -407,7 +407,7 @@ Task::ReportResult GTest_TaskExec::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskStateOrder::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_TaskStateOrder::init(XMLTestFormat*, const QDomElement& el) {
     serial_flag = true;
     subtask_num = 0;
     cancel_flag = false;
@@ -456,7 +456,7 @@ void GTest_TaskStateOrder::init(XMLTestFormat *, const QDomElement &el) {
     task = new StateOrderTestTask(this, (run_after_all_subs_flag ? TaskFlag_None : TaskFlag_RunBeforeSubtasksFinished));
 
     for (int i = 0; i < subtask_num; i++) {
-        StateOrderTestTask *sub = new StateOrderTestTask(this, TaskFlag_None);
+        StateOrderTestTask* sub = new StateOrderTestTask(this, TaskFlag_None);
         subs.append(sub);
         task->addSubTask(sub);
     }
@@ -469,7 +469,7 @@ void GTest_TaskStateOrder::run() {
     }
 }
 
-void GTest_TaskStateOrder::func(StateOrderTestTask *_task, StateOrderType st) {
+void GTest_TaskStateOrder::func(StateOrderTestTask* _task, StateOrderType st) {
     int ind = -1;
     if (task == _task) {
         if (st == StateOrder_Done) {
@@ -487,7 +487,7 @@ void GTest_TaskStateOrder::func(StateOrderTestTask *_task, StateOrderType st) {
             return;
         }
     }
-    int &step = _task->step;
+    int& step = _task->step;
     State newState = _task->getState();
 
     if (step == 0) {
@@ -542,7 +542,7 @@ Task::ReportResult GTest_TaskStateOrder::report() {
     return ReportResult_Finished;
 }
 
-void GTest_Wait::init(U2::XMLTestFormat *, const QDomElement &el) {
+void GTest_Wait::init(U2::XMLTestFormat*, const QDomElement& el) {
     waitOk = false;
     condition = WaitCond_None;
     QString ms_str = el.attribute(DELAY_ATTR);
@@ -584,7 +584,7 @@ void GTest_Wait::init(U2::XMLTestFormat *, const QDomElement &el) {
 
 void GTest_Wait::prepare() {
     if (!objContextName.isEmpty()) {
-        Task *task = getContext<Task>(this, objContextName);
+        Task* task = getContext<Task>(this, objContextName);
         if (task == nullptr) {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
@@ -594,7 +594,7 @@ void GTest_Wait::prepare() {
 }
 
 void GTest_Wait::sl_WaitCond_StateChanged() {
-    Task *task = getContext<Task>(this, objContextName);
+    Task* task = getContext<Task>(this, objContextName);
     if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(objContextName));
         return;
@@ -607,7 +607,7 @@ void GTest_Wait::sl_WaitCond_StateChanged() {
 
 void GTest_Wait::run() {
     if (!objContextName.isEmpty()) {
-        Task *task = getContext<Task>(this, objContextName);
+        Task* task = getContext<Task>(this, objContextName);
         if (task == nullptr) {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
@@ -636,8 +636,8 @@ Task::ReportResult GTest_Wait::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> TaskTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> TaskTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_TaskStateOrder::createFactory());
     res.append(GTest_TaskCreateTest::createFactory());
     res.append(GTest_TaskAddSubtaskTest::createFactory());

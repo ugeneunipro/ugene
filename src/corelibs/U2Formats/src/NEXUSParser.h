@@ -38,7 +38,7 @@ class Tokenizer
 // Breaks input stream on tokens (QString)
 {
 public:
-    Tokenizer(IOAdapter *io_)
+    Tokenizer(IOAdapter* io_)
         : io(io_) {
         assert(io_ && "IO must exist");
     }
@@ -61,14 +61,14 @@ public:
         return io->isEof();
     }
 
-    IOAdapter *getIO() {
+    IOAdapter* getIO() {
         return io;
     }
 
     QString whiteSpacesAfterLastToken;
 
 private:
-    IOAdapter *io;
+    IOAdapter* io;
     QString next;
 
     static const int BUFF_SIZE;
@@ -80,12 +80,12 @@ class NEXUSParser
 // NEXUS File format parser
 {
 public:
-    NEXUSParser(IOAdapter *io_, const U2DbiRef &dbiRef_, const QString &folder, U2OpStatus &ti_)
+    NEXUSParser(IOAdapter* io_, const U2DbiRef& dbiRef_, const QString& folder, U2OpStatus& ti_)
         : io(io_), dbiRef(dbiRef_), folder(folder), ti(ti_), tz(io) {
         assert(io_ && "IO must exist");
     }
 
-    QList<GObject *> loadObjects(const U2DbiRef &dbiRef);
+    QList<GObject*> loadObjects(const U2DbiRef& dbiRef);
 
     bool hasError() {
         return !errors.isEmpty();
@@ -94,10 +94,10 @@ public:
         return !warnings.isEmpty();
     }
 
-    const QStringList &getErrors() const {
+    const QStringList& getErrors() const {
         return errors;
     }
-    const QStringList &getWarnings() const {
+    const QStringList& getWarnings() const {
         return warnings;
     }
 
@@ -105,20 +105,20 @@ private:
     typedef QMap<QString, QString> Context;
 
     bool skipCommand();
-    bool readSimpleCommand(Context &ctx);
+    bool readSimpleCommand(Context& ctx);
 
-    bool readBlock(Context &ctx, const U2DbiRef &dbiRef);
+    bool readBlock(Context& ctx, const U2DbiRef& dbiRef);
     bool skipBlockContents();
-    bool readTaxaContents(Context &ctx);
-    bool readDataContents(Context &ctx);
-    bool readTreesContents(Context &ctx, const U2DbiRef &dbiRef);
+    bool readTaxaContents(Context& ctx);
+    bool readDataContents(Context& ctx);
+    bool readTreesContents(Context& ctx, const U2DbiRef& dbiRef);
 
     void reportProgress() {
         ti.setProgress(io->getProgress());
     }
 
     // append object to objects, and resolve name conflicts
-    void addObject(GObject *obj);
+    void addObject(GObject* obj);
 
 private:
     static const QString BEGIN;
@@ -135,13 +135,13 @@ private:
     static const QString CMD_TRANSLATE;
 
 private:
-    IOAdapter *io;
-    const U2DbiRef &dbiRef;
+    IOAdapter* io;
+    const U2DbiRef& dbiRef;
     QString folder;
-    U2OpStatus &ti;
+    U2OpStatus& ti;
     Tokenizer tz;
 
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     QSet<QString> objectNames;
 
     Context global;

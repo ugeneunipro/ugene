@@ -118,7 +118,7 @@ const QString SpadesWorkerFactory::BASE_SPADES_SUBDIR = "spades";
 
 const StrStrMap SpadesWorkerFactory::PORT_ID_2_YAML_LIBRARY_NAME = SpadesWorkerFactory::getPortId2YamlLibraryName();
 
-const QString SpadesWorkerFactory::getPortNameById(const QString &portId) {
+const QString SpadesWorkerFactory::getPortNameById(const QString& portId) {
     QString res;
     if (portId == IN_PORT_ID_LIST[0]) {
         res = tr("unpaired reads");
@@ -174,14 +174,14 @@ const QString SpadesWorker::K_MER_AUTO = "Auto";
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-SpadesWorker::SpadesWorker(Actor *p)
+SpadesWorker::SpadesWorker(Actor* p)
     : BaseWorker(p, false), output(nullptr) {
 }
 
 void SpadesWorker::init() {
     const QStringList portIds = QStringList() << SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST << SpadesWorkerFactory::IN_PORT_ID_LIST;
-    foreach (const QString &portId, portIds) {
-        IntegralBus *channel = ports.value(portId);
+    foreach (const QString& portId, portIds) {
+        IntegralBus* channel = ports.value(portId);
         inChannels << channel;
         readsFetchers << DatasetFetcher(this, channel, context);
     }
@@ -190,13 +190,13 @@ void SpadesWorker::init() {
 
 namespace {
 
-QVariantMap uniteUniquely(const QVariantMap &first, const QVariantMap &second) {
+QVariantMap uniteUniquely(const QVariantMap& first, const QVariantMap& second) {
     QVariantMap result;
-    foreach (const QString &key, first.keys()) {
+    foreach (const QString& key, first.keys()) {
         result[key] = first.value(key);
     }
 
-    foreach (const QString &key, second.keys()) {
+    foreach (const QString& key, second.keys()) {
         result[key] = second.value(key);
     }
     return result;
@@ -204,7 +204,7 @@ QVariantMap uniteUniquely(const QVariantMap &first, const QVariantMap &second) {
 
 }  // namespace
 
-Task *SpadesWorker::tick() {
+Task* SpadesWorker::tick() {
     U2OpStatus2Log os;
     trySetDone(os);
     CHECK(!os.hasError(), new FailTask(os.getError()));
@@ -232,7 +232,7 @@ Task *SpadesWorker::tick() {
         const int index = SpadesWorkerFactory::getReadsUrlSlotIdIndex(portId, isPaired);
 
         QList<Message> fullDataset = readsFetchers[i].takeFullDataset();
-        foreach (const Message &m, fullDataset) {
+        foreach (const Message& m, fullDataset) {
             messageCounter++;
             messageId = m.getMetadataId();
 
@@ -269,7 +269,7 @@ Task *SpadesWorker::tick() {
     output->setContext(unitedPortContext, currentMetadataId);
 
     settings.listeners = createLogListeners();
-    GenomeAssemblyMultiTask *t = new GenomeAssemblyMultiTask(settings);
+    GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }
@@ -283,11 +283,11 @@ bool SpadesWorker::isReady() const {
     }
 
     bool res = true;
-    QList<Port *> inPorts = actor->getInputPorts();
-    foreach (Port *port, inPorts) {
+    QList<Port*> inPorts = actor->getInputPorts();
+    foreach (Port* port, inPorts) {
         CHECK_CONTINUE(port->isEnabled());
 
-        IntegralBus *inChannel = ports.value(port->getId());
+        IntegralBus* inChannel = ports.value(port->getId());
         int hasMsg = inChannel->hasMessage();
         bool ended = inChannel->isEnded();
         res = res && (hasMsg || ended);
@@ -298,10 +298,10 @@ bool SpadesWorker::isReady() const {
 
 bool SpadesWorker::processInputMessagesAndCheckReady() {
     bool result = true;
-    QList<Port *> inPorts = actor->getInputPorts();
+    QList<Port*> inPorts = actor->getInputPorts();
     for (int i = 0; i < readsFetchers.size(); i++) {
         const QString portId = readsFetchers[i].getPortId();
-        Port *port = actor->getPort(portId);
+        Port* port = actor->getPort(portId);
         SAFE_POINT(port != nullptr, QString("Port with id %1 not found").arg(portId), false);
         CHECK_CONTINUE(port->isEnabled());
 
@@ -313,7 +313,7 @@ bool SpadesWorker::processInputMessagesAndCheckReady() {
     return result;
 }
 
-void SpadesWorker::trySetDone(U2OpStatus &os) {
+void SpadesWorker::trySetDone(U2OpStatus& os) {
     CHECK(!isDone(), );
 
     bool isDone = true;
@@ -321,7 +321,7 @@ void SpadesWorker::trySetDone(U2OpStatus &os) {
     bool hasDoneFetcher = false;
     for (int i = 0; i < readsFetchers.size(); i++) {
         const QString portId = readsFetchers[i].getPortId();
-        Port *port = actor->getPort(portId);
+        Port* port = actor->getPort(portId);
         SAFE_POINT(port != nullptr, QString("Port with id %1 not found").arg(portId), );
         CHECK_CONTINUE(port->isEnabled());
 
@@ -343,13 +343,13 @@ void SpadesWorker::trySetDone(U2OpStatus &os) {
 }
 
 void SpadesWorker::sl_taskFinished() {
-    GenomeAssemblyMultiTask *t = dynamic_cast<GenomeAssemblyMultiTask *>(sender());
+    GenomeAssemblyMultiTask* t = dynamic_cast<GenomeAssemblyMultiTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled() || t->getResultUrl().isEmpty()) {
         return;
     }
 
     QString scaffoldUrl = t->getResultUrl();
-    SpadesTask *spadesTask = qobject_cast<SpadesTask *>(t->getAssemblyTask());
+    SpadesTask* spadesTask = qobject_cast<SpadesTask*>(t->getAssemblyTask());
     CHECK(spadesTask != nullptr, );
     QString contigsUrl = spadesTask->getContigsUrl();
 
@@ -362,7 +362,7 @@ void SpadesWorker::sl_taskFinished() {
     context->getMonitor()->addOutputFile(contigsUrl, getActor()->getId());
 }
 
-GenomeAssemblyTaskSettings SpadesWorker::getSettings(U2OpStatus &os) {
+GenomeAssemblyTaskSettings SpadesWorker::getSettings(U2OpStatus& os) {
     GenomeAssemblyTaskSettings settings;
 
     settings.algName = SpadesSupport::ET_SPADES;
@@ -397,11 +397,11 @@ GenomeAssemblyTaskSettings SpadesWorker::getSettings(U2OpStatus &os) {
 /************************************************************************/
 
 void SpadesWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
 
     // in port
     QList<Descriptor> readDescriptors;
-    foreach (const QString &readId, QStringList() << IN_PORT_PAIRED_ID_LIST << IN_PORT_ID_LIST) {
+    foreach (const QString& readId, QStringList() << IN_PORT_PAIRED_ID_LIST << IN_PORT_ID_LIST) {
         const QString dataName = SpadesWorkerFactory::getPortNameById(readId);
         readDescriptors << Descriptor(readId,
                                       SpadesWorker::tr("Input %1").arg(dataName),
@@ -409,7 +409,7 @@ void SpadesWorkerFactory::init() {
     }
 
     QList<Descriptor> inputDescriptors;
-    foreach (const QString &id, READS_URL_SLOT_ID_LIST) {
+    foreach (const QString& id, READS_URL_SLOT_ID_LIST) {
         inputDescriptors << Descriptor(id,
                                        SpadesWorker::tr("File URL 1"),
                                        SpadesWorker::tr("File URL 1."));
@@ -418,7 +418,7 @@ void SpadesWorkerFactory::init() {
                "Incorrect descriptors quantity", );
 
     QList<Descriptor> inputPairedDescriptors;
-    foreach (const QString &pairedId, READS_PAIRED_URL_SLOT_ID_LIST) {
+    foreach (const QString& pairedId, READS_PAIRED_URL_SLOT_ID_LIST) {
         inputPairedDescriptors << Descriptor(pairedId,
                                              SpadesWorker::tr("File URL 2"),
                                              SpadesWorker::tr("File URL 2."));
@@ -427,12 +427,12 @@ void SpadesWorkerFactory::init() {
                "Incorrect paired descriptors quantity", );
 
     for (int i = 0; i < inputDescriptors.size(); i++) {
-        const Descriptor &desc = inputDescriptors[i];
+        const Descriptor& desc = inputDescriptors[i];
 
         QMap<Descriptor, DataTypePtr> inTypeMap;
         inTypeMap[desc] = BaseTypes::STRING_TYPE();
         if (i < inputPairedDescriptors.size()) {
-            const Descriptor &pairedDesc = inputPairedDescriptors[i];
+            const Descriptor& pairedDesc = inputPairedDescriptors[i];
             inTypeMap[pairedDesc] = BaseTypes::STRING_TYPE();
         }
 
@@ -460,7 +460,7 @@ void SpadesWorkerFactory::init() {
     DataTypePtr outTypeSet(new MapDataType(OUT_TYPE_ID, outTypeMap));
     portDescs << new PortDescriptor(outPortDesc, outTypeSet, false, true);
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor inputData(SpadesTask::OPTION_INPUT_DATA,
                              SpadesWorker::tr("Input data"),
@@ -510,13 +510,13 @@ void SpadesWorkerFactory::init() {
         QVariantMap defaultValue;
         defaultValue.insert(IN_PORT_PAIRED_ID_LIST[0], QString("%1:%2").arg(ORIENTATION_FR).arg(TYPE_SINGLE));
         defaultValue.insert(SEQUENCING_PLATFORM_ID, PLATFORM_ILLUMINA);
-        Attribute *inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
+        Attribute* inputAttr = new Attribute(inputData, BaseTypes::MAP_TYPE(), false, QVariant::fromValue<QVariantMap>(defaultValue));
 
-        foreach (const QString &read, IN_PORT_ID_LIST) {
+        foreach (const QString& read, IN_PORT_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(read, QVariantList() << read));
         }
 
-        foreach (const QString &pairedRead, IN_PORT_PAIRED_ID_LIST) {
+        foreach (const QString& pairedRead, IN_PORT_PAIRED_ID_LIST) {
             inputAttr->addPortRelation(new SpadesPortRelationDescriptor(pairedRead, QVariantList() << pairedRead));
             bool unused = false;
             const int index = getReadsUrlSlotIdIndex(pairedRead, unused);
@@ -534,7 +534,7 @@ void SpadesWorkerFactory::init() {
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::CanBeEmpty | Attribute::Required);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, SpadesWorker::tr("Auto"));
@@ -572,7 +572,7 @@ void SpadesWorkerFactory::init() {
                           To use the element, configure the type of input in the \"Input data\" parameter. The corresponding input ports will appear \
                           on the element. Provide URL(s) to the corresponding FASTA or FASTQ file(s) to these ports."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new SpadesPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     for (int i = 0; i < IN_PORT_PAIRED_ID_LIST.size(); i++) {
@@ -583,11 +583,11 @@ void SpadesWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SpadesWorkerFactory());
 }
 
-Worker *SpadesWorkerFactory::createWorker(Actor *a) {
+Worker* SpadesWorkerFactory::createWorker(Actor* a) {
     return new SpadesWorker(a);
 }
 
-int SpadesWorkerFactory::getReadsUrlSlotIdIndex(const QString &portId, bool &isPaired) {
+int SpadesWorkerFactory::getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) {
     int index = -1;
     isPaired = IN_PORT_PAIRED_ID_LIST.contains(portId);
     if (isPaired) {

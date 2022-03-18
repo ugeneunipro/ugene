@@ -34,9 +34,9 @@
 #include <U2Core/U2SafePoints.h>
 namespace U2 {
 
-QSet<QString> DocumentUtils::getURLs(const QList<Document *> &docs) {
+QSet<QString> DocumentUtils::getURLs(const QList<Document*>& docs) {
     QSet<QString> result;
-    foreach (Document *d, docs) {
+    foreach (Document* d, docs) {
         result.insert(d->getURLString());
     }
     return result;
@@ -44,14 +44,14 @@ QSet<QString> DocumentUtils::getURLs(const QList<Document *> &docs) {
 
 QSet<QString> DocumentUtils::getNewDocFileNameExcludesHint() {
     QSet<QString> excludeFileNames;
-    Project *p = AppContext::getProject();
+    Project* p = AppContext::getProject();
     if (p != nullptr) {
         excludeFileNames = DocumentUtils::getURLs(p->getDocuments());
     }
     return excludeFileNames;
 }
 
-static void placeOrderedByScore(const FormatDetectionResult &info, QList<FormatDetectionResult> &result, const FormatDetectionConfig &conf) {
+static void placeOrderedByScore(const FormatDetectionResult& info, QList<FormatDetectionResult>& result, const FormatDetectionConfig& conf) {
     if (info.score() == FormatDetection_NotMatched) {
         return;
     }
@@ -84,13 +84,13 @@ static void placeOrderedByScore(const FormatDetectionResult &info, QList<FormatD
 // returns formats with FormatDetectionResult != Not matched sorted by FormatDetectionResult
 // FormatDetectionResult is adjusted by +FORMAT_DETECTION_EXT_BONUS if extension is matched
 
-QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray &rawData, const QString &ext, const GUrl &url, const FormatDetectionConfig &conf) {
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
+QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray& rawData, const QString& ext, const GUrl& url, const FormatDetectionConfig& conf) {
+    DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> allFormats = fr->getRegisteredFormats();
 
     QList<FormatDetectionResult> result;
-    foreach (const DocumentFormatId &id, allFormats) {
-        DocumentFormat *f = fr->getFormatById(id);
+    foreach (const DocumentFormatId& id, allFormats) {
+        DocumentFormat* f = fr->getFormatById(id);
         FormatCheckResult cr = f->checkRawData(rawData, url);
         if (cr.score == FormatDetection_NotMatched) {
             continue;
@@ -111,8 +111,8 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray &rawDa
         placeOrderedByScore(res, result, conf);
     }
     if (conf.useImporters) {
-        DocumentImportersRegistry *importReg = AppContext::getDocumentFormatRegistry()->getImportSupport();
-        foreach (DocumentImporter *i, importReg->getImporters()) {
+        DocumentImportersRegistry* importReg = AppContext::getDocumentFormatRegistry()->getImportSupport();
+        foreach (DocumentImporter* i, importReg->getImporters()) {
             FormatCheckResult cr = i->checkRawData(rawData, url);
             if (conf.useExtensionBonus && i->getSupportedFileExtensions().contains(ext) && cr.score >= FormatDetection_VeryLowSimilarity) {
                 cr.score += FORMAT_DETECTION_EXT_BONUS;
@@ -129,7 +129,7 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray &rawDa
     return result;
 }
 
-QList<FormatDetectionResult> DocumentUtils::detectFormat(const GUrl &url, const FormatDetectionConfig &conf) {
+QList<FormatDetectionResult> DocumentUtils::detectFormat(const GUrl& url, const FormatDetectionConfig& conf) {
     QList<FormatDetectionResult> result;
     if (url.isEmpty()) {
         return result;
@@ -143,7 +143,7 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const GUrl &url, const 
     return result;
 }
 
-QList<FormatDetectionResult> DocumentUtils::detectFormat(IOAdapter *io, const FormatDetectionConfig &conf) {
+QList<FormatDetectionResult> DocumentUtils::detectFormat(IOAdapter* io, const FormatDetectionConfig& conf) {
     QList<FormatDetectionResult> result;
     if (io == nullptr || !io->isOpen()) {
         return result;
@@ -154,15 +154,15 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(IOAdapter *io, const Fo
     return result;
 }
 
-DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl &url, QString &resultId) {
+DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl& url, QString& resultId) {
     FormatDetectionConfig cfg;
     cfg.bestMatchesOnly = false;
     cfg.useImporters = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url, cfg);
     CHECK(formats.size() > 0, UNKNOWN);
 
-    DocumentFormat *format = formats.first().format;
-    DocumentImporter *importer = formats.first().importer;
+    DocumentFormat* format = formats.first().format;
+    DocumentImporter* importer = formats.first().importer;
     if (nullptr != format) {
         resultId = format->getFormatId();
         return FORMAT;
@@ -174,9 +174,9 @@ DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl &url, QString &r
     }
 }
 
-QList<DocumentFormat *> DocumentUtils::toFormats(const QList<FormatDetectionResult> &infos) {
-    QList<DocumentFormat *> result;
-    foreach (const FormatDetectionResult &info, infos) {
+QList<DocumentFormat*> DocumentUtils::toFormats(const QList<FormatDetectionResult>& infos) {
+    QList<DocumentFormat*> result;
+    foreach (const FormatDetectionResult& info, infos) {
         if (info.format != nullptr) {
             result << info.format;
         }
@@ -184,23 +184,23 @@ QList<DocumentFormat *> DocumentUtils::toFormats(const QList<FormatDetectionResu
     return result;
 }
 
-bool DocumentUtils::canAddGObjectsToDocument(Document *doc, const GObjectType &type) {
+bool DocumentUtils::canAddGObjectsToDocument(Document* doc, const GObjectType& type) {
     if (!doc->isLoaded() || doc->isStateLocked()) {
         return false;
     }
 
-    DocumentFormat *df = doc->getDocumentFormat();
+    DocumentFormat* df = doc->getDocumentFormat();
     return df->isObjectOpSupported(doc, DocumentFormat::DocObjectOp_Add, type);
 }
 
-bool DocumentUtils::canRemoveGObjectFromDocument(GObject *obj) {
-    Document *doc = obj->getDocument();
+bool DocumentUtils::canRemoveGObjectFromDocument(GObject* obj) {
+    Document* doc = obj->getDocument();
 
     if (nullptr == doc || !doc->isLoaded() || doc->isStateLocked()) {
         return false;
     }
 
-    DocumentFormat *df = doc->getDocumentFormat();
+    DocumentFormat* df = doc->getDocumentFormat();
     if (!df->isObjectOpSupported(doc, DocumentFormat::DocObjectOp_Remove, obj->getGObjectType())) {
         return false;
     }
@@ -208,13 +208,13 @@ bool DocumentUtils::canRemoveGObjectFromDocument(GObject *obj) {
     return true;
 }
 
-void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject *obj) {
+void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject* obj) {
     // no results found -> delete empty annotation document
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     if (proj != nullptr) {
-        Document *toDelete = nullptr;
-        QList<Document *> docs = proj->getDocuments();
-        foreach (Document *doc, docs) {
+        Document* toDelete = nullptr;
+        QList<Document*> docs = proj->getDocuments();
+        foreach (Document* doc, docs) {
             if (doc->getObjects().contains(obj)) {
                 toDelete = doc;
                 break;
@@ -226,12 +226,12 @@ void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject *obj) {
     }
 }
 
-QFile::Permissions DocumentUtils::getPermissions(Document *doc) {
+QFile::Permissions DocumentUtils::getPermissions(Document* doc) {
     return QFile(doc->getURLString()).permissions();
 }
 
-Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStatus &os, bool shallowCopy) {
-    Document *resultDoc = nullptr;
+Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStatus& os, bool shallowCopy) {
+    Document* resultDoc = nullptr;
     QVariantMap hints = doc->getGHintsMap();
 
     if (hints.value(ProjectLoaderHint_MultipleFilesMode_Flag, false).toBool()) {
@@ -239,10 +239,10 @@ Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStat
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
-        MultipleSequenceAlignmentObject *maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy, true);
+        MultipleSequenceAlignmentObject* maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy, true);
         CHECK_OP(os, nullptr);
         CHECK(maObj != nullptr, resultDoc);
-        QList<GObject *> objects;
+        QList<GObject*> objects;
         objects << maObj;
 
         DocumentFormatConstraints objTypeConstraints;
@@ -258,7 +258,7 @@ Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStat
             return nullptr;
         }
 
-        QList<GObject *> objects = U1SequenceUtils::mergeSequences(doc, doc->getDbiRef(), hints, os);
+        QList<GObject*> objects = U1SequenceUtils::mergeSequences(doc, doc->getDbiRef(), hints, os);
         resultDoc = new Document(doc->getDocumentFormat(), doc->getIOAdapterFactory(), doc->getURL(), doc->getDbiRef(), objects, hints, tr("File content was merged"));
         doc->propagateModLocks(resultDoc);
 

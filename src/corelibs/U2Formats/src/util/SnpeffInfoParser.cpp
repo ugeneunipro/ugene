@@ -38,10 +38,10 @@ SnpeffInfoParser::~SnpeffInfoParser() {
     qDeleteAll(partParsers.values());
 }
 
-QList<QList<U2Qualifier>> SnpeffInfoParser::parse(U2OpStatus &os, const QString &snpeffInfo) const {
+QList<QList<U2Qualifier>> SnpeffInfoParser::parse(U2OpStatus& os, const QString& snpeffInfo) const {
     QList<QList<U2Qualifier>> qualifiers;
     const QStringList keyValuePairs = snpeffInfo.split(PAIRS_SEPARATOR, QString::SkipEmptyParts);
-    foreach (const QString &keyValuePair, keyValuePairs) {
+    foreach (const QString& keyValuePair, keyValuePairs) {
         const QStringList splittedKeyValuePair = keyValuePair.split(KEY_VALUE_SEPARATOR);
         if (splittedKeyValuePair.size() > 2) {
             os.addWarning(tr("Can't parse the next INFO part: '%1'").arg(keyValuePair));
@@ -52,7 +52,7 @@ QList<QList<U2Qualifier>> SnpeffInfoParser::parse(U2OpStatus &os, const QString 
             continue;
         }
 
-        InfoPartParser *partParser = partParsers.value(splittedKeyValuePair.first(), nullptr);
+        InfoPartParser* partParser = partParsers.value(splittedKeyValuePair.first(), nullptr);
         if (nullptr == partParser) {
             // This INFO part is not added by SnpEff
             continue;
@@ -79,32 +79,32 @@ const QString InfoPartParser::MESSAGE_DESCRIPTION = "message_desc";
 const QString InfoPartParser::ANNOTATION_SEPARATOR = ",";
 const QString InfoPartParser::SNPEFF_TAG = "SnpEff_tag";
 
-InfoPartParser::InfoPartParser(const QString &keyWord, bool canStoreMessages)
+InfoPartParser::InfoPartParser(const QString& keyWord, bool canStoreMessages)
     : keyWord(keyWord),
       canStoreMessages(canStoreMessages) {
 }
 
-const QString &InfoPartParser::getKeyWord() const {
+const QString& InfoPartParser::getKeyWord() const {
     return keyWord;
 }
 
-QList<QList<U2Qualifier>> InfoPartParser::parse(U2OpStatus &os, const QString &infoPart) const {
+QList<QList<U2Qualifier>> InfoPartParser::parse(U2OpStatus& os, const QString& infoPart) const {
     QList<QList<U2Qualifier>> qualifiers;
     const QStringList entries = infoPart.split(ANNOTATION_SEPARATOR);
-    foreach (const QString &entry, entries) {
+    foreach (const QString& entry, entries) {
         qualifiers << parseEntry(os, entry);
         CHECK_OP(os, qualifiers);
     }
     return qualifiers;
 }
 
-QList<U2Qualifier> InfoPartParser::processValue(const QString &qualifierName, const QString &value) const {
+QList<U2Qualifier> InfoPartParser::processValue(const QString& qualifierName, const QString& value) const {
     QList<U2Qualifier> qualifiers;
     qualifiers << U2Qualifier(qualifierName, value);
     return qualifiers;
 }
 
-QList<U2Qualifier> InfoPartParser::parseEntry(U2OpStatus &os, const QString &entry) const {
+QList<U2Qualifier> InfoPartParser::parseEntry(U2OpStatus& os, const QString& entry) const {
     QList<U2Qualifier> qualifiers;
     const QStringList qualifierNames = getQualifierNames();
     const QStringList values = getValues(entry);
@@ -163,17 +163,17 @@ QStringList AnnParser::getQualifierNames() const {
                          << "Distance_to_feature";
 }
 
-QStringList AnnParser::getValues(const QString &entry) const {
+QStringList AnnParser::getValues(const QString& entry) const {
     return entry.split(VALUES_SEPARATOR);
 }
 
-QList<U2Qualifier> AnnParser::processValue(const QString &qualifierName, const QString &value) const {
+QList<U2Qualifier> AnnParser::processValue(const QString& qualifierName, const QString& value) const {
     QList<U2Qualifier> qualifiers = InfoPartParser::processValue(qualifierName, value);
     if (qualifierName == PUTATIVE_IMPACT && SnpeffDictionary::impactDescriptions.contains(value)) {
         qualifiers << U2Qualifier(PUTATIVE_IMPACT_DESCRIPTION, SnpeffDictionary::impactDescriptions[value]);
     } else if (qualifierName == EFFECT) {
         const QStringList effects = value.split(EFFECTS_SEPARATOR, QString::SkipEmptyParts);
-        foreach (const QString &effect, effects) {
+        foreach (const QString& effect, effects) {
             if (SnpeffDictionary::effectDescriptions.contains(effect)) {
                 qualifiers << U2Qualifier(EFFECT_DESCRIPTION, effect + ": " + SnpeffDictionary::effectDescriptions[value]);
             }
@@ -208,7 +208,7 @@ QStringList EffParser::getQualifierNames() const {
                          << "Genotype_number";
 }
 
-QStringList EffParser::getValues(const QString &entry) const {
+QStringList EffParser::getValues(const QString& entry) const {
     QRegExp regexp("^(\\w+)\\((.*)\\)$");
     QStringList values;
     regexp.indexIn(entry);
@@ -217,7 +217,7 @@ QStringList EffParser::getValues(const QString &entry) const {
     return values;
 }
 
-QList<U2Qualifier> EffParser::processValue(const QString &qualifierName, const QString &value) const {
+QList<U2Qualifier> EffParser::processValue(const QString& qualifierName, const QString& value) const {
     QList<U2Qualifier> qualifiers = InfoPartParser::processValue(qualifierName, value);
     if (qualifierName == EFFECT && SnpeffDictionary::effectDescriptions.contains(value)) {
         qualifiers << U2Qualifier(EFFECT_DESCRIPTION, SnpeffDictionary::effectDescriptions[value]);
@@ -241,7 +241,7 @@ QStringList LofParser::getQualifierNames() const {
                          << "percent_affected";
 }
 
-QStringList LofParser::getValues(const QString &entry) const {
+QStringList LofParser::getValues(const QString& entry) const {
     return entry.mid(1, entry.length() - 2).split(VALUES_SEPARATOR);
 }
 
@@ -259,7 +259,7 @@ QStringList NmdParser::getQualifierNames() const {
                          << "percent_affected";
 }
 
-QStringList NmdParser::getValues(const QString &entry) const {
+QStringList NmdParser::getValues(const QString& entry) const {
     return entry.mid(1, entry.length() - 2).split(VALUES_SEPARATOR);
 }
 

@@ -31,13 +31,13 @@
 
 namespace U2 {
 
-QList<XMLTestFactory *> AnnotationUtilsTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> AnnotationUtilsTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_ShiftSequence::createFactory());
     return res;
 }
 
-void GTest_ShiftSequence::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ShiftSequence::init(XMLTestFormat*, const QDomElement& el) {
     bool isOk;
     locationStringBefore = el.attribute("location-before");
     locationStringAfter = el.attribute("location-after");

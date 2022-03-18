@@ -51,7 +51,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_align_sequences_to_msa {
 using namespace HI;
 
-static void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, const QString &expectedContent) {
+static void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect& selectionRect, const QString& expectedContent) {
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, selectionRect.center().x()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList fileList = {"tub1.txt", "tub3.txt"};
-    GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
+    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
     GTUtilsDialog::waitForDialog(os, ob);
 
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
@@ -306,25 +306,25 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
-    QStringList expectedMsaData = QStringList() << "----TAAGACTTCTAA------------"
-                                                << "----TAAGCTTACTAA------------"
-                                                << "----TTAGTTTATTAA------------"
-                                                << "----TCAGTCTATTAA------------"
-                                                << "----TCAGTTTATTAA------------"
-                                                << "----TTAGTCTACTAA------------"
-                                                << "----TCAGATTATTAA------------"
-                                                << "----TTAGATTGCTAA------------"
-                                                << "----TTAGATTATTAA------------"
-                                                << "----TAAGTCTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGAATAATTA------------"
-                                                << "----TAAGCCTTTTAA------------"
-                                                << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    QStringList expectedMsaData = {"----TAAGACTTCTAA------------",
+                                   "----TAAGCTTACTAA------------",
+                                   "----TTAGTTTATTAA------------",
+                                   "----TCAGTCTATTAA------------",
+                                   "----TCAGTTTATTAA------------",
+                                   "----TTAGTCTACTAA------------",
+                                   "----TCAGATTATTAA------------",
+                                   "----TTAGATTGCTAA------------",
+                                   "----TTAGATTATTAA------------",
+                                   "----TAAGTCTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGAATAATTA------------",
+                                   "----TAAGCCTTTTAA------------",
+                                   "GCGCTAAGCCTTTTAAGCGCGCGCGCGC"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Expected:\n" + expectedMsaData.join("\n") + "\nFound:\n" + msaData.join("\n"));
@@ -343,25 +343,25 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
-    QStringList expectedMsaData = QStringList() << "------TAAGACTTCTAA"
-                                                << "------TAAGCTTACTAA"
-                                                << "------TTAGTTTATTAA"
-                                                << "------TCAGTCTATTAA"
-                                                << "------TCAGTTTATTAA"
-                                                << "------TTAGTCTACTAA"
-                                                << "------TCAGATTATTAA"
-                                                << "------TTAGATTGCTAA"
-                                                << "------TTAGATTATTAA"
-                                                << "------TAAGTCTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGAATAATTA"
-                                                << "------TAAGCCTTTTAA"
-                                                << "GCGCGCTAAGCC------";
+    QStringList expectedMsaData = {"------TAAGACTTCTAA",
+                                   "------TAAGCTTACTAA",
+                                   "------TTAGTTTATTAA",
+                                   "------TCAGTCTATTAA",
+                                   "------TCAGTTTATTAA",
+                                   "------TTAGTCTACTAA",
+                                   "------TCAGATTATTAA",
+                                   "------TTAGATTGCTAA",
+                                   "------TTAGATTATTAA",
+                                   "------TAAGTCTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGAATAATTA",
+                                   "------TAAGCCTTTTAA",
+                                   "GCGCGCTAAGCC------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -380,17 +380,17 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     // Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
-    const QStringList expectedMsaData = QStringList() << "-----AAGCTTCTTTTAA----------"
-                                                      << "-----AAGTTACTAA-------------"
-                                                      << "-----TAG---TTATTAA----------"
-                                                      << "-----AAGC---TATTAA----------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----AAGCTTT---TAA----------"
-                                                      << "-----A--AGAATAATTA----------"
-                                                      << "-----AAGCTTTTAA-------------"
-                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    const QStringList expectedMsaData = {"-----AAGCTTCTTTTAA----------",
+                                         "-----AAGTTACTAA-------------",
+                                         "-----TAG---TTATTAA----------",
+                                         "-----AAGC---TATTAA----------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----AAGCTTT---TAA----------",
+                                         "-----A--AGAATAATTA----------",
+                                         "-----AAGCTTTTAA-------------",
+                                         "GCGCTAAGCCTTTTAAGCGCGCGCGCGC"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -409,17 +409,17 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
-    QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
-                                                << "AAGTTACTAA---"
-                                                << "TAG---TTATTAA"
-                                                << "AAGC---TATTAA"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "AAGCTTT---TAA"
-                                                << "A--AGAATAATTA"
-                                                << "AAGCTTTTAA---"
-                                                << "AAGAATA------";
+    QStringList expectedMsaData = {"AAGCTTCTTTTAA",
+                                   "AAGTTACTAA---",
+                                   "TAG---TTATTAA",
+                                   "AAGC---TATTAA",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "AAGCTTT---TAA",
+                                   "A--AGAATAATTA",
+                                   "AAGCTTTTAA---",
+                                   "AAGAATA------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -442,17 +442,17 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     //    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
-    QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
-                                                << "AAGTTACTAA---"
-                                                << "TAG---TTATTAA"
-                                                << "AAGC---TATTAA"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "AAGCTTT---TAA"
-                                                << "A--AGAATAATTA"
-                                                << "AAGCTTTTAA---"
-                                                << "AAGAATA------";
+    QStringList expectedMsaData = {"AAGCTTCTTTTAA",
+                                   "AAGTTACTAA---",
+                                   "TAG---TTATTAA",
+                                   "AAGC---TATTAA",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "AAGCTTT---TAA",
+                                   "A--AGAATAATTA",
+                                   "AAGCTTTTAA---",
+                                   "AAGAATA------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");

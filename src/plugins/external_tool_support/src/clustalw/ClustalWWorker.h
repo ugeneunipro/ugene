@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class ClustalWPrompter : public PrompterBase<ClustalWPrompter> {
     Q_OBJECT
 public:
-    ClustalWPrompter(Actor *p = 0);
+    ClustalWPrompter(Actor* p = 0);
 
 protected:
     QString composeRichDoc();
@@ -43,10 +43,10 @@ protected:
 class ClustalWWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ClustalWWorker(Actor *a);
+    ClustalWWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -58,7 +58,7 @@ private:
     ClustalWSupportTaskSettings cfg;
 
 private:
-    void send(const MultipleSequenceAlignment &msa);
+    void send(const MultipleSequenceAlignment& msa);
 };
 
 class ClustalWWorkerFactory : public DomainFactory {
@@ -68,12 +68,12 @@ public:
     ClustalWWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new ClustalWWorker(a);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

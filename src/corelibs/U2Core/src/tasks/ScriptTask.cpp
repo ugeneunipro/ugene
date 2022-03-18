@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-ScriptTask::ScriptTask(const QString &taskName, const QString &_scriptText, const ScriptTaskSettings &_settings)
+ScriptTask::ScriptTask(const QString& taskName, const QString& _scriptText, const ScriptTaskSettings& _settings)
     : Task(taskName, _settings.mainThreadScript ? TaskFlag_NoRun : TaskFlag_None), scriptText(_scriptText), conf(_settings) {
     setVerboseLogMode(true);
 }
@@ -44,13 +44,13 @@ Task::ReportResult ScriptTask::report() {
     return ReportResult_Finished;
 }
 
-QScriptValue ScriptTask::runScript(QScriptEngine *engine, const QMap<QString, QScriptValue> &inputParametersMap, const QString &scriptText, TaskStateInfo &stateInfo) {
+QScriptValue ScriptTask::runScript(QScriptEngine* engine, const QMap<QString, QScriptValue>& inputParametersMap, const QString& scriptText, TaskStateInfo& stateInfo) {
     // create new script engine
     QScriptValue result;
 
     // setup all input params as global vars
     QScriptValue thiz = engine->globalObject();
-    foreach (const QString &varName, inputParametersMap.keys()) {
+    foreach (const QString& varName, inputParametersMap.keys()) {
         QScriptValue varVal = inputParametersMap.value(varName);
         thiz.setProperty(varName, varVal);
     }

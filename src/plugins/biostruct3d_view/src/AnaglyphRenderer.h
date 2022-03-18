@@ -38,7 +38,7 @@ enum AnaglyphStatus { NOT_AVAILABLE = -1,
 
 class AnaglyphSettings {
 public:
-    AnaglyphSettings(float _eyesShift, const QColor &_leftEyeColor, const QColor &_rightEyeColor)
+    AnaglyphSettings(float _eyesShift, const QColor& _leftEyeColor, const QColor& _rightEyeColor)
         : eyesShift(_eyesShift), leftEyeColor(_leftEyeColor), rightEyeColor(_rightEyeColor) {
     }
 
@@ -49,15 +49,15 @@ public:
     static AnaglyphSettings defaultSettings();
 
 public:
-    QVariantMap toMap(QVariantMap &map) const;
-    static AnaglyphSettings fromMap(const QVariantMap &map);
+    QVariantMap toMap(QVariantMap& map) const;
+    static AnaglyphSettings fromMap(const QVariantMap& map);
 };
 
 /** Anaglyph effect renderer */
 class AnaglyphRenderer {
 public:
     /** Construct anaglyph renderer over scene renderer */
-    AnaglyphRenderer(BioStruct3DGLWidget *_renderer, const AnaglyphSettings &_settings);
+    AnaglyphRenderer(BioStruct3DGLWidget* _renderer, const AnaglyphSettings& _settings);
     virtual ~AnaglyphRenderer();
 
     /** Checks if possible to enable anaglyph. Performs test rendering */
@@ -67,9 +67,9 @@ public:
     virtual void resize(int w, int h);
     virtual void draw();
 
-    const AnaglyphSettings &getSettings() const;
+    const AnaglyphSettings& getSettings() const;
 
-    void setSettings(const AnaglyphSettings &_settings);
+    void setSettings(const AnaglyphSettings& _settings);
 
 private:
     /** Set up an ortho projection. For textures rendering */
@@ -83,10 +83,10 @@ private:
 
 private:
     // this will redefine CHECK_GL_ERROR macro
-    inline void checkGlError(const char *file, int line);
+    inline void checkGlError(const char* file, int line);
 
 private:
-    BioStruct3DGLWidget *renderer;
+    BioStruct3DGLWidget* renderer;
     AnaglyphSettings settings;
     int width, height;
 
@@ -95,11 +95,11 @@ private:
     bool hasErrors;
 };
 
-inline void AnaglyphRenderer::checkGlError(const char *file, int line) {
+inline void AnaglyphRenderer::checkGlError(const char* file, int line) {
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
         QString where = QString("%1:%2: ").arg(file).arg(line);
-        QString msg = QString("OpenGL error (%1): %2").arg(error).arg((char *)gluErrorString(error));
+        QString msg = QString("OpenGL error (%1): %2").arg(error).arg((char*)gluErrorString(error));
         uiLog.trace(where + msg);
 
         hasErrors = true;

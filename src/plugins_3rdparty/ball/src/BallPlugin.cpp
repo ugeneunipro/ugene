@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT U2::Plugin *U2_PLUGIN_INIT_FUNC() {
-    BallPlugin *plug = new BallPlugin();
+extern "C" Q_DECL_EXPORT U2::Plugin* U2_PLUGIN_INIT_FUNC() {
+    BallPlugin* plug = new BallPlugin();
     return plug;
 }
 

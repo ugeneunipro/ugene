@@ -34,21 +34,21 @@ class StructuralAlignmentDialog : public QDialog, public Ui_StructuralAlignmentD
     Q_OBJECT
 
 public:
-    StructuralAlignmentDialog(const BioStruct3DObject *fixedRef = 0, int fixedRefModel = -1, QWidget *parent = 0);
+    StructuralAlignmentDialog(const BioStruct3DObject* fixedRef = 0, int fixedRefModel = -1, QWidget* parent = 0);
 
     /** Check if algorithm available and ::exec() */
     int execIfAlgorithmAvailable();
 
     /** @returns set up StructuralAlignmentTask */
-    StructuralAlignmentTask *getTask();
+    StructuralAlignmentTask* getTask();
 
 public slots:
     void accept() override;
 
 private:
-    StructuralAlignmentTask *task = nullptr;
-    BioStruct3DSubsetEditor *ref = nullptr;
-    BioStruct3DSubsetEditor *mob = nullptr;
+    StructuralAlignmentTask* task = nullptr;
+    BioStruct3DSubsetEditor* ref = nullptr;
+    BioStruct3DSubsetEditor* mob = nullptr;
 };
 
 }  // namespace U2

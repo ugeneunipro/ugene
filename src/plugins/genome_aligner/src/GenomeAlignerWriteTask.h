@@ -34,26 +34,26 @@ namespace U2 {
 
 class WriteData {
 public:
-    SearchQuery *qu;
+    SearchQuery* qu;
     SAType offset;
 };
 
 class GenomeAlignerWriteTask : public Task {
     Q_OBJECT
 public:
-    GenomeAlignerWriteTask(GenomeAlignerWriter *seqWriter);
+    GenomeAlignerWriteTask(GenomeAlignerWriter* seqWriter);
     virtual void run();
 
-    void addResult(SearchQuery *qu);
+    void addResult(SearchQuery* qu);
     void flush();
     void setFinished();
     quint64 getWrittenReadsCount() const {
         return readsWritten;
     }
-    void setSeqWriter(GenomeAlignerWriter *seqWriter);
+    void setSeqWriter(GenomeAlignerWriter* seqWriter);
 
 private:
-    GenomeAlignerWriter *seqWriter;
+    GenomeAlignerWriter* seqWriter;
     QVector<WriteData> results;
     bool end;
     bool writing;
@@ -66,7 +66,7 @@ private:
 
     static const int MAX_LIST_SIZE = 1000;
 
-    inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
+    inline void setReadWritten(SearchQuery* read, SearchQuery* revCompl);
 };
 }  // namespace U2
 

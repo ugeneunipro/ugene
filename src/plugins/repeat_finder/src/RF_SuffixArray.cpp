@@ -58,19 +58,19 @@ void memmove(void* _src, void* _dst, const size_t _size){
 using namespace std;
 
 class exc : public exception {
-    const char *msg;
+    const char* msg;
 
 public:
-    exc(const char *_msg)
+    exc(const char* _msg)
         : msg(_msg) {
     }
 
-    const char *what() const throw() {
+    const char* what() const throw() {
         return msg;
     }
 };
 
-SuffixArray::SuffixArray(const char *_sequence, int size, int _prefixLen)
+SuffixArray::SuffixArray(const char* _sequence, int size, int _prefixLen)
     : prefixLen(_prefixLen), usablePrefixLen(qMin(_prefixLen, 12)), seqSize(size), sequence(_sequence), prefixNum(1 << (2 * usablePrefixLen)) {
     startt = clock();
 
@@ -81,7 +81,7 @@ SuffixArray::SuffixArray(const char *_sequence, int size, int _prefixLen)
     prefixes = new quint32[prefixNum];
     U2::memset(prefixes, 0, prefixNum * sizeof(quint32));
     // init prefixes
-    const BitMask &mask = *bitMask;
+    const BitMask& mask = *bitMask;
     for (quint32 i = 0; i <= seqSize - prefixLen; i++) {
         const quint32 ind = (mask[i] >> (64 - usablePrefixLen * 2));
 #ifdef _DEBUG
@@ -167,7 +167,7 @@ void SuffixArray::sortDeeper(const quint32 begin, const quint32 end) {
 #ifdef _DEBUG
     Q_ASSERT(begin < end && (end - begin) <= maxSuffixesPerPrefix);
 #endif
-    const BitMask &bits = *bitMask;
+    const BitMask& bits = *bitMask;
     const static quint64 HI_DWORD_MASK = 0xffffffff00000000LL;
     const static quint64 LO_DWORD_MASK = ~HI_DWORD_MASK;
     for (quint32 suffRunner = begin; suffRunner < end; suffRunner++) {
@@ -184,7 +184,7 @@ void SuffixArray::sortUndefinedDeeper(const quint32 begin, const quint32 end) {
 #ifdef _DEBUG
     Q_ASSERT(begin < end && (end - begin) <= maxSuffixesPerPrefix);
 #endif
-    const BitMask &bits = *bitMask;
+    const BitMask& bits = *bitMask;
     const static quint64 HI_DWORD_MASK = 0xffffffff00000000LL;
     const static quint64 LO_DWORD_MASK = ~HI_DWORD_MASK;
     for (quint32 suffRunner = begin; suffRunner < end; suffRunner++) {
@@ -223,7 +223,7 @@ void SuffixArray::qsort(const quint32 first, const quint32 last) {
         suffixes[last] = t;
         return;
     }
-    const quint64 *alignedSortBuf = qSortBuffer - first;
+    const quint64* alignedSortBuf = qSortBuffer - first;
     quint32 lrunner = first;
     quint32 rrunner = last;
     const quint64 midv = alignedSortBuf[(first + last) / 2];

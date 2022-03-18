@@ -36,7 +36,7 @@ SequenceQualityTrimTaskSettings::SequenceQualityTrimTaskSettings()
       trimBothEnds(true) {
 }
 
-SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings)
+SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings& settings)
     : Task(tr("Trim sequence by quality"), TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(settings),
       trimmedSequenceObject(nullptr),
@@ -50,8 +50,8 @@ SequenceQualityTrimTask::~SequenceQualityTrimTask() {
     delete trimmedChromatogramObject;
 }
 
-U2SequenceObject *SequenceQualityTrimTask::takeTrimmedSequence() {
-    U2SequenceObject *result = trimmedSequenceObject;
+U2SequenceObject* SequenceQualityTrimTask::takeTrimmedSequence() {
+    U2SequenceObject* result = trimmedSequenceObject;
     trimmedSequenceObject = nullptr;
     return result;
 }
@@ -82,7 +82,7 @@ void SequenceQualityTrimTask::cloneObjects() {
 
 void SequenceQualityTrimTask::cloneSequence() {
     const U2DbiRef dbiRef = settings.sequenceObject->getEntityRef().dbiRef;
-    trimmedSequenceObject = qobject_cast<U2SequenceObject *>(settings.sequenceObject->clone(dbiRef, stateInfo));
+    trimmedSequenceObject = qobject_cast<U2SequenceObject*>(settings.sequenceObject->clone(dbiRef, stateInfo));
 }
 
 void SequenceQualityTrimTask::cloneChromatogram() {
@@ -95,7 +95,7 @@ void SequenceQualityTrimTask::cloneChromatogram() {
     CHECK_OP(stateInfo, );
 
     QScopedPointer<DNAChromatogramObject> chromatogramObject(new DNAChromatogramObject(chromatogramName, chromatogramRef));
-    trimmedChromatogramObject = qobject_cast<DNAChromatogramObject *>(chromatogramObject->clone(dbiRef, stateInfo));
+    trimmedChromatogramObject = qobject_cast<DNAChromatogramObject*>(chromatogramObject->clone(dbiRef, stateInfo));
     CHECK_OP(stateInfo, );
 }
 
@@ -127,7 +127,7 @@ U2Region SequenceQualityTrimTask::trimSequence() {
     return acceptedRegion;
 }
 
-void SequenceQualityTrimTask::trimChromatogram(const U2Region &regionToCrop) {
+void SequenceQualityTrimTask::trimChromatogram(const U2Region& regionToCrop) {
     CHECK(nullptr != trimmedChromatogramObject, );
     DNAChromatogram chromatogram = trimmedChromatogramObject->getChromatogram();
     ChromatogramUtils::crop(chromatogram, regionToCrop.startPos, regionToCrop.length);

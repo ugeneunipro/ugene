@@ -42,7 +42,7 @@ private:
 
 class SMatrixTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

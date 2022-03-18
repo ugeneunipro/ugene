@@ -56,7 +56,7 @@ namespace U2 {
 #define MISMATCHES "mismatches"
 #define ALG_ATTR "alg"
 
-U2Region GTest_FindSingleSequenceRepeatsTask::parseRegion(const QString &n, const QDomElement &el) {
+U2Region GTest_FindSingleSequenceRepeatsTask::parseRegion(const QString& n, const QDomElement& el) {
     U2Region res;
     QString v = el.attribute(n);
     if (v.isEmpty()) {
@@ -77,7 +77,7 @@ U2Region GTest_FindSingleSequenceRepeatsTask::parseRegion(const QString &n, cons
     return res;
 }
 
-void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat*, const QDomElement& el) {
     seq = el.attribute(SEQ_ATTR);
     if (seq.isEmpty()) {
         stateInfo.setError(QString("Value not found '%1'").arg(SEQ_ATTR));
@@ -161,7 +161,7 @@ void GTest_FindSingleSequenceRepeatsTask::prepare() {
     if (hasError() || isCanceled()) {
         return;
     }
-    U2SequenceObject *seq1IObj = getContext<U2SequenceObject>(this, seq);
+    U2SequenceObject* seq1IObj = getContext<U2SequenceObject>(this, seq);
     if (seq1IObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
@@ -214,7 +214,7 @@ void GTest_FindSingleSequenceRepeatsTask::prepare() {
         s.algo = algo;
         DNASequence seqData = seq1IObj->getWholeSequence(os);
         CHECK_OP_EXT(os, setError(os.getError()), );
-        Task *sub = new FindRepeatsTask(s, seqData, seqData);
+        Task* sub = new FindRepeatsTask(s, seqData, seqData);
         addSubTask(sub);
     }
 }
@@ -255,7 +255,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
     std::sort(expectedResults.begin(), expectedResults.end());
 
     // check all subtasks
-    FindRepeatsTask *sub = qobject_cast<FindRepeatsTask *>(getSubtasks()[0].data());
+    FindRepeatsTask* sub = qobject_cast<FindRepeatsTask*>(getSubtasks()[0].data());
     QVector<RFResult> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
         stateInfo.setError(QString("Results count not matched, num = %1, expected = %2, alg = %3")
@@ -300,7 +300,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
 
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
-void GTest_FindTandemRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindTandemRepeatsTask::init(XMLTestFormat*, const QDomElement& el) {
     minD = el.attribute(MIND_ATTR, "-1").toInt();
     maxD = el.attribute(MAXD_ATTR, "-1").toInt();
 
@@ -328,13 +328,13 @@ void GTest_FindTandemRepeatsTask::prepare() {
     // this->getContext(this,"")
     // new DNAAlphabetRegistryImpl(
     //     TaskResourceUsage* tru = AppContext::getTaskScheduler()->getTaskResources(NULL).constData();
-    const DNAAlphabet *alph = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* alph = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     seqObj = new DNASequence(QString("sequence"), sequence.toLatin1(), alph);
     if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
-    string = (char *)(seqObj->constData());
+    string = (char*)(seqObj->constData());
 
     int maxLen = sequence.length();
     if (minD == -1) {
@@ -363,7 +363,7 @@ void GTest_FindTandemRepeatsTask::run() {
     QList<Tandem> expectedResults;
     // load file with results
     QStringList resList = results.split(';', QString::SkipEmptyParts);
-    foreach (const QString &result, resList) {
+    foreach (const QString& result, resList) {
         QStringList hit = result.split(',', QString::SkipEmptyParts);
         if (hit.size() != 3) {
             stateInfo.setError(QString("Can't parse results line: %1").arg(result));
@@ -379,7 +379,7 @@ void GTest_FindTandemRepeatsTask::run() {
     }
 
     // check all subtasks
-    TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
+    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
         QString results("First results are:\n");
@@ -414,7 +414,7 @@ void GTest_FindTandemRepeatsTask::run() {
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 
-U2Region GTest_FindRealTandemRepeatsTask::parseRegion(const QString &n, const QDomElement &el) {
+U2Region GTest_FindRealTandemRepeatsTask::parseRegion(const QString& n, const QDomElement& el) {
     U2Region res;
     QString v = el.attribute(n);
     if (v.isEmpty()) {
@@ -435,7 +435,7 @@ U2Region GTest_FindRealTandemRepeatsTask::parseRegion(const QString &n, const QD
     return res;
 }
 
-void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat*, const QDomElement& el) {
     minD = el.attribute(MIND_ATTR, "-1").toInt();
     maxD = el.attribute(MAXD_ATTR, "-1").toInt();
 
@@ -467,7 +467,7 @@ void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *, const QDomElement &e
 
 void GTest_FindRealTandemRepeatsTask::prepare() {
     CHECK_OP(stateInfo, );
-    U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, sequence);
+    U2SequenceObject* seqObj = getContext<U2SequenceObject>(this, sequence);
     if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
@@ -529,7 +529,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
     std::sort(expectedResults.begin(), expectedResults.end());
 
     // check all subtasks
-    TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
+    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     QMutableListIterator<Tandem> cIt(calcResults);
     QMutableListIterator<Tandem> eIt(expectedResults);
@@ -560,7 +560,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 
-void GTest_SArrayBasedFindTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SArrayBasedFindTask::init(XMLTestFormat*, const QDomElement& el) {
     QString buf = el.attribute(RESULT_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(QString("Value not found: '%1'").arg(RESULT_ATTR));
@@ -568,7 +568,7 @@ void GTest_SArrayBasedFindTask::init(XMLTestFormat *, const QDomElement &el) {
     }
 
     QStringList results = buf.split(",");
-    foreach (const QString &str, results) {
+    foreach (const QString& str, results) {
         bool ok = false;
         int pos = str.toInt(&ok);
         if (!ok) {
@@ -610,7 +610,7 @@ void GTest_SArrayBasedFindTask::cleanup() {
 void GTest_SArrayBasedFindTask::prepare() {
     CHECK_OP(stateInfo, );
 
-    U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, seqObjName);
+    U2SequenceObject* seqObj = getContext<U2SequenceObject>(this, seqObjName);
     if (seqObj == nullptr) {
         stateInfo.setError(QString("Can't find index sequence %1").arg(seqObjName));
         return;
@@ -619,7 +619,7 @@ void GTest_SArrayBasedFindTask::prepare() {
     char unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N'
                                                                                         : '\0';
 
-    const quint32 *bitMask = nullptr;
+    const quint32* bitMask = nullptr;
     int bitCharLen = 0;
 
     if (useBitMask) {
@@ -682,8 +682,8 @@ void GTest_SArrayBasedFindTask::run() {
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 
-QList<XMLTestFactory *> RepeatFinderTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> RepeatFinderTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_FindSingleSequenceRepeatsTask::createFactory());
     res.append(GTest_FindTandemRepeatsTask::createFactory());
     res.append(GTest_FindRealTandemRepeatsTask::createFactory());

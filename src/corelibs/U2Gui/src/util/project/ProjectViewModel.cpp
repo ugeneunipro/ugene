@@ -46,38 +46,38 @@ namespace U2 {
 
 const QString ProjectViewModel::MODIFIED_ITEM_COLOR = "#0032a0";
 
-ProjectViewModel::ProjectViewModel(const ProjectTreeControllerModeSettings &settings, QObject *parent)
+ProjectViewModel::ProjectViewModel(const ProjectTreeControllerModeSettings& settings, QObject* parent)
     : QAbstractItemModel(parent), settings(settings) {
 }
 
-void ProjectViewModel::updateSettings(const ProjectTreeControllerModeSettings &newSettings) {
+void ProjectViewModel::updateSettings(const ProjectTreeControllerModeSettings& newSettings) {
     settings = newSettings;
 }
 
-void ProjectViewModel::updateData(const QModelIndex &index) {
+void ProjectViewModel::updateData(const QModelIndex& index) {
     emit dataChanged(index, index);
 }
 
-int ProjectViewModel::columnCount(const QModelIndex & /*parent*/) const {
+int ProjectViewModel::columnCount(const QModelIndex& /*parent*/) const {
     return 1;
 }
 
-QVariant ProjectViewModel::data(const QModelIndex &index, int role) const {
+QVariant ProjectViewModel::data(const QModelIndex& index, int role) const {
     CHECK(index.isValid(), QVariant());
 
     switch (itemType(index)) {
         case DOCUMENT: {
-            Document *doc = toDocument(index);
+            Document* doc = toDocument(index);
             SAFE_POINT(nullptr != doc, "NULL document", QVariant());
             return data(doc, role);
         }
         case FOLDER: {
-            Folder *folder = toFolder(index);
+            Folder* folder = toFolder(index);
             SAFE_POINT(nullptr != folder, "NULL folder", QVariant());
             return data(folder, role);
         }
         case OBJECT: {
-            GObject *obj = toObject(index);
+            GObject* obj = toObject(index);
             SAFE_POINT(nullptr != obj, "NULL object", QVariant());
             return data(obj, role);
         }
@@ -86,7 +86,7 @@ QVariant ProjectViewModel::data(const QModelIndex &index, int role) const {
     }
 }
 
-bool ProjectViewModel::setData(const QModelIndex &index, const QVariant &value, int /*role*/) {
+bool ProjectViewModel::setData(const QModelIndex& index, const QVariant& value, int /*role*/) {
     CHECK(index.isValid(), false);
     CHECK(value.isValid(), false);
 
@@ -114,22 +114,22 @@ bool ProjectViewModel::setData(const QModelIndex &index, const QVariant &value, 
     return true;
 }
 
-QModelIndex ProjectViewModel::setObjectData(GObject *obj, const QString &newName) {
+QModelIndex ProjectViewModel::setObjectData(GObject* obj, const QString& newName) {
     SAFE_POINT(nullptr != obj, "Invalid object detected", QModelIndex());
     CHECK(newName != obj->getGObjectName(), QModelIndex());
     obj->setGObjectName(newName);
 
-    Document *doc = obj->getDocument();
+    Document* doc = obj->getDocument();
     const QString objPath = getObjectFolder(doc, obj);
     removeObject(doc, obj);
     insertObject(doc, obj, objPath);
     return getIndexForObject(obj);
 }
 
-QModelIndex ProjectViewModel::setFolderData(Folder *folder, const QString &newName) {
+QModelIndex ProjectViewModel::setFolderData(Folder* folder, const QString& newName) {
     SAFE_POINT(nullptr != folder, "Invalid folder detected", QModelIndex());
 
-    Document *doc = folder->getDocument();
+    Document* doc = folder->getDocument();
     SAFE_POINT(nullptr != doc, "Invalid document detected", QModelIndex());
     const QString parentPath = folder->getParentPath();
     const QString newPath = U2ObjectDbi::ROOT_FOLDER == parentPath ? parentPath + newName : parentPath + U2ObjectDbi::PATH_SEP + newName;
@@ -141,7 +141,7 @@ QModelIndex ProjectViewModel::setFolderData(Folder *folder, const QString &newNa
     return getIndexForPath(doc, newPath);
 }
 
-QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex &parent) const {
+QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex& parent) const {
     CHECK(parent.isValid() || row < rowCount(parent), QModelIndex());
     if (!parent.isValid()) {
         return getTopLevelItemIndex(row, column);
@@ -149,10 +149,10 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex &pare
 
     switch (itemType(parent)) {
         case DOCUMENT: {
-            Document *doc = toDocument(parent);
+            Document* doc = toDocument(parent);
             SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
-            QList<Folder *> subFolders = folders[doc]->getSubFolders(U2ObjectDbi::ROOT_FOLDER);
-            QList<GObject *> subObjects = folders[doc]->getObjects(U2ObjectDbi::ROOT_FOLDER);
+            QList<Folder*> subFolders = folders[doc]->getSubFolders(U2ObjectDbi::ROOT_FOLDER);
+            QList<GObject*> subObjects = folders[doc]->getObjects(U2ObjectDbi::ROOT_FOLDER);
             if (row < subFolders.size()) {
                 return createIndex(row, column, subFolders[row]);
             }
@@ -160,10 +160,10 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex &pare
             return createIndex(row, column, subObjects[row - subFolders.size()]);
         }
         case FOLDER: {
-            Folder *folder = toFolder(parent);
+            Folder* folder = toFolder(parent);
             SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
-            QList<Folder *> subFolders = folders[folder->getDocument()]->getSubFolders(folder->getFolderPath());
-            QList<GObject *> subObjects = folders[folder->getDocument()]->getObjects(folder->getFolderPath());
+            QList<Folder*> subFolders = folders[folder->getDocument()]->getSubFolders(folder->getFolderPath());
+            QList<GObject*> subObjects = folders[folder->getDocument()]->getObjects(folder->getFolderPath());
             if (row < subFolders.size()) {
                 return createIndex(row, column, subFolders[row]);
             }
@@ -175,7 +175,7 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex &pare
     }
 }
 
-QModelIndex ProjectViewModel::parent(const QModelIndex &index) const {
+QModelIndex ProjectViewModel::parent(const QModelIndex& index) const {
     CHECK(index.isValid(), QModelIndex());
 
     switch (itemType(index)) {
@@ -183,16 +183,16 @@ QModelIndex ProjectViewModel::parent(const QModelIndex &index) const {
             return QModelIndex();  //  Documents are top level items
         }
         case FOLDER: {
-            Folder *folder = toFolder(index);
+            Folder* folder = toFolder(index);
             SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
 
             return getIndexForPath(folder->getDocument(), DocumentFolders::getParentFolder(folder->getFolderPath()));
         }
         case OBJECT: {
-            GObject *obj = toObject(index);
+            GObject* obj = toObject(index);
             SAFE_POINT(nullptr != obj, "NULL object", QModelIndex());
 
-            Document *doc = getObjectDocument(obj);
+            Document* doc = getObjectDocument(obj);
             SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
 
             QString parentPath = folders[doc]->getObjectFolder(obj);
@@ -203,19 +203,19 @@ QModelIndex ProjectViewModel::parent(const QModelIndex &index) const {
     }
 }
 
-int ProjectViewModel::rowCount(const QModelIndex &parent) const {
+int ProjectViewModel::rowCount(const QModelIndex& parent) const {
     if (!parent.isValid()) {
         return getTopLevelItemsCount();
     }
 
     switch (itemType(parent)) {
         case DOCUMENT: {
-            Document *doc = toDocument(parent);
+            Document* doc = toDocument(parent);
             SAFE_POINT(nullptr != doc, "NULL document", 0);
             return getChildrenCount(doc, U2ObjectDbi::ROOT_FOLDER);
         }
         case FOLDER: {
-            Folder *folder = toFolder(parent);
+            Folder* folder = toFolder(parent);
             SAFE_POINT(nullptr != folder, "NULL folder", 0);
             return getChildrenCount(folder->getDocument(), folder->getFolderPath());
         }
@@ -227,13 +227,13 @@ int ProjectViewModel::rowCount(const QModelIndex &parent) const {
     }
 }
 
-Qt::ItemFlags ProjectViewModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags ProjectViewModel::flags(const QModelIndex& index) const {
     Qt::ItemFlags result = QAbstractItemModel::flags(index);
     CHECK(index.isValid(), result);
 
     switch (itemType(index)) {
         case DOCUMENT: {
-            Document *doc = toDocument(index);
+            Document* doc = toDocument(index);
             SAFE_POINT(nullptr != doc, "NULL document", result);
             if (isDropEnabled(doc)) {
                 result |= Qt::ItemIsDropEnabled;
@@ -242,10 +242,10 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex &index) const {
             return result;
         }
         case FOLDER: {
-            Folder *folder = toFolder(index);
+            Folder* folder = toFolder(index);
             SAFE_POINT(nullptr != folder, "NULL folder", result);
             const QString path = folder->getFolderPath();
-            Document *doc = folder->getDocument();
+            Document* doc = folder->getDocument();
             if (!ProjectUtils::isFolderInRecycleBin(path) && isDropEnabled(doc)) {
                 result |= Qt::ItemIsDropEnabled;
             }
@@ -258,9 +258,9 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex &index) const {
             return result;
         }
         case OBJECT: {
-            GObject *obj = toObject(index);
+            GObject* obj = toObject(index);
             SAFE_POINT(nullptr != obj, "NULL object", result);
-            Document *doc = obj->getDocument();
+            Document* doc = obj->getDocument();
             if ((GObjectTypes::UNLOADED == obj->getGObjectType()) && !settings.allowSelectUnloaded) {
                 result &= ~QFlags<Qt::ItemFlag>(Qt::ItemIsEnabled);
             } else if (isWritableDoc(doc)) {
@@ -277,12 +277,12 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex &index) const {
     }
 }
 
-QMimeData *ProjectViewModel::mimeData(const QModelIndexList &indexes) const {
+QMimeData* ProjectViewModel::mimeData(const QModelIndexList& indexes) const {
     QList<QPointer<Document>> docs;
     QList<Folder> folders;
     QList<QPointer<GObject>> objects;
 
-    foreach (const QModelIndex &index, indexes) {
+    foreach (const QModelIndex& index, indexes) {
         switch (itemType(index)) {
             case DOCUMENT:
                 docs << toDocument(index);
@@ -305,7 +305,7 @@ QMimeData *ProjectViewModel::mimeData(const QModelIndexList &indexes) const {
     } else if ((1 == folders.size()) && objects.isEmpty() && docs.isEmpty()) {
         return new FolderMimeData(folders.first());
     } else {
-        BunchMimeData *bmd = new BunchMimeData();
+        BunchMimeData* bmd = new BunchMimeData();
         bmd->objects = objects;
         bmd->folders = folders;
         return bmd;
@@ -321,11 +321,11 @@ QStringList ProjectViewModel::mimeTypes() const {
     return result;
 }
 
-bool ProjectViewModel::dropMimeData(const QMimeData *data, Qt::DropAction /*action*/, int row, int /*column*/, const QModelIndex &parent) {
+bool ProjectViewModel::dropMimeData(const QMimeData* data, Qt::DropAction /*action*/, int row, int /*column*/, const QModelIndex& parent) {
     CHECK(parent.isValid(), false);
     Folder target = getDropFolder(parent);
     const QString folderPath = target.getFolderPath();
-    Document *targetDoc = target.getDocument();
+    Document* targetDoc = target.getDocument();
     SAFE_POINT(nullptr != targetDoc, "NULL document", false);
     CHECK(!targetDoc->isStateLocked(), false);
     SAFE_POINT(-1 == row || ProjectUtils::isFolderInRecycleBinSubtree(folderPath), "Wrong insertion row", false);
@@ -351,8 +351,8 @@ Qt::DropActions ProjectViewModel::supportedDropActions() const {
     return Qt::CopyAction | Qt::MoveAction;
 }
 
-void ProjectViewModel::addDocument(Document *doc) {
-    DocumentFolders *f = new DocumentFolders;
+void ProjectViewModel::addDocument(Document* doc) {
+    DocumentFolders* f = new DocumentFolders;
     U2OpStatus2Log os;
     f->init(doc, os);
     CHECK_OP(os, );
@@ -366,11 +366,11 @@ void ProjectViewModel::addDocument(Document *doc) {
 
     connectDocument(doc);
 
-    connect(doc, SIGNAL(si_objectAdded(GObject *)), SLOT(sl_objectAdded(GObject *)));
-    connect(doc, SIGNAL(si_objectRemoved(GObject *)), SLOT(sl_objectRemoved(GObject *)));
+    connect(doc, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_objectAdded(GObject*)));
+    connect(doc, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_objectRemoved(GObject*)));
 }
 
-void ProjectViewModel::removeDocument(Document *doc) {
+void ProjectViewModel::removeDocument(Document* doc) {
     disconnectDocument(doc);
     int row = beforeRemoveDocument(doc);
     docs.removeAll(doc);
@@ -379,7 +379,7 @@ void ProjectViewModel::removeDocument(Document *doc) {
     afterRemove(row);
 }
 
-void ProjectViewModel::findFoldersDiff(QStringList oldFolders, QStringList newFolders, QStringList &added, QStringList &deleted) {
+void ProjectViewModel::findFoldersDiff(QStringList oldFolders, QStringList newFolders, QStringList& added, QStringList& deleted) {
     oldFolders.sort();
     newFolders.sort();
 
@@ -406,7 +406,7 @@ void ProjectViewModel::findFoldersDiff(QStringList oldFolders, QStringList newFo
     }
 }
 
-void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update) {
+void ProjectViewModel::merge(Document* doc, const DocumentFoldersUpdate& update) {
     // TODO
     GTIMER(c, t, "ProjectViewModel::merge");
     SAFE_POINT(folders.contains(doc), "Unknown document", );
@@ -414,7 +414,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     ConnectionHelper con(doc->getDbiRef(), os);
     CHECK_OP(os, );
 
-    DocumentFolders *docFolders = folders[doc];
+    DocumentFolders* docFolders = folders[doc];
     DocumentFoldersUpdate lastUpdate = docFolders->getLastUpdate();
 
     // folders
@@ -423,7 +423,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     findFoldersDiff(lastUpdate.folders, update.folders, addedFolders, deletedFolders);
 
     // NOTE: this cycle supposes that @addedFolders is sorted
-    foreach (const QString &path, addedFolders) {
+    foreach (const QString& path, addedFolders) {
         if (!docFolders->isFolderIgnored(path)) {
             insertFolder(doc, path);
         }
@@ -433,7 +433,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     QSet<U2DataId> deletedObjectIds = lastUpdate.objectIdFolders.keys().toSet();  // use QSet to speed up the further search within it
     QHash<U2Object, QString>::ConstIterator it = update.u2objectFolders.constBegin();
     for (; it != update.u2objectFolders.constEnd(); it++) {
-        const U2Object &entity = it.key();
+        const U2Object& entity = it.key();
         const U2DataId id = entity.id;
         const QString path = it.value();
 
@@ -449,13 +449,13 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
                 coreLog.error("Document is locked");
                 continue;
             }
-            GObject *obj = GObjectUtils::createObject(con.dbi->getDbiRef(), id, entity.visualName);
+            GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), id, entity.visualName);
             if (nullptr != obj) {
                 doc->addObject(obj);
                 insertObject(doc, obj, path);
             }
         } else if (docFolders->hasObject(id)) {  // existing object
-            GObject *obj = docFolders->getObject(id);
+            GObject* obj = docFolders->getObject(id);
             SAFE_POINT(nullptr != obj, "NULL object", );
 
             QString oldFolder = docFolders->getObjectFolder(obj);
@@ -471,11 +471,11 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
 
     // delete deleted objects
     if (!doc->isStateLocked()) {
-        foreach (const U2DataId &id, deletedObjectIds) {
+        foreach (const U2DataId& id, deletedObjectIds) {
             if (!docFolders->hasObject(id) || docFolders->isObjectIgnored(id)) {
                 continue;
             }
-            GObject *obj = docFolders->getObject(id);
+            GObject* obj = docFolders->getObject(id);
             SAFE_POINT(nullptr != obj, "NULL object", );
             doc->removeObject(obj, DocumentObjectRemovalMode_Release);
             delete obj;
@@ -492,27 +492,27 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     }
 }
 
-void ProjectViewModel::addToIgnoreObjFilter(Document *doc, const U2DataId &objId) {
+void ProjectViewModel::addToIgnoreObjFilter(Document* doc, const U2DataId& objId) {
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     folders[doc]->addIgnoredObject(objId);
 }
 
-void ProjectViewModel::addToIgnoreFolderFilter(Document *doc, const QString &folderPath) {
+void ProjectViewModel::addToIgnoreFolderFilter(Document* doc, const QString& folderPath) {
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     folders[doc]->addIgnoredFolder(folderPath);
 }
 
-void ProjectViewModel::excludeFromObjIgnoreFilter(Document *doc, const QSet<U2DataId> &ids) {
+void ProjectViewModel::excludeFromObjIgnoreFilter(Document* doc, const QSet<U2DataId>& ids) {
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     folders[doc]->excludeFromObjFilter(ids);
 }
 
-void ProjectViewModel::excludeFromFolderIgnoreFilter(Document *doc, const QSet<QString> &paths) {
+void ProjectViewModel::excludeFromFolderIgnoreFilter(Document* doc, const QSet<QString>& paths) {
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     folders[doc]->excludeFromFolderFilter(paths);
 }
 
-void ProjectViewModel::moveObject(Document *doc, GObject *obj, const QString &newFolderPath) {
+void ProjectViewModel::moveObject(Document* doc, GObject* obj, const QString& newFolderPath) {
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -525,7 +525,7 @@ void ProjectViewModel::moveObject(Document *doc, GObject *obj, const QString &ne
 
     DbiConnection con(doc->getDbiRef(), os);
     CHECK_OP(os, );
-    U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
 
     // create folder if it does not exist
     DocumentFoldersUpdate lastUpdate = folders[doc]->getLastUpdate();
@@ -553,7 +553,7 @@ void ProjectViewModel::moveObject(Document *doc, GObject *obj, const QString &ne
     emit si_documentContentChanged(doc);
 }
 
-bool ProjectViewModel::restoreObjectItemFromRecycleBin(Document *doc, GObject *obj) {
+bool ProjectViewModel::restoreObjectItemFromRecycleBin(Document* doc, GObject* obj) {
     SAFE_POINT(nullptr != doc, "NULL document", false);
     SAFE_POINT(folders.contains(doc), "Unknown document", false);
 
@@ -587,7 +587,7 @@ bool ProjectViewModel::restoreObjectItemFromRecycleBin(Document *doc, GObject *o
     return true;
 }
 
-bool ProjectViewModel::restoreFolderItemFromRecycleBin(Document *doc, const QString &oldPath) {
+bool ProjectViewModel::restoreFolderItemFromRecycleBin(Document* doc, const QString& oldPath) {
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
     CHECK_OP(os, false);
@@ -605,28 +605,28 @@ bool ProjectViewModel::restoreFolderItemFromRecycleBin(Document *doc, const QStr
     return renameFolder(doc, oldPath, originPath);
 }
 
-QList<GObject *> ProjectViewModel::getFolderObjects(Document *doc, const QString &path) const {
-    QList<GObject *> result;
+QList<GObject*> ProjectViewModel::getFolderObjects(Document* doc, const QString& path) const {
+    QList<GObject*> result;
     SAFE_POINT(nullptr != doc, "NULL document", result);
     SAFE_POINT(folders.contains(doc), "Unknown document", result);
 
     QStringList subFolders = folders[doc]->getAllSubFolders(path);
     subFolders << path;
-    foreach (const QString &folder, subFolders) {
+    foreach (const QString& folder, subFolders) {
         result << folders[doc]->getObjectsNatural(folder);
     }
     return result;
 }
 
-QString ProjectViewModel::getObjectFolder(Document *doc, GObject *obj) const {
-    SAFE_POINT(nullptr != doc, "NULL document", "");
+QString ProjectViewModel::getObjectFolder(Document* doc, GObject* obj) const {
+    SAFE_POINT(doc != nullptr, "NULL document", "");
     SAFE_POINT(folders.contains(doc), "Unknown document", "");
     return folders[doc]->getObjectFolder(obj);
 }
 
 namespace {
 
-void rollNewFolderPath(QString &originalPath, U2ObjectDbi *oDbi, U2OpStatus &os) {
+void rollNewFolderPath(QString& originalPath, U2ObjectDbi* oDbi, U2OpStatus& os) {
     const QStringList allFolders = oDbi->getFolders(os);
     SAFE_POINT_OP(os, );
 
@@ -640,7 +640,7 @@ void rollNewFolderPath(QString &originalPath, U2ObjectDbi *oDbi, U2OpStatus &os)
 
 }  // namespace
 
-void ProjectViewModel::createFolder(Document *doc, QString &path) {
+void ProjectViewModel::createFolder(Document* doc, QString& path) {
     CHECK(nullptr != doc && folders.contains(doc), );
 
     U2OpStatus2Log os;
@@ -648,7 +648,7 @@ void ProjectViewModel::createFolder(Document *doc, QString &path) {
     CHECK_OP(os, );
     DbiConnection con(doc->getDbiRef(), os);
     CHECK_OP(os, );
-    U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
 
     QString resultNewPath = path;
     rollNewFolderPath(resultNewPath, oDbi, os);
@@ -664,13 +664,13 @@ void ProjectViewModel::createFolder(Document *doc, QString &path) {
     afterInsert(newRow);
 }
 
-bool ProjectViewModel::renameFolderInDb(Document *doc, const QString &oldPath, QString &newPath) const {
+bool ProjectViewModel::renameFolderInDb(Document* doc, const QString& oldPath, QString& newPath) const {
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
     CHECK_OP(os, false);
     DbiConnection con(doc->getDbiRef(), os);
     CHECK_OP(os, false);
-    U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
 
     QString resultNewPath = newPath;
     rollNewFolderPath(resultNewPath, oDbi, os);
@@ -684,7 +684,7 @@ bool ProjectViewModel::renameFolderInDb(Document *doc, const QString &oldPath, Q
     return true;
 }
 
-bool ProjectViewModel::isFolderVisible(Document *doc, const QString &path) const {
+bool ProjectViewModel::isFolderVisible(Document* doc, const QString& path) const {
     SAFE_POINT(nullptr != doc, "NULL document", false);
     SAFE_POINT(folders.contains(doc), "Unknown document", false);
 
@@ -696,13 +696,13 @@ bool ProjectViewModel::isFolderVisible(Document *doc, const QString &path) const
     }
 }
 
-int ProjectViewModel::beforeInsertDocument(Document * /*doc*/) {
+int ProjectViewModel::beforeInsertDocument(Document* /*doc*/) {
     int newRow = docs.size();
     beginInsertRows(QModelIndex(), newRow, newRow);
     return newRow;
 }
 
-int ProjectViewModel::beforeInsertPath(Document *doc, const QString &path) {
+int ProjectViewModel::beforeInsertPath(Document* doc, const QString& path) {
     SAFE_POINT(nullptr != doc, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
     CHECK(isFolderVisible(doc, path), -1);
@@ -713,7 +713,7 @@ int ProjectViewModel::beforeInsertPath(Document *doc, const QString &path) {
     return newRow;
 }
 
-int ProjectViewModel::beforeInsertObject(Document *doc, GObject *obj, const QString &path) {
+int ProjectViewModel::beforeInsertObject(Document* doc, GObject* obj, const QString& path) {
     QString parentPath = DocumentFolders::getParentFolder(path);
     if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != parentPath) {  // the object is visible
         int newRow = folders[doc]->getNewObjectRowInParent(obj, path);
@@ -730,7 +730,7 @@ void ProjectViewModel::afterInsert(int newRow) {
     }
 }
 
-int ProjectViewModel::beforeRemoveDocument(Document *doc) {
+int ProjectViewModel::beforeRemoveDocument(Document* doc) {
     int row = docRow(doc);
     SAFE_POINT(-1 != row, "Unknown document", -1);
 
@@ -738,7 +738,7 @@ int ProjectViewModel::beforeRemoveDocument(Document *doc) {
     return row;
 }
 
-int ProjectViewModel::beforeRemovePath(Document *doc, const QString &path) {
+int ProjectViewModel::beforeRemovePath(Document* doc, const QString& path) {
     SAFE_POINT(nullptr != doc, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
     CHECK(isFolderVisible(doc, path), -1);
@@ -750,7 +750,7 @@ int ProjectViewModel::beforeRemovePath(Document *doc, const QString &path) {
     return row;
 }
 
-int ProjectViewModel::beforeRemoveObject(Document *doc, GObject *obj) {
+int ProjectViewModel::beforeRemoveObject(Document* doc, GObject* obj) {
     QString path = folders[doc]->getObjectFolder(obj);
     QString parentPath = DocumentFolders::getParentFolder(path);
 
@@ -770,7 +770,7 @@ void ProjectViewModel::afterRemove(int row) {
     }
 }
 
-bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const QString &newPath) {
+bool ProjectViewModel::renameFolder(Document* doc, const QString& oldPath, const QString& newPath) {
     CHECK(nullptr != doc && folders.contains(doc) && folders[doc]->hasFolder(oldPath), false);
 
     QString resultNewPath = newPath;
@@ -778,7 +778,7 @@ bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const
     renameFolderInDb(doc, oldPath, resultNewPath);
 
     // 2. update model
-    DocumentFolders *docFolders = folders[doc];
+    DocumentFolders* docFolders = folders[doc];
     SAFE_POINT(!docFolders->hasFolder(resultNewPath), "The folder already exists", false);
 
     QStringList foldersToRename;
@@ -787,7 +787,7 @@ bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const
     // 2.1 copy folder tree
     int newRow = beforeInsertPath(doc, resultNewPath);
     QStringList newFolderNames;  // cache new subfolder paths
-    foreach (const QString &folderPrevPath, foldersToRename) {
+    foreach (const QString& folderPrevPath, foldersToRename) {
         QString folderNewPath = folderPrevPath;
         folderNewPath.replace(0, oldPath.length(), resultNewPath);
         newFolderNames.append(folderNewPath);
@@ -808,9 +808,9 @@ bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const
     // then they have to disappear, since they are hidden in the parent folder
     if (ProjectUtils::isFolderInRecycleBin(newPath)) {
         const QStringList removedSubfolders = docFolders->getAllSubFolders(newPath);
-        foreach (const QString &subpath, removedSubfolders) {
+        foreach (const QString& subpath, removedSubfolders) {
             if (docFolders->hasFolder(subpath)) {
-                Folder *folder = docFolders->getFolder(subpath);
+                Folder* folder = docFolders->getFolder(subpath);
                 SAFE_POINT(nullptr != folder, "Invalid folder detected", false);
                 int subfolderRow = folderRow(folder);
                 if (-1 != subfolderRow) {
@@ -827,16 +827,16 @@ bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const
     return true;
 }
 
-void ProjectViewModel::moveObjectsBetweenFolderTrees(Document *doc, const QStringList &srcTree, const QStringList &dstTree) {
-    DocumentFolders *docFolders = folders[doc];
+void ProjectViewModel::moveObjectsBetweenFolderTrees(Document* doc, const QStringList& srcTree, const QStringList& dstTree) {
+    DocumentFolders* docFolders = folders[doc];
 
     const bool objectsWillBeObscuredInRecycleBin = ProjectUtils::isFolderInRecycleBin(dstTree.first());
     for (int i = 0, n = srcTree.size(); i < n; ++i) {
         const QString folderPrevPath = srcTree.at(i);
         const QString folderNewPath = dstTree.at(i);
 
-        const QList<GObject *> objects = docFolders->getObjectsNatural(folderPrevPath);
-        foreach (GObject *obj, objects) {
+        const QList<GObject*> objects = docFolders->getObjectsNatural(folderPrevPath);
+        foreach (GObject* obj, objects) {
             if (objectsWillBeObscuredInRecycleBin) {
                 doc->removeObject(obj, DocumentObjectRemovalMode_OnlyNotify);
             } else {
@@ -848,20 +848,20 @@ void ProjectViewModel::moveObjectsBetweenFolderTrees(Document *doc, const QStrin
     }
 }
 
-QModelIndex ProjectViewModel::getIndexForDoc(Document *doc) const {
+QModelIndex ProjectViewModel::getIndexForDoc(Document* doc) const {
     SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
     int row = docRow(doc);
     SAFE_POINT(-1 != row, "Out of range row", QModelIndex());
     return createIndex(row, 0, doc);
 }
 
-QModelIndex ProjectViewModel::getIndexForPath(Document *doc, const QString &path) const {
+QModelIndex ProjectViewModel::getIndexForPath(Document* doc, const QString& path) const {
     SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
 
     if (U2ObjectDbi::ROOT_FOLDER == path) {
         return getIndexForDoc(doc);
     } else {
-        Folder *folder = folders[doc]->getFolder(path);
+        Folder* folder = folders[doc]->getFolder(path);
         SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
         int row = folderRow(folder);
         SAFE_POINT(-1 != row, "Out of range row", QModelIndex());
@@ -869,14 +869,14 @@ QModelIndex ProjectViewModel::getIndexForPath(Document *doc, const QString &path
     }
 }
 
-QModelIndex ProjectViewModel::getIndexForObject(GObject *obj) const {
+QModelIndex ProjectViewModel::getIndexForObject(GObject* obj) const {
     int row = objectRow(obj);
     CHECK(-1 != row, QModelIndex());
     return createIndex(row, 0, obj);
 }
 
-Document *ProjectViewModel::findDocument(const U2DbiRef &dbiRef) const {
-    foreach (Document *doc, docs) {
+Document* ProjectViewModel::findDocument(const U2DbiRef& dbiRef) const {
+    foreach (Document* doc, docs) {
         if (doc->getDbiRef() == dbiRef) {
             return doc;
         }
@@ -884,7 +884,7 @@ Document *ProjectViewModel::findDocument(const U2DbiRef &dbiRef) const {
     return nullptr;
 }
 
-void ProjectViewModel::insertFolder(Document *doc, const QString &path) {
+void ProjectViewModel::insertFolder(Document* doc, const QString& path) {
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     CHECK(!folders[doc]->hasFolder(path), );
@@ -898,7 +898,7 @@ void ProjectViewModel::insertFolder(Document *doc, const QString &path) {
     {  // Find the path to the folder which is not in the model. It some parent of @path or @path itself
         const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
         QString fullPath;
-        foreach (const QString &folder, pathList) {
+        foreach (const QString& folder, pathList) {
             fullPath += U2ObjectDbi::PATH_SEP + folder;
             if (folders[doc]->hasFolder(fullPath)) {
                 continue;
@@ -914,14 +914,14 @@ void ProjectViewModel::insertFolder(Document *doc, const QString &path) {
     afterInsert(newRow);
 }
 
-void ProjectViewModel::insertFolderInRecycleBin(Document *doc, const QString &path) {
+void ProjectViewModel::insertFolderInRecycleBin(Document* doc, const QString& path) {
     SAFE_POINT(ProjectUtils::isFolderInRecycleBin(path), "Not in recycle bin path", );
     int newRow = beforeInsertPath(doc, path);
     folders[doc]->addFolder(path);
     afterInsert(newRow);
 }
 
-void ProjectViewModel::removeFolder(Document *doc, const QString &path) {
+void ProjectViewModel::removeFolder(Document* doc, const QString& path) {
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -929,62 +929,62 @@ void ProjectViewModel::removeFolder(Document *doc, const QString &path) {
     CHECK(U2ObjectDbi::ROOT_FOLDER != path, );
     CHECK(folders[doc]->hasFolder(path), );
 
-    Folder *folder = folders[doc]->getFolder(path);
+    Folder* folder = folders[doc]->getFolder(path);
     SAFE_POINT(nullptr != folder, "NULL folder", );
     int row = beforeRemovePath(doc, path);
     folders[doc]->removeFolder(path);
     afterRemove(row);
 }
 
-void ProjectViewModel::insertObject(Document *doc, GObject *obj, const QString &path) {
+void ProjectViewModel::insertObject(Document* doc, GObject* obj, const QString& path) {
     int newRow = beforeInsertObject(doc, obj, path);
     folders[doc]->addObject(obj, path);
     afterInsert(newRow);
 }
 
-void ProjectViewModel::removeObject(Document *doc, GObject *obj) {
+void ProjectViewModel::removeObject(Document* doc, GObject* obj) {
     QString path = folders[doc]->getObjectFolder(obj);
     int row = beforeRemoveObject(doc, obj);
     folders[doc]->removeObject(obj, path);
     afterRemove(row);
 }
 
-ProjectViewModel::Type ProjectViewModel::itemType(const QModelIndex &index) {
-    QObject *obj = toQObject(index);
+ProjectViewModel::Type ProjectViewModel::itemType(const QModelIndex& index) {
+    QObject* obj = toQObject(index);
     SAFE_POINT(nullptr != obj, "NULL QObject", DOCUMENT);
 
-    if (nullptr != qobject_cast<Document *>(obj)) {
+    if (nullptr != qobject_cast<Document*>(obj)) {
         return DOCUMENT;
-    } else if (nullptr != qobject_cast<Folder *>(obj)) {
+    } else if (nullptr != qobject_cast<Folder*>(obj)) {
         return FOLDER;
-    } else if (nullptr != qobject_cast<GObject *>(obj)) {
+    } else if (nullptr != qobject_cast<GObject*>(obj)) {
         return OBJECT;
     }
     FAIL("Unexpected data type", DOCUMENT);
 }
 
-QObject *ProjectViewModel::toQObject(const QModelIndex &index) {
-    void *ptr = index.internalPointer();
+QObject* ProjectViewModel::toQObject(const QModelIndex& index) {
+    void* ptr = index.internalPointer();
     SAFE_POINT(nullptr != ptr, "Internal error. No index data", nullptr);
-    return static_cast<QObject *>(ptr);
+    return static_cast<QObject*>(ptr);
 }
 
-Document *ProjectViewModel::toDocument(const QModelIndex &index) {
-    return qobject_cast<Document *>(toQObject(index));
+Document* ProjectViewModel::toDocument(const QModelIndex& index) {
+    return qobject_cast<Document*>(toQObject(index));
 }
 
-Folder *ProjectViewModel::toFolder(const QModelIndex &index) {
-    return qobject_cast<Folder *>(toQObject(index));
+Folder* ProjectViewModel::toFolder(const QModelIndex& index) {
+    return qobject_cast<Folder*>(toQObject(index));
 }
 
-GObject *ProjectViewModel::toObject(const QModelIndex &index) {
-    return qobject_cast<GObject *>(toQObject(index));
+GObject* ProjectViewModel::toObject(const QModelIndex& index) {
+    return qobject_cast<GObject*>(toQObject(index));
 }
 
-Document *ProjectViewModel::getObjectDocument(GObject *obj) const {
-    Document *result = obj->getDocument();
+Document* ProjectViewModel::getObjectDocument(GObject* obj) const {
+    Document* result = obj->getDocument();
     if (nullptr == result) {
-        return qobject_cast<Document *>(sender());
+        return qobject_cast<Document*>(sender());
     }
     return result;
 }
@@ -998,33 +998,33 @@ QModelIndex ProjectViewModel::getTopLevelItemIndex(int row, int column) const {
     return createIndex(row, column, docs[row]);
 }
 
-int ProjectViewModel::getChildrenCount(Document *doc, const QString &path) const {
+int ProjectViewModel::getChildrenCount(Document* doc, const QString& path) const {
     SAFE_POINT(nullptr != doc, "NULL document", 0);
     SAFE_POINT(folders.contains(doc), "Unknown document", 0);
     SAFE_POINT(folders[doc]->hasFolder(path), "Unknown folder path", 0);
 
-    QList<Folder *> subFolders = folders[doc]->getSubFolders(path);
-    QList<GObject *> subObjects = folders[doc]->getObjects(path);
+    QList<Folder*> subFolders = folders[doc]->getSubFolders(path);
+    QList<GObject*> subObjects = folders[doc]->getObjects(path);
     return subFolders.size() + subObjects.size();
 }
 
-QList<Folder *> ProjectViewModel::getSubfolders(Document *doc, const QString &path) const {
-    SAFE_POINT(nullptr != doc, "NULL document", QList<Folder *>());
-    SAFE_POINT(folders.contains(doc), "Unknown document", QList<Folder *>());
-    SAFE_POINT(folders[doc]->hasFolder(path), "Unknown folder path", QList<Folder *>());
+QList<Folder*> ProjectViewModel::getSubfolders(Document* doc, const QString& path) const {
+    SAFE_POINT(nullptr != doc, "NULL document", QList<Folder*>());
+    SAFE_POINT(folders.contains(doc), "Unknown document", QList<Folder*>());
+    SAFE_POINT(folders[doc]->hasFolder(path), "Unknown folder path", QList<Folder*>());
 
     return folders[doc]->getSubFolders(path);
 }
 
-int ProjectViewModel::docRow(Document *doc) const {
+int ProjectViewModel::docRow(Document* doc) const {
     return docs.indexOf(doc);
 }
 
-bool ProjectViewModel::hasDocument(Document *doc) const {
+bool ProjectViewModel::hasDocument(Document* doc) const {
     return -1 != docRow(doc);
 }
 
-bool ProjectViewModel::hasObject(Document *doc, GObject *obj) const {
+bool ProjectViewModel::hasObject(Document* doc, GObject* obj) const {
     CHECK(hasDocument(doc), false);
     CHECK(folders[doc]->hasObject(obj->getEntityRef().entityId), false);
 
@@ -1032,25 +1032,25 @@ bool ProjectViewModel::hasObject(Document *doc, GObject *obj) const {
     return !ProjectUtils::isFolderInRecycleBin(objectFolder);
 }
 
-int ProjectViewModel::folderRow(Folder *subFolder) const {
+int ProjectViewModel::folderRow(Folder* subFolder) const {
     SAFE_POINT(U2ObjectDbi::ROOT_FOLDER != subFolder->getFolderPath(), "Unexpected folder path", -1);
-    Document *doc = subFolder->getDocument();
+    Document* doc = subFolder->getDocument();
     SAFE_POINT(nullptr != doc, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
 
     QString parentPath = DocumentFolders::getParentFolder(subFolder->getFolderPath());
-    QList<Folder *> allSubFolders = folders[doc]->getSubFolders(parentPath);
+    QList<Folder*> allSubFolders = folders[doc]->getSubFolders(parentPath);
     return allSubFolders.indexOf(subFolder);
 }
 
-int ProjectViewModel::objectRow(GObject *obj) const {
-    Document *doc = getObjectDocument(obj);
+int ProjectViewModel::objectRow(GObject* obj) const {
+    Document* doc = getObjectDocument(obj);
     SAFE_POINT(nullptr != doc, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
 
     QString parentPath = folders[doc]->getObjectFolder(obj);
-    QList<Folder *> subFolders = folders[doc]->getSubFolders(parentPath);
-    QList<GObject *> subObjects = folders[doc]->getObjects(parentPath);
+    QList<Folder*> subFolders = folders[doc]->getSubFolders(parentPath);
+    QList<GObject*> subObjects = folders[doc]->getObjects(parentPath);
 
     int objRow = subObjects.indexOf(obj);
     SAFE_POINT(-1 != objRow, "Unknown object", -1);
@@ -1058,7 +1058,7 @@ int ProjectViewModel::objectRow(GObject *obj) const {
     return subFolders.size() + objRow;
 }
 
-QVariant ProjectViewModel::data(Document *doc, int role) const {
+QVariant ProjectViewModel::data(Document* doc, int role) const {
     switch (role) {
         case Qt::TextColorRole:
             return getDocumentTextColorData(doc);
@@ -1075,7 +1075,7 @@ QVariant ProjectViewModel::data(Document *doc, int role) const {
     }
 }
 
-QVariant ProjectViewModel::getDocumentTextColorData(Document *doc) const {
+QVariant ProjectViewModel::getDocumentTextColorData(Document* doc) const {
     if (doc->isModified()) {
         return QColor(MODIFIED_ITEM_COLOR);
     } else {
@@ -1083,7 +1083,7 @@ QVariant ProjectViewModel::getDocumentTextColorData(Document *doc) const {
     }
 }
 
-QVariant ProjectViewModel::getDocumentFontData(Document *doc) const {
+QVariant ProjectViewModel::getDocumentFontData(Document* doc) const {
     const bool markedAsActive = settings.markActive && isActive(doc);
     if (markedAsActive) {
         return settings.activeFont;
@@ -1092,10 +1092,10 @@ QVariant ProjectViewModel::getDocumentFontData(Document *doc) const {
     }
 }
 
-QVariant ProjectViewModel::getDocumentDisplayData(Document *doc) const {
+QVariant ProjectViewModel::getDocumentDisplayData(Document* doc) const {
     QString text;
     if (!doc->isLoaded()) {
-        LoadUnloadedDocumentTask *t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
+        LoadUnloadedDocumentTask* t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
         if (t == nullptr) {
             text += ProjectViewModel::tr("[unloaded] ");
         } else {
@@ -1109,7 +1109,7 @@ QVariant ProjectViewModel::getDocumentDisplayData(Document *doc) const {
     return text + doc->getName();
 }
 
-QVariant ProjectViewModel::getDocumentDecorationData(Document *doc) const {
+QVariant ProjectViewModel::getDocumentDecorationData(Document* doc) const {
     static const QIcon roDocumentIcon(":/core/images/ro_document.png");
     static const QIcon documentIcon(":/core/images/document.png");
     static const QIcon databaseIcon(":/core/images/db/database.png");
@@ -1132,15 +1132,15 @@ QVariant ProjectViewModel::getDocumentDecorationData(Document *doc) const {
     }
 }
 
-QVariant ProjectViewModel::getDocumentToolTipData(Document *doc) const {
+QVariant ProjectViewModel::getDocumentToolTipData(Document* doc) const {
     QString tooltip = doc->getURLString();
     if (doc->isStateLocked()) {
         tooltip.append("<br><br>").append(ProjectViewModel::tr("Locks:"));
-        StateLockableItem *docContext = doc->getParentStateLockItem();
+        StateLockableItem* docContext = doc->getParentStateLockItem();
         if (docContext != nullptr && docContext->isStateLocked()) {
             tooltip.append("<br>&nbsp;*&nbsp;").append(ProjectViewModel::tr("Project is locked"));
         }
-        foreach (StateLock *lock, doc->getStateLocks()) {
+        foreach (StateLock* lock, doc->getStateLocks()) {
             if (!doc->isLoaded() && lock == doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE)) {
                 continue;  // do not visualize some locks for unloaded document
             }
@@ -1150,7 +1150,7 @@ QVariant ProjectViewModel::getDocumentToolTipData(Document *doc) const {
     return tooltip;
 }
 
-QVariant ProjectViewModel::data(Folder *folder, int role) const {
+QVariant ProjectViewModel::data(Folder* folder, int role) const {
     switch (role) {
         case Qt::DecorationRole:
             return getFolderDecorationData(folder);
@@ -1162,15 +1162,15 @@ QVariant ProjectViewModel::data(Folder *folder, int role) const {
     }
 }
 
-QVariant ProjectViewModel::getFolderDecorationData(Folder *folder) const {
+QVariant ProjectViewModel::getFolderDecorationData(Folder* folder) const {
     const bool isRecycleBin = (ProjectUtils::RECYCLE_BIN_FOLDER_PATH == folder->getFolderPath());
     const QString pathToIcon = isRecycleBin ? ":core/images/recycle_bin.png" : ":U2Designer/images/directory.png";
     bool enabled = !ProjectUtils::isFolderInRecycleBin(folder->getFolderPath());
     return getIcon(QIcon(pathToIcon), enabled);
 }
 
-QVariant ProjectViewModel::data(GObject *obj, int role) const {
-    Document *parentDoc = getObjectDocument(obj);
+QVariant ProjectViewModel::data(GObject* obj, int role) const {
+    Document* parentDoc = getObjectDocument(obj);
     SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected!", QVariant());
     SAFE_POINT(folders.contains(parentDoc), "Unknown document", QVariant());
 
@@ -1195,18 +1195,18 @@ QVariant ProjectViewModel::data(GObject *obj, int role) const {
     }
 }
 
-QVariant ProjectViewModel::getObjectDisplayData(GObject *obj, Document *parentDoc) const {
+QVariant ProjectViewModel::getObjectDisplayData(GObject* obj, Document* parentDoc) const {
     GObjectType objectType = obj->getGObjectType();
     bool isUnloaded = objectType == GObjectTypes::UNLOADED;
     if (isUnloaded) {
-        objectType = qobject_cast<UnloadedObject *>(obj)->getLoadedObjectType();
+        objectType = qobject_cast<UnloadedObject*>(obj)->getLoadedObjectType();
     }
     QString text;
-    const GObjectTypeInfo &ti = GObjectTypes::getTypeInfo(objectType);
+    const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(objectType);
     text += "[" + ti.treeSign + "] ";
 
     if (isUnloaded && parentDoc->getObjects().size() < ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS) {
-        LoadUnloadedDocumentTask *loadTask = LoadUnloadedDocumentTask::findActiveLoadingTask(parentDoc);
+        LoadUnloadedDocumentTask* loadTask = LoadUnloadedDocumentTask::findActiveLoadingTask(parentDoc);
         if (loadTask != nullptr) {
             if (loadTask->getProgress() == -1) {
                 text += ProjectViewModel::tr("[loading] ");
@@ -1225,7 +1225,7 @@ QVariant ProjectViewModel::getObjectDisplayData(GObject *obj, Document *parentDo
     return text;
 }
 
-QVariant ProjectViewModel::getObjectFontData(GObject *obj, bool itemIsEnabled) const {
+QVariant ProjectViewModel::getObjectFontData(GObject* obj, bool itemIsEnabled) const {
     const bool markedAsActive = settings.markActive && isActive(obj) && itemIsEnabled;
     if (markedAsActive) {
         return settings.activeFont;
@@ -1234,7 +1234,7 @@ QVariant ProjectViewModel::getObjectFontData(GObject *obj, bool itemIsEnabled) c
     }
 }
 
-QVariant ProjectViewModel::getObjectToolTipData(GObject * /*obj*/, Document *parentDoc) const {
+QVariant ProjectViewModel::getObjectToolTipData(GObject* /*obj*/, Document* parentDoc) const {
     QString tooltip;
     // todo: make tooltip for object items
     if (ProjectTreeGroupMode_Flat == settings.groupMode) {
@@ -1243,10 +1243,10 @@ QVariant ProjectViewModel::getObjectToolTipData(GObject * /*obj*/, Document *par
     return tooltip;
 }
 
-QVariant ProjectViewModel::getObjectDecorationData(GObject *obj, bool itemIsEnabled) const {
+QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnabled) const {
     // There is a special case: circular sequence object should have an icon that differs from the standard sequence icon!
     if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-        U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
+        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seqObj != nullptr, "Cannot cast GObject to U2SequenceObject", QVariant());
         if (seqObj->isCircular()) {
             const QIcon circIcon(":core/images/circular_seq.png");
@@ -1254,12 +1254,12 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject *obj, bool itemIsEnab
         }
     }
 
-    const GObjectTypeInfo &ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
-    const QIcon &icon = (nullptr != obj->getGObjectModLock(GObjectModLock_IO) ? ti.lockedIcon : ti.icon);
+    const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
+    const QIcon& icon = (nullptr != obj->getGObjectModLock(GObjectModLock_IO) ? ti.lockedIcon : ti.icon);
     return getIcon(icon, itemIsEnabled);
 }
 
-QVariant ProjectViewModel::getObjectTextColorData(GObject *obj) const {
+QVariant ProjectViewModel::getObjectTextColorData(GObject* obj) const {
     if (obj->isItemModified()) {
         return QColor(MODIFIED_ITEM_COLOR);
     } else {
@@ -1267,35 +1267,35 @@ QVariant ProjectViewModel::getObjectTextColorData(GObject *obj) const {
     }
 }
 
-bool ProjectViewModel::isActive(Document *doc) {
-    GObjectViewWindow *w = GObjectViewUtils::getActiveObjectViewWindow();
+bool ProjectViewModel::isActive(Document* doc) {
+    GObjectViewWindow* w = GObjectViewUtils::getActiveObjectViewWindow();
     CHECK(nullptr != w, false);
     return w->getObjectView()->containsDocumentObjects(doc);
 }
 
-bool ProjectViewModel::isActive(GObject *obj) {
-    GObjectViewWindow *w = GObjectViewUtils::getActiveObjectViewWindow();
+bool ProjectViewModel::isActive(GObject* obj) {
+    GObjectViewWindow* w = GObjectViewUtils::getActiveObjectViewWindow();
     CHECK(nullptr != w, false);
     return w->getObjectView()->containsObject(obj);
 }
 
-QIcon ProjectViewModel::getIcon(const QIcon &icon, bool enabled) {
+QIcon ProjectViewModel::getIcon(const QIcon& icon, bool enabled) {
     const QList<QSize> sizes = icon.availableSizes();
     CHECK(sizes.size() > 0, icon);
     const QPixmap newPic = icon.pixmap(sizes.first(), enabled ? QIcon::Normal : QIcon::Disabled);
     return QIcon(newPic);
 }
 
-bool ProjectViewModel::isWritableDoc(const Document *doc) {
+bool ProjectViewModel::isWritableDoc(const Document* doc) {
     CHECK(nullptr != doc, false);
     return !doc->isStateLocked();
 }
 
-bool ProjectViewModel::isDropEnabled(const Document *doc) {
+bool ProjectViewModel::isDropEnabled(const Document* doc) {
     return ProjectUtils::isConnectedDatabaseDoc(doc) && isWritableDoc(doc);
 }
 
-bool ProjectViewModel::isAcceptableFolder(Document *targetDoc, const QString &targetFolderPath, const Folder &folder) {
+bool ProjectViewModel::isAcceptableFolder(Document* targetDoc, const QString& targetFolderPath, const Folder& folder) {
     CHECK(nullptr != folder.getDocument(), false);
 
     if (folder.getDocument() == targetDoc) {
@@ -1305,41 +1305,41 @@ bool ProjectViewModel::isAcceptableFolder(Document *targetDoc, const QString &ta
     return false;
 }
 
-void ProjectViewModel::connectDocument(Document *doc) {
+void ProjectViewModel::connectDocument(Document* doc) {
     connect(doc, SIGNAL(si_loadedStateChanged()), SLOT(sl_documentLoadedStateChanged()));
     connect(doc, SIGNAL(si_modifiedStateChanged()), SLOT(sl_documentModifiedStateChanged()));
     connect(doc, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(doc, SIGNAL(si_urlChanged()), SLOT(sl_documentURLorNameChanged()));
     connect(doc, SIGNAL(si_nameChanged()), SLOT(sl_documentURLorNameChanged()));
 
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         connectGObject(obj);
     }
 }
 
-void ProjectViewModel::disconnectDocument(Document *doc) {
+void ProjectViewModel::disconnectDocument(Document* doc) {
     disconnect(doc, SIGNAL(si_loadedStateChanged()), this, SLOT(sl_documentLoadedStateChanged()));
     disconnect(doc, SIGNAL(si_modifiedStateChanged()), this, SLOT(sl_documentModifiedStateChanged()));
     disconnect(doc, SIGNAL(si_lockedStateChanged()), this, SLOT(sl_lockedStateChanged()));
     disconnect(doc, SIGNAL(si_urlChanged()), this, SLOT(sl_documentURLorNameChanged()));
     disconnect(doc, SIGNAL(si_nameChanged()), this, SLOT(sl_documentURLorNameChanged()));
 
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         obj->disconnect(this);
     }
 
-    Task *t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
+    Task* t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
     CHECK(nullptr != t, );
     t->disconnect(this);
     t->cancel();
 }
 
-void ProjectViewModel::connectGObject(GObject *obj) {
+void ProjectViewModel::connectGObject(GObject* obj) {
     connect(obj, SIGNAL(si_modifiedStateChanged()), SLOT(sl_objectModifiedStateChanged()));
 }
 
-Folder ProjectViewModel::getDropFolder(const QModelIndex &index) const {
-    Document *doc = nullptr;
+Folder ProjectViewModel::getDropFolder(const QModelIndex& index) const {
+    Document* doc = nullptr;
     QString path;
     switch (itemType(index)) {
         case DOCUMENT:
@@ -1347,14 +1347,14 @@ Folder ProjectViewModel::getDropFolder(const QModelIndex &index) const {
             path = U2ObjectDbi::ROOT_FOLDER;
             break;
         case FOLDER: {
-            Folder *folder = toFolder(index);
+            Folder* folder = toFolder(index);
             SAFE_POINT(nullptr != folder, "NULL folder", Folder());
             doc = folder->getDocument();
             path = folder->getFolderPath();
             break;
         }
         case OBJECT: {
-            GObject *obj = toObject(index);
+            GObject* obj = toObject(index);
             SAFE_POINT(nullptr != obj, "NULL object", Folder());
             doc = obj->getDocument();
             path = getObjectFolder(doc, obj);
@@ -1368,26 +1368,26 @@ Folder ProjectViewModel::getDropFolder(const QModelIndex &index) const {
 
 namespace {
 
-QString changeDropPathIfInRecycleBin(const QString &path) {
+QString changeDropPathIfInRecycleBin(const QString& path) {
     return ProjectUtils::isFolderInRecycleBin(path) ? ProjectUtils::RECYCLE_BIN_FOLDER_PATH : path;
 }
 
 }  // namespace
 
-void ProjectViewModel::dropObject(GObject *obj, Document *targetDoc, const QString &targetFolderPath) {
+void ProjectViewModel::dropObject(GObject* obj, Document* targetDoc, const QString& targetFolderPath) {
     const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);  // we can drop only to the 'Recycle Bin' folder but not to its subfolder
 
     if (obj->getDocument() == targetDoc) {
         moveObject(targetDoc, obj, actualDstPath);
         emit si_documentContentChanged(targetDoc);
     } else {
-        ImportObjectToDatabaseTask *task = new ImportObjectToDatabaseTask(obj, targetDoc->getDbiRef(), actualDstPath);
+        ImportObjectToDatabaseTask* task = new ImportObjectToDatabaseTask(obj, targetDoc->getDbiRef(), actualDstPath);
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_objectImported()));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
 
-void ProjectViewModel::dropFolder(const Folder &folder, Document *targetDoc, const QString &targetFolderPath) {
+void ProjectViewModel::dropFolder(const Folder& folder, Document* targetDoc, const QString& targetFolderPath) {
     const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);  // we can drop only to the 'Recycle Bin' folder but not to its subfolder
     CHECK(isAcceptableFolder(targetDoc, actualDstPath, folder), );
 
@@ -1396,21 +1396,21 @@ void ProjectViewModel::dropFolder(const Folder &folder, Document *targetDoc, con
     emit si_documentContentChanged(targetDoc);
 }
 
-void ProjectViewModel::dropDocument(Document *doc, Document *targetDoc, const QString &targetFolderPath) {
+void ProjectViewModel::dropDocument(Document* doc, Document* targetDoc, const QString& targetFolderPath) {
     CHECK(doc != targetDoc, );
     ImportToDatabaseOptions options;
-    ImportDocumentToDatabaseTask *task = new ImportDocumentToDatabaseTask(doc, targetDoc->getDbiRef(), targetFolderPath, options);
+    ImportDocumentToDatabaseTask* task = new ImportDocumentToDatabaseTask(doc, targetDoc->getDbiRef(), targetFolderPath, options);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_documentImported()));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void ProjectViewModel::sl_documentImported() {
-    ImportDocumentToDatabaseTask *task = dynamic_cast<ImportDocumentToDatabaseTask *>(sender());
+    ImportDocumentToDatabaseTask* task = dynamic_cast<ImportDocumentToDatabaseTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
 
-    Document *doc = findDocument(task->getDstDbiRef());
+    Document* doc = findDocument(task->getDstDbiRef());
     CHECK(nullptr != doc, );
 
     const QString resultPath = task->getDstFolder();
@@ -1418,7 +1418,7 @@ void ProjectViewModel::sl_documentImported() {
     if (!folders[doc]->hasFolder(resultPath)) {
         insertFolder(doc, resultPath);
     }
-    foreach (GObject *importedObj, task->getImportedObjects()) {
+    foreach (GObject* importedObj, task->getImportedObjects()) {
         if (nullptr == doc->getObjectById(importedObj->getEntityRef().entityId)) {
             doc->addObject(importedObj);
             insertObject(doc, importedObj, resultPath);
@@ -1430,15 +1430,15 @@ void ProjectViewModel::sl_documentImported() {
 }
 
 void ProjectViewModel::sl_objectImported() {
-    ImportObjectToDatabaseTask *task = dynamic_cast<ImportObjectToDatabaseTask *>(sender());
+    ImportObjectToDatabaseTask* task = dynamic_cast<ImportObjectToDatabaseTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
 
-    Document *doc = findDocument(task->getDbiRef());
+    Document* doc = findDocument(task->getDbiRef());
     CHECK(nullptr != doc, );
 
-    GObject *newObj = task->takeResult();
+    GObject* newObj = task->takeResult();
     CHECK(nullptr != newObj, );
 
     doc->addObject(newObj);
@@ -1446,8 +1446,8 @@ void ProjectViewModel::sl_objectImported() {
     emit si_documentContentChanged(doc);
 }
 
-void ProjectViewModel::sl_objectAdded(GObject *obj) {
-    Document *doc = getObjectDocument(obj);
+void ProjectViewModel::sl_objectAdded(GObject* obj) {
+    Document* doc = getObjectDocument(obj);
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1465,8 +1465,8 @@ void ProjectViewModel::sl_objectAdded(GObject *obj) {
     }
 }
 
-void ProjectViewModel::sl_objectRemoved(GObject *obj) {
-    Document *doc = getObjectDocument(obj);
+void ProjectViewModel::sl_objectRemoved(GObject* obj) {
+    Document* doc = getObjectDocument(obj);
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1475,7 +1475,7 @@ void ProjectViewModel::sl_objectRemoved(GObject *obj) {
 }
 
 void ProjectViewModel::sl_documentModifiedStateChanged() {
-    Document *doc = qobject_cast<Document *>(sender());
+    Document* doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1485,7 +1485,7 @@ void ProjectViewModel::sl_documentModifiedStateChanged() {
 }
 
 void ProjectViewModel::sl_documentLoadedStateChanged() {
-    Document *doc = qobject_cast<Document *>(sender());
+    Document* doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1506,7 +1506,7 @@ void ProjectViewModel::sl_documentLoadedStateChanged() {
 }
 
 void ProjectViewModel::sl_lockedStateChanged() {
-    Document *doc = qobject_cast<Document *>(sender());
+    Document* doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1525,7 +1525,7 @@ void ProjectViewModel::sl_lockedStateChanged() {
 }
 
 void ProjectViewModel::sl_documentURLorNameChanged() {
-    Document *doc = qobject_cast<Document *>(sender());
+    Document* doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1535,7 +1535,7 @@ void ProjectViewModel::sl_documentURLorNameChanged() {
 }
 
 void ProjectViewModel::sl_objectModifiedStateChanged() {
-    GObject *obj = qobject_cast<GObject *>(sender());
+    GObject* obj = qobject_cast<GObject*>(sender());
     SAFE_POINT(nullptr != obj, "NULL object", );
     QModelIndex idx = getIndexForObject(obj);
     emit dataChanged(idx, idx);

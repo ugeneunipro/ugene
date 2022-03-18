@@ -39,14 +39,14 @@ class VariantTrackObject;
 class ConvertSnpeffVariationsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    ConvertSnpeffVariationsToAnnotationsTask(const QList<VariantTrackObject *> &variantTrackObjects);
+    ConvertSnpeffVariationsToAnnotationsTask(const QList<VariantTrackObject*>& variantTrackObjects);
 
-    const QMap<QString, QList<SharedAnnotationData>> &getAnnotationsData() const;
+    const QMap<QString, QList<SharedAnnotationData>>& getAnnotationsData() const;
 
 private:
     void run();
 
-    const QList<VariantTrackObject *> variantTrackObjects;
+    const QList<VariantTrackObject*> variantTrackObjects;
     QMap<QString, QList<SharedAnnotationData>> annotationTablesData;
 
     static const QString CHROM_QUALIFIER_NAME;
@@ -60,16 +60,16 @@ private:
 class U2FORMATS_EXPORT LoadConvertAndSaveSnpeffVariationsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(const QString &variationsUrl, const U2DbiRef &dstDbiRef, const QString &dstUrl, const QString &formatId);
+    LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(const QString& variationsUrl, const U2DbiRef& dstDbiRef, const QString& dstUrl, const QString& formatId);
     ~LoadConvertAndSaveSnpeffVariationsToAnnotationsTask();
 
-    const QString &getResultUrl() const;
+    const QString& getResultUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    Document *prepareDocument();
+    Document* prepareDocument();
     void prepareSaveTask();
 
     const QString variationsUrl;
@@ -77,14 +77,14 @@ private:
     const QString dstUrl;
     const QString formatId;
 
-    LoadDocumentTask *loadTask;
-    ConvertSnpeffVariationsToAnnotationsTask *convertTask;
-    QList<Task *> createAnnotationsTasks;
-    SaveDocumentTask *saveTask;
+    LoadDocumentTask* loadTask;
+    ConvertSnpeffVariationsToAnnotationsTask* convertTask;
+    QList<Task*> createAnnotationsTasks;
+    SaveDocumentTask* saveTask;
 
-    Document *loadedVariationsDocument;
-    Document *annotationsDocument;
-    QList<AnnotationTableObject *> annotationTableObjects;
+    Document* loadedVariationsDocument;
+    Document* annotationsDocument;
+    QList<AnnotationTableObject*> annotationTableObjects;
 };
 
 }  // namespace U2

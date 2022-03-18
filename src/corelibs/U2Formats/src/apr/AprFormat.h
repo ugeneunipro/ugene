@@ -38,16 +38,16 @@ class MultipleSequenceAlignment;
 class U2FORMATS_EXPORT AprFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    AprFormat(QObject *p);
+    AprFormat(QObject* p);
 
     virtual QString getRadioButtonText() const;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl &url = GUrl()) const;
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-    void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &ti);
+    void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti);
 };
 
 }  // namespace U2

@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-ExternalToolRunTask *TBlastNTask::createBlastTask() {
+ExternalToolRunTask* TBlastNTask::createBlastTask() {
     QStringList arguments;
 
     arguments << "-db" << settings.databaseNameAndPath;
@@ -95,9 +95,9 @@ ExternalToolRunTask *TBlastNTask::createBlastTask() {
         arguments << "-out" << settings.outputOriginalFile;
     }
 
-    algoLog.trace("TBlastN+ arguments: " + arguments.join(" "));
+    algoLog.trace("TBlastN arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

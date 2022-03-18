@@ -31,21 +31,21 @@ class InSilicoPcrWorkflowTask : public Task {
 public:
     class Result {
     public:
-        Document *doc;
+        Document* doc;
         InSilicoPcrProduct product;
     };
-    InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &pcrSettings, const ExtractProductSettings &productSettings);
+    InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings& pcrSettings, const ExtractProductSettings& productSettings);
 
     QList<Result> takeResult();
-    const InSilicoPcrTaskSettings &getPcrSettings() const;
+    const InSilicoPcrTaskSettings& getPcrSettings() const;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     ExtractProductSettings productSettings;
-    InSilicoPcrTask *pcrTask;
-    QList<ExtractProductTask *> productTasks;
+    InSilicoPcrTask* pcrTask;
+    QList<ExtractProductTask*> productTasks;
 };
 
 }  // namespace U2

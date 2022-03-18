@@ -36,23 +36,23 @@ class VcfConsensusSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(VcfConsensusSupportTask)
 public:
-    VcfConsensusSupportTask(const GUrl &inputFA, const GUrl &inputVcf, const GUrl &output);
+    VcfConsensusSupportTask(const GUrl& inputFA, const GUrl& inputVcf, const GUrl& output);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    const GUrl &getResultUrl();
+    const GUrl& getResultUrl();
 
 private:
     GUrl inputFA;
     GUrl inputVcf;
     GUrl output;
-    TabixSupportTask *tabixTask;
-    ExternalToolRunTask *vcfTask;
+    TabixSupportTask* tabixTask;
+    ExternalToolRunTask* vcfTask;
 
-    QString getPath(ExternalTool *et);
+    QString getPath(ExternalTool* et);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VCF_CONSENSUS_SUPPORT_TASK_H_
+#endif  // _U2_VCF_CONSENSUS_SUPPORT_TASK_H_

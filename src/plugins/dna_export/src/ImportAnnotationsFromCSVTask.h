@@ -73,26 +73,26 @@ class Document;
 class ImportAnnotationsFromCSVTask : public Task {
     Q_OBJECT
 public:
-    ImportAnnotationsFromCSVTask(ImportAnnotationsFromCSVTaskConfig &config);
+    ImportAnnotationsFromCSVTask(ImportAnnotationsFromCSVTaskConfig& config);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QMap<QString, QList<SharedAnnotationData>> prepareAnnotations() const;
 
-    Document *prepareNewDocument(const QMap<QString, QList<SharedAnnotationData>> &annotations);
+    Document* prepareNewDocument(const QMap<QString, QList<SharedAnnotationData>>& annotations);
 
     ImportAnnotationsFromCSVTaskConfig config;
-    ReadCSVAsAnnotationsTask *readTask;
-    SaveDocumentTask *writeTask;
-    AddDocumentTask *addTask;
+    ReadCSVAsAnnotationsTask* readTask;
+    SaveDocumentTask* writeTask;
+    AddDocumentTask* addTask;
     QPointer<Document> doc;
 };
 
 class ReadCSVAsAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    ReadCSVAsAnnotationsTask(const QString &file, const CSVParsingConfig &config);
+    ReadCSVAsAnnotationsTask(const QString& file, const CSVParsingConfig& config);
 
     void run();
 
@@ -100,11 +100,11 @@ public:
         return result;
     }
 
-    static QList<QStringList> parseLinesIntoTokens(const QString &text, const CSVParsingConfig &config, int &maxColumns, TaskStateInfo &ti);
+    static QList<QStringList> parseLinesIntoTokens(const QString& text, const CSVParsingConfig& config, int& maxColumns, TaskStateInfo& ti);
 
-    static QStringList parseLineIntoTokens(const QString &line, const CSVParsingConfig &config, TaskStateInfo &ti, int lineNum = 1);
+    static QStringList parseLineIntoTokens(const QString& line, const CSVParsingConfig& config, TaskStateInfo& ti, int lineNum = 1);
 
-    static QString guessSeparatorString(const QString &text, const CSVParsingConfig &config);
+    static QString guessSeparatorString(const QString& text, const CSVParsingConfig& config);
 
     // script variable that holds line value
     static QString LINE_VAR;

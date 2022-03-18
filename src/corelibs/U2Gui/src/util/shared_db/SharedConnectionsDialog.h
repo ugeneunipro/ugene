@@ -40,7 +40,7 @@ class U2GUI_EXPORT SharedConnectionsDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(SharedConnectionsDialog)
 public:
-    explicit SharedConnectionsDialog(QWidget *parent = 0);
+    explicit SharedConnectionsDialog(QWidget* parent = 0);
     ~SharedConnectionsDialog();
 
 signals:
@@ -48,52 +48,52 @@ signals:
 
 private slots:
     void sl_selectionChanged();
-    void sl_itemDoubleClicked(const QModelIndex &index);
+    void sl_itemDoubleClicked(const QModelIndex& index);
     void sl_connectClicked();
     void sl_disconnectClicked();
     void sl_editClicked();
     void sl_addClicked();
     void sl_deleteClicked();
     void sl_connectionComplete();
-    void sl_upgradeComplete(Task *upgradeTask);
+    void sl_upgradeComplete(Task* upgradeTask);
 
 private:
     void init();
     void connectSignals();
-    bool askCredentials(QString &dbiUrl);
+    bool askCredentials(QString& dbiUrl);
 
     void updateState();
     void updateButtonsState();
     void updateConnectionsState();
-    void updateItemIcon(QListWidgetItem *item, bool isConnected);
+    void updateItemIcon(QListWidgetItem* item, bool isConnected);
 
     void restoreRecentConnections();
-    void removeRecentConnection(const QListWidgetItem *item) const;
-    void saveRecentConnection(const QListWidgetItem *item) const;
+    void removeRecentConnection(const QListWidgetItem* item) const;
+    void saveRecentConnection(const QListWidgetItem* item) const;
     void saveRecentConnections() const;
 
-    bool checkDatabaseAvailability(const U2DbiRef &ref, bool &initializationRequired);
-    bool isConnected(QListWidgetItem *item) const;
-    void setUpgradedMark(QListWidgetItem *item, bool isUpgraded);
-    bool alreadyExists(const QString &dbiUrl, const QString &userName, QString &existingName) const;
-    QListWidgetItem *insertConnection(const QString &preferredName, const QString &fullDbiUrl);
-    QListWidgetItem *insertConnection(const QString &preferredName, const QString &dbiUrl, const QString &userName);
-    void cancelConnection(QListWidgetItem *item);
-    QString rollName(const QString &preferredName) const;
-    void countConnectionsToPublicDatabase(const QString &dbiUrl);
+    bool checkDatabaseAvailability(const U2DbiRef& ref, bool& initializationRequired);
+    bool isConnected(QListWidgetItem* item) const;
+    void setUpgradedMark(QListWidgetItem* item, bool isUpgraded);
+    bool alreadyExists(const QString& dbiUrl, const QString& userName, QString& existingName) const;
+    QListWidgetItem* insertConnection(const QString& preferredName, const QString& fullDbiUrl);
+    QListWidgetItem* insertConnection(const QString& preferredName, const QString& dbiUrl, const QString& userName);
+    void cancelConnection(QListWidgetItem* item);
+    QString rollName(const QString& preferredName) const;
+    void countConnectionsToPublicDatabase(const QString& dbiUrl);
     QString getCurrentFullDbiUrl() const;
-    QString getFullDbiUrl(const QListWidgetItem *item) const;
+    QString getFullDbiUrl(const QListWidgetItem* item) const;
     void findUpgradeTasks();
-    QListWidgetItem *findItemByDbiUrl(const QString &dbiUrl) const;
+    QListWidgetItem* findItemByDbiUrl(const QString& dbiUrl) const;
 
-    bool checkDbInitializationState(const U2DbiRef &ref, bool &initializationRequired);
-    bool checkDbIsTooNew(const U2DbiRef &ref);
-    bool checkDbShouldBeUpgraded(const U2DbiRef &ref);
-    void checkDbConnectionDuplicate(const QString &shortDbiUrl, const QString &userName, const QString &allowedDuplicateName = QString());
+    bool checkDbInitializationState(const U2DbiRef& ref, bool& initializationRequired);
+    bool checkDbIsTooNew(const U2DbiRef& ref);
+    bool checkDbShouldBeUpgraded(const U2DbiRef& ref);
+    void checkDbConnectionDuplicate(const QString& shortDbiUrl, const QString& userName, const QString& allowedDuplicateName = QString());
 
-    Ui_SharedConnectionsDialog *ui;
-    QMap<QListWidgetItem *, Task *> connectionTasks;
-    QMap<QListWidgetItem *, Task *> upgradeTasks;
+    Ui_SharedConnectionsDialog* ui;
+    QMap<QListWidgetItem*, Task*> connectionTasks;
+    QMap<QListWidgetItem*, Task*> upgradeTasks;
 
     static const QString SETTINGS_RECENT;  // TODO: move this identifier to another class, since it is to be used
                                            // not only within the dialog. After that search through the code,

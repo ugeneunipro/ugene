@@ -34,22 +34,22 @@ class GObject;
 class U2VIEW_EXPORT ADVSplitWidget : public QWidget {
     Q_OBJECT
 public:
-    ADVSplitWidget(AnnotatedDNAView *view)
+    ADVSplitWidget(AnnotatedDNAView* view)
         : dnaView(view) {
     }
-    AnnotatedDNAView *getAnnotatedDNAView() const {
+    AnnotatedDNAView* getAnnotatedDNAView() const {
         return dnaView;
     }
-    virtual bool acceptsGObject(GObject *objects) = 0;
-    virtual void updateState(const QVariantMap &m) = 0;
-    virtual void saveState(QVariantMap &m) = 0;
+    virtual bool acceptsGObject(GObject* objects) = 0;
+    virtual void updateState(const QVariantMap& m) = 0;
+    virtual void saveState(QVariantMap& m) = 0;
 
     virtual bool onCloseEvent() {
         return true;
     }
 
 protected:
-    AnnotatedDNAView *dnaView;
+    AnnotatedDNAView* dnaView;
 };
 
 }  // namespace U2

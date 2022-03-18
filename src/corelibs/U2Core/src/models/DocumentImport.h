@@ -36,11 +36,11 @@ class ImportWidget;
 class U2CORE_EXPORT ImportDialog : public QDialog {
     Q_OBJECT
 public:
-    ImportDialog(const QVariantMap &_settings)
+    ImportDialog(const QVariantMap& _settings)
         : settings(_settings) {
     }
 
-    const QVariantMap &getSettings() const {
+    const QVariantMap& getSettings() const {
         return settings;
     }
 
@@ -61,7 +61,7 @@ public:
     virtual ~ImportWidgetFactory() {
     }
 
-    virtual ImportWidget *getWidget(const GUrl &url, const QVariantMap &settings) const = 0;
+    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const = 0;
 };
 
 /** Registry for all DocumentImportHandlers */
@@ -69,30 +69,30 @@ class U2CORE_EXPORT DocumentImportersRegistry : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(DocumentImportersRegistry)
 public:
-    DocumentImportersRegistry(QObject *p = nullptr)
+    DocumentImportersRegistry(QObject* p = nullptr)
         : QObject(p) {
     }
     ~DocumentImportersRegistry();
 
     /** returns handler by its id */
-    DocumentImporter *getDocumentImporter(const QString &importerId) const;
+    DocumentImporter* getDocumentImporter(const QString& importerId) const;
 
     /** registers new document import handler */
-    void addDocumentImporter(DocumentImporter *i);
+    void addDocumentImporter(DocumentImporter* i);
 
-    const QList<DocumentImporter *> &getImporters() const {
+    const QList<DocumentImporter*>& getImporters() const {
         return importers;
     }
 
 private:
-    QList<DocumentImporter *> importers;
+    QList<DocumentImporter*> importers;
 };
 
 class U2CORE_EXPORT DocumentImporter : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(DocumentImporter)
 public:
-    DocumentImporter(const QString &_id, const QString &_name, QObject *o = nullptr)
+    DocumentImporter(const QString& _id, const QString& _name, QObject* o = nullptr)
         : QObject(o), id(_id), name(_name), widgetFactory(nullptr) {
     }
 
@@ -100,37 +100,37 @@ public:
         delete widgetFactory;
     }
 
-    virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl &url) = 0;
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url) = 0;
 
-    virtual DocumentProviderTask *createImportTask(const FormatDetectionResult &res, bool showGui, const QVariantMap &hints) = 0;
+    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints) = 0;
 
     virtual QString getRadioButtonText() const;
 
-    virtual ImportWidget *createImportWidget(const GUrl &url, const QVariantMap &settings) const;
+    virtual ImportWidget* createImportWidget(const GUrl& url, const QVariantMap& settings) const;
 
     virtual QString getImporterDescription() const {
         return importerDescription;
     }
 
-    const QString &getImporterName() const {
+    const QString& getImporterName() const {
         return name;
     }
 
-    const QString &getId() const {
+    const QString& getId() const {
         return id;
     }
 
-    const QStringList &getFormatIds() const {
+    const QStringList& getFormatIds() const {
         return formatIds;
     }
 
-    const QList<QString> &getSupportedFileExtensions() const {
+    const QList<QString>& getSupportedFileExtensions() const {
         return extensions;
     }
 
-    void setWidgetFactory(ImportWidgetFactory *factory);
+    void setWidgetFactory(ImportWidgetFactory* factory);
 
-    const QSet<GObjectType> &getSupportedObjectTypes() const;
+    const QSet<GObjectType>& getSupportedObjectTypes() const;
 
     // NOTE: it is hint, it should be true by default
     static const QString LOAD_RESULT_DOCUMENT;
@@ -141,7 +141,7 @@ protected:
     QStringList formatIds;
     QList<QString> extensions;
     QString importerDescription;
-    ImportWidgetFactory *widgetFactory;
+    ImportWidgetFactory* widgetFactory;
     QSet<GObjectType> supportedObjectTypes;
 };
 

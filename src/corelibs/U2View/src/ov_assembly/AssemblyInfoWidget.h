@@ -32,7 +32,7 @@ class AssemblyBrowser;
 class AssemblyInfoWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p = nullptr);
+    AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p = nullptr);
 
 private:
     U2SavableWidget savableTab;
@@ -43,7 +43,7 @@ class U2VIEW_EXPORT AssemblyInfoWidgetFactory : public OPWidgetFactory {
 public:
     AssemblyInfoWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

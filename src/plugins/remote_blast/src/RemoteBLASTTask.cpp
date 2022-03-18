@@ -43,7 +43,7 @@ namespace U2 {
 class BaseIOAdapters;
 class BaseDocumentFormats;
 
-RemoteBLASTToAnnotationsTask::RemoteBLASTToAnnotationsTask(const RemoteBLASTTaskSettings &_cfg, int _qoffs, AnnotationTableObject *_ao, const QString &_url, const QString &_group, const QString &annDescription)
+RemoteBLASTToAnnotationsTask::RemoteBLASTToAnnotationsTask(const RemoteBLASTTaskSettings& _cfg, int _qoffs, AnnotationTableObject* _ao, const QString& _url, const QString& _group, const QString& annDescription)
     : Task(tr("RemoteBLASTTask"), TaskFlags_NR_FOSCOE), offsInGlobalSeq(_qoffs), aobj(_ao), group(_group), annDescription(annDescription), url(_url) {
     GCOUNTER(cvar, "RemoteBLASTToAnnotationsTask");
 
@@ -51,8 +51,8 @@ RemoteBLASTToAnnotationsTask::RemoteBLASTToAnnotationsTask(const RemoteBLASTTask
     addSubTask(queryTask);
 }
 
-QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -74,7 +74,7 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
 
     // Query was finished
 
-    RemoteBLASTTask *rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
+    RemoteBLASTTask* rrTask = qobject_cast<RemoteBLASTTask*>(queryTask);
     SAFE_POINT(nullptr != rrTask, "Invalid remote BLAST task!", res);
     QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
     if (anns.isEmpty()) {
@@ -82,10 +82,10 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     }
 
     if (aobj->getDocument() == nullptr && !url.isEmpty()) {  // create new document if object has no document and url is not empty
-        Document *d = AppContext::getProject()->findDocumentByURL(url);
+        Document* d = AppContext::getProject()->findDocumentByURL(url);
         if (d == nullptr) {
-            IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+            IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+            DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
             d = df->createNewLoadedDocument(iof, url, stateInfo);
             CHECK_OP(stateInfo, res);
             d->addObject(aobj);
@@ -99,7 +99,7 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     // Add annotations to aobj: shift annotations according to offset first
     QList<SharedAnnotationData> annotations;
     for (QMutableListIterator<SharedAnnotationData> it_ad(anns); it_ad.hasNext();) {
-        SharedAnnotationData &ad = it_ad.next();
+        SharedAnnotationData& ad = it_ad.next();
         U2Region::shift(offsInGlobalSeq, ad->location->regions);
         annotations << ad;
     }
@@ -108,7 +108,7 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-RemoteBLASTTask::RemoteBLASTTask(const RemoteBLASTTaskSettings &cfg_)
+RemoteBLASTTask::RemoteBLASTTask(const RemoteBLASTTaskSettings& cfg_)
     : Task(tr("RemoteBLASTTask"), TaskFlags_NR_FOSE_COSC),
       cfg(cfg_),
       httpBlastTask(nullptr),
@@ -117,8 +117,8 @@ RemoteBLASTTask::RemoteBLASTTask(const RemoteBLASTTaskSettings &cfg_)
     addSubTask(httpBlastTask);
 }
 
-QList<Task *> RemoteBLASTTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> RemoteBLASTTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError() && (subTask == httpBlastTask || subTask == createAnnotTask)) {
         stateInfo.setError(subTask->getError());
@@ -146,11 +146,11 @@ QByteArray RemoteBLASTTask::getOutputFile() const {
     return httpBlastTask->getOutputFile();
 }
 
-const QList<SharedAnnotationData> &RemoteBLASTTask::getResultedAnnotations() const {
+const QList<SharedAnnotationData>& RemoteBLASTTask::getResultedAnnotations() const {
     return resultAnnotations;
 }
 
-RemoteBlastHttpRequestTask::RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings &cfg)
+RemoteBlastHttpRequestTask::RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings& cfg)
     : Task(tr("Http Blast requests task"), TaskFlags_FOSE_COSC),
       cfg(cfg),
       timeout(false) {
@@ -160,12 +160,12 @@ void RemoteBlastHttpRequestTask::prepare() {
     prepareQueries();
     algoLog.trace("Sequences prepared");
     for (QList<Query>::iterator it = queries.begin(), end = queries.end(); it != end; it++) {
-        DataBaseFactory *dbf = AppContext::getDataBaseRegistry()->getFactoryById(cfg.dbChoosen);
+        DataBaseFactory* dbf = AppContext::getDataBaseRegistry()->getFactoryById(cfg.dbChoosen);
         if (dbf == nullptr) {
             stateInfo.setError(tr("Incorrect database"));
             return;
         }
-        HttpRequest *tmp = dbf->getRequest(this);
+        HttpRequest* tmp = dbf->getRequest(this);
         httpRequest.append(tmp);
     }
     algoLog.trace("Requests formed");
@@ -230,8 +230,8 @@ void RemoteBlastHttpRequestTask::prepareQueries() {
     }
 }
 
-CreateAnnotationsFromHttpBlastResultTask::CreateAnnotationsFromHttpBlastResultTask(const RemoteBLASTTaskSettings &cfg,
-                                                                                   const QList<RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult> &results)
+CreateAnnotationsFromHttpBlastResultTask::CreateAnnotationsFromHttpBlastResultTask(const RemoteBLASTTaskSettings& cfg,
+                                                                                   const QList<RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult>& results)
     : Task(tr("Create annotations from BLAST results"), TaskFlags_NR_FOSE_COSC),
       cfg(cfg),
       httpBlastResults(results) {
@@ -240,14 +240,14 @@ CreateAnnotationsFromHttpBlastResultTask::CreateAnnotationsFromHttpBlastResultTa
 }
 
 void CreateAnnotationsFromHttpBlastResultTask::prepare() {
-    foreach (const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult &r, httpBlastResults) {
+    foreach (const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult& r, httpBlastResults) {
         createAnnotations(r);
     }
     mergeNeighbourResults();
 }
 
-void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult &result) {
-    HttpRequest *t = result.request;
+void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult& result) {
+    HttpRequest* t = result.request;
     SAFE_POINT_EXT(t != nullptr, setError(tr("HttpRequest is NULL!")), );
     RemoteBlastHttpRequestTask::Query q = result.query;
     QList<SharedAnnotationData> annotations = t->getAnnotations();
@@ -270,14 +270,14 @@ void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBla
     }
 
     for (int i = 0; i < annotations.size(); i++) {
-        SharedAnnotationData &d = annotations[i];
+        SharedAnnotationData& d = annotations[i];
         for (QVector<U2Region>::iterator jt = d->location->regions.begin(), eend = d->location->regions.end(); eend != jt; ++jt) {
-            qint64 &s = jt->startPos;
-            qint64 &l = jt->length;
+            qint64& s = jt->startPos;
+            qint64& l = jt->length;
 
             if (q.complement) {
                 s = q.seq.size() - s - l;
-                d->setStrand(d->getStrand().isCompementary() ? U2Strand::Direct : U2Strand::Complementary);
+                d->setStrand(d->getStrand().isComplementary() ? U2Strand::Direct : U2Strand::Complementary);
             }
             if (q.amino) {
                 s = s * 3 + (q.complement ? 2 - q.offs : q.offs);
@@ -289,17 +289,17 @@ void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBla
     resultAnnotations << annotations;
 }
 
-QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnnotations(QList<SharedAnnotationData> &annotations) {
+QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnnotations(QList<SharedAnnotationData>& annotations) {
     QString selectiveQual = cfg.useEval ? "e-value" : "score";
     QList<SharedAnnotationData> resultList;
 
     if (cfg.filterResult & FilterResultByAccession) {
         QStringList accessions;
-        foreach (const SharedAnnotationData &ann, annotations) {
+        foreach (const SharedAnnotationData& ann, annotations) {
             QString acc = ann->findFirstQualifierValue("accession");
             if (accessions.contains(acc)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);
-                foreach (const SharedAnnotationData &a, resultList) {
+                foreach (const SharedAnnotationData& a, resultList) {
                     if (a->findFirstQualifierValue("accession") == acc) {
                         if (cfg.useEval ? a->findFirstQualifierValue(selectiveQual).toDouble() < eval.toDouble() : a->findFirstQualifierValue(selectiveQual).toDouble() > eval.toDouble()) {
                             resultList.removeOne(a);
@@ -319,11 +319,11 @@ QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnno
     if (cfg.filterResult & FilterResultByDef) {
         resultList.clear();
         QStringList defs;
-        foreach (const SharedAnnotationData &ann, annotations) {
+        foreach (const SharedAnnotationData& ann, annotations) {
             QString def = ann->findFirstQualifierValue("def");
             if (defs.contains(def)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);
-                foreach (const SharedAnnotationData &a, resultList) {
+                foreach (const SharedAnnotationData& a, resultList) {
                     if (a->findFirstQualifierValue("def") == def) {
                         if (cfg.useEval ? a->findFirstQualifierValue(selectiveQual).toDouble() < eval.toDouble() : a->findFirstQualifierValue(selectiveQual).toDouble() > eval.toDouble()) {
                             resultList.removeOne(a);
@@ -343,11 +343,11 @@ QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnno
     if (cfg.filterResult & FilterResultById) {
         resultList.clear();
         QStringList ids;
-        foreach (const SharedAnnotationData &ann, annotations) {
+        foreach (const SharedAnnotationData& ann, annotations) {
             QString id = ann->findFirstQualifierValue("id");
             if (ids.contains(id)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);
-                foreach (const SharedAnnotationData &a, resultList) {
+                foreach (const SharedAnnotationData& a, resultList) {
                     if (a->findFirstQualifierValue("id") == id) {
                         if (cfg.useEval ? a->findFirstQualifierValue(selectiveQual).toDouble() < eval.toDouble() : a->findFirstQualifierValue(selectiveQual).toDouble() > eval.toDouble()) {
                             resultList.removeOne(a);
@@ -395,7 +395,7 @@ void CreateAnnotationsFromHttpBlastResultTask::mergeNeighbourResults() {
     }
 }
 
-SharedAnnotationData CreateAnnotationsFromHttpBlastResultTask::merge(const SharedAnnotationData &start, const SharedAnnotationData &end) {
+SharedAnnotationData CreateAnnotationsFromHttpBlastResultTask::merge(const SharedAnnotationData& start, const SharedAnnotationData& end) {
     SharedAnnotationData result(new AnnotationData);
 
     result->name = start->name;
@@ -455,13 +455,13 @@ SharedAnnotationData CreateAnnotationsFromHttpBlastResultTask::merge(const Share
     return result;
 }
 
-bool CreateAnnotationsFromHttpBlastResultTask::annotationsReferToTheSameSeq(const SharedAnnotationData &start, const SharedAnnotationData &end) {
+bool CreateAnnotationsFromHttpBlastResultTask::annotationsReferToTheSameSeq(const SharedAnnotationData& start, const SharedAnnotationData& end) {
     bool annsHaveTheSameId = start->findFirstQualifierValue("accession") == end->findFirstQualifierValue("accession") && start->findFirstQualifierValue("id") == end->findFirstQualifierValue("id");
     bool annsAreOnTheSameStrand = start->findFirstQualifierValue("source_frame") == end->findFirstQualifierValue("source_frame");
     return (annsHaveTheSameId && annsAreOnTheSameStrand);
 }
 
-bool CreateAnnotationsFromHttpBlastResultTask::annotationsAreNeighbours(SharedAnnotationData &start, SharedAnnotationData &end) {
+bool CreateAnnotationsFromHttpBlastResultTask::annotationsAreNeighbours(SharedAnnotationData& start, SharedAnnotationData& end) {
     SAFE_POINT(start->getRegions().size() == 1, tr("Wrong number of annotations"), false);
     SAFE_POINT(end->getRegions().size() == 1, tr("Wrong number of annotations"), false);
 
@@ -482,7 +482,7 @@ bool CreateAnnotationsFromHttpBlastResultTask::annotationsAreNeighbours(SharedAn
     return false;
 }
 
-void CreateAnnotationsFromHttpBlastResultTask::orderNeighbors(SharedAnnotationData &start, SharedAnnotationData &end) {
+void CreateAnnotationsFromHttpBlastResultTask::orderNeighbors(SharedAnnotationData& start, SharedAnnotationData& end) {
     int sStart = start->getRegions().first().startPos;
     int eEnd = end->getRegions().first().endPos();
 
@@ -491,16 +491,16 @@ void CreateAnnotationsFromHttpBlastResultTask::orderNeighbors(SharedAnnotationDa
     }
 }
 
-void CreateAnnotationsFromHttpBlastResultTask::createCheckTask(const SharedAnnotationData &adStart, const SharedAnnotationData &adEnd) {
+void CreateAnnotationsFromHttpBlastResultTask::createCheckTask(const SharedAnnotationData& adStart, const SharedAnnotationData& adEnd) {
     mergeCandidates.append(QPair<SharedAnnotationData, SharedAnnotationData>(adStart, adEnd));
     QString id = adStart->findFirstQualifierValue("accession");
-    CheckNCBISequenceCircularityTask *checkTask = new CheckNCBISequenceCircularityTask(id);
+    CheckNCBISequenceCircularityTask* checkTask = new CheckNCBISequenceCircularityTask(id);
     circCheckTasks.append(checkTask);
     addSubTask(checkTask);
 }
 
-QList<Task *> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -511,7 +511,7 @@ QList<Task *> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task *
         return res;
     }
 
-    CheckNCBISequenceCircularityTask *checkCircTask = qobject_cast<CheckNCBISequenceCircularityTask *>(subTask);
+    CheckNCBISequenceCircularityTask* checkCircTask = qobject_cast<CheckNCBISequenceCircularityTask*>(subTask);
     if (checkCircTask == nullptr) {
         return res;
     }
@@ -532,7 +532,7 @@ QList<Task *> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task *
     return res;
 }
 
-CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString &id)
+CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString& id)
     : Task(tr("Check NCBI sequence circularity"), TaskFlags_NR_FOSE_COSC),
       seqId(id),
       loadTask(nullptr),
@@ -550,15 +550,15 @@ CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString
     addSubTask(loadTask);
 }
 
-QList<Task *> CheckNCBISequenceCircularityTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CheckNCBISequenceCircularityTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
     }
 
     if (subTask == loadTask) {
-        LoadRemoteDocumentTask *task = qobject_cast<LoadRemoteDocumentTask *>(loadTask);
+        LoadRemoteDocumentTask* task = qobject_cast<LoadRemoteDocumentTask*>(loadTask);
         GUrl loadedSeq = task->getLocalUrl();
         U2OpStatusImpl os;
         result = GenbankPlainTextFormat::checkCircularity(loadedSeq, os);
@@ -574,7 +574,7 @@ QList<Task *> CheckNCBISequenceCircularityTask::onSubTaskFinished(Task *subTask)
     return res;
 }
 
-RemoteCDSearch::RemoteCDSearch(const CDSearchSettings &settings) {
+RemoteCDSearch::RemoteCDSearch(const CDSearchSettings& settings) {
     RemoteBLASTTaskSettings cfg;
     cfg.dbChoosen = "cdd";
 
@@ -606,7 +606,7 @@ RemoteCDSearch::RemoteCDSearch(const CDSearchSettings &settings) {
     task = new RemoteBLASTTask(cfg);
 }
 
-U2Qualifier Merge::equalQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::equalQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString qualValue;
     qualValue = first->findFirstQualifierValue(qualName);
 
@@ -616,7 +616,7 @@ U2Qualifier Merge::equalQualifiers(const QString &qualName, const SharedAnnotati
     return U2Qualifier(qualName, qualValue);
 }
 
-U2Qualifier Merge::percentQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::percentQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue(qualName);
     SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     // parse
@@ -634,19 +634,19 @@ U2Qualifier Merge::percentQualifiers(const QString &qualName, const SharedAnnota
     return U2Qualifier(qualName, qualValue);
 }
 
-U2Qualifier Merge::hitFromQualifier(const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::hitFromQualifier(const SharedAnnotationData& first, const SharedAnnotationData& second) {
     Q_UNUSED(second);
     QString qualValue = first->findFirstQualifierValue("hit-from");
     return U2Qualifier("hit-from", qualValue);
 }
 
-U2Qualifier Merge::hitToQualifier(const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::hitToQualifier(const SharedAnnotationData& first, const SharedAnnotationData& second) {
     Q_UNUSED(first);
     QString qualValue = second->findFirstQualifierValue("hit-to");
     return U2Qualifier("hit-to", qualValue);
 }
 
-U2Qualifier Merge::sumQualifiers(const QString &qualName, const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::sumQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue(qualName);
     SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     bool ok;
@@ -661,7 +661,7 @@ U2Qualifier Merge::sumQualifiers(const QString &qualName, const SharedAnnotation
     return U2Qualifier(qualName, QString::number(res));
 }
 
-U2Qualifier Merge::eValueQualifier(int seqLen, const SharedAnnotationData &first, const SharedAnnotationData &second) {
+U2Qualifier Merge::eValueQualifier(int seqLen, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue("E-value");
     SAFE_POINT(!tmp.isEmpty(), tr("Can not find 'E-value' qualifier"), U2Qualifier());
     bool ok;

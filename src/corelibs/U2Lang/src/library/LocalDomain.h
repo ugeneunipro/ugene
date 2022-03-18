@@ -49,7 +49,7 @@ class U2LANG_EXPORT BaseWorker : public QObject, public Worker, public Communica
 public:
     using Workflow::Worker::tick;
 
-    BaseWorker(Actor *a, bool autoTransitBus = true);
+    BaseWorker(Actor* a, bool autoTransitBus = true);
     virtual ~BaseWorker();
 
     virtual ActorId getActorId() const;
@@ -61,20 +61,20 @@ public:
     virtual bool isReady() const;
 
     // reimplemented from CommunicationSubject
-    virtual bool addCommunication(const QString &name, CommunicationChannel *_ch);
-    virtual CommunicationChannel *getCommunication(const QString &name);
+    virtual bool addCommunication(const QString& name, CommunicationChannel* _ch);
+    virtual CommunicationChannel* getCommunication(const QString& name);
     virtual QStringList getOutputFiles();
 
     // if you want your worker support scripts -> you should call this function to get Messages from channels
     // call this when channel has message
     // after calling: set all needed values for running your worker
     // called from 'tick' and then setup worker params
-    virtual Message getMessageAndSetupScriptValues(CommunicationChannel *channel);
+    virtual Message getMessageAndSetupScriptValues(CommunicationChannel* channel);
 
-    QMap<QString, IntegralBus *> &getPorts() {
+    QMap<QString, IntegralBus*>& getPorts() {
         return ports;
     }
-    Actor *getActor() const {
+    Actor* getActor() const {
         return actor;
     }
 
@@ -88,43 +88,43 @@ public:
     // method should be invoked by scheduler instead of tick().
     // parameter canBeCanceled indicates if the returning task can be canceled
     // in case of the schema's pause
-    Task *tick(bool &canResultBeCanceled);
+    Task* tick(bool& canResultBeCanceled);
 
-    QList<ExternalToolListener *> createLogListeners(int listenersNumber = 1) const;
+    QList<ExternalToolListener*> createLogListeners(int listenersNumber = 1) const;
 
 private:
     // bind values from input ports to script vars.
     // This function is called before 'get' data from channel -> to set up parameters for scripting
     void bindScriptValues();
-    void setScriptVariableFromBus(AttributeScript *script, IntegralBus *bus);
+    void setScriptVariableFromBus(AttributeScript* script, IntegralBus* bus);
     bool processDone;
 
     // this field contains all messages that Worker processes during one tick.
     // New messages are added here in getMessageAndSetupScriptValues(CommunicationChannel *) method.
     // Also during the pause state it contains backup messages
     // (which were existed at the moment before the pause) from the same ports
-    QMap<CommunicationChannel *, QQueue<Message>> messagesProcessedOnLastTick;
+    QMap<CommunicationChannel*, QQueue<Message>> messagesProcessedOnLastTick;
 
     // puts all messages from messagesProcessedOnLastTick to appropriate channel
     // which is actually key for the queue of messages
-    void addMessagesFromBackupToAppropriratePort(CommunicationChannel *channel);
+    void addMessagesFromBackupToAppropriratePort(CommunicationChannel* channel);
 
 protected:
-    Actor *actor;
+    Actor* actor;
     // integral buses of actor's ports
-    QMap<QString, IntegralBus *> ports;
+    QMap<QString, IntegralBus*> ports;
 
     // default implementation always return false
     // TODO: check all workers' task and override this method
     // in order to cancel tasks on debug events (e.g. pause, breakpoint, etc)
-    virtual bool canTaskBeCanceled(Task *workerTask) const;
+    virtual bool canTaskBeCanceled(Task* workerTask) const;
 
     /** Returns the value of a parameter with paramId */
     template<class T>
-    T getValue(const QString &paramId) const;
+    T getValue(const QString& paramId) const;
 
-    WorkflowMonitor *monitor() const;
-    void reportError(const QString &message);
+    WorkflowMonitor* monitor() const;
+    void reportError(const QString& message);
 };  // BaseWorker
 
 /**
@@ -139,10 +139,10 @@ public:
     // reimplemented from CommunicationChannel
     virtual Message get();
     virtual Message look() const;
-    virtual void put(const Message &m, bool isMessageRestored = false);
+    virtual void put(const Message& m, bool isMessageRestored = false);
     virtual int hasMessage() const;
     virtual int takenMessages() const;
-    virtual int hasRoom(const DataType *) const;
+    virtual int hasRoom(const DataType*) const;
     virtual bool isEnded() const;
     virtual void setEnded();
     // capacity is INT_MAX
@@ -175,10 +175,10 @@ public:
     virtual ~LocalDomainFactory() {
     }
 
-    virtual Worker *createWorker(Actor *);
-    virtual CommunicationChannel *createConnection(Link *);
-    virtual Scheduler *createScheduler(Schema *);
-    virtual void destroy(Scheduler *, Schema *);
+    virtual Worker* createWorker(Actor*);
+    virtual CommunicationChannel* createConnection(Link*);
+    virtual Scheduler* createScheduler(Schema*);
+    virtual void destroy(Scheduler*, Schema*);
 
 };  // LocalDomainFactory
 
@@ -186,8 +186,8 @@ public:
 /* Template definitions */
 /************************************************************************/
 template<class T>
-T BaseWorker::getValue(const QString &paramId) const {
-    Attribute *attr = actor->getParameter(paramId);
+T BaseWorker::getValue(const QString& paramId) const {
+    Attribute* attr = actor->getParameter(paramId);
     if (nullptr == attr) {
         return T();
     }
@@ -195,8 +195,8 @@ T BaseWorker::getValue(const QString &paramId) const {
 }
 
 template<>
-inline QString BaseWorker::getValue(const QString &paramId) const {
-    Attribute *attr = actor->getParameter(paramId);
+inline QString BaseWorker::getValue(const QString& paramId) const {
+    Attribute* attr = actor->getParameter(paramId);
     if (nullptr == attr) {
         return "";
     }

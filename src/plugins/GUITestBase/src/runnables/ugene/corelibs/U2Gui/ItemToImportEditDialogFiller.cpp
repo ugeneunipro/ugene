@@ -32,17 +32,16 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ItemToImportEditDialogFiller"
 
-ItemToImportEditDialogFiller::ItemToImportEditDialogFiller(HI::GUITestOpStatus &os, const QVariantMap &data)
+ItemToImportEditDialogFiller::ItemToImportEditDialogFiller(HI::GUITestOpStatus& os, const QVariantMap& data)
     : Filler(os, "ItemToImportEditDialog"),
       data(data) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ItemToImportEditDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    ImportOptionsWidget *optionsWidget = qobject_cast<ImportOptionsWidget *>(GTWidget::findWidget(os, "optionsWidget", dialog));
+    ImportOptionsWidget* optionsWidget = qobject_cast<ImportOptionsWidget*>(GTWidget::findWidget(os, "optionsWidget", dialog));
     GT_CHECK(nullptr != optionsWidget, "optionsWidget is NULL");
 
     ImportOptionsWidgetFiller::fill(os, optionsWidget, data);

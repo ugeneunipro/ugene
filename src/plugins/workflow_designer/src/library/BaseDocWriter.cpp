@@ -50,17 +50,17 @@ namespace LocalWorkflow {
 /**********************************
  * BaseDocWriter
  **********************************/
-BaseDocWriter::BaseDocWriter(Actor *a, const DocumentFormatId &fid)
+BaseDocWriter::BaseDocWriter(Actor* a, const DocumentFormatId& fid)
     : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
     format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
 }
 
-BaseDocWriter::BaseDocWriter(Actor *a)
+BaseDocWriter::BaseDocWriter(Actor* a)
     : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
 }
 
 void BaseDocWriter::cleanup() {
-    foreach (IOAdapter *io, adapters.values()) {
+    foreach (IOAdapter* io, adapters.values()) {
         if (io->isOpen()) {
             io->close();
         }
@@ -72,14 +72,14 @@ void BaseDocWriter::init() {
     ch = ports.values().first();
 }
 
-void BaseDocWriter::takeParameters(U2OpStatus &os) {
-    Attribute *dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
+void BaseDocWriter::takeParameters(U2OpStatus& os) {
+    Attribute* dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
     const QString storage = (nullptr == dataStorageAttr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
     if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storage) {
         dataStorage = LocalFs;
 
-        Attribute *formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
+        Attribute* formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
         if (nullptr != formatAttr) {  // user sets format
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
@@ -90,7 +90,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
         }
 
         fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
-        Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
+        Attribute* a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
         if (a != nullptr) {
             append = a->getAttributeValue<bool>(context);
         } else {
@@ -111,7 +111,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
 }
 
 namespace {
-QString toFileName(const QString &base, const QString &suffix, const QString &ext) {
+QString toFileName(const QString& base, const QString& suffix, const QString& ext) {
     QString result = base + suffix;
     if (!ext.isEmpty()) {
         result += "." + ext;
@@ -125,7 +125,7 @@ QString BaseDocWriter::getDefaultFileName() const {
 }
 
 bool BaseDocWriter::ifGroupByDatasets() const {
-    Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
+    Attribute* a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
     if (nullptr == a) {
         return false;
     }
@@ -133,7 +133,7 @@ bool BaseDocWriter::ifGroupByDatasets() const {
 }
 
 QString BaseDocWriter::getSuffix() const {
-    Attribute *a = actor->getParameter(BaseAttributes::URL_SUFFIX().getId());
+    Attribute* a = actor->getParameter(BaseAttributes::URL_SUFFIX().getId());
     if (nullptr == a) {
         return "";
     }
@@ -147,7 +147,7 @@ QString BaseDocWriter::getExtension() const {
     return exts.first();
 }
 
-QString BaseDocWriter::getBaseName(const MessageMetadata &metadata, bool groupByDatasets, const QString &defaultName) {
+QString BaseDocWriter::getBaseName(const MessageMetadata& metadata, bool groupByDatasets, const QString& defaultName) {
     if (groupByDatasets) {
         if (metadata.getDatasetName().isEmpty()) {
             return defaultName;
@@ -155,7 +155,7 @@ QString BaseDocWriter::getBaseName(const MessageMetadata &metadata, bool groupBy
         return metadata.getDatasetName();
     } else if (!metadata.getFileUrl().isEmpty()) {
         QFileInfo info(metadata.getFileUrl());
-        return info.baseName();
+        return info.completeBaseName();
     } else if (!metadata.getDatabaseId().isEmpty()) {
         return metadata.getDatabaseId();
     }
@@ -167,12 +167,12 @@ QString BaseDocWriter::generateUrl(int metadataId) const {
     return generateUrl(metadata, ifGroupByDatasets(), getSuffix(), getExtension(), getDefaultFileName());
 }
 
-QString BaseDocWriter::generateUrl(const MessageMetadata &metadata, bool groupByDatasets, const QString &suffix, const QString &ext, const QString &defaultName) {
+QString BaseDocWriter::generateUrl(const MessageMetadata& metadata, bool groupByDatasets, const QString& suffix, const QString& ext, const QString& defaultName) {
     QString baseName = getBaseName(metadata, groupByDatasets, defaultName);
     return toFileName(baseName, suffix, ext);
 }
 
-QStringList BaseDocWriter::takeUrlList(const QVariantMap &data, int metadataId, U2OpStatus &os) {
+QStringList BaseDocWriter::takeUrlList(const QVariantMap& data, int metadataId, U2OpStatus& os) {
     QString url = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
     if (url.isEmpty()) {
         url = data.value(BaseSlots::URL_SLOT().getId()).toString();
@@ -202,7 +202,7 @@ bool BaseDocWriter::isSupportedSeveralMessages() const {
     return true;
 }
 
-bool BaseDocWriter::ifCreateAdapter(const QString &url) const {
+bool BaseDocWriter::ifCreateAdapter(const QString& url) const {
     if (!isSupportedSeveralMessages()) {
         return true;
     }
@@ -215,7 +215,7 @@ bool BaseDocWriter::ifCreateAdapter(const QString &url) const {
     return (!adapters.contains(url));
 }
 
-void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDocFlags &flags, U2OpStatus &os) {
+void BaseDocWriter::openAdapter(IOAdapter* io, const QString& aUrl, const SaveDocFlags& flags, U2OpStatus& os) {
     {  // prepare dir
         QFileInfo info(aUrl);
         if (!info.dir().exists()) {
@@ -255,12 +255,12 @@ void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDo
     counters[aUrl] = suffix;
 }
 
-IOAdapter *BaseDocWriter::getAdapter(const QString &url, U2OpStatus &os) {
+IOAdapter* BaseDocWriter::getAdapter(const QString& url, U2OpStatus& os) {
     if (!ifCreateAdapter(url)) {
         return adapters[url];
     }
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     openAdapter(io.data(), url, SaveDocFlags(fileMode), os);
     CHECK_OP(os, nullptr);
@@ -278,7 +278,7 @@ IOAdapter *BaseDocWriter::getAdapter(const QString &url, U2OpStatus &os) {
     return io.take();
 }
 
-Document *BaseDocWriter::getDocument(IOAdapter *io, U2OpStatus &os) {
+Document* BaseDocWriter::getDocument(IOAdapter* io, U2OpStatus& os) {
     if (docs.contains(io)) {
         return docs[io];
     }
@@ -286,7 +286,7 @@ Document *BaseDocWriter::getDocument(IOAdapter *io, U2OpStatus &os) {
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
     hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
-    Document *doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
+    Document* doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
     CHECK_OP(os, nullptr);
 
     doc->setDocumentOwnsDbiResources(false);
@@ -298,15 +298,15 @@ bool BaseDocWriter::isStreamingSupport() const {
     return format->isStreamingSupport();
 }
 
-void BaseDocWriter::storeData(const QStringList &urls, const QVariantMap &data, U2OpStatus &os) {
-    foreach (const QString &anUrl, urls) {
-        IOAdapter *io = getAdapter(anUrl, os);
+void BaseDocWriter::storeData(const QStringList& urls, const QVariantMap& data, U2OpStatus& os) {
+    foreach (const QString& anUrl, urls) {
+        IOAdapter* io = getAdapter(anUrl, os);
         CHECK_OP(os, );
         if (isStreamingSupport()) {
             // TODO: make it in separate thread!
             storeEntry(io, data, ch->takenMessages());
         } else {
-            Document *doc = getDocument(io, os);
+            Document* doc = getDocument(io, os);
             CHECK_OP(os, );
             data2doc(doc, data);
         }
@@ -319,7 +319,7 @@ void BaseDocWriter::storeData(const QStringList &urls, const QVariantMap &data, 
         continue; \
     }
 
-Task *BaseDocWriter::tick() {
+Task* BaseDocWriter::tick() {
     U2OpStatusImpl os;
     while (ch->hasMessage()) {
         const Message inputMessage = getMessageAndSetupScriptValues(ch);
@@ -342,7 +342,7 @@ Task *BaseDocWriter::tick() {
                 break;
             }
         } else if (dataStorage == SharedDb) {
-            Task *result = createWriteToSharedDbTask(data);
+            Task* result = createWriteToSharedDbTask(data);
             if (result == nullptr) {
                 continue;
             } else {
@@ -370,21 +370,21 @@ void BaseDocWriter::reportNoDataReceivedWarning() {
     monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
 }
 
-QSet<GObject *> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap &data) const {
-    QSet<GObject *> result = getObjectsToWrite(data);
+QSet<GObject*> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap& data) const {
+    QSet<GObject*> result = getObjectsToWrite(data);
     result.remove(nullptr);  // eliminate invalid objects
     return result;
 }
 
-Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
-    QList<Task *> tasks;
-    foreach (GObject *obj, getObjectsToWriteBaseImpl(data)) {
+Task* BaseDocWriter::createWriteToSharedDbTask(const QVariantMap& data) {
+    QList<Task*> tasks;
+    foreach (GObject* obj, getObjectsToWriteBaseImpl(data)) {
         if (nullptr == obj) {
             reportError(tr("Unable to fetch data from a message"));
             continue;
         }
-        Task *importTask = new ImportObjectToDatabaseTask(obj, dstDbiRef, dstPathInDb);
-        connect(new TaskSignalMapper(importTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_objectImported(Task *)));
+        Task* importTask = new ImportObjectToDatabaseTask(obj, dstDbiRef, dstPathInDb);
+        connect(new TaskSignalMapper(importTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_objectImported(Task*)));
         tasks.append(importTask);
     }
     if (tasks.isEmpty()) {
@@ -392,29 +392,29 @@ Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
     } else {
         objectsReceived = true;
     }
-    Task *resultTask = tasks.size() == 1 ? tasks.first() : new MultiTask(tr("Save objects to a shared database"), tasks);
+    Task* resultTask = tasks.size() == 1 ? tasks.first() : new MultiTask(tr("Save objects to a shared database"), tasks);
     return resultTask;
 }
 
-void BaseDocWriter::sl_objectImported(Task *importTask) {
-    ImportObjectToDatabaseTask *realTask = qobject_cast<ImportObjectToDatabaseTask *>(importTask);
+void BaseDocWriter::sl_objectImported(Task* importTask) {
+    ImportObjectToDatabaseTask* realTask = qobject_cast<ImportObjectToDatabaseTask*>(importTask);
     SAFE_POINT(nullptr != realTask, "Invalid task detected", );
     delete realTask->getSourceObject();
 }
 
-Task *BaseDocWriter::processDocs() {
+Task* BaseDocWriter::processDocs() {
     if (adapters.isEmpty()) {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
         return nullptr;
     }
-    QList<Task *> tlist;
-    foreach (IOAdapter *io, docs.keys()) {
-        Document *doc = docs[io];
+    QList<Task*> tlist;
+    foreach (IOAdapter* io, docs.keys()) {
+        Document* doc = docs[io];
         ioLog.details(tr("Writing to %1 [%2]").arg(io->getURL().getURLString()).arg(format->getFormatName()));
         io->close();
-        GHints *hints = doc->getGHints();
+        GHints* hints = doc->getGHints();
         hints->set(DocumentRemovalMode_Synchronous, QString());
         tlist << getWriteDocTask(doc, getDocFlags());
     }
@@ -423,7 +423,7 @@ Task *BaseDocWriter::processDocs() {
     return tlist.size() == 1 ? tlist.first() : new MultiTask(tr("Save documents"), tlist);
 }
 
-Task *BaseDocWriter::getWriteDocTask(Document *doc, const SaveDocFlags &flags) {
+Task* BaseDocWriter::getWriteDocTask(Document* doc, const SaveDocFlags& flags) {
     return new SaveDocumentTask(doc, flags, DocumentUtils::getNewDocFileNameExcludesHint());
 }
 
@@ -436,7 +436,7 @@ SaveDocFlags BaseDocWriter::getDocFlags() const {
     return flags;
 }
 
-QString BaseDocWriter::getUniqueObjectName(const Document *doc, const QString &name) {
+QString BaseDocWriter::getUniqueObjectName(const Document* doc, const QString& name) {
     QString result = name;
     int num = 0;
     bool found = false;

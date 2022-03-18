@@ -37,7 +37,7 @@ typedef PrompterBase<FilterBamPrompter> FilterBamBase;
 class FilterBamPrompter : public FilterBamBase {
     Q_OBJECT
 public:
-    FilterBamPrompter(Actor *p = 0)
+    FilterBamPrompter(Actor* p = 0)
         : FilterBamBase(p) {
     }
 
@@ -48,22 +48,22 @@ protected:
 class FilterBamWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FilterBamWorker(Actor *a);
+    FilterBamWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QStringList outUrls;
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    void sendResult(const QString &url);
-    QString getTargetName(const QString &fileUrl, const QString &outDir);
+    void sendResult(const QString& url);
+    QString getTargetName(const QString& fileUrl, const QString& outDir);
 
 };  // FilterBamWorker
 
@@ -75,7 +75,7 @@ public:
     FilterBamWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new FilterBamWorker(a);
     }
 };  // FilterBamWorkerFactory
@@ -102,7 +102,7 @@ public:
 class SamtoolsViewFilterTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    SamtoolsViewFilterTask(const BamFilterSetting &settings);
+    SamtoolsViewFilterTask(const BamFilterSetting& settings);
 
     void prepare();
     void run();
@@ -112,8 +112,8 @@ public:
     }
 
 private:
-    void start(const ProcessRun &pRun, const QString &toolName);
-    void checkExitCode(QProcess *process, const QString &toolName);
+    void start(const ProcessRun& pRun, const QString& toolName);
+    void checkExitCode(QProcess* process, const QString& toolName);
 
 private:
     BamFilterSetting settings;

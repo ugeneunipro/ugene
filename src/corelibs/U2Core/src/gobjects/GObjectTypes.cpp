@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-GObjectTypeInfo::GObjectTypeInfo(const GObjectType &_type, const QString &_name, const QString &_pluralName, const QString &_treeSign, const QString _iconURL, const QString &_lockedIconUrl)
+GObjectTypeInfo::GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& _treeSign, const QString _iconURL, const QString& _lockedIconUrl)
     : type(_type), name(_name), pluralName(_pluralName), treeSign(_treeSign), iconURL(_iconURL), lockedIconUrl(_lockedIconUrl) {
 }
 
@@ -52,41 +52,41 @@ REGISTER_TYPE_EX(PHYLOGENETIC_TREE, "OT_PTREE", GObject::tr("Tree"), GObject::tr
 REGISTER_TYPE_EX(BIOSTRUCTURE_3D, "OT_BIOSTRUCT3D", GObject::tr("3D model"), GObject::tr("3D models"), "3d", ":core/images/biostruct3d.png", ":core/images/ro_biostruct3d.png");
 REGISTER_TYPE(ASSEMBLY, "OT_ASSEMBLY", GObject::tr("Assembly"), GObject::tr("Assemblies"), "as");
 
-static QHash<GObjectType, GObjectTypeInfo> &getTypeMap() {
+static QHash<GObjectType, GObjectTypeInfo>& getTypeMap() {
     static QHash<GObjectType, GObjectTypeInfo> map;
     return map;
 }
 
-const GObjectTypeInfo &GObjectTypes::getTypeInfo(const QString &t) {
-    QHash<GObjectType, GObjectTypeInfo> &m = getTypeMap();
+const GObjectTypeInfo& GObjectTypes::getTypeInfo(const QString& t) {
+    QHash<GObjectType, GObjectTypeInfo>& m = getTypeMap();
     if (m.contains(t)) {
-        GObjectTypeInfo &r = m[t];
+        GObjectTypeInfo& r = m[t];
         return r;
     }
-    GObjectTypeInfo &r = m[GObjectTypes::UNKNOWN];
+    GObjectTypeInfo& r = m[GObjectTypes::UNKNOWN];
     return r;
 }
 
-GObjectType GObjectTypes::registerTypeInfo(const GObjectTypeInfo &ti) {
-    QHash<GObjectType, GObjectTypeInfo> &map = getTypeMap();
+GObjectType GObjectTypes::registerTypeInfo(const GObjectTypeInfo& ti) {
+    QHash<GObjectType, GObjectTypeInfo>& map = getTypeMap();
     assert(!map.contains(ti.type));
     map[ti.type] = ti;
     return ti.type;
 }
 
 void GObjectTypes::initTypeTranslations() {
-    QHash<GObjectType, GObjectTypeInfo> &map = getTypeMap();
+    QHash<GObjectType, GObjectTypeInfo>& map = getTypeMap();
     foreach (GObjectType t, map.keys()) {
-        GObjectTypeInfo &info = map[t];
+        GObjectTypeInfo& info = map[t];
         info.name = GObject::tr(info.name.toLocal8Bit().data());
         info.pluralName = GObject::tr(info.pluralName.toLocal8Bit().data());
     }
 }
 
 void GObjectTypes::initTypeIcons() {
-    QHash<GObjectType, GObjectTypeInfo> &map = getTypeMap();
+    QHash<GObjectType, GObjectTypeInfo>& map = getTypeMap();
     foreach (GObjectType t, map.keys()) {
-        GObjectTypeInfo &info = map[t];
+        GObjectTypeInfo& info = map[t];
         if (!info.iconURL.isEmpty()) {
             info.icon = QIcon(info.iconURL);
             info.lockedIcon = QIcon(info.lockedIconUrl);

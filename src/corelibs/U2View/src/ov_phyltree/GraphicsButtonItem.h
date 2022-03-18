@@ -36,11 +36,11 @@ class PhyTreeObject;
 
 class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *e);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e);
+    void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 public:
     GraphicsButtonItem(double nodeValue = 0);
@@ -55,11 +55,11 @@ public:
 
     void setSelected(bool selected);
 
-    void rerootTree(PhyTreeObject *treeObject);
+    void rerootTree(PhyTreeObject* treeObject);
 
-    void updateSettings(const OptionsMap &settings);
+    void updateSettings(const OptionsMap& settings);
 
-    const QGraphicsSimpleTextItem *getLabel() const;
+    const QGraphicsSimpleTextItem* getLabel() const;
 
     qreal getNodeValue() const {
         return nodeValue;
@@ -73,7 +73,7 @@ private:
     static const qreal radius;
 
     bool isSelected;
-    QGraphicsSimpleTextItem *nodeLabel;
+    QGraphicsSimpleTextItem* nodeLabel;
     qreal nodeValue;
 };
 

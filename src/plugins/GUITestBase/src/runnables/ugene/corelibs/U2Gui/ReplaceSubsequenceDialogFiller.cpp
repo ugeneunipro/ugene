@@ -40,23 +40,24 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool recalculateQuals)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
     : Filler(_os, "EditSequenceDialog"),
       pasteDataHere(_pasteDataHere),
-      recalculateQuals(recalculateQuals) {
+      recalculateQuals(recalculateQuals),
+      expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario, bool _expectAlphabetChanged)
     : Filler(os, "EditSequenceDialog", scenario),
-      recalculateQuals(false) {
+      recalculateQuals(false),
+      expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
+    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
     // GTKeyboardDriver::keyClick( GTKeyboardDriver::key["a"], Qt::ControlModifier);
     // GTGlobals::sleep();
@@ -64,10 +65,10 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTGlobals::sleep();
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
-
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
+    if (expectAlphabetChanged) {
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 

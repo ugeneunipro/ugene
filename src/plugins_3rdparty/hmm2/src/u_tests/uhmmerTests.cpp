@@ -80,7 +80,7 @@ class GObject;
 
 /* TRANSLATOR U2::GTest */
 
-void GTest_uHMMERSearch::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_uHMMERSearch::init(XMLTestFormat*, const QDomElement& el) {
     evalueCutoff = 10;
     number_of_seq = 1;
     domEvalueCutoff = 0.9999999;
@@ -183,25 +183,25 @@ void GTest_uHMMERSearch::init(XMLTestFormat *, const QDomElement &el) {
     aDoc = NULL;
 }
 void GTest_uHMMERSearch::prepare() {
-    Document *doc = getContext<Document>(this, seqDocCtxName);
+    Document* doc = getContext<Document>(this, seqDocCtxName);
     if (doc == NULL) {
         stateInfo.setError(QString("context not found %1").arg(seqDocCtxName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
 
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == NULL) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::SEQUENCE));
         return;
     }
     assert(obj != NULL);
-    U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
+    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == NULL) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -228,12 +228,12 @@ void GTest_uHMMERSearch::prepare() {
     }
     QString annotationName = "hmm_signal";
     QString url = env->getVar("TEMP_DATA_DIR") + "/uhmmsearch/" + resultDocName;
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     assert(aDoc == NULL);
     aDoc = df->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
-    AnnotationTableObject *ao = new AnnotationTableObject("Annotations", aDoc->getDbiRef());
+    AnnotationTableObject* ao = new AnnotationTableObject("Annotations", aDoc->getDbiRef());
     aDoc->addObject(ao);
     DNASequence dnaSequence = mySequence->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
@@ -241,9 +241,9 @@ void GTest_uHMMERSearch::prepare() {
     addSubTask(searchTask);
 }
 
-QList<Task *> GTest_uHMMERSearch::onSubTaskFinished(Task *subTask) {
+QList<Task*> GTest_uHMMERSearch::onSubTaskFinished(Task* subTask) {
     Q_UNUSED(subTask);
-    QList<Task *> res;
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
@@ -298,7 +298,7 @@ void GTest_uHMMERSearch::cleanup() {
 //**********uHMMER Build*******************************************************
 //*****************************************************************************
 
-void GTest_uHMMERBuild::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_uHMMERBuild::init(XMLTestFormat*, const QDomElement& el) {
     QString inFile = el.attribute(IN_FILE_NAME_ATTR);
     if (inFile.isEmpty()) {
         failMissingValue(IN_FILE_NAME_ATTR);
@@ -374,7 +374,7 @@ void GTest_uHMMERBuild::cleanup() {
     XmlTest::cleanup();
 }
 
-void GTest_hmmCompare::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_hmmCompare::init(XMLTestFormat*, const QDomElement& el) {
     file1Name = el.attribute(IN_FILE1_NAME_ATTR);
     if (file1Name.isEmpty()) {
         failMissingValue(IN_FILE1_NAME_ATTR);
@@ -390,12 +390,12 @@ void GTest_hmmCompare::init(XMLTestFormat *, const QDomElement &el) {
 Task::ReportResult GTest_hmmCompare::report() {
     QFileInfo fi1(env->getVar("COMMON_DATA_DIR") + "/" + file1Name);
     QString url1 = fi1.absoluteFilePath();
-    IOAdapterFactory *iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url1));
+    IOAdapterFactory* iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url1));
     QScopedPointer<IOAdapter> io1(iof1->createIOAdapter());
     // QFile file1(fi1.absoluteFilePath());
     QFileInfo fi2(env->getVar("TEMP_DATA_DIR") + "/" + file2Name);
     QString url2 = fi2.absoluteFilePath();
-    IOAdapterFactory *iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url2));
+    IOAdapterFactory* iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url2));
     QScopedPointer<IOAdapter> io2(iof2->createIOAdapter());
     fi2.absoluteDir().mkdir(fi2.absoluteDir().absolutePath());  // ???
     // QFile file2(fi2.absoluteFilePath());
@@ -414,8 +414,8 @@ Task::ReportResult GTest_hmmCompare::report() {
 
     qint64 len1, len2, line1 = 0, line2 = 0;
     QByteArray readBuffer1(READ_BUFF_SIZE, '\0'), readBuffer2(READ_BUFF_SIZE, '\0');
-    char *cbuff1 = readBuffer1.data();
-    char *cbuff2 = readBuffer2.data();
+    char* cbuff1 = readBuffer1.data();
+    char* cbuff2 = readBuffer2.data();
     QRegExp rx("CKSUM ");
 
     bool ok = false;
@@ -472,7 +472,7 @@ Task::ReportResult GTest_hmmCompare::report() {
 //**********uHMMER Calibrate***************************************************
 //*****************************************************************************
 
-void GTest_uHMMERCalibrate::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_uHMMERCalibrate::init(XMLTestFormat*, const QDomElement& el) {
     calibrateTask = NULL;
 
     QString hmmFile = el.attribute(HMM_FILE_ATTR);
@@ -534,7 +534,7 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *, const QDomElement &el) {
         s.seed = seed;
     }
 
-    calibrateTask = new HMMCalibrateToFileTask *[nCalibrates];
+    calibrateTask = new HMMCalibrateToFileTask*[nCalibrates];
 
     s.nThreads = nThreads;
 
@@ -551,12 +551,12 @@ Task::ReportResult GTest_uHMMERCalibrate::report() {
         return ReportResult_Finished;
     }
     for (int i = 0; i < nCalibrates; i++) {
-        float new_mu = ((::plan7_s *)calibrateTask[i]->getHMM())->mu;
+        float new_mu = ((::plan7_s*)calibrateTask[i]->getHMM())->mu;
         if (qAbs(new_mu - mu) > 0.1) {
             stateInfo.setError(QString("mu value %1, expected %2").arg(new_mu).arg(mu));
             break;
         }
-        float new_lambda = ((::plan7_s *)calibrateTask[i]->getHMM())->lambda;
+        float new_lambda = ((::plan7_s*)calibrateTask[i]->getHMM())->lambda;
         if (qAbs(new_lambda - lambda) > 0.1) {
             stateInfo.setError(QString("lambda value %1, expected %2").arg(new_lambda).arg(lambda));
             break;
@@ -565,7 +565,7 @@ Task::ReportResult GTest_uHMMERCalibrate::report() {
     return ReportResult_Finished;
 }
 
-GTest_uHMMERCalibrate::GTest_uHMMERCalibrateSubtask::GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask **calibrateTask, int n)
+GTest_uHMMERCalibrate::GTest_uHMMERCalibrateSubtask::GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask** calibrateTask, int n)
     : Task(tr("uhmmer-calibrate-subtask"), TaskFlags_NR_FOSCOE) {
     assert(calibrateTask != NULL);
     for (int i = 0; i < n; i++) {
@@ -582,8 +582,8 @@ void GTest_uHMMERCalibrate::cleanup() {
     XmlTest::cleanup();
 }
 
-QList<XMLTestFactory *> UHMMERTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> UHMMERTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_uHMMERSearch::createFactory());
     res.append(GTest_uHMMERBuild::createFactory());
     res.append(GTest_hmmCompare::createFactory());

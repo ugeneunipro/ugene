@@ -67,18 +67,18 @@ MrBayesSupport::MrBayesSupport()
     toolKitName = "MrBayes";
 
     // register the method
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
+    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////
 // MrBayesAdapter
 
-Task *MrBayesAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
+Task* MrBayesAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
     return new MrBayesSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget *MrBayesAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget* MrBayesAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent) {
     return new MrBayesWidget(ma, parent);
 }
 

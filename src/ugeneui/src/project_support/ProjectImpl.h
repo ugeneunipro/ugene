@@ -41,44 +41,44 @@ class ProjectImpl : public Project {
     friend class LoadProjectTask;
 
 public:
-    ProjectImpl(const QString &_name, const QString &_url, const QList<Document *> &_docs = QList<Document *>(), const QList<GObjectViewState *> &_states = QList<GObjectViewState *>());
+    ProjectImpl(const QString& _name, const QString& _url, const QList<Document*>& _docs = QList<Document*>(), const QList<GObjectViewState*>& _states = QList<GObjectViewState*>());
     virtual ~ProjectImpl();
 
-    virtual const QString &getProjectName() const {
+    virtual const QString& getProjectName() const {
         return name;
     }
 
-    virtual void setProjectName(const QString &name);
+    virtual void setProjectName(const QString& name);
 
-    virtual const QString &getProjectURL() const {
+    virtual const QString& getProjectURL() const {
         return url;
     }
 
-    virtual void setProjectURL(const QString &);
+    virtual void setProjectURL(const QString&);
 
-    virtual const QList<Document *> &getDocuments() const {
+    virtual const QList<Document*>& getDocuments() const {
         return docs;
     }
 
-    virtual void addDocument(Document *d);
+    virtual void addDocument(Document* d);
 
-    virtual void removeDocument(Document *d, bool autodelete = true);
+    virtual void removeDocument(Document* d, bool autodelete = true);
 
-    virtual bool lockResources(int sizeMB, const QString &url, QString &error);
+    virtual bool lockResources(int sizeMB, const QString& url, QString& error);
 
-    virtual Document *findDocumentByURL(const QString &url) const;
+    virtual Document* findDocumentByURL(const QString& url) const;
 
-    virtual Document *findDocumentByURL(const GUrl &url) const {
+    virtual Document* findDocumentByURL(const GUrl& url) const {
         return findDocumentByURL(url.getURLString());
     }
 
-    virtual const QList<GObjectViewState *> &getGObjectViewStates() const {
+    virtual const QList<GObjectViewState*>& getGObjectViewStates() const {
         return objectViewStates;
     }
 
-    virtual void addGObjectViewState(GObjectViewState *s);
+    virtual void addGObjectViewState(GObjectViewState* s);
 
-    virtual void removeGObjectViewState(GObjectViewState *s);
+    virtual void removeGObjectViewState(GObjectViewState* s);
 
     virtual void makeClean();
 
@@ -90,37 +90,38 @@ public:
         idGen = c;
     }
 
-    virtual void removeRelations(const QString &docUrl);
+    virtual void removeRelations(const QString& docUrl);
 
-    virtual void updateDocInRelations(const QString &oldDocUrl, const QString &newDocUrl);
+    virtual void updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl);
 
 private slots:
-    void sl_onStateModified(GObjectViewState *);
-    void sl_onObjectAdded(GObject *);
-    void sl_onObjectRemoved(GObject *o);
-    void sl_onObjectRenamed(const QString &oldName);
-    void sl_onObjectRelationChanged(const QList<GObjectRelation> &previousRelations);
+    void sl_onStateModified(GObjectViewState*);
+    void sl_onObjectAdded(GObject*);
+    void sl_onObjectRemoved(GObject* o);
+    void sl_onObjectRenamed(const QString& oldName);
+    void sl_onObjectRelationChanged(const QList<GObjectRelation>& previousRelations);
 
-    void sl_onMdiWindowAdded(MWMDIWindow *w);
-    void sl_onMdiWindowClosing(MWMDIWindow *w);
-    void sl_onViewRenamed(const QString &oldName);
+    void sl_onMdiWindowAdded(MWMDIWindow* w);
+    void sl_onMdiWindowClosing(MWMDIWindow* w);
+    void sl_onViewRenamed(const QString& oldName);
+    void sl_removeAllrelationsWithObject(GObject* obj);
 
 private:
-    void addState(GObjectViewState *s);
-    void updateObjectRelations(const GObjectReference &oldRef, const GObjectReference &newRef);
+    void addState(GObjectViewState* s);
+    void updateObjectRelations(const GObjectReference& oldRef, const GObjectReference& newRef);
     // returns number of reference fields updated
-    int updateReferenceFields(const QString &stateName, QVariantMap &map, const GObjectReference &from, const GObjectReference &to);
-    void updateGObjectViewStates(const QString &oldViewName, const QString &newViewName);
+    int updateReferenceFields(const QString& stateName, QVariantMap& map, const GObjectReference& from, const GObjectReference& to);
+    void updateGObjectViewStates(const QString& oldViewName, const QString& newViewName);
     QString genNextObjectId();
 
     int idGen;
 
     QString name;
     QString url;
-    QList<Document *> docs;
+    QList<Document*> docs;
 
-    QList<GObjectViewState *> objectViewStates;
-    AppResource *resourceTracker;
+    QList<GObjectViewState*> objectViewStates;
+    AppResource* resourceTracker;
     QMap<QString, qint64> resourceUsage;
 
     // Every implementation of Project Parser must be added as friend, to get access to addState

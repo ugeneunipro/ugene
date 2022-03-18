@@ -34,17 +34,17 @@ PVRowsManager::~PVRowsManager() {
 
 typedef QVector<U2Region>::const_iterator LRIter;
 
-PVRowData::PVRowData(const QString &key)
+PVRowData::PVRowData(const QString& key)
     : key(key) {
 }
 
-bool PVRowData::fitToRow(const QVector<U2Region> &location) {
+bool PVRowData::fitToRow(const QVector<U2Region>& location) {
     // assume locations are always in ascending order
     // usually annotations come in sorted by location
     // first check the most frequent way
     if (!ranges.isEmpty()) {
-        const U2Region &l = location.first();
-        const U2Region &r = ranges.last();
+        const U2Region& l = location.first();
+        const U2Region& r = ranges.last();
         if (l.startPos > r.endPos()) {
             ranges << location;
             return true;
@@ -57,7 +57,7 @@ bool PVRowData::fitToRow(const QVector<U2Region> &location) {
     QVarLengthArray<int, 16> pos;
     LRIter zero = ranges.constBegin();
     LRIter end = ranges.constEnd();
-    foreach (const U2Region &l, location) {
+    foreach (const U2Region& l, location) {
         LRIter it = std::lower_bound(zero, end, l);
         if (it != end && (it->startPos <= l.endPos() || (it != zero && (it - 1)->endPos() >= l.startPos))) {
             // got intersection
@@ -74,16 +74,16 @@ bool PVRowData::fitToRow(const QVector<U2Region> &location) {
     return true;
 }
 
-inline bool compare_rows(PVRowData *x, PVRowData *y) {
+inline bool compare_rows(PVRowData* x, PVRowData* y) {
     return x->key.compare(y->key) > 0;
 }
 
 PVRowsManager::PVRowsManager() {
 }
 
-void PVRowsManager::addAnnotation(Annotation *a) {
+void PVRowsManager::addAnnotation(Annotation* a) {
     SAFE_POINT(!rowByAnnotation.contains(a), "Annotation has been already added", );
-    const SharedAnnotationData &data = a->getData();
+    const SharedAnnotationData& data = a->getData();
     const QVector<U2Region> location = data->getRegions();
 
     QString name;
@@ -95,7 +95,7 @@ void PVRowsManager::addAnnotation(Annotation *a) {
     }
 
     if (rowByName.contains(name)) {
-        foreach (PVRowData *row, rowByName[name]) {
+        foreach (PVRowData* row, rowByName[name]) {
             if (row->fitToRow(location)) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
@@ -107,13 +107,13 @@ void PVRowsManager::addAnnotation(Annotation *a) {
         }
     }
 
-    PVRowData *row = new PVRowData(name);
+    PVRowData* row = new PVRowData(name);
 
     row->ranges << location;
     row->annotations.append(a);
     rowByAnnotation[a] = row;
 
-    QList<PVRowData *>::iterator i = std::upper_bound(rows.begin(), rows.end(), row, compare_rows);
+    QList<PVRowData*>::iterator i = std::upper_bound(rows.begin(), rows.end(), row, compare_rows);
     rows.insert(i, row);
     rowByName[name].append(row);
     if (name != data->name) {
@@ -123,9 +123,9 @@ void PVRowsManager::addAnnotation(Annotation *a) {
 
 namespace {
 
-void substractRegions(QVector<U2Region> &regionsToProcess, const QVector<U2Region> &regionsToRemove) {
+void substractRegions(QVector<U2Region>& regionsToProcess, const QVector<U2Region>& regionsToRemove) {
     QVector<U2Region> result;
-    foreach (const U2Region &pr, regionsToProcess) {
+    foreach (const U2Region& pr, regionsToProcess) {
         if (!regionsToRemove.contains(pr)) {
             result.append(pr);
         }
@@ -135,8 +135,8 @@ void substractRegions(QVector<U2Region> &regionsToProcess, const QVector<U2Regio
 
 }  // namespace
 
-void PVRowsManager::removeAnnotation(Annotation *a) {
-    PVRowData *row = rowByAnnotation.value(a, nullptr);
+void PVRowsManager::removeAnnotation(Annotation* a) {
+    PVRowData* row = rowByAnnotation.value(a, nullptr);
     CHECK(nullptr != row, );  // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
     rowByName.remove(a->getName());
@@ -144,7 +144,7 @@ void PVRowsManager::removeAnnotation(Annotation *a) {
     substractRegions(row->ranges, a->getRegions());
     if (row->annotations.isEmpty()) {
         rows.removeOne(row);
-        QList<PVRowData *> &rowsWithSameName = rowByName[row->key];
+        QList<PVRowData*>& rowsWithSameName = rowByName[row->key];
         rowsWithSameName.removeOne(row);
         if (rowsWithSameName.isEmpty()) {
             rowByName.remove(row->key);
@@ -153,8 +153,8 @@ void PVRowsManager::removeAnnotation(Annotation *a) {
     }
 }
 
-int PVRowsManager::getAnnotationRowIdx(Annotation *a) const {
-    PVRowData *row = rowByAnnotation.value(a, nullptr);
+int PVRowsManager::getAnnotationRowIdx(Annotation* a) const {
+    PVRowData* row = rowByAnnotation.value(a, nullptr);
     if (nullptr == row) {
         return -1;
     } else {
@@ -164,23 +164,23 @@ int PVRowsManager::getAnnotationRowIdx(Annotation *a) const {
 
 int PVRowsManager::getNumAnnotationsInRow(int rowNum) const {
     SAFE_POINT(rowNum >= 0 && rowNum < rows.size(), "Row number out of range", 0);
-    PVRowData *r = rows[rowNum];
+    PVRowData* r = rows[rowNum];
     return r->annotations.size();
 }
 
-int PVRowsManager::getNumRows() const {
+int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 
-bool PVRowsManager::contains(const QString &key) const {
+bool PVRowsManager::contains(const QString& key) const {
     return rowByName.contains(key);
 }
 
-PVRowData *PVRowsManager::getAnnotationRow(Annotation *a) const {
+PVRowData* PVRowsManager::getAnnotationRow(Annotation* a) const {
     return rowByAnnotation.value(a, nullptr);
 }
 
-PVRowData *PVRowsManager::getRow(int row) const {
+PVRowData* PVRowsManager::getRow(int row) const {
     if (row >= 0 && row < rows.size()) {
         return rows.at(row);
     }

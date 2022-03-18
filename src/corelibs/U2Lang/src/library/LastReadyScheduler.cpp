@@ -33,7 +33,7 @@ namespace U2 {
 
 namespace LocalWorkflow {
 
-LastReadyScheduler::LastReadyScheduler(Schema *sh)
+LastReadyScheduler::LastReadyScheduler(Schema* sh)
     : Scheduler(sh), lastWorker(nullptr), canLastTaskBeCanceled(false), requestedActorForNextTick(), timeUpdater(nullptr) {
 }
 
@@ -42,10 +42,10 @@ LastReadyScheduler::~LastReadyScheduler() {
 }
 
 void LastReadyScheduler::init() {
-    foreach (Actor *a, schema->getProcesses()) {
-        BaseWorker *w = a->castPeer<BaseWorker>();
-        QList<IntegralBus *> portBuses = w->getPorts().values();
-        for (IntegralBus *bus : qAsConst(portBuses)) {
+    foreach (Actor* a, schema->getProcesses()) {
+        BaseWorker* w = a->castPeer<BaseWorker>();
+        QList<IntegralBus*> portBuses = w->getPorts().values();
+        for (IntegralBus* bus : qAsConst(portBuses)) {
             bus->setWorkflowContext(context);
         }
         w->setContext(context);
@@ -56,7 +56,7 @@ void LastReadyScheduler::init() {
 }
 
 bool LastReadyScheduler::isReady() const {
-    foreach (Actor *a, schema->getProcesses()) {
+    foreach (Actor* a, schema->getProcesses()) {
         if (a->castPeer<BaseWorker>()->isReady()) {
             return true;
         }
@@ -96,9 +96,9 @@ inline void LastReadyScheduler::measuredTick() {
     }
 }
 
-Task *LastReadyScheduler::tick() {
+Task* LastReadyScheduler::tick() {
     for (int vertexLabel = 0; vertexLabel < topologicSortedGraph.size(); vertexLabel++) {
-        foreach (Actor *a, topologicSortedGraph.value(vertexLabel)) {
+        foreach (Actor* a, topologicSortedGraph.value(vertexLabel)) {
             if (a->castPeer<BaseWorker>()->isReady()) {
                 if (requestedActorForNextTick.isEmpty() || a->getId() == requestedActorForNextTick) {
                     lastWorker = a->castPeer<BaseWorker>();
@@ -116,15 +116,15 @@ Task *LastReadyScheduler::tick() {
     return nullptr;
 }
 
-Task *LastReadyScheduler::replayLastWorkerTick() {
+Task* LastReadyScheduler::replayLastWorkerTick() {
     lastWorker->saveCurrentChannelsStateAndRestorePrevious();
-    Task *result = lastWorker->tick();
+    Task* result = lastWorker->tick();
     lastWorker->restoreActualChannelsState();
     return result;
 }
 
 bool LastReadyScheduler::isDone() const {
-    foreach (Actor *a, schema->getProcesses()) {
+    foreach (Actor* a, schema->getProcesses()) {
         if (!a->castPeer<BaseWorker>()->isDone()) {
             return false;
         }
@@ -133,15 +133,15 @@ bool LastReadyScheduler::isDone() const {
 }
 
 void LastReadyScheduler::cleanup() {
-    foreach (Actor *a, schema->getProcesses()) {
+    foreach (Actor* a, schema->getProcesses()) {
         a->castPeer<BaseWorker>()->cleanup();
     }
 }
 
-WorkerState LastReadyScheduler::getWorkerState(const Actor *a) {
-    BaseWorker *w = a->castPeer<BaseWorker>();
+WorkerState LastReadyScheduler::getWorkerState(const Actor* a) {
+    BaseWorker* w = a->castPeer<BaseWorker>();
     if (lastWorker == w) {
-        Task *t = lastTask;
+        Task* t = lastTask;
         if (w->isDone() && t && t->isFinished()) {
             return WorkerDone;
         }
@@ -155,18 +155,18 @@ WorkerState LastReadyScheduler::getWorkerState(const Actor *a) {
     return WorkerWaiting;
 }
 
-WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
-    Actor *actor1 = schema->actorById(id);
+WorkerState LastReadyScheduler::getWorkerState(const ActorId& id) {
+    Actor* actor1 = schema->actorById(id);
     if (actor1 != nullptr) {
         return getWorkerState(actor1);
     }
-    QList<Actor *> actors = schema->actorsByOwnerId(id);
+    QList<Actor*> actors = schema->actorsByOwnerId(id);
     assert(actors.size() > 0);
 
     bool someWaiting = false;
     bool someDone = false;
     bool someReady = false;
-    for (Actor *actor2 : qAsConst(actors)) {
+    for (Actor* actor2 : qAsConst(actors)) {
         WorkerState state = getWorkerState(actor2);
         switch (state) {
             case WorkerRunning:
@@ -207,7 +207,7 @@ bool LastReadyScheduler::cancelCurrentTaskIfAllowed() {
     return false;
 }
 
-void LastReadyScheduler::makeOneTick(const ActorId &actor) {
+void LastReadyScheduler::makeOneTick(const ActorId& actor) {
     requestedActorForNextTick = actor;
 }
 

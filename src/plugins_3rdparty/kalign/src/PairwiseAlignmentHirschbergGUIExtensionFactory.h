@@ -39,7 +39,7 @@ class PairwiseAlignmentHirschbergMainWidget : public AlignmentAlgorithmMainWidge
     Q_OBJECT
 
 public:
-    PairwiseAlignmentHirschbergMainWidget(QWidget *parent, QVariantMap *s);
+    PairwiseAlignmentHirschbergMainWidget(QWidget* parent, QVariantMap* s);
     virtual ~PairwiseAlignmentHirschbergMainWidget();
 
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
@@ -75,7 +75,7 @@ public:
     PairwiseAlignmentHirschbergGUIExtensionFactory();
     virtual ~PairwiseAlignmentHirschbergGUIExtensionFactory();
 
-    virtual AlignmentAlgorithmMainWidget *createMainWidget(QWidget *parent, QVariantMap *s);
+    virtual AlignmentAlgorithmMainWidget* createMainWidget(QWidget* parent, QVariantMap* s);
 };
 
 }  // namespace U2

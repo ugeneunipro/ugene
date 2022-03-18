@@ -29,13 +29,13 @@ namespace U2 {
 class U2FORMATS_EXPORT EMBLPlainTextFormat : public EMBLGenbankAbstractDocument {
     Q_OBJECT
 public:
-    EMBLPlainTextFormat(QObject *p);
+    EMBLPlainTextFormat(QObject* p);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    bool readIdLine(ParserState *);
-    bool readEntry(ParserState *, U2SequenceImporter &, int &seqSize, int &fullSeqSize, bool merge, int gapSize, U2OpStatus &);
+    bool readIdLine(ParserState*);
+    bool readEntry(ParserState*, U2SequenceImporter&, int& seqSize, int& fullSeqSize, bool merge, int gapSize, U2OpStatus&);
     // void readAnnotations(ParserState*, int offset);
     QMap<QString, QString> tagMap;
 };

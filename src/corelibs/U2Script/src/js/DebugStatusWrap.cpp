@@ -28,16 +28,16 @@
 #include "ActorWrap.h"
 #include "NodeApiUtils.h"
 
-const char *WRONG_ARGUMENT_TYPE_ERROR = "Wrong argument type";
+const char* WRONG_ARGUMENT_TYPE_ERROR = "Wrong argument type";
 
 namespace U2 {
 
 namespace Js {
 
 Persistent<Function> DebugStatusWrap::CONSTRUCTOR;
-const char *DebugStatusWrap::CLASS_NAME = "DebugStatus";
+const char* DebugStatusWrap::CLASS_NAME = "DebugStatus";
 
-DebugStatusWrap::DebugStatusWrap(WorkflowDebugStatus *initDebugStatus)
+DebugStatusWrap::DebugStatusWrap(WorkflowDebugStatus* initDebugStatus)
     : debugStatus(initDebugStatus) {
 }
 
@@ -65,7 +65,7 @@ void DebugStatusWrap::init() {
     CONSTRUCTOR = Persistent<Function>::New(tpl->GetFunction());
 }
 
-Handle<Value> DebugStatusWrap::newInstance(int argc, const Handle<Value> *argv) {
+Handle<Value> DebugStatusWrap::newInstance(int argc, const Handle<Value>* argv) {
     HandleScope scope;
     const int requiredArgumentCount = 1;
     if (!NodeApiUtils::isArgumentCountCorrect(argc, requiredArgumentCount)) {
@@ -76,18 +76,18 @@ Handle<Value> DebugStatusWrap::newInstance(int argc, const Handle<Value> *argv) 
     return scope.Close(instance);
 }
 
-Handle<Value> DebugStatusWrap::newObject(const Arguments &args) {
+Handle<Value> DebugStatusWrap::newObject(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
     }
-    WorkflowDebugStatus *debugStatus = reinterpret_cast<WorkflowDebugStatus *>(args[0]->IntegerValue());
-    DebugStatusWrap *obj = new DebugStatusWrap(debugStatus);
+    WorkflowDebugStatus* debugStatus = reinterpret_cast<WorkflowDebugStatus*>(args[0]->IntegerValue());
+    DebugStatusWrap* obj = new DebugStatusWrap(debugStatus);
     obj->Wrap(args.This());
     return args.This();
 }
 
-Handle<Value> DebugStatusWrap::addBreakpointToActor(const Arguments &args) {
+Handle<Value> DebugStatusWrap::addBreakpointToActor(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
@@ -96,14 +96,14 @@ Handle<Value> DebugStatusWrap::addBreakpointToActor(const Arguments &args) {
         ThrowException(Exception::TypeError(String::New(WRONG_ARGUMENT_TYPE_ERROR)));
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
 
     const String::Utf8Value actorId(args[0]->ToString());
     obj->debugStatus->addBreakpointToActor(*actorId);
     return scope.Close(Undefined());
 }
 
-Handle<Value> DebugStatusWrap::removeBreakpointFromActor(const Arguments &args) {
+Handle<Value> DebugStatusWrap::removeBreakpointFromActor(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
@@ -112,14 +112,14 @@ Handle<Value> DebugStatusWrap::removeBreakpointFromActor(const Arguments &args) 
         ThrowException(Exception::TypeError(String::New(WRONG_ARGUMENT_TYPE_ERROR)));
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
 
     const String::Utf8Value actorId(args[0]->ToString());
     obj->debugStatus->removeBreakpointFromActor(*actorId);
     return scope.Close(Undefined());
 }
 
-Handle<Value> DebugStatusWrap::setBreakpointEnabled(const Arguments &args) {
+Handle<Value> DebugStatusWrap::setBreakpointEnabled(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 2)) {
         return scope.Close(Undefined());
@@ -128,7 +128,7 @@ Handle<Value> DebugStatusWrap::setBreakpointEnabled(const Arguments &args) {
         ThrowException(Exception::TypeError(String::New(WRONG_ARGUMENT_TYPE_ERROR)));
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
 
     const String::Utf8Value actorId(args[0]->ToString());
     bool enabled = args[1]->ToBoolean()->Value();
@@ -136,20 +136,20 @@ Handle<Value> DebugStatusWrap::setBreakpointEnabled(const Arguments &args) {
     return scope.Close(Undefined());
 }
 
-Handle<Value> DebugStatusWrap::getActorsWithBreakpoints(const Arguments &args) {
+Handle<Value> DebugStatusWrap::getActorsWithBreakpoints(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 0)) {
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
     QList<ActorId> actorIds = obj->debugStatus->getActorsWithBreakpoints();
 
-    ScriptContext *scriptContext = AppContext::getScriptContext();
+    ScriptContext* scriptContext = AppContext::getScriptContext();
     Q_ASSERT(nullptr != scriptContext);
 
     Local<Object> actorList = Object::New();
     foreach (ActorId id, actorIds) {
-        Actor *actor = scriptContext->getActorById(id);
+        Actor* actor = scriptContext->getActorById(id);
         Handle<Value> actorInitData[] = {Int32::New(reinterpret_cast<int>(actor))};
         Handle<Value> wrappedActor = ActorWrap::newInstance(1, actorInitData);
         actorList->Set(String::NewSymbol(actor->getId().toLocal8Bit().constData()),
@@ -158,7 +158,7 @@ Handle<Value> DebugStatusWrap::getActorsWithBreakpoints(const Arguments &args) {
     return scope.Close(actorList);
 }
 
-Handle<Value> DebugStatusWrap::setPaused(const Arguments &args) {
+Handle<Value> DebugStatusWrap::setPaused(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
@@ -167,7 +167,7 @@ Handle<Value> DebugStatusWrap::setPaused(const Arguments &args) {
         ThrowException(Exception::TypeError(String::New(WRONG_ARGUMENT_TYPE_ERROR)));
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
     bool pause = args[0]->ToBoolean()->Value();
     if (pause) {
         obj->debugStatus->sl_pauseTriggerActivated();
@@ -177,12 +177,12 @@ Handle<Value> DebugStatusWrap::setPaused(const Arguments &args) {
     return scope.Close(Undefined());
 }
 
-Handle<Value> DebugStatusWrap::isPaused(const Arguments &args) {
+Handle<Value> DebugStatusWrap::isPaused(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 0)) {
         return scope.Close(Undefined());
     }
-    DebugStatusWrap *obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
+    DebugStatusWrap* obj = ObjectWrap::Unwrap<DebugStatusWrap>(args.This());
     return scope.Close(Boolean::New(obj->debugStatus->isPaused()));
 }
 

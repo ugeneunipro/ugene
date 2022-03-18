@@ -37,7 +37,7 @@ const QString PhyMLSupportTask::TMP_FILE_NAME("tmp.phy");
 const QString PhyMLSupportTask::RESULT_BOOTSTRAP_EXT("_phyml_boot_trees.txt");
 const QString PhyMLSupportTask::RESULT_TREE_EXT("_phyml_tree.txt");
 
-PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s, const QString &url)
+PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for PhyML"), TaskFlags_NR_FOSE_COSC),
       ma(ma),
       settings(s),
@@ -52,8 +52,8 @@ void PhyMLPrepareDataForCalculation::prepare() {
     saveDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveDocumentTask);
 }
-QList<Task *> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -80,7 +80,7 @@ QList<Task *> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s)
+PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s),
       prepareDataTask(nullptr),
       phyMlTask(nullptr),
@@ -88,7 +88,7 @@ PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment &ma, const Cr
       sequencesNumber(0) {
     GCOUNTER(cvar, "PhyMLSupportTask");
 
-    sequencesNumber = ma->getNumRows();
+    sequencesNumber = ma->getRowCount();
 
     setTaskName(tr("PhyML tree calculation"));
 
@@ -98,7 +98,7 @@ PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment &ma, const Cr
 }
 
 void PhyMLSupportTask::prepare() {
-    //Add new subdir for temporary files
+    // Add new subdir for temporary files
 
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir(PhyMLSupport::PHYML_TEMP_DIR, stateInfo);
     CHECK_OP(stateInfo, );
@@ -114,8 +114,8 @@ Task::ReportResult PhyMLSupportTask::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> PhyMLSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -139,28 +139,28 @@ QList<Task *> PhyMLSupportTask::onSubTaskFinished(Task *subTask) {
         getTreeTask->setSubtaskProgressWeight(5);
         res.append(getTreeTask);
     } else if (subTask == getTreeTask) {
-        PhyTreeObject *phyObj = getTreeTask->getPhyObject();
-        SAFE_POINT_EXT(nullptr != phyObj, setError(tr("UGENE internal error")), QList<Task *>());
+        PhyTreeObject* phyObj = getTreeTask->getPhyObject();
+        SAFE_POINT_EXT(nullptr != phyObj, setError(tr("UGENE internal error")), QList<Task*>());
         result = phyObj->getTree();
     }
 
     return res;
 }
 
-void PhyMLSupportTask::onExternalToolFailed(const QString &err) {
+void PhyMLSupportTask::onExternalToolFailed(const QString& err) {
     if (nullptr != phyMlTask) {
         phyMlTask->setError(err);
     }
 }
 
-PhyMLLogParser::PhyMLLogParser(PhyMLSupportTask *parentTask, int sequencesNumber)
+PhyMLLogParser::PhyMLLogParser(PhyMLSupportTask* parentTask, int sequencesNumber)
     : parentTask(parentTask),
       isMCMCRunning(false),
       curProgress(0),
       processedBranches(0),
       sequencesNumber(sequencesNumber) {
 }
-void PhyMLLogParser::parseOutput(const QString &partOfLog) {
+void PhyMLLogParser::parseOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QChar('\n'));
     lastPartOfLog.first() = lastLine + lastPartOfLog.first();
     lastLine = lastPartOfLog.takeLast();
@@ -180,7 +180,7 @@ void PhyMLLogParser::parseOutput(const QString &partOfLog) {
         ioLog.trace(buf);
     }
 }
-void PhyMLLogParser::parseErrOutput(const QString &partOfLog) {
+void PhyMLLogParser::parseErrOutput(const QString& partOfLog) {
     parseOutput(partOfLog);
 }
 int PhyMLLogParser::getProgress() {
@@ -188,7 +188,7 @@ int PhyMLLogParser::getProgress() {
     return qMin((processedBranches * 100) / sequencesNumber, 99);
 }
 
-PhyMLGetCalculatedTreeTask::PhyMLGetCalculatedTreeTask(const QString &url)
+PhyMLGetCalculatedTreeTask::PhyMLGetCalculatedTreeTask(const QString& url)
     : Task(tr("Generating output trees from PhyML"),
            TaskFlags_NR_FOSE_COSC),
       baseFileName(url),
@@ -209,8 +209,8 @@ void PhyMLGetCalculatedTreeTask::prepare() {
     loadTmpDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(loadTmpDocumentTask);
 }
-QList<Task *> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -220,7 +220,7 @@ QList<Task *> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
     if (subTask == loadTmpDocumentTask) {
-        Document *doc = loadTmpDocumentTask->getDocument();
+        Document* doc = loadTmpDocumentTask->getDocument();
         SAFE_POINT(doc != nullptr, "Failed loading result document", res);
 
         if (doc->getObjects().size() == 0) {
@@ -228,17 +228,17 @@ QList<Task *> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
             return res;
         }
 
-        const QList<GObject *> &treeList = doc->getObjects();
+        const QList<GObject*>& treeList = doc->getObjects();
         SAFE_POINT_EXT(treeList.count() > 0, setError(tr("No result tree in PhyML output")), res);
-        int index = 1;    //the second tree in the file is needed
+        int index = 1;  // the second tree in the file is needed
         if (treeList.count() - 1 < index) {
             index = 0;
         }
-        phyObject = qobject_cast<PhyTreeObject *>(treeList.at(index));
+        phyObject = qobject_cast<PhyTreeObject*>(treeList.at(index));
         SAFE_POINT_EXT(nullptr != phyObject, setError(tr("No result tree in PhyML output")), res);
     }
 
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

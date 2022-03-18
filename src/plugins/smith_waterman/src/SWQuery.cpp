@@ -52,7 +52,7 @@ void SWAlgoEditor::populate() {
     if (algoLst.isEmpty()) {
         return;
     }
-    foreach (const QString &n, algoLst) {
+    foreach (const QString& n, algoLst) {
         comboItems.append(qMakePair(n, n));
     }
 
@@ -63,7 +63,7 @@ void SWAlgoEditor::populate() {
 /* QDSWActor                                                              */
 /************************************************************************/
 
-QDSWActor::QDSWActor(QDActorPrototype const *proto)
+QDSWActor::QDSWActor(QDActorPrototype const* proto)
     : QDActor(proto), algo(0) {
     units["sw"] = new QDSchemeUnit(this);
     algo = nullptr;
@@ -78,7 +78,7 @@ int QDSWActor::getMaxResultLen() const {
 }
 
 QString QDSWActor::getText() const {
-    QMap<QString, Attribute *> params = cfg->getParameters();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     QString pattern = params.value(PATTERN_ATTR)->getAttributeValueWithoutScript<QString>().toLatin1().toUpper();
     if (pattern.isEmpty()) {
@@ -114,10 +114,10 @@ QString QDSWActor::getText() const {
     return doc;
 }
 
-Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
-    Task *task = nullptr;
+Task* QDSWActor::getAlgorithmTask(const QVector<U2Region>& searchLocation) {
+    Task* task = nullptr;
     assert(scheme);
-    QMap<QString, Attribute *> params = cfg->getParameters();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     settings.aminoTT = nullptr;
     settings.complTT = nullptr;
@@ -161,11 +161,11 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
         return new FailTask(err);
     }
 
-    const DNASequence &dnaSeq = scheme->getSequence();
+    const DNASequence& dnaSeq = scheme->getSequence();
     settings.sqnc = dnaSeq.seq;
 
     if (settings.strand != StrandOption_DirectOnly) {
-        DNATranslation *compTT = nullptr;
+        DNATranslation* compTT = nullptr;
         if (dnaSeq.alphabet->isNucleic()) {
             compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
         }
@@ -179,7 +179,7 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
 
     if (params.value(AMINO_ATTR)->getAttributeValueWithoutScript<bool>()) {
         DNATranslationType tt = (dnaSeq.alphabet->getType() == DNAAlphabet_NUCL) ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
-        QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(dnaSeq.alphabet, tt);
+        QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(dnaSeq.alphabet, tt);
         if (!TTs.isEmpty()) {  // FIXME let user choose or use hints ?
             settings.aminoTT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(dnaSeq.alphabet);
         }
@@ -199,9 +199,9 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     settings.globalRegion = U2Region(0, dnaSeq.length());
 
     task = new Task(tr("SSearch"), TaskFlag_NoRun);
-    foreach (const U2Region &r, searchLocation) {
+    foreach (const U2Region& r, searchLocation) {
         SmithWatermanSettings stngs(settings);
-        SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(nullptr,
+        SmithWatermanReportCallbackAnnotImpl* rcb = new SmithWatermanReportCallbackAnnotImpl(nullptr,
                                                                                              U2FeatureTypes::MiscFeature,
                                                                                              QString(),
                                                                                              QString(),
@@ -210,24 +210,24 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
         stngs.resultCallback = rcb;
         stngs.resultListener = new SmithWatermanResultListener();
         stngs.globalRegion = r;
-        Task *sub = algo->getTaskInstance(stngs, tr("smith_waterman_task"));
+        Task* sub = algo->getTaskInstance(stngs, tr("smith_waterman_task"));
         rcb->setParent(sub);
         task->addSubTask(sub);
         callbacks.insert(sub, rcb);
     }
-    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished(Task *)));
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
     return task;
 }
 
-void QDSWActor::sl_onAlgorithmTaskFinished(Task *) {
+void QDSWActor::sl_onAlgorithmTaskFinished(Task*) {
     QList<SharedAnnotationData> res;
-    QMapIterator<Task *, SmithWatermanReportCallbackAnnotImpl *> iter(callbacks);
+    QMapIterator<Task*, SmithWatermanReportCallbackAnnotImpl*> iter(callbacks);
     while (iter.hasNext()) {
         iter.next();
         res << iter.value()->getAnotations();
     }
 
-    foreach (const SharedAnnotationData &ad, res) {
+    foreach (const SharedAnnotationData& ad, res) {
         QDResultUnit ru(new QDResultUnitData);
         ru->strand = ad->getStrand();
         ru->quals = ad->qualifiers;
@@ -261,7 +261,7 @@ SWQDActorFactory::SWQDActorFactory() {
 
     attributes << new Attribute(pd, BaseTypes::STRING_TYPE(), true);
     attributes << new Attribute(mxd, BaseTypes::STRING_TYPE(), true, QString("---"));
-    Attribute *algAttr = new Attribute(ald, BaseTypes::STRING_TYPE(), true);
+    Attribute* algAttr = new Attribute(ald, BaseTypes::STRING_TYPE(), true);
     attributes << algAttr;
     attributes << new Attribute(frd, BaseTypes::STRING_TYPE(), false, defFilter);
     attributes << new Attribute(scd, BaseTypes::NUM_TYPE(), false, 90);
@@ -269,7 +269,7 @@ SWQDActorFactory::SWQDActorFactory() {
     attributes << new Attribute(god, BaseTypes::NUM_TYPE(), false, -10.);
     attributes << new Attribute(ged, BaseTypes::NUM_TYPE(), false, -1.);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = 1;
@@ -287,7 +287,7 @@ SWQDActorFactory::SWQDActorFactory() {
     }
     {
         QVariantMap m;
-        foreach (const QString &n, filterLst) {
+        foreach (const QString& n, filterLst) {
             m.insert(n, n);
         }
         delegates[FILTER_ATTR] = new ComboBoxDelegate(m);
@@ -296,13 +296,13 @@ SWQDActorFactory::SWQDActorFactory() {
         QVariantMap m;
         m.insert(QDSWActor::tr("Auto"), QString("---"));
         QStringList lst = AppContext::getSubstMatrixRegistry()->getMatrixNames();
-        foreach (const QString &n, lst) {
+        foreach (const QString& n, lst) {
             m.insert(n, n);
         }
         delegates[MATRIX_ATTR] = new ComboBoxDelegate(m);
     }
 
-    SWAlgoEditor *aled = new SWAlgoEditor(algAttr);
+    SWAlgoEditor* aled = new SWAlgoEditor(algAttr);
     aled->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(populate()));
     aled->populate();
     delegates[ALGO_ATTR] = aled;

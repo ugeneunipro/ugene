@@ -29,8 +29,8 @@
 namespace U2 {
 namespace Workflow {
 
-DbiDataHandler::DbiDataHandler(const U2EntityRef &entRef, U2ObjectDbi *dbi, bool useGC)
-    : entRef(entRef), dbi(dbi), useGC(useGC) {
+DbiDataHandler::DbiDataHandler(const U2EntityRef& entityRef, U2ObjectDbi* dbi, bool useGC)
+    : entityRef(entityRef), dbi(dbi), useGC(useGC) {
 }
 
 DbiDataHandler::~DbiDataHandler() {
@@ -42,20 +42,20 @@ DbiDataHandler::~DbiDataHandler() {
     }
 }
 
-DbiDataHandler::DbiDataHandler(const DbiDataHandler & /*other*/)
+DbiDataHandler::DbiDataHandler(const DbiDataHandler& /*other*/)
     : QSharedData() {
 }
 
-DbiDataHandler &DbiDataHandler::operator=(const DbiDataHandler &) {
+DbiDataHandler& DbiDataHandler::operator=(const DbiDataHandler&) {
     return *this;
 }
 
-bool DbiDataHandler::equals(const DbiDataHandler *other) const {
+bool DbiDataHandler::equals(const DbiDataHandler* other) const {
     if (nullptr == other) {
         return false;
     }
 
-    return (other->entRef == entRef) && (other->dbi == dbi);
+    return (other->entityRef == entityRef) && (other->dbi == dbi);
 }
 
 int DbiDataHandler::getReferenceCount() const {
@@ -63,11 +63,15 @@ int DbiDataHandler::getReferenceCount() const {
 }
 
 U2DbiRef DbiDataHandler::getDbiRef() const {
-    return entRef.dbiRef;
+    return entityRef.dbiRef;
+}
+
+const U2EntityRef& DbiDataHandler::getEntityRef() const {
+    return entityRef;
 }
 
 bool DbiDataHandler::isValid() const {
-    return entRef.isValid();
+    return entityRef.isValid();
 }
 
 }  // namespace Workflow

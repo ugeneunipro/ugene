@@ -30,7 +30,7 @@ const QString U2Clipboard::UGENE_MIME_TYPE = "text/ugene";
 
 ///////////////////
 /// PasteFactory
-PasteFactory::PasteFactory(QObject *parent)
+PasteFactory::PasteFactory(QObject* parent)
     : QObject(parent) {
 }
 
@@ -40,17 +40,17 @@ PasteTask::PasteTask(TaskFlags flags)
     : Task(tr("Paste data"), flags) {
 }
 
-void PasteTask::processDocument(Document *) {
+void PasteTask::processDocument(Document*) {
 }
 
 ///////////////////
 /// PasteUtils
-QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpStatus &os) {
+QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpStatus& os) {
     QList<DNASequence> res;
 
-    for (Document *doc : qAsConst(docs)) {
-        for (GObject *seqObj : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
-            U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(seqObj);
+    for (Document* doc : qAsConst(docs)) {
+        for (GObject* seqObj : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
+            U2SequenceObject* casted = qobject_cast<U2SequenceObject*>(seqObj);
             if (casted == nullptr) {
                 continue;
             }
@@ -61,14 +61,14 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpS
             seq.alphabet = casted->getAlphabet();
             res.append(seq);
         }
-        const QList<GObject *> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-        for (GObject *msaObj : qAsConst(msaObjectList)) {
-            MultipleSequenceAlignmentObject *casted = qobject_cast<MultipleSequenceAlignmentObject *>(msaObj);
+        const QList<GObject*> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+        for (GObject* msaObj : qAsConst(msaObjectList)) {
+            MultipleSequenceAlignmentObject* casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
             if (casted == nullptr) {
                 continue;
             }
             const QList<MultipleSequenceAlignmentRow> msaRowList = casted->getMsa()->getMsaRows();
-            for (const MultipleSequenceAlignmentRow &row : qAsConst(msaRowList)) {
+            for (const MultipleSequenceAlignmentRow& row : qAsConst(msaRowList)) {
                 DNASequence seq = row->getSequence();
                 seq.seq = row->getData();
                 seq.alphabet = casted->getAlphabet();

@@ -38,11 +38,11 @@ public:
     static void shutdown();
     static U2DbiRef getDbiRef();
     static U2EntityRef getObjRef();
-    static U2ObjectDbi *getObjDbi();
-    static UdrDbi *getUdrDbi();
-    static const BioStruct3D &getBioStruct();
+    static U2ObjectDbi* getObjDbi();
+    static UdrDbi* getUdrDbi();
+    static const BioStruct3D& getBioStruct();
 
-    static BioStruct3D readBioStruct(const QString &fileName, U2OpStatus &os, bool useSessionDbi = true);
+    static BioStruct3D readBioStruct(const QString& fileName, U2OpStatus& os, bool useSessionDbi = true);
 
 private:
     static TestDbiProvider dbiProvider;

@@ -50,8 +50,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *const wizard = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* const wizard = GTWidget::getActiveModalWidget(os);
 
             const QString dirPath = QDir(dataDir + "samples/Genbank").absolutePath();
             const auto chooseDirDialog = new GTFileDialogUtils(os, dirPath, "", HI::GTFileDialogUtils::Choose);
@@ -67,9 +67,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     const GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Filter short scaffolds...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());

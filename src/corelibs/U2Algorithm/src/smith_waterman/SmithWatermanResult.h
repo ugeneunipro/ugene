@@ -27,8 +27,8 @@
 namespace U2 {
 
 struct U2ALGORITHM_EXPORT SmithWatermanResult {
-    SharedAnnotationData toAnnotation(const QString &name) const;
-    bool operator<(const SmithWatermanResult &op1) const;
+    SharedAnnotationData toAnnotation(const QString& name) const;
+    bool operator<(const SmithWatermanResult& op1) const;
 
     U2Strand strand;
     bool trans;
@@ -49,8 +49,8 @@ class U2ALGORITHM_EXPORT SmithWatermanResultListener {
 public:
     virtual ~SmithWatermanResultListener();
 
-    virtual void pushResult(const SmithWatermanResult &r);
-    virtual void pushResult(const QList<SmithWatermanResult> &r);
+    virtual void pushResult(const SmithWatermanResult& r);
+    virtual void pushResult(const QList<SmithWatermanResult>& r);
     virtual QList<SmithWatermanResult> popResults();
     virtual QList<SmithWatermanResult> getResults() const;
 

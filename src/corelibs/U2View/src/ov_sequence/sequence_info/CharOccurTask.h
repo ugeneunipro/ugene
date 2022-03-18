@@ -56,7 +56,7 @@ typedef QList<CharOccurResult> CharactersOccurrence;
 
 class U2VIEW_EXPORT CharOccurTask : public BackgroundTask<QList<CharOccurResult>> {
 public:
-    CharOccurTask(const DNAAlphabet *alphabet, U2EntityRef seqRef, const QVector<U2Region> &regions);
+    CharOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, const QVector<U2Region>& regions);
 
     /**
      * Calculates the characters occurrence (in a different thread).
@@ -65,7 +65,7 @@ public:
     virtual void run();
 
 private:
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
 

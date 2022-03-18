@@ -67,26 +67,26 @@ namespace U2 {
 
 class MWStub : public QMainWindow {
 public:
-    MWStub(MainWindowImpl *_owner)
+    MWStub(MainWindowImpl* _owner)
         : owner(_owner) {
         setAttribute(Qt::WA_NativeWindow);
         setAcceptDrops(true);
     }
-    virtual QMenu *createPopupMenu() {
+    virtual QMenu* createPopupMenu() {
         return nullptr;
     }  // todo: decide if we do really need this menu and fix it if yes?
 protected:
-    virtual void closeEvent(QCloseEvent *e);
-    virtual void dragEnterEvent(QDragEnterEvent *event);
-    virtual void dropEvent(QDropEvent *event);
-    virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void closeEvent(QCloseEvent* e);
+    virtual void dragEnterEvent(QDragEnterEvent* event);
+    virtual void dropEvent(QDropEvent* event);
+    virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual bool focusNextPrevChild(bool next);
 
 protected:
-    MainWindowImpl *owner;
+    MainWindowImpl* owner;
 };
 
-void MWStub::closeEvent(QCloseEvent *e) {
+void MWStub::closeEvent(QCloseEvent* e) {
     if (owner->getMDIManager() == nullptr) {
         QMainWindow::closeEvent(e);
     } else {
@@ -95,21 +95,21 @@ void MWStub::closeEvent(QCloseEvent *e) {
     }
 }
 
-void MWStub::dragEnterEvent(QDragEnterEvent *event) {
+void MWStub::dragEnterEvent(QDragEnterEvent* event) {
     MainWindowDragNDrop::dragEnterEvent(event);
 }
 
-void MainWindowDragNDrop::dragEnterEvent(QDragEnterEvent *event) {
+void MainWindowDragNDrop::dragEnterEvent(QDragEnterEvent* event) {
     if (event->mimeData()->hasUrls() || event->mimeData()->hasFormat(DocumentMimeData::MIME_TYPE)) {
         event->acceptProposedAction();
     }
 }
 
-void MWStub::dropEvent(QDropEvent *event) {
+void MWStub::dropEvent(QDropEvent* event) {
     MainWindowDragNDrop::dropEvent(event);
 }
 
-void MainWindowDragNDrop::dropEvent(QDropEvent *event) {
+void MainWindowDragNDrop::dropEvent(QDropEvent* event) {
     if (event->source() == nullptr) {
         QList<GUrl> urls;
         if (event->mimeData()->hasUrls()) {
@@ -120,7 +120,7 @@ void MainWindowDragNDrop::dropEvent(QDropEvent *event) {
         if (!urls.isEmpty()) {
             QVariantMap hints;
             hints[ProjectLoaderHint_CloseActiveProject] = true;
-            Task *t = AppContext::getProjectLoader()->openWithProjectTask(urls, hints);
+            Task* t = AppContext::getProjectLoader()->openWithProjectTask(urls, hints);
             if (t) {
                 AppContext::getTaskScheduler()->registerTopLevelTask(t);
                 event->acceptProposedAction();
@@ -128,13 +128,13 @@ void MainWindowDragNDrop::dropEvent(QDropEvent *event) {
         }
     } else {
         if (event->mimeData()->hasFormat(DocumentMimeData::MIME_TYPE)) {
-            const DocumentMimeData *docData = static_cast<const DocumentMimeData *>(event->mimeData());
+            const DocumentMimeData* docData = static_cast<const DocumentMimeData*>(event->mimeData());
 
             DocumentSelection ds;
-            ds.setSelection(QList<Document *>() << docData->objPtr);
+            ds.setSelection(QList<Document*>() << docData->objPtr);
             MultiGSelection ms;
             ms.addSelection(&ds);
-            foreach (GObjectViewFactory *f, AppContext::getObjectViewFactoryRegistry()->getAllFactories()) {
+            foreach (GObjectViewFactory* f, AppContext::getObjectViewFactoryRegistry()->getAllFactories()) {
                 if (f->canCreateView(ms)) {
                     AppContext::getTaskScheduler()->registerTopLevelTask(f->createViewTask(ms));
                     break;
@@ -148,18 +148,18 @@ bool MWStub::focusNextPrevChild(bool /*next*/) {
     return false;
 }
 
-void MWStub::dragMoveEvent(QDragMoveEvent *event) {
+void MWStub::dragMoveEvent(QDragMoveEvent* event) {
     MainWindowDragNDrop::dragMoveEvent(event);
 }
 
-void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent *event) {
-    MainWindow *mainWindow = AppContext::getMainWindow();
+void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent* event) {
+    MainWindow* mainWindow = AppContext::getMainWindow();
     SAFE_POINT(nullptr != mainWindow, L10N::nullPointerError("Main Window"), );
 
     if (event->mimeData()->hasUrls())
         return;
     if (event->source() != nullptr) {
-        QObject *par = event->source()->parent();
+        QObject* par = event->source()->parent();
         while (par != nullptr) {
             if (par == mainWindow->getQMainWindow()) {
                 return;
@@ -173,30 +173,8 @@ void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent *event) {
 //////////////////////////////////////////////////////////////////////////
 // MainWindowController
 //////////////////////////////////////////////////////////////////////////
-MainWindowImpl::MainWindowImpl() {
-    mw = nullptr;
-    mdi = nullptr;
-    menuManager = nullptr;
-    toolbarManager = nullptr;
-    mdiManager = nullptr;
-    dockManager = nullptr;
-    exitAction = nullptr;
-    visitWebAction = nullptr;
-    viewOnlineDocumentation = nullptr;
-    checkUpdateAction = nullptr;
-    createDesktopShortcutAction = nullptr;
-    aboutAction = nullptr;
-    welcomePageAction = nullptr;
-    crashUgeneAction = nullptr;
-    shutDownInProcess = false;
-#ifdef _INSTALL_TO_PATH_ACTION
-    installToPathAction = nullptr;
-#endif
-    nStack = nullptr;
-}
-
 MainWindowImpl::~MainWindowImpl() {
-    assert(mw == nullptr);
+    SAFE_POINT(mw == nullptr, "main window must be null!", );
 }
 
 void MainWindowImpl::prepare() {
@@ -231,12 +209,12 @@ void MainWindowImpl::close() {
     mw = nullptr;
 }
 
-bool MainWindowImpl::eventFilter(QObject *object, QEvent *event) {
+bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(mw == object, false);
     CHECK(nullptr != event, false);
     CHECK(event->type() == QEvent::KeyPress, false);
 
-    QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+    QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
     CHECK(nullptr != keyEvent, false);
 
     if (keyEvent->matches(QKeySequence::Paste)) {
@@ -297,7 +275,7 @@ void MainWindowImpl::sl_exitAction() {
 }
 
 void MainWindowImpl::sl_aboutAction() {
-    QWidget *p = qobject_cast<QWidget *>(getQMainWindow());
+    QWidget* p = qobject_cast<QWidget*>(getQMainWindow());
     QObjectScopedPointer<AboutDialogController> d = new AboutDialogController(visitWebAction, p);
     d->exec();
 }
@@ -314,7 +292,7 @@ void MainWindowImpl::sl_createDesktopShortcutAction() {
     AppContext::getTaskScheduler()->registerTopLevelTask(new CreateDesktopShortcutTask());
 }
 
-void MainWindowImpl::setWindowTitle(const QString &title) {
+void MainWindowImpl::setWindowTitle(const QString& title) {
     if (title.isEmpty()) {
         mw->setWindowTitle(U2_APP_TITLE);
     } else {
@@ -322,7 +300,7 @@ void MainWindowImpl::setWindowTitle(const QString &title) {
     }
 }
 
-void MainWindowImpl::registerAction(QAction *action) {
+void MainWindowImpl::registerAction(QAction* action) {
     menuManager->registerAction(action);
 }
 
@@ -355,7 +333,7 @@ void MainWindowImpl::prepareGUI() {
 
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
-    QMenu *helpMenu = menuManager->getTopLevelMenu(MWMENU_HELP);
+    QMenu* helpMenu = menuManager->getTopLevelMenu(MWMENU_HELP);
     helpMenu->addAction(viewOnlineDocumentation);
     helpMenu->addSeparator();
     helpMenu->addAction(visitWebAction);
@@ -405,7 +383,7 @@ void MainWindowImpl::runClosingTask() {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(getQMainWindow());
         msgBox->setWindowTitle(U2_APP_TITLE);
         msgBox->setText(tr("Shutdown already in process. Close UGENE immediately?"));
-        QPushButton *closeButton = msgBox->addButton(tr("Close"), QMessageBox::ActionRole);
+        QPushButton* closeButton = msgBox->addButton(tr("Close"), QMessageBox::ActionRole);
         /*QPushButton *waitButton =*/msgBox->addButton(tr("Wait"), QMessageBox::ActionRole);
         msgBox->exec();
         CHECK_EXT(!msgBox.isNull(), exit(0), );
@@ -426,10 +404,10 @@ void MainWindowImpl::setShutDownInProcess(bool flag) {
 }
 
 void MainWindowImpl::sl_visitWeb() {
-    GUIUtils::runWebBrowser("http://ugene.net");
+    GUIUtils::runWebBrowser("https://ugene.net");
 }
 void MainWindowImpl::sl_viewOnlineDocumentation() {
-    GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
+    GUIUtils::runWebBrowser("https://ugene.net/documentation.html");
 }
 
 void MainWindowImpl::sl_tempDirPathCheckFailed(QString path) {
@@ -464,10 +442,10 @@ void MainWindowImpl::sl_installToPathAction() {
             QByteArray executable = (exePath + tool).toUtf8();
             QByteArray installPath = installationPath.toUtf8();
             QString symlink = installationPath + tool;
-            char const *arguments[] = {"-f", "-s", executable.constData(), installPath.constData(), nullptr};
-            char const *helperTool = "/bin/ln";
+            char const* arguments[] = {"-f", "-s", executable.constData(), installPath.constData(), nullptr};
+            char const* helperTool = "/bin/ln";
 
-            if (AuthorizationExecuteWithPrivileges(auth, helperTool, kAuthorizationFlagDefaults, (char **)arguments, nullptr) == errAuthorizationSuccess) {
+            if (AuthorizationExecuteWithPrivileges(auth, helperTool, kAuthorizationFlagDefaults, (char**)arguments, nullptr) == errAuthorizationSuccess) {
                 // HACK: sleep because otherwise QFileInfo::exists might return false
                 sleep(100);
                 wait(nullptr);
@@ -495,17 +473,17 @@ void MainWindowImpl::sl_installToPathAction() {
 }
 #endif  // #ifdef _INSTALL_TO_PATH_ACTION
 
-QMenu *MainWindowImpl::getTopLevelMenu(const QString &sysName) const {
+QMenu* MainWindowImpl::getTopLevelMenu(const QString& sysName) const {
     return menuManager->getTopLevelMenu(sysName);
 }
 
-QToolBar *MainWindowImpl::getToolbar(const QString &sysName) const {
+QToolBar* MainWindowImpl::getToolbar(const QString& sysName) const {
     return toolbarManager->getToolbar(sysName);
 }
 
 ///////////////////////////////////////////////////////////////////
 
-FixedMdiArea::FixedMdiArea(QWidget *parent)
+FixedMdiArea::FixedMdiArea(QWidget* parent)
     : QMdiArea(parent) {
     setDocumentMode(true);
     setTabShape(QTabWidget::Rounded);
@@ -519,8 +497,8 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
     QMdiArea::setViewMode(mode);
     if (mode == QMdiArea::TabbedView) {
         // FIXME QTBUG-9293, Adding a close button to tabbed QMdiSubWindows
-        QList<QTabBar *> tb = findChildren<QTabBar *>();
-        for (QTabBar *t : qAsConst(tb)) {
+        QList<QTabBar*> tb = findChildren<QTabBar*>();
+        for (QTabBar* t : qAsConst(tb)) {
             if (t->parentWidget() == this) {
                 t->setTabsClosable(true);
             }
@@ -531,9 +509,9 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
 }
 
 // Workaround for QTBUG-17428: Superfluous RestoreAction for tabbed QMdiSubWindows
-void FixedMdiArea::sysContextMenuAction(QAction *action) {
+void FixedMdiArea::sysContextMenuAction(QAction* action) {
     if (viewMode() == QMdiArea::TabbedView && activeSubWindow()) {
-        QList<QAction *> lst = activeSubWindow()->actions();
+        QList<QAction*> lst = activeSubWindow()->actions();
         if (!lst.isEmpty() && action == lst.first()) {  // RestoreAction always comes before CloseAction
             // FIXME better to detect via shortcut or icon ???
             assert(action->icon().pixmap(32).toImage() == style()->standardIcon(QStyle::SP_TitleBarNormalButton).pixmap(32).toImage());
@@ -542,10 +520,10 @@ void FixedMdiArea::sysContextMenuAction(QAction *action) {
     }
 }
 
-QMdiSubWindow *FixedMdiArea::addSubWindow(QWidget *widget) {
-    QMdiSubWindow *subWindow = QMdiArea::addSubWindow(widget);
+QMdiSubWindow* FixedMdiArea::addSubWindow(QWidget* widget) {
+    QMdiSubWindow* subWindow = QMdiArea::addSubWindow(widget);
     // Workaround for QTBUG-17428
-    connect(subWindow->systemMenu(), SIGNAL(triggered(QAction *)), SLOT(sysContextMenuAction(QAction *)));
+    connect(subWindow->systemMenu(), SIGNAL(triggered(QAction*)), SLOT(sysContextMenuAction(QAction*)));
     return subWindow;
 }
 
@@ -559,7 +537,7 @@ void FixedMdiArea::tileSubWindows() {
         return;
     }
 
-    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     SAFE_POINT_EXT(mainWindow != nullptr, QMdiArea::tileSubWindows(), );
 
     QPoint topLeft = mainWindow->mapToGlobal(QPoint(0, 0));
@@ -577,9 +555,6 @@ void FixedMdiArea::tileSubWindows() {
 }
 
 void MainWindowImpl::sl_show() {
-    if (qobject_cast<TaskScheduler *>(sender()) == qobject_cast<TaskScheduler *>(AppContext::getTaskScheduler())) {
-        QObject::disconnect(AppContext::getTaskScheduler(), SIGNAL(si_noTasksInScheduler()), this, SLOT(sl_show()));
-    }
     bool maximized = AppContext::getSettings()->getValue(SETTINGS_DIR + "maximized", false).toBool();
     QRect geom = AppContext::getSettings()->getValue(SETTINGS_DIR + "geometry", QRect()).toRect();
 
@@ -595,7 +570,7 @@ void MainWindowImpl::sl_show() {
     } else {
         return;
     }
-    foreach (Task *t, startupTasklist) {
+    foreach (Task* t, startupTasklist) {
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
     startupTasklist.clear();
@@ -603,15 +578,15 @@ void MainWindowImpl::sl_show() {
 }
 
 void MainWindowImpl::sl_crashUgene() {
-    volatile int *killer = nullptr;
+    volatile int* killer = nullptr;
     *killer = 0;
 }
 
-void MainWindowImpl::registerStartupChecks(QList<Task *> tasks) {
+void MainWindowImpl::registerStartupChecks(const QList<Task*>& tasks) {
     startupTasklist << tasks;
 }
 
-void MainWindowImpl::addNotification(const QString &message, NotificationType type) {
+void MainWindowImpl::addNotification(const QString& message, NotificationType type) {
     SAFE_POINT(nStack != nullptr, "Notification stack is null", );
     nStack->add(message, type);
 }

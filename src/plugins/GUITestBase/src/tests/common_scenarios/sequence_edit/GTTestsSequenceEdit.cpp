@@ -40,6 +40,7 @@
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
@@ -221,10 +222,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 2. Select "Remove subsequence" in the context menu.
     // 3. Insert region "2..2" into the "Region to remove" field.
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "2..2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove subsequence...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
 
     // Expected result: the sequence is started from "AAT", the sequence length is 29, DUMMY_1 annotation is [2..5].
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
@@ -241,8 +239,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QTreeWidgetItem *dummyTest = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
-    CHECK_SET_ERR(dummyTest != nullptr, "There is no annotation DUMMY_1");
+    GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
     GTKeyboardUtils::selectAll();
@@ -261,7 +258,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
     CHECK_SET_ERR(sequenceBegin == "AAT", "Sequence starts with <" + sequenceBegin + ">, expected AAT");
 
-    QTreeWidgetItem *dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", GTGlobals::FindOptions(false));
+    QTreeWidgetItem* dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", nullptr, {false});
     CHECK_SET_ERR(dummy1 == nullptr, "There is annotation DUMMY_1, expected state there is no annotation DUMMY_1");
 }
 
@@ -283,7 +280,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 11));
     GTKeyboardUtils::selectAll();
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, ADV_COPY_TRANSLATION_ACTION}, GTGlobals::UseKey));
@@ -297,8 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_COPY"
-                                                                        << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_COPY", "action_copy_annotation_sequence"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -338,7 +334,7 @@ static QMap<QString, QString> getReferenceQualifiers() {
     return qualifiers;
 }
 
-static QString shiftQualifierRegions(const QString &value, int delta) {
+static QString shiftQualifierRegions(const QString& value, int delta) {
     QString result = value;
     QRegExp digitMatcher("\\d+");
     int lastFoundPos = 0;
@@ -355,25 +351,25 @@ static QString shiftQualifierRegions(const QString &value, int delta) {
     return result;
 }
 
-static void checkQualifierValue(HI::GUITestOpStatus &os, const QString &qualName, int regionShift) {
-    QTreeWidgetItem *qual = GTUtilsAnnotationsTreeView::findItem(os, qualName);
+static void checkQualifierValue(HI::GUITestOpStatus& os, const QString& qualName, int regionShift) {
+    QTreeWidgetItem* qual = GTUtilsAnnotationsTreeView::findItem(os, qualName);
     QString qualValue = qual->data(2, Qt::DisplayRole).toString();
     QString expectedVal = shiftQualifierRegions(getReferenceQualifiers()[qualName], regionShift);
     CHECK_SET_ERR(qualValue == expectedVal, QString("Qualifier value has changed unexpectedly. Expected: '%1'. Actual: '%2'").arg(expectedVal).arg(qualValue));
 }
 
-static void checkQualifierRegionsShift(HI::GUITestOpStatus &os, int shift) {
-    foreach (const QString &qualName, getReferenceQualifiers().keys()) {
+static void checkQualifierRegionsShift(HI::GUITestOpStatus& os, int shift) {
+    foreach (const QString& qualName, getReferenceQualifiers().keys()) {
         checkQualifierValue(os, qualName, shift);
     }
 }
 
 /** Expands all annotation in "Misc. Feature" group. This action lazily creates qualifier tree items. */
-static void expandAllAnnotationsInGroup(HI::GUITestOpStatus &os) {
-    QTreeWidgetItem *groupItem = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+static void expandAllAnnotationsInGroup(HI::GUITestOpStatus& os) {
+    QTreeWidgetItem* groupItem = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
     GTTreeWidget::expand(os, groupItem);
     for (int i = 0; i < groupItem->childCount(); ++i) {
-        QTreeWidgetItem *annotationItem = groupItem->child(i);
+        QTreeWidgetItem* annotationItem = groupItem->child(i);
         GTTreeWidget::expand(os, annotationItem);
     }
 }
@@ -424,10 +420,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("WARLLPLP*V*P*"), "Unexpected 'translation' qualifier value");
 }
@@ -442,10 +438,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2_neg) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR("translation" == qualItem->text(0), "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
 }
@@ -500,10 +496,10 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQDCYHSLKFDLRSLER"), "Unexpected 'translation' qualifier value");
 }
@@ -520,10 +516,10 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2_neg) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
 }
@@ -586,10 +582,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQKLLPLP*V*P*ITGKMS"), "Unexpected 'translation' qualifier value");
 }
@@ -607,10 +603,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2_neg) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
-    QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
+    QTreeWidgetItem* annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
+    QTreeWidgetItem* qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
 }

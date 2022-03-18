@@ -46,14 +46,14 @@ const QString ACEFormat::AS = "AS";
 const QString ACEFormat::AF = "AF";
 const QString ACEFormat::BQ = "BQ";
 
-ACEFormat::ACEFormat(QObject *p)
+ACEFormat::ACEFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::ACE, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-static int modifyLine(QString &line, int pos) {
+static int modifyLine(QString& line, int pos) {
     int curIdx = 0;
     char space = ' ';
 
@@ -83,7 +83,7 @@ static int modifyLine(QString &line, int pos) {
     }
 }
 
-static int prepareLine(QString &line, int pos) {
+static int prepareLine(QString& line, int pos) {
     int curIdx = 0;
     char space = ' ';
 
@@ -102,19 +102,19 @@ static int prepareLine(QString &line, int pos) {
 }
 
 #define READS_COUNT_POS 3
-static int readsCount(const QString &cur_line) {
+static int readsCount(const QString& cur_line) {
     QString line = cur_line;
     return modifyLine(line, READS_COUNT_POS);
 }
 
 #define CONTIG_COUNT_POS 1
-static int contigCount(const QString &cur_line) {
+static int contigCount(const QString& cur_line) {
     QString line = cur_line;
     return modifyLine(line, CONTIG_COUNT_POS);
 }
 
 #define LAST_QA_POS 4
-static int clearRange(const QString &cur_line) {
+static int clearRange(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, LAST_QA_POS);
 
@@ -127,7 +127,7 @@ static int clearRange(const QString &cur_line) {
     }
 }
 #define PADDED_START_POS 3
-static int paddedStartCons(const QString &cur_line) {
+static int paddedStartCons(const QString& cur_line) {
     QString line = cur_line;
     modifyLine(line, PADDED_START_POS);
 
@@ -141,7 +141,7 @@ static int paddedStartCons(const QString &cur_line) {
 }
 
 #define READS_POS 3
-static int readsPos(const QString &cur_line) {
+static int readsPos(const QString& cur_line) {
     QString line = cur_line;
     prepareLine(line, READS_POS);
 
@@ -160,7 +160,7 @@ static int readsPos(const QString &cur_line) {
     }
 }
 #define COMPLEMENT_POS 2
-static int readsComplement(const QString &cur_line) {
+static int readsComplement(const QString& cur_line) {
     QString line = cur_line;
     prepareLine(line, COMPLEMENT_POS);
 
@@ -173,7 +173,7 @@ static int readsComplement(const QString &cur_line) {
     }
 }
 
-static QString getName(const QString &line) {
+static QString getName(const QString& line) {
     int curIdx = 0;
     char space = ' ';
 
@@ -196,8 +196,8 @@ static QString getName(const QString &line) {
     return name;
 }
 
-static bool checkSeq(const QByteArray &seq) {
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+static bool checkSeq(const QByteArray& seq) {
+    const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     for (int i = 0; i < seq.length(); i++) {
         if (!(alphabet->contains(seq[i]) || seq[i] == '*')) {
             return false;
@@ -206,7 +206,7 @@ static bool checkSeq(const QByteArray &seq) {
     return true;
 }
 
-static inline void skipBreaks(U2::IOAdapter *io, U2OpStatus &ti, char *buff, qint64 *len) {
+static inline void skipBreaks(U2::IOAdapter* io, U2OpStatus& ti, char* buff, qint64* len) {
     bool lineOk = true;
     *len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
     CHECK_EXT(!io->hasError(), ti.setError(io->errorString()), );
@@ -214,7 +214,7 @@ static inline void skipBreaks(U2::IOAdapter *io, U2OpStatus &ti, char *buff, qin
     CHECK_EXT(lineOk, ti.setError(ACEFormat::tr("Line is too long")), );
 }
 
-static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char *buff, QString &consName, QSet<QString> &names, QString &headerLine, QByteArray &consensus) {
+static inline void parseConsensus(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QString& consName, QSet<QString>& names, QString& headerLine, QByteArray& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -249,7 +249,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char *buff,
     consensus.replace('*', U2Msa::GAP_CHAR);
 }
 
-static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char *buff, int count, QMap<QString, int> &posMap, QMap<QString, bool> &complMap, QSet<QString> &names) {
+static inline void parseAFTag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, int count, QMap<QString, int>& posMap, QMap<QString, bool>& complMap, QSet<QString>& names) {
     int count1 = count;
     QString readLine;
     QString name;
@@ -291,7 +291,7 @@ static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char *buff, int
     }
 }
 
-static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char *buff, QSet<QString> &names, QString &name, QByteArray &sequence) {
+static inline void parseRDandQATag(U2::IOAdapter* io, U2OpStatus& ti, char* buff, QSet<QString>& names, QString& name, QByteArray& sequence) {
     QString line;
     qint64 len = 0;
     bool ok = true;
@@ -362,7 +362,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char *buff
  * Offsets in an ACE file are specified relatively to the reference sequence,
  * so "pos" can be negative.
  */
-static inline int getSmallestOffset(const QMap<QString, int> &posMap) {
+static inline int getSmallestOffset(const QMap<QString, int>& posMap) {
     int smallestOffset = 0;
     foreach (int value, posMap) {
         smallestOffset = qMin(smallestOffset, value - 1);
@@ -371,9 +371,9 @@ static inline int getSmallestOffset(const QMap<QString, int> &posMap) {
     return smallestOffset;
 }
 
-void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
+void ACEFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray readBuff(READ_BUFF_SIZE + 1, 0);
-    char *buff = readBuff.data();
+    char* buff = readBuff.data();
     qint64 len = 0;
 
     QByteArray sequence;
@@ -464,14 +464,14 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-        MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
         CHECK_OP(os, );
         objects.append(obj);
     }
 }
 
-FormatCheckResult ACEFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    static const char *formatTag = "AS";
+FormatCheckResult ACEFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
+    static const char* formatTag = "AS";
 
     if (!rawData.startsWith(formatTag)) {
         return FormatDetection_NotMatched;
@@ -479,8 +479,8 @@ FormatCheckResult ACEFormat::checkRawTextData(const QByteArray &rawData, const G
     return FormatDetection_AverageSimilarity;
 }
 
-Document *ACEFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    QList<GObject *> objs;
+Document* ACEFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+    QList<GObject*> objs;
     load(io, dbiRef, objs, fs, os);
 
     CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
@@ -489,7 +489,7 @@ Document *ACEFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
         os.setError(ACEFormat::tr("File doesn't contain any msa objects"));
         return nullptr;
     }
-    Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 
     return doc;
 }

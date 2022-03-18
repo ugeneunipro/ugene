@@ -35,12 +35,11 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 
 void AliasesDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep(500);
 
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "paramAliasesTableWidget", dialog));
-    QMap<QPoint *, QString>::iterator i;
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "paramAliasesTableWidget", dialog));
+    QMap<QPoint*, QString>::iterator i;
     for (i = map.begin(); i != map.end(); ++i) {
         GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, i.key()->x(), i.key()->y()));
         GTMouseDriver::doubleClick();

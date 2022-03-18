@@ -39,7 +39,7 @@ public:
     ~PluginViewerController();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 
 private slots:
 
@@ -47,10 +47,10 @@ private slots:
     void sl_enableService();
     void sl_disableService();
 
-    void sl_treeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void sl_treeCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 
-    void sl_onServiceStateChanged(Service *s, ServiceState oldState);
-    void sl_onServiceUnregistered(Service *s);
+    void sl_onServiceStateChanged(Service* s, ServiceState oldState);
+    void sl_onServiceUnregistered(Service* s);
     void sl_showHideLicense();
     void sl_acceptLicense();
 
@@ -65,23 +65,23 @@ private:
     void showLicense();
     void hideLicense();
 
-    PlugViewPluginItem *findPluginItem(Plugin *p) const;
-    PlugViewServiceItem *findServiceItem(Service *s) const;
-    PlugViewServiceItem *getCurrentServiceItem() const;
-    PlugViewPluginItem *getCurrentPluginItem() const;
+    PlugViewPluginItem* findPluginItem(Plugin* p) const;
+    PlugViewServiceItem* findServiceItem(Service* s) const;
+    PlugViewServiceItem* getCurrentServiceItem() const;
+    PlugViewPluginItem* getCurrentPluginItem() const;
 
     Ui_PluginViewWidget ui;
 
-    MWMDIWindow *mdiWindow;
-    QAction *enableServiceAction;
-    QAction *disableServiceAction;
+    MWMDIWindow* mdiWindow;
+    QAction* enableServiceAction;
+    QAction* disableServiceAction;
 
     bool showServices;
 };
 
 class PlugViewTreeItem : public QTreeWidgetItem {
 public:
-    PlugViewTreeItem(PlugViewTreeItem *parent)
+    PlugViewTreeItem(PlugViewTreeItem* parent)
         : QTreeWidgetItem(parent) {
     }
 
@@ -99,24 +99,24 @@ public:
 
 class PlugViewPluginItem : public PlugViewTreeItem {
 public:
-    PlugViewPluginItem(PlugViewTreeItem *parent, Plugin *p, bool showServices);
+    PlugViewPluginItem(PlugViewTreeItem* parent, Plugin* p, bool showServices);
     virtual bool isPluginItem() const {
         return true;
     }
     void updateVisual();
-    Plugin *plugin;
+    Plugin* plugin;
     bool showServices;
 };
 
 class PlugViewServiceItem : public PlugViewTreeItem {
 public:
-    PlugViewServiceItem(PlugViewPluginItem *parent, Service *s);
+    PlugViewServiceItem(PlugViewPluginItem* parent, Service* s);
     virtual bool isServiceItem() const {
         return true;
     }
     void updateVisual();
 
-    Service *service;
+    Service* service;
 };
 }  // namespace U2
 

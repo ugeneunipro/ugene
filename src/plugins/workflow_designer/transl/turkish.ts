@@ -609,55 +609,55 @@ p, li { white-space: pre-wrap; }
         <translation>%1 biçimi ek açıklamaları desteklemiyor</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="502"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1571"/>
+        <location filename="../src/WorkflowViewController.cpp" line="501"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1573"/>
         <source>Breakpoints</source>
         <translation>Kesme noktaları</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="126"/>
+        <location filename="../src/WorkflowViewController.cpp" line="125"/>
+        <location filename="../src/WorkflowViewController.cpp" line="128"/>
         <location filename="../src/WorkflowViewController.cpp" line="129"/>
-        <location filename="../src/WorkflowViewController.cpp" line="130"/>
-        <location filename="../src/WorkflowViewController.cpp" line="512"/>
-        <location filename="../src/WorkflowViewController.cpp" line="518"/>
-        <location filename="../src/WorkflowViewController.cpp" line="525"/>
+        <location filename="../src/WorkflowViewController.cpp" line="511"/>
+        <location filename="../src/WorkflowViewController.cpp" line="517"/>
+        <location filename="../src/WorkflowViewController.cpp" line="524"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="394"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2183"/>
+        <location filename="../src/WorkflowViewController.cpp" line="393"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2210"/>
         <source>You opened obsolete workflow in XML format. It is strongly recommended to clear working space and create workflow from scratch.</source>
         <translation>Eski iş akışını XML biçiminde açtınız. Çalışma alanını temizlemek ve sıfırdan iş akışı oluşturmak şiddetle tavsiye edilir.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="397"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
+        <location filename="../src/WorkflowViewController.cpp" line="396"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2213"/>
         <source>Sorry! This workflow is obsolete and cannot be opened.</source>
         <translation>Afedersiniz! Bu iş akışı eski ve açılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="181"/>
+        <location filename="../src/WorkflowViewController.cpp" line="180"/>
         <source>Scripting mode</source>
         <translation>Komut dosyası modu</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="838"/>
+        <location filename="../src/WorkflowViewController.cpp" line="837"/>
         <source>Can not create the folder: </source>
         <translation>Klasör oluşturulamıyor: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="844"/>
+        <location filename="../src/WorkflowViewController.cpp" line="843"/>
         <source>The file &apos;%1&apos; already exists</source>
         <translation>&apos;%1&apos; dosyası zaten var</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="849"/>
+        <location filename="../src/WorkflowViewController.cpp" line="848"/>
         <source>Can not copy the file here: </source>
         <translation>Dosyayı buraya kopyalayamazsınız: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1380"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1379"/>
         <source>Run workflow</source>
         <translation>İş akışını çalıştırın</translation>
     </message>
@@ -697,17 +697,17 @@ p, li { white-space: pre-wrap; }
         <translation>İstenen kuyruktaki mesajlar, şu anda görüntüleme için desteklenmeyen &apos;%1&apos; veri türü bilgilerini içeriyor. Ara veriler görüntülenmeyecek</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="50"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="48"/>
         <source>coverage</source>
         <translation>kapsam</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="51"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="49"/>
         <source>bases count</source>
         <translation>bazlar sayılır</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="264"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="272"/>
         <source>Save annotations</source>
         <translation>Ek açıklamaları kaydedin</translation>
     </message>
@@ -720,12 +720,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RemoteDBFetcherWorker</name>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="268"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="264"/>
         <source>List of IDs</source>
         <translation>Kimlik listesi</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="269"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="265"/>
         <source>File with IDs</source>
         <translation>Kimlikli dosya</translation>
     </message>
@@ -789,47 +789,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BreakpointManagerView</name>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="130"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="133"/>
         <source>&amp;Break at element...</source>
         <translation>&amp;Öğede kırılma...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="137"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="140"/>
         <source>Delete &amp;all breakpoints</source>
         <translation>&amp;Tüm kesme noktalarını sil</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="144"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="147"/>
         <source>&amp;Delete</source>
         <translation>&amp;Sil</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="151"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="154"/>
         <source>Delete the selected breakpoints</source>
         <translation>Seçili kesme noktalarını silin</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="153"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="156"/>
         <source>&amp;Enable or disable all breakpoints</source>
         <translation>&amp;Tüm kesme noktalarını etkinleştirin veya devre dışı bırakın</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="159"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="162"/>
         <source>H&amp;ighlight selected item</source>
         <translation>Seçili öğeyi v&amp;urgula</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="165"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="168"/>
         <source>&amp;Hit Count...</source>
         <translation>&amp;İsabet Sayısı...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="168"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="171"/>
         <source>Edit &amp;labels...</source>
         <translation>&amp;Etiketleri düzenle...</translation>
     </message>
     <message>
-        <location filename="../src/BreakpointManagerView.cpp" line="171"/>
+        <location filename="../src/BreakpointManagerView.cpp" line="174"/>
         <source>&amp;Condition...</source>
         <translation>&amp;Durum...</translation>
     </message>
@@ -971,7 +971,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/ChooseItemDialog.cpp" line="38"/>
         <source>Cancel</source>
-        <translation>Çıkış</translation>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1128,12 +1128,12 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::DashboardManagerHelper</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="224"/>
+        <location filename="../src/WorkflowViewController.cpp" line="223"/>
         <source>No Dashboards Found</source>
         <translation>Gösterge Tablosu Bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="224"/>
+        <location filename="../src/WorkflowViewController.cpp" line="223"/>
         <source>You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager.</source>
         <translation>Henüz kontrol paneliniz yok. Gösterge Tablosu Yöneticisini kullanmak için bazı iş akışlarını çalıştırmanız gerekir.</translation>
     </message>
@@ -1164,13 +1164,13 @@ Değişiklikleri uygulamak ister misiniz? </translation>
         <location filename="../src/DashboardsManagerDialog.cpp" line="48"/>
         <location filename="../src/DashboardsManagerDialog.cpp" line="172"/>
         <source>Cancel</source>
-        <translation>Çıkış</translation>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>U2::ExtendedProcStyle</name>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="200"/>
+        <location filename="../src/ItemViewStyle.cpp" line="198"/>
         <source>Auto-resize to text</source>
         <translation>Metne göre otomatik olarak yeniden boyutlandır</translation>
     </message>
@@ -1247,17 +1247,17 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::ItemViewStyle</name>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="63"/>
+        <location filename="../src/ItemViewStyle.cpp" line="61"/>
         <source>Background color</source>
         <translation>Arkaplan rengi</translation>
     </message>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="66"/>
+        <location filename="../src/ItemViewStyle.cpp" line="64"/>
         <source>Font</source>
         <translation>Yazı Tipi</translation>
     </message>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="83"/>
+        <location filename="../src/ItemViewStyle.cpp" line="81"/>
         <source>Characters Font</source>
         <translation>Karakterler Yazı Tipi</translation>
     </message>
@@ -1284,17 +1284,17 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::LoadWorkflowSceneTask</name>
     <message>
-        <location filename="../src/WorkflowSceneIOTasks.cpp" line="71"/>
+        <location filename="../src/WorkflowSceneIOTasks.cpp" line="44"/>
         <source>Load workflow scene</source>
         <translation>İş akışı sahnesini yükle</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSceneIOTasks.cpp" line="95"/>
+        <location filename="../src/WorkflowSceneIOTasks.cpp" line="68"/>
         <source>Undefined format: plain text or xml expected</source>
         <translation>Tanımsız format: düz metin veya xml bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSceneIOTasks.cpp" line="126"/>
+        <location filename="../src/WorkflowSceneIOTasks.cpp" line="99"/>
         <source>Error while parsing file: %1</source>
         <translation>Dosya ayrıştırılırken hata oluştu: %1</translation>
     </message>
@@ -1302,17 +1302,17 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::LocalWorkflow::Alignment2SequencePrompter</name>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="135"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="139"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="138"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="142"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="139"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="143"/>
         <source>Split alignment%1 into sequences.</source>
         <translation>%1 hizalamasını dizilere bölün.</translation>
     </message>
@@ -1320,37 +1320,37 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::LocalWorkflow::Alignment2SequenceWorker</name>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="72"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="73"/>
         <source>empty input alignment</source>
         <translation>boş giriş hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="104"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="108"/>
         <source>Input alignment</source>
         <translation>Giriş hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="104"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="108"/>
         <source>A alignment which will be split into sequences</source>
         <translation>Dizilere bölünecek bir hizalama</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="110"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="114"/>
         <source>Output sequences</source>
         <translation>Çıkış dizileri</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="110"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="114"/>
         <source>Converted sequences</source>
         <translation>Dönüştürülen diziler</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="117"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="121"/>
         <source>Split Alignment into Sequences</source>
         <translation>Hizalamayı Dizilere Böl</translation>
     </message>
     <message>
-        <location filename="../src/library/MSA2SequenceWorker.cpp" line="118"/>
+        <location filename="../src/library/MSA2SequenceWorker.cpp" line="122"/>
         <source>Splits input alignment into sequences</source>
         <translation>Giriş hizalamasını sıralara böler</translation>
     </message>
@@ -1437,7 +1437,7 @@ Değişiklikleri uygulamak ister misiniz? </translation>
     </message>
     <message>
         <source>Amino Translation</source>
-        <translation>Amino Çevirisi</translation>
+        <translation type="vanished">Amino Çevirisi</translation>
     </message>
 </context>
 <context>
@@ -1482,68 +1482,68 @@ Değişiklikleri uygulamak ister misiniz? </translation>
 <context>
     <name>U2::LocalWorkflow::BaseDocWriter</name>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="97"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="88"/>
         <source>Document format not set</source>
         <translation>Belge biçimi ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="113"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="104"/>
         <source>Invalid database reference</source>
         <translation>Geçersiz veritabanı referansı</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="116"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="107"/>
         <source>Empty destination path supplied</source>
         <translation>Boş hedef yol sağlandı</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="118"/>
-        <location filename="../src/library/BaseDocWriter.cpp" line="361"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="109"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="352"/>
         <source>Unexpected data storage attribute value</source>
         <translation>Beklenmeyen veri depolama özelliği değeri</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="193"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="184"/>
         <source>Unspecified URL to write %1</source>
         <translation>%1 yazmak için belirtilmemiş URL</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="233"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="224"/>
         <source>Can not create folder: %1</source>
         <translation>Klasör oluşturulamıyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="261"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="252"/>
         <source>Can not open a file for writing: %1</source>
         <translation>Dosya yazmak için açılamıyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="340"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="331"/>
         <source>No data to write</source>
         <translation>Yazılacak veri yok</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="379"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="370"/>
         <source>Nothing to write</source>
         <translation>Yazacak bir şey yok</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="392"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="383"/>
         <source>Unable to fetch data from a message</source>
         <translation>Bir mesajdan veri alınamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="404"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="395"/>
         <source>Save objects to a shared database</source>
         <translation>Nesneleri paylaşılan bir veritabanına kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="424"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="415"/>
         <source>Writing to %1 [%2]</source>
         <translation>%1&apos;e yazılıyor [%2]</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseDocWriter.cpp" line="432"/>
+        <location filename="../src/library/BaseDocWriter.cpp" line="423"/>
         <source>Save documents</source>
         <translation>Belgeleri kaydedin</translation>
     </message>
@@ -1796,17 +1796,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ConvertFilesFormatPrompter</name>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="74"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="69"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="75"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="70"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="77"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="72"/>
         <source>Convert file %1 to selected format if it is not excluded.</source>
         <translation>Dışarıda bırakılmamışsa %1 dosyasını seçili biçime dönüştürün.</translation>
     </message>
@@ -1814,48 +1814,38 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ConvertFilesFormatWorker</name>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="119"/>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="120"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="113"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="114"/>
         <source>File</source>
         <translation>Dosya</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="119"/>
-        <source>A file to perform format conversion</source>
-        <translation>Biçim dönüştürme gerçekleştirmek için bir dosya</translation>
-    </message>
-    <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="120"/>
-        <source>File of selected format</source>
-        <translation>Seçili formattaki dosya</translation>
-    </message>
-    <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="133"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="127"/>
         <source>Excluded formats</source>
         <translation>Hariç tutulan biçimler</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="133"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="127"/>
         <source>Input file won&apos;t be converted to any of selected formats.</source>
         <translation>Girdi dosyası, seçilen formatlardan herhangi birine dönüştürülmez.</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="135"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="129"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="135"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="129"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
         <translation>Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="139"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="133"/>
         <source>Custom folder</source>
         <translation>Özel klasör</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="139"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="133"/>
         <source>Select the custom output folder.</source>
         <translation>Özel çıktı klasörünü seçin.</translation>
     </message>
@@ -1868,6 +1858,16 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="159"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
+    </message>
+    <message>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="113"/>
+        <source>A source file to convert</source>
+        <translation>Dönüştürülecek bir kaynak dosya</translation>
+    </message>
+    <message>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="114"/>
+        <source>A target file to save the converted result</source>
+        <translation>Dönüştürülen sonucu kaydetmek için bir hedef dosya</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="160"/>
@@ -1890,25 +1890,33 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Bilinmeyen dosya formatı: </translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="115"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="109"/>
         <source>File Format Conversion</source>
         <translation>Dosya Biçimi Dönüşümü</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="115"/>
+        <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="109"/>
         <source>Converts the file to selected format if it is not excluded.</source>
         <translation>Dışarıda bırakılmamışsa, dosyayı seçilen biçime dönüştürür.</translation>
+    </message>
+    <message>
+        <source>A file to perform format conversion</source>
+        <translation type="vanished">Biçim dönüştürme gerçekleştirmek için bir dosya</translation>
+    </message>
+    <message>
+        <source>File of selected format</source>
+        <translation type="vanished">Seçili formattaki dosya</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::ConvertSnpeffVariationsToAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="59"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="60"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="61"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="62"/>
         <source>Parses information in variations from &lt;u&gt;%1&lt;/u&gt; into annotations.</source>
         <translation>Değişikliklerdeki bilgileri &lt;u&gt;%1&lt;/u&gt; &apos;den ek açıklamalara ayırır.</translation>
     </message>
@@ -1916,27 +1924,27 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ConvertSnpeffVariationsToAnnotationsWorker</name>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="78"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="79"/>
         <source>Input URL</source>
         <translation>URL girin</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="79"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="80"/>
         <source>Input variation file URL.</source>
         <translation>Varyasyon dosyası URL&apos;sini girin.</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="104"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="105"/>
         <source>Convert SnpEff Variations to Annotations</source>
         <translation>SnpEff Varyasyonlarını Ek Açıklamalara Dönüştür</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="105"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="106"/>
         <source>Parses information, added to variations by SnpEff, into standard annotations.</source>
         <translation>SnpEff tarafından varyasyonlara eklenen bilgileri standart ek açıklamalara ayrıştırır.</translation>
     </message>
     <message>
-        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="113"/>
+        <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="114"/>
         <source>Produced from the input file name</source>
         <translation>Giriş dosyası adından üretilir</translation>
     </message>
@@ -2063,15 +2071,15 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExternalProcessWorkerPrompter</name>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="765"/>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="780"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="763"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="778"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="766"/>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="785"/>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="789"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="764"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="783"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="787"/>
         <source>&lt;u&gt;%1&lt;/u&gt;</source>
         <translation>&lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
@@ -2079,52 +2087,52 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractAssemblyCoverageWorker</name>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="100"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="98"/>
         <source>Empty assembly slot</source>
         <translation>Boş montaj yuvası</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="107"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="105"/>
         <source>Error with assembly object</source>
         <translation>Montaj nesnesiyle ilgili hata</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="164"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="162"/>
         <source>Extract Coverage from Assembly</source>
         <translation>Montajdan Kapsamı Çıkarın</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="165"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="163"/>
         <source>Extract the coverage and bases quantity from the incoming assembly.</source>
         <translation>Gelen montajdan kapsama alanını ve baz miktarını çıkarın.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="178"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="176"/>
         <source>Format</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="179"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="177"/>
         <source>Format to store the output.</source>
         <translation>Çıkışı depolamak için biçimlendirin.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="181"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="179"/>
         <source>Export</source>
         <translation>Dışarı aktar</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="182"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="180"/>
         <source>Data type to export.</source>
         <translation>Dışa aktarılacak veri türü.</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="184"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="182"/>
         <source>Threshold</source>
         <translation>Eşik</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="185"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="183"/>
         <source>The minimum coverage value to export.</source>
         <translation>Dışa aktarılacak minimum kapsam değeri.</translation>
     </message>
@@ -2132,18 +2140,18 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ExtractAssemblyCoverageWorkerPrompter</name>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="244"/>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="257"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="242"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="255"/>
         <source>coverage in &quot;%1&quot; format</source>
         <translation>&quot;%1&quot; biçiminde kapsam</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="249"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="247"/>
         <source>nothing</source>
         <translation>hiçbiri</translation>
     </message>
     <message>
-        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="264"/>
+        <location filename="../src/library/ExtractAssemblyCoverageWorker.cpp" line="262"/>
         <source>Exports %1 from the incoming assembly with threshold %2 to %3 in tab delimited plain text format.</source>
         <translation>%1&apos;i gelen derlemeden %2 eşikli %3&apos;e sekmeyle ayrılmış düz metin biçiminde dışa aktarır.</translation>
     </message>
@@ -2308,7 +2316,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FastQWriter</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="382"/>
+        <location filename="../src/library/DocWorkers.cpp" line="379"/>
         <source>Fastq writer: NULL sequence object</source>
         <translation>Fastq yazıcı: BOŞ sıra nesnesi</translation>
     </message>
@@ -2442,17 +2450,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FetchSequenceByIdFromAnnotationPrompter</name>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="399"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="395"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="400"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="396"/>
         <source>&lt;u&gt;%1&lt;/u&gt;</source>
         <translation>&lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="402"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="398"/>
         <source>In each annotation from %1 search for accession ID and download the corresponding sequences.</source>
         <translation>%1&apos;den gelen her ek açıklamada erişim kimliğini arayın ve karşılık gelen dizileri indirin.</translation>
     </message>
@@ -2460,42 +2468,42 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FetchSequenceByIdFromAnnotationWorker</name>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="407"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="403"/>
         <source>Cannot create folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörü oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="459"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="455"/>
         <source>failed to load item &apos;%1&apos; from &apos;%2&apos; DB : %3</source>
         <translation>&apos;%1&apos; öğesi &apos;%2&apos; DB&apos;den: %3 yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="518"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="514"/>
         <source>Fetch Sequences by ID from Annotation</source>
         <translation>Ek Açıklamadan Kimliğe Göre Dizileri Getir</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="519"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="515"/>
         <source>Parses annotations to find any IDs and fetches corresponding sequences.</source>
         <translation>Herhangi bir kimliği bulmak için ek açıklamaları ayrıştırır ve karşılık gelen dizileri getirir.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="523"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="519"/>
         <source>Input annotations</source>
         <translation>Giriş ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="523"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="519"/>
         <source>The annotations are scanned for accesion ids.</source>
         <translation>Ek açıklamalar erişim kimlikleri için taranır.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="529"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="525"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="529"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="525"/>
         <source>The downloaded sequences</source>
         <translation>İndirilen diziler</translation>
     </message>
@@ -2503,12 +2511,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterAnnotationsByQualifierPrompter</name>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="50"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="47"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="53"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="50"/>
         <source>Filter annotations from &lt;u&gt;%1&lt;/u&gt; by given qualifier name and value.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den gelen ek açıklamaları, verilen niteleyici adı ve değerine göre filtreleyin.</translation>
     </message>
@@ -2524,62 +2532,62 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterAnnotationsByQualifierWorker</name>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="108"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="105"/>
         <source>Input annotations</source>
         <translation>Giriş ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="108"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="105"/>
         <source>Annotations to be filtered by name.</source>
         <translation>Ada göre filtrelenecek ek açıklamalar.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="109"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="106"/>
         <source>Result annotations</source>
         <translation>Sonuç ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="109"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="106"/>
         <source>Resulted annotations, filtered by name.</source>
         <translation>Ada göre filtrelenen sonuç ek açıklamaları.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="117"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="114"/>
         <source>Qualifier name</source>
         <translation>Niteleyici adı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="118"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="115"/>
         <source>Name of the qualifier to use for filtering.</source>
         <translation>Filtreleme için kullanılacak niteleyicinin adı.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="120"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="117"/>
         <source>Qualifier value</source>
         <translation>Niteleyici değeri</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="121"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="118"/>
         <source>Text value of the qualifier to apply as filtering criteria</source>
         <translation>Filtreleme ölçütü olarak uygulanacak niteleyicinin metin değeri</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="123"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="120"/>
         <source>Accept or filter</source>
         <translation>Kabul et veya filtrele</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="124"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="121"/>
         <source>Selects the name filter: accept specified names or accept all except specified.</source>
         <translation>Ad filtresini seçer: belirtilen adları kabul edin veya belirtilenler dışında tümünü kabul edin.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="132"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="129"/>
         <source>Filter Annotations by Qualifier</source>
         <translation>Açıklamaları Niteleyiciye Göre Filtrele</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="133"/>
+        <location filename="../src/library/FilterAnnotationsByQualifierWorker.cpp" line="130"/>
         <source>Filters annotations by Qualifier.</source>
         <translation>Ek açıklamaları Niteleyiciye göre filtreler.</translation>
     </message>
@@ -2587,12 +2595,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="51"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="49"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="54"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="52"/>
         <source>Filter annotations from &lt;u&gt;%1&lt;/u&gt; by supplied names.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den gelen ek açıklamaları sağlanan adlara göre filtreleyin.</translation>
     </message>
@@ -2600,22 +2608,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterAnnotationsTask</name>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="179"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="177"/>
         <source>Filter annotations task</source>
         <translation>Ek açıklamaları filtreleme görevi</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="188"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="186"/>
         <source>The list of annotation names to accept/filter is empty</source>
         <translation>Kabul edilecek / filtrelenecek ek açıklama adlarının listesi boş</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="222"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="220"/>
         <source>Too big annotation names file</source>
         <translation>Çok büyük ek açıklama adları dosyası</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="227"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="225"/>
         <source>Not enough memory to load the file with annotation names</source>
         <translation>Ek açıklama adlarıyla dosyayı yüklemek için yeterli bellek yok</translation>
     </message>
@@ -2623,67 +2631,67 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterAnnotationsWorker</name>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="109"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="107"/>
         <source>Input annotations</source>
         <translation>Giriş ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="109"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="107"/>
         <source>Annotations to be filtered by name.</source>
         <translation>Ada göre filtrelenecek ek açıklamalar.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="110"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="108"/>
         <source>Result annotations</source>
         <translation>Sonuç ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="110"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="108"/>
         <source>Resulted annotations, filtered by name.</source>
         <translation>Ada göre filtrelenen sonuç ek açıklamaları.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="118"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="116"/>
         <source>Annotation names</source>
         <translation>Ek açıklama adları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="119"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="117"/>
         <source>List of annotation names, separated by spaces, that will be accepted or filtered.</source>
         <translation>Kabul edilecek veya filtrelenecek, boşluklarla ayrılmış ek açıklama adlarının listesi.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="121"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="119"/>
         <source>Annotation names file</source>
         <translation>Ek açıklama adları dosyası</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="122"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="120"/>
         <source>File with annotation names, separated by whitespaces, that will be accepted or filtered.</source>
         <translation>Kabul edilecek veya filtrelenecek, boşluklarla ayrılmış ek açıklama adlarına sahip dosya.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="171"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="169"/>
         <source>At least one of these parameters must be set: &quot;Annotation names&quot;, &quot;Annotation names file&quot;.</source>
         <translation>Şu parametrelerden en az biri ayarlanmalıdır: &quot;Ek açıklama adları&quot;, &quot;Ek açıklama adları dosyası&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="124"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="122"/>
         <source>Accept or filter</source>
         <translation>Kabul et veya filtrele</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="125"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="123"/>
         <source>Selects the name filter: accept specified names or accept all except specified.</source>
         <translation>Ad filtresini seçer: belirtilen adları kabul edin veya belirtilenler dışında tümünü kabul edin.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="133"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="131"/>
         <source>Filter Annotations by Name</source>
         <translation>Ek Açıklamaları Ada Göre Filtrele</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="134"/>
+        <location filename="../src/library/FilterAnnotationsWorker.cpp" line="132"/>
         <source>Filters annotations by name.</source>
         <translation>Ek açıklamaları ada göre filtreler.</translation>
     </message>
@@ -2691,17 +2699,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterBamPrompter</name>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="75"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="69"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="76"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="70"/>
         <source>&lt;u&gt;%1&lt;/u&gt;</source>
         <translation>&lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="78"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="72"/>
         <source>Filter BAM/SAM files from %1 with SAMTools view.</source>
         <translation>SAMTools görünümüyle %1&apos;den BAM / SAM dosyalarını filtreleyin.</translation>
     </message>
@@ -2709,127 +2717,127 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::FilterBamWorker</name>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="121"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="115"/>
         <source>Filter BAM/SAM files</source>
         <translation>BAM / SAM dosyalarını filtreleyin</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="121"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="115"/>
         <source>Filters BAM/SAM files using SAMTools view.</source>
         <translation>SAMTools görünümünü kullanarak BAM / SAM dosyalarını filtreler.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="125"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="119"/>
         <source>BAM/SAM File</source>
         <translation>BAM / SAM Dosyası</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="125"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="119"/>
         <source>Set of BAM/SAM files to filter</source>
         <translation>Filtrelenecek BAM / SAM dosyaları kümesi</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="126"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="120"/>
         <source>Filtered BAM/SAM files</source>
         <translation>Filtrelenmiş BAM / SAM dosyaları</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="139"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="133"/>
         <source>Output folder</source>
         <translation>Çıktı klasörü</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="139"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="133"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
         <translation>Bir çıktı klasörü seçin. &lt;b&gt;Özel&lt;/b&gt; - &apos;Özel klasör&apos; parametresinde çıktı klasörünü belirtin. &lt;b&gt;İş akışı&lt;/b&gt; - dahili iş akışı klasörü. &lt;b&gt;Girdi dosyası&lt;/b&gt; - girdi dosyasının klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="143"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="137"/>
         <source>Custom folder</source>
         <translation>Özel klasör</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="143"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="137"/>
         <source>Select the custom output folder.</source>
         <translation>Özel çıktı klasörünü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="145"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="139"/>
         <source>Output name</source>
         <translation>Çıktı adı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="145"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="139"/>
         <source>A name of an output BAM/SAM file. If default of empty value is provided the output name is the name of the first BAM/SAM file with .filtered extension.</source>
         <translation>Bir çıktı BAM / SAM dosyasının adı. Varsayılan olarak boş değer sağlanırsa, çıktı adı .filtered uzantılı ilk BAM / SAM dosyasının adıdır.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="147"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="141"/>
         <source>Output format</source>
         <translation>Çıktı biçimi</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="147"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="141"/>
         <source>Format of an output assembly file.</source>
         <translation>Çıktı derleme dosyasının biçimi.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="149"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="143"/>
         <source>Region</source>
         <translation>Bölge</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="149"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="143"/>
         <source>Regions to filter. For BAM output only. chr2 to output the whole chr2. chr2:1000 to output regions of chr 2 starting from 1000. chr2:1000-2000 to output regions of chr2 between 1000 and 2000 including the end point. To input multiple regions use the space separator (e.g. chr1 chr2 chr3:1000-2000).</source>
         <translation>Filtrelenecek bölgeler. Yalnızca BAM çıkışı için. chr2, tüm chr2&apos;yi verir. chr2: 1000 kanal 2&apos;nin çıktı bölgelerine 1000&apos;den başlayarak. chr2: 1000-2000, bitiş noktası dahil olmak üzere 1000 ve 2000 arasındaki kanal2 bölgelerinin çıkışına. Birden fazla bölgeyi girmek için boşluk ayırıcısını kullanın (ör. Chr1 chr2 chr3: 1000-2000).</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="152"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="146"/>
         <source>MAPQ threshold</source>
         <translation>MAPQ eşiği</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="152"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="146"/>
         <source>Minimum MAPQ quality score.</source>
         <translation>Minimum MAPQ kalite puanı.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="154"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="148"/>
         <source>Accept flag</source>
         <translation>Bayrağı kabul et</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="154"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="148"/>
         <source>Only output alignments with the selected items. Select the items in the combobox to configure bit flag. Do not select the items to avoid filtration by this parameter.</source>
         <translation>Yalnızca seçili öğelerle çıktı hizalamaları. Bit bayrağını yapılandırmak için birleşik giriş kutusundaki öğeleri seçin. Bu parametre ile filtrelemeyi önlemek için öğeleri seçmeyin.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="156"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="150"/>
         <source>Skip flag</source>
         <translation>Bayrağı atla</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="156"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="150"/>
         <source>Skip alignment with the selected items. Select the items in the combobox to configure bit flag. Do not select the items to avoid filtration by this parameter.</source>
         <translation>Seçili öğelerle hizalamayı atlayın. Bit bayrağını yapılandırmak için birleşik giriş kutusundaki öğeleri seçin. Bu parametre ile filtrelemeyi önlemek için öğeleri seçmeyin.</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="175"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="169"/>
         <source>Custom</source>
         <translation>Özelleştirilmiş</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="173"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="167"/>
         <source>Input file</source>
         <translation>Girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="174"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="168"/>
         <source>Workflow</source>
         <translation>İş akışı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="231"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="228"/>
         <source>Unknown file format: </source>
         <translation>Bilinmeyen dosya formatı: </translation>
     </message>
@@ -3064,7 +3072,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::GFFWriter</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="642"/>
+        <location filename="../src/library/DocWorkers.cpp" line="639"/>
         <source>GFF writer: NULL sequence object</source>
         <translation>GFF yazıcı: BOŞ sıra nesnesi</translation>
     </message>
@@ -3072,7 +3080,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::GenbankWriter</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="502"/>
+        <location filename="../src/library/DocWorkers.cpp" line="499"/>
         <source>Genbank writer: NULL sequence object</source>
         <translation>Genbank yazar: BOŞ sıra nesnesi</translation>
     </message>
@@ -3275,42 +3283,42 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ImportAnnotationsWorker</name>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="84"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="80"/>
         <source>Load documents with annotations</source>
         <translation>Ek açıklamalar içeren belgeleri yükleyin</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="155"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="151"/>
         <source>Input annotations</source>
         <translation>Giriş ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="155"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="151"/>
         <source>Input annotation table. Read annotations will be added to it</source>
         <translation>Giriş ek açıklama tablosu. Okunan ek açıklamalar buna eklenecek</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="161"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="157"/>
         <source>Output annotations</source>
         <translation>Çıktı açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="161"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="157"/>
         <source>Output annotation table</source>
         <translation>Çıktı açıklama tablosu</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="171"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="167"/>
         <source>Merge Annotations</source>
         <translation>Ek Açıklamaları Birleştir</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="172"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="168"/>
         <source>Read input annotation table and merge it with supplied annotation tables.</source>
         <translation>Giriş açıklama tablosunu okuyun ve verilen açıklama tablolarıyla birleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="182"/>
+        <location filename="../src/library/ImportAnnotationsWorker.cpp" line="178"/>
         <source>Merge input annotations with annotations from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Giriş ek açıklamalarını &lt;u&gt;%1&lt;/u&gt; kaynağından ek açıklamalarla birleştirin.</translation>
     </message>
@@ -3318,32 +3326,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::LaunchExternalToolTask</name>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="673"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="671"/>
         <source>Launch external process task</source>
         <translation>Harici işlem görevini başlatın</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="709"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="707"/>
         <source>Running external process: %1</source>
         <translation>Harici işlem çalıştırılıyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="713"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="711"/>
         <source>Can&apos;t launch %1</source>
         <translation>%1 başlatılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="726"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="724"/>
         <source>External process %1 exited with the following error: %2 (Code: %3)</source>
         <translation>%1 harici işlem şu hatayla çıktı: %2 (Kod: %3)</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="731"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="729"/>
         <source>External process %1 exited with code %2</source>
         <translation>%1 harici işlemden %2 koduyla çıkıldı</translation>
     </message>
     <message>
-        <location filename="../src/library/ExternalProcessWorker.cpp" line="733"/>
+        <location filename="../src/library/ExternalProcessWorker.cpp" line="731"/>
         <source>External process &quot;%1&quot; finished successfully</source>
         <translation>&quot;%1&quot; harici işlem başarıyla tamamlandı</translation>
     </message>
@@ -3405,7 +3413,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::MSAWriter</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="851"/>
+        <location filename="../src/library/DocWorkers.cpp" line="850"/>
         <source>Empty alignment passed for writing to %1</source>
         <translation>%1&apos;e yazmak için boş hizalama geçildi</translation>
     </message>
@@ -3843,23 +3851,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Giriş sırasını tersine, tamamlayıcıya veya ters tamamlayıcı karşılığına dönüştürür</translation>
     </message>
     <message>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="120"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="121"/>
         <source>Null sequence object supplied to FindWorker</source>
         <translation>FindWorker&apos;a sağlanan boş sıra nesnesi</translation>
     </message>
     <message>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="126"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="127"/>
         <source>Null sequence supplied to FindWorker: %1</source>
         <translation>FindWorker&apos;a sağlanan boş dizi: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="133"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="134"/>
         <source>Can&apos;t complement amino sequence</source>
         <translation>Amino dizisini tamamlayamaz</translation>
     </message>
     <message>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="142"/>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="153"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="143"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="154"/>
         <source>Can&apos;t find complement translation</source>
         <translation>Tamamlayıcı çeviri bulamıyorum</translation>
     </message>
@@ -3877,7 +3885,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/library/ReverseComplementWorker.cpp" line="100"/>
+        <location filename="../src/library/ReverseComplementWorker.cpp" line="101"/>
         <source>Converts each input sequence %1 into its %2 counterpart.</source>
         <translation>Her %1 giriş dizisini %2 karşılığına dönüştürür.</translation>
     </message>
@@ -3885,7 +3893,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::RawSeqWriter</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="437"/>
+        <location filename="../src/library/DocWorkers.cpp" line="434"/>
         <source>Raw sequence writer: NULL sequence object</source>
         <translation>Ham dizi yazar: BOŞ sıra nesnesi</translation>
     </message>
@@ -3893,22 +3901,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadAnnotationsTask</name>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="194"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="192"/>
         <source>Read annotations from %1</source>
         <translation>%1 kaynağından ek açıklamaları okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="222"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="220"/>
         <source>File &apos;%1&apos; does not exist</source>
         <translation>&apos;%1&apos; dosyası mevcut değil</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="232"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="230"/>
         <source>Unsupported document format: %1</source>
         <translation>Desteklenmeyen belge biçimi: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="234"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="232"/>
         <source>Reading annotations from %1 [%2]</source>
         <translation>%1 [%2] kaynağından ek açıklamalar okunuyor</translation>
     </message>
@@ -3916,62 +3924,62 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadAnnotationsWorker</name>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="133"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="131"/>
         <source>Read Annotations</source>
         <translation>Ek Açıklamaları Okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="134"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="132"/>
         <source>Input one or several files with annotations: a file may also contain a sequence (e.g. GenBank format) or contain annotations only (e.g. GTF format). The element outputs message(s) with the annotations data.</source>
         <translation>Ek açıklamalarla bir veya birkaç dosya girin: bir dosya ayrıca bir sıra (ör. GenBank biçimi) veya yalnızca ek açıklamalar (ör. GTF biçimi) içerebilir. Öğe, açıklama verileriyle birlikte mesaj (lar) verir.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="144"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="142"/>
         <source>Annotations</source>
         <translation>Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="145"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="143"/>
         <source>Annotations.</source>
         <translation>Açıklamalar.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="150"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="148"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="150"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="148"/>
         <source>&lt;ul&gt;&lt;li&gt;&lt;i&gt;&quot;Separate&quot;&lt;/i&gt; mode keeps the tables as they are;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from file&quot;&lt;/i&gt; unites annotation tables from one file into one annotations table;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from dataset&quot;&lt;/i&gt; unites all annotation tables from all files from dataset;&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>&lt;ul&gt;&lt;li&gt;&lt;i&gt; &quot;Ayrı&quot;&lt;/i&gt; modu tabloları olduğu gibi tutar; &lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Dosyadan birleştir&quot;&lt;/i&gt; ek açıklama tablolarını bir dosyadan bir ek açıklama tablosu; &lt;/li&gt;&lt;li&gt;&lt;i&gt; &quot;Veri kümesinden birleştirme&quot;&lt;/i&gt;, veri kümesindeki tüm dosyalardaki tüm açıklama tablolarını birleştirir; &lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="157"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="155"/>
         <source>Annotation table name</source>
         <translation>Ek açıklama tablosu adı</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="157"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="155"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Dosya veya veri kümesinden birleştirilmiş ek açıklama verilerini içeren sonuç ek açıklama tablosunun adı.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="165"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="163"/>
         <source>Separate annotation tables</source>
         <translation>Ayrı açıklama tabloları</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="166"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="164"/>
         <source>Merge annotation tables from file</source>
         <translation>Ek açıklama tablolarını dosyadan birleştir</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="167"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="165"/>
         <source>Merge all annotation tables from dataset</source>
         <translation>Veri kümesindeki tüm ek açıklama tablolarını birleştirin</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="174"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="172"/>
         <source>Reads annotations from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynağından ek açıklamaları okur.</translation>
     </message>
@@ -3979,23 +3987,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadAssemblyWorker</name>
     <message>
-        <location filename="../src/library/ReadAssemblyWorker.cpp" line="119"/>
+        <location filename="../src/library/ReadAssemblyWorker.cpp" line="114"/>
         <source>Read NGS Reads Assembly</source>
         <translation>NGS Okuma Derlemesini Okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAssemblyWorker.cpp" line="120"/>
+        <location filename="../src/library/ReadAssemblyWorker.cpp" line="115"/>
         <source>Input one or several files with assembled NGS reads in SAM, BAM, or UGENEDB format. The element outputs message(s) with the assembled reads data.&lt;br/&gt;&lt;br/&gt;Note that some tools require URL(s) of the files as input, not the assembled reads data.</source>
         <translation>SAM, BAM veya UGENEDB formatında birleştirilmiş NGS okumalarına sahip bir veya birkaç dosya girin. Öğe, birleştirilmiş okuma verileri ile mesaj (lar) çıkarır. &lt;br/&gt;&lt;br/&gt; Bazı araçların, birleştirilmiş verileri okumayı değil, girdi olarak dosyaların URL&apos;lerini gerektirdiğine dikkat edin.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAssemblyWorker.cpp" line="132"/>
-        <location filename="../src/library/ReadAssemblyWorker.cpp" line="133"/>
+        <location filename="../src/library/ReadAssemblyWorker.cpp" line="127"/>
+        <location filename="../src/library/ReadAssemblyWorker.cpp" line="128"/>
         <source>Assembly</source>
         <translation>Montaj</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAssemblyWorker.cpp" line="138"/>
+        <location filename="../src/library/ReadAssemblyWorker.cpp" line="133"/>
         <source>Reads assembly from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynağından derlemeyi okur.</translation>
     </message>
@@ -4003,27 +4011,27 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadVariationTask</name>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="92"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="91"/>
         <source>Read variations from %1</source>
         <translation>%1&apos;den varyasyonları okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="131"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="130"/>
         <source>File &apos;%1&apos; not exists</source>
         <translation>&apos;%1&apos; dosyası yok</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="146"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="145"/>
         <source>Unsupported document format: %1</source>
         <translation>Desteklenmeyen belge biçimi: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="149"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="148"/>
         <source>Reading variations from %1 [%2]</source>
         <translation>%1 [%2] kaynağından varyasyonlar okunuyor</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="162"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="161"/>
         <source>Incorrect track object in %1</source>
         <translation>%1 içinde yanlış izleme nesnesi</translation>
     </message>
@@ -4031,43 +4039,43 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadVariationWorker</name>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="181"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="180"/>
         <source>Read Variants</source>
         <translation>Çeşitleri Okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="182"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="181"/>
         <source>Input one or several files with variants in one of the formats, supported by UGENE (e.g. VCF). The element outputs message(s) with the variants data.</source>
         <translation>UGENE tarafından desteklenen biçimlerden birinde varyantlara sahip bir veya birkaç dosya girin (örn. VCF). Eleman, varyant verileriyle mesaj (lar) çıkarır.</translation>
     </message>
     <message>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="191"/>
         <location filename="../src/library/ReadVariationWorker.cpp" line="192"/>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="193"/>
         <source>Variation track</source>
         <translation>Varyasyon parçası</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="198"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="197"/>
         <source>Split Alleles</source>
         <translation>Alelleri Böl</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="198"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="197"/>
         <source>If the file contains variations with multiple alleles (chr1 100 C G,A), &lt;i&gt;No split&lt;/i&gt; mode sends them &quot;as is&quot; to the output, while &lt;i&gt;Split&lt;/i&gt; splits them into two variations (chr1 100 C G and chr1 100 C A).</source>
         <translation>Dosya birden çok alele sahip varyasyonlar içeriyorsa (chr1 100 CG, A), &lt;i&gt;Bölme yok&lt;/i&gt; modu bunları çıktıya &quot;olduğu gibi&quot; gönderir, &lt;i&gt;Böl&lt;/i&gt; ise bunları iki varyasyona böler (chr1 100 CG ve chr1 100 CA).</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="206"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="205"/>
         <source>Split</source>
         <translation>Bölünmüş</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="207"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="206"/>
         <source>No split</source>
         <translation>Bölünme yok</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadVariationWorker.cpp" line="213"/>
+        <location filename="../src/library/ReadVariationWorker.cpp" line="212"/>
         <source>Reads variations from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynağından varyasyonları okur.</translation>
     </message>
@@ -4083,115 +4091,115 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::RemoteDBFetcherWorker</name>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="78"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="77"/>
         <source>sequences identified with</source>
         <translation>ile tanımlanan diziler</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="79"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="77"/>
         <source>sequence identified with</source>
         <translation>ile tanımlanan dizi</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="84"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="81"/>
         <source>sequences identified with resource IDs that will be read from files</source>
         <translation>dosyalardan okunacak kaynak kimlikleriyle tanımlanan diziler</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="85"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="81"/>
         <source>sequences identified with resource IDs that will be read from file</source>
         <translation>dosyadan okunacak kaynak kimlikleriyle tanımlanan diziler</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="94"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="90"/>
         <source>Save result to &lt;u&gt;%1&lt;/u&gt; folder.</source>
         <translation>Sonucu &lt;u&gt;%1&lt;/u&gt; klasörüne kaydedin.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="96"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="92"/>
         <source>Reads %1 %2 from &lt;u&gt;%3&lt;/u&gt; remote database. %4</source>
         <translation>&lt;u&gt;%3&lt;/u&gt; uzak veritabanından %1 %2 okur. %4</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="137"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="133"/>
         <source>Cannot create folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörü oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="169"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="165"/>
         <source>failed to load item &apos;%1&apos; from &apos;%2&apos; DB : %3</source>
         <translation>&apos;%1&apos; öğesi &apos;%2&apos; DB&apos;den: %3 yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="294"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="290"/>
         <source>Read Sequence from Remote Database</source>
         <translation>Uzak Veritabanından Sırayı Oku</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="295"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="291"/>
         <source>Download sequence(s) with the specified ID(s) from one of remote databases: NCBI, Ensembl, PDB, etc. The sequences are downloaded with the associated annotations in a file format, specific for the selected database. The element outputs message(s) with the sequence and annotations data.&lt;br/&gt;&lt;br/&gt;Make sure the Internet connection is active.</source>
         <translation>Uzak veritabanlarından birinden belirtilen ID (ler) ile sekans (lar) indirin: NCBI, Ensembl, PDB, vb. Sekanslar, seçilen veritabanına özel bir dosya formatında ilgili açıklamalarla birlikte indirilir. Öğe, sıra ve ek açıklama verileriyle mesaj (lar) verir. &lt;br/&gt;&lt;br/&gt; İnternet bağlantısının etkin olduğundan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="303"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="299"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="314"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="310"/>
         <source>Database</source>
         <translation>Veri Tabanı</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="315"/>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="542"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="311"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="538"/>
         <source>The database to read from.</source>
         <translation>Okumak için veritabanı.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="319"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="315"/>
         <source>Read resource ID(s) from source</source>
         <translation>Kaynak kimliklerini kaynaktan okuyun</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="320"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="316"/>
         <source>The source to read resource IDs from: the list or a local file.</source>
         <translation>Kaynak kimliklerinin okunacağı kaynak: liste veya yerel bir dosya.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="324"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="320"/>
         <source>File with resource IDs</source>
         <translation>Kaynak kimlikleriyle dosya</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="325"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="321"/>
         <source>A file with a list of resource ID`s in the database (one per line).</source>
         <translation>Veritabanındaki kaynak kimliklerinin listesini içeren bir dosya (her satırda bir tane).</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="331"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="327"/>
         <source>Resource ID(s)</source>
         <translation>Kaynak Kimlikleri</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="332"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="328"/>
         <source>Semicolon-separated list of resource ID`s in the database.</source>
         <translation>Veritabanındaki kaynak kimliklerinin noktalı virgülle ayrılmış listesi.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="338"/>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="536"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="334"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="532"/>
         <source>Save file to folder</source>
         <translation>Dosyayı klasöre kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="339"/>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="537"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="335"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="533"/>
         <source>The folder to store sequence files loaded from a database.</source>
         <translation>Veritabanından yüklenen sıra dosyalarının saklanacağı klasör.</translation>
     </message>
     <message>
-        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="541"/>
+        <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="537"/>
         <source>NCBI database</source>
         <translation>NCBI veritabanı</translation>
     </message>
@@ -4457,32 +4465,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::SamtoolsViewFilterTask</name>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="359"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="356"/>
         <source>Samtool view (filter) for %1 </source>
         <translation>%1 için Samtool görünümü (filtre) </translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="364"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="361"/>
         <source>No assembly URL to filter</source>
         <translation>Filtrelenecek derleme URL&apos;si yok</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="370"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="367"/>
         <source>Folder does not exist: </source>
         <translation>Klasör mevcut değil: </translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="407"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="404"/>
         <source>Can not run %1 tool</source>
         <translation>%1 aracı çalıştırılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="413"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="410"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 araçtan %2 koduyla çıkıldı</translation>
     </message>
     <message>
-        <location filename="../src/library/FilterBamWorker.cpp" line="415"/>
+        <location filename="../src/library/FilterBamWorker.cpp" line="412"/>
         <source>Tool %1 finished successfully</source>
         <translation>%1 aracı başarıyla tamamladı</translation>
     </message>
@@ -4518,8 +4526,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Çıkış verileri</translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="214"/>
-        <location filename="../src/library/ScriptWorker.cpp" line="215"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="210"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="211"/>
         <source>no script text</source>
         <translation>senaryo metni yok</translation>
     </message>
@@ -4527,12 +4535,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorkerTask</name>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="81"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="77"/>
         <source>Error in line </source>
         <translation>Satırda hata </translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="63"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="59"/>
         <source>Script worker task</source>
         <translation>Komut dosyası çalışanı görevi</translation>
     </message>
@@ -5075,17 +5083,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::TextReader</name>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="137"/>
+        <location filename="../src/library/DocWorkers.cpp" line="134"/>
         <source>Can&apos;t load the object %1 from the database %2</source>
         <translation>%1 nesnesi %2 veritabanından yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="144"/>
+        <location filename="../src/library/DocWorkers.cpp" line="141"/>
         <source>Can&apos;t load file %1</source>
         <translation>%1 dosyası yüklenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/library/DocWorkers.cpp" line="155"/>
+        <location filename="../src/library/DocWorkers.cpp" line="152"/>
         <source>Can&apos;t load file %1. %2</source>
         <translation>%1 dosyası yüklenemiyor. %2</translation>
     </message>
@@ -5093,32 +5101,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::WriteAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="512"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="523"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="525"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="536"/>
         <source>default file</source>
         <translation>varsayılan dosya</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="546"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="557"/>
         <source>Save all annotations from &lt;u&gt;%1&lt;/u&gt; to %2</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; ile %2 arasındaki tüm ek açıklamaları kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="560"/>
         <source> in %1 format.</source>
         <translation> %1 biçiminde.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="560"/>
         <source> in the </source>
         <translation> içinde </translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="560"/>
         <source> database.</source>
         <translation> veri tabanı.</translation>
     </message>
@@ -5146,98 +5154,98 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Tanınmayan veri depolama: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="153"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="161"/>
         <source>Unspecified URL to write</source>
         <translation>Yazılacak belirtilmemiş URL</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="172"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="185"/>
         <source>Unrecognized data storage</source>
         <translation>Tanınmayan veri depolama</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="211"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="224"/>
         <source>Annotations name not specified. Default value used: &apos;%1&apos;</source>
         <translation>Ek açıklama adı belirtilmedi. Kullanılan varsayılan değer: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="259"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="267"/>
         <source>Nothing to write</source>
         <translation>Yazacak bir şey yok</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="376"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="384"/>
         <source>Input annotations</source>
         <translation>Giriş ek açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="376"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="384"/>
         <source>Input annotations which will be written to output file</source>
         <translation>Çıktı dosyasına yazılacak girdi açıklamaları</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="415"/>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="440"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="423"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
         <source>Merge annotation tables</source>
         <translation>Ek açıklama tablolarını birleştir</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="415"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="423"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one. The value of &lt;i&gt;Annotation table name&lt;/i&gt; parameter will be used as the name of result annotation table.</source>
         <translation>Eğer &lt;i&gt;doğru&lt;/i&gt; ise, veri kümesindeki tüm ek açıklama tabloları tek bir yerde birleştirilecektir. &lt;i&gt;Ek açıklama tablosu adı&lt;/i&gt; parametresinin değeri, sonuç ek açıklama tablosunun adı olarak kullanılacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="427"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
         <source>Annotation table name</source>
         <translation>Ek açıklama tablosu adı</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="427"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Dosya veya veri kümesinden birleştirilmiş ek açıklama verilerini içeren sonuç ek açıklama tablosunun adı.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="440"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one annotation object. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</source>
         <translation>Eğer &lt;i&gt;doğru&lt;/i&gt; ise, veri kümesindeki tüm açıklama tabloları tek bir açıklama nesnesinde birleştirilecektir. &lt;i&gt;Ek açıklama nesnesi adı&lt;/i&gt; parametresinin değeri, sonuç ek açıklama nesnesinin adı olarak kullanılacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="471"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="479"/>
         <source>The element gets message(s) with annotations data and saves the data to the specified file(s) in one of the appropriate formats (GenBank, GTF, etc.).</source>
         <translation>Öğe, açıklama verileriyle birlikte mesaj (lar) alır ve verileri uygun formatlardan birinde (GenBank, GTF, vb.) Belirtilen dosyaya / dosyalara kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
         <source>Annotation object name</source>
         <translation>Ek açıklama nesnesi adı</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
         <source>Name of the saved annotation object.</source>
         <translation>Kaydedilen açıklama nesnesinin adı.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="453"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="461"/>
         <source>CSV separator</source>
         <translation>CSV ayırıcı</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="453"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="461"/>
         <source>String which separates values in CSV files.</source>
         <translation>CSV dosyalarındaki değerleri ayıran dize.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="467"/>
         <source>Write sequence names</source>
         <translation>Sıra adlarını yazın</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="467"/>
         <source>Add names of sequences into CSV file.</source>
         <translation>Sekans adlarını CSV dosyasına ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="470"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="478"/>
         <source>Write Annotations</source>
         <translation>Ek Açıklamalar Yaz</translation>
     </message>
@@ -5375,17 +5383,9 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::SampleActionsManager</name>
     <message>
-        <location filename="../src/SampleActionsManager.cpp" line="99"/>
+        <location filename="../src/SampleActionsManager.cpp" line="104"/>
         <source>This task requires the following plugins: %1. Add them and try again, please.</source>
         <translation>Bu görev şu eklentileri gerektiriyor: %1. Bunları ekleyin ve tekrar deneyin lütfen.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SaveWorkflowSceneTask</name>
-    <message>
-        <location filename="../src/WorkflowSceneIOTasks.cpp" line="48"/>
-        <source>Save workflow scene task</source>
-        <translation>İş akışı sahne görevini kaydetme</translation>
     </message>
 </context>
 <context>
@@ -5417,156 +5417,156 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::CoreLib</name>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="153"/>
+        <location filename="../src/library/CoreLib.cpp" line="150"/>
         <source>Write FASTA</source>
         <translation>FAŞTA yaz</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="176"/>
+        <location filename="../src/library/CoreLib.cpp" line="173"/>
         <source>Read Plain Text</source>
         <translation>Düz Metni Oku</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="197"/>
+        <location filename="../src/library/CoreLib.cpp" line="194"/>
         <source>Write Plain Text</source>
         <translation>Düz Metin Yaz</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="293"/>
+        <location filename="../src/library/CoreLib.cpp" line="290"/>
         <source>Save all sequences from &lt;u&gt;%1&lt;/u&gt; to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; ile &lt;u&gt;%2&lt;/u&gt; arasındaki tüm dizileri kaydedin.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="413"/>
+        <location filename="../src/library/CoreLib.cpp" line="410"/>
         <source>The directory for included elements can&apos;t be created. Possibly, you don&apos;t have a permission to write to the chosen directory</source>
         <translation>Dahil edilen öğelerin dizini oluşturulamaz. Muhtemelen, seçilen dizine yazma izniniz yok</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="446"/>
+        <location filename="../src/library/CoreLib.cpp" line="443"/>
         <source>Another worker with this name is already registered: %1</source>
         <translation>Bu isimde başka bir işçi zaten kayıtlı: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="448"/>
+        <location filename="../src/library/CoreLib.cpp" line="445"/>
         <source>The actor &apos;%1&apos; has been already registered</source>
         <translation>Aktör &apos;%1&apos; zaten kayıtlı</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="155"/>
-        <location filename="../src/library/CoreLib.cpp" line="262"/>
-        <location filename="../src/library/GenericReadActor.cpp" line="104"/>
+        <location filename="../src/library/CoreLib.cpp" line="152"/>
+        <location filename="../src/library/CoreLib.cpp" line="259"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="101"/>
         <source>Sequence</source>
         <translation>Sıra</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="177"/>
-        <location filename="../src/library/CoreLib.cpp" line="199"/>
+        <location filename="../src/library/CoreLib.cpp" line="174"/>
+        <location filename="../src/library/CoreLib.cpp" line="196"/>
         <source>Plain text</source>
         <translation>Düz metin</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="125"/>
+        <location filename="../src/library/CoreLib.cpp" line="122"/>
         <source>Location</source>
         <translation>Yer</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="153"/>
+        <location filename="../src/library/CoreLib.cpp" line="150"/>
         <source>The element gets message(s) with sequence data and saves the data to the specified file(s) in FASTA format.</source>
         <translation>Eleman, sekans verileriyle mesaj (lar) alır ve verileri FAŞTA formatında belirtilen dosya (lar) a kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="176"/>
+        <location filename="../src/library/CoreLib.cpp" line="173"/>
         <source>Input one or several text files. The element outputs text message(s), read from the file(s).</source>
         <translation>Bir veya birkaç metin dosyası girin. Öğe, dosyalardan okunan metin mesajlarını çıkarır.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="180"/>
+        <location filename="../src/library/CoreLib.cpp" line="177"/>
         <source>Reads text from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den gelen metni okur.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="197"/>
+        <location filename="../src/library/CoreLib.cpp" line="194"/>
         <source>The element gets message(s) with text data and saved the data to the specified text file(s).</source>
         <translation>Öğe, metin verileriyle mesaj (lar) alır ve verileri belirtilen metin dosyalarına kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="205"/>
+        <location filename="../src/library/CoreLib.cpp" line="202"/>
         <source>Save text from &lt;u&gt;%1&lt;/u&gt; to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den &lt;u&gt;%2&lt;/u&gt;&apos; ye metin kaydedin.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="220"/>
+        <location filename="../src/library/CoreLib.cpp" line="217"/>
         <source>The element gets message(s) with alignment data and saves the data to the specified file(s) in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.).</source>
         <translation>Eleman, hizalama verileriyle mesaj (lar) alır ve verileri UGENE (ClustalW, FASTA, vb.) Tarafından desteklenen çoklu dizi hizalama formatlarından birinde belirtilen dosyalara kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="222"/>
-        <location filename="../src/library/GenericReadActor.cpp" line="164"/>
+        <location filename="../src/library/CoreLib.cpp" line="219"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="161"/>
         <source>Multiple sequence alignment</source>
         <translation>Çoklu dizi hizalaması</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="235"/>
+        <location filename="../src/library/CoreLib.cpp" line="232"/>
         <source>Save all MSAs from &lt;u&gt;%1&lt;/u&gt; to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; ile &lt;u&gt;%2&lt;/u&gt; arasındaki tüm MSA&apos;ları kaydedin.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="258"/>
+        <location filename="../src/library/CoreLib.cpp" line="255"/>
         <source>The elements gets message(s) with sequence data and, optionally, associated annotations data and saves the data to the specified file(s) in one of the appropriate formats (GenBank, FASTA, etc.).</source>
         <translation>Öğeler, sekans verileri ve isteğe bağlı olarak ilişkili açıklama verilerini içeren mesajları alır ve verileri uygun formatlardan birinde (GenBank, FAŞTA, vb.) Belirtilen dosya (lar) a kaydeder.</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="220"/>
+        <location filename="../src/library/CoreLib.cpp" line="217"/>
         <source>Write Alignment</source>
         <translation>Hizalama Yaz</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="258"/>
+        <location filename="../src/library/CoreLib.cpp" line="255"/>
         <source>Write Sequence</source>
         <translation>Sırayı Yaz</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="89"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="86"/>
         <source>Read Sequence</source>
         <translation>Sırayı Oku</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="90"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="87"/>
         <source>Input one or several files with nucleotide or protein sequences. A file may also contain annotations. Any format, supported by UGENE, is allowed (GenBank, FASTA, etc.). The element outputs message(s) with the sequence and annotations data.</source>
         <translation>Nükleotid veya protein dizileri içeren bir veya birkaç dosya girin. Bir dosya ayrıca ek açıklamalar içerebilir. UGENE tarafından desteklenen herhangi bir biçime izin verilir (GenBank, FASTA, vb.). Öğe, sıra ve ek açıklama verileriyle mesaj (lar) verir.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="141"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="138"/>
         <source>Reads sequence(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynağından dizileri okur.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="151"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="148"/>
         <source>Read Alignment</source>
         <translation>Hizalamayı Oku</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="152"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="149"/>
         <source>Input one or several files in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.). The element outputs message(s) with the alignment data.</source>
         <translation>UGENE (ClustalW, FASTA, vb.) Tarafından desteklenen çoklu dizi hizalama formatlarından birinde bir veya birkaç dosya girin. Eleman, hizalama verileriyle birlikte mesaj (lar) verir.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="169"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="166"/>
         <source>Reads MSA(s) from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; kaynaklı MSA&apos;yı okur.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="104"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="101"/>
         <source>A sequence of any type (nucleotide, protein).</source>
         <translation>Her türden bir dizi (nükleotid, protein).</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="125"/>
+        <location filename="../src/library/CoreLib.cpp" line="122"/>
         <source>Location for writing data</source>
         <translation>Veri yazma yeri</translation>
     </message>
     <message>
-        <location filename="../src/library/CoreLib.cpp" line="155"/>
+        <location filename="../src/library/CoreLib.cpp" line="152"/>
         <source>A sequence along with FASTA header line.</source>
         <translation>FAŞTA başlık satırı ile birlikte bir sekans.</translation>
     </message>
@@ -5594,7 +5594,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/PortAliasesConfigurationDialog.cpp" line="40"/>
         <source>Cancel</source>
-        <translation>Çıkış</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/PortAliasesConfigurationDialog.cpp" line="41"/>
@@ -5681,7 +5681,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/SchemaAliasesConfigurationDialogImpl.cpp" line="41"/>
         <source>Cancel</source>
-        <translation>Çıkış</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/SchemaAliasesConfigurationDialogImpl.cpp" line="42"/>
@@ -5692,52 +5692,52 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::SeqReadPrompter</name>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="109"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="106"/>
         <source>Mode</source>
         <translation>Mod</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="109"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="106"/>
         <source>If the file contains more than one sequence, &lt;i&gt;Split&lt;/i&gt; mode sends them &quot;as is&quot; to the output, while &lt;i&gt;Merge&lt;/i&gt; appends all the sequences and outputs the sole merged sequence.</source>
         <translation>Dosya birden fazla dizi içeriyorsa, &lt;i&gt;Böl&lt;/i&gt; modu bunları çıktıya &quot;olduğu gibi&quot; gönderirken, &lt;i&gt;Birleştir&lt;/i&gt; tüm dizileri ekler ve tek birleştirilmiş diziyi çıkarır.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="111"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="108"/>
         <source>Merging gap</source>
         <translation>Boşluk birleştiriliyor</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="111"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="108"/>
         <source>In &lt;i&gt;Merge&lt;/i&gt; mode, the specified number of gaps are inserted between the original sequences. This is helpful, for example, to avoid finding false positives at the merge boundaries.</source>
         <translation>&lt;i&gt;Birleştirme&lt;/i&gt; modunda, belirtilen sayıda boşluk orijinal diziler arasına eklenir. Bu, örneğin, birleştirme sınırlarında yanlış pozitifler bulmaktan kaçınmak için faydalıdır.</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="113"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="110"/>
         <source>Accession filter</source>
         <translation>Erişim filtresi</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="113"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="110"/>
         <source>Reports only sequences containing the specified regular expression.&lt;p&gt;&lt;i&gt;Leave it empty to switch off this filter. Use &lt;b&gt;*&lt;/b&gt; to mask many symbol and use &lt;b&gt;?&lt;/b&gt; to mask one symbol.&lt;/i&gt;&lt;/p&gt;</source>
         <translation>Yalnızca belirtilen normal ifadeyi içeren dizileri rapor eder. &lt;p&gt;&lt;i&gt;Bu filtreyi kapatmak için boş bırakın. Birçok sembolü maskelemek için &lt;b&gt;*&lt;/b&gt; kullanın ve bir sembolü maskelemek için &lt;b&gt;?&lt;/b&gt; kullanın.&lt;/i&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="115"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="112"/>
         <source>Sequence count limit</source>
         <translation>Sıra sayısı sınırı</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="115"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="112"/>
         <source>&lt;i&gt;Split mode&lt;/i&gt; only.&lt;p&gt;Read only first N sequences from each file.&lt;br&gt;Set 0 value for reading all sequences.&lt;/p&gt;</source>
         <translation>&lt;i&gt;Bölme modu&lt;/i&gt;sadece.&lt;p&gt;Her dosyadan yalnızca ilk N diziyi okuyun.&lt;br&gt;Tüm dizileri okumak için 0 değerini ayarlayın.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="128"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="125"/>
         <source>Split</source>
         <translation>Bölünmüş</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadActor.cpp" line="129"/>
+        <location filename="../src/library/GenericReadActor.cpp" line="126"/>
         <source>Merge</source>
         <translation>Birleştir</translation>
     </message>
@@ -5745,17 +5745,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::WriteDocPrompter</name>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="229"/>
+        <location filename="../src/library/DocActors.cpp" line="228"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="263"/>
+        <location filename="../src/library/DocActors.cpp" line="262"/>
         <source> in the </source>
         <translation> içinde </translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="263"/>
+        <location filename="../src/library/DocActors.cpp" line="262"/>
         <source> database.</source>
         <translation> veri tabanı.</translation>
     </message>
@@ -5763,12 +5763,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::WriteFastaPrompter</name>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="203"/>
+        <location filename="../src/library/DocActors.cpp" line="202"/>
         <source>Writes sequence(s) in %1 format to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>%1 biçimindeki dizileri &lt;u&gt;%2&lt;/u&gt; adresine yazar.</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="207"/>
+        <location filename="../src/library/DocActors.cpp" line="206"/>
         <source>Writes sequence(s) from &lt;u&gt;%1&lt;/u&gt; in %2 format to  &lt;u&gt;%3&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; dizisini %2 biçiminde  &lt;u&gt;%3&lt;/u&gt; biçimine yazar.</translation>
     </message>
@@ -5776,32 +5776,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::WriteGenbankPrompter</name>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="158"/>
+        <location filename="../src/library/DocActors.cpp" line="157"/>
         <source> sequence from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; kaynaklı dizi</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="161"/>
+        <location filename="../src/library/DocActors.cpp" line="160"/>
         <source> set of annotations from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; kaynaklı ek açıklama grubu</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="171"/>
+        <location filename="../src/library/DocActors.cpp" line="170"/>
         <source>Write sequence(s) in Genbank format to &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Dizileri Genbank biçiminde &lt;u&gt;%1&lt;/u&gt; konumuna yazın.</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="174"/>
+        <location filename="../src/library/DocActors.cpp" line="173"/>
         <source>each %1 and %2</source>
         <translation>her biri %1 ve %2</translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="176"/>
+        <location filename="../src/library/DocActors.cpp" line="175"/>
         <source>each </source>
         <translation>her biri </translation>
     </message>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="179"/>
+        <location filename="../src/library/DocActors.cpp" line="178"/>
         <source>Write %1 in Genbank format, to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Genbank formatında %1 &lt;u&gt;%2&lt;/u&gt; &apos;ye yazın.</translation>
     </message>
@@ -5809,67 +5809,67 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowDesignerPlugin</name>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="79"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="80"/>
         <source>Workflow Designer</source>
         <translation>İş Akışı Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="79"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="80"/>
         <source>Workflow Designer allows one to create complex computational workflows.</source>
         <translation>İş Akışı Tasarımcısı, birinin karmaşık hesaplama iş akışları oluşturmasına izin verir.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="165"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="175"/>
         <source>Runs the specified task.</source>
         <translation>Belirtilen görevi çalıştırır.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="166"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="176"/>
         <source>Runs the specified task. A path to a user-defined UGENE workflow be used as a task name.</source>
         <translation>Belirtilen görevi çalıştırır. Kullanıcı tanımlı bir UGENE iş akışına giden bir yol, görev adı olarak kullanılabilir.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="168"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="178"/>
         <source>&lt;task_name&gt; [&lt;task_parameter&gt;=value ...]</source>
         <translation>&lt;görev_adı&gt; [&lt;görev_parametresi&gt;=değer ...]</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="174"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="184"/>
         <source>Prints the content of the specified slot.</source>
         <translation>Belirtilen yuvanın içeriğini yazdırır.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="175"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="185"/>
         <source>Prints the content of the specified slot. The incoming/outcoming content of specified slot is printed to the standard output.</source>
         <translation>Belirtilen yuvanın içeriğini yazdırır. Belirtilen yuvanın gelen / giden içeriği standart çıktıya yazdırılır.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="177"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="187"/>
         <source>&lt;actor_name&gt;.&lt;port_name&gt;.&lt;slot_name&gt;</source>
         <translation>&lt;aktör_adı&gt;.&lt;bağlantı_noktası adı&gt;.&lt;yuva_adı&gt;</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="182"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="192"/>
         <source>Creates new Galaxy tool config.</source>
         <translation>Yeni Galaxy araç yapılandırması oluşturur.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="183"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="193"/>
         <source>Creates new Galaxy tool config from existing workflow. Paths to UGENE and Galaxy can be set</source>
         <translation>Mevcut iş akışından yeni Galaxy araç yapılandırması oluşturur. UGENE ve Galaxy&apos;ye giden yollar ayarlanabilir</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="185"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="195"/>
         <source>&lt;uwl-file&gt; [--ugene-path=value] [--galaxy-path=value]</source>
         <translation>&lt;uwl-file&gt; [--ugene-yol=değer] [--galaksi-yol=değer]</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="209"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="219"/>
         <source>Close Designer</source>
         <translation>Tasarımcıyı Kapat</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="220"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="230"/>
         <source>Close Designer canceled</source>
         <translation>Tasarımcıyı Kapat iptal edildi</translation>
     </message>
@@ -5877,99 +5877,97 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowDesignerService</name>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="229"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="239"/>
         <source>Workflow Designer</source>
         <translation>İş Akışı Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="267"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="277"/>
         <source>Workflow Designer...</source>
         <translation>İş Akışı Tasarımcısı...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="277"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="287"/>
         <source>New workflow...</source>
         <translation>Yeni iş akışı...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="308"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="318"/>
         <source>Can not open Workflow Designer. Please, try to reload UGENE.</source>
         <translation>İş Akışı Tasarımcısı açılamıyor. Lütfen UGENE&apos;yi yeniden yüklemeyi deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="351"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="363"/>
         <source>Raw DNA-Seq data processing...</source>
         <translation>Ham DNA-Seq veri işleme...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="353"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="366"/>
         <source>Variant calling...</source>
         <translation>Varyant çağırıyor...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="355"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="369"/>
         <source>Annotate variants and predict effects...</source>
         <translation>Varyantlara açıklama ekleyin ve etkileri tahmin edin...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="357"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="372"/>
         <source>Raw RNA-Seq data processing...</source>
         <translation>Ham RNA-Seq veri işleme...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="359"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="375"/>
         <source>RNA-Seq data analysis...</source>
         <translation>RNA-Seq veri analizi...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="361"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="378"/>
         <source>Extract transcript sequences...</source>
         <translation>Transkript dizilerini çıkarın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="363"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="381"/>
         <source>Raw ChIP-Seq data processing...</source>
         <translation>Ham ChIP-Seq veri işleme...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="365"/>
-        <source>ChIP-Seq data analysis...</source>
-        <translation>ChIP-Seq veri analizi...</translation>
-    </message>
-    <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="367"/>
-        <source>Metagenomics classification...</source>
-        <translation>Metagenomik sınıflandırması...</translation>
-    </message>
-    <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="373"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="384"/>
         <source>Extract coverage from assemblies...</source>
         <translation>Montajlardan kapsamı çıkarın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="375"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="387"/>
         <source>Extract consensus from assemblies...</source>
         <translation>Montajdan fikir birliği alın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="378"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="390"/>
         <source>Remote NCBI BLAST...</source>
         <translation>Uzak NCBI BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="340"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="350"/>
         <source>Reads quality control...</source>
         <translation>Kalite kontrolünü okur...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="345"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="355"/>
         <source>Reads de novo assembly (with SPAdes)...</source>
         <translation>De novo düzeneğini okur (SPAdes ile)...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="349"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="360"/>
         <source>Filter short scaffolds...</source>
         <translation>Kısa iskeleleri filtreleyin...</translation>
+    </message>
+    <message>
+        <source>ChIP-Seq data analysis...</source>
+        <translation type="vanished">ChIP-Seq veri analizi...</translation>
+    </message>
+    <message>
+        <source>Metagenomics classification...</source>
+        <translation type="vanished">Metagenomik sınıflandırması...</translation>
     </message>
 </context>
 <context>
@@ -6084,7 +6082,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/WorkflowMetaDialog.cpp" line="48"/>
         <source>Cancel</source>
-        <translation>Çıkış</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/WorkflowMetaDialog.cpp" line="49"/>
@@ -6100,12 +6098,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowPaletteElements</name>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="476"/>
+        <location filename="../src/WorkflowPalette.cpp" line="478"/>
         <source>Unable to Edit Element</source>
         <translation>Öğe Düzenlenemiyor</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="477"/>
+        <location filename="../src/WorkflowPalette.cpp" line="479"/>
         <source>The element with external tool is used in other Workflow Designer window(s). Please remove these instances to be able to edit the element configuration.</source>
         <translation>Harici aracı olan öğe, diğer İş Akışı Tasarımcısı pencerelerinde kullanılır. Öğe yapılandırmasını düzenleyebilmek için lütfen bu örnekleri kaldırın.</translation>
     </message>
@@ -6164,22 +6162,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>İş akışı bulunamıyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="123"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="119"/>
         <source>alias &apos;%1&apos; not set in workflow</source>
         <translation>&apos;%1&apos; takma adı iş akışında ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="143"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="139"/>
         <source>Incorrect value for &apos;%1&apos;, null or default value passed to workflow</source>
         <translation>&apos;%1&apos; için yanlış değer, iş akışına boş veya varsayılan değer geçirildi</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="129"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="125"/>
         <source>actor parameter &apos;%1&apos; not found</source>
         <translation>aktör parametresi &apos;%1&apos; bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="135"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="131"/>
         <source>cannot parse value from &apos;%1&apos;</source>
         <translation>&apos;%1&apos; den değer ayrıştırılamıyor</translation>
     </message>
@@ -6187,22 +6185,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowScene</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2457"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2476"/>
         <source>Open document(s)</source>
         <translation>Belgeleri aç</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2630"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2649"/>
         <source>Workflow Designer</source>
         <translation>İş Akışı Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2630"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2649"/>
         <source>Unable to open specified documents. Watch log for details.</source>
         <translation>Belirtilen belgeler açılamıyor. Ayrıntılar için günlüğü izleyin.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2713"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2732"/>
         <source>Drop an element from the palette here</source>
         <translation>Buraya paletten bir öğe bırakın</translation>
     </message>
@@ -6246,7 +6244,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="857"/>
+        <location filename="../src/WorkflowViewController.cpp" line="856"/>
         <source>UGENE workflow element</source>
         <translation>UGENE iş akışı öğesi</translation>
     </message>
@@ -6254,375 +6252,406 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowView</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="273"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2261"/>
+        <location filename="../src/WorkflowViewController.cpp" line="272"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2280"/>
         <source>Workflow Designer</source>
         <translation>İş Akışı Tasarımcısı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="366"/>
-        <location filename="../src/WorkflowViewController.cpp" line="496"/>
+        <location filename="../src/WorkflowViewController.cpp" line="365"/>
+        <location filename="../src/WorkflowViewController.cpp" line="495"/>
         <source>Error list</source>
         <translation>Hata listesi</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="394"/>
-        <location filename="../src/WorkflowViewController.cpp" line="397"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2183"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
+        <location filename="../src/WorkflowViewController.cpp" line="393"/>
+        <location filename="../src/WorkflowViewController.cpp" line="396"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2210"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2213"/>
         <source>Warning!</source>
         <translation>Uyarı!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="400"/>
+        <location filename="../src/WorkflowViewController.cpp" line="399"/>
         <source>Undefined workflow format for %1</source>
         <translation>%1 için tanımlanmamış iş akışı biçimi</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="400"/>
+        <location filename="../src/WorkflowViewController.cpp" line="399"/>
         <source>file</source>
         <translation>dosya</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="615"/>
+        <location filename="../src/WorkflowViewController.cpp" line="614"/>
         <source>&amp;Save workflow as...</source>
         <translation>&amp;İş akışını farklı kaydet...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="620"/>
+        <location filename="../src/WorkflowViewController.cpp" line="619"/>
         <source>Show wizard</source>
         <translation>Sihirbazı göster</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="648"/>
+        <location filename="../src/WorkflowViewController.cpp" line="647"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="762"/>
+        <location filename="../src/WorkflowViewController.cpp" line="761"/>
         <source>Create element with external tool...</source>
         <translation>Harici araçla öğe oluştur...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="773"/>
+        <location filename="../src/WorkflowViewController.cpp" line="772"/>
         <source>Add element with external tool...</source>
         <translation>Harici araçla öğe ekleyin...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="862"/>
-        <location filename="../src/WorkflowViewController.cpp" line="890"/>
+        <location filename="../src/WorkflowViewController.cpp" line="861"/>
+        <location filename="../src/WorkflowViewController.cpp" line="889"/>
         <source>Can&apos;t load element.</source>
         <translation>Öğe yüklenemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1218"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1279"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1217"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1278"/>
         <source>Element style</source>
         <translation>Öğe stili</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1704"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1731"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1706"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1733"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="691"/>
+        <location filename="../src/WorkflowViewController.cpp" line="690"/>
         <source>Select all elements</source>
         <translation>Tüm öğeleri seçin</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="682"/>
+        <location filename="../src/WorkflowViewController.cpp" line="681"/>
         <source>Import workflow to element...</source>
         <translation>İş akışını öğeye aktarın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="686"/>
+        <location filename="../src/WorkflowViewController.cpp" line="685"/>
         <source>Create Galaxy tool config...</source>
         <translation>Galaxy araç yapılandırması oluşturun...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="694"/>
+        <location filename="../src/WorkflowViewController.cpp" line="693"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopyala</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="702"/>
+        <location filename="../src/WorkflowViewController.cpp" line="701"/>
         <source>Cu&amp;t</source>
         <translation>Ke&amp;s</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="709"/>
+        <location filename="../src/WorkflowViewController.cpp" line="708"/>
         <source>&amp;Paste</source>
         <translation>&amp;Yapıştır</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="91"/>
-        <location filename="../src/WorkflowViewController.cpp" line="717"/>
+        <location filename="../src/WorkflowViewController.cpp" line="716"/>
         <source>Minimal</source>
         <translation>Küçült</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="92"/>
-        <location filename="../src/WorkflowViewController.cpp" line="723"/>
+        <location filename="../src/WorkflowViewController.cpp" line="722"/>
         <source>Extended</source>
         <translation>Genişletilmiş</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="858"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1186"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1289"/>
+        <location filename="../src/WorkflowViewController.cpp" line="857"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1185"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1288"/>
         <source>Add element</source>
         <translation>Öğe ekle</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="548"/>
+        <location filename="../src/WorkflowViewController.cpp" line="547"/>
         <source>&amp;Run workflow</source>
         <translation>&amp;İş akışını çalıştırın</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="555"/>
+        <location filename="../src/WorkflowViewController.cpp" line="554"/>
         <source>S&amp;top workflow</source>
         <translation>İş akışını d&amp;urdur</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="562"/>
+        <location filename="../src/WorkflowViewController.cpp" line="561"/>
         <source>&amp;Validate workflow</source>
         <translation>&amp;İş akışını doğrulayın</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="568"/>
+        <location filename="../src/WorkflowViewController.cpp" line="567"/>
         <source>&amp;Estimate workflow</source>
         <translation>&amp;İş akışını tahmin et</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="574"/>
+        <location filename="../src/WorkflowViewController.cpp" line="573"/>
         <source>&amp;Pause workflow</source>
         <translation>&amp;İş akışını duraklatın</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="582"/>
+        <location filename="../src/WorkflowViewController.cpp" line="581"/>
         <source>&amp;Next step</source>
         <translation>&amp;Sonraki adım</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="592"/>
+        <location filename="../src/WorkflowViewController.cpp" line="591"/>
         <source>Process one &amp;message</source>
         <translation>Bir &amp;mesajı işle</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="602"/>
+        <location filename="../src/WorkflowViewController.cpp" line="601"/>
         <source>&amp;New workflow...</source>
         <translation>&amp;Yeni iş akışı...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="608"/>
+        <location filename="../src/WorkflowViewController.cpp" line="607"/>
         <source>&amp;Save workflow</source>
         <translation>&amp;İş akışını kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="637"/>
+        <location filename="../src/WorkflowViewController.cpp" line="636"/>
         <source>&amp;Load workflow</source>
         <translation>&amp;İş akışını yükle</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="643"/>
+        <location filename="../src/WorkflowViewController.cpp" line="642"/>
         <source>&amp;Export workflow as image</source>
         <translation>&amp;İş akışını görüntü olarak dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="652"/>
+        <location filename="../src/WorkflowViewController.cpp" line="651"/>
         <source>Dashboards manager</source>
         <translation>Gösterge tabloları yöneticisi</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="673"/>
+        <location filename="../src/WorkflowViewController.cpp" line="672"/>
         <source>Set parameter aliases...</source>
         <translation>Parametre takma adlarını ayarlayın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="678"/>
+        <location filename="../src/WorkflowViewController.cpp" line="677"/>
         <source>Set port and slot aliases...</source>
         <translation>Bağlantı noktası ve yuva takma adlarını ayarlayın...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="731"/>
+        <location filename="../src/WorkflowViewController.cpp" line="730"/>
         <source>Hide scripting options</source>
         <translation>Komut dosyası seçeneklerini gizle</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="738"/>
+        <location filename="../src/WorkflowViewController.cpp" line="737"/>
         <source>Show scripting options</source>
         <translation>Komut dosyası seçeneklerini göster</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="751"/>
+        <location filename="../src/WorkflowViewController.cpp" line="750"/>
         <source>Create element with script...</source>
         <translation>Komut dosyasıyla öğe oluşturun...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="756"/>
+        <location filename="../src/WorkflowViewController.cpp" line="755"/>
         <source>Edit script of the element...</source>
         <translation>Öğenin komut dosyasını düzenleyin...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="767"/>
+        <location filename="../src/WorkflowViewController.cpp" line="766"/>
         <source>Edit configuration...</source>
         <translation>Yapılandırmayı düzenleyin...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1323"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1322"/>
         <source>Empty workflow!</source>
         <translation>Boş iş akışı!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1323"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1322"/>
         <source>Nothing to run: empty workflow</source>
         <translation>Çalıştırılacak bir şey yok: boş iş akışı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1348"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1347"/>
         <source>Workflow cannot be executed</source>
         <translation>İş akışı yürütülemez</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1348"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1347"/>
         <source>Please fix issues listed in the error list (located under workflow).</source>
         <translation>Lütfen hata listesinde (iş akışının altında bulunan) listelenen sorunları düzeltin.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1351"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1350"/>
         <source>Workflow is valid. 
 </source>
         <translation>İş akışı geçerlidir. 
 </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1353"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1352"/>
         <source>Well done!</source>
         <translation>Aferin!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1355"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1354"/>
         <source>There are non-critical warnings.</source>
         <translation>Kritik olmayan uyarılar var.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1357"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1356"/>
         <source>Workflow is valid</source>
         <translation>İş akışı geçerlidir</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1599"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1601"/>
         <source>Aliases for workflow parameters should be different!</source>
         <translation>İş akışı parametreleri için takma adlar farklı olmalıdır!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1632"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1634"/>
         <source>Workflow does not contain any parameter aliases</source>
         <translation>İş akışı herhangi bir parametre takma adı içermiyor</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1646"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1648"/>
         <source>Internal error!</source>
         <translation>Dahili Hata!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1646"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1648"/>
         <source>Can not create Galaxy config</source>
         <translation>Galaxy yapılandırması oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1702"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1704"/>
         <source>The workflow contains a wizard. Sorry, but current version of UGENE doesn&apos;t support of wizards in the includes.</source>
         <translation>İş akışı bir sihirbaz içerir. Maalesef UGENE&apos;nin şu anki sürümü, içerdiği sihirbazları desteklemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1750"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1752"/>
         <source>Drag an element to the scene to add it to the workflow.</source>
         <translation>İş akışına eklemek için bir öğeyi sahneye sürükleyin.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2041"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1969"/>
+        <source>Confirm file save path</source>
+        <translation>Dosya kaydetme yolunu onaylayın</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="1970"/>
+        <source>It seems you trying to save workflow schema to &quot;workflow_samples&quot; directory which used by UGENE. Rewriting existing files can cause problems with analyzing algorithms.<byte value="xd"/>
+- &quot;Save anyway&quot; will rewrite existing schema<byte value="xd"/>
+- &quot;Choose new path&quot; will allow you to save schema by another path<byte value="xd"/>
+- &quot;Cancel&quot; will cancel save and leave schema untouched</source>
+        <translation>Görünüşe göre iş akışı şemasını UGENE tarafından kullanılan &quot;workflow_samples&quot; dizinine kaydetmeye çalışıyorsunuz. Mevcut dosyaların yeniden yazılması, algoritmaların analizinde sorunlara neden olabilir.<byte value="xd"/>
+- &quot;Yine de kaydet&quot; mevcut şemayı yeniden yazacak<byte value="xd"/>
+- &quot;Yeni yol seç&quot;, şemayı başka bir yolla kaydetmenize olanak tanır<byte value="xd"/>
+- &quot;İptal&quot;, kaydetmeyi iptal eder ve şemaya dokunulmaz</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="1974"/>
+        <source>Save anyway</source>
+        <translation>Yine de kaydet</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="1975"/>
+        <source>Choose new path</source>
+        <translation>Yeni yol seçin</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="1978"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="2068"/>
         <source>File is not found: %1</source>
         <translation>Dosya bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2106"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2133"/>
         <source>To Workflow Designer</source>
         <translation>İş Akışı Tasarımcısına</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2110"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2137"/>
         <source>Go to Dashboard</source>
         <translation>Gösterge Tablosuna Git</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2112"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2139"/>
         <source>Show dashboard</source>
         <translation>Gösterge tablosunu göster</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2108"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2135"/>
         <source>Show workflow</source>
         <translation>İş akışını göster</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="886"/>
+        <location filename="../src/WorkflowViewController.cpp" line="885"/>
         <source>Can&apos;t register element.</source>
         <translation>Öğesi kaydedilemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2156"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2159"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2183"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
         <source>Open workflow file</source>
         <translation>İş akışı dosyasını aç</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2198"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2225"/>
         <source>New workflow</source>
         <translation>Yeni iş akışı</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2261"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2280"/>
         <source>The workflow has been modified.
 Do you want to save changes?</source>
         <translation>İş akışı değiştirildi.
 Değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1224"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1223"/>
         <source>Scripting mode</source>
         <translation>Komut dosyası modu</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1272"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1271"/>
         <source>Element properties</source>
         <translation>Eleman özellikleri</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1599"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1632"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1601"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1634"/>
         <source>Bad input!</source>
         <translation>Hatalı giriş!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2230"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2249"/>
         <source>Workflow Designer - %1</source>
         <translation>İş Akışı Tasarımcısı - %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="347"/>
+        <location filename="../src/WorkflowViewController.cpp" line="346"/>
         <source>Elements</source>
         <translation>Ögeler</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="350"/>
+        <location filename="../src/WorkflowViewController.cpp" line="349"/>
         <source>Samples</source>
         <translation>Örnekler</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="746"/>
+        <location filename="../src/WorkflowViewController.cpp" line="745"/>
         <source>Unlock Scene</source>
         <translation>Sahnenin Kilidini Aç</translation>
     </message>
@@ -6790,19 +6819,19 @@ Değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Use directory for output files</source>
-        <translation>Çıktı dosyaları için dizin kullan</translation>
+        <translation type="vanished">Çıktı dosyaları için dizin kullan</translation>
     </message>
     <message>
         <source>Directory for custom elements with scripts</source>
-        <translation>Komut dosyaları içeren özel öğeler için dizin</translation>
+        <translation type="vanished">Komut dosyaları içeren özel öğeler için dizin</translation>
     </message>
     <message>
         <source>Directory for custom elements with external tools</source>
-        <translation>Harici araçlarla özel öğeler için dizin</translation>
+        <translation type="vanished">Harici araçlarla özel öğeler için dizin</translation>
     </message>
     <message>
         <source>Directory for included schema elements</source>
-        <translation>Dahil edilen şema öğeleri için dizin</translation>
+        <translation type="vanished">Dahil edilen şema öğeleri için dizin</translation>
     </message>
 </context>
 <context>
@@ -6826,9 +6855,16 @@ Değişiklikleri kaydetmek istiyor musunuz?</translation>
 <context>
     <name>WriteDocPrompter</name>
     <message>
-        <location filename="../src/library/DocActors.cpp" line="189"/>
+        <location filename="../src/library/DocActors.cpp" line="188"/>
         <source>default file</source>
         <translation>varsayılan dosya</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveWorkflowSceneTask</name>
+    <message>
+        <source>Save workflow scene task</source>
+        <translation type="vanished">İş akışı sahne görevini kaydetme</translation>
     </message>
 </context>
 </TS>

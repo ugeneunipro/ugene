@@ -31,7 +31,7 @@ namespace U2 {
 class U2CORE_EXPORT U2PhyTree : public U2RawData {
 public:
     U2PhyTree();
-    U2PhyTree(const U2DbiRef &dbiRef);
+    U2PhyTree(const U2DbiRef& dbiRef);
 
     U2DataType getType() const;
 };
@@ -39,26 +39,26 @@ public:
 class U2CORE_EXPORT PhyTreeObject : public GObject {
     Q_OBJECT
 public:
-    static PhyTreeObject *createInstance(const PhyTree &tree, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap = QVariantMap());
+    static PhyTreeObject* createInstance(const PhyTree& tree, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap = QVariantMap());
 
-    PhyTreeObject(const QString &objectName, const U2EntityRef &treeRef, const QVariantMap &hintsMap = QVariantMap());
+    PhyTreeObject(const QString& objectName, const U2EntityRef& treeRef, const QVariantMap& hintsMap = QVariantMap());
 
-    virtual const PhyTree &getTree() const;
-    void setTree(const PhyTree &_tree);
+    virtual const PhyTree& getTree() const;
+    void setTree(const PhyTree& _tree);
 
     void onTreeChanged();
 
-    void rerootPhyTree(PhyNode *node);
+    void rerootPhyTree(PhyNode* node);
     // Warning!
     // PhyBranches can be accessed and modified!
     // TODO: move branches to private data, add getters and setters
-    const PhyNode *findPhyNodeByName(const QString &name);
+    const PhyNode* findPhyNodeByName(const QString& name);
 
-    virtual GObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    virtual GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
     // Utility functions
     // Compares number of nodes and nodes with names (how many nodes etc.)
-    static bool treesAreAlike(const PhyTree &tree1, const PhyTree &tree2);
+    static bool treesAreAlike(const PhyTree& tree1, const PhyTree& tree2);
 
     bool haveNodeLabels() const;
 
@@ -66,13 +66,13 @@ signals:
     void si_phyTreeChanged();
 
 protected:
-    void loadDataCore(U2OpStatus &os);
+    void loadDataCore(U2OpStatus& os);
 
 private:
-    PhyTreeObject(const PhyTree &tree, const QString &objectName, const U2EntityRef &treeRef, const QVariantMap &hintsMap);
+    PhyTreeObject(const PhyTree& tree, const QString& objectName, const U2EntityRef& treeRef, const QVariantMap& hintsMap);
     void commit();
-    static void commit(const PhyTree &tree, const U2EntityRef &treeRef, U2OpStatus &os);
-    static void commit(const PhyTree &tree, const U2EntityRef &treeRef);
+    static void commit(const PhyTree& tree, const U2EntityRef& treeRef, U2OpStatus& os);
+    static void commit(const PhyTree& tree, const U2EntityRef& treeRef);
 
     PhyTree tree;
 };

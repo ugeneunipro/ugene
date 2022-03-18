@@ -30,20 +30,20 @@ namespace U2 {
 class U2CORE_EXPORT MultipleSequenceAlignmentObject : public MultipleAlignmentObject {
     Q_OBJECT
 public:
-    MultipleSequenceAlignmentObject(const QString &name,
-                                    const U2EntityRef &msaRef,
-                                    const QVariantMap &hintsMap = QVariantMap(),
-                                    const MultipleSequenceAlignment &msaData = MultipleSequenceAlignment());
+    MultipleSequenceAlignmentObject(const QString& name,
+                                    const U2EntityRef& msaRef,
+                                    const QVariantMap& hintsMap = QVariantMap(),
+                                    const MultipleSequenceAlignment& msaData = MultipleSequenceAlignment());
 
     /** Returns a reference to MultipleSequenceAlignment data . */
-    const MultipleSequenceAlignment &getMsa() const;
+    const MultipleSequenceAlignment& getMsa() const;
 
     /** Returns a copy of the MultipleSequenceAlignment data . */
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
     // Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
-    virtual MultipleSequenceAlignmentObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
     /** Const getters */
     char charAt(int seqNum, qint64 position) const;
@@ -53,20 +53,20 @@ public:
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(U2OpStatus &os, const QMap<qint64, QList<U2MsaGap>> &rowsGapModel);
-    void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
+    void updateGapModel(U2OpStatus& os, const QMap<qint64, QVector<U2MsaGap>>& rowsGapModel);
+    void updateGapModel(const QList<MultipleSequenceAlignmentRow>& sourceRows);
 
     /** Keeps only given row ids and given column range in the alignment. */
-    void crop(const QList<qint64> &rowIds, const U2Region &columnRange);
+    void crop(const QList<qint64>& rowIds, const U2Region& columnRange);
 
     /** Keeps only given column range in the alignment. */
-    void crop(const U2Region &columnRange);
+    void crop(const U2Region& columnRange);
 
     /** Methods to work with rows */
-    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const QList<U2MsaGap> &gapModel);
+    void updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QVector<U2MsaGap>& gapModel);
 
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
-    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);
+    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet = nullptr);
 
     /**
      * Updates MSA alphabet to the 'newAlphabet'.
@@ -77,21 +77,21 @@ public:
      *
      * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
      */
-    void morphAlphabet(const DNAAlphabet *newAlphabet, const QByteArray &replacementMap = QByteArray());
+    void morphAlphabet(const DNAAlphabet* newAlphabet, const QByteArray& replacementMap = QByteArray());
 
-    void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
+    void deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount = -1);
 
-    void insertGap(const U2Region &rows, int pos, int nGaps);
+    void insertGap(const U2Region& rows, int pos, int nGaps);
 
-    void insertGapByRowIndexList(const QList<int> &rowIndexes, int pos, int nGaps);
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
 
 private:
-    void loadAlignment(U2OpStatus &os);
-    void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
-    void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
+    void loadAlignment(U2OpStatus& os);
+    void updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds);
+    void updateDatabase(U2OpStatus& os, const MultipleAlignment& ma);
 
-    void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
-    void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
+    void removeRowPrivate(U2OpStatus& os, const U2EntityRef& msaRef, qint64 rowId);
+    void removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases);
 };
 
 }  // namespace U2

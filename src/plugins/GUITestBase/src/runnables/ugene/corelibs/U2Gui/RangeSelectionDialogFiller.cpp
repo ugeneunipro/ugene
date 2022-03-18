@@ -32,7 +32,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int *_len)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus& _os, int* _len)
     : Filler(_os, "RangeSelectionDialog") {
     rangeType = Single;
     selectAll = true;
@@ -45,7 +45,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario *scenario)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus& _os, CustomScenario* scenario)
     : Filler(_os, "RangeSelectionDialog", scenario) {
     rangeType = Single;
     selectAll = true;
@@ -58,7 +58,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _minVal, int _maxVal)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus& _os, int _minVal, int _maxVal)
     : Filler(_os, "RangeSelectionDialog") {
     rangeType = Single;
     selectAll = false;
@@ -71,7 +71,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, const QString &range)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus& _os, const QString& range)
     : Filler(_os, "RangeSelectionDialog") {
     rangeType = Multiple;
     selectAll = false;
@@ -84,7 +84,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus& _os, int _length, bool selectFromBegin)
     : Filler(_os, "RangeSelectionDialog") {
     rangeType = Single;
     selectAll = false;
@@ -104,12 +104,11 @@ void SelectSequenceRegionDialogFiller::setCircular(bool v) {
 #define GT_METHOD_NAME "commonScenario"
 void SelectSequenceRegionDialogFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (selectAll) {
-        QToolButton *min = dialog->findChild<QToolButton *>("minButton");
-        QToolButton *max = dialog->findChild<QToolButton *>("maxButton");
+        QToolButton* min = dialog->findChild<QToolButton*>("minButton");
+        QToolButton* max = dialog->findChild<QToolButton*>("maxButton");
         GT_CHECK(min != nullptr, "Min button not found");
         GT_CHECK(max != nullptr, "Max button not found");
 
@@ -119,15 +118,15 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
         GTGlobals::sleep(500);
 
         if (len != nullptr) {
-            QLineEdit *endEdit = dialog->findChild<QLineEdit *>("endEdit");
+            QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
             GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
             *len = endEdit->text().toInt();
         }
     } else if (rangeType == Single) {
         GT_CHECK(circular || minVal <= maxVal, "Value \"min\" greater then \"max\"");
 
-        QLineEdit *startEdit = dialog->findChild<QLineEdit *>("startEdit");
-        QLineEdit *endEdit = dialog->findChild<QLineEdit *>("endEdit");
+        QLineEdit* startEdit = dialog->findChild<QLineEdit*>("startEdit");
+        QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
         GT_CHECK(startEdit != nullptr, "QLineEdit \"startEdit\" not found");
         GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
 
@@ -150,11 +149,11 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
     } else {
         GT_CHECK(!multipleRange.isEmpty(), "Range is empty");
 
-        QRadioButton *multipleButton = dialog->findChild<QRadioButton *>("miltipleButton");
+        QRadioButton* multipleButton = dialog->findChild<QRadioButton*>("miltipleButton");
         GT_CHECK(multipleButton != nullptr, "RadioButton \"miltipleButton\" not found");
         GTRadioButton::click(os, multipleButton);
 
-        QLineEdit *regionEdit = dialog->findChild<QLineEdit *>("multipleRegionEdit");
+        QLineEdit* regionEdit = dialog->findChild<QLineEdit*>("multipleRegionEdit");
         GT_CHECK(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
         GTLineEdit::setText(os, regionEdit, multipleRange);
     }

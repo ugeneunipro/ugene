@@ -28,11 +28,11 @@ namespace U2 {
  *****************************/
 const QString DataType::EMPTY_TYPESET_ID = QString("empty");
 
-DataType::DataType(const QString &id, const QString &name, const QString &desc)
+DataType::DataType(const QString& id, const QString& name, const QString& desc)
     : Descriptor(id, name, desc) {
 }
 
-DataType::DataType(const Descriptor &d)
+DataType::DataType(const Descriptor& d)
     : Descriptor(d) {
 }
 
@@ -48,12 +48,12 @@ QMap<Descriptor, DataTypePtr> DataType::getDatatypesMap() const {
     return QMap<Descriptor, DataTypePtr>();
 }
 
-DataTypePtr DataType::getDatatypeByDescriptor(const Descriptor &idd) const {
+DataTypePtr DataType::getDatatypeByDescriptor(const Descriptor& idd) const {
     Q_UNUSED(idd);
     return DataTypePtr();
 }
 
-Descriptor DataType::getDatatypeDescriptor(const QString &id) const {
+Descriptor DataType::getDatatypeDescriptor(const QString& id) const {
     QList<Descriptor> lst = getAllDescriptors();
     int idx = lst.indexOf(id);
     return idx == -1 ? "" : lst.at(idx);
@@ -62,7 +62,7 @@ Descriptor DataType::getDatatypeDescriptor(const QString &id) const {
 /*****************************
  * MapDataType
  *****************************/
-MapDataType::MapDataType(const Descriptor &d, const QMap<Descriptor, DataTypePtr> &m)
+MapDataType::MapDataType(const Descriptor& d, const QMap<Descriptor, DataTypePtr>& m)
     : DataType(d), map(m) {
 }
 
@@ -70,7 +70,7 @@ DataType::Kind MapDataType::kind() const {
     return DataType::Map;
 }
 
-DataTypePtr MapDataType::getDatatypeByDescriptor(const Descriptor &d) const {
+DataTypePtr MapDataType::getDatatypeByDescriptor(const Descriptor& d) const {
     return map.value(d);
 }
 
@@ -85,7 +85,7 @@ QMap<Descriptor, DataTypePtr> MapDataType::getDatatypesMap() const {
 /*****************************
  * ListDataType
  *****************************/
-ListDataType::ListDataType(const Descriptor &d, DataTypePtr el)
+ListDataType::ListDataType(const Descriptor& d, DataTypePtr el)
     : DataType(d), listElementDatatype(el) {
 }
 
@@ -93,7 +93,7 @@ DataType::Kind ListDataType::kind() const {
     return DataType::List;
 }
 
-DataTypePtr ListDataType::getDatatypeByDescriptor(const Descriptor &idd) const {
+DataTypePtr ListDataType::getDatatypeByDescriptor(const Descriptor& idd) const {
     Q_UNUSED(idd);
     return listElementDatatype;
 }
@@ -105,7 +105,7 @@ DataTypeRegistry::~DataTypeRegistry() {
     registry.clear();
 }
 
-DataTypePtr DataTypeRegistry::getById(const QString &id) const {
+DataTypePtr DataTypeRegistry::getById(const QString& id) const {
     return registry.value(id);
 }
 
@@ -118,7 +118,7 @@ bool DataTypeRegistry::registerEntry(DataTypePtr t) {
     }
 }
 
-DataTypePtr DataTypeRegistry::unregisterEntry(const QString &id) {
+DataTypePtr DataTypeRegistry::unregisterEntry(const QString& id) {
     return registry.take(id);
 }
 

@@ -33,7 +33,7 @@ class GObject;
 class U2CORE_EXPORT DeleteObjectsTask : public Task {
     Q_OBJECT
 public:
-    DeleteObjectsTask(const QList<GObject *> &objs);
+    DeleteObjectsTask(const QList<GObject*>& objs);
 
     void run();
 
@@ -44,7 +44,7 @@ private:
 class U2CORE_EXPORT DeleteFoldersTask : public Task {
     Q_OBJECT
 public:
-    DeleteFoldersTask(const QList<Folder> &folders);
+    DeleteFoldersTask(const QList<Folder>& folders);
 
     void run();
 

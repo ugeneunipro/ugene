@@ -28,7 +28,7 @@
 #include "Utils.h"
 
 namespace {
-QString loadReport(int argc, char *argv[]) {
+QString loadReport(int argc, char* argv[]) {
     if (Utils::hasReportUrl()) {
         return Utils::loadReportFromUrl(Utils::getReportUrl());
     } else if (argc > 1) {
@@ -39,7 +39,7 @@ QString loadReport(int argc, char *argv[]) {
 }
 }  // namespace
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     bool useGui = true;
 #if defined(Q_OS_UNIX)
     useGui = (getenv("DISPLAY") != 0);

@@ -23,14 +23,14 @@
 
 namespace U2 {
 
-QThreadStorage<TLSContextRef *> TLSUtils::tls;
+QThreadStorage<TLSContextRef*> TLSUtils::tls;
 
 /************************************************************************/
 /* TaskLocalData                                                        */
 /************************************************************************/
-TLSContext *TLSUtils::current(QString contextId) {
+TLSContext* TLSUtils::current(QString contextId) {
     Q_UNUSED(contextId)
-    TLSContextRef *ref = tls.localData();
+    TLSContextRef* ref = tls.localData();
     if (ref != nullptr) {
         assert(ref->ctx != nullptr);
         assert(ref->ctx->id == contextId);
@@ -40,14 +40,14 @@ TLSContext *TLSUtils::current(QString contextId) {
     return nullptr;
 }
 
-void TLSUtils::bindToTLSContext(TLSContext *ctx) {
+void TLSUtils::bindToTLSContext(TLSContext* ctx) {
     assert(ctx != nullptr);
     assert(!tls.hasLocalData());
     tls.setLocalData(new TLSContextRef(ctx));
 }
 
 void TLSUtils::detachTLSContext() {
-    TLSContextRef *ref = tls.localData();
+    TLSContextRef* ref = tls.localData();
     assert(ref != nullptr && ref->ctx != nullptr);
     ref->ctx = nullptr;
     tls.setLocalData(nullptr);
@@ -57,7 +57,7 @@ void TLSUtils::detachTLSContext() {
 /* TLSTask                                                              */
 /************************************************************************/
 
-TLSTask::TLSTask(const QString &_name, TaskFlags _flags, bool _deleteContext)
+TLSTask::TLSTask(const QString& _name, TaskFlags _flags, bool _deleteContext)
     : Task(_name, _flags), taskContext(nullptr), deleteContext(_deleteContext) {
 }
 

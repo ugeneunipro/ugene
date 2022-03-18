@@ -67,14 +67,14 @@ void SpadesSupport::checkIn() {
     QStringList genomeReadsFormats;
     genomeReadsFormats << BaseDocumentFormats::FASTA;
     genomeReadsFormats << BaseDocumentFormats::FASTQ;
-    GenomeAssemblyAlgorithmEnv *spadesAlgorithmEnv = new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats);
+    GenomeAssemblyAlgorithmEnv* spadesAlgorithmEnv = new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats);
     AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(spadesAlgorithmEnv);
 
     LocalWorkflow::SpadesWorkerFactory::init();
 
-    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
     xmlTestFormat->registerTestFactories(SpadesTaskTest::createTestFactories());
 }
 
-}    // namespace U2
+}  // namespace U2

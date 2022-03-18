@@ -46,7 +46,7 @@ namespace U2 {
 /** Default (empty) implementation for optional DBI methods */
 class U2AbstractDbi : public U2Dbi {
 protected:
-    U2AbstractDbi(const U2DbiFactoryId &fid) {
+    U2AbstractDbi(const U2DbiFactoryId& fid) {
         state = U2DbiState_Void;
         factoryId = fid;
     }
@@ -56,7 +56,7 @@ protected:
     }
 
 public:
-    virtual bool flush(U2OpStatus &) {
+    virtual bool flush(U2OpStatus&) {
         return true;
     }
 
@@ -72,7 +72,7 @@ public:
         return factoryId;
     }
 
-    virtual const QSet<U2DbiFeature> &getFeatures() const {
+    virtual const QSet<U2DbiFeature>& getFeatures() const {
         return features;
     }
 
@@ -80,71 +80,73 @@ public:
         return initProperties;
     }
 
-    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus &) {
+    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) {
         return metaInfo;
     }
 
-    virtual U2SequenceDbi *getSequenceDbi() {
+    virtual U2SequenceDbi* getSequenceDbi() {
         return nullptr;
     }
 
-    virtual U2FeatureDbi *getFeatureDbi() {
+    virtual U2FeatureDbi* getFeatureDbi() {
         return nullptr;
     }
 
-    virtual U2MsaDbi *getMsaDbi() {
+    virtual U2MsaDbi* getMsaDbi() {
         return nullptr;
     }
 
-    virtual U2AssemblyDbi *getAssemblyDbi() {
+    virtual U2AssemblyDbi* getAssemblyDbi() {
         return nullptr;
     }
 
-    virtual U2AttributeDbi *getAttributeDbi() {
+    virtual U2AttributeDbi* getAttributeDbi() {
         return nullptr;
     }
 
-    virtual U2ObjectDbi *getObjectDbi() {
+    virtual U2ObjectDbi* getObjectDbi() {
         return nullptr;
     }
 
-    virtual U2ObjectRelationsDbi *getObjectRelationsDbi() {
+    virtual U2ObjectRelationsDbi* getObjectRelationsDbi() {
         return nullptr;
     }
 
-    virtual U2VariantDbi *getVariantDbi() {
+    virtual U2VariantDbi* getVariantDbi() {
         return nullptr;
     }
 
-    virtual U2ModDbi *getModDbi() {
+    virtual U2ModDbi* getModDbi() {
         return nullptr;
     }
 
-    virtual U2CrossDatabaseReferenceDbi *getCrossDatabaseReferenceDbi() {
+    virtual U2CrossDatabaseReferenceDbi* getCrossDatabaseReferenceDbi() {
         return nullptr;
     }
 
-    virtual UdrDbi *getUdrDbi() {
+    virtual UdrDbi* getUdrDbi() {
         return nullptr;
     }
 
-    virtual U2DataType getEntityTypeById(const U2DataId &) const {
+    virtual U2DataType getEntityTypeById(const U2DataId&) const {
         return U2Type::Unknown;
     }
 
-    virtual QString getProperty(const QString &, const QString &defaultValue, U2OpStatus &os) {
+    virtual QString getProperty(const QString&, const QString& defaultValue, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ReadProperties, this, os);
         return defaultValue;
     }
 
-    virtual void setProperty(const QString &, const QString &, U2OpStatus &os) {
+    virtual void setProperty(const QString&, const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteProperties, this, os);
     }
 
-    virtual void upgrade(U2OpStatus &os) {
+    virtual void upgrade(U2OpStatus& os) {
         std::sort(upgraders.begin(), upgraders.end());
-        foreach (const U2DbiUpgrader *upgrader, upgraders) {
-            if (upgrader->isAppliable(Version::parseVersion(getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "0.0.0", os)))) {
+        for (const U2DbiUpgrader* upgrader : qAsConst(upgraders)) {
+            Version dbVersion = Version::parseVersion(getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "0.0.0", os));
+            CHECK_OP(os, );
+            if (upgrader->isApplicable(dbVersion)) {
                 upgrader->upgrade(os);
                 CHECK_OP(os, );
             }
@@ -162,101 +164,101 @@ protected:
     QSet<U2DbiFeature> features;
     QHash<QString, QString> initProperties;
     QHash<QString, QString> metaInfo;
-    QList<U2DbiUpgrader *> upgraders;
+    QList<U2DbiUpgrader*> upgraders;
 };
 
 /** Default no-op implementation for write  methods of U2ObjectDbi */
 class U2SimpleObjectDbi : public U2ObjectDbi {
 protected:
-    U2SimpleObjectDbi(U2Dbi *rootDbi)
+    U2SimpleObjectDbi(U2Dbi* rootDbi)
         : U2ObjectDbi(rootDbi) {
     }
 
 public:
-    virtual void getObject(U2Object &, const U2DataId &, U2OpStatus &os) {
+    virtual void getObject(U2Object&, const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
     }
 
-    virtual U2DataId getObject(qint64 objectId, U2OpStatus &os) {
+    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) {
         Q_UNUSED(objectId)
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return U2DataId();
     }
 
-    virtual QHash<U2Object, QString> getObjectFolders(U2OpStatus &os) {
+    virtual QHash<U2Object, QString> getObjectFolders(U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return QHash<U2Object, QString>();
     }
 
-    virtual QStringList getObjectFolders(const U2DataId &, U2OpStatus &os) {
+    virtual QStringList getObjectFolders(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return QStringList();
     }
 
-    virtual bool removeObject(const U2DataId &, bool, U2OpStatus &os) {
+    virtual bool removeObject(const U2DataId&, bool, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return false;
     }
 
-    virtual bool removeObjects(const QList<U2DataId> &, bool, U2OpStatus &os) {
+    virtual bool removeObjects(const QList<U2DataId>&, bool, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return false;
     }
 
-    virtual void createFolder(const QString &, U2OpStatus &os) {
+    virtual void createFolder(const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual bool removeFolder(const QString &, U2OpStatus &os) {
+    virtual bool removeFolder(const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return false;
     }
 
-    virtual void renameFolder(const QString &, const QString &, U2OpStatus &os) {
+    virtual void renameFolder(const QString&, const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual QString getFolderPreviousPath(const QString &, U2OpStatus &os) {
+    virtual QString getFolderPreviousPath(const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return "";
     }
 
-    virtual void addObjectsToFolder(const QList<U2DataId> &, const QString &, U2OpStatus &os) {
+    virtual void addObjectsToFolder(const QList<U2DataId>&, const QString&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual void moveObjects(const QList<U2DataId> &, const QString &, const QString &, U2OpStatus &os, bool) {
+    virtual void moveObjects(const QList<U2DataId>&, const QString&, const QString&, U2OpStatus& os, bool) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
     }
 
-    virtual QStringList restoreObjects(const QList<U2DataId> &, U2OpStatus &os) {
+    virtual QStringList restoreObjects(const QList<U2DataId>&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ChangeFolders, getRootDbi(), os);
         return QStringList();
     }
 
-    virtual U2TrackModType getTrackModType(const U2DataId &, U2OpStatus &os) {
+    virtual U2TrackModType getTrackModType(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_ReadModifications, getRootDbi(), os);
         return NoTrack;
     }
 
-    virtual void setTrackModType(const U2DataId &, U2TrackModType, U2OpStatus &os) {
+    virtual void setTrackModType(const U2DataId&, U2TrackModType, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteModifications, getRootDbi(), os);
     }
 
-    virtual void undo(const U2DataId &, U2OpStatus &os) {
+    virtual void undo(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
     }
 
-    virtual void redo(const U2DataId &, U2OpStatus &os) {
+    virtual void redo(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
     }
 
-    virtual bool canUndo(const U2DataId & /*msaId*/, U2OpStatus &os) {
+    virtual bool canUndo(const U2DataId& /*msaId*/, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
         return false;
     }
 
-    virtual bool canRedo(const U2DataId & /*objId*/, U2OpStatus &os) {
+    virtual bool canRedo(const U2DataId& /*objId*/, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_UndoRedo, getRootDbi(), os);
         return false;
     }
@@ -265,40 +267,40 @@ public:
 /** Default no-op implementation for write  methods of U2AssemblyDbi */
 class U2SimpleAssemblyDbi : public U2AssemblyDbi {
 protected:
-    U2SimpleAssemblyDbi(U2Dbi *rootDbi)
+    U2SimpleAssemblyDbi(U2Dbi* rootDbi)
         : U2AssemblyDbi(rootDbi) {
     }
 
 public:
-    virtual void createAssemblyObject(U2Assembly &, const QString &, U2DbiIterator<U2AssemblyRead> *, U2AssemblyReadsImportInfo &, U2OpStatus &os) {
+    virtual void createAssemblyObject(U2Assembly&, const QString&, U2DbiIterator<U2AssemblyRead>*, U2AssemblyReadsImportInfo&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void finalizeAssemblyObject(U2Assembly & /*assembly*/, U2OpStatus &os) {
+    virtual void finalizeAssemblyObject(U2Assembly& /*assembly*/, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void removeAssemblyData(const U2DataId &, U2OpStatus &os) {
+    virtual void removeAssemblyData(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void updateAssemblyObject(U2Assembly &, U2OpStatus &os) {
+    virtual void updateAssemblyObject(U2Assembly&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void removeReads(const U2DataId &, const QList<U2DataId> &, U2OpStatus &os) {
+    virtual void removeReads(const U2DataId&, const QList<U2DataId>&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void addReads(const U2DataId &, U2DbiIterator<U2AssemblyRead> *, U2OpStatus &os) {
+    virtual void addReads(const U2DataId&, U2DbiIterator<U2AssemblyRead>*, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAssembly, getRootDbi(), os);
     }
 
-    virtual void pack(const U2DataId &, U2AssemblyPackStat &, U2OpStatus &os) {
+    virtual void pack(const U2DataId&, U2AssemblyPackStat&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_AssemblyReadsPacking, getRootDbi(), os);
     }
 
-    virtual void calculateCoverage(const U2DataId &, const U2Region &, U2AssemblyCoverageStat &, U2OpStatus &os) {
+    virtual void calculateCoverage(const U2DataId&, const U2Region&, U2AssemblyCoverageStat&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_AssemblyCoverageStat, getRootDbi(), os);
     }
 };
@@ -306,32 +308,32 @@ public:
 /** Default no-op implementation for write  methods of U2AttributeDbi */
 class U2SimpleAttributeDbi : public U2AttributeDbi {
 protected:
-    U2SimpleAttributeDbi(U2Dbi *rootDbi)
+    U2SimpleAttributeDbi(U2Dbi* rootDbi)
         : U2AttributeDbi(rootDbi) {
     }
 
 public:
-    virtual void removeAttributes(const QList<U2DataId> &, U2OpStatus &os) {
+    virtual void removeAttributes(const QList<U2DataId>&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void removeObjectAttributes(const U2DataId &, U2OpStatus &os) {
+    virtual void removeObjectAttributes(const U2DataId&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createIntegerAttribute(U2IntegerAttribute &, U2OpStatus &os) {
+    virtual void createIntegerAttribute(U2IntegerAttribute&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createRealAttribute(U2RealAttribute &, U2OpStatus &os) {
+    virtual void createRealAttribute(U2RealAttribute&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createStringAttribute(U2StringAttribute &, U2OpStatus &os) {
+    virtual void createStringAttribute(U2StringAttribute&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 
-    virtual void createByteArrayAttribute(U2ByteArrayAttribute &, U2OpStatus &os) {
+    virtual void createByteArrayAttribute(U2ByteArrayAttribute&, U2OpStatus& os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_WriteAttributes, getRootDbi(), os);
     }
 };

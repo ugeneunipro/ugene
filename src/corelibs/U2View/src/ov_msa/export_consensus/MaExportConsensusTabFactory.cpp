@@ -44,12 +44,12 @@ MsaExportConsensusTabFactory::MsaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *MsaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* MsaExportConsensusTabFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MSAEditor *ma = qobject_cast<MSAEditor *>(objView);
+    MSAEditor* ma = qobject_cast<MSAEditor*>(objView);
     SAFE_POINT(ma != nullptr,
                QString("Internal error: unable to cast object view to MsaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
@@ -65,28 +65,28 @@ McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget *McaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* McaExportConsensusTabFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MaEditor *ma = qobject_cast<MaEditor *>(objView);
+    MaEditor* ma = qobject_cast<MaEditor*>(objView);
     SAFE_POINT(ma != nullptr,
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    QWidget *widget = new QWidget(objView->getWidget());
-    QVBoxLayout *layout = new QVBoxLayout();
+    QWidget* widget = new QWidget(objView->getWidget());
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
-    MaConsensusModeWidget *consensusModeWgt = new MaConsensusModeWidget(widget);
+    MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget(widget);
     consensusModeWgt->init(ma->getMaObject(), ma->getUI()->getConsensusArea());
-    ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
+    ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
 
-    MaExportConsensusWidget *exportWidget = new MaExportConsensusWidget(ma, widget);
+    MaExportConsensusWidget* exportWidget = new MaExportConsensusWidget(ma, widget);
     exportWidget->layout()->setContentsMargins(9, 9, 9, 9);
-    ShowHideSubgroupWidget *exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"), exportWidget, true);
+    ShowHideSubgroupWidget* exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"), exportWidget, true);
 
     layout->addWidget(consensusMode);
     layout->addWidget(exportConsensus);
@@ -97,7 +97,7 @@ OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
 }
 
-const QString &McaExportConsensusTabFactory::getGroupId() {
+const QString& McaExportConsensusTabFactory::getGroupId() {
     return GROUP_ID;
 }
 

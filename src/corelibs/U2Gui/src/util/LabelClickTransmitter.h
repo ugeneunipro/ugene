@@ -31,13 +31,13 @@ namespace U2 {
 
 class U2GUI_EXPORT LabelClickTransmitter : public QObject {
 public:
-    LabelClickTransmitter(QLabel *label, QAbstractButton *button);
+    LabelClickTransmitter(QLabel* label, QAbstractButton* button);
 
 private:
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
-    QLabel *label;
-    QAbstractButton *button;
+    QLabel* label;
+    QAbstractButton* button;
 };
 
 }  // namespace U2

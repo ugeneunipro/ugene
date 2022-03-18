@@ -41,18 +41,18 @@ namespace U2 {
 /* WMQDTask                                                             */
 /************************************************************************/
 
-WMQDTask::WMQDTask(const QString &url, const WeightMatrixSearchCfg &cfg, const DNASequence &sqnc, const QString &resName, const QVector<U2Region> &location)
+WMQDTask::WMQDTask(const QString& url, const WeightMatrixSearchCfg& cfg, const DNASequence& sqnc, const QString& resName, const QVector<U2Region>& location)
     : Task(tr("Weight matrix query"), TaskFlag_NoRun), settings(cfg), dnaSeq(sqnc),
       resultName(resName), location(location) {
     readTask = new PWMatrixReadTask(url);
     addSubTask(readTask);
 }
 
-QList<Task *> WMQDTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subtasks;
+QList<Task*> WMQDTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subtasks;
     if (subTask == readTask) {
         PWMatrix model = readTask->getResult();
-        foreach (const U2Region &r, location) {
+        foreach (const U2Region& r, location) {
             QByteArray seqBlock = dnaSeq.seq.mid(r.startPos, r.length);
             subtasks << new WeightMatrixSingleSearchTask(model,
                                                          seqBlock,
@@ -60,7 +60,7 @@ QList<Task *> WMQDTask::onSubTaskFinished(Task *subTask) {
                                                          r.startPos);
         }
     } else {
-        WeightMatrixSingleSearchTask *t = qobject_cast<WeightMatrixSingleSearchTask *>(subTask);
+        WeightMatrixSingleSearchTask* t = qobject_cast<WeightMatrixSingleSearchTask*>(subTask);
         assert(t);
         res << t->takeResults();
     }
@@ -80,7 +80,7 @@ QList<WeightMatrixSearchResult> WMQDTask::takeResults() {
 static const QString SCORE_ATTR = "min-score";
 static const QString PROFILE_URL_ATTR = "matrix";
 
-QDWMActor::QDWMActor(QDActorPrototype const *proto)
+QDWMActor::QDWMActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units["wm"] = new QDSchemeUnit(this);
 }
@@ -97,7 +97,7 @@ int QDWMActor::getMaxResultLen() const {
 }
 
 QString QDWMActor::getText() const {
-    QMap<QString, Attribute *> params = cfg->getParameters();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     QString strandName;
     switch (strand) {
@@ -129,25 +129,25 @@ QString QDWMActor::getText() const {
     return doc;
 }
 
-Task *QDWMActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    Task *t = nullptr;
-    const DNASequence &dnaSeq = scheme->getSequence();
-    QMap<QString, Attribute *> params = cfg->getParameters();
+Task* QDWMActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    Task* t = nullptr;
+    const DNASequence& dnaSeq = scheme->getSequence();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     WeightMatrixSearchCfg config;
     config.minPSUM = params.value(SCORE_ATTR)->getAttributeValueWithoutScript<int>();
-    const QString &modelUrl = params.value(PROFILE_URL_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& modelUrl = params.value(PROFILE_URL_ATTR)->getAttributeValueWithoutScript<QString>();
 
     if (dnaSeq.alphabet->getType() == DNAAlphabet_NUCL) {
         config.complOnly = strand == QDStrand_ComplementOnly;
         if (strand == QDStrand_Both || strand == QDStrand_ComplementOnly) {
-            DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
+            DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
             if (compTT != nullptr) {
                 config.complTT = compTT;
             }
         }
         t = new WMQDTask(modelUrl, config, dnaSeq, "", location);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished(Task *)));
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
     } else {
         QString err = tr("%1: sequence should be nucleic.").arg(getParameters()->getLabel());
         return new FailTask(err);
@@ -155,11 +155,11 @@ Task *QDWMActor::getAlgorithmTask(const QVector<U2Region> &location) {
     return t;
 }
 
-void QDWMActor::sl_onAlgorithmTaskFinished(Task *t) {
-    WMQDTask *wmqdt = qobject_cast<WMQDTask *>(t);
+void QDWMActor::sl_onAlgorithmTaskFinished(Task* t) {
+    WMQDTask* wmqdt = qobject_cast<WMQDTask*>(t);
     assert(wmqdt);
     QList<WeightMatrixSearchResult> res = wmqdt->takeResults();
-    foreach (const WeightMatrixSearchResult &r, res) {
+    foreach (const WeightMatrixSearchResult& r, res) {
         QDResultUnit ru(new QDResultUnitData);
         ru->strand = r.strand;
         QMapIterator<QString, QString> it(r.qual);
@@ -188,7 +188,7 @@ QDWMActorPrototype::QDWMActorPrototype() {
     attributes << new Attribute(scd, BaseTypes::NUM_TYPE(), false, 85);
     attributes << new Attribute(mx, BaseTypes::STRING_TYPE(), true);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = 1;

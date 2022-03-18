@@ -41,7 +41,7 @@ namespace U2 {
 
 static const QString GROUP_NAME = "Query results";
 
-void GTest_QDSchedulerTest::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_QDSchedulerTest::init(XMLTestFormat*, const QDomElement& el) {
     sched = nullptr;
     expectedResult = nullptr;
     seqObj = nullptr;
@@ -78,36 +78,36 @@ void GTest_QDSchedulerTest::prepare() {
     if (hasError() || isCanceled()) {
         return;
     }
-    Document *seqDoc = getContext<Document>(this, seqName);
+    Document* seqDoc = getContext<Document>(this, seqName);
     if (seqDoc == nullptr) {
         stateInfo.setError("can't find sequence");
         return;
     }
-    seqObj = qobject_cast<U2SequenceObject *>(seqDoc->findGObjectByType(GObjectTypes::SEQUENCE).first());
+    seqObj = qobject_cast<U2SequenceObject*>(seqDoc->findGObjectByType(GObjectTypes::SEQUENCE).first());
     if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence");
         return;
     }
 
-    Document *expDoc = getContext<Document>(this, expectedResName);
+    Document* expDoc = getContext<Document>(this, expectedResName);
     if (expDoc == nullptr) {
         stateInfo.setError("can't find result");
         return;
     }
-    expectedResult = qobject_cast<AnnotationTableObject *>(expDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).first());
+    expectedResult = qobject_cast<AnnotationTableObject*>(expDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).first());
     if (expectedResult == nullptr) {
         stateInfo.setError("can't find result");
         return;
     }
 
-    QDDocument *doc = new QDDocument;
+    QDDocument* doc = new QDDocument;
     QFile f(schemaUri);
     if (!f.open(QIODevice::ReadOnly)) {
         stateInfo.setError("can't read result");
         return;
     }
     QByteArray data = f.readAll();
-    const QString &content = QString::fromUtf8(data);
+    const QString& content = QString::fromUtf8(data);
     f.close();
     bool res = doc->setContent(content);
     if (!res) {
@@ -115,7 +115,7 @@ void GTest_QDSchedulerTest::prepare() {
         return;
     }
 
-    bool ok = QDSceneSerializer::doc2scheme((QList<QDDocument *>() << doc), schema);
+    bool ok = QDSceneSerializer::doc2scheme((QList<QDDocument*>() << doc), schema);
     delete doc;
     if (!ok) {
         stateInfo.setError(tr("can't read %1").arg(expectedResName));
@@ -134,19 +134,19 @@ void GTest_QDSchedulerTest::prepare() {
     addSubTask(sched);
 }
 
-QList<Task *> GTest_QDSchedulerTest::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subs;
+QList<Task*> GTest_QDSchedulerTest::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subs;
     if (subTask == sched) {
-        AnnotationGroup *resG = result->getRootGroup()->getSubgroup(GROUP_NAME, false);
-        AnnotationGroup *expResG = expectedResult->getRootGroup()->getSubgroup(GROUP_NAME, false);
+        AnnotationGroup* resG = result->getRootGroup()->getSubgroup(GROUP_NAME, false);
+        AnnotationGroup* expResG = expectedResult->getRootGroup()->getSubgroup(GROUP_NAME, false);
         CHECK_EXT(nullptr != resG, setError("Group not found!" + GROUP_NAME), subs);
         CHECK_EXT(nullptr != expResG, setError("Exp group not found!" + GROUP_NAME), subs);
 
-        const QList<AnnotationGroup *> res = resG->getSubgroups();
-        const QList<AnnotationGroup *> expRes = expResG->getSubgroups();
+        const QList<AnnotationGroup*> res = resG->getSubgroups();
+        const QList<AnnotationGroup*> expRes = expResG->getSubgroups();
         subs.append(new CompareAnnotationGroupsTask(res, expRes));
     } else {
-        CompareAnnotationGroupsTask *compareTask = qobject_cast<CompareAnnotationGroupsTask *>(subTask);
+        CompareAnnotationGroupsTask* compareTask = qobject_cast<CompareAnnotationGroupsTask*>(subTask);
         assert(compareTask);
         if (!compareTask->areEqual()) {
             setError(tr("Results do not match."));
@@ -160,17 +160,17 @@ GTest_QDSchedulerTest::~GTest_QDSchedulerTest() {
     delete result;
 }
 
-QList<XMLTestFactory *> QDTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> QDTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_QDSchedulerTest::createFactory());
     return res;
 }
 
-static bool containsRegion(AnnotationGroup *g, const U2Region &subj) {
-    QList<Annotation *> annotations = g->getAnnotations();
-    for (Annotation *a : qAsConst(annotations)) {
-        const QVector<U2Region> &regions = a->getRegions();
-        for (const U2Region &r : qAsConst(regions)) {
+static bool containsRegion(AnnotationGroup* g, const U2Region& subj) {
+    QList<Annotation*> annotations = g->getAnnotations();
+    for (Annotation* a : qAsConst(annotations)) {
+        const QVector<U2Region>& regions = a->getRegions();
+        for (const U2Region& r : qAsConst(regions)) {
             if (r == subj) {
                 return true;
             }
@@ -179,10 +179,10 @@ static bool containsRegion(AnnotationGroup *g, const U2Region &subj) {
     return false;
 }
 
-static bool compareGroups(AnnotationGroup *g1, AnnotationGroup *g2) {
-    foreach (Annotation *a1, g1->getAnnotations()) {
-        const QVector<U2Region> &regions = a1->getRegions();
-        for (const U2Region &r1 : qAsConst(regions)) {
+static bool compareGroups(AnnotationGroup* g1, AnnotationGroup* g2) {
+    foreach (Annotation* a1, g1->getAnnotations()) {
+        const QVector<U2Region>& regions = a1->getRegions();
+        for (const U2Region& r1 : qAsConst(regions)) {
             if (!containsRegion(g2, r1)) {
                 return false;
             }
@@ -191,8 +191,8 @@ static bool compareGroups(AnnotationGroup *g1, AnnotationGroup *g2) {
     return true;
 }
 
-static bool containsGroup(const QList<AnnotationGroup *> &grps, AnnotationGroup *subj) {
-    foreach (AnnotationGroup *grp, grps) {
+static bool containsGroup(const QList<AnnotationGroup*>& grps, AnnotationGroup* subj) {
+    foreach (AnnotationGroup* grp, grps) {
         if (compareGroups(grp, subj)) {
             return true;
         }
@@ -201,7 +201,7 @@ static bool containsGroup(const QList<AnnotationGroup *> &grps, AnnotationGroup 
 }
 
 void CompareAnnotationGroupsTask::run() {
-    foreach (AnnotationGroup *g1, grps1) {
+    foreach (AnnotationGroup* g1, grps1) {
         if (!containsGroup(grps2, g1)) {
             equal = false;
             return;

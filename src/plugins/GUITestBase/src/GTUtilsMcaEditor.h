@@ -43,71 +43,71 @@ class MultipleAlignmentRowData;
 class GTUtilsMcaEditor {
 public:
     /** Returns active MCA editor window or fails. */
-    static QWidget *getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
+    static QWidget* getActiveMcaEditorWindow(HI::GUITestOpStatus& os);
 
     /** Checks if editor window is active or fails. */
-    static void checkMcaEditorWindowIsActive(HI::GUITestOpStatus &os);
+    static void checkMcaEditorWindowIsActive(HI::GUITestOpStatus& os);
 
-    static McaEditor *getEditor(HI::GUITestOpStatus &os);
-    static McaEditorWgt *getEditorUi(HI::GUITestOpStatus &os);
-    static QLabel *getReferenceLabel(HI::GUITestOpStatus &os);
-    static McaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
-    static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
-    static McaEditorConsensusArea *getConsensusArea(HI::GUITestOpStatus &os);
-    static McaEditorReferenceArea *getReferenceArea(HI::GUITestOpStatus &os);
-    static QScrollBar *getHorizontalScrollBar(HI::GUITestOpStatus &os);
-    static QScrollBar *getVerticalScrollBar(HI::GUITestOpStatus &os);
+    static McaEditor* getEditor(HI::GUITestOpStatus& os);
+    static McaEditorWgt* getEditorUi(HI::GUITestOpStatus& os);
+    static QLabel* getReferenceLabel(HI::GUITestOpStatus& os);
+    static McaEditorNameList* getNameListArea(HI::GUITestOpStatus& os);
+    static McaEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus& os);
+    static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus& os);
+    static McaEditorReferenceArea* getReferenceArea(HI::GUITestOpStatus& os);
+    static QScrollBar* getHorizontalScrollBar(HI::GUITestOpStatus& os);
+    static QScrollBar* getVerticalScrollBar(HI::GUITestOpStatus& os);
 
-    static MultipleAlignmentRowData *getMcaRow(HI::GUITestOpStatus &os, int rowNum);
+    static MultipleAlignmentRowData* getMcaRow(HI::GUITestOpStatus& os, int rowNum);
 
-    static QAction *getOffsetAction(HI::GUITestOpStatus &os);
+    static QAction* getOffsetAction(HI::GUITestOpStatus& os);
 
-    static QString getReferenceLabelText(HI::GUITestOpStatus &os);
+    static QString getReferenceLabelText(HI::GUITestOpStatus& os);
 
-    static int getReadsCount(HI::GUITestOpStatus &os);
-    static const QStringList getReadsNames(HI::GUITestOpStatus &os);
-    static const QStringList getDirectReadsNames(HI::GUITestOpStatus &os);
-    static const QStringList getReverseComplementReadsNames(HI::GUITestOpStatus &os);
+    static int getReadsCount(HI::GUITestOpStatus& os);
+    static const QStringList getReadsNames(HI::GUITestOpStatus& os);
+    static const QStringList getDirectReadsNames(HI::GUITestOpStatus& os);
+    static const QStringList getReverseComplementReadsNames(HI::GUITestOpStatus& os);
 
-    static QRect getReadNameRect(HI::GUITestOpStatus &os, const QString &readName);
-    static QRect getReadNameRect(HI::GUITestOpStatus &os, int rowNumber);
+    static QRect getReadNameRect(HI::GUITestOpStatus& os, const QString& readName);
+    static QRect getReadNameRect(HI::GUITestOpStatus& os, int rowNumber);
 
-    static void scrollToRead(HI::GUITestOpStatus &os, const QString &readName);
-    static void scrollToRead(HI::GUITestOpStatus &os, int readNumber);
-    static void moveToReadName(HI::GUITestOpStatus &os, const QString &readName);
-    static void moveToReadName(HI::GUITestOpStatus &os, int readNumber);
+    static void scrollToRead(HI::GUITestOpStatus& os, const QString& readName);
+    static void scrollToRead(HI::GUITestOpStatus& os, int readNumber);
+    static void moveToReadName(HI::GUITestOpStatus& os, const QString& readName);
+    static void moveToReadName(HI::GUITestOpStatus& os, int readNumber);
 
-    static void clickReadName(HI::GUITestOpStatus &os,
-                              const QString &sequenceName,
+    static void clickReadName(HI::GUITestOpStatus& os,
+                              const QString& sequenceName,
                               Qt::MouseButton mouseButton = Qt::LeftButton,
-                              const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
+                              const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
 
-    static void clickReadName(HI::GUITestOpStatus &os,
+    static void clickReadName(HI::GUITestOpStatus& os,
                               int readNumber,
                               Qt::MouseButton mouseButton = Qt::LeftButton,
-                              const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
+                              const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
 
     /** Double clicks read with the given index in the name list. */
-    static void doubleClickReadName(HI::GUITestOpStatus &os, int readIndex);
+    static void doubleClickReadName(HI::GUITestOpStatus& os, int readIndex);
 
-    static void removeRead(HI::GUITestOpStatus &os, const QString &readName);
+    static void removeRead(HI::GUITestOpStatus& os, const QString& readName);
 
-    static void undo(HI::GUITestOpStatus &os);
-    static void redo(HI::GUITestOpStatus &os);
-    static void zoomIn(HI::GUITestOpStatus &os);
-    static void zoomOut(HI::GUITestOpStatus &os);
-    static void resetZoom(HI::GUITestOpStatus &os);
+    static void undo(HI::GUITestOpStatus& os);
+    static void redo(HI::GUITestOpStatus& os);
+    static void zoomIn(HI::GUITestOpStatus& os);
+    static void zoomOut(HI::GUITestOpStatus& os);
+    static void resetZoom(HI::GUITestOpStatus& os);
 
-    static bool isUndoEnabled(HI::GUITestOpStatus &os);
-    static bool isRedoEnabled(HI::GUITestOpStatus &os);
+    static bool isUndoEnabled(HI::GUITestOpStatus& os);
+    static bool isRedoEnabled(HI::GUITestOpStatus& os);
 
-    static void toggleShowChromatogramsMode(HI::GUITestOpStatus &os);
+    static void toggleShowChromatogramsMode(HI::GUITestOpStatus& os);
 
     /** Selects reads in the name list by name using Ctrl + Mouse click. Fails if any of the rows is not found. */
-    static void selectReadsByName(HI::GUITestOpStatus &os, const QStringList &rowNames);
+    static void selectReadsByName(HI::GUITestOpStatus& os, const QStringList& rowNames);
 
 private:
-    static int readName2readNumber(HI::GUITestOpStatus &os, const QString &readName);
+    static int readName2readNumber(HI::GUITestOpStatus& os, const QString& readName);
 };
 
 }  // namespace U2

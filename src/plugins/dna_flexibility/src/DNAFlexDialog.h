@@ -37,7 +37,7 @@ class DNAFlexDialog : public QDialog, public Ui_DNAFlexDialog {
     Q_OBJECT
 
 public:
-    DNAFlexDialog(ADVSequenceObjectContext *ctx);
+    DNAFlexDialog(ADVSequenceObjectContext* ctx);
     virtual void accept();
 
 private slots:
@@ -49,8 +49,8 @@ private slots:
     void sl_updateSizes(int);
 
 private:
-    ADVSequenceObjectContext *ctx;
-    CreateAnnotationWidgetController *annotController;
+    ADVSequenceObjectContext* ctx;
+    CreateAnnotationWidgetController* annotController;
     HighFlexSettings settings;
 
     void updateHighFlexValues();

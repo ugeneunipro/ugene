@@ -35,7 +35,7 @@ class U2SequenceDbi;
 
 class Utils {
 public:
-    static void addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static void addRow(U2Dbi* dbi, const U2DataId& msaId, const QByteArray& name, const QByteArray& seq, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 };
 
 class MsaDbiUtilsTestUtils {
@@ -43,27 +43,27 @@ public:
     static void init();
     static void shutdown();
 
-    static U2MsaDbi *getMsaDbi();
-    static U2SequenceDbi *getSequenceDbi();
+    static U2MsaDbi* getMsaDbi();
+    static U2SequenceDbi* getSequenceDbi();
 
     static U2EntityRef initTestAlignment(const qint64 rowConut);
-    static U2EntityRef initTestAlignment(const QStringList &rowsData);
-    static U2EntityRef initTestAlignment(QList<U2MsaRow> &rows);
+    static U2EntityRef initTestAlignment(const QStringList& rowsData);
+    static U2EntityRef initTestAlignment(QList<U2MsaRow>& rows);
     static QStringList getRowNames(U2EntityRef msaRef);
 
-    static U2EntityRef removeRegionTestAlignment(U2OpStatus &os);
+    static U2EntityRef removeRegionTestAlignment(U2OpStatus& os);
 
 public:
     static const QString alignmentName;
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &MSA_DB_URL;
-    static U2MsaDbi *msaDbi;
-    static U2SequenceDbi *sequenceDbi;
+    static const QString& MSA_DB_URL;
+    static U2MsaDbi* msaDbi;
+    static U2SequenceDbi* sequenceDbi;
 
 private:
-    static U2MsaRow addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static U2MsaRow addRow(const QByteArray& name, const QByteArray& seq, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 };
 
 /**

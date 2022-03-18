@@ -38,26 +38,26 @@ namespace U2 {
 /// MaContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-static bool patternFitsMaAlphabet(const MultipleAlignmentObject *maObject, const QString &pattern) {
+static bool patternFitsMaAlphabet(const MultipleAlignmentObject* maObject, const QString& pattern) {
     SAFE_POINT(nullptr != maObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const DNAAlphabet *alphabet = maObject->getAlphabet();
+    const DNAAlphabet* alphabet = maObject->getAlphabet();
     SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("MSA alphabet"), false);
 
     const QByteArray searchStr = pattern.toUpper().toLatin1();
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-static bool maContainsPattern(const MultipleAlignmentObject *maObject, const QString &pattern) {
+static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QString& pattern) {
     SAFE_POINT(nullptr != maObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MultipleAlignmentData *mData = maObject->getMultipleAlignment().data();
+    const MultipleAlignmentData* mData = maObject->getMultipleAlignment().data();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = mData->getNumRows(); i < n; ++i) {
-        const MultipleAlignmentRow &row = mData->getRow(i);
+    for (int i = 0, n = mData->getRowCount(); i < n; ++i) {
+        const MultipleAlignmentRow& row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);
             int altenateLength = 0;
@@ -69,10 +69,10 @@ static bool maContainsPattern(const MultipleAlignmentObject *maObject, const QSt
     return false;
 }
 
-static bool isFilteredByMAContent(const MultipleAlignmentObject *maObj, const ProjectTreeControllerModeSettings &settings) {
+static bool isFilteredByMAContent(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
     CHECK(nullptr != maObj, false);
 
-    foreach (const QString &pattern, settings.tokensToShow) {
+    foreach (const QString& pattern, settings.tokensToShow) {
         if (!patternFitsMaAlphabet(maObj, pattern)) {
             continue;
         }
@@ -83,7 +83,7 @@ static bool isFilteredByMAContent(const MultipleAlignmentObject *maObj, const Pr
     return false;
 }
 
-static bool seqContainsPattern(const U2SequenceObject *seqObject, const QString &pattern) {
+static bool seqContainsPattern(const U2SequenceObject* seqObject, const QString& pattern) {
     SAFE_POINT(seqObject != nullptr, L10N::nullPointerError("Sequence object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -95,38 +95,38 @@ static bool seqContainsPattern(const U2SequenceObject *seqObject, const QString 
     return seqData.indexOf(searchStr) >= 0;
 }
 
-MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MSA_CONTENT_FILTER_NAME, docs) {
     filteredObjCountPerIteration = 1;
 }
 
-bool MsaContentFilterTask::filterAcceptsObject(GObject *obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleSequenceAlignmentObject *>(obj), settings);
+bool MsaContentFilterTask::filterAcceptsObject(GObject* obj) {
+    return isFilteredByMAContent(qobject_cast<MultipleSequenceAlignmentObject*>(obj), settings);
 }
 
-McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+McaReadContentFilterTask::McaReadContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_READ_CONTENT_FILTER_NAME, docs) {
     filteredObjCountPerIteration = 1;
 }
 
-bool McaReadContentFilterTask::filterAcceptsObject(GObject *obj) {
-    return isFilteredByMAContent(qobject_cast<MultipleChromatogramAlignmentObject *>(obj), settings);
+bool McaReadContentFilterTask::filterAcceptsObject(GObject* obj) {
+    return isFilteredByMAContent(qobject_cast<MultipleChromatogramAlignmentObject*>(obj), settings);
 }
 
-McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_REFERENCE_CONTENT_FILTER_NAME, docs) {
     filteredObjCountPerIteration = 1;
 }
 
-bool McaReferenceContentFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleChromatogramAlignmentObject *mcaObj = qobject_cast<MultipleChromatogramAlignmentObject *>(obj);
+bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     CHECK(nullptr != mcaObj, false);
 
-    foreach (const QString &pattern, settings.tokensToShow) {
+    foreach (const QString& pattern, settings.tokensToShow) {
         if (!patternFitsMaAlphabet(mcaObj, pattern)) {
             continue;
         }
-        U2SequenceObject *refObj = mcaObj->getReferenceObj();
+        U2SequenceObject* refObj = mcaObj->getReferenceObj();
         if (refObj != nullptr && seqContainsPattern(refObj, pattern)) {
             return true;
         }
@@ -138,18 +138,18 @@ bool McaReferenceContentFilterTask::filterAcceptsObject(GObject *obj) {
 /// MaContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *MsaContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                      const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* MsaContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                      const QList<QPointer<Document>>& docs) const {
     return new MsaContentFilterTask(settings, docs);
 }
 
-AbstractProjectFilterTask *McaReadContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                          const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* McaReadContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                          const QList<QPointer<Document>>& docs) const {
     return new McaReadContentFilterTask(settings, docs);
 }
 
-AbstractProjectFilterTask *McaReferenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                               const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* McaReferenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                               const QList<QPointer<Document>>& docs) const {
     return new McaReferenceContentFilterTask(settings, docs);
 }
 

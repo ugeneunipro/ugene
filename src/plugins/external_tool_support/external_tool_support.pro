@@ -37,7 +37,7 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/blast/RPSBlastTask.h \
            src/blast/TBlastNTask.h \
            src/blast/TBlastXTask.h \
-           src/blast/align_worker_subtasks/BlastReadsSubtask.h \
+           src/blast/align_worker_subtasks/BlastAlignToReferenceTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubtask.h \
            src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.h \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
@@ -110,6 +110,7 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/hmmer/PhmmerSearchSettings.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
+           src/iqtree/CmdlineParamsParser.h \
            src/iqtree/IQTreeSupport.h \
            src/iqtree/IQTreeTask.h \
            src/iqtree/IQTreeWidget.h \
@@ -270,7 +271,7 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/blast/RPSBlastTask.cpp \
            src/blast/TBlastNTask.cpp \
            src/blast/TBlastXTask.cpp \
-           src/blast/align_worker_subtasks/BlastReadsSubtask.cpp \
+           src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubtask.cpp \
            src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
@@ -342,6 +343,7 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/hmmer/PhmmerSearchSettings.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
+           src/iqtree/CmdlineParamsParser.cpp \
            src/iqtree/IQTreeSupport.cpp \
            src/iqtree/IQTreeTask.cpp \
            src/iqtree/IQTreeWidget.cpp \

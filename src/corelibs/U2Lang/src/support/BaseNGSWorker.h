@@ -40,15 +40,15 @@ public:
     QString outName;
     QString inputUrl;
     QVariantMap customParameters;
-    QList<ExternalToolListener *> listeners;
+    QList<ExternalToolListener*> listeners;
 };
 
 class U2LANG_EXPORT BaseNGSWorker : public BaseWorker {
     Q_OBJECT
 public:
-    BaseNGSWorker(Actor *a);
+    BaseNGSWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
     static const QString INPUT_PORT;
@@ -63,19 +63,19 @@ protected:
         return QVariantMap();
     }
     virtual QString getDefaultFileName() const = 0;
-    virtual Task *getTask(const BaseNGSSetting &settings) const = 0;
+    virtual Task* getTask(const BaseNGSSetting& settings) const = 0;
 
     QString takeUrl();
-    QString getTargetName(const QString &fileUrl, const QString &outDir);
-    void sendResult(const QString &url);
+    QString getTargetName(const QString& fileUrl, const QString& outDir);
+    void sendResult(const QString& url);
 
 protected:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QStringList outUrls;
 
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 };  // BaseNGSWorker
 
@@ -83,8 +83,8 @@ class U2LANG_EXPORT BaseNGSParser : public ExternalToolLogParser {
 public:
     BaseNGSParser();
 
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastErrLine;
@@ -93,7 +93,7 @@ private:
 class U2LANG_EXPORT BaseNGSTask : public Task {
     Q_OBJECT
 public:
-    BaseNGSTask(const BaseNGSSetting &settings);
+    BaseNGSTask(const BaseNGSSetting& settings);
 
     void prepare();
     void run();
@@ -109,8 +109,8 @@ protected:
     /**
      * Don't delete customParser, it will be deleted automatically.
      */
-    virtual ExternalToolRunTask *getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser = nullptr);
-    virtual QStringList getParameters(U2OpStatus &os) = 0;
+    virtual ExternalToolRunTask* getExternalToolTask(const QString& toolId, ExternalToolLogParser* customParser = nullptr);
+    virtual QStringList getParameters(U2OpStatus& os) = 0;
 
 protected:
     BaseNGSSetting settings;

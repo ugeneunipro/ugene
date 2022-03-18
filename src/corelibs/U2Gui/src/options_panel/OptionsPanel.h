@@ -41,7 +41,7 @@ class U2GUI_EXPORT OptionsPanel : public QObject {
     Q_OBJECT
 public:
     /** Creates a new OptionsPanelWidget */
-    OptionsPanel(GObjectView *);
+    OptionsPanel(GObjectView*);
 
     /**
      * Normally, the OptionsPanelWidget is added to another widget and should be deleted
@@ -51,13 +51,13 @@ public:
     ~OptionsPanel();
 
     /** Add a new options panel group instance and corresponding widgets*/
-    void addGroup(OPWidgetFactory *factory);
+    void addGroup(OPWidgetFactory* factory);
 
     /** Returns the main Options Panel widget */
-    OptionsPanelWidget *getMainWidget();
+    OptionsPanelWidget* getMainWidget();
 
     /** Opens a group with the specified group id. */
-    void openGroupById(const QString &groupId, const QVariantMap &options = QVariantMap());
+    void openGroupById(const QString& groupId, const QVariantMap& options = QVariantMap());
 
     /** Returns id for currently opened tab. **/
     QString getActiveGroupId() {
@@ -70,22 +70,22 @@ public slots:
     void sl_groupHeaderPressed(QString groupId);
 
 private:
-    GObjectView *objView;
+    GObjectView* objView;
 
     /** Shows the options widget */
-    void openOptionsGroup(const QString &groupId, const QVariantMap &options = QVariantMap());
+    void openOptionsGroup(const QString& groupId, const QVariantMap& options = QVariantMap());
 
     /** Hides the options widget  */
-    void closeOptionsGroup(const QString &groupId);
+    void closeOptionsGroup(const QString& groupId);
 
     /** Returns the Options Panel widget factory by the specified groupId, or NULL. */
-    OPWidgetFactory *findFactoryByGroupId(const QString &groupId);
+    OPWidgetFactory* findFactoryByGroupId(const QString& groupId);
 
     /** All added groups */
-    QList<OPWidgetFactory *> opWidgetFactories;
+    QList<OPWidgetFactory*> opWidgetFactories;
 
     /** The widget that displays options groups */
-    OptionsPanelWidget *widget;
+    OptionsPanelWidget* widget;
 
     /** IDs of the opened group */
     QString activeGroupId;

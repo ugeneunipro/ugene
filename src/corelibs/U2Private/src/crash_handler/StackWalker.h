@@ -108,7 +108,7 @@ public:
     StackWalker(DWORD dwProcessId, HANDLE hProcess);
     virtual ~StackWalker();
 
-    typedef bool(__stdcall *PReadProcessMemoryRoutine)(
+    typedef bool(__stdcall* PReadProcessMemoryRoutine)(
         HANDLE hProcess,
         DWORD64 qwBaseAddress,
         PVOID lpBuffer,
@@ -121,7 +121,7 @@ public:
 
     bool ShowCallstack(
         HANDLE hThread = GetCurrentThread(),
-        const CONTEXT *context = nullptr,
+        const CONTEXT* context = nullptr,
         PReadProcessMemoryRoutine readMemoryFunction = nullptr,
         LPVOID pUserData = nullptr  // optional to identify some data in the 'readMemoryFunction'-callback
     );
@@ -157,11 +157,11 @@ protected:
 
     virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
     virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);
-    virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry);
+    virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry);
     virtual void OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr);
     virtual void OnOutput(LPCSTR szText);
 
-    StackWalkerInternal *m_sw;
+    StackWalkerInternal* m_sw;
     HANDLE m_hProcess;
     DWORD m_dwProcessId;
     BOOL m_modulesLoaded;

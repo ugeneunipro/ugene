@@ -36,7 +36,7 @@ namespace U2 {
 
 ////////////////////////////////////////
 // TCoffeeSupportRunDialog
-TCoffeeSupportRunDialog::TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
+TCoffeeSupportRunDialog::TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930847");
@@ -62,7 +62,7 @@ void TCoffeeSupportRunDialog::accept() {
 }
 ////////////////////////////////////////
 // TCoffeeWithExtFileSpecifySupportRunDialog
-TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
+TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent),
       settings(_settings),
       saveController(nullptr) {

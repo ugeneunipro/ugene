@@ -53,14 +53,14 @@ static const QString OUT_URL_ATTR_ID("url-out");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-GffreadWorker::GffreadWorker(Actor *a)
+GffreadWorker::GffreadWorker(Actor* a)
     : BaseWorker(a) {
 }
 
 void GffreadWorker::init() {
 }
 
-Task *GffreadWorker::tick() {
+Task* GffreadWorker::tick() {
     if (hasInput()) {
         U2OpStatusImpl os;
         GffreadSettings s = takeSettings(os);
@@ -74,7 +74,7 @@ Task *GffreadWorker::tick() {
 }
 
 void GffreadWorker::sl_taskFinished() {
-    GffreadSupportTask *t = dynamic_cast<GffreadSupportTask *>(sender());
+    GffreadSupportTask* t = dynamic_cast<GffreadSupportTask*>(sender());
     CHECK(t->isFinished() && !t->hasError(), );
 
     if (t->isCanceled()) {
@@ -92,7 +92,7 @@ bool GffreadWorker::hasInput() const {
     return ports[IN_PORT_ID]->hasMessage();
 }
 
-static void createUrlDir(const QString &url) {
+static void createUrlDir(const QString& url) {
     QFileInfo info(url);
     QDir dir = info.absoluteDir();
     if (!dir.exists()) {
@@ -113,7 +113,7 @@ QString GffreadWorker::getOutUrl() {
     return url;
 }
 
-QVariantMap GffreadWorker::takeData(U2OpStatus &os) {
+QVariantMap GffreadWorker::takeData(U2OpStatus& os) {
     Message m = getMessageAndSetupScriptValues(ports[IN_PORT_ID]);
     QVariantMap data = m.getData().toMap();
     if (!data.contains(GENOME_URL_SLOT_ID)) {
@@ -125,7 +125,7 @@ QVariantMap GffreadWorker::takeData(U2OpStatus &os) {
     return data;
 }
 
-GffreadSettings GffreadWorker::takeSettings(U2OpStatus &os) {
+GffreadSettings GffreadWorker::takeSettings(U2OpStatus& os) {
     GffreadSettings settings;
     QVariantMap data = takeData(os);
     CHECK_OP(os, settings);
@@ -136,8 +136,8 @@ GffreadSettings GffreadWorker::takeSettings(U2OpStatus &os) {
     return settings;
 }
 
-Task *GffreadWorker::runGffread(const GffreadSettings &s) {
-    GffreadSupportTask *t = new GffreadSupportTask(s);
+Task* GffreadWorker::runGffread(const GffreadSettings& s) {
+    GffreadSupportTask* t = new GffreadSupportTask(s);
     t->addListeners(createLogListeners());
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
@@ -152,7 +152,7 @@ void GffreadWorker::finalize() {
     ports[OUT_PORT_ID]->setEnded();
 }
 
-void GffreadWorker::sendResult(const QString &outUrl) {
+void GffreadWorker::sendResult(const QString& outUrl) {
     QVariantMap data;
     data[OUT_URL_SLOT_ID] = outUrl;
     ports[OUT_PORT_ID]->put(Message(ports[OUT_PORT_ID]->getBusType(), data));
@@ -163,7 +163,7 @@ void GffreadWorker::sendResult(const QString &outUrl) {
 /************************************************************************/
 class GffreadInputSlotsValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
         bool genome = isBinded(port, GENOME_URL_SLOT_ID);
         bool transc = isBinded(port, TRANSCRIPTS_URL_SLOT_ID);
 
@@ -184,7 +184,7 @@ public:
 /* Factory */
 /************************************************************************/
 void GffreadWorkerFactory::init() {
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         Descriptor inD(IN_PORT_ID, QObject::tr("Input transcripts"), QObject::tr("Input transcripts"));
         Descriptor genomeD(GENOME_URL_SLOT_ID, QObject::tr("Genomic sequence url"), QObject::tr("Genomic sequence url [FASTA]"));
@@ -200,13 +200,13 @@ void GffreadWorkerFactory::init() {
         ports << new PortDescriptor(outD, DataTypePtr(new MapDataType("out.sequences", outM)), false /*input*/, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor od(OUT_URL_ATTR_ID, QObject::tr("Output sequences"), QObject::tr("The url to the output file with the extracted sequences."));
         attrs << new Attribute(od, BaseTypes::STRING_TYPE(), true);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[OUT_URL_ATTR_ID] = new URLDelegate("", "", false, false, true);
     }
@@ -214,18 +214,18 @@ void GffreadWorkerFactory::init() {
     Descriptor desc(ACTOR_ID,
                     QObject::tr("Extract Transcript Sequences with gffread"),
                     QObject::tr("Extract transcript sequences from the genomic sequence(s) with gffread."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attrs);
     proto->setPrompter(new GffreadPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_ID, new GffreadInputSlotsValidator());
     proto->addExternalTool(CufflinksSupport::ET_GFFREAD_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GffreadWorkerFactory());
 }
 
-Worker *GffreadWorkerFactory::createWorker(Actor *a) {
+Worker* GffreadWorkerFactory::createWorker(Actor* a) {
     return new GffreadWorker(a);
 }
 
@@ -233,7 +233,7 @@ Worker *GffreadWorkerFactory::createWorker(Actor *a) {
 /* Prompter */
 /************************************************************************/
 QString GffreadPrompter::composeRichDoc() {
-    IntegralBusPort *in = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_ID));
+    IntegralBusPort* in = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_ID));
     SAFE_POINT(nullptr != in, "NULL input port", "");
     QString genome = getProducersOrUnset(IN_PORT_ID, GENOME_URL_SLOT_ID);
     QString transc = getProducersOrUnset(IN_PORT_ID, TRANSCRIPTS_URL_SLOT_ID);
@@ -242,5 +242,5 @@ QString GffreadPrompter::composeRichDoc() {
     return tr("Extract transcript sequences from the genomic sequence from <u>%1</u> using transcripts from <u>%2</u> and save them to the file %3.").arg(genome).arg(transc).arg(url);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

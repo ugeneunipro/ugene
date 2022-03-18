@@ -36,19 +36,19 @@ public:
     MaEditorState() {
     }
 
-    MaEditorState(const QVariantMap &_stateData)
+    MaEditorState(const QVariantMap& _stateData)
         : stateData(_stateData) {
     }
 
-    static QVariantMap saveState(MaEditor *v);
+    static QVariantMap saveState(MaEditor* v);
 
     bool isValid() const;
 
     GObjectReference getMaObjectRef() const;
-    void setMaObjectRef(const GObjectReference &ref);
+    void setMaObjectRef(const GObjectReference& ref);
 
     QFont getFont() const;
-    void setFont(const QFont &f);
+    void setFont(const QFont& f);
 
     int getFirstPos() const;
     void setFirstPos(int y);

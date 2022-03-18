@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget *parent)
+MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel* markerModel, QWidget* parent)
     : QWidget(parent), markerModel(markerModel) {
     setupUi(this);
     {
@@ -51,42 +51,42 @@ MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget
     connect(addButton, SIGNAL(clicked()), SLOT(sl_onAddButtonClicked()));
     connect(editButton, SIGNAL(clicked()), SLOT(sl_onEditButtonClicked()));
     connect(removeButton, SIGNAL(clicked()), SLOT(sl_onRemoveButtonClicked()));
-    connect(markerTable, SIGNAL(entered(const QModelIndex &)), SLOT(sl_onItemEntered(const QModelIndex &)));
-    connect(markerTable, SIGNAL(pressed(const QModelIndex &)), SLOT(sl_onItemSelected(const QModelIndex &)));
+    connect(markerTable, SIGNAL(entered(const QModelIndex&)), SLOT(sl_onItemEntered(const QModelIndex&)));
+    connect(markerTable, SIGNAL(pressed(const QModelIndex&)), SLOT(sl_onItemSelected(const QModelIndex&)));
 }
 
 void MarkerEditorWidget::sl_onAddButtonClicked() {
-    Workflow::MarkerGroupListCfgModel *model = dynamic_cast<Workflow::MarkerGroupListCfgModel *>(markerTable->model());
+    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
     QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(true, nullptr, model, this);
     const int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        Marker *newMarker = dlg->getMarker();
+        Marker* newMarker = dlg->getMarker();
         model->addMarker(newMarker);
     }
 }
 
 void MarkerEditorWidget::sl_onEditButtonClicked() {
-    QItemSelectionModel *m = markerTable->selectionModel();
+    QItemSelectionModel* m = markerTable->selectionModel();
     QModelIndexList selected = m->selectedRows();
     if (1 != selected.size()) {
         return;
     }
 
-    Workflow::MarkerGroupListCfgModel *model = dynamic_cast<Workflow::MarkerGroupListCfgModel *>(markerTable->model());
+    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
     QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(false, model->getMarker(selected.first().row()), model, this);
     const int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        Marker *newMarker = dlg->getMarker();
+        Marker* newMarker = dlg->getMarker();
         model->replaceMarker(selected.first().row(), newMarker);
     }
 }
 
 void MarkerEditorWidget::sl_onRemoveButtonClicked() {
-    QItemSelectionModel *m = markerTable->selectionModel();
+    QItemSelectionModel* m = markerTable->selectionModel();
     QModelIndexList selected = m->selectedRows();
     if (1 != selected.size()) {
         return;
@@ -101,24 +101,24 @@ void MarkerEditorWidget::sl_onRemoveButtonClicked() {
     }
 }
 
-void MarkerEditorWidget::sl_onItemEntered(const QModelIndex &idx) {
+void MarkerEditorWidget::sl_onItemEntered(const QModelIndex& idx) {
     Qt::MouseButtons bs = QApplication::mouseButtons();
     if (bs.testFlag(Qt::LeftButton)) {
         sl_onItemSelected(idx);
     }
 }
 
-void MarkerEditorWidget::sl_onItemSelected(const QModelIndex &) {
+void MarkerEditorWidget::sl_onItemSelected(const QModelIndex&) {
     editButton->setEnabled(true);
     removeButton->setEnabled(true);
 }
 
-bool MarkerEditorWidget::checkEditMarkerGroupResult(const QString &oldName, Marker *newMarker, QString &message) {
-    Workflow::MarkerGroupListCfgModel *model = dynamic_cast<Workflow::MarkerGroupListCfgModel *>(markerTable->model());
-    QList<Marker *> &markers = model->getMarkers();
+bool MarkerEditorWidget::checkEditMarkerGroupResult(const QString& oldName, Marker* newMarker, QString& message) {
+    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    QList<Marker*>& markers = model->getMarkers();
 
     if (oldName != newMarker->getName()) {
-        foreach (Marker *m, markers) {
+        foreach (Marker* m, markers) {
             if (m->getName() == newMarker->getName()) {
                 message.append(tr("Duplicate marker's name: %1").arg(newMarker->getName()));
                 return false;
@@ -129,11 +129,11 @@ bool MarkerEditorWidget::checkEditMarkerGroupResult(const QString &oldName, Mark
     return true;
 }
 
-bool MarkerEditorWidget::checkAddMarkerGroupResult(Marker *newMarker, QString &message) {
-    Workflow::MarkerGroupListCfgModel *model = dynamic_cast<Workflow::MarkerGroupListCfgModel *>(markerTable->model());
-    QList<Marker *> &markers = model->getMarkers();
+bool MarkerEditorWidget::checkAddMarkerGroupResult(Marker* newMarker, QString& message) {
+    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    QList<Marker*>& markers = model->getMarkers();
 
-    foreach (Marker *m, markers) {
+    foreach (Marker* m, markers) {
         if (m->getName() == newMarker->getName()) {
             message.append(tr("Duplicate marker's name: %1").arg(newMarker->getName()));
             return false;

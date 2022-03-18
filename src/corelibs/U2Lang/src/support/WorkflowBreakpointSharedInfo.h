@@ -46,7 +46,7 @@ struct U2LANG_EXPORT BreakpointHitCounterDump {
     quint32 hitCounterParameter;
 };
 
-U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString> &getNamesOfHitCounters();
+U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString>& getNamesOfHitCounters();
 
 enum BreakpointConditionParameter {
     IS_TRUE,
@@ -55,7 +55,7 @@ enum BreakpointConditionParameter {
 
 struct U2LANG_EXPORT BreakpointConditionDump {
     BreakpointConditionDump(BreakpointConditionParameter _conditionParameter,
-                            const QString &_condition,
+                            const QString& _condition,
                             bool _isEnabled);
 
     BreakpointConditionParameter conditionParameter;

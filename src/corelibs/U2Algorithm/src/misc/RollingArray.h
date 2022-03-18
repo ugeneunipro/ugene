@@ -34,7 +34,7 @@ template<class T>
 class RollingArray {
 public:
     RollingArray(int maxSize);
-    RollingArray(const T *data, int size);
+    RollingArray(const T* data, int size);
 
     inline RollingArray()
         : startRollPos(0), endRollPos(0), maxSize(0) {};
@@ -44,7 +44,7 @@ public:
 
     inline void set(int pos, T val);
     inline T get(int pos) const;
-    inline T &get(int pos);
+    inline T& get(int pos);
 
     inline void push_back_pop_front(T val);
     inline void push_front_pop_back(T val);
@@ -74,7 +74,7 @@ inline RollingArray<T>::RollingArray(int ms) {
 }
 
 template<class T>
-inline RollingArray<T>::RollingArray(const T *data, int size)
+inline RollingArray<T>::RollingArray(const T* data, int size)
     : buf(size), startRollPos(0), endRollPos(size - 1), maxSize(size) {
     for (int i = 0; i < buf.size(); ++i)
         buf[i] = *(data + i);
@@ -104,7 +104,7 @@ T RollingArray<T>::get(int pos) const {
 }
 
 template<class T>
-T &RollingArray<T>::get(int pos) {
+T& RollingArray<T>::get(int pos) {
     int rollPos = toRollPos(pos);
     return buf[rollPos];
 }

@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-GUITestThread::GUITestThread(GUITest *test, bool isRunPostActionsAndCleanup)
+GUITestThread::GUITestThread(GUITest* test, bool isRunPostActionsAndCleanup)
     : testToRun(test),
       isRunPostActionsAndCleanup(isRunPostActionsAndCleanup),
       testResult("Not run") {
@@ -51,9 +51,9 @@ GUITestThread::GUITestThread(GUITest *test, bool isRunPostActionsAndCleanup)
 void GUITestThread::run() {
     SAFE_POINT(testToRun != nullptr, "GUITest is NULL", );
 
-    UGUITestBase *db = UGUITestBase::getInstance();
+    UGUITestBase* db = UGUITestBase::getInstance();
 
-    QList<GUITest *> testList;
+    QList<GUITest*> testList;
     testList << db->getTests(UGUITestBase::PreAdditional);
     testList << testToRun;
     testList << db->getTests(UGUITestBase::PostAdditionalChecks);
@@ -80,7 +80,7 @@ void GUITestThread::sl_testTimeOut() {
     exit();
 }
 
-QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
+QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
     // Start all tests with some common mouse position.
@@ -88,25 +88,25 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
 
     HI::GUITestOpStatus os;
     try {
-        for (GUITest *test : qAsConst(tests)) {
+        for (GUITest* test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
             test->run(os);
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
         }
-    } catch (HI::GUITestOpStatus *) {
+    } catch (HI::GUITestOpStatus*) {
     }
     // Run post checks if there is an error.
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
-            UGUITestBase *testBase = UGUITestBase::getInstance();
-            const QList<GUITest *> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
-            for (GUITest *test : qAsConst(postCheckList)) {
+            UGUITestBase* testBase = UGUITestBase::getInstance();
+            const QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
+            for (GUITest* test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
                 test->run(os);
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
             }
-        } catch (HI::GUITestOpStatus *) {
+        } catch (HI::GUITestOpStatus*) {
         }
     }
     qDebug("launchTest for all tests/checks is finished, error: '%s', isEmpty: %d", error.toLocal8Bit().constData(), error.isEmpty());
@@ -118,7 +118,7 @@ void GUITestThread::clearSandbox() {
     QDir sandbox(pathToSandbox);
 
     const QStringList entryList = sandbox.entryList();
-    for (const QString &fileName : qAsConst(entryList)) {
+    for (const QString& fileName : qAsConst(entryList)) {
         if (fileName != "." && fileName != "..") {
             if (QFile::remove(pathToSandbox + fileName)) {
                 continue;
@@ -130,11 +130,11 @@ void GUITestThread::clearSandbox() {
     }
 }
 
-void GUITestThread::removeDir(const QString &dirName) {
+void GUITestThread::removeDir(const QString& dirName) {
     QDir dir(dirName);
 
     const QFileInfoList fileInfoList = dir.entryInfoList();
-    for (const QFileInfo &fileInfo : qAsConst(fileInfoList)) {
+    for (const QFileInfo& fileInfo : qAsConst(fileInfoList)) {
         const QString fileName = fileInfo.fileName();
         const QString filePath = fileInfo.filePath();
         if (fileName != "." && fileName != "..") {
@@ -162,15 +162,15 @@ void GUITestThread::saveScreenshot() {
 void GUITestThread::cleanup() {
     qDebug("Running cleanup after the test");
     testToRun->cleanup();
-    UGUITestBase *testBase = UGUITestBase::getInstance();
-    const QList<GUITest *> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
-    for (HI::GUITest *postAction : qAsConst(postActionList)) {
+    UGUITestBase* testBase = UGUITestBase::getInstance();
+    const QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
+    for (HI::GUITest* postAction : qAsConst(postActionList)) {
         HI::GUITestOpStatus os;
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
             postAction->run(os);
             qDebug("Cleanup action is finished: %s", postAction->getFullName().toLocal8Bit().constData());
-        } catch (HI::GUITestOpStatus *opStatus) {
+        } catch (HI::GUITestOpStatus* opStatus) {
             coreLog.error(opStatus->getError());
         }
     }

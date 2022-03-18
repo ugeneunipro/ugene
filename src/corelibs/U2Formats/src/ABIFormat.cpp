@@ -45,7 +45,7 @@
 
 namespace U2 {
 
-ABIFormat::ABIFormat(QObject *p)
+ABIFormat::ABIFormat(QObject* p)
     : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, {"ab1", "abi", "abif"}) {
     formatName = tr("ABIF");
     formatDescription = tr("A chromatogram file format");
@@ -53,8 +53,8 @@ ABIFormat::ABIFormat(QObject *p)
     supportedObjectTypes += GObjectTypes::CHROMATOGRAM;
 }
 
-FormatCheckResult ABIFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
-    const char *data = rawData.constData();
+FormatCheckResult ABIFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+    const char* data = rawData.constData();
     int size = rawData.size();
 
     if (size <= 4 || data[0] != 'A' || data[1] != 'B' || data[2] != 'I' || data[3] != 'F') {
@@ -74,7 +74,7 @@ FormatCheckResult ABIFormat::checkRawData(const QByteArray &rawData, const GUrl 
 
 #define MAX_SUPPORTED_ABIF_SIZE 10 * 1024 * 1024
 
-Document *ABIFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* ABIFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
     quint64 len = 0;
@@ -87,13 +87,13 @@ Document *ABIFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     sf.head = readBuff.constData();
     sf.pos = 0;
     sf.size = readBuff.size();
-    Document *doc = parseABI(dbiRef, &sf, io, fs, os);
+    Document* doc = parseABI(dbiRef, &sf, io, fs, os);
     CHECK_OP(os, nullptr)
     CHECK_EXT(doc != nullptr, os.setError(tr("Not a valid ABIF file: %1").arg(io->toString())), nullptr);
     return doc;
 }
 
-DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
+DNASequence* ABIFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
     if (io->isEof()) {
         return nullptr;
     }
@@ -112,7 +112,7 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     sf.pos = 0;
     sf.size = readBuff.size();
 
-    DNASequence *seq = new DNASequence();
+    DNASequence* seq = new DNASequence();
     DNAChromatogram cd;
 
     if (!loadABIObjects(&sf, (*seq), cd)) {
@@ -191,7 +191,7 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
  * Gets the offset of the ABI index.
  * Returns -1 for failure, 0 for success.
  */
-static int getABIIndexOffset(SeekableBuf *fp, uint *indexO) {
+static int getABIIndexOffset(SeekableBuf* fp, uint* indexO) {
     uint magic = 0;
 
     /*
@@ -219,7 +219,7 @@ static int getABIIndexOffset(SeekableBuf *fp, uint *indexO) {
  * from the `count'th entry labelled `label'.
  * The result is 0 for failure, or index offset for success.
  */
-int getABIIndexEntryLW(SeekableBuf *fp, int indexO, uint label, uint count, int lw, uint *val) {
+int getABIIndexEntryLW(SeekableBuf* fp, int indexO, uint label, uint count, int lw, uint* val) {
     int entryNum = -1;
     int i;
     uint entryLabel, entryLw1;
@@ -251,7 +251,7 @@ int getABIIndexEntryLW(SeekableBuf *fp, int indexO, uint label, uint count, int 
  * from the `count'th entry labelled `label'.
  * The result is 0 for failure, or index offset for success.
  */
-int getABIIndexEntrySW(SeekableBuf *fp, int indexO, uint label, uint count, int sw, ushort *val) {
+int getABIIndexEntrySW(SeekableBuf* fp, int indexO, uint label, uint count, int sw, ushort* val) {
     int entryNum = -1;
     int i;
     uint entryLabel, entryLw1;
@@ -290,7 +290,7 @@ int getABIIndexEntrySW(SeekableBuf *fp, int indexO, uint label, uint count, int 
  *
  * Returns -1 for failure, string length for success.
  */
-int getABIString(SeekableBuf *fp, int indexO, uint label, uint count, char *string) {
+int getABIString(SeekableBuf* fp, int indexO, uint label, uint count, char* string) {
     uint off;
     uint len;
     quint16 type;
@@ -341,7 +341,7 @@ int getABIString(SeekableBuf *fp, int indexO, uint label, uint count, char *stri
  * up to max_data_len elements, but it gives an indication of whether there
  * was more to come).
  */
-int getABIint1(SeekableBuf *fp, int indexO, uint label, uint count, uchar *data, int max_data_len) {
+int getABIint1(SeekableBuf* fp, int indexO, uint label, uint count, uchar* data, int max_data_len) {
     uint off;
     uint len, len2;
 
@@ -365,7 +365,7 @@ int getABIint1(SeekableBuf *fp, int indexO, uint label, uint count, uchar *data,
         len = len2 = max_data_len;
     }
 
-    fp->read((char *)data, len2);
+    fp->read((char*)data, len2);
 
     return len;
 }
@@ -378,18 +378,18 @@ int getABIint1(SeekableBuf *fp, int indexO, uint label, uint count, uchar *data,
  * up to max_data_len elements, but it gives an indication of whether there
  * was more to come).
  */
-int getABIint2(SeekableBuf *fp, int indexO, uint label, uint count, ushort *data, int max_data_len) {
+int getABIint2(SeekableBuf* fp, int indexO, uint label, uint count, ushort* data, int max_data_len) {
     int len, l2;
     int i;
 
-    len = getABIint1(fp, indexO, label, count, (uchar *)data, max_data_len * 2);
+    len = getABIint1(fp, indexO, label, count, (uchar*)data, max_data_len * 2);
     if (-1 == len)
         return -1;
 
     len /= 2;
     l2 = qMin(len, max_data_len);
     for (i = 0; i < l2; i++) {
-        data[i] = be_int2((uchar *)(data + i));
+        data[i] = be_int2((uchar*)(data + i));
     }
 
     return len;
@@ -403,25 +403,25 @@ int getABIint2(SeekableBuf *fp, int indexO, uint label, uint count, ushort *data
  * up to max_data_len elements, but it gives an indication of whether there
  * was more to come).
  */
-int getABIint4(SeekableBuf *fp, int indexO, uint label, uint count, uint *data, int max_data_len) {
+int getABIint4(SeekableBuf* fp, int indexO, uint label, uint count, uint* data, int max_data_len) {
     int len, l2;
     int i;
 
-    len = getABIint1(fp, indexO, label, count, (uchar *)data, max_data_len * 4);
+    len = getABIint1(fp, indexO, label, count, (uchar*)data, max_data_len * 4);
     if (-1 == len)
         return -1;
 
     len /= 4;
     l2 = qMin(len, max_data_len);
     for (i = 0; i < l2; i++) {
-        data[i] = be_int4((uchar *)(data + i));
+        data[i] = be_int4((uchar*)(data + i));
     }
 
     return len;
 }
 
-static void replace_nl(char *string) {
-    char *cp;
+static void replace_nl(char* string) {
+    char* cp;
 
     for (cp = string; *cp; cp++) {
         if (*cp == '\n')
@@ -429,7 +429,7 @@ static void replace_nl(char *string) {
     }
 }
 
-Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os) {
+Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
     DNASequence dna;
@@ -442,7 +442,7 @@ Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter
         dna.setName("Sequence");
     }
 
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     QVariantMap hints;
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     hints.insert(DBI_FOLDER_HINT, folder);
@@ -452,24 +452,24 @@ Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter
     }
     U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna, dna.alphabet->getId());
     CHECK_OP(os, nullptr);
-    U2SequenceObject *seqObj = new U2SequenceObject(dna.getName(), ref);
+    U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
-    DNAChromatogramObject *chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);
+    DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objects.append(chromObj);
 
     QString seqComment = dna.info.value(DNAInfo::COMMENT).toStringList().join("\n");
-    TextObject *textObj = TextObject::createInstance(seqComment, "Info", dbiRef, os, hints);
+    TextObject* textObj = TextObject::createInstance(seqComment, "Info", dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objects.append(textObj);
 
-    Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     chromObj->addObjectRelation(GObjectRelation(GObjectReference(seqObj), ObjectRole_Sequence));
     return doc;
 }
 
-bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogram &cd) {
+bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence& dna, DNAChromatogram& cd) {
     uint numPoints, numBases;
     uint signalO;
     int no_bases = 0;
@@ -539,7 +539,7 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
      * Juggle around with data pointers to get it right
      */
     if (sections & READ_SAMPLES) {
-        uint *dataxO[4];
+        uint* dataxO[4];
 
         dataxO[0] = &dataCO;
         dataxO[1] = &dataAO;
@@ -696,8 +696,8 @@ skip_bases:
         int clen = getABIString(fp, indexO, CMNTLabel, 1, commstr);
         if (clen != -1) {
             commstr[clen] = 0;
-            char *commstrp = commstr;
-            char *p;
+            char* commstrp = commstr;
+            char* p;
             do {
                 if ((p = strchr(commstrp, '\n'))) {
                     *p++ = 0;
@@ -721,24 +721,24 @@ skip_bases:
         /* Get Signal Strength Offset */
         if (getABIIndexEntryLW(fp, indexO, SignalEntryLabel, 1, 5, &signalO)) {
             short C, A, G, T;
-            short *base[4];
+            short* base[4];
             base[0] = &C;
             base[1] = &A;
             base[2] = &G;
             base[3] = &T;
 
             if (SeekBuf(fp, signalO, 0) != -1 &&
-                be_read_int_2(fp, (ushort *)base[baseIndex((char)(fwo_ >> 24 & 255))]) &&
-                be_read_int_2(fp, (ushort *)base[baseIndex((char)(fwo_ >> 16 & 255))]) &&
-                be_read_int_2(fp, (ushort *)base[baseIndex((char)(fwo_ >> 8 & 255))]) &&
-                be_read_int_2(fp, (ushort *)base[baseIndex((char)(fwo_ & 255))])) {
+                be_read_int_2(fp, (ushort*)base[baseIndex((char)(fwo_ >> 24 & 255))]) &&
+                be_read_int_2(fp, (ushort*)base[baseIndex((char)(fwo_ >> 16 & 255))]) &&
+                be_read_int_2(fp, (ushort*)base[baseIndex((char)(fwo_ >> 8 & 255))]) &&
+                be_read_int_2(fp, (ushort*)base[baseIndex((char)(fwo_ & 255))])) {
                 sequenceComment.append(QString("SIGN=A=%1,C=%2,G=%3,T=%4\n").arg(A).arg(C).arg(G).arg(T));
             }
         }
 
         /* Get the spacing.. it's a float but don't worry yet */
         float fspacing = 0;
-        if (-1 != getABIint4(fp, indexO, SpacingEntryLabel, 1, (uint *)&spacing, 1)) {
+        if (-1 != getABIint4(fp, indexO, SpacingEntryLabel, 1, (uint*)&spacing, 1)) {
             fspacing = int_to_float(spacing);
             sequenceComment.append(QString("SPAC=%1\n").arg(fspacing));  //-6.2f",
         }
@@ -755,7 +755,7 @@ skip_bases:
         }
 
         /* Get primer position */
-        if (getABIIndexEntryLW(fp, indexO, PPOSLabel, 1, 5, (uint *)&i4)) {
+        if (getABIIndexEntryLW(fp, indexO, PPOSLabel, 1, 5, (uint*)&i4)) {
             /* ppos stores in MBShort of pointer */
             sequenceComment.append(QString("PRIM=%1\n").arg(i4 >> 16));
         }

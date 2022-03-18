@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName)
+MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt* ui, const QString& objectName)
     : QWidget(ui) {
     setObjectName(objectName);
 
@@ -40,10 +40,7 @@ MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objec
     setContextMenuPolicy(Qt::PreventContextMenu);
 }
 
-void MaEditorOverviewArea::cancelRendering() {
-}
-
-void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
+void MaEditorOverviewArea::addOverview(QWidget* overviewWgt) {
     layout->addWidget(overviewWgt);
 }
 

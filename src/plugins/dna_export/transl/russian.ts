@@ -1173,12 +1173,12 @@
 <context>
     <name>U2::ExportSelectedSeqRegionsTask</name>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="185"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="189"/>
         <source>Export selected regions from a sequence task</source>
         <translation>Export selected regions from a sequence task</translation>
     </message>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="191"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="195"/>
         <source>Invalid annotation table detected</source>
         <translation>Invalid annotation table detected</translation>
     </message>

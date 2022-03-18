@@ -35,26 +35,26 @@ namespace U2 {
 
 class AttributeTestData {
 public:
-    static U2AttributeDbi *getAttributeDbi();
-    static QList<U2DataId> *getObjects() {
+    static U2AttributeDbi* getAttributeDbi();
+    static QList<U2DataId>* getObjects() {
         return objects;
     }
     static void init();
     static void shutdown();
-    static void testAttributesMatch(QList<U2IntegerAttribute> &expectedInt,
-                                    QList<U2RealAttribute> &expectedReal,
-                                    QList<U2StringAttribute> &expectedString,
-                                    QList<U2ByteArrayAttribute> &expectedArray,
-                                    const QList<U2DataId> &attributes);
-    static void getObjectAttrsTest(const APITestData &testData,
+    static void testAttributesMatch(QList<U2IntegerAttribute>& expectedInt,
+                                    QList<U2RealAttribute>& expectedReal,
+                                    QList<U2StringAttribute>& expectedString,
+                                    QList<U2ByteArrayAttribute>& expectedArray,
+                                    const QList<U2DataId>& attributes);
+    static void getObjectAttrsTest(const APITestData& testData,
                                    bool filterByName,
                                    bool filterByChild);
 
 protected:
-    static U2AttributeDbi *attributeDbi;
-    static QList<U2DataId> *objects;
+    static U2AttributeDbi* attributeDbi;
+    static QList<U2DataId>* objects;
 
-    static const QString &ATT_DB_URL;
+    static const QString& ATT_DB_URL;
 
     static TestDbiProvider dbiProvider;
     static bool registerTest;

@@ -60,16 +60,16 @@ namespace U2 {
 
 class SiteconResultItem : public QTreeWidgetItem {
 public:
-    SiteconResultItem(const SiteconSearchResult &r);
+    SiteconResultItem(const SiteconSearchResult& r);
     SiteconSearchResult res;
-    virtual bool operator<(const QTreeWidgetItem &other) const {
-        const SiteconResultItem *o = (const SiteconResultItem *)&other;
+    virtual bool operator<(const QTreeWidgetItem& other) const {
+        const SiteconResultItem* o = (const SiteconResultItem*)&other;
         int n = treeWidget()->sortColumn();
         switch (n) {
             case 0:
                 return res.region.startPos < o->res.region.startPos;
             case 1:
-                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+                return res.strand != o->res.strand ? res.strand.isComplementary() : (res.region.startPos < o->res.region.startPos);
             case 2:
                 return res.psum < o->res.psum;
             case 3:
@@ -83,7 +83,7 @@ public:
 
 /* TRANSLATOR U2::SiteconSearchDialogController */
 
-SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectContext *_ctx, QWidget *p)
+SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectContext* _ctx, QWidget* p)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930797");
@@ -131,7 +131,7 @@ void SiteconSearchDialogController::connectGUI() {
     connect(pbClose, SIGNAL(clicked()), SLOT(sl_onClose()));
 
     // results list
-    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
+    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem*, int)), SLOT(sl_onResultActivated(QTreeWidgetItem*, int)));
 
     resultsTree->installEventFilter(this);
 }
@@ -165,11 +165,11 @@ void SiteconSearchDialogController::updateStatus() {
     statusLabel->setText(message);
 }
 
-bool SiteconSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
+bool SiteconSearchDialogController::eventFilter(QObject* obj, QEvent* ev) {
     if (obj == resultsTree && ev->type() == QEvent::KeyPress) {
-        QKeyEvent *ke = (QKeyEvent *)ev;
+        QKeyEvent* ke = (QKeyEvent*)ev;
         if (ke->key() == Qt::Key_Space) {
-            SiteconResultItem *item = static_cast<SiteconResultItem *>(resultsTree->currentItem());
+            SiteconResultItem* item = static_cast<SiteconResultItem*>(resultsTree->currentItem());
             if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
@@ -186,7 +186,7 @@ void SiteconSearchDialogController::sl_selectModelFile() {
     }
 
     TaskStateInfo si;
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(lod.url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(lod.url));
     SiteconModel m = SiteconIO::readModel(iof, lod.url, si);
     if (si.hasError()) {
         QMessageBox::critical(this, tr("Error"), si.getError());
@@ -199,7 +199,7 @@ void SiteconSearchDialogController::sl_selectModelFile() {
     modelFileEdit->setText(fi.absoluteFilePath());
 }
 
-void SiteconSearchDialogController::updateModel(const SiteconModel &m) {
+void SiteconSearchDialogController::updateModel(const SiteconModel& m) {
     if (model != nullptr) {
         delete model;
         model = nullptr;
@@ -257,16 +257,16 @@ void SiteconSearchDialogController::sl_onSaveAnnotations() {
         return;
     }
     ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
-    const QString &name = m.data->name;
+    const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsTree->topLevelItemCount(); i < n; ++i) {
-        SiteconResultItem *item = static_cast<SiteconResultItem *>(resultsTree->topLevelItem(i));
+        SiteconResultItem* item = static_cast<SiteconResultItem*>(resultsTree->topLevelItem(i));
         SharedAnnotationData data = item->res.toAnnotation(name);
         U1AnnotationUtils::addDescriptionQualifier(data, m.description);
         list.append(data);
     }
 
-    CreateAnnotationsTask *t = new CreateAnnotationsTask(m.getAnnotationObject(), list, m.groupName);
+    CreateAnnotationsTask* t = new CreateAnnotationsTask(m.getAnnotationObject(), list, m.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -330,7 +330,7 @@ void SiteconSearchDialogController::runTask() {
 }
 
 void SiteconSearchDialogController::sl_onTaskFinished() {
-    task = qobject_cast<SiteconSearchTask *>(sender());
+    task = qobject_cast<SiteconSearchTask*>(sender());
     if (!task->isFinished()) {
         return;
     }
@@ -348,8 +348,8 @@ void SiteconSearchDialogController::importResults() {
     resultsTree->setSortingEnabled(false);
 
     QList<SiteconSearchResult> newResults = task->takeResults();
-    foreach (const SiteconSearchResult &r, newResults) {
-        SiteconResultItem *item = new SiteconResultItem(r);
+    foreach (const SiteconSearchResult& r, newResults) {
+        SiteconResultItem* item = new SiteconResultItem(r);
         resultsTree->addTopLevelItem(item);
     }
     updateStatus();
@@ -357,10 +357,10 @@ void SiteconSearchDialogController::importResults() {
     resultsTree->setSortingEnabled(true);
 }
 
-void SiteconSearchDialogController::sl_onResultActivated(QTreeWidgetItem *i, int col) {
+void SiteconSearchDialogController::sl_onResultActivated(QTreeWidgetItem* i, int col) {
     Q_UNUSED(col);
     assert(i);
-    SiteconResultItem *item = static_cast<SiteconResultItem *>(i);
+    SiteconResultItem* item = static_cast<SiteconResultItem*>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
 }
@@ -368,7 +368,7 @@ void SiteconSearchDialogController::sl_onResultActivated(QTreeWidgetItem *i, int
 //////////////////////////////////////////////////////////////////////////
 /// tree
 
-SiteconResultItem::SiteconResultItem(const SiteconSearchResult &r)
+SiteconResultItem::SiteconResultItem(const SiteconSearchResult& r)
     : res(r) {
     QString range = QString("%1..%2").arg(r.region.startPos + 1).arg(r.region.endPos());
     setTextAlignment(0, Qt::AlignRight);
@@ -378,7 +378,7 @@ SiteconResultItem::SiteconResultItem(const SiteconSearchResult &r)
     setTextAlignment(4, Qt::AlignRight);
 
     setText(0, range);
-    QString strand = res.strand.isCompementary() ? SiteconSearchDialogController::tr("Complement strand") : SiteconSearchDialogController::tr("Direct strand");
+    QString strand = res.strand.isComplementary() ? SiteconSearchDialogController::tr("Complement strand") : SiteconSearchDialogController::tr("Direct strand");
     setText(1, strand);
     setText(2, QString::number(res.psum, 'f', 2) + "%");
     setText(3, QString::number(res.err1, 'g', 4));

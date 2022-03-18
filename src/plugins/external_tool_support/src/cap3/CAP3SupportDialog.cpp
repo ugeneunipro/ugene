@@ -33,9 +33,9 @@
 
 namespace U2 {
 ////////////////////////////////////////
-//CAP3SupportDialog
+// CAP3SupportDialog
 
-CAP3SupportDialog::CAP3SupportDialog(CAP3SupportTaskSettings &s, QWidget *parent)
+CAP3SupportDialog::CAP3SupportDialog(CAP3SupportTaskSettings& s, QWidget* parent)
     : QDialog(parent),
       settings(s),
       saveController(nullptr) {
@@ -143,7 +143,7 @@ void CAP3SupportDialog::sl_onAddButtonClicked() {
         return;
     }
     lod.url = fileNames.at(fileNames.count() - 1);
-    foreach (const QString &f, fileNames) {
+    foreach (const QString& f, fileNames) {
         seqList->addItem(f);
     }
 
@@ -160,4 +160,4 @@ void CAP3SupportDialog::sl_onRemoveAllButtonClicked() {
     seqList->clear();
 }
 
-}    // namespace U2
+}  // namespace U2

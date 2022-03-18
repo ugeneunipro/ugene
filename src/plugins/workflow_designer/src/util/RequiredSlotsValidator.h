@@ -29,8 +29,8 @@ namespace Workflow {
 
 class RequiredSlotsValidator : public PortValidator {
 public:
-    RequiredSlotsValidator(const QList<Descriptor> &requiredSlots);
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
+    RequiredSlotsValidator(const QList<Descriptor>& requiredSlots);
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const;
 
 private:
     QList<Descriptor> requiredSlots;

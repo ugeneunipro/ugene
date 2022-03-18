@@ -28,7 +28,7 @@
 namespace U2 {
 namespace BAM {
 
-BaiReader::BaiReader(IOAdapter &ioAdapter)
+BaiReader::BaiReader(IOAdapter& ioAdapter)
     : ioAdapter(ioAdapter) {
 }
 
@@ -88,7 +88,7 @@ Index BaiReader::readIndex() {
     return Index(QList<Index::ReferenceIndex>(referenceIndices));
 }
 
-void BaiReader::readBytes(char *buff, qint64 size) {
+void BaiReader::readBytes(char* buff, qint64 size) {
     qint64 returnedValue = ioAdapter.readBlock(buff, size);
     if (-1 == returnedValue) {
         throw IOException(BAMDbiPlugin::tr("Can't read input. %1").arg(ioAdapter.errorString()));

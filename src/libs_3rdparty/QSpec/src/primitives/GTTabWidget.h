@@ -32,22 +32,22 @@ class HI_EXPORT GTTabWidget {
 public:
     // fails if the tabwidget is NULL, index is not in a tabwidget's range
     // or a tabwidget's index differs from a given index in the end of method's execution
-    static void setCurrentIndex(GUITestOpStatus &os, QTabWidget *const tabWidget, int index);
-    static QTabBar *getTabBar(GUITestOpStatus &os, QTabWidget *tabWidget);
+    static void setCurrentIndex(GUITestOpStatus& os, QTabWidget* const tabWidget, int index);
+    static QTabBar* getTabBar(GUITestOpStatus& os, QTabWidget* tabWidget);
 
-    static void clickTab(GUITestOpStatus &os, QTabWidget *const tabWidget, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, QWidget  *parent, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(GUITestOpStatus &os, QTabWidget *const tabWidget, const QString &tabName, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, QWidget  *parent, const QString &tabName, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
 
-    static QString getTabName(GUITestOpStatus &os, QTabWidget *tabWidget, int idx);
+    static QString getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int idx);
 
-    static int getTabNumByName(GUITestOpStatus &os, QTabWidget *tabWidget, QString tabName);
-    static QWidget *getTabCornerWidget(GUITestOpStatus &os, QTabWidget *tabWidget, int idx);
-    static QWidget *getTabCornerWidget(GUITestOpStatus &os, QTabWidget *tabWidget, QString tabName);
+    static int getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName);
+    static QWidget* getTabCornerWidget(GUITestOpStatus& os, QTabWidget* tabWidget, int idx);
+    static QWidget* getTabCornerWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName);
 
-    static void closeTab(GUITestOpStatus &os, QTabWidget *tabWidget, int idx);
-    static void closeTab(GUITestOpStatus &os, QTabWidget *tabWidget, QString tabName);
+    static void closeTab(GUITestOpStatus& os, QTabWidget* tabWidget, int idx);
+    static void closeTab(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName);
 };
 
 }  // namespace HI

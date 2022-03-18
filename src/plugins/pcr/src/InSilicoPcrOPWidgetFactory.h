@@ -31,11 +31,11 @@ class InSilicoPcrOPWidgetFactory : public OPWidgetFactory {
 public:
     InSilicoPcrOPWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
-    bool passFiltration(OPFactoryFilterVisitorInterface *filter) override;
+    bool passFiltration(OPFactoryFilterVisitorInterface* filter) override;
 
 private:
     static const QString GROUP_DOC_PAGE;

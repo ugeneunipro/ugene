@@ -29,7 +29,7 @@ namespace U2 {
 class BedtoolsSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BedtoolsSupport(const QString &path = "");
+    BedtoolsSupport(const QString& path = "");
 
     static const QString ET_BEDTOOLS_ID;
     static const QString GENOMES_DATA_NAME;
@@ -38,5 +38,5 @@ private slots:
     void sl_validationStatusChanged(bool newStatus);
 };
 
-}    // namespace U2
-#endif    // _U2_BEDTOOLS_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_BEDTOOLS_SUPPORT_H_

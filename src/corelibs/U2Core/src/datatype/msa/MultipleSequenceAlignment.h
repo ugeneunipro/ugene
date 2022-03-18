@@ -36,19 +36,19 @@ class U2Region;
 
 class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
 public:
-    MultipleSequenceAlignment(const QString &name = QString(),
-                              const DNAAlphabet *alphabet = nullptr,
-                              const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-    MultipleSequenceAlignment(const MultipleAlignment &ma);
-    MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
+    MultipleSequenceAlignment(const QString& name = QString(),
+                              const DNAAlphabet* alphabet = nullptr,
+                              const QList<MultipleSequenceAlignmentRow>& rows = QList<MultipleSequenceAlignmentRow>());
+    MultipleSequenceAlignment(const MultipleAlignment& ma);
+    MultipleSequenceAlignment(MultipleSequenceAlignmentData* msaData);
 
-    MultipleSequenceAlignmentData *data() const;
+    MultipleSequenceAlignmentData* data() const;
 
-    MultipleSequenceAlignmentData &operator*();
-    const MultipleSequenceAlignmentData &operator*() const;
+    MultipleSequenceAlignmentData& operator*();
+    const MultipleSequenceAlignmentData& operator*() const;
 
-    MultipleSequenceAlignmentData *operator->();
-    const MultipleSequenceAlignmentData *operator->() const;
+    MultipleSequenceAlignmentData* operator->();
+    const MultipleSequenceAlignmentData* operator->() const;
 
     MultipleSequenceAlignment clone() const;
     template<class Derived>
@@ -72,17 +72,17 @@ protected:
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleSequenceAlignmentData(const QString &name = QString(),
-                                  const DNAAlphabet *alphabet = nullptr,
-                                  const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-    MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msaData);
+    MultipleSequenceAlignmentData(const QString& name = QString(),
+                                  const DNAAlphabet* alphabet = nullptr,
+                                  const QList<MultipleSequenceAlignmentRow>& rows = QList<MultipleSequenceAlignmentRow>());
+    MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData& msaData);
 
 public:
-    MultipleSequenceAlignmentData &operator=(const MultipleSequenceAlignment &msa);
-    MultipleSequenceAlignmentData &operator=(const MultipleSequenceAlignmentData &msaData);
+    MultipleSequenceAlignmentData& operator=(const MultipleSequenceAlignment& msa);
+    MultipleSequenceAlignmentData& operator=(const MultipleSequenceAlignmentData& msaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
@@ -101,20 +101,20 @@ public:
      * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
      * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
      */
-    bool sortRowsBySimilarity(QVector<U2Region> &united);
+    bool sortRowsBySimilarity(QVector<U2Region>& united);
 
     /** Returns rows sorted by similarity. Does not update MSA. */
-    QList<MultipleSequenceAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region> &united) const;
+    QList<MultipleSequenceAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region>& united) const;
 
     /** Returns row of the alignment */
     inline MultipleSequenceAlignmentRow getMsaRow(int row);
     inline const MultipleSequenceAlignmentRow getMsaRow(int row) const;
-    const MultipleSequenceAlignmentRow getMsaRow(const QString &name) const;
+    const MultipleSequenceAlignmentRow getMsaRow(const QString& name) const;
 
     /** Returns all rows in the alignment */
     const QList<MultipleSequenceAlignmentRow> getMsaRows() const;
 
-    MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus &os) const;
+    MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus& os) const;
 
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowNumber, int pos) const;
@@ -124,7 +124,7 @@ public:
      * Inserts 'count' gaps into the specified position.
      * Can increase the overall alignment length.
      */
-    void insertGaps(int row, int pos, int count, U2OpStatus &os);
+    void insertGaps(int row, int pos, int count, U2OpStatus& os);
 
     /**
      * Removes a region from the alignment.
@@ -138,23 +138,23 @@ public:
      * Renames the row with the specified index.
      * Assumes that the row index is valid and the name is not empty.
      */
-    void renameRow(int row, const QString &name);
+    void renameRow(int row, const QString& name);
 
     /**
      * Sets the new content for the row with the specified index.
      * Assumes that the row index is valid.
      * Can modify the overall alignment length (increase or decrease).
      */
-    void setRowContent(int rowNumber, const QByteArray &sequence, int offset = 0);
+    void setRowContent(int rowNumber, const QByteArray& sequence, int offset = 0);
 
     /** Converts all rows' sequences to upper case */
     void toUpperCase();
 
     /** Keep only only column-range of given rows in the alignment. */
-    bool crop(const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os);
+    bool crop(const QList<qint64>& rowIds, const U2Region& columnRange, U2OpStatus& os);
 
     /** Keeps only 'columnRange' region in the alignment */
-    bool crop(const U2Region &columnRange, U2OpStatus &os);
+    bool crop(const U2Region& columnRange, U2OpStatus& os);
 
     /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
@@ -162,9 +162,9 @@ public:
      */
     MultipleSequenceAlignment mid(int start, int len) const;
 
-    virtual void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    virtual void setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel);
 
-    void setSequenceId(int rowIndex, const U2DataId &sequenceId);
+    void setSequenceId(int rowIndex, const U2DataId& sequenceId);
 
     /**
      * Adds a new row to the alignment.
@@ -173,10 +173,10 @@ public:
      * Does not trim the original alignment.
      * Can increase the overall alignment length.
      */
-    void addRow(const QString &name, const QByteArray &bytes);
-    void addRow(const QString &name, const QByteArray &bytes, int rowIndex);
-    void addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    void addRow(const QString& name, const QByteArray& bytes);
+    void addRow(const QString& name, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -193,13 +193,13 @@ public:
      * Does NOT recalculate the alignment length!
      * The index must be valid.
      */
-    void appendChars(int row, const char *str, int len);
+    void appendChars(int row, const char* str, int len);
 
-    void appendChars(int row, qint64 afterPos, const char *str, int len);
+    void appendChars(int row, qint64 afterPos, const char* str, int len);
 
-    void appendRow(int rowNumber, const MultipleSequenceAlignmentRow &rowIdx, bool ignoreTrailingGaps, U2OpStatus &os);
+    void appendRow(int rowNumber, const MultipleSequenceAlignmentRow& rowIdx, bool ignoreTrailingGaps, U2OpStatus& os);
 
-    void appendRow(int rowNumber, qint64 afterPos, const MultipleSequenceAlignmentRow &rowIdx, U2OpStatus &os);
+    void appendRow(int rowNumber, qint64 afterPos, const MultipleSequenceAlignmentRow& rowIdx, U2OpStatus& os);
 
     /** returns "True" if there are no gaps in the alignment */
     bool hasEmptyGapModel() const;
@@ -211,32 +211,32 @@ public:
      * Joins two alignments. Alignments must have the same size and alphabet.
      * Increases the alignment length.
      */
-    MultipleSequenceAlignmentData &operator+=(const MultipleSequenceAlignmentData &ma);
+    MultipleSequenceAlignmentData& operator+=(const MultipleSequenceAlignmentData& ma);
 
     /** Compares two alignments: calls isEqual() method. */
-    bool operator==(const MultipleSequenceAlignmentData &msaData) const;
-    bool operator!=(const MultipleSequenceAlignmentData &msaData) const;
+    bool operator==(const MultipleSequenceAlignmentData& msaData) const;
+    bool operator!=(const MultipleSequenceAlignmentData& msaData) const;
 
     MultipleAlignment getCopy() const;
     MultipleSequenceAlignment getExplicitCopy() const;
 
 private:
-    void copy(const MultipleAlignmentData &other);
-    void copy(const MultipleSequenceAlignmentData &other);
+    void copy(const MultipleAlignmentData& other);
+    void copy(const MultipleSequenceAlignmentData& other);
     MultipleAlignmentRow getEmptyRow() const;
 
     /** Create a new row (sequence + gap model) from the bytes */
-    MultipleSequenceAlignmentRow createRow(const QString &name, const QByteArray &bytes);
+    MultipleSequenceAlignmentRow createRow(const QString& name, const QByteArray& bytes);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    MultipleSequenceAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
-    MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow &row);
+    MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow& row);
 
-    void setRows(const QList<MultipleSequenceAlignmentRow> &msaRows);
+    void setRows(const QList<MultipleSequenceAlignmentRow>& msaRows);
 };
 
 inline MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::getMsaRow(int rowIndex) {
@@ -247,22 +247,22 @@ inline const MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::getMsaR
     return getRow(rowIndex).dynamicCast<const MultipleSequenceAlignmentRow>();
 }
 
-inline bool operator!=(const MultipleSequenceAlignment &ptr1, const MultipleSequenceAlignment &ptr2) {
+inline bool operator!=(const MultipleSequenceAlignment& ptr1, const MultipleSequenceAlignment& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleSequenceAlignment &ptr1, const MultipleSequenceAlignmentData *ptr2) {
+inline bool operator!=(const MultipleSequenceAlignment& ptr1, const MultipleSequenceAlignmentData* ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleSequenceAlignmentData *ptr1, const MultipleSequenceAlignment &ptr2) {
+inline bool operator!=(const MultipleSequenceAlignmentData* ptr1, const MultipleSequenceAlignment& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator==(const MultipleSequenceAlignment &ptr1, const MultipleSequenceAlignment &ptr2) {
+inline bool operator==(const MultipleSequenceAlignment& ptr1, const MultipleSequenceAlignment& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleSequenceAlignment &ptr1, const MultipleSequenceAlignmentData *ptr2) {
+inline bool operator==(const MultipleSequenceAlignment& ptr1, const MultipleSequenceAlignmentData* ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleSequenceAlignmentData *ptr1, const MultipleSequenceAlignment &ptr2) {
+inline bool operator==(const MultipleSequenceAlignmentData* ptr1, const MultipleSequenceAlignment& ptr2) {
     return *ptr1 == *ptr2;
 }
 

@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-CopyDataTask::CopyDataTask(IOAdapterFactory *_ioFrom, const GUrl &_urlFrom, IOAdapterFactory *_ioTo, const GUrl &_urlTo)
+CopyDataTask::CopyDataTask(IOAdapterFactory* _ioFrom, const GUrl& _urlFrom, IOAdapterFactory* _ioTo, const GUrl& _urlTo)
     : Task(tr("Copy Data Task"), TaskFlag_None), ioFrom(_ioFrom), ioTo(_ioTo),
       urlFrom(_urlFrom), urlTo(_urlTo) {
     assert(ioFrom != nullptr && ioTo != nullptr);

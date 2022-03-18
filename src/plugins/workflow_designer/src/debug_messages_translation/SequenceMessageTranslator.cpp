@@ -26,18 +26,18 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowContext.h>
 
-const char *SEQUENCE_NAME_LABEL = "Name: ";
-const char *SEQUENCE_LENGTH_LABEL = " Length: ";
-const char *SEQUENCE_CONTENT_LABEL = " Content: ";
-const char *SEQUENCE_CONTENT_ENDING = "...";
+const char* SEQUENCE_NAME_LABEL = "Name: ";
+const char* SEQUENCE_LENGTH_LABEL = " Length: ";
+const char* SEQUENCE_CONTENT_LABEL = " Content: ";
+const char* SEQUENCE_CONTENT_ENDING = "...";
 const int COUNT_OF_DISPLAYING_SEQUENCE_SYMBOLS = 100;
 
 namespace U2 {
 
 using namespace Workflow;
 
-SequenceMessageTranslator::SequenceMessageTranslator(const QVariant &atomicMessage,
-                                                     WorkflowContext *initContext)
+SequenceMessageTranslator::SequenceMessageTranslator(const QVariant& atomicMessage,
+                                                     WorkflowContext* initContext)
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Invalid sequence data supplied!", );
     SharedDbiDataHandler sequenceId = source.value<SharedDbiDataHandler>();

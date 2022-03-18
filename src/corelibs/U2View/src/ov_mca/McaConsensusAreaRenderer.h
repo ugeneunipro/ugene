@@ -30,12 +30,12 @@ class McaReferenceCharController;
 
 class McaConsensusAreaRenderer : public MaConsensusAreaRenderer {
 public:
-    McaConsensusAreaRenderer(MaEditorConsensusArea *area);
+    McaConsensusAreaRenderer(MaEditorConsensusArea* area);
 
 private:
-    void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
+    void drawRuler(QPainter& painter, const ConsensusRenderSettings& settings);
 
-    McaReferenceCharController *refCharController;
+    McaReferenceCharController* refCharController;
 };
 
 }  // namespace U2

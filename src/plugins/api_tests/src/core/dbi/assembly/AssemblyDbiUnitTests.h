@@ -38,17 +38,17 @@ class AssemblyTestData {
 public:
     static void init();
     static void shutdown();
-    static U2AssemblyDbi *getAssemblyDbi();
+    static U2AssemblyDbi* getAssemblyDbi();
     static void close();
-    static QList<U2DataId> *getAssemblyIds() {
+    static QList<U2DataId>* getAssemblyIds() {
         return assemblyIds;
     };
 
 public:
-    static U2AssemblyDbi *assemblyDbi;
-    static QList<U2DataId> *assemblyIds;
+    static U2AssemblyDbi* assemblyDbi;
+    static QList<U2DataId>* assemblyIds;
 
-    static const QString &ASS_DB_URL;
+    static const QString& ASS_DB_URL;
 
 protected:
     static TestDbiProvider dbiProvider;

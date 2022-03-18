@@ -32,16 +32,16 @@ class SaveDocumentController;
 
 class AddNewDocumentDialogImpl : public QDialog, public Ui_AddNewDocumentDialog {
     Q_OBJECT
-    AddNewDocumentDialogImpl(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c);
+    AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDialogModel& m, const DocumentFormatConstraints& c);
     friend class AddNewDocumentDialogController;
 
 public slots:
     void accept();
 
 private:
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
     AddNewDocumentDialogModel model;
-    DocumentFormatComboboxController *formatController;
+    DocumentFormatComboboxController* formatController;
 };
 
 }  // namespace U2

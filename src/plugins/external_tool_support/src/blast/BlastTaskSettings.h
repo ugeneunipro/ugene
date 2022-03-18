@@ -96,61 +96,70 @@ public:
     BlastTaskSettings();
     void reset();
 
-    QString programName;    //-p Program Name [String]
-    QString databaseNameAndPath;    //-d database [String]
-    QString filter;    //-F Filter query sequence (DUST with blastn, SEG with others) [String] : default = T
-    float expectValue;    //-e Expectation value [Real] : default = 10.0
-    bool megablast;    //-n MegaBlast search [T/F]
+    QString programName;  //-p Program Name [String]
+    QString databaseNameAndPath;  //-d database [String]
+    QString filter;  //-F Filter query sequence (DUST with blastn, SEG with others) [String] : default = T
+    float expectValue;  //-e Expectation value [Real] : default = 10.0
+    bool megablast;  //-n MegaBlast search [T/F]
 
-    int wordSize;    //-W Word size, default if zero (blastn 11, megablast 28, all others 3) [Integer] up to 99
-    int gapOpenCost;    //-G Cost to open a gap (-1 invokes default behavior) [Integer]
-    int gapExtendCost;    //-E Cost to extend a gap (-1 invokes default behavior) [Integer]
+    int wordSize;  //-W Word size, default if zero (blastn 11, megablast 28, all others 3) [Integer] up to 99
+    int gapOpenCost;  //-G Cost to open a gap (-1 invokes default behavior) [Integer]
+    int gapExtendCost;  //-E Cost to extend a gap (-1 invokes default behavior) [Integer]
     bool isDefaultCosts;
 
-    bool isGappedAlignment;    //-g Perform gapped alignment (not available with tblastx)
-    //only for nucleotide sequence
-    int mismatchPenalty;    //-q Penalty for a nucleotide mismatch (blastn only) [Integer]
-    int matchReward;    //-r Reward for a nucleotide match (blastn only) [Integer]
+    bool isGappedAlignment;  //-g Perform gapped alignment (not available with tblastx)
+    // only for nucleotide sequence
+    int mismatchPenalty;  //-q Penalty for a nucleotide mismatch (blastn only) [Integer]
+    int matchReward;  //-r Reward for a nucleotide match (blastn only) [Integer]
     bool isDefaultScores;
-    //only for protein sequence
-    QString matrix;    //-M Matrix [String] : default = BLOSUM62
+    // only for protein sequence
+    QString matrix;  //-M Matrix [String] : default = BLOSUM62
     bool isDefaultMatrix;
 
-    //X dropoff
-    int xDropoffGA;    //-X  X dropoff value for gapped alignment (in bits) blastn 30, megablast 20, tblastx 0, all others 15 [Integer]
-    float xDropoffUnGA;    //-y  X dropoff value for ungapped extensions in bits blastn 20, megablast 10, all others 7 [Real]
-    int xDropoffFGA;    //-Z  X dropoff value for final gapped alignment in bits blastn/megablast 100, tblastx 0, all others 25 [Integer]
+    // X dropoff
+    int xDropoffGA;  //-X  X dropoff value for gapped alignment (in bits) blastn 30, megablast 20, tblastx 0, all others 15 [Integer]
+    float xDropoffUnGA;  //-y  X dropoff value for ungapped extensions in bits blastn 20, megablast 10, all others 7 [Real]
+    int xDropoffFGA;  //-Z  X dropoff value for final gapped alignment in bits blastn/megablast 100, tblastx 0, all others 25 [Integer]
 
-    int windowSize;    //-A  Multiple Hits window size, default if zero (blastn/megablast 0, all others 40 [Integer]
+    int windowSize;  //-A  Multiple Hits window size, default if zero (blastn/megablast 0, all others 40 [Integer]
     bool isDefaultThreshold;
-    float threshold;    //-f  Threshold for extending hits, default if zero blastp 11, blastn 0, blastx 12, tblastn 13 tblastx 13, megablast 0 [Real]
+    float threshold;  //-f  Threshold for extending hits, default if zero blastp 11, blastn 0, blastx 12, tblastn 13 tblastx 13, megablast 0 [Real]
 
-    QString queryFile;    //-i Query File [File In]
-    QByteArray querySequence;
-    bool isSequenceCircular;    // if the sequence is circular, UGENE will expand the sequence
-        // and results on circular junction will be found
-    QString outputResFile;    //Output file with annotations
-    QString outputOriginalFile;    //-o BLAST report Output File [File Out]  Optional
-    int outputType;    //-m Type of BLAST report Output File [File Out]  Optional
+    QString queryFile;  //-i Query File [File In]
 
-    int numberOfProcessors;    //-a Number of processors to use [Integer]
-    int numberOfHits;    //-K Number of best hits from a region to keep. Off by default.  If used a value of 100 is recommended.
+    /** List of sequences to query. */
+    QList<QByteArray> querySequences;
 
-    QString compStats;    //-comp_based_stats <String> (-C in blastall)
+    bool isSequenceCircular;  // if the sequence is circular, UGENE will expand the sequence
+                              // and results on circular junction will be found
+    QString outputResFile;  // Output file with annotations
+    QString outputOriginalFile;  //-o BLAST report Output File [File Out]  Optional
+    int outputType;  //-m Type of BLAST report Output File [File Out]  Optional
+
+    int numberOfProcessors;  //-a Number of processors to use [Integer]
+    int numberOfHits;  //-K Number of best hits from a region to keep. Off by default.  If used a value of 100 is recommended.
+
+    QString compStats;  //-comp_based_stats <String> (-C in blastall)
 
     bool isNucleotideSeq;
-    const DNAAlphabet *alphabet;
-    //settings for annotations
+    const DNAAlphabet* alphabet;
+    // settings for annotations
     bool needCreateAnnotations;
     StrandSource strandSource;
-    AnnotationTableObject *aobj;
+    AnnotationTableObject* aobj;
     QString groupName;
     QString annDescription;
-    int offsInGlobalSeq;
+
+    /**
+     * Extra offset added to all BLAST results.
+     * Used to when BLAST results should be applied as annotations to some region of the global sequence.
+     */
+    int resultRegionOffset;
+
     TriState directStrand;
 
     // service settings
-    U2SequenceObject *querySequenceObject;    // can be NULL
+    U2SequenceObject* querySequenceObject;  // can be NULL
 };
-}    // namespace U2
-#endif    // _U2_BLAST_TASK_SETTINGS_H
+}  // namespace U2
+#endif  // _U2_BLAST_TASK_SETTINGS_H

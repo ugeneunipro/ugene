@@ -32,33 +32,62 @@ namespace HI {
 class HI_EXPORT GTTreeWidget {
 public:
     // expands treeWidget to the item and returns item's rect
-    static QRect getItemRect(GUITestOpStatus &os, QTreeWidgetItem *item);
+    static QRect getItemRect(GUITestOpStatus& os, QTreeWidgetItem* item);
 
-    static QPoint getItemCenter(GUITestOpStatus &os, QTreeWidgetItem *item);
+    static QPoint getItemCenter(GUITestOpStatus& os, QTreeWidgetItem* item);
 
-    // recursively expands the tree making the given item visible
-    // fails if item is NULL, item is hidden or item wasn't expanded
-    static void expand(GUITestOpStatus &os, QTreeWidgetItem *item);
+    /**
+     * Recursively expands the tree making the given item visible.
+     * Fails if item is null or item is hidden or item can't be expanded (has no children).
+     * Does nothing if the item already expanded.
+     */
+    static void expand(GUITestOpStatus& os, QTreeWidgetItem* item);
+
+    /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
+    static void checkItemIsExpanded(HI::GUITestOpStatus& os, QTreeWidgetItem* item);
 
     // Checks the tree item or unchecks it if it is already checked
-    static void checkItem(GUITestOpStatus &os, QTreeWidgetItem *item, int column = 0, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    static void checkItem(GUITestOpStatus& os, QTreeWidgetItem* item, int column = 0, GTGlobals::UseMethod method = GTGlobals::UseMouse);
 
     // gets all items under root recursively and returns a list of them
-    static QList<QTreeWidgetItem *> getItems(QTreeWidgetItem *root);
-    static QList<QTreeWidgetItem *> getItems(GUITestOpStatus &os, QTreeWidget *treeWidget);
-    static QStringList getItemNames(GUITestOpStatus &os, QTreeWidget *treeWidget);
+    static QList<QTreeWidgetItem*> getItems(QTreeWidgetItem* root);
+    static QList<QTreeWidgetItem*> getItems(GUITestOpStatus& os, QTreeWidget* treeWidget);
+    static QStringList getItemNames(GUITestOpStatus& os, QTreeWidget* treeWidget);
 
-    static QTreeWidgetItem *findItem(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QTreeWidgetItem* findItem(GUITestOpStatus& os,
+                                     QTreeWidget* tree,
+                                     const QString& text,
+                                     QTreeWidgetItem* parent = nullptr,
+                                     int column = 0,
+                                     const GTGlobals::FindOptions& options = {},
+                                     bool expandParent = true);
 
-    static QList<QTreeWidgetItem *> findItems(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QList<QTreeWidgetItem*> findItems(GUITestOpStatus& os,
+                                             QTreeWidget* tree,
+                                             const QString& text,
+                                             QTreeWidgetItem* parent = nullptr,
+                                             int column = 0,
+                                             const GTGlobals::FindOptions& options = {});
 
-    static void click(GUITestOpStatus &os, QTreeWidgetItem *item, int column = -1);  //  column == -1 - item center
+    static void click(GUITestOpStatus& os, QTreeWidgetItem* item, int column = -1);  //  column == -1 - item center
+    static void doubleClick(GUITestOpStatus& os, QTreeWidgetItem* item, int column = -1);
 
     // Returns item level, 0 - top level item
-    static int getItemLevel(GUITestOpStatus &os, QTreeWidgetItem *item);
+    static int getItemLevel(GUITestOpStatus& os, QTreeWidgetItem* item);
+
+    /** Scroll to the item to guarantee the item is visible. */
+    static void scrollToItem(GUITestOpStatus& os, QTreeWidgetItem* item);
+
+    /** Returns visual string representation of the item for logging. */
+    static QString toString(QTreeWidgetItem* item);
 
 private:
-    static QTreeWidgetItem *findItemPrivate(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QTreeWidgetItem* findItemPrivate(GUITestOpStatus& os,
+                                            QTreeWidget* tree,
+                                            const QString& text,
+                                            QTreeWidgetItem* parent = nullptr,
+                                            int column = 0,
+                                            const GTGlobals::FindOptions& options = {});
 };
 
 }  // namespace HI

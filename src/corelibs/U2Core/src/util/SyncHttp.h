@@ -37,7 +37,7 @@ namespace U2 {
 class U2CORE_EXPORT SyncHttp : public QNetworkAccessManager {
     Q_OBJECT
 public:
-    SyncHttp(U2OpStatus &os, QObject *parent = nullptr);
+    SyncHttp(U2OpStatus& os, QObject* parent = nullptr);
     ~SyncHttp();
 
     /**
@@ -45,7 +45,7 @@ public:
      * The method creates new event loop that will block the current one until request is finished.
      * Consider a better approach before start using this method.
      */
-    QString syncGet(const QUrl &url, int timeoutMillis);
+    QString syncGet(const QUrl& url, int timeoutMillis);
 
     QNetworkReply::NetworkError error() const {
         return err;
@@ -54,28 +54,28 @@ public:
         return errString;
     }
 protected slots:
-    virtual void finished(QNetworkReply *);
-    virtual void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
+    virtual void finished(QNetworkReply*);
+    virtual void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
     void sl_taskCancellingCheck();
 
 private:
     void runStateCheckTimer();
 
-    QEventLoop *loop;
+    QEventLoop* loop;
     QNetworkReply::NetworkError err;
     QString errString;
-    U2OpStatus &os;
+    U2OpStatus& os;
 };
 
 class ReplyTimeout : public QObject {
     Q_OBJECT
 public:
-    ReplyTimeout(QNetworkReply *reply, int timeoutMillis);
+    ReplyTimeout(QNetworkReply* reply, int timeoutMillis);
 
-    static void set(QNetworkReply *reply, int timeoutMillis);
+    static void set(QNetworkReply* reply, int timeoutMillis);
 
 protected:
-    void timerEvent(QTimerEvent *timerEvent);
+    void timerEvent(QTimerEvent* timerEvent);
 
 private:
     QBasicTimer timer;

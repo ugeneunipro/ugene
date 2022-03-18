@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-QString SWMulAlignSubseqPropTag::expandTag(const QVariant &argument) const {
+QString SWMulAlignSubseqPropTag::expandTag(const QVariant& argument) const {
     assert(argument.canConvert<U2Region>());
     U2Region subsequence = argument.value<U2Region>();
 

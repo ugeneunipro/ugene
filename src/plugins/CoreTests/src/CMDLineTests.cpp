@@ -49,7 +49,7 @@ namespace U2 {
 /************************
  * GTest_RunCMDLine
  ************************/
-void GTest_RunCMDLine::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_RunCMDLine::init(XMLTestFormat*, const QDomElement& el) {
     setUgeneclPath();
     setArgs(el);
     proc = new QProcess(this);
@@ -73,7 +73,7 @@ void GTest_RunCMDLine::init(XMLTestFormat *, const QDomElement &el) {
     QDir protoDir(protoPath);
     protoDir.setNameFilters({"*.usa"});
     QFileInfoList protoScriptFiles = protoDir.entryInfoList();
-    for (const QFileInfo &protoScriptFile : qAsConst(protoScriptFiles)) {
+    for (const QFileInfo& protoScriptFile : qAsConst(protoScriptFiles)) {
         QFileInfo targetScriptFile(userScriptsDir.path() + "/" + protoScriptFile.fileName());
         if (!targetScriptFile.exists() || protoScriptFile.size() != targetScriptFile.size()) {
             QFile::copy(protoScriptFile.absoluteFilePath(), targetScriptFile.absoluteFilePath());
@@ -81,7 +81,7 @@ void GTest_RunCMDLine::init(XMLTestFormat *, const QDomElement &el) {
     }
 }
 
-void GTest_RunCMDLine::setArgs(const QDomElement &el) {
+void GTest_RunCMDLine::setArgs(const QDomElement& el) {
     args.append("--log-level-details");
     args.append("--lang=en");
     args.append("--log-no-task-progress");
@@ -115,12 +115,12 @@ void GTest_RunCMDLine::setArgs(const QDomElement &el) {
     cmdLog.info(args.join(" "));
 }
 
-QString GTest_RunCMDLine::splitVal(const QString &val, const QString &prefValue, const QString &prefix, bool isTmp) {
+QString GTest_RunCMDLine::splitVal(const QString& val, const QString& prefValue, const QString& prefix, bool isTmp) {
     int midSize = prefValue.size();
     const QString splitter = WorkflowUtils::getDatasetSplitter(val);
     QStringList dsVals = val.split(splitter + splitter);
     QStringList result;
-    foreach (const QString &dsVal, dsVals) {
+    foreach (const QString& dsVal, dsVals) {
         QStringList realVals = dsVal.split(splitter);
         QStringList dsResult;
         foreach (QString s, realVals) {
@@ -138,7 +138,7 @@ QString GTest_RunCMDLine::splitVal(const QString &val, const QString &prefValue,
     return result.join(";;");
 }
 
-QString GTest_RunCMDLine::getVal(const QString &val) {
+QString GTest_RunCMDLine::getVal(const QString& val) {
     if (val.isEmpty()) {
         return val;
     }
@@ -189,7 +189,7 @@ void GTest_RunCMDLine::prepare() {
 }
 
 static const QString ERROR_LABEL_TRY1 = "finished with error";
-static QString getErrorMsg(const QString &str) {
+static QString getErrorMsg(const QString& str) {
     int ind = str.indexOf(ERROR_LABEL_TRY1);
     if (ind != -1) {
         return str.mid(ind + ERROR_LABEL_TRY1.size());
@@ -241,7 +241,7 @@ Task::ReportResult GTest_RunCMDLine::report() {
 
 void GTest_RunCMDLine::cleanup() {
     if (!XMLTestUtils::parentTasksHaveError(this)) {
-        foreach (const QString &file, tmpFiles) {
+        foreach (const QString& file, tmpFiles) {
             taskLog.trace(QString("Temporary file removed: %1").arg(file));
             QFile::remove(file);
         }
@@ -258,8 +258,8 @@ void GTest_RunCMDLine::cleanup() {
 /************************
  * GTest_RunCMDLine
  ************************/
-QList<XMLTestFactory *> CMDLineTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> CMDLineTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_RunCMDLine::createFactory());
     return res;
 }

@@ -39,12 +39,12 @@ POSTERIOR_CHECK_DEFINITION(post_check_0001) {
     // Check there are no modal widgets
     // Check there are no popup widgets
 
-    QWidget *modalWidget = QApplication::activeModalWidget();
+    QWidget* modalWidget = QApplication::activeModalWidget();
     if (modalWidget != nullptr) {
         CHECK_SET_ERR(modalWidget == nullptr, QString("There is a modal widget after test finish: %1").arg(modalWidget->windowTitle()));
     }
 
-    QWidget *popupWidget = QApplication::activePopupWidget();
+    QWidget* popupWidget = QApplication::activePopupWidget();
     CHECK_SET_ERR(popupWidget == nullptr, "There is a popup widget after test finish");
 }
 

@@ -39,89 +39,100 @@ class GraphLabelTextBox;
 class GTUtilsSequenceView {
 public:
     /** Returns active sequence view window or fails if not found. */
-    static QWidget *getActiveSequenceViewWindow(HI::GUITestOpStatus &os);
+    static QWidget* getActiveSequenceViewWindow(HI::GUITestOpStatus& os);
 
     /** Checks that there is an active sequence view window or fails if not found. */
-    static void checkSequenceViewWindowIsActive(HI::GUITestOpStatus &os);
+    static void checkSequenceViewWindowIsActive(HI::GUITestOpStatus& os);
 
     /** Checks that there is no sequence view window opened: either active or non-active. */
-    static void checkNoSequenceViewWindowIsOpened(HI::GUITestOpStatus &os);
+    static void checkNoSequenceViewWindowIsOpened(HI::GUITestOpStatus& os);
 
-    static void getSequenceAsString(HI::GUITestOpStatus &os, QString &sequence);
-    static QString getSequenceAsString(HI::GUITestOpStatus &os, int number = 0);
-    static QString getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length);
-    static QString getEndOfSequenceAsString(HI::GUITestOpStatus &os, int length);
-    static int getLengthOfSequence(HI::GUITestOpStatus &os);
-    static int getVisibleStart(HI::GUITestOpStatus &os, int widgetNumber = 0);
-    static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
-    static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
-    static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString &multipleRangeString);
+    static void getSequenceAsString(HI::GUITestOpStatus& os, QString& sequence);
+    static QString getSequenceAsString(HI::GUITestOpStatus& os, int number = 0);
+    static QString getBeginOfSequenceAsString(HI::GUITestOpStatus& os, int length);
+    static QString getEndOfSequenceAsString(HI::GUITestOpStatus& os, int length);
+    static int getLengthOfSequence(HI::GUITestOpStatus& os);
+    static int getVisibleStart(HI::GUITestOpStatus& os, int widgetNumber = 0);
+    static U2Region getVisibleRange(HI::GUITestOpStatus& os, int widgetNumber = 0);
+    static void checkSequence(HI::GUITestOpStatus& os, const QString& expectedSequence);
+    static void selectSequenceRegion(HI::GUITestOpStatus& os, int from, int to);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus& os, const QString& multipleRangeString);
 
-    static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
-    static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static void openSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName);
+    static void addSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName);
 
-    static void goToPosition(HI::GUITestOpStatus &os, qint64 position);
+    static void goToPosition(HI::GUITestOpStatus& os, qint64 position);
 
     /** Moves mouse to the safe sequence view area (Pan or Det view, not a scrollbar) and clicks (brings focus) into it. */
-    static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os);
+    static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus& os);
 
     /** Opens popup menu safely on the sequence view. The sequence view must have either Det or Pan view widget. */
-    static void openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus &os, int number = 0);
+    static void openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus& os, int number = 0);
 
     /**
      * Returns currently opened PanView or DetView widget.
      * This method is useful to trigger mouse events over a sequence safely with no chance of hitting scrollbars, etc...
      */
-    static QWidget *getPanOrDetView(HI::GUITestOpStatus &os, int number = 0);
+    static QWidget* getPanOrDetView(HI::GUITestOpStatus& os, int number = 0);
 
-    static ADVSingleSequenceWidget *getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static DetView *getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static PanView *getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static Overview *getOverviewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static int getSeqWidgetsNumber(HI::GUITestOpStatus &os);
-    static QVector<U2Region> getSelection(HI::GUITestOpStatus &os, int number = 0);
-    static QString getSeqName(HI::GUITestOpStatus &os, int number = 0);
-    static QString getSeqName(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget);
+    static ADVSingleSequenceWidget* getSeqWidgetByNumber(HI::GUITestOpStatus& os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static DetView* getDetViewByNumber(HI::GUITestOpStatus& os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static PanView* getPanViewByNumber(HI::GUITestOpStatus& os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static Overview* getOverviewByNumber(HI::GUITestOpStatus& os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static int getSeqWidgetsNumber(HI::GUITestOpStatus& os);
+    static QVector<U2Region> getSelection(HI::GUITestOpStatus& os, int number = 0);
+    static QString getSeqName(HI::GUITestOpStatus& os, int number = 0);
+    static QString getSeqName(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget);
+
+    /** Move mouse (hovers) to the annotation in the DetView. */
+    static void moveMouseToAnnotationInDetView(HI::GUITestOpStatus& os,
+                                               const QString& annotationName,
+                                               int annotationRegionStartPos,
+                                               int sequenceWidgetIndex = 0);
 
     /**
      * Clicks on the center of the annotation region in DetView.
      * Locates the region to click by the annotationName and annotationRegionStartPos(visual, starts with 1) that must be one of the location.region.startPos.
-     * */
-    static void clickAnnotationDet(HI::GUITestOpStatus &os, const QString &annotationName, int annotationRegionStartPos, int sequenceWidgetIndex = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+     */
+    static void clickAnnotationDet(HI::GUITestOpStatus& os,
+                                   const QString& annotationName,
+                                   int annotationRegionStartPos,
+                                   int sequenceWidgetIndex = 0,
+                                   bool isDoubleClick = false,
+                                   Qt::MouseButton button = Qt::LeftButton);
 
-    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(HI::GUITestOpStatus& os, QString name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
-    static GSequenceGraphView *getGraphView(HI::GUITestOpStatus &os);
-    static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
-    static QList<GraphLabelTextBox *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
-    static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+    static GSequenceGraphView* getGraphView(HI::GUITestOpStatus& os);
+    static QList<QVariant> getLabelPositions(HI::GUITestOpStatus& os, GSequenceGraphView* graph);
+    static QList<GraphLabelTextBox*> getGraphLabels(HI::GUITestOpStatus& os, GSequenceGraphView* graph);
+    static QColor getGraphColor(HI::GUITestOpStatus& os, GSequenceGraphView* graph);
 
     /** Toggle graph visibility by graph name. */
-    static void toggleGraphByName(HI::GUITestOpStatus &os, const QString &graphName, int sequenceViewIndex = 0);
+    static void toggleGraphByName(HI::GUITestOpStatus& os, const QString& graphName, int sequenceViewIndex = 0);
 
     /** Clicks zoom in button. */
-    static void zoomIn(HI::GUITestOpStatus &os, int sequenceViewIndex = 0);
+    static void zoomIn(HI::GUITestOpStatus& os, int sequenceViewIndex = 0);
 
-    static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
+    static void enableEditingMode(HI::GUITestOpStatus& os, bool enable = true, int sequenceNumber = 0);
 
     /** Enables editing mode, sets cursor to the offset, enters the sequence and disables editing mode. */
-    static void insertSubsequence(HI::GUITestOpStatus &os, qint64 offset, const QString &subsequence, bool isDirectStrand = true);
+    static void insertSubsequence(HI::GUITestOpStatus& os, qint64 offset, const QString& subsequence, bool isDirectStrand = true);
 
     /** It is supposed, that the editing mode is enabled and DetView is visible.
       * The method sets the cursor before the @position (0-based) in the first sequence in the view
       The case with translations and turned off complementary supported bad, let's try to avoid this situation now
       **/
-    static void setCursor(HI::GUITestOpStatus &os, qint64 position, bool clickOnDirectLine = false, bool doubleClick = false);
+    static void setCursor(HI::GUITestOpStatus& os, qint64 position, bool clickOnDirectLine = false, bool doubleClick = false);
 
-    static qint64 getCursor(HI::GUITestOpStatus &os);
+    static qint64 getCursor(HI::GUITestOpStatus& os);
 
-    static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region &region);
+    static QString getRegionAsString(HI::GUITestOpStatus& os, const U2Region& region);
 
-    static void clickOnDetView(HI::GUITestOpStatus &os);
+    static void clickOnDetView(HI::GUITestOpStatus& os);
 
     /** Enables det-view widget if it is not visible. */
-    static void makeDetViewVisible(HI::GUITestOpStatus &os);
+    static void makeDetViewVisible(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

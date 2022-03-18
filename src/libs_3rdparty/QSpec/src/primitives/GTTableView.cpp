@@ -27,7 +27,7 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTSpinBox"
 #define GT_METHOD_NAME "getCellPosition"
-QPoint GTTableView::getCellPosition(GUITestOpStatus &os, QTableView *table, int column, int row) {
+QPoint GTTableView::getCellPosition(GUITestOpStatus& os, QTableView* table, int column, int row) {
     GT_CHECK_RESULT(table, "table view is NULL", {});
     QPoint p(table->columnViewportPosition(column) + table->columnWidth(column) / 2,
              table->rowViewportPosition(row) + table->rowHeight(row) * 1.5);
@@ -36,17 +36,17 @@ QPoint GTTableView::getCellPosition(GUITestOpStatus &os, QTableView *table, int 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollTo"
-void GTTableView::scrollTo(GUITestOpStatus &os, QTableView *table, const QModelIndex &index) {
+void GTTableView::scrollTo(GUITestOpStatus& os, QTableView* table, const QModelIndex& index) {
     // TODO: set index by mouse/keyboard
     class MainThreadAction : public CustomScenario {
     public:
-        MainThreadAction(QTableView *_table, const QModelIndex &_index)
+        MainThreadAction(QTableView* _table, const QModelIndex& _index)
             : table(_table), index(_index) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             table->scrollTo(index);
         }
-        QTableView *table = nullptr;
+        QTableView* table = nullptr;
         QModelIndex index;
     };
     GTThread::runInMainThread(os, new MainThreadAction(table, index));
@@ -54,17 +54,17 @@ void GTTableView::scrollTo(GUITestOpStatus &os, QTableView *table, const QModelI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCellPoint"
-QPoint GTTableView::getCellPoint(GUITestOpStatus &os, QTableView *table, int row, int column) {
+QPoint GTTableView::getCellPoint(GUITestOpStatus& os, QTableView* table, int row, int column) {
     QModelIndex idx = table->model()->index(row, column);
     scrollTo(os, table, idx);
     QRect cellRect = table->visualRect(idx);
-    QWidget *viewport = table->viewport();
+    QWidget* viewport = table->viewport();
     return viewport->mapToGlobal(cellRect.center());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "rowCount"
-int GTTableView::rowCount(GUITestOpStatus &os, QTableView *table) {
+int GTTableView::rowCount(GUITestOpStatus& os, QTableView* table) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", -1);
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", -1);
     return table->model()->rowCount(QModelIndex());
@@ -72,7 +72,7 @@ int GTTableView::rowCount(GUITestOpStatus &os, QTableView *table) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "data"
-QString GTTableView::data(GUITestOpStatus &os, QTableView *table, int row, int column) {
+QString GTTableView::data(GUITestOpStatus& os, QTableView* table, int row, int column) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", "");
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", "");
 

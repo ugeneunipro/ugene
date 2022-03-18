@@ -29,11 +29,11 @@ U2ObjectRelation::U2ObjectRelation()
     : referencedType(GObjectTypes::UNKNOWN), relationRole(ObjectRole_Sequence) {
 }
 
-bool U2ObjectRelation::operator==(const U2ObjectRelation &other) const {
+bool U2ObjectRelation::operator==(const U2ObjectRelation& other) const {
     return referencedObject == other.referencedObject && referencedName == other.referencedName && referencedType == other.referencedType && relationRole == other.relationRole;
 }
 
-U2ObjectRelationsDbi::U2ObjectRelationsDbi(U2Dbi *rootDbi)
+U2ObjectRelationsDbi::U2ObjectRelationsDbi(U2Dbi* rootDbi)
     : U2ChildDbi(rootDbi) {
 }
 

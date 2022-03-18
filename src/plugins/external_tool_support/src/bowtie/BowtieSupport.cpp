@@ -29,11 +29,11 @@ namespace U2 {
 const QString BowtieSupport::ET_BOWTIE_ID = "USUPP_BOWTIE";
 const QString BowtieSupport::ET_BOWTIE_BUILD_ID = "USUPP_BOWTIE_BUILD";
 
-static QString getBowtieToolNameById(const QString &id) {
+static QString getBowtieToolNameById(const QString& id) {
     return id == BowtieSupport::ET_BOWTIE_ID ? "Bowtie aligner" : "Bowtie build indexer";
 }
 
-BowtieSupport::BowtieSupport(const QString &id)
+BowtieSupport::BowtieSupport(const QString& id)
     : ExternalTool(id, "bowtie1", getBowtieToolNameById(id)) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -65,4 +65,4 @@ BowtieSupport::BowtieSupport(const QString &id)
     toolKitName = "Bowtie";
 }
 
-}    // namespace U2
+}  // namespace U2

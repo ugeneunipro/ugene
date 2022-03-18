@@ -43,7 +43,7 @@ namespace U2 {
 #define DIR_MARKER_CLASS "dir-marker"
 #define DATASET_MARKER_CLASS "dataset-marker"
 
-static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &dom) {
+static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement& dom) {
     QList<WorkerParametersInfo> workers;
     QDomElement navTabsEl = DomUtils::findChildElementByClass(dom, "params-nav-tabs", 2);
     QDomNodeList workerNameList = navTabsEl.elementsByTagName("li");
@@ -100,7 +100,7 @@ static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &d
     return workers;
 }
 
-static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Monitor::WorkerParamsInfo> &workerInfoList) {
+static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Monitor::WorkerParamsInfo>& workerInfoList) {
     QList<WorkerParametersInfo> result;
     for (auto workerInfo : qAsConst(workerInfoList)) {
         QList<WorkerParameterInfo> parameters;
@@ -113,13 +113,13 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
             QVariant valueVariant = p->getAttributePureValue();
             if (valueVariant.canConvert<QList<Dataset>>()) {
                 QList<Dataset> sets = valueVariant.value<QList<Dataset>>();
-                for (const Dataset &set : qAsConst(sets)) {
+                for (const Dataset& set : qAsConst(sets)) {
                     if (sets.size() > 1) {
                         name += ": " + set.getName();
                     }
                     QStringList urls;
-                    const QList<URLContainer *> urlContainers = set.getUrls();
-                    for (const auto &urlContainer : qAsConst(urlContainers)) {
+                    const QList<URLContainer*> urlContainers = set.getUrls();
+                    for (const auto& urlContainer : qAsConst(urlContainers)) {
                         urls << urlContainer->getUrl();
                     }
                     value = urls.join("\n");
@@ -141,7 +141,7 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
     return result;
 }
 
-ParametersDashboardWidget::ParametersDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor)
+ParametersDashboardWidget::ParametersDashboardWidget(const QString& dashboardDir, const QDomElement& dom, const WorkflowMonitor* monitor)
     : dashboardDir(dashboardDir), monitor(monitor) {
     setObjectName("ParametersDashboardWidget");
     setMinimumWidth(1100);
@@ -184,7 +184,7 @@ ParametersDashboardWidget::ParametersDashboardWidget(const QString &dashboardDir
 }
 
 void ParametersDashboardWidget::sl_workerLabelClicked() {
-    auto label = qobject_cast<HoverQLabel *>(sender());
+    auto label = qobject_cast<HoverQLabel*>(sender());
     CHECK(label != nullptr, );
     bool ok = false;
     int index = label->property("worker-index").toInt(&ok);
@@ -194,7 +194,7 @@ void ParametersDashboardWidget::sl_workerLabelClicked() {
 
 void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
     CHECK(workerIndex >= 0 && workerIndex <= workers.size(), );
-    QLayoutItem *item;
+    QLayoutItem* item;
     while ((item = parametersGridLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
@@ -215,7 +215,7 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
 
     // Parameters table.
     addTableHeadersRow(parametersGridLayout, QStringList() << tr("Parameter") << tr("Value"));
-    QList<WorkerParameterInfo> &parameters = workers[workerIndex].parameters;
+    QList<WorkerParameterInfo>& parameters = workers[workerIndex].parameters;
     for (int parameterIndex = 0; parameterIndex < parameters.size(); parameterIndex++) {
         auto parameter = parameters[parameterIndex];
         bool isLastRow = parameterIndex == parameters.size() - 1;
@@ -248,12 +248,12 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
     }
 }
 
-bool ParametersDashboardWidget::isValidDom(const QDomElement &dom) {
+bool ParametersDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findChildElementByClass(dom, "params-nav-tabs", 2).isNull() &&
            !DomUtils::findChildElementByClass(dom, "params-tab-content", 2).isNull();
 }
 
-static QString getParameterTypeClass(const WorkerParameterInfo &parameter) {
+static QString getParameterTypeClass(const WorkerParameterInfo& parameter) {
     QString result = QString() + ((parameter.isUrl) ? URL_MARKER_CLASS : "") + " " + ((parameter.isDir) ? DIR_MARKER_CLASS : "") + " " + ((parameter.isDataset) ? DATASET_MARKER_CLASS : "");
     return result.isEmpty() ? QString() : " class=\"" + result.trimmed() + "\"";
 }
@@ -298,11 +298,11 @@ QString ParametersDashboardWidget::toHtml() const {
     return html;
 }
 
-WorkerParametersInfo::WorkerParametersInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters)
+WorkerParametersInfo::WorkerParametersInfo(const QString& workerName, const QList<WorkerParameterInfo>& parameters)
     : workerName(workerName), parameters(parameters) {
 }
 
-WorkerParameterInfo::WorkerParameterInfo(const QString &name, const QString &value, bool isUrl, bool isDir, bool isDataset)
+WorkerParameterInfo::WorkerParameterInfo(const QString& name, const QString& value, bool isUrl, bool isDir, bool isDataset)
     : name(name), value(value), isUrl(isUrl), isDir(isDir), isDataset(isDataset) {
 }
 

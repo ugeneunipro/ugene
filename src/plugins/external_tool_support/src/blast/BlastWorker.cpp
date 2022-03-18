@@ -82,8 +82,8 @@ QString BlastWorkerFactory::getHitsDescription() {
 #define BLAST_GAPPED_ALN "gapped-aln"  // Perform gapped alignment (not available with tblastx)
 
 void BlastWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_SEQ_PORT_ID(), BlastWorker::tr("Input sequence"), BlastWorker::tr("Sequence for which annotations is searched."));
     Descriptor oud(BasePorts::OUT_ANNOTATIONS_PORT_ID(), BlastWorker::tr("Annotations"), BlastWorker::tr("Found annotations."));
 
@@ -116,7 +116,7 @@ void BlastWorkerFactory::init() {
     a << new Attribute(etp, BaseTypes::STRING_TYPE(), true, QVariant("default"));
     a << new Attribute(tdp, BaseTypes::STRING_TYPE(), true, QVariant("default"));
     a << new Attribute(ev, BaseTypes::NUM_TYPE(), false, QVariant(10.00));
-    Attribute *cbsAttr = new Attribute(cbs, BaseTypes::STRING_TYPE(), false, "D");
+    Attribute* cbsAttr = new Attribute(cbs, BaseTypes::STRING_TYPE(), false, "D");
     QVariantList cbsVisibilitylist;
     cbsVisibilitylist << "blastp"
                       << "blastx"
@@ -126,7 +126,7 @@ void BlastWorkerFactory::init() {
     a << new Attribute(mh, BaseTypes::NUM_TYPE(), false, QVariant(0));
     a << new Attribute(gn, BaseTypes::STRING_TYPE(), false, QVariant("blast_result"));
 
-    Attribute *gaAttr = new Attribute(ga, BaseTypes::BOOL_TYPE(), false, QVariant(true));
+    Attribute* gaAttr = new Attribute(ga, BaseTypes::BOOL_TYPE(), false, QVariant(true));
     QVariantList gaVisibilitylist;
     gaVisibilitylist << "blastn"
                      << "blastp"
@@ -137,7 +137,7 @@ void BlastWorkerFactory::init() {
 
     a << new Attribute(gc, BaseTypes::STRING_TYPE(), false, "2 2");
 
-    Attribute *msAttr = new Attribute(ms, BaseTypes::STRING_TYPE(), false, "1 -3");
+    Attribute* msAttr = new Attribute(ms, BaseTypes::STRING_TYPE(), false, "1 -3");
     QVariantMap scoresGapDependency = ExternalToolSupportUtils::getScoresGapDependencyMap();
     msAttr->addRelation(new ValuesRelation(BLAST_GAP_COSTS_VALUE, scoresGapDependency));
     a << msAttr;
@@ -146,8 +146,8 @@ void BlastWorkerFactory::init() {
     a << new Attribute(outtype, BaseTypes::STRING_TYPE(), false, QVariant("5"));
 
     Descriptor desc(ACTOR_ID, BlastWorker::tr("Local BLAST Search"), BlastWorker::tr("Finds annotations for DNA sequence in local database."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap m;
@@ -230,19 +230,19 @@ void BlastWorkerFactory::init() {
     proto->setValidator(new ToolsValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new BlastWorkerFactory());
 }
 
 /****************************
  * BlastPrompter
  ****************************/
-BlastPrompter::BlastPrompter(Actor *p)
+BlastPrompter::BlastPrompter(Actor* p)
     : PrompterBase<BlastPrompter>(p) {
 }
 QString BlastPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     QString doc = tr("For sequence <u>%1</u> find annotations in database <u>%2</u>.")
@@ -254,7 +254,7 @@ QString BlastPrompter::composeRichDoc() {
 /****************************
  * BlastWorker
  ****************************/
-BlastWorker::BlastWorker(Actor *a)
+BlastWorker::BlastWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -263,7 +263,7 @@ void BlastWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *BlastWorker::tick() {
+Task* BlastWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -311,10 +311,10 @@ Task *BlastWorker::tick() {
         if (seq.length() < 1) {
             return new FailTask(tr("Empty sequence supplied to BLAST"));
         }
-        cfg.querySequence = seq.seq;
+        cfg.querySequences = {seq.seq};
         cfg.isSequenceCircular = seq.circular;
 
-        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(seq.seq);
+        const DNAAlphabet* alp = U2AlphabetUtils::findBestAlphabet(seq.seq);
         cfg.alphabet = alp;
         // TO DO: Check alphabet
         if (seq.alphabet->isAmino()) {
@@ -330,7 +330,7 @@ Task *BlastWorker::tick() {
         cfg.outputType = getValue<int>(BLAST_OUT_TYPE);
         cfg.outputOriginalFile = getValue<QString>(BLAST_ORIGINAL_OUT);
         if (cfg.outputType != 5 && cfg.outputOriginalFile.isEmpty()) {
-            return new FailTask(tr("Not selected BLAST output file"));
+            return new FailTask(tr("No selected BLAST output file"));
         }
 
         // TODO: big copy-paste with what we have in BlastSupport.
@@ -365,7 +365,7 @@ Task *BlastWorker::tick() {
         cfg.matchReward = matchScores.split(" ").at(0).toInt();
         cfg.mismatchPenalty = matchScores.split(" ").at(1).toInt();
 
-        ExternalToolSupportTask *task = nullptr;
+        ExternalToolSupportTask* task = nullptr;
         if (cfg.programName == "blastn") {
             task = new BlastNTask(cfg);
         } else if (cfg.programName == "blastp") {
@@ -389,13 +389,13 @@ Task *BlastWorker::tick() {
 }
 
 void BlastWorker::sl_taskFinished() {
-    BlastCommonTask *t = qobject_cast<BlastCommonTask *>(sender());
+    BlastCommonTask* t = qobject_cast<BlastCommonTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
 
-    if (nullptr != output) {
-        QList<SharedAnnotationData> res = t->getResultedAnnotations();
+    if (output != nullptr) {
+        QList<SharedAnnotationData> res = t->getResultAnnotations();
         QString annName = actor->getParameter(BLAST_GROUP_NAME)->getAttributeValue<QString>(context);
         if (!annName.isEmpty()) {
             for (int i = 0; i < res.count(); i++) {
@@ -414,11 +414,11 @@ void BlastWorker::cleanup() {
 /************************************************************************/
 /* Validator */
 /************************************************************************/
-bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
-    ExternalTool *tool = getTool(getValue<QString>(actor, BLAST_PROGRAM_NAME));
+bool ToolsValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& /*options*/) const {
+    ExternalTool* tool = getTool(getValue<QString>(actor, BLAST_PROGRAM_NAME));
     SAFE_POINT(tool != nullptr, "Blast tool is null", false);
 
-    Attribute *attr = actor->getParameter(BLAST_EXT_TOOL_PATH);
+    Attribute* attr = actor->getParameter(BLAST_EXT_TOOL_PATH);
     SAFE_POINT(attr != nullptr, "Blast path attribute is null", false);
 
     bool isValid = attr->isDefaultValue() ? !tool->getPath().isEmpty() : !attr->isEmpty();
@@ -432,7 +432,7 @@ bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificatio
     return isValid;
 }
 
-ExternalTool *ToolsValidator::getTool(const QString &programName) const {
+ExternalTool* ToolsValidator::getTool(const QString& programName) const {
     QString toolId = BlastSupport::getToolIdByProgramName(programName);
     return AppContext::getExternalToolRegistry()->getById(toolId);
 }

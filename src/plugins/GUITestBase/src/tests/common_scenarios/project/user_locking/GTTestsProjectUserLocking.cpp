@@ -55,12 +55,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 #define GT_METHOD_NAME "run"
     class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker(HI::GUITestOpStatus &_os, const QString &radioButtonName)
+        CreateAnnnotationDialogComboBoxChecker(HI::GUITestOpStatus& _os, const QString& radioButtonName)
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QRadioButton* btn = dialog->findChild<QRadioButton*>("rbExistingTable");
             GT_CHECK(btn != nullptr, "Radio button not found");
 
             if (!btn->isEnabled()) {
@@ -68,16 +68,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                 GTMouseDriver::click();
             }
 
-            QComboBox *comboBox = dialog->findChild<QComboBox *>();
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
             GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
 
     private:
@@ -108,12 +103,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 #define GT_METHOD_NAME "run"
     class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker(HI::GUITestOpStatus &_os, const QString &radioButtonName)
+        CreateAnnnotationDialogComboBoxChecker(HI::GUITestOpStatus& _os, const QString& radioButtonName)
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QRadioButton* btn = dialog->findChild<QRadioButton*>("rbExistingTable");
             GT_CHECK(btn != nullptr, "Radio button not found");
 
             if (!btn->isEnabled()) {
@@ -121,16 +116,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                 GTMouseDriver::click();
             }
 
-            QComboBox *comboBox = dialog->findChild<QComboBox *>();
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
             GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != nullptr, "cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
 
     private:
@@ -150,8 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "1.gb");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "action_open_view"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
 
@@ -205,13 +194,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(expectedImage == foundImage, "Icon is unlocked");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
@@ -228,7 +215,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsProject::openFile(os, dataDir + "samples/ABIF/A01.abi");
     GTUtilsProject::openFile(os, dataDir + "samples/Genbank/sars.gb");
-    Document *d = GTUtilsDocument::getDocument(os, "A01.abi");
+    Document* d = GTUtilsDocument::getDocument(os, "A01.abi");
     CHECK_SET_ERR(!d->isModificationAllowed(StateLockModType_AddChild), QString("Enable to perform locking/unlocking for : %1").arg(d->getName()));
 
     d = GTUtilsDocument::getDocument(os, "sars.gb");

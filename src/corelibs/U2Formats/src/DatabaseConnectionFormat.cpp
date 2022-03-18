@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p)
+DatabaseConnectionFormat::DatabaseConnectionFormat(QObject* p)
     : DocumentFormat(p, BaseDocumentFormats::DATABASE_CONNECTION, DocumentFormatFlags(DocumentFormatFlag_NoPack) | DocumentFormatFlag_NoFullMemoryLoad | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCreated | DocumentFormatFlag_AllowDuplicateNames | DocumentFormatFlag_DirectWriteOperations) {
     formatName = DocumentFormat::tr("Database connection");
     formatDescription = DocumentFormat::tr("A fake format that was added to implement shared database connection within existing document model.");
@@ -57,31 +57,31 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p)
                          << GObjectTypes::ASSEMBLY;
 }
 
-const QString &DatabaseConnectionFormat::getFormatName() const {
+const QString& DatabaseConnectionFormat::getFormatName() const {
     return formatName;
 }
 
-FormatCheckResult DatabaseConnectionFormat::checkRawData(QByteArray const &, GUrl const &) const {
+FormatCheckResult DatabaseConnectionFormat::checkRawData(QByteArray const&, GUrl const&) const {
     return FormatCheckResult();
 }
 
-Document *DatabaseConnectionFormat::loadDocument(IOAdapter *io, const U2DbiRef &, const QVariantMap &hints, U2OpStatus &os) {
-    DatabaseConnectionAdapter *databaseConnectionAdapter = qobject_cast<DatabaseConnectionAdapter *>(io);
+Document* DatabaseConnectionFormat::loadDocument(IOAdapter* io, const U2DbiRef&, const QVariantMap& hints, U2OpStatus& os) {
+    DatabaseConnectionAdapter* databaseConnectionAdapter = qobject_cast<DatabaseConnectionAdapter*>(io);
     SAFE_POINT(nullptr != databaseConnectionAdapter, QString("Can't use current IOAdapter: %1").arg(io->getAdapterName()), nullptr);
 
-    U2Dbi *dbi = databaseConnectionAdapter->getConnection().dbi;
+    U2Dbi* dbi = databaseConnectionAdapter->getConnection().dbi;
     SAFE_POINT(nullptr != dbi, "NULL dbi", nullptr);
-    QList<GObject *> objects = getObjects(dbi, os);
+    QList<GObject*> objects = getObjects(dbi, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     const QString modLockDesc = dbi->getFeatures().contains(U2DbiFeature_GlobalReadOnly) ? DocumentFormat::tr("You have no permissions to modify the content of this database") : QString();
-    Document *resultDocument = new Document(this, io->getFactory(), io->getURL(), dbi->getDbiRef(), objects, hints, modLockDesc);
+    Document* resultDocument = new Document(this, io->getFactory(), io->getURL(), dbi->getDbiRef(), objects, hints, modLockDesc);
     resultDocument->setDocumentOwnsDbiResources(false);
     return resultDocument;
 }
 
 namespace {
-void updateProgress(U2OpStatus &os, int current, int size) {
+void updateProgress(U2OpStatus& os, int current, int size) {
     if (0 == size) {
         os.setProgress(100);
     } else {
@@ -102,8 +102,8 @@ void updateProgress(U2OpStatus &os, int current, int size) {
     progressCounter++; \
     CHECK(!os.isCanceled(), resultList);
 
-QList<GObject *> DatabaseConnectionFormat::getObjects(U2Dbi *dbi, U2OpStatus &os) {
-    QList<GObject *> resultList;
+QList<GObject*> DatabaseConnectionFormat::getObjects(U2Dbi* dbi, U2OpStatus& os) {
+    QList<GObject*> resultList;
 
     QHash<U2DataId, QString> object2Name = dbi->getObjectDbi()->getObjectNames(0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, resultList);
@@ -114,9 +114,9 @@ QList<GObject *> DatabaseConnectionFormat::getObjects(U2Dbi *dbi, U2OpStatus &os
     Q_UNUSED(objectCount);
     const U2DbiRef dbiRef = dbi->getDbiRef();
 
-    foreach (const U2DataId &id, object2Name.keys()) {
+    foreach (const U2DataId& id, object2Name.keys()) {
         UPDATE_STATE();
-        GObject *obj = GObjectUtils::createObject(dbiRef, id, object2Name.value(id));
+        GObject* obj = GObjectUtils::createObject(dbiRef, id, object2Name.value(id));
         if (nullptr != obj) {
             resultList << obj;
         }

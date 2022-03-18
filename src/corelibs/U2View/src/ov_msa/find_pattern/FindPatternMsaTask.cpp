@@ -31,7 +31,7 @@ FindPatternMsaSettings::FindPatternMsaSettings()
       matchValue(100) {
 }
 
-FindPatternMsaTask::FindPatternMsaTask(const FindPatternMsaSettings &settings)
+FindPatternMsaTask::FindPatternMsaTask(const FindPatternMsaSettings& settings)
     : Task(tr("Searching a pattern in multiple alignment task"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       currentSequenceIndex(0),
@@ -60,8 +60,8 @@ void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
     searchInSingleSequenceTask = new FindPatternListTask(findPatternSettings, settings.patterns, settings.removeOverlaps, settings.matchValue);
 }
 
-QList<Task *> FindPatternMsaTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> FindPatternMsaTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     if (subTask->isCanceled()) {
         return result;
     }
@@ -72,7 +72,7 @@ QList<Task *> FindPatternMsaTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == searchInSingleSequenceTask) {
         getResultFromTask();
-        if (currentSequenceIndex < settings.msaObj->getNumRows() && totalResultsCounter < settings.findSettings.maxResult2Find) {
+        if (currentSequenceIndex < settings.msaObj->getRowCount() && totalResultsCounter < settings.findSettings.maxResult2Find) {
             createSearchTaskForCurrentSequence();
             result.append(searchInSingleSequenceTask);
         }
@@ -81,18 +81,18 @@ QList<Task *> FindPatternMsaTask::onSubTaskFinished(Task *subTask) {
 }
 
 void FindPatternMsaTask::getResultFromTask() {
-    const QList<SharedAnnotationData> &rowResults = searchInSingleSequenceTask->getResults();
+    const QList<SharedAnnotationData>& rowResults = searchInSingleSequenceTask->getResults();
     if (rowResults.isEmpty()) {
         currentSequenceIndex++;
         return;
     }
-    const MultipleAlignment &multipleAlignment = settings.msaObj->getMultipleAlignment();
+    const MultipleAlignment& multipleAlignment = settings.msaObj->getMultipleAlignment();
     QList<U2Region> regions;
-    const MultipleAlignmentRow &msaRow = multipleAlignment->getRow(currentSequenceIndex);
+    const MultipleAlignmentRow& msaRow = multipleAlignment->getRow(currentSequenceIndex);
     for (int i = 0; i < rowResults.length() && totalResultsCounter < settings.findSettings.maxResult2Find; i++) {
-        const SharedAnnotationData &annotationData = rowResults[i];
-        const U2Region &resultRegion = annotationData->getRegions().first();
-        const U2Region &resultRegionWithGaps = msaRow.data()->getGapped(resultRegion);
+        const SharedAnnotationData& annotationData = rowResults[i];
+        const U2Region& resultRegion = annotationData->getRegions().first();
+        const U2Region& resultRegionWithGaps = msaRow.data()->getGapped(resultRegion);
         regions.append(resultRegionWithGaps);
         totalResultsCounter++;
     }
@@ -102,11 +102,11 @@ void FindPatternMsaTask::getResultFromTask() {
     currentSequenceIndex++;
 }
 
-const QList<FindPatternInMsaResult> &FindPatternMsaTask::getResults() const {
+const QList<FindPatternInMsaResult>& FindPatternMsaTask::getResults() const {
     return results;
 }
 
-FindPatternInMsaResult::FindPatternInMsaResult(qint64 rowId, const QList<U2Region> &regions)
+FindPatternInMsaResult::FindPatternInMsaResult(qint64 rowId, const QList<U2Region>& regions)
     : rowId(rowId), regions(regions) {
 }
 

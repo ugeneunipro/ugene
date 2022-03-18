@@ -49,12 +49,12 @@
 
 namespace U2 {
 
-PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
+PrimerLibraryWidget::PrimerLibraryWidget(QWidget* parent)
     : QWidget(parent), editPrimerButton(nullptr), removePrimersButton(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930783");
 
-    QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
+    QPushButton* newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));
 
     editPrimerButton = buttonBox->addButton(tr("Edit primer"), QDialogButtonBox::ActionRole);
@@ -63,7 +63,7 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
     removePrimersButton = buttonBox->addButton(tr("Remove primer(s)"), QDialogButtonBox::ActionRole);
     connect(removePrimersButton, SIGNAL(clicked()), SLOT(sl_removePrimers()));
 
-    QPushButton *importPrimersButton = buttonBox->addButton(tr("Import primer(s)"), QDialogButtonBox::ActionRole);
+    QPushButton* importPrimersButton = buttonBox->addButton(tr("Import primer(s)"), QDialogButtonBox::ActionRole);
     connect(importPrimersButton, SIGNAL(clicked()), SLOT(sl_importPrimers()));
 
     exportPrimersButton = buttonBox->addButton(tr("Export primer(s)"), QDialogButtonBox::ActionRole);
@@ -72,8 +72,8 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
     connect(buttonBox, SIGNAL(rejected()), SIGNAL(si_close()));
 
     new PrimerLibraryTableController(this, primerTable);
-    connect(primerTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_editPrimer()));
-    connect(primerTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
+    connect(primerTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_editPrimer()));
+    connect(primerTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_selectionChanged()));
     sl_selectionChanged();
 }
 
@@ -84,7 +84,7 @@ void PrimerLibraryWidget::sl_newPrimer() {
     CHECK(QDialog::Accepted == result, );
 
     U2OpStatusImpl os;
-    PrimerLibrary *library = PrimerLibrary::getInstance(os);
+    PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
     Primer primer = dlg->getPrimer();
@@ -102,7 +102,7 @@ void PrimerLibraryWidget::sl_editPrimer() {
     CHECK(QDialog::Accepted == result, );
 
     U2OpStatusImpl os;
-    PrimerLibrary *library = PrimerLibrary::getInstance(os);
+    PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
     Primer primer = dlg->getPrimer();
@@ -115,10 +115,10 @@ void PrimerLibraryWidget::sl_removePrimers() {
     const QList<Primer> primers = primerTable->getSelection();
 
     U2OpStatusImpl os;
-    PrimerLibrary *library = PrimerLibrary::getInstance(os);
+    PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
-    foreach (const Primer &primer, primers) {
+    foreach (const Primer& primer, primers) {
         library->removePrimer(primer, os);
         CHECK_OP_UI(os, );
     }

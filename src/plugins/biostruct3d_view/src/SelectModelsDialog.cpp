@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-SelectModelsDialog::SelectModelsDialog(const QList<int> &_modelIds, const QList<int> &_selectedItems, QWidget *parent /* = 0*/)
+SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& _selectedItems, QWidget* parent /* = 0*/)
     : QDialog(parent), Ui_SelectModelsDialog() {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929544");
@@ -45,24 +45,24 @@ SelectModelsDialog::SelectModelsDialog(const QList<int> &_modelIds, const QList<
 
     for (int i = 0; i < modelIds.size(); ++i) {
         int modelId = modelIds[i];
-        QListWidgetItem *it = new QListWidgetItem(QString::number(modelId));
+        QListWidgetItem* it = new QListWidgetItem(QString::number(modelId));
 
         it->setCheckState((selectedItems.contains(i)) ? Qt::Checked : Qt::Unchecked);
 
         modelsList->addItem(it);
     }
 
-    connect(modelsList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(sl_onItemDoubleClicked(QListWidgetItem *)));
+    connect(modelsList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(sl_onItemDoubleClicked(QListWidgetItem*)));
 
-    QPushButton *allButton = buttonBox_1->button(QDialogButtonBox::Cancel);
-    QPushButton *invertButton = buttonBox_1->button(QDialogButtonBox::No);
+    QPushButton* allButton = buttonBox_1->button(QDialogButtonBox::Cancel);
+    QPushButton* invertButton = buttonBox_1->button(QDialogButtonBox::No);
 
     connect(allButton, SIGNAL(clicked()), this, SLOT(sl_onSlectAll()));
     connect(invertButton, SIGNAL(clicked()), this, SLOT(sl_onInvertSelection()));
 }
 
 /** Toggle item by double click */
-void SelectModelsDialog::sl_onItemDoubleClicked(QListWidgetItem *item) {
+void SelectModelsDialog::sl_onItemDoubleClicked(QListWidgetItem* item) {
     item->setCheckState((item->checkState() == Qt::Unchecked) ? Qt::Checked : Qt::Unchecked);
 }
 
@@ -74,14 +74,14 @@ void SelectModelsDialog::sl_onSlectAll() {
 
 void SelectModelsDialog::sl_onInvertSelection() {
     for (int i = 0; i < modelsList->count(); ++i) {
-        QListWidgetItem *item = modelsList->item(i);
+        QListWidgetItem* item = modelsList->item(i);
         item->setCheckState((item->checkState() == Qt::Unchecked) ? Qt::Checked : Qt::Unchecked);
     }
 }
 
 void SelectModelsDialog::accept() {
     for (int i = 0; i < modelsList->count(); ++i) {
-        QListWidgetItem *item = modelsList->item(i);
+        QListWidgetItem* item = modelsList->item(i);
         if (item->checkState() == Qt::Checked) {
             selectedModelsIndexes << i;
         }
@@ -95,7 +95,7 @@ void SelectModelsDialog::accept() {
     QDialog::accept();
 }
 
-const QList<int> &SelectModelsDialog::getSelectedModelsIndexes() const {
+const QList<int>& SelectModelsDialog::getSelectedModelsIndexes() const {
     return selectedModelsIndexes;
 }
 

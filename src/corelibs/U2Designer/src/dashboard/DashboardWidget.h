@@ -42,20 +42,20 @@ namespace U2 {
 class U2DESIGNER_EXPORT DashboardWidget : public QWidget {
     Q_OBJECT
 public:
-    DashboardWidget(const QString &title, QWidget *contentWidget);
+    DashboardWidget(const QString& title, QWidget* contentWidget);
 };
 
 class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
     Q_OBJECT
 public:
-    DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, const WorkflowMonitor *monitor, bool isFolderMode = false);
+    DashboardFileButton(const QStringList& urlList, const QString& dashboardDir, const WorkflowMonitor* monitor, bool isFolderMode = false);
 
 private slots:
     void sl_openFileClicked();
-    void sl_dashboardDirChanged(const QString &dashboardDir);
+    void sl_dashboardDirChanged(const QString& dashboardDir);
 
 private:
-    void addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction = false);
+    void addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction = false);
 
     /** List of urls to open. */
     QStringList urlList;
@@ -71,31 +71,31 @@ private:
 class U2DESIGNER_EXPORT DashboardPopupMenu : public QMenu {
     Q_OBJECT
 public:
-    explicit DashboardPopupMenu(QAbstractButton *button, QWidget *parent = 0);
-    void showEvent(QShowEvent *event);
+    explicit DashboardPopupMenu(QAbstractButton* button, QWidget* parent = 0);
+    void showEvent(QShowEvent* event);
 
 private:
-    QAbstractButton *button;
+    QAbstractButton* button;
 };
 
 /** Various Dashboard widget helpers. */
 class U2DESIGNER_EXPORT DashboardWidgetUtils {
 public:
-    static void addTableHeadersRow(QGridLayout *gridLayout, const QStringList &headerNameList);
+    static void addTableHeadersRow(QGridLayout* gridLayout, const QStringList& headerNameList);
 
-    static void addTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList);
+    static void addTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList);
 
-    static void addTableCell(QGridLayout *gridLayout, const QString &rowId, QWidget *widget, int row, int column, bool isLastRow, bool isLastColumn);
+    static void addTableCell(QGridLayout* gridLayout, const QString& rowId, QWidget* widget, int row, int column, bool isLastRow, bool isLastColumn);
 
-    static void addTableCell(QGridLayout *gridLayout, const QString &rowId, const QString &text, int row, int column, bool isLastRow, bool isLastColumn);
+    static void addTableCell(QGridLayout* gridLayout, const QString& rowId, const QString& text, int row, int column, bool isLastRow, bool isLastColumn);
 
     /**
      * Adds new row or updates existing row in the table. Uses rowId to compare rows.
      * Returns true if a new row was added.
      */
-    static bool addOrUpdateTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList);
+    static bool addOrUpdateTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList);
 
-    static QString parseOpenUrlValueFromOnClick(const QString &onclickValue);
+    static QString parseOpenUrlValueFromOnClick(const QString& onclickValue);
 };
 
 }  // namespace U2

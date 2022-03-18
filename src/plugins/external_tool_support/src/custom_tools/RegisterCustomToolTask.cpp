@@ -32,13 +32,13 @@
 
 namespace U2 {
 
-RegisterCustomToolTask::RegisterCustomToolTask(const QString &_url)
+RegisterCustomToolTask::RegisterCustomToolTask(const QString& _url)
     : Task(tr("Register custom external tool"), TaskFlag_None),
       url(_url),
       registeredTool(nullptr) {
 }
 
-CustomExternalTool *RegisterCustomToolTask::getTool() const {
+CustomExternalTool* RegisterCustomToolTask::getTool() const {
     return registeredTool;
 }
 
@@ -56,4 +56,4 @@ void RegisterCustomToolTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

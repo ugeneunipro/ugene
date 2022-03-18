@@ -46,7 +46,7 @@ namespace U2 {
 
 // Documentation: http://informatics.nescent.org/w/images/8/8b/NEXUS_Final.pdf
 
-NEXUSFormat::NEXUSFormat(QObject *p)
+NEXUSFormat::NEXUSFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
                                                                                                                                                                            << "nxs")  // disable streaming for now
 {
@@ -286,7 +286,7 @@ const QString NEXUSParser::CMD_TREE = "tree";
 const QString NEXUSParser::CMD_UTREE = "utree";
 const QString NEXUSParser::CMD_TRANSLATE = "translate";
 
-QList<GObject *> NEXUSParser::loadObjects(const U2DbiRef &dbiRef) {
+QList<GObject*> NEXUSParser::loadObjects(const U2DbiRef& dbiRef) {
     while (tz.look() != "") {
         if (!readBlock(global, dbiRef)) {
             break;
@@ -305,7 +305,7 @@ bool NEXUSParser::skipCommand() {
     return true;
 }
 
-bool NEXUSParser::readSimpleCommand(Context &ctx) {
+bool NEXUSParser::readSimpleCommand(Context& ctx) {
     tz.skip();  // command name
     QStringList wl = tz.getUntil(";");
 
@@ -329,7 +329,7 @@ bool NEXUSParser::readSimpleCommand(Context &ctx) {
     return true;
 }
 
-bool NEXUSParser::readBlock(Context &ctx, const U2DbiRef &dbiRef) {
+bool NEXUSParser::readBlock(Context& ctx, const U2DbiRef& dbiRef) {
     if (tz.get().toLower() != BEGIN) {
         errors.append(QString("\'%1\' expected").arg(BEGIN));
         return false;
@@ -378,7 +378,7 @@ bool NEXUSParser::skipBlockContents() {
     return true;
 }
 
-bool NEXUSParser::readTaxaContents(Context &) {
+bool NEXUSParser::readTaxaContents(Context&) {
     while (true) {
         QString cmd = tz.look().toLower();
         if (cmd == END) {
@@ -393,7 +393,7 @@ bool NEXUSParser::readTaxaContents(Context &) {
     return true;
 }
 
-bool NEXUSParser::readDataContents(Context &ctx) {
+bool NEXUSParser::readDataContents(Context& ctx) {
     while (true) {
         QString cmd = tz.look().toLower();  // cmd name
         if (cmd == CMD_FORMAT || cmd == CMD_DIMENSIONS) {
@@ -471,7 +471,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 char ourMissing = ma->getAlphabet()->getDefaultSymbol();
 
                 // replace missing
-                for (int i = 0; i < ma->getNumRows(); ++i) {
+                for (int i = 0; i < ma->getRowCount(); ++i) {
                     ma->replaceChars(i, missing, ourMissing);
                 }
             } else {
@@ -484,7 +484,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 return false;
             }
 
-            MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {
@@ -499,7 +499,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
     return true;
 }
 
-bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
+bool NEXUSParser::readTreesContents(Context&, const U2DbiRef& dbiRef) {
     QMap<QString, QString> namesTranslation;
 
     while (true) {
@@ -553,10 +553,10 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
                 }
             }
 
-            QStack<PhyNode *> nodeStack;
+            QStack<PhyNode*> nodeStack;
             nodeStack.push(new PhyNode());
 
-            QStack<PhyBranch *> branchStack;
+            QStack<PhyBranch*> branchStack;
 
             enum State { NAME,
                          WEIGHT } state = NAME;
@@ -585,8 +585,8 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
                         break;
                     }
 
-                    PhyNode *top = new PhyNode();
-                    PhyBranch *br = PhyTreeData::addBranch(nodeStack.top(), top, 1);
+                    PhyNode* top = new PhyNode();
+                    PhyBranch* br = PhyTreeData::addBranch(nodeStack.top(), top, 1);
                     nodeStack.push(top);
                     branchStack.push(br);
                 } else if (tok == "," || tok == ")") {
@@ -634,8 +634,8 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
                     branchStack.pop();
 
                     if (tok == ",") {
-                        PhyNode *top = new PhyNode();
-                        PhyBranch *br = PhyTreeData::addBranch(nodeStack.top(), top, 1);
+                        PhyNode* top = new PhyNode();
+                        PhyBranch* br = PhyTreeData::addBranch(nodeStack.top(), top, 1);
                         nodeStack.push(top);
                         branchStack.push(br);
                     }
@@ -676,7 +676,7 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
 
             if (hasError()) {
                 // clean up
-                PhyNode *n = nodeStack.pop();
+                PhyNode* n = nodeStack.pop();
                 delete n;  // PhyNode::~PhyNode() is recursive
 
                 warnings.push_back(QString("Tree '%1' ignored due following errors: %2").arg(treeName, errors.takeLast()));
@@ -690,7 +690,7 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
 
                 QVariantMap hints;
                 hints.insert(DocumentFormat::DBI_FOLDER_HINT, folder);
-                PhyTreeObject *obj = PhyTreeObject::createInstance(tree, treeName, dbiRef, ti, hints);
+                PhyTreeObject* obj = PhyTreeObject::createInstance(tree, treeName, dbiRef, ti, hints);
                 CHECK_OP_EXT(ti, errors << ti.getError(), false);
                 addObject(obj);
             }
@@ -706,17 +706,17 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
     return true;
 }
 
-void NEXUSParser::addObject(GObject *obj) {
+void NEXUSParser::addObject(GObject* obj) {
     QString name = TextUtils::variate(obj->getGObjectName(), "_", objectNames, false, 1);
     objectNames.insert(name);
     obj->setGObjectName(name);
     objects.append(obj);
 }
 
-QList<GObject *> NEXUSFormat::loadObjects(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &ti) {
+QList<GObject*> NEXUSFormat::loadObjects(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& ti) {
     assert(io && "io must exist");
     DbiOperationsBlock opBlock(dbiRef, ti);
-    CHECK_OP(ti, QList<GObject *>());
+    CHECK_OP(ti, QList<GObject*>());
 
     const int HEADER_LEN = 6;
     QByteArray header(HEADER_LEN, 0);
@@ -724,12 +724,12 @@ QList<GObject *> NEXUSFormat::loadObjects(IOAdapter *io, const U2DbiRef &dbiRef,
     header.truncate(rd);
     if (header != "#NEXUS") {
         ti.setError(tr("#NEXUS header missing"));
-        return QList<GObject *>();
+        return QList<GObject*>();
     }
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     NEXUSParser parser(io, dbiRef, folder, ti);
-    QList<GObject *> objects = parser.loadObjects(dbiRef);
+    QList<GObject*> objects = parser.loadObjects(dbiRef);
 
     if (parser.hasError()) {
         QByteArray msg = "NEXUSParser: ";
@@ -740,23 +740,23 @@ QList<GObject *> NEXUSFormat::loadObjects(IOAdapter *io, const U2DbiRef &dbiRef,
     return objects;
 }
 
-Document *NEXUSFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* NEXUSFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     assert(io && "IO must exist");
 
-    QList<GObject *> objects = loadObjects(io, dbiRef, fs, os);
+    QList<GObject*> objects = loadObjects(io, dbiRef, fs, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
-    Document *d = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
+    Document* d = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     return d;
 }
 
-void writeHeader(IOAdapter *io, U2OpStatus &) {
+void writeHeader(IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QTextStream(&line) << "#NEXUS\n\n";
     io->writeBlock(line);
 }
 
-void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdapter *io, U2OpStatus &) {
+void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -768,7 +768,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     tabs.append(tab);
 
     int ntax, nchar;
-    ntax = ma->getNumRows();
+    ntax = ma->getRowCount();
     nchar = ma->getLength();
 
     QTextStream(&line) << tabs << "dimensions ntax=" << ntax << " nchar=" << nchar << ";\n";
@@ -777,7 +777,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     // datatype for MrBayes files
     QString dataType;
-    const QString &alphabetId = ma->getAlphabet()->getId();
+    const QString& alphabetId = ma->getAlphabet()->getId();
     if (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()) {
         dataType = "dna";
     } else if (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED()) {
@@ -802,14 +802,14 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
 
     int nameMaxLen = 0;
-    foreach (const MultipleSequenceAlignmentRow &row, rows) {
+    foreach (const MultipleSequenceAlignmentRow& row, rows) {
         if (row->getName().size() > nameMaxLen) {
             nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;  // quotes may appear
 
-    foreach (const MultipleSequenceAlignmentRow &row, rows) {
+    foreach (const MultipleSequenceAlignmentRow& row, rows) {
         QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))) {
@@ -847,7 +847,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     line.clear();
 }
 
-static void writeNode(const PhyNode *node, IOAdapter *io) {
+static void writeNode(const PhyNode* node, IOAdapter* io) {
     int branches = node->branchCount();
 
     if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
@@ -886,7 +886,7 @@ static void writeNode(const PhyNode *node, IOAdapter *io) {
 }
 
 // spike: PhyTreeData don't have own name
-void writePhyTree(const PhyTree &pt, QString name, IOAdapter *io, U2OpStatus &) {
+void writePhyTree(const PhyTree& pt, QString name, IOAdapter* io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -912,17 +912,17 @@ void writePhyTree(const PhyTree &pt, QString name, IOAdapter *io, U2OpStatus &) 
     line.clear();
 }
 
-void writePhyTree(const PhyTree &pt, IOAdapter *io, U2OpStatus &ti) {
+void writePhyTree(const PhyTree& pt, IOAdapter* io, U2OpStatus& ti) {
     writePhyTree(pt, "Tree", io, ti);
 }
 
-void NEXUSFormat::storeObjects(QList<GObject *> objects, bool simpleNames, IOAdapter *io, U2OpStatus &ti) {
+void NEXUSFormat::storeObjects(QList<GObject*> objects, bool simpleNames, IOAdapter* io, U2OpStatus& ti) {
     SAFE_POINT(nullptr != io, L10N::nullPointerError("I/O Adapter"), );
     writeHeader(io, ti);
 
-    foreach (GObject *object, objects) {
-        MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(object);
-        PhyTreeObject *pto = qobject_cast<PhyTreeObject *>(object);
+    foreach (GObject* object, objects) {
+        MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(object);
+        PhyTreeObject* pto = qobject_cast<PhyTreeObject*>(object);
         if (mao) {
             writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
@@ -936,13 +936,13 @@ void NEXUSFormat::storeObjects(QList<GObject *> objects, bool simpleNames, IOAda
     }
 }
 
-void NEXUSFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    QList<GObject *> objects = d->getObjects();
+void NEXUSFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
+    QList<GObject*> objects = d->getObjects();
     bool simpleNames = d->getGHintsMap().contains(DocumentWritingMode_SimpleNames);
     storeObjects(objects, simpleNames, io, os);
 }
 
-FormatCheckResult NEXUSFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult NEXUSFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     if (rawData.startsWith("#NEXUS")) {
         return FormatDetection_VeryHighSimilarity;
     }

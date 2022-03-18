@@ -47,7 +47,7 @@ static const QString STABILITY_ATTR("stability");
 static const QString PAIR_MAX_MISPRIMING_ATTR("pair_max_mispriming");
 static const QString PAIR_MAX_TEMPLATE_MISPRIMING_ATTR("pair_max_template_mispriming");
 
-QDPrimerActor::QDPrimerActor(QDActorPrototype const *proto)
+QDPrimerActor::QDPrimerActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     cfg->setAnnotationKey("top primers");
     units[LEFT_PRIMER_ID] = new QDSchemeUnit(this);
@@ -59,16 +59,16 @@ QString QDPrimerActor::getText() const {
     return "Searches primers";
 }
 
-Task *QDPrimerActor::getAlgorithmTask(const QVector<U2Region> & /*location*/) {
-    Task *t = nullptr;
-    const DNASequence &dnaSeq = scheme->getSequence();
+Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
+    Task* t = nullptr;
+    const DNASequence& dnaSeq = scheme->getSequence();
     settings.setSequence(dnaSeq.seq);
 
     U2Region seqRange(0, dnaSeq.length());
     settings.setIncludedRegion(seqRange.startPos + settings.getFirstBaseIndex(), seqRange.length);
 
     QList<U2Region> list;
-    const QString &excludedRegsStr = cfg->getParameter(EXCLUDED_REGIONS_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& excludedRegsStr = cfg->getParameter(EXCLUDED_REGIONS_ATTR)->getAttributeValueWithoutScript<QString>();
     bool ok = Primer3Dialog::parseIntervalList(excludedRegsStr, ",", &list);
     if (ok) {
         settings.setExcludedRegion(list);
@@ -77,7 +77,7 @@ Task *QDPrimerActor::getAlgorithmTask(const QVector<U2Region> & /*location*/) {
         return nullptr;
     }
 
-    const QString &targetsStr = cfg->getParameter(TARGETS_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& targetsStr = cfg->getParameter(TARGETS_ATTR)->getAttributeValueWithoutScript<QString>();
     ok = Primer3Dialog::parseIntervalList(targetsStr, ",", &list);
     if (ok) {
         settings.setTarget(list);
@@ -86,7 +86,7 @@ Task *QDPrimerActor::getAlgorithmTask(const QVector<U2Region> & /*location*/) {
         return nullptr;
     }
 
-    const QString &sizeRangesAttr = cfg->getParameter(SIZE_RANGES_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& sizeRangesAttr = cfg->getParameter(SIZE_RANGES_ATTR)->getAttributeValueWithoutScript<QString>();
     ok = Primer3Dialog::parseIntervalList(sizeRangesAttr, "-", &list, Primer3Dialog::Start_End);
     if (ok) {
         settings.setProductSizeRange(list);
@@ -118,19 +118,19 @@ Task *QDPrimerActor::getAlgorithmTask(const QVector<U2Region> & /*location*/) {
     assert(settings.getAlignPropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"));
 
     t = new Primer3SWTask(settings);
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished(Task *)));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
 
     return t;
 }
 
-void QDPrimerActor::sl_onAlgorithmTaskFinished(Task *t) {
-    Primer3SWTask *primerTask = qobject_cast<Primer3SWTask *>(t);
+void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
+    Primer3SWTask* primerTask = qobject_cast<Primer3SWTask*>(t);
     assert(primerTask);
     QList<PrimerPair> bestPairs = primerTask->getBestPairs();
     foreach (PrimerPair pair, bestPairs) {
         QList<SharedAnnotationData> annotations;
-        Primer *leftPrimer = pair.getLeftPrimer();
-        Primer *rightPrimer = pair.getRightPrimer();
+        Primer* leftPrimer = pair.getLeftPrimer();
+        Primer* rightPrimer = pair.getRightPrimer();
         if (leftPrimer != nullptr && rightPrimer != nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;
@@ -141,7 +141,7 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task *t) {
             ru2->region = U2Region(rightPrimer->getStart() - rightPrimer->getLength() - 1,
                                    rightPrimer->getLength());
             ru2->owner = units.value(RIGHT_PRIMER_ID);
-            QDResultGroup *g = new QDResultGroup;
+            QDResultGroup* g = new QDResultGroup;
             g->add(ru1);
             g->add(ru2);
             results.append(g);
@@ -198,7 +198,7 @@ QDPrimerActorPrototype::QDPrimerActorPrototype() {
     attributes << new Attribute(pmmd, BaseTypes::NUM_TYPE(), false, 24.0);
     attributes << new Attribute(pmtmd, BaseTypes::NUM_TYPE(), false, 24.0);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     QVariantMap lenMap;
     lenMap["minimum"] = QVariant(0);
     lenMap["maximum"] = QVariant(9999);

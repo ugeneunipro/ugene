@@ -38,14 +38,14 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::PredictSecondaryStructureDialogFiller"
 
-PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI::GUITestOpStatus &os, int startPos, int endPos, bool onlyPressOk)
+PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI::GUITestOpStatus& os, int startPos, int endPos, bool onlyPressOk)
     : Filler(os, "SecStructDialog"),
       startPos(startPos),
       endPos(endPos),
       onlyPressOk(onlyPressOk) {
 }
 
-PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "SecStructDialog", scenario),
       startPos(0),
       endPos(0),
@@ -54,20 +54,19 @@ PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI:
 
 #define GT_METHOD_NAME "commonScenario"
 void PredictSecondaryStructureDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", dialog));
+    QLineEdit* startLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", dialog));
     GT_CHECK(startLineEdit != nullptr, "Start lineEdit is NULL");
     GTLineEdit::setText(os, startLineEdit, QString::number(startPos));
 
-    QLineEdit *endLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", dialog));
+    QLineEdit* endLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", dialog));
     GT_CHECK(endLineEdit != nullptr, "Start lineEdit is NULL");
     GTLineEdit::setText(os, endLineEdit, QString::number(endPos));
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
 
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
+    QPushButton* button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -78,9 +77,8 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -88,7 +86,7 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario));
 
-    QPushButton *saveButton = box->button(QDialogButtonBox::Save);
+    QPushButton* saveButton = box->button(QDialogButtonBox::Save);
     GT_CHECK(saveButton != nullptr, "save button is NULL");
     GTWidget::click(os, saveButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);

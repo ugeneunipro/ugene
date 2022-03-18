@@ -30,11 +30,11 @@ class U2CORE_EXPORT CredentialsAsker {
 public:
     virtual ~CredentialsAsker();
 
-    virtual bool askWithFixedLogin(const QString &resourceUrl) const = 0;
-    virtual bool askWithModifiableLogin(QString &resourceUrl) const = 0;
+    virtual bool askWithFixedLogin(const QString& resourceUrl) const = 0;
+    virtual bool askWithModifiableLogin(QString& resourceUrl) const = 0;
 
 protected:
-    static void saveCredentials(const QString &resourceUrl, const QString &password, bool remember);
+    static void saveCredentials(const QString& resourceUrl, const QString& password, bool remember);
 };
 
 }  // namespace U2

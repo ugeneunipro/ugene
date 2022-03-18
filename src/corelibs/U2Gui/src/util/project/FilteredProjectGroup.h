@@ -36,16 +36,16 @@ class GObject;
 class WrappedObject : public QObject {
     Q_OBJECT
 public:
-    WrappedObject(GObject *obj, FilteredProjectGroup *parentGroup);
+    WrappedObject(GObject* obj, FilteredProjectGroup* parentGroup);
 
-    GObject *getObject() const;
-    FilteredProjectGroup *getParentGroup() const;
+    GObject* getObject() const;
+    FilteredProjectGroup* getParentGroup() const;
 
-    static bool objectLessThan(const WrappedObject *first, const WrappedObject *second);
+    static bool objectLessThan(const WrappedObject* first, const WrappedObject* second);
 
 private:
-    GObject *obj;
-    FilteredProjectGroup *parentGroup;
+    GObject* obj;
+    FilteredProjectGroup* parentGroup;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -56,26 +56,26 @@ class FilteredProjectGroup : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(FilteredProjectGroup)
 public:
-    explicit FilteredProjectGroup(const QString &name);
+    explicit FilteredProjectGroup(const QString& name);
     ~FilteredProjectGroup();
 
-    const QString &getGroupName() const;
+    const QString& getGroupName() const;
 
-    void addObject(GObject *obj, int objNumber);
+    void addObject(GObject* obj, int objNumber);
     void removeAt(int objNumber);
 
-    bool contains(GObject *obj) const;
-    WrappedObject *getWrappedObject(GObject *obj) const;
-    WrappedObject *getWrappedObject(int position) const;
-    int getWrappedObjectNumber(WrappedObject *obj) const;
+    bool contains(GObject* obj) const;
+    WrappedObject* getWrappedObject(GObject* obj) const;
+    WrappedObject* getWrappedObject(int position) const;
+    int getWrappedObjectNumber(WrappedObject* obj) const;
     int getObjectsCount() const;
-    int getNewObjectNumber(GObject *obj) const;
+    int getNewObjectNumber(GObject* obj) const;
 
-    static bool groupLessThan(FilteredProjectGroup *first, FilteredProjectGroup *second);
+    static bool groupLessThan(FilteredProjectGroup* first, FilteredProjectGroup* second);
 
 private:
     const QString name;
-    QList<WrappedObject *> filteredObjs;
+    QList<WrappedObject*> filteredObjs;
 };
 
 }  // namespace U2

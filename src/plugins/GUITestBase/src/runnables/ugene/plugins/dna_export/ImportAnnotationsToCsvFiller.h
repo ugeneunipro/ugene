@@ -44,11 +44,11 @@ public:
                       Genbank,
                       Swiss_Prot };
     struct RoleColumnParameter {
-        RoleColumnParameter(int _column, RoleParameter *_p)
+        RoleColumnParameter(int _column, RoleParameter* _p)
             : column(_column), parameter(_p) {
         }
         int column;
-        RoleParameter *parameter;
+        RoleParameter* parameter;
     };
     typedef QList<RoleColumnParameter> RoleParameters;
 
@@ -85,27 +85,27 @@ public:
     };
 
     struct QualifierParameter : public RoleParameter {
-        QualifierParameter(const QString &_name)
+        QualifierParameter(const QString& _name)
             : name(_name) {
         }
         QString name;
     };
 
-    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus &_os,
-                                 const QString &_fileToRead,
-                                 const QString &_resultFile,
+    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus& _os,
+                                 const QString& _fileToRead,
+                                 const QString& _resultFile,
                                  ImportAnnotationsToCsvFiller::fileFormat _format,
                                  bool _addResultFileToProject,
                                  bool _columnSeparator,
-                                 const QString &_separator,
+                                 const QString& _separator,
                                  int _numberOfLines,
-                                 const QString &_skipAllLinesStartsWith,
+                                 const QString& _skipAllLinesStartsWith,
                                  bool _interpretMultipleAsSingle,
                                  bool _removeQuotesButton,
-                                 const QString &_defaultAnnotationName,
-                                 const RoleParameters &roleParameters = RoleParameters(),
+                                 const QString& _defaultAnnotationName,
+                                 const RoleParameters& roleParameters = RoleParameters(),
                                  GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus &_os, CustomScenario *c);
+    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus& _os, CustomScenario* c);
 
     virtual void commonScenario();
 
@@ -128,17 +128,17 @@ private:
 
 class RoleFiller : public Filler {
 public:
-    RoleFiller(HI::GUITestOpStatus &os, ImportAnnotationsToCsvFiller::RoleParameter *_parameter)
+    RoleFiller(HI::GUITestOpStatus& os, ImportAnnotationsToCsvFiller::RoleParameter* _parameter)
         : Filler(os, "CSVColumnConfigurationDialog"), parameter(_parameter) {
     }
-    RoleFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    RoleFiller(HI::GUITestOpStatus& os, CustomScenario* c)
         : Filler(os, "CSVColumnConfigurationDialog", c), parameter(nullptr) {
     }
 
     virtual void commonScenario();
 
 private:
-    ImportAnnotationsToCsvFiller::RoleParameter *parameter;
+    ImportAnnotationsToCsvFiller::RoleParameter* parameter;
 };
 
 }  // namespace U2

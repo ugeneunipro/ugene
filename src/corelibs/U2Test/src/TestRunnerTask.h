@@ -38,36 +38,36 @@ class GTest;
 class U2TEST_EXPORT TestRunnerTask : public Task {
     Q_OBJECT
 public:
-    TestRunnerTask(const QList<GTestState *> &tests, const GTestEnvironment *env, int testSizeToRun = 5);
+    TestRunnerTask(const QList<GTestState*>& tests, const GTestEnvironment* env, int testSizeToRun = 5);
 
     virtual void cleanup();
 
-    const QMap<GTest *, GTestState *> &getStateByTestMap() const {
+    const QMap<GTest*, GTestState*>& getStateByTestMap() const {
         return stateByTest;
     }
 
 protected:
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
-    QMap<GTest *, GTestState *> stateByTest;
-    const GTestEnvironment *env;
+    QMap<GTest*, GTestState*> stateByTest;
+    const GTestEnvironment* env;
     int sizeToRun;
     int finishedTests;
     int totalTests;
-    QList<GTestState *> awaitingTests;
+    QList<GTestState*> awaitingTests;
 
     /** All tests environments created during the run. Will be deleted with the test. */
-    QList<GTestEnvironment *> allTestEnvironments;
+    QList<GTestEnvironment*> allTestEnvironments;
 };
 
 class U2TEST_EXPORT LoadTestTask : public Task {
     Q_OBJECT
 public:
-    LoadTestTask(GTestState *test);
+    LoadTestTask(GTestState* test);
 
     void run();
 
-    GTestState *testState;
+    GTestState* testState;
 
     QByteArray testData;
 };

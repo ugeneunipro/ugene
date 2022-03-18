@@ -51,16 +51,16 @@ public:
                          CREATE_GUI_TEST,
                          RUN_ALL_TESTS_NO_IGNORED };
 
-    GUITestService(QObject *parent = nullptr);
+    GUITestService(QObject* parent = nullptr);
     ~GUITestService();
 
     void runTest(HI::GUITests testsToRun);
     //    qint64 getMainThreadTimerValue() const;
 
-    static GUITestService *getGuiTestService();  // the service should be already created and registered
+    static GUITestService* getGuiTestService();  // the service should be already created and registered
 
     static void setEnvVariablesForGuiTesting();
-    static LaunchOptions getLaunchOptions(CMDLineRegistry *cmdLine);
+    static LaunchOptions getLaunchOptions(CMDLineRegistry* cmdLine);
     static bool isGuiTestServiceNeeded();
 
     static const QString GUITESTING_REPORT_PREFIX;
@@ -68,7 +68,7 @@ public:
 public slots:
     void runGUICrazyUserTest();
     void runGUITest();
-    void runGUITest(GUITest *t);
+    void runGUITest(GUITest* t);
 
     void runAllGUITests();
 
@@ -76,7 +76,7 @@ private slots:
     void sl_allStartUpPluginsLoaded();
     void sl_registerService();
     void sl_serviceRegistered();
-    void sl_taskStateChanged(Task *);
+    void sl_taskStateChanged(Task*);
     void sl_testThreadFinish();
 
 private:
@@ -90,13 +90,13 @@ private:
     void registerTestSuiteTask();
     void registerServiceTask();
 
-    Task *createTestLauncherTask(int suiteNumber = 0, bool noIgnored = false) const;
-    Task *createTestSuiteLauncherTask() const;
-    static void writeTestResult(const QString &result);
+    Task* createTestLauncherTask(int suiteNumber = 0, bool noIgnored = false) const;
+    Task* createTestSuiteLauncherTask() const;
+    static void writeTestResult(const QString& result);
 
-    QAction *runTestsAction;
-    Task *testLauncher;
-    QList<GUITest *> testsToRun;
+    QAction* runTestsAction;
+    Task* testLauncher;
+    QList<GUITest*> testsToRun;
     bool isTeamcityLogOn;
     //    MainThreadTimer timer;
 };

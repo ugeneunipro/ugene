@@ -37,8 +37,8 @@ public:
     static const QString MERGE_STRING;
     static const QString MERGE_ANNS;
 
-    static bool isValidType(const QString &actionType);
-    static DataTypePtr getDataTypeByAction(const QString &actionType);
+    static bool isValidType(const QString& actionType);
+    static DataTypePtr getDataTypeByAction(const QString& actionType);
 };
 
 class U2LANG_EXPORT ActionParameters {
@@ -56,20 +56,20 @@ public:
     static const QString SEQ_NAME;
     static const QString SEQ_SLOT;
 
-    static ParameterType getType(const QString &parameter);
-    static bool isValidParameter(const QString &actionType, const QString &parameter);
+    static ParameterType getType(const QString& parameter);
+    static bool isValidParameter(const QString& actionType, const QString& parameter);
 };
 
 class U2LANG_EXPORT GrouperSlotAction {
 public:
-    GrouperSlotAction(const QString &type);
-    GrouperSlotAction(const GrouperSlotAction &other);
+    GrouperSlotAction(const QString& type);
+    GrouperSlotAction(const GrouperSlotAction& other);
 
     QString getType() const;
-    const QVariantMap &getParameters() const;
-    bool hasParameter(const QString &parameterId) const;
-    QVariant getParameterValue(const QString &parameterId) const;
-    void setParameterValue(const QString &parameterId, const QVariant &value);
+    const QVariantMap& getParameters() const;
+    bool hasParameter(const QString& parameterId) const;
+    QVariant getParameterValue(const QString& parameterId) const;
+    void setParameterValue(const QString& parameterId, const QVariant& value);
 
 private:
     QString type;
@@ -85,31 +85,31 @@ public:
 
 class U2LANG_EXPORT GrouperOutSlot {
 public:
-    GrouperOutSlot(const QString &outSlotId, const QString &inSlotStr);
-    GrouperOutSlot(const GrouperOutSlot &another);
+    GrouperOutSlot(const QString& outSlotId, const QString& inSlotStr);
+    GrouperOutSlot(const GrouperOutSlot& another);
     ~GrouperOutSlot();
 
-    bool operator==(const GrouperOutSlot &other) const;
+    bool operator==(const GrouperOutSlot& other) const;
 
-    GrouperSlotAction *getAction();
-    GrouperSlotAction *getAction() const;
-    void setAction(const GrouperSlotAction &action);
+    GrouperSlotAction* getAction();
+    GrouperSlotAction* getAction() const;
+    void setAction(const GrouperSlotAction& action);
 
     QString getOutSlotId() const;
-    void setOutSlotId(const QString &outSlotId);
+    void setOutSlotId(const QString& outSlotId);
 
     QString getInSlotStr() const;
     QString getBusMapInSlotId() const;
-    void setInSlotStr(const QString &slotStr);
-    void setBusMapInSlotStr(const QString &busMapSlotStr);
+    void setInSlotStr(const QString& slotStr);
+    void setBusMapInSlotStr(const QString& busMapSlotStr);
 
-    static QString readable2busMap(const QString &readableSlotStr);
-    static QString busMap2readable(const QString &busMapSlotStr);
+    static QString readable2busMap(const QString& readableSlotStr);
+    static QString busMap2readable(const QString& busMapSlotStr);
 
 private:
     QString outSlotId;
     QString inSlotStr;
-    GrouperSlotAction *action;
+    GrouperSlotAction* action;
 };
 
 }  // namespace U2

@@ -33,15 +33,15 @@ class LoadCustomExternalToolsTask : public Task {
 public:
     LoadCustomExternalToolsTask();
 
-    const QList<CustomExternalTool *> &getTools() const;
+    const QList<CustomExternalTool*>& getTools() const;
 
 private:
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    QList<CustomExternalTool *> tools;
+    QList<CustomExternalTool*> tools;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LOAD_CUSTOM_EXTERNAL_TOOLS_TASK_H_
+#endif  // _U2_LOAD_CUSTOM_EXTERNAL_TOOLS_TASK_H_

@@ -9,7 +9,7 @@
 
 namespace U2 {
 
-HMMCalibrateTask::HMMCalibrateTask(plan7_s *hmm, const UHMMCalibrateSettings &s)
+HMMCalibrateTask::HMMCalibrateTask(plan7_s* hmm, const UHMMCalibrateSettings& s)
     : HMMCalibrateAbstractTask("", hmm, s) {
     GCOUNTER(cvar, "HMMCalibrateTask");
     setTaskName(tr("HMM calibrate '%1'").arg(hmm->name));
@@ -20,7 +20,7 @@ void HMMCalibrateTask::run() {
     TaskLocalData::createHMMContext(getTaskId(), true);
     try {
         UHMMCalibrate::calibrate(hmm, settings, stateInfo);
-    } catch (const HMMException &e) {
+    } catch (const HMMException& e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::freeHMMContext(getTaskId());
@@ -28,7 +28,7 @@ void HMMCalibrateTask::run() {
 
 //////////////////////////////////////////////////////////////////////////
 // top-lebel parallel calibration subtask
-HMMCalibrateParallelTask::HMMCalibrateParallelTask(plan7_s *_hmm, const UHMMCalibrateSettings &s)
+HMMCalibrateParallelTask::HMMCalibrateParallelTask(plan7_s* _hmm, const UHMMCalibrateSettings& s)
     : HMMCalibrateAbstractTask(tr("HMM calibrate '%1'").arg(_hmm->name), _hmm, s), initTask(NULL) {
     wpool.hmm = hmm;
     wpool.progress = &stateInfo.progress;
@@ -47,11 +47,11 @@ void HMMCalibrateParallelTask::prepare() {
     setMaxParallelSubtasks(1);
 }
 
-QList<Task *> HMMCalibrateParallelTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> HMMCalibrateParallelTask::onSubTaskFinished(Task* subTask) {
     if (subTask == initTask) {
         setMaxParallelSubtasks(settings.nThreads);
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 void HMMCalibrateParallelTask::run() {
@@ -61,7 +61,7 @@ void HMMCalibrateParallelTask::run() {
 
     TaskLocalData::bindToHMMContext(getTaskId());
     try {
-        histogram_s *hist = getWorkPool()->hist;
+        histogram_s* hist = getWorkPool()->hist;
         if (!ExtremeValueFitHistogram(hist, TRUE, 9999.)) {
             stateInfo.setError("fit failed; num sequences may be set too small?\n");
         } else {
@@ -69,7 +69,7 @@ void HMMCalibrateParallelTask::run() {
             hmm->mu = hist->param[EVD_MU];
             hmm->lambda = hist->param[EVD_LAMBDA];
         }
-    } catch (const HMMException &e) {
+    } catch (const HMMException& e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::detachFromHMMContext();
@@ -89,7 +89,7 @@ void HMMCalibrateParallelTask::cleanup() {
 
 //////////////////////////////////////////////////////////////////////////
 // task to init wpool state
-HMMCreateWPoolTask::HMMCreateWPoolTask(HMMCalibrateParallelTask *t)
+HMMCreateWPoolTask::HMMCreateWPoolTask(HMMCalibrateParallelTask* t)
     : Task(tr("Initialize parallel context"), TaskFlag_None), pt(t) {
 }
 
@@ -97,15 +97,15 @@ void HMMCreateWPoolTask::run() {
     TaskLocalData::bindToHMMContext(pt->getTaskId());
     try {
         runUnsafe();
-    } catch (const HMMException &e) {
+    } catch (const HMMException& e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::detachFromHMMContext();
 }
 
 void HMMCreateWPoolTask::runUnsafe() {
-    const UHMMCalibrateSettings &settings = pt->getSettings();
-    WorkPool_s *wpool = pt->getWorkPool();
+    const UHMMCalibrateSettings& settings = pt->getSettings();
+    WorkPool_s* wpool = pt->getWorkPool();
 
     SetAlphabet(wpool->hmm->atype);
     sre_srandom(settings.seed);
@@ -126,7 +126,7 @@ void HMMCreateWPoolTask::runUnsafe() {
 
 //////////////////////////////////////////////////////////////////////////
 // parallel calibrate subtask
-HMMCalibrateParallelSubTask::HMMCalibrateParallelSubTask(HMMCalibrateParallelTask *t)
+HMMCalibrateParallelSubTask::HMMCalibrateParallelSubTask(HMMCalibrateParallelTask* t)
     : Task(tr("Parallel HMM calibration subtask"), TaskFlag_None), pt(t) {
     tpm = Task::Progress_Manual;
 }
@@ -135,7 +135,7 @@ void HMMCalibrateParallelSubTask::run() {
     TaskLocalData::bindToHMMContext(pt->getTaskId());
     try {
         UHMMCalibrate::calibrateParallel(pt->getWorkPool(), stateInfo);
-    } catch (const HMMException &e) {
+    } catch (const HMMException& e) {
         stateInfo.setError(e.error);
     }
 
@@ -144,7 +144,7 @@ void HMMCalibrateParallelSubTask::run() {
 
 //////////////////////////////////////////////////////////////////////////
 // task to save calibration results to file
-HMMCalibrateToFileTask::HMMCalibrateToFileTask(const QString &_inFile, const QString &_outFile, const UHMMCalibrateSettings &s)
+HMMCalibrateToFileTask::HMMCalibrateToFileTask(const QString& _inFile, const QString& _outFile, const UHMMCalibrateSettings& s)
     : Task("", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported), hmm(NULL), inFile(_inFile), outFile(_outFile), settings(s) {
     setVerboseLogMode(true);
     QString tn = tr("HMM calibrate '%1'").arg(QFileInfo(inFile).fileName());
@@ -159,8 +159,8 @@ void HMMCalibrateToFileTask::prepare() {
     addSubTask(readTask);
 }
 
-QList<Task *> HMMCalibrateToFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> HMMCalibrateToFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -179,7 +179,7 @@ QList<Task *> HMMCalibrateToFileTask::onSubTaskFinished(Task *subTask) {
         }
         res.append(calibrateTask);
     } else if (subTask == calibrateTask) {
-        Task *t = new HMMWriteTask(outFile, hmm);
+        Task* t = new HMMWriteTask(outFile, hmm);
         t->setSubtaskProgressWeight(0);
         res.append(t);
     }

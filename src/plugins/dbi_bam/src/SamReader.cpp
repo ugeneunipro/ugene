@@ -50,7 +50,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
     }
 
     {
-        QByteArray &qname = tokens[0];
+        QByteArray& qname = tokens[0];
         // workaround for malformed SAMs
         if (!QRegExp("[ -~]{1,255}").exactMatch(qname)) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid query template name: %1").arg(QString(qname)));
@@ -100,7 +100,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         alignment.setFlags(flags);
     }
     {
-        QByteArray &rname = tokens[2];
+        QByteArray& rname = tokens[2];
         // workaround for malformed SAMs
         if (!QRegExp("[*]|[!-()+-<>-~][ -~]*").exactMatch(rname)) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid reference name: %1").arg(QString(rname)));
@@ -137,7 +137,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         alignment.setMapQuality(mapQuality);
     }
     {
-        QByteArray &cigarString = tokens[5];
+        QByteArray& cigarString = tokens[5];
         if (!QRegExp("[*]|([0-9]+[MIDNSHPX=])+").exactMatch(cigarString)) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar value: %1").arg(QString(cigarString)));
         }
@@ -262,27 +262,27 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         // Validation of the CIGAR string.
         int totalLength = 0;
         int length = alignment.getSequence().length();
-        const QList<Alignment::CigarOperation> &cigar = alignment.getCigar();
+        const QList<Alignment::CigarOperation>& cigar = alignment.getCigar();
         CigarValidator validator(cigar);
         validator.validate(&totalLength);
         if (!cigar.isEmpty() && length != totalLength) {
-            const_cast<QList<Alignment::CigarOperation> &>(cigar).clear();  // Ignore invalid cigar
+            const_cast<QList<Alignment::CigarOperation>&>(cigar).clear();  // Ignore invalid cigar
         }
     }
     return alignment;
 }
 
-SamReader::SamReader(IOAdapter &ioAdapter)
+SamReader::SamReader(IOAdapter& ioAdapter)
     : Reader(ioAdapter),
       readBuffer(LOCAL_READ_BUFFER_SIZE, '\0') {
     readHeader();
 }
 
-const Header &SamReader::getHeader() const {
+const Header& SamReader::getHeader() const {
     return header;
 }
 
-Alignment SamReader::readAlignment(bool &eof) {
+Alignment SamReader::readAlignment(bool& eof) {
     QByteArray alignmentString = readString(eof);
 
     return parseAlignmentString(alignmentString);
@@ -292,8 +292,8 @@ bool SamReader::isEof() const {
     return ioAdapter.isEof();
 }
 
-QByteArray SamReader::readString(bool &eof) {
-    char *buff = readBuffer.data();
+QByteArray SamReader::readString(bool& eof) {
+    char* buff = readBuffer.data();
     bool lineOk = false;
     int len = 0;
     QByteArray result;
@@ -309,7 +309,7 @@ QByteArray SamReader::readString(bool &eof) {
 }
 
 void SamReader::readHeader() {
-    char *buff = readBuffer.data();
+    char* buff = readBuffer.data();
     bool lineOk = false;
     int len = 0;
     qint64 bRead = ioAdapter.bytesRead();
@@ -402,7 +402,7 @@ void SamReader::readHeader() {
                     header.setSortingOrder(Header::Unknown);
                 }
             } else if ("SQ" == recordTag) {
-                Header::Reference *reference = nullptr;
+                Header::Reference* reference = nullptr;
                 QByteArray name;
                 if (fields.contains("SN")) {
                     name = fields["SN"];
@@ -521,7 +521,7 @@ void SamReader::readHeader() {
             }
         }
         for (int index = 0; index < programs.size(); index++) {
-            const QByteArray &previousProgramId = previousProgramIds[index];
+            const QByteArray& previousProgramId = previousProgramIds[index];
             if (!previousProgramId.isEmpty()) {
                 if (programsMap.contains(previousProgramId)) {
                     programs[index].setPreviousId(programsMap[previousProgramId]);

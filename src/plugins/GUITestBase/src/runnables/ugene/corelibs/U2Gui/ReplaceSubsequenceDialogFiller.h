@@ -29,13 +29,14 @@ using namespace HI;
 
 class ReplaceSubsequenceDialogFiller : public Filler {
 public:
-    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool recalculateQuals = false);
-    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals = false, bool expectAlphabetChanged = false);
+    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario, bool expectAlphabetChanged = false);
     void commonScenario();
 
 private:
     QString pasteDataHere;
     bool recalculateQuals;
+    bool expectAlphabetChanged = false;
 };
 
 }  // namespace U2

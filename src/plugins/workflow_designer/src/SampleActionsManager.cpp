@@ -37,18 +37,18 @@
 namespace U2 {
 
 namespace {
-const char *ID_PROPERTY = "action_id";
+const char* ID_PROPERTY = "action_id";
 }
 
-SampleAction::SampleAction(const QString &actionName, const QString &toolsMenu, const QString &samplePath, const QString &actionText)
+SampleAction::SampleAction(const QString& actionName, const QString& toolsMenu, const QString& samplePath, const QString& actionText)
     : actionText(actionText), actionName(actionName), toolsMenu(toolsMenu), samplePath(samplePath) {
 }
 
-SampleActionsManager::SampleActionsManager(QObject *parent)
+SampleActionsManager::SampleActionsManager(QObject* parent)
     : QObject(parent) {
 }
 
-void SampleActionsManager::registerAction(const SampleAction &action) {
+void SampleActionsManager::registerAction(const SampleAction& action) {
     // Do not register samples with not available workflow files.
     QString samplePath = QDir("data:workflow_samples").path() + "/" + action.samplePath;
     CHECK(QFileInfo::exists(samplePath), );
@@ -56,15 +56,15 @@ void SampleActionsManager::registerAction(const SampleAction &action) {
     actions.append(action);
     int id = actions.size() - 1;
 
-    QAction *a = new QAction(action.actionText, this);
+    QAction* a = new QAction(action.actionText, this);
     a->setObjectName(action.actionName);
     a->setProperty(ID_PROPERTY, id);
     connect(a, SIGNAL(triggered()), SLOT(sl_clicked()));
     ToolsMenu::addAction(action.toolsMenu, a);
 }
 
-int SampleActionsManager::getValidClickedActionId(U2OpStatus &os) const {
-    QAction *a = qobject_cast<QAction *>(sender());
+int SampleActionsManager::getValidClickedActionId(U2OpStatus& os) const {
+    QAction* a = qobject_cast<QAction*>(sender());
     CHECK_EXT(nullptr != a, os.setError(L10N::internalError("Unexpected method call")), -1);
 
     bool ok = false;
@@ -75,20 +75,20 @@ int SampleActionsManager::getValidClickedActionId(U2OpStatus &os) const {
     return id;
 }
 
-SampleAction SampleActionsManager::getClickedAction(U2OpStatus &os) const {
+SampleAction SampleActionsManager::getClickedAction(U2OpStatus& os) const {
     int id = getValidClickedActionId(os);
     CHECK_OP(os, SampleAction("", "", "", ""));
     return actions[id];
 }
 
-QStringList SampleActionsManager::getAbsentPlugins(const QStringList &requiredPlugins) const {
+QStringList SampleActionsManager::getAbsentPlugins(const QStringList& requiredPlugins) const {
     QStringList result = requiredPlugins;
 #ifdef _DEBUG
     for (int i = 0; i < result.size(); i++) {
         result[i] += "d";
     }
 #endif  // _DEBUG
-    foreach (Plugin *plugin, AppContext::getPluginSupport()->getPlugins()) {
+    foreach (Plugin* plugin, AppContext::getPluginSupport()->getPlugins()) {
         result.removeAll(plugin->getId());
     }
     return result;

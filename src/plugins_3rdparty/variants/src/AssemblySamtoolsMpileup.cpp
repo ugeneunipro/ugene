@@ -49,7 +49,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-CallVariantsTask::CallVariantsTask(const CallVariantsTaskSettings &_settings, DbiDataStorage *_store)
+CallVariantsTask::CallVariantsTask(const CallVariantsTaskSettings& _settings, DbiDataStorage* _store)
     : ExternalToolSupportTask(tr("Call variants for %1").arg(_settings.refSeqUrl), TaskFlag_NoRun), settings(_settings), loadTask(nullptr), mpileupTask(nullptr), storage(_store) {
     GCOUNTER(cvar, "NGS:CallVariantsTask");
     setMaxParallelSubtasks(1);
@@ -66,7 +66,7 @@ QString CallVariantsTask::toString(FileType type) {
     }
 }
 
-bool CallVariantsTask::ensureFileExists(const QString &url, FileType type) {
+bool CallVariantsTask::ensureFileExists(const QString& url, FileType type) {
     if (!QFile::exists(url)) {
         setError(tr("The %1 file does not exist: %2").arg(toString(type)).arg(url));
         return false;
@@ -76,7 +76,7 @@ bool CallVariantsTask::ensureFileExists(const QString &url, FileType type) {
 
 void CallVariantsTask::prepare() {
     CHECK(ensureFileExists(settings.refSeqUrl, Reference), );
-    foreach (const QString &url, settings.assemblyUrls) {
+    foreach (const QString& url, settings.assemblyUrls) {
         CHECK(ensureFileExists(url, Assembly), );
     }
 
@@ -99,8 +99,8 @@ void CallVariantsTask::prepare() {
     addSubTask(mpileupTask);
 }
 
-QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -112,7 +112,7 @@ QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == mpileupTask) {
         const GUrl url(settings.variationsUrl);
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         if (iof == nullptr) {
             return res;
         }
@@ -120,7 +120,7 @@ QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
         if (dfs.isEmpty()) {
             return res;
         }
-        DocumentFormat *df = dfs.first().format;
+        DocumentFormat* df = dfs.first().format;
         QVariantMap cfg;
         cfg.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(storage->getDbiRef()));
         loadTask = new LoadDocumentTask(df->getFormatId(), url, iof, cfg);
@@ -130,8 +130,8 @@ QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
         QScopedPointer<Document> doc(loadTask->takeDocument(false));
         SAFE_POINT(doc != nullptr, tr("No document loaded"), res);
         doc->setDocumentOwnsDbiResources(false);
-        foreach (GObject *go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
-            VariantTrackObject *varObj = dynamic_cast<VariantTrackObject *>(go);
+        foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
+            VariantTrackObject* varObj = dynamic_cast<VariantTrackObject*>(go);
             CHECK_EXT(nullptr != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
 
             QVariantMap m;
@@ -145,7 +145,7 @@ QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-QString CallVariantsTask::tmpFilePath(const QString &baseName, const QString &ext, U2OpStatus &os) {
+QString CallVariantsTask::tmpFilePath(const QString& baseName, const QString& ext, U2OpStatus& os) {
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(CALL_VARIANTS_DIR);
     return GUrlUtils::prepareTmpFileLocation(tmpDirPath, baseName, ext, os);
 }
@@ -158,7 +158,7 @@ const QString SamtoolsMpileupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 const QString SamtoolsMpileupTask::BCFTOOLS_ID = "USUPP_BCFTOOLS";
 const QString SamtoolsMpileupTask::VCFUTILS_ID = "USUPP_VCFUTILS";
 
-SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings &_settings)
+SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings& _settings)
     : ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)), settings(_settings) {
 }
 
@@ -173,7 +173,7 @@ void SamtoolsMpileupTask::prepare() {
         return;
     }
 
-    foreach (const QString &aUrl, settings.assemblyUrls) {
+    foreach (const QString& aUrl, settings.assemblyUrls) {
         if (aUrl.isEmpty()) {
             setError(tr("There is an assembly with an empty path"));
             return;
@@ -236,13 +236,13 @@ void SamtoolsMpileupTask::run() {
     checkExitCode(samtools.process, "SAMtools");
 }
 
-void SamtoolsMpileupTask::start(const ProcessRun &pRun, const QString &toolName) {
+void SamtoolsMpileupTask::start(const ProcessRun& pRun, const QString& toolName) {
     pRun.process->start(pRun.program, pRun.arguments);
     bool started = pRun.process->waitForStarted();
     CHECK_EXT(started, setError(tr("Can not run %1 tool").arg(toolName)), );
 }
 
-void SamtoolsMpileupTask::checkExitCode(QProcess *process, const QString &toolName) {
+void SamtoolsMpileupTask::checkExitCode(QProcess* process, const QString& toolName) {
     int exitCode = process->exitCode();
     if (exitCode != EXIT_SUCCESS && !hasError()) {
         setError(tr("%1 tool exited with code %2").arg(toolName).arg(exitCode));

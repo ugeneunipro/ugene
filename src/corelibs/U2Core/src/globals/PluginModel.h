@@ -46,9 +46,9 @@ class Task;
 #define U2_PLUGIN_FAIL_MASSAGE_FUNC ugene_plugin_fail_message
 #define U2_PLUGIN_FAIL_MASSAGE_NAME "ugene_plugin_fail_message"
 
-typedef Plugin *(*PLUG_INIT_FUNC)();
+typedef Plugin* (*PLUG_INIT_FUNC)();
 typedef bool (*PLUG_VERIFY_FUNC)();
-typedef QString *(*PLUG_FAIL_MESSAGE_FUNC)();
+typedef QString* (*PLUG_FAIL_MESSAGE_FUNC)();
 
 enum PluginState {
     PluginState_Loaded,
@@ -58,27 +58,27 @@ enum PluginState {
 class U2CORE_EXPORT Plugin : public QObject {
     Q_OBJECT
 public:
-    Plugin(const QString &_name, const QString &_desc, const bool _isFree = true, PluginState _state = PluginState_Loaded);
+    Plugin(const QString& _name, const QString& _desc, const bool _isFree = true, PluginState _state = PluginState_Loaded);
 
     // plugin is deallocated by plugin_support service when it's removed or on application shutting down
     virtual ~Plugin() {
     }
 
-    const QString &getId() const;
-    void setId(const QString &value);
+    const QString& getId() const;
+    void setId(const QString& value);
 
-    const QString &getName() const {
+    const QString& getName() const {
         return name;
     }
 
-    const QString &getDescription() const {
+    const QString& getDescription() const {
         return description;
     }
 
-    const GUrl &getLicensePath() const {
+    const GUrl& getLicensePath() const {
         return licensePath;
     }
-    void setLicensePath(const QString &licensePath);
+    void setLicensePath(const QString& licensePath);
 
     PluginState getState() const {
         return state;
@@ -94,14 +94,14 @@ public:
 
     // returns list of services provided by the plugin
     // after plugin is loaded all services from this list are automatically registered
-    const QList<Service *> &getServices() const {
+    const QList<Service*>& getServices() const {
         return services;
     }
 
 protected:
     QString id;
     QString name, description;
-    QList<Service *> services;
+    QList<Service*> services;
     bool isFreeValue;
     bool isLicenseAcceptedValue;
     PluginState state;
@@ -113,8 +113,8 @@ class U2CORE_EXPORT PluginSupport : public QObject {
     Q_OBJECT
 
 public:
-    virtual const QList<Plugin *> &getPlugins() = 0;
-    virtual void setLicenseAccepted(Plugin *p) = 0;
+    virtual const QList<Plugin*>& getPlugins() = 0;
+    virtual void setLicenseAccepted(Plugin* p) = 0;
     virtual bool isAllPluginsLoaded() const = 0;
 
 signals:

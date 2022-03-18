@@ -27,8 +27,8 @@ namespace U2 {
 
 using namespace Workflow;
 
-BaseMessageTranslator::BaseMessageTranslator(const QVariant &atomicMessage,
-                                             WorkflowContext *initContext)
+BaseMessageTranslator::BaseMessageTranslator(const QVariant& atomicMessage,
+                                             WorkflowContext* initContext)
     : source(atomicMessage), context(initContext) {
 }
 

@@ -39,12 +39,12 @@ CmdlineInOutTaskConfig::CmdlineInOutTaskConfig()
 }
 
 namespace {
-CmdlineTaskConfig prepareConfig(const CmdlineInOutTaskConfig &config) {
+CmdlineTaskConfig prepareConfig(const CmdlineInOutTaskConfig& config) {
     CmdlineTaskConfig result = config;
 
     QStringList dbList;
     QStringList idList;
-    foreach (GObject *object, config.inputObjects) {
+    foreach (GObject* object, config.inputObjects) {
         U2EntityRef entityRef = object->getEntityRef();
         dbList << CmdlineInOutTaskRunner::toString(entityRef.dbiRef);
         idList << QString::number(U2DbiUtils::toDbiId(entityRef.entityId));
@@ -58,7 +58,7 @@ CmdlineTaskConfig prepareConfig(const CmdlineInOutTaskConfig &config) {
 }
 }  // namespace
 
-CmdlineInOutTaskRunner::CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig &config)
+CmdlineInOutTaskRunner::CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig& config)
     : CmdlineTaskRunner(prepareConfig(config)), config(config) {
 }
 
@@ -74,15 +74,15 @@ Task::ReportResult CmdlineInOutTaskRunner::report() {
     return result;
 }
 
-const QList<U2DataId> &CmdlineInOutTaskRunner::getOutputObjects() const {
+const QList<U2DataId>& CmdlineInOutTaskRunner::getOutputObjects() const {
     return outputObjects;
 }
 
-QString CmdlineInOutTaskRunner::toString(const U2DbiRef &dbiRef) {
+QString CmdlineInOutTaskRunner::toString(const U2DbiRef& dbiRef) {
     return dbiRef.dbiFactoryId + ">" + dbiRef.dbiId;
 }
 
-U2DbiRef CmdlineInOutTaskRunner::parseDbiRef(const QString &string, U2OpStatus &os) {
+U2DbiRef CmdlineInOutTaskRunner::parseDbiRef(const QString& string, U2OpStatus& os) {
     QStringList dbTokens = string.split(">");
     if (1 == dbTokens.size()) {
         return U2DbiRef(DEFAULT_DBI_ID, string);
@@ -94,7 +94,7 @@ U2DbiRef CmdlineInOutTaskRunner::parseDbiRef(const QString &string, U2OpStatus &
     return U2DbiRef(dbTokens[0], dbTokens[1]);
 }
 
-U2DataId CmdlineInOutTaskRunner::parseDataId(const QString &string, const U2DbiRef &dbiRef, U2OpStatus &os) {
+U2DataId CmdlineInOutTaskRunner::parseDataId(const QString& string, const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, U2DataId());
     return con.dbi->getObjectDbi()->getObject(string.toLongLong(), os);
@@ -104,15 +104,15 @@ namespace {
 const QString OUTPUT_OBJECT_TAG = "ugene-output-object-id=";
 }
 
-void CmdlineInOutTaskRunner::logOutputObject(const U2DataId &id) {
+void CmdlineInOutTaskRunner::logOutputObject(const U2DataId& id) {
     coreLog.info(OUTPUT_OBJECT_TAG + QString::number(U2DbiUtils::toDbiId(id)));
 }
 
-bool CmdlineInOutTaskRunner::isCommandLogLine(const QString &logLine) const {
+bool CmdlineInOutTaskRunner::isCommandLogLine(const QString& logLine) const {
     return logLine.startsWith(OUTPUT_OBJECT_TAG);
 }
 
-bool CmdlineInOutTaskRunner::parseCommandLogWord(const QString &logWord) {
+bool CmdlineInOutTaskRunner::parseCommandLogWord(const QString& logWord) {
     if (logWord.startsWith(OUTPUT_OBJECT_TAG)) {
         QString idString = logWord.mid(OUTPUT_OBJECT_TAG.size());
         U2DataId objectId = parseDataId(idString, config.outDbiRef, stateInfo);

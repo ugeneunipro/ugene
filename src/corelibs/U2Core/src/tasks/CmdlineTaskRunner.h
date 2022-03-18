@@ -45,11 +45,11 @@ class U2CORE_EXPORT CmdlineTaskRunner : public Task {
 public:
     static QList<long> getChildrenProcesses(qint64 processId, bool fullTree = true);
     static int killChildrenProcesses(qint64 processId, bool fullTree = true);
-    static int killProcessTree(QProcess *process);
+    static int killProcessTree(QProcess* process);
     static int killProcessTree(qint64 processId);
     static int killProcess(qint64 processId);
 
-    CmdlineTaskRunner(const CmdlineTaskConfig &config);
+    CmdlineTaskRunner(const CmdlineTaskConfig& config);
 
     void prepare();
     ReportResult report();
@@ -57,11 +57,11 @@ public:
     static const QString REPORT_FILE_ARG;
 
 protected:
-    virtual bool isCommandLogLine(const QString &logLine) const;
-    virtual bool parseCommandLogWord(const QString &logWord);
+    virtual bool isCommandLogLine(const QString& logLine) const;
+    virtual bool parseCommandLogWord(const QString& logWord);
 
 private:
-    void writeLog(QStringList &lines);
+    void writeLog(QStringList& lines);
     QString readStdout();
 
 private slots:
@@ -71,14 +71,14 @@ private slots:
 
 private:
     CmdlineTaskConfig config;
-    QProcess *process;
+    QProcess* process;
     QString processLogPrefix;
 };
 
 class U2CORE_EXPORT CmdlineTask : public Task {
     Q_OBJECT
 public:
-    CmdlineTask(const QString &name, TaskFlags flags);
+    CmdlineTask(const QString& name, TaskFlags flags);
     ReportResult report();
 
 protected:

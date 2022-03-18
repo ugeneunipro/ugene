@@ -35,29 +35,29 @@ public:
     virtual ~ActorValidator() {
     }
 
-    virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const;
-    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const = 0;
+    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const;
+    virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const = 0;
 
 protected:
     template<class T>
-    T getValue(const Actor *actor, const QString &attrId) const;
+    T getValue(const Actor* actor, const QString& attrId) const;
 };
 
 class U2LANG_EXPORT ActorValidatorRegistry {
 public:
     ActorValidatorRegistry();
     ~ActorValidatorRegistry();
-    bool addValidator(const QString &id, ActorValidator *validator);
-    ActorValidator *findValidator(const QString &id);
+    bool addValidator(const QString& id, ActorValidator* validator);
+    ActorValidator* findValidator(const QString& id);
 
 private:
     QMutex mutex;
-    QMap<QString, ActorValidator *> validators;
+    QMap<QString, ActorValidator*> validators;
 };
 
 template<class T>
-T ActorValidator::getValue(const Actor *actor, const QString &attrId) const {
-    Attribute *attr = actor->getParameter(attrId);
+T ActorValidator::getValue(const Actor* actor, const QString& attrId) const {
+    Attribute* attr = actor->getParameter(attrId);
     if (nullptr == attr) {
         return T();
     }

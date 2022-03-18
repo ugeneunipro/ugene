@@ -30,7 +30,7 @@ class MaEditor;
 
 class U2VIEW_EXPORT DrawHelper {
 public:
-    DrawHelper(MaEditor *editor);
+    DrawHelper(MaEditor* editor);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
     U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
@@ -39,10 +39,10 @@ public:
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
 
     /** Returns screen coordinates for the given rect of columns and rows. */
-    QRect getScreenRect(const QRect &columnsAndRowsRect) const;
+    QRect getScreenRect(const QRect& columnsAndRowsRect) const;
 
 private:
-    MaEditor *const editor;
+    MaEditor* const editor;
 };
 
 }  // namespace U2

@@ -36,7 +36,7 @@ public:
     enum Button { Ok,
                   Cancel };
 
-    GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus &os, CustomScenario *scenario = nullptr);
+    GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
     virtual void commonScenario();
 
 private:
@@ -46,9 +46,9 @@ private:
     void setNewDocumentName();
     void selectSaveDocument();
     void clickButton();
-    void changeSpinBoxValue(QSpinBox *, int);
+    void changeSpinBoxValue(QSpinBox*, int);
 
-    QWidget *dialog;
+    QWidget* dialog;
 };
 
 }  // namespace U2

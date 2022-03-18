@@ -92,7 +92,7 @@ const QString GTFFormat::FRAME_QUALIFIER_NAME = "frame";
 const QString GTFFormat::GENE_ID_QUALIFIER_NAME = "gene_id";
 const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
-GTFFormat::GTFFormat(QObject *parent)
+GTFFormat::GTFFormat(QObject* parent)
     : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::GTF, DocumentFormatFlag_SupportWriting, QStringList("gtf")) {
     formatName = tr("GTF");
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
@@ -101,18 +101,18 @@ GTFFormat::GTFFormat(QObject *parent)
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
-Document *GTFFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+Document* GTFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
-    QList<GObject *> objects;
+    QList<GObject*> objects;
 
     load(io, objects, dbiRef, hints, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
-    Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
 }
 
-int readGTFLine(QString &buffer, IOAdapter *io, QScopedArrayPointer<char> &charbuff, U2OpStatus &os) {
+int readGTFLine(QString& buffer, IOAdapter* io, QScopedArrayPointer<char>& charbuff, U2OpStatus& os) {
     int len;
     buffer.clear();
     do {
@@ -126,7 +126,7 @@ int readGTFLine(QString &buffer, IOAdapter *io, QScopedArrayPointer<char> &charb
     return buffer.length();
 }
 
-QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter *io, U2OpStatus &os) {
+QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter* io, U2OpStatus& os) {
     QMap<QString, QList<SharedAnnotationData>> result;
 
     QScopedArrayPointer<char> buff(new char[READ_BUFF_SIZE]);
@@ -200,7 +200,7 @@ QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter *i
             annotData->qualifiers << U2Qualifier(FRAME_QUALIFIER_NAME, gtfLineData.frame);
         }
 
-        foreach (const QString &attributeName, gtfLineData.attributes.keys()) {
+        foreach (const QString& attributeName, gtfLineData.attributes.keys()) {
             U2Qualifier qualifier(attributeName, gtfLineData.attributes.value(attributeName));
             if (!qualifier.isValid()) {
                 validationStatus.setFlagIncorrectFormatOfAttributes();
@@ -244,7 +244,7 @@ QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter *i
     return result;
 }
 
-void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+void GTFFormat::load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
 
@@ -253,16 +253,16 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
     QMultiMap<QString, QList<SharedAnnotationData>>::const_iterator iter = annotationsMap.constBegin();
     const int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
-    QMap<AnnotationTableObject *, QMap<QString, QList<SharedAnnotationData>>> annTable2Annotations;
+    QMap<AnnotationTableObject*, QMap<QString, QList<SharedAnnotationData>>> annTable2Annotations;
     while (iter != annotationsMap.constEnd()) {
-        const QString &sequenceName = iter.key();
+        const QString& sequenceName = iter.key();
 
         // Get or create the annotations table
         QString annotTableName = sequenceName + FEATURES_TAG;
-        AnnotationTableObject *annotTable = nullptr;
-        foreach (GObject *object, objects) {
+        AnnotationTableObject* annotTable = nullptr;
+        foreach (GObject* object, objects) {
             if (object->getGObjectName() == annotTableName) {
-                annotTable = dynamic_cast<AnnotationTableObject *>(object);
+                annotTable = dynamic_cast<AnnotationTableObject*>(object);
                 break;
             }
         }
@@ -279,8 +279,8 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
             objects.append(annotTable);
         }
 
-        const QList<SharedAnnotationData> &annotList = iter.value();
-        foreach (const SharedAnnotationData &annotData, annotList) {
+        const QList<SharedAnnotationData>& annotList = iter.value();
+        foreach (const SharedAnnotationData& annotData, annotList) {
             QString groupName = annotData->name;  // Assume that the group name is the same as the annotation name
             if (!AnnotationGroup::isValidGroupName(groupName, false)) {
                 groupName = "Group";  // Or just a value if the name of the feature is not appropriate
@@ -290,16 +290,16 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
         ++iter;
     }
 
-    QList<AnnotationTableObject *> annTable2AnnotationsKeys = annTable2Annotations.keys();
-    for (AnnotationTableObject *ato : qAsConst(annTable2AnnotationsKeys)) {
-        foreach (const QString &groupName, annTable2Annotations[ato].keys()) {
+    QList<AnnotationTableObject*> annTable2AnnotationsKeys = annTable2Annotations.keys();
+    for (AnnotationTableObject* ato : qAsConst(annTable2AnnotationsKeys)) {
+        foreach (const QString& groupName, annTable2Annotations[ato].keys()) {
             ato->addAnnotations(annTable2Annotations[ato][groupName], groupName);
         }
     }
 }
 
-FormatCheckResult GTFFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    const char *data = rawData.constData();
+FormatCheckResult GTFFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
+    const char* data = rawData.constData();
     int size = rawData.size();
 
     bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);
@@ -341,7 +341,7 @@ FormatCheckResult GTFFormat::checkRawTextData(const QByteArray &rawData, const G
 // from the start of any subsequent attribute by exactly one space
 // character (NOT a tab character).
 // Textual attributes should be surrounded by double quotes.
-bool parseAttributes(QString attributesStr, QMap<QString, QString> &parsedAttrValues) {
+bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrValues) {
     QMap<QString, QString> result;
 
     QString attributeName;
@@ -414,7 +414,7 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString> &parsedAttrVa
     return true;
 }
 
-GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags &status) const {
+GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags& status) const {
     GTFLineData parsedData;
 
     // If there is a comment char, then ignore all characters after it
@@ -509,8 +509,8 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags &
     return parsedData;
 }
 
-void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    QList<GObject *> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+void GTFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
+    QList<GObject*> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
     QStringList cleanFields;
     for (int i = 0; i < FIELDS_COUNT_IN_EACH_LINE; ++i) {
@@ -518,11 +518,11 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     }
 
     QByteArray lineData;
-    bool geneIdOrTranscriptIdQualNotFound = false;
+    bool hasNoGeneIdOrTranscriptId = false;
 
-    foreach (GObject *annotTable, annotTables) {
-        AnnotationTableObject *annTable = qobject_cast<AnnotationTableObject *>(annotTable);
-        QList<Annotation *> annotationsList = annTable->getAnnotations();
+    for (GObject* annotTable : qAsConst(annotTables)) {
+        auto annTable = qobject_cast<AnnotationTableObject*>(annotTable);
+        QList<Annotation*> annotationsList = annTable->getAnnotations();
 
         QString annotTableName;
         QList<GObjectRelation> relations = annTable->findRelatedObjectsByType(GObjectTypes::SEQUENCE);
@@ -535,7 +535,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             }
         }
 
-        for (Annotation *annot : qAsConst(annotationsList)) {
+        for (Annotation* annot : qAsConst(annotationsList)) {
             QString annotName = annot->getName();
             if (annotName == U1AnnotationUtils::lowerCaseAnnotationName || annotName == U1AnnotationUtils::upperCaseAnnotationName) {
                 continue;
@@ -546,10 +546,10 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             QVector<U2Qualifier> annotQualifiers = annot->getQualifiers();
 
             lineFields[GTF_SEQ_NAME_INDEX] = annotTableName;
-            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isCompementary() ? "-" : "+");
+            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isComplementary() ? "-" : "+");
 
             // Joined annotations are currently stored as other annotations (we do not store that they are joined)
-            for (const U2Region &region : qAsConst(annotRegions)) {
+            for (const U2Region& region : qAsConst(annotRegions)) {
                 lineFields[GTF_FEATURE_INDEX] = annotName;
 
                 lineFields[GTF_START_INDEX] = QString::number(region.startPos + 1);
@@ -558,7 +558,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 QString geneIdAttributeStr;
                 QString transcriptIdAttributeStr;
                 QString otherAttributesStr;
-                for (const U2Qualifier &qualifier : qAsConst(annotQualifiers)) {
+                for (const U2Qualifier& qualifier : qAsConst(annotQualifiers)) {
                     if (qualifier.name == SOURCE_QUALIFIER_NAME) {
                         lineFields[GTF_SOURCE_INDEX] = qualifier.value;
                     } else if (qualifier.name == SCORE_QUALIFIER_NAME) {
@@ -568,22 +568,19 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                     } else {
                         // All other qualifiers are saved as attributes
                         QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
-                        if (qualifier.name != GENE_ID_QUALIFIER_NAME) {
-                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
-                        }
-
                         if (qualifier.name == GENE_ID_QUALIFIER_NAME) {
                             geneIdAttributeStr = attrStr;
-                        } else if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
-                            transcriptIdAttributeStr = attrStr;
                         } else {
-                            otherAttributesStr += attrStr;
+                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
+                            if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
+                                transcriptIdAttributeStr = attrStr;
+                            } else {
+                                otherAttributesStr += attrStr;
+                            }
                         }
                     }
                 }
-                if (!geneIdOrTranscriptIdQualNotFound && (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty())) {
-                    geneIdOrTranscriptIdQualNotFound = true;
-                }
+                hasNoGeneIdOrTranscriptId = hasNoGeneIdOrTranscriptId || (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty());
                 lineFields[GTF_ATTRIBUTES_INDEX] = geneIdAttributeStr +
                                                    transcriptIdAttributeStr +
                                                    otherAttributesStr;
@@ -597,8 +594,9 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             }
         }
     }
-    if (geneIdOrTranscriptIdQualNotFound) {
-        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers.").arg(io->getURL().getURLString()));
+    if (hasNoGeneIdOrTranscriptId) {
+        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers.")
+                       .arg(io->getURL().getURLString()));
     }
 }
 

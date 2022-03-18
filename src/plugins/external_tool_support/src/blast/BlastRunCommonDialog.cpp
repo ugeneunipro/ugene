@@ -42,7 +42,7 @@ using namespace LocalWorkflow;
 
 ////////////////////////////////////////
 // BlastAllSupportRunCommonDialog
-BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, bool _useCompValues, const QStringList &_compValues)
+BlastRunCommonDialog::BlastRunCommonDialog(QWidget* parent, bool _useCompValues, const QStringList& _compValues)
     : QDialog(parent), useCompValues(_useCompValues), compValues(_compValues) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930723");
@@ -95,7 +95,7 @@ void BlastRunCommonDialog::setupCompositionBasedStatistics() {
     compStatsComboBox->setVisible(visible);
 }
 
-const BlastTaskSettings &BlastRunCommonDialog::getSettings() const {
+const BlastTaskSettings& BlastRunCommonDialog::getSettings() const {
     return settings;
 }
 void BlastRunCommonDialog::sl_onMatchScoresChanged(int) {
@@ -358,7 +358,7 @@ void BlastRunCommonDialog::sl_onCompStatsChanged() {
     settings.compStats = value.left(1);
 }
 
-void BlastRunCommonDialog::getSettings(BlastTaskSettings &settingsSnapshot) {
+void BlastRunCommonDialog::getSettings(BlastTaskSettings& settingsSnapshot) {
     settingsSnapshot.programName = programNameComboBox->currentText();
     settingsSnapshot.databaseNameAndPath = dbSelector->databasePathLineEdit->text() + "/" + dbSelector->baseNameLineEdit->text();
     settingsSnapshot.expectValue = evalueSpinBox->value();

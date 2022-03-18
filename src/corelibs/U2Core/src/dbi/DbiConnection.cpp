@@ -30,17 +30,17 @@
 
 namespace U2 {
 
-DbiConnection::DbiConnection(const U2DbiRef &ref, U2OpStatus &os)
+DbiConnection::DbiConnection(const U2DbiRef& ref, U2OpStatus& os)
     : dbi(nullptr) {
     open(ref, os);
 }
 
-DbiConnection::DbiConnection(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties)
+DbiConnection::DbiConnection(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties)
     : dbi(nullptr) {
     open(ref, create, os, properties);
 }
 
-DbiConnection::DbiConnection(const DbiConnection &dbiConnection) {
+DbiConnection::DbiConnection(const DbiConnection& dbiConnection) {
     copy(dbiConnection);
 }
 
@@ -49,31 +49,31 @@ DbiConnection::~DbiConnection() {
     close(os);
 }
 
-void DbiConnection::open(const U2DbiRef &ref, U2OpStatus &os) {
+void DbiConnection::open(const U2DbiRef& ref, U2OpStatus& os) {
     open(ref, false, os);
 }
 
 namespace {
-U2DbiPool *getDbiPool(U2OpStatus &os) {
-    U2DbiRegistry *dbiReg = AppContext::getDbiRegistry();
+U2DbiPool* getDbiPool(U2OpStatus& os) {
+    U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
     CHECK_EXT(nullptr != dbiReg, os.setError("DBI registry is not initialized"), nullptr);
 
-    U2DbiPool *pool = dbiReg->getGlobalDbiPool();
+    U2DbiPool* pool = dbiReg->getGlobalDbiPool();
     CHECK_EXT(nullptr != pool, os.setError("DBI pool is not initialized"), nullptr);
     return pool;
 }
 }  // namespace
 
-void DbiConnection::open(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties) {
+void DbiConnection::open(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties) {
     SAFE_POINT_EXT(!isOpen(), os.setError(QString("Connection is already opened! %1").arg(dbi->getDbiId())), );
-    U2DbiPool *pool = getDbiPool(os);
+    U2DbiPool* pool = getDbiPool(os);
     SAFE_POINT_OP(os, );
     dbi = pool->openDbi(ref, create, os, properties);
 }
 
-void DbiConnection::close(U2OpStatus &os) {
+void DbiConnection::close(U2OpStatus& os) {
     if (dbi != nullptr) {
-        U2DbiPool *pool = getDbiPool(os);
+        U2DbiPool* pool = getDbiPool(os);
         SAFE_POINT_OP(os, );
         pool->releaseDbi(dbi, os);
         dbi = nullptr;
@@ -84,7 +84,7 @@ bool DbiConnection::isOpen() const {
     return dbi != nullptr;
 }
 
-DbiConnection &DbiConnection::operator=(DbiConnection const &dbiConnection) {
+DbiConnection& DbiConnection::operator=(DbiConnection const& dbiConnection) {
     if (this == &dbiConnection) {
         return *this;
     }
@@ -95,11 +95,11 @@ DbiConnection &DbiConnection::operator=(DbiConnection const &dbiConnection) {
     return *this;
 }
 
-void DbiConnection::copy(DbiConnection const &dbiConnection) {
+void DbiConnection::copy(DbiConnection const& dbiConnection) {
     dbi = dbiConnection.dbi;
     if (dbiConnection.dbi != nullptr) {
         U2OpStatus2Log os;
-        U2DbiPool *pool = getDbiPool(os);
+        U2DbiPool* pool = getDbiPool(os);
         SAFE_POINT_OP(os, );
         pool->addRef(dbi, os);
     }

@@ -25,13 +25,13 @@
 
 namespace U2 {
 
-U2LongLongValidator::U2LongLongValidator(qint64 minimum, qint64 maximum, QObject *parent)
+U2LongLongValidator::U2LongLongValidator(qint64 minimum, qint64 maximum, QObject* parent)
     : QValidator(parent),
       minimum(minimum),
       maximum(maximum) {
 }
 
-QValidator::State U2LongLongValidator::validate(QString &input, int & /*pos*/) const {
+QValidator::State U2LongLongValidator::validate(QString& input, int& /*pos*/) const {
     CHECK(!input.isEmpty(), QValidator::Acceptable);
 
     if ((minimum >= 0 && input.startsWith('-')) || (maximum < 0 && input.startsWith('+'))) {

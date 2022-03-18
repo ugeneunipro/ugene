@@ -43,7 +43,7 @@ private:
     void prepare() override;
     ReportResult report() override;
 
-    DNAStatisticsTask *task;
+    DNAStatisticsTask* task;
 
     // input values
     QString docName;
@@ -77,7 +77,7 @@ private:
 
 class DnaStatisticsTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

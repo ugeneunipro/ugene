@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #ifndef _U2_PHMMER_SEARCH_TASK_TEST_H_
 #define _U2_PHMMER_SEARCH_TASK_TEST_H_
@@ -31,10 +31,10 @@
 namespace U2 {
 
 /*****************************************
-* Test for hmmer3 phmmer.
-* settings set by same tags from hmm3-search and hmm3-build tests + gaps probab. options and subst. matr
-* we test here 1<->1 queries
-*****************************************/
+ * Test for hmmer3 phmmer.
+ * settings set by same tags from hmm3-search and hmm3-build tests + gaps probab. options and subst. matr
+ * we test here 1<->1 queries
+ *****************************************/
 class GTest_UHMM3Phmmer : public XmlTest {
     Q_OBJECT
 public:
@@ -51,26 +51,26 @@ public:
 
     void prepare();
     ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     void setAndCheckArgs();
 
-    static void setSearchTaskSettings(PhmmerSearchSettings &set, const QDomElement &el, TaskStateInfo &si);
+    static void setSearchTaskSettings(PhmmerSearchSettings& set, const QDomElement& el, TaskStateInfo& si);
 
 private:
     PhmmerSearchSettings searchSettings;
     QString queryFilename;
     QString dbFilename;
-    PhmmerSearchTask *phmmerTask;
+    PhmmerSearchTask* phmmerTask;
     QString outputDir;
-};    // GTest_UHMM3Phmmer
+};  // GTest_UHMM3Phmmer
 
 /*****************************************
-* Test compares original hmmer3 phmmer results with UHMM3SearchResults
-*
-* Note, that you should make original hmmer3 to show results in academic version (e.g. 1.01e-23)
-*****************************************/
+ * Test compares original hmmer3 phmmer results with UHMM3SearchResults
+ *
+ * Note, that you should make original hmmer3 to show results in academic version (e.g. 1.01e-23)
+ *****************************************/
 
 class GTest_UHMM3PhmmerCompare : public XmlTest {
     Q_OBJECT
@@ -88,8 +88,8 @@ private:
 private:
     QString actualOutFilename;
     QString trueOutFilename;
-};    // GTest_UHMM3PhmmerCompare
+};  // GTest_UHMM3PhmmerCompare
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

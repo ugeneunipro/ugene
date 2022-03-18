@@ -44,7 +44,7 @@
 
 namespace U2 {
 
-FastaFormat::FastaFormat(QObject *p)
+FastaFormat::FastaFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, {"fa", "mpfa", "fna", "fsa", "fas", "fasta", "sef", "seq", "seqs"}) {
     formatName = tr("FASTA");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
@@ -55,7 +55,7 @@ FastaFormat::FastaFormat(QObject *p)
 }
 
 /** Returns FormatDetectionResult properties (hints) for the given data. */
-static QVariantMap buildFormatDetectionHints(const QString &data) {
+static QVariantMap buildFormatDetectionHints(const QString& data) {
     bool hasGaps = false;
     int minLen = -1;
     int maxLen = -1;
@@ -97,16 +97,16 @@ static QVariantMap buildFormatDetectionHints(const QString &data) {
 }
 
 /** Returns true if the line is a valid comment line for FASTA format. */
-static bool isCommentLine(const QString &line) {
+static bool isCommentLine(const QString& line) {
     return line.startsWith(FastaFormat::FASTA_COMMENT_START_SYMBOL);
 }
 
 /** Returns true if the line is a valid comment line for FASTA format. */
-static bool isHeaderLine(const QString &line) {
+static bool isHeaderLine(const QString& line) {
     return line.startsWith(FastaFormat::FASTA_HEADER_START_SYMBOL);
 }
 
-FormatCheckResult FastaFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+FormatCheckResult FastaFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     QString data = TextUtils::skip(TextUtils::WHITES, dataPrefix);
     FormatDetectionScore score;
     if (isHeaderLine(data)) {
@@ -125,7 +125,7 @@ FormatCheckResult FastaFormat::checkRawTextData(const QString &dataPrefix, const
 }
 
 /** Skips leading 'whites' and comment lines from the stream. */
-static void skipLeadingWhitesAndComments(IOAdapterReader &reader, U2OpStatus &os) {
+static void skipLeadingWhitesAndComments(IOAdapterReader& reader, U2OpStatus& os) {
     while (!reader.atEnd()) {
         QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE);
         CHECK_OP(os, );
@@ -138,7 +138,7 @@ static void skipLeadingWhitesAndComments(IOAdapterReader &reader, U2OpStatus &os
 }
 
 /** Reads a full FASTA header line from the current position and returns a part with no leading '>' character. */
-static QString readHeader(IOAdapterReader &reader, U2OpStatus &os) {
+static QString readHeader(IOAdapterReader& reader, U2OpStatus& os) {
     QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).trimmed();
     CHECK_OP(os, "");
     CHECK_EXT(isHeaderLine(line), os.setError(FastaFormat::tr("First line is not a FASTA header")), "");
@@ -146,7 +146,7 @@ static QString readHeader(IOAdapterReader &reader, U2OpStatus &os) {
 }
 
 /** Loads sequence objects into 'objects' list from the text data in FASTA format available via 'reader'. */
-static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, QList<GObject *> &objects, int gapSize, QString &writeLockReason, U2OpStatus &os) {
+static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, QList<GObject*>& objects, int gapSize, QString& writeLockReason, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
 
@@ -220,7 +220,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
             // DNASequence in UGENE can contain only 1-byte symbols.
             // Forcing latin1 conversion here: the local multi-byte symbols will be lost.
             QByteArray dnaChars = buf.toLatin1();
-            char *dnaCharsBuff = dnaChars.data();
+            char* dnaCharsBuff = dnaChars.data();
             int sequenceChunkLength = TextUtils::remove(dnaCharsBuff, dnaChars.length(), TextUtils::WHITES);
             if (sequenceChunkLength > 0) {
                 seqImporter.addBlock(dnaCharsBuff, sequenceChunkLength, os);
@@ -273,7 +273,8 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
     }
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
-    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence, os.setError(Document::tr("Document is empty.")), );
+    bool isEmptyFileAllowed = hints.value(DocumentReadingMode_AllowEmptyFile).toBool();
+    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(headers.size() == mergedMapping.size(), "headers <-> regions mapping failed!", );
     ioLog.trace("All sequences are processed");
 
@@ -301,8 +302,8 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
     }
 }
 
-Document *FastaFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    QList<GObject *> objects;
+Document* FastaFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    QList<GObject*> objects;
     int gapSize = qBound(-1, DocumentFormatUtils::getMergeGap(hints), 1000 * 1000);
 
     QString lockReason;
@@ -312,11 +313,11 @@ Document *FastaFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef 
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints, lockReason);
 }
 
-static void writeHeaderToFile(IOAdapterWriter &writer, const QString &sequenceName, U2OpStatus &os) {
+static void writeHeaderToFile(IOAdapterWriter& writer, const QString& sequenceName, U2OpStatus& os) {
     writer.write(os, FastaFormat::FASTA_HEADER_START_SYMBOL + sequenceName + '\n');
 }
 
-static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *sequence, U2OpStatus &os) {
+static void saveSequenceObject(IOAdapterWriter& writer, const U2SequenceObject* sequence, U2OpStatus& os) {
     writeHeaderToFile(writer, sequence->getSequenceName(), os);
     CHECK_OP(os, );
     qint64 sequenceLength = sequence->getSequenceLength();
@@ -327,7 +328,7 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
         U2Region region(i, chunkSize);
         QByteArray chunkContent = sequence->getSequenceData(region, os);
         QList<QByteArray> lines = TextUtils::split(chunkContent, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH);
-        for (const QByteArray &line : qAsConst(lines)) {
+        for (const QByteArray& line : qAsConst(lines)) {
             CHECK_OP(os, );
             writer.write(os, QString::fromLatin1(line));
             CHECK_OP(os, );
@@ -337,11 +338,11 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
     }
 }
 
-static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U2OpStatus &os) {
+static void saveSequence(IOAdapterWriter& writer, const DNASequence& sequence, U2OpStatus& os) {
     writeHeaderToFile(writer, sequence.getName(), os);
     CHECK_OP(os, );
 
-    const char *seq = sequence.constData();
+    const char* seq = sequence.constData();
     qint64 sequenceLength = sequence.length();
     for (qint64 i = 0; i < sequenceLength; i += FastaFormat::FASTA_SEQUENCE_LINE_LENGTH) {
         int chunkSize = (int)qMin((qint64)FastaFormat::FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
@@ -352,15 +353,15 @@ static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U
     }
 }
 
-void FastaFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
-    QList<GObject *> objects = document->getObjects();
-    for (GObject *object : qAsConst(objects)) {
-        if (auto sequenceObject = dynamic_cast<U2SequenceObject *>(object)) {
+void FastaFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
+    QList<GObject*> objects = document->getObjects();
+    for (GObject* object : qAsConst(objects)) {
+        if (auto sequenceObject = dynamic_cast<U2SequenceObject*>(object)) {
             saveSequenceObject(writer, sequenceObject, os);
             CHECK_OP(os, );
         } else {
             QList<DNASequence> sequences = DocumentFormatUtils::toSequences(object);
-            for (const DNASequence &sequence : qAsConst(sequences)) {
+            for (const DNASequence& sequence : qAsConst(sequences)) {
                 saveSequence(writer, sequence, os);
                 CHECK_OP(os, );
             }
@@ -368,18 +369,18 @@ void FastaFormat::storeTextDocument(IOAdapterWriter &writer, Document *document,
     }
 }
 
-void FastaFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+void FastaFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::SEQUENCE), "Fasta entry storing: no sequences", );
 
-    const QList<GObject *> &sequenceObjects = objectsMap[GObjectTypes::SEQUENCE];
+    const QList<GObject*>& sequenceObjects = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(sequenceObjects.size() == 1, "Fasta entry storing: expecting 1 sequence object", );
 
-    auto sequenceObject = dynamic_cast<U2SequenceObject *>(sequenceObjects.first());
+    auto sequenceObject = dynamic_cast<U2SequenceObject*>(sequenceObjects.first());
     SAFE_POINT(sequenceObject != nullptr, "Fasta entry storing: sequence object is null", );
     saveSequenceObject(writer, sequenceObject, os);
 }
 
-DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &os) {
+DNASequence* FastaFormat::loadTextSequence(IOAdapterReader& reader, U2OpStatus& os) {
     try {
         MemoryLocker l(os);
         CHECK_OP(os, nullptr);
@@ -410,7 +411,7 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
             // DNASequence in UGENE can contain only 1-byte symbols.
             // Forcing latin1 conversion here: the local multi-byte symbols will be lost.
             QByteArray dnaChars = buf.toLatin1();
-            char *dnaCharsBuff = dnaChars.data();
+            char* dnaCharsBuff = dnaChars.data();
             int sequenceChunkLength = TextUtils::remove(dnaCharsBuff, dnaChars.length(), TextUtils::WHITES);
             if (sequenceChunkLength > 0) {
                 l.tryAcquire(sequenceChunkLength);
@@ -427,7 +428,7 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
         SAFE_POINT(alphabet != nullptr, "Can't find built-in NUCL_DNA_EXTENDED alphabet!", nullptr);
         auto dnaSequence = new DNASequence(header, sequence, alphabet);
         if (!dnaSequence->alphabet->isCaseSensitive()) {
-            TextUtils::translate(TextUtils::UPPER_CASE_MAP, const_cast<char *>(dnaSequence->seq.constData()), dnaSequence->seq.length());
+            TextUtils::translate(TextUtils::UPPER_CASE_MAP, const_cast<char*>(dnaSequence->seq.constData()), dnaSequence->seq.length());
         }
         return dnaSequence;
     } catch (...) {
@@ -436,21 +437,21 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
     }
 }
 
-void FastaFormat::storeSequence(const DNASequence &sequence, IOAdapter *ioAdapter, U2OpStatus &os) {
+void FastaFormat::storeSequence(const DNASequence& sequence, IOAdapter* ioAdapter, U2OpStatus& os) {
     IOAdapterWriter writer(ioAdapter);
     saveSequence(writer, sequence, os);
 }
 
-void FastaFormat::storeSequence(const U2SequenceObject *sequence, IOAdapter *ioAdapter, U2OpStatus &os) {
+void FastaFormat::storeSequence(const U2SequenceObject* sequence, IOAdapter* ioAdapter, U2OpStatus& os) {
     IOAdapterWriter writer(ioAdapter);
     saveSequenceObject(writer, sequence, os);
 }
 
-static QString skipComments(const QString &userInput, U2OpStatus &os) {
+static QString skipComments(const QString& userInput, U2OpStatus& os) {
     QStringList lines = userInput.trimmed().split("\n", QString::SkipEmptyParts);
     QStringList result = lines;
     QStringList unreferenced;
-    foreach (const QString &line, lines) {
+    foreach (const QString& line, lines) {
         if (isHeaderLine(line)) {
             break;
         } else {
@@ -470,19 +471,19 @@ static QString skipComments(const QString &userInput, U2OpStatus &os) {
     return result.join("\n");
 }
 
-QList<QPair<QString, QString>> FastaFormat::getSequencesAndNamesFromUserInput(const QString &userInput, U2OpStatus &os) {
+QList<QPair<QString, QString>> FastaFormat::getSequencesAndNamesFromUserInput(const QString& userInput, U2OpStatus& os) {
     // TODO: rework to use common FASTA parsing algorithm.
     QList<QPair<QString, QString>> result;
     if (userInput.contains(FASTA_HEADER_START_SYMBOL)) {
         QString patterns = skipComments(userInput, os);
         QStringList seqDefs = patterns.trimmed().split(FASTA_HEADER_START_SYMBOL, QString::SkipEmptyParts);
 
-        for (const QString &seqDef : qAsConst(seqDefs)) {
+        for (const QString& seqDef : qAsConst(seqDefs)) {
             QStringList seqData = seqDef.split("\n");
             CHECK_EXT(!seqData.isEmpty(), os.setError("Invalid fasta input"), result);
             QString name = seqData.takeFirst();
             QString sequence;
-            for (const QString &line : qAsConst(seqData)) {
+            for (const QString& line : qAsConst(seqData)) {
                 if (isCommentLine(line)) {
                     continue;
                 }

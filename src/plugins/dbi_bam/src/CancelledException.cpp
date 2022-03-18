@@ -24,7 +24,7 @@
 namespace U2 {
 namespace BAM {
 
-CancelledException::CancelledException(const QString &message)
+CancelledException::CancelledException(const QString& message)
     : Exception(message) {
 }
 

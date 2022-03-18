@@ -58,7 +58,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsProject"
 
-void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s, ProjectCheckType checkType) {
+void GTUtilsProject::openFiles(HI::GUITestOpStatus& os, const QList<QUrl>& urls, const OpenFileSettings& s, ProjectCheckType checkType) {
     switch (s.openMethod) {
         case OpenFileSettings::DragDrop:
             openFilesDrop(os, urls);
@@ -70,20 +70,20 @@ void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls,
     checkProject(os, checkType);
 }
 
-void GTUtilsProject::openFile(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s, ProjectCheckType checkType) {
+void GTUtilsProject::openFile(HI::GUITestOpStatus& os, const GUrl& path, const OpenFileSettings& s, ProjectCheckType checkType) {
     openFiles(os, QList<QUrl>() << path.getURLString(), s, checkType);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-void GTUtilsProject::openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s) {
+void GTUtilsProject::openFileExpectNoProject(HI::GUITestOpStatus& os, const GUrl& path, const OpenFileSettings& s) {
     GTUtilsProject::openFile(os, path, s, NotExists);
 }
 
 #define GT_METHOD_NAME "checkProject"
-void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType) {
+void GTUtilsProject::checkProject(HI::GUITestOpStatus& os, ProjectCheckType checkType) {
     GTGlobals::sleep(500);
 
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     if (checkType == NotExists) {
         GT_CHECK(project == nullptr, "checkProject: There is a project");
         return;
@@ -96,11 +96,11 @@ void GTUtilsProject::checkProject(HI::GUITestOpStatus &os, ProjectCheckType chec
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsProject::openFilesDrop(HI::GUITestOpStatus &os, const QList<QUrl> &urls) {
-    QWidget *widget = AppContext::getMainWindow()->getQMainWindow();
+void GTUtilsProject::openFilesDrop(HI::GUITestOpStatus& os, const QList<QUrl>& urls) {
+    QWidget* widget = AppContext::getMainWindow()->getQMainWindow();
     QPoint widgetPos(widget->width() / 2, widget->height() / 2);
 
-    QMimeData *mimeData = new QMimeData();
+    QMimeData* mimeData = new QMimeData();
     mimeData->setUrls(urls);
 
     Qt::DropActions dropActions = Qt::DropActions(Qt::CopyAction | Qt::MoveAction | Qt::LinkAction);
@@ -110,35 +110,33 @@ void GTUtilsProject::openFilesDrop(HI::GUITestOpStatus &os, const QList<QUrl> &u
         GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
     }
 
-    QDragEnterEvent *dragEnterEvent = new QDragEnterEvent(widgetPos, dropActions, mimeData, mouseButtons, 0);
+    QDragEnterEvent* dragEnterEvent = new QDragEnterEvent(widgetPos, dropActions, mimeData, mouseButtons, 0);
     GTGlobals::sendEvent(widget, dragEnterEvent);
 
-    QDropEvent *dropEvent = new QDropEvent(widgetPos, dropActions, mimeData, mouseButtons, 0);
+    QDropEvent* dropEvent = new QDropEvent(widgetPos, dropActions, mimeData, mouseButtons, 0);
     GTGlobals::sendEvent(widget, dropEvent);
 }
 
-void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus &os, const QList<QUrl> &urls) {
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new GTSequenceReadingModeDialogUtils(os));
+void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus& os, const QList<QUrl>& urls) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, QUrl::toStringList(urls)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Open...");
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
     GTGlobals::sleep(2000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 #define GT_METHOD_NAME "openFileExpectSequence"
-ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(HI::GUITestOpStatus &os,
-                                                                const QString &dirPath,
-                                                                const QString &fileName,
-                                                                const QString &seqName) {
+ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(HI::GUITestOpStatus& os,
+                                                                const QString& dirPath,
+                                                                const QString& fileName,
+                                                                const QString& seqName) {
     return openFileExpectSequence(os, dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectSequence"
-ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus &os,
-                                                                const QString &filePath,
-                                                                const QString &seqName) {
+ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(GUITestOpStatus& os,
+                                                                const QString& filePath,
+                                                                const QString& seqName) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GT_CHECK_OP_RESULT(os, "Error opening file!", nullptr);
@@ -149,7 +147,7 @@ ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus 
     GT_CHECK_OP_RESULT(os, "Error getting the number of sequence widgets!", nullptr);
     GT_CHECK_RESULT(1 == seqWidgetNum, QString("Number of sequences is %1").arg(seqWidgetNum), nullptr);
 
-    ADVSingleSequenceWidget *seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    ADVSingleSequenceWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     GT_CHECK_OP_RESULT(os, "Error grtting sequence widget!", nullptr);
 
     QString actualName = GTUtilsSequenceView::getSeqName(os, seqWidget);
@@ -161,48 +159,48 @@ ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectRawSequence"
-ADVSingleSequenceWidget *GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus &os,
-                                                                   const QString &dirPath,
-                                                                   const QString &fileName,
-                                                                   const QString &seqName) {
+ADVSingleSequenceWidget* GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus& os,
+                                                                   const QString& dirPath,
+                                                                   const QString& fileName,
+                                                                   const QString& seqName) {
     return openFileExpectRawSequence(os, dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectRawSequence"
-ADVSingleSequenceWidget *GTUtilsProject::openFileExpectRawSequence(GUITestOpStatus &os,
-                                                                   const QString &filePath,
-                                                                   const QString &seqName) {
+ADVSingleSequenceWidget* GTUtilsProject::openFileExpectRawSequence(GUITestOpStatus& os,
+                                                                   const QString& filePath,
+                                                                   const QString& seqName) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     return openFileExpectSequence(os, filePath, seqName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectSequences"
-QList<ADVSingleSequenceWidget *> GTUtilsProject::openFileExpectSequences(HI::GUITestOpStatus &os,
-                                                                         const QString &path,
-                                                                         const QString &fileName,
-                                                                         const QList<QString> &seqNames) {
-    QList<ADVSingleSequenceWidget *> result;
+QList<ADVSingleSequenceWidget*> GTUtilsProject::openFileExpectSequences(HI::GUITestOpStatus& os,
+                                                                        const QString& path,
+                                                                        const QString& fileName,
+                                                                        const QList<QString>& seqNames) {
+    QList<ADVSingleSequenceWidget*> result;
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, path + fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GT_CHECK_OP_RESULT(os, "Error opening file!", QList<ADVSingleSequenceWidget *>());
+    GT_CHECK_OP_RESULT(os, "Error opening file!", QList<ADVSingleSequenceWidget*>());
 
     GTGlobals::sleep(200);
 
     int seqWidgetNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
-    GT_CHECK_OP_RESULT(os, "Error getting the number of sequence widgets!", QList<ADVSingleSequenceWidget *>());
-    GT_CHECK_RESULT(seqWidgetNum == seqNames.size(), QString("Expected number of sequences: %1, actual: %2!").arg(seqNames.size()).arg(seqWidgetNum), QList<ADVSingleSequenceWidget *>());
+    GT_CHECK_OP_RESULT(os, "Error getting the number of sequence widgets!", QList<ADVSingleSequenceWidget*>());
+    GT_CHECK_RESULT(seqWidgetNum == seqNames.size(), QString("Expected number of sequences: %1, actual: %2!").arg(seqNames.size()).arg(seqWidgetNum), QList<ADVSingleSequenceWidget*>());
 
     for (int i = 0; i < seqNames.size(); ++i) {
-        ADVSingleSequenceWidget *seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
-        GT_CHECK_OP_RESULT(os, QString("Error grtting sequence widget: %1!").arg(i), QList<ADVSingleSequenceWidget *>());
+        ADVSingleSequenceWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
+        GT_CHECK_OP_RESULT(os, QString("Error grtting sequence widget: %1!").arg(i), QList<ADVSingleSequenceWidget*>());
 
         QString actualName = GTUtilsSequenceView::getSeqName(os, seqWidget);
         GT_CHECK_RESULT(seqNames.at(i) == actualName,
                         QString("Unexpected sequence widget at position %1. Expected sequence name: %2, actual: %3!").arg(i).arg(seqNames.at(i)).arg(actualName),
-                        QList<ADVSingleSequenceWidget *>());
+                        QList<ADVSingleSequenceWidget*>());
         result << seqWidget;
     }
 
@@ -211,13 +209,13 @@ QList<ADVSingleSequenceWidget *> GTUtilsProject::openFileExpectSequences(HI::GUI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openMultiSequenceFileAsSequences"
-void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, const QString &path, const QString &fileName) {
+void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus& os, const QString& path, const QString& fileName) {
     openMultiSequenceFileAsSequences(os, path + "/" + fileName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openMultiSequenceFileAsSequences"
-void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, const QString &filePath) {
+void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus& os, const QString& filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -225,7 +223,7 @@ void GTUtilsProject::openMultiSequenceFileAsSequences(HI::GUITestOpStatus &os, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openMultiSequenceFileAsMergedSequence"
-void GTUtilsProject::openMultiSequenceFileAsMergedSequence(HI::GUITestOpStatus &os, const QString &filePath) {
+void GTUtilsProject::openMultiSequenceFileAsMergedSequence(HI::GUITestOpStatus& os, const QString& filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
     GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -233,13 +231,13 @@ void GTUtilsProject::openMultiSequenceFileAsMergedSequence(HI::GUITestOpStatus &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openMultiSequenceFileAsMalignment"
-void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, const QString &dirPath, const QString &fileName) {
+void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus& os, const QString& dirPath, const QString& fileName) {
     openMultiSequenceFileAsMalignment(os, dirPath + "/" + fileName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openMultiSequenceFileAsMalignment"
-void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, const QString &filePath) {
+void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus& os, const QString& filePath) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -247,7 +245,7 @@ void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "saveProjectAs"
-void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus &os, const QString &path) {
+void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path) {
     const QFileInfo info(path);
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", info.absoluteFilePath()));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -255,20 +253,13 @@ void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus &os, const QString &path)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeProjectDeprecated"
-void GTUtilsProject::closeProject(HI::GUITestOpStatus &os) {
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AppCloseMessageBoxDialogFiller(os));
-    GTGlobals::sleep(500);
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "closeProject"
-void GTUtilsProject::closeProject(HI::GUITestOpStatus &os, bool isExpectSaveProjectDialog) {
+void GTUtilsProject::closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog, bool isExpectAppMessageBox) {
     if (isExpectSaveProjectDialog) {
         GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    }
+    if (isExpectAppMessageBox) {
+        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
     }
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }

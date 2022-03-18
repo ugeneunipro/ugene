@@ -32,13 +32,13 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTUtilsDialog::MessageBoxDialogFiller"
 
-MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, QMessageBox::StandardButton b, const QString &_message, const QString &objectName)
+MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus& os, QMessageBox::StandardButton b, const QString& _message, const QString& objectName)
     : Filler(os, objectName),
       b(b),
       message(_message) {
 }
 
-MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, const QString &_buttonText, const QString &_message)
+MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus& os, const QString& _buttonText, const QString& _message)
     : Filler(os, ""),
       b(QMessageBox::NoButton),
       buttonText(_buttonText),
@@ -48,7 +48,7 @@ MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, const QStrin
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxDialogFiller::commonScenario() {
     auto modalWidget = GTWidget::getActiveModalWidget(os);
-    auto messageBox = qobject_cast<QMessageBox *>(modalWidget);
+    auto messageBox = qobject_cast<QMessageBox*>(modalWidget);
     GT_CHECK(messageBox != nullptr, "messageBox is NULL");
 
     if (!message.isEmpty()) {
@@ -58,7 +58,7 @@ void MessageBoxDialogFiller::commonScenario() {
     }
 
     if (!buttonText.isEmpty()) {
-        for (QAbstractButton *button : messageBox->buttons()) {
+        for (QAbstractButton* button : messageBox->buttons()) {
             if (button->text().contains(buttonText, Qt::CaseInsensitive)) {
                 GTWidget::click(os, button);
                 return;
@@ -66,7 +66,7 @@ void MessageBoxDialogFiller::commonScenario() {
         }
     }
 
-    QAbstractButton *button = messageBox->button(b);
+    QAbstractButton* button = messageBox->button(b);
     GT_CHECK(button != nullptr, QString("There is no such button in messagebox: 0x%1").arg(QString::number(b, 16)));
     GTWidget::click(os, button);
 }
@@ -76,25 +76,25 @@ void MessageBoxDialogFiller::commonScenario() {
 
 #define GT_CLASS_NAME "GTUtilsDialog::AppCloseMessageBoxDialogFiller"
 
-AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller(GUITestOpStatus &os)
+AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller(GUITestOpStatus& os)
     : Filler(os, "") {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void AppCloseMessageBoxDialogFiller::commonScenario() {
-    QWidget *activeModal = QApplication::activeModalWidget();
-    QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
+    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
-    QAbstractButton *noButton = messageBox->button(QMessageBox::No);
-    QAbstractButton *noToAllButton = messageBox->button(QMessageBox::NoToAll);
+    QAbstractButton* noButton = messageBox->button(QMessageBox::No);
+    QAbstractButton* noToAllButton = messageBox->button(QMessageBox::NoToAll);
 
     if (NULL != noToAllButton) {
         GTWidget::click(os, noToAllButton);
     } else if (NULL != noButton) {
         GTWidget::click(os, noButton);
     } else {
-        GT_CHECK(false, "There are neither \"No\" or \"No to all\" buttons in the message box");
+        GT_FAIL("There are neither \"No\" or \"No to all\" buttons in the message box", );
     }
 }
 #undef GT_METHOD_NAME
@@ -103,17 +103,17 @@ void AppCloseMessageBoxDialogFiller::commonScenario() {
 
 #define GT_CLASS_NAME "GTUtilsDialog::MessageBoxNoToAllOrNo"
 
-MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo(GUITestOpStatus &os)
+MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo(GUITestOpStatus& os)
     : Filler(os, "") {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxNoToAllOrNo::commonScenario() {
-    QWidget *activeModal = QApplication::activeModalWidget();
-    QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
+    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
-    QAbstractButton *button = messageBox->button(QMessageBox::NoToAll);
+    QAbstractButton* button = messageBox->button(QMessageBox::NoToAll);
     if (!button) {
         button = messageBox->button(QMessageBox::No);
     }
@@ -127,20 +127,20 @@ void MessageBoxNoToAllOrNo::commonScenario() {
 
 #define GT_CLASS_NAME "MessageBoxOpenAnotherProject"
 
-MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject(GUITestOpStatus &os)
+MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject(GUITestOpStatus& os)
     : Filler(os, "") {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxOpenAnotherProject::commonScenario() {
-    QWidget *activeModal = QApplication::activeModalWidget();
-    QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
+    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
-    QAbstractButton *button = messageBox->findChild<QAbstractButton *>("New Window");
+    QAbstractButton* button = messageBox->findChild<QAbstractButton*>("New Window");
     GT_CHECK(button != NULL, "There are no New Window buttons in messagebox");
 
-    button = messageBox->findChild<QAbstractButton *>("This Window");
+    button = messageBox->findChild<QAbstractButton*>("This Window");
     GT_CHECK(button != NULL, "There are no This Window buttons in messagebox");
 
     button = messageBox->button(QMessageBox::Abort);
@@ -154,15 +154,15 @@ void MessageBoxOpenAnotherProject::commonScenario() {
 
 #define GT_CLASS_NAME "MessageBoxOpenAnotherProject"
 
-InputIntFiller::InputIntFiller(GUITestOpStatus &os, int value)
+InputIntFiller::InputIntFiller(GUITestOpStatus& os, int value)
     : Filler(os, ""),
       value(value) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void InputIntFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    QSpinBox *spinBox = dialog->findChild<QSpinBox *>();
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QSpinBox* spinBox = dialog->findChild<QSpinBox*>();
     GT_CHECK(NULL != spinBox, "NULL spinBox");
 
     GTSpinBox::setValue(os, spinBox, value);

@@ -50,7 +50,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment &_ma, const QString &_url, const DocumentFormatId &_documentFormatId)
+ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _url, const DocumentFormatId& _documentFormatId)
     : DocumentProviderTask(tr("Export alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportAlignmentTask");
     documentDescription = QFileInfo(url).fileName();
@@ -59,14 +59,14 @@ ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment &_ma, c
 }
 
 void ExportAlignmentTask::run() {
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -82,10 +82,10 @@ void ExportAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment &_ma,
-                                                 const QString &_url,
+ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment& _ma,
+                                                 const QString& _url,
                                                  bool _trimLeadingAndTrailingGaps,
-                                                 const DocumentFormatId &_documentFormatId)
+                                                 const DocumentFormatId& _documentFormatId)
     : DocumentProviderTask(tr("Export alignment as sequence to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url),
       trimLeadingAndTrailingGaps(_trimLeadingAndTrailingGaps), documentFormatId(_documentFormatId) {
     documentDescription = QFileInfo(url).fileName();
@@ -94,16 +94,16 @@ ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment
 }
 
 void ExportMSA2SequencesTask::run() {
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
     QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
     CHECK_OP(stateInfo, );
     QSet<QString> usedNames;
-    for (DNASequence &sequence : sequenceList) {
+    for (DNASequence& sequence : sequenceList) {
         QString name = sequence.getName();
         if (usedNames.contains(name)) {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
@@ -126,12 +126,12 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
-                                     const QList<qint64> &rowIds,
-                                     const U2Region &columnRegion,
-                                     const QString &_url,
-                                     const DNATranslation *_aminoTranslation,
-                                     const DocumentFormatId &_documentFormatId,
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
+                                     const QList<qint64>& rowIds,
+                                     const U2Region& columnRegion,
+                                     const QString& _url,
+                                     const DNATranslation* _aminoTranslation,
+                                     const DocumentFormatId& _documentFormatId,
                                      bool _trimGaps,
                                      bool _convertUnknownToGap,
                                      bool _reverseComplement,
@@ -153,22 +153,22 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
 }
 
 void ExportMSA2MSATask::run() {
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
     QList<DNASequence> resultSequenceList;
-    for (const DNASequence &originalSequence : sequenceList) {
+    for (const DNASequence& originalSequence : sequenceList) {
         DNASequence sequence = reverseComplement ? DNASequenceUtils::reverseComplement(originalSequence) : originalSequence;
         sequence.seq = sequence.seq.right(sequence.seq.length() - translationFrame);
         QString name = sequence.getName();
         if (aminoTranslation != nullptr) {
             name += "(translated)";
 
-            const QByteArray &seq = sequence.seq;
+            const QByteArray& seq = sequence.seq;
             int aminoSequenceLength = seq.length() / 3;
             QByteArray resultData(aminoSequenceLength, '\0');
             CHECK_EXT(resultData.size() == aminoSequenceLength, L10N::outOfMemory(), );
@@ -187,7 +187,7 @@ void ExportMSA2MSATask::run() {
     MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
     exportedDocument->addObject(obj);
@@ -202,14 +202,14 @@ void ExportMSA2MSATask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export chromatogram to SCF
 
-ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject *_obj, const ExportChromatogramTaskSettings &_settings)
+ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject* _obj, const ExportChromatogramTaskSettings& _settings)
     : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE), chromaObject(_obj), settings(_settings), loadTask(nullptr) {
     GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
 }
 
 void ExportDNAChromatogramTask::prepare() {
-    Document *d = chromaObject->getDocument();
+    Document* d = chromaObject->getDocument();
     SAFE_POINT_EXT(d != nullptr, setError(L10N::internalError("Chromatogram object has no associated document")), );
 
     QList<GObjectRelation> relatedObjs = chromaObject->findRelatedObjectsByRole(ObjectRole_Sequence);
@@ -217,8 +217,8 @@ void ExportDNAChromatogramTask::prepare() {
 
     QString seqObjName = relatedObjs.first().ref.objName;
 
-    GObject *resObj = d->findGObjectByName(seqObjName);
-    auto sObj = qobject_cast<U2SequenceObject *>(resObj);
+    GObject* resObj = d->findGObjectByName(seqObjName);
+    auto sObj = qobject_cast<U2SequenceObject*>(resObj);
     SAFE_POINT_EXT(sObj != nullptr, setError(L10N::nullPointerError("sequence object is null")), );
 
     DNAChromatogram cd = chromaObject->getChromatogram();
@@ -259,7 +259,7 @@ void ExportDNAChromatogramTask::prepare() {
     }
 
     if (settings.complement) {
-        DNATranslation *tr = AppContext::getDNATranslationRegistry()->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
+        DNATranslation* tr = AppContext::getDNATranslationRegistry()->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
         tr->translate(seq.data(), seq.length());
         qSwap(cd.A, cd.T);
         qSwap(cd.C, cd.G);
@@ -271,12 +271,12 @@ void ExportDNAChromatogramTask::prepare() {
     CHECK_OP(stateInfo, );
 
     if (settings.loadDocument) {
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         loadTask = new LoadDocumentTask(BaseDocumentFormats::SCF, settings.url, iof);
         addSubTask(loadTask);
     }
 }
-QList<Task *> ExportDNAChromatogramTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> ExportDNAChromatogramTask::onSubTaskFinished(Task* subTask) {
     if (subTask == loadTask) {
         resultDocument = loadTask->takeDocument();
     }

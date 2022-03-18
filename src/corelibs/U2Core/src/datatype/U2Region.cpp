@@ -47,15 +47,15 @@ QString U2Region::toString(Format format) const {
     }
 }
 
-QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region> &_regions, int seqLen) {
+QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region>& _regions, int seqLen) {
     CHECK(_regions.size() >= 2, _regions);
 
     QVector<U2Region> regions = join(_regions);
     CHECK(regions.size() >= 2, regions);
     U2Region maxInterval(regions[0].endPos(), regions[1].startPos - regions[0].endPos());
     for (int i = 1; i < regions.size() - 1; i++) {
-        const U2Region &r0 = regions[i];
-        const U2Region &r1 = regions[i + 1];
+        const U2Region& r0 = regions[i];
+        const U2Region& r1 = regions[i + 1];
         if (maxInterval.length < r1.startPos - r0.endPos()) {
             maxInterval = U2Region(r0.endPos(), r1.startPos - r0.endPos());
         }
@@ -68,12 +68,12 @@ QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region> &_regions
     }
 }
 
-QVector<U2Region> U2Region::join(QVector<U2Region> &regions) {
+QVector<U2Region> U2Region::join(QVector<U2Region>& regions) {
     QVector<U2Region> result = regions;
     std::stable_sort(result.begin(), result.end());  // sort by region start pos first
     for (int i = 0; i < result.size() - 1;) {
-        const U2Region &ri0 = result[i];
-        const U2Region &ri1 = result[i + 1];
+        const U2Region& ri0 = result[i];
+        const U2Region& ri1 = result[i + 1];
         if (!ri0.intersects(ri1)) {
             i++;
             continue;
@@ -85,9 +85,9 @@ QVector<U2Region> U2Region::join(QVector<U2Region> &regions) {
     return result;
 }
 
-void U2Region::bound(qint64 minPos, qint64 maxPos, QVector<U2Region> &regions) {
+void U2Region::bound(qint64 minPos, qint64 maxPos, QVector<U2Region>& regions) {
     for (int i = 0, n = regions.size(); i < n; i++) {
-        U2Region &r = regions[i];
+        U2Region& r = regions[i];
         int start = qBound(minPos, r.startPos, maxPos);
         int end = qBound(minPos, r.endPos(), maxPos);
         r.startPos = start;
@@ -95,45 +95,45 @@ void U2Region::bound(qint64 minPos, qint64 maxPos, QVector<U2Region> &regions) {
     }
 }
 
-void U2Region::mirror(qint64 mirrorPos, QVector<U2Region> &regions) {
+void U2Region::mirror(qint64 mirrorPos, QVector<U2Region>& regions) {
     for (int i = 0, n = regions.size(); i < n; i++) {
-        U2Region &r = regions[i];
+        U2Region& r = regions[i];
         assert(r.endPos() <= mirrorPos);
         r.startPos = mirrorPos - r.endPos();
     }
 }
 
-void U2Region::divide(qint64 div, QVector<U2Region> &regions) {
+void U2Region::divide(qint64 div, QVector<U2Region>& regions) {
     for (int i = 0, n = regions.size(); i < n; i++) {
-        U2Region &r = regions[i];
+        U2Region& r = regions[i];
         r.startPos = r.startPos / div;
     }
 }
 
-void U2Region::multiply(qint64 mult, QVector<U2Region> &regions) {
+void U2Region::multiply(qint64 mult, QVector<U2Region>& regions) {
     for (int i = 0, n = regions.size(); i < n; i++) {
-        U2Region &r = regions[i];
+        U2Region& r = regions[i];
         r.startPos = r.startPos * mult;
     }
 }
 
-void U2Region::reverse(QVector<U2Region> &regions) {
+void U2Region::reverse(QVector<U2Region>& regions) {
     QVector<U2Region> old = regions;
     regions.clear();
-    foreach (const U2Region &r, old) {
+    foreach (const U2Region& r, old) {
         regions.prepend(r);
     }
 }
 
-void U2Region::shift(qint64 offset, QVector<U2Region> &regions) {
+void U2Region::shift(qint64 offset, QVector<U2Region>& regions) {
     QVector<U2Region> res;
     for (int i = 0, n = regions.size(); i < n; i++) {
-        U2Region &r = regions[i];
+        U2Region& r = regions[i];
         r.startPos += offset;
     }
 }
 
-QList<U2Region> U2Region::split(const U2Region &region, qint64 blockSize) {
+QList<U2Region> U2Region::split(const U2Region& region, qint64 blockSize) {
     if (region.length <= blockSize) {
         return QList<U2Region>() << region;
     }
@@ -145,17 +145,17 @@ QList<U2Region> U2Region::split(const U2Region &region, qint64 blockSize) {
     return result;
 }
 
-qint64 U2Region::sumLength(const QVector<U2Region> &regions) {
+qint64 U2Region::sumLength(const QVector<U2Region>& regions) {
     qint64 size = 0;
-    foreach (const U2Region &region, regions) {
+    foreach (const U2Region& region, regions) {
         size += region.length;
     }
     return size;
 }
 
-int U2Region::findIntersectedRegion(const QVector<U2Region> &rs) const {
+int U2Region::findIntersectedRegion(const QVector<U2Region>& rs) const {
     for (int i = 0, n = rs.size(); i < n; i++) {
-        const U2Region &r = rs[i];
+        const U2Region& r = rs[i];
         if (intersects(r)) {
             return i;
         }
@@ -163,9 +163,9 @@ int U2Region::findIntersectedRegion(const QVector<U2Region> &rs) const {
     return -1;
 }
 
-int U2Region::findOverlappingRegion(const QVector<U2Region> &rs) const {
+int U2Region::findOverlappingRegion(const QVector<U2Region>& rs) const {
     for (int i = 0, n = rs.size(); i < n; i++) {
-        const U2Region &r = rs[i];
+        const U2Region& r = rs[i];
         if (r.contains(*this)) {
             return i;
         }
@@ -173,11 +173,11 @@ int U2Region::findOverlappingRegion(const QVector<U2Region> &rs) const {
     return -1;
 }
 
-U2Region U2Region::fromXRange(const QRect &rect) {
+U2Region U2Region::fromXRange(const QRect& rect) {
     return U2Region(rect.x(), rect.width());
 }
 
-U2Region U2Region::fromYRange(const QRect &rect) {
+U2Region U2Region::fromYRange(const QRect& rect) {
     return U2Region(rect.y(), rect.height());
 }
 
@@ -196,17 +196,49 @@ static bool _registerMeta() {
 
 bool U2Region::registerMeta = _registerMeta();
 
-QDataStream &operator<<(QDataStream &out, const U2Region &myObj) {
+QDataStream& operator<<(QDataStream& out, const U2Region& myObj) {
     qint64 startPos = myObj.startPos;
     qint64 length = myObj.length;
     out << startPos << length;
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, U2Region &myObj) {
+QDataStream& operator>>(QDataStream& in, U2Region& myObj) {
     in >> myObj.startPos;
     in >> myObj.length;
     return in;
+}
+
+QVector<U2Region> U2Region::headOf(const QVector<U2Region>& regions, qint64 headLength) {
+    QVector<U2Region> result;
+    qint64 currentLength = 0;
+    for (const U2Region& region : qAsConst(regions)) {
+        if (currentLength + region.length >= headLength) {
+            qint64 trimmedRegionLength = headLength - currentLength;
+            result << U2Region(region.startPos, trimmedRegionLength);
+            break;
+        }
+        result << region;
+        currentLength += region.length;
+    }
+    return result;
+}
+
+QVector<U2Region> U2Region::tailOf(const QVector<U2Region>& regions, qint64 tailLength) {
+    QVector<U2Region> result;
+    qint64 currentLength = 0;
+    for (int i = regions.length(); --i >= 0;) {
+        const U2Region& region = regions[i];
+        if (currentLength + region.length >= tailLength) {
+            qint64 trimmedRegionLength = tailLength - currentLength;
+            result << U2Region(region.endPos() - trimmedRegionLength, trimmedRegionLength);
+            break;
+        }
+        result << region;
+        currentLength += region.length;
+    }
+    std::reverse(result.begin(), result.end());
+    return result;
 }
 
 }  // namespace U2

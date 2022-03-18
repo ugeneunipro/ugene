@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-ExternalToolRunTask *BlastXTask::createBlastTask() {
+ExternalToolRunTask* BlastXTask::createBlastTask() {
     QStringList arguments;
     // arguments <<"-p"<< settings.programName;
     //     if(!settings.filter.isEmpty()){
@@ -103,9 +103,9 @@ ExternalToolRunTask *BlastXTask::createBlastTask() {
         arguments << "-out" << settings.outputOriginalFile;
     }
 
-    algoLog.trace("BlastX+ arguments: " + arguments.join(" "));
+    algoLog.trace("BlastX arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(BlastSupport::ET_BLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastSupport::ET_BLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Go to Start page.
     //    Expected state: project is added to "Resent files" list
     //    Close project
-    GTUtilsProject::closeProject(os);
+    GTUtilsProject::closeProject(os, false);
     //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
     //    Click project name in "Resent projects" list
@@ -118,19 +118,17 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 
     //    Use main menu: Help->Open start page
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
 
     //    Expected state: nothing happens
     title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
     //    Close Start page
     GTUtilsMdi::click(os, GTGlobals::Close);
-    QWidget *window = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
+    QWidget* window = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(window == nullptr, "start page was not closed");
     //    Repeat step 2
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
     //    Expected state: Start page is opened
     title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);

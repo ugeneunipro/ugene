@@ -31,28 +31,28 @@ class DNATranslationRegistry;
 class U2CORE_EXPORT DNAAlphabetRegistryImpl : public DNAAlphabetRegistry {
     Q_OBJECT
 public:
-    DNAAlphabetRegistryImpl(DNATranslationRegistry *tr);
+    DNAAlphabetRegistryImpl(DNATranslationRegistry* tr);
     ~DNAAlphabetRegistryImpl();
 
-    virtual bool registerAlphabet(const DNAAlphabet *a);
+    virtual bool registerAlphabet(const DNAAlphabet* a);
 
-    virtual void unregisterAlphabet(const DNAAlphabet *a);
+    virtual void unregisterAlphabet(const DNAAlphabet* a);
 
-    virtual const DNAAlphabet *findById(const QString &id) const;
+    virtual const DNAAlphabet* findById(const QString& id) const;
 
-    virtual QList<const DNAAlphabet *> getRegisteredAlphabets() const {
+    virtual QList<const DNAAlphabet*> getRegisteredAlphabets() const {
         return alphabets;
     }
 
 private:
     void initBaseAlphabets();
     void initBaseTranslations();
-    void reg4tables(const char *amino, const char *role, const char *n1, const char *n2, const char *n3, const QString &id, const QString &name);
+    void reg4tables(const char* amino, const char* role, const char* n1, const char* n2, const char* n3, const QString& id, const QString& name);
 
-    void regPtables(const char *amino, const int *prob, const char *n1, const char *n2, const char *n3, const QString &id, const QString &name);
+    void regPtables(const char* amino, const int* prob, const char* n1, const char* n2, const char* n3, const QString& id, const QString& name);
 
-    QList<const DNAAlphabet *> alphabets;
-    DNATranslationRegistry *treg;
+    QList<const DNAAlphabet*> alphabets;
+    DNATranslationRegistry* treg;
 };
 
 }  // namespace U2

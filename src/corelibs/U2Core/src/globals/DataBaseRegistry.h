@@ -34,7 +34,7 @@ namespace U2 {
 
 class HttpRequest {
 public:
-    virtual void sendRequest(const QString &program, const QString &query) = 0;
+    virtual void sendRequest(const QString& program, const QString& query) = 0;
     virtual QList<SharedAnnotationData> getAnnotations() {
         return result;
     }
@@ -47,31 +47,31 @@ public:
     virtual ~HttpRequest() {};
 
 protected:
-    HttpRequest(Task *_task)
+    HttpRequest(Task* _task)
         : error(""), task(_task) {};
     QString error;
     QList<SharedAnnotationData> result;
-    Task *task;
+    Task* task;
 };
 
 class DataBaseFactory {
 public:
     virtual ~DataBaseFactory() {
     }
-    virtual HttpRequest *getRequest(Task *t) = 0;
+    virtual HttpRequest* getRequest(Task* t) = 0;
 };
 
 class U2CORE_EXPORT DataBaseRegistry : public QObject {
     Q_OBJECT
 public:
-    DataBaseRegistry(QObject *o = nullptr);
+    DataBaseRegistry(QObject* o = nullptr);
     ~DataBaseRegistry();
-    bool registerDataBase(DataBaseFactory *f, const QString &id);
-    DataBaseFactory *getFactoryById(const QString &id);
-    bool isRegistered(const QString &id);
+    bool registerDataBase(DataBaseFactory* f, const QString& id);
+    DataBaseFactory* getFactoryById(const QString& id);
+    bool isRegistered(const QString& id);
 
 private:
-    QMap<QString, DataBaseFactory *> factories;
+    QMap<QString, DataBaseFactory*> factories;
 };
 
 }  // namespace U2

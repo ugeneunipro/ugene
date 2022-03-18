@@ -78,7 +78,7 @@ extern "C" {
  * then corresponding string is returned.
  *
  */
-U2SCRIPT_EXPORT const wchar_t *getErrorString(U2ErrorType type);
+U2SCRIPT_EXPORT const wchar_t* getErrorString(U2ErrorType type);
 
 /*
  * This function attempts to write last produced by U2Script string value that has not
@@ -103,8 +103,8 @@ U2SCRIPT_EXPORT const wchar_t *getErrorString(U2ErrorType type);
  *
  */
 U2SCRIPT_EXPORT U2ErrorType getLastFailedStringValue(int maxExpectedLength,
-                                                     wchar_t *destination,
-                                                     int *requiredSize);
+                                                     wchar_t* destination,
+                                                     int* requiredSize);
 
 #ifdef __cplusplus
 };

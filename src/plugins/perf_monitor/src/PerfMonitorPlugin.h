@@ -37,7 +37,7 @@ private slots:
     void sl_openWindow();
 
 private:
-    QAction *openWindowAction;
+    QAction* openWindowAction;
     int windowId;
 };
 

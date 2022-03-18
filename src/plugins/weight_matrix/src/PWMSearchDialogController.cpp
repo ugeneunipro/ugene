@@ -66,10 +66,10 @@ namespace U2 {
 
 class WeightMatrixResultItem : public QTreeWidgetItem {
 public:
-    WeightMatrixResultItem(const WeightMatrixSearchResult &r);
+    WeightMatrixResultItem(const WeightMatrixSearchResult& r);
     WeightMatrixSearchResult res;
-    virtual bool operator<(const QTreeWidgetItem &other) const {
-        const WeightMatrixResultItem *o = (const WeightMatrixResultItem *)&other;
+    virtual bool operator<(const QTreeWidgetItem& other) const {
+        const WeightMatrixResultItem* o = (const WeightMatrixResultItem*)&other;
         int n = treeWidget()->sortColumn();
         switch (n) {
             case 0:
@@ -77,7 +77,7 @@ public:
             case 1:
                 return res.modelInfo < o->res.modelInfo;
             case 2:
-                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+                return res.strand != o->res.strand ? res.strand.isComplementary() : (res.region.startPos < o->res.region.startPos);
             case 3:
                 return res.score < o->res.score;
         }
@@ -87,10 +87,10 @@ public:
 
 class WeightMatrixQueueItem : public QTreeWidgetItem {
 public:
-    WeightMatrixQueueItem(const WeightMatrixSearchCfg &r);
+    WeightMatrixQueueItem(const WeightMatrixSearchCfg& r);
     WeightMatrixSearchCfg res;
-    virtual bool operator<(const QTreeWidgetItem &other) const {
-        const WeightMatrixQueueItem *o = (const WeightMatrixQueueItem *)&other;
+    virtual bool operator<(const QTreeWidgetItem& other) const {
+        const WeightMatrixQueueItem* o = (const WeightMatrixQueueItem*)&other;
         int n = treeWidget()->sortColumn();
         switch (n) {
             case 0:
@@ -106,7 +106,7 @@ public:
 
 /* TRANSLATOR U2::PWMSearchDialogController */
 
-PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext *_ctx, QWidget *p)
+PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext* _ctx, QWidget* p)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930906");
@@ -163,7 +163,7 @@ void PWMSearchDialogController::connectGUI() {
     connect(clearListButton, SIGNAL(clicked()), SLOT(sl_onClearQueue()));
 
     // results list
-    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
+    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem*, int)), SLOT(sl_onResultActivated(QTreeWidgetItem*, int)));
 
     resultsTree->installEventFilter(this);
 }
@@ -196,11 +196,11 @@ void PWMSearchDialogController::updateStatus() {
     statusLabel->setText(message);
 }
 
-bool PWMSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
+bool PWMSearchDialogController::eventFilter(QObject* obj, QEvent* ev) {
     if (obj == resultsTree && ev->type() == QEvent::KeyPress) {
-        QKeyEvent *ke = (QKeyEvent *)ev;
+        QKeyEvent* ke = (QKeyEvent*)ev;
         if (ke->key() == Qt::Key_Space) {
-            WeightMatrixResultItem *item = static_cast<WeightMatrixResultItem *>(resultsTree->currentItem());
+            WeightMatrixResultItem* item = static_cast<WeightMatrixResultItem*>(resultsTree->currentItem());
             if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
@@ -222,7 +222,7 @@ void PWMSearchDialogController::sl_selectModelFile() {
     loadFile(lod.url);
 }
 
-void PWMSearchDialogController::updateModel(const PWMatrix &m) {
+void PWMSearchDialogController::updateModel(const PWMatrix& m) {
     model = m;
 }
 
@@ -244,16 +244,16 @@ void PWMSearchDialogController::sl_onSaveAnnotations() {
         return;
     }
     ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
-    const QString &name = m.data->name;
+    const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsTree->topLevelItemCount(); i < n; ++i) {
-        WeightMatrixResultItem *item = static_cast<WeightMatrixResultItem *>(resultsTree->topLevelItem(i));
+        WeightMatrixResultItem* item = static_cast<WeightMatrixResultItem*>(resultsTree->topLevelItem(i));
         SharedAnnotationData data = item->res.toAnnotation(m.data->type, name);
         U1AnnotationUtils::addDescriptionQualifier(data, m.description);
         list.append(data);
     }
 
-    CreateAnnotationsTask *t = new CreateAnnotationsTask(m.getAnnotationObject(), list, m.groupName);
+    CreateAnnotationsTask* t = new CreateAnnotationsTask(m.getAnnotationObject(), list, m.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -289,7 +289,7 @@ void PWMSearchDialogController::addToQueue() {
     if (queue.contains(queueElement)) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("Same model with same parameters already in the search queue"));
     } else {
-        WeightMatrixQueueItem *item = new WeightMatrixQueueItem(cfg);
+        WeightMatrixQueueItem* item = new WeightMatrixQueueItem(cfg);
         tasksTree->addTopLevelItem(item);
         queue.append(queueElement);
     }
@@ -324,8 +324,8 @@ void PWMSearchDialogController::sl_onBuildMatrix() {
 void PWMSearchDialogController::sl_onAlgoChanged(QString newAlgo) {
     if (intermediate.getLength() == 0)
         return;
-    PWMConversionAlgorithmFactory *factory = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmFactory(newAlgo);
-    PWMConversionAlgorithm *algo = factory->createAlgorithm();
+    PWMConversionAlgorithmFactory* factory = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmFactory(newAlgo);
+    PWMConversionAlgorithm* algo = factory->createAlgorithm();
     PWMatrix m = algo->convert(intermediate);
     if (m.getLength() == 0) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
@@ -484,7 +484,7 @@ void PWMSearchDialogController::runTask() {
         return;
     }
 
-    DNATranslation *complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : nullptr;
+    DNATranslation* complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : nullptr;
     bool complOnly = rbComplement->isChecked();
 
     for (int i = 0, n = queue.size(); i < n; i++) {
@@ -506,7 +506,7 @@ void PWMSearchDialogController::runTask() {
 }
 
 void PWMSearchDialogController::sl_onTaskFinished() {
-    task = qobject_cast<WeightMatrixSearchTask *>(sender());
+    task = qobject_cast<WeightMatrixSearchTask*>(sender());
     if (!task->isFinished()) {
         return;
     }
@@ -524,8 +524,8 @@ void PWMSearchDialogController::importResults() {
     resultsTree->setSortingEnabled(false);
 
     QList<WeightMatrixSearchResult> newResults = task->takeResults();
-    foreach (const WeightMatrixSearchResult &r, newResults) {
-        WeightMatrixResultItem *item = new WeightMatrixResultItem(r);
+    foreach (const WeightMatrixSearchResult& r, newResults) {
+        WeightMatrixResultItem* item = new WeightMatrixResultItem(r);
         resultsTree->addTopLevelItem(item);
     }
     updateStatus();
@@ -533,16 +533,16 @@ void PWMSearchDialogController::importResults() {
     resultsTree->setSortingEnabled(true);
 }
 
-void PWMSearchDialogController::sl_onResultActivated(QTreeWidgetItem *i, int col) {
+void PWMSearchDialogController::sl_onResultActivated(QTreeWidgetItem* i, int col) {
     Q_UNUSED(col);
     assert(i);
-    WeightMatrixResultItem *item = static_cast<WeightMatrixResultItem *>(i);
+    WeightMatrixResultItem* item = static_cast<WeightMatrixResultItem*>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
 }
 
 void PWMSearchDialogController::loadFile(QString filename) {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename));
     TaskStateInfo siPFM;
     PWMatrix m;
     intermediate = WeightMatrixIO::readPFMatrix(iof, filename, siPFM);
@@ -558,8 +558,8 @@ void PWMSearchDialogController::loadFile(QString filename) {
     } else {
         algorithmLabel->setEnabled(true);
         algorithmCombo->setEnabled(true);
-        PWMConversionAlgorithmFactory *factory = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmFactory(algorithmCombo->currentText());
-        PWMConversionAlgorithm *algo = factory->createAlgorithm();
+        PWMConversionAlgorithmFactory* factory = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmFactory(algorithmCombo->currentText());
+        PWMConversionAlgorithm* algo = factory->createAlgorithm();
         m = algo->convert(intermediate);
         if (m.getLength() == 0) {
             QMessageBox::critical(this, L10N::errorTitle(), tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
@@ -573,7 +573,7 @@ void PWMSearchDialogController::loadFile(QString filename) {
 //////////////////////////////////////////////////////////////////////////
 /// tree
 
-WeightMatrixResultItem::WeightMatrixResultItem(const WeightMatrixSearchResult &r)
+WeightMatrixResultItem::WeightMatrixResultItem(const WeightMatrixSearchResult& r)
     : res(r) {
     setTextAlignment(0, Qt::AlignRight);
     setTextAlignment(1, Qt::AlignLeft);
@@ -582,12 +582,12 @@ WeightMatrixResultItem::WeightMatrixResultItem(const WeightMatrixSearchResult &r
     QString range = QString("%1..%2").arg(r.region.startPos + 1).arg(r.region.endPos());
     setText(0, range);
     setText(1, r.modelInfo);
-    QString strand = res.strand.isCompementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
+    QString strand = res.strand.isComplementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
     setText(2, strand);
     setText(3, QString::number(res.score, 'f', 2) + "%");
 }
 
-WeightMatrixQueueItem::WeightMatrixQueueItem(const WeightMatrixSearchCfg &r)
+WeightMatrixQueueItem::WeightMatrixQueueItem(const WeightMatrixSearchCfg& r)
     : res(r) {
     setTextAlignment(0, Qt::AlignLeft);
     setTextAlignment(1, Qt::AlignRight);

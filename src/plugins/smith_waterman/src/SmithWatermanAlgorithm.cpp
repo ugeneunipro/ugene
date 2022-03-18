@@ -43,8 +43,8 @@ quint64 SmithWatermanAlgorithm::estimateNeededRamAmount(const qint32 gapOpen,
                                                         const qint32 gapExtension,
                                                         const quint32 minScore,
                                                         const quint32 maxScore,
-                                                        const QByteArray &patternSeq,
-                                                        const QByteArray &searchSeq,
+                                                        const QByteArray& patternSeq,
+                                                        const QByteArray& searchSeq,
                                                         const SmithWatermanSettings::SWResultView resultView) {
     const double b_to_mb_factor = 1048576.0;
 
@@ -93,9 +93,9 @@ bool SmithWatermanAlgorithm::calculateMatrixLength() {
     return 1;
 }
 
-void SmithWatermanAlgorithm::setValues(const SMatrix &_substitutionMatrix,
-                                       const QByteArray &_patternSeq,
-                                       const QByteArray &_searchSeq,
+void SmithWatermanAlgorithm::setValues(const SMatrix& _substitutionMatrix,
+                                       const QByteArray& _patternSeq,
+                                       const QByteArray& _searchSeq,
                                        int _gapOpen,
                                        int _gapExtension,
                                        int _minScore,
@@ -109,9 +109,9 @@ void SmithWatermanAlgorithm::setValues(const SMatrix &_substitutionMatrix,
     resultView = _resultView;
 }
 
-void SmithWatermanAlgorithm::launch(const SMatrix &_substitutionMatrix,
-                                    const QByteArray &_patternSeq,
-                                    const QByteArray &_searchSeq,
+void SmithWatermanAlgorithm::launch(const SMatrix& _substitutionMatrix,
+                                    const QByteArray& _patternSeq,
+                                    const QByteArray& _searchSeq,
                                     int _gapOpen,
                                     int _gapExtension,
                                     int _minScore,
@@ -147,16 +147,16 @@ QList<PairAlignSequences> SmithWatermanAlgorithm::getResults() {
     return pairAlignmentStrings;
 }
 
-const QString &SmithWatermanAlgorithm::getCalculationError() const {
+const QString& SmithWatermanAlgorithm::getCalculationError() const {
     return calculationError;
 }
 
 void SmithWatermanAlgorithm::setMemoryLimitError() {
     calculationError = QObject::tr("Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.")
-                        .arg(QString::number(MEMORY_SIZE_LIMIT_MB));
+                           .arg(QString::number(MEMORY_SIZE_LIMIT_MB));
 }
 
-void SmithWatermanAlgorithm::sortByScore(QList<PairAlignSequences> &res) {
+void SmithWatermanAlgorithm::sortByScore(QList<PairAlignSequences>& res) {
     QList<PairAlignSequences> buf;
     QVector<int> pos;
     QVector<KeyOfPairAlignSeq> sortedScores;
@@ -178,7 +178,7 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     int i, j, n, e1, f1, x;
     unsigned int xpos = 0;
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
 
     n = pat_n * 2;
     unsigned int dirn = (4 + pat_n + 3) >> 2;
@@ -187,20 +187,20 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
         setMemoryLimitError();
         return;
     }
-    int *buf, *matrix = (int *)malloc(memory);
+    int *buf, *matrix = (int*)malloc(memory);
     if (matrix == nullptr) {
         std::bad_alloc e;
         throw e;
     }
-    char *score, *score1 = (char *)(matrix + n);
-    unsigned char *dir, *dir2, *dir1 = (unsigned char *)score1 + pat_n * 0x80;
+    char *score, *score1 = (char*)(matrix + n);
+    unsigned char *dir, *dir2, *dir1 = (unsigned char*)score1 + pat_n * 0x80;
     memset(matrix, 0, n * sizeof(int));
     memset(dir1, 0, dirn);
     dir = dir1 + dirn;
     dir2 = dir1 + matrixLength * dirn;
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
         unsigned char ch = alphaCharsData[i];
@@ -285,7 +285,7 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
             xpos = pat_n - xpos + 4;
             j = i;
             int xend = xpos - 3;
-            unsigned char *xdir = (unsigned char *)dir - dirn;
+            unsigned char* xdir = (unsigned char*)dir - dirn;
             for (;;) {
                 x = (xdir[xpos >> 2] >> ((xpos & 3) * 2)) & 3;
                 if (!x)
@@ -332,7 +332,7 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     int subst, max, pos = 0, max1;
     int i, j, n, e1, f1, fpos;
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
 
     n = pat_n * 3;
     unsigned long memory = n * sizeof(int) + pat_n * 0x80;
@@ -340,16 +340,16 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
         setMemoryLimitError();
         return;
     }
-    int *buf, *matrix = (int *)malloc(memory);
+    int *buf, *matrix = (int*)malloc(memory);
     if (matrix == nullptr) {
         std::bad_alloc e;
         throw e;
     }
-    char *score, *score1 = (char *)(matrix + n);
+    char *score, *score1 = (char*)(matrix + n);
     memset(matrix, 0, n * sizeof(int));
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
         unsigned char ch = alphaCharsData[i];

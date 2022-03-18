@@ -37,7 +37,7 @@ namespace U2 {
 
 static Logger teamcityLog(ULOG_CAT_TEAMCITY);
 
-TestRunnerTask::TestRunnerTask(const QList<GTestState *> &tests, const GTestEnvironment *_env, int testSizeToRun)
+TestRunnerTask::TestRunnerTask(const QList<GTestState*>& tests, const GTestEnvironment* _env, int testSizeToRun)
     : Task(tr("Test runner"), TaskFlag_NoRun), env(_env) {
     tpm = Task::Progress_Manual;
 
@@ -47,38 +47,38 @@ TestRunnerTask::TestRunnerTask(const QList<GTestState *> &tests, const GTestEnvi
 
     awaitingTests = tests;
     totalTests = tests.size();
-    foreach (GTestState *t, awaitingTests) {
+    foreach (GTestState* t, awaitingTests) {
         t->clearState();
     }
     for (int i = 0; !awaitingTests.isEmpty() && i < sizeToRun; i++) {
-        GTestState *t = awaitingTests.takeFirst();
-        LoadTestTask *lt = new LoadTestTask(t);
+        GTestState* t = awaitingTests.takeFirst();
+        LoadTestTask* lt = new LoadTestTask(t);
         addSubTask(lt);
     }
 }
 
-QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
     // update progress info: progress is a % of finished tests
 
     stateInfo.progress = 100 * finishedTests / totalTests;
 
-    QList<Task *> res;
+    QList<Task*> res;
     if (isCanceled()) {
         return res;
     }
-    auto loadTestTask = qobject_cast<LoadTestTask *>(subTask);
+    auto loadTestTask = qobject_cast<LoadTestTask*>(subTask);
     if (loadTestTask == nullptr) {
-        auto test = qobject_cast<GTest *>(subTask);
+        auto test = qobject_cast<GTest*>(subTask);
         assert(test);
         test->cleanup();
         if (!test->hasError()) {
             test->removeTempDir();
         }
-        GTestState *testState = stateByTest.value(test);
+        GTestState* testState = stateByTest.value(test);
         assert(testState != nullptr);
         assert(testState->isNew());
-        GTestRef *testRef = testState->getTestRef();
-        GTestSuite *testSuite = testRef->getSuite();
+        GTestRef* testRef = testState->getTestRef();
+        GTestSuite* testSuite = testRef->getSuite();
         if (test->hasError()) {
             testState->setFailed(test->getStateInfo().getError());
             teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(testSuite->getName(), testRef->getShortName()));
@@ -90,14 +90,14 @@ QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
             teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2' duration='%3']").arg(testSuite->getName(), testRef->getShortName(), QString::number(GTimer::millisBetween(test->getTimeInfo().startTime, test->getTimeInfo().finishTime))));
         }
         if (!awaitingTests.isEmpty()) {
-            GTestState *t = awaitingTests.takeFirst();
+            GTestState* t = awaitingTests.takeFirst();
             res.append(new LoadTestTask(t));
         }
     } else {
         finishedTests++;
-        GTestState *testState = loadTestTask->testState;
-        GTestRef *testRef = testState->getTestRef();
-        GTestSuite *suite = testRef->getSuite();
+        GTestState* testState = loadTestTask->testState;
+        GTestRef* testRef = testState->getTestRef();
+        GTestSuite* suite = testRef->getSuite();
         if (loadTestTask->hasError()) {
             testState->setFailed(loadTestTask->getStateInfo().getError());
             teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
@@ -105,7 +105,7 @@ QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
             teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
         } else {
             GTestFormatId testFormatId = testRef->getFormatId();
-            GTestFormat *testFormat = AppContext::getTestFramework()->getTestFormatRegistry()->findFormat(testFormatId);
+            GTestFormat* testFormat = AppContext::getTestFramework()->getTestFormatRegistry()->findFormat(testFormatId);
             if (testFormat == nullptr) {
                 testState->setFailed(tr("Test format not supported: %1").arg(testFormatId));
                 teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
@@ -116,17 +116,17 @@ QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
                 allTestEnvironments << testEnv;
 
                 // Copy parent env values.
-                GTestEnvironment *testParentEnv = suite->getEnv();
+                GTestEnvironment* testParentEnv = suite->getEnv();
                 QMap<QString, QString> parentVars = testParentEnv->getVars();
                 QList<QString> parentVarsNames = parentVars.keys();
-                for (const QString &parentVar : qAsConst(parentVarsNames)) {
+                for (const QString& parentVar : qAsConst(parentVarsNames)) {
                     testEnv->setVar(parentVar, parentVars[parentVar]);
                 }
 
                 // Override existing variables with the global ones.
                 QMap<QString, QString> globalEnvVars = env->getVars();
                 QList<QString> globalEnvKeys = globalEnvVars.keys();
-                for (const QString &var : qAsConst(globalEnvKeys)) {
+                for (const QString& var : qAsConst(globalEnvKeys)) {
                     testEnv->setVar(var, globalEnvVars[var]);
                 }
 
@@ -162,7 +162,7 @@ QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
 
                 // Create the test
                 QString err;
-                GTest *test = testFormat->createTest(testRef->getShortName(), nullptr, testEnv, loadTestTask->testData, err);
+                GTest* test = testFormat->createTest(testRef->getShortName(), nullptr, testEnv, loadTestTask->testData, err);
                 if (test == nullptr) {
                     testState->setFailed(err);
                     teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(suite->getName(), testRef->getShortName()));
@@ -191,12 +191,12 @@ void TestRunnerTask::cleanup() {
     Task::cleanup();
 }
 
-LoadTestTask::LoadTestTask(GTestState *_testState)
+LoadTestTask::LoadTestTask(GTestState* _testState)
     : Task(tr("TestLoader for %1").arg(_testState->getTestRef()->getShortName()), TaskFlag_None), testState(_testState) {
 }
 
 void LoadTestTask::run() {
-    const QString &url = testState->getTestRef()->getURL();
+    const QString& url = testState->getTestRef()->getURL();
     QFile f(url);
     if (!f.open(QIODevice::ReadOnly)) {
         stateInfo.setError(tr("Cannot open file: %1").arg(url));

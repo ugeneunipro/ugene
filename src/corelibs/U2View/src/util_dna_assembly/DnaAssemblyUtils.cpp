@@ -63,19 +63,19 @@
 namespace U2 {
 
 DnaAssemblySupport::DnaAssemblySupport() {
-    QAction *convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
+    QAction* convertAssemblyToSamAction = new QAction(tr("Convert UGENE assembly database to SAM..."), this);
     convertAssemblyToSamAction->setObjectName(ToolsMenu::NGS_CONVERT_SAM);
     convertAssemblyToSamAction->setIcon(QIcon(":core/images/align.png"));
     connect(convertAssemblyToSamAction, SIGNAL(triggered()), SLOT(sl_showConvertToSamDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
-    QAction *dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
+    QAction* dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this);
     dnaAssemblyAction->setObjectName(ToolsMenu::NGS_MAP);
     dnaAssemblyAction->setIcon(QIcon(":core/images/align.png"));
     connect(dnaAssemblyAction, SIGNAL(triggered()), SLOT(sl_showDnaAssemblyDialog()));
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, dnaAssemblyAction);
 
-    QAction *buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
+    QAction* buildIndexAction = new QAction(tr("Build index for reads mapping..."), this);
     buildIndexAction->setObjectName(ToolsMenu::NGS_INDEX);
     buildIndexAction->setIcon(QIcon(":core/images/align.png"));
     connect(buildIndexAction, SIGNAL(triggered()), SLOT(sl_showBuildIndexDialog()));
@@ -83,7 +83,7 @@ DnaAssemblySupport::DnaAssemblySupport() {
 }
 
 void DnaAssemblySupport::sl_showDnaAssemblyDialog() {
-    DnaAssemblyAlgRegistry *registry = AppContext::getDnaAssemblyAlgRegistry();
+    DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();
     if (registry->getRegisteredAlgorithmIds().isEmpty()) {
         QMessageBox::information(QApplication::activeWindow(), tr("DNA Assembly"), tr("There are no algorithms for DNA assembly available.\nPlease, check your plugin list."));
         return;
@@ -104,13 +104,13 @@ void DnaAssemblySupport::sl_showDnaAssemblyDialog() {
         s.pairedReads = dlg->isPaired();
         s.openView = true;
         s.prebuiltIndex = dlg->isPrebuiltIndex();
-        Task *assemblyTask = new DnaAssemblyTaskWithConversions(s, true);
+        Task* assemblyTask = new DnaAssemblyTaskWithConversions(s, true);
         AppContext::getTaskScheduler()->registerTopLevelTask(assemblyTask);
     }
 }
 
 void DnaAssemblySupport::sl_showGenomeAssemblyDialog() {
-    GenomeAssemblyAlgRegistry *registry = AppContext::getGenomeAssemblyAlgRegistry();
+    GenomeAssemblyAlgRegistry* registry = AppContext::getGenomeAssemblyAlgRegistry();
     if (registry->getRegisteredAlgorithmIds().isEmpty()) {
         QMessageBox::information(QApplication::activeWindow(), tr("Genome Assembly"), tr("There are no algorithms for genome assembly available.\nPlease, check external tools in the settings."));
         return;
@@ -127,13 +127,13 @@ void DnaAssemblySupport::sl_showGenomeAssemblyDialog() {
         s.setCustomSettings(dlg->getCustomSettings());
         s.reads = dlg->getReads();
         s.openView = true;
-        Task *assemblyTask = new GenomeAssemblyMultiTask(s);
+        Task* assemblyTask = new GenomeAssemblyMultiTask(s);
         AppContext::getTaskScheduler()->registerTopLevelTask(assemblyTask);
     }
 }
 
 void DnaAssemblySupport::sl_showBuildIndexDialog() {
-    DnaAssemblyAlgRegistry *registry = AppContext::getDnaAssemblyAlgRegistry();
+    DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();
     if (registry->getRegisteredAlgorithmIds().isEmpty()) {
         QMessageBox::information(QApplication::activeWindow(), tr("DNA Assembly"), tr("There are no algorithms for DNA assembly available.\nPlease, check your plugin list."));
         return;
@@ -153,7 +153,7 @@ void DnaAssemblySupport::sl_showBuildIndexDialog() {
         s.openView = false;
         s.prebuiltIndex = false;
         s.pairedReads = false;
-        Task *assemblyTask = new DnaAssemblyTaskWithConversions(s, false, true);
+        Task* assemblyTask = new DnaAssemblyTaskWithConversions(s, false, true);
         AppContext::getTaskScheduler()->registerTopLevelTask(assemblyTask);
     }
 }
@@ -164,7 +164,7 @@ void DnaAssemblySupport::sl_showConvertToSamDialog() {
     CHECK(!dlg.isNull(), );
 
     if (QDialog::Accepted == dlg->result()) {
-        Task *convertTask = new ConvertAssemblyToSamTask(dlg->getDbFileUrl(), dlg->getSamFileUrl());
+        Task* convertTask = new ConvertAssemblyToSamTask(dlg->getDbFileUrl(), dlg->getSamFileUrl());
         AppContext::getTaskScheduler()->registerTopLevelTask(convertTask);
     }
 }
@@ -176,7 +176,7 @@ enum Result {
     INCORRECT
 };
 
-static Result isCorrectFormat(const GUrl &url, const QStringList &targetFormats, QString &detectedFormat) {
+static Result isCorrectFormat(const GUrl& url, const QStringList& targetFormats, QString& detectedFormat) {
     DocumentUtils::Detection r = DocumentUtils::detectFormat(url, detectedFormat);
     CHECK(DocumentUtils::UNKNOWN != r, UNKNOWN);
 
@@ -187,7 +187,7 @@ static Result isCorrectFormat(const GUrl &url, const QStringList &targetFormats,
     return INCORRECT;
 }
 
-ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormats) {
+ConvertFileTask* getConvertTask(const GUrl& url, const QStringList& targetFormats) {
     QString detectedFormat;
     Result r = isCorrectFormat(url, targetFormats, detectedFormat);
     if (UNKNOWN == r) {
@@ -214,7 +214,7 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
 
 #define PREPARE_FILE(url, targetFormats) \
     if (!toConvert.contains(url.getURLString())) { \
-        ConvertFileTask *task = getConvertTask(url, targetFormats); \
+        ConvertFileTask* task = getConvertTask(url, targetFormats); \
         if (nullptr != task) { \
             addSubTask(task); \
             conversionTasksCount++; \
@@ -222,12 +222,12 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
         } \
     }
 
-QMap<QString, QString> DnaAssemblySupport::toConvert(const DnaAssemblyToRefTaskSettings &settings, QList<GUrl> &unknownFormatFiles) {
+QMap<QString, QString> DnaAssemblySupport::toConvert(const DnaAssemblyToRefTaskSettings& settings, QList<GUrl>& unknownFormatFiles) {
     QMap<QString, QString> result;
-    DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
+    DnaAssemblyAlgorithmEnv* env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
     SAFE_POINT(nullptr != env, "Unknown algorithm: " + settings.algName, result);
 
-    foreach (const GUrl &url, settings.getShortReadUrls()) {
+    foreach (const GUrl& url, settings.getShortReadUrls()) {
         CHECK_FILE(url, env->getReadsFormats());
     }
 
@@ -237,18 +237,18 @@ QMap<QString, QString> DnaAssemblySupport::toConvert(const DnaAssemblyToRefTaskS
     return result;
 }
 
-QString DnaAssemblySupport::toConvertText(const QMap<QString, QString> &files) {
+QString DnaAssemblySupport::toConvertText(const QMap<QString, QString>& files) {
     QStringList strings;
-    foreach (const QString &url, files.keys()) {
+    foreach (const QString& url, files.keys()) {
         QString format = files[url];
         strings << url + " [" + format + "]";
     }
     return strings.join("\n");
 }
 
-QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
+QString DnaAssemblySupport::unknownText(const QList<GUrl>& unknownFormatFiles) {
     QStringList strings;
-    foreach (const GUrl &url, unknownFormatFiles) {
+    foreach (const GUrl& url, unknownFormatFiles) {
         strings << url.getURLString();
     }
     return strings.join("\n");
@@ -257,7 +257,7 @@ QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
 /************************************************************************/
 /* FilterUnpairedReads */
 /************************************************************************/
-FilterUnpairedReadsTask::FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings &settings)
+FilterUnpairedReadsTask::FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings& settings)
     : Task(tr("Filter unpaired reads task"), TaskFlags_FOSE_COSC),
       settings(settings) {
     tmpDirPath = settings.tmpDirectoryForFilteredFiles.isEmpty() ? AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() : settings.tmpDirectoryForFilteredFiles;
@@ -269,7 +269,7 @@ void FilterUnpairedReadsTask::run() {
 
     QList<ShortReadSet> upstream;
     QList<ShortReadSet> downstream;
-    foreach (const ShortReadSet &set, settings.shortReadSets) {
+    foreach (const ShortReadSet& set, settings.shortReadSets) {
         if (set.order == ShortReadSet::UpstreamMate) {
             upstream << set;
         } else {
@@ -292,13 +292,13 @@ void FilterUnpairedReadsTask::run() {
     }
 }
 
-QString FilterUnpairedReadsTask::getTmpFilePath(const GUrl &initialFile) {
+QString FilterUnpairedReadsTask::getTmpFilePath(const GUrl& initialFile) {
     QString result = GUrlUtils::prepareTmpFileLocation(tmpDirPath, initialFile.baseFileName(), "fastq", stateInfo);
     CHECK_OP(stateInfo, QString());
     return result;
 }
 
-void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &downstream, const GUrl &upstreamFiltered, const GUrl &downstreamFiltered) {
+void FilterUnpairedReadsTask::compareFiles(const GUrl& upstream, const GUrl& downstream, const GUrl& upstreamFiltered, const GUrl& downstreamFiltered) {
     PairedFastqComparator comparator(upstream.getURLString(), downstream.getURLString(), upstreamFiltered.getURLString(), downstreamFiltered.getURLString(), stateInfo);
     CHECK_OP(stateInfo, );
     comparator.compare(stateInfo);
@@ -316,16 +316,16 @@ void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &dow
 /************************************************************************/
 /* DnaAssemblyTaskWithConversions */
 /************************************************************************/
-DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult, bool justBuildIndex)
+DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings& settings, bool viewResult, bool justBuildIndex)
     : ExternalToolSupportTask("Dna assembly task", TaskFlags(TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings)), settings(settings), viewResult(viewResult),
       justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(nullptr) {
 }
 
-const DnaAssemblyToRefTaskSettings &DnaAssemblyTaskWithConversions::getSettings() const {
+const DnaAssemblyToRefTaskSettings& DnaAssemblyTaskWithConversions::getSettings() const {
     return settings;
 }
 void DnaAssemblyTaskWithConversions::prepare() {
-    DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
+    DnaAssemblyAlgorithmEnv* env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
     if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(settings.algName));
         return;
@@ -333,7 +333,7 @@ void DnaAssemblyTaskWithConversions::prepare() {
 
     QSet<QString> toConvert;
     Q_UNUSED(toConvert);
-    foreach (const GUrl &url, settings.getShortReadUrls()) {
+    foreach (const GUrl& url, settings.getShortReadUrls()) {
         PREPARE_FILE(url, env->getReadsFormats());
     }
 
@@ -352,16 +352,16 @@ void DnaAssemblyTaskWithConversions::prepare() {
     }
 }
 
-QList<Task *> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
-    FilterUnpairedReadsTask *filterTask = qobject_cast<FilterUnpairedReadsTask *>(subTask);
+QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
+    FilterUnpairedReadsTask* filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
     if (filterTask != nullptr) {
         settings.shortReadSets = filterTask->getFilteredReadList();
     }
     CHECK(!subTask->hasError(), result);
     CHECK(!hasError(), result);
 
-    ConvertFileTask *convertTask = qobject_cast<ConvertFileTask *>(subTask);
+    ConvertFileTask* convertTask = qobject_cast<ConvertFileTask*>(subTask);
     if (nullptr != convertTask) {
         SAFE_POINT_EXT(conversionTasksCount > 0, setError("Conversions task count error"), result);
         if (convertTask->getSourceURL() == settings.refSeqUrl) {
@@ -394,7 +394,7 @@ QList<Task *> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
 
 Task::ReportResult DnaAssemblyTaskWithConversions::report() {
     if (settings.filterUnpaired && settings.pairedReads) {
-        foreach (const ShortReadSet &set, settings.shortReadSets) {
+        foreach (const ShortReadSet& set, settings.shortReadSets) {
             if (!QFile::remove(set.url.getURLString())) {
                 stateInfo.addWarning(tr("Cannot remove temporary file %1").arg(set.url.getURLString()));
             }

@@ -29,8 +29,8 @@ using namespace HI;
 
 class CreateFragmentDialogFiller : public Filler {
 public:
-    CreateFragmentDialogFiller(HI::GUITestOpStatus &os);
-    CreateFragmentDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    CreateFragmentDialogFiller(HI::GUITestOpStatus& os);
+    CreateFragmentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 };

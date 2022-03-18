@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
+DashboardTabPage::DashboardTabPage(const QString& tabObjectName) {
     setObjectName(tabObjectName);
     setStyleSheet("QWidget#tabPageStyleRoot {"
                   " background: url(':U2Designer/images/background.png') repeat scroll 0 0 transparent; "
@@ -76,7 +76,7 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
     setWidgetResizable(true);  // make the widget to fill whole available space
 }
 
-DashboardWidget *DashboardTabPage::addDashboardWidget(const QString &title, QWidget *contentWidget) {
+DashboardWidget* DashboardTabPage::addDashboardWidget(const QString& title, QWidget* contentWidget) {
     auto layout = leftColumnLayout->count() <= rightColumnLayout->count() ? leftColumnLayout : rightColumnLayout;
     auto dashboardWidget = new DashboardWidget(title, contentWidget);
     layout->insertWidget(layout->count() - 1, dashboardWidget);  // the last is stretch.

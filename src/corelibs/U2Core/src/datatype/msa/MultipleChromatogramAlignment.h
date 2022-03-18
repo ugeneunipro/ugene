@@ -33,19 +33,19 @@ class MultipleChromatogramAlignmentData;
 class U2CORE_EXPORT MultipleChromatogramAlignment : public MultipleAlignment {
 public:
     MultipleChromatogramAlignment();
-    MultipleChromatogramAlignment(const MultipleAlignment &ma);
-    MultipleChromatogramAlignment(MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignment(const QString &name,
-                                  const DNAAlphabet *alphabet = nullptr,
-                                  const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
+    MultipleChromatogramAlignment(const MultipleAlignment& ma);
+    MultipleChromatogramAlignment(MultipleChromatogramAlignmentData* mcaData);
+    MultipleChromatogramAlignment(const QString& name,
+                                  const DNAAlphabet* alphabet = nullptr,
+                                  const QList<MultipleChromatogramAlignmentRow>& rows = QList<MultipleChromatogramAlignmentRow>());
 
-    MultipleChromatogramAlignmentData *data() const;
+    MultipleChromatogramAlignmentData* data() const;
 
-    MultipleChromatogramAlignmentData &operator*();
-    const MultipleChromatogramAlignmentData &operator*() const;
+    MultipleChromatogramAlignmentData& operator*();
+    const MultipleChromatogramAlignmentData& operator*() const;
 
-    MultipleChromatogramAlignmentData *operator->();
-    const MultipleChromatogramAlignmentData *operator->() const;
+    MultipleChromatogramAlignmentData* operator->();
+    const MultipleChromatogramAlignmentData* operator->() const;
 
     MultipleChromatogramAlignment clone() const;
 
@@ -67,17 +67,17 @@ protected:
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleChromatogramAlignmentData(const QString &name = QString(),
-                                      const DNAAlphabet *alphabet = nullptr,
-                                      const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
-    MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData);
+    MultipleChromatogramAlignmentData(const QString& name = QString(),
+                                      const DNAAlphabet* alphabet = nullptr,
+                                      const QList<MultipleChromatogramAlignmentRow>& rows = QList<MultipleChromatogramAlignmentRow>());
+    MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData& mcaData);
 
 public:
-    MultipleChromatogramAlignmentData &operator=(const MultipleChromatogramAlignment &mca);
-    MultipleChromatogramAlignmentData &operator=(const MultipleChromatogramAlignmentData &mcaData);
+    MultipleChromatogramAlignmentData& operator=(const MultipleChromatogramAlignment& mca);
+    MultipleChromatogramAlignmentData& operator=(const MultipleChromatogramAlignmentData& mcaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
@@ -96,17 +96,17 @@ public:
      * Sorts rows by similarity making identical rows sequential.
      * Returns 'true' if the rows were resorted, and 'false' otherwise.
      */
-    bool sortRowsBySimilarity(QVector<U2Region> &united);
+    bool sortRowsBySimilarity(QVector<U2Region>& united);
 
     /** Returns row of the alignment */
     inline MultipleChromatogramAlignmentRow getMcaRow(int row);
     inline const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
-    const MultipleChromatogramAlignmentRow getMcaRow(const QString &name) const;
+    const MultipleChromatogramAlignmentRow getMcaRow(const QString& name) const;
 
     /** Returns all rows in the alignment */
     const QList<MultipleChromatogramAlignmentRow> getMcaRows() const;
 
-    MultipleChromatogramAlignmentRow getMcaRowByRowId(qint64 rowId, U2OpStatus &os) const;
+    MultipleChromatogramAlignmentRow getMcaRowByRowId(qint64 rowId, U2OpStatus& os) const;
 
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowNumber, int pos) const;
@@ -117,7 +117,7 @@ public:
      * Inserts 'count' gaps into the specified position.
      * Can increase the overall alignment length.
      */
-    void insertGaps(int row, int pos, int count, U2OpStatus &os);
+    void insertGaps(int row, int pos, int count, U2OpStatus& os);
 
     /**
      * Removes a region from the alignment.
@@ -131,15 +131,15 @@ public:
      * Renames the row with the specified index.
      * Assumes that the row index is valid and the name is not empty.
      */
-    void renameRow(int row, const QString &name);
+    void renameRow(int row, const QString& name);
 
     /**
      * Sets the new content for the row with the specified index.
      * Assumes that the row index is valid.
      * Can modify the overall alignment length (increase or decrease).
      */
-    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gapModel);
-    void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
+    void setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel);
+    void setRowContent(int rowNumber, const McaRowMemoryData& mcaRowMemoryData);
 
     /** Converts all rows' sequences to upper case */
     void toUpperCase();
@@ -148,9 +148,9 @@ public:
      * Modifies the alignment by keeping data from the specified region and rows only.
      * Assumes that the region start is not negative, but it can be greater than a row length.
      */
-    bool crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os);
-    bool crop(const U2Region &region, U2OpStatus &os);
-    bool crop(int start, int count, U2OpStatus &os);
+    bool crop(const U2Region& region, const QSet<QString>& rowNames, U2OpStatus& os);
+    bool crop(const U2Region& region, U2OpStatus& os);
+    bool crop(int start, int count, U2OpStatus& os);
 
     /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
@@ -158,9 +158,9 @@ public:
      */
     MultipleChromatogramAlignment mid(int start, int len) const;
 
-    void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    void setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel);
 
-    void setSequenceId(int rowIndex, const U2DataId &sequenceId);
+    void setSequenceId(int rowIndex, const U2DataId& sequenceId);
 
     /**
      * Adds a new row to the alignment.
@@ -169,11 +169,11 @@ public:
      * Does not trim the original alignment.
      * Can increase the overall alignment length.
      */
-    void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes);
-    void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes, int rowIndex);
-    void addRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
-    void addRow(const U2MsaRow &rowInDb, const McaRowMemoryData &mcaRowMemoryData, U2OpStatus &os);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex);
+    void addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
+    void addRow(const U2MsaRow& rowInDb, const McaRowMemoryData& mcaRowMemoryData, U2OpStatus& os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -190,9 +190,9 @@ public:
      * Does NOT recalculate the alignment length!
      * The index must be valid.
      */
-    void appendChars(int row, const char *str, int len);
+    void appendChars(int row, const char* str, int len);
 
-    void appendChars(int row, qint64 afterPos, const char *str, int len);
+    void appendChars(int row, qint64 afterPos, const char* str, int len);
 
     /** returns "True" if there are no gaps in the alignment */
     bool hasEmptyGapModel() const;
@@ -204,32 +204,32 @@ public:
      * Joins two alignments. Alignments must have the same size and alphabet.
      * Increases the alignment length.
      */
-    MultipleChromatogramAlignmentData &operator+=(const MultipleChromatogramAlignmentData &mcaData);
+    MultipleChromatogramAlignmentData& operator+=(const MultipleChromatogramAlignmentData& mcaData);
 
     /** Compares two alignments: calls isEqual() method. */
-    bool operator==(const MultipleChromatogramAlignmentData &other) const;
-    bool operator!=(const MultipleChromatogramAlignmentData &other) const;
+    bool operator==(const MultipleChromatogramAlignmentData& other) const;
+    bool operator!=(const MultipleChromatogramAlignmentData& other) const;
 
     MultipleAlignment getCopy() const;
     MultipleChromatogramAlignment getExplicitCopy() const;
 
 private:
-    void copy(const MultipleAlignmentData &other);
-    void copy(const MultipleChromatogramAlignmentData &other);
+    void copy(const MultipleAlignmentData& other);
+    void copy(const MultipleChromatogramAlignmentData& other);
     MultipleAlignmentRow getEmptyRow() const;
 
     /** Create a new row (sequence + gap model) from the bytes */
-    MultipleChromatogramAlignmentRow createRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes);
+    MultipleChromatogramAlignmentRow createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleChromatogramAlignmentRow createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    MultipleChromatogramAlignmentRow createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os);
 
-    MultipleChromatogramAlignmentRow createRow(const MultipleChromatogramAlignmentRow &row);
+    MultipleChromatogramAlignmentRow createRow(const MultipleChromatogramAlignmentRow& row);
 
-    void setRows(const QList<MultipleChromatogramAlignmentRow> &mcaRows);
+    void setRows(const QList<MultipleChromatogramAlignmentRow>& mcaRows);
 };
 
 inline MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::getMcaRow(int rowIndex) {
@@ -240,22 +240,22 @@ inline const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData:
     return getRow(rowIndex).dynamicCast<const MultipleChromatogramAlignmentRow>();
 }
 
-inline bool operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignment& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignmentData* ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) {
+inline bool operator!=(const MultipleChromatogramAlignmentData* ptr1, const MultipleChromatogramAlignment& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) {
+inline bool operator==(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignment& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignmentData *ptr2) {
+inline bool operator==(const MultipleChromatogramAlignment& ptr1, const MultipleChromatogramAlignmentData* ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const MultipleChromatogramAlignmentData *ptr1, const MultipleChromatogramAlignment &ptr2) {
+inline bool operator==(const MultipleChromatogramAlignmentData* ptr1, const MultipleChromatogramAlignment& ptr2) {
     return *ptr1 == *ptr2;
 }
 

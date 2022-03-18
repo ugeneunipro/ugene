@@ -31,10 +31,10 @@ namespace U2 {
 class BuildSArraySettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_BuildSuffixArraySettings {
     Q_OBJECT
 public:
-    BuildSArraySettingsWidget(QWidget *parent);
+    BuildSArraySettingsWidget(QWidget* parent);
     virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
     virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl &url);
+    virtual GUrl buildIndexUrl(const GUrl& url);
 private slots:
     void sl_onPartSliderChanged(int value);
 

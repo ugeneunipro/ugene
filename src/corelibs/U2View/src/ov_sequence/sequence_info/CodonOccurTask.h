@@ -41,24 +41,24 @@ class Annotation;
 class U2VIEW_EXPORT CodonOccurTask : public BackgroundTask<QMap<QByteArray, qint64>>, public SequenceDbiWalkerCallback {
 public:
     /** Create a task to count codons in all 6 frames (3 direct and 3 complement) in the whole sequence. */
-    CodonOccurTask(DNATranslation *complementTranslation,
-                   const U2EntityRef &seqRef);
+    CodonOccurTask(DNATranslation* complementTranslation,
+                   const U2EntityRef& seqRef);
 
     /**
      * Creates a task to count codons in 2 frames (1 direct and 1 complement) in the given regions.
      * Every regions in this case is a part of a 'sequence selection'.
      */
-    CodonOccurTask(DNATranslation *complementTranslation,
-                   const U2EntityRef &seqRef,
-                   const QVector<U2Region> &regions);
+    CodonOccurTask(DNATranslation* complementTranslation,
+                   const U2EntityRef& seqRef,
+                   const QVector<U2Region>& regions);
 
     /** Creates a task to count codons in 1 frame guided by the annotation strand. */
-    CodonOccurTask(DNATranslation *complementTranslation,
-                   const U2EntityRef &seqRef,
-                   const QList<Annotation *> &annotations);
+    CodonOccurTask(DNATranslation* complementTranslation,
+                   const U2EntityRef& seqRef,
+                   const QList<Annotation*>& annotations);
 
     /** Processes the given sequence region. A callback used by SequenceWalker subtask. */
-    void onRegion(SequenceDbiWalkerSubtask *task, TaskStateInfo &ti) override;
+    void onRegion(SequenceDbiWalkerSubtask* task, TaskStateInfo& ti) override;
     ReportResult report() override;
 
 private:

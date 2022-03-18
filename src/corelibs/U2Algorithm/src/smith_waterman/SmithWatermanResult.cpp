@@ -27,7 +27,7 @@ namespace U2 {
 /// SmithWatermanResult
 //////////////////////////////////////////////////////////////////////////
 
-SharedAnnotationData SmithWatermanResult::toAnnotation(const QString &name) const {
+SharedAnnotationData SmithWatermanResult::toAnnotation(const QString& name) const {
     SharedAnnotationData data(new AnnotationData);
     data->name = name;
     data->location->regions << refSubseq;
@@ -39,7 +39,7 @@ SharedAnnotationData SmithWatermanResult::toAnnotation(const QString &name) cons
     return data;
 }
 
-bool SmithWatermanResult::operator<(const SmithWatermanResult &op1) const {
+bool SmithWatermanResult::operator<(const SmithWatermanResult& op1) const {
     return score < op1.score;
 }
 
@@ -50,11 +50,11 @@ bool SmithWatermanResult::operator<(const SmithWatermanResult &op1) const {
 SmithWatermanResultListener::~SmithWatermanResultListener() {
 }
 
-void SmithWatermanResultListener::pushResult(const SmithWatermanResult &r) {
+void SmithWatermanResultListener::pushResult(const SmithWatermanResult& r) {
     result.append(r);
 }
 
-void SmithWatermanResultListener::pushResult(const QList<SmithWatermanResult> &r) {
+void SmithWatermanResultListener::pushResult(const QList<SmithWatermanResult>& r) {
     result.append(r);
 }
 

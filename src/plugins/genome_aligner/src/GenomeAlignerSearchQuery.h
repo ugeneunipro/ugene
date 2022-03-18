@@ -45,18 +45,18 @@ public:
 class SearchQuery {
     Q_DISABLE_COPY(SearchQuery)
 public:
-    SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl = nullptr);
-    SearchQuery(const U2AssemblyRead &shortRead, SearchQuery *revCompl = nullptr);
+    SearchQuery(const DNASequence* shortRead, SearchQuery* revCompl = nullptr);
+    SearchQuery(const U2AssemblyRead& shortRead, SearchQuery* revCompl = nullptr);
     ~SearchQuery();
 
     QString getName() const;
     int length() const;
     int getNameLength() const;
-    char *data();
-    const char *constData() const;
+    char* data();
+    const char* constData() const;
     const QByteArray constSequence() const;
     bool hasQuality() const;
-    const DNAQuality &getQuality() const;
+    const DNAQuality& getQuality() const;
 
     bool haveResult() const;
     bool haveMCount() const;
@@ -67,17 +67,17 @@ public:
     SAType firstResult() const;
     quint32 firstMCount() const;
     bool contains(SAType result) const;
-    const QVector<SAType> &getResults() const;
+    const QVector<SAType>& getResults() const;
     bool isWroteResult() const {
         return wroteResult;
     }
     void writeResult() {
         wroteResult = true;
     }
-    SearchQuery *getRevCompl() {
+    SearchQuery* getRevCompl() {
         return revCompl;
     }
-    void setRevCompl(SearchQuery *rc) {
+    void setRevCompl(SearchQuery* rc) {
         revCompl = rc;
     }
 
@@ -85,14 +85,14 @@ public:
 
 private:
     // U2AssemblyRead assRead;
-    DNAQuality *quality;
-    char *seq;
-    char *name;
+    DNAQuality* quality;
+    char* seq;
+    char* name;
     quint32 seqLength;
     quint32 nameLength;
     bool dna;
     bool wroteResult;
-    SearchQuery *revCompl;
+    SearchQuery* revCompl;
 
     QVector<SAType> results;
     QVector<SAType> overlapResults;
@@ -103,13 +103,13 @@ class SearchQueryContainer {
 public:
     SearchQueryContainer();
     ~SearchQueryContainer();
-    void append(SearchQuery *qu);
+    void append(SearchQuery* qu);
     void clear();
     quint64 size() const;
-    SearchQuery *at(quint64 pos);
+    SearchQuery* at(quint64 pos);
 
 private:
-    SearchQuery **queries;
+    SearchQuery** queries;
     quint64 length;
     quint64 allocated;
 

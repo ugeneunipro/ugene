@@ -47,10 +47,10 @@ struct U2VIEW_EXPORT ExportConsensusTaskSettings : public AssemblyConsensusTaskS
 class U2VIEW_EXPORT ExportConsensusTask : public DocumentProviderTask, ConsensusSettingsQueue {
     Q_OBJECT
 public:
-    ExportConsensusTask(const ExportConsensusTaskSettings &settings_);
+    ExportConsensusTask(const ExportConsensusTaskSettings& settings_);
 
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
     // implement ConsensusSettingsQueue interface
     virtual int count() {
@@ -60,14 +60,14 @@ public:
         return !consensusRegions.isEmpty();
     }
     virtual AssemblyConsensusTaskSettings getNextSettings();
-    virtual void reportResult(const ConsensusInfo &result);
+    virtual void reportResult(const ConsensusInfo& result);
 
     U2Sequence getResult() const;
 
 private:
     U2Sequence resultSequence;
     ExportConsensusTaskSettings settings;
-    AssemblyConsensusWorker *consensusTask;
+    AssemblyConsensusWorker* consensusTask;
     U2SequenceImporter seqImporter;
 
     // A region to analyze at a time

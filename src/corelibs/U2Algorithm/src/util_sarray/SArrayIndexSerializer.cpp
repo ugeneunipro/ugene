@@ -28,7 +28,7 @@ namespace U2 {
 const QString SArrayIndexSerializer::SARRAY_HEADER("#UGENE suffix array index\n");
 const QString SArrayIndexSerializer::SARRAY_PARAMETERS("#file \"%1\", sequence's length = %2, w = %3, gap offset = %4\n");
 
-void SArrayIndexSerializer::serialize(const SArrayIndex *index, const QString &indexFileName, const QString &refFileName) {
+void SArrayIndexSerializer::serialize(const SArrayIndex* index, const QString& indexFileName, const QString& refFileName) {
     assert(nullptr != index);
     QFile file(indexFileName);
     if (indexFileName.isEmpty() || !file.open(QIODevice::WriteOnly)) {
@@ -53,7 +53,7 @@ void SArrayIndexSerializer::serialize(const SArrayIndex *index, const QString &i
     file.write(data);
 
     QByteArray writeBuffer(BUFF_SIZE, '\0');
-    char *buff = writeBuffer.data();
+    char* buff = writeBuffer.data();
 
     writeArray(file, buff, index->sArray, index->arrLen);
 
@@ -64,7 +64,7 @@ void SArrayIndexSerializer::serialize(const SArrayIndex *index, const QString &i
     file.close();
 }
 
-void SArrayIndexSerializer::writeArray(QFile &file, char *buff, quint32 *array, int len) {
+void SArrayIndexSerializer::writeArray(QFile& file, char* buff, quint32* array, int len) {
     int pos = 0;
     QByteArray line;
     quint32 number = 0;
@@ -112,7 +112,7 @@ void SArrayIndexSerializer::writeArray(QFile &file, char *buff, quint32 *array, 
     file.write(buff, pos);
 }
 
-inline int getNextInt(QByteArray &data, bool &eol, bool &intErr) {
+inline int getNextInt(QByteArray& data, bool& eol, bool& intErr) {
     int commaIdx = data.indexOf(',');
     if (-1 == commaIdx) {
         commaIdx = data.length();
@@ -133,7 +133,7 @@ inline int getNextInt(QByteArray &data, bool &eol, bool &intErr) {
     return result.toInt();
 }
 
-void SArrayIndexSerializer::readArray(QFile &file, char *buff, int *len, int *pos, int *bytes, int *lineIdx, quint32 *array, int arrLen, TaskStateInfo &ti) {
+void SArrayIndexSerializer::readArray(QFile& file, char* buff, int* len, int* pos, int* bytes, int* lineIdx, quint32* array, int arrLen, TaskStateInfo& ti) {
     quint32 number = 0;
     int numberLength = 0;
     bool newLine = true;
@@ -184,7 +184,7 @@ void SArrayIndexSerializer::readArray(QFile &file, char *buff, int *len, int *po
     }
 }
 
-void SArrayIndexSerializer::deserialize(SArrayIndex *index, const QString &indexFileName, TaskStateInfo &ti) {
+void SArrayIndexSerializer::deserialize(SArrayIndex* index, const QString& indexFileName, TaskStateInfo& ti) {
     QFile file(indexFileName);
     if (!file.open(QIODevice::ReadOnly)) {
         ti.setError("Can't open file-index");
@@ -232,7 +232,7 @@ void SArrayIndexSerializer::deserialize(SArrayIndex *index, const QString &index
 
     index->sArray = new quint32[index->arrLen];
     QByteArray readBuffer(BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
+    char* buff = readBuffer.data();
     lineIdx++;
     int len = 0;
     int pos = 0;

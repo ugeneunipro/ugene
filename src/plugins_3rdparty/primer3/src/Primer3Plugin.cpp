@@ -49,8 +49,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    Primer3Plugin *plug = new Primer3Plugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    Primer3Plugin* plug = new Primer3Plugin();
     return plug;
 }
 
@@ -61,19 +61,19 @@ Primer3Plugin::Primer3Plugin()
         viewCtx->init();
     }
 
-    QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDPrimerActorPrototype());
 
     //////////////////////////////////////////////////////////////////////////
     // tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Primer3Tests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -83,25 +83,25 @@ Primer3Plugin::Primer3Plugin()
 Primer3Plugin::~Primer3Plugin() {
 }
 
-Primer3ADVContext::Primer3ADVContext(QObject *p)
+Primer3ADVContext::Primer3ADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void Primer3ADVContext::initViewContext(GObjectView *v) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
+void Primer3ADVContext::initViewContext(GObjectView* v) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
     a->setObjectName("primer3_action");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 }
 
 void Primer3ADVContext::sl_showDialog() {
-    QAction *a = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    QAction* a = (QAction*)sender();
+    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     {
         Primer3TaskSettings defaultSettings;
@@ -145,14 +145,14 @@ void Primer3ADVContext::sl_showDialog() {
                 QMessageBox::warning(QApplication::activeWindow(), tr("Error"), tr("Cannot create an annotation object. Please check settings"));
                 return;
             }
-            const CreateAnnotationModel &model = dialog->getCreateAnnotationModel();
+            const CreateAnnotationModel& model = dialog->getCreateAnnotationModel();
             AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), model.getAnnotationObject(), model.groupName, model.data->name, model.description));
         }
     }
 }
 
-QList<XMLTestFactory *> Primer3Tests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> Primer3Tests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_Primer3::createFactory());
     return res;
 }

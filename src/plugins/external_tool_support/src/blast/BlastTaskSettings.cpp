@@ -24,7 +24,7 @@
 namespace U2 {
 
 BlastTaskSettings::BlastTaskSettings() {
-    offsInGlobalSeq = 0;
+    resultRegionOffset = 0;
     aobj = nullptr;
     alphabet = nullptr;
     isNucleotideSeq = false;
@@ -68,4 +68,4 @@ void BlastTaskSettings::reset() {
     querySequenceObject = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

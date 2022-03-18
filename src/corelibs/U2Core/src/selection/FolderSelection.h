@@ -29,13 +29,13 @@ namespace U2 {
 
 class U2CORE_EXPORT FolderSelection : public GSelection {
 public:
-    FolderSelection(QObject *p = nullptr);
+    FolderSelection(QObject* p = nullptr);
 
     bool isEmpty() const;
     void clear();
 
-    const QList<Folder> &getSelection() const;
-    void setSelection(const QList<Folder> &folders);
+    const QList<Folder>& getSelection() const;
+    void setSelection(const QList<Folder>& folders);
 
 private:
     QList<Folder> selection;

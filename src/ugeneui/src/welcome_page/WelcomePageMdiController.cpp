@@ -36,21 +36,21 @@ namespace U2 {
 WelcomePageMdiController::WelcomePageMdiController()
     : QObject(nullptr),
       welcomePage(nullptr) {
-    MWMDIManager *mdiManager = getMdiManager();
+    MWMDIManager* mdiManager = getMdiManager();
     CHECK(mdiManager != nullptr, );
 
-    connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow *)), SLOT(sl_onMdiClose(MWMDIWindow *)));
+    connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow*)), SLOT(sl_onMdiClose(MWMDIWindow*)));
 }
 
-MWMDIManager *WelcomePageMdiController::getMdiManager() {
-    MainWindow *mainWindow = AppContext::getMainWindow();
+MWMDIManager* WelcomePageMdiController::getMdiManager() {
+    MainWindow* mainWindow = AppContext::getMainWindow();
     SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), nullptr);
 
     return mainWindow->getMDIManager();
 }
 
 void WelcomePageMdiController::sl_showPage() {
-    MWMDIManager *mdiManager = getMdiManager();
+    MWMDIManager* mdiManager = getMdiManager();
     CHECK(mdiManager != nullptr, );
 
     if (welcomePage != nullptr) {
@@ -67,7 +67,7 @@ void WelcomePageMdiController::sl_showPage() {
     sl_onRecentChanged();
 }
 
-void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
+void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow* mdi) {
     CHECK(mdi == welcomePage, );
     welcomePage = nullptr;
 }
@@ -75,7 +75,7 @@ void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
 void WelcomePageMdiController::sl_onRecentChanged() {
     // Update recent list asynchronously: sl_onRecentChanged may be called within 'label->click'
     // event processing and welcomePage->updateRecent deletes the labels for missed files.
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         CHECK(welcomePage != nullptr, );
         auto settings = AppContext::getSettings();
         QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();

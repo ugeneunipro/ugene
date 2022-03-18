@@ -35,30 +35,30 @@ NetworkSettingsPageState::NetworkSettingsPageState()
     : config(*AppContext::getAppSettings()->getNetworkConfiguration()), useDefaultWebBrowser(true) {
 }
 
-NetworkSettingsPageController::NetworkSettingsPageController(QObject *p)
+NetworkSettingsPageController::NetworkSettingsPageController(QObject* p)
     : AppSettingsGUIPageController(tr("Network"), APP_SETTINGS_GUI_NETWORK, p) {
 }
 
-AppSettingsGUIPageState *NetworkSettingsPageController::getSavedState() {
-    NetworkSettingsPageState *state = new NetworkSettingsPageState();
+AppSettingsGUIPageState* NetworkSettingsPageController::getSavedState() {
+    NetworkSettingsPageState* state = new NetworkSettingsPageState();
     state->config = *AppContext::getAppSettings()->getNetworkConfiguration();
-    UserAppsSettings *s = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->webBrowserUrl = s->getWebBrowserURL();
     state->useDefaultWebBrowser = s->useDefaultWebBrowser();
     return state;
 }
 
-void NetworkSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    NetworkSettingsPageState *state = qobject_cast<NetworkSettingsPageState *>(s);
-    NetworkConfiguration *dst = AppContext::getAppSettings()->getNetworkConfiguration();
+void NetworkSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    NetworkSettingsPageState* state = qobject_cast<NetworkSettingsPageState*>(s);
+    NetworkConfiguration* dst = AppContext::getAppSettings()->getNetworkConfiguration();
     dst->copyFrom(state->config);
-    UserAppsSettings *st = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setWebBrowserURL(state->webBrowserUrl);
     st->setUseDefaultWebBrowser(state->useDefaultWebBrowser);
 }
 
-AppSettingsGUIPageWidget *NetworkSettingsPageController::createWidget(AppSettingsGUIPageState *data) {
-    NetworkSettingsPageWidget *r = new NetworkSettingsPageWidget();
+AppSettingsGUIPageWidget* NetworkSettingsPageController::createWidget(AppSettingsGUIPageState* data) {
+    NetworkSettingsPageWidget* r = new NetworkSettingsPageWidget();
     r->setState(data);
     return r;
 }
@@ -85,9 +85,9 @@ void NetworkSettingsPageWidget::sl_ExceptionsChecked(int) {
     proxyExceptionsEdit->setEnabled(httpProxyCheck->isChecked() && proxyExceptionsCheck->isChecked());
 }
 
-void NetworkSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    NetworkSettingsPageState *state = qobject_cast<NetworkSettingsPageState *>(s);
-    const NetworkConfiguration &set = state->config;
+void NetworkSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    NetworkSettingsPageState* state = qobject_cast<NetworkSettingsPageState*>(s);
+    const NetworkConfiguration& set = state->config;
     QNetworkProxy httpProxy = set.getProxy(QNetworkProxy::HttpProxy);
     if (QNetworkProxy::DefaultProxy != httpProxy.type()) {
         httpProxyAddrEdit->insert(httpProxy.hostName());
@@ -124,10 +124,10 @@ void NetworkSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     webBrowserEdit->setText(state->webBrowserUrl);
 }
 
-AppSettingsGUIPageState *NetworkSettingsPageWidget::getState(QString &err) const {
+AppSettingsGUIPageState* NetworkSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
-    NetworkSettingsPageState *state = new NetworkSettingsPageState();
-    NetworkConfiguration &set = state->config;
+    NetworkSettingsPageState* state = new NetworkSettingsPageState();
+    NetworkConfiguration& set = state->config;
 
     QString httpProxyAddress = httpProxyAddrEdit->text();
     if (!httpProxyAddress.isEmpty()) {

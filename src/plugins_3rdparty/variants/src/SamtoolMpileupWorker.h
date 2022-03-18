@@ -37,7 +37,7 @@ typedef PrompterBase<CallVariantsPrompter> CallVariantsPrompterBase;
 class CallVariantsPrompter : public CallVariantsPrompterBase {
     Q_OBJECT
 public:
-    CallVariantsPrompter(Actor *p = 0)
+    CallVariantsPrompter(Actor* p = 0)
         : CallVariantsPrompterBase(p) {
     }
 
@@ -48,11 +48,11 @@ protected:
 class CallVariantsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    CallVariantsWorker(Actor *a);
+    CallVariantsWorker(Actor* a);
 
     virtual bool isReady() const;
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -75,11 +75,11 @@ private:
 
 private:
     void initDatasetMode();
-    void takeAssembly(U2OpStatus &os);
-    void takeReference(U2OpStatus &os);
+    void takeAssembly(U2OpStatus& os);
+    void takeReference(U2OpStatus& os);
     CallVariantsTaskSettings getSettings();
-    void processError(const U2OpStatus &os);
-    void checkState(U2OpStatus &os);
+    void processError(const U2OpStatus& os);
+    void checkState(U2OpStatus& os);
     bool hasAssembly() const;
     bool hasReferenceInPort() const;
 };
@@ -91,7 +91,7 @@ public:
     CallVariantsWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new CallVariantsWorker(a);
     }
 };
@@ -99,30 +99,30 @@ public:
 class ScientificDoubleWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ScientificDoubleWidget(QWidget *parent);
+    ScientificDoubleWidget(QWidget* parent);
 
     virtual QVariant value();
 
 public slots:
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
 
 private:
-    QLineEdit *lineEdit;
+    QLineEdit* lineEdit;
 };
 
 class ScientificDoubleDelegate : public PropertyDelegate {
 public:
-    ScientificDoubleDelegate(QObject *parent = nullptr);
+    ScientificDoubleDelegate(QObject* parent = nullptr);
 
     // PropertyDelegate
-    virtual QVariant getDisplayValue(const QVariant &v) const;
-    virtual PropertyDelegate *clone();
-    virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
+    virtual QVariant getDisplayValue(const QVariant& v) const;
+    virtual PropertyDelegate* clone();
+    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
 
     // QItemDelegate
-    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
+    virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 };
 
 }  // namespace LocalWorkflow

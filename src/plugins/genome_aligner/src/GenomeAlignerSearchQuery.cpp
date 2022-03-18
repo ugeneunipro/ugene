@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-SearchQuery::SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl) {
+SearchQuery::SearchQuery(const DNASequence* shortRead, SearchQuery* revCompl) {
     dna = true;
     wroteResult = false;
     this->revCompl = revCompl;
@@ -62,7 +62,7 @@ qint64 SearchQuery::memoryHint() const {
     return m * 2;  // overhead due to many new calls of small regions
 }
 
-SearchQuery::SearchQuery(const U2AssemblyRead &, SearchQuery *revCompl) {
+SearchQuery::SearchQuery(const U2AssemblyRead&, SearchQuery* revCompl) {
     dna = false;
     wroteResult = false;
     this->revCompl = revCompl;
@@ -102,7 +102,7 @@ int SearchQuery::getNameLength() const {
     }
 }
 
-char *SearchQuery::data() {
+char* SearchQuery::data() {
     if (dna) {
         return seq;
     } else {
@@ -110,7 +110,7 @@ char *SearchQuery::data() {
     }
 }
 
-const char *SearchQuery::constData() const {
+const char* SearchQuery::constData() const {
     if (dna) {
         return seq;
     } else {
@@ -134,7 +134,7 @@ bool SearchQuery::hasQuality() const {
     }
 }
 
-const DNAQuality &SearchQuery::getQuality() const {
+const DNAQuality& SearchQuery::getQuality() const {
     assert(dna);
     return *quality;
 }
@@ -184,7 +184,7 @@ bool SearchQuery::contains(SAType result) const {
     return (results.contains(result) || overlapResults.contains(result));
 }
 
-const QVector<SAType> &SearchQuery::getResults() const {
+const QVector<SAType>& SearchQuery::getResults() const {
     return results;
 }
 
@@ -201,16 +201,16 @@ SearchQueryContainer::~SearchQueryContainer() {
     length = 0;
 }
 
-void SearchQueryContainer::append(SearchQuery *qu) {
+void SearchQueryContainer::append(SearchQuery* qu) {
     if (length == allocated) {
-        void *reallocRetValue = realloc(queries, (allocated + reallocSize) * sizeof(SearchQuery *));
+        void* reallocRetValue = realloc(queries, (allocated + reallocSize) * sizeof(SearchQuery*));
         if (reallocRetValue == nullptr) {
             delete[] queries;
             queries = nullptr;
             coreLog.error(QString("Unable to perform realloc() at %1:%2").arg(__FILE__).arg(__LINE__));
             return;
         } else {
-            queries = (SearchQuery **)reallocRetValue;
+            queries = (SearchQuery**)reallocRetValue;
         }
         allocated += reallocSize;
     }
@@ -226,7 +226,7 @@ quint64 SearchQueryContainer::size() const {
     return length;
 }
 
-SearchQuery *SearchQueryContainer::at(quint64 pos) {
+SearchQuery* SearchQueryContainer::at(quint64 pos) {
     assert(pos <= size());
     return queries[pos];
 }

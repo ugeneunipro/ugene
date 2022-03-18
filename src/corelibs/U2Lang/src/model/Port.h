@@ -39,7 +39,7 @@ class Link;
  */
 class U2LANG_EXPORT PortDescriptor : public Descriptor {
 public:
-    PortDescriptor(const Descriptor &desc, DataTypePtr type, bool input, bool multi = false, uint f = 0);
+    PortDescriptor(const Descriptor& desc, DataTypePtr type, bool input, bool multi = false, uint f = 0);
     virtual ~PortDescriptor() {
     }
 
@@ -50,10 +50,10 @@ public:
 
     virtual DataTypePtr getType() const;
     DataTypePtr getOutputType() const;
-    void setNewType(const DataTypePtr &newType);
+    void setNewType(const DataTypePtr& newType);
     QMap<Descriptor, DataTypePtr> getOwnTypeMap() const;
-    virtual void setVisibleSlot(const QString &slotId, const bool isVisible);
-    QString getSlotNameById(const QString &id) const;
+    virtual void setVisibleSlot(const QString& slotId, const bool isVisible);
+    QString getSlotNameById(const QString& id) const;
 
 protected:
     // type of data that this port contains
@@ -83,31 +83,31 @@ private:
 class U2LANG_EXPORT Port : public QObject, public PortDescriptor, public Configuration, public Peer {
     Q_OBJECT
 public:
-    Port(const PortDescriptor &d, Actor *p);
+    Port(const PortDescriptor& d, Actor* p);
     virtual ~Port() {
     }
 
-    Actor *owner() const;
+    Actor* owner() const;
 
-    QMap<Port *, Link *> getLinks() const;
-    virtual void addLink(Link *);
-    virtual void removeLink(Link *);
+    QMap<Port*, Link*> getLinks() const;
+    virtual void addLink(Link*);
+    virtual void removeLink(Link*);
 
     // how many links goes throw this port
     int getWidth() const;
 
     // reimplemented Configuration::setParameter
-    virtual void setParameter(const QString &name, const QVariant &val);
+    virtual void setParameter(const QString& name, const QVariant& val);
 
     // simple check if one port can be binded to other
     // port types doesn't check here
-    virtual bool canBind(const Port *other) const;
+    virtual bool canBind(const Port* other) const;
 
     // reimplemented Configuration::remap
     // empty implementation
-    virtual void remap(const QMap<ActorId, ActorId> &);
-    virtual void updateBindings(const QMap<ActorId, ActorId> &);
-    virtual void replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMapping> &mappings);
+    virtual void remap(const QMap<ActorId, ActorId>&);
+    virtual void updateBindings(const QMap<ActorId, ActorId>&);
+    virtual void replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings);
 
     bool isEnabled() const {
         return enabled;
@@ -121,9 +121,9 @@ signals:
 
 protected:
     // owner of this port
-    Actor *proc;
+    Actor* proc;
     // links with other ports
-    QMap<Port *, Link *> bindings;
+    QMap<Port*, Link*> bindings;
     bool enabled;
 };  // Port
 
@@ -136,22 +136,22 @@ protected:
 class U2LANG_EXPORT Link : public Peer {
 public:
     Link();
-    Link(Port *p1, Port *p2);
+    Link(Port* p1, Port* p2);
     virtual ~Link() {
     }
 
     // adds this link to p1 and p2 bindings
-    void connect(Port *p1, Port *p2);
+    void connect(Port* p1, Port* p2);
     void disconnect();
 
-    Port *source() const;
-    Port *destination() const;
+    Port* source() const;
+    Port* destination() const;
 
 private:
     // output port of some actor
-    Port *src;
+    Port* src;
     // input port of some actor
-    Port *dest;
+    Port* dest;
 
 };  // Link
 
@@ -159,12 +159,12 @@ class U2LANG_EXPORT ActorPortsAliases {
 public:
     ActorPortsAliases() {
     }
-    bool addAlias(const QString &newPortName, const QString &newSlotName, const Port *port, const QString &slotId);
-    bool hasAlias(const QString &portName, const QString &slotName) const;
+    bool addAlias(const QString& newPortName, const QString& newSlotName, const Port* port, const QString& slotId);
+    bool hasAlias(const QString& portName, const QString& slotName) const;
     bool getAlias();
 
 private:
-    QMap<QPair<QString, QString>, QPair<Port *, QString>> outPortAliases;
+    QMap<QPair<QString, QString>, QPair<Port*, QString>> outPortAliases;
 };
 
 }  // namespace Workflow

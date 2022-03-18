@@ -48,7 +48,7 @@ public:
 
 private:
     QString docContextName;
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask* loadTask;
     bool contextAdded;
     bool tempFile;
     QString url;
@@ -70,10 +70,10 @@ public:
 private:
     QString url;
     DocumentFormatId formatId;
-    IOAdapterFactory *iof;
+    IOAdapterFactory* iof;
 
     QString docContextName;
-    SaveDocumentTask *saveTask;
+    SaveDocumentTask* saveTask;
 };
 
 class GTest_LoadBrokenDocument : public XmlTest {
@@ -81,12 +81,12 @@ class GTest_LoadBrokenDocument : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_LoadBrokenDocument, "load-broken-document", TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskCancel);
 
-    Document *getDocument() const;
+    Document* getDocument() const;
     ReportResult report();
     void cleanup();
 
 private:
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask* loadTask;
     QString url;
     bool tempFile;
     QString message;
@@ -104,7 +104,7 @@ public:
 
 private:
     QString docContextName;
-    DocumentProviderTask *importTask;
+    DocumentProviderTask* importTask;
     bool contextAdded;
     bool tempFile;
     QString url;
@@ -123,12 +123,12 @@ class GTest_ImportBrokenDocument : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ImportBrokenDocument, "import-broken-document", TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskCancel);
 
-    Document *getDocument() const;
+    Document* getDocument() const;
     ReportResult report();
     void cleanup();
 
 private:
-    DocumentProviderTask *importTask;
+    DocumentProviderTask* importTask;
     QString url;
     QString destUrl;
     bool tempFile;
@@ -176,7 +176,7 @@ class GTest_DocumentObjectTypes : public XmlTest {
 
 class DocumentModelTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 class GTest_FindGObjectByName : public XmlTest {
@@ -192,7 +192,7 @@ private:
     QString objContextName;
     QString objName;
     GObjectType type;
-    GObject *result;
+    GObject* result;
 };
 
 class GTest_CompareFiles : public XmlTest {
@@ -203,8 +203,8 @@ class GTest_CompareFiles : public XmlTest {
 
 private:
     void compareMixed();
-    QByteArray getLine(IOAdapter *io);
-    IOAdapter *createIoAdapter(const QString &filePath);
+    QByteArray getLine(IOAdapter* io);
+    IOAdapter* createIoAdapter(const QString& filePath);
 
     QString doc1Path;
     QString doc2Path;
@@ -224,8 +224,8 @@ class GTest_Compare_VCF_Files : public XmlTest {
     ReportResult report();
 
 private:
-    IOAdapter *createIoAdapter(const QString &filePath);
-    QString getLine(IOAdapter *io);
+    IOAdapter* createIoAdapter(const QString& filePath);
+    QString getLine(IOAdapter* io);
 
     QString doc1Path;
     QString doc2Path;

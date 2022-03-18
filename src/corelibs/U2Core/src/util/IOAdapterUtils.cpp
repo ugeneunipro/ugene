@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-IOAdapterId IOAdapterUtils::url2io(const GUrl &url) {
+IOAdapterId IOAdapterUtils::url2io(const GUrl& url) {
     if (url.isVFSFile()) {
         return BaseIOAdapters::VFS_FILE;
     }
@@ -49,9 +49,9 @@ IOAdapterId IOAdapterUtils::url2io(const GUrl &url) {
     return BaseIOAdapters::LOCAL_FILE;
 }
 
-QByteArray IOAdapterUtils::readFileHeader(const GUrl &url, int size) {
+QByteArray IOAdapterUtils::readFileHeader(const GUrl& url, int size) {
     QByteArray data;
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     QScopedPointer<IOAdapter> adapter(iof->createIOAdapter());
     bool res = adapter->open(url, IOAdapterMode_Read);
     if (!res) {
@@ -72,7 +72,7 @@ QByteArray IOAdapterUtils::readFileHeader(const GUrl &url, int size) {
     return data;
 }
 
-QByteArray IOAdapterUtils::readFileHeader(IOAdapter *io, int sz) {
+QByteArray IOAdapterUtils::readFileHeader(IOAdapter* io, int sz) {
     QByteArray data;
     if (nullptr == io || !io->isOpen()) {
         return data;
@@ -90,8 +90,8 @@ QByteArray IOAdapterUtils::readFileHeader(IOAdapter *io, int sz) {
     return data;
 }
 
-IOAdapter *IOAdapterUtils::open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode, IOAdapterFactory *_iof) {
-    IOAdapterFactory *iof = _iof;
+IOAdapter* IOAdapterUtils::open(const GUrl& url, U2OpStatus& os, IOAdapterMode mode, IOAdapterFactory* _iof) {
+    IOAdapterFactory* iof = _iof;
 
     if (nullptr == iof || (iof->getAdapterId() != BaseIOAdapters::LOCAL_FILE && iof->getAdapterId() != BaseIOAdapters::GZIPPED_LOCAL_FILE)) {
         IOAdapterId ioId = IOAdapterUtils::url2io(url);
@@ -101,7 +101,7 @@ IOAdapter *IOAdapterUtils::open(const GUrl &url, U2OpStatus &os, IOAdapterMode m
         os.setError(L10N::tr("Failed to detect IO adapter for %1").arg(url.getURLString()));
         return nullptr;
     }
-    IOAdapter *io = iof->createIOAdapter();
+    IOAdapter* io = iof->createIOAdapter();
     SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
 
     bool ok = io->open(url, mode);
@@ -113,11 +113,11 @@ IOAdapter *IOAdapterUtils::open(const GUrl &url, U2OpStatus &os, IOAdapterMode m
     return io;
 }
 
-IOAdapterFactory *IOAdapterUtils::get(const IOAdapterId &id) {
+IOAdapterFactory* IOAdapterUtils::get(const IOAdapterId& id) {
     return AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(id);
 }
 
-QString IOAdapterUtils::readTextFile(const QString &path, const char *codecName) {
+QString IOAdapterUtils::readTextFile(const QString& path, const char* codecName) {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return QString();
@@ -127,7 +127,7 @@ QString IOAdapterUtils::readTextFile(const QString &path, const char *codecName)
     return in.readAll();
 }
 
-bool IOAdapterUtils::writeTextFile(const QString &path, const QString &content, const char *codecName) {
+bool IOAdapterUtils::writeTextFile(const QString& path, const QString& content, const char* codecName) {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return false;

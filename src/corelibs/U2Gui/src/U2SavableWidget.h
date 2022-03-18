@@ -35,26 +35,26 @@ class MWMDIWindow;
 
 class U2GUI_EXPORT U2SavableWidget {
 public:
-    U2SavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
+    U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
     virtual ~U2SavableWidget();
 
     virtual QString getWidgetId() const;
     virtual QSet<QString> getChildIds() const;
-    virtual bool childValueIsAcceptable(const QString &childId, const QVariant &value) const;
-    virtual QVariant getChildValue(const QString &childId) const;
-    virtual void setChildValue(const QString &childId, const QVariant &value);
+    virtual bool childValueIsAcceptable(const QString& childId, const QVariant& value) const;
+    virtual QVariant getChildValue(const QString& childId) const;
+    virtual void setChildValue(const QString& childId, const QVariant& value);
 
-    MWMDIWindow *getContextWindow() const;
+    MWMDIWindow* getContextWindow() const;
 
 protected:
-    virtual bool childCanBeSaved(QWidget *child) const;
-    virtual QString getChildId(QWidget *child) const;
-    virtual bool childExists(const QString &childId) const;
-    virtual QWidget *getChildWidgetById(const QString &childId) const;
-    virtual QSet<QWidget *> getCompoundChildren() const;
+    virtual bool childCanBeSaved(QWidget* child) const;
+    virtual QString getChildId(QWidget* child) const;
+    virtual bool childExists(const QString& childId) const;
+    virtual QWidget* getChildWidgetById(const QString& childId) const;
+    virtual QSet<QWidget*> getCompoundChildren() const;
 
-    QWidget *wrappedWidget;
-    MWMDIWindow *contextWindow;
+    QWidget* wrappedWidget;
+    MWMDIWindow* contextWindow;
     bool widgetStateSaved;
 };
 

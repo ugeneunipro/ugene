@@ -56,21 +56,21 @@ bool WorkflowGObject::isTreeItemModified() const {
     return GObject::isItemModified();
 }
 
-void WorkflowGObject::setView(WorkflowView *_view) {
+void WorkflowGObject::setView(WorkflowView* _view) {
     view = _view;
 }
 
-void WorkflowGObject::setSceneRawData(const QString &data) {
+void WorkflowGObject::setSceneRawData(const QString& data) {
     assert(view != nullptr);
     assert(!view->getScene()->isModified());
     serializedScene = data;
 }
 
-GObject *WorkflowGObject::clone(const U2DbiRef &, U2OpStatus &, const QVariantMap &hints) const {
+GObject* WorkflowGObject::clone(const U2DbiRef&, U2OpStatus&, const QVariantMap& hints) const {
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
 
-    WorkflowGObject *copy = new WorkflowGObject(getGObjectName(), serializedScene, gHints.getMap());
+    WorkflowGObject* copy = new WorkflowGObject(getGObjectName(), serializedScene, gHints.getMap());
     assert(!view);
     return copy;
 }
@@ -78,7 +78,7 @@ GObject *WorkflowGObject::clone(const U2DbiRef &, U2OpStatus &, const QVariantMa
 //////////////////////////////////////////////////////////////////////////
 /// Workflow document format
 
-WorkflowDocFormat::WorkflowDocFormat(QObject *p)
+WorkflowDocFormat::WorkflowDocFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, WorkflowDocFormat::FORMAT_ID, DocumentFormatFlags_W1, QStringList(WorkflowUtils::WD_FILE_EXTENSIONS) << WorkflowUtils::WD_XML_FORMAT_EXTENSION) {
     formatName = tr("Workflow");
     supportedObjectTypes += WorkflowGObject::TYPE;
@@ -86,16 +86,16 @@ WorkflowDocFormat::WorkflowDocFormat(QObject *p)
                            "workflow with the text file");
 }
 
-Document *WorkflowDocFormat::createNewLoadedDocument(IOAdapterFactory *io, const GUrl &url, U2OpStatus &os, const QVariantMap &fs) {
-    Document *d = DocumentFormat::createNewLoadedDocument(io, url, os, fs);
-    GObject *o = new WorkflowGObject(tr("Workflow"), "");
+Document* WorkflowDocFormat::createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs) {
+    Document* d = DocumentFormat::createNewLoadedDocument(io, url, os, fs);
+    GObject* o = new WorkflowGObject(tr("Workflow"), "");
     d->addObject(o);
     return d;
 }
 
 #define BUFF_SIZE 1024
 
-Document *WorkflowDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os) {
+Document* WorkflowDocFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray rawData;
     QByteArray block(BUFF_SIZE, '\0');
     int blockLen = 0;
@@ -112,20 +112,20 @@ Document *WorkflowDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &tar
     }
     // todo: check file-readonly status?
 
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     QString data = QString::fromUtf8(rawData.data(), rawData.size());
     objects.append(new WorkflowGObject(tr("Workflow"), data));
     return new Document(this, io->getFactory(), io->getURL(), targetDb, objects, hints);
 }
 
-void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) {
+void WorkflowDocFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus&) {
     assert(d->getDocumentFormat() == this);
     assert(d->getObjects().size() == 1);
 
-    WorkflowGObject *wo = qobject_cast<WorkflowGObject *>(d->getObjects().first());
+    WorkflowGObject* wo = qobject_cast<WorkflowGObject*>(d->getObjects().first());
     assert(wo && wo->getView());
 
-    const Metadata &meta = wo->getView()->getMeta();
+    const Metadata& meta = wo->getView()->getMeta();
     const QSharedPointer<const Schema> schema = wo->getView()->getSchema();
     QByteArray rawData = HRSchemaSerializer::schema2String(*schema, &meta).toUtf8();
     int nWritten = 0;
@@ -139,29 +139,29 @@ void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) 
     wo->setSceneRawData(rawData);
 }
 
-FormatCheckResult WorkflowDocFormat::checkRawTextData(const QByteArray &data, const GUrl &) const {
+FormatCheckResult WorkflowDocFormat::checkRawTextData(const QByteArray& data, const GUrl&) const {
     LoadWorkflowTask::FileFormat format = LoadWorkflowTask::detectFormat(data);
     bool ok = format == LoadWorkflowTask::HR || format == LoadWorkflowTask::XML;
     return ok ? FormatDetection_Matched : FormatDetection_NotMatched;
 }
 
-bool WorkflowViewFactory::canCreateView(const MultiGSelection &multiSelection) {
-    foreach (GObject *go, SelectionUtils::findObjects(WorkflowGObject::TYPE, &multiSelection, UOF_LoadedOnly)) {
-        if (!qobject_cast<WorkflowGObject *>(go)->getView()) {
+bool WorkflowViewFactory::canCreateView(const MultiGSelection& multiSelection) {
+    foreach (GObject* go, SelectionUtils::findObjects(WorkflowGObject::TYPE, &multiSelection, UOF_LoadedOnly)) {
+        if (!qobject_cast<WorkflowGObject*>(go)->getView()) {
             return true;
         }
     }
     return false;
 }
 
-Task *WorkflowViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single) {
-    QSet<Document *> documents = SelectionUtils::findDocumentsWithObjects(WorkflowGObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
+Task* WorkflowViewFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
+    QSet<Document*> documents = SelectionUtils::findDocumentsWithObjects(WorkflowGObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
     if (documents.size() == 0) {
         return nullptr;
     }
-    Task *result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
-    foreach (Document *d, documents) {
-        Task *t = new OpenWorkflowViewTask(d);
+    Task* result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    foreach (Document* d, documents) {
+        Task* t = new OpenWorkflowViewTask(d);
         if (result == nullptr) {
             return t;
         }
@@ -170,12 +170,12 @@ Task *WorkflowViewFactory::createViewTask(const MultiGSelection &multiSelection,
     return result;
 }
 
-OpenWorkflowViewTask::OpenWorkflowViewTask(Document *doc)
+OpenWorkflowViewTask::OpenWorkflowViewTask(Document* doc)
     : ObjectViewTask(WorkflowViewFactory::ID) {
     if (!doc->isLoaded()) {
         documentsToLoad.append(doc);
     } else {
-        foreach (GObject *go, doc->findGObjectByType(WorkflowGObject::TYPE)) {
+        foreach (GObject* go, doc->findGObjectByType(WorkflowGObject::TYPE)) {
             selectedObjects.append(go);
         }
         assert(!selectedObjects.isEmpty());
@@ -187,12 +187,12 @@ void OpenWorkflowViewTask::open() {
         return;
     }
     if (!documentsToLoad.isEmpty()) {
-        foreach (GObject *go, documentsToLoad.first()->findGObjectByType(WorkflowGObject::TYPE)) {
+        foreach (GObject* go, documentsToLoad.first()->findGObjectByType(WorkflowGObject::TYPE)) {
             selectedObjects.append(go);
         }
     }
     foreach (QPointer<GObject> po, selectedObjects) {
-        WorkflowGObject *o = qobject_cast<WorkflowGObject *>(po);
+        WorkflowGObject* o = qobject_cast<WorkflowGObject*>(po);
         assert(o && !o->getView());
         WorkflowView::openWD(o);
     }

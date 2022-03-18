@@ -51,7 +51,7 @@ namespace U2 {
 #define PREFIX_EXTERNAL_TOOL_VERSION SETTINGS + "exToolVersion"
 #define PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO SETTINGS + "exToolAdditionalInfo"
 
-Watcher *const ExternalToolSupportSettings::watcher = new Watcher;
+Watcher* const ExternalToolSupportSettings::watcher = new Watcher;
 
 int ExternalToolSupportSettings::prevNumberExternalTools = 0;
 
@@ -66,7 +66,7 @@ void ExternalToolSupportSettings::setNumberExternalTools(int v) {
 
 void ExternalToolSupportSettings::loadExternalToolsFromAppConfig() {
     int numberExternalTools = getNumberExternalTools();
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     for (int i = 0; i < numberExternalTools; i++) {
         QString toolIndex = QString::number(i);
         QString id = settings->getValue(PREFIX_EXTERNAL_TOOL_ID + toolIndex, QVariant(""), true).toString();
@@ -75,7 +75,7 @@ void ExternalToolSupportSettings::loadExternalToolsFromAppConfig() {
         bool isChecked = settings->getValue(PREFIX_EXTERNAL_TOOL_IS_CHECKED + toolIndex, QVariant(false), true).toBool();
         QString version = settings->getValue(PREFIX_EXTERNAL_TOOL_VERSION + toolIndex, QVariant("unknown"), true).toString();
         StrStrMap additionalInfo = settings->getValue(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + toolIndex, QVariant::fromValue<StrStrMap>(StrStrMap()), true).value<StrStrMap>();
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(id);
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(id);
         if (tool != nullptr) {
             tool->setPath(path);
             tool->setVersion(version);
@@ -89,14 +89,14 @@ void ExternalToolSupportSettings::loadExternalToolsFromAppConfig() {
 }
 
 void ExternalToolSupportSettings::saveExternalToolsToAppConfig() {
-    QList<ExternalTool *> externalToolList = AppContext::getExternalToolRegistry()->getAllEntries();
+    QList<ExternalTool*> externalToolList = AppContext::getExternalToolRegistry()->getAllEntries();
     setNumberExternalTools(externalToolList.length());
     int numberOfIterations = prevNumberExternalTools <= externalToolList.length() ? externalToolList.length() : prevNumberExternalTools;
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     for (int i = 0; i < numberOfIterations; i++) {
         QString toolIndex = QString::number(i);
         if (i < externalToolList.length()) {
-            ExternalTool *tool = externalToolList[i];
+            ExternalTool* tool = externalToolList[i];
             settings->setValue(PREFIX_EXTERNAL_TOOL_ID + toolIndex, tool->getId(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, tool->getPath(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_IS_VALID + toolIndex, tool->isValid(), true);
@@ -118,7 +118,7 @@ void ExternalToolSupportSettings::saveExternalToolsToAppConfig() {
     prevNumberExternalTools = externalToolList.length();
 }
 
-void ExternalToolSupportSettings::checkTemporaryDir(U2OpStatus &os) {
+void ExternalToolSupportSettings::checkTemporaryDir(U2OpStatus& os) {
     if (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(QObject::tr("Path for temporary files"));
@@ -145,7 +145,7 @@ bool ExternalToolSupportSettings::checkTemporaryDir(const LogLevel& logLevel) {
 }
 //////////////////////////////////////////////////////////////////////////
 // LimitedDirIterator
-LimitedDirIterator::LimitedDirIterator(const QDir &dir, int deepLevels)
+LimitedDirIterator::LimitedDirIterator(const QDir& dir, int deepLevels)
     : deepLevel(deepLevels), curPath("") {
     if (deepLevel < 0) {
         deepLevel = 0;
@@ -176,7 +176,7 @@ void LimitedDirIterator::fetchNext() {
         if (deepLevel > nextPath.second) {
             QDir curDir(curPath);
             QStringList subdirs = curDir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
-            foreach (const QString &subdir, subdirs) {
+            foreach (const QString& subdir, subdirs) {
                 data.enqueue(qMakePair(curPath + "/" + subdir, nextPath.second + 1));
             }
         }

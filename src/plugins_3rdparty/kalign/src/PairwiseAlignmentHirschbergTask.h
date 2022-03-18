@@ -36,7 +36,7 @@ class Project;
 
 class PairwiseAlignmentHirschbergTaskSettings : public PairwiseAlignmentTaskSettings {
 public:
-    PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings &s);
+    PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s);
     virtual ~PairwiseAlignmentHirschbergTaskSettings();
 
     virtual bool convertCustomSettings();
@@ -57,21 +57,21 @@ public:
 
 class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask {
 public:
-    PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings *_settings);
+    PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings);
     ~PairwiseAlignmentHirschbergTask();
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
     virtual ReportResult report();
 
 protected:
-    void changeGivenUrlIfDocumentExists(QString &givenUrl, const Project *curProject);
+    void changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject);
 
 protected:
-    PairwiseAlignmentHirschbergTaskSettings *settings;
-    KalignTask *kalignSubTask;
-    KalignGObjectRunFromSchemaTask *workflowKalignSubTask;
+    PairwiseAlignmentHirschbergTaskSettings* settings;
+    KalignTask* kalignSubTask;
+    KalignGObjectRunFromSchemaTask* workflowKalignSubTask;
     MultipleSequenceAlignment ma;
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
 };
 
 }  // namespace U2

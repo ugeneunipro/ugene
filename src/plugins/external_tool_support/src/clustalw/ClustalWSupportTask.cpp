@@ -58,7 +58,7 @@ void ClustalWSupportTaskSettings::reset() {
     outOrderInput = true;
 }
 
-ClustalWSupportTask::ClustalWSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const ClustalWSupportTaskSettings &_settings)
+ClustalWSupportTask::ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalW alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
@@ -77,12 +77,12 @@ ClustalWSupportTask::~ClustalWSupportTask() {
     if (nullptr != tmpDoc) {
         delete tmpDoc;
     }
-    //Unlock the alignment object if the task has been failed
+    // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
-            GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+            GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -104,17 +104,17 @@ void ClustalWSupportTask::prepare() {
     algoLog.info(tr("ClustalW alignment started"));
 
     if (objRef.isValid()) {
-        GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+        GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
         }
     }
 
-    //Add new subdir for temporary files
-    //Folder name is ExternalToolName + CurrentDate + CurrentTime
+    // Add new subdir for temporary files
+    // Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "ClustalW_" + QString::number(this->getTaskId()) + "_" +
                          QDate::currentDate().toString("dd.MM.yyyy") + "_" +
@@ -124,10 +124,10 @@ void ClustalWSupportTask::prepare() {
     url = tmpDirPath + "tmp.aln";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
-    //Check and remove subdir for temporary files
+    // Check and remove subdir for temporary files
     QDir tmpDir(tmpDirPath);
     if (tmpDir.exists()) {
-        foreach (const QString &file, tmpDir.entryList()) {
+        foreach (const QString& file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
         if (!tmpDir.rmdir(tmpDir.absolutePath())) {
@@ -145,8 +145,8 @@ void ClustalWSupportTask::prepare() {
     addSubTask(saveTemporaryDocumentTask);
 }
 
-QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -177,7 +177,7 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         if (settings.outOrderInput) {
             arguments << "-OUTORDER=INPUT";
         } else {
-            arguments << "-OUTORDER=ALIGNED";    //this is default value in ClustalW, may be not needed set this option
+            arguments << "-OUTORDER=ALIGNED";  // this is default value in ClustalW, may be not needed set this option
         }
         if (!settings.matrix.isEmpty()) {
             if ((settings.matrix == "IUB") || (settings.matrix == "CLUSTALW")) {
@@ -193,7 +193,7 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         if (settings.noHGaps)
             arguments << "-NOHGAP";
         arguments << "-OUTFILE=" + outputUrl;
-        clustalWTask = new ExternalToolRunTask(ClustalWSupport::ET_CLUSTAL_ID, arguments, new ClustalWLogParser(inputMsa->getNumRows()));
+        clustalWTask = new ExternalToolRunTask(ClustalWSupport::ET_CLUSTAL_ID, arguments, new ClustalWLogParser(inputMsa->getRowCount()));
         setListenerForTask(clustalWTask);
         clustalWTask->setSubtaskProgressWeight(95);
         res.append(clustalWTask);
@@ -222,8 +222,8 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length() == 1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
-        //move MultipleSequenceAlignment from new alignment to old document
-        MultipleSequenceAlignmentObject *newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject *>(tmpDoc->getObjects().first());
+        // move MultipleSequenceAlignment from new alignment to old document
+        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
@@ -232,18 +232,18 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
-            GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+            GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
-                QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-                for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+                for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
                     qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-                    const QList<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGapModel();
+                    const QVector<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGaps();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -277,7 +277,7 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
                     }
                 }
 
-                Document *currentDocument = alObj->getDocument();
+                Document* currentDocument = alObj->getDocument();
                 SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
@@ -287,12 +287,12 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         algoLog.info(tr("ClustalW alignment successfully finished"));
-        //new document deleted in destructor of LoadDocumentTask
+        // new document deleted in destructor of LoadDocumentTask
     }
     return res;
 }
 Task::ReportResult ClustalWSupportTask::report() {
-    //Remove subdir for temporary files, that created in prepare
+    // Remove subdir for temporary files, that created in prepare
     if (!url.isEmpty()) {
         QDir tmpDir(QFileInfo(url).absoluteDir());
         foreach (QString file, tmpDir.entryList()) {
@@ -307,8 +307,8 @@ Task::ReportResult ClustalWSupportTask::report() {
 }
 
 ////////////////////////////////////////
-//ClustalWWithExtFileSpecifySupportTask
-ClustalWWithExtFileSpecifySupportTask::ClustalWWithExtFileSpecifySupportTask(const ClustalWSupportTaskSettings &_settings)
+// ClustalWWithExtFileSpecifySupportTask
+ClustalWWithExtFileSpecifySupportTask::ClustalWWithExtFileSpecifySupportTask(const ClustalWSupportTaskSettings& _settings)
     : Task("Run ClustalW alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
     GCOUNTER(cvar, "ClustalWSupportTask");
@@ -343,13 +343,13 @@ void ClustalWWithExtFileSpecifySupportTask::prepare() {
     if (alnFormat == BaseDocumentFormats::FASTA) {
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
     }
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
     loadDocumentTask = new LoadDocumentTask(alnFormat, settings.inputFilePath, iof, hints);
 
     addSubTask(loadDocumentTask);
 }
-QList<Task *> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -361,7 +361,7 @@ QList<Task *> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
@@ -369,7 +369,7 @@ QList<Task *> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
         res.append(clustalWSupportTask);
     } else if (subTask == clustalWSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(clustalWSupportTask->resultMA->getMsaRows());
 
@@ -379,7 +379,7 @@ QList<Task *> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task *sub
                                                 settings.outputFilePath);
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
+        Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
         if (openTask != nullptr) {
             res << openTask;
         }
@@ -391,7 +391,7 @@ Task::ReportResult ClustalWWithExtFileSpecifySupportTask::report() {
 }
 
 ////////////////////////////////////////
-//ClustalWLogParser
+// ClustalWLogParser
 ClustalWLogParser::ClustalWLogParser(int _countSequencesInMSA)
     : ExternalToolLogParser(), countSequencesInMSA(_countSequencesInMSA) {
 }
@@ -425,4 +425,4 @@ int ClustalWLogParser::getProgress() {
     }
     return 0;
 }
-}    // namespace U2
+}  // namespace U2

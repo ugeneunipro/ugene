@@ -25,17 +25,17 @@
 
 namespace U2 {
 
-OPWidgetFactoryRegistry::OPWidgetFactoryRegistry(QObject *parent /* = NULL */)
+OPWidgetFactoryRegistry::OPWidgetFactoryRegistry(QObject* parent /* = NULL */)
     : QObject(parent) {
 }
 
 OPWidgetFactoryRegistry::~OPWidgetFactoryRegistry() {
-    foreach (OPWidgetFactory *factory, opWidgetFactories) {
+    foreach (OPWidgetFactory* factory, opWidgetFactories) {
         delete factory;
     }
 }
 
-bool OPWidgetFactoryRegistry::registerFactory(OPWidgetFactory *factory) {
+bool OPWidgetFactoryRegistry::registerFactory(OPWidgetFactory* factory) {
     QMutexLocker lock(&mutex);
 
     SAFE_POINT(!opWidgetFactories.contains(factory),
@@ -46,14 +46,14 @@ bool OPWidgetFactoryRegistry::registerFactory(OPWidgetFactory *factory) {
     return true;
 }
 
-QList<OPWidgetFactory *> OPWidgetFactoryRegistry::getRegisteredFactories(const QList<OPFactoryFilterVisitorInterface *> &filters) {
+QList<OPWidgetFactory*> OPWidgetFactoryRegistry::getRegisteredFactories(const QList<OPFactoryFilterVisitorInterface*>& filters) {
     QMutexLocker lock(&mutex);
 
-    QList<OPWidgetFactory *> factoriesForObjView;
+    QList<OPWidgetFactory*> factoriesForObjView;
 
-    foreach (OPWidgetFactory *factory, opWidgetFactories) {
+    foreach (OPWidgetFactory* factory, opWidgetFactories) {
         bool pass = true;
-        foreach (OPFactoryFilterVisitorInterface *filter, filters) {
+        foreach (OPFactoryFilterVisitorInterface* filter, filters) {
             pass &= factory->passFiltration(filter);
         }
         if (pass) {
@@ -64,17 +64,17 @@ QList<OPWidgetFactory *> OPWidgetFactoryRegistry::getRegisteredFactories(const Q
     return factoriesForObjView;
 }
 
-OPCommonWidgetFactoryRegistry::OPCommonWidgetFactoryRegistry(QObject *parent)
+OPCommonWidgetFactoryRegistry::OPCommonWidgetFactoryRegistry(QObject* parent)
     : QObject(parent) {
 }
 
 OPCommonWidgetFactoryRegistry::~OPCommonWidgetFactoryRegistry() {
-    foreach (OPCommonWidgetFactory *factory, factories) {
+    foreach (OPCommonWidgetFactory* factory, factories) {
         delete factory;
     }
 }
 
-bool OPCommonWidgetFactoryRegistry::registerFactory(OPCommonWidgetFactory *factory) {
+bool OPCommonWidgetFactoryRegistry::registerFactory(OPCommonWidgetFactory* factory) {
     QMutexLocker lock(&mutex);
 
     SAFE_POINT(!factories.contains(factory), "OP common widget factory has been already registered!", false);
@@ -83,11 +83,11 @@ bool OPCommonWidgetFactoryRegistry::registerFactory(OPCommonWidgetFactory *facto
     return true;
 }
 
-QList<OPCommonWidgetFactory *> OPCommonWidgetFactoryRegistry::getRegisteredFactories(QString groupId) {
+QList<OPCommonWidgetFactory*> OPCommonWidgetFactoryRegistry::getRegisteredFactories(QString groupId) {
     QMutexLocker lock(&mutex);
-    QList<OPCommonWidgetFactory *> result;
+    QList<OPCommonWidgetFactory*> result;
 
-    foreach (OPCommonWidgetFactory *factory, factories) {
+    foreach (OPCommonWidgetFactory* factory, factories) {
         SAFE_POINT(nullptr != factory, "NULL factory!", result);
         if (factory->isInGroup(groupId)) {
             result.append(factory);

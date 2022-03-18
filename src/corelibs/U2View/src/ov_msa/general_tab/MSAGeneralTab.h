@@ -35,7 +35,7 @@ class MSAEditor;
 class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
     Q_OBJECT
 public:
-    MSAGeneralTab(MSAEditor *msaEditor);
+    MSAGeneralTab(MSAEditor* msaEditor);
 
 public slots:
     void sl_alignmentChanged();
@@ -48,7 +48,7 @@ private:
     void updateState();
     void updateConvertAlphabetButtonState();
 
-    MSAEditor *msaEditor;
+    MSAEditor* msaEditor;
     MsaOpSavableTab savableTab;
 };
 

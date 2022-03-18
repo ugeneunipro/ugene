@@ -29,11 +29,11 @@ namespace U2 {
 
 const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
-MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
-void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeGaps::process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const {
     if (seqChar == U2Msa::GAP_CHAR) {
         color = gapColor;
         highlight = true;
@@ -44,11 +44,11 @@ void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColo
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true) {
 }
 
-MsaHighlightingScheme *MsaHighlightingSchemeGapsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeGapsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 

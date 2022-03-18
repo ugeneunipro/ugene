@@ -27,7 +27,7 @@ namespace U2 {
 /// U2Entity implementation
 //////////////////////////////////////////////////////////////////////////
 
-U2Entity::U2Entity(const U2DataId &id)
+U2Entity::U2Entity(const U2DataId& id)
     : id(id) {
 }
 
@@ -35,15 +35,15 @@ bool U2Entity::hasValidId() const {
     return !id.isEmpty();
 }
 
-bool U2Entity::operator==(const U2Entity &other) const {
+bool U2Entity::operator==(const U2Entity& other) const {
     return id == other.id;
 }
 
-bool U2Entity::operator!=(const U2Entity &other) const {
+bool U2Entity::operator!=(const U2Entity& other) const {
     return id != other.id;
 }
 
-bool U2Entity::operator<(const U2Entity &other) const {
+bool U2Entity::operator<(const U2Entity& other) const {
     return id < other.id;
 }
 
@@ -51,7 +51,7 @@ bool U2Entity::operator<(const U2Entity &other) const {
 /// U2DbiRef implementation
 //////////////////////////////////////////////////////////////////////////
 
-U2DbiRef::U2DbiRef(const U2DbiFactoryId &dbiFactoryId, const U2DbiId &dbiId)
+U2DbiRef::U2DbiRef(const U2DbiFactoryId& dbiFactoryId, const U2DbiId& dbiId)
     : dbiFactoryId(dbiFactoryId), dbiId(dbiId) {
 }
 
@@ -59,24 +59,24 @@ bool U2DbiRef::isValid() const {
     return !dbiFactoryId.isEmpty() && !dbiId.isEmpty();
 }
 
-bool U2DbiRef::operator!=(const U2DbiRef &r2) const {
+bool U2DbiRef::operator!=(const U2DbiRef& r2) const {
     return !(operator==(r2));
 }
 
-bool U2DbiRef::operator==(const U2DbiRef &r2) const {
+bool U2DbiRef::operator==(const U2DbiRef& r2) const {
     return dbiFactoryId == r2.dbiFactoryId && dbiId == r2.dbiId;
 }
 
-bool U2DbiRef::operator<(const U2DbiRef &r2) const {
+bool U2DbiRef::operator<(const U2DbiRef& r2) const {
     return dbiFactoryId + dbiId < r2.dbiFactoryId + r2.dbiId;
 }
 
-QDataStream &operator<<(QDataStream &out, const U2DbiRef &dbiRef) {
+QDataStream& operator<<(QDataStream& out, const U2DbiRef& dbiRef) {
     out << dbiRef.dbiFactoryId << dbiRef.dbiId;
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, U2DbiRef &dbiRef) {
+QDataStream& operator>>(QDataStream& in, U2DbiRef& dbiRef) {
     in >> dbiRef.dbiFactoryId;
     in >> dbiRef.dbiId;
     return in;
@@ -90,7 +90,7 @@ U2EntityRef::U2EntityRef()
     : version(0) {
 }
 
-U2EntityRef::U2EntityRef(const U2DbiRef &dbiRef, const U2DataId &entityId)
+U2EntityRef::U2EntityRef(const U2DbiRef& dbiRef, const U2DataId& entityId)
     : dbiRef(dbiRef), entityId(entityId), version(0) {
 }
 
@@ -98,15 +98,15 @@ bool U2EntityRef::isValid() const {
     return dbiRef.isValid() && !entityId.isEmpty();
 }
 
-bool U2EntityRef::operator==(const U2EntityRef &other) const {
+bool U2EntityRef::operator==(const U2EntityRef& other) const {
     return (entityId == other.entityId) && (version == other.version) && (dbiRef == other.dbiRef);
 }
 
-bool U2EntityRef::operator!=(const U2EntityRef &other) const {
+bool U2EntityRef::operator!=(const U2EntityRef& other) const {
     return !(operator==(other));
 }
 
-bool U2EntityRef::operator<(const U2EntityRef &other) const {
+bool U2EntityRef::operator<(const U2EntityRef& other) const {
     if (dbiRef.dbiFactoryId != other.dbiRef.dbiFactoryId) {
         return dbiRef.dbiFactoryId < other.dbiRef.dbiFactoryId;
     } else if (dbiRef.dbiId != other.dbiRef.dbiId) {

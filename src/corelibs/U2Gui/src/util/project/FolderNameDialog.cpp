@@ -28,19 +28,19 @@
 
 namespace U2 {
 
-FolderNameDialog::FolderNameDialog(const QString &name, QWidget *parent)
+FolderNameDialog::FolderNameDialog(const QString& name, QWidget* parent)
     : QDialog(parent), okButton(nullptr) {
     setupUi(this);
     setWindowTitle(name.isEmpty() ? tr("Add Folder") : tr("Rename Folder"));
 
-    connect(nameEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_textChanged(const QString &)));
+    connect(nameEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_textChanged(const QString&)));
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     nameEdit->setText(name);
     sl_textChanged(name);
 }
 
-void FolderNameDialog::sl_textChanged(const QString &text) {
+void FolderNameDialog::sl_textChanged(const QString& text) {
     CHECK(nullptr != okButton, );
     okButton->setEnabled(Folder::isCorrectFolderName(text));
 }

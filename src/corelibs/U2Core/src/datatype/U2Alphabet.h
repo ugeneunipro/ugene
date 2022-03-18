@@ -33,7 +33,7 @@ namespace U2 {
 */
 class U2CORE_EXPORT U2AlphabetId : public AbstractStringId {
 public:
-    U2AlphabetId(const QString &id = QString())
+    U2AlphabetId(const QString& id = QString())
         : AbstractStringId(id) {
     }
 };

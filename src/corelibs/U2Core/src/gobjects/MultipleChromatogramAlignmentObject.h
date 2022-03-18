@@ -42,14 +42,14 @@ public:
 
     static const QString MCAOBJECT_REFERENCE;
 
-    MultipleChromatogramAlignmentObject(const QString &name,
-                                        const U2EntityRef &mcaRef,
-                                        const QVariantMap &hintsMap = QVariantMap(),
-                                        const MultipleChromatogramAlignment &mca = MultipleChromatogramAlignment());
+    MultipleChromatogramAlignmentObject(const QString& name,
+                                        const U2EntityRef& mcaRef,
+                                        const QVariantMap& hintsMap = QVariantMap(),
+                                        const MultipleChromatogramAlignment& mca = MultipleChromatogramAlignment());
 
     virtual ~MultipleChromatogramAlignmentObject();
 
-    GObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
     char charAt(int seqNum, qint64 position) const;
 
@@ -57,40 +57,40 @@ public:
     const MultipleChromatogramAlignment getMcaCopy() const;
 
     const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
-    U2SequenceObject *getReferenceObj() const;
+    U2SequenceObject* getReferenceObj() const;
 
     // inserts column of gaps with newChar at rowIndex row
     void insertCharacter(int rowIndex, int pos, char newChar);
 
-    void insertGap(const U2Region &rows, int pos, int nGaps);
+    void insertGap(const U2Region& rows, int pos, int nGaps);
 
-    void insertGapByRowIndexList(const QList<int> &rowIndexes, int pos, int nGaps);
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
 
-    void deleteColumnsWithGaps(U2OpStatus &os);
+    void deleteColumnsWithGaps(U2OpStatus& os);
 
-    void trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge);
+    void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
 
     /**
      * Updates the corresponding alternative mutations.
      * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
      */
-    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os);
+    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os);
 
     void saveState();
     void releaseState();
     int getReferenceLengthWithGaps() const;
 
 private:
-    void loadAlignment(U2OpStatus &os);
-    void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
-    void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
-    void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
-    void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
+    void loadAlignment(U2OpStatus& os);
+    void updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds);
+    void updateDatabase(U2OpStatus& os, const MultipleAlignment& ma);
+    void removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId);
+    void removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases);
 
     QList<U2Region> getColumnsWithGaps() const;
-    QList<U2MsaGap> getReferenceGapModel() const;
+    QVector<U2MsaGap> getReferenceGapModel() const;
 
-    mutable U2SequenceObject *referenceObj;
+    mutable U2SequenceObject* referenceObj;
 };
 
 }  // namespace U2

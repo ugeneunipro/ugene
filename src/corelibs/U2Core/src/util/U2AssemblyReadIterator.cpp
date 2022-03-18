@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray &read_, QList<U2CigarToken> cigar_, int startPos /* = 0*/)
+U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray& read_, QList<U2CigarToken> cigar_, int startPos /* = 0*/)
     : offsetInRead(0), read(read_), offsetInToken(0), offsetInCigar(0), cigar(cigar_) {
     for (int i = 0; i < startPos && hasNext();) {
         skip();
@@ -142,7 +142,7 @@ void U2AssemblyReadIterator::skipPaddingAndHardClip() {
 }
 
 namespace {
-void check(const QByteArray &expectedSeq, U2AssemblyReadIterator &it) {
+void check(const QByteArray& expectedSeq, U2AssemblyReadIterator& it) {
     int i = 0;
     while (it.hasNext()) {
         assert(i < expectedSeq.size());

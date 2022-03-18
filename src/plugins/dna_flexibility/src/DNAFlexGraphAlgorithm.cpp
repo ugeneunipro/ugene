@@ -34,7 +34,7 @@ namespace U2 {
  * @param region The region of the sequence to use
  * @param windowData Current parameters of the graph (window, step, etc.)
  */
-void DNAFlexGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void DNAFlexGraphAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     QByteArray sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
     CHECK(window > 1, );

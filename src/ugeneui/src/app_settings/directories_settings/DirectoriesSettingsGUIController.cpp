@@ -39,7 +39,7 @@ namespace U2 {
 #define SETTINGS_ROOT QString("/genome_aligner_settings/")
 #define INDEX_DIR QString("index_dir")
 
-DirectoriesSettingsPageController::DirectoriesSettingsPageController(QObject *p)
+DirectoriesSettingsPageController::DirectoriesSettingsPageController(QObject* p)
     : AppSettingsGUIPageController(tr("Directories"), APP_SETTINGS_DIRECTORIES, p) {
 }
 
@@ -50,16 +50,16 @@ QString DirectoriesSettingsPageUtils::getIndexDir() {
     return res;
 }
 
-void DirectoriesSettingsPageUtils::setIndexDir(const QString &indexDir) {
+void DirectoriesSettingsPageUtils::setIndexDir(const QString& indexDir) {
     QString defaultDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("aligner");
     if (defaultDir != indexDir) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + INDEX_DIR, indexDir, true);
     }
 }
 
-AppSettingsGUIPageState *DirectoriesSettingsPageController::getSavedState() {
-    DirectoriesSettingsPageState *state = new DirectoriesSettingsPageState();
-    UserAppsSettings *s = AppContext::getAppSettings()->getUserAppsSettings();
+AppSettingsGUIPageState* DirectoriesSettingsPageController::getSavedState() {
+    DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
+    UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->downloadsDirPath = s->getDownloadDirPath();
     state->documentsDirectory = s->getDefaultDataDirPath();
     state->temporaryDirPath = s->getUserTemporaryDirPath();
@@ -69,9 +69,9 @@ AppSettingsGUIPageState *DirectoriesSettingsPageController::getSavedState() {
     return state;
 }
 
-void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    DirectoriesSettingsPageState *state = qobject_cast<DirectoriesSettingsPageState *>(s);
-    UserAppsSettings *st = AppContext::getAppSettings()->getUserAppsSettings();
+void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setDownloadDirPath(state->downloadsDirPath);
     st->setDefaultDataDirPath(state->documentsDirectory);
     DirectoriesSettingsPageUtils::setIndexDir(state->indexDirectory);
@@ -89,15 +89,15 @@ void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState *s) {
     }
 }
 
-AppSettingsGUIPageWidget *DirectoriesSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
-    DirectoriesSettingsPageWidget *r = new DirectoriesSettingsPageWidget(this);
+AppSettingsGUIPageWidget* DirectoriesSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+    DirectoriesSettingsPageWidget* r = new DirectoriesSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
 
 const QString DirectoriesSettingsPageController::helpPageId = QString("65929353");
 
-DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettingsPageController * /*ctrl*/) {
+DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettingsPageController* /*ctrl*/) {
     setupUi(this);
     connect(browseDownloadDirButton, SIGNAL(clicked()), SLOT(sl_browseDownloadsDirButtonClicked()));
     connect(documentsDirectoryButton, SIGNAL(clicked()), SLOT(sl_browseDocumentsDirButtonClicked()));
@@ -107,8 +107,8 @@ DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettings
     connect(indexDirectoryButton, SIGNAL(clicked()), SLOT(sl_onIndexDirButton()));
 }
 
-void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    DirectoriesSettingsPageState *state = qobject_cast<DirectoriesSettingsPageState *>(s);
+void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
     downloadsDirPathEdit->setText(state->downloadsDirPath);
     documentsDirectoryEdit->setText(state->documentsDirectory);
     tmpDirPathEdit->setText(state->temporaryDirPath);
@@ -116,9 +116,9 @@ void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     indexDirectoryEdit->setText(state->indexDirectory);
 }
 
-AppSettingsGUIPageState *DirectoriesSettingsPageWidget::getState(QString &err) const {
+AppSettingsGUIPageState* DirectoriesSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err)
-    DirectoriesSettingsPageState *state = new DirectoriesSettingsPageState();
+    DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
     state->downloadsDirPath = downloadsDirPathEdit->text();
     state->documentsDirectory = documentsDirectoryEdit->text();
     state->temporaryDirPath = tmpDirPathEdit->text();
@@ -161,7 +161,7 @@ void DirectoriesSettingsPageWidget::sl_browseFileStorageButtonClicked() {
 }
 
 void DirectoriesSettingsPageWidget::sl_cleanupStorage() {
-    CleanupFileStorageTask *t = new CleanupFileStorageTask();
+    CleanupFileStorageTask* t = new CleanupFileStorageTask();
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

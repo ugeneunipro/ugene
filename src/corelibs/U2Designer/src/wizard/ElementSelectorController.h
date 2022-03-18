@@ -35,17 +35,17 @@ class WizardController;
 class ElementSelectorController : public WidgetController {
     Q_OBJECT
 public:
-    ElementSelectorController(WizardController *wc, ElementSelectorWidget *widget, int labelSize);
+    ElementSelectorController(WizardController* wc, ElementSelectorWidget* widget, int labelSize);
     virtual ~ElementSelectorController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
 private:
-    ElementSelectorWidget *widget;
+    ElementSelectorWidget* widget;
     int labelSize;
 
 private slots:
-    void sl_valueChanged(const QVariant &newValue);
+    void sl_valueChanged(const QVariant& newValue);
 };
 
 }  // namespace U2

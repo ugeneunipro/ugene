@@ -43,7 +43,7 @@ public:
         : addToProj(false), saveDoc(true), alphabet(nullptr), length(0), numSeqs(1), useRef(true), window(0), seed(0) {
     }
 
-    const DNAAlphabet *getAlphabet() const {
+    const DNAAlphabet* getAlphabet() const {
         assert(alphabet);
         return alphabet;
     }
@@ -52,11 +52,11 @@ public:
         return useRef;
     }
 
-    const QString &getReferenceUrl() const {
+    const QString& getReferenceUrl() const {
         return refUrl;
     }
 
-    const QMap<char, qreal> &getContent() const {
+    const QMap<char, qreal>& getContent() const {
         return content;
     }
 
@@ -76,7 +76,7 @@ public:
         return outUrl;
     }
 
-    const DocumentFormatId &getDocumentFormatId() const {
+    const DocumentFormatId& getDocumentFormatId() const {
         return formatId;
     }
 
@@ -89,7 +89,7 @@ public:
     // output document format
     DocumentFormatId formatId;
     // output sequence alphabet
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     // output sequence length
     int length;
     // number of sequences to generate
@@ -118,21 +118,21 @@ public:
      * This way if an 'A' character has frequency '0.4' the result sequence will have around 40% of 'A' characters.
      * The frequency values precision is supported up the 3rd fractional digit: 0.123 and rounded up after that.
      */
-    static void generateSequence(const QMap<char, qreal> &charFreqs,
+    static void generateSequence(const QMap<char, qreal>& charFreqs,
                                  int length,
-                                 QByteArray &result,
-                                 QRandomGenerator &randomGenerator,
-                                 U2OpStatus &os);
+                                 QByteArray& result,
+                                 QRandomGenerator& randomGenerator,
+                                 U2OpStatus& os);
 
-    static void evaluateBaseContent(const DNASequence &sequence, QMap<char, qreal> &result);
+    static void evaluateBaseContent(const DNASequence& sequence, QMap<char, qreal>& result);
 
-    static void evaluateBaseContent(const MultipleSequenceAlignment &ma, QMap<char, qreal> &result);
+    static void evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result);
 };
 
 class EvaluateBaseContentTask : public Task {
     Q_OBJECT
 public:
-    EvaluateBaseContentTask(GObject *obj);
+    EvaluateBaseContentTask(GObject* obj);
 
     void run();
 
@@ -140,13 +140,13 @@ public:
         return result;
     }
 
-    const DNAAlphabet *getAlphabet() const {
+    const DNAAlphabet* getAlphabet() const {
         return alp;
     }
 
 private:
-    GObject *_obj;
-    const DNAAlphabet *alp;
+    GObject* _obj;
+    const DNAAlphabet* alp;
     QMap<char, qreal> result;
 };
 
@@ -158,7 +158,7 @@ public:
      * If the seed is < 0 a random seed will be generated per each window.
      * Otherwise the same seed will be used for all windows that will lead to the equal sequences in every window.
      */
-    GenerateDNASequenceTask(const QMap<char, qreal> &baseContent, int length, int window, int count, int seed);
+    GenerateDNASequenceTask(const QMap<char, qreal>& baseContent, int length, int window, int count, int seed);
 
     void prepare() override;
     void run() override;
@@ -183,28 +183,28 @@ private:
 class DNASequenceGeneratorTask : public Task {
     Q_OBJECT
 public:
-    DNASequenceGeneratorTask(const DNASequenceGeneratorConfig &cfg_);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg_);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QList<DNASequence> getSequences() const {
         return results;
     }
 
 private:
-    QList<Task *> onLoadRefTaskFinished();
-    QList<Task *> onEvalTaskFinished();
-    QList<Task *> onGenerateTaskFinished();
-    QList<Task *> onSaveTaskFinished();
+    QList<Task*> onLoadRefTaskFinished();
+    QList<Task*> onEvalTaskFinished();
+    QList<Task*> onGenerateTaskFinished();
+    QList<Task*> onSaveTaskFinished();
 
-    void addSequencesToMsaDoc(Document *source);
-    void addSequencesToSeqDoc(Document *source);
+    void addSequencesToMsaDoc(Document* source);
+    void addSequencesToSeqDoc(Document* source);
 
-    static EvaluateBaseContentTask *createEvaluationTask(Document *doc, QString &err);
+    static EvaluateBaseContentTask* createEvaluationTask(Document* doc, QString& err);
 
     DNASequenceGeneratorConfig cfg;
-    LoadDocumentTask *loadRefTask;
-    EvaluateBaseContentTask *evalTask;
-    GenerateDNASequenceTask *generateTask;
-    SaveDocumentTask *saveTask;
+    LoadDocumentTask* loadRefTask;
+    EvaluateBaseContentTask* evalTask;
+    GenerateDNASequenceTask* generateTask;
+    SaveDocumentTask* saveTask;
     QList<DNASequence> results;
 };
 

@@ -34,19 +34,30 @@ class PhyTreeDisplayOptionsWidget;
 class IQTreeWidget : public CreatePhyTreeWidget {
     Q_OBJECT
 public:
-    IQTreeWidget(const MultipleSequenceAlignment &msa, QWidget *parent);
+    IQTreeWidget(const MultipleSequenceAlignment& msa, QWidget* parent);
 
-    void fillSettings(CreatePhyTreeSettings &settings) override;
+    void fillSettings(CreatePhyTreeSettings& settings) override;
 
     void storeSettings() override;
 
     void restoreDefault() override;
 
-    bool checkSettings(QString &message, const CreatePhyTreeSettings &settings) override;
+    bool checkSettings(QString& message, const CreatePhyTreeSettings& settings) override;
 
 private:
-    QPlainTextEdit *extraParametersTextEdit = nullptr;
-    PhyTreeDisplayOptionsWidget *displayOptionsWidget = nullptr;
+    void propagateWidgetValuesToTextParameters();
+
+    void propagateTextParametersToWidgetValues();
+
+    QPlainTextEdit* extraParametersTextEdit = nullptr;
+    PhyTreeDisplayOptionsWidget* displayOptionsWidget = nullptr;
+
+    QLineEdit* substModelEdit = nullptr;
+    QLineEdit* ultrafastBootstrapEdit = nullptr;
+    QLineEdit* alrtEdit = nullptr;
+    QCheckBox* ancestralReconstructionCheckBox = nullptr;
+
+    bool isInsideChangeCallback = false;
 };
 
 }  // namespace U2

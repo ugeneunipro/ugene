@@ -34,7 +34,7 @@ class MSAEditorOverviewArea;
 class MaOverviewContextMenu : public QMenu {
     Q_OBJECT
 public:
-    MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *so, MaGraphOverview *go);
+    MaOverviewContextMenu(QWidget* parent, MaSimpleOverview* so, MaGraphOverview* go);
 
 private:
     void connectSlots();
@@ -47,10 +47,10 @@ signals:
 
 public slots:
     void sl_exportAsImageTriggered();
-    void sl_graphTypeActionTriggered(QAction *);
-    void sl_graphOrientationActionTriggered(QAction *);
+    void sl_graphTypeActionTriggered(QAction*);
+    void sl_graphOrientationActionTriggered(QAction*);
     void sl_colorActionTriggered();
-    void sl_caclulationMethodActionTriggered(QAction *);
+    void sl_calculationMethodActionTriggered(QAction*);
 
 private:
     void initSimpleOverviewAction();
@@ -61,37 +61,37 @@ private:
     void initGraphTypeSubmenu();
     void initOrientationSubmenu();
 
-    QAction *createCheckableAction(const QString &text, QActionGroup *group = nullptr);
+    QAction* createCheckableAction(const QString& text, QActionGroup* group = nullptr);
 
-    MaSimpleOverview *simpleOverview;
-    MaGraphOverview *graphOverview;
+    MaSimpleOverview* simpleOverview;
+    MaGraphOverview* graphOverview;
 
-    QAction *showSimpleOverviewAction;
-    QAction *exportAsImageAction;
+    QAction* showSimpleOverviewAction;
+    QAction* exportAsImageAction;
 
-    QMenu *displaySettingsMenu;
-    QMenu *graphTypeMenu;
+    QMenu* displaySettingsMenu;
+    QMenu* graphTypeMenu;
 
-    QActionGroup *graphTypeActionGroup;
-    QAction *histogramGraphAction;
-    QAction *lineGraphAction;
-    QAction *areaGraphAction;
+    QActionGroup* graphTypeActionGroup;
+    QAction* histogramGraphAction;
+    QAction* lineGraphAction;
+    QAction* areaGraphAction;
 
-    QMenu *orientationMenu;
+    QMenu* orientationMenu;
 
-    QActionGroup *orientationActionGroup;
-    QAction *topToBottomOrientationAction;
-    QAction *bottomToTopOrientationAction;
+    QActionGroup* orientationActionGroup;
+    QAction* topToBottomOrientationAction;
+    QAction* bottomToTopOrientationAction;
 
-    QAction *colorAction;
+    QAction* colorAction;
 
-    QMenu *calculationMethodMenu;
+    QMenu* calculationMethodMenu;
 
-    QActionGroup *calculationMethodActionGroup;
-    QAction *strictMethodAction;
-    QAction *gapMethodAction;
-    QAction *clustalMethodAction;
-    QAction *highlightingMethodAction;
+    QActionGroup* calculationMethodActionGroup;
+    QAction* strictMethodAction;
+    QAction* gapMethodAction;
+    QAction* clustalMethodAction;
+    QAction* highlightingMethodAction;
 };
 
 }  // namespace U2

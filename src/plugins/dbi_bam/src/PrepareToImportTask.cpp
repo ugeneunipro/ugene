@@ -38,7 +38,7 @@
 namespace U2 {
 namespace BAM {
 
-PrepareToImportTask::PrepareToImportTask(const GUrl &url, bool sam, const QString &refUrl, const QString &workingDir)
+PrepareToImportTask::PrepareToImportTask(const GUrl& url, bool sam, const QString& refUrl, const QString& workingDir)
     : Task("Prepare assembly file to import", TaskFlag_None),
       sourceURL(url), refUrl(refUrl), workingDir(workingDir), samFormat(sam), newURL(false) {
     tpm = Progress_Manual;
@@ -53,11 +53,11 @@ QString PrepareToImportTask::getBamUrl() const {
     }
 }
 
-QString PrepareToImportTask::getSortedBamUrl(const QString &bamUrl) const {
+QString PrepareToImportTask::getSortedBamUrl(const QString& bamUrl) const {
     return workingDir + "/" + QFileInfo(bamUrl).fileName() + "_sorted";
 }
 
-QString PrepareToImportTask::getIndexedBamUrl(const QString &sortedBamUrl) const {
+QString PrepareToImportTask::getIndexedBamUrl(const QString& sortedBamUrl) const {
     return workingDir + "/" + QFileInfo(sortedBamUrl).fileName();
 }
 
@@ -65,17 +65,17 @@ QString PrepareToImportTask::getFastaUrl() const {
     return workingDir + "/" + QFileInfo(refUrl).fileName();
 }
 
-QString PrepareToImportTask::getCopyError(const QString &url1, const QString &url2) const {
+QString PrepareToImportTask::getCopyError(const QString& url1, const QString& url2) const {
     return LoadInfoTask::tr("Can not copy the '%1' file to '%2'").arg(url1).arg(url2);
 }
 
 namespace {
-bool equalUrls(const QString &url1, const QString &url2) {
+bool equalUrls(const QString& url1, const QString& url2) {
     return QFileInfo(url1).absoluteFilePath() == QFileInfo(url2).absoluteFilePath();
 }
 }  // namespace
 
-bool PrepareToImportTask::needToCopyBam(const QString &sortedBamUrl) const {
+bool PrepareToImportTask::needToCopyBam(const QString& sortedBamUrl) const {
     const QString indexedBamUrl = getIndexedBamUrl(sortedBamUrl);
     return !equalUrls(indexedBamUrl, sortedBamUrl);
 }
@@ -141,7 +141,7 @@ void PrepareToImportTask::run() {
 }
 
 namespace {
-static bool isUnknownFormat(const QList<FormatDetectionResult> &formats) {
+static bool isUnknownFormat(const QList<FormatDetectionResult>& formats) {
     if (formats.isEmpty()) {
         return true;
     }
@@ -152,7 +152,7 @@ static bool isUnknownFormat(const QList<FormatDetectionResult> &formats) {
     return false;
 }
 
-static QString detectedFormatId(const FormatDetectionResult &f) {
+static QString detectedFormatId(const FormatDetectionResult& f) {
     if (nullptr == f.format && f.importer == nullptr) {
         return "";
     } else if (nullptr == f.format) {
@@ -188,7 +188,7 @@ void PrepareToImportTask::checkReferenceFile() {
     }
 }
 
-const GUrl &PrepareToImportTask::getSourceUrl() const {
+const GUrl& PrepareToImportTask::getSourceUrl() const {
     return sourceURL;
 }
 

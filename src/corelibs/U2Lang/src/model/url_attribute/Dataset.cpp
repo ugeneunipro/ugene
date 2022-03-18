@@ -27,7 +27,7 @@ namespace U2 {
 
 const QString Dataset::DEFAULT_NAME("Dataset 1");
 
-Dataset::Dataset(const QString &_name)
+Dataset::Dataset(const QString& _name)
     : name(_name) {
 }
 
@@ -35,7 +35,7 @@ Dataset::Dataset() {
     name = DEFAULT_NAME;
 }
 
-Dataset::Dataset(const Dataset &other) {
+Dataset::Dataset(const Dataset& other) {
     copy(other);
 }
 
@@ -43,29 +43,29 @@ Dataset::~Dataset() {
     clear();
 }
 
-const QString &Dataset::getName() const {
+const QString& Dataset::getName() const {
     return name;
 }
 
-void Dataset::setName(const QString &value) {
+void Dataset::setName(const QString& value) {
     name = value;
 }
 
-void Dataset::addUrl(URLContainer *url) {
+void Dataset::addUrl(URLContainer* url) {
     if (url != nullptr) {
         urls << url;
     }
 }
 
-void Dataset::removeUrl(URLContainer *url) {
+void Dataset::removeUrl(URLContainer* url) {
     urls.removeOne(url);
 }
 
-QList<URLContainer *> Dataset::getUrls() const {
+QList<URLContainer*> Dataset::getUrls() const {
     return urls;
 }
 
-QList<URLContainer *> &Dataset::getUrls() {
+QList<URLContainer*>& Dataset::getUrls() {
     return urls;
 }
 
@@ -73,7 +73,7 @@ QList<Dataset> Dataset::getDefaultDatasetList() {
     return QList<Dataset>() << Dataset();
 }
 
-Dataset &Dataset::operator=(const Dataset &other) {
+Dataset& Dataset::operator=(const Dataset& other) {
     if (this == &other) {
         return *this;
     }
@@ -81,16 +81,16 @@ Dataset &Dataset::operator=(const Dataset &other) {
     return *this;
 }
 
-void Dataset::copy(const Dataset &other) {
+void Dataset::copy(const Dataset& other) {
     clear();
     name = other.name;
-    foreach (URLContainer *url, other.urls) {
+    foreach (URLContainer* url, other.urls) {
         urls << url->clone();
     }
 }
 
-bool Dataset::contains(const QString &url) const {
-    foreach (URLContainer *cont, urls) {
+bool Dataset::contains(const QString& url) const {
+    foreach (URLContainer* cont, urls) {
         if (cont->getUrl() == url) {
             return true;
         }
@@ -106,9 +106,9 @@ void Dataset::clear() {
 /************************************************************************/
 /* DatasetFilesIterator */
 /************************************************************************/
-DatasetFilesIterator::DatasetFilesIterator(const QList<Dataset> &_sets)
+DatasetFilesIterator::DatasetFilesIterator(const QList<Dataset>& _sets)
     : FilesIterator(), currentIter(nullptr) {
-    foreach (const Dataset &dSet, _sets) {
+    foreach (const Dataset& dSet, _sets) {
         sets << dSet;
     }
 }
@@ -145,7 +145,7 @@ bool DatasetFilesIterator::hasNext() {
         if (sets.isEmpty()) {
             return false;
         }
-        URLContainer *url = sets.first().getUrls().takeFirst();
+        URLContainer* url = sets.first().getUrls().takeFirst();
         sets.first().removeUrl(url);
         delete currentIter;
         currentIter = url->getFileUrls();

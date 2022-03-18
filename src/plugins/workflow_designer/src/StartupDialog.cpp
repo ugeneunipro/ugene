@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-StartupDialog::StartupDialog(QWidget *parent)
+StartupDialog::StartupDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929873");
@@ -40,11 +40,11 @@ StartupDialog::StartupDialog(QWidget *parent)
     label->setStyleSheet(Theme::infoHintStyleSheet());
 
     outDirWidget = new OutputDirectoryWidget(this, false /*don't commitOnHide*/);
-    QVBoxLayout *l = new QVBoxLayout(box);
+    QVBoxLayout* l = new QVBoxLayout(box);
     l->setMargin(3);
     l->addWidget(outDirWidget);
 
-    const QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
+    const QPushButton* button = buttonBox->button(QDialogButtonBox::Ok);
     connect(button, SIGNAL(clicked()), this, SLOT(sl_accepted()));
 
 #ifdef Q_OS_WIN

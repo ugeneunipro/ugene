@@ -36,7 +36,7 @@ Qt::MouseButtons GTMouseDriver::bp = Qt::NoButton;
 
 namespace {
 
-bool isPointInsideScreen(const QPoint &point) {
+bool isPointInsideScreen(const QPoint& point) {
     const CGDirectDisplayID displayID = CGMainDisplayID();
     const size_t horres = CGDisplayPixelsWide(displayID);
     const size_t vertres = CGDisplayPixelsHigh(displayID);
@@ -67,7 +67,7 @@ bool selectAreaMac(const int x, const int y) {
 }  // namespace
 
 #    define GT_METHOD_NAME "moveToP"
-bool GTMouseDriver::moveTo(const QPoint &p) {
+bool GTMouseDriver::moveTo(const QPoint& p) {
     int x = p.x();
     int y = p.y();
     if (bp.testFlag(Qt::LeftButton)) {
@@ -88,7 +88,7 @@ bool GTMouseDriver::moveTo(const QPoint &p) {
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "moveAndClick"
-bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
+bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
     DRIVER_CHECK(!bp.testFlag(Qt::LeftButton), "Can't click, LeftButton is pressed already");
 
     CGEventType eventType2, eventType3;

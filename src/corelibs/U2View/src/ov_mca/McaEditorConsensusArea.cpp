@@ -39,7 +39,7 @@ namespace U2 {
 /************************************************************************/
 /* McaEditorConsensusArea */
 /************************************************************************/
-McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
+McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt* ui)
     : MaEditorConsensusArea(ui) {
     initCache();
 
@@ -51,7 +51,7 @@ McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     setupFontAndHeight();
 }
 
-void McaEditorConsensusArea::buildStaticToolbar(QToolBar *t) {
+void McaEditorConsensusArea::buildStaticToolbar(QToolBar* t) {
     t->addAction(mismatchController->getPrevMismatchAction());
     t->addAction(mismatchController->getNextMismatchAction());
 }

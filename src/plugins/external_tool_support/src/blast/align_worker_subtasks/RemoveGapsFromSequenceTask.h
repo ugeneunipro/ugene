@@ -31,16 +31,16 @@ class U2SequenceObject;
 
 class FindGapsInSequenceCallback : public SequenceDbiWalkerCallback {
 public:
-    FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject);
+    FindGapsInSequenceCallback(U2SequenceObject* const sequenceObject);
 
-    void onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo) override;
+    void onRegion(SequenceDbiWalkerSubtask* subtask, TaskStateInfo& stateInfo) override;
 
-    const QList<U2Region> &getGappedRegions() const;
+    const QList<U2Region>& getGappedRegions() const;
 
 private:
-    void addGaps(const QList<U2MsaGap> &gaps);
+    void addGaps(const QVector<U2MsaGap>& gaps);
 
-    U2SequenceObject *const sequenceObject;
+    U2SequenceObject* const sequenceObject;
 
     QMutex mutex;
     QList<U2Region> gappedRegions;
@@ -49,16 +49,16 @@ private:
 class RemoveGapsFromSequenceTask : public Task {
     Q_OBJECT
 public:
-    RemoveGapsFromSequenceTask(U2SequenceObject *const sequenceObject);
+    RemoveGapsFromSequenceTask(U2SequenceObject* const sequenceObject);
 
 private:
     void prepare() override;
     void run() override;
 
-    U2SequenceObject *const sequenceObject;
+    U2SequenceObject* const sequenceObject;
 
     FindGapsInSequenceCallback callback;
-    SequenceDbiWalkerTask *findGapsTask = nullptr;
+    SequenceDbiWalkerTask* findGapsTask = nullptr;
 };
 
 }  // namespace U2

@@ -36,17 +36,17 @@ class DocumentProviderTask;
 class U2GUI_EXPORT LoadUnloadedDocumentAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    LoadUnloadedDocumentAndOpenViewTask(Document *d);
+    LoadUnloadedDocumentAndOpenViewTask(Document* d);
 
-    Document *getDocument();
+    Document* getDocument();
 
 protected:
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     void clearResourceUse();
 
-    LoadUnloadedDocumentTask *loadUnloadedTask;
+    LoadUnloadedDocumentTask* loadUnloadedTask;
 };
 
 enum LoadRemoteDocumentMode {
@@ -58,19 +58,19 @@ enum LoadRemoteDocumentMode {
 class U2GUI_EXPORT LoadRemoteDocumentAndAddToProjectTask : public Task {
     Q_OBJECT
 public:
-    LoadRemoteDocumentAndAddToProjectTask(const QString &accId, const QString &dbName);
-    LoadRemoteDocumentAndAddToProjectTask(const QString &accId,
-                                          const QString &dbName,
-                                          const QString &fullpath,
-                                          const QString &format = QString(),
-                                          const QVariantMap &hints = QVariantMap(),
+    LoadRemoteDocumentAndAddToProjectTask(const QString& accId, const QString& dbName);
+    LoadRemoteDocumentAndAddToProjectTask(const QString& accId,
+                                          const QString& dbName,
+                                          const QString& fullpath,
+                                          const QString& format = QString(),
+                                          const QVariantMap& hints = QVariantMap(),
                                           LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_OpenView);
-    LoadRemoteDocumentAndAddToProjectTask(const GUrl &url);
+    LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
     virtual void prepare();
     virtual QString generateReport() const;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QString accNumber;
@@ -80,13 +80,13 @@ private:
     GUrl docUrl;
     QVariantMap hints;
     LoadRemoteDocumentMode mode;
-    LoadRemoteDocumentTask *loadRemoteDocTask;
+    LoadRemoteDocumentTask* loadRemoteDocTask;
 };
 
 class U2GUI_EXPORT OpenViewTask : public Task {
     Q_OBJECT
 public:
-    OpenViewTask(Document *d);
+    OpenViewTask(Document* d);
 
     static const int MAX_DOC_NUMBER_TO_OPEN_VIEWS;
 
@@ -94,17 +94,17 @@ protected:
     void prepare();
 
 private:
-    Document *doc;
+    Document* doc;
 };
 
 class U2GUI_EXPORT AddDocumentAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    AddDocumentAndOpenViewTask(Document *d, const AddDocumentTaskConfig &conf = AddDocumentTaskConfig());
-    AddDocumentAndOpenViewTask(DocumentProviderTask *d, const AddDocumentTaskConfig &conf = AddDocumentTaskConfig());
+    AddDocumentAndOpenViewTask(Document* d, const AddDocumentTaskConfig& conf = AddDocumentTaskConfig());
+    AddDocumentAndOpenViewTask(DocumentProviderTask* d, const AddDocumentTaskConfig& conf = AddDocumentTaskConfig());
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *t);
+    QList<Task*> onSubTaskFinished(Task* t);
 };
 
 }  // namespace U2

@@ -34,14 +34,14 @@ class SaveDocumentController;
 class ExportPrimersDialog : public QDialog, private Ui_ExportPrimersDialog {
     Q_OBJECT
 public:
-    ExportPrimersDialog(const QList<Primer> &primers, QWidget *parent);
+    ExportPrimersDialog(const QList<Primer>& primers, QWidget* parent);
 
 private slots:
     void sl_updateState();
     void sl_connect();
     void sl_connectionCompleted();
-    void sl_documentAdded(Document *document);
-    void sl_documentRemoved(Document *document);
+    void sl_documentAdded(Document* document);
+    void sl_documentRemoved(Document* document);
     void sl_folderBrowse();
     void accept();
 
@@ -54,7 +54,7 @@ private:
     bool isFileMode() const;
 
     QList<Primer> primers;
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 
     static const QString LOCAL_FILE;
     static const QString SHARED_DB;

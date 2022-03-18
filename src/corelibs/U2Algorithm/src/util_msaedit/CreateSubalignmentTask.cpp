@@ -45,16 +45,16 @@
 
 namespace U2 {
 
-CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64> &_rowIds,
-                                                       const U2Region &_columnRange,
-                                                       const GUrl &_url,
+CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64>& _rowIds,
+                                                       const U2Region& _columnRange,
+                                                       const GUrl& _url,
                                                        bool _saveImmediately,
                                                        bool _addToProject,
-                                                       const DocumentFormatId &_formatIdToSave)
+                                                       const DocumentFormatId& _formatIdToSave)
     : rowIds(_rowIds), columnRange(_columnRange), url(_url), saveImmediately(_saveImmediately), addToProject(_addToProject), formatIdToSave(_formatIdToSave) {
 }
 
-CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
+CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
       origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
     origDoc = maObj->getDocument();
@@ -62,10 +62,10 @@ CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *
 }
 
 void CreateSubalignmentTask::prepare() {
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *dfd = dfr->getFormatById(cfg.formatIdToSave);
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* dfd = dfr->getFormatById(cfg.formatIdToSave);
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(cfg.url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(cfg.url));
     QList<qint64> resultRowIds;
     if (createCopy) {
         QVariantMap hints = origDoc->getGHintsMap();
@@ -84,12 +84,12 @@ void CreateSubalignmentTask::prepare() {
         resultDocument->addObject(resultMAObj);
         GObjectUtils::updateRelationsURL(resultMAObj, origDoc->getURL(), cfg.url);
         QList<GObjectRelation> phyTreeRelations = resultMAObj->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-        for (const GObjectRelation &phyTreeRel : qAsConst(phyTreeRelations)) {
+        for (const GObjectRelation& phyTreeRel : qAsConst(phyTreeRelations)) {
             resultMAObj->removeObjectRelation(phyTreeRel);
         }
         // Remap row ids.
         QMap<qint64, qint64> rowIdRemap;
-        for (int i = 0; i < origMAObj->getNumRows() && i < resultMAObj->getNumRows(); i++) {
+        for (int i = 0; i < origMAObj->getRowCount() && i < resultMAObj->getRowCount(); i++) {
             qint64 oldRowId = origMAObj->getRow(i)->getRowId();
             qint64 resultRowId = resultMAObj->getRow(i)->getRowId();
             rowIdRemap[oldRowId] = resultRowId;

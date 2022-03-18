@@ -32,7 +32,7 @@ class HI_EXPORT GTMenuBar {
 public:
     // clicks cornerMenu of QMenuBar as if it is a standard {Minimize, Maximize, Close} buttons widget
     // fails if menuBar is NULL or action as int value is not one of GTGlobals::WindowAction values
-    static void clickCornerMenu(GUITestOpStatus &os, QMenuBar *mBar, GTGlobals::WindowAction action);
+    static void clickCornerMenu(GUITestOpStatus& os, QMenuBar* mBar, GTGlobals::WindowAction action);
 };
 
 }  // namespace HI

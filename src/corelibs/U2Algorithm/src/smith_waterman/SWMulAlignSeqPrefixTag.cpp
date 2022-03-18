@@ -25,7 +25,7 @@ const QString REG_EXP_PATTERN_FOR_WORDS_SEPARATORS = "\\s|_";
 
 namespace U2 {
 
-QString SWMulAlignSeqPrefixTag::expandTag(const QVariant &argument) const {
+QString SWMulAlignSeqPrefixTag::expandTag(const QVariant& argument) const {
     assert(argument.canConvert(QVariant::String));
     QString seqName = argument.toString();
     assert(!seqName.isEmpty());

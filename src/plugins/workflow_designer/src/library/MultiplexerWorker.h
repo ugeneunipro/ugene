@@ -36,7 +36,7 @@ enum MultiplexingRules {
 class MultiplexerPrompter : public PrompterBase<MultiplexerPrompter> {
     Q_OBJECT
 public:
-    MultiplexerPrompter(Actor *p = nullptr)
+    MultiplexerPrompter(Actor* p = nullptr)
         : PrompterBase<MultiplexerPrompter>(p) {
     }
 
@@ -48,17 +48,17 @@ protected:
 class MultiplexerWorker : public BaseWorker {
     Q_OBJECT
 public:
-    MultiplexerWorker(Actor *p);
+    MultiplexerWorker(Actor* p);
 
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *inChannel1;
-    IntegralBus *inChannel2;
-    IntegralBus *outChannel;
+    IntegralBus* inChannel1;
+    IntegralBus* inChannel2;
+    IntegralBus* outChannel;
 
     uint rule;
     bool hasMultiData;
@@ -71,9 +71,9 @@ private:
     void shutDown();
     bool checkIfEnded();
     bool hasDataFotMultiplexing() const;
-    void sendUnitedMessage(const QVariantMap &m1, QVariantMap &m2, int metadataId);
+    void sendUnitedMessage(const QVariantMap& m1, QVariantMap& m2, int metadataId);
     void multiplexManyMode();
-    QString getInputActorName(IntegralBus *bus) const;
+    QString getInputActorName(IntegralBus* bus) const;
     QString getMessagesMismatchError() const;
 
 };  // MultiplexerWorker
@@ -86,7 +86,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // MultiplexerWorkerFactory
 

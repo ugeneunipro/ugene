@@ -27,11 +27,11 @@
 
 namespace U2 {
 
-McaGeneralTab::McaGeneralTab(McaEditor *mca)
+McaGeneralTab::McaGeneralTab(McaEditor* mca)
     : mca(mca) {
     setupUi(this);
 
-    ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWgt, true);
+    ShowHideSubgroupWidget* alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWgt, true);
 
     Ui_McaGeneralTab::verticalLayout->addWidget(alignmentInfo);
 

@@ -421,134 +421,144 @@
 <context>
     <name>U2::ADVExportContext</name>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="110"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="111"/>
         <source>Export selected sequence region...</source>
         <translation>Seçili dizi bölgesini dışa aktarın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="114"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="115"/>
         <source>Export sequence of selected annotations...</source>
         <translation>Seçili ek açıklamaların sırasını dışa aktarın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="118"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="119"/>
         <source>Export annotations...</source>
         <translation>Ek açıklamaları dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="122"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="123"/>
         <source>Align selected annotations...</source>
         <translation>Seçili ek açıklamaları hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="126"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="127"/>
         <source>Align selected annotations (amino acids)...</source>
         <translation>Seçili ek açıklamaları (amino asitler) hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="130"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="131"/>
         <source>Align selected sequence regions...</source>
         <translation>Seçili dizi bölgelerini hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="134"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="135"/>
         <source>Align selected sequence regions (amino acids)...</source>
         <translation>Seçili dizi bölgelerini (amino asitler) hizalayın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="138"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="139"/>
         <source>Export sequences by &apos;id&apos;</source>
         <translation>Dizileri &quot;kimliğe&quot; e göre dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="140"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="141"/>
         <source>Export sequences by &apos;accession&apos;</source>
         <translation>Dizileri &apos;katılım&apos; ile dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="142"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="143"/>
         <source>Export sequences by &apos;db_xref&apos;</source>
         <translation>Dizileri &apos;db_xref&apos; ile dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="145"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="146"/>
         <source>Export BLAST result to alignment</source>
         <translation>BLAST sonucunu hizalamaya aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="249"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="250"/>
         <source>from &apos;</source>
         <translation>&apos;dan</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="250"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="251"/>
         <source>Fetch sequences from remote database</source>
         <translation>Uzak veritabanından sekansları getir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="253"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="254"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Dizileri %1 &quot;kimlik&quot; ile getir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="257"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="258"/>
         <source>Fetch sequences by &apos;accession&apos; %1</source>
         <translation>Dizileri %1 &quot;erişim&quot; ile getir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="261"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="262"/>
         <source>Fetch sequences by &apos;db_xref&apos; %1</source>
         <translation>Dizileri &apos;db_xref&apos; %1 ile getir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="469"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="330"/>
+        <source>Export Sequence of Selected Annotations</source>
+        <translation>Seçili Açıklamaların Sırasını Dışa Aktar</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="394"/>
+        <source>Export Selected Sequence Region</source>
+        <translation>Seçili Dizi Bölgesini Dışa Aktar</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="470"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="522"/>
         <source>Illegal parameter: input alignment is not empty!</source>
         <translation>Geçersiz parametre: giriş hizalaması boş değil!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="481"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="482"/>
         <source>%1 is not a BLAST annotation</source>
         <translation>%1 bir BLAST ek açıklaması değil</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="485"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="486"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Farklı dizilerden BLAST ek açıklamaları dışa aktarılamaz</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="488"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="489"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>BLAST dizisi için ad olarak ayarlanacak niteleyici bulunamıyor</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="565"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="564"/>
         <source>Illegal parameter: Input alignment is not empty!</source>
         <translation>Geçersiz parametre: Giriş hizalaması boş değil!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="639"/>
         <source>Create alignment</source>
         <translation>Hizalama oluştur</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="641"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
         <source>Save alignment to file</source>
         <translation>Hizalamayı dosyaya kaydedin</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="281"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="421"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="282"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="422"/>
         <source>No annotations selected!</source>
         <translation>Ek açıklama seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="367"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="368"/>
         <source>No sequence regions selected!</source>
         <translation>Dizi bölgesi seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="471"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="472"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
         <source>At least 2 annotations are required</source>
         <translation>En az 2 ek açıklama gerekli</translation>
@@ -559,40 +569,27 @@
         <translation>Farklı sıra alfabeleri</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="593"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="592"/>
         <source>At least 2 sequences required</source>
         <translation>En az 2 sıra gerekli</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="484"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="485"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="531"/>
         <source>No sequence object found</source>
         <translation>Sıralama nesnesi bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="494"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="495"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="551"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="607"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="606"/>
         <source>Alignment is too large</source>
         <translation>Hizalama çok büyük</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="587"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="586"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Hizalama alfabesi türetilemiyor</translation>
-    </message>
-</context>
-<context>
-    <name>U2::AddExportedDocumentAndOpenViewTask</name>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="72"/>
-        <source>Document is already added to the project %1</source>
-        <translation>Belge %1 projesine zaten eklendi</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="78"/>
-        <source>Can&apos;t create load task</source>
-        <translation>Yükleme görevi oluşturulamıyor</translation>
     </message>
 </context>
 <context>
@@ -674,60 +671,60 @@
 <context>
     <name>U2::DNASequenceGeneratorDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="70"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="69"/>
         <source>Generate</source>
         <translation>Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="71"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="70"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="118"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="117"/>
         <source>Save sequences</source>
         <translation>Sıraları kaydet</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="133"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="132"/>
         <source>Open file</source>
         <translation>Dosya aç</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="157"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="162"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="151"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="156"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="161"/>
         <source>DNA Sequence Generator</source>
         <translation>DNA Dizi Üreticisi</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
-        <source>Windows size bigger than sequence length</source>
-        <translation>Pencere boyutu sıra uzunluğundan daha büyük</translation>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="151"/>
+        <source>Windows size is bigger than the sequence length</source>
+        <translation>Pencere boyutu, dizi uzunluğundan daha büyük</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="157"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="156"/>
         <source>Reference url is not specified.</source>
         <translation>Referans url belirtilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="162"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="161"/>
         <source>Output file is no specified.</source>
         <translation>Çıktı dosyası belirtilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="175"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="174"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
         <source>Base content</source>
         <translation>Temel içerik</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="175"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="174"/>
         <source>Total percentage must be 100%</source>
         <translation>Toplam yüzde % 100 olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="200"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="199"/>
         <source>Incorrect GC Skew value</source>
         <translation>Yanlış GC Skew değeri</translation>
     </message>
@@ -735,22 +732,22 @@
 <context>
     <name>U2::DNASequenceGeneratorTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="165"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="169"/>
         <source>Reference for sequence generator has to be a sequence or an alignment</source>
         <translation>Sıra oluşturucu için referans, bir dizi veya bir hizalama olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="170"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="174"/>
         <source>Generate sequence task</source>
         <translation>Sıra oluşturucu için referans, bir dizi veya bir hizalama olmalıdır</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="199"/>
-        <source>Incorrect reference file</source>
-        <translation>Yanlış referans dosyası</translation>
+        <location filename="../src/DNASequenceGenerator.cpp" line="201"/>
+        <source>Incorrect reference file: %1</source>
+        <translation>Yanlış referans dosyası: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="311"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="315"/>
         <source>Generated MSA</source>
         <translation>Oluşturulan MSA</translation>
     </message>
@@ -758,38 +755,30 @@
 <context>
     <name>U2::EvaluateBaseContentTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="378"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="379"/>
         <source>Evaluate base content task</source>
         <translation>Temel içerik görevini değerlendirin</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="391"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="392"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Temel içerik, dizi veya dizi hizalaması için değerlendirilebilir</translation>
     </message>
 </context>
 <context>
-    <name>U2::ExportAlignmentTask</name>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="93"/>
-        <source>Export alignment to &apos;%1&apos;</source>
-        <translation>Hizalamayı &apos;%1&apos; e aktar</translation>
-    </message>
-</context>
-<context>
     <name>U2::ExportAnnotationSequenceSubTask</name>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="530"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="535"/>
         <source>Extract annotation regions</source>
         <translation>Ek açıklama bölgelerini ayıklayın</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="578"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="584"/>
         <source>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</source>
         <translation>Seçili ek açıklamaların dizileri dışa aktarılamaz. Ek açıklamalardan en az biri sınırların dışında</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="596"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="604"/>
         <source>Exported sequence has been deleted unexpectedly</source>
         <translation>Dışa aktarılan sıra beklenmedik bir şekilde silindi</translation>
     </message>
@@ -797,7 +786,7 @@
 <context>
     <name>U2::ExportAnnotationSequenceTask</name>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="510"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="515"/>
         <source>Export annotations</source>
         <translation>Ek açıklamaları dışa aktar</translation>
     </message>
@@ -805,17 +794,17 @@
 <context>
     <name>U2::ExportBlastResultDialog</name>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="43"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="40"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="44"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="41"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="59"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="56"/>
         <source>File name is empty!</source>
         <translation>Dosya adı boş!</translation>
     </message>
@@ -841,14 +830,6 @@
         <location filename="../src/ExportChromatogramDialog.cpp" line="74"/>
         <source>File name is empty!</source>
         <translation>Dosya adı boş!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ExportDNAChromatogramTask</name>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="225"/>
-        <source>Export chromatogram to SCF</source>
-        <translation>Kromatogramı SCF&apos;ye aktar</translation>
     </message>
 </context>
 <context>
@@ -954,6 +935,11 @@
         <translation>Seçili satırlar</translation>
     </message>
     <message>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="45"/>
+        <source>Export Amino Translation</source>
+        <translation>Amino Çevirisini Dışa Aktar</translation>
+    </message>
+    <message>
         <location filename="../src/ExportMSA2MSADialog.cpp" line="47"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
@@ -972,24 +958,6 @@
         <location filename="../src/ExportMSA2MSADialog.cpp" line="103"/>
         <source>File is empty</source>
         <translation>Dosya boş</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ExportMSA2MSATask</name>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="158"/>
-        <source>Export alignment to alignment: %1</source>
-        <translation>Hizalamayı şu hizaya aktar: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="170"/>
-        <source>Nothing to export: multiple alignment is empty</source>
-        <translation>Dışa aktarılacak bir şey yok: çoklu hizalama boş</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="195"/>
-        <source>Out of memory</source>
-        <translation>Bellek Aşımı</translation>
     </message>
 </context>
 <context>
@@ -1035,27 +1003,19 @@
         <translation>Kırp</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="45"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="46"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="56"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
         <source>File name is empty!</source>
         <translation>Dosya adı boş!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ExportMSA2SequencesTask</name>
-    <message>
-        <location filename="../src/ExportTasks.cpp" line="117"/>
-        <source>Export alignment to sequence: %1</source>
-        <translation>Hizalamayı şu sıraya aktar: %1</translation>
     </message>
 </context>
 <context>
@@ -1079,7 +1039,7 @@
 <context>
     <name>U2::ExportMca2MsaTask</name>
     <message>
-        <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="38"/>
+        <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="39"/>
         <source>Export Sanger reads task</source>
         <translation>Sanger okuma görevini dışa aktar</translation>
     </message>
@@ -1087,137 +1047,142 @@
 <context>
     <name>U2::ExportProjectViewItemsContoller</name>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="84"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="82"/>
         <source>Export sequences...</source>
         <translation>Sıraları dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="88"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="86"/>
         <source>Export corresponding sequence...</source>
         <translation>Karşılık gelen sırayı dışa aktarın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="92"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="90"/>
         <source>Export sequences as alignment...</source>
         <translation>Dizileri hizalama olarak dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="96"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="94"/>
         <source>Export alignment to sequence format...</source>
         <translation>Hizalamayı sıra formatına dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="100"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="98"/>
         <source>Export alignment without chromatograms...</source>
         <translation>Kromatogramlar olmadan dışa aktarım hizalaması...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="101"/>
         <source>Export amino acid translation...</source>
         <translation>Amino asit çevirisini dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="107"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="105"/>
         <source>Import annotations from CSV file...</source>
         <translation>Ek açıklamaları CSV dosyasından içe aktarın...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="111"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="109"/>
         <source>Export chromatogram to SCF...</source>
         <translation>Kromatogramı SCF&apos;ye aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="115"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="113"/>
         <source>Export annotations...</source>
         <translation>Ek açıklamaları dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="119"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="117"/>
         <source>Export sequence quality...</source>
         <translation>Dışa aktarma sırası kalitesi...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="122"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="120"/>
         <source>Export object...</source>
         <translation>Nesneyi dışa aktar...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="154"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="165"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="178"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="186"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="195"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="205"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="217"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="152"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="163"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="176"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="184"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="193"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="203"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="215"/>
         <source>Export/Import</source>
         <translation>İçe/Dışa aktarma</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="307"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="305"/>
         <source>There are no sequence objects selected.</source>
         <translation>Seçili sıralama nesnesi yok.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="323"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="321"/>
         <source>There is no annotation table selected.</source>
         <translation>Ek açıklama tablosu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="336"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="334"/>
         <source>There is no associated sequence found.</source>
         <translation>İlişkili sıra bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="390"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="609"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="388"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="614"/>
         <source>No sequence objects selected!</source>
         <translation>Sıralama nesnesi seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="417"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="401"/>
+        <source>Sequence is too large to be exported as a multiple alignment</source>
+        <translation>Sıra, çoklu hizalama olarak dışa aktarılamayacak kadar büyük</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportProjectViewItems.cpp" line="428"/>
         <source>Not enough memory</source>
         <translation>Yeterli bellek yok</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="441"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="487"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="452"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="498"/>
         <source>Select one alignment object to export</source>
         <translation>Dışa aktarmak için bir hizalama nesnesi seçin</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="469"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="480"/>
         <source>Select one chromatogram alignment object to export</source>
         <translation>Dışa aktarmak için bir kromatogram hizalama nesnesi seçin</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="549"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="554"/>
         <source>Select one chromatogram object to export</source>
         <translation>Dışa aktarmak için bir kromatogram nesnesi seçin</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="585"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="590"/>
         <source>Select one annotation object to export</source>
         <translation>Dışa aktarmak için bir ek açıklama nesnesi seçin</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="614"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="619"/>
         <source>Set output quality file</source>
         <translation>Çıktı kalitesi dosyasını ayarla</translation>
     </message>
     <message>
         <source>Export nucleic alignment to amino translation...</source>
-        <translation>Nükleik hizalamayı amino çeviriye aktarın...</translation>
+        <translation type="vanished">Nükleik hizalamayı amino çeviriye aktarın...</translation>
     </message>
 </context>
 <context>
     <name>U2::ExportSelectedSeqRegionsTask</name>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="185"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="189"/>
         <source>Export selected regions from a sequence task</source>
         <translation>Sıralı bir görevden seçili bölgeleri dışa aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="191"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="195"/>
         <source>Invalid annotation table detected</source>
         <translation>Geçersiz ek açıklama tablosu algılandı</translation>
     </message>
@@ -1225,22 +1190,22 @@
 <context>
     <name>U2::ExportSequenceTask</name>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="193"/>
-        <source>Export sequence to &apos;%1&apos;</source>
-        <translation>Diziyi &apos;%1&apos; olarak dışa aktar</translation>
+        <location filename="../src/ExportSequenceTask.cpp" line="191"/>
+        <source>Export sequence to %1</source>
+        <translation>Sırayı %1&apos;e aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="210"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="209"/>
         <source>Complement translation not found</source>
         <translation>Tamamlayıcı çevirisi bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="251"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="250"/>
         <source>Amino translation not found</source>
         <translation>Amino çevirisi bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="296"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="295"/>
         <source>The &quot;%1&quot; translation is empty due to small source sequence length</source>
         <translation>Küçük kaynak dizisi uzunluğu nedeniyle &quot;%1&quot; çevirisi boş</translation>
     </message>
@@ -1250,7 +1215,7 @@
         <translation>Hiçbir sekans üretilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceTask.cpp" line="320"/>
+        <location filename="../src/ExportSequenceTask.cpp" line="319"/>
         <source>Back-translation not found</source>
         <translation>Geri çeviri bulunamadı</translation>
     </message>
@@ -1288,17 +1253,17 @@
         <translation>Dizilerin adı olarak Genbank &quot;SOURCE&quot; etiketlerini kullanın (yalnızca Genbank dizileri için)</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="43"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="40"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="44"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="41"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="55"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="52"/>
         <source>File name is empty!</source>
         <translation>Dosya adı boş!</translation>
     </message>
@@ -1421,22 +1386,22 @@
         <translation>Sıraları birleştir</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="53"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="52"/>
         <source>Export</source>
         <translation>Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="185"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="184"/>
         <source>Export Sequences</source>
         <translation>Dizileri Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="147"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="146"/>
         <source>Select organism</source>
         <translation>Organizma seçin</translation>
     </message>
@@ -1459,7 +1424,7 @@
 <context>
     <name>U2::ExportUtils</name>
     <message>
-        <location filename="../src/ExportUtils.cpp" line="98"/>
+        <location filename="../src/ExportUtils.cpp" line="100"/>
         <source>A problem occurred during export MCA to MSA. The MCA is no more available.</source>
         <translation>MCA&apos;yı MSA&apos;ya aktarırken bir sorun oluştu. MCA artık mevcut değil.</translation>
     </message>
@@ -1467,73 +1432,73 @@
 <context>
     <name>U2::GTest</name>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="117"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="115"/>
         <source>Unable to create temporary file</source>
         <translation>Geçici dosya oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="136"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="134"/>
         <source>Invalid translation table num: %1</source>
         <translation>Geçersiz çeviri tablosu numarası: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="152"/>
-        <location filename="../src/DNAExportPluginTests.cpp" line="158"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="150"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="156"/>
         <source>Invalid base : %1</source>
         <translation>Geçersiz taban: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="179"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="177"/>
         <source>Invalid translation frame : %1</source>
         <translation>Geçersiz çeviri çerçevesi: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="192"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="190"/>
         <source> context not found %1</source>
         <translation> içerik %1 bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="198"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="196"/>
         <source> container of object with type &quot;%1&quot; is empty</source>
         <translation> &quot;%1&quot; türündeki nesnenin kapsayıcı boş</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="239"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="242"/>
         <source>context  not found %1</source>
         <translation>içerik %1  bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="245"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="248"/>
         <source>container  of object with type &quot;%1&quot; is empty</source>
         <translation>&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="262"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="265"/>
         <source>context not  found %1</source>
         <translation>içerik %1  bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="268"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="271"/>
         <source>container of  object with type &quot;%1&quot; is empty</source>
         <translation>&quot;%1&quot; türündeki nesnenin kapsayıcı  boş</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="275"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="278"/>
         <source>Unexpected alignment length %1, expected %2</source>
         <translation>Beklenmeyen hizalama uzunluğu %1, beklenen %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="280"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="283"/>
         <source>Unexpected alignment size %1, expected %2</source>
         <translation>Beklenmeyen hizalama boyutu %1, beklenen %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="289"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="292"/>
         <source>Invalid name for row %1: %2, expected %3</source>
         <translation>%1 satırı için geçersiz ad: %2, beklenen %3</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="294"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="297"/>
         <source>Invalid char at row %1 column %2: %3, expected %4</source>
         <translation>%1. Satır %2 sütununda geçersiz karakter: %3, beklenen %4</translation>
     </message>
@@ -1541,7 +1506,12 @@
 <context>
     <name>U2::GenerateDNASequenceTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="401"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="82"/>
+        <source>Failed to allocate memory for the result sequence.</source>
+        <translation>Sonuç dizisi için bellek ayrılamadı.</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGenerator.cpp" line="402"/>
         <source>Generate DNA sequence task</source>
         <translation>DNA dizisi görevi oluşturun</translation>
     </message>
@@ -1577,7 +1547,7 @@
         <translation>İçe aktarılan ek açıklamaları şuraya kaydet</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="105"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="104"/>
         <source>//The script parses input line
  // and returns an array of parsed elements as the result
 var %1; //input line
@@ -1588,32 +1558,27 @@ var %1; //giriş satırı
 var %2; //ayrıştırılmış satır numarası</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="160"/>
-        <source>Invalid start position/end position/length configuration!</source>
-        <translation>Geçersiz başlangıç konumu / bitiş konumu / uzunluk yapılandırması!</translation>
-    </message>
-    <message>
         <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="164"/>
         <source>Multiple columns are used as a name!</source>
         <translation>Ad olarak birden çok sütun kullanılır!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="325"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="326"/>
         <source>Column separator value: [%1], hex: [%2], length: %3</source>
         <translation>Sütun ayırıcı değeri: [%1], onaltılık: [%2], uzunluk: %3</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="345"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="346"/>
         <source>CSV Files</source>
         <translation>CSV Dosyaları</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="393"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="394"/>
         <source>Script is empty</source>
         <translation>Komut dosyası boş</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="403"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="404"/>
         <source>Output file name is not set!</source>
         <translation>Çıktı dosyası adı ayarlanmadı!</translation>
     </message>
@@ -1623,94 +1588,107 @@ var %2; //ayrıştırılmış satır numarası</translation>
         <translation>Geçersiz varsayılan ek açıklama adı!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="302"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="303"/>
         <source>Failed to guess separator sequence!</source>
         <translation>Ayırıcı sıra tahmin edilemedi!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="323"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="324"/>
         <source>Column separator</source>
         <translation>Sütun ayırıcı</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="346"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="347"/>
         <source>Select CSV file to read</source>
         <translation>Okunacak CSV dosyasını seçin</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="360"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="361"/>
         <source>Enter input CSV file name</source>
         <translation>Giriş CSV dosyası adını girin</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="387"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="388"/>
         <source>Separator value is not set</source>
         <translation>Ayırıcı değeri ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="67"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="66"/>
         <source>Run</source>
         <translation>Çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="68"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="67"/>
         <source>Cancel</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="485"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="159"/>
+        <source>Invalid [start position] or [end position] or [length] column assignment!
+
+Please assign a column role by clicking on a column header in &apos;Results preview&apos;</source>
+        <translation>Geçersiz [başlangıç konumu] veya [bitiş konumu] veya [uzunluk] sütun ataması!
+
+Lütfen &apos;Sonuçlar önizlemesinde&apos; bir sütun başlığına tıklayarak bir sütun rolü atayın.</translation>
+    </message>
+    <message>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="486"/>
         <source>[ignored]</source>
         <translation>[yok sayıldı]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="488"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="489"/>
         <source>[qualifier %1]</source>
         <translation>[niteleyici %1]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="491"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="492"/>
         <source>[name]</source>
         <translation>[ad]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="495"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="496"/>
         <source>[start position with offset %1]</source>
         <translation>[%1 ofset ile başlangıç konumu]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="497"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="498"/>
         <source>[start position]</source>
         <translation>[başlangıç konumu]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="502"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="503"/>
         <source>[end position (inclusive)]</source>
         <translation>[son konum (dahil)]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="504"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="505"/>
         <source>[end position]</source>
         <translation>[son konum]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="508"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="509"/>
         <source>[length]</source>
         <translation>[uzunluk]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="512"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="513"/>
         <source>[complement]</source>
         <translation>[Tamamlayıcı]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="514"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="515"/>
         <source>[complement if &apos;%1&apos;]</source>
         <translation>[&apos;%1&apos; ise tamamlayın]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="518"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="519"/>
         <source>[group]</source>
         <translation>[grup]</translation>
+    </message>
+    <message>
+        <source>Invalid start position/end position/length configuration!</source>
+        <translation type="vanished">Geçersiz başlangıç konumu / bitiş konumu / uzunluk yapılandırması!</translation>
     </message>
 </context>
 <context>
@@ -1734,17 +1712,17 @@ var %2; //ayrıştırılmış satır numarası</translation>
 <context>
     <name>U2::LocalWorkflow::ExportPhredQualityPrompter</name>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="94"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="93"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="96"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="95"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="98"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="97"/>
         <source>Export PHRED quality scores%1 to %2.</source>
         <translation>PHRED kalite puanlarını %1 ile %2 arasında dışa aktarın.</translation>
     </message>
@@ -1752,32 +1730,32 @@ var %2; //ayrıştırılmış satır numarası</translation>
 <context>
     <name>U2::LocalWorkflow::ExportPhredQualityWorker</name>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="56"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="55"/>
         <source>DNA sequences</source>
         <translation>DNA dizileri</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="56"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="55"/>
         <source>The PHRED scores from these sequences will be exported</source>
         <translation>Bu dizilerden PHRED puanları dışa aktarılacak</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="64"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="63"/>
         <source>PHRED output</source>
         <translation>PHRED çıktısı</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="64"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="63"/>
         <source>Path to file with PHRED quality scores.</source>
         <translation>PHRED kalite puanlarına sahip dosyalama yolu.</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="73"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="72"/>
         <source>Export PHRED Qualities</source>
         <translation>PHRED Kalitelerini Dışa Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ExportQualityScoresWorker.cpp" line="73"/>
+        <location filename="../src/ExportQualityScoresWorker.cpp" line="72"/>
         <source>Export corresponding PHRED quality scores from input sequences.</source>
         <translation>Giriş dizilerinden karşılık gelen PHRED kalite puanlarını dışa aktarın.</translation>
     </message>
@@ -1956,17 +1934,17 @@ var %2; //ayrıştırılmış satır numarası</translation>
 <context>
     <name>U2::LocalWorkflow::ImportPhredQualityPrompter</name>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="113"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="112"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="115"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="114"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="118"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="117"/>
         <source>Import PHRED quality scores in file %1  to the sequences %2 and send the sequences to the output.</source>
         <translation>%1  dosyasındaki PHRED kalite puanlarını %2 dizilerine aktarın ve dizileri çıktıya gönderin.</translation>
     </message>
@@ -1974,69 +1952,69 @@ var %2; //ayrıştırılmış satır numarası</translation>
 <context>
     <name>U2::LocalWorkflow::ImportPhredQualityWorker</name>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="58"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="57"/>
         <source>DNA sequences</source>
         <translation>DNA dizileri</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="58"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="57"/>
         <source>The PHRED scores will be imported to these sequences</source>
         <translation>PHRED puanları bu dizilere aktarılacaktır</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="59"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="58"/>
         <source>DNA sequences with imported qualities</source>
         <translation>İçe aktarılan niteliklere sahip DNA dizileri</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="59"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="58"/>
         <source>These sequences have quality scores.</source>
         <translation>Bu dizilerin kalite puanları vardır.</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="68"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="67"/>
         <source>PHRED input</source>
         <translation>PHRED girdisi</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="68"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="67"/>
         <source>Path to file with PHRED quality scores.</source>
         <translation>PHRED kalite puanlarına sahip dosyalama yolu.</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="69"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="68"/>
         <source>Quality type</source>
         <translation>Kalite türü</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="69"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="68"/>
         <source>Choose method to encode quality scores.</source>
         <translation>Kalite puanlarını kodlama yöntemini seçin.</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="70"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="69"/>
         <source>File format</source>
         <translation>Dosya formatı</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="70"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="69"/>
         <source>Quality values can be in specialized FASTA-like PHRED qual format or encoded similar as in FASTQ files.</source>
         <translation>Kalite değerleri, özelleştirilmiş FAŞTA benzeri PHRED qual formatında olabilir veya FASTQ dosyalarındakine benzer şekilde kodlanabilir.</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="76"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="75"/>
         <source>Import PHRED Qualities</source>
         <translation>PHRED Kalitelerini İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="76"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="75"/>
         <source>Add corresponding PHRED quality scores to the sequences.
 You can use this worker to convert .fasta and .qual pair to fastq format.</source>
         <translation>Dizilere karşılık gelen PHRED kalite puanlarını ekleyin.
 Bu çalışanı .fasta ve .qual pair&apos;i fastq biçimine dönüştürmek için kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/ImportQualityScoresWorker.cpp" line="177"/>
+        <location filename="../src/ImportQualityScoresWorker.cpp" line="176"/>
         <source>Import of qualities is finished.</source>
         <translation>Kalitelerin ithalatı tamamlandı.</translation>
     </message>
@@ -2044,14 +2022,9 @@ Bu çalışanı .fasta ve .qual pair&apos;i fastq biçimine dönüştürmek içi
 <context>
     <name>U2::MSAExportContext</name>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="79"/>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="78"/>
         <source>Amino translation...</source>
         <translation>Amino çevirisi...</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="108"/>
-        <source>Export Amino Translation</source>
-        <translation>Amino Çevirisini Dışa Aktar</translation>
     </message>
 </context>
 <context>
@@ -2158,6 +2131,53 @@ GI tanımlayıcısına göre NCBI Genbank
         <location filename="../src/GetSequenceByIdDialog.ui" line="67"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AddExportedDocumentAndOpenViewTask</name>
+    <message>
+        <source>Document is already added to the project %1</source>
+        <translation type="vanished">Belge %1 projesine zaten eklendi</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create load task</source>
+        <translation type="vanished">Yükleme görevi oluşturulamıyor</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportAlignmentTask</name>
+    <message>
+        <source>Export alignment to &apos;%1&apos;</source>
+        <translation type="vanished">Hizalamayı &apos;%1&apos; e aktar</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportDNAChromatogramTask</name>
+    <message>
+        <source>Export chromatogram to SCF</source>
+        <translation type="vanished">Kromatogramı SCF&apos;ye aktar</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMSA2MSATask</name>
+    <message>
+        <source>Export alignment to alignment: %1</source>
+        <translation type="vanished">Hizalamayı şu hizaya aktar: %1</translation>
+    </message>
+    <message>
+        <source>Nothing to export: multiple alignment is empty</source>
+        <translation type="vanished">Dışa aktarılacak bir şey yok: çoklu hizalama boş</translation>
+    </message>
+    <message>
+        <source>Out of memory</source>
+        <translation type="vanished">Bellek Aşımı</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMSA2SequencesTask</name>
+    <message>
+        <source>Export alignment to sequence: %1</source>
+        <translation type="vanished">Hizalamayı şu sıraya aktar: %1</translation>
     </message>
 </context>
 </TS>

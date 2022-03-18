@@ -29,14 +29,13 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
-
 namespace U2 {
 namespace LocalWorkflow {
 
 class FindPrimerPairsPromter : public PrompterBase<FindPrimerPairsPromter> {
     Q_OBJECT
 public:
-    FindPrimerPairsPromter(Actor *p = 0)
+    FindPrimerPairsPromter(Actor* p = 0)
         : PrompterBase<FindPrimerPairsPromter>(p) {};
 
 protected:
@@ -46,18 +45,18 @@ protected:
 class FindPrimerPairsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FindPrimerPairsWorker(Actor *p)
+    FindPrimerPairsWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *inPort;
-    IntegralBus *outPort;
+    IntegralBus* inPort;
+    IntegralBus* outPort;
 private slots:
-    void sl_onTaskFinished(Task *t);
+    void sl_onTaskFinished(Task* t);
 
 private:
     QList<DNASequence> data;
@@ -70,7 +69,7 @@ public:
     FindPrimerPairsWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new FindPrimerPairsWorker(a);
     }
 };
@@ -80,7 +79,7 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString &outputFileUrl, const QList<DNASequence> &sequences);
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences);
 
     void run();
     QString getReport() const {
@@ -91,9 +90,9 @@ private:
     void createReport();
     void writeReportToFile();
 
-    QString createRow(const QString &forwardName, const QString &reverseName, double forwardTm, double reverseTm);
-    QString createCell(const QString &value);
-    QString createColumn(const QString &name);
+    QString createRow(const QString& forwardName, const QString& reverseName, double forwardTm, double reverseTm);
+    QString createCell(const QString& value);
+    QString createColumn(const QString& name);
 
 private:
     QList<DNASequence> sequences;

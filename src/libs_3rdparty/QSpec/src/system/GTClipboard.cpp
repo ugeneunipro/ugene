@@ -34,22 +34,22 @@ namespace HI {
 #define GT_CLASS_NAME "GTClipboard"
 
 #define GT_METHOD_NAME "text"
-QString GTClipboard::text(GUITestOpStatus &os) {
+QString GTClipboard::text(GUITestOpStatus& os) {
     GTGlobals::sleep(300);
 
     // check that clipboard contains text
     QString clipboardText;
     class Scenario : public CustomScenario {
     public:
-        Scenario(QString &_text)
+        Scenario(QString& _text)
             : text(_text) {
         }
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
-            QClipboard *clipboard = QApplication::clipboard();
+            QClipboard* clipboard = QApplication::clipboard();
 
             GT_CHECK(clipboard != NULL, "Clipboard is NULL");
-            const QMimeData *mimeData = clipboard->mimeData();
+            const QMimeData* mimeData = clipboard->mimeData();
             GT_CHECK(mimeData != NULL, "Clipboard MimeData is NULL");
 
             GT_CHECK(mimeData->hasText(), "Clipboard doesn't contain text data");
@@ -57,7 +57,7 @@ QString GTClipboard::text(GUITestOpStatus &os) {
         }
 
     private:
-        QString &text;
+        QString& text;
     };
 
     GTThread::runInMainThread(os, new Scenario(clipboardText));
@@ -67,15 +67,15 @@ QString GTClipboard::text(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setText"
-void GTClipboard::setText(GUITestOpStatus &os, QString text) {
+void GTClipboard::setText(GUITestOpStatus& os, QString text) {
     class Scenario : public CustomScenario {
     public:
         Scenario(QString _text)
             : text(_text) {
         }
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
-            QClipboard *clipboard = QApplication::clipboard();
+            QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
             clipboard->setText(text);
         }
@@ -91,9 +91,9 @@ void GTClipboard::setText(GUITestOpStatus &os, QString text) {
 #undef GT_METHOD_NAME
 
 namespace {
-QList<QUrl> toLocalQUrls(GUITestOpStatus &os, const QList<QString> &urls) {
+QList<QUrl> toLocalQUrls(GUITestOpStatus& os, const QList<QString>& urls) {
     QList<QUrl> qurls;
-    for (const QString &url : qAsConst(urls)) {
+    for (const QString& url : qAsConst(urls)) {
         QFileInfo fi(url);
         if (fi.isAbsolute()) {
             qurls.append(QUrl::fromLocalFile(url));
@@ -110,21 +110,21 @@ QList<QUrl> toLocalQUrls(GUITestOpStatus &os, const QList<QString> &urls) {
 }  // namespace
 
 #define GT_METHOD_NAME "setUrls"
-void GTClipboard::setUrls(GUITestOpStatus &os, const QList<QString> &urls) {
+void GTClipboard::setUrls(GUITestOpStatus& os, const QList<QString>& urls) {
     class Scenario : public CustomScenario {
         QList<QUrl> urls;
 
     public:
-        Scenario(const QList<QUrl> &urls)
+        Scenario(const QList<QUrl>& urls)
             : urls(urls) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
-            QMimeData *urlMime = new QMimeData();
+            QMimeData* urlMime = new QMimeData();
             urlMime->setUrls(urls);
 
-            QClipboard *clipboard = QApplication::clipboard();
+            QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
             clipboard->setMimeData(urlMime);
         }
@@ -138,14 +138,14 @@ void GTClipboard::setUrls(GUITestOpStatus &os, const QList<QString> &urls) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clear"
-void GTClipboard::clear(GUITestOpStatus &os) {
+void GTClipboard::clear(GUITestOpStatus& os) {
     class Scenario : public CustomScenario {
     public:
         Scenario() {
         }
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
-            QClipboard *clipboard = QApplication::clipboard();
+            QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
         }
     };

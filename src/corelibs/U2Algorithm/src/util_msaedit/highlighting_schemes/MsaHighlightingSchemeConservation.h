@@ -33,10 +33,10 @@ typedef QMap<char, int> CharCountMap;
 class MsaHighlightingSchemeConservation : public MsaHighlightingScheme {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    MsaHighlightingSchemeConservation(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj);
 
-    void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
-    void applySettings(const QVariantMap &settings);
+    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const;
+    void applySettings(const QVariantMap& settings);
     QVariantMap getSettings() const;
 
 private slots:
@@ -52,9 +52,9 @@ private:
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeConservationFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
+    MsaHighlightingSchemeConservationFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaHighlightingScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MsaHighlightingScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
 };
 
 }  // namespace U2

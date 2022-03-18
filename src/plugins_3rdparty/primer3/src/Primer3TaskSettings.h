@@ -60,17 +60,17 @@ struct SpanIntronExonBoundarySettings {
 class Primer3TaskSettings {
 public:
     Primer3TaskSettings();
-    Primer3TaskSettings(const Primer3TaskSettings &settings);
-    Primer3TaskSettings &operator=(const Primer3TaskSettings &settings);
+    Primer3TaskSettings(const Primer3TaskSettings& settings);
+    Primer3TaskSettings& operator=(const Primer3TaskSettings& settings);
     ~Primer3TaskSettings();
 
-    bool getIntProperty(const QString &key, int *outValue) const;
-    bool getDoubleProperty(const QString &key, double *outValue) const;
-    bool getAlignProperty(const QString &key, short *outValue) const;
+    bool getIntProperty(const QString& key, int* outValue) const;
+    bool getDoubleProperty(const QString& key, double* outValue) const;
+    bool getAlignProperty(const QString& key, short* outValue) const;
 
-    bool setIntProperty(const QString &key, int value);
-    bool setDoubleProperty(const QString &key, double value);
-    bool setAlignProperty(const QString &key, short value);
+    bool setIntProperty(const QString& key, int value);
+    bool setDoubleProperty(const QString& key, double value);
+    bool setAlignProperty(const QString& key, short value);
 
     QList<QString> getIntPropertyList() const;
     QList<QString> getDoublePropertyList() const;
@@ -94,45 +94,45 @@ public:
     QByteArray getError() const;
     int getFirstBaseIndex() const;
 
-    void setSequenceName(const QByteArray &value);
-    void setSequence(const QByteArray &value, bool isCircular = false);
+    void setSequenceName(const QByteArray& value);
+    void setSequence(const QByteArray& value, bool isCircular = false);
     void setCircularity(bool isCircular);
-    void setTarget(const QList<U2Region> &value);
-    void setProductSizeRange(const QList<U2Region> &value);
-    void setTask(const task &value);
-    void setInternalOligoExcludedRegion(const QList<U2Region> &value);
-    void setLeftInput(const QByteArray &value);
-    void setRightInput(const QByteArray &value);
-    void setInternalInput(const QByteArray &value);
-    void setExcludedRegion(const QList<U2Region> &value);
-    void setIncludedRegion(const U2Region &value);
-    void setIncludedRegion(const qint64 &startPos, const qint64 &length);
-    void setSequenceQuality(const QVector<int> &value);
+    void setTarget(const QList<U2Region>& value);
+    void setProductSizeRange(const QList<U2Region>& value);
+    void setTask(const task& value);
+    void setInternalOligoExcludedRegion(const QList<U2Region>& value);
+    void setLeftInput(const QByteArray& value);
+    void setRightInput(const QByteArray& value);
+    void setInternalInput(const QByteArray& value);
+    void setExcludedRegion(const QList<U2Region>& value);
+    void setIncludedRegion(const U2Region& value);
+    void setIncludedRegion(const qint64& startPos, const qint64& length);
+    void setSequenceQuality(const QVector<int>& value);
 
-    void setRepeatLibrary(const QByteArray &value);
-    void setMishybLibrary(const QByteArray &value);
+    void setRepeatLibrary(const QByteArray& value);
+    void setMishybLibrary(const QByteArray& value);
 
     QByteArray getRepeatLibrary() const;
     QByteArray getMishybLibrary() const;
 
-    primer_args *getPrimerArgs();
-    seq_args *getSeqArgs();
+    primer_args* getPrimerArgs();
+    seq_args* getSeqArgs();
 
     // span intron/exon boundary settings
 
-    const SpanIntronExonBoundarySettings &getSpanIntronExonBoundarySettings() const {
+    const SpanIntronExonBoundarySettings& getSpanIntronExonBoundarySettings() const {
         return spanIntronExonBoundarySettings;
     }
 
-    void setSpanIntronExonBoundarySettings(const SpanIntronExonBoundarySettings &settings) {
+    void setSpanIntronExonBoundarySettings(const SpanIntronExonBoundarySettings& settings) {
         spanIntronExonBoundarySettings = settings;
     }
 
-    const QList<U2Region> &getExonRegions() const {
+    const QList<U2Region>& getExonRegions() const {
         return spanIntronExonBoundarySettings.regionList;
     }
 
-    void setExonRegions(const QList<U2Region> &regions) {
+    void setExonRegions(const QList<U2Region>& regions) {
         spanIntronExonBoundarySettings.regionList = regions;
     }
 
@@ -144,15 +144,15 @@ public:
         return isCircular;
     }
 
-    bool checkIncludedRegion(const U2Region &r) const;
+    bool checkIncludedRegion(const U2Region& r) const;
 
 private:
     void initMaps();
 
 private:
-    QMap<QString, int *> intProperties;
-    QMap<QString, double *> doubleProperties;
-    QMap<QString, short *> alignProperties;
+    QMap<QString, int*> intProperties;
+    QMap<QString, double*> doubleProperties;
+    QMap<QString, short*> alignProperties;
 
     // don't forget to change copy constructor and assignment operator when changing this!
     QByteArray sequenceName;

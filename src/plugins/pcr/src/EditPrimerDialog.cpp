@@ -33,12 +33,12 @@
 
 namespace U2 {
 
-EditPrimerDialog::EditPrimerDialog(QWidget *parent)
+EditPrimerDialog::EditPrimerDialog(QWidget* parent)
     : QDialog(parent) {
     init();
 }
 
-EditPrimerDialog::EditPrimerDialog(QWidget *parent, const Primer &editToPrimer)
+EditPrimerDialog::EditPrimerDialog(QWidget* parent, const Primer& editToPrimer)
     : QDialog(parent) {
     init();
     setWindowTitle(tr("Edit Primer"));
@@ -53,10 +53,10 @@ void EditPrimerDialog::init() {
 
     primerEdit->setValidator(new PrimerValidator(this));
 
-    connect(primerEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_onPrimerChanged(const QString &)));
+    connect(primerEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
 
-    connect(primerEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_validate()));
-    connect(nameEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_validate()));
+    connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_validate()));
+    connect(nameEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_validate()));
 
     sl_validate();
 }
@@ -68,7 +68,7 @@ Primer EditPrimerDialog::getPrimer() const {
     return result;
 }
 
-void EditPrimerDialog::sl_onPrimerChanged(const QString &primerSequence) {
+void EditPrimerDialog::sl_onPrimerChanged(const QString& primerSequence) {
     int curPos = primerEdit->cursorPosition();
     primerEdit->setText(primerSequence.toUpper());
     primerEdit->setCursorPosition(curPos);
@@ -81,7 +81,7 @@ void EditPrimerDialog::sl_validate() {
 }
 
 void EditPrimerDialog::validate(bool isValid) {
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     SAFE_POINT(nullptr != okButton, L10N::nullPointerError("OK button"), );
     okButton->setEnabled(isValid);
 }

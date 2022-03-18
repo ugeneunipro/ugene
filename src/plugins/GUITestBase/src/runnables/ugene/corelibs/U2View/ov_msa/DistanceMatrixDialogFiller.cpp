@@ -39,7 +39,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DistanceMatrixDialogFiller"
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, bool _hamming, bool _counts, bool _excludeGaps)
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, bool _hamming, bool _counts, bool _excludeGaps)
     : Filler(os, "DistanceMatrixMSAProfileDialog"),
       hamming(_hamming),
       counts(_counts),
@@ -48,7 +48,7 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
       format(HTML) {
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, DistanceMatrixDialogFiller::SaveFormat _format, QString _path)
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, DistanceMatrixDialogFiller::SaveFormat _format, QString _path)
     : Filler(os, "DistanceMatrixMSAProfileDialog"),
       hamming(true),
       counts(true),
@@ -58,7 +58,7 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
       path(QDir::toNativeSeparators(_path)) {
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
     : Filler(os, "DistanceMatrixMSAProfileDialog", c),
       hamming(false),
       counts(false),
@@ -69,10 +69,9 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "run"
 void DistanceMatrixDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QComboBox *algoCombo = dialog->findChild<QComboBox *>("algoCombo");
+    QComboBox* algoCombo = dialog->findChild<QComboBox*>("algoCombo");
     if (hamming) {
         GTComboBox::selectItemByIndex(os, algoCombo, 0);
     } else {
@@ -80,10 +79,10 @@ void DistanceMatrixDialogFiller::commonScenario() {
     }
 
     if (counts) {
-        QRadioButton *countsRB = dialog->findChild<QRadioButton *>("countsRB");
+        QRadioButton* countsRB = dialog->findChild<QRadioButton*>("countsRB");
         GTRadioButton::click(os, countsRB);
     } else {
-        QRadioButton *percentsRB = dialog->findChild<QRadioButton *>("percentsRB");
+        QRadioButton* percentsRB = dialog->findChild<QRadioButton*>("percentsRB");
         GTRadioButton::click(os, percentsRB);
     }
 
@@ -91,19 +90,19 @@ void DistanceMatrixDialogFiller::commonScenario() {
         if (saveToFile) {
             GTGroupBox::setChecked(os, "saveBox", dialog);
 
-            QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileEdit");
+            QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
             GTLineEdit::setText(os, fileEdit, QDir::toNativeSeparators(path));
 
             if (format == HTML) {
-                QRadioButton *htmlRB = dialog->findChild<QRadioButton *>("htmlRB");
+                QRadioButton* htmlRB = dialog->findChild<QRadioButton*>("htmlRB");
                 GTRadioButton::click(os, htmlRB);
             } else {
-                QRadioButton *csvRB = dialog->findChild<QRadioButton *>("csvRB");
+                QRadioButton* csvRB = dialog->findChild<QRadioButton*>("csvRB");
                 GTRadioButton::click(os, csvRB);
             }
         }
     }
-    QCheckBox *checkBox = dialog->findChild<QCheckBox *>("checkBox");
+    QCheckBox* checkBox = dialog->findChild<QCheckBox*>("checkBox");
     GTCheckBox::setChecked(os, checkBox, excludeGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -38,16 +38,16 @@ public:
      * To remove the counter from the global list a counter must be deleted.
      * If the counter is not deleted until application shutdown 'isOnHeap' flag is used to check if the counter must be deleted manually.
      */
-    GCounter(const QString &name, const QString &suffix, qint64 value = 0, double scale = 1, bool isReportable = false, bool isOnHeap = false);
+    GCounter(const QString& name, const QString& suffix, qint64 value = 0, double scale = 1, bool isReportable = false, bool isOnHeap = false);
 
     /** Unregisters counter from the global counters list. */
     virtual ~GCounter();
 
     /** Returns a snapshot (copy) of all registered counters. */
-    static QList<GCounter *> getAllCounters();
+    static QList<GCounter*> getAllCounters();
 
     /** Returns instance of the currently registered counter or nullptr if no counter with the given name/suffix was found. */
-    static GCounter *findCounter(const QString &name, const QString &suffix);
+    static GCounter* findCounter(const QString& name, const QString& suffix);
 
     /** Visual name of the counter. Name + suffix used to uniquely identify the counter. */
     const QString name;
@@ -82,7 +82,7 @@ public:
     const bool isOnHeap;
 
     /** Increments value of the existing counter or creates a new reportable on-heap counter if no counter with this name+suffix is registered. */
-    static void increment(const QString &name, const QString &suffix = "");
+    static void increment(const QString& name, const QString& suffix = "");
 };
 
 /** Creates a new reportable counter as function local static variable and increments it's value. */

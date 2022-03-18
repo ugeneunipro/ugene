@@ -36,24 +36,24 @@ public:
         QList<Descriptor> otherDescs;
     };
 
-    static SplitResult splitCandidates(const QList<Descriptor> &candidates, const Descriptor &toDesc, DataTypePtr toDatatype);
-    static void remapBus(StrStrMap &busMap, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping);
-    static void remapPathedSlotString(QString &pathedSlotStr, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping);
-    static QList<Descriptor> getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type);
+    static SplitResult splitCandidates(const QList<Descriptor>& candidates, const Descriptor& toDesc, DataTypePtr toDatatype);
+    static void remapBus(StrStrMap& busMap, const ActorId& oldId, const ActorId& newId, const PortMapping& mapping);
+    static void remapPathedSlotString(QString& pathedSlotStr, const ActorId& oldId, const ActorId& newId, const PortMapping& mapping);
+    static QList<Descriptor> getSlotsByType(const QMap<Descriptor, DataTypePtr>& busMap, const Descriptor& slot, const DataTypePtr& type);
 };
 
 class U2LANG_EXPORT CandidatesSplitter {
 public:
-    CandidatesSplitter(const QString &id);
+    CandidatesSplitter(const QString& id);
     virtual ~CandidatesSplitter();
 
-    virtual bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) = 0;
-    virtual IntegralBusUtils::SplitResult splitCandidates(const QList<Descriptor> &candidates);
+    virtual bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) = 0;
+    virtual IntegralBusUtils::SplitResult splitCandidates(const QList<Descriptor>& candidates);
 
-    const QString &getId() const;
+    const QString& getId() const;
 
 protected:
-    virtual bool isMain(const QString &candidateSlotId) = 0;
+    virtual bool isMain(const QString& candidateSlotId) = 0;
 
 private:
     const QString id;
@@ -62,17 +62,17 @@ private:
 class U2LANG_EXPORT CandidatesSplitterRegistry {
 public:
     ~CandidatesSplitterRegistry();
-    static CandidatesSplitterRegistry *instance();
+    static CandidatesSplitterRegistry* instance();
 
-    CandidatesSplitter *findSplitter(const Descriptor &toDesc, DataTypePtr toDatatype);
-    CandidatesSplitter *findSplitter(const QString &id);
+    CandidatesSplitter* findSplitter(const Descriptor& toDesc, DataTypePtr toDatatype);
+    CandidatesSplitter* findSplitter(const QString& id);
 
-    void registerSplitter(CandidatesSplitter *splitter);
-    void unregisterSplitter(const QString &id);
+    void registerSplitter(CandidatesSplitter* splitter);
+    void unregisterSplitter(const QString& id);
 
 private:
-    static CandidatesSplitterRegistry *_instance;
-    QList<CandidatesSplitter *> splitters;
+    static CandidatesSplitterRegistry* _instance;
+    QList<CandidatesSplitter*> splitters;
 
 private:
     CandidatesSplitterRegistry();

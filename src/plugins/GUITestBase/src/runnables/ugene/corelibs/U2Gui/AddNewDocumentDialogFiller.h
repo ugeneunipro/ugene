@@ -29,8 +29,8 @@ using namespace HI;
 
 class AddNewDocumentDialogFiller : public Filler {
 public:
-    AddNewDocumentDialogFiller(HI::GUITestOpStatus &os, const QString &format, const QString &path);
-    AddNewDocumentDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    AddNewDocumentDialogFiller(HI::GUITestOpStatus& os, const QString& format, const QString& path);
+    AddNewDocumentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 

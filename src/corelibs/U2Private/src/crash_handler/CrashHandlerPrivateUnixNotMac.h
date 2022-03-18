@@ -43,13 +43,13 @@ public:
     QString getAdditionalInfo() const;
 
 private:
-    static bool breakpadCallback(const google_breakpad::MinidumpDescriptor &descriptor,
-                                 void *context,
+    static bool breakpadCallback(const google_breakpad::MinidumpDescriptor& descriptor,
+                                 void* context,
                                  bool succeeded);
-    static bool crashContextCallback(const void *crash_context,
+    static bool crashContextCallback(const void* crash_context,
                                      size_t crash_context_size,
-                                     void *context);
-    static QString getExceptionText(const google_breakpad::ExceptionHandler::CrashContext *crashContext);
+                                     void* context);
+    static QString getExceptionText(const google_breakpad::ExceptionHandler::CrashContext* crashContext);
 
     QString lastExceptionText;
     bool stacktraceFileWasSucessfullyRemoved;

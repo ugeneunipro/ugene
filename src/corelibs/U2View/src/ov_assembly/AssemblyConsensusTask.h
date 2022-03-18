@@ -50,7 +50,7 @@ struct U2VIEW_EXPORT AssemblyConsensusTaskSettings {
 class AssemblyConsensusTask : public BackgroundTask<ConsensusInfo> {
     Q_OBJECT
 public:
-    AssemblyConsensusTask(const AssemblyConsensusTaskSettings &settings);
+    AssemblyConsensusTask(const AssemblyConsensusTaskSettings& settings);
     virtual void run();
 
 private:
@@ -65,7 +65,7 @@ public:
     virtual bool hasNext() = 0;
     virtual AssemblyConsensusTaskSettings getNextSettings() = 0;
     virtual int count() = 0;
-    virtual void reportResult(const ConsensusInfo &result) = 0;
+    virtual void reportResult(const ConsensusInfo& result) = 0;
 };
 
 /**
@@ -75,11 +75,11 @@ public:
 class AssemblyConsensusWorker : public Task {
     Q_OBJECT
 public:
-    AssemblyConsensusWorker(ConsensusSettingsQueue *settingsQueue);
+    AssemblyConsensusWorker(ConsensusSettingsQueue* settingsQueue);
     virtual void run();
 
 private:
-    ConsensusSettingsQueue *settingsQueue;
+    ConsensusSettingsQueue* settingsQueue;
 };
 
 }  // namespace U2

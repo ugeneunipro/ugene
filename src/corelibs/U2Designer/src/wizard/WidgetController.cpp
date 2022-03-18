@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-WidgetController::WidgetController(WizardController *_wc)
+WidgetController::WidgetController(WizardController* _wc)
     : wc(_wc) {
 }
 
@@ -39,7 +39,7 @@ WidgetController::~WidgetController() {
 /************************************************************************/
 /* LabeledPropertyWidget */
 /************************************************************************/
-LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent)
+LabeledPropertyWidget::LabeledPropertyWidget(const QString& labelText, PropertyWidget* widget, QWidget* parent)
     : QWidget(parent) {
     setObjectName(labelText + "_propertyWidget");
     auto layout = new QHBoxLayout(this);
@@ -47,7 +47,7 @@ LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyW
 
     label = new QLabel(labelText, this);
     label->setObjectName(labelText + " label");
-    auto mainWidget = widget->findChild<QWidget *>("mainWidget");
+    auto mainWidget = widget->findChild<QWidget*>("mainWidget");
     if (mainWidget != nullptr) {
         mainWidget->setObjectName(labelText + " widget");
     }

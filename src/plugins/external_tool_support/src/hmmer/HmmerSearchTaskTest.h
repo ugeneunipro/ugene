@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #ifndef _U2_HMMER_SEARCH_TASK_TESTS_H_
 #define _U2_HMMER_SEARCH_TASK_TESTS_H_
@@ -70,11 +70,11 @@ public:
     void prepare();
     ReportResult report();
 
-    virtual QList<Task *> onSubTaskFinished(Task *sub);
+    virtual QList<Task*> onSubTaskFinished(Task* sub);
 
 private:
     void setAndCheckArgs();
-    static void setSearchTaskSettings(HmmerSearchSettings &set, const QDomElement &el, TaskStateInfo &si);
+    static void setSearchTaskSettings(HmmerSearchSettings& set, const QDomElement& el, TaskStateInfo& si);
 
     HmmerSearchSettings settings;
     QString hmmFilename;
@@ -82,9 +82,9 @@ private:
 
     QString outputDir;
 
-    HmmerSearchTask *searchTask;
+    HmmerSearchTask* searchTask;
 
-};    // GTest_GeneralUHMM3Search
+};  // GTest_GeneralUHMM3Search
 
 class UHMM3SearchSeqDomainResult {
 public:
@@ -104,7 +104,7 @@ public:
     double acc; /* expected accuracy per residue of the alignment */
 
     bool isSignificant; /* domain meets inclusion tresholds */
-};    // UHMM3SearchSeqDomainResult
+};  // UHMM3SearchSeqDomainResult
 
 class UHMM3SearchCompleteSeqResult {
 public:
@@ -118,13 +118,13 @@ public:
     UHMM3SearchCompleteSeqResult()
         : eval(0), score(0), bias(0), expectedDomainsNum(0), reportedDomainsNum(0), isReported(false) {
     }
-};    // UHMM3SearchCompleteSeqResult
+};  // UHMM3SearchCompleteSeqResult
 
 class UHMM3SearchResult {
 public:
     UHMM3SearchCompleteSeqResult fullSeqResult;
     QList<UHMM3SearchSeqDomainResult> domainResList;
-};    // UHMM3SearchResult
+};  // UHMM3SearchResult
 
 class GTest_UHMM3SearchCompare : public XmlTest {
     Q_OBJECT
@@ -132,8 +132,8 @@ public:
     static const QString ACTUAL_OUT_FILE_TAG;
     static const QString TRUE_OUT_FILE_TAG; /* file with original hmmer3 output */
 
-    static UHMM3SearchResult getSearchResultFromOutput(const QString &filename);
-    static void generalCompareResults(const UHMM3SearchResult &myRes, const UHMM3SearchResult &trueRes, TaskStateInfo &ti);
+    static UHMM3SearchResult getSearchResultFromOutput(const QString& filename);
+    static void generalCompareResults(const UHMM3SearchResult& myRes, const UHMM3SearchResult& trueRes, TaskStateInfo& ti);
 
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_UHMM3SearchCompare, "hmm3-search-compare");
     ReportResult report();
@@ -144,8 +144,8 @@ private:
 private:
     QString actualOutFilename;
     QString trueOutFilename;
-};    // GTest_GeneralUHMM3SearchCompare
+};  // GTest_GeneralUHMM3SearchCompare
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

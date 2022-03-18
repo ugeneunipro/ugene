@@ -100,7 +100,7 @@ const QString StringTieWorkerFactory::ACTOR_ID("stringtie");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-StringTieWorker::StringTieWorker(Actor *p)
+StringTieWorker::StringTieWorker(Actor* p)
     : BaseWorker(p),
       inputPort(nullptr),
       outputPort(nullptr) {
@@ -111,7 +111,7 @@ void StringTieWorker::init() {
     outputPort = ports.value(OUT_PORT_ID);
 }
 
-Task *StringTieWorker::tick() {
+Task* StringTieWorker::tick() {
     if (inputPort->hasMessage()) {
         const Message message = getMessageAndSetupScriptValues(inputPort);
         QVariantMap data = message.getData().toMap();
@@ -122,7 +122,7 @@ Task *StringTieWorker::tick() {
             return new FailTask(os.getError());
         }
 
-        StringTieTask *task = new StringTieTask(settings);
+        StringTieTask* task = new StringTieTask(settings);
         task->addListeners(createLogListeners());
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 
@@ -138,7 +138,7 @@ void StringTieWorker::cleanup() {
 }
 
 void StringTieWorker::sl_taskFinished() {
-    StringTieTask *t = qobject_cast<StringTieTask *>(sender());
+    StringTieTask* t = qobject_cast<StringTieTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -156,7 +156,7 @@ void StringTieWorker::sl_taskFinished() {
     outputPort->put(Message(outputPort->getBusType(), data));
 }
 
-StringTieTaskSettings StringTieWorker::getSettings(U2OpStatus &os, const QString &inputFile) {
+StringTieTaskSettings StringTieWorker::getSettings(U2OpStatus& os, const QString& inputFile) {
     StringTieTaskSettings settings;
     settings.inputBam = inputFile;
 
@@ -219,7 +219,7 @@ StringTieTaskSettings StringTieWorker::getSettings(U2OpStatus &os, const QString
 /************************************************************************/
 /* Prompter */
 /************************************************************************/
-StringTiePrompter::StringTiePrompter(Actor *p)
+StringTiePrompter::StringTiePrompter(Actor* p)
     : PrompterBase<StringTiePrompter>(p) {
 }
 
@@ -232,7 +232,7 @@ QString StringTiePrompter::composeRichDoc() {
 /* Factory */
 /************************************************************************/
 void StringTieWorkerFactory::init() {
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         QMap<Descriptor, DataTypePtr> inputMap;
         Descriptor inSlotDesc(IN_URL_SLOT_ID,
@@ -270,7 +270,7 @@ void StringTieWorkerFactory::init() {
                                     false /* input */);
     }
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         Descriptor refAnnotations(REFERENCE_ANNOTATIONS,
                                   StringTieWorker::tr("Reference annotations"),
@@ -409,7 +409,7 @@ void StringTieWorkerFactory::init() {
         attributes << new Attribute(multiHitFraction, BaseTypes::NUM_TYPE(), false, 0.95);
         attributes << new Attribute(skipSequences, BaseTypes::STRING_TYPE(), false);
 
-        Attribute *refOnlyAbudanceAttr = new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute* refOnlyAbudanceAttr = new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
         refOnlyAbudanceAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << refOnlyAbudanceAttr;
 
@@ -420,31 +420,31 @@ void StringTieWorkerFactory::init() {
 
         attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), false);
 
-        Attribute *geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute* geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
         geneAbudanceOutputAttr->addSlotRelation(new SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID, QVariantList() << true));
         attributes << geneAbudanceOutputAttr;
-        Attribute *geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
+        Attribute* geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
         geneAbudanceOutputFileAttr->addRelation(new VisibilityRelation(GENE_ABUDANCE_OUTPUT, true));
         attributes << geneAbudanceOutputFileAttr;
 
-        Attribute *coverageRefOutputAttr = new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute* coverageRefOutputAttr = new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
         coverageRefOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << coverageRefOutputAttr;
-        Attribute *coverageRefOutputFileAttr = new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
+        Attribute* coverageRefOutputFileAttr = new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
         coverageRefOutputFileAttr->addRelation(new VisibilityRelation(COVERAGE_REF_OUTPUT, true));
         coverageRefOutputFileAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << coverageRefOutputFileAttr;
 
-        Attribute *ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute* ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
         ballgawnOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgawnOutputAttr;
-        Attribute *ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false, "");
+        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false, "");
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(BALLGOWN_OUTPUT, true));
         ballgownOutputFolderAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
         attributes << ballgownOutputFolderAttr;
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     delegates[REFERENCE_ANNOTATIONS] = new URLDelegate("", "", false, false, false);
     {
@@ -545,7 +545,7 @@ void StringTieWorkerFactory::init() {
                                                                                                               "and quantitate full-length transcripts representing multiple splice variants for each gene locus."));
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
 
     // Init and register the actor prototype
     proto->setEditor(new DelegateEditor(delegates));
@@ -553,11 +553,11 @@ void StringTieWorkerFactory::init() {
     proto->addExternalTool(StringTieSupport::ET_STRINGTIE_ID, "STRINGTIE_EXT_TOOL_PATH");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new StringTieWorkerFactory());
 }
 
-Worker *StringTieWorkerFactory::createWorker(Actor *a) {
+Worker* StringTieWorkerFactory::createWorker(Actor* a) {
     return new StringTieWorker(a);
 }
 

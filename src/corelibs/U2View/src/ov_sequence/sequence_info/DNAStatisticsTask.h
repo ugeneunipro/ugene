@@ -62,12 +62,12 @@ struct U2VIEW_EXPORT DNAStatistics {
 class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask<DNAStatistics> {
     Q_OBJECT
 public:
-    DNAStatisticsTask(const DNAAlphabet *alphabet, const U2EntityRef seqRef, const QVector<U2Region> &regions);
+    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions);
 
 private:
     void run() override;
 
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
 
@@ -90,8 +90,8 @@ private:
     static const QVector<double> GC_RATIO_MAP;  // how much contribution the character makes to the GC content
 
     void computeStats();
-    double calcPi(U2SequenceDbi *sequenceDbi);
-    double calcChargeState(const QVector<qint64> &countMap, double pH);
+    double calcPi(U2SequenceDbi* sequenceDbi);
+    double calcChargeState(const QVector<qint64>& countMap, double pH);
 };
 
 }  // namespace U2

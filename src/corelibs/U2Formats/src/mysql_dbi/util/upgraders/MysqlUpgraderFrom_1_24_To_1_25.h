@@ -30,13 +30,13 @@ class MysqlDbRef;
 
 class MysqlUpgraderFrom_1_24_To_1_25 : public MysqlUpgrader {
 public:
-    MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi *dbi);
+    MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi* dbi);
 
-    void upgrade(U2OpStatus &os) const;
+    void upgrade(U2OpStatus& os) const override;
 
 private:
-    void dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const;
-    void upgradeCoverageAttribute(U2OpStatus &os) const;
+    void dropOldProcedure(U2OpStatus& os, MysqlDbRef* dbRef) const;
+    void upgradeCoverageAttribute(U2OpStatus& os) const;
 };
 
 }  // namespace U2

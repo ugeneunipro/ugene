@@ -43,15 +43,15 @@ class DNASequence;
 class DNAFlexTask : public Task {
     Q_OBJECT
 public:
-    DNAFlexTask(const HighFlexSettings &settings,
-                AnnotationTableObject *annotObject,
-                const QString &annotName,
-                const QString &annotGroup,
-                const QString &annDescription,
-                const DNASequence &sequence);
+    DNAFlexTask(const HighFlexSettings& settings,
+                AnnotationTableObject* annotObject,
+                const QString& annotName,
+                const QString& annotGroup,
+                const QString& annDescription,
+                const DNASequence& sequence);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    QList<SharedAnnotationData> getAnnotationsFromResults(const QList<HighFlexResult> &results);
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<SharedAnnotationData> getAnnotationsFromResults(const QList<HighFlexResult>& results);
 
 private:
     HighFlexSettings settings;
@@ -61,7 +61,7 @@ private:
     QString annotGroup;
     const QString annDescription;
     DNASequence sequence;
-    FindHighFlexRegions *findHighFlexTask;
+    FindHighFlexRegions* findHighFlexTask;
 };
 
 }  // namespace U2

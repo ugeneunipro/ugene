@@ -30,8 +30,8 @@ class DNAChromatogram;
 
 class U2CORE_EXPORT DnaChromatogramUtils {
 public:
-    static void append(DNAChromatogram &chromatogram, const DNAChromatogram &appendedChromatogram);
-    static void crop(DNAChromatogram &chromatogram, int startPos, int length);
+    static void append(DNAChromatogram& chromatogram, const DNAChromatogram& appendedChromatogram);
+    static void crop(DNAChromatogram& chromatogram, int startPos, int length);
 };
 
 }  // namespace U2

@@ -46,18 +46,18 @@ public:
     MsaSchemesMenuBuilder()
         : QObject() {};
 
-    static void createAndFillColorSchemeMenuActions(QList<QAction *> &actions, ColorSchemeType type, DNAAlphabetType alphabet, MaEditorSequenceArea *actionsParent);
+    static void createAndFillColorSchemeMenuActions(QList<QAction*>& actions, ColorSchemeType type, DNAAlphabetType alphabet, MaEditorSequenceArea* actionsParent);
 
-    static void createAndFillHighlightingMenuActions(QList<QAction *> &actions, DNAAlphabetType alphabet, MaEditorSequenceArea *actionsParent);
+    static void createAndFillHighlightingMenuActions(QList<QAction*>& actions, DNAAlphabetType alphabet, MaEditorSequenceArea* actionsParent);
 
-    static void addActionOrTextSeparatorToMenu(QAction *a, QMenu *colorsSchemeMenu);
+    static void addActionOrTextSeparatorToMenu(QAction* a, QMenu* colorsSchemeMenu);
 
 private:
-    static void fillColorSchemeMenuActions(QList<QAction *> &actions, QList<MsaColorSchemeFactory *> colorFactories, MaEditorSequenceArea *actionsParent);
-    static void fillHighlightingSchemeMenuActions(QList<QAction *> &actions, const QList<MsaHighlightingSchemeFactory *> &highlightingSchemeFactories, MaEditorSequenceArea *actionsParent);
+    static void fillColorSchemeMenuActions(QList<QAction*>& actions, QList<MsaColorSchemeFactory*> colorFactories, MaEditorSequenceArea* actionsParent);
+    static void fillHighlightingSchemeMenuActions(QList<QAction*>& actions, const QList<MsaHighlightingSchemeFactory*>& highlightingSchemeFactories, MaEditorSequenceArea* actionsParent);
 
-    static void fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory *> &colorSchemesFactories, QList<QAction *> &actions, const QString &alphName, MaEditorSequenceArea *actionsParent);
-    static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString &, MaEditorSequenceArea *actionsParent);
+    static void fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory*>& colorSchemesFactories, QList<QAction*>& actions, const QString& alphName, MaEditorSequenceArea* actionsParent);
+    static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory*>& highlightSchemesFactories, QList<QAction*>& actions, const QString&, MaEditorSequenceArea* actionsParent);
 };
 
 }  // namespace U2

@@ -36,19 +36,19 @@ public:
     GObjectReference() {
     }
 
-    GObjectReference(const QString &_docUrl, const QString &_objName, const GObjectType &_type, const U2EntityRef &_entityRef = U2EntityRef())
+    GObjectReference(const QString& _docUrl, const QString& _objName, const GObjectType& _type, const U2EntityRef& _entityRef = U2EntityRef())
         : docUrl(_docUrl), objName(_objName), entityRef(_entityRef), objType(_type) {
     }
 
-    GObjectReference(const GObject *obj, bool deriveLoadedType = true);
+    GObjectReference(const GObject* obj, bool deriveLoadedType = true);
 
     bool isValid() const {
         return !docUrl.isEmpty() && !objName.isEmpty() && !objType.isEmpty();
     }
 
-    bool operator==(const GObjectReference &o) const;
+    bool operator==(const GObjectReference& o) const;
 
-    bool operator<(const GObjectReference &o) const;
+    bool operator<(const GObjectReference& o) const;
 
     /** GObject reference keeps only string path of the document url.
         This must be enough to find document in the project
@@ -71,11 +71,11 @@ private:
     static bool registerMeta;
 };
 
-inline uint qHash(const GObjectReference &key) {
+inline uint qHash(const GObjectReference& key) {
     return ::qHash(key.docUrl) + ::qHash(key.objName) + ::qHash(key.objType);
 }
 
-inline uint qHash(const GObjectReference *key) {
+inline uint qHash(const GObjectReference* key) {
     return ::qHash(key->docUrl) + ::qHash(key->objName) + ::qHash(key->objType);
 }
 
@@ -86,7 +86,7 @@ public:
     GObjectRelation() {
     }
 
-    GObjectRelation(const GObjectReference &_ref, const GObjectRelationRole &_role)
+    GObjectRelation(const GObjectReference& _ref, const GObjectRelationRole& _role)
         : ref(_ref), role(_role) {
     }
 
@@ -94,9 +94,9 @@ public:
         return ref.isValid();
     }
 
-    bool operator==(const GObjectRelation &o) const;
+    bool operator==(const GObjectRelation& o) const;
 
-    const QString &getDocURL() const {
+    const QString& getDocURL() const {
         return ref.docUrl;
     }
 
@@ -107,16 +107,16 @@ private:
     static bool registerMeta;
 };
 
-inline uint qHash(const GObjectRelation &key) {
+inline uint qHash(const GObjectRelation& key) {
     const uint h1 = qHash(key.ref);
     const uint h2 = ::qHash(static_cast<int>(key.role));
     return ((h1 << 16) | (h1 >> 16)) ^ h2;
 }
 
-QDataStream &operator<<(QDataStream &out, const GObjectReference &myObj);
-QDataStream &operator>>(QDataStream &in, GObjectReference &myObj);
-QDataStream &operator<<(QDataStream &out, const GObjectRelation &myObj);
-QDataStream &operator>>(QDataStream &in, GObjectRelation &myObj);
+QDataStream& operator<<(QDataStream& out, const GObjectReference& myObj);
+QDataStream& operator>>(QDataStream& in, GObjectReference& myObj);
+QDataStream& operator<<(QDataStream& out, const GObjectRelation& myObj);
+QDataStream& operator>>(QDataStream& in, GObjectRelation& myObj);
 
 }  // namespace U2
 

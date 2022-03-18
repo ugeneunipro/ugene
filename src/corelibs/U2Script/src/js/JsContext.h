@@ -37,10 +37,10 @@ namespace U2 {
 namespace Js {
 
 void initModule(Handle<Object> target);
-Handle<Value> launchSchemeWithScheduler(const Arguments &args);
-Handle<Value> debugStatus(const Arguments &args);
-Handle<Value> topologicalSortedGraph(const Arguments &args);
-Handle<Value> tick(const Arguments &args);
+Handle<Value> launchSchemeWithScheduler(const Arguments& args);
+Handle<Value> debugStatus(const Arguments& args);
+Handle<Value> topologicalSortedGraph(const Arguments& args);
+Handle<Value> tick(const Arguments& args);
 
 }  // namespace Js
 

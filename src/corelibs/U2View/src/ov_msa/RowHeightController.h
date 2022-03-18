@@ -31,10 +31,10 @@ class MaEditorWgt;
 class U2VIEW_EXPORT RowHeightController : public QObject {
     Q_OBJECT
 public:
-    RowHeightController(MaEditorWgt *ui);
+    RowHeightController(MaEditorWgt* ui);
 
     int getGlobalYPositionByMaRowIndex(int maRowIndex) const;
-    int getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const;
+    int getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const;
 
     int getMaRowIndexByGlobalYPosition(int y) const;
     int getViewRowIndexByGlobalYPosition(int y) const;
@@ -46,14 +46,14 @@ public:
 
     virtual int getRowHeightByMaIndex(int maRowIndex) const = 0;
     int getRowHeightByViewRowIndex(int viewRowIndex) const;
-    int getSumOfRowHeightsByMaIndexes(const QList<int> &maRowIndexes) const;
+    int getSumOfRowHeightsByMaIndexes(const QList<int>& maRowIndexes) const;
 
     U2Region getGlobalYRegionByMaRowIndex(int maRowIndex) const;
-    U2Region getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const;
+    U2Region getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const;
     U2Region getGlobalYRegionByViewRowIndex(int viewRowIndex) const;
 
-    U2Region getGlobalYRegionByViewRowsRegion(const U2Region &viewRowsRegion) const;
-    U2Region getScreenYRegionByViewRowsRegion(const U2Region &viewRowsRegion) const;
+    U2Region getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
+    U2Region getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
 
     U2Region getScreenYRegionByMaRowIndex(int maRowIndex) const;
 
@@ -68,9 +68,9 @@ public:
     int getSingleRowHeight() const;
 
 protected:
-    U2Region mapGlobalToScreen(const U2Region &globalRegion) const;
+    U2Region mapGlobalToScreen(const U2Region& globalRegion) const;
 
-    MaEditorWgt *ui;
+    MaEditorWgt* ui;
 };
 
 }  // namespace U2

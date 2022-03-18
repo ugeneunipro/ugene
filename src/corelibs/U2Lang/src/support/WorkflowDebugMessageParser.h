@@ -40,17 +40,17 @@ public:
     WorkflowDebugMessageParser();
     virtual ~WorkflowDebugMessageParser();
 
-    void setContext(Workflow::WorkflowContext *context);
-    void setSourceData(const QQueue<Workflow::Message> &sourceData);
+    void setContext(Workflow::WorkflowContext* context);
+    void setSourceData(const QQueue<Workflow::Message>& sourceData);
 
     virtual WorkflowInvestigationData getAllMessageValues() = 0;
-    virtual void convertMessagesToDocuments(const QString &convertedType,
-                                            const QString &schemeName,
+    virtual void convertMessagesToDocuments(const QString& convertedType,
+                                            const QString& schemeName,
                                             quint32 messageNumber) = 0;
 
 protected:
     QQueue<QVariantMap> sourceMessages;
-    Workflow::WorkflowContext *context;
+    Workflow::WorkflowContext* context;
 
     static QStringList possibleMessageTypes;
 };

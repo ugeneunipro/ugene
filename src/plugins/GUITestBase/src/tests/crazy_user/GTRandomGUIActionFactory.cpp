@@ -38,16 +38,16 @@ int randInt(int low, int high) {
     return qrand() % ((high + 1) - low) + low;
 }
 
-GTAbstractGUIAction *GTRandomGUIActionFactory::create(QObject *obj) {
+GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {
     SAFE_POINT(nullptr != obj, "", nullptr);
 
-    GTAbstractGUIAction *action = nullptr;
-    for (const QMetaObject *metaObj = obj->metaObject(); metaObj != nullptr; metaObj = metaObj->superClass()) {
+    GTAbstractGUIAction* action = nullptr;
+    for (const QMetaObject* metaObj = obj->metaObject(); metaObj != nullptr; metaObj = metaObj->superClass()) {
         QString className = metaObj->className();
         uiLog.trace(QString("Searching GTAbstractGUIAction for %1").arg(className));
 
         GTAbstractGUIActionMap::const_iterator mappedIterator = actionMap.constFind(className);
-        const GTAbstractGUIAction *mappedAction = actionMap.constEnd() == mappedIterator ? nullptr : actionMap[className];
+        const GTAbstractGUIAction* mappedAction = actionMap.constEnd() == mappedIterator ? nullptr : actionMap[className];
         if (nullptr != mappedAction) {
             uiLog.trace(QString("Found GUIAction for %1").arg(className));
             action = mappedAction->clone();
@@ -62,7 +62,7 @@ GTAbstractGUIAction *GTRandomGUIActionFactory::create(QObject *obj) {
     return action;
 }
 
-QMap<QString, const GTAbstractGUIAction *> GTRandomGUIActionFactory::actionMap;
+QMap<QString, const GTAbstractGUIAction*> GTRandomGUIActionFactory::actionMap;
 
 class GTAbstractGUIAction_QWidget : public GTAbstractGUIAction {
 public:
@@ -70,13 +70,13 @@ public:
         : GTAbstractGUIAction(priority) {
     }
     virtual void run() {
-        QWidget *objCasted = qobject_cast<QWidget *>(obj);
+        QWidget* objCasted = qobject_cast<QWidget*>(obj);
         SAFE_POINT(nullptr != objCasted, "", );
 
         GTWidget::click(os, objCasted);
     }
 
-    virtual GTAbstractGUIAction_QWidget *clone() const {
+    virtual GTAbstractGUIAction_QWidget* clone() const {
         return new GTAbstractGUIAction_QWidget(*this);
     }
 };
@@ -88,7 +88,7 @@ public:
         : GTAbstractGUIAction(priority) {
     }
     virtual void run() {
-        QFileDialog *objCasted = qobject_cast<QFileDialog *>(obj);
+        QFileDialog* objCasted = qobject_cast<QFileDialog*>(obj);
         SAFE_POINT(nullptr != objCasted, "", );
 
         QString findPath = UGUITest::dataDir;
@@ -106,11 +106,11 @@ public:
         int filesListId = randInt(0, files.size() - 1);
         QString randomFilePath = files[filesListId];
 
-        GTFileDialogUtils *u = new GTFileDialogUtils(os, randomFilePath);
+        GTFileDialogUtils* u = new GTFileDialogUtils(os, randomFilePath);
         u->run();
     }
 
-    virtual GTAbstractGUIAction_QFileDialog *clone() const {
+    virtual GTAbstractGUIAction_QFileDialog* clone() const {
         return new GTAbstractGUIAction_QFileDialog(*this);
     }
 };

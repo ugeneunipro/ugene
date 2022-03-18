@@ -42,7 +42,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_querry_designer {
 using namespace HI;
 
-void test1(HI::GUITestOpStatus &os, QString s = "") {
+void test1(HI::GUITestOpStatus& os, QString s = "") {
     // Bug: QD: Crash while resizing and deleting elements (0002402)
     // 1. Open Query Designer
     GTUtilsQueryDesigner::openQueryDesigner(os);
@@ -87,8 +87,8 @@ void test1(HI::GUITestOpStatus &os, QString s = "") {
         GTMouseDriver::click();
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         // check no elements on scene
-        QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
-        QList<QGraphicsItem *> items = sceneView->items();
+        QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+        QList<QGraphicsItem*> items = sceneView->items();
         CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");  // 2 - is equal empty scene
     }
     // 5. repeat from step 2 (do 4 iterations)

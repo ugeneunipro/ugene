@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
+PWMJASPARDialogController::PWMJASPARDialogController(QWidget* w)
     : QDialog(w) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930913");
@@ -45,7 +45,7 @@ PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
         QString filename = jasparDir;
         filename.append("/").append(list[i]).append("/matrix_list.txt");
         if (QFile::exists(filename)) {
-            JasparGroupTreeItem *gti = new JasparGroupTreeItem(list[i]);
+            JasparGroupTreeItem* gti = new JasparGroupTreeItem(list[i]);
             gti->setFlags(gti->flags() & ~Qt::ItemIsSelectable);
             jasparTree->addTopLevelItem(gti);
             QFile base(filename);
@@ -53,7 +53,7 @@ PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
             while (!base.atEnd()) {
                 QString curr = base.readLine();
                 JasparInfo info = (curr);
-                JasparTreeItem *ti = new JasparTreeItem(info);
+                JasparTreeItem* ti = new JasparTreeItem(info);
                 gti->addChild(ti);
             }
             base.close();
@@ -61,13 +61,13 @@ PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
     }
     fileName = "";
 
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onOK()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancel()));
     connect(jasparTree, SIGNAL(itemSelectionChanged()), SLOT(sl_onSelectionChanged()));
-    connect(jasparTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), SLOT(sl_onDoubleClicked(QTreeWidgetItem *, int)));
-    connect(propertiesTable, SIGNAL(itemClicked(QTableWidgetItem *)), SLOT(sl_onTableItemClicked(QTableWidgetItem *)));
+    connect(jasparTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_onDoubleClicked(QTreeWidgetItem*, int)));
+    connect(propertiesTable, SIGNAL(itemClicked(QTableWidgetItem*)), SLOT(sl_onTableItemClicked(QTableWidgetItem*)));
 }
 
 void PWMJASPARDialogController::sl_onOK() {
@@ -79,7 +79,7 @@ void PWMJASPARDialogController::sl_onCancel() {
 }
 
 void PWMJASPARDialogController::sl_onSelectionChanged() {
-    QTreeWidgetItem *item = jasparTree->currentItem();
+    QTreeWidgetItem* item = jasparTree->currentItem();
     if (item == 0) {
         fileName = "";
         return;
@@ -88,7 +88,7 @@ void PWMJASPARDialogController::sl_onSelectionChanged() {
         fileName = "";
         return;
     }
-    JasparTreeItem *it = static_cast<JasparTreeItem *>(item);
+    JasparTreeItem* it = static_cast<JasparTreeItem*>(item);
     QMap<QString, QString> props = it->matrix.getProperties();
     fileName = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/position_weight_matrix/JASPAR/";
     fileName.append(it->matrix.getProperty("tax_group")).append("/");
@@ -109,7 +109,7 @@ void PWMJASPARDialogController::sl_onSelectionChanged() {
     }
 }
 
-void PWMJASPARDialogController::sl_onTableItemClicked(QTableWidgetItem *item) {
+void PWMJASPARDialogController::sl_onTableItemClicked(QTableWidgetItem* item) {
     if (item->column() != 1)
         return;
     int row = item->row();
@@ -129,7 +129,7 @@ void PWMJASPARDialogController::sl_onTableItemClicked(QTableWidgetItem *item) {
     }
 }
 
-void PWMJASPARDialogController::sl_onDoubleClicked(QTreeWidgetItem *item, int col) {
+void PWMJASPARDialogController::sl_onDoubleClicked(QTreeWidgetItem* item, int col) {
     Q_UNUSED(col);
     if (item == 0)
         return;
@@ -140,7 +140,7 @@ void PWMJASPARDialogController::sl_onDoubleClicked(QTreeWidgetItem *item, int co
 
 //////////////////////////////////////////////////////////////////////////
 // Tree item
-JasparTreeItem::JasparTreeItem(const JasparInfo &ed)
+JasparTreeItem::JasparTreeItem(const JasparInfo& ed)
     : matrix(ed) {
     this->setText(0, matrix.getProperty(QString("name")));
     this->setText(1, matrix.getProperty(QString("id")));
@@ -148,18 +148,18 @@ JasparTreeItem::JasparTreeItem(const JasparInfo &ed)
     this->setText(3, matrix.getProperty(QString("family")));
 }
 
-bool JasparTreeItem::operator<(const QTreeWidgetItem &other) const {
+bool JasparTreeItem::operator<(const QTreeWidgetItem& other) const {
     int col = treeWidget()->sortColumn();
-    const JasparTreeItem &ei = static_cast<const JasparTreeItem &>(other);
+    const JasparTreeItem& ei = static_cast<const JasparTreeItem&>(other);
     return text(col) < ei.text(col);
 }
 
-JasparGroupTreeItem::JasparGroupTreeItem(const QString &_s)
+JasparGroupTreeItem::JasparGroupTreeItem(const QString& _s)
     : s(_s) {
     this->setText(0, s);
 }
 
-bool JasparGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
+bool JasparGroupTreeItem::operator<(const QTreeWidgetItem& other) const {
     if (other.parent() != nullptr) {
         return true;
     }

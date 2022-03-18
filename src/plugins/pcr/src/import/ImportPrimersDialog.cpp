@@ -45,7 +45,7 @@ namespace U2 {
 const QString ImportPrimersDialog::LOCAL_FILES = QObject::tr("Local file(s)");
 const QString ImportPrimersDialog::SHARED_DB = QObject::tr("Shared database");
 
-ImportPrimersDialog::ImportPrimersDialog(QWidget *parent)
+ImportPrimersDialog::ImportPrimersDialog(QWidget* parent)
     : QDialog(parent),
       waitForConnection(false) {
     setupUi(this);
@@ -93,15 +93,15 @@ void ImportPrimersDialog::sl_addFileClicked() {
     CHECK(!fileList.isEmpty(), );
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
 
-    foreach (const QString &filePath, fileList) {
-        QListWidgetItem *item = new QListWidgetItem(QIcon(":/core/images/document.png"), filePath);
+    foreach (const QString& filePath, fileList) {
+        QListWidgetItem* item = new QListWidgetItem(QIcon(":/core/images/document.png"), filePath);
         item2file.insert(item, filePath);
         lwFiles->addItem(item);
     }
 }
 
 void ImportPrimersDialog::sl_removeFileClicked() {
-    foreach (QListWidgetItem *item, lwFiles->selectedItems()) {
+    foreach (QListWidgetItem* item, lwFiles->selectedItems()) {
         item2file.remove(item);
         delete item;
     }
@@ -119,24 +119,24 @@ void ImportPrimersDialog::sl_addObjectClicked() {
 
     ProjectTreeControllerModeSettings settings = prepareProjectItemsSelectionSettings();
     QList<Folder> folders;
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
 
-    foreach (const Folder &folder, folders) {
-        QListWidgetItem *item = new QListWidgetItem(QIcon(":U2Designer/images/directory.png"), folder.getFolderPath());
+    foreach (const Folder& folder, folders) {
+        QListWidgetItem* item = new QListWidgetItem(QIcon(":U2Designer/images/directory.png"), folder.getFolderPath());
         item2folder.insert(item, folder);
         lwObjects->addItem(item);
     }
 
-    foreach (GObject *object, objects) {
-        QListWidgetItem *item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
+    foreach (GObject* object, objects) {
+        QListWidgetItem* item = new QListWidgetItem(GObjectTypes::getTypeInfo(object->getGObjectType()).icon, object->getDocument()->getName() + ": " + object->getGObjectName());
         item2object.insert(item, object);
         lwObjects->addItem(item);
     }
 }
 
 void ImportPrimersDialog::sl_removeObjectClicked() {
-    foreach (QListWidgetItem *item, lwObjects->selectedItems()) {
+    foreach (QListWidgetItem* item, lwObjects->selectedItems()) {
         item2folder.remove(item);
         item2object.remove(item);
         delete item;
@@ -144,7 +144,7 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
 }
 
 void ImportPrimersDialog::sl_connectionComplete() {
-    SharedConnectionsDialog *connectionDialog = qobject_cast<SharedConnectionsDialog *>(sender());
+    SharedConnectionsDialog* connectionDialog = qobject_cast<SharedConnectionsDialog*>(sender());
     if (Q_LIKELY(nullptr != connectionDialog)) {
         connectionDialog->deleteLater();
     } else {
@@ -156,29 +156,29 @@ void ImportPrimersDialog::sl_connectionComplete() {
 
 void ImportPrimersDialog::sl_selectionChanged() {
     const bool isLocalFilesMode = (LOCAL_FILES == cbSource->currentText());
-    QListWidget *listWidget = isLocalFilesMode ? lwFiles : lwObjects;
-    QPushButton *removeButton = isLocalFilesMode ? pbRemoveFile : pbRemoveObject;
+    QListWidget* listWidget = isLocalFilesMode ? lwFiles : lwObjects;
+    QPushButton* removeButton = isLocalFilesMode ? pbRemoveFile : pbRemoveObject;
     removeButton->setEnabled(!listWidget->selectedItems().isEmpty());
 }
 
 void ImportPrimersDialog::sl_contentChanged() {
     const bool isLocalFilesMode = (LOCAL_FILES == cbSource->currentText());
-    QListWidget *listWidget = isLocalFilesMode ? lwFiles : lwObjects;
+    QListWidget* listWidget = isLocalFilesMode ? lwFiles : lwObjects;
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(listWidget->count() > 0);
 }
 
 void ImportPrimersDialog::accept() {
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     if (LOCAL_FILES == cbSource->currentText()) {
-        foreach (const QString &filePath, item2file) {
+        foreach (const QString& filePath, item2file) {
             tasks << new ImportPrimersFromFileTask(filePath);
         }
     } else {
-        foreach (const Folder &folder, item2folder) {
+        foreach (const Folder& folder, item2folder) {
             tasks << new ImportPrimersFromFolderTask(folder);
         }
 
-        foreach (GObject *object, item2object) {
+        foreach (GObject* object, item2object) {
             tasks << new ImportPrimerFromObjectTask(object);
         }
     }
@@ -204,16 +204,16 @@ void ImportPrimersDialog::connectSignals() {
     connect(pbRemoveObject, SIGNAL(clicked()), SLOT(sl_removeObjectClicked()));
     connect(lwFiles, SIGNAL(itemSelectionChanged()), SLOT(sl_selectionChanged()));
     connect(lwObjects, SIGNAL(itemSelectionChanged()), SLOT(sl_selectionChanged()));
-    connect(lwFiles->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_contentChanged()));
-    connect(lwFiles->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_contentChanged()));
-    connect(lwObjects->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(sl_contentChanged()));
-    connect(lwObjects->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(sl_contentChanged()));
+    connect(lwFiles->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), SLOT(sl_contentChanged()));
+    connect(lwFiles->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), SLOT(sl_contentChanged()));
+    connect(lwObjects->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), SLOT(sl_contentChanged()));
+    connect(lwObjects->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), SLOT(sl_contentChanged()));
 }
 
 ProjectTreeControllerModeSettings ImportPrimersDialog::prepareProjectItemsSelectionSettings() const {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
-    foreach (Document *document, AppContext::getProject()->getDocuments()) {
+    foreach (Document* document, AppContext::getProject()->getDocuments()) {
         if (!document->isDatabaseConnection()) {
             settings.excludeDocList << document;
         }

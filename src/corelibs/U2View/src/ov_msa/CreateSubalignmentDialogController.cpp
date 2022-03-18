@@ -46,7 +46,7 @@ namespace U2 {
 
 #define ROW_ID_PROPERTY "row-id"
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *obj, const QList<qint64> &preSelectedRowIdList, const U2Region &preSelectedColumnsRegion, QWidget *p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject* obj, const QList<qint64>& preSelectedRowIdList, const U2Region& preSelectedColumnsRegion, QWidget* p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929690");
@@ -60,10 +60,10 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    connect(startLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
-    connect(endLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
+    connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
 
-    int rowCount = (int)msaObject->getNumRows();
+    int rowCount = (int)msaObject->getRowCount();
     int msaLength = (int)msaObject->getLength();
 
     sequencesTableWidget->clearContents();
@@ -104,27 +104,27 @@ DocumentFormatId CreateSubalignmentDialogController::getFormatId() const {
     return saveController->getFormatIdToSave();
 }
 
-const U2Region &CreateSubalignmentDialogController::getSelectedColumnsRegion() const {
+const U2Region& CreateSubalignmentDialogController::getSelectedColumnsRegion() const {
     return selectedColumnRegion;
 }
 
 void CreateSubalignmentDialogController::sl_allButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(true);
     }
 }
 
 void CreateSubalignmentDialogController::sl_invertButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(!cb->isChecked());
     }
 }
 
 void CreateSubalignmentDialogController::sl_noneButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(false);
     }
 }
@@ -227,7 +227,7 @@ bool CreateSubalignmentDialogController::getAddToProjFlag() const {
 void CreateSubalignmentDialogController::updateSelectedRowIds() {
     selectedRowIds.clear();
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         if (cb->isChecked()) {
             qint64 rowId = (qint64)cb->property(ROW_ID_PROPERTY).toLongLong();
             selectedRowIds << rowId;
@@ -235,23 +235,23 @@ void CreateSubalignmentDialogController::updateSelectedRowIds() {
     }
 }
 
-const QList<qint64> &CreateSubalignmentDialogController::getSelectedRowIds() const {
+const QList<qint64>& CreateSubalignmentDialogController::getSelectedRowIds() const {
     return selectedRowIds;
 }
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings)
     : Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE) {
     csTask = new CreateSubalignmentTask(maObj, settings);
     addSubTask(csTask);
     setMaxParallelSubtasks(1);
 }
 
-QList<Task *> CreateSubalignmentAndOpenViewTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CreateSubalignmentAndOpenViewTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
     if ((subTask == csTask) && csTask->getSettings().addToProject) {
-        Document *doc = csTask->takeDocument();
+        Document* doc = csTask->takeDocument();
         assert(doc != nullptr);
         res.append(new AddDocumentAndOpenViewTask(doc));
     }

@@ -29,7 +29,7 @@ using namespace HI;
 
 class SetSequenceOriginDialogFiller : public Filler {
 public:
-    SetSequenceOriginDialogFiller(HI::GUITestOpStatus &os, int _start)
+    SetSequenceOriginDialogFiller(HI::GUITestOpStatus& os, int _start)
         : Filler(os, "SetSequenceOriginDialog"), start(_start) {
     }
     virtual void commonScenario();

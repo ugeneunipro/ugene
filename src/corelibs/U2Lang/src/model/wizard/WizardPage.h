@@ -35,24 +35,24 @@ class TemplatedPageVisitor;
 
 class U2LANG_EXPORT WizardPage {
 public:
-    WizardPage(const QString &id, const QString &title);
+    WizardPage(const QString& id, const QString& title);
     virtual ~WizardPage();
 
-    void validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const;
+    void validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const;
 
-    void setNext(const QString &id);
-    void setNext(const QString &id, const Predicate &predicate, U2OpStatus &os);
-    QString getNextId(const QMap<QString, Variable> &vars) const;
+    void setNext(const QString& id);
+    void setNext(const QString& id, const Predicate& predicate, U2OpStatus& os);
+    QString getNextId(const QMap<QString, Variable>& vars) const;
     bool isFinal() const;
 
-    const QString &getId() const;
-    const QString &getTitle() const;
-    void setContent(TemplatedPageContent *value);
-    TemplatedPageContent *getContent();
+    const QString& getId() const;
+    const QString& getTitle() const;
+    void setContent(TemplatedPageContent* value);
+    TemplatedPageContent* getContent();
 
     /** for serializing */
-    const QMap<Predicate, QString> &nextIdMap() const;
-    const QString &plainNextId() const;
+    const QMap<Predicate, QString>& nextIdMap() const;
+    const QString& plainNextId() const;
 
 private:
     QString id;
@@ -60,18 +60,18 @@ private:
     QMap<Predicate, QString> nextIds;  // predicate <-> id
     QString title;
 
-    TemplatedPageContent *content;
+    TemplatedPageContent* content;
 };
 
 class U2LANG_EXPORT TemplatedPageContent {
 public:
-    TemplatedPageContent(const QString &templateId);
+    TemplatedPageContent(const QString& templateId);
     virtual ~TemplatedPageContent();
 
-    virtual void accept(TemplatedPageVisitor *visitor) = 0;
-    virtual void validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const = 0;
+    virtual void accept(TemplatedPageVisitor* visitor) = 0;
+    virtual void validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const = 0;
 
-    const QString &getTemplateId() const;
+    const QString& getTemplateId() const;
 
 private:
     QString templateId;
@@ -79,7 +79,7 @@ private:
 
 class PageContentFactory {
 public:
-    static TemplatedPageContent *createContent(const QString &id, U2OpStatus &os);
+    static TemplatedPageContent* createContent(const QString& id, U2OpStatus& os);
 };
 
 /**
@@ -91,11 +91,11 @@ public:
     DefaultPageContent();
     virtual ~DefaultPageContent();
 
-    virtual void accept(TemplatedPageVisitor *visitor);
-    virtual void validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const;
+    virtual void accept(TemplatedPageVisitor* visitor);
+    virtual void validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const;
 
-    void addParamWidget(WizardWidget *widget);
-    void setLogoPath(const QString &path);
+    void addParamWidget(WizardWidget* widget);
+    void setLogoPath(const QString& path);
 
     /** Default height of the page in pixels. Default height can be changed
      * to another one by logo widget.
@@ -104,12 +104,12 @@ public:
     /** The width in pixels of whole page: logo + parameters */
     int getPageWidth() const;
 
-    LogoWidget *getLogoArea();
-    WidgetsArea *getParamsArea();
+    LogoWidget* getLogoArea();
+    WidgetsArea* getParamsArea();
 
 private:
-    LogoWidget *logoArea;
-    WidgetsArea *paramsArea;
+    LogoWidget* logoArea;
+    WidgetsArea* paramsArea;
 
     static const int HEIGHT;  // px
     static const int WIDTH;  // px
@@ -122,7 +122,7 @@ public:
 /////////////////////////////////////////////////////
 class U2LANG_EXPORT TemplatedPageVisitor {
 public:
-    virtual void visit(DefaultPageContent *) = 0;
+    virtual void visit(DefaultPageContent*) = 0;
 };
 
 }  // namespace U2

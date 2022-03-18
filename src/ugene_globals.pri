@@ -90,6 +90,7 @@ linux-g++ {
         QMAKE_CXXFLAGS += -Werror=return-type
         QMAKE_CXXFLAGS += -Werror=uninitialized
         QMAKE_CXXFLAGS += -Werror=unused-parameter
+        QMAKE_CXXFLAGS += -Werror=unused-value
         QMAKE_CXXFLAGS += -Werror=unused-variable
 
         versionAtLeast(GCC_VERSION, 7.1) {
@@ -106,6 +107,8 @@ linux-g++ {
         QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
         QMAKE_LFLAGS += -lgcov --coverage
     }
+    # Check for undefined symbols during the build.
+    QMAKE_LFLAGS += "-Wl,--no-undefined"
 }
 
 isEmpty(PREFIX): PREFIX  = dist/ugene-$${UGENE_VERSION}

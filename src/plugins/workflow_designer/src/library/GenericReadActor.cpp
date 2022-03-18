@@ -54,7 +54,7 @@ namespace Workflow {
 /************************************************************************/
 /* GenericReadDocProto */
 /************************************************************************/
-GenericReadDocProto::GenericReadDocProto(const Descriptor &desc)
+GenericReadDocProto::GenericReadDocProto(const Descriptor& desc)
     : ReadDbObjActorPrototype(desc) {
     {
         attrs << new URLAttribute(BaseAttributes::URL_IN_ATTRIBUTE(),
@@ -62,7 +62,7 @@ GenericReadDocProto::GenericReadDocProto(const Descriptor &desc)
                                   true);
     }
 
-    setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
 
     if (AppContext::isGUIMode()) {
         setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
@@ -119,7 +119,7 @@ GenericSeqActorProto::GenericSeqActorProto()
         attrs << new Attribute(acd, BaseTypes::STRING_TYPE(), false, QString());
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap modeMap;
         QString splitStr = SeqReadPrompter::tr("Split");
@@ -170,10 +170,10 @@ GenericMAActorProto::GenericMAActorProto()
     }
 }
 
-bool GenericMAActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params) const {
-    QList<DocumentFormat *> fs;
+bool GenericMAActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
+    QList<DocumentFormat*> fs;
     QString url = WorkflowUtils::getDropUrl(fs, md);
-    foreach (DocumentFormat *f, fs) {
+    foreach (DocumentFormat* f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             if (params != nullptr) {
                 params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), url);
@@ -201,11 +201,11 @@ bool GenericMAActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *par
     return false;
 }
 
-bool GenericSeqActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params) const {
-    QList<DocumentFormat *> fs;
-    const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
+bool GenericSeqActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
+    QList<DocumentFormat*> fs;
+    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
     if (gomd && params) {
-        const U2SequenceObject *obj = qobject_cast<const U2SequenceObject *>(gomd->objPtr.data());
+        const U2SequenceObject* obj = qobject_cast<const U2SequenceObject*>(gomd->objPtr.data());
         if (obj) {
             params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), obj->getDocument()->getURLString());
             QString acc = obj->getStringAttribute(DNAInfo::ACCESSION);
@@ -217,7 +217,7 @@ bool GenericSeqActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *pa
     }
 
     QString url = WorkflowUtils::getDropUrl(fs, md);
-    foreach (DocumentFormat *f, fs) {
+    foreach (DocumentFormat* f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE)) {
             if (params) {
                 params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), url);

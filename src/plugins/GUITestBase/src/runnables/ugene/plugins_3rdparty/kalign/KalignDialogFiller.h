@@ -29,7 +29,7 @@ using namespace HI;
 
 class KalignDialogFiller : public Filler {
 public:
-    KalignDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal = 0, bool _toAmino = false);
+    KalignDialogFiller(HI::GUITestOpStatus& _os, int _gapOpenVal = 0, bool _toAmino = false);
     void commonScenario();
 
 private:

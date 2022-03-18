@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTUTILSTASK_H
-#define GTUTILSTASK_H
+#ifndef _U2_GT_UTILS_TASK_H_
+#define _U2_GT_UTILS_TASK_H_
 
 #include "GTGlobals.h"
 
@@ -29,19 +29,21 @@ class Task;
 namespace U2 {
 using namespace HI;
 
+/**
+ * Low level task utilities.
+ * Use GTUtilsTaskTreeView for normal GUI tests (a usual user experience).
+ * Use this class only for low-level checks & waits.
+ */
 class GTUtilsTask {
 public:
-    static QList<Task *> getTopLevelTasks(HI::GUITestOpStatus &os);
-    static Task *getTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
-    static Task *getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
-    static Task *getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QString taskName, GTGlobals::FindOptions options = GTGlobals::FindOptions(true));
-    static void checkTask(HI::GUITestOpStatus &os, QString taskName);
-    static void checkNoTask(HI::GUITestOpStatus &os, QString taskName);
-    static void cancelTask(HI::GUITestOpStatus &os, QString taskName);
-    static void cancelSubTask(HI::GUITestOpStatus &os, QString taskName);
-    static void waitTaskStart(HI::GUITestOpStatus &os, QString taskName, int timeOut = 180000);
+    static void checkNoTask(HI::GUITestOpStatus& os, const QString& taskName);
+
+    static void waitTaskStart(HI::GUITestOpStatus& os, const QString& taskName, int timeout = 180000);
+
+private:
+    static Task* getTaskByName(HI::GUITestOpStatus& os, const QString& taskName, const GTGlobals::FindOptions& options = {});
 };
 
 }  // namespace U2
 
-#endif  // GTUTILSTASK_H
+#endif  // _U2_GT_UTILS_TASK_H_

@@ -36,30 +36,30 @@ public:
     UserActionsWriter();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
     /** Logs message for the current event. Calls 'logMouseEventMessage' to do it. */
-    void logMouseEvent(QMouseEvent *mouseEvent);
+    void logMouseEvent(QMouseEvent* mouseEvent);
 
     /** Logs mouse event message only if it is different from the previous message. Saves the logged event into 'prevMessage'.  */
-    void logMouseEventMessage(const QString &message);
+    void logMouseEventMessage(const QString& message);
 
     /** Logs message for the current event. Calls 'logKeyEventMessage' to do it. */
-    void logKeyEvent(QKeyEvent *keyEvent);
+    void logKeyEvent(QKeyEvent* keyEvent);
 
     /** Logs key event message only if it is different from the previous message. Saves the logged event into 'prevMessage'.  */
-    void logKeyEventMessage(QKeyEvent *keyEvent, const QString &message);
+    void logKeyEventMessage(QKeyEvent* keyEvent, const QString& message);
 
-    static QString getTreeWidgetInfo(QMouseEvent *mouseEvent, QWidget *parent);
+    static QString getTreeWidgetInfo(QMouseEvent* mouseEvent, QWidget* parent);
 
-    static QString getAdditionalWidgetInfo(QMouseEvent *mouseEvent, QWidget *widget);
+    static QString getAdditionalWidgetInfo(QMouseEvent* mouseEvent, QWidget* widget);
 
-    static QString getMouseButtonInfo(QMouseEvent *mouseEvent);
+    static QString getMouseButtonInfo(QMouseEvent* mouseEvent);
 
-    static QString getWidgetText(QMouseEvent *mouseEvent, QWidget *widget);
+    static QString getWidgetText(QMouseEvent* mouseEvent, QWidget* widget);
 
-    static QString getKeyModifiersInfo(QKeyEvent *keyEvent);
+    static QString getKeyModifiersInfo(QKeyEvent* keyEvent);
 
     static QString getActiveModalWidgetInfo();
 

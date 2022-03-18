@@ -20,6 +20,7 @@
  */
 
 #include "GTUtilsExternalTools.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -34,15 +35,14 @@ namespace U2 {
 
 class RemoveToolScenario : public CustomScenario {
 public:
-    RemoveToolScenario(const QString &toolName)
+    RemoveToolScenario(const QString& toolName)
         : CustomScenario(), toolName(toolName) {
     }
 
-    void run(HI::GUITestOpStatus &os) {
+    void run(HI::GUITestOpStatus& os) {
         AppSettingsDialogFiller::clearToolPath(os, toolName);
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget* dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
 
@@ -52,16 +52,15 @@ private:
 
 class CheckValidationScenario : public CustomScenario {
 public:
-    CheckValidationScenario(const QString &toolName)
+    CheckValidationScenario(const QString& toolName)
         : CustomScenario(), toolName(toolName) {
     }
 
-    void run(HI::GUITestOpStatus &os) {
+    void run(HI::GUITestOpStatus& os) {
         bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, toolName);
         CHECK_SET_ERR(isValid, QString("External Tool %1 is not valid, byu should be").arg(toolName));
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget* dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
     }
 
@@ -71,15 +70,14 @@ private:
 
 class SetToolUrlScenario : public CustomScenario {
 public:
-    SetToolUrlScenario(const QString &toolName, const QString &url)
+    SetToolUrlScenario(const QString& toolName, const QString& url)
         : CustomScenario(), toolName(toolName), url(url) {
     }
 
-    void run(HI::GUITestOpStatus &os) {
+    void run(HI::GUITestOpStatus& os) {
         AppSettingsDialogFiller::setExternalToolPath(os, toolName, url);
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget* dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
 
@@ -91,7 +89,7 @@ private:
 #define GT_CLASS_NAME "GTUtilsExternalTools"
 
 #define GT_METHOD_NAME "removeTool"
-void GTUtilsExternalTools::removeTool(HI::GUITestOpStatus &os, const QString &toolName) {
+void GTUtilsExternalTools::removeTool(HI::GUITestOpStatus& os, const QString& toolName) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new RemoveToolScenario(toolName)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
@@ -99,7 +97,7 @@ void GTUtilsExternalTools::removeTool(HI::GUITestOpStatus &os, const QString &to
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isValid"
-void GTUtilsExternalTools::checkValidation(HI::GUITestOpStatus &os, const QString &toolName) {
+void GTUtilsExternalTools::checkValidation(HI::GUITestOpStatus& os, const QString& toolName) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckValidationScenario(toolName)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
@@ -107,7 +105,7 @@ void GTUtilsExternalTools::checkValidation(HI::GUITestOpStatus &os, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setToolUrl"
-void GTUtilsExternalTools::setToolUrl(HI::GUITestOpStatus &os, const QString &toolName, const QString &url) {
+void GTUtilsExternalTools::setToolUrl(HI::GUITestOpStatus& os, const QString& toolName, const QString& url) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario(toolName, url)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");

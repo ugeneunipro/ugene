@@ -34,21 +34,21 @@ class GUITestRunner : public QWidget, public Ui_GUITestRunner {
     Q_OBJECT
 
 public:
-    explicit GUITestRunner(UGUITestBase *guiTestBase, QWidget *parent = 0);
+    explicit GUITestRunner(UGUITestBase* guiTestBase, QWidget* parent = 0);
     ~GUITestRunner();
 
 private slots:
     void sl_runSelected();
     void sl_runAllGUITests();
     void sl_testFinished();
-    void sl_filterChanged(const QString &nameFilter);
+    void sl_filterChanged(const QString& nameFilter);
     void sl_filterCleared();
 
 private:
-    void revisible(const QString &nameFilter);
+    void revisible(const QString& nameFilter);
 
-    UGUITestBase *guiTestBase;
-    QAction *delTextAction;
+    UGUITestBase* guiTestBase;
+    QAction* delTextAction;
 };
 
 }  // namespace U2

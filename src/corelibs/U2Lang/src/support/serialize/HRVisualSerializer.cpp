@@ -42,14 +42,14 @@ static const int MAX_SCALE = 500;
 /************************************************************************/
 /* HRVisualParser */
 /************************************************************************/
-HRVisualParser::HRVisualParser(WorkflowSchemaReaderData &_data)
+HRVisualParser::HRVisualParser(WorkflowSchemaReaderData& _data)
     : data(_data) {
 }
 
 HRVisualParser::~HRVisualParser() {
 }
 
-void HRVisualParser::parse(U2OpStatus &os) {
+void HRVisualParser::parse(U2OpStatus& os) {
     try {
         while (data.tokenizer.look() != Constants::BLOCK_END) {
             QString tok = data.tokenizer.take();
@@ -68,12 +68,12 @@ void HRVisualParser::parse(U2OpStatus &os) {
                 }
             }
         }
-    } catch (const ReadFailed &e) {
+    } catch (const ReadFailed& e) {
         os.setError(e.what);
     }
 }
 
-void HRVisualParser::parseScale(const QString &scaleStr) {
+void HRVisualParser::parseScale(const QString& scaleStr) {
     CHECK(nullptr != data.meta, );
     bool ok = false;
     int scale = scaleStr.toInt(&ok);
@@ -84,7 +84,7 @@ void HRVisualParser::parseScale(const QString &scaleStr) {
     data.meta->scalePercent = scale;
 }
 
-void HRVisualParser::parseVisualActorParams(const QString &actorId) {
+void HRVisualParser::parseVisualActorParams(const QString& actorId) {
     if (!data.actorMap.contains(actorId)) {
         throw ReadFailed(HRVisualParser::tr("%1 element undefined in visual block").arg(actorId));
     }
@@ -111,11 +111,11 @@ void HRVisualParser::parseVisualActorParams(const QString &actorId) {
         parseStyleData(visual, style, pairs);
     }
 
-    foreach (const QString &key, pairs.equalPairs.keys()) {
+    foreach (const QString& key, pairs.equalPairs.keys()) {
         QStringList list = key.split(Constants::DOT);
         if (list.size() == 2 && list.at(1) == PORT_ANGLE) {
             QString portId = list.at(0);
-            Port *port = data.actorMap[actorId]->getPort(portId);
+            Port* port = data.actorMap[actorId]->getPort(portId);
             if (port == nullptr) {
                 throw ReadFailed(HRVisualParser::tr("Cannot find port '%1' at %2 element").arg(portId).arg(actorId));
             }
@@ -133,26 +133,26 @@ void HRVisualParser::parseVisualActorParams(const QString &actorId) {
     data.meta->setActorVisualData(visual);
 }
 
-void HRVisualParser::parseLinkVisualBlock(const QString &from, const QString &to) {
+void HRVisualParser::parseLinkVisualBlock(const QString& from, const QString& to) {
     bool hasBlock = data.tokenizer.look() == Constants::BLOCK_START;
     QString srcActorId = HRSchemaSerializer::parseAt(from, 0);
-    Actor *srcActor = data.actorMap.value(srcActorId);
+    Actor* srcActor = data.actorMap.value(srcActorId);
     if (srcActor == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Undefined element id: '%1'").arg(srcActorId));
     }
     QString srcPortId = HRSchemaSerializer::parseAt(from, 1);
-    Port *srcPort = srcActor->getPort(srcPortId);
+    Port* srcPort = srcActor->getPort(srcPortId);
     if (srcPort == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Cannot find '%1' port at '%2'").arg(srcPortId).arg(srcActorId));
     }
 
     QString dstActorId = HRSchemaSerializer::parseAt(to, 0);
-    Actor *dstActor = data.actorMap.value(dstActorId);
+    Actor* dstActor = data.actorMap.value(dstActorId);
     if (dstActor == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Undefined element id: '%1'").arg(dstActorId));
     }
     QString dstPortId = HRSchemaSerializer::parseAt(to, 1);
-    Port *dstPort = dstActor->getPort(dstPortId);
+    Port* dstPort = dstActor->getPort(dstPortId);
     if (dstPort == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Cannot find '%1' port at '%2'").arg(dstPortId).arg(dstActorId));
     }
@@ -177,12 +177,12 @@ void HRVisualParser::parseLinkVisualBlock(const QString &from, const QString &to
             throw ReadFailed(HRSchemaSerializer::tr("Undefined data-flow link: '%1'. Define it in actor-bindings").arg(from));
         }
     } else {
-        QPair<Port *, Port *> link(srcPort, dstPort);
+        QPair<Port*, Port*> link(srcPort, dstPort);
         data.links << link;
     }
 }
 
-QPointF HRVisualParser::string2Point(const QString &str, U2OpStatus &os) {
+QPointF HRVisualParser::string2Point(const QString& str, U2OpStatus& os) {
     QStringList list = str.split(QRegExp("\\s"), QString::SkipEmptyParts);
     if (list.size() != 2) {
         os.setError(HRVisualParser::tr("Cannot parse coordinates from '%1'").arg(str));
@@ -203,7 +203,7 @@ QPointF HRVisualParser::string2Point(const QString &str, U2OpStatus &os) {
     return QPointF(x, y);
 }
 
-QColor HRVisualParser::string2Color(const QString &str, U2OpStatus &os) {
+QColor HRVisualParser::string2Color(const QString& str, U2OpStatus& os) {
     int r = 0, g = 0, b = 0, a = 0;
     QTextStream stream(str.toLatin1());
     stream >> r >> g >> b >> a;
@@ -213,7 +213,7 @@ QColor HRVisualParser::string2Color(const QString &str, U2OpStatus &os) {
     return QColor(r, g, b, a);
 }
 
-QFont HRVisualParser::string2Font(const QString &str, U2OpStatus &os) {
+QFont HRVisualParser::string2Font(const QString& str, U2OpStatus& os) {
     QFont f;
     if (!f.fromString(str)) {
         os.setError(HRVisualParser::tr("Cannot parse font from '%1'").arg(str));
@@ -221,7 +221,7 @@ QFont HRVisualParser::string2Font(const QString &str, U2OpStatus &os) {
     return f;
 }
 
-QRectF HRVisualParser::string2Rect(const QString &str, U2OpStatus &os) {
+QRectF HRVisualParser::string2Rect(const QString& str, U2OpStatus& os) {
     QStringList list = str.split(QRegExp("\\s"));
     if (list.size() != 4) {
         os.setError(HRVisualParser::tr("Cannot parse rectangle from '%1'").arg(str));
@@ -229,7 +229,7 @@ QRectF HRVisualParser::string2Rect(const QString &str, U2OpStatus &os) {
     return QRectF(string2Point(list.at(0) + " " + list.at(1), os), string2Point(list.at(2) + " " + list.at(3), os));
 }
 
-void HRVisualParser::parseStyleData(ActorVisualData &visual, const QString &styleId, ParsedPairs &pairs) {
+void HRVisualParser::parseStyleData(ActorVisualData& visual, const QString& styleId, ParsedPairs& pairs) {
     QString bgColor = pairs.equalPairs.take(BG_COLOR + styleId);
     if (!bgColor.isEmpty()) {
         U2OpStatus2Log os;
@@ -261,7 +261,7 @@ void HRVisualParser::parseStyleData(ActorVisualData &visual, const QString &styl
 /************************************************************************/
 /* HRVisualSerializer */
 /************************************************************************/
-HRVisualSerializer::HRVisualSerializer(const Metadata &_meta, const HRSchemaSerializer::NamesMap &nmap)
+HRVisualSerializer::HRVisualSerializer(const Metadata& _meta, const HRSchemaSerializer::NamesMap& nmap)
     : meta(_meta) {
     meta.renameActors(nmap);
 }
@@ -273,11 +273,11 @@ QString HRVisualSerializer::serialize(int depth) {
         vData += HRSchemaSerializer::makeEqualsPair(SCALE, QString::number(meta.scalePercent), depth + 1);
     }
 
-    foreach (const ActorVisualData &visual, meta.getActorsVisual()) {
+    foreach (const ActorVisualData& visual, meta.getActorsVisual()) {
         vData += actorVisualData(visual, depth + 1);
     }
 
-    foreach (const QString &link, meta.getTextPosMap().keys()) {
+    foreach (const QString& link, meta.getTextPosMap().keys()) {
         QPointF p = meta.getTextPosMap()[link];
         vData += linkVisualData(link, p, depth + 1);
     }
@@ -285,7 +285,7 @@ QString HRVisualSerializer::serialize(int depth) {
     return HRSchemaSerializer::makeBlock(Constants::VISUAL_START, Constants::NO_NAME, vData, depth);
 }
 
-QString HRVisualSerializer::actorVisualData(const ActorVisualData &visual, int depth) {
+QString HRVisualSerializer::actorVisualData(const ActorVisualData& visual, int depth) {
     QString aData;
     bool contains = false;
 
@@ -312,7 +312,7 @@ QString HRVisualSerializer::actorVisualData(const ActorVisualData &visual, int d
         }
     }
 
-    foreach (const QString &portId, visual.getAngleMap().keys()) {
+    foreach (const QString& portId, visual.getAngleMap().keys()) {
         qreal a = visual.getAngleMap()[portId];
         aData += HRSchemaSerializer::makeEqualsPair(portId + Constants::DOT + PORT_ANGLE,
                                                     QString::number(a),
@@ -324,25 +324,25 @@ QString HRVisualSerializer::actorVisualData(const ActorVisualData &visual, int d
                                          depth);
 }
 
-QString HRVisualSerializer::linkVisualData(const QString &link, const QPointF &p, int depth) {
+QString HRVisualSerializer::linkVisualData(const QString& link, const QPointF& p, int depth) {
     QString lData;
     lData += HRSchemaSerializer::makeEqualsPair(TEXT_POS_ATTR, point2String(p), depth + 1);
     return HRSchemaSerializer::makeBlock(link, Constants::NO_NAME, lData, depth);
 }
 
-QString HRVisualSerializer::point2String(const QPointF &point) {
+QString HRVisualSerializer::point2String(const QPointF& point) {
     return QString("%1 %2").arg(point.x()).arg(point.y());
 }
 
-QString HRVisualSerializer::color2String(const QColor &color) {
+QString HRVisualSerializer::color2String(const QColor& color) {
     return QString("%1 %2 %3 %4").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
 }
 
-QString HRVisualSerializer::font2String(const QFont &font) {
+QString HRVisualSerializer::font2String(const QFont& font) {
     return font.toString();
 }
 
-QString HRVisualSerializer::rect2String(const QRectF &rect) {
+QString HRVisualSerializer::rect2String(const QRectF& rect) {
     return QString("%1 %2").arg(point2String(rect.topLeft())).arg(point2String(rect.bottomRight()));
 }
 

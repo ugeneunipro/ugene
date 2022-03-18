@@ -40,12 +40,12 @@ class U2OpStatus;
 class U2CORE_EXPORT DbiConnection {
 public:
     /** Opens connection to existing DBI */
-    DbiConnection(const U2DbiRef &ref, U2OpStatus &os);
+    DbiConnection(const U2DbiRef& ref, U2OpStatus& os);
 
     /** Opens connection to existing DBI or create news DBI*/
-    DbiConnection(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties = (QHash<QString, QString>()));
+    DbiConnection(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties = (QHash<QString, QString>()));
 
-    DbiConnection(const DbiConnection &dbiConnection);
+    DbiConnection(const DbiConnection& dbiConnection);
 
     /** Constructs not opened dbi connection */
     DbiConnection();
@@ -53,21 +53,21 @@ public:
     ~DbiConnection();
 
     /** Opens connection to existing DBI */
-    void open(const U2DbiRef &ref, U2OpStatus &os);
+    void open(const U2DbiRef& ref, U2OpStatus& os);
 
     /** Opens connection to existing DBI or create news DBI*/
-    void open(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties = (QHash<QString, QString>()));
+    void open(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties = (QHash<QString, QString>()));
 
-    void close(U2OpStatus &os);
+    void close(U2OpStatus& os);
 
     bool isOpen() const;
 
-    DbiConnection &operator=(DbiConnection const &dbiConnection);
+    DbiConnection& operator=(DbiConnection const& dbiConnection);
 
-    U2Dbi *dbi;
+    U2Dbi* dbi;
 
 private:
-    void copy(const DbiConnection &dbiConnection);
+    void copy(const DbiConnection& dbiConnection);
 };
 
 }  // namespace U2

@@ -83,8 +83,8 @@ const QString LIBRARY = "library";
 const QString FILTER_UNPAIRED = "filter-unpaired";
 
 //////////////////////////////////////////////////////////////////////////
-//BaseShortReadsAlignerWorker
-BaseShortReadsAlignerWorker::BaseShortReadsAlignerWorker(Actor *a, const QString &algName)
+// BaseShortReadsAlignerWorker
+BaseShortReadsAlignerWorker::BaseShortReadsAlignerWorker(Actor* a, const QString& algName)
     : BaseWorker(a, false), algName(algName), inChannel(nullptr), inPairedChannel(nullptr), output(nullptr), pairedReadsInput(false), filterUnpaired(true) {
 }
 
@@ -102,10 +102,10 @@ void BaseShortReadsAlignerWorker::init() {
     inChannel->addComplement(output);
 }
 
-DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus &os) {
+DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus& os) {
     DnaAssemblyToRefTaskSettings settings;
 
-    //settings.prebuiltIndex = true;
+    // settings.prebuiltIndex = true;
     setGenomeIndex(settings);
 
     QString outDir = GUrlUtils::createDirectory(
@@ -124,8 +124,8 @@ DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus
     }
     settings.resultFileName = outDir + outFileName;
 
-    //settings.indexFileName = getValue<QString>(REFERENCE_GENOME);
-    //settings.refSeqUrl = GUrl(settings.indexFileName).baseFileName();
+    // settings.indexFileName = getValue<QString>(REFERENCE_GENOME);
+    // settings.refSeqUrl = GUrl(settings.indexFileName).baseFileName();
     settings.algName = algName;
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
@@ -138,7 +138,7 @@ DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus
     return settings;
 }
 
-Task *BaseShortReadsAlignerWorker::tick() {
+Task* BaseShortReadsAlignerWorker::tick() {
     readsFetcher.processInputMessage();
     if (pairedReadsInput) {
         pairedReadsFetcher.processInputMessage();
@@ -161,7 +161,7 @@ Task *BaseShortReadsAlignerWorker::tick() {
             settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate);
         }
 
-        DnaAssemblyTaskWithConversions *t = new DnaAssemblyTaskWithConversions(settings);
+        DnaAssemblyTaskWithConversions* t = new DnaAssemblyTaskWithConversions(settings);
         t->addListeners(createLogListeners(2));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
@@ -210,7 +210,7 @@ bool BaseShortReadsAlignerWorker::isReady() const {
 }
 
 void BaseShortReadsAlignerWorker::sl_taskFinished() {
-    DnaAssemblyTaskWithConversions *t = qobject_cast<DnaAssemblyTaskWithConversions *>(sender());
+    DnaAssemblyTaskWithConversions* t = qobject_cast<DnaAssemblyTaskWithConversions*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -224,9 +224,9 @@ void BaseShortReadsAlignerWorker::sl_taskFinished() {
     context->getMonitor()->addOutputFile(url, getActor()->getId());
 }
 
-QList<ShortReadSet> BaseShortReadsAlignerWorker::toUrls(const QList<Message> &messages, const QString &urlSlotId, ShortReadSet::LibraryType libType, ShortReadSet::MateOrder order) const {
+QList<ShortReadSet> BaseShortReadsAlignerWorker::toUrls(const QList<Message>& messages, const QString& urlSlotId, ShortReadSet::LibraryType libType, ShortReadSet::MateOrder order) const {
     QList<ShortReadSet> result;
-    foreach (const Message &message, messages) {
+    foreach (const Message& message, messages) {
         const QVariantMap data = message.getData().toMap();
         if (data.contains(urlSlotId)) {
             const QString url = data.value(urlSlotId).value<QString>();
@@ -260,8 +260,8 @@ QString BaseShortReadsAlignerWorker::getAlignerSubdir() const {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//ShortReadsAlignerSlotsValidator
-bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+// ShortReadsAlignerSlotsValidator
+bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
     QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
     bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
     if (!data) {
@@ -274,11 +274,11 @@ bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, Noti
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BaseShortReadsAlignerWorkerFactory
+// BaseShortReadsAlignerWorkerFactory
 int BaseShortReadsAlignerWorkerFactory::getThreadsCount() {
-    AppSettings *settings = AppContext::getAppSettings();
+    AppSettings* settings = AppContext::getAppSettings();
     CHECK(nullptr != settings, 1);
-    AppResourcePool *pool = settings->getAppResourcePool();
+    AppResourcePool* pool = settings->getAppResourcePool();
     CHECK(nullptr != pool, 1);
 
     int threads = pool->getIdealThreadCount();
@@ -286,7 +286,7 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount() {
     return threads;
 }
 
-void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute *> &attrs, QMap<QString, PropertyDelegate *> &delegates, const QString &descrIndexFolder, const QString &descrIndexBasename) {
+void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates, const QString& descrIndexFolder, const QString& descrIndexBasename) {
     {
         Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
                                       BaseShortReadsAlignerWorker::tr("Reference input type"),
@@ -324,25 +324,25 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute *> 
                           BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
-        Attribute *attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
         attrs << attrRefGenom;
-        Attribute *attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexDir;
-        Attribute *attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
 
-        Attribute *libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
+        Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
         QVariantList visibilityValues;
         visibilityValues << QVariant("Paired-end");
         libraryAttr->addPortRelation(new PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attrs << libraryAttr;
 
-        Attribute *filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
+        Attribute* filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
         filterAttr->addRelation(new VisibilityRelation(LIBRARY, "Paired-end"));
         attrs << filterAttr;
     }
@@ -361,17 +361,17 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute *> 
         QVariantMap libMap;
         libMap["Single-end"] = "Single-end";
         libMap["Paired-end"] = "Paired-end";
-        ComboBoxDelegate *libDelegate = new ComboBoxDelegate(libMap);
+        ComboBoxDelegate* libDelegate = new ComboBoxDelegate(libMap);
         delegates[LIBRARY] = libDelegate;
 
         delegates[FILTER_UNPAIRED] = new ComboBoxWithBoolsDelegate();
     }
 }
 
-QList<PortDescriptor *> BaseShortReadsAlignerWorkerFactory::getPortDescriptors() {
-    QList<PortDescriptor *> portDescs;
+QList<PortDescriptor*> BaseShortReadsAlignerWorkerFactory::getPortDescriptors() {
+    QList<PortDescriptor*> portDescs;
 
-    //in port
+    // in port
     QMap<Descriptor, DataTypePtr> inTypeMap;
     QMap<Descriptor, DataTypePtr> inTypeMapPaired;
     Descriptor readsDesc(READS_URL_SLOT_ID,
@@ -394,12 +394,12 @@ QList<PortDescriptor *> BaseShortReadsAlignerWorkerFactory::getPortDescriptors()
 
     DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
     DataTypePtr inTypeSetPaired(new MapDataType(IN_TYPE_ID, inTypeMapPaired));
-    PortDescriptor *readsDescriptor = new PortDescriptor(inPortDesc, inTypeSet, true);
-    PortDescriptor *readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT);
+    PortDescriptor* readsDescriptor = new PortDescriptor(inPortDesc, inTypeSet, true);
+    PortDescriptor* readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT);
     portDescs << readsDescriptor2;
     portDescs << readsDescriptor;
 
-    //out port
+    // out port
     QMap<Descriptor, DataTypePtr> outTypeMap;
     Descriptor assemblyOutDesc(ASSEBLY_OUT_SLOT_ID,
                                BaseShortReadsAlignerWorker::tr("Assembly URL"),
@@ -420,14 +420,14 @@ QList<PortDescriptor *> BaseShortReadsAlignerWorkerFactory::getPortDescriptors()
 QString ShortReadsAlignerPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor *readsProducer = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
-    Port *pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
+    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
+    Port* pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     if (pairedPort->isEnabled()) {
-        IntegralBusPort *pairedBus = qobject_cast<IntegralBusPort *>(pairedPort);
-        Actor *pairedReadsProducer = pairedBus->getProducer(READS_PAIRED_URL_SLOT_ID);
+        IntegralBusPort* pairedBus = qobject_cast<IntegralBusPort*>(pairedPort);
+        Actor* pairedReadsProducer = pairedBus->getProducer(READS_PAIRED_URL_SLOT_ID);
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));
     } else {
@@ -445,5 +445,5 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
 
     return res;
 }
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

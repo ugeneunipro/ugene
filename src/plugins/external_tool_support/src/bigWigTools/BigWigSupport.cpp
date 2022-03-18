@@ -35,7 +35,7 @@ const QString BigWigSupport::ET_BIGWIG_ID = "USUPP_BED_GRAPH_TO_BIG_WIG";
 const QString BigWigSupport::GENOMES_DATA_NAME = "Genome files";
 const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 
-BigWigSupport::BigWigSupport(const QString &path)
+BigWigSupport::BigWigSupport(const QString& path)
     : ExternalTool(ET_BIGWIG_ID, "bigwig", "bigwig", path) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -54,11 +54,11 @@ BigWigSupport::BigWigSupport(const QString &path)
     validationArguments << "";
     toolKitName = "bedGraphToBigWig";
 
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr != nullptr) {
-        U2DataPath *dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
+        U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 }
 
-}    // namespace U2
+}  // namespace U2

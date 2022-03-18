@@ -35,7 +35,7 @@ const int SelectionModificationHelper::PIXEL_OFFSET_FOR_BORDER_POINTING = 3;
 const double SelectionModificationHelper::PIXEL_OFFSET_FOR_CIRCULAR_VIEW = 0.075;
 const int SelectionModificationHelper::GRADUATION = 16;
 
-SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const Qt::CursorShape shape, const QPoint &globalMousePos, const QRect &selection, const QSizeF &baseSize) {
+SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const Qt::CursorShape shape, const QPoint& globalMousePos, const QRect& selection, const QSizeF& baseSize) {
     double leftBorderPosition = 0;
     double rightBorderPosition = 0;
     calculateBordersPositions(selection.x(), selection.width(), baseSize.width(), leftBorderPosition, rightBorderPosition);
@@ -125,7 +125,7 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
     return NoMovableBorder;
 }
 
-Qt::CursorShape SelectionModificationHelper::getCursorShape(const QPoint &globalMousePos, const QRect &selection, const double baseWidth, const double baseHeight) {
+Qt::CursorShape SelectionModificationHelper::getCursorShape(const QPoint& globalMousePos, const QRect& selection, const double baseWidth, const double baseHeight) {
     double leftBorder = 0;
     double rightBorder = 0;
     calculateBordersPositions(selection.x(), selection.width(), baseWidth, leftBorder, rightBorder);
@@ -197,7 +197,7 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinC
     return resultShape;
 }
 
-U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide &border, const int globalMousePos, const double baseSize, const U2Region &currentSelection) {
+U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide& border, const int globalMousePos, const double baseSize, const U2Region& currentSelection) {
     CHECK(border != NoMovableBorder, U2Region());
     CHECK(globalMousePos >= 0, U2Region());
     CHECK(baseSize > 0, U2Region());
@@ -239,7 +239,7 @@ U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide
     return resultSelection;
 }
 
-QRect SelectionModificationHelper::getNewSelection(MovableSide &movableSide, const QPoint &globalMousePos, const QSizeF &baseSize, const QRect &currentSelection) {
+QRect SelectionModificationHelper::getNewSelection(MovableSide& movableSide, const QPoint& globalMousePos, const QSizeF& baseSize, const QRect& currentSelection) {
     CHECK(movableSide != NoMovableBorder, QRect());
     CHECK(globalMousePos.x() >= 0 && globalMousePos.y() >= 0, QRect());
 
@@ -272,7 +272,7 @@ QRect SelectionModificationHelper::getNewSelection(MovableSide &movableSide, con
     return resultSelection;
 }
 
-QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide &corner, const QPoint &globalMousePos, const QSizeF &baseSize, const QRect &currentSelection) {
+QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide& corner, const QPoint& globalMousePos, const QSizeF& baseSize, const QRect& currentSelection) {
     CHECK(corner != NoMovableBorder, QRect());
     CHECK(globalMousePos.x() >= 0 && globalMousePos.y() >= 0, QRect());
 
@@ -313,7 +313,7 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide &c
     return resultSelection;
 }
 
-QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide &board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool &isTwoRegions) {
+QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions) {
     double currentAngle = 180 * GRADUATION * mouseAngle / PI;
     currentAngle -= rotationDegree * GRADUATION;
     if (currentAngle < 0) {
@@ -382,7 +382,7 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
     return NoMovableBorder;
 }
 
-void SelectionModificationHelper::calculateBordersPositions(const int selectionPos, const int selectionSize, const double baseSize, double &leftOrTopBorderPosition, double &rightOrBottomBorderPosition) {
+void SelectionModificationHelper::calculateBordersPositions(const int selectionPos, const int selectionSize, const double baseSize, double& leftOrTopBorderPosition, double& rightOrBottomBorderPosition) {
     leftOrTopBorderPosition = selectionPos * baseSize;
     rightOrBottomBorderPosition = (selectionPos + selectionSize) * baseSize;
 }

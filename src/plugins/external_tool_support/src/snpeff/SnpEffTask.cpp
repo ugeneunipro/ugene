@@ -40,19 +40,19 @@ namespace U2 {
 #define SUMMARY_FILE "snpEff_summary.html"
 
 //////////////////////////////////////////////////////////////////////////
-//SnpEffParser
+// SnpEffParser
 
 const QStringList SnpEffParser::stringsToIgnore = SnpEffParser::initStringsToIgnore();
 
-SnpEffParser::SnpEffParser(const QString &genome)
+SnpEffParser::SnpEffParser(const QString& genome)
     : ExternalToolLogParser(),
       genome(genome) {
 }
 
-void SnpEffParser::parseOutput(const QString &partOfLog) {
+void SnpEffParser::parseOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
 
-    foreach (const QString &buf, lastPartOfLog) {
+    foreach (const QString& buf, lastPartOfLog) {
         if (buf.contains("Could not reserve enough space for object heap", Qt::CaseInsensitive) ||
             buf.contains("Invalid maximum heap size", Qt::CaseInsensitive) ||
             buf.contains("Unable to allocate", Qt::CaseInsensitive) ||
@@ -62,12 +62,12 @@ void SnpEffParser::parseOutput(const QString &partOfLog) {
     }
 }
 
-void SnpEffParser::parseErrOutput(const QString &partOfLog) {
+void SnpEffParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 
-    foreach (const QString &buf, lastPartOfLog) {
+    foreach (const QString& buf, lastPartOfLog) {
         if (stringsToIgnore.contains(buf)) {
             continue;
         }
@@ -119,8 +119,8 @@ QStringList SnpEffParser::initStringsToIgnore() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//SnpEffTask
-SnpEffTask::SnpEffTask(const SnpEffSetting &settings)
+// SnpEffTask
+SnpEffTask::SnpEffTask(const SnpEffSetting& settings)
     : ExternalToolSupportTask(QString("snpEff for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC), settings(settings) {
 }
 
@@ -144,7 +144,7 @@ void SnpEffTask::prepare() {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask *etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), true);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile(getResFileUrl());
     addSubTask(etTask);
@@ -192,7 +192,7 @@ QString SnpEffTask::getDataPath() const {
     return AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + "snpeff_data_" + AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID)->getVersion();
 }
 
-QStringList SnpEffTask::getParameters(U2OpStatus &os) const {
+QStringList SnpEffTask::getParameters(U2OpStatus& os) const {
     QStringList res;
 
     res << QString("-dataDir");
@@ -242,4 +242,4 @@ QStringList SnpEffTask::getParameters(U2OpStatus &os) const {
     return res;
 }
 
-}    //namespace U2
+}  // namespace U2

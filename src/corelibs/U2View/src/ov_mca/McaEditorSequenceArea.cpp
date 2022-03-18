@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
+McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb)
     : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
@@ -65,7 +65,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView *, QToolBar *)), SLOT(sl_buildStaticToolbar(GObjectView *, QToolBar *)));
+    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
 
     traceActionsMenu = new QMenu(tr("Show/hide trace"), this);
     traceActionsMenu->setObjectName("traceActionsMenu");
@@ -129,7 +129,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     addAction(ambiguousCharactersController->getPreviousAction());
     addAction(ambiguousCharactersController->getNextAction());
 
-    SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
@@ -137,8 +137,8 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     sl_updateActions();
 }
 
-void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus &os) {
-    McaEditor *mcaEditor = getEditor();
+void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
+    McaEditor* mcaEditor = getEditor();
     qint64 newLength = mcaEditor->getMaObject()->getLength();
     qint64 currentLength = mcaEditor->getReferenceContext()->getSequenceLength();
     if (newLength > currentLength) {
@@ -150,43 +150,43 @@ void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus &os) {
     }
 }
 
-MaAmbiguousCharactersController *McaEditorSequenceArea::getAmbiguousCharactersController() const {
+MaAmbiguousCharactersController* McaEditorSequenceArea::getAmbiguousCharactersController() const {
     return ambiguousCharactersController;
 }
 
-QMenu *McaEditorSequenceArea::getTraceActionsMenu() const {
+QMenu* McaEditorSequenceArea::getTraceActionsMenu() const {
     return traceActionsMenu;
 }
 
-QAction *McaEditorSequenceArea::getIncreasePeaksHeightAction() const {
+QAction* McaEditorSequenceArea::getIncreasePeaksHeightAction() const {
     return scaleBar->getPlusAction();
 }
 
-QAction *McaEditorSequenceArea::getDecreasePeaksHeightAction() const {
+QAction* McaEditorSequenceArea::getDecreasePeaksHeightAction() const {
     return scaleBar->getMinusAction();
 }
 
-QAction *McaEditorSequenceArea::getInsertAction() const {
+QAction* McaEditorSequenceArea::getInsertAction() const {
     return insertAction;
 }
 
-QAction *McaEditorSequenceArea::getInsertGapAction() const {
+QAction* McaEditorSequenceArea::getInsertGapAction() const {
     return fillWithGapsinsSymAction;
 }
 
-QAction *McaEditorSequenceArea::getRemoveGapBeforeSelectionAction() const {
+QAction* McaEditorSequenceArea::getRemoveGapBeforeSelectionAction() const {
     return removeGapBeforeSelectionAction;
 }
 
-QAction *McaEditorSequenceArea::getRemoveColumnsOfGapsAction() const {
+QAction* McaEditorSequenceArea::getRemoveColumnsOfGapsAction() const {
     return removeColumnsOfGapsAction;
 }
 
-QAction *McaEditorSequenceArea::getTrimLeftEndAction() const {
+QAction* McaEditorSequenceArea::getTrimLeftEndAction() const {
     return trimLeftEndAction;
 }
 
-QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
+QAction* McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
@@ -213,7 +213,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
 
     QRect newSelectionRect(selectionRect.x() + dx, nextRowToSelect, selectionRect.width(), selectionRect.height());
     setSelectionRect(newSelectionRect);
-    const QPoint &cursorPosition = editor->getCursorPosition();
+    const QPoint& cursorPosition = editor->getCursorPosition();
     editor->setCursorPosition(QPoint(cursorPosition.x() + dx, nextRowToSelect));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
@@ -224,7 +224,7 @@ void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
 
 void McaEditorSequenceArea::sl_showHideTrace() {
     GCounter::increment("Selection of a 'Show / hide trace' item", editor->getFactoryId());
-    QAction *traceAction = qobject_cast<QAction *>(sender());
+    QAction* traceAction = qobject_cast<QAction*>(sender());
 
     if (!traceAction) {
         return;
@@ -251,8 +251,8 @@ void McaEditorSequenceArea::sl_showAllTraces() {
     settings.drawTraceC = true;
     settings.drawTraceG = true;
     settings.drawTraceT = true;
-    QList<QAction *> actions = traceActionsMenu->actions();
-    foreach (QAction *action, actions) {
+    QList<QAction*> actions = traceActionsMenu->actions();
+    foreach (QAction* action, actions) {
         action->setChecked(true);
     }
     sl_completeUpdate();
@@ -260,7 +260,7 @@ void McaEditorSequenceArea::sl_showAllTraces() {
 
 void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     // k = chromaMax
-    SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     int currentAreaHeight = r->getAreaHeight();
     if (currentAreaHeight != k) {
         GCounter::increment(k > currentAreaHeight ? "Increase peaks height" : "Decrease peaks height", editor->getFactoryId());
@@ -269,7 +269,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar *t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* /*v*/, QToolBar* t) {
     if (scaleAction != nullptr) {
         t->addAction(scaleAction);
     } else {
@@ -279,7 +279,7 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar 
     t->addSeparator();
     t->addAction(ambiguousCharactersController->getPreviousAction());
     t->addAction(ambiguousCharactersController->getNextAction());
-    McaEditorConsensusArea *consensusArea = getEditor()->getUI()->getConsensusArea();
+    McaEditorConsensusArea* consensusArea = getEditor()->getUI()->getConsensusArea();
     consensusArea->buildStaticToolbar(t);
 
     t->addSeparator();
@@ -320,9 +320,9 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 }
 
 void McaEditorSequenceArea::sl_updateActions() {
-    MultipleAlignmentObject *maObj = editor->getMaObject();
+    MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
 
     bool readOnly = maObj->isStateLocked();
@@ -343,7 +343,7 @@ void McaEditorSequenceArea::sl_updateActions() {
 }
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
-    MultipleChromatogramAlignmentObject *mcaObj = getEditor()->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
     QList<int> maRowIndexes = getEditor()->getSelectionController()->getSelectedMaRowIndexes();
     SAFE_POINT(!maRowIndexes.isEmpty() && maRowIndexes.size() == 1, "Incorrect selection", )
     int maRowIndex = maRowIndexes[0];
@@ -353,7 +353,7 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     SAFE_POINT(!selection.isEmpty(), "selection is empty", );
     int currentPos = selection.toRect().x();
 
@@ -385,19 +385,19 @@ void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(ui, this);
 }
 
-void McaEditorSequenceArea::drawBackground(QPainter &painter) {
-    auto mcaRenderer = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+void McaEditorSequenceArea::drawBackground(QPainter& painter) {
+    auto mcaRenderer = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     SAFE_POINT(mcaRenderer != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
     mcaRenderer->drawReferenceSelection(painter);
     mcaRenderer->drawNameListSelection(painter);
 }
 
-void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
+void McaEditorSequenceArea::getColorAndHighlightingIds(QString& csid, QString& hsid) {
     csid = MsaColorScheme::UGENE_SANGER_NUCL;
     hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
 
-QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionName) {
+QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {
     auto showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
@@ -410,12 +410,12 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != nullptr, );
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );
 
-    MultipleChromatogramAlignmentObject *maObj = getEditor()->getMaObject();
+    MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
     CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     // if this method was invoked during a region shifting
@@ -434,7 +434,7 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     GCounter::increment(newCharacter == U2Msa::GAP_CHAR ? "Insert gap into a new column" : "Insert character into a new column", editor->getFactoryId());
 
     // insert char into the reference
-    U2SequenceObject *ref = getEditor()->getMaObject()->getReferenceObj();
+    U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();
     U2Region region = U2Region(selectionRect.x(), 0);
     ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
     SAFE_POINT_OP(os, );
@@ -442,32 +442,32 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     exitFromEditCharacterMode();
 }
 
-bool McaEditorSequenceArea::isCharacterAcceptable(const QString &text) const {
+bool McaEditorSequenceArea::isCharacterAcceptable(const QString& text) const {
     static const QString alphabetCharacters = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED())->getAlphabetChars();
     static const QRegExp dnaExtendedCharacterOrGap(QString("([%1]| |-|%2)").arg(alphabetCharacters).arg(emDash));
     return dnaExtendedCharacterOrGap.exactMatch(text);
 }
 
-const QString &McaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {
+const QString& McaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {
     static const QString message = tr("It is not possible to insert the character into the alignment. "
                                       "Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character ('Space', '-' or '%1').")
                                        .arg(emDash);
     return message;
 }
 
-McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
-    return qobject_cast<McaEditorWgt *>(ui);
+McaEditorWgt* McaEditorSequenceArea::getMcaEditorWgt() const {
+    return qobject_cast<McaEditorWgt*>(ui);
 }
 
-void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInfo) {
+void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
     if (!modInfo.rowListChanged) {
         return;
     }
-    MultipleAlignmentObject *maObject = editor->getMaObject();
-    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    MultipleAlignmentObject* maObject = editor->getMaObject();
+    MaCollapseModel* collapseModel = editor->getCollapseModel();
     QSet<int> expandedGroupIndexes;
     for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
-        const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroup(i);
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
         if (!group->isCollapsed) {
             qint64 rowId = group->maRowIds[0];
             expandedGroupIndexes << maObject->getRowPosById(rowId);

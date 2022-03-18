@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class MarkSequencePrompter : public PrompterBase<MarkSequencePrompter> {
     Q_OBJECT
 public:
-    MarkSequencePrompter(Actor *p = nullptr)
+    MarkSequencePrompter(Actor* p = nullptr)
         : PrompterBase<MarkSequencePrompter>(p) {
     }
 
@@ -46,16 +46,16 @@ public:
     static QMap<QString, QString> cuteAlIdNames;
 
 public:
-    MarkSequenceWorker(Actor *p);
+    MarkSequenceWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
 private:
-    IntegralBus *inChannel;
-    IntegralBus *outChannel;
+    IntegralBus* inChannel;
+    IntegralBus* outChannel;
     DataTypePtr mtype;
 
 };  // MarkSequenceWorker
@@ -68,7 +68,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // MarkSequenceWorkerFactory
 

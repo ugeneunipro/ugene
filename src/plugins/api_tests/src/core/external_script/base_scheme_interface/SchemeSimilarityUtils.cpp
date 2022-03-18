@@ -32,8 +32,8 @@ namespace U2 {
 using namespace WorkflowSerialize;
 
 void SchemeSimilarityUtils::checkSchemesSimilarity(SchemeHandle assembledScheme,
-                                                   const QString &pathToProperScheme,
-                                                   U2OpStatus &stateInfo) {
+                                                   const QString& pathToProperScheme,
+                                                   U2OpStatus& stateInfo) {
     QString assembledSchemeContent = getSchemeContentByHandle(assembledScheme, stateInfo);
     CHECK_OP(stateInfo, );
     skipSchemeSpecificNames(assembledSchemeContent);
@@ -57,11 +57,11 @@ void SchemeSimilarityUtils::checkSchemesSimilarity(SchemeHandle assembledScheme,
                                                                    " were listed in test scheme"), );
 }
 
-int SchemeSimilarityUtils::getSchemeDescriptionStartPos(const QString &schemeContent) {
+int SchemeSimilarityUtils::getSchemeDescriptionStartPos(const QString& schemeContent) {
     return schemeContent.indexOf(Constants::BLOCK_START) + 1;
 }
 
-int SchemeSimilarityUtils::getSchemeDescriptionEndPos(const QString &schemeContent) {
+int SchemeSimilarityUtils::getSchemeDescriptionEndPos(const QString& schemeContent) {
     int result = schemeContent.indexOf(Constants::META_START);
     if (-1 == result) {
         result = schemeContent.lastIndexOf(Constants::BLOCK_END);
@@ -70,9 +70,9 @@ int SchemeSimilarityUtils::getSchemeDescriptionEndPos(const QString &schemeConte
 }
 
 QString SchemeSimilarityUtils::getSchemeContentByHandle(SchemeHandle scheme,
-                                                        U2OpStatus &stateInfo) {
+                                                        U2OpStatus& stateInfo) {
     QString pathToScheme(TEMP_SCHEMES_DIR_PATH + "/test_scheme.uwl");
-    wchar_t *wPathToScheme = (wchar_t *)malloc((pathToScheme.length() + 1) * sizeof(wchar_t));
+    wchar_t* wPathToScheme = (wchar_t*)malloc((pathToScheme.length() + 1) * sizeof(wchar_t));
     pathToScheme.toWCharArray(wPathToScheme);
     wPathToScheme[pathToScheme.length()] = '\0';
     U2ErrorType error = saveSchemeToFile(scheme, wPathToScheme);
@@ -89,14 +89,14 @@ QString SchemeSimilarityUtils::getSchemeContentByHandle(SchemeHandle scheme,
     return schemeContent;
 }
 
-QString SchemeSimilarityUtils::getSchemeContentByFilePath(const QString &pathToScheme,
-                                                          U2OpStatus &stateInfo) {
+QString SchemeSimilarityUtils::getSchemeContentByFilePath(const QString& pathToScheme,
+                                                          U2OpStatus& stateInfo) {
     QFile schemeFile(pathToScheme);
     const QString schemeContent = readFileContent(schemeFile, stateInfo);
     return schemeContent;
 }
 
-QString SchemeSimilarityUtils::readFileContent(QFile &file, U2OpStatus &stateInfo) {
+QString SchemeSimilarityUtils::readFileContent(QFile& file, U2OpStatus& stateInfo) {
     CHECK_EXT((file.isOpen() || file.open(QIODevice::ReadOnly | QIODevice::Text)),
               stateInfo.setError(QString("Could not open the file: \"%1\"")
                                      .arg(file.fileName())),
@@ -106,14 +106,14 @@ QString SchemeSimilarityUtils::readFileContent(QFile &file, U2OpStatus &stateInf
     return contentReader.readAll();
 }
 
-void SchemeSimilarityUtils::skipSchemeSpecificNames(QString &schemeContent) {
+void SchemeSimilarityUtils::skipSchemeSpecificNames(QString& schemeContent) {
     skipElementNames(schemeContent);
     skipElementIds(schemeContent);
     skipActorBindingsBlockBoundaries(schemeContent);
     skipValidatorBlocks(schemeContent);
 }
 
-void SchemeSimilarityUtils::skipElementNames(QString &schemeContent) {
+void SchemeSimilarityUtils::skipElementNames(QString& schemeContent) {
     int nextNameAttributePosition = schemeContent.indexOf(QRegExp(Constants::NAME_ATTR + "\\s*" + Constants::COLON));
     while (SUBSTRING_NOT_FOUND != nextNameAttributePosition) {
         const int nameStartPos = schemeContent.indexOf(Constants::COLON,
@@ -127,7 +127,7 @@ void SchemeSimilarityUtils::skipElementNames(QString &schemeContent) {
     }
 }
 
-void SchemeSimilarityUtils::skipElementIds(QString &schemeContent) {
+void SchemeSimilarityUtils::skipElementIds(QString& schemeContent) {
     const QRegExp elementIdStartPattern(Constants::NEW_LINE + Constants::TAB + "\\w");
     int elementIdEndPos = 0;
     int elementIdStartPos = 0;
@@ -159,7 +159,7 @@ void SchemeSimilarityUtils::skipElementIds(QString &schemeContent) {
     }
 }
 
-void SchemeSimilarityUtils::skipValidatorBlocks(QString &schemeContent) {
+void SchemeSimilarityUtils::skipValidatorBlocks(QString& schemeContent) {
     const QRegExp validatorBlockStartPattern("\\s+\\" + Constants::VALIDATOR + "\\s+");
     int validatorBlockStartPos = 0;
     int validatorBlockEndPos = 0;
@@ -194,7 +194,7 @@ void SchemeSimilarityUtils::skipValidatorBlocks(QString &schemeContent) {
     }
 }
 
-QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme(const QString &schemeContent) {
+QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme(const QString& schemeContent) {
     const int schemeDescStartPos = getSchemeDescriptionStartPos(schemeContent);
     const int schemeDescEndPos = getSchemeDescriptionEndPos(schemeContent);
 
@@ -211,7 +211,7 @@ QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme(const QString
     return statements;
 }
 
-void SchemeSimilarityUtils::skipActorBindingsBlockBoundaries(QString &schemeContent) {
+void SchemeSimilarityUtils::skipActorBindingsBlockBoundaries(QString& schemeContent) {
     const QString actorBindingsLine(Constants::NEW_LINE + Constants::TAB + Constants::ACTOR_BINDINGS);
     const int actorBindingsLineStart = schemeContent.indexOf(actorBindingsLine);
     if (SUBSTRING_NOT_FOUND != actorBindingsLineStart) {

@@ -68,7 +68,7 @@ const QString ADVSingleSequenceWidget::DET_VIEW_COLLAPSED = SEQUENCE_SETTINGS + 
 const QString ADVSingleSequenceWidget::ZOOM_VIEW_COLLAPSED = SEQUENCE_SETTINGS + "/zoomViewState";
 const QString ADVSingleSequenceWidget::OVERVIEW_COLLAPSED = SEQUENCE_SETTINGS + "/overviewState";
 
-ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCtx, AnnotatedDNAView *ctx)
+ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCtx, AnnotatedDNAView* ctx)
     : ADVSequenceWidget(ctx),
       detView(nullptr),
       panView(nullptr),
@@ -98,8 +98,8 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
     connect(toggleOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleOverview(bool)));
 
     connect(seqCtx->getAnnotatedDNAView()->getAnnotationsSelection(),
-            SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
-            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
+            SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)),
+            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)));
 
     selectRangeAction1 = new QAction(QIcon(":/core/images/select_region.png"), tr("Select sequence region..."), this);
     selectRangeAction1->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
@@ -138,14 +138,14 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
     linesSplitter->setAutoFillBackground(true);
     linesSplitter->setObjectName("single_sequence_view_splitter");
 
-    QWidget *linesLayoutWidget = new QWidget();
+    QWidget* linesLayoutWidget = new QWidget();
     linesLayoutWidget->setObjectName("lines_layout_widget");
     linesLayoutWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     linesLayoutWidget->setLayout(linesLayout);
 
     linesSplitter->addWidget(linesLayoutWidget);
 
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
     l->setSpacing(0);
     l->addWidget(linesSplitter);
@@ -165,7 +165,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
 }
 
 void ADVSingleSequenceWidget::init() {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
     detView = new DetView(this, seqCtx);
     QString objName = getSequenceObject()->getGObjectName();
     detView->setObjectName("det_view_" + objName);
@@ -192,8 +192,8 @@ void ADVSingleSequenceWidget::init() {
 
     buttonTabOrederedNames = new QList<QString>;
 
-    QToolBar *hStandardBar = headerWidget->getStandardToolBar();
-    QToolBar *hViewsBar = headerWidget->getViewsToolBar();
+    QToolBar* hStandardBar = headerWidget->getStandardToolBar();
+    QToolBar* hViewsBar = headerWidget->getViewsToolBar();
     hViewsBar->addSeparator();
     addButtonWithActionToToolbar(toggleOverviewAction, hViewsBar);
     addButtonWithActionToToolbar(togglePanViewAction, hViewsBar);
@@ -224,7 +224,7 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(closeViewAction, hViewsBar);
     connect(closeViewAction, SIGNAL(triggered()), SLOT(sl_closeView()));
 
-    dynamic_cast<OrderedToolbar *>(hStandardBar)->setButtonTabOrderList(buttonTabOrederedNames);
+    dynamic_cast<OrderedToolbar*>(hStandardBar)->setButtonTabOrderList(buttonTabOrederedNames);
 
     updateSelectionActions();
 
@@ -245,7 +245,7 @@ ADVSingleSequenceWidget::~ADVSingleSequenceWidget() {
     delete buttonTabOrederedNames;
 }
 
-QToolButton *ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction *buttonAction, QToolBar *toolBar, int position) const {
+QToolButton* ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction* buttonAction, QToolBar* toolBar, int position) const {
     SAFE_POINT(nullptr != buttonAction, "buttonAction is NULL", nullptr);
     SAFE_POINT(nullptr != toolBar, "toolBar is NULL", nullptr);
     SAFE_POINT(!buttonAction->objectName().isEmpty(), "Action's object name is empty", nullptr);
@@ -253,14 +253,14 @@ QToolButton *ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction *butt
     if (position == -1) {
         toolBar->addAction(buttonAction);
     } else {
-        QAction *before = toolBar->actions().at(position);
+        QAction* before = toolBar->actions().at(position);
         if (before != nullptr) {
             toolBar->insertAction(before, buttonAction);
         } else {
             toolBar->addAction(buttonAction);
         }
     }
-    QToolButton *button = qobject_cast<QToolButton *>(toolBar->widgetForAction(buttonAction));
+    QToolButton* button = qobject_cast<QToolButton*>(toolBar->widgetForAction(buttonAction));
     button->setFixedHeight(ADV_HEADER_HEIGHT - ADV_HEADER_TOP_BOTTOM_INDENT);
 
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(buttonAction->objectName()), nullptr);
@@ -350,7 +350,7 @@ void ADVSingleSequenceWidget::setOverviewCollapsed(bool collapsed) {
     updateViewButtonState();
 }
 
-void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView *v, QWidget *after) {
+void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView* v, QWidget* after) {
     assert(!lineViews.contains(v));
     lineViews.append(v);
     if (after == nullptr) {
@@ -363,10 +363,10 @@ void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView *v, QWidget *aft
     v->setVisible(true);
     v->installEventFilter(this);
     updateMinMaxHeight();
-    connect(v, SIGNAL(destroyed(QObject *)), SLOT(sl_onViewDestroyed(QObject *)));
+    connect(v, SIGNAL(destroyed(QObject*)), SLOT(sl_onViewDestroyed(QObject*)));
 }
 
-void ADVSingleSequenceWidget::removeSequenceView(GSequenceLineView *v, bool deleteView) {
+void ADVSingleSequenceWidget::removeSequenceView(GSequenceLineView* v, bool deleteView) {
     assert(lineViews.contains(v));
     lineViews.removeOne(v);
     v->setVisible(false);  // making widget invisible removes it from the splitter automatically
@@ -382,7 +382,7 @@ U2Region ADVSingleSequenceWidget::getVisibleRange() const {
     return panView->getVisibleRange();
 }
 
-void ADVSingleSequenceWidget::setVisibleRange(const U2Region &r) {
+void ADVSingleSequenceWidget::setVisibleRange(const U2Region& r) {
     return panView->setVisibleRange(r);
 }
 
@@ -394,16 +394,16 @@ void ADVSingleSequenceWidget::setNumBasesVisible(qint64 n) {
     panView->setNumBasesVisible(n);
 }
 
-void ADVSingleSequenceWidget::sl_onViewDestroyed(QObject *o) {
-    GSequenceLineView *v = static_cast<GSequenceLineView *>(o);
+void ADVSingleSequenceWidget::sl_onViewDestroyed(QObject* o) {
+    GSequenceLineView* v = static_cast<GSequenceLineView*>(o);
     bool r = lineViews.removeOne(v);
     assert(r);
     Q_UNUSED(r);
     updateMinMaxHeight();
 }
 
-void ADVSingleSequenceWidget::centerPosition(int pos, QWidget *skipView) {
-    foreach (GSequenceLineView *v, lineViews) {
+void ADVSingleSequenceWidget::centerPosition(int pos, QWidget* skipView) {
+    foreach (GSequenceLineView* v, lineViews) {
         if (v == skipView) {
             continue;
         }
@@ -419,24 +419,24 @@ void ADVSingleSequenceWidget::updateMinMaxHeight() {
     }
 }
 
-void ADVSingleSequenceWidget::addZoomMenu(const QPoint &globalPos, QMenu *m) {
-    GSequenceLineView *lineView = findSequenceViewByPos(globalPos);
+void ADVSingleSequenceWidget::addZoomMenu(const QPoint& globalPos, QMenu* m) {
+    GSequenceLineView* lineView = findSequenceViewByPos(globalPos);
     if (lineView == nullptr) {
         return;
     }
 
-    QAction *first = m->actions().isEmpty() ? nullptr : m->actions().first();
+    QAction* first = m->actions().isEmpty() ? nullptr : m->actions().first();
 
-    QAction *zoomInAction = lineView->getZoomInAction();
-    QAction *zoomOutAction = lineView->getZoomOutAction();
-    QAction *zoomToSelection = lineView->getZoomToSelectionAction();
-    QAction *zoomToSequence = lineView->getZoomToSequenceAction();
+    QAction* zoomInAction = lineView->getZoomInAction();
+    QAction* zoomOutAction = lineView->getZoomOutAction();
+    QAction* zoomToSelection = lineView->getZoomToSelectionAction();
+    QAction* zoomToSequence = lineView->getZoomToSequenceAction();
 
     if (zoomInAction == nullptr && zoomOutAction == nullptr && zoomToSelection == nullptr && zoomToSequence == nullptr) {
         return;
     }
 
-    QMenu *zm = m->addMenu(tr("Zoom"));
+    QMenu* zm = m->addMenu(tr("Zoom"));
 
     if (zoomInAction != nullptr) {
         zm->insertAction(first, zoomInAction);
@@ -457,7 +457,7 @@ void ADVSingleSequenceWidget::addZoomMenu(const QPoint &globalPos, QMenu *m) {
     m->addSeparator();
 }
 
-GSequenceLineView *ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint &globalPos) const {
+GSequenceLineView* ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint& globalPos) const {
     Q_UNUSED(globalPos);
     assert(0);
     return nullptr;
@@ -467,35 +467,35 @@ qint64 ADVSingleSequenceWidget::getSequenceLength() const {
     return getSequenceContext()->getSequenceLength();
 }
 
-DNATranslation *ADVSingleSequenceWidget::getComplementTT() const {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
+DNATranslation* ADVSingleSequenceWidget::getComplementTT() const {
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
     return seqCtx->getComplementTT();
 }
 
-DNATranslation *ADVSingleSequenceWidget::getAminoTT() const {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
+DNATranslation* ADVSingleSequenceWidget::getAminoTT() const {
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
     return seqCtx->getAminoTT();
 }
 
-DNASequenceSelection *ADVSingleSequenceWidget::getSequenceSelection() const {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
+DNASequenceSelection* ADVSingleSequenceWidget::getSequenceSelection() const {
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
     return seqCtx->getSequenceSelection();
 }
 
-U2SequenceObject *ADVSingleSequenceWidget::getSequenceObject() const {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
+U2SequenceObject* ADVSingleSequenceWidget::getSequenceObject() const {
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
     return seqCtx->getSequenceObject();
 }
 
-GSequenceLineView *ADVSingleSequenceWidget::getPanGSLView() const {
+GSequenceLineView* ADVSingleSequenceWidget::getPanGSLView() const {
     return panView;
 }
 
-GSequenceLineView *ADVSingleSequenceWidget::getDetGSLView() const {
+GSequenceLineView* ADVSingleSequenceWidget::getDetGSLView() const {
     return detView;
 }
 
-void ADVSingleSequenceWidget::buildPopupMenu(QMenu &m) {
+void ADVSingleSequenceWidget::buildPopupMenu(QMenu& m) {
     m.insertAction(GUIUtils::findActionAfter(m.actions(), ADV_GOTO_ACTION), getAnnotatedDNAView()->getCreateAnnotationAction());
     m.insertAction(GUIUtils::findActionAfter(m.actions(), ADV_GOTO_ACTION), selectRangeAction1);
 
@@ -506,28 +506,28 @@ void ADVSingleSequenceWidget::buildPopupMenu(QMenu &m) {
     }
 
     ADVSequenceWidget::buildPopupMenu(m);
-    foreach (GSequenceLineView *v, lineViews) {
+    foreach (GSequenceLineView* v, lineViews) {
         v->buildPopupMenu(m);
     }
 }
 
-void ADVSingleSequenceWidget::addSelectMenu(QMenu &m) {
-    QMenu *selectMenu = new QMenu(tr("Select"), &m);
+void ADVSingleSequenceWidget::addSelectMenu(QMenu& m) {
+    QMenu* selectMenu = new QMenu(tr("Select"), &m);
     selectMenu->menuAction()->setObjectName("Select");
 
     selectMenu->addAction(selectRangeAction2);
     selectMenu->addAction(selectInAnnotationRangeAction);
     selectMenu->addAction(selectOutAnnotationRangeAction);
 
-    QAction *aBefore = GUIUtils::findActionAfter(m.actions(), ADV_MENU_COPY);
+    QAction* aBefore = GUIUtils::findActionAfter(m.actions(), ADV_MENU_COPY);
     m.insertMenu(aBefore, selectMenu);
 }
 
-void ADVSingleSequenceWidget::addRulersMenu(QMenu &m) {
+void ADVSingleSequenceWidget::addRulersMenu(QMenu& m) {
     qDeleteAll(rulerActions.qlist);
     rulerActions.qlist.clear();
 
-    QMenu *rulersM = new QMenu(tr("Rulers..."), &m);
+    QMenu* rulersM = new QMenu(tr("Rulers..."), &m);
     rulersM->menuAction()->setObjectName("Rulers");
     rulersM->setIcon(QIcon(":core/images/ruler.png"));
 
@@ -537,22 +537,22 @@ void ADVSingleSequenceWidget::addRulersMenu(QMenu &m) {
     rulersM->addAction(panView->getToggleCustomRulersAction());
     rulersM->addSeparator();
 
-    foreach (const RulerInfo &ri, panView->getCustomRulers()) {
-        QAction *rulerAction = new QAction(tr("Remove '%1'").arg(ri.name), this);
+    foreach (const RulerInfo& ri, panView->getCustomRulers()) {
+        QAction* rulerAction = new QAction(tr("Remove '%1'").arg(ri.name), this);
         rulerAction->setData(ri.name);
         connect(rulerAction, SIGNAL(triggered()), SLOT(sl_removeCustomRuler()));
         rulerActions.qlist.append(rulerAction);
     }
     rulersM->addActions(rulerActions.qlist);
 
-    QAction *aBefore = GUIUtils::findActionAfter(m.actions(), ADV_MENU_SECTION2_SEP);
+    QAction* aBefore = GUIUtils::findActionAfter(m.actions(), ADV_MENU_SECTION2_SEP);
     m.insertMenu(aBefore, rulersM);
     m.insertSeparator(aBefore)->setObjectName("SECOND_SEP");
 }
 
-bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject *o) const {
-    foreach (GSequenceLineView *v, lineViews) {
-        SequenceObjectContext *ctx = v->getSequenceContext();
+bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject* o) const {
+    foreach (GSequenceLineView* v, lineViews) {
+        SequenceObjectContext* ctx = v->getSequenceContext();
         if (ctx->getSequenceGObject() == o) {
             return true;
         }
@@ -560,10 +560,10 @@ bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject *o) const {
     return false;
 }
 
-bool ADVSingleSequenceWidget::eventFilter(QObject *o, QEvent *e) {
+bool ADVSingleSequenceWidget::eventFilter(QObject* o, QEvent* e) {
     QEvent::Type t = e->type();
     if (t == QEvent::Resize) {
-        GSequenceLineView *v = qobject_cast<GSequenceLineView *>(o);
+        GSequenceLineView* v = qobject_cast<GSequenceLineView*>(o);
         if (lineViews.contains(v)) {
             updateMinMaxHeight();
         }
@@ -572,7 +572,7 @@ bool ADVSingleSequenceWidget::eventFilter(QObject *o, QEvent *e) {
     }
 
     if (o == headerWidget && t == QEvent::MouseButtonPress) {
-        QMouseEvent *event = dynamic_cast<QMouseEvent *>(e);
+        QMouseEvent* event = dynamic_cast<QMouseEvent*>(e);
         CHECK(event, false);
         if (event->buttons() == Qt::LeftButton) {
             emit si_titleClicked(this);
@@ -585,28 +585,28 @@ void ADVSingleSequenceWidget::sl_onLocalCenteringRequest(qint64 pos) {
     detView->setCenterPos(pos);
 }
 
-void ADVSingleSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction *a) {
+void ADVSingleSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction* a) {
     ADVSequenceWidget::addADVSequenceWidgetAction(a);
     if (a->addToBar) {
-        QToolBar *tb = headerWidget->getStandardToolBar();
+        QToolBar* tb = headerWidget->getStandardToolBar();
         addButtonWithActionToToolbar(a, tb, 0);
         buttonTabOrederedNames->prepend(a->objectName());
     }
 }
 
-void ADVSingleSequenceWidget::addADVSequenceWidgetActionToViewsToolbar(ADVSequenceWidgetAction *a) {
+void ADVSingleSequenceWidget::addADVSequenceWidgetActionToViewsToolbar(ADVSequenceWidgetAction* a) {
     ADVSequenceWidget::addADVSequenceWidgetAction(a);
     if (a->addToBar) {
-        QToolBar *tb = headerWidget->getViewsToolBar();
+        QToolBar* tb = headerWidget->getViewsToolBar();
         addButtonWithActionToToolbar(a, tb, 1);
     }
 }
 
 void ADVSingleSequenceWidget::sl_onSelectRange() {
-    ADVSequenceObjectContext *ctx = getSequenceContext();
-    DNASequenceSelection *selection = ctx->getSequenceSelection();
+    ADVSequenceObjectContext* ctx = getSequenceContext();
+    DNASequenceSelection* selection = ctx->getSequenceSelection();
 
-    const QVector<U2Region> &seqRegions = selection->getSelectedRegions();
+    const QVector<U2Region>& seqRegions = selection->getSelectedRegions();
 
     QObjectScopedPointer<MultipleRangeSelector> mrs = new MultipleRangeSelector(this, seqRegions, ctx->getSequenceLength(), ctx->getSequenceObject()->isCircular());
     mrs->exec();
@@ -630,13 +630,13 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
 }
 
 QVector<U2Region> ADVSingleSequenceWidget::getSelectedAnnotationRegions(int max) {
-    ADVSequenceObjectContext *seqCtx = getSequenceContext();
-    const QList<Annotation *> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getAnnotations();
-    const QSet<AnnotationTableObject *> myAnns = seqCtx->getAnnotationObjects(true);
+    ADVSequenceObjectContext* seqCtx = getSequenceContext();
+    const QList<Annotation*> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getAnnotations();
+    const QSet<AnnotationTableObject*> myAnns = seqCtx->getAnnotationObjects(true);
 
     QVector<U2Region> res;
-    foreach (const Annotation *annotation, selection) {
-        AnnotationTableObject *aObj = annotation->getGObject();
+    foreach (const Annotation* annotation, selection) {
+        AnnotationTableObject* aObj = annotation->getGObject();
         if (myAnns.contains(aObj)) {
             res << U2Region::containingRegion(annotation->getRegions());
             if (max > 0 && res.size() >= max) {
@@ -651,8 +651,8 @@ void ADVSingleSequenceWidget::sl_onSelectInRange() {
     QVector<U2Region> selRegs = getSelectedAnnotationRegions(3);
     assert(selRegs.size() == 2);
 
-    const U2Region &r1 = selRegs.at(0);
-    const U2Region &r2 = selRegs.at(1);
+    const U2Region& r1 = selRegs.at(0);
+    const U2Region& r2 = selRegs.at(1);
     assert(!r1.intersects(r2));
 
     U2Region r;
@@ -670,16 +670,16 @@ void ADVSingleSequenceWidget::sl_onSelectOutRange() {
     setSelectedRegion(r);
 }
 
-void ADVSingleSequenceWidget::setSelectedRegion(const U2Region &region) {
+void ADVSingleSequenceWidget::setSelectedRegion(const U2Region& region) {
     getSequenceContext()->getSequenceSelection()->setRegion(region);
 }
 
 void ADVSingleSequenceWidget::sl_zoomToRange() {
-    DNASequenceSelection *sel = getSequenceSelection();
+    DNASequenceSelection* sel = getSequenceSelection();
     int start = getVisibleRange().startPos + 1;
     int end = getVisibleRange().endPos();
     if (!sel->isEmpty()) {
-        const QVector<U2Region> &regions = sel->getSelectedRegions();
+        const QVector<U2Region>& regions = sel->getSelectedRegions();
         start = regions.first().startPos + 1;
         end = regions.first().endPos();
     }
@@ -688,7 +688,7 @@ void ADVSingleSequenceWidget::sl_zoomToRange() {
     dlg->setModal(true);
     dlg->setWindowTitle(tr("Zoom to range"));
 
-    RangeSelector *rs = new RangeSelector(dlg.data(), start, end, getSequenceLength(), true);
+    RangeSelector* rs = new RangeSelector(dlg.data(), start, end, getSequenceLength(), true);
 
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -713,7 +713,7 @@ void ADVSingleSequenceWidget::sl_zoomToRange() {
 #define CUSTOM_R_OFFSETS "CUSTOMR_OFFSETS"
 #define SEQUENCE_GRAPH_NAME "GRAPH_NAME"
 
-void ADVSingleSequenceWidget::updateState(const QVariantMap &m) {
+void ADVSingleSequenceWidget::updateState(const QVariantMap& m) {
     QVariantMap map = m.value(SPLITTER_STATE_MAP_NAME).toMap();
     QString sequenceInProjectId = getActiveSequenceContext()->getSequenceObject()->getGHints()->get(GObjectHint_InProjectId).toString();
     QVariantMap myData = map.value(sequenceInProjectId).toMap();
@@ -760,7 +760,7 @@ void ADVSingleSequenceWidget::updateState(const QVariantMap &m) {
     emit si_updateGraphView(graphNames, myData);
 }
 
-void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
+void ADVSingleSequenceWidget::saveState(QVariantMap& m) {
     QVariantMap map = m.value(SPLITTER_STATE_MAP_NAME).toMap();
 
     QVariantMap myData;
@@ -775,7 +775,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
     QStringList rnames;
     QList<QVariant> roffsets;
     QList<QVariant> rcolors;
-    foreach (const RulerInfo &ri, panView->getCustomRulers()) {
+    foreach (const RulerInfo& ri, panView->getCustomRulers()) {
         rnames.append(ri.name);
         roffsets.append(ri.offset);
         rcolors.append(ri.color);
@@ -785,8 +785,8 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
     myData[CUSTOM_R_COLORS] = rcolors;
 
     QStringList graphNames;
-    for (GSequenceLineView *view : qAsConst(lineViews)) {
-        if (auto graphView = dynamic_cast<GSequenceGraphView *>(view)) {
+    for (GSequenceLineView* view : qAsConst(lineViews)) {
+        if (auto graphView = dynamic_cast<GSequenceGraphView*>(view)) {
             QList<QVariant> graphLabelPositions;
             graphNames.append(graphView->getGraphViewName());
             graphView->getSavedLabelsState(graphLabelPositions);
@@ -813,37 +813,37 @@ void ADVSingleSequenceWidget::sl_saveScreenshot() {
     SingleSequenceImageExportController controller(this);
 
     QString fileName = GUrlUtils::fixFileName(getSequenceObject()->getGObjectName());
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&controller, ExportImageDialog::SequenceView, fileName, ExportImageDialog::NoScaling, p);
 
     dialog->exec();
 }
 
 void ADVSingleSequenceWidget::closeView() {
-    U2SequenceObject *dnaObj = getSequenceObject();
-    AnnotatedDNAView *v = getAnnotatedDNAView();
+    U2SequenceObject* dnaObj = getSequenceObject();
+    AnnotatedDNAView* v = getAnnotatedDNAView();
     v->removeObject(dnaObj);
 }
 
 void ADVSingleSequenceWidget::sl_createCustomRuler() {
     QSet<QString> namesToFilter;
-    foreach (const RulerInfo &ri, panView->getCustomRulers()) {
+    foreach (const RulerInfo& ri, panView->getCustomRulers()) {
         namesToFilter.insert(ri.name);
     }
 
     int offset = panView->getVisibleRange().center();
 
-    AnnotationSelection *annSelection = getDetGSLView()->getSequenceContext()->getAnnotationsSelection();
-    U2SequenceObject *seqObj = getSequenceObject();
+    AnnotationSelection* annSelection = getDetGSLView()->getSequenceContext()->getAnnotationsSelection();
+    U2SequenceObject* seqObj = getSequenceObject();
     int annOffset = INT_MAX;
-    foreach (const Annotation *ann, annSelection->getAnnotations()) {
-        AnnotationTableObject *annObj = ann->getGObject();
+    foreach (const Annotation* ann, annSelection->getAnnotations()) {
+        AnnotationTableObject* annObj = ann->getGObject();
         if (!annObj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
             continue;
         }
 
         // find minimum of start positions of selected annotations
-        foreach (const U2Region &region, ann->getRegions()) {
+        foreach (const U2Region& region, ann->getRegions()) {
             annOffset = annOffset > region.startPos ? region.startPos : annOffset;
         }
     }
@@ -868,11 +868,11 @@ void ADVSingleSequenceWidget::sl_createCustomRuler() {
 }
 
 void ADVSingleSequenceWidget::sl_removeCustomRuler() {
-    QString rulerName = qobject_cast<QAction *>(sender())->data().toString();
+    QString rulerName = qobject_cast<QAction*>(sender())->data().toString();
     panView->removeCustomRuler(rulerName);
 }
 
-void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
+void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&) {
     updateSelectionActions();
 }
 
@@ -899,28 +899,28 @@ void ADVSingleSequenceWidget::sl_toggleOverview(bool checked) {
     setOverviewCollapsed(!checked);
 }
 
-void ADVSingleSequenceWidget::onSequenceObjectRenamed(const QString &) {
+void ADVSingleSequenceWidget::onSequenceObjectRenamed(const QString&) {
     headerWidget->updateTitle();
 }
 
 //////////////////////////////////////////////////////////////////////////
 // header
 
-ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWidget *p)
+ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWidget* p)
     : QWidget(p), ctx(p) {
     setFixedHeight(ADV_HEADER_HEIGHT);
     setBackgroundRole(QPalette::Window);
     setAutoFillBackground(true);
 
-    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
+    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_onActiveSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)));
 
     // TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
-    QHBoxLayout *l = new QHBoxLayout();
+    QHBoxLayout* l = new QHBoxLayout();
     l->setSpacing(4);
     l->setContentsMargins(5, 1, 0, 2);
 
-    U2SequenceObject *seqObj = ctx->getSequenceObject();
+    U2SequenceObject* seqObj = ctx->getSequenceObject();
     QString objName = seqObj->getGObjectName();
     pixLabel = new QLabel(this);
     QFont f = pixLabel->font();
@@ -966,24 +966,24 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
     l->addWidget(standardToolBar);
     l->addWidget(viewsToolBar);
 
-    connect(standardToolBar, SIGNAL(actionTriggered(QAction *)), SLOT(sl_actionTriggered(QAction *)));
-    connect(viewsToolBar, SIGNAL(actionTriggered(QAction *)), SLOT(sl_actionTriggered(QAction *)));
+    connect(standardToolBar, SIGNAL(actionTriggered(QAction*)), SLOT(sl_actionTriggered(QAction*)));
+    connect(viewsToolBar, SIGNAL(actionTriggered(QAction*)), SLOT(sl_actionTriggered(QAction*)));
 
     updateActiveState();
 }
 
 void ADVSingleSequenceHeaderWidget::updateTitle() {
-    U2SequenceObject *seqObj = ctx->getSequenceObject();
+    U2SequenceObject* seqObj = ctx->getSequenceObject();
     QString newTitle = seqObj->getGObjectName() + " [" + getShortAlphabetName(seqObj->getAlphabet()) + "]";
     setTitle(newTitle);
 }
 
-void ADVSingleSequenceHeaderWidget::sl_actionTriggered(QAction *a) {
+void ADVSingleSequenceHeaderWidget::sl_actionTriggered(QAction* a) {
     Q_UNUSED(a);
     ctx->getAnnotatedDNAView()->setActiveSequenceWidget(ctx);
 }
 
-void ADVSingleSequenceHeaderWidget::sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *oldActiveWidget, ADVSequenceWidget *newActiveWidget) {
+void ADVSingleSequenceHeaderWidget::sl_onActiveSequenceWidgetChanged(ADVSequenceWidget* oldActiveWidget, ADVSequenceWidget* newActiveWidget) {
     if (oldActiveWidget == ctx || newActiveWidget == ctx) {
         update();
         updateActiveState();
@@ -998,12 +998,12 @@ void ADVSingleSequenceHeaderWidget::updateActiveState() {
     // toolBar->setEnabled(focused); TODO: click on disabled buttons does not switch focus!
 }
 
-void ADVSingleSequenceHeaderWidget::mouseDoubleClickEvent(QMouseEvent *e) {
+void ADVSingleSequenceHeaderWidget::mouseDoubleClickEvent(QMouseEvent* e) {
     ctx->toggleViewAction->trigger();
     QWidget::mouseDoubleClickEvent(e);
 }
 
-void ADVSingleSequenceHeaderWidget::paintEvent(QPaintEvent *e) {
+void ADVSingleSequenceHeaderWidget::paintEvent(QPaintEvent* e) {
     QWidget::paintEvent(e);
 
     QPainter p(this);
@@ -1011,7 +1011,7 @@ void ADVSingleSequenceHeaderWidget::paintEvent(QPaintEvent *e) {
     p.drawLine(0, height() - 1, width(), height() - 1);
 }
 
-QString ADVSingleSequenceHeaderWidget::getShortAlphabetName(const DNAAlphabet *al) {
+QString ADVSingleSequenceHeaderWidget::getShortAlphabetName(const DNAAlphabet* al) {
     DNAAlphabetType type = al->getType();
     if (type == DNAAlphabet_RAW) {
         return tr("raw");

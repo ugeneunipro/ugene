@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options)
+ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString& srcUrl, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options)
     : Task(tr("Import file %1 to the database").arg(QFileInfo(srcUrl).fileName()), TaskFlags_FOSE_COSC),
       srcUrl(srcUrl),
       dstDbiRef(dstDbiRef),
@@ -50,7 +50,7 @@ ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const 
 }
 
 void ImportFileToDatabaseTask::prepare() {
-    DocumentProviderTask *importTask = detectFormat();
+    DocumentProviderTask* importTask = detectFormat();
     CHECK_EXT(format != nullptr || importTask != nullptr, setError(tr("File format is not recognized")), );
     CHECK_OP(stateInfo, );
 
@@ -66,15 +66,15 @@ void ImportFileToDatabaseTask::run() {
 
     const QVariantMap hints = prepareHints();
 
-    IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(GUrl(srcUrl)));
+    IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(GUrl(srcUrl)));
     CHECK_EXT(ioFactory != nullptr, setError(tr("Unrecognized url: ") + srcUrl), );
     CHECK_OP(stateInfo, );
 
-    Document *loadedDoc = format->loadDocument(ioFactory, srcUrl, hints, stateInfo);
+    Document* loadedDoc = format->loadDocument(ioFactory, srcUrl, hints, stateInfo);
     CHECK_OP(stateInfo, );
 
     U2OpStatusImpl os;
-    Document *restructuredDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDoc, os);
+    Document* restructuredDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDoc, os);
     if (restructuredDoc != nullptr) {
         restructuredDoc->setDocumentOwnsDbiResources(false);
         loadedDoc->setDocumentOwnsDbiResources(true);
@@ -86,11 +86,11 @@ void ImportFileToDatabaseTask::run() {
     delete loadedDoc;
 }
 
-const QString &ImportFileToDatabaseTask::getFilePath() const {
+const QString& ImportFileToDatabaseTask::getFilePath() const {
     return srcUrl;
 }
 
-DocumentProviderTask *ImportFileToDatabaseTask::detectFormat() {
+DocumentProviderTask* ImportFileToDatabaseTask::detectFormat() {
     FormatDetectionConfig detectionConfig;
     detectionConfig.useImporters = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(GUrl(srcUrl), detectionConfig);
@@ -101,7 +101,7 @@ DocumentProviderTask *ImportFileToDatabaseTask::detectFormat() {
     format = preferredFormat.format;
     CHECK(format == nullptr, nullptr);
 
-    DocumentImporter *importer = preferredFormat.importer;
+    DocumentImporter* importer = preferredFormat.importer;
     CHECK(importer != nullptr, nullptr);  // do something with unrecognized files here
 
     QVariantMap hints = prepareHints();
@@ -150,12 +150,12 @@ QString ImportFileToDatabaseTask::getFolderName() const {
     return result;
 }
 
-FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<FormatDetectionResult> &detectedFormats) const {
+FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<FormatDetectionResult>& detectedFormats) const {
     CHECK(!detectedFormats.isEmpty(), FormatDetectionResult());
     CHECK(!options.preferredFormats.isEmpty(), detectedFormats.first());
 
     QStringList detectedFormatIds;
-    for (const FormatDetectionResult &detectedFormat : qAsConst(detectedFormats)) {
+    for (const FormatDetectionResult& detectedFormat : qAsConst(detectedFormats)) {
         if (detectedFormat.format != nullptr) {
             detectedFormatIds << detectedFormat.format->getFormatId();
         } else if (detectedFormat.importer != nullptr) {
@@ -165,7 +165,7 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
         }
     }
 
-    for (const QString &formatId : qAsConst(options.preferredFormats)) {
+    for (const QString& formatId : qAsConst(options.preferredFormats)) {
         int i = detectedFormatIds.indexOf(formatId);
         if (i >= 0) {
             return detectedFormats[i];

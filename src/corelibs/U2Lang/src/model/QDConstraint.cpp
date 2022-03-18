@@ -27,7 +27,7 @@ namespace U2 {
 
 const QDConstraintType QDConstraintTypes::DISTANCE("QD_Distance_Constraint");
 
-QDDistanceConstraint::QDDistanceConstraint(const QList<QDSchemeUnit *> &_units, QDDistanceType type, int min, int max)
+QDDistanceConstraint::QDDistanceConstraint(const QList<QDSchemeUnit*>& _units, QDDistanceType type, int min, int max)
     : QDConstraint(_units, QDConstraintTypes::DISTANCE), distType(type) {
     assert(_units.size() == 2);
     cfg = new QDParameters;
@@ -35,8 +35,8 @@ QDDistanceConstraint::QDDistanceConstraint(const QList<QDSchemeUnit *> &_units, 
     Descriptor mind(QDConstraintController::MIN_LEN_ATTR, QObject::tr("Min distance"), QObject::tr("Minimum distance"));
     Descriptor maxd(QDConstraintController::MAX_LEN_ATTR, QObject::tr("Max distance"), QObject::tr("Maximum distance"));
 
-    Attribute *minAttr = new Attribute(mind, BaseTypes::NUM_TYPE(), true, QVariant(min));
-    Attribute *maxAttr = new Attribute(maxd, BaseTypes::NUM_TYPE(), true, QVariant(max));
+    Attribute* minAttr = new Attribute(mind, BaseTypes::NUM_TYPE(), true, QVariant(min));
+    Attribute* maxAttr = new Attribute(maxd, BaseTypes::NUM_TYPE(), true, QVariant(max));
 
     cfg->addParameter(minAttr->getId(), minAttr);
     cfg->addParameter(maxAttr->getId(), maxAttr);
@@ -62,7 +62,7 @@ void QDDistanceConstraint::setMax(int max) {
     cfg->setParameter(QDConstraintController::MAX_LEN_ATTR, qVariantFromValue(max));
 }
 
-QString QDDistanceConstraint::getText(QDSchemeUnit *, QDSchemeUnit *) const {
+QString QDDistanceConstraint::getText(QDSchemeUnit*, QDSchemeUnit*) const {
     int minVal = getMin();
     int maxVal = getMax();
     if (minVal == maxVal) {
@@ -97,14 +97,14 @@ QDDistanceType QDConstraintController::getInvertedType(QDDistanceType type) {
     return type;
 }
 
-bool QDConstraintController::match(QDConstraint *c, const QDResultUnit &r1, const QDResultUnit &r2, bool complement) {
-    QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(c);
+bool QDConstraintController::match(QDConstraint* c, const QDResultUnit& r1, const QDResultUnit& r2, bool complement) {
+    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
     assert(dc);
 
-    const U2Region &reg1 = r1->region;
-    const U2Region &reg2 = r2->region;
+    const U2Region& reg1 = r1->region;
+    const U2Region& reg2 = r2->region;
 
-    const QDDistanceType &dist = dc->distanceType();
+    const QDDistanceType& dist = dc->distanceType();
 
     int min = dc->getMin();
     int max = dc->getMax();
@@ -125,9 +125,9 @@ bool QDConstraintController::match(QDConstraint *c, const QDResultUnit &r1, cons
     }
 }
 
-bool QDConstraintController::match(const U2Region &srcReg,
-                                   const U2Region &dstReg,
-                                   const QDDistanceType &type,
+bool QDConstraintController::match(const U2Region& srcReg,
+                                   const U2Region& dstReg,
+                                   const QDDistanceType& type,
                                    int min,
                                    int max) {
     switch (type) {
@@ -171,12 +171,12 @@ bool QDConstraintController::match(const U2Region &srcReg,
     return false;
 }
 
-U2Region QDConstraintController::matchLocation(QDDistanceConstraint *dc, const QDResultUnit &r, bool complement) {
+U2Region QDConstraintController::matchLocation(QDDistanceConstraint* dc, const QDResultUnit& r, bool complement) {
     int start = 0;
     int end = 0;
 
-    QDSchemeUnit *src = nullptr;
-    QDSchemeUnit *dst = nullptr;
+    QDSchemeUnit* src = nullptr;
+    QDSchemeUnit* dst = nullptr;
     QDDistanceType type = dc->distanceType();
     int minDist = dc->getMin();
     int maxDist = dc->getMax();

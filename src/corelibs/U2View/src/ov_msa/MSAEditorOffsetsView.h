@@ -38,9 +38,9 @@ class MultipleSequenceAlignmentObject;
 class U2VIEW_EXPORT MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
 public:
-    MSAEditorOffsetsViewController(MaEditorWgt *maEditorUi, MaEditor *editor, MaEditorSequenceArea *seqArea);
+    MSAEditorOffsetsViewController(MaEditorWgt* maEditorUi, MaEditor* editor, MaEditorSequenceArea* seqArea);
 
-    bool eventFilter(QObject *o, QEvent *e) override;
+    bool eventFilter(QObject* o, QEvent* e) override;
 
 private slots:
     void sl_updateOffsets();
@@ -49,13 +49,13 @@ private slots:
 private:
     void updateOffsets();
 
-    MaEditorSequenceArea *seqArea;
-    MaEditor *editor;
+    MaEditorSequenceArea* seqArea;
+    MaEditor* editor;
 
 public:
-    MSAEditorOffsetsViewWidget *leftWidget;
-    MSAEditorOffsetsViewWidget *rightWidget;
-    QAction *toggleColumnsViewAction;
+    MSAEditorOffsetsViewWidget* leftWidget;
+    MSAEditorOffsetsViewWidget* rightWidget;
+    QAction* toggleColumnsViewAction;
 };
 
 class MSAEditorOffsetsViewWidget : public QWidget {
@@ -63,23 +63,23 @@ class MSAEditorOffsetsViewWidget : public QWidget {
     friend class MSAEditorOffsetsViewController;
 
 public:
-    MSAEditorOffsetsViewWidget(MaEditorWgt *maEditorUi, MaEditor *editor, MaEditorSequenceArea *seqArea, bool showStartPos);
+    MSAEditorOffsetsViewWidget(MaEditorWgt* maEditorUi, MaEditor* editor, MaEditorSequenceArea* seqArea, bool showStartPos);
 
 private slots:
     void sl_completeRedraw();
 
 protected:
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent* e);
     void updateView();
-    void drawAll(QPainter &p);
+    void drawAll(QPainter& p);
     QFont getOffsetsFont();
-    void drawRefSequence(QPainter &p, const QRect &r);
+    void drawRefSequence(QPainter& p, const QRect& r);
 
 private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
-    MaEditorSequenceArea *seqArea;
-    MaEditor *editor;
+    MaEditorSequenceArea* seqArea;
+    MaEditor* editor;
     bool showStartPos;
     bool completeRedraw;
     QPixmap cachedView;

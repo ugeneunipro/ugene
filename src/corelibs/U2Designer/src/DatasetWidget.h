@@ -40,13 +40,13 @@ class URLListController;
 class U2DESIGNER_EXPORT URLListWidget : public QWidget {
     Q_OBJECT
 public:
-    URLListWidget(URLListController *ctrl);
+    URLListWidget(URLListController* ctrl);
     ~URLListWidget();
 
-    void addUrlItem(UrlItem *urlItem);
+    void addUrlItem(UrlItem* urlItem);
 
 protected:
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject* obj, QEvent* event);
 
 private slots:
     void sl_addFileButton();
@@ -61,33 +61,33 @@ private slots:
     void sl_sharedDbConnected();
 
 private:
-    void addUrl(const QString &url);
+    void addUrl(const QString& url);
     void reset();
     bool readingFromDbIsSupported() const;
 
 private:
-    Ui_DatasetWidget *ui;
-    URLListController *ctrl;
-    OptionsPopup *popup;
+    Ui_DatasetWidget* ui;
+    URLListController* ctrl;
+    OptionsPopup* popup;
     QObjectScopedPointer<SharedConnectionsDialog> connectToDbDialog;
     bool waitingForDbToConnect;
 };
 
 class OptionsPopup : public QFrame {
 public:
-    OptionsPopup(QWidget *parent);
+    OptionsPopup(QWidget* parent);
 
-    void showOptions(QWidget *options, const QPoint &pos);
+    void showOptions(QWidget* options, const QPoint& pos);
     void hideOptions();
 
 protected:
-    virtual void closeEvent(QCloseEvent *event);
+    virtual void closeEvent(QCloseEvent* event);
 
 private:
     void removeOptions();
 
 private:
-    QVBoxLayout *l;
+    QVBoxLayout* l;
 };
 
 }  // namespace U2

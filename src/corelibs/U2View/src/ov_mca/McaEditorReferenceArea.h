@@ -35,7 +35,7 @@ class McaEditorWgt;
 class U2VIEW_EXPORT McaEditorReferenceArea : public PanView {
     Q_OBJECT
 public:
-    McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx);
+    McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectContext* ctx);
 
     /** Clears reference area selection. */
     void clearSelection();
@@ -48,43 +48,43 @@ public slots:
 
 private slots:
     void sl_visibleRangeChanged();
-    void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
-    void sl_onSelectionChanged(LRegionsSelection *selection, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions);
-    void sl_fontChanged(const QFont &newFont);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
+    void sl_onSelectionChanged(LRegionsSelection* selection, const QVector<U2Region>& addedRegions, const QVector<U2Region>& removedRegions);
+    void sl_fontChanged(const QFont& newFont);
 
 private:
-    void setReferenceSelection(QMouseEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void keyPressEvent(QKeyEvent *event);
+    void setReferenceSelection(QMouseEvent* e);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void keyPressEvent(QKeyEvent* event);
     void updateScrollBar();
 
-    McaEditor *editor;
-    McaEditorWgt *ui;
-    McaReferenceAreaRenderer *renderer;
+    McaEditor* editor;
+    McaEditorWgt* ui;
+    McaReferenceAreaRenderer* renderer;
     qint64 firstPressedSelectionPosition;
 };
 
 class McaEditorReferenceRenderArea : public PanViewRenderArea {
 public:
-    McaEditorReferenceRenderArea(McaEditorWgt *ui, PanView *d, PanViewRenderer *renderer);
+    McaEditorReferenceRenderArea(McaEditorWgt* ui, PanView* d, PanViewRenderer* renderer);
 
-    qint64 coordToPos(const QPoint &coord) const override;
+    qint64 coordToPos(const QPoint& coord) const override;
 
 private:
-    McaEditorWgt *const ui;
+    McaEditorWgt* const ui;
 };
 
 class McaEditorReferenceRenderAreaFactory : public PanViewRenderAreaFactory {
 public:
-    McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor);
+    McaEditorReferenceRenderAreaFactory(McaEditorWgt* _ui, McaEditor* _editor);
 
-    PanViewRenderArea *createRenderArea(PanView *panView) const;
+    PanViewRenderArea* createRenderArea(PanView* panView) const;
 
 private:
-    McaEditorWgt *ui;
-    MaEditor *maEditor;
+    McaEditorWgt* ui;
+    MaEditor* maEditor;
 };
 
 }  // namespace U2

@@ -36,7 +36,7 @@ public:
     ReportResult report();
 
 private:
-    bool copyDirectry(const QString &from, const QString &to);
+    bool copyDirectry(const QString& from, const QString& to);
 
     QString fromUrl;
     QString toUrl;
@@ -71,7 +71,7 @@ private:
 
 class UtilTestActions {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

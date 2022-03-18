@@ -44,7 +44,7 @@ struct ResponseBuffer {
     ~ResponseBuffer() {
         buf.close();
     }
-    void setBuffer(QByteArray *arr) {
+    void setBuffer(QByteArray* arr) {
         buf.setBuffer(arr);
     }
     bool open(QIODevice::OpenMode openMode) {
@@ -63,11 +63,11 @@ struct ResponseBuffer {
 class HttpRequestBLAST : public HttpRequest {
     Q_DECLARE_TR_FUNCTIONS(HttpRequestBLAST)
 public:
-    HttpRequestBLAST(Task *_task)
+    HttpRequestBLAST(Task* _task)
         : HttpRequest(_task) {
     }
-    virtual void sendRequest(const QString &program, const QString &query);
-    virtual void parseResult(const QByteArray &buf);
+    virtual void sendRequest(const QString& program, const QString& query);
+    virtual void parseResult(const QByteArray& buf);
     virtual QByteArray getOutputFile();
 
 private:
@@ -80,8 +80,8 @@ private:
     QString runHttpRequest(QString request);
     static const QString host;
     QByteArray output;
-    void parseHit(const QDomNode &xml);
-    void parseHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession, const QString &hitLen);
+    void parseHit(const QDomNode& xml);
+    void parseHsp(const QDomNode& xml, const QString& id, const QString& def, const QString& accession, const QString& hitLen);
 };
 
 }  // namespace U2

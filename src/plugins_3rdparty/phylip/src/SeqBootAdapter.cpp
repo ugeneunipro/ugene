@@ -72,11 +72,11 @@ void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen) {
     }
 }
 
-const MultipleSequenceAlignment &SeqBoot::getMSA(int pos) const {
+const MultipleSequenceAlignment& SeqBoot::getMSA(int pos) const {
     return generatedSeq[pos];
 }
 
-void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings) {
+void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings) {
     if (!settings.bootstrap) {
         return;
     }
@@ -88,7 +88,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment &ma
 
     reps = replicates;
 
-    spp = ma->getNumRows();
+    spp = ma->getRowCount();
     sites = ma->getLength();
 
     initGenerSeq(replicates, spp, sites);

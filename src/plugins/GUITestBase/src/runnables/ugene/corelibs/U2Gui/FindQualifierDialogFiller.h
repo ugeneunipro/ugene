@@ -29,8 +29,8 @@ using namespace HI;
 class FindQualifierFiller : public Filler {
 public:
     struct FindQualifierFillerSettings {
-        FindQualifierFillerSettings(const QString &name = QString(),
-                                    const QString &value = QString(),
+        FindQualifierFillerSettings(const QString& name = QString(),
+                                    const QString& value = QString(),
                                     bool exactMatch = true,
                                     bool nextQualifier = true,
                                     unsigned int nextCount = 1,
@@ -57,8 +57,8 @@ public:
         bool selectAll;
     };
 
-    FindQualifierFiller(HI::GUITestOpStatus &os, const FindQualifierFillerSettings &settings = FindQualifierFillerSettings());
-    FindQualifierFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    FindQualifierFiller(HI::GUITestOpStatus& os, const FindQualifierFillerSettings& settings = FindQualifierFillerSettings());
+    FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 

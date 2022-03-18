@@ -44,27 +44,27 @@ const QString StrPackUtils::pairSeparatorPattern = QString("^\\%2|(?!\\\\)\\%2%1
 const QRegExp StrPackUtils::pairSingleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\'"));
 const QRegExp StrPackUtils::pairDoubleQuoteSeparatorRegExp(pairSeparatorPattern.arg("\""));
 
-QString StrPackUtils::packStringList(const QStringList &list, Options options) {
+QString StrPackUtils::packStringList(const QStringList& list, Options options) {
     QString packedList;
-    foreach (const QString &string, list) {
+    foreach (const QString& string, list) {
         packedList += wrapString(escapeCharacters(string), options) + LIST_SEPARATOR;
     }
     packedList.chop(LIST_SEPARATOR.size());
     return packedList;
 }
 
-QStringList StrPackUtils::unpackStringList(const QString &string, Options options) {
+QStringList StrPackUtils::unpackStringList(const QString& string, Options options) {
     QStringList unpackedList;
     const QRegExp separator = (options == SingleQuotes ? listSingleQuoteSeparatorRegExp : listDoubleQuoteSeparatorRegExp);
-    foreach (const QString &escapedString, string.split(separator, QString::SkipEmptyParts)) {
+    foreach (const QString& escapedString, string.split(separator, QString::SkipEmptyParts)) {
         unpackedList << unescapeCharacters(escapedString);
     }
     return unpackedList;
 }
 
-QString StrPackUtils::packMap(const QVariantMap &map, Options options) {
+QString StrPackUtils::packMap(const QVariantMap& map, Options options) {
     StrStrMap newMap;
-    foreach (const QString &key, map.keys()) {
+    foreach (const QString& key, map.keys()) {
         QVariant mapValue = map.value(key);
         SAFE_POINT(mapValue.canConvert<QString>(), tr("QVariant value can't be converted to string"), QString());
 
@@ -73,9 +73,9 @@ QString StrPackUtils::packMap(const QVariantMap &map, Options options) {
     return packMap(newMap, options);
 }
 
-QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
+QString StrPackUtils::packMap(const StrStrMap& map, Options options) {
     QString string;
-    foreach (const QString &key, map.keys()) {
+    foreach (const QString& key, map.keys()) {
         string += wrapString(escapeCharacters(key), options) +
                   PAIR_CONNECTOR +
                   wrapString(escapeCharacters(map[key]), options) +
@@ -85,14 +85,16 @@ QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
     return string;
 }
 
-StrStrMap StrPackUtils::unpackMap(const QString &string, Options options) {
+StrStrMap StrPackUtils::unpackMap(const QString& string, Options options) {
     StrStrMap map;
     QRegExp elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
-    foreach (const QString &pair, string.split(elementsSeparator, QString::SkipEmptyParts)) {
+    foreach (const QString& pair, string.split(elementsSeparator, QString::SkipEmptyParts)) {
         QRegExp keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
         QStringList splitPair = pair.split(keyValueSeparator, QString::SkipEmptyParts);
         Q_ASSERT(splitPair.size() <= 2);
-        map.insert(splitPair.first(), splitPair.size() > 1 ? splitPair[1] : "");
+        if (!splitPair.empty()) {  // splitPair can be empty if both key and value are empty strings.
+            map.insert(splitPair.first(), splitPair.size() > 1 ? splitPair[1] : "");
+        }
     }
     return map;
 }
@@ -128,7 +130,7 @@ QString StrPackUtils::unescapeCharacters(QString string) {
     return string;
 }
 
-QString StrPackUtils::wrapString(const QString &string, Options options) {
+QString StrPackUtils::wrapString(const QString& string, Options options) {
     const QString wrapChar = (options == SingleQuotes ? "\'" : "\"");
     return wrapChar + string + wrapChar;
 }

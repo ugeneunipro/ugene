@@ -32,13 +32,12 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTBaseCompleter"
 #define GT_METHOD_NAME "click"
-void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor, const QString &seqName) {
-    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
+void GTBaseCompleter::click(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor, const QString& seqName) {
+    QTreeWidget* tree = getCompleter(os, widgetCompleterFor);
     GT_CHECK(tree != nullptr, "tree widget is NULL");
-    QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, seqName);
+    QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, seqName);
     GT_CHECK(item != nullptr, "item not found");
-    tree->scrollToItem(item);
-    GTGlobals::sleep(100);
+    GTTreeWidget::scrollToItem(os, item);
     QRect itemRect = tree->visualItemRect(item);
     QPoint globalCenter = tree->mapToGlobal(itemRect.center());
     GTMouseDriver::moveTo(globalCenter);
@@ -47,12 +46,12 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNames"
-QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
-    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
+QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor) {
+    QTreeWidget* tree = getCompleter(os, widgetCompleterFor);
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", QStringList());
     QStringList result;
-    QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
-    foreach (QTreeWidgetItem *item, items) {
+    QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
+    foreach (QTreeWidgetItem* item, items) {
         result << item->text(0);
     }
     return result;
@@ -60,8 +59,8 @@ QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QWidget *widgetCo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isEmpty"
-bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
-    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
+bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor) {
+    QTreeWidget* tree = getCompleter(os, widgetCompleterFor);
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", true);
     QStringList items = getNames(os, widgetCompleterFor);
     bool result = (items.count() == 1) && (items.at(0) == "");
@@ -70,9 +69,9 @@ bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterF
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCompleter"
-QTreeWidget *GTBaseCompleter::getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
+QTreeWidget* GTBaseCompleter::getCompleter(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor) {
     GT_CHECK_RESULT(widgetCompleterFor != nullptr, "Widget associated with completer not found", nullptr);
-    QTreeWidget *completer = widgetCompleterFor->findChild<QTreeWidget *>();
+    QTreeWidget* completer = widgetCompleterFor->findChild<QTreeWidget*>();
     GT_CHECK_RESULT(completer != nullptr, "auto completer widget not found", nullptr);
     return completer;
 }

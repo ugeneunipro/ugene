@@ -23,6 +23,6 @@
 
 namespace U2 {
 
-AppContext *AppContext::instance = nullptr;
+AppContext* AppContext::instance = nullptr;
 
 }  // namespace U2

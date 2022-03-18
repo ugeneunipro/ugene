@@ -25,107 +25,46 @@
 #include <U2Core/Task.h>
 
 #include "GTUtilsTask.h"
-#include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsTask"
 
-#define GT_METHOD_NAME "getTopLevelTasks"
-QList<Task *> GTUtilsTask::getTopLevelTasks(HI::GUITestOpStatus &os) {
-    Q_UNUSED(os);
-    TaskScheduler *scheduller = AppContext::getTaskScheduler();
-    GT_CHECK_RESULT(scheduller != nullptr, "task scheduler is NULL", QList<Task *>());
-    return scheduller->getTopLevelTasks();
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getSubTaskByName"
-Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options) {
-    Task *result = nullptr;
-    QList<Task *> tasks = getTopLevelTasks(os);
-    foreach (Task *t, tasks) {
-        result = getSubTaskByName(os, t, taskName, false);
-    }
-    if (options.failIfNotFound) {
-        GT_CHECK_RESULT(result != nullptr, "no subtask with name " + taskName, nullptr);
-    }
-    return result;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getSubTaskByName"
-Task *GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QString taskName, GTGlobals::FindOptions options) {
-    Task *result = nullptr;
-    foreach (const QPointer<Task> &t, parent->getSubtasks()) {
-        if (t->getTaskName() == taskName) {
-            return t.data();
-        } else {
-            result = getSubTaskByName(os, t.data(), taskName, false);
-        }
-    }
-
-    if (options.failIfNotFound) {
-        GT_CHECK_RESULT(result != nullptr, "no subtask with name " + taskName, nullptr);
-    }
-    return result;
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "getTaskByName"
-Task *GTUtilsTask::getTaskByName(HI::GUITestOpStatus &os, QString taskName, GTGlobals::FindOptions options) {
-    QList<Task *> tasks = getTopLevelTasks(os);
-    foreach (Task *t, tasks) {
-        QString name = t->getTaskName();
+Task* GTUtilsTask::getTaskByName(HI::GUITestOpStatus& os, const QString& taskName, const GTGlobals::FindOptions& options) {
+    TaskScheduler* scheduler = AppContext::getTaskScheduler();
+    GT_CHECK_RESULT(scheduler != nullptr, "task scheduler is NULL", {});
+    QList<Task*> allTasks = scheduler->getTopLevelTasks();
+    Task* result = nullptr;
+    for (int i = 0; i < allTasks.size(); i++) {
+        Task* task = allTasks[i];
+        QString name = task->getTaskName();
         if (name == taskName) {
-            return t;
+            CHECK_SET_ERR_RESULT(result == nullptr, "Found multiple tasks with the same name: " + taskName + ", example: " + name, nullptr);
+            result = task;
         }
+        allTasks << task->getPureSubtasks();
     }
-    if (options.failIfNotFound == true) {
-        GT_CHECK_RESULT(false, "task " + taskName + " not found", nullptr);
-    }
-    return nullptr;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkTask"
-void GTUtilsTask::checkTask(HI::GUITestOpStatus &os, QString taskName) {
-    getTaskByName(os, taskName);
+    GT_CHECK_RESULT(result != nullptr || !options.failIfNotFound, "No top-level with name " + taskName, nullptr);
+    return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoTask"
-void GTUtilsTask::checkNoTask(HI::GUITestOpStatus &os, QString taskName) {
-    Task *t = getTaskByName(os, taskName, GTGlobals::FindOptions(false));
-    GT_CHECK(t == nullptr, "tast " + taskName + " unexpectidly found");
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "cancelTask"
-void GTUtilsTask::cancelTask(HI::GUITestOpStatus &os, QString taskName) {
-    Task *t = getTaskByName(os, taskName);
-    t->cancel();
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "cancelSubTask"
-void GTUtilsTask::cancelSubTask(HI::GUITestOpStatus &os, QString taskName) {
-    Task *t = getSubTaskByName(os, taskName);
-    t->cancel();
+void GTUtilsTask::checkNoTask(HI::GUITestOpStatus& os, const QString& taskName) {
+    Task* task = getTaskByName(os, taskName, {false});
+    GT_CHECK(task == nullptr, "task " + taskName + " unexpectedly found");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "waitTaskStart"
-void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus &os, QString taskName, int timeOut) {
-    int i = 0;
-    while (getTaskByName(os, taskName, GTGlobals::FindOptions(false)) == nullptr) {
-        GTGlobals::sleep(100);
-        i++;
-        if (i > (timeOut / 100)) {
-            GT_CHECK(false, "task " + taskName + " not launched");
-            break;
-        }
+void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus& os, const QString& taskName, int timeout) {
+    Task* task = nullptr;
+    for (int time = 0; time < timeout && task == nullptr; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        task = getTaskByName(os, taskName, {false});
     }
+    GT_CHECK(task != nullptr, "waitTaskStart: task '" + taskName + "' is not found");
 }
 #undef GT_METHOD_NAME
 

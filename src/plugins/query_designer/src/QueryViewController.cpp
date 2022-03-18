@@ -70,7 +70,7 @@ const QSizeF QueryScene::DEFAULT_SCENE_SIZE(1000, 1000);
 #define FOOTNOTES_AREA_TOP_MARGIN 20
 #define FOOTNOTE_BOTTOM_MARGIN 20
 
-QueryScene::QueryScene(QueryViewController *parent /* =0 */)
+QueryScene::QueryScene(QueryViewController* parent /* =0 */)
     : QGraphicsScene(parent),
       dropCandidateLeft(nullptr), dropCandidateRight(nullptr), view(parent), rowsNum(3),
       showSchemeLbl(false), showDesc(true), showOrder(true), modified(false) {
@@ -124,7 +124,7 @@ void QueryScene::initDescription() {
         viewWidth = sceneRect().width();
     } else {
         assert(views().size() == 1);
-        QGraphicsView *v = views().first();
+        QGraphicsView* v = views().first();
         viewWidth = v->viewport()->width();
     }
     qreal xPos = (viewWidth - descTxtItem->boundingRect().width()) / 2.0;
@@ -134,16 +134,16 @@ void QueryScene::initDescription() {
     descTxtItem->setVisible(false);
 }
 
-int QueryScene::getRow(QDElement *const uv) const {
-    const QPointF &pos = uv->scenePos();
+int QueryScene::getRow(QDElement* const uv) const {
+    const QPointF& pos = uv->scenePos();
     qreal top = annotationsArea().top();
     int row = (pos.y() - top) / GRID_STEP;
     return row;
 }
 
-bool yPosLessThan(QGraphicsItem *uv1, QGraphicsItem *uv2) {
-    const QPointF &pos1 = uv1->scenePos();
-    const QPointF &pos2 = uv2->scenePos();
+bool yPosLessThan(QGraphicsItem* uv1, QGraphicsItem* uv2) {
+    const QPointF& pos1 = uv1->scenePos();
+    const QPointF& pos2 = uv2->scenePos();
     if (pos1.y() < pos2.y()) {
         return false;
     }
@@ -158,8 +158,8 @@ void QueryScene::insertRow(int idx) {
     }
     qreal rowTop = idx * GRID_STEP + annotationsArea().top();
     // sort items by y-pos
-    QList<QGraphicsItem *> units;
-    foreach (QGraphicsItem *it, items()) {
+    QList<QGraphicsItem*> units;
+    foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
             if (it->scenePos().y() >= rowTop) {
                 units.append(it);
@@ -167,7 +167,7 @@ void QueryScene::insertRow(int idx) {
         }
     }
     std::sort(units.begin(), units.end(), yPosLessThan);
-    foreach (QGraphicsItem *it, units) {
+    foreach (QGraphicsItem* it, units) {
         QPointF itPos = it->scenePos();
         itPos.ry() += GRID_STEP;
         it->setPos(itPos);
@@ -198,11 +198,11 @@ QString QueryScene::getDescription() const {
     return descTxtItem->toPlainText();
 }
 
-void QueryScene::setLabel(const QString &lbl) {
+void QueryScene::setLabel(const QString& lbl) {
     labelTxtItem->setPlainText(lbl);
 }
 
-void QueryScene::setDescription(const QString &dsc) {
+void QueryScene::setDescription(const QString& dsc) {
     descTxtItem->setPlainText(dsc);
 }
 
@@ -221,7 +221,7 @@ void QueryScene::sl_showLabel(bool show) {
         dy = -LABEL_HEIGHT;
         ruler->setPos(0, 0);
     }
-    foreach (QGraphicsItem *it, items()) {
+    foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
             it->moveBy(0.0, dy);
         }
@@ -236,9 +236,9 @@ void QueryScene::sl_showSchemeDesc(bool show) {
 
 void QueryScene::sl_showItemDesc(bool show) {
     showDesc = show;
-    foreach (QGraphicsItem *it, items()) {
+    foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
-            QDElement *uv = qgraphicsitem_cast<QDElement *>(it);
+            QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
             uv->sl_refresh();
             uv->rememberSize();
             uv->adaptSize();
@@ -249,9 +249,9 @@ void QueryScene::sl_showItemDesc(bool show) {
 
 void QueryScene::sl_showOrder(bool show) {
     showOrder = show;
-    foreach (QGraphicsItem *it, items()) {
+    foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
-            QDElement *uv = qgraphicsitem_cast<QDElement *>(it);
+            QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
             uv->sl_refresh();
         }
     }
@@ -265,7 +265,7 @@ QRectF QueryScene::rulerArea() const {
 }
 
 QRectF QueryScene::annotationsArea() const {
-    const QRectF &rect = sceneRect();
+    const QRectF& rect = sceneRect();
     assert(rect.width() < MAX_ITEM_SIZE && rect.height() < MAX_ITEM_SIZE);
     // qreal top = round(rect.top() + dy, GRID_STEP);
     qreal top = rect.top() + ruler->boundingRect().height();
@@ -281,7 +281,7 @@ QRectF QueryScene::footnotesArea() const {
     qreal tlY = annotationsArea().bottom() + FOOTNOTES_AREA_TOP_MARGIN;
     qreal brX = sceneRect().right();
     qreal brY = tlY;
-    foreach (QGraphicsItem *it, items()) {
+    foreach (QGraphicsItem* it, items()) {
         if (it->type() == FootnoteItemType) {
             qreal itBottomEdge = it->scenePos().y() + it->boundingRect().height();
             if (itBottomEdge > brY) {
@@ -295,20 +295,20 @@ QRectF QueryScene::footnotesArea() const {
     return rect;
 }
 
-QList<QDElement *> QueryScene::getElements() const {
-    QList<QDElement *> res;
-    foreach (QGraphicsItem *item, items()) {
+QList<QDElement*> QueryScene::getElements() const {
+    QList<QDElement*> res;
+    foreach (QGraphicsItem* item, items()) {
         if (item->type() == QDElementType) {
-            QDElement *el = qgraphicsitem_cast<QDElement *>(item);
+            QDElement* el = qgraphicsitem_cast<QDElement*>(item);
             res.append(el);
         }
     }
     return res;
 }
 
-QList<QGraphicsItem *> QueryScene::getFootnotes() const {
-    QList<QGraphicsItem *> res;
-    foreach (QGraphicsItem *item, items()) {
+QList<QGraphicsItem*> QueryScene::getFootnotes() const {
+    QList<QGraphicsItem*> res;
+    foreach (QGraphicsItem* item, items()) {
         if (item->type() == FootnoteItemType) {
             res.append(item);
         }
@@ -316,8 +316,8 @@ QList<QGraphicsItem *> QueryScene::getFootnotes() const {
     return res;
 }
 
-QDElement *QueryScene::getUnitView(QDSchemeUnit *su) const {
-    foreach (QDElement *el, getElements()) {
+QDElement* QueryScene::getUnitView(QDSchemeUnit* su) const {
+    foreach (QDElement* el, getElements()) {
         if (el->getSchemeUnit() == su) {
             return el;
         }
@@ -330,9 +330,9 @@ void QueryScene::setRowsNumber(int count) {
     if (count <= MAX_ROWS_NUMBER) {
         qreal dY = (count - rowsNum) * GRID_STEP;
         rowsNum = count;
-        foreach (QGraphicsItem *item, items()) {
+        foreach (QGraphicsItem* item, items()) {
             if (item->type() == FootnoteItemType) {
-                Footnote *fn = qgraphicsitem_cast<Footnote *>(item);
+                Footnote* fn = qgraphicsitem_cast<Footnote*>(item);
                 fn->moveBy(0.0, dY);
             }
         }
@@ -352,21 +352,21 @@ void QueryScene::setRowsNumber(int count) {
     }
 }
 
-void QueryScene::drawBackground(QPainter *painter, const QRectF &rect) {
+void QueryScene::drawBackground(QPainter* painter, const QRectF& rect) {
     Q_UNUSED(rect);
     int step = GRID_STEP;
     painter->setPen(QPen(QColor(200, 200, 255, 125)));
     // draw horizontal grid
-    const QRectF &area = annotationsArea();
+    const QRectF& area = annotationsArea();
     qreal start = area.top();
     for (qreal y = start; y < start + (rowsNum + 1) * step; y += step) {
         painter->drawLine(area.left(), y, area.right(), y);
     }
 }
 
-QList<QGraphicsItem *> QueryScene::getElements(const QRectF &area) {
-    QList<QGraphicsItem *> items = QGraphicsScene::items(area, Qt::IntersectsItemShape);
-    foreach (QGraphicsItem *item, items) {
+QList<QGraphicsItem*> QueryScene::getElements(const QRectF& area) {
+    QList<QGraphicsItem*> items = QGraphicsScene::items(area, Qt::IntersectsItemShape);
+    foreach (QGraphicsItem* item, items) {
         if (item->type() != QDElementType) {
             items.removeAll(item);
         }
@@ -374,7 +374,7 @@ QList<QGraphicsItem *> QueryScene::getElements(const QRectF &area) {
     return items;
 }
 
-void QueryScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+void QueryScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) {
     if (!mouseEvent->isAccepted() && view->getActor() && (mouseEvent->button() == Qt::LeftButton)) {
         addActor(view->getActor(), mouseEvent->scenePos());
     }
@@ -382,14 +382,14 @@ void QueryScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 }
 
 #define BINDING_AREA 50
-void QueryScene::dragEnterEvent(QGraphicsSceneDragDropEvent *) {
+void QueryScene::dragEnterEvent(QGraphicsSceneDragDropEvent*) {
 }
 
-void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
-    const QString &mimeStr = event->mimeData()->text();
+void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event) {
+    const QString& mimeStr = event->mimeData()->text();
     if (mimeStr == QDDistanceIds::E2S || mimeStr == QDDistanceIds::S2E ||
         mimeStr == QDDistanceIds::S2S || mimeStr == QDDistanceIds::E2E) {
-        const QList<QGraphicsItem *> &sceneUnitViews = getElements(sceneRect());
+        const QList<QGraphicsItem*>& sceneUnitViews = getElements(sceneRect());
         if (sceneUnitViews.size() < 2) {
             event->setDropAction(Qt::IgnoreAction);
             return;
@@ -403,19 +403,19 @@ void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
 
         QRectF leftArea = sceneRect();
         leftArea.setRight(mousePos.x());
-        const QList<QGraphicsItem *> &annItemsToLeft = getElements(leftArea);
+        const QList<QGraphicsItem*>& annItemsToLeft = getElements(leftArea);
 
         QRectF rightArea = sceneRect();
         rightArea.setLeft(mousePos.x());
-        const QList<QGraphicsItem *> &annItemsToRight = getElements(rightArea);
+        const QList<QGraphicsItem*>& annItemsToRight = getElements(rightArea);
 
         qreal delta = sceneRect().width() * sceneRect().width() + sceneRect().height() * sceneRect().height();
         QDElement *src = nullptr, *dst = nullptr;
-        foreach (QGraphicsItem *itLeft, annItemsToLeft) {
-            QDElement *leftAnn = qgraphicsitem_cast<QDElement *>(itLeft);
+        foreach (QGraphicsItem* itLeft, annItemsToLeft) {
+            QDElement* leftAnn = qgraphicsitem_cast<QDElement*>(itLeft);
             assert(leftAnn);
-            foreach (QGraphicsItem *itRight, annItemsToRight) {
-                QDElement *rightAnn = qgraphicsitem_cast<QDElement *>(itRight);
+            foreach (QGraphicsItem* itRight, annItemsToRight) {
+                QDElement* rightAnn = qgraphicsitem_cast<QDElement*>(itRight);
                 assert(rightAnn);
                 QLineF srcToPos(leftAnn->getRightConnector(), mousePos);
                 QLineF dstToPos(rightAnn->getLeftConnector(), mousePos);
@@ -444,15 +444,15 @@ void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
     }
 }
 
-void QueryScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+void QueryScene::dropEvent(QGraphicsSceneDragDropEvent* event) {
     if (!event->mimeData()->hasText()) {
         return;
     }
     QApplication::changeOverrideCursor(QCursor(Qt::ArrowCursor));
-    const QString &mimeStr = event->mimeData()->text();
+    const QString& mimeStr = event->mimeData()->text();
     if (AppContext::getQDActorProtoRegistry()->getAllIds().contains(mimeStr)) {
-        QDActorPrototype *proto = AppContext::getQDActorProtoRegistry()->getProto(mimeStr);
-        QDActor *actor = proto->createInstance();
+        QDActorPrototype* proto = AppContext::getQDActorProtoRegistry()->getProto(mimeStr);
+        QDActor* actor = proto->createInstance();
         addActor(actor, event->scenePos());
         return;
     } else if (mimeStr == QDDistanceIds::E2E) {
@@ -483,14 +483,14 @@ void QueryScene::setupDistanceDialog(QDDistanceType kind) {
 }
 
 #define UNIT_PADDING 30
-void QueryScene::addActor(QDActor *actor, const QPointF &pos) {
+void QueryScene::addActor(QDActor* actor, const QPointF& pos) {
     int count = 0;
-    foreach (QDActor *a, scheme->getActors()) {
+    foreach (QDActor* a, scheme->getActors()) {
         if (a->getActorType() == actor->getActorType()) {
             ++count;
         }
     }
-    QDActorParameters *actorCfg = actor->getParameters();
+    QDActorParameters* actorCfg = actor->getParameters();
     QString defaultName = actor->getProto()->getDisplayName();
     if (count > 0) {
         actorCfg->setLabel(QString("%1%2").arg(defaultName).arg(count));
@@ -504,9 +504,9 @@ void QueryScene::addActor(QDActor *actor, const QPointF &pos) {
     qreal y = rowNum * GRID_STEP + top;
     scheme->addActor(actor);
     int dx = 0;
-    QMap<QDSchemeUnit *, QDElement *> unit2view;
-    foreach (QDSchemeUnit *su, actor->getSchemeUnits()) {
-        QDElement *uv = new QDElement(su);
+    QMap<QDSchemeUnit*, QDElement*> unit2view;
+    foreach (QDSchemeUnit* su, actor->getSchemeUnits()) {
+        QDElement* uv = new QDElement(su);
         unit2view[su] = uv;
         addItem(uv);
         uv->setObjectName("QDElement");
@@ -516,11 +516,11 @@ void QueryScene::addActor(QDActor *actor, const QPointF &pos) {
         uv->setPos(p);
         dx += UNIT_PADDING + uv->boundingRect().width();
     }
-    foreach (QDConstraint *c, actor->getParamConstraints()) {
-        QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(c);
+    foreach (QDConstraint* c, actor->getParamConstraints()) {
+        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
             QueryViewController::setupConstraintEditor(dc);
-            Footnote *fn = new Footnote(unit2view.value(dc->getSource()),
+            Footnote* fn = new Footnote(unit2view.value(dc->getSource()),
                                         unit2view.value(dc->getDestination()),
                                         dc->distanceType(),
                                         c);
@@ -534,10 +534,10 @@ void QueryScene::addActor(QDActor *actor, const QPointF &pos) {
     emit si_itemAdded();
 }
 
-bool QueryScene::ajustPosForNewItem(QDElement *targetItem, QPointF &posToAjust) {
+bool QueryScene::ajustPosForNewItem(QDElement* targetItem, QPointF& posToAjust) {
     QRectF itemRect = targetItem->boundingRect();
     itemRect.moveTo(posToAjust);
-    foreach (QDElement *el, getElements()) {
+    foreach (QDElement* el, getElements()) {
         if (el == targetItem)
             continue;
         QRectF elRect = el->sceneBoundingRect();
@@ -550,15 +550,15 @@ bool QueryScene::ajustPosForNewItem(QDElement *targetItem, QPointF &posToAjust) 
     return false;
 }
 
-void QueryScene::addDistanceConstraint(QDElement *src, QDElement *dst, QDDistanceType distType, int min, int max) {
+void QueryScene::addDistanceConstraint(QDElement* src, QDElement* dst, QDDistanceType distType, int min, int max) {
     if (src != dst) {
-        QList<QDSchemeUnit *> units;
+        QList<QDSchemeUnit*> units;
         units << src->getSchemeUnit() << dst->getSchemeUnit();
-        QDConstraint *c = new QDDistanceConstraint(units, distType, min, max);
+        QDConstraint* c = new QDDistanceConstraint(units, distType, min, max);
         QueryViewController::setupConstraintEditor(c);
         scheme->addConstraint(c);
         connect(c->getParameters(), SIGNAL(si_modified()), ruler, SLOT(sl_updateText()));
-        Footnote *fn = new Footnote(src, dst, distType, c);
+        Footnote* fn = new Footnote(src, dst, distType, c);
         addItem(fn);
         fn->updatePos();
         updateDescription();
@@ -567,23 +567,23 @@ void QueryScene::addDistanceConstraint(QDElement *src, QDElement *dst, QDDistanc
     setModified(true);
 }
 
-void QueryScene::removeActor(QDActor *actor) {
-    foreach (QGraphicsItem *it, getElements()) {
-        QDElement *uv = qgraphicsitem_cast<QDElement *>(it);
+void QueryScene::removeActor(QDActor* actor) {
+    foreach (QGraphicsItem* it, getElements()) {
+        QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
         assert(uv);
         if (uv->getActor() == actor) {
             removeItem(uv);
             delete uv;
         }
     }
-    const QList<QDActor *> &actors = scheme->getActors();
+    const QList<QDActor*>& actors = scheme->getActors();
     int removedIdx = actors.indexOf(actor);
     scheme->removeActor(actor);
     int actorsNumber = actors.size();
     for (int idx = removedIdx; idx < actorsNumber; idx++) {
-        QDActor *a = actors.at(idx);
+        QDActor* a = actors.at(idx);
         scheme->setOrder(a, idx);
-        foreach (QDElement *el, getElements()) {
+        foreach (QDElement* el, getElements()) {
             if (el->getActor() == a) {
                 el->sl_refresh();
                 break;
@@ -594,18 +594,18 @@ void QueryScene::removeActor(QDActor *actor) {
     setModified(true);
 }
 
-void QueryScene::removeActors(const QList<QDActor *> &actors) {
-    foreach (QDActor *a, actors) {
+void QueryScene::removeActors(const QList<QDActor*>& actors) {
+    foreach (QDActor* a, actors) {
         removeActor(a);
     }
 }
 
-void QueryScene::removeConstraint(QDConstraint *constraint) {
-    QDSchemeUnit *su = constraint->getSchemeUnits().at(0);
+void QueryScene::removeConstraint(QDConstraint* constraint) {
+    QDSchemeUnit* su = constraint->getSchemeUnits().at(0);
     Q_UNUSED(su);
     assert(su->getConstraints().contains(constraint));
-    foreach (QGraphicsItem *it, getFootnotes()) {
-        Footnote *fn = qgraphicsitem_cast<Footnote *>(it);
+    foreach (QGraphicsItem* it, getFootnotes()) {
+        Footnote* fn = qgraphicsitem_cast<Footnote*>(it);
         assert(fn);
         if (fn->getConstraint() == constraint) {
             removeItem(fn);
@@ -623,12 +623,12 @@ void QueryScene::clearScene() {
     scheme->clear();
 }
 
-QList<QGraphicsItem *> QueryScene::unitsIntersectedByRow(int idx) const {
-    const QRectF &area = annotationsArea();
+QList<QGraphicsItem*> QueryScene::unitsIntersectedByRow(int idx) const {
+    const QRectF& area = annotationsArea();
     QRectF currRow(area.left(), idx * GRID_STEP, area.width(), GRID_STEP);
     currRow.moveTop(currRow.top() + annotationsArea().top());
-    QList<QGraphicsItem *> rowItems = items(currRow, Qt::IntersectsItemShape);
-    foreach (QGraphicsItem *it, rowItems) {
+    QList<QGraphicsItem*> rowItems = items(currRow, Qt::IntersectsItemShape);
+    foreach (QGraphicsItem* it, rowItems) {
         if (it->type() != QDElementType) {
             rowItems.removeAll(it);
         }
@@ -674,7 +674,7 @@ QueryViewController::QueryViewController()
     palette = new QueryPalette(this);
     palette->setObjectName("palette");
     groupsEditor = new QDGroupsEditor(this);
-    QDSamplesWidget *samples = new QDSamplesWidget(scene, this);
+    QDSamplesWidget* samples = new QDSamplesWidget(scene, this);
 
     tabs = new QTabWidget(this);
     tabs->insertTab(ElementsTab, palette, tr("Elements"));
@@ -685,23 +685,23 @@ QueryViewController::QueryViewController()
 
     connect(scene, SIGNAL(selectionChanged()), SLOT(sl_editItem()));
     connect(scene, SIGNAL(si_itemAdded()), SLOT(sl_itemAdded()));
-    connect(palette, SIGNAL(processSelected(QDActorPrototype *)), SLOT(sl_elementSelected(QDActorPrototype *)));
-    connect(samples, SIGNAL(setupGlass(GlassPane *)), sceneView, SLOT(setGlass(GlassPane *)));
-    connect(samples, SIGNAL(itemActivated(QDDocument *)), SLOT(sl_pasteSample(QDDocument *)));
+    connect(palette, SIGNAL(processSelected(QDActorPrototype*)), SLOT(sl_elementSelected(QDActorPrototype*)));
+    connect(samples, SIGNAL(setupGlass(GlassPane*)), sceneView, SLOT(setGlass(GlassPane*)));
+    connect(samples, SIGNAL(itemActivated(QDDocument*)), SLOT(sl_pasteSample(QDDocument*)));
     connect(tabs, SIGNAL(currentChanged(int)), samples, SLOT(sl_cancel()));
     connect(editor, SIGNAL(modified()), scene, SLOT(sl_setModified()));
 
-    QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
+    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(tabs);
     splitter->addWidget(sceneView);
     splitter->addWidget(editor);
 
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     if (settings->contains(PALETTE_STATE)) {
         palette->restoreState(settings->getValue(PALETTE_STATE));
     }
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout* layout = new QHBoxLayout(this);
     layout->addWidget(splitter);
     layout->setSpacing(0);
     layout->setMargin(0);
@@ -714,10 +714,10 @@ QueryViewController::QueryViewController()
     sl_scrollUp();
 }
 
-void QueryViewController::loadScene(const QString &content) {
+void QueryViewController::loadScene(const QString& content) {
     QDDocument doc;
     doc.setContent(content);
-    QList<QDDocument *> docs;
+    QList<QDDocument*> docs;
     docs << &doc;
     QDSceneSerializer::doc2scene(scene, docs);
     scene->setModified(false);
@@ -757,7 +757,7 @@ void QueryViewController::createActions() {
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteItem()));
 
     {  // Delete shortcut
-        QAction *deleteShortcut = new QAction(sceneView);
+        QAction* deleteShortcut = new QAction(sceneView);
         deleteShortcut->setShortcuts(QKeySequence::Delete);
         deleteShortcut->setShortcutContext(Qt::WidgetShortcut);
         connect(deleteShortcut, SIGNAL(triggered()), SLOT(sl_deleteItem()));
@@ -810,27 +810,27 @@ void QueryViewController::createActions() {
             assert(0);
             break;
     }
-    connect(strandActions, SIGNAL(triggered(QAction *)), SLOT(sl_setGlobalStrand(QAction *)));
+    connect(strandActions, SIGNAL(triggered(QAction*)), SLOT(sl_setGlobalStrand(QAction*)));
 }
 
-void QueryViewController::setupViewModeMenu(QMenu *m) {
+void QueryViewController::setupViewModeMenu(QMenu* m) {
     m->addAction(showLabelAction);
     m->addAction(showDescAction);
     m->addAction(showItemDescAction);
     m->addAction(showOrderAction);
 }
 
-void QueryViewController::setupQuerySequenceModeMenu(QMenu *m) {
+void QueryViewController::setupQuerySequenceModeMenu(QMenu* m) {
     m->addAction(directStrandAction);
     m->addAction(complementStrandAction);
     m->addAction(bothStrandsAction);
 }
 
-void QueryViewController::setupStrandMenu(QMenu *m) {
+void QueryViewController::setupStrandMenu(QMenu* m) {
     m->addActions(strandActions->actions());
 }
 
-void QueryViewController::setupMDIToolbar(QToolBar *tb) {
+void QueryViewController::setupMDIToolbar(QToolBar* tb) {
     tb->addAction(newAction);
     tb->addAction(loadAction);
     tb->addAction(saveAction);
@@ -840,19 +840,19 @@ void QueryViewController::setupMDIToolbar(QToolBar *tb) {
     tb->addAction(runAction);
     tb->addSeparator();
 
-    QToolButton *tt = new QToolButton(tb);
-    QMenu *viewModeMenu = new QMenu(tr("View Mode"), this);
+    QToolButton* tt = new QToolButton(tb);
+    QMenu* viewModeMenu = new QMenu(tr("View Mode"), this);
     setupViewModeMenu(viewModeMenu);
-    QAction *a = viewModeMenu->menuAction();
+    QAction* a = viewModeMenu->menuAction();
     tt->setDefaultAction(a);
     tt->setPopupMode(QToolButton::InstantPopup);
     tt->setIcon(QIcon(":query_designer/images/eye.png"));
     tb->addWidget(tt);
 
-    QToolButton *st = new QToolButton(tb);
-    QMenu *strandMenu = new QMenu(tr("Query Sequence Mode"), this);
+    QToolButton* st = new QToolButton(tb);
+    QMenu* strandMenu = new QMenu(tr("Query Sequence Mode"), this);
     setupStrandMenu(strandMenu);
-    QAction *sa = strandMenu->menuAction();
+    QAction* sa = strandMenu->menuAction();
     st->setDefaultAction(sa);
     st->setPopupMode(QToolButton::InstantPopup);
     st->setIcon(QIcon(":query_designer/images/strands.png"));
@@ -862,7 +862,7 @@ void QueryViewController::setupMDIToolbar(QToolBar *tb) {
     tb->addAction(deleteAction);
 }
 
-void QueryViewController::setupViewMenu(QMenu *m) {
+void QueryViewController::setupViewMenu(QMenu* m) {
     m->addAction(newAction);
     m->addAction(loadAction);
     m->addAction(saveAction);
@@ -871,12 +871,12 @@ void QueryViewController::setupViewMenu(QMenu *m) {
     m->addAction(runAction);
     m->addSeparator();
 
-    QMenu *viewModeMenu = new QMenu(tr("View Mode"), this);
+    QMenu* viewModeMenu = new QMenu(tr("View Mode"), this);
     viewModeMenu->setIcon(QIcon(":query_designer/images/eye.png"));
     setupViewModeMenu(viewModeMenu);
     m->addMenu(viewModeMenu);
 
-    QMenu *querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
+    QMenu* querySequenceModeMenu = new QMenu(tr("Query Sequence Mode"), this);
     querySequenceModeMenu->setIcon((QIcon(":query_designer/images/strands.png")));
     setupQuerySequenceModeMenu(querySequenceModeMenu);
     m->addMenu(querySequenceModeMenu);
@@ -900,7 +900,7 @@ void QueryViewController::saveState() {
 }
 
 void QueryViewController::sl_run() {
-    QDScheme *scheme = scene->getScheme();
+    QDScheme* scheme = scene->getScheme();
     if (scheme->isEmpty()) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("The schema is empty!"));
     } else if (!scheme->isValid()) {
@@ -934,8 +934,8 @@ void QueryViewController::sl_loadScene() {
     LastUsedDirHelper dir(QUERY_DESIGNER_ID);
     dir.url = U2FileDialog::getOpenFileName(this, tr("Load Schema"), dir, QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
     if (!dir.url.isEmpty()) {
-        QDLoadSceneTask *t = new QDLoadSceneTask(scene, dir.url);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_updateTitle()));
+        QDLoadSceneTask* t = new QDLoadSceneTask(scene, dir.url);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_updateTitle()));
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
         scene->setModified(false);
         schemeUri = dir.url;
@@ -950,7 +950,7 @@ void QueryViewController::sl_saveScene() {
         info.path = schemeUri;
         info.schemeName = scene->getLabel();
         info.description = scene->getDescription();
-        QDSaveSceneTask *t = new QDSaveSceneTask(scene, info);
+        QDSaveSceneTask* t = new QDSaveSceneTask(scene, info);
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
         scene->setModified(false);
     }
@@ -966,23 +966,23 @@ void QueryViewController::sl_saveSceneAs() {
 }
 
 void QueryViewController::sl_deleteItem() {
-    QList<QDActor *> actors2remove;
-    QList<QDConstraint *> constraints2remove;
-    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
-    foreach (QGraphicsItem *item, selectedItems) {
+    QList<QDActor*> actors2remove;
+    QList<QDConstraint*> constraints2remove;
+    QList<QGraphicsItem*> selectedItems = scene->selectedItems();
+    foreach (QGraphicsItem* item, selectedItems) {
         switch (item->type()) {
             case QDElementType: {
-                QDElement *uv = qgraphicsitem_cast<QDElement *>(item);
+                QDElement* uv = qgraphicsitem_cast<QDElement*>(item);
                 assert(uv);
-                QDActor *a = uv->getActor();
+                QDActor* a = uv->getActor();
                 if (!actors2remove.contains(a)) {
                     actors2remove.append(a);
                 }
             } break;
             case FootnoteItemType: {
-                Footnote *fn = qgraphicsitem_cast<Footnote *>(item);
+                Footnote* fn = qgraphicsitem_cast<Footnote*>(item);
                 assert(fn);
-                QDConstraint *c = fn->getConstraint();
+                QDConstraint* c = fn->getConstraint();
                 if (!constraints2remove.contains(c)) {
                     constraints2remove.append(c);
                 }
@@ -992,13 +992,13 @@ void QueryViewController::sl_deleteItem() {
         }
     }
 
-    QList<QDConstraint *> removedConstraints;
-    foreach (QDConstraint *c, constraints2remove) {
+    QList<QDConstraint*> removedConstraints;
+    foreach (QDConstraint* c, constraints2remove) {
         if (removedConstraints.contains(c)) {
             continue;
         }
-        QDSchemeUnit *su = c->getSchemeUnits().at(0);
-        QDActor *actor = su->getActor();
+        QDSchemeUnit* su = c->getSchemeUnits().at(0);
+        QDActor* actor = su->getActor();
         if (!su->getConstraints().contains(c)) {  // param constraint
             actors2remove.removeAll(actor);
             removedConstraints << actor->getConstraints();
@@ -1012,17 +1012,17 @@ void QueryViewController::sl_deleteItem() {
 }
 
 void QueryViewController::sl_editItem() {
-    const QList<QGraphicsItem *> &selectedItems = scene->selectedItems();
+    const QList<QGraphicsItem*>& selectedItems = scene->selectedItems();
     if (1 == selectedItems.size()) {
-        QGraphicsItem *selectedItem = selectedItems.at(0);
+        QGraphicsItem* selectedItem = selectedItems.at(0);
         if (selectedItem->type() == QDElementType) {
-            QDElement *unitView = qgraphicsitem_cast<QDElement *>(selectedItem);
-            QDActor *a = unitView->getSchemeUnit()->getActor();
+            QDElement* unitView = qgraphicsitem_cast<QDElement*>(selectedItem);
+            QDActor* a = unitView->getSchemeUnit()->getActor();
             editor->edit(a);
         }
         if (selectedItem->type() == FootnoteItemType) {
-            Footnote *fn = qgraphicsitem_cast<Footnote *>(selectedItem);
-            QDConstraint *con = fn->getConstraint();
+            Footnote* fn = qgraphicsitem_cast<Footnote*>(selectedItem);
+            QDConstraint* con = fn->getConstraint();
             editor->edit(con);
         }
     } else {
@@ -1030,7 +1030,7 @@ void QueryViewController::sl_editItem() {
     }
 }
 
-void QueryViewController::sl_elementSelected(QDActorPrototype *proto) {
+void QueryViewController::sl_elementSelected(QDActorPrototype* proto) {
     scene->clearSelection();
     editor->showProto(proto);
 
@@ -1046,7 +1046,7 @@ void QueryViewController::sl_elementSelected(QDActorPrototype *proto) {
     }
 }
 
-void QueryViewController::sl_pasteSample(QDDocument *content) {
+void QueryViewController::sl_pasteSample(QDDocument* content) {
     if (!scene->getScheme()->getActors().isEmpty()) {
         if (!confirmModified()) {
             return;
@@ -1054,14 +1054,14 @@ void QueryViewController::sl_pasteSample(QDDocument *content) {
     }
     tabs->setCurrentIndex(ElementsTab);
     scene->clearScene();
-    QList<QDDocument *> docList = (QList<QDDocument *>() << content);
+    QList<QDDocument*> docList = (QList<QDDocument*>() << content);
     QDSceneSerializer::doc2scene(scene, docList);
     sl_updateTitle();
     scene->setModified(false);
     schemeUri.clear();
 }
 
-void QueryViewController::sl_selectEditorCell(const QString &link) {
+void QueryViewController::sl_selectEditorCell(const QString& link) {
     editor->setCurrentAttribute(link);
 }
 
@@ -1069,8 +1069,8 @@ void QueryViewController::sl_updateTitle() {
     setWindowTitle(tr("Query Designer - %1").arg(scene->getLabel()));
 }
 
-void QueryViewController::sl_setGlobalStrand(QAction *a) {
-    QDScheme *scheme = scene->getScheme();
+void QueryViewController::sl_setGlobalStrand(QAction* a) {
+    QDScheme* scheme = scene->getScheme();
     QDStrandOption old = scheme->getStrand();
     if (a == bothStrandsAction) {
         scheme->setStrand(QDStrand_Both);
@@ -1101,9 +1101,9 @@ void QueryViewController::sl_scrollUp() {
     sceneView->ensureVisible(topRect);
 }
 
-void QueryViewController::setupConstraintEditor(QDConstraint *c) {
+void QueryViewController::setupConstraintEditor(QDConstraint* c) {
     if (c->constraintType() == QDConstraintTypes::DISTANCE) {
-        QMap<QString, PropertyDelegate *> delegates;
+        QMap<QString, PropertyDelegate*> delegates;
         {
             QVariantMap lenMap;
             lenMap["minimum"] = QVariant(0);
@@ -1142,7 +1142,7 @@ void QueryViewController::enableSaveAction(bool enable) {
 /* AddConstraintDialog                                                  */
 /************************************************************************/
 
-AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kind, QDElement *defSrc, QDElement *defDst)
+AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kind, QDElement* defSrc, QDElement* defDst)
     : scene(_scene), kind(_kind) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930627");
@@ -1169,11 +1169,11 @@ AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kin
 
     maxSpin->setMaximum(INT_MAX);
     minSpin->setMaximum(INT_MAX);
-    const QList<QDElement *> &elements = scene->getElements();
+    const QList<QDElement*>& elements = scene->getElements();
     int index = 0;
-    foreach (QDElement *el, elements) {
-        const QVariant &data = qVariantFromValue(el);
-        QDActor *a = el->getActor();
+    foreach (QDElement* el, elements) {
+        const QVariant& data = qVariantFromValue(el);
+        QDActor* a = el->getActor();
         QString name = a->getParameters()->getLabel();
         if (a->getSchemeUnits().size() > 1) {
             name += QString(".%1").arg(a->getUnitId(el->getSchemeUnit()));
@@ -1195,8 +1195,8 @@ AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kin
 void AddConstraintDialog::accept() {
     int min = minSpin->text().toInt();
     int max = maxSpin->text().toInt();
-    QDElement *src = fromCBox->itemData(fromCBox->currentIndex()).value<QDElement *>();
-    QDElement *dst = toCBox->itemData(toCBox->currentIndex()).value<QDElement *>();
+    QDElement* src = fromCBox->itemData(fromCBox->currentIndex()).value<QDElement*>();
+    QDElement* dst = toCBox->itemData(toCBox->currentIndex()).value<QDElement*>();
     scene->addDistanceConstraint(src, dst, kind, min, max);
     QDialog::accept();
 }
@@ -1205,17 +1205,17 @@ void AddConstraintDialog::accept() {
 /* GUIUtils                                                             */
 /************************************************************************/
 
-QPixmap QDUtils::generateSnapShot(QDDocument *doc, const QRect &rect) {
+QPixmap QDUtils::generateSnapShot(QDDocument* doc, const QRect& rect) {
     QueryScene scene;
-    QList<QDDocument *> docs = (QList<QDDocument *>() << doc);
+    QList<QDDocument*> docs = (QList<QDDocument*>() << doc);
     QDSceneSerializer::doc2scene(&scene, docs);
     return generateSnapShot(&scene, rect);
 }
 
-QPixmap QDUtils::generateSnapShot(QueryScene *scene, const QRect &rect) {
+QPixmap QDUtils::generateSnapShot(QueryScene* scene, const QRect& rect) {
     // assert(!rect.isNull());
     QRectF bounds;
-    foreach (QGraphicsItem *item, scene->items()) {
+    foreach (QGraphicsItem* item, scene->items()) {
         if (item->type() == QDElementType || item->type() == FootnoteItemType) {
             QRectF itemBound = item->boundingRect();
             QPointF pos = item->scenePos();

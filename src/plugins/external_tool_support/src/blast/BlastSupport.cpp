@@ -71,7 +71,7 @@ const QString BlastSupport::BLAST_TMP_DIR = "blast";
 const QString BlastSupport::ET_BLASTDBCMD_ID = "USUPP_BLAST_DB_CMD";
 const QString BlastSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
 
-BlastSupport::BlastSupport(const QString &id)
+BlastSupport::BlastSupport(const QString& id)
     : ExternalTool(id, "blast", getProgramNameByToolId(id)) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
@@ -128,8 +128,8 @@ BlastSupport::BlastSupport(const QString &id)
     toolKitName = "BLAST";
 }
 
-bool BlastSupport::checkBlastTool(const QString &toolId) {
-    ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
+bool BlastSupport::checkBlastTool(const QString& toolId) {
+    ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
     SAFE_POINT(tool != nullptr, "Blast tool not found: " + toolId, false);
     CHECK(tool->getPath().isEmpty(), true);
 
@@ -148,7 +148,7 @@ bool BlastSupport::checkBlastTool(const QString &toolId) {
 
 void BlastSupport::sl_runBlastSearch() {
     // Call select input file and setup settings dialog
-    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<BlastWithExtFileRunDialog> blastRunDialog = new BlastWithExtFileRunDialog(mainWindow);
     blastRunDialog->exec();
     CHECK(!blastRunDialog.isNull() && blastRunDialog->result() == QDialog::Accepted, );
@@ -193,7 +193,7 @@ void BlastSupport::sl_runMakeBlastDb() {
     AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(makeBlastDbDialog->getTaskSettings()));
 }
 
-QString BlastSupport::getToolIdByProgramName(const QString &programName) {
+QString BlastSupport::getToolIdByProgramName(const QString& programName) {
     QString toolId = programName == "blastn"        ? ET_BLASTN_ID
                      : programName == "blastp"      ? ET_BLASTP_ID
                      : programName == "blastx"      ? ET_BLASTX_ID
@@ -207,7 +207,7 @@ QString BlastSupport::getToolIdByProgramName(const QString &programName) {
     return toolId;
 }
 
-QString BlastSupport::getProgramNameByToolId(const QString &toolId) {
+QString BlastSupport::getProgramNameByToolId(const QString& toolId) {
     QString programName = toolId == ET_BLASTN_ID        ? "blastn"
                           : toolId == ET_BLASTP_ID      ? "blastp"
                           : toolId == ET_BLASTX_ID      ? "blastx"
@@ -226,7 +226,7 @@ QString BlastSupport::getProgramNameByToolId(const QString &toolId) {
 
 #define BLAST_ANNOTATION_NAME "blast result"
 
-BlastSupportContext::BlastSupportContext(QObject *p)
+BlastSupportContext::BlastSupportContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
     searchToolIds = QStringList({BlastSupport::ET_BLASTN_ID,
                                  BlastSupport::ET_BLASTP_ID,
@@ -240,8 +240,8 @@ BlastSupportContext::BlastSupportContext(QObject *p)
     connect(fetchSequenceByIdAction, SIGNAL(triggered()), SLOT(sl_fetchSequenceById()));
 }
 
-void BlastSupportContext::initViewContext(GObjectView *view) {
-    SAFE_POINT(qobject_cast<AnnotatedDNAView *>(view) != nullptr, "Object view is not an AnnotatedDNAView", );
+void BlastSupportContext::initViewContext(GObjectView* view) {
+    SAFE_POINT(qobject_cast<AnnotatedDNAView*>(view) != nullptr, "Object view is not an AnnotatedDNAView", );
 
     auto queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST..."), 2000, searchToolIds);
     queryAction->setObjectName("query_with_blast");
@@ -250,9 +250,9 @@ void BlastSupportContext::initViewContext(GObjectView *view) {
 }
 
 /**  Returns comma-separated sequence ids from the list of annotations.  */
-static QString getCommaSeparatedIdsFromAnnotations(const QList<Annotation *> &annotations) {
+static QString getCommaSeparatedIdsFromAnnotations(const QList<Annotation*>& annotations) {
     QStringList idList;
-    for (const Annotation *ann : qAsConst(annotations)) {
+    for (const Annotation* ann : qAsConst(annotations)) {
         QString value = ann->findFirstQualifierValue("id");
         if (!value.isEmpty() && !idList.contains(value)) {
             idList.append(value);
@@ -261,21 +261,21 @@ static QString getCommaSeparatedIdsFromAnnotations(const QList<Annotation *> &an
     return idList.join(",");
 }
 
-void BlastSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    auto dnaView = qobject_cast<AnnotatedDNAView *>(view);
+void BlastSupportContext::buildStaticOrContextMenu(GObjectView* view, QMenu* m) {
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(view);
     CHECK(dnaView != nullptr, );
 
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
+    QList<GObjectViewAction*> actions = getViewActions(view);
+    QMenu* analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
     SAFE_POINT(analyseMenu != nullptr, "analyseMenu", );
-    for (GObjectViewAction *a : qAsConst(actions)) {
+    for (GObjectViewAction* a : qAsConst(actions)) {
         a->addToMenuWithOrder(analyseMenu);
     }
 
-    QList<Annotation *> selectedAnnotations = dnaView->getAnnotationsSelection()->getAnnotations();
+    QList<Annotation*> selectedAnnotations = dnaView->getAnnotationsSelection()->getAnnotations();
     CHECK(!selectedAnnotations.isEmpty(), );
 
-    bool isBlastResultSelected = std::all_of(selectedAnnotations.begin(), selectedAnnotations.end(), [](auto &a) { return a->getName() == BLAST_ANNOTATION_NAME; });
+    bool isBlastResultSelected = std::all_of(selectedAnnotations.begin(), selectedAnnotations.end(), [](auto& a) { return a->getName() == BLAST_ANNOTATION_NAME; });
     CHECK(isBlastResultSelected, );
 
     commaSeparatedSelectedSequenceIds = getCommaSeparatedIdsFromAnnotations(selectedAnnotations);
@@ -293,13 +293,13 @@ void BlastSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) 
 }
 
 void BlastSupportContext::sl_showDialog() {
-    auto viewAction = qobject_cast<GObjectViewAction *>(sender());
+    auto viewAction = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(viewAction != nullptr, "Not a GObjectViewAction!", );
 
-    auto view = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    auto view = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     SAFE_POINT(view != nullptr, "Not an AnnotatedDNAView!", );
 
-    ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = view->getActiveSequenceContext();
     QObjectScopedPointer<BlastRunDialog> dlg = new BlastRunDialog(seqCtx, view->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull() && dlg->result() == QDialog::Accepted, );
@@ -308,10 +308,10 @@ void BlastSupportContext::sl_showDialog() {
     U2Region region = dlg->getSelectedRegion();
 
     U2OpStatus2Log os(LogLevel_DETAILS);
-    settings.querySequence = seqCtx->getSequenceData(region, os);
+    settings.querySequences = {seqCtx->getSequenceData(region, os)};
     CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
-    settings.offsInGlobalSeq = region.startPos;
+    settings.resultRegionOffset = region.startPos;
     SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
 
     settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
@@ -327,7 +327,7 @@ void BlastSupportContext::sl_showDialog() {
                 : settings.programName == "tblastn"  ? new TBlastNTask(settings)
                 : settings.programName == "tblastx"  ? new TBlastXTask(settings)
                 : settings.programName == "rpsblast" ? new RPSBlastTask(settings)
-                                                     : (Task *)nullptr;
+                                                     : (Task*)nullptr;
     SAFE_POINT(task != nullptr, "Unsupported blast program name: " + settings.programName, );
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }

@@ -44,15 +44,15 @@
 
 namespace U2 {
 
-AssemblyConsensusArea::AssemblyConsensusArea(AssemblyBrowserUi *ui)
+AssemblyConsensusArea::AssemblyConsensusArea(AssemblyBrowserUi* ui)
     : AssemblySequenceArea(ui, AssemblyConsensusAlgorithm::EMPTY_CHAR), consensusAlgorithmMenu(nullptr), consensusAlgorithm(nullptr), canceled(false) {
     setToolTip(tr("Consensus sequence"));
     setObjectName("Consensus area");
     connect(&consensusTaskRunner, SIGNAL(si_finished()), SLOT(sl_consensusReady()));
 
-    AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
+    AssemblyConsensusAlgorithmRegistry* registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
     QString defaultId = BuiltInAssemblyConsensusAlgorithms::DEFAULT_ALGO;
-    AssemblyConsensusAlgorithmFactory *f = registry->getAlgorithmFactory(defaultId);
+    AssemblyConsensusAlgorithmFactory* f = registry->getAlgorithmFactory(defaultId);
     SAFE_POINT(f != nullptr, QString("consensus algorithm factory %1 not found").arg(defaultId), );
     consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
 
@@ -66,11 +66,11 @@ void AssemblyConsensusArea::createContextMenu() {
 
     contextMenu->addMenu(getConsensusAlgorithmMenu());
 
-    QAction *exportCoverage = contextMenu->addAction(tr("Export coverage..."));
+    QAction* exportCoverage = contextMenu->addAction(tr("Export coverage..."));
     exportCoverage->setObjectName("Export coverage");
     connect(exportCoverage, SIGNAL(triggered()), browser, SLOT(sl_exportCoverage()));
 
-    QAction *exportAction = contextMenu->addAction(tr("Export consensus..."));
+    QAction* exportAction = contextMenu->addAction(tr("Export consensus..."));
     connect(exportAction, SIGNAL(triggered()), SLOT(sl_exportConsensus()));
 
     exportConsensusVariationsAction = contextMenu->addAction(tr("Export consensus variations..."));
@@ -88,7 +88,7 @@ bool AssemblyConsensusArea::canDrawSequence() {
     return !getModel()->isEmpty();
 }
 
-QByteArray AssemblyConsensusArea::getSequenceRegion(U2OpStatus &os) {
+QByteArray AssemblyConsensusArea::getSequenceRegion(U2OpStatus& os) {
     Q_UNUSED(os);
     return lastResult.consensus;
 }
@@ -140,7 +140,7 @@ void AssemblyConsensusArea::sl_zoomPerformed() {
     launchConsensusCalculation();
 }
 
-void AssemblyConsensusArea::drawSequence(QPainter &p) {
+void AssemblyConsensusArea::drawSequence(QPainter& p) {
     if (areCellsVisible()) {
         U2Region visibleRegion = getVisibleRegion();
         if (!consensusTaskRunner.isIdle() || canceled) {
@@ -166,40 +166,40 @@ void AssemblyConsensusArea::drawSequence(QPainter &p) {
     }
 }
 
-QMenu *AssemblyConsensusArea::getConsensusAlgorithmMenu() {
+QMenu* AssemblyConsensusArea::getConsensusAlgorithmMenu() {
     if (consensusAlgorithmMenu == nullptr) {
         consensusAlgorithmMenu = new QMenu(tr("Consensus algorithm"));
 
-        AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
-        QList<AssemblyConsensusAlgorithmFactory *> factories = registry->getAlgorithmFactories();
+        AssemblyConsensusAlgorithmRegistry* registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
+        QList<AssemblyConsensusAlgorithmFactory*> factories = registry->getAlgorithmFactories();
 
-        foreach (AssemblyConsensusAlgorithmFactory *f, factories) {
-            QAction *action = consensusAlgorithmMenu->addAction(f->getName());
+        foreach (AssemblyConsensusAlgorithmFactory* f, factories) {
+            QAction* action = consensusAlgorithmMenu->addAction(f->getName());
             action->setCheckable(true);
             action->setChecked(f == consensusAlgorithm->getFactory());
             action->setData(f->getId());
-            connect(consensusAlgorithmMenu, SIGNAL(triggered(QAction *)), SLOT(sl_consensusAlgorithmChanged(QAction *)));
+            connect(consensusAlgorithmMenu, SIGNAL(triggered(QAction*)), SLOT(sl_consensusAlgorithmChanged(QAction*)));
             algorithmActions << action;
         }
     }
     return consensusAlgorithmMenu;
 }
 
-QList<QAction *> AssemblyConsensusArea::getAlgorithmActions() {
+QList<QAction*> AssemblyConsensusArea::getAlgorithmActions() {
     // ensure that menu is created
     getConsensusAlgorithmMenu();
     return algorithmActions;
 }
 
-void AssemblyConsensusArea::sl_consensusAlgorithmChanged(QAction *action) {
+void AssemblyConsensusArea::sl_consensusAlgorithmChanged(QAction* action) {
     QString id = action->data().toString();
-    AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
-    AssemblyConsensusAlgorithmFactory *f = registry->getAlgorithmFactory(id);
+    AssemblyConsensusAlgorithmRegistry* registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
+    AssemblyConsensusAlgorithmFactory* f = registry->getAlgorithmFactory(id);
     SAFE_POINT(f != nullptr, QString("cannot change consensus algorithm, invalid id %1").arg(id), );
 
     consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
 
-    foreach (QAction *a, consensusAlgorithmMenu->actions()) {
+    foreach (QAction* a, consensusAlgorithmMenu->actions()) {
         a->setChecked(a == action);
     }
 
@@ -215,7 +215,7 @@ void AssemblyConsensusArea::sl_drawDifferenceChanged(bool drawDifference) {
     sl_redraw();
 }
 
-void AssemblyConsensusArea::mousePressEvent(QMouseEvent *e) {
+void AssemblyConsensusArea::mousePressEvent(QMouseEvent* e) {
     if (e->button() == Qt::RightButton) {
         updateActions();
         contextMenu->exec(QCursor::pos());
@@ -235,7 +235,7 @@ void AssemblyConsensusArea::sl_consensusReady() {
 }
 
 void AssemblyConsensusArea::sl_exportConsensus() {
-    const DocumentFormat *defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::FASTA);
+    const DocumentFormat* defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::FASTA);
     SAFE_POINT(defaultFormat != nullptr, "Internal: couldn't find default document format for consensus", );
 
     ExportConsensusTaskSettings settings;
@@ -261,7 +261,7 @@ void AssemblyConsensusArea::sl_exportConsensus() {
     }
 }
 void AssemblyConsensusArea::sl_exportConsensusVariations() {
-    const DocumentFormat *defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::SNP);
+    const DocumentFormat* defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::SNP);
     SAFE_POINT(defaultFormat != nullptr, "Internal: couldn't find default document format for consensus variations", );
 
     ExportConsensusVariationsTaskSettings settings;

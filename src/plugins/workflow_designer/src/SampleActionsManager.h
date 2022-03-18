@@ -30,7 +30,7 @@ namespace U2 {
 
 class SampleAction {
 public:
-    SampleAction(const QString &actionName, const QString &toolsMenu, const QString &samplePath, const QString &actionText);
+    SampleAction(const QString& actionName, const QString& toolsMenu, const QString& samplePath, const QString& actionText);
 
     QString actionText;
     QString actionName;
@@ -42,19 +42,19 @@ public:
 class SampleActionsManager : public QObject {
     Q_OBJECT
 public:
-    SampleActionsManager(QObject *parent);
-    void registerAction(const SampleAction &action);
+    SampleActionsManager(QObject* parent);
+    void registerAction(const SampleAction& action);
 
 signals:
-    void si_clicked(const SampleAction &action);
+    void si_clicked(const SampleAction& action);
 
 private slots:
     void sl_clicked();
 
 private:
-    int getValidClickedActionId(U2OpStatus &os) const;
-    SampleAction getClickedAction(U2OpStatus &os) const;
-    QStringList getAbsentPlugins(const QStringList &requiredPlugins) const;
+    int getValidClickedActionId(U2OpStatus& os) const;
+    SampleAction getClickedAction(U2OpStatus& os) const;
+    QStringList getAbsentPlugins(const QStringList& requiredPlugins) const;
 
 private:
     QList<SampleAction> actions;

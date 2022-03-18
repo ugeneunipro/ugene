@@ -40,20 +40,20 @@ public:
 class NeighborJoinWidget : public CreatePhyTreeWidget, public Ui_NeighborJoinWidget {
     Q_OBJECT
 public:
-    NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
+    NeighborJoinWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
 
-    void fillSettings(CreatePhyTreeSettings &settings);
+    void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
-    bool checkMemoryEstimation(QString &msg, const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
-    bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
+    bool checkMemoryEstimation(QString& msg, const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
+    bool checkSettings(QString& msg, const CreatePhyTreeSettings& settings);
 
 private slots:
-    void sl_onMatrixModelChanged(const QString &matrixModelName);
-    void sl_onConsensusTypeChanged(const QString &consensusTypeName);
+    void sl_onMatrixModelChanged(const QString& matrixModelName);
+    void sl_onConsensusTypeChanged(const QString& consensusTypeName);
 
 private:
-    void init(const MultipleSequenceAlignment &ma);
+    void init(const MultipleSequenceAlignment& ma);
     void connectSignals();
     static int getRandomSeed();
     static bool checkSeed(int seed);

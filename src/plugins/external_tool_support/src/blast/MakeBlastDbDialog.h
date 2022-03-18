@@ -33,10 +33,10 @@ namespace U2 {
 class MakeBlastDbDialog : public QDialog, public Ui_MakeBlastDbDialog {
     Q_OBJECT
 public:
-    MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &settings = {});
+    MakeBlastDbDialog(QWidget* parent, const MakeBlastDbSettings& settings = {});
 
     /** Returns the original settings adjusted after the dialog is accepted. */
-    const MakeBlastDbSettings &getTaskSettings() const;
+    const MakeBlastDbSettings& getTaskSettings() const;
 
 private slots:
     void sl_makeBlastDb();
@@ -48,8 +48,8 @@ private slots:
 
 private:
     MakeBlastDbSettings settings;
-    QPushButton *makeButton;
-    QPushButton *cancelButton;
+    QPushButton* makeButton;
+    QPushButton* cancelButton;
 };
 
 }  // namespace U2

@@ -33,7 +33,7 @@ const IOAdapterId BaseIOAdapters::VFS_FILE("memory_buffer");
 const IOAdapterId BaseIOAdapters::STRING("string");
 const IOAdapterId BaseIOAdapters::DATABASE_CONNECTION("database_connection");
 
-qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerminators, TerminatorHandling th, bool *terminatorFound) {
+qint64 IOAdapter::readUntil(char* buf, qint64 maxSize, const QBitArray& readTerminators, TerminatorHandling th, bool* terminatorFound) {
     const qint64 CHUNK = (qint64)1024;
     const char *chunk_start, *start = buf, *end = buf + maxSize;
 
@@ -51,7 +51,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
             // last chunk, no more data or buffer space
             end = buf + len;
         }
-        const char *buf_end = buf + len;
+        const char* buf_end = buf + len;
         for (; buf < buf_end; buf++) {
             // loop exit invariant: buf is positioned after last accepted char
             if (readTerminators[(uchar)*buf]) {
@@ -90,7 +90,7 @@ bool IOAdapter::isEof() {
     return 0 == ret;
 }
 
-qint64 IOAdapter::readLine(char *buff, qint64 maxSize, bool *terminatorFound /* = 0*/) {
+qint64 IOAdapter::readLine(char* buff, qint64 maxSize, bool* terminatorFound /* = 0*/) {
     bool terminatorFlagStub = false;
     if (!terminatorFound) {
         terminatorFound = &terminatorFlagStub;
@@ -113,7 +113,7 @@ qint64 IOAdapter::readLine(char *buff, qint64 maxSize, bool *terminatorFound /* 
     return len;
 }
 
-void IOAdapter::cutByteOrderMarks(char *data, QString &errorString, qint64 &length) {
+void IOAdapter::cutByteOrderMarks(char* data, QString& errorString, qint64& length) {
     QByteArray dataByteArray(data, length);
     qint64 newCached = TextUtils::cutByteOrderMarks(data, errorString, length);
     QByteArray newDatatByteArray(data);

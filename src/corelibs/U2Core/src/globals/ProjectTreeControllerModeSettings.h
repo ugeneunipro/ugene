@@ -42,26 +42,26 @@ enum ProjectTreeGroupMode {
 // filtered objects and documents are not shown in project tree
 class PTCObjectFilter : public QObject {
 public:
-    PTCObjectFilter(QObject *p)
+    PTCObjectFilter(QObject* p)
         : QObject(p) {
     }
-    virtual bool filter(GObject *o) const = 0;
+    virtual bool filter(GObject* o) const = 0;
 };
 
 class PTCDocumentFilter : public QObject {
 public:
-    PTCDocumentFilter(QObject *p)
+    PTCDocumentFilter(QObject* p)
         : QObject(p) {
     }
-    virtual bool filter(Document *d) const = 0;
+    virtual bool filter(Document* d) const = 0;
 };
 
 class U2CORE_EXPORT PTCObjectRelationFilter : public PTCObjectFilter {
 public:
-    PTCObjectRelationFilter(const GObjectRelation &rel, QObject *p = nullptr)
+    PTCObjectRelationFilter(const GObjectRelation& rel, QObject* p = nullptr)
         : PTCObjectFilter(p), rel(rel) {
     }
-    bool filter(GObject *o) const;
+    bool filter(GObject* o) const;
     GObjectRelation rel;
 };
 
@@ -80,30 +80,30 @@ public:
     }
 
     QSet<GObjectType> objectTypesToShow;  // show only objects of specified type
-    QSet<GObjectConstraints *> objectConstraints;  // show only objects that fits constraints
+    QSet<GObjectConstraints*> objectConstraints;  // show only objects that fits constraints
     QList<QPointer<GObject>> excludeObjectList;  // do not show these objects
     QList<QPointer<Document>> excludeDocList;  // do not show these documents
-    QStringList tokensToShow;  // show documents/objects with all of tokens in a name
+    QStringList tokensToShow;  // show documents/objects with all tokens in a name
     bool allowMultipleSelection;  // use multiple selection in tree
     TriState readOnlyFilter;  // unknown->all, true->filter(exclude) readonly, false -> keep only readonly
-    LoadDocumentTaskProvider *loadTaskProvider;  // use custom LoadDocumentTask factory instead of default
+    LoadDocumentTaskProvider* loadTaskProvider;  // use custom LoadDocumentTask factory instead of default
     ProjectTreeGroupMode groupMode;  // group mode for objects
     bool allowSelectUnloaded;  // ability to select unloaded objects
     bool ignoreRemoteObjects;  // do not load from remote database
 
     // Note that objectFilter and documentFilter are called only on object add/remove ops!
     // WARN: object and document filters live-range is controlled by the side created these objects
-    PTCObjectFilter *objectFilter;
-    PTCDocumentFilter *documentFilter;
+    PTCObjectFilter* objectFilter;
+    PTCDocumentFilter* documentFilter;
 
     bool markActive;
     QFont activeFont;
 
-    bool isDocumentShown(Document *doc) const;
-    bool isTypeShown(GObjectType t) const;
-    bool isObjectShown(GObject *o) const;
+    bool isDocumentShown(Document* doc) const;
+    bool isTypeShown(const GObjectType& t) const;
+    bool isObjectShown(GObject* o) const;
     bool isObjectFilterActive() const;
-    bool nameFilterAcceptsString(const QString &str) const;
+    bool nameFilterAcceptsString(const QString& str) const;
 };
 
 }  // namespace U2

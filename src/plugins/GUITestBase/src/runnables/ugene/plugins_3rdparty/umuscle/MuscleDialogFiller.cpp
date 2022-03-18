@@ -34,23 +34,22 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::MuscleDialogFiller"
 
-MuscleDialogFiller::MuscleDialogFiller(HI::GUITestOpStatus &os, Mode _mode, bool _doNotReArr, bool translateToAmino)
+MuscleDialogFiller::MuscleDialogFiller(HI::GUITestOpStatus& os, Mode _mode, bool _doNotReArr, bool translateToAmino)
     : Filler(os, "MuscleAlignmentDialog"), mode(_mode), doNotReArr(_doNotReArr), translateToAmino(translateToAmino) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MuscleDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QComboBox *modeBox = dialog->findChild<QComboBox *>("confBox");
+    QComboBox* modeBox = dialog->findChild<QComboBox*>("confBox");
     GT_CHECK(modeBox != nullptr, "combobox not found");
     GTComboBox::selectItemByIndex(os, modeBox, mode);
 
-    QCheckBox *stableCB = dialog->findChild<QCheckBox *>("stableCB");
+    QCheckBox* stableCB = dialog->findChild<QCheckBox*>("stableCB");
     GTCheckBox::setChecked(os, stableCB, doNotReArr);
 
-    QCheckBox *translate2AminoCb = dialog->findChild<QCheckBox *>("translateCheckBox");
+    QCheckBox* translate2AminoCb = dialog->findChild<QCheckBox*>("translateCheckBox");
     GTCheckBox::setChecked(os, translate2AminoCb, translateToAmino);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

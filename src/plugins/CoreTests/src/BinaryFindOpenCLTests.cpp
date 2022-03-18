@@ -34,13 +34,13 @@ namespace U2 {
 #    define FIND_NUMBERS "find_numbers"
 #    define EXPECTED_RESULTS "expected_res"
 
-QList<XMLTestFactory *> BinaryFindOpenCLTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> BinaryFindOpenCLTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_BinaryFindOpenCL::createFactory());
     return res;
 }
 
-void GTest_BinaryFindOpenCL::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_BinaryFindOpenCL::init(XMLTestFormat*, const QDomElement& el) {
     QString buf;
 
     buf = el.attribute(NUMBERS);

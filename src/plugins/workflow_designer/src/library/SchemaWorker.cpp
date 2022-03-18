@@ -29,7 +29,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-SchemaWorker::SchemaWorker(Actor *a)
+SchemaWorker::SchemaWorker(Actor* a)
     : BaseWorker(a) {
 }
 
@@ -41,7 +41,7 @@ bool SchemaWorker::isDone() const {
     return true;
 }
 
-Task *SchemaWorker::tick() {
+Task* SchemaWorker::tick() {
     return nullptr;
 }
 
@@ -55,8 +55,8 @@ QString SchemaWorkerPrompter::composeRichDoc() {
     return SchemaWorker::tr("Some workflow is in this element.");
 }
 
-bool SchemaWorkerFactory::init(Schema *schema, const QString &name, const QString &actorFilePath) {
-    ActorPrototype *proto = IncludedProtoFactory::getSchemaActorProto(schema, name, actorFilePath);
+bool SchemaWorkerFactory::init(Schema* schema, const QString& name, const QString& actorFilePath) {
+    ActorPrototype* proto = IncludedProtoFactory::getSchemaActorProto(schema, name, actorFilePath);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_SNP_ANNOTATION(), proto);
     return true;
 }

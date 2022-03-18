@@ -130,19 +130,19 @@ class NotificationStack;
 class U2GUI_EXPORT MainWindow : public QObject {
     Q_OBJECT
 public:
-    virtual QMenu *getTopLevelMenu(const QString &sysName) const = 0;
-    virtual QToolBar *getToolbar(const QString &sysName) const = 0;
-    virtual QMainWindow *getQMainWindow() const = 0;
+    virtual QMenu* getTopLevelMenu(const QString& sysName) const = 0;
+    virtual QToolBar* getToolbar(const QString& sysName) const = 0;
+    virtual QMainWindow* getQMainWindow() const = 0;
 
-    virtual MWMDIManager *getMDIManager() const = 0;
-    virtual MWDockManager *getDockManager() const = 0;
-    virtual NotificationStack *getNotificationStack() const = 0;
+    virtual MWMDIManager* getMDIManager() const = 0;
+    virtual MWDockManager* getDockManager() const = 0;
+    virtual NotificationStack* getNotificationStack() const = 0;
 
-    virtual void setWindowTitle(const QString &title) = 0;
+    virtual void setWindowTitle(const QString& title) = 0;
 
-    virtual void addNotification(const QString &message, NotificationType type) = 0;
+    virtual void addNotification(const QString& message, NotificationType type) = 0;
 
-    virtual void registerAction(QAction *action) = 0;
+    virtual void registerAction(QAction* action) = 0;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -154,12 +154,12 @@ class U2GUI_EXPORT MWMDIWindow : public QWidget {
     friend class MWMDIManager;
 
 public:
-    MWMDIWindow(const QString &_windowName);
+    MWMDIWindow(const QString& _windowName);
     ~MWMDIWindow();
 
-    virtual void setupMDIToolbar(QToolBar *) {
+    virtual void setupMDIToolbar(QToolBar*) {
     }
-    virtual void setupViewMenu(QMenu *) {
+    virtual void setupViewMenu(QMenu*) {
     }
 
     int getId() const {
@@ -179,32 +179,32 @@ protected:
 class U2GUI_EXPORT MWMDIManager : public QObject {
     Q_OBJECT
 public:
-    MWMDIManager(QObject *p)
+    MWMDIManager(QObject* p)
         : QObject(p) {
     }
 
     /** Adds the specified window to MainWindow layout and activates it. */
-    virtual void addMDIWindow(MWMDIWindow *w) = 0;
+    virtual void addMDIWindow(MWMDIWindow* w) = 0;
 
-    virtual bool closeMDIWindow(MWMDIWindow *w) = 0;
+    virtual bool closeMDIWindow(MWMDIWindow* w) = 0;
 
-    virtual QList<MWMDIWindow *> getWindows() const = 0;
+    virtual QList<MWMDIWindow*> getWindows() const = 0;
 
-    virtual MWMDIWindow *getWindowById(int id) const = 0;
+    virtual MWMDIWindow* getWindowById(int id) const = 0;
 
-    virtual void activateWindow(MWMDIWindow *w) = 0;
+    virtual void activateWindow(MWMDIWindow* w) = 0;
 
-    virtual MWMDIWindow *getActiveWindow() const = 0;
+    virtual MWMDIWindow* getActiveWindow() const = 0;
 
 signals:
-    void si_windowAdded(MWMDIWindow *w);
-    void si_windowClosing(MWMDIWindow *w);
-    void si_windowActivated(MWMDIWindow *w);
-    void si_windowDeactivated(MWMDIWindow *w);
+    void si_windowAdded(MWMDIWindow* w);
+    void si_windowClosing(MWMDIWindow* w);
+    void si_windowActivated(MWMDIWindow* w);
+    void si_windowDeactivated(MWMDIWindow* w);
 
 protected:
     /* returns true if the window agreed to close, false otherwise */
-    bool onCloseEvent(MWMDIWindow *w) {
+    bool onCloseEvent(MWMDIWindow* w) {
         return w->onCloseEvent();
     }
 };
@@ -222,25 +222,25 @@ enum MWDockArea {
 class U2GUI_EXPORT MWDockManager : public QObject {
     Q_OBJECT
 public:
-    MWDockManager(QObject *p)
+    MWDockManager(QObject* p)
         : QObject(p) {
     }
 
-    virtual QAction *registerDock(MWDockArea area, QWidget *w, const QKeySequence &ks = QKeySequence()) = 0;
+    virtual QAction* registerDock(MWDockArea area, QWidget* w, const QKeySequence& ks = QKeySequence()) = 0;
 
-    virtual QWidget *findWidget(const QString &widgetObjName) = 0;
+    virtual QWidget* findWidget(const QString& widgetObjName) = 0;
 
-    virtual QWidget *getActiveWidget(MWDockArea a) = 0;
+    virtual QWidget* getActiveWidget(MWDockArea a) = 0;
 
-    virtual QWidget *activateDock(const QString &widgetObjName) = 0;
+    virtual QWidget* activateDock(const QString& widgetObjName) = 0;
 
-    virtual QWidget *toggleDock(const QString &widgetObjName) = 0;
+    virtual QWidget* toggleDock(const QString& widgetObjName) = 0;
 
     virtual void dontActivateNextTime(MWDockArea a) = 0;
 };
 
 }  // namespace U2
-Q_DECLARE_METATYPE(U2::MainWindow *)
-Q_DECLARE_METATYPE(U2::MWMDIManager *)
-Q_DECLARE_METATYPE(U2::MWDockManager *)
+Q_DECLARE_METATYPE(U2::MainWindow*)
+Q_DECLARE_METATYPE(U2::MWMDIManager*)
+Q_DECLARE_METATYPE(U2::MWDockManager*)
 #endif

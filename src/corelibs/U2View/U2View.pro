@@ -107,6 +107,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h \
            src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.h \
+           src/ov_msa/exclude_list/MsaExcludeList.h \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.h \
            src/ov_msa/export_consensus/MaExportConsensusWidget.h \
            src/ov_msa/export_image/MSAImageExportTask.h \
@@ -388,6 +389,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp \
            src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp \
+           src/ov_msa/exclude_list/MsaExcludeList.cpp \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.cpp \
            src/ov_msa/export_consensus/MaExportConsensusWidget.cpp \
            src/ov_msa/export_image/MSAImageExportTask.cpp \

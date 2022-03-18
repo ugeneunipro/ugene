@@ -107,14 +107,14 @@ public:
     OPWidgetFactory();
     virtual ~OPWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView, const QVariantMap &options) = 0;
+    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options) = 0;
 
     virtual OPGroupParameters getOPGroupParameters() = 0;
 
-    virtual bool passFiltration(OPFactoryFilterVisitorInterface *filter);
+    virtual bool passFiltration(OPFactoryFilterVisitorInterface* filter);
 
     /** Called when existing widget is activated by API with a custom options set. */
-    virtual void applyOptionsToWidget(QWidget *widget, const QVariantMap &options);
+    virtual void applyOptionsToWidget(QWidget* widget, const QVariantMap& options);
 
 protected:
     virtual ObjectViewType getObjectViewType() const {
@@ -122,7 +122,7 @@ protected:
     }
 
 protected:
-    GObjectView *objView;
+    GObjectView* objView;
     ObjectViewType objectViewOfWidget;
 };
 
@@ -132,7 +132,7 @@ public:
     OPCommonWidgetFactory(QList<QString> groupIds);
     virtual ~OPCommonWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView, const QVariantMap &options) = 0;
+    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options) = 0;
 
     bool isInGroup(QString groupId) {
         return groupIds.contains(groupId);

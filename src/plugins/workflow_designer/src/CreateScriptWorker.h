@@ -43,10 +43,10 @@ class CreateScriptElementDialog : public QDialog, public Ui_CreateScriptBlockDia
     Q_OBJECT
 public:
     // CreateScriptElementDialog(QWidget* p = NULL);
-    CreateScriptElementDialog(QWidget *p = nullptr, ActorPrototype *proto = nullptr);
+    CreateScriptElementDialog(QWidget* p = nullptr, ActorPrototype* proto = nullptr);
     QList<DataTypePtr> getInput() const;
     QList<DataTypePtr> getOutput() const;
-    QList<Attribute *> getAttributes() const;
+    QList<Attribute*> getAttributes() const;
     const QString getName() const;
     const QString getDescription() const;
     const QString getActorFilePath() const;
@@ -65,12 +65,12 @@ private slots:
 private:
     QDomDocument saveXml();
     bool saveParams();
-    void fillFields(ActorPrototype *proto);
+    void fillFields(ActorPrototype* proto);
     void changeDirectoryForActors();
 
     QList<DataTypePtr> input;
     QList<DataTypePtr> output;
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     QString name;
     QString description;
     bool editing;

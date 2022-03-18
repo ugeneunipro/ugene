@@ -64,13 +64,13 @@ public:
             c = _c;
     }
 
-    bool operator==(const RFResult &r) const {
+    bool operator==(const RFResult& r) const {
         return x == r.x && y == r.y && l == r.l;
     }
-    bool operator!=(const RFResult &r) const {
+    bool operator!=(const RFResult& r) const {
         return !(*this == r);
     }
-    bool operator<(const RFResult &r) const {
+    bool operator<(const RFResult& r) const {
         return (x != r.x) ? x < r.x : (y != r.y) ? y < r.y
                                                  : (l < r.l);
     }
@@ -84,8 +84,8 @@ public:
 
 class RFResultsListener {
 public:
-    virtual void onResult(const RFResult &r) = 0;
-    virtual void onResults(const QVector<RFResult> &v) = 0;
+    virtual void onResult(const RFResult& r) = 0;
+    virtual void onResults(const QVector<RFResult>& v) = 0;
 };
 
 struct RepeatFinderSettings {
@@ -97,13 +97,13 @@ struct RepeatFinderSettings {
     }
 
     RepeatFinderSettings(
-        RFResultsListener *_l,
-        const char *_seqX,
+        RFResultsListener* _l,
+        const char* _seqX,
         int _sizeX,
         bool _inverted,
-        const char *_seqY,
+        const char* _seqY,
         int _sizeY,
-        const DNAAlphabet *_al,
+        const DNAAlphabet* _al,
         int _w,
         int _mismatches,
         RFAlgorithm _alg,
@@ -114,19 +114,19 @@ struct RepeatFinderSettings {
           alg(_alg), nThreads(_nThreads) {
     }
 
-    RFResultsListener *l;
-    const char *seqX;
+    RFResultsListener* l;
+    const char* seqX;
     int sizeX;
     bool inverted;
-    const char *seqY;
+    const char* seqY;
     int sizeY;
-    const DNAAlphabet *al;
+    const DNAAlphabet* al;
     int w;
     int mismatches;
     RFAlgorithm alg;
     int nThreads;
 
-    bool operator==(const RepeatFinderSettings &op) const {
+    bool operator==(const RepeatFinderSettings& op) const {
         return l == op.l &&
                seqX == op.seqX &&
                sizeX == op.sizeX &&

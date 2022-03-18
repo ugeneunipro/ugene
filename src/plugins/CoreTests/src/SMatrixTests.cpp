@@ -37,13 +37,13 @@ namespace U2 {
 #define VALUE_ATTR "val"
 #define ALPHABET_ATTR "alphabet"
 
-QList<XMLTestFactory *> SMatrixTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> SMatrixTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_SubstMatrix::createFactory());
     return res;
 }
 
-void GTest_SubstMatrix::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SubstMatrix::init(XMLTestFormat*, const QDomElement& el) {
     QString buf;
     bool isOk;
     buf = el.attribute(FILE_ATTR);
@@ -77,7 +77,7 @@ void GTest_SubstMatrix::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_SubstMatrix::report() {
-    SubstMatrixRegistry *r = AppContext::getSubstMatrixRegistry();
+    SubstMatrixRegistry* r = AppContext::getSubstMatrixRegistry();
     if ((r->getMatrixNames()).indexOf(file) == -1) {
         stateInfo.setError(tr("Matrix with %1 name not found").arg(file));
         return ReportResult_Finished;

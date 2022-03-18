@@ -40,9 +40,9 @@
 
 namespace U2 {
 
-RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject *msaObjectToClone,
-                                                                 const QSet<qint64> &_rowsToAlignIds,
-                                                                 const QString &_algorithmId)
+RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject* msaObjectToClone,
+                                                                 const QSet<qint64>& _rowsToAlignIds,
+                                                                 const QString& _algorithmId)
     : Task(tr("Realign sequences in this alignment"), TaskFlags_NR_FOSE_COSC),
       originalMsaObject(msaObjectToClone),
       msaObject(nullptr),
@@ -51,7 +51,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     msaObject = msaObjectToClone->clone(msaObjectToClone->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
 
-    for (int index = 0; index < msaObject->getNumRows(); index++) {
+    for (int index = 0; index < msaObject->getRowCount(); index++) {
         const QString name = QString::number(index);
         msaObject->renameRow(index, name);
         originalRowOrder.append(name);
@@ -90,7 +90,7 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
     originalMsaObject->updateGapModel(msaObject->getMsa()->getMsaRows());
     QDir tmpDir(extractedSequencesDirUrl);
-    foreach (const QString &file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
+    foreach (const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
         tmpDir.remove(file);
     }
     tmpDir.rmdir(tmpDir.absolutePath());
@@ -103,8 +103,8 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
     return Task::ReportResult_Finished;
 }
 
-QList<Task *> RealignSequencesInAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> RealignSequencesInAlignmentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
     CHECK(subTask == extractSequences, res);
 

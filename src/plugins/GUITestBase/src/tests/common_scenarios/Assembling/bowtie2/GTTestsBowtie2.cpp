@@ -45,9 +45,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //  And click Start.
     GTUtilsDialog::waitForDialog(os, new BuildIndexDialogFiller(os, testDir + "_common_data/fasta/", "human_T1_cutted.fa", "Bowtie2", false, testDir + "_common_data/scenarios/sandbox/", "human_T1_cutted"));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Build index for reads mapping...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Build index for reads mapping..."});
 
     // Expected state: there are six files as result:
     // human_T1_cutted.1.bt2, human_T1_cutted.2.bt2, human_T1_cutted.3.bt2, human_T1_cutted.4.bt2,
@@ -106,19 +104,17 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                                testDir + "_common_data/fasta/",
                                                                "shuffled.fa");
     // Parameters
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);
     CHECK_OP(os, );
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -172,19 +168,17 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     bowtie2Parameters.noOverlappingMates = true;
     bowtie2Parameters.noMatesContainingOneAnother = true;
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);
     CHECK_OP(os, );
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -245,20 +239,18 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     bowtie2Parameters.noOverlappingMates = false;
     bowtie2Parameters.noMatesContainingOneAnother = false;
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os,
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os,
                                                                        testDir + "_common_data/scenarios/sandbox/human_T1_cutted.sam.ugenedb");
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);
     CHECK_OP(os, );
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -271,9 +263,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     bowtie2Parameters.prebuiltIndex = true;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &bowtie2Parameters));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -284,9 +274,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                         testDir + "_common_data/bowtie2/",
                                                         "reads_1.fq");
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);

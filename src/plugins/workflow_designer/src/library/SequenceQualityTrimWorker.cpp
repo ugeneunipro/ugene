@@ -41,24 +41,24 @@ static const QString QUALITY_ID("qual-id");
 static const QString LEN_ID("len-id");
 static const QString BOTH_ID("both-ends");
 
-SequenceQualityTrimPrompter::SequenceQualityTrimPrompter(Actor *actor)
+SequenceQualityTrimPrompter::SequenceQualityTrimPrompter(Actor* actor)
     : SequenceQualityTrimBase(actor) {
 }
 
 QString SequenceQualityTrimPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    const Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     const QString producerName = tr("from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     const QString trimSide = getHyperlink(BOTH_ID, tr(getParameter(BOTH_ID).toBool() ? "the both ends" : "the end"));
     return tr("Trim input sequence %1 from %2, using the quality threshold.").arg(producerName).arg(trimSide);
 }
 
-SequenceQualityTrimWorker::SequenceQualityTrimWorker(Actor *actor)
+SequenceQualityTrimWorker::SequenceQualityTrimWorker(Actor* actor)
     : BaseThroughWorker(actor, BasePorts::IN_SEQ_PORT_ID(), BasePorts::OUT_SEQ_PORT_ID()) {
 }
 
-Task *SequenceQualityTrimWorker::createTask(const Message &message, U2OpStatus &os) {
+Task* SequenceQualityTrimWorker::createTask(const Message& message, U2OpStatus& os) {
     SequenceQualityTrimTaskSettings settings;
     settings.qualityTreshold = getValue<int>(QUALITY_ID);
     settings.minSequenceLength = getValue<int>(LEN_ID);
@@ -72,9 +72,9 @@ Task *SequenceQualityTrimWorker::createTask(const Message &message, U2OpStatus &
     return new SequenceQualityTrimTask(settings);
 }
 
-QList<Message> SequenceQualityTrimWorker::fetchResult(Task *task, U2OpStatus &os) {
+QList<Message> SequenceQualityTrimWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> messages;
-    SequenceQualityTrimTask *trimTask = qobject_cast<SequenceQualityTrimTask *>(task);
+    SequenceQualityTrimTask* trimTask = qobject_cast<SequenceQualityTrimTask*>(task);
     SAFE_POINT_EXT(nullptr != trimTask, os.setError(tr("An unexpected task type")), messages);
 
     QScopedPointer<U2SequenceObject> trimmedSequenceObject(trimTask->takeTrimmedSequence());
@@ -103,7 +103,7 @@ void SequenceQualityTrimWorkerFactory::init() {
                                                                                                                        "Then it trims the sequence to that position. If a the whole sequence has quality less than the threshold or the length of the output sequence less than "
                                                                                                                        "the minimum length threshold then the sequence is skipped."));
 
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         Descriptor inPortDescriptor(BasePorts::IN_SEQ_PORT_ID(), SequenceQualityTrimWorker::tr("Input Sequence"), SequenceQualityTrimWorker::tr("Set of sequences to trim by quality"));
         Descriptor outPortDescriptor(BasePorts::OUT_SEQ_PORT_ID(), SequenceQualityTrimWorker::tr("Output Sequence"), SequenceQualityTrimWorker::tr("Trimmed sequences"));
@@ -119,7 +119,7 @@ void SequenceQualityTrimWorkerFactory::init() {
         ports << new PortDescriptor(outPortDescriptor, outType, false, true);
     }
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Trimming quality threshold"), SequenceQualityTrimWorker::tr("Quality threshold for trimming."));
 
@@ -132,7 +132,7 @@ void SequenceQualityTrimWorkerFactory::init() {
         attributes << new Attribute(trimBothEnds, BaseTypes::BOOL_TYPE(), false, true);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap intLimitsMap;
         intLimitsMap["minimum"] = 0;
@@ -142,16 +142,16 @@ void SequenceQualityTrimWorkerFactory::init() {
         delegates[BOTH_ID] = new ComboBoxWithBoolsDelegate();
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new SequenceQualityTrimPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SequenceQualityTrimWorkerFactory());
 }
 
-Worker *SequenceQualityTrimWorkerFactory::createWorker(Actor *actor) {
+Worker* SequenceQualityTrimWorkerFactory::createWorker(Actor* actor) {
     return new SequenceQualityTrimWorker(actor);
 }
 

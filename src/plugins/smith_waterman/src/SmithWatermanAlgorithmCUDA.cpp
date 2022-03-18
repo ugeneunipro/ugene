@@ -35,8 +35,8 @@ const double B_TO_MB_FACTOR = 1048576.0;
 
 namespace U2 {
 
-quint64 SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(const SMatrix &sm, const QByteArray &_patternSeq, const QByteArray &_searchSeq, SmithWatermanSettings::SWResultView resultView) {
-    const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
+quint64 SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(const SMatrix& sm, const QByteArray& _patternSeq, const QByteArray& _searchSeq, SmithWatermanSettings::SWResultView resultView) {
+    const QByteArray& alphChars = sm.getAlphabet()->getAlphabetChars();
     int subLen = alphChars.size();
     int qLen = _patternSeq.size();
     int profLen = subLen * (qLen + 1) * (alphChars[alphChars.size() - 1] + 1);
@@ -44,10 +44,10 @@ quint64 SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(const SMatrix &sm, c
     return sw_cuda_cpp::estimateNeededGpuMemory(_searchSeq.size(), profLen, qLen, resultView) / B_TO_MB_FACTOR;
 }
 
-quint64 SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(const SMatrix &sm, const QByteArray &_patternSeq, const QByteArray &_searchSeq, const SmithWatermanSettings::SWResultView resultView) {
+quint64 SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(const SMatrix& sm, const QByteArray& _patternSeq, const QByteArray& _searchSeq, const SmithWatermanSettings::SWResultView resultView) {
     const int qLen = _patternSeq.size();
     const int subLen = sm.getAlphabet()->getNumAlphabetChars();
-    const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
+    const QByteArray& alphChars = sm.getAlphabet()->getAlphabetChars();
     const int profLen = subLen * (qLen + 1) * (alphChars[alphChars.size() - 1] + 1);
 
     const quint64 memToAlloc = sizeof(ScoreType) * profLen + sw_cuda_cpp::estimateNeededRamAmount(_searchSeq.size(), profLen, qLen, resultView);
@@ -55,7 +55,7 @@ quint64 SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(const SMatrix &sm, c
     return memToAlloc / B_TO_MB_FACTOR;
 }
 
-void SmithWatermanAlgorithmCUDA::launch(const SMatrix &sm, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView) {
+void SmithWatermanAlgorithmCUDA::launch(const SMatrix& sm, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView) {
     algoLog.details("START SmithWatermanAlgorithmCUDA::launch");
 
     int qLen = _patternSeq.size();
@@ -63,10 +63,10 @@ void SmithWatermanAlgorithmCUDA::launch(const SMatrix &sm, const QByteArray &_pa
     int subLen = sm.getAlphabet()->getNumAlphabetChars();
 
     // alphChars is sorted
-    const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
+    const QByteArray& alphChars = sm.getAlphabet()->getAlphabetChars();
     int profLen = subLen * (qLen + 1) * (alphChars[alphChars.size() - 1] + 1);
 
-    ScoreType *queryProfile = new ScoreType[profLen];
+    ScoreType* queryProfile = new ScoreType[profLen];
 
     for (int i = 0; i < profLen; i++) {
         queryProfile[i] = 0;

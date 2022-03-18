@@ -31,9 +31,9 @@ namespace U2 {
 class U2GUI_EXPORT DocumentFormatComboboxController : public QObject {
     Q_OBJECT
 public:
-    DocumentFormatComboboxController(QObject *p, QComboBox *combo, const DocumentFormatConstraints &c, const DocumentFormatId &active = DocumentFormatId());
+    DocumentFormatComboboxController(QObject* p, QComboBox* combo, const DocumentFormatConstraints& c, const DocumentFormatId& active = DocumentFormatId());
 
-    void updateConstraints(const DocumentFormatConstraints &c);
+    void updateConstraints(const DocumentFormatConstraints& c);
 
     DocumentFormatId getActiveFormatId() const;
     void setActiveFormatId(DocumentFormatId);
@@ -41,22 +41,22 @@ public:
         return !getActiveFormatId().isNull();
     }
     QList<DocumentFormatId> getFormatsInCombo();
-    QComboBox *comboBox() {
+    QComboBox* comboBox() {
         return combo;
     }
 
-    static void fill(QComboBox *combo, QList<DocumentFormatId> &ids, DocumentFormatId active);
-    static DocumentFormatId getActiveFormatId(QComboBox *combo);
-    static QList<DocumentFormatId> getFormatsInCombo(QComboBox *combo);
+    static void fill(QComboBox* combo, QList<DocumentFormatId>& ids, DocumentFormatId active);
+    static DocumentFormatId getActiveFormatId(QComboBox* combo);
+    static QList<DocumentFormatId> getFormatsInCombo(QComboBox* combo);
 
 private slots:
-    void sl_onDocumentFormatRegistered(DocumentFormat *);
-    void sl_onDocumentFormatUnregistered(DocumentFormat *);
+    void sl_onDocumentFormatRegistered(DocumentFormat*);
+    void sl_onDocumentFormatUnregistered(DocumentFormat*);
 
 private:
     void updateCombo(DocumentFormatId active);
 
-    QComboBox *combo;
+    QComboBox* combo;
     DocumentFormatConstraints c;
 };
 

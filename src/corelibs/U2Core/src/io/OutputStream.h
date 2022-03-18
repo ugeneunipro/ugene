@@ -43,7 +43,7 @@ public:
     /**
      * Writes @length bytes from the specified byte array starting to this output stream.
      */
-    virtual void write(const char *buffer, int length, U2OpStatus &os) = 0;
+    virtual void write(const char* buffer, int length, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

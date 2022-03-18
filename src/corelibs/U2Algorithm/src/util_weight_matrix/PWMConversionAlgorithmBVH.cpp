@@ -24,11 +24,11 @@
 
 namespace U2 {
 
-PWMConversionAlgorithmFactoryBVH::PWMConversionAlgorithmFactoryBVH(QObject *p)
+PWMConversionAlgorithmFactoryBVH::PWMConversionAlgorithmFactoryBVH(QObject* p)
     : PWMConversionAlgorithmFactory(BuiltInPWMConversionAlgorithms::BVH_ALGO, p) {
 }
 
-PWMConversionAlgorithm *PWMConversionAlgorithmFactoryBVH::createAlgorithm(QObject *p) {
+PWMConversionAlgorithm* PWMConversionAlgorithmFactoryBVH::createAlgorithm(QObject* p) {
     return new PWMConversionAlgorithmBVH(this, p);
 }
 
@@ -40,7 +40,7 @@ QString PWMConversionAlgorithmFactoryBVH::getDescription() const {
     return tr("Berg and von Hippel weight function");
 }
 
-PWMatrix PWMConversionAlgorithmBVH::convert(const PFMatrix &matrix) {
+PWMatrix PWMConversionAlgorithmBVH::convert(const PFMatrix& matrix) {
     int size = (matrix.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
     int length = matrix.getLength();
     QVarLengthArray<int> best(length);
@@ -64,7 +64,7 @@ PWMatrix PWMConversionAlgorithmBVH::convert(const PFMatrix &matrix) {
     return w;
 }
 
-PWMConversionAlgorithmBVH::PWMConversionAlgorithmBVH(PWMConversionAlgorithmFactory *factory, QObject *p)
+PWMConversionAlgorithmBVH::PWMConversionAlgorithmBVH(PWMConversionAlgorithmFactory* factory, QObject* p)
     : PWMConversionAlgorithm(factory, p) {
 }
 

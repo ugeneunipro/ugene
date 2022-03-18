@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-TmpDirChangeDialogController::TmpDirChangeDialogController(const QString &path, QWidget *p)
+TmpDirChangeDialogController::TmpDirChangeDialogController(const QString& path, QWidget* p)
     : QDialog(p), tmpDirPath(path) {
     setupUi(this);
     QString message = "You do not have permission to write to \"" + tmpDirPath +
@@ -39,7 +39,7 @@ TmpDirChangeDialogController::TmpDirChangeDialogController(const QString &path, 
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_okButtonClicked()));
 }
 
-const QString &TmpDirChangeDialogController::getTmpDirPath() const {
+const QString& TmpDirChangeDialogController::getTmpDirPath() const {
     return tmpDirPath;
 }
 

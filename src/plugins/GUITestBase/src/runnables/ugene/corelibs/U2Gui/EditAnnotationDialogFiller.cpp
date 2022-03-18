@@ -37,23 +37,22 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::EditAnnotationFiller"
 #define GT_METHOD_NAME "run"
 void EditAnnotationFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("leAnnotationName");
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
     GT_CHECK(lineEdit != nullptr, "line edit leAnnotationName not found");
     GTLineEdit::setText(os, lineEdit, annotationName);
 
-    QRadioButton *gbFormatLocation = dialog->findChild<QRadioButton *>("rbGenbankFormat");
+    QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
     GT_CHECK(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
     GTRadioButton::click(os, gbFormatLocation);
 
-    QLineEdit *lineEdit1 = dialog->findChild<QLineEdit *>("leLocation");
+    QLineEdit* lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
     GT_CHECK(lineEdit != nullptr, "line edit leLocation not found");
     GTLineEdit::setText(os, lineEdit1, location);
 
     if (complementStrand != false) {
-        QToolButton *complementStrand = dialog->findChild<QToolButton *>("tbDoComplement");
+        QToolButton* complementStrand = dialog->findChild<QToolButton*>("tbDoComplement");
         GT_CHECK(complementStrand != nullptr, "tool button DoComplement not found");
         GTWidget::click(os, complementStrand);
     }
@@ -67,11 +66,10 @@ void EditAnnotationFiller::commonScenario() {
 
 #define GT_METHOD_NAME "commonScenario"
 void EditAnnotationChecker::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!annotationName.isEmpty()) {
-        QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("leAnnotationName");
+        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
         GT_CHECK(lineEdit != nullptr, "line edit leAnnotationName not found");
         QString text = lineEdit->text();
 
@@ -79,11 +77,11 @@ void EditAnnotationChecker::commonScenario() {
     }
 
     if (!location.isEmpty()) {
-        QRadioButton *gbFormatLocation = dialog->findChild<QRadioButton *>("rbGenbankFormat");
+        QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
         GT_CHECK(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
         GTRadioButton::click(os, gbFormatLocation);
 
-        QLineEdit *lineEdit1 = dialog->findChild<QLineEdit *>("leLocation");
+        QLineEdit* lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
         GT_CHECK(lineEdit1 != nullptr, "line edit leLocation not found");
 
         QString text = lineEdit1->text();

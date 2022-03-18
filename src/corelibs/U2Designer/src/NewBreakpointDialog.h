@@ -33,17 +33,17 @@ namespace U2 {
 class U2DESIGNER_EXPORT NewBreakpointDialog : public QDialog {
     Q_OBJECT
 public:
-    NewBreakpointDialog(const QStringList &elementsNames, QWidget *parent = nullptr, Qt::WindowFlags f = 0);
+    NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
     ~NewBreakpointDialog();
 
 signals:
-    void si_newBreakpointCreated(const QString &element);
+    void si_newBreakpointCreated(const QString& element);
 
 private slots:
     void sl_announceNewBreakpoint();
 
 private:
-    Ui_NewBreakpointDialog *ui;
+    Ui_NewBreakpointDialog* ui;
 };
 
 }  // namespace U2

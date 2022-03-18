@@ -30,8 +30,8 @@ namespace U2 {
 
 class GTUtilsMcaEditorReference {
 public:
-    static void clickToPosition(HI::GUITestOpStatus &os, int position);
-    static void scrollToPosition(HI::GUITestOpStatus &os, int position);
+    static void clickToPosition(HI::GUITestOpStatus& os, int position);
+    static void scrollToPosition(HI::GUITestOpStatus& os, int position);
 };
 
 }  // namespace U2

@@ -28,7 +28,7 @@
 namespace U2 {
 
 namespace Workflow {
-class BlastReadsSubtask;
+class BlastAlignToReferenceMuxTask;
 class MakeBlastDbAlignerSubtask;
 class ComposeResultSubtask;
 }  // namespace Workflow
@@ -41,13 +41,13 @@ namespace LocalWorkflow {
 class AlignToReferenceBlastTask : public Task {
     Q_OBJECT
 public:
-    AlignToReferenceBlastTask(const QString &refUrl,
-                              const QString &resultUrl,
-                              const SharedDbiDataHandler &reference,
-                              const QList<SharedDbiDataHandler> &reads,
-                              const QMap<SharedDbiDataHandler, QString> &readsNames,
+    AlignToReferenceBlastTask(const QString& refUrl,
+                              const QString& resultUrl,
+                              const SharedDbiDataHandler& reference,
+                              const QList<SharedDbiDataHandler>& reads,
+                              const QMap<SharedDbiDataHandler, QString>& _readNameById,
                               int minIdentityPercent,
-                              DbiDataStorage *storage);
+                              DbiDataStorage* storage);
     QString getResultUrl() const;
     SharedDbiDataHandler getAnnotations() const;
     QList<QPair<QString, QPair<int, bool>>> getAcceptedReads() const;
@@ -55,7 +55,7 @@ public:
 
 private:
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
     QString generateReport() const override;
 
@@ -63,15 +63,15 @@ private:
     const QString resultUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
-    const QMap<SharedDbiDataHandler, QString> readsNames;
+    const QMap<SharedDbiDataHandler, QString> readNameById;
     const int minIdentityPercent;
 
-    MakeBlastDbAlignerSubtask *formatDbSubTask = nullptr;
-    BlastReadsSubtask *blastTask = nullptr;
-    ComposeResultSubtask *composeSubTask = nullptr;
-    SaveDocumentTask *saveTask = nullptr;
+    MakeBlastDbAlignerSubtask* formatDbSubTask = nullptr;
+    BlastAlignToReferenceMuxTask* blastTask = nullptr;
+    ComposeResultSubtask* composeSubTask = nullptr;
+    SaveDocumentTask* saveTask = nullptr;
 
-    DbiDataStorage *storage;
+    DbiDataStorage* storage;
 };
 
 /************************************************************************/
@@ -80,7 +80,7 @@ private:
 class AlignToReferenceBlastPrompter : public PrompterBase<AlignToReferenceBlastPrompter> {
     Q_OBJECT
 public:
-    AlignToReferenceBlastPrompter(Actor *a);
+    AlignToReferenceBlastPrompter(Actor* a);
 
 protected:
     QString composeRichDoc();
@@ -92,18 +92,18 @@ protected:
 class AlignToReferenceBlastWorker : public BaseDatasetWorker {
     Q_OBJECT
 public:
-    AlignToReferenceBlastWorker(Actor *a);
+    AlignToReferenceBlastWorker(Actor* a);
 
 protected:
-    Task *createPrepareTask(U2OpStatus &os) const override;
-    void onPrepared(Task *task, U2OpStatus &os) override;
+    Task* createPrepareTask(U2OpStatus& os) const override;
+    void onPrepared(Task* task, U2OpStatus& os) override;
 
-    Task *createTask(const QList<Message> &messages) const override;
-    QVariantMap getResult(Task *task, U2OpStatus &os) const override;
-    MessageMetadata generateMetadata(const QString &datasetName) const override;
+    Task* createTask(const QList<Message>& messages) const override;
+    QVariantMap getResult(Task* task, U2OpStatus& os) const override;
+    MessageMetadata generateMetadata(const QString& datasetName) const override;
 
 private:
-    QString getReadName(const Message &message) const;
+    QString getReadName(const Message& message) const;
 
     SharedDbiDataHandler reference;
     QString referenceUrl;
@@ -115,7 +115,7 @@ private:
 class AlignToReferenceBlastWorkerFactory : public DomainFactory {
 public:
     AlignToReferenceBlastWorkerFactory();
-    Worker *createWorker(Actor *a);
+    Worker* createWorker(Actor* a);
 
     static void init();
 

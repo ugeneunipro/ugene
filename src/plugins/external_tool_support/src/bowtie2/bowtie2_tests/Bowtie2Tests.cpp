@@ -30,7 +30,7 @@ namespace U2 {
 #define FILE3_ATTR "file3"
 #define IS_BAM_ATTR "isbam"
 
-void GTest_Bowtie2::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Bowtie2::init(XMLTestFormat*, const QDomElement& el) {
     file1Url = el.attribute(FILE1_ATTR);
     if (file1Url.isEmpty()) {
         failMissingValue(FILE1_ATTR);
@@ -70,9 +70,9 @@ Task::ReportResult GTest_Bowtie2::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> Bowtie2Tests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> Bowtie2Tests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_Bowtie2::createFactory());
     return res;
 }
-}    // namespace U2
+}  // namespace U2

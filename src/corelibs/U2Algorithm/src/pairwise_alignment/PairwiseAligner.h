@@ -28,13 +28,13 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT PairwiseAligner {
 public:
-    PairwiseAligner(const QByteArray &seq1, const QByteArray &seq2);
+    PairwiseAligner(const QByteArray& seq1, const QByteArray& seq2);
     virtual ~PairwiseAligner();
 
     virtual MultipleSequenceAlignment align() = 0;
-    virtual void setSeq1(const QByteArray &value);
-    virtual void setSeq2(const QByteArray &value);
-    virtual void setSeqs(const QByteArray &value1, const QByteArray &value2);
+    virtual void setSeq1(const QByteArray& value);
+    virtual void setSeq2(const QByteArray& value);
+    virtual void setSeqs(const QByteArray& value1, const QByteArray& value2);
 
 protected:
     QByteArray seq1;
@@ -43,9 +43,9 @@ protected:
 
 class U2ALGORITHM_EXPORT PairwiseAlignerFactory {
 public:
-    static PairwiseAligner *createAligner(const QString &alignerId,
-                                          const QByteArray &seq1,
-                                          const QByteArray &seq2);
+    static PairwiseAligner* createAligner(const QString& alignerId,
+                                          const QByteArray& seq1,
+                                          const QByteArray& seq2);
 
     static const QString NEEDLEMAN_WUNSCH;
 };

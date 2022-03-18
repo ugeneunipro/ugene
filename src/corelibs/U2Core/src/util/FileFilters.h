@@ -41,34 +41,34 @@ public:
     static QString createAllFilesFilter();
 
     /** Creates a single filter. No 'All files' included. */
-    static QString createSingleFileFilter(const QString &name, const QStringList &extensions, bool addGzipVariant);
+    static QString createSingleFileFilter(const QString& name, const QStringList& extensions, bool addGzipVariant);
 
     /** Creates a single filter with all document extensions. No 'All files' included. */
-    static QString createSingleFileFilter(const DocumentFormat *documentFormat);
+    static QString createSingleFileFilter(const DocumentFormat* documentFormat);
 
     /** Creates a single filter with all document extensions. No 'All files' included. */
-    static QString createSingleFileFilterByDocumentFormatId(const QString &documentFormatId);
+    static QString createSingleFileFilterByDocumentFormatId(const QString& documentFormatId);
 
     /** Returns filters string with the given name and extension. 'All files' filter. */
-    static QString createFileFilter(const QString &name, const QStringList &extensions, bool useGzipVariant);
+    static QString createFileFilter(const QString& name, const QStringList& extensions, bool useGzipVariant);
 
     /** Returns filters string with all formats listed in 'formatExtensionsByName' plus 'All files' filter. */
-    static QString createFileFilter(const QMap<QString, QStringList> &formatExtensionsByName, bool addGzipVariant);
+    static QString createFileFilter(const QMap<QString, QStringList>& formatExtensionsByName, bool addGzipVariant);
 
     /** Returns a filter with the given name and file extensions plus 'All files' filter. */
-    static QString createFileFilter(const QString &name, const QStringList &extensions);
+    static QString createFileFilter(const QString& name, const QStringList& extensions);
 
     /** Returns a filter with all document format extensions plus 'All files' filter. */
-    static QString createFileFilterByDocumentFormatId(const DocumentFormatId &documentFormatId);
+    static QString createFileFilterByDocumentFormatId(const DocumentFormatId& documentFormatId);
 
     /** Returns a filter with all document formats supported by UGENE plus 'All files' filter. */
     static QString createAllSupportedFormatsFileFilter(const QMap<QString, QStringList>& extraFilters = {});
 
     /** Returns a filter with all document formats accepted by the given constraints plus 'All files' filter. */
-    static QString createFileFilter(const DocumentFormatConstraints &constraints);
+    static QString createFileFilter(const DocumentFormatConstraints& constraints);
 
     /** Returns a filter with all document formats what support writing of the given object types plus 'All files' filter. */
-    static QString createFileFilterByObjectTypes(const QList<GObjectType> &objectTypes, bool useWriteOnlyFormats = false);
+    static QString createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats = false);
 };
 
 }  // namespace U2

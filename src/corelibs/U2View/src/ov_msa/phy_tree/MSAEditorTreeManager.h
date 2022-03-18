@@ -44,7 +44,7 @@ class MSAEditorMultiTreeViewer;
 class MSAEditorTreeManager : public QObject {
     Q_OBJECT
 public:
-    MSAEditorTreeManager(MSAEditor *msaEditor);
+    MSAEditorTreeManager(MSAEditor* msaEditor);
 
     void loadRelatedTrees();
 
@@ -53,29 +53,29 @@ public:
     void buildTreeWithDialog();
 
 private slots:
-    void sl_openTree(Task *treeBuildTask);
-    void sl_openTreeTaskFinished(Task *task);
-    void sl_onWindowClosed(GObjectViewWindow *viewWindow);
-    void sl_treeRebuildingFinished(Task *treeBuildTask);
-    void sl_refreshTree(MSAEditorTreeViewer *treeViewer);
-    void sl_onPhyTreeDocLoaded(Task *);
-    void sl_onDocumentRemovedFromProject(Document *doc);
+    void sl_openTree(Task* treeBuildTask);
+    void sl_openTreeTaskFinished(Task* task);
+    void sl_onWindowClosed(GObjectViewWindow* viewWindow);
+    void sl_treeRebuildingFinished(Task* treeBuildTask);
+    void sl_refreshTree(MSAEditorTreeViewer* treeViewer);
+    void sl_onPhyTreeDocLoaded(Task*);
+    void sl_onDocumentRemovedFromProject(Document* doc);
 
 private:
-    void buildTree(const CreatePhyTreeSettings &buildSettings);
-    bool canRefreshTree(MSAEditorTreeViewer *treeViewer);
-    void openTreeViewer(PhyTreeObject *treeObj);
-    void loadTreeFromFile(const QString &treeFileName);
-    void createPhyTreeGeneratorTask(const CreatePhyTreeSettings &buildSettings, bool refreshExistingTree = false, MSAEditorTreeViewer *treeViewer = nullptr);
-    MSAEditorMultiTreeViewer *getMultiTreeViewer() const;
+    void buildTree(const CreatePhyTreeSettings& buildSettings);
+    bool canRefreshTree(MSAEditorTreeViewer* treeViewer);
+    void openTreeViewer(PhyTreeObject* treeObj);
+    void loadTreeFromFile(const QString& treeFileName);
+    void createPhyTreeGeneratorTask(const CreatePhyTreeSettings& buildSettings, bool refreshExistingTree = false, MSAEditorTreeViewer* treeViewer = nullptr);
+    MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 
-    MSAEditor *editor;
+    MSAEditor* editor;
     QPointer<MultipleSequenceAlignmentObject> msaObject;
     CreatePhyTreeSettings settings;
     bool addExistingTree;
     PhyTree phyTree;
-    Document *treeDocument;
-    QMap<MSAEditorTreeViewer *, Task *> activeRefreshTasks;
+    Document* treeDocument;
+    QMap<MSAEditorTreeViewer*, Task*> activeRefreshTasks;
 };
 
 }  // namespace U2

@@ -83,7 +83,7 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 /************************************************************************/
 /* Dashboard */
 /************************************************************************/
-Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent)
+Dashboard::Dashboard(const WorkflowMonitor* monitor, const QString& name, QWidget* parent)
     : QWidget(parent), name(name), opened(true),
       monitor(monitor), workflowInProgress(true),
       mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
@@ -92,13 +92,13 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
     setObjectName("Dashboard");
     setContextMenuPolicy(Qt::NoContextMenu);
     initLayout();
-    connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
+    connect(monitor, SIGNAL(si_dirSet(const QString&)), SLOT(sl_setDirectory(const QString&)));
     connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
     connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
     connect(getMonitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
 }
 
-Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
+Dashboard::Dashboard(const QString& dirPath, QWidget* parent)
     : QWidget(parent),
       dir(dirPath), opened(true), monitor(nullptr), workflowInProgress(false),
       mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
@@ -110,7 +110,7 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     saveSettings();
 }
 
-void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates) {
+void Dashboard::initLayout(const QMap<QString, QDomElement>& initialWidgetStates) {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -261,7 +261,7 @@ void Dashboard::onShow() {
     }
 }
 
-const QPointer<const WorkflowMonitor> &Dashboard::getMonitor() const {
+const QPointer<const WorkflowMonitor>& Dashboard::getMonitor() const {
     return monitor;
 }
 
@@ -275,19 +275,19 @@ void Dashboard::setClosed() {
     updateDashboard();
 }
 
-const QString &Dashboard::directory() const {
+const QString& Dashboard::directory() const {
     return dir;
 }
 
-const QString &Dashboard::getDashboardId() const {
+const QString& Dashboard::getDashboardId() const {
     return dir;
 }
 
-const QString &Dashboard::getName() const {
+const QString& Dashboard::getName() const {
     return name;
 }
 
-void Dashboard::setName(const QString &value) {
+void Dashboard::setName(const QString& value) {
     name = value;
     saveSettings();
     updateDashboard();
@@ -364,7 +364,7 @@ void Dashboard::saveReportFile() {
     IOAdapterUtils::writeTextFile(dir + REPORT_SUB_DIR + DB_FILE_NAME, html);
 }
 
-void Dashboard::sl_setDirectory(const QString &value) {
+void Dashboard::sl_setDirectory(const QString& value) {
     dir = value;
     saveSettings();
     reserveName();
@@ -410,7 +410,7 @@ void Dashboard::reserveName() const {
     AppContext::getDashboardInfoRegistry()->reserveName(getDashboardId(), name);
 }
 
-static void trimToWrapper(QString &html) {
+static void trimToWrapper(QString& html) {
     int startIdx = html.indexOf("<div id=\"wrapper\">");
     int endIdx = html.indexOf("<div id=\"log_messages\"", startIdx);
     if (startIdx >= 0 && endIdx >= 0) {
@@ -419,7 +419,7 @@ static void trimToWrapper(QString &html) {
     }
 }
 
-static void fixImages(QString &html) {
+static void fixImages(QString& html) {
     int startIdx = 0;
     while (true) {
         startIdx = html.indexOf("<img src=", startIdx);
@@ -432,7 +432,7 @@ static void fixImages(QString &html) {
     };
 }
 
-static void removeExtraDiv(QString &html) {
+static void removeExtraDiv(QString& html) {
     // UGENE 34 and below may have unbalanced divs count.
     int openingDivCount = html.count("<div");
     int closingDivCount = html.count("</div>");
@@ -442,7 +442,7 @@ static void removeExtraDiv(QString &html) {
     }
 }
 
-static void removeHtml(QString &html, const QByteArray &tag) {
+static void removeHtml(QString& html, const QByteArray& tag) {
     while (true) {
         int startIdx = html.indexOf("<" + tag + ">");
         if (startIdx == -1) {
@@ -457,7 +457,7 @@ static void removeHtml(QString &html, const QByteArray &tag) {
 }
 
 /** In-place fixes old-style UGENE's HTML to be parsable by the QXml. */
-static void makeValidDomFromHtml(QString &htmlData) {
+static void makeValidDomFromHtml(QString& htmlData) {
     trimToWrapper(htmlData);
     removeHtml(htmlData, "colgroup");
     fixImages(htmlData);
@@ -466,7 +466,7 @@ static void makeValidDomFromHtml(QString &htmlData) {
     htmlData.replace("<wbr>", "<wbr/>");
 }
 
-static void removeProblemsWidgetDom(QString &htmlData) {
+static void removeProblemsWidgetDom(QString& htmlData) {
     QString startToken = "<tbody scroll=\"yes\" id=\"problemsWidget123\">";
     QString endToken = "</tbody>";
     int startIndex = htmlData.indexOf(startToken);
@@ -476,7 +476,7 @@ static void removeProblemsWidgetDom(QString &htmlData) {
     }
 }
 
-QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htmlUrl) {
+QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString& htmlUrl) {
     QMap<QString, QDomElement> map;
     QString html = IOAdapterUtils::readTextFile(htmlUrl);
     if (html.isNull()) {

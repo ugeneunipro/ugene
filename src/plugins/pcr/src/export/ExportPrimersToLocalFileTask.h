@@ -36,17 +36,17 @@ class ExportPrimersToDatabaseTask;
 class ExportPrimersToLocalFileTask : public Task {
     Q_OBJECT
 public:
-    ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
+    ExportPrimersToLocalFileTask(const QList<Primer>& primers, const DocumentFormatId& formatId, const QString& localFilePath);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    Document *prepareDocument();
-    void addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask);
+    Document* prepareDocument();
+    void addObjects(Document* document, ExportPrimersToDatabaseTask* convertTask);
 
     const QList<Primer> primers;
-    DocumentFormat *format;
+    DocumentFormat* format;
     const GUrl url;
 };
 

@@ -32,7 +32,7 @@ class U2EntityRef;
 
 class AssemblyMessageTranslator : public BaseMessageTranslator {
 public:
-    AssemblyMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);
+    AssemblyMessageTranslator(const QVariant& atomicMessage, Workflow::WorkflowContext* initContext);
 
     QString getTranslation() const;
 

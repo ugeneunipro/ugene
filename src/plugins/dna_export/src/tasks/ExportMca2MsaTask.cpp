@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject,
-                                     const QString &fileName,
-                                     const DocumentFormatId &formatId,
+ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject,
+                                     const QString& fileName,
+                                     const DocumentFormatId& formatId,
                                      bool includeReference)
     : DocumentProviderTask(tr("Export Sanger reads task"), TaskFlags_NR_FOSE_COSC),
       mcaObject(mcaObject),
@@ -52,8 +52,8 @@ void ExportMca2MsaTask::prepare() {
     addSubTask(convertTask);
 }
 
-QList<Task *> ExportMca2MsaTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> newSubTasks;
+QList<Task*> ExportMca2MsaTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
     if (convertTask == subTask) {

@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-MSADistanceAlgorithmFactoryHammingRevCompl::MSADistanceAlgorithmFactoryHammingRevCompl(QObject *p)
+MSADistanceAlgorithmFactoryHammingRevCompl::MSADistanceAlgorithmFactoryHammingRevCompl(QObject* p)
     : MSADistanceAlgorithmFactory(BuiltInDistanceAlgorithms::HAMMING_REVCOMPL_ALGO, DistanceAlgorithmFlag_Nucleic, p) {
 }
 
@@ -42,7 +42,7 @@ QString MSADistanceAlgorithmFactoryHammingRevCompl::getName() const {
     return tr("Hamming reverse-complement");
 }
 
-MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MultipleSequenceAlignment &ma, QObject *) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MultipleSequenceAlignment& ma, QObject*) {
     return new MSADistanceAlgorithmHammingRevCompl(this, ma);
 }
 
@@ -50,12 +50,12 @@ MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorith
 // Algorithm
 
 void MSADistanceAlgorithmHammingRevCompl::run() {
-    DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
+    DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
 
     assert(compTT != nullptr);
 
-    DNATranslation *trans = compTT;
-    int nSeq = ma->getNumRows();
+    DNATranslation* trans = compTT;
+    int nSeq = ma->getRowCount();
     MultipleSequenceAlignment revtransl;
     revtransl->setAlphabet(ma->getAlphabet());
     U2OpStatus2Log os;

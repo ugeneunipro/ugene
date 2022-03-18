@@ -40,13 +40,13 @@ const QString MysqlSingleTableAssemblyAdapter::RTM_RANGE_CONDITION_CHECK_COUNT =
 const QString MysqlSingleTableAssemblyAdapter::ALL_READ_FIELDS = " id, prow, gstart, elen, flags, mq, data";
 const QString MysqlSingleTableAssemblyAdapter::SORTED_READS = " ORDER BY gstart ASC ";
 
-MysqlSingleTableAssemblyAdapter::MysqlSingleTableAssemblyAdapter(MysqlDbi *dbi,
-                                                                 const U2DataId &assemblyId,
+MysqlSingleTableAssemblyAdapter::MysqlSingleTableAssemblyAdapter(MysqlDbi* dbi,
+                                                                 const U2DataId& assemblyId,
                                                                  char tablePrefix,
-                                                                 const QString &tableSuffix,
-                                                                 const AssemblyCompressor *compressor,
-                                                                 MysqlDbRef *db,
-                                                                 U2OpStatus &)
+                                                                 const QString& tableSuffix,
+                                                                 const AssemblyCompressor* compressor,
+                                                                 MysqlDbRef* db,
+                                                                 U2OpStatus&)
     : MysqlAssemblyAdapter(assemblyId, compressor, db),
       dbi(dbi),
       readsTable(getReadsTableName(assemblyId, tablePrefix, tableSuffix)),
@@ -58,7 +58,7 @@ MysqlSingleTableAssemblyAdapter::MysqlSingleTableAssemblyAdapter(MysqlDbi *dbi,
       inited(false) {
 }
 
-void MysqlSingleTableAssemblyAdapter::createReadsTables(U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::createReadsTables(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // id - id of the read
@@ -94,7 +94,7 @@ static const QString CREATE_INDEX_IF_NOT_EXISTS_QUERY =
     "\"CREATE INDEX %3 ON %1.%2(%4);\""
     ") into @a; prepare smt from @a; execute smt; deallocate prepare smt;";
 
-void MysqlSingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     U2SqlQuery(CREATE_INDEX_IF_NOT_EXISTS_QUERY.arg(db->handle.databaseName())
@@ -115,7 +115,7 @@ void MysqlSingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus &os) {
         .execute();
 }
 
-qint64 MysqlSingleTableAssemblyAdapter::countReads(const U2Region &r, U2OpStatus &os) {
+qint64 MysqlSingleTableAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) {
     if (r == U2_REGION_MAX) {
         return U2SqlQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
     }
@@ -126,7 +126,7 @@ qint64 MysqlSingleTableAssemblyAdapter::countReads(const U2Region &r, U2OpStatus
     return q.selectInt64();
 }
 
-qint64 MysqlSingleTableAssemblyAdapter::countReadsPrecise(const U2Region &r, U2OpStatus &os) {
+qint64 MysqlSingleTableAssemblyAdapter::countReadsPrecise(const U2Region& r, U2OpStatus& os) {
     if (!rangeMode) {
         return countReads(r, os);
     }
@@ -138,19 +138,19 @@ qint64 MysqlSingleTableAssemblyAdapter::countReadsPrecise(const U2Region &r, U2O
     return q.selectInt64();
 }
 
-qint64 MysqlSingleTableAssemblyAdapter::getMaxPackedRow(const U2Region &r, U2OpStatus &os) {
+qint64 MysqlSingleTableAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus& os) {
     static const QString queryString = "SELECT MAX(prow) FROM %1 WHERE %2";
     U2SqlQuery q(queryString.arg(readsTable).arg(rangeConditionCheck), db, os);
     bindRegion(q, r);
     return q.selectInt64();
 }
 
-qint64 MysqlSingleTableAssemblyAdapter::getMaxEndPos(U2OpStatus &os) {
+qint64 MysqlSingleTableAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
     static const QString queryString = "SELECT MAX(gstart + elen) FROM %1";
     return U2SqlQuery(queryString.arg(readsTable), db, os).selectInt64();
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReads(const U2Region &r, U2OpStatus &os, bool sortedHint) {
+U2DbiIterator<U2AssemblyRead>* MysqlSingleTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
     static const QString qStr = "SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE %2";
 
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(qStr.arg(readsTable).arg(rangeConditionCheck) + (sortedHint ? SORTED_READS : ""), db, os));
@@ -158,7 +158,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReads(const U
     return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByRow(const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* MysqlSingleTableAssemblyAdapter::getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     static const QString qStr = "SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE %2 AND (prow >= :minRow AND prow < :maxRow)";
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(qStr.arg(readsTable).arg(rangeConditionCheck), db, os));
     bindRegion(*q, r);
@@ -167,7 +167,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByRow(co
     return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByName(const QByteArray &name, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* MysqlSingleTableAssemblyAdapter::getReadsByName(const QByteArray& name, U2OpStatus& os) {
     static const QString qStr = "SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE name = :name";
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(qStr.arg(readsTable), db, os));
     int hash = qHash(name);
@@ -175,7 +175,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByName(c
     return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), new MysqlAssemblyNameFilter(name), U2AssemblyRead(), os);
 }
 
-void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     if (!inited) {
@@ -220,7 +220,7 @@ void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it
     }
 }
 
-void MysqlSingleTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds, U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::removeReads(const QList<U2DataId>& readIds, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // TODO: add transaction per pack or reads
@@ -234,20 +234,20 @@ void MysqlSingleTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds
     MysqlObjectDbi::incrementVersion(assemblyId, db, os);
 }
 
-void MysqlSingleTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::dropReadsTables(U2OpStatus& os) {
     static QString queryString = "DROP TABLE IF EXISTS %1";
     U2SqlQuery(queryString.arg(readsTable), db, os).execute();
     CHECK_OP(os, );
     MysqlObjectDbi::incrementVersion(assemblyId, db, os);
 }
 
-void MysqlSingleTableAssemblyAdapter::pack(U2AssemblyPackStat &stat, U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& os) {
     MysqlSingleTablePackAlgorithmAdapter packAdapter(db, readsTable);
     AssemblyPackAlgorithm::pack(packAdapter, stat, os);
     createReadsIndexes(os);
 }
 
-void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     QString queryString = "SELECT gstart, elen, data FROM " + readsTable;
     bool rangeArgs = (r != U2_REGION_MAX);
 
@@ -264,7 +264,7 @@ void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region &r, U2Ass
     MysqlAssemblyUtils::calculateCoverage(q, r, coverage, os);
 }
 
-const QString &MysqlSingleTableAssemblyAdapter::getReadsTableName() const {
+const QString& MysqlSingleTableAssemblyAdapter::getReadsTableName() const {
     return readsTable;
 }
 
@@ -276,12 +276,12 @@ void MysqlSingleTableAssemblyAdapter::enableRangeTableMode(int minLen, int maxLe
     rangeConditionCheckForCount = RTM_RANGE_CONDITION_CHECK_COUNT;
 }
 
-QString MysqlSingleTableAssemblyAdapter::getReadsTableName(const U2DataId &assemblyId, char prefix, const QString &suffix) {
+QString MysqlSingleTableAssemblyAdapter::getReadsTableName(const U2DataId& assemblyId, char prefix, const QString& suffix) {
     return QString("AssemblyRead_%1%2_%3").arg(prefix).arg(U2DbiUtils::toDbiId(assemblyId)).arg(suffix);
     ;
 }
 
-void MysqlSingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus &os) {
+void MysqlSingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString q1 = "DROP INDEX IF EXISTS %1_gstart";
@@ -299,7 +299,7 @@ qint64 MysqlSingleTableAssemblyAdapter::getMaxReadLength() const {
     return maxReadLength;
 }
 
-void MysqlSingleTableAssemblyAdapter::bindRegion(U2SqlQuery &q, const U2Region &r, bool forCount) {
+void MysqlSingleTableAssemblyAdapter::bindRegion(U2SqlQuery& q, const U2Region& r, bool forCount) {
     if (rangeMode) {
         q.bindInt64(":end", r.endPos());
         q.bindInt64(":start", r.startPos - maxReadLength);
@@ -315,7 +315,7 @@ void MysqlSingleTableAssemblyAdapter::bindRegion(U2SqlQuery &q, const U2Region &
 //////////////////////////////////////////////////////////////////////////
 // pack adapter
 
-MysqlSingleTablePackAlgorithmAdapter::MysqlSingleTablePackAlgorithmAdapter(MysqlDbRef *db, const QString &readsTable)
+MysqlSingleTablePackAlgorithmAdapter::MysqlSingleTablePackAlgorithmAdapter(MysqlDbRef* db, const QString& readsTable)
     : db(db),
       readsTable(readsTable),
       updateQuery(nullptr) {
@@ -325,12 +325,12 @@ MysqlSingleTablePackAlgorithmAdapter::~MysqlSingleTablePackAlgorithmAdapter() {
     releaseDbResources();
 }
 
-U2DbiIterator<PackAlgorithmData> *MysqlSingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus &os) {
+U2DbiIterator<PackAlgorithmData>* MysqlSingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus& os) {
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
     return new MysqlRSIterator<PackAlgorithmData>(q, new MysqlSimpleAssemblyReadPackedDataLoader(), nullptr, PackAlgorithmData(), os);
 }
 
-void MysqlSingleTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os) {
+void MysqlSingleTablePackAlgorithmAdapter::assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os) {
     if (updateQuery != nullptr) {
         delete updateQuery;
     }

@@ -42,35 +42,35 @@ GrouperEditor::GrouperEditor()
 GrouperEditor::~GrouperEditor() {
 }
 
-QWidget *GrouperEditor::getWidget() {
+QWidget* GrouperEditor::getWidget() {
     return createGUI();
 }
 
-QWidget *GrouperEditor::createGUI() {
+QWidget* GrouperEditor::createGUI() {
     if (nullptr == grouperModel) {
         return nullptr;
     }
 
-    GrouperEditorWidget *gui = new GrouperEditorWidget(grouperModel, cfg);
+    GrouperEditorWidget* gui = new GrouperEditorWidget(grouperModel, cfg);
     connect(gui, SIGNAL(si_grouperCfgChanged()), SIGNAL(si_configurationChanged()));
 
     return gui;
 }
 
-void GrouperEditor::setConfiguration(Actor *actor) {
+void GrouperEditor::setConfiguration(Actor* actor) {
     ActorConfigurationEditor::setConfiguration(actor);
-    QMap<QString, Attribute *> attrs = cfg->getParameters();
+    QMap<QString, Attribute*> attrs = cfg->getParameters();
 
-    GrouperOutSlotAttribute *gAttr = nullptr;
+    GrouperOutSlotAttribute* gAttr = nullptr;
     foreach (QString key, attrs.keys()) {
-        Attribute *attr = attrs.value(key);
+        Attribute* attr = attrs.value(key);
         if (GROUPER_SLOT_GROUP == attr->getGroup()) {
             if (nullptr != gAttr) {
                 assert(0);
                 gAttr = nullptr;
                 break;
             }
-            gAttr = dynamic_cast<GrouperOutSlotAttribute *>(attr);
+            gAttr = dynamic_cast<GrouperOutSlotAttribute*>(attr);
         }
     }
 
@@ -79,38 +79,38 @@ void GrouperEditor::setConfiguration(Actor *actor) {
     }
 
     grouperModel = new GrouperSlotsCfgModel(this, gAttr->getOutSlots());
-    connect(grouperModel, SIGNAL(si_actionEdited(const GrouperOutSlot &)), SLOT(sl_onActionEdited(const GrouperOutSlot &)));
-    connect(grouperModel, SIGNAL(si_slotAdded(const GrouperOutSlot &)), SLOT(sl_onSlotAdded(const GrouperOutSlot &)));
-    connect(grouperModel, SIGNAL(si_slotRemoved(const QString &)), SLOT(sl_onSlotRemoved(const QString &)));
+    connect(grouperModel, SIGNAL(si_actionEdited(const GrouperOutSlot&)), SLOT(sl_onActionEdited(const GrouperOutSlot&)));
+    connect(grouperModel, SIGNAL(si_slotAdded(const GrouperOutSlot&)), SLOT(sl_onSlotAdded(const GrouperOutSlot&)));
+    connect(grouperModel, SIGNAL(si_slotRemoved(const QString&)), SLOT(sl_onSlotRemoved(const QString&)));
 }
 
-void GrouperEditor::sl_onActionEdited(const GrouperOutSlot &outSlot) {
+void GrouperEditor::sl_onActionEdited(const GrouperOutSlot& outSlot) {
     sl_onSlotAdded(outSlot);
     // TODO: send signal to unlink differently typed linked slots
 }
 
-void GrouperEditor::sl_onSlotAdded(const GrouperOutSlot &outSlot) {
+void GrouperEditor::sl_onSlotAdded(const GrouperOutSlot& outSlot) {
     assert(1 == cfg->getOutputPorts().size());
-    Port *outPort = cfg->getOutputPorts().first();
+    Port* outPort = cfg->getOutputPorts().first();
     assert(outPort->getOutputType()->isMap());
     QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
 
-    GrouperSlotAction *action = outSlot.getAction();
+    GrouperSlotAction* action = outSlot.getAction();
     DataTypePtr type = ActionTypes::getDataTypeByAction(action->getType());
 
     outTypeMap[outSlot.getOutSlotId()] = type;
-    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
     outPort->setNewType(newType);
 }
 
-void GrouperEditor::sl_onSlotRemoved(const QString &outSlotName) {
+void GrouperEditor::sl_onSlotRemoved(const QString& outSlotName) {
     assert(1 == cfg->getOutputPorts().size());
-    Port *outPort = cfg->getOutputPorts().first();
+    Port* outPort = cfg->getOutputPorts().first();
     assert(outPort->getOutputType()->isMap());
     QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
 
     outTypeMap.remove(outSlotName);
-    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
     outPort->setNewType(newType);
 }
 

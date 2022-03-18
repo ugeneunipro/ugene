@@ -36,16 +36,16 @@ class IOAdapter;
 class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    StockholmFormat(QObject *obj);
+    StockholmFormat(QObject* obj);
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) override;
 
-    bool isObjectOpSupported(const Document *doc, DocumentFormat::DocObjectOp op, GObjectType t) const override;
+    bool isObjectOpSupported(const Document* doc, DocumentFormat::DocObjectOp op, GObjectType t) const override;
 
 protected:
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
 public:
     static const QString FILE_ANNOTATION_ID;

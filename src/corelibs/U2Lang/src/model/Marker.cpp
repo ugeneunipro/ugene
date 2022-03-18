@@ -43,7 +43,7 @@ const QString MarkerTypes::QUAL_TEXT_VALUE_MARKER_ID("qualifier-text-value");
 const QString MarkerTypes::QUAL_FLOAT_VALUE_MARKER_ID("qualifier-float-value");
 const QString MarkerTypes::TEXT_MARKER_ID("text");
 
-MarkerDataType MarkerTypes::getDataTypeById(const QString &typeId) {
+MarkerDataType MarkerTypes::getDataTypeById(const QString& typeId) {
     if (SEQ_LENGTH_MARKER_ID == typeId) {
         return INTEGER;
     } else if (ANNOTATION_COUNT_MARKER_ID == typeId) {
@@ -91,7 +91,7 @@ const Descriptor MarkerTypes::TEXT() {
     return Descriptor(MarkerTypes::TEXT_MARKER_ID, tr("Text markers"), tr("Text markers group."));
 }
 
-const Descriptor MarkerSlots::getSlotByMarkerType(const QString &markerId, const QString &slotName) {
+const Descriptor MarkerSlots::getSlotByMarkerType(const QString& markerId, const QString& slotName) {
     if (markerId == MarkerTypes::SEQ_LENGTH_MARKER_ID) {
         return Descriptor(slotName, slotName, tr("Sequence length marker."));
     } else if (markerId == MarkerTypes::ANNOTATION_COUNT_MARKER_ID) {
@@ -121,8 +121,8 @@ const QString MarkerPorts::OUT_MARKER_SEQ_PORT() {
     return "out-marked-seq";
 }
 
-Marker *MarkerFactory::createInstanse(const QString &type, const QVariant &additionalParam) {
-    Marker *m = nullptr;
+Marker* MarkerFactory::createInstanse(const QString& type, const QVariant& additionalParam) {
+    Marker* m = nullptr;
     if (type == MarkerTypes::QUAL_INT_VALUE_MARKER_ID || type == MarkerTypes::QUAL_TEXT_VALUE_MARKER_ID || type == MarkerTypes::QUAL_FLOAT_VALUE_MARKER_ID) {
         m = new QualifierMarker(type, "NewQualMarker", additionalParam.toString());
     } else if (MarkerTypes::ANNOTATION_LENGTH_MARKER_ID == type || MarkerTypes::ANNOTATION_COUNT_MARKER_ID == type) {
@@ -143,13 +143,13 @@ Marker *MarkerFactory::createInstanse(const QString &type, const QVariant &addit
 /************************************************************************/
 /* Marker */
 /************************************************************************/
-Marker::Marker(const QString &markerType, const QString &markerName)
+Marker::Marker(const QString& markerType, const QString& markerName)
     : type(markerType), name(markerName) {
     dataType = MarkerTypes::getDataTypeById(markerType);
     values.insert(MarkerUtils::REST_OPERATION, tr("Rest"));
 }
 
-Marker::Marker(const Marker &m)
+Marker::Marker(const Marker& m)
     : QObject(), type(m.type), name(m.name), dataType(m.dataType), values(m.values) {
 }
 
@@ -161,7 +161,7 @@ ParameterState Marker::hasAdditionalParameter() {
     return NONE;
 }
 
-void Marker::setAdditionalParameter(const QVariant &) {
+void Marker::setAdditionalParameter(const QVariant&) {
 }
 
 QVariant Marker::getAdditionalParameter() {
@@ -172,7 +172,7 @@ QString Marker::getAdditionalParameterName() {
     return "";
 }
 
-QString Marker::getMarkingResult(const QVariant &object) {
+QString Marker::getMarkingResult(const QVariant& object) {
     foreach (QString val, values.keys()) {
         if (MarkerUtils::REST_OPERATION == val) {
             continue;
@@ -206,7 +206,7 @@ QString Marker::getMarkingResult(const QVariant &object) {
     return values.value(MarkerUtils::REST_OPERATION);
 }
 
-bool Marker::getMarkerIntResult(const QVariant &object, QVariantList &expr) {
+bool Marker::getMarkerIntResult(const QVariant& object, QVariantList& expr) {
     int obj = object.toInt();
     QString operation = expr.at(0).toString();
 
@@ -232,7 +232,7 @@ bool Marker::getMarkerIntResult(const QVariant &object, QVariantList &expr) {
     return false;
 }
 
-bool Marker::getMarkerFloatResult(const QVariant &object, QVariantList &expr) {
+bool Marker::getMarkerFloatResult(const QVariant& object, QVariantList& expr) {
     float obj = object.toFloat();
     QString operation = expr.at(0).toString();
 
@@ -258,7 +258,7 @@ bool Marker::getMarkerFloatResult(const QVariant &object, QVariantList &expr) {
     return false;
 }
 
-bool Marker::getMarkerStringResult(const QVariant &object, QVariantList &expr) {
+bool Marker::getMarkerStringResult(const QVariant& object, QVariantList& expr) {
     QString obj = object.toString();
     QString operation = expr.at(0).toString();
     QString val = expr.at(1).toString();
@@ -279,23 +279,23 @@ bool Marker::getMarkerStringResult(const QVariant &object, QVariantList &expr) {
     return false;
 }
 
-const QString &Marker::getName() const {
+const QString& Marker::getName() const {
     return name;
 }
 
-const QString &Marker::getType() const {
+const QString& Marker::getType() const {
     return type;
 }
 
-const QMap<QString, QString> &Marker::getValues() const {
+const QMap<QString, QString>& Marker::getValues() const {
     return values;
 }
 
-QMap<QString, QString> &Marker::getValues() {
+QMap<QString, QString>& Marker::getValues() {
     return values;
 }
 
-void Marker::setName(const QString &newName) {
+void Marker::setName(const QString& newName) {
     name = newName;
 }
 
@@ -311,7 +311,7 @@ const QString Marker::toString() const {
 /************************************************************************/
 /* SequencerMarker */
 /************************************************************************/
-QString SequenceMarker::getMarkingResult(const QVariant &object) {
+QString SequenceMarker::getMarkingResult(const QVariant& object) {
     DNASequence seq = object.value<DNASequence>();
 
     if (MarkerTypes::SEQ_LENGTH_MARKER_ID == type) {
@@ -328,24 +328,24 @@ MarkerGroup SequenceMarker::getGroup() {
     return SEQUENCE;
 }
 
-Marker *SequenceMarker::clone() {
+Marker* SequenceMarker::clone() {
     return new SequenceMarker(*this);
 }
 
 /************************************************************************/
 /* QualifierMarker */
 /************************************************************************/
-QString QualifierMarker::getMarkingResult(const QVariant &object) {
+QString QualifierMarker::getMarkingResult(const QVariant& object) {
     const QString rest = values.value(MarkerUtils::REST_OPERATION);
 
     QList<SharedAnnotationData> anns;
-    foreach (const QVariant &ann, object.toList()) {
+    foreach (const QVariant& ann, object.toList()) {
         SAFE_POINT(ann.canConvert<SharedAnnotationData>(), "Invalid annotation data encountered!", QString());
         anns << ann.value<SharedAnnotationData>();
     }
 
-    for (const SharedAnnotationData &ann : qAsConst(anns)) {
-        foreach (const U2Qualifier &qual, ann->qualifiers) {
+    for (const SharedAnnotationData& ann : qAsConst(anns)) {
+        foreach (const U2Qualifier& qual, ann->qualifiers) {
             if (qual.name == qualName) {
                 bool ok = false;
                 QVariant value;
@@ -374,11 +374,11 @@ MarkerGroup QualifierMarker::getGroup() {
     return QUALIFIER;
 }
 
-const QString &QualifierMarker::getQualifierName() const {
+const QString& QualifierMarker::getQualifierName() const {
     return qualName;
 }
 
-Marker *QualifierMarker::clone() {
+Marker* QualifierMarker::clone() {
     return new QualifierMarker(*this);
 }
 
@@ -386,7 +386,7 @@ ParameterState QualifierMarker::hasAdditionalParameter() {
     return REQUIRED;
 }
 
-void QualifierMarker::setAdditionalParameter(const QVariant &param) {
+void QualifierMarker::setAdditionalParameter(const QVariant& param) {
     qualName = param.toString();
 }
 
@@ -401,9 +401,9 @@ QString QualifierMarker::getAdditionalParameterName() {
 /************************************************************************/
 /* AnnotationMarker */
 /************************************************************************/
-QString AnnotationMarker::getMarkingResult(const QVariant &object) {
+QString AnnotationMarker::getMarkingResult(const QVariant& object) {
     QList<SharedAnnotationData> anns;
-    foreach (const QVariant &ann, object.toList()) {
+    foreach (const QVariant& ann, object.toList()) {
         SAFE_POINT(ann.canConvert<SharedAnnotationData>(), "Invalid annotation data encountered!", QString());
         anns << ann.value<SharedAnnotationData>();
     }
@@ -413,7 +413,7 @@ QString AnnotationMarker::getMarkingResult(const QVariant &object) {
         if (annName.isEmpty()) {
             count = anns.size();
         } else {
-            foreach (const SharedAnnotationData &ann, anns) {
+            foreach (const SharedAnnotationData& ann, anns) {
                 if (ann->name == annName) {
                     count++;
                 }
@@ -433,11 +433,11 @@ MarkerGroup AnnotationMarker::getGroup() {
     return ANNOTATION;
 }
 
-const QString &AnnotationMarker::getAnnotationName() const {
+const QString& AnnotationMarker::getAnnotationName() const {
     return annName;
 }
 
-Marker *AnnotationMarker::clone() {
+Marker* AnnotationMarker::clone() {
     return new AnnotationMarker(*this);
 }
 
@@ -445,7 +445,7 @@ ParameterState AnnotationMarker::hasAdditionalParameter() {
     return NOT_REQUIRED;
 }
 
-void AnnotationMarker::setAdditionalParameter(const QVariant &param) {
+void AnnotationMarker::setAdditionalParameter(const QVariant& param) {
     annName = param.toString();
 }
 
@@ -460,7 +460,7 @@ QString AnnotationMarker::getAdditionalParameterName() {
 /************************************************************************/
 /* TextMarker */
 /************************************************************************/
-QString TextMarker::getMarkingResult(const QVariant &object) {
+QString TextMarker::getMarkingResult(const QVariant& object) {
     if (MarkerTypes::TEXT_MARKER_ID == type) {
         return Marker::getMarkingResult(object);
     } else {
@@ -474,7 +474,7 @@ MarkerGroup TextMarker::getGroup() {
     return TEXT;
 }
 
-Marker *TextMarker::clone() {
+Marker* TextMarker::clone() {
     return new TextMarker(*this);
 }
 

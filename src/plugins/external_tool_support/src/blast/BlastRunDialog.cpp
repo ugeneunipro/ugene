@@ -58,7 +58,7 @@ static QStringList getCompValues() {
 
 ////////////////////////////////////////
 // BlastRunDialog
-BlastRunDialog::BlastRunDialog(ADVSequenceObjectContext *_seqCtx, QWidget *parent)
+BlastRunDialog::BlastRunDialog(ADVSequenceObjectContext* _seqCtx, QWidget* parent)
     : BlastRunCommonDialog(parent, true, getCompValues()), seqCtx(_seqCtx) {
     sequenceObject = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
@@ -132,7 +132,7 @@ void BlastRunDialog::sl_runQuery() {
 
 ////////////////////////////////////////
 // BlastWithExtFileRunDialog
-BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget *parent)
+BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
     : BlastRunCommonDialog(parent, true, getCompValues()) {
     // Create input file widget.
     auto widget = new QWidget(parent);
@@ -155,7 +155,7 @@ BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget *parent)
     auto inputFileGroupBox = new QGroupBox(tr("Select input file"), widget);
     inputFileGroupBox->setLayout(layout);
 
-    auto parentLayout = qobject_cast<QBoxLayout *>(this->layout());
+    auto parentLayout = qobject_cast<QBoxLayout*>(this->layout());
     SAFE_POINT(parentLayout != nullptr, "Not a QBoxLayout!", );
     parentLayout->insertWidget(0, inputFileGroupBox);
 
@@ -163,7 +163,7 @@ BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget *parent)
     connect(this, SIGNAL(rejected()), SLOT(sl_cancel()));
 }
 
-const QList<BlastTaskSettings> &BlastWithExtFileRunDialog::getSettingsList() const {
+const QList<BlastTaskSettings>& BlastWithExtFileRunDialog::getSettingsList() const {
     return settingsList;
 }
 
@@ -171,23 +171,23 @@ void BlastWithExtFileRunDialog::sl_lineEditChanged() {
     okButton->setEnabled(dbSelector->isInputDataValid() && hasValidInput);
 }
 
-static const char *INPUT_URL_PROP = "input_url";
+static const char* INPUT_URL_PROP = "input_url";
 
-void BlastWithExtFileRunDialog::sl_inputFileLineEditChanged(const QString &url) {
+void BlastWithExtFileRunDialog::sl_inputFileLineEditChanged(const QString& url) {
     hasValidInput = false;
     sl_lineEditChanged();
     CHECK(!url.isEmpty(), );
 
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     if (proj == nullptr) {
         wasNoOpenProject = true;
     } else {
-        Document *doc = proj->findDocumentByURL(url);
+        Document* doc = proj->findDocumentByURL(url);
         if (doc != nullptr) {
             if (doc->isLoaded()) {
                 tryApplyDoc(doc);
             } else {
-                LoadUnloadedDocumentAndOpenViewTask *loadTask = new LoadUnloadedDocumentAndOpenViewTask(doc);
+                LoadUnloadedDocumentAndOpenViewTask* loadTask = new LoadUnloadedDocumentAndOpenViewTask(doc);
                 loadTask->setProperty(INPUT_URL_PROP, url);
                 connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_inputFileOpened()));
                 AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
@@ -204,13 +204,13 @@ void BlastWithExtFileRunDialog::onFormatError() {
     inputFileLineEdit->setText("");
 }
 
-void BlastWithExtFileRunDialog::loadDoc(const QString &url) {
+void BlastWithExtFileRunDialog::loadDoc(const QString& url) {
     FormatDetectionConfig config;
     config.useExtensionBonus = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url, config);
     CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), onFormatError(), );
 
-    DocumentFormat *format = formats.first().format;
+    DocumentFormat* format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), onFormatError(), );
 
     auto loadTask = new LoadDocumentTask(format->getFormatId(), url, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url)));
@@ -222,23 +222,23 @@ void BlastWithExtFileRunDialog::loadDoc(const QString &url) {
 }
 
 void BlastWithExtFileRunDialog::sl_inputFileOpened() {
-    auto task = qobject_cast<Task *>(sender());
+    auto task = qobject_cast<Task*>(sender());
     CHECK(task != nullptr, );
     CHECK(task->isFinished() && !task->hasError(), );
 
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     SAFE_POINT(proj != nullptr, "No opened project", );
 
     QString url = task->property(INPUT_URL_PROP).toString();
-    Document *doc = proj->findDocumentByURL(url);
+    Document* doc = proj->findDocumentByURL(url);
     SAFE_POINT(doc != nullptr, "No loaded document", );
 
     tryApplyDoc(doc);
 }
 
-void BlastWithExtFileRunDialog::tryApplyDoc(Document *doc) {
+void BlastWithExtFileRunDialog::tryApplyDoc(Document* doc) {
     int numOfSequences = 0;
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
             numOfSequences++;
         }
@@ -252,16 +252,16 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document *doc) {
     }
 
     hasValidInput = true;
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         if (obj->getGObjectType() != GObjectTypes::SEQUENCE) {
             continue;
         }
-        U2SequenceObject *seq = dynamic_cast<U2SequenceObject *>(obj);
+        U2SequenceObject* seq = dynamic_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seq != nullptr, "NULL sequence object", );
 
         BlastTaskSettings localSettings;
         U2OpStatusImpl os;
-        localSettings.querySequence = seq->getWholeSequenceData(os);
+        localSettings.querySequences = {seq->getWholeSequenceData(os)};
         CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
         localSettings.alphabet = seq->getAlphabet();
         if (localSettings.alphabet->getType() != DNAAlphabet_AMINO) {
@@ -319,15 +319,15 @@ void BlastWithExtFileRunDialog::sl_runQuery() {
         settingsList[i].outputType = 5;  // By default set output file format to xml
     }
     bool docAlreadyInProject = false;
-    Project *proj = AppContext::getProject();
-    foreach (Document *doc, proj->getDocuments()) {
+    Project* proj = AppContext::getProject();
+    foreach (Document* doc, proj->getDocuments()) {
         if (doc->getURL() == inputFileLineEdit->text()) {
             docAlreadyInProject = true;
         }
     }
     if (!docAlreadyInProject) {
         QString url = inputFileLineEdit->text();
-        Task *t = AppContext::getProjectLoader()->openWithProjectTask(url);
+        Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
         if (t != nullptr) {
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
@@ -339,12 +339,12 @@ void BlastWithExtFileRunDialog::sl_runQuery() {
 }
 
 void BlastWithExtFileRunDialog::sl_cancel() {
-    if (qobject_cast<BlastWithExtFileRunDialog *>(sender()) == nullptr) {
+    if (qobject_cast<BlastWithExtFileRunDialog*>(sender()) == nullptr) {
         reject();
         return;
     }
     if (wasNoOpenProject) {
-        ProjectService *projService = AppContext::getProjectService();
+        ProjectService* projService = AppContext::getProjectService();
         CHECK(projService != nullptr, );
         AppContext::getTaskScheduler()->registerTopLevelTask(projService->closeProjectTask());
     }

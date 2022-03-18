@@ -40,16 +40,16 @@ namespace U2 {
 namespace {
 const QString TABLE_PREFIX = "UdrSchema_";
 
-QString tableName(const UdrSchemaId &schemaId) {
+QString tableName(const UdrSchemaId& schemaId) {
     return TABLE_PREFIX + schemaId;
 }
 }  // namespace
 
-MysqlUdrDbi::MysqlUdrDbi(MysqlDbi *dbi)
+MysqlUdrDbi::MysqlUdrDbi(MysqlDbi* dbi)
     : UdrDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlUdrDbi::undo(const U2SingleModStep &modStep, U2OpStatus &os) {
+void MysqlUdrDbi::undo(const U2SingleModStep& modStep, U2OpStatus& os) {
     SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
 
     MysqlTransaction t(db, os);
@@ -62,7 +62,7 @@ void MysqlUdrDbi::undo(const U2SingleModStep &modStep, U2OpStatus &os) {
     RawDataUdrSchema::writeContent(oldData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
 }
 
-void MysqlUdrDbi::redo(const U2SingleModStep &modStep, U2OpStatus &os) {
+void MysqlUdrDbi::redo(const U2SingleModStep& modStep, U2OpStatus& os) {
     SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
 
     MysqlTransaction t(db, os);
@@ -75,9 +75,9 @@ void MysqlUdrDbi::redo(const U2SingleModStep &modStep, U2OpStatus &os) {
     RawDataUdrSchema::writeContent(newData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
 }
 
-UdrRecordId MysqlUdrDbi::addRecord(const UdrSchemaId &schemaId, const QList<UdrValue> &data, U2OpStatus &os) {
+UdrRecordId MysqlUdrDbi::addRecord(const UdrSchemaId& schemaId, const QList<UdrValue>& data, U2OpStatus& os) {
     UdrRecordId result("", "");
-    const UdrSchema *schema = udrSchema(schemaId, os);
+    const UdrSchema* schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), result);
 
@@ -93,8 +93,8 @@ UdrRecordId MysqlUdrDbi::addRecord(const UdrSchemaId &schemaId, const QList<UdrV
     return UdrRecordId(schemaId, recordId);
 }
 
-void MysqlUdrDbi::updateRecord(const UdrRecordId &recordId, const QList<UdrValue> &data, U2OpStatus &os) {
-    const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
+void MysqlUdrDbi::updateRecord(const UdrRecordId& recordId, const QList<UdrValue>& data, U2OpStatus& os) {
+    const UdrSchema* schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, );
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), );
 
@@ -111,9 +111,9 @@ void MysqlUdrDbi::updateRecord(const UdrRecordId &recordId, const QList<UdrValue
     q.update();
 }
 
-UdrRecord MysqlUdrDbi::getRecord(const UdrRecordId &recordId, U2OpStatus &os) {
+UdrRecord MysqlUdrDbi::getRecord(const UdrRecordId& recordId, U2OpStatus& os) {
     UdrRecord result(recordId, QList<UdrValue>(), os);
-    const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
+    const UdrSchema* schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, result);
 
     U2SqlQuery q(selectDef(schema, os), db, os);
@@ -133,15 +133,15 @@ UdrRecord MysqlUdrDbi::getRecord(const UdrRecordId &recordId, U2OpStatus &os) {
     return UdrRecord(recordId, data, os);
 }
 
-void MysqlUdrDbi::createObject(const UdrSchemaId &schemaId, U2Object &udrObject, const QString &folder, U2OpStatus &os) {
-    const UdrSchema *schema = udrSchema(schemaId, os);
+void MysqlUdrDbi::createObject(const UdrSchemaId& schemaId, U2Object& udrObject, const QString& folder, U2OpStatus& os) {
+    const UdrSchema* schema = udrSchema(schemaId, os);
     CHECK_OP(os, );
     SAFE_POINT_EXT(schema->hasObjectReference(), os.setError("No object reference"), );
 
     dbi->getMysqlObjectDbi()->createObject(udrObject, folder, U2DbiObjectRank_TopLevel, os);
 }
 
-QList<U2DataId> MysqlUdrDbi::getObjectRecordIds(const UdrSchema *schema, const U2DataId &objectId, U2OpStatus &os) {
+QList<U2DataId> MysqlUdrDbi::getObjectRecordIds(const UdrSchema* schema, const U2DataId& objectId, U2OpStatus& os) {
     QList<U2DataId> result;
     SAFE_POINT_EXT(schema->hasObjectReference(), os.setError("No object reference"), result);
 
@@ -154,15 +154,15 @@ QList<U2DataId> MysqlUdrDbi::getObjectRecordIds(const UdrSchema *schema, const U
     return result;
 }
 
-QList<UdrRecord> MysqlUdrDbi::getObjectRecords(const UdrSchemaId &schemaId, const U2DataId &objectId, U2OpStatus &os) {
+QList<UdrRecord> MysqlUdrDbi::getObjectRecords(const UdrSchemaId& schemaId, const U2DataId& objectId, U2OpStatus& os) {
     QList<UdrRecord> result;
-    const UdrSchema *schema = udrSchema(schemaId, os);
+    const UdrSchema* schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
 
     const QList<U2DataId> ids = getObjectRecordIds(schema, objectId, os);
     CHECK_OP(os, result);
 
-    foreach (const U2DataId &id, ids) {
+    foreach (const U2DataId& id, ids) {
         result << getRecord(UdrRecordId(schemaId, id), os);
         CHECK_OP(os, result);
     }
@@ -170,9 +170,9 @@ QList<UdrRecord> MysqlUdrDbi::getObjectRecords(const UdrSchemaId &schemaId, cons
     return result;
 }
 
-QList<UdrRecord> MysqlUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatus &os) {
+QList<UdrRecord> MysqlUdrDbi::getRecords(const UdrSchemaId& schemaId, U2OpStatus& os) {
     QList<UdrRecord> result;
-    const UdrSchema *schema = udrSchema(schemaId, os);
+    const UdrSchema* schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
 
     U2SqlQuery q(selectDef(schema, os), db, os);
@@ -189,7 +189,7 @@ QList<UdrRecord> MysqlUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatus
     return result;
 }
 
-void MysqlUdrDbi::removeRecord(const UdrRecordId &recordId, U2OpStatus &os) {
+void MysqlUdrDbi::removeRecord(const UdrRecordId& recordId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     U2SqlQuery q("DELETE FROM " + tableName(recordId.getSchemaId()) + " WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = :id", db, os);
@@ -197,8 +197,8 @@ void MysqlUdrDbi::removeRecord(const UdrRecordId &recordId, U2OpStatus &os) {
     q.execute();
 }
 
-InputStream *MysqlUdrDbi::createInputStream(const UdrRecordId &recordId, int fieldNum, U2OpStatus &os) {
-    const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
+InputStream* MysqlUdrDbi::createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os) {
+    const UdrSchema* schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, nullptr);
 
     UdrSchema::FieldDesc field = UdrSchema::getBlobField(schema, fieldNum, os);
@@ -207,11 +207,11 @@ InputStream *MysqlUdrDbi::createInputStream(const UdrRecordId &recordId, int fie
     return new MysqlBlobInputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), os);
 }
 
-OutputStream *MysqlUdrDbi::createOutputStream(const UdrRecordId &recordId, int fieldNum, qint64 size, U2OpStatus &os) {
+OutputStream* MysqlUdrDbi::createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os) {
     CHECK_EXT(size >= 0, os.setError("Negative stream size"), nullptr);
     CHECK_EXT(size <= INT_MAX, os.setError("Too big stream size"), nullptr);
 
-    const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
+    const UdrSchema* schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, nullptr);
 
     UdrSchema::FieldDesc field = UdrSchema::getBlobField(schema, fieldNum, os);
@@ -220,28 +220,28 @@ OutputStream *MysqlUdrDbi::createOutputStream(const UdrRecordId &recordId, int f
     return new MysqlBlobOutputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), (int)size, os);
 }
 
-ModificationAction *MysqlUdrDbi::getModificationAction(const U2DataId &id) {
+ModificationAction* MysqlUdrDbi::getModificationAction(const U2DataId& id) {
     return new MysqlModificationAction(dbi, id);
 }
 
 /************************************************************************/
 /* SQL initialization */
 /************************************************************************/
-void MysqlUdrDbi::initSqlSchema(U2OpStatus &os) {
-    UdrSchemaRegistry *udrRegistry = AppContext::getUdrSchemaRegistry();
+void MysqlUdrDbi::initSqlSchema(U2OpStatus& os) {
+    UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
     SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
 
     MysqlTransaction t(db, os);
 
-    foreach (const UdrSchemaId &id, udrRegistry->getRegisteredSchemas()) {
-        const UdrSchema *schema = udrSchema(id, os);
+    foreach (const UdrSchemaId& id, udrRegistry->getRegisteredSchemas()) {
+        const UdrSchema* schema = udrSchema(id, os);
         CHECK_OP(os, );
         initSchema(schema, os);
         CHECK_OP(os, );
     }
 }
 
-void MysqlUdrDbi::initSchema(const UdrSchema *schema, U2OpStatus &os) {
+void MysqlUdrDbi::initSchema(const UdrSchema* schema, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
@@ -254,7 +254,7 @@ void MysqlUdrDbi::initSchema(const UdrSchema *schema, U2OpStatus &os) {
     }
 }
 
-void MysqlUdrDbi::createTable(const UdrSchema *schema, U2OpStatus &os) {
+void MysqlUdrDbi::createTable(const UdrSchema* schema, U2OpStatus& os) {
     CHECK_EXT(schema->size() > 0, os.setError("Empty schema"), );
 
     QString query = tableStartDef(schema->getId());
@@ -274,7 +274,7 @@ void MysqlUdrDbi::createTable(const UdrSchema *schema, U2OpStatus &os) {
     U2SqlQuery(query, db, os).execute();
 }
 
-void MysqlUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &fields, U2OpStatus &os) {
+void MysqlUdrDbi::createIndex(const UdrSchemaId& schemaId, const QStringList& fields, U2OpStatus& os) {
     QString query = "CREATE INDEX " + tableName(schemaId) + "_" + fields.join("_") + " " + "on " + tableName(schemaId) + "(" + fields.join(", ") + ")";
 
     MysqlTransaction t(db, os);
@@ -285,28 +285,28 @@ void MysqlUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &fi
 /************************************************************************/
 /* Utilities */
 /************************************************************************/
-const UdrSchema *MysqlUdrDbi::udrSchema(const UdrSchemaId &schemaId, U2OpStatus &os) {
-    UdrSchemaRegistry *udrRegistry = AppContext::getUdrSchemaRegistry();
+const UdrSchema* MysqlUdrDbi::udrSchema(const UdrSchemaId& schemaId, U2OpStatus& os) {
+    UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
     SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), nullptr);
 
-    const UdrSchema *schema = udrRegistry->getSchemaById(schemaId);
+    const UdrSchema* schema = udrRegistry->getSchemaById(schemaId);
     SAFE_POINT_EXT(nullptr != schema, os.setError("NULL UDR schema"), nullptr);
     return schema;
 }
 
-QString MysqlUdrDbi::insertDef(const UdrSchema *schema, U2OpStatus &os) {
+QString MysqlUdrDbi::insertDef(const UdrSchema* schema, U2OpStatus& os) {
     const QStringList fieldNames = UdrSchema::fieldNames(schema, os);
     CHECK_OP(os, "");
 
     QStringList placeholders;
-    foreach (const QString &name, fieldNames) {
+    foreach (const QString& name, fieldNames) {
         placeholders << ":" + name;
     }
 
     return "INSERT INTO " + tableName(schema->getId()) + "(" + fieldNames.join(", ") + ") " + "VALUES(" + placeholders.join(", ") + ")";
 }
 
-QString MysqlUdrDbi::updateDef(const UdrSchema *schema, U2OpStatus &os) {
+QString MysqlUdrDbi::updateDef(const UdrSchema* schema, U2OpStatus& os) {
     QStringList assignments;
     for (int i = 0; i < schema->size(); i++) {
         UdrSchema::FieldDesc field = schema->getField(i, os);
@@ -317,7 +317,7 @@ QString MysqlUdrDbi::updateDef(const UdrSchema *schema, U2OpStatus &os) {
     return "UPDATE " + tableName(schema->getId()) + " SET " + assignments.join(", ") + " WHERE " + QString("%1 = :%1").arg(UdrSchema::RECORD_ID_FIELD_NAME.constData());
 }
 
-QString MysqlUdrDbi::selectAllDef(const UdrSchema *schema, U2OpStatus &os) {
+QString MysqlUdrDbi::selectAllDef(const UdrSchema* schema, U2OpStatus& os) {
     QList<int> directFields = UdrSchema::notBinary(schema, os);
     CHECK_OP(os, "");
 
@@ -326,16 +326,16 @@ QString MysqlUdrDbi::selectAllDef(const UdrSchema *schema, U2OpStatus &os) {
     return "SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + ", " + UdrSchema::fieldNames(schema, os, directFields).join(", ") + (isObjectReferenced ? ", o.type" : "") + " FROM " + tableName(schema->getId()) + (isObjectReferenced ? " AS udr INNER JOIN Object AS o ON o.id = udr." + UdrSchema::OBJECT_FIELD_NAME : "");
 }
 
-QString MysqlUdrDbi::selectDef(const UdrSchema *schema, U2OpStatus &os) {
+QString MysqlUdrDbi::selectDef(const UdrSchema* schema, U2OpStatus& os) {
     return selectAllDef(schema, os) + " WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = :" + UdrSchema::RECORD_ID_FIELD_NAME;
 }
 
-QString MysqlUdrDbi::tableStartDef(const UdrSchemaId &schemaId) {
+QString MysqlUdrDbi::tableStartDef(const UdrSchemaId& schemaId) {
     return "CREATE TABLE " + tableName(schemaId) + " (" +
            UdrSchema::RECORD_ID_FIELD_NAME + " BIGINT PRIMARY KEY AUTO_INCREMENT";
 }
 
-QString MysqlUdrDbi::fieldDef(const UdrSchema::FieldDesc &field) {
+QString MysqlUdrDbi::fieldDef(const UdrSchema::FieldDesc& field) {
     QString def = field.getName() + " ";
     switch (field.getDataType()) {
         case UdrSchema::INTEGER:
@@ -359,7 +359,7 @@ QString MysqlUdrDbi::fieldDef(const UdrSchema::FieldDesc &field) {
     return def;
 }
 
-QString MysqlUdrDbi::foreignKeysDef(const UdrSchema *schema, U2OpStatus &os) {
+QString MysqlUdrDbi::foreignKeysDef(const UdrSchema* schema, U2OpStatus& os) {
     QString result;
 
     for (int i = 0; i < schema->size(); i++) {
@@ -374,7 +374,7 @@ QString MysqlUdrDbi::foreignKeysDef(const UdrSchema *schema, U2OpStatus &os) {
     return result;
 }
 
-QList<QStringList> MysqlUdrDbi::indexes(const UdrSchema *schema, U2OpStatus &os) {
+QList<QStringList> MysqlUdrDbi::indexes(const UdrSchema* schema, U2OpStatus& os) {
     QList<QStringList> result;
 
     // single column indexes
@@ -389,7 +389,7 @@ QList<QStringList> MysqlUdrDbi::indexes(const UdrSchema *schema, U2OpStatus &os)
     }
 
     // multi column indexes
-    foreach (const QList<int> &multiIndex, schema->getMultiIndexes()) {
+    foreach (const QList<int>& multiIndex, schema->getMultiIndexes()) {
         result << UdrSchema::fieldNames(schema, os, multiIndex);
         CHECK_OP(os, result);
     }
@@ -397,9 +397,9 @@ QList<QStringList> MysqlUdrDbi::indexes(const UdrSchema *schema, U2OpStatus &os)
     return result;
 }
 
-void MysqlUdrDbi::bindData(const QList<UdrValue> &data, const UdrSchema *schema, U2SqlQuery &q, U2OpStatus &os) {
+void MysqlUdrDbi::bindData(const QList<UdrValue>& data, const UdrSchema* schema, U2SqlQuery& q, U2OpStatus& os) {
     for (int i = 0; i < data.size(); i++) {
-        const UdrValue &value = data[i];
+        const UdrValue& value = data[i];
         UdrSchema::FieldDesc field = schema->getField(i, os);
         CHECK_OP(os, );
 
@@ -426,7 +426,7 @@ void MysqlUdrDbi::bindData(const QList<UdrValue> &data, const UdrSchema *schema,
     }
 }
 
-void MysqlUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, U2SqlQuery &q, U2OpStatus &os) {
+void MysqlUdrDbi::retreiveData(QList<UdrValue>& data, const UdrSchema* schema, U2SqlQuery& q, U2OpStatus& os) {
     QList<int> fields = UdrSchema::notBinary(schema, os);
     CHECK_OP(os, );
 

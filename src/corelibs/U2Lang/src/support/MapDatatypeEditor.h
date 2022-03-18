@@ -41,16 +41,16 @@ namespace U2 {
 class U2LANG_EXPORT MapDatatypeEditor : public ConfigurationEditor {
     Q_OBJECT
 public:
-    MapDatatypeEditor(Configuration *cfg, const QString &prop, DataTypePtr from, DataTypePtr to);
+    MapDatatypeEditor(Configuration* cfg, const QString& prop, DataTypePtr from, DataTypePtr to);
     virtual ~MapDatatypeEditor() {
     }
-    virtual QWidget *getWidget();
+    virtual QWidget* getWidget();
     virtual void commit();
     virtual QMap<QString, QString> getBindingsMap();
     int getOptimalHeight();
 
 signals:
-    void si_showDoc(const QString &);
+    void si_showDoc(const QString&);
 
 protected slots:
     void sl_showDoc();
@@ -62,18 +62,18 @@ protected:
     bool isInfoMode() const {
         return from == to;
     }
-    virtual QWidget *createGUI(DataTypePtr from, DataTypePtr to);
+    virtual QWidget* createGUI(DataTypePtr from, DataTypePtr to);
     virtual QString getTitle() const {
         return "";
     }
 
 protected:
-    Configuration *cfg;
+    Configuration* cfg;
     const QString propertyName;
     DataTypePtr from, to;
-    QWidget *mainWidget;
-    QTableWidget *table;
-    QTextEdit *doc;
+    QWidget* mainWidget;
+    QTableWidget* table;
+    QTextEdit* doc;
 
 };  // MapDatatypeEditor
 
@@ -87,7 +87,7 @@ class IntegralBusPort;
 class U2LANG_EXPORT BusPortEditor : public MapDatatypeEditor {
     Q_OBJECT
 public:
-    BusPortEditor(Workflow::IntegralBusPort *p);
+    BusPortEditor(Workflow::IntegralBusPort* p);
     virtual ~BusPortEditor() {
     }
     virtual void commit();
@@ -95,27 +95,27 @@ public:
     virtual bool isEmpty() const;
 
 protected:
-    virtual QWidget *createGUI(DataTypePtr from, DataTypePtr to);
+    virtual QWidget* createGUI(DataTypePtr from, DataTypePtr to);
     QString getTitle() const;
 
-    Workflow::IntegralBusPort *port;
+    Workflow::IntegralBusPort* port;
 
 private slots:
-    void handleDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void handleDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 };  // BusPortEditor
 
 class U2LANG_EXPORT DescriptorListEditorDelegate : public QItemDelegate {
     Q_OBJECT
 public:
-    DescriptorListEditorDelegate(QObject *parent = 0)
+    DescriptorListEditorDelegate(QObject* parent = 0)
         : QItemDelegate(parent) {
     }
     virtual ~DescriptorListEditorDelegate() {
     }
 
-    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
+    virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 
 private slots:
     void sl_commitData();
@@ -123,8 +123,8 @@ private slots:
 
 class ItemDelegateForHeaders : public QItemDelegate {
 public:
-    ItemDelegateForHeaders(QObject *parent = 0);
-    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    ItemDelegateForHeaders(QObject* parent = 0);
+    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
 }  // namespace U2

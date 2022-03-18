@@ -41,20 +41,20 @@ namespace U2 {
 class PrepareInputForSpideyTask : public Task {
     Q_OBJECT
 public:
-    PrepareInputForSpideyTask(const U2SequenceObject *dna,
-                              const U2SequenceObject *mRna,
-                              const QString &outputDirPath);
+    PrepareInputForSpideyTask(const U2SequenceObject* dna,
+                              const U2SequenceObject* mRna,
+                              const QString& outputDirPath);
     void run();
-    const QStringList &getArgumentsList() {
+    const QStringList& getArgumentsList() {
         return argumentList;
     }
-    const QString &getResultPath() {
+    const QString& getResultPath() {
         return resultPath;
     }
 
 private:
-    const U2SequenceObject *dnaObj;
-    const U2SequenceObject *mRnaObj;
+    const U2SequenceObject* dnaObj;
+    const U2SequenceObject* mRnaObj;
     QStringList argumentList;
     StreamSequenceReader seqReader;
     QString outputDir;
@@ -64,25 +64,25 @@ private:
 class SpideyAlignmentTask : public SplicedAlignmentTask {
     Q_OBJECT
 public:
-    SpideyAlignmentTask(const SplicedAlignmentTaskConfig &config, const QString &annDescription);
+    SpideyAlignmentTask(const SplicedAlignmentTaskConfig& config, const QString& annDescription);
     void prepare();
     QList<SharedAnnotationData> getAlignmentResult() {
         return resultAnnotations;
     }
     Task::ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QList<SharedAnnotationData> resultAnnotations;
     QString tmpDirUrl;
     QString tmpOutputUrl;
     const QString annDescription;
-    PrepareInputForSpideyTask *prepareDataForSpideyTask;
-    ExternalToolRunTask *spideyTask;
+    PrepareInputForSpideyTask* prepareDataForSpideyTask;
+    ExternalToolRunTask* spideyTask;
 };
 
 class SpideyAlignmentTaskFactory : public SplicedAlignmentTaskFactory {
-    virtual SplicedAlignmentTask *createTaskInstance(const SplicedAlignmentTaskConfig &config) {
+    virtual SplicedAlignmentTask* createTaskInstance(const SplicedAlignmentTaskConfig& config) {
         return new SpideyAlignmentTask(config, "");
     }
 };
@@ -96,17 +96,17 @@ public:
 class SpideySupportTask : public Task {
     Q_OBJECT
 public:
-    SpideySupportTask(const SplicedAlignmentTaskConfig &cfg,
-                      AnnotationTableObject *aobj,
-                      const QString &annDescription);
+    SpideySupportTask(const SplicedAlignmentTaskConfig& cfg,
+                      AnnotationTableObject* aobj,
+                      const QString& annDescription);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    SpideyAlignmentTask *spideyAlignmentTask;
-    AnnotationTableObject *aObj;
+    SpideyAlignmentTask* spideyAlignmentTask;
+    AnnotationTableObject* aObj;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPIDEY_SUPPORT_TASK_H_
+#endif  // _U2_SPIDEY_SUPPORT_TASK_H_

@@ -41,15 +41,15 @@ class MaCollapseModel;
  */
 class U2VIEW_EXPORT MaEditorContext {
 public:
-    MaEditorContext(MaEditor *editor);
+    MaEditorContext(MaEditor* editor);
 
-    MaEditor *const editor;
-    MultipleAlignmentObject *const maObject;
-    MaEditorWgt *const ui;
-    MaEditorSelectionController *const selectionController;
-    MaCollapseModel *const collapseModel;
+    MaEditor* const editor;
+    MultipleAlignmentObject* const maObject;
+    MaEditorWgt* const ui;
+    MaEditorSelectionController* const selectionController;
+    MaCollapseModel* const collapseModel;
 
-    const MaEditorSelection &getSelection() const;
+    const MaEditorSelection& getSelection() const;
 };
 
 }  // namespace U2

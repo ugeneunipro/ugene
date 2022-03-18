@@ -28,16 +28,16 @@
 
 namespace U2 {
 
-MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme)
+MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject* parent, const ColorSchemeData& scheme)
     : MsaColorSchemeFactory(parent, scheme.name, scheme.name, scheme.type | DNAAlphabet_RAW),
       colorsPerChar(colorMapToColorVector(scheme.alpColors)) {
 }
 
-MsaColorScheme *MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemeCustomFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 
-bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const {
+bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData& scheme) const {
     bool result = true;
     result &= getName() == scheme.name;
     result &= isAlphabetTypeSupported(scheme.type);
@@ -45,7 +45,7 @@ bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const
     return result;
 }
 
-void MsaColorSchemeCustomFactory::setScheme(const ColorSchemeData &scheme) {
+void MsaColorSchemeCustomFactory::setScheme(const ColorSchemeData& scheme) {
     CHECK(!isEqualTo(scheme), );
     name = scheme.name;
     supportedAlphabets &= ~supportedAlphabets;
@@ -54,7 +54,7 @@ void MsaColorSchemeCustomFactory::setScheme(const ColorSchemeData &scheme) {
     emit si_factoryChanged();
 }
 
-QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<char, QColor> &map) {
+QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<char, QColor>& map) {
     QVector<QColor> colorsPerChar;
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     QMapIterator<char, QColor> it(map);

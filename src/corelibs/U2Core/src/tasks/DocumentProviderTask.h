@@ -34,13 +34,13 @@ class Document;
 class U2CORE_EXPORT DocumentProviderTask : public Task {
     Q_OBJECT
 public:
-    DocumentProviderTask(const QString &name, TaskFlags flags);
+    DocumentProviderTask(const QString& name, TaskFlags flags);
     virtual ~DocumentProviderTask() {
         cleanup();
     }
 
-    virtual Document *getDocument(bool mainThread = true);
-    virtual Document *takeDocument(bool mainThread = true);
+    virtual Document* getDocument(bool mainThread = true);
+    virtual Document* takeDocument(bool mainThread = true);
 
     virtual void cleanup();
     virtual QString getDocumentDescription() const {
@@ -48,7 +48,7 @@ public:
     }
 
 protected:
-    Document *resultDocument;
+    Document* resultDocument;
     bool docOwner;
 
     /** provider's document description */

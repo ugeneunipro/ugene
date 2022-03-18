@@ -56,7 +56,7 @@ ExportSequenceItem::ExportSequenceItem()
     : circular(false), alphabet(nullptr), length(0), complTT(nullptr), aminoTT(nullptr), backTT(nullptr) {
 }
 
-ExportSequenceItem::ExportSequenceItem(const ExportSequenceItem &other)
+ExportSequenceItem::ExportSequenceItem(const ExportSequenceItem& other)
     : seqRef(other.seqRef), name(other.name), circular(other.circular), alphabet(other.alphabet), length(other.length),
       annotations(other.annotations), complTT(other.complTT), aminoTT(other.aminoTT), backTT(other.backTT) {
     if (ownsSeq()) {
@@ -64,7 +64,7 @@ ExportSequenceItem::ExportSequenceItem(const ExportSequenceItem &other)
     }
 }
 
-ExportSequenceItem &ExportSequenceItem::operator=(const ExportSequenceItem &other) {
+ExportSequenceItem& ExportSequenceItem::operator=(const ExportSequenceItem& other) {
     seqRef = other.seqRef;
     name = other.name;
     circular = other.circular;
@@ -81,7 +81,7 @@ ExportSequenceItem &ExportSequenceItem::operator=(const ExportSequenceItem &othe
     return *this;
 }
 
-bool ExportSequenceItem::operator==(const ExportSequenceItem &other) const {
+bool ExportSequenceItem::operator==(const ExportSequenceItem& other) const {
     return seqRef == other.seqRef &&
            name == other.name &&
            circular == other.circular &&
@@ -134,7 +134,7 @@ void ExportSequenceItem::stopSeqOwnership() {
     sequencesRefCounts.remove(seqRef);
 }
 
-void ExportSequenceItem::setOwnershipOverSeq(const U2Sequence &seq, const U2DbiRef &dbiRef) {
+void ExportSequenceItem::setOwnershipOverSeq(const U2Sequence& seq, const U2DbiRef& dbiRef) {
     SAFE_POINT(seq.hasValidId() && dbiRef.isValid(), "Invalid DBI reference", );
 
     releaseOwnedSeq();
@@ -148,7 +148,7 @@ void ExportSequenceItem::setOwnershipOverSeq(const U2Sequence &seq, const U2DbiR
     startSeqOwnership();
 }
 
-U2SequenceObject *ExportSequenceItem::takeOwnedSeq() {
+U2SequenceObject* ExportSequenceItem::takeOwnedSeq() {
     stopSeqOwnership();
     return new U2SequenceObject(name, seqRef);
 }
@@ -163,7 +163,7 @@ bool ExportSequenceItem::isEmpty() const {
     return *this == empty;
 }
 
-void ExportSequenceItem::setSequenceInfo(U2SequenceObject *seqObj) {
+void ExportSequenceItem::setSequenceInfo(U2SequenceObject* seqObj) {
     SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
 
     seqRef = seqObj->getEntityRef();
@@ -187,7 +187,7 @@ ExportSequenceTaskSettings::ExportSequenceTaskSettings()
 //////////////////////////////////////////////////////////////////////////
 // ExportSequenceTask
 
-ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
+ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings& s)
     : DocumentProviderTask(tr("Export sequence to %1").arg(s.fileName), TaskFlag_None), config(s) {
     documentDescription = QFileInfo(s.fileName).fileName();
     setVerboseLogMode(true);
@@ -195,8 +195,8 @@ ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
 
 namespace {
 
-bool checkFrame(const QVector<U2Region> &regions, int frame) {
-    foreach (const U2Region &r, regions) {
+bool checkFrame(const QVector<U2Region>& regions, int frame) {
+    foreach (const U2Region& r, regions) {
         if (r.startPos % 3 != frame) {
             return false;
         }
@@ -204,7 +204,7 @@ bool checkFrame(const QVector<U2Region> &regions, int frame) {
     return true;
 }
 
-ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
+ExportSequenceItem toRevComplement(ExportSequenceItem& ei, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     ExportSequenceItem complEi = ei;
     CHECK_EXT(nullptr != ei.complTT, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
 
@@ -220,7 +220,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resul
         QByteArray chunkContent = seqObject.getSequenceData(chunkRegion, os);
         CHECK_OP(os, complEi);
 
-        char *rawChunkContent = chunkContent.data();
+        char* rawChunkContent = chunkContent.data();
         ei.complTT->translate(rawChunkContent, currentChunkSize);
         TextUtils::reverse(rawChunkContent, currentChunkSize);
 
@@ -235,7 +235,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resul
 
     // fix annotation locations
     for (int a = 0; a < complEi.annotations.size(); a++) {
-        SharedAnnotationData &ad = complEi.annotations[a];
+        SharedAnnotationData& ad = complEi.annotations[a];
         ad->setStrand(ad->getStrand() == U2Strand::Direct ? U2Strand::Complementary : U2Strand::Direct);
         U2Region::mirror(ei.length, ad->location->regions);
         U2Region::reverse(ad->location->regions);
@@ -244,7 +244,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resul
     return complEi;
 }
 
-QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
+QList<ExportSequenceItem> toAmino(ExportSequenceItem& ei, bool allFrames, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     QList<ExportSequenceItem> res;
 
     CHECK_EXT(nullptr != ei.aminoTT, os.setError(ExportSequenceTask::tr("Amino translation not found")), res);
@@ -277,7 +277,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
             }
             chunkRemainders[frameNumber] = frameChunkContent.right(frameChunkContent.size() % 3);
 
-            const DNAAlphabet *dstAlphabet = ei.aminoTT->getDstAlphabet();
+            const DNAAlphabet* dstAlphabet = ei.aminoTT->getDstAlphabet();
             QByteArray transContent(frameChunkContent.size() / 3, dstAlphabet->getDefaultSymbol());
 
             ei.aminoTT->translate(frameChunkContent.constData(), frameChunkContent.length(), transContent.data(), transContent.length());
@@ -301,7 +301,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
 
         // fix annotation locations
         transEi.annotations.clear();
-        foreach (const SharedAnnotationData &ad, ei.annotations) {
+        foreach (const SharedAnnotationData& ad, ei.annotations) {
             if (checkFrame(ad->getRegions(), frameNumber)) {
                 SharedAnnotationData r = ad;
                 U2Region::divide(3, r->location->regions);
@@ -314,7 +314,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
     return res;
 }
 
-ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
+ExportSequenceItem backToNucleic(ExportSequenceItem& ei, bool mostProbable, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     ExportSequenceItem backEi = ei;
     CHECK_EXT(nullptr != ei.backTT, os.setError(ExportSequenceTask::tr("Back-translation not found")), backEi);
     SAFE_POINT(ei.backTT->isOne2Three(), "Invalid reverse translation", backEi);
@@ -324,7 +324,7 @@ ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, cons
     CHECK_OP(os, backEi);
 
     // translate
-    const DNATranslation1to3Impl *trans = dynamic_cast<const DNATranslation1to3Impl *>(ei.backTT);
+    const DNATranslation1to3Impl* trans = dynamic_cast<const DNATranslation1to3Impl*>(ei.backTT);
     SAFE_POINT(nullptr != trans, L10N::nullPointerError("DNA translation"), backEi);
     const BackTranslationMode translationMode = mostProbable ? USE_MOST_PROBABLE_CODONS : USE_FREQUENCE_DISTRIBUTION;
 
@@ -349,19 +349,19 @@ ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, cons
 
     // fix annotation locations
     for (int a = 0; a < backEi.annotations.size(); a++) {
-        SharedAnnotationData &ad = backEi.annotations[a];
+        SharedAnnotationData& ad = backEi.annotations[a];
         U2Region::multiply(3, ad->location->regions);
     }
     return backEi;
 }
 
-ExportSequenceItem mergeExportItems(QList<ExportSequenceItem> &items, int mergeGap, U2OpStatus &os) {
+ExportSequenceItem mergeExportItems(QList<ExportSequenceItem>& items, int mergeGap, U2OpStatus& os) {
     ExportSequenceItem mergedEi = items.takeFirst();
     QByteArray gapSequence(mergeGap, mergedEi.alphabet->getDefaultSymbol());
 
     U2SequenceObject mergedSeqObject(mergedEi.name, mergedEi.seqRef);
     for (int i = 0, n = items.size(); i < n; ++i) {
-        ExportSequenceItem &ei2 = items[i];
+        ExportSequenceItem& ei2 = items[i];
 
         mergedSeqObject.replaceRegion(U2Region(mergedEi.length, 0), DNASequence(gapSequence, mergedEi.alphabet), os);
         CHECK_OP(os, mergedEi);
@@ -379,7 +379,7 @@ ExportSequenceItem mergeExportItems(QList<ExportSequenceItem> &items, int mergeG
         }
 
         // fix annotation locations
-        foreach (const SharedAnnotationData &ad, ei2.annotations) {
+        foreach (const SharedAnnotationData& ad, ei2.annotations) {
             SharedAnnotationData ma = ad;
             U2Region::shift(mergedEi.length, ma->location->regions);
             mergedEi.annotations.append(ma);
@@ -389,13 +389,13 @@ ExportSequenceItem mergeExportItems(QList<ExportSequenceItem> &items, int mergeG
     return mergedEi;
 }
 
-void saveExportItems2Doc(const QList<ExportSequenceItem> &items, const QString &seqName, Document *doc, U2OpStatus &os) {
+void saveExportItems2Doc(const QList<ExportSequenceItem>& items, const QString& seqName, Document* doc, U2OpStatus& os) {
     QVariantMap hints;
     hints[DocumentFormat::DBI_FOLDER_HINT] = U2ObjectDbi::ROOT_FOLDER;
     QSet<QString> usedNames;
     int itemCount = 0;
     foreach (ExportSequenceItem ri, items) {
-        U2SequenceObject *seqObj = ri.ownsSeq() ? ri.takeOwnedSeq() : qobject_cast<U2SequenceObject *>(U2SequenceObject(ri.name, ri.seqRef).clone(doc->getDbiRef(), os, hints));
+        U2SequenceObject* seqObj = ri.ownsSeq() ? ri.takeOwnedSeq() : qobject_cast<U2SequenceObject*>(U2SequenceObject(ri.name, ri.seqRef).clone(doc->getDbiRef(), os, hints));
         CHECK_OP(os, );
         seqObj->moveToThread(doc->thread());
 
@@ -413,7 +413,7 @@ void saveExportItems2Doc(const QList<ExportSequenceItem> &items, const QString &
         bool annotationsSupported = doc->checkConstraints(c);
         if (annotationsSupported && !ri.annotations.isEmpty()) {
             const QString aName = ExportUtils::genUniqueName(usedNames, name + " annotations");
-            AnnotationTableObject *annObj = new AnnotationTableObject(aName, doc->getDbiRef());
+            AnnotationTableObject* annObj = new AnnotationTableObject(aName, doc->getDbiRef());
             usedNames.insert(aName);
             annObj->addAnnotations(ri.annotations);
             annObj->addObjectRelation(seqObj, ObjectRole_Sequence);
@@ -424,11 +424,11 @@ void saveExportItems2Doc(const QList<ExportSequenceItem> &items, const QString &
     }
 }
 
-QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, bool allAminoFrames, bool mostProbableTranslation, const U2DbiRef &resDbiRef, U2OpStatus &os) {
+QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem>& items, bool allAminoFrames, bool mostProbableTranslation, const U2DbiRef& resDbiRef, U2OpStatus& os) {
     // translate to amino or back-translate if needed
     QList<ExportSequenceItem> result;
     for (int i = 0, n = items.size(); i < n; ++i) {
-        ExportSequenceItem &ei = items[i];
+        ExportSequenceItem& ei = items[i];
         if (ei.aminoTT != nullptr) {
             result.append(toAmino(ei, allAminoFrames, resDbiRef, os));
         } else if (ei.backTT != nullptr) {
@@ -446,9 +446,9 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
 void ExportSequenceTask::run() {
     GTIMER(cvar, tvar, "ExportSequenceTask");
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
     SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
     SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, config.fileName, stateInfo));
     CHECK_OP(stateInfo, );
@@ -460,7 +460,7 @@ void ExportSequenceTask::run() {
 
     QList<ExportSequenceItem> notMergedItems;
     for (int i = 0, n = config.items.size(); i < n; ++i) {
-        ExportSequenceItem &ei0 = config.items[i];
+        ExportSequenceItem& ei0 = config.items[i];
 
         QList<ExportSequenceItem> r1Items;
         if (config.strand == TriState_Yes || config.strand == TriState_Unknown) {
@@ -500,7 +500,7 @@ void ExportSequenceTask::run() {
     resultDocument = format->loadDocument(iof, config.fileName, {}, stateInfo);
 }
 
-ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem &first, const ExportSequenceItem &second, U2OpStatus &os) {
+ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem& first, const ExportSequenceItem& second, U2OpStatus& os) {
     return mergeExportItems(QList<ExportSequenceItem>() << first << second, 0, os);
 }
 
@@ -511,14 +511,14 @@ ExportSequenceAItem::ExportSequenceAItem()
     : aminoTT(nullptr), complTT(nullptr) {
 }
 
-ExportAnnotationSequenceTask::ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings &s)
+ExportAnnotationSequenceTask::ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings& s)
     : DocumentProviderTask(tr("Export annotations"), TaskFlags_NR_FOSE_COSC), config(s), exportSubTask(nullptr) {
     extractSubTask = new ExportAnnotationSequenceSubTask(config);
     addSubTask(extractSubTask);
 }
 
-QList<Task *> ExportAnnotationSequenceTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ExportAnnotationSequenceTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK(!isCanceled(), res);
 
     if (subTask == extractSubTask && !extractSubTask->hasError()) {
@@ -531,15 +531,15 @@ QList<Task *> ExportAnnotationSequenceTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-ExportAnnotationSequenceSubTask::ExportAnnotationSequenceSubTask(ExportAnnotationSequenceTaskSettings &s)
+ExportAnnotationSequenceSubTask::ExportAnnotationSequenceSubTask(ExportAnnotationSequenceTaskSettings& s)
     : Task(tr("Extract annotation regions"), TaskFlag_None), config(s) {
 }
 
 namespace {
 
-int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings &config) {
+int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings& config) {
     int result = 0;
-    foreach (const ExportSequenceAItem &item, config.items) {
+    foreach (const ExportSequenceAItem& item, config.items) {
         result += item.annotations.length();
     }
     return result;
@@ -547,14 +547,14 @@ int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings &config) {
 
 }  // namespace
 
-U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData &ad,
-                                                                   const ExportSequenceAItem &ei,
-                                                                   const U2DbiRef &resultDbiRef,
-                                                                   QVector<U2Region> &resultRegions,
-                                                                   U2OpStatus &os) {
+U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData& ad,
+                                                                   const ExportSequenceAItem& ei,
+                                                                   const U2DbiRef& resultDbiRef,
+                                                                   QVector<U2Region>& resultRegions,
+                                                                   U2OpStatus& os) {
     U2SequenceImporter importer(QVariantMap(), true);
 
-    bool isReverseComplement = ad->getStrand().isCompementary() && ei.complTT != nullptr;
+    bool isReverseComplement = ad->getStrand().isComplementary() && ei.complTT != nullptr;
     importer.enableReverseComplement(isReverseComplement ? ei.complTT : nullptr);
 
     importer.enableAminoTranslation(ei.aminoTT);
@@ -566,7 +566,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
     if (isReverseComplement) {
         std::reverse(regions.begin(), regions.end());
     }
-    for (const U2Region &region : qAsConst(regions)) {
+    for (const U2Region& region : qAsConst(regions)) {
         qint64 currentRegionLength = 0;
         for (qint64 currentChunkOffset = 0; currentChunkOffset < region.length; currentChunkOffset += MAX_CHUNK_LENGTH) {
             int currentChunkSize = (int)qMin(MAX_CHUNK_LENGTH, region.length - currentChunkOffset);
@@ -599,12 +599,12 @@ void ExportAnnotationSequenceSubTask::run() {
     const int allAnnotationSize = totalAnnotationCount(config);
     int annotationCount = 0;
     // extract sequences for every annotation & form ExportSequenceTaskSettings
-    foreach (const ExportSequenceAItem &ei, config.items) {
+    foreach (const ExportSequenceAItem& ei, config.items) {
         if (ei.sequence.isNull()) {
             coreLog.info(tr("Exported sequence has been deleted unexpectedly"));
             continue;
         }
-        foreach (const SharedAnnotationData &ad, ei.annotations) {
+        foreach (const SharedAnnotationData& ad, ei.annotations) {
             QVector<U2Region> resultRegions;
             const U2Sequence annSeqDbiObject = importAnnotatedSeq2Dbi(ad, ei, dbiRef, resultRegions, stateInfo);
             CHECK_OP(stateInfo, );

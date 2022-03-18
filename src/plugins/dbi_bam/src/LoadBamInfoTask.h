@@ -36,9 +36,9 @@ public:
     BAMInfo()
         : _hasIndex(false), unmappedSelected(false) {
     }
-    BAMInfo(const BAMInfo &src) = default;
+    BAMInfo(const BAMInfo& src) = default;
 
-    inline QList<bool> &getSelected() {
+    inline QList<bool>& getSelected() {
         return selected;
     }
     inline bool hasIndex() const {
@@ -50,20 +50,20 @@ public:
         else
             return selected.at(id);
     }
-    inline Index &getIndex() {
+    inline Index& getIndex() {
         return index;
     }
-    inline const Header &getHeader() {
+    inline const Header& getHeader() {
         return header;
     }
     inline bool isUnmappedSelected() const {
         return unmappedSelected;
     }
-    void setIndex(Index &index) {
+    void setIndex(Index& index) {
         this->index = index;
         _hasIndex = true;
     }
-    void setHeader(const Header &header) {
+    void setHeader(const Header& header) {
         this->header = header;
         selected.clear();
         for (int i = 0; i < header.getReferences().count(); i++) {
@@ -85,12 +85,12 @@ private:
 class LoadInfoTask : public Task {
     Q_OBJECT
 public:
-    LoadInfoTask(const GUrl &sourceUrl, bool sam);
+    LoadInfoTask(const GUrl& sourceUrl, bool sam);
     void run();
-    inline BAMInfo &getInfo() {
+    inline BAMInfo& getInfo() {
         return bamInfo;
     }
-    const GUrl &getSourceUrl() const;
+    const GUrl& getSourceUrl() const;
     bool isSam() const {
         return sam;
     }

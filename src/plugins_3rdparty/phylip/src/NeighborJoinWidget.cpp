@@ -70,14 +70,14 @@ QList<QString> ConsensusModelTypes::getConsensusModelTypes() {
     return list;
 }
 
-NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
+NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     setupUi(this);
     init(ma);
     connectSignals();
 }
 
-void NeighborJoinWidget::fillSettings(CreatePhyTreeSettings &settings) {
+void NeighborJoinWidget::fillSettings(CreatePhyTreeSettings& settings) {
     settings.matrixId = cbModel->currentText();
     settings.useGammaDistributionRates = chbGamma->isChecked();
     settings.alphaFactor = sbAlpha->value();
@@ -129,8 +129,8 @@ void NeighborJoinWidget::restoreDefault() {
     displayOptions->restoreDefault();
 }
 
-bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings) {
-    AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
+bool NeighborJoinWidget::checkMemoryEstimation(QString& msg, const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) {
+    AppResourcePool* s = AppContext::getAppSettings()->getAppResourcePool();
     const qint64 appMemMb = s->getMaxMemorySizeInMB();
 
     //****description******
@@ -145,7 +145,7 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
     // sizeof(sitelike) = 32
     // sizeof(ratelike) = 4
 
-    const qint64 spp = msa->getNumRows();
+    const qint64 spp = msa->getRowCount();
     const qint64 endsite = msa->getLength();
     const qint64 ugeneLowestMemoryUsageMb = 50;
     const qint64 minMemoryForDistanceMatrixMb = (qint64)(spp * endsite * 32 + endsite * 4) / (1024 * 1024);
@@ -161,7 +161,7 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
     }
 }
 
-bool NeighborJoinWidget::checkSettings(QString &msg, const CreatePhyTreeSettings &settings) {
+bool NeighborJoinWidget::checkSettings(QString& msg, const CreatePhyTreeSettings& settings) {
     if (!((settings.seed >= SEED_MIN) && (settings.seed <= SEED_MAX) && (settings.seed % 2 == 1))) {
         msg = tr("Seed must be odd");
         return false;
@@ -170,11 +170,11 @@ bool NeighborJoinWidget::checkSettings(QString &msg, const CreatePhyTreeSettings
     return displayOptions->checkSettings(msg, settings);
 }
 
-void NeighborJoinWidget::sl_onMatrixModelChanged(const QString &matrixModelName) {
+void NeighborJoinWidget::sl_onMatrixModelChanged(const QString& matrixModelName) {
     transitionRatioSpinBox->setEnabled(matrixModelName == DNADistModelTypes::F84 || matrixModelName == DNADistModelTypes::Kimura);
 }
 
-void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString &consensusTypeName) {
+void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString& consensusTypeName) {
     const bool isM1 = (consensusTypeName == ConsensusModelTypes::M1);
     lblFraction->setEnabled(isM1);
     sbFraction->setEnabled(isM1);
@@ -192,7 +192,7 @@ void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString &consensusTypeN
     }
 }
 
-void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
+void NeighborJoinWidget::init(const MultipleSequenceAlignment& ma) {
     const DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)) {
         cbModel->addItems(DNADistModelTypes::getDNADistModelTypes());
@@ -224,8 +224,8 @@ void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
 }
 
 void NeighborJoinWidget::connectSignals() {
-    connect(cbModel, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onMatrixModelChanged(const QString &)));
-    connect(cbConsensusType, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onConsensusTypeChanged(const QString &)));
+    connect(cbModel, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onMatrixModelChanged(const QString&)));
+    connect(cbConsensusType, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onConsensusTypeChanged(const QString&)));
 }
 
 int NeighborJoinWidget::getRandomSeed() {

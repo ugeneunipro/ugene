@@ -50,4 +50,4 @@ VcfutilsSupport::VcfutilsSupport()
     muted = true;
 }
 
-}    // namespace U2
+}  // namespace U2

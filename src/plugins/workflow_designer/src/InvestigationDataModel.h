@@ -39,39 +39,39 @@ using namespace Workflow;
 class InvestigationDataModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    InvestigationDataModel(const Workflow::Link *bus, QObject *parent = nullptr);
+    InvestigationDataModel(const Workflow::Link* bus, QObject* parent = nullptr);
     ~InvestigationDataModel();
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole)
         const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::DisplayRole);
-    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::DisplayRole);
-    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
-    bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex());
-    bool insertColumns(int column, int count, const QModelIndex &parent = QModelIndex());
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::DisplayRole);
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::DisplayRole);
+    bool insertRows(int position, int rows, const QModelIndex& index = QModelIndex());
+    bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex());
+    bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex());
+    bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex());
 
     // the returning value is the count of rows which data is cached
     int loadedRowCount() const;
     bool isAnyColumnHidden() const;
     void showAllHiddenColumns();
     int getAbsoluteNumberOfVisibleColumn(int column) const;
-    void setColumnsVisibility(const QBitArray &columns);
+    void setColumnsVisibility(const QBitArray& columns);
     QBitArray getColumnsVisibility() const;
 
 signals:
-    void si_investigationRequested(const Workflow::Link *bus, int messageNumber = 0) const;
-    void si_countOfMessagesRequested(const Workflow::Link *bus) const;
+    void si_investigationRequested(const Workflow::Link* bus, int messageNumber = 0) const;
+    void si_countOfMessagesRequested(const Workflow::Link* bus) const;
     void si_columnsVisibilityRequested() const;
 
 private:
     int getVisibleNumberOfAbsoluteColumn(int column) const;
 
-    const Workflow::Link *investigatedLink;
+    const Workflow::Link* investigatedLink;
     WorkflowInvestigationData cachedData;
     int countOfRows;
     QBitArray hiddenColumns;

@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-CalculateSequencesNumberTask::CalculateSequencesNumberTask(const QString &url)
+CalculateSequencesNumberTask::CalculateSequencesNumberTask(const QString& url)
     : Task(tr("Calculate sequences number"),
            TaskFlag_None),
       sequenceUrl(url),

@@ -1008,34 +1008,34 @@
 <context>
     <name>U2::PrimerLibraryModel</name>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="68"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="67"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="70"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="69"/>
         <source>GC-content (%)</source>
         <translation>GC-состав (%)</translation>
     </message>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="74"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="73"/>
         <source>Length (bp)</source>
         <translation>Длина (нк)</translation>
     </message>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="76"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="75"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="114"/>
-        <location filename="../src/PrimerLibraryTable.cpp" line="122"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="113"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="121"/>
         <source>Incorrect primer number</source>
         <translation>Incorrect primer number</translation>
     </message>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="134"/>
-        <location filename="../src/PrimerLibraryTable.cpp" line="136"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="133"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="135"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -1051,7 +1051,7 @@
 <context>
     <name>U2::PrimerLibraryTable</name>
     <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="214"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="213"/>
         <source>Your primer library is empty.
 Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library.</source>
         <translation>Ваша Библиотека олигонуклеотидов пуста.

@@ -31,7 +31,7 @@ static const QString EYES_SHIFT_NAME("EyesShift");
 static const QString LEFT_EYE_COLOR_NAME("LeftEyeColor");
 static const QString RIGHT_EYE_COLOR_NAME("RightEyeColor");
 
-QVariantMap AnaglyphSettings::toMap(QVariantMap &map) const {
+QVariantMap AnaglyphSettings::toMap(QVariantMap& map) const {
     map[EYES_SHIFT_NAME] = qVariantFromValue(eyesShift);
     map[LEFT_EYE_COLOR_NAME] = qVariantFromValue(leftEyeColor);
     map[RIGHT_EYE_COLOR_NAME] = qVariantFromValue(rightEyeColor);
@@ -39,7 +39,7 @@ QVariantMap AnaglyphSettings::toMap(QVariantMap &map) const {
     return map;
 }
 
-AnaglyphSettings AnaglyphSettings::fromMap(const QVariantMap &map) {
+AnaglyphSettings AnaglyphSettings::fromMap(const QVariantMap& map) {
     float eyesShift = map[EYES_SHIFT_NAME].value<float>();
     QColor leftEyeColor = map[LEFT_EYE_COLOR_NAME].value<QColor>();
     QColor rightEyeColor = map[RIGHT_EYE_COLOR_NAME].value<QColor>();
@@ -72,7 +72,7 @@ void AnaglyphRenderer::resize(int _width, int _height) {
 void AnaglyphRenderer::draw() {
     CHECK_GL_ERROR
 
-    GLFrame *glFrame = renderer->getGLFrame();
+    GLFrame* glFrame = renderer->getGLFrame();
     float eyesShift = 5.0 * settings.eyesShift * glFrame->getCameraPosition().z / 200.0;
 
     glMatrixMode(GL_MODELVIEW);
@@ -163,11 +163,11 @@ void AnaglyphRenderer::createEmptyTextures() {
     GLuint txtnumbers[3] = {0};
     glGenTextures(3, txtnumbers);
 
-    char *txtdata = new char[texwidth * texheight * 4];
+    char* txtdata = new char[texwidth * texheight * 4];
 
-    for (GLuint *txtnumber = txtnumbers; txtnumber < txtnumbers + 3; ++txtnumber) {
+    for (GLuint* txtnumber = txtnumbers; txtnumber < txtnumbers + 3; ++txtnumber) {
         glBindTexture(GL_TEXTURE_2D, *txtnumber);
-        glTexImage2D(GL_TEXTURE_2D, 0, 4, texwidth, texheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)txtdata);
+        glTexImage2D(GL_TEXTURE_2D, 0, 4, texwidth, texheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)txtdata);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -232,7 +232,7 @@ void AnaglyphRenderer::drawTexture(GLuint anaglyphRenderTexture, int red, int gr
     CHECK_GL_ERROR
 }
 
-AnaglyphRenderer::AnaglyphRenderer(BioStruct3DGLWidget *_renderer, const AnaglyphSettings &_settings)
+AnaglyphRenderer::AnaglyphRenderer(BioStruct3DGLWidget* _renderer, const AnaglyphSettings& _settings)
     : renderer(_renderer),
       settings(_settings),
       width(1),
@@ -243,11 +243,11 @@ AnaglyphRenderer::AnaglyphRenderer(BioStruct3DGLWidget *_renderer, const Anaglyp
       hasErrors(false) {
 }
 
-const AnaglyphSettings &AnaglyphRenderer::getSettings() const {
+const AnaglyphSettings& AnaglyphRenderer::getSettings() const {
     return settings;
 }
 
-void AnaglyphRenderer::setSettings(const AnaglyphSettings &_settings) {
+void AnaglyphRenderer::setSettings(const AnaglyphSettings& _settings) {
     settings = _settings;
 }
 

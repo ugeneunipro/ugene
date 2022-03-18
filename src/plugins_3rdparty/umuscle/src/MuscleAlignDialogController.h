@@ -38,7 +38,7 @@ class MuscleAlignPreset {
 public:
     virtual ~MuscleAlignPreset() {
     }
-    virtual void apply(MuscleTaskSettings &ts) const = 0;
+    virtual void apply(MuscleTaskSettings& ts) const = 0;
 
     QString name;
     QString desc;
@@ -47,7 +47,7 @@ public:
 class DefaultModePreset : public MuscleAlignPreset {
 public:
     DefaultModePreset();
-    virtual void apply(MuscleTaskSettings &ts) const {
+    virtual void apply(MuscleTaskSettings& ts) const {
         // no options
         ts.reset();
     }
@@ -57,7 +57,7 @@ class LargeModePreset : public MuscleAlignPreset {
 public:
     LargeModePreset();
 
-    virtual void apply(MuscleTaskSettings &ts) const {
+    virtual void apply(MuscleTaskSettings& ts) const {
         ts.reset();
         ts.maxIterations = 2;
     }
@@ -66,7 +66,7 @@ public:
 class RefineModePreset : public MuscleAlignPreset {
 public:
     RefineModePreset();
-    virtual void apply(MuscleTaskSettings &ts) const {
+    virtual void apply(MuscleTaskSettings& ts) const {
         ts.reset();
         ts.op = MuscleTaskOp_Refine;
     }
@@ -76,7 +76,7 @@ class MuscleAlignDialogController : public QDialog, public Ui_MuscleAlignmentDia
     Q_OBJECT
 
 public:
-    MuscleAlignDialogController(QWidget *w, const MultipleSequenceAlignment &ma, MuscleTaskSettings &settings);
+    MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& ma, MuscleTaskSettings& settings);
     bool translateToAmino();
     QString getTranslationId();
 public slots:
@@ -89,7 +89,7 @@ private:
     void initPresets();
 
     MultipleSequenceAlignment ma;
-    MuscleTaskSettings &settings;
+    MuscleTaskSettings& settings;
     GAutoDeleteList<MuscleAlignPreset> presets;
 };
 
@@ -97,7 +97,7 @@ class MuscleAlignWithExtFileSpecifyDialogController : public QDialog, public Ui_
     Q_OBJECT
 
 public:
-    MuscleAlignWithExtFileSpecifyDialogController(QWidget *w, MuscleTaskSettings &settings);
+    MuscleAlignWithExtFileSpecifyDialogController(QWidget* w, MuscleTaskSettings& settings);
 
 public slots:
     void accept();
@@ -110,9 +110,9 @@ private:
     void initPresets();
     void initSaveController();
 
-    MuscleTaskSettings &settings;
+    MuscleTaskSettings& settings;
     GAutoDeleteList<MuscleAlignPreset> presets;
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

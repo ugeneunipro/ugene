@@ -75,15 +75,15 @@ struct InSilicoPcrProduct {
 class InSilicoPcrTask : public Task {
     Q_OBJECT
 public:
-    InSilicoPcrTask(const InSilicoPcrTaskSettings &settings);
+    InSilicoPcrTask(const InSilicoPcrTaskSettings& settings);
 
     // Task
     void prepare();
     void run();
     QString generateReport() const;
 
-    const QList<InSilicoPcrProduct> &getResults() const;
-    const InSilicoPcrTaskSettings &getSettings() const;
+    const QList<InSilicoPcrProduct>& getResults() const;
+    const InSilicoPcrTaskSettings& getSettings() const;
 
 private:
     struct PrimerBind {
@@ -94,25 +94,25 @@ private:
         U2Region region;
         int ledge;
     };
-    PrimerBind getPrimerBind(const FindAlgorithmResult &forward, const FindAlgorithmResult &reverse, U2Strand::Direction direction) const;
+    PrimerBind getPrimerBind(const FindAlgorithmResult& forward, const FindAlgorithmResult& reverse, U2Strand::Direction direction) const;
 
-    qint64 getProductSize(const PrimerBind &leftBind, const PrimerBind &rightBind) const;
+    qint64 getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const;
     FindAlgorithmTaskSettings getFindPatternSettings(U2Strand::Direction direction);
     bool isCorrectProductSize(qint64 productSize, qint64 minPrimerSize) const;
-    bool filter(const PrimerBind &leftBind, const PrimerBind &rightBind, qint64 productSize) const;
-    bool checkPerfectMatch(const PrimerBind &bind, U2Strand::Direction direction) const;
-    QByteArray getSequence(const U2Region &region, U2Strand::Direction direction) const;
-    InSilicoPcrProduct createResult(const PrimerBind &leftPrimer, const U2Region &product, const PrimerBind &rightPrimer, U2Strand::Direction direction) const;
-    bool updateSequenceByPrimers(const PrimerBind &leftPrimer, const PrimerBind &rightPrimer, QByteArray &productSequence) const;
-    void updateSequenceByPrimer(const PrimerBind &primer, QByteArray &productSequence) const;
+    bool filter(const PrimerBind& leftBind, const PrimerBind& rightBind, qint64 productSize) const;
+    bool checkPerfectMatch(const PrimerBind& bind, U2Strand::Direction direction) const;
+    QByteArray getSequence(const U2Region& region, U2Strand::Direction direction) const;
+    InSilicoPcrProduct createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const;
+    bool updateSequenceByPrimers(const PrimerBind& leftPrimer, const PrimerBind& rightPrimer, QByteArray& productSequence) const;
+    void updateSequenceByPrimer(const PrimerBind& primer, QByteArray& productSequence) const;
 
 private:
-    //it takes ~6 minutes to process matrix 50x50 results with default algorithm settings in release build
+    // it takes ~6 minutes to process matrix 50x50 results with default algorithm settings in release build
     static constexpr int MAX_RESULTS_FOR_PRIMERS_PER_STRAND = 50;
 
     InSilicoPcrTaskSettings settings;
-    FindAlgorithmTask *forwardSearch;
-    FindAlgorithmTask *reverseSearch;
+    FindAlgorithmTask* forwardSearch;
+    FindAlgorithmTask* reverseSearch;
     QList<InSilicoPcrProduct> results;
     int minProductSize;
 };

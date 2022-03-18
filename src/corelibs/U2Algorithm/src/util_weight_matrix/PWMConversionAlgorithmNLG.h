@@ -34,9 +34,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT PWMConversionAlgorithmFactoryNLG : public PWMConversionAlgorithmFactory {
     Q_OBJECT
 public:
-    PWMConversionAlgorithmFactoryNLG(QObject *p = nullptr);
+    PWMConversionAlgorithmFactoryNLG(QObject* p = nullptr);
 
-    virtual PWMConversionAlgorithm *createAlgorithm(QObject *parent);
+    virtual PWMConversionAlgorithm* createAlgorithm(QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -46,9 +46,9 @@ public:
 class U2ALGORITHM_EXPORT PWMConversionAlgorithmNLG : public PWMConversionAlgorithm {
     Q_OBJECT
 public:
-    PWMConversionAlgorithmNLG(PWMConversionAlgorithmFactory *factory, QObject *p = nullptr);
+    PWMConversionAlgorithmNLG(PWMConversionAlgorithmFactory* factory, QObject* p = nullptr);
 
-    virtual PWMatrix convert(const PFMatrix &matrix);
+    virtual PWMatrix convert(const PFMatrix& matrix);
 };
 
 }  // namespace U2

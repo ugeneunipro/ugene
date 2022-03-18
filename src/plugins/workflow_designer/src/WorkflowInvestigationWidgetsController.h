@@ -41,31 +41,31 @@ class WorkflowInvestigationWidgetsController : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(WorkflowInvestigationWidgetsController)
 public:
-    explicit WorkflowInvestigationWidgetsController(QWidget *parent = nullptr);
+    explicit WorkflowInvestigationWidgetsController(QWidget* parent = nullptr);
     ~WorkflowInvestigationWidgetsController();
 
     void deleteBusInvestigations();
     void resetInvestigations();
     void setInvestigationWidgetsVisible(bool visible);
-    void setCurrentInvestigation(const Workflow::Link *bus);
-    bool eventFilter(QObject *watched, QEvent *event);
+    void setCurrentInvestigation(const Workflow::Link* bus);
+    bool eventFilter(QObject* watched, QEvent* event);
 
 public slots:
-    void sl_currentInvestigationUpdateResponse(const WorkflowInvestigationData &investigationInfo,
-                                               const Workflow::Link *bus);
-    void sl_countOfMessagesResponse(const Workflow::Link *bus, int countOfMessages);
+    void sl_currentInvestigationUpdateResponse(const WorkflowInvestigationData& investigationInfo,
+                                               const Workflow::Link* bus);
+    void sl_countOfMessagesResponse(const Workflow::Link* bus, int countOfMessages);
 
 signals:
-    void si_updateCurrentInvestigation(const Workflow::Link *bus);
-    void si_updateCurrentInvestigation(const Workflow::Link *bus, int messageNumber);
-    void si_countOfMessagesRequested(const Workflow::Link *bus);
-    void si_convertionMessages2DocumentsIsRequested(const Workflow::Link *bus,
-                                                    const QString &messageType,
+    void si_updateCurrentInvestigation(const Workflow::Link* bus);
+    void si_updateCurrentInvestigation(const Workflow::Link* bus, int messageNumber);
+    void si_countOfMessagesRequested(const Workflow::Link* bus);
+    void si_convertionMessages2DocumentsIsRequested(const Workflow::Link* bus,
+                                                    const QString& messageType,
                                                     int messageNumber);
 
 private slots:
-    void sl_contextMenuRequested(const QPoint &cursorPosition);
-    void sl_hotizontalHeaderContextMenuRequested(const QPoint &cursorPosition);
+    void sl_contextMenuRequested(const QPoint& cursorPosition);
+    void sl_hotizontalHeaderContextMenuRequested(const QPoint& cursorPosition);
     void sl_exportInvestigation();
     void sl_copyToClipboard() const;
     void sl_hideSelectedColumn();
@@ -76,26 +76,26 @@ private slots:
 private:
     void createNewInvestigation();
     void createInvestigationModel();
-    void adjustInvestigationColumnWidth(WorkflowInvestigationWidget *investigator);
+    void adjustInvestigationColumnWidth(WorkflowInvestigationWidget* investigator);
 
-    WorkflowInvestigationWidget *investigationView;
-    InvestigationDataModel *investigationModel;
-    const Workflow::Link *investigatedLink;
+    WorkflowInvestigationWidget* investigationView;
+    InvestigationDataModel* investigationModel;
+    const Workflow::Link* investigatedLink;
     QString investigatorName;
     // the variable signals if investigation widget was visible when
     // debugging finished. If true, then it will become visible when
     // debugging starts next time
     bool wasDisplayed;
-    QAction *exportInvestigationAction;
-    QAction *copyToClipboardAction;
+    QAction* exportInvestigationAction;
+    QAction* copyToClipboardAction;
 
-    QAction *hideThisColumnAction;
-    QAction *hideAllColumnsButThisAction;
-    QAction *showAllColumnsAction;
+    QAction* hideThisColumnAction;
+    QAction* hideAllColumnsButThisAction;
+    QAction* showAllColumnsAction;
     int selectedColumn;
-    QMap<const Workflow::Link *, QVector<int>> columnWidths;
+    QMap<const Workflow::Link*, QVector<int>> columnWidths;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_INVESTIGATION_WIDGETS_CONTROLLER_H_
+#endif  // _U2_WORKFLOW_INVESTIGATION_WIDGETS_CONTROLLER_H_

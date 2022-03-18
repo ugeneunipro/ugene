@@ -25,33 +25,33 @@
 
 namespace U2 {
 
-HoverQLabel::HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName)
+HoverQLabel::HoverQLabel(const QString& html, const QString& normalStyle, const QString& hoveredStyle, const QString& objectName)
     : QLabel(html), isHovered(false) {
     setCursor(Qt::PointingHandCursor);
     setObjectName(objectName);
     updateStyles(normalStyle, hoveredStyle);
 }
 
-void HoverQLabel::updateStyles(const QString &newNormalStyle, const QString &newHoveredStyle) {
+void HoverQLabel::updateStyles(const QString& newNormalStyle, const QString& newHoveredStyle) {
     QString objName = objectName();
     normalStyle = objName.isEmpty() ? newNormalStyle : "#" + objName + " {" + newNormalStyle + "}";
     hoveredStyle = objName.isEmpty() ? newHoveredStyle : "#" + objName + " {" + newHoveredStyle + "}";
     setStyleSheet(isHovered ? hoveredStyle : normalStyle);
 }
 
-void HoverQLabel::enterEvent(QEvent *event) {
+void HoverQLabel::enterEvent(QEvent* event) {
     isHovered = true;
     setStyleSheet(hoveredStyle);
     QLabel::enterEvent(event);
 }
 
-void HoverQLabel::leaveEvent(QEvent *event) {
+void HoverQLabel::leaveEvent(QEvent* event) {
     isHovered = false;
     setStyleSheet(normalStyle);
     QLabel::leaveEvent(event);
 }
 
-void HoverQLabel::mousePressEvent(QMouseEvent *event) {
+void HoverQLabel::mousePressEvent(QMouseEvent* event) {
     QLabel::mousePressEvent(event);
     emit clicked();
     event->accept();

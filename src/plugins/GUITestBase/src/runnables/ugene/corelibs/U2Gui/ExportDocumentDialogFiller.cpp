@@ -37,7 +37,7 @@ namespace U2 {
 QString ExportDocumentDialogFiller::defaultExportString = "";
 
 #define GT_CLASS_NAME "ExportDocumentDialogFiller"
-ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
+ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
     : Filler(_os, "ExportDocumentDialog"),
       path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile), addToProject(addToProject) {
     if (!path.isEmpty()) {
@@ -60,27 +60,26 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportDocumentDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
-        QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
+        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
         GT_CHECK(lineEdit != nullptr, "line edit not found");
         defaultExportString = GTLineEdit::copyText(os, lineEdit);
         GTLineEdit::setText(os, lineEdit, path + name);
 
-        QComboBox *comboBox = dialog->findChild<QComboBox *>("formatCombo");
+        QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
         GT_CHECK(comboBox != nullptr, "ComboBox not found");
         int index = comboBox->findText(comboBoxItems[format]);
 
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
         GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-        QCheckBox *compressCheckBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("compressCheck"));
+        QCheckBox* compressCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("compressCheck"));
         GT_CHECK(compressCheckBox != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, compressCheckBox, compressFile);
 
-        QCheckBox *addCheckBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjCheck"));
+        QCheckBox* addCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjCheck"));
         GT_CHECK(addCheckBox != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, addCheckBox, addToProject);
     }

@@ -48,32 +48,32 @@ unsigned int Index::ReferenceIndex::Bin::getBin() const {
     return bin;
 }
 
-const QList<Index::ReferenceIndex::Chunk> &Index::ReferenceIndex::Bin::getChunks() const {
+const QList<Index::ReferenceIndex::Chunk>& Index::ReferenceIndex::Bin::getChunks() const {
     return chunks;
 }
 
 // Index::ReferenceIndex
 
-Index::ReferenceIndex::ReferenceIndex(const QList<Bin> &bins, const QList<VirtualOffset> &intervals)
+Index::ReferenceIndex::ReferenceIndex(const QList<Bin>& bins, const QList<VirtualOffset>& intervals)
     : bins(bins),
       intervals(intervals) {
 }
 
-const QList<Index::ReferenceIndex::Bin> &Index::ReferenceIndex::getBins() const {
+const QList<Index::ReferenceIndex::Bin>& Index::ReferenceIndex::getBins() const {
     return bins;
 }
 
-const QList<VirtualOffset> &Index::ReferenceIndex::getIntervals() const {
+const QList<VirtualOffset>& Index::ReferenceIndex::getIntervals() const {
     return intervals;
 }
 
 // Index
 
-Index::Index(const QList<ReferenceIndex> &referenceIndices)
+Index::Index(const QList<ReferenceIndex>& referenceIndices)
     : referenceIndices(referenceIndices) {
 }
 
-const QList<Index::ReferenceIndex> &Index::getReferenceIndices() const {
+const QList<Index::ReferenceIndex>& Index::getReferenceIndices() const {
     return referenceIndices;
 }
 

@@ -43,7 +43,7 @@ public:
         return isEnabled() ? QDoubleSpinBox::textFromValue(val) : "";
     }
 
-    bool event(QEvent *ev) {
+    bool event(QEvent* ev) {
         if (ev->type() == QEvent::EnabledChange) {
             this->setValue(this->value());
         }
@@ -51,7 +51,7 @@ public:
     }
 };
 
-KalignDialogController::KalignDialogController(QWidget *w, const MultipleSequenceAlignment &_ma, KalignTaskSettings &_settings)
+KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings)
     : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");
@@ -62,11 +62,11 @@ KalignDialogController::KalignDialogController(QWidget *w, const MultipleSequenc
     inputGroupBox->setVisible(false);
     this->adjustSize();
     translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
     assert(!aminoTs.empty());
-    foreach (DNATranslation *t, aminoTs) {
+    foreach (DNATranslation* t, aminoTs) {
         translationTableBox->addItem(t->getTranslationName());
     }
 }
@@ -109,7 +109,7 @@ void KalignDialogController::accept() {
 }
 
 // KalignAlignWithExtFileSpecifyDialogController
-KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDialogController(QWidget *w, KalignTaskSettings &_settings)
+KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& _settings)
     : QDialog(w),
       settings(_settings),
       saveController(NULL) {
@@ -123,11 +123,11 @@ KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDial
 
     connect(inputFilePathButton, SIGNAL(clicked()), SLOT(sl_inputPathButtonClicked()));
 
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
     assert(!aminoTs.empty());
-    foreach (DNATranslation *t, aminoTs) {
+    foreach (DNATranslation* t, aminoTs) {
         translationTableBox->addItem(t->getTranslationName());
     }
 }
@@ -160,7 +160,7 @@ bool KalignDialogController::translateToAmino() {
 }
 
 QString KalignDialogController::getTranslationId() {
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
     assert(!ids.empty());
 

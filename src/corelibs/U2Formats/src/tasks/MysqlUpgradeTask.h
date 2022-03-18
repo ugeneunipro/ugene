@@ -30,11 +30,11 @@ namespace U2 {
 class U2FORMATS_EXPORT MysqlUpgradeTask : public Task {
     Q_OBJECT
 public:
-    MysqlUpgradeTask(const U2DbiRef &dbiRef);
+    MysqlUpgradeTask(const U2DbiRef& dbiRef);
 
-    void run();
+    void run() override;
 
-    const U2DbiRef &getDbiRef() const;
+    const U2DbiRef& getDbiRef() const;
 
 private:
     const U2DbiRef dbiRef;

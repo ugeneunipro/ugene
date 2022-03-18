@@ -50,7 +50,7 @@ class MsaHighlightingSchemeRegistry;
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget {
     Q_OBJECT
 public:
-    MSAHighlightingTab(MSAEditor *msa);
+    MSAHighlightingTab(MSAEditor* msa);
 
 signals:
     void si_colorSchemeChanged();
@@ -66,26 +66,26 @@ private slots:
     void sl_refreshSchemes();
 
 private:
-    QWidget *createColorGroup();
-    QWidget *createHighlightingGroup();
+    QWidget* createColorGroup();
+    QWidget* createHighlightingGroup();
 
-    MSAEditor *msa;
-    MaEditorSequenceArea *seqArea;
-    MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry> *colorSchemeController;
-    MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry> *highlightingSchemeController;
-    QLabel *hint;
-    QCheckBox *useDots;
-    QToolButton *exportHighlightning;
+    MSAEditor* msa;
+    MaEditorSequenceArea* seqArea;
+    MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>* colorSchemeController;
+    MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry>* highlightingSchemeController;
+    QLabel* hint;
+    QCheckBox* useDots;
+    QToolButton* exportHighlightning;
 
-    QLabel *colorThresholdLabel;
-    QSlider *colorThresholdSlider;
-    QDoubleSpinBox *colorSpinBox;
+    QLabel* colorThresholdLabel;
+    QSlider* colorThresholdSlider;
+    QDoubleSpinBox* colorSpinBox;
 
-    QLabel *thresholdLabel;
-    QSlider *highlightingThresholdSlider;
-    QLabel *lessMoreLabel;
-    QRadioButton *thresholdLessRb;
-    QRadioButton *thresholdMoreRb;
+    QLabel* thresholdLabel;
+    QSlider* highlightingThresholdSlider;
+    QLabel* lessMoreLabel;
+    QRadioButton* thresholdLessRb;
+    QRadioButton* thresholdMoreRb;
 
     MsaHighlightingSavableTab savableTab;
 };

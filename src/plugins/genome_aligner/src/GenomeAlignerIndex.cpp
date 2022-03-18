@@ -66,7 +66,7 @@ GenomeAlignerIndex::~GenomeAlignerIndex() {
     delete[] objLens;
 }
 
-void GenomeAlignerIndex::serialize(const QString &refFileName) {
+void GenomeAlignerIndex::serialize(const QString& refFileName) {
     QString indexFileName = baseFileName + QString(".") + HEADER_EXTENSION;
     QFile file(indexFileName);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -96,7 +96,7 @@ void GenomeAlignerIndex::serialize(const QString &refFileName) {
     file.close();
 }
 
-inline quint32 getNextInt(QByteArray &data, bool &eol, bool &intErr) {
+inline quint32 getNextInt(QByteArray& data, bool& eol, bool& intErr) {
     int commaIdx = data.indexOf(',');
     if (-1 == commaIdx) {
         commaIdx = data.length();
@@ -116,7 +116,7 @@ inline quint32 getNextInt(QByteArray &data, bool &eol, bool &intErr) {
     return result.toUInt();
 }
 
-bool GenomeAlignerIndex::deserialize(QByteArray &error) {
+bool GenomeAlignerIndex::deserialize(QByteArray& error) {
     QString indexFileName = baseFileName + QString(".") + HEADER_EXTENSION;
     QFile file(indexFileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -201,7 +201,7 @@ bool GenomeAlignerIndex::openIndexFiles() {
     return indexPart.refFile->open(QIODevice::ReadOnly);
 }
 
-BMType GenomeAlignerIndex::getBitValue(const char *seq, int length) const {
+BMType GenomeAlignerIndex::getBitValue(const char* seq, int length) const {
     BMType bitValue = 0;
     for (int i = 0; i < length; i++) {
         bitValue = (bitValue << bitCharLen) | bitTable[uchar(*(seq + i))];
@@ -252,7 +252,7 @@ bool GenomeAlignerIndex::loadPart(int part) {
 BinarySearchResult GenomeAlignerIndex::bitMaskBinarySearch(BMType bitValue, BMType bitFilter) {
     int low = 0;
     int high = indexPart.getLoadedPartSize() - 1;
-    BMType *a = indexPart.bitMask;
+    BMType* a = indexPart.bitMask;
     qint64 rc = 0;
     while (low <= high) {
         int mid = (low + high) / 2;
@@ -275,22 +275,22 @@ BinarySearchResult GenomeAlignerIndex::bitMaskBinarySearch(BMType bitValue, BMTy
 }
 
 #ifdef OPENCL_SUPPORT
-BinarySearchResult *GenomeAlignerIndex::bitMaskBinarySearchOpenCL(const BMType *bitValues, int size, const int *windowSizes) {
+BinarySearchResult* GenomeAlignerIndex::bitMaskBinarySearchOpenCL(const BMType* bitValues, int size, const int* windowSizes) {
     taskLog.trace(QString("Binary search on GPU for %1 Mb search-values in %2 Mb base values")
                       .arg((8 * size) / (1 << 20))
                       .arg((8 * indexPart.getLoadedPartSize()) / (1 << 20)));
     assert(indexPart.getLoadedPartSize() != 0);
     assert(size > 0);
 
-    BinaryFindOpenCL bf((NumberType *)indexPart.bitMask, indexPart.getLoadedPartSize(), (NumberType *)bitValues, size, windowSizes);
+    BinaryFindOpenCL bf((NumberType*)indexPart.bitMask, indexPart.getLoadedPartSize(), (NumberType*)bitValues, size, windowSizes);
 
-    NumberType *ans = bf.launch();
+    NumberType* ans = bf.launch();
 
-    return (BinarySearchResult *)ans;
+    return (BinarySearchResult*)ans;
 }
 #endif
 
-bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAType &fisrtSymbol, SearchQuery *qu, SAType &loadedSeqStart) {
+bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAType& fisrtSymbol, SearchQuery* qu, SAType& loadedSeqStart) {
     assert(offset < objLens[objCount - 1]);
     if ((qint64)offset - loadedSeqStart < startPos) {
         return false;
@@ -329,7 +329,7 @@ bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAT
     return true;
 }
 
-bool GenomeAlignerIndex::compare(const char *sourceSeq, const char *querySeq, int startPos, int w, int &c, int CMAX, int length) {
+bool GenomeAlignerIndex::compare(const char* sourceSeq, const char* querySeq, int startPos, int w, int& c, int CMAX, int length) {
     // forward collect
     for (int i = startPos + w; i < length && c <= CMAX; i++) {
         c += (querySeq[i] == sourceSeq[i]) ? 0 : 1;
@@ -348,15 +348,15 @@ bool GenomeAlignerIndex::compare(const char *sourceSeq, const char *querySeq, in
 }
 
 // this method contains big copy-paste but it works very fast because of it.
-void GenomeAlignerIndex::alignShortRead(SearchQuery *qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext *settings, BMType bitFilter, int w) {
+void GenomeAlignerIndex::alignShortRead(SearchQuery* qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext* settings, BMType bitFilter, int w) {
     if (firstResult < 0) {
         return;
     }
 
     SAType fisrtSymbol = 0;
-    const char *querySeq = qu->constData();
+    const char* querySeq = qu->constData();
     const int queryLen = qu->length();
-    char *refBuff = nullptr;
+    char* refBuff = nullptr;
 
     int CMAX = settings->nMismatches;
     if (!settings->absMismatches) {
@@ -419,21 +419,21 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery *qu, BMType bitValue, int st
 }
 
 /*build index*/
-void GenomeAlignerIndex::buildPart(SAType start, SAType length, SAType &arrLen) {
+void GenomeAlignerIndex::buildPart(SAType start, SAType length, SAType& arrLen) {
     qint64 t0 = GTimer::currentTimeMicros();
     initSArray(start, length, arrLen);
     qint64 t1 = GTimer::currentTimeMicros();
     algoLog.trace(QString("initSArray time %1 ms, len %2").arg((t1 - t0) / double(1000), 0, 'f', 3).arg(length));
 
-    const char *seq = indexPart.seq;
-    SAType *arunner = sArray;
-    BMType *mrunner = bitMask;
+    const char* seq = indexPart.seq;
+    SAType* arunner = sArray;
+    BMType* mrunner = bitMask;
     BMType bitValue = 0;
     SAType expectedNext = 0;
     quint32 wCharsInMask1 = w - 1;
 
-    for (BMType *end = mrunner + arrLen; mrunner < end; arunner++, mrunner++) {
-        const char *s = seq + *arunner;
+    for (BMType* end = mrunner + arrLen; mrunner < end; arunner++, mrunner++) {
+        const char* s = seq + *arunner;
         if (*arunner == expectedNext && expectedNext != 0) {  // pop first bit, push wCharsInMask1 char to the mask
             bitValue = ((bitValue << bitCharLen) | bitTable[uchar(*(s + wCharsInMask1))]) & bitFilter;
 #ifdef _DEBUG
@@ -452,7 +452,7 @@ void GenomeAlignerIndex::buildPart(SAType start, SAType length, SAType &arrLen) 
     algoLog.trace(QString("buildPart bitValue time %1 ms, len %2").arg((t2 - t1) / double(1000), 0, 'f', 3).arg(length));
 }
 
-void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen) {
+void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType& arrLen) {
     indexPart.refFile->seek(start);
     qint64 l = indexPart.refFile->read(indexPart.seq, length);
     if (length != l) {
@@ -460,9 +460,9 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen)
         return;
     }
 
-    const char *seq = indexPart.seq;
+    const char* seq = indexPart.seq;
 
-    SAType *arunner = sArray;
+    SAType* arunner = sArray;
     SAType idx = start;
     SAType seqIdx = 0;
     SAType tmpIdx = 0;

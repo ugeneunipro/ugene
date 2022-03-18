@@ -36,25 +36,23 @@ class MaOverviewContextMenu;
 class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt *ui);
+    MSAEditorOverviewArea(MaEditorWgt* ui);
 
-    void contextMenuEvent(QContextMenuEvent *event) override;
-
-    void cancelRendering() override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
     void setVisible(bool isVisible) override;
 
 private:
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
     /** Updates fixed-height value of the widget. Recomputes the new height by checking children visibility. */
     void updateFixedHeightGeometry();
 
-    MaGraphOverview *graphOverview = nullptr;
-    MaSimpleOverview *simpleOverview = nullptr;
-    MaOverviewContextMenu *contextMenu = nullptr;
+    MaGraphOverview* graphOverview = nullptr;
+    MaSimpleOverview* simpleOverview = nullptr;
+    MaOverviewContextMenu* contextMenu = nullptr;
 };
 
 }  // namespace U2

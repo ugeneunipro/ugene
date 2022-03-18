@@ -33,16 +33,16 @@ namespace U2 {
 class U2LANG_EXPORT NoFailTaskWrapper : public Task {
     Q_OBJECT
 public:
-    NoFailTaskWrapper(Task *task);
+    NoFailTaskWrapper(Task* task);
     virtual void prepare();
 
-    Task *originalTask() const;
+    Task* originalTask() const;
 
     virtual bool hasWarning() const;
     virtual QStringList getWarnings() const;
 
 private:
-    Task *subTask;
+    Task* subTask;
 };
 
 }  // namespace U2

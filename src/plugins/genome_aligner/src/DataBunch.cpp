@@ -56,7 +56,7 @@ void DataBunch::prepareSorted() {
 qint64 DataBunch::memoryHint() const {
     qint64 m = sizeof(*this);
 
-    m += queries.capacity() * (qint64)sizeof(SearchQuery *);
+    m += queries.capacity() * (qint64)sizeof(SearchQuery*);
     m += bitValuesV.capacity() * (qint64)sizeof(BMType);
     m += readNumbersV.capacity() * (qint64)sizeof(int);
     m += positionsAtReadV.capacity() * (qint64)sizeof(int);

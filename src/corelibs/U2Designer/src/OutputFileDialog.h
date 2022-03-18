@@ -35,7 +35,7 @@ class RunFileSystem;
 class OutputFileDialog : public QDialog, public Ui_OutputFileDialog {
     Q_OBJECT
 public:
-    OutputFileDialog(RunFileSystem *rfs, bool saveDir, CompletionFiller *filler, QWidget *parent);
+    OutputFileDialog(RunFileSystem* rfs, bool saveDir, CompletionFiller* filler, QWidget* parent);
     QString getResult() const;
     bool isSaveToFileSystem() const;
 
@@ -48,44 +48,44 @@ private slots:
 private:
     void updateSaveButton();
     QString selectedPath() const;
-    FSItem *selectedItem() const;
+    FSItem* selectedItem() const;
     void updateFocus();
     void setupSettings();
 
 private:
-    RunFileSystem *rfs;
+    RunFileSystem* rfs;
     bool saveDir;
-    RFSTreeModel *model;
-    QItemSelectionModel *selectionModel;
+    RFSTreeModel* model;
+    QItemSelectionModel* selectionModel;
     bool saveToFileSystem;
 };
 
 class RFSTreeModel : public QAbstractItemModel {
 public:
-    RFSTreeModel(FSItem *rootItem, bool saveDir, QObject *parent);
+    RFSTreeModel(FSItem* rootItem, bool saveDir, QObject* parent);
     ~RFSTreeModel();
 
-    QVariant data(const QModelIndex &index, int role) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant data(const QModelIndex& index, int role) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const;
+    QModelIndex parent(const QModelIndex& index) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const;
 
-    FSItem *toItem(const QModelIndex &index) const;
-    QString getPath(FSItem *target) const;
-    QModelIndex addDir(const QModelIndex &index, const QString &dirName);
+    FSItem* toItem(const QModelIndex& index) const;
+    QString getPath(FSItem* target) const;
+    QModelIndex addDir(const QModelIndex& index, const QString& dirName);
 
 private:
-    FSItem *superRootItem;
+    FSItem* superRootItem;
     bool saveDir;
 };
 
 class CreateDirectoryDialog : public QDialog, public Ui_CreateDirectoryDialog {
     Q_OBJECT
 public:
-    CreateDirectoryDialog(RunFileSystem *rfs, const QString &parentDir, QWidget *parent);
+    CreateDirectoryDialog(RunFileSystem* rfs, const QString& parentDir, QWidget* parent);
 
     QString getResult() const;
 
@@ -93,7 +93,7 @@ private slots:
     void sl_textChanged();
 
 private:
-    RunFileSystem *rfs;
+    RunFileSystem* rfs;
     QString parentDir;
 };
 

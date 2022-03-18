@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-bool MSAUtils::equalsIgnoreGaps(const MultipleAlignmentRow &row, int startPos, const QByteArray &pat, int &alternateLen) {
+bool MSAUtils::equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
     int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -63,7 +63,7 @@ bool MSAUtils::equalsIgnoreGaps(const MultipleAlignmentRow &row, int startPos, c
     return true;
 }
 
-int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow &row, int startPos, const QByteArray &pat, int &alternateLen) {
+int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int& alternateLen) {
     int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -82,11 +82,11 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow 
     return similarity;
 }
 
-MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence> &list, U2OpStatus &os, bool recheckAlphabetFromDataIfRaw) {
+MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
     MultipleSequenceAlignment ma(MA_OBJECT_NAME);
-    const DNAAlphabet *alphabet = deriveCommonAlphabet(list, recheckAlphabetFromDataIfRaw);
+    const DNAAlphabet* alphabet = deriveCommonAlphabet(list, recheckAlphabetFromDataIfRaw);
     ma->setAlphabet(alphabet);
-    foreach (const DNASequence &seq, list) {
+    foreach (const DNASequence& seq, list) {
         // TODO: handle memory overflow
         ma->addRow(seq.getName(), seq.seq);
     }
@@ -96,11 +96,11 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence> &list, U2OpS
 
 namespace {
 
-MultipleSequenceAlignmentObject *prepareSequenceHeadersList(const QList<GObject *> &list, bool useGenbankHeader, QList<U2SequenceObject *> &dnaList, QList<QString> &nameList) {
-    foreach (GObject *obj, list) {
-        U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
+MultipleSequenceAlignmentObject* prepareSequenceHeadersList(const QList<GObject*>& list, bool useGenbankHeader, QList<U2SequenceObject*>& dnaList, QList<QString>& nameList) {
+    foreach (GObject* obj, list) {
+        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
         if (dnaObj == nullptr) {
-            if (MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj)) {
+            if (MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj)) {
                 return maObj;
             }
             continue;
@@ -120,7 +120,7 @@ MultipleSequenceAlignmentObject *prepareSequenceHeadersList(const QList<GObject 
     return nullptr;
 }
 
-void appendSequenceToAlignmentRow(MultipleSequenceAlignment &ma, int rowIndex, int afterPos, const U2SequenceObject &seq, U2OpStatus &os) {
+void appendSequenceToAlignmentRow(MultipleSequenceAlignment& ma, int rowIndex, int afterPos, const U2SequenceObject& seq, U2OpStatus& os) {
     U2Region seqRegion(0, seq.getSequenceLength());
     const qint64 blockReadFromBD = 4194305;  // 4 MB + 1
 
@@ -136,11 +136,11 @@ void appendSequenceToAlignmentRow(MultipleSequenceAlignment &ma, int rowIndex, i
 
 }  // unnamed namespace
 
-MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool useGenbankHeader, bool recheckAlphabetFromDataIfRaw) {
-    QList<U2SequenceObject *> dnaList;
+MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject*>& list, U2OpStatus& os, bool useGenbankHeader, bool recheckAlphabetFromDataIfRaw) {
+    QList<U2SequenceObject*> dnaList;
     QStringList nameList;
 
-    MultipleSequenceAlignmentObject *obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
+    MultipleSequenceAlignmentObject* obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
     if (nullptr != obj) {
         return obj->getMsaCopy();
     }
@@ -150,17 +150,17 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
     int i = 0;
     SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignment());
-    QListIterator<U2SequenceObject *> listIterator(dnaList);
+    QListIterator<U2SequenceObject*> listIterator(dnaList);
     QListIterator<QString> nameIterator(nameList);
     while (listIterator.hasNext()) {
-        const U2SequenceObject &seq = *(listIterator.next());
-        const QString &objName = nameIterator.next();
+        const U2SequenceObject& seq = *(listIterator.next());
+        const QString& objName = nameIterator.next();
 
         CHECK_OP(os, MultipleSequenceAlignment());
 
         ma->addRow(objName, QByteArray(""));
 
-        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
+        SAFE_POINT(i < ma->getRowCount(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
         CHECK_OP(os, MultipleSequenceAlignment());
         i++;
@@ -169,9 +169,9 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
     return ma;
 }
 
-static const DNAAlphabet *selectBestAlphabetForAlignment(const QList<const DNAAlphabet *> &availableAlphabets) {
-    const DNAAlphabet *bestMatch = nullptr;
-    foreach (const DNAAlphabet *alphabet, availableAlphabets) {
+static const DNAAlphabet* selectBestAlphabetForAlignment(const QList<const DNAAlphabet*>& availableAlphabets) {
+    const DNAAlphabet* bestMatch = nullptr;
+    foreach (const DNAAlphabet* alphabet, availableAlphabets) {
         if (bestMatch == nullptr || bestMatch->isRaw()) {  // prefer any other alphabet over RAW.
             bestMatch = alphabet;
             continue;
@@ -187,65 +187,65 @@ static const DNAAlphabet *selectBestAlphabetForAlignment(const QList<const DNAAl
     return bestMatch;
 }
 
-const DNAAlphabet *MSAUtils::deriveCommonAlphabet(const QList<DNASequence> &sequenceList, bool recheckAlphabetFromDataIfRaw) {
+const DNAAlphabet* MSAUtils::deriveCommonAlphabet(const QList<DNASequence>& sequenceList, bool recheckAlphabetFromDataIfRaw) {
     // first perform fast check using sequence alphabets only.
-    QList<const DNAAlphabet *> alphabetList;
-    foreach (const DNASequence &sequence, sequenceList) {
+    QList<const DNAAlphabet*> alphabetList;
+    foreach (const DNASequence& sequence, sequenceList) {
         alphabetList.append(sequence.alphabet);
     }
-    const DNAAlphabet *resultAlphabet = deriveCommonAlphabet(alphabetList);
+    const DNAAlphabet* resultAlphabet = deriveCommonAlphabet(alphabetList);
     if (!resultAlphabet->isRaw() || !recheckAlphabetFromDataIfRaw) {
         return resultAlphabet;
     }
     // now perform slow check with raw data access.
-    QSet<const DNAAlphabet *> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
-    foreach (const DNASequence &sequence, sequenceList) {
-        QList<const DNAAlphabet *> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constData());
+    QSet<const DNAAlphabet*> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
+    foreach (const DNASequence& sequence, sequenceList) {
+        QList<const DNAAlphabet*> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constData());
         availableAlphabets.intersect(sequenceAlphabets.toSet());
     }
     return selectBestAlphabetForAlignment(availableAlphabets.toList());
 }
 
-const DNAAlphabet *MSAUtils::deriveCommonAlphabet(const QList<U2SequenceObject *> &sequenceList, bool recheckAlphabetFromDataIfRaw, U2OpStatus &os) {
+const DNAAlphabet* MSAUtils::deriveCommonAlphabet(const QList<U2SequenceObject*>& sequenceList, bool recheckAlphabetFromDataIfRaw, U2OpStatus& os) {
     // first perform fast check using sequence alphabets only.
-    QList<const DNAAlphabet *> alphabetList;
-    foreach (const U2SequenceObject *sequenceObject, sequenceList) {
+    QList<const DNAAlphabet*> alphabetList;
+    foreach (const U2SequenceObject* sequenceObject, sequenceList) {
         alphabetList.append(sequenceObject->getAlphabet());
     }
-    const DNAAlphabet *resultAlphabet = deriveCommonAlphabet(alphabetList);
+    const DNAAlphabet* resultAlphabet = deriveCommonAlphabet(alphabetList);
     if (!resultAlphabet->isRaw() || !recheckAlphabetFromDataIfRaw) {
         return resultAlphabet;
     }
     // now perform slow check with raw data access.
-    QSet<const DNAAlphabet *> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
-    foreach (const U2SequenceObject *sequence, sequenceList) {
-        QList<const DNAAlphabet *> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence->getWholeSequence(os).constData());
+    QSet<const DNAAlphabet*> availableAlphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets().toSet();
+    foreach (const U2SequenceObject* sequence, sequenceList) {
+        QList<const DNAAlphabet*> sequenceAlphabets = U2AlphabetUtils::findAllAlphabets(sequence->getWholeSequence(os).constData());
         availableAlphabets.intersect(sequenceAlphabets.toSet());
     }
     return selectBestAlphabetForAlignment(availableAlphabets.toList());
 }
 
-const DNAAlphabet *MSAUtils::deriveCommonAlphabet(const QList<const DNAAlphabet *> &alphabetList) {
-    const DNAAlphabet *result = nullptr;
-    foreach (const DNAAlphabet *alphabet, alphabetList) {
+const DNAAlphabet* MSAUtils::deriveCommonAlphabet(const QList<const DNAAlphabet*>& alphabetList) {
+    const DNAAlphabet* result = nullptr;
+    foreach (const DNAAlphabet* alphabet, alphabetList) {
         result = result == nullptr ? alphabet : U2AlphabetUtils::deriveCommonAlphabet(result, alphabet);
     }
     return result == nullptr ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::RAW()) : result;
 }
 
-QList<DNASequence> MSAUtils::convertMsaToSequenceList(const MultipleSequenceAlignment &msa,
-                                                      U2OpStatus &os,
+QList<DNASequence> MSAUtils::convertMsaToSequenceList(const MultipleSequenceAlignment& msa,
+                                                      U2OpStatus& os,
                                                       bool trimGaps,
-                                                      const QSet<qint64> &rowIdFilter,
-                                                      const U2Region &columnRegion) {
+                                                      const QSet<qint64>& rowIdFilter,
+                                                      const U2Region& columnRegion) {
     QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
     int msaLength = msa->getLength();
     CHECK_EXT(U2Region(0, msaLength).contains(columnRegion), os.setError(tr("Invalid column region")), {});
 
-    const DNAAlphabet *msaAlphabet = msa->getAlphabet();
+    const DNAAlphabet* msaAlphabet = msa->getAlphabet();
     QList<DNASequence> sequenceList;
-    const QList<MultipleSequenceAlignmentRow> &rows = msa->getMsaRows();
-    for (const MultipleSequenceAlignmentRow &row : qAsConst(rows)) {
+    const QList<MultipleSequenceAlignmentRow>& rows = msa->getMsaRows();
+    for (const MultipleSequenceAlignmentRow& row : qAsConst(rows)) {
         if (!rowIdFilter.isEmpty() && !rowIdFilter.contains(row->getRowId())) {
             continue;
         }
@@ -263,7 +263,7 @@ QList<DNASequence> MSAUtils::convertMsaToSequenceList(const MultipleSequenceAlig
     return sequenceList;
 }
 
-bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2OpStatus &ti) {
+bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti) {
     if (ali->getLength() == 0) {
         ti.setError(tr("Alignment is empty!"));
         return false;
@@ -273,7 +273,7 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2
         ti.setError(tr("Alignment is empty!"));
         return false;
     }
-    for (int i = 0, n = ali->getNumRows(); i < n; i++) {
+    for (int i = 0, n = ali->getRowCount(); i < n; i++) {
         int rowCoreLength = ali->getMsaRow(i)->getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
@@ -283,10 +283,10 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2
     return true;
 }
 
-int MSAUtils::getRowIndexByName(const MultipleSequenceAlignment &ma, const QString &name) {
+int MSAUtils::getRowIndexByName(const MultipleSequenceAlignment& ma, const QString& name) {
     int idx = 0;
 
-    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         if (row->getName() == name) {
             return idx;
         }
@@ -298,9 +298,9 @@ int MSAUtils::getRowIndexByName(const MultipleSequenceAlignment &ma, const QStri
 
 namespace {
 
-bool listContainsSeqObject(const QList<GObject *> &objs, int &firstSeqObjPos) {
+bool listContainsSeqObject(const QList<GObject*>& objs, int& firstSeqObjPos) {
     int objectNumber = 0;
-    foreach (GObject *o, objs) {
+    foreach (GObject* o, objs) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
             firstSeqObjPos = objectNumber;
             return true;
@@ -310,15 +310,15 @@ bool listContainsSeqObject(const QList<GObject *> &objs, int &firstSeqObjPos) {
     return false;
 }
 
-QList<U2Sequence> getDbSequences(const QList<GObject *> &objects) {
-    Document *parentDoc = nullptr;
+QList<U2Sequence> getDbSequences(const QList<GObject*>& objects) {
+    Document* parentDoc = nullptr;
     QList<U2Sequence> sequencesInDb;
-    foreach (GObject *o, objects) {
+    foreach (GObject* o, objects) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
             if (nullptr != (parentDoc = o->getDocument())) {
                 parentDoc->removeObject(o, DocumentObjectRemovalMode_Release);
             }
-            QScopedPointer<U2SequenceObject> seqObj(qobject_cast<U2SequenceObject *>(o));
+            QScopedPointer<U2SequenceObject> seqObj(qobject_cast<U2SequenceObject*>(o));
             SAFE_POINT(!seqObj.isNull(), "Unexpected object type", QList<U2Sequence>());
             sequencesInDb.append(U2SequenceUtils::getSequenceDbInfo(seqObj.data()));
         }
@@ -328,7 +328,7 @@ QList<U2Sequence> getDbSequences(const QList<GObject *> &objects) {
 
 }  // namespace
 
-MultipleSequenceAlignmentObject *MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os, bool shallowCopy, bool recheckAlphabetFromDataIfRaw) {
+MultipleSequenceAlignmentObject* MSAUtils::seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy, bool recheckAlphabetFromDataIfRaw) {
     CHECK(!objects.isEmpty(), nullptr);
 
     int firstSeqObjPos = -1;
@@ -351,27 +351,27 @@ MultipleSequenceAlignmentObject *MSAUtils::seqObjs2msaObj(const QList<GObject *>
     return MultipleSequenceAlignmentImporter::createAlignment(dbiRef, dstFolder, ma, os, sequencesInDB);
 }
 
-MultipleSequenceAlignmentObject *MSAUtils::seqDocs2msaObj(QList<Document *> docs, const QVariantMap &hints, U2OpStatus &os, bool recheckAlphabetFromDataIfRaw) {
+MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw) {
     CHECK(!docs.isEmpty(), nullptr);
-    QList<GObject *> objects;
-    foreach (Document *doc, docs) {
+    QList<GObject*> objects;
+    foreach (Document* doc, docs) {
         objects << doc->getObjects();
     }
     return seqObjs2msaObj(objects, hints, os, recheckAlphabetFromDataIfRaw);
 }
 
-void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
-                                     MultipleSequenceAlignment &newMsa,
-                                     QList<int> &removedRowIndexes,
-                                     QList<int> &addedRowIndexes) {
+void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment& origMsa,
+                                     MultipleSequenceAlignment& newMsa,
+                                     QList<int>& removedRowIndexes,
+                                     QList<int>& addedRowIndexes) {
     QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getMsaRows();
     QSet<qint64> remappedRowIds;
-    for (int newRowIndex = 0; newRowIndex < newMsa->getNumRows(); newRowIndex++) {
+    for (int newRowIndex = 0; newRowIndex < newMsa->getRowCount(); newRowIndex++) {
         MultipleSequenceAlignmentRow newMsaRow = newMsa->getMsaRow(newRowIndex);
         QString newRowNameForCompare = newMsaRow->getName().replace(" ", "_");
         bool isNewRowRemapped = false;
         for (int origRowIndex = 0; origRowIndex < origMsaRows.size(); origRowIndex++) {
-            const MultipleSequenceAlignmentRow &origMsaRow = origMsaRows[origRowIndex];
+            const MultipleSequenceAlignmentRow& origMsaRow = origMsaRows[origRowIndex];
             QString origRowNameForCompare = origMsaRow->getName().replace(" ", "_");
             if (newRowNameForCompare == origRowNameForCompare && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
                 isNewRowRemapped = true;
@@ -396,9 +396,9 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
     }
 }
 
-void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
-                                     MultipleSequenceAlignment &newMsa,
-                                     U2OpStatus &os) {
+void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment& origMsa,
+                                     MultipleSequenceAlignment& newMsa,
+                                     U2OpStatus& os) {
     QList<int> removed;
     QList<int> added;
     assignOriginalDataIds(origMsa, newMsa, removed, added);
@@ -407,7 +407,7 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
     }
 }
 
-U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os) {
+U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject* seqObj, const U2DbiRef& dstDbi, U2OpStatus& os) {
     U2MsaRow row;
     CHECK_EXT(nullptr != seqObj, os.setError("NULL sequence object"), row);
 
@@ -417,7 +417,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef 
     return copyRowFromSequence(dnaSeq, dstDbi, os);
 }
 
-U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDbi, U2OpStatus &os) {
+U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef& dstDbi, U2OpStatus& os) {
     U2MsaRow row;
     row.rowId = -1;  // set the ID automatically
 
@@ -447,7 +447,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     return row;
 }
 
-void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os) {
+void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject* msaObj, U2SequenceObject* seqObj, U2OpStatus& os) {
     CHECK_EXT(nullptr != msaObj, os.setError("NULL msa object"), );
 
     U2MsaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);
@@ -461,17 +461,17 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2Se
     con.dbi->getMsaDbi()->addRow(entityRef.entityId, -1, row, os);
 }
 
-MultipleSequenceAlignment MSAUtils::createCopyWithIndexedRowNames(const MultipleSequenceAlignment &ma, const QString &prefix) {
+MultipleSequenceAlignment MSAUtils::createCopyWithIndexedRowNames(const MultipleSequenceAlignment& ma, const QString& prefix) {
     MultipleSequenceAlignment res = ma->getExplicitCopy();
-    int rowNumber = res->getNumRows();
+    int rowNumber = res->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, prefix + QString::number(i));
     }
     return res;
 }
 
-bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment &ma, const QStringList &names, const QString &prefix) {
-    int rowCount = ma->getNumRows();
+bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment& ma, const QStringList& names, const QString& prefix) {
+    int rowCount = ma->getRowCount();
     CHECK(rowCount == names.size() || !prefix.isEmpty(), false);
 
     QStringList resultNames;
@@ -498,9 +498,9 @@ bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment
     return true;
 }
 
-bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa, const MultipleSequenceAlignment &originalMa, const QString &prefix) {
-    int rowCount = resultMa->getNumRows();
-    CHECK(rowCount == originalMa->getNumRows() || !prefix.isEmpty(), false);
+bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa, const MultipleSequenceAlignment& originalMa, const QString& prefix) {
+    int rowCount = resultMa->getRowCount();
+    CHECK(rowCount == originalMa->getRowCount() || !prefix.isEmpty(), false);
 
     for (int resultMaIndex = 0; resultMaIndex < rowCount; resultMaIndex++) {
         MultipleSequenceAlignmentRow resultRow = resultMa->getMsaRow(resultMaIndex);
@@ -523,7 +523,7 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QList<U2MsaGap>> &maGapModel, int length, int requiredGapsCount) {
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
@@ -550,15 +550,15 @@ QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QList<U2MsaGap>> &maGap
     return regionsToDelete;
 }
 
-void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount) {
+void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount) {
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
     const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getLength(), requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
-        msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getNumRows(), true);
+        msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getRowCount(), true);
     }
 }
 
-QString MSAUtils::rollMsaRowName(const QString &rowName, const QSet<QString> &usedRowNamesSet, const QString &suffixSeparator) {
+QString MSAUtils::rollMsaRowName(const QString& rowName, const QSet<QString>& usedRowNamesSet, const QString& suffixSeparator) {
     QString result = rowName;
     int counter = 1;
     while (usedRowNamesSet.contains(result)) {
@@ -568,20 +568,20 @@ QString MSAUtils::rollMsaRowName(const QString &rowName, const QSet<QString> &us
     return result;
 }
 
-void MSAUtils::addRowsToMsa(U2EntityRef &msaObjectRef, QList<MultipleSequenceAlignmentRow> &rows, U2OpStatus &os) {
+void MSAUtils::addRowsToMsa(U2EntityRef& msaObjectRef, QList<MultipleSequenceAlignmentRow>& rows, U2OpStatus& os) {
     DbiConnection con(msaObjectRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
-    U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT_OP(os, );
 
     QList<U2MsaRow> msaRows;
-    for (MultipleSequenceAlignmentRow &row : rows) {
+    for (MultipleSequenceAlignmentRow& row : rows) {
         U2MsaRow msaRow = copyRowFromSequence(row->getSequence(), msaObjectRef.dbiRef, os);
         SAFE_POINT_OP(os, );
         msaDbi->addRow(msaObjectRef.entityId, -1, msaRow, os);
         SAFE_POINT_OP(os, );
-        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGapModel(), os);
+        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGaps(), os);
         SAFE_POINT_OP(os, );
 
         row->setRowId(msaRow.rowId);

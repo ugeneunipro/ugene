@@ -38,7 +38,7 @@ typedef PrompterBase<CASAVAFilterPrompter> CASAVAFilterBase;
 class CASAVAFilterPrompter : public CASAVAFilterBase {
     Q_OBJECT
 public:
-    CASAVAFilterPrompter(Actor *p = 0)
+    CASAVAFilterPrompter(Actor* p = 0)
         : CASAVAFilterBase(p) {
     }
 
@@ -49,12 +49,12 @@ protected:
 class CASAVAFilterWorker : public BaseNGSWorker {
     Q_OBJECT
 public:
-    CASAVAFilterWorker(Actor *a);
+    CASAVAFilterWorker(Actor* a);
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
-    Task *getTask(const BaseNGSSetting &settings) const;
+    Task* getTask(const BaseNGSSetting& settings) const;
 
 };  // CASAVAFilterWorker
 
@@ -66,7 +66,7 @@ public:
     CASAVAFilterWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new CASAVAFilterWorker(a);
     }
 };  // CASAVAFilterWorkerFactory
@@ -74,11 +74,11 @@ public:
 class CASAVAFilterTask : public BaseNGSTask {
     Q_OBJECT
 public:
-    CASAVAFilterTask(const BaseNGSSetting &settings);
+    CASAVAFilterTask(const BaseNGSSetting& settings);
 
 protected:
     void runStep();
-    QStringList getParameters(U2OpStatus &os);
+    QStringList getParameters(U2OpStatus& os);
 };
 
 //////////////////////////////////////////////////
@@ -88,7 +88,7 @@ typedef PrompterBase<FastqQualityTrimPrompter> QualityTrimBase;
 class FastqQualityTrimPrompter : public QualityTrimBase {
     Q_OBJECT
 public:
-    FastqQualityTrimPrompter(Actor *p = 0)
+    FastqQualityTrimPrompter(Actor* p = 0)
         : QualityTrimBase(p) {
     }
 
@@ -99,12 +99,12 @@ protected:
 class FastqQualityTrimWorker : public BaseNGSWorker {
     Q_OBJECT
 public:
-    FastqQualityTrimWorker(Actor *a);
+    FastqQualityTrimWorker(Actor* a);
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
-    Task *getTask(const BaseNGSSetting &settings) const;
+    Task* getTask(const BaseNGSSetting& settings) const;
 
 };  // FastqQualityTrimWorker
 
@@ -116,7 +116,7 @@ public:
     FastqQualityTrimWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new FastqQualityTrimWorker(a);
     }
 };  // FastqQualityTrimWorkerFactory
@@ -124,12 +124,12 @@ public:
 class FastqQualityTrimTask : public BaseNGSTask {
     Q_OBJECT
 public:
-    FastqQualityTrimTask(const BaseNGSSetting &settings);
+    FastqQualityTrimTask(const BaseNGSSetting& settings);
 
 protected:
     void runStep();
     DNAQualityType detectQualityType();
-    QStringList getParameters(U2OpStatus &os);
+    QStringList getParameters(U2OpStatus& os);
 };
 
 //////////////////////////////////////////////////
@@ -139,7 +139,7 @@ typedef PrompterBase<MergeFastqPrompter> MergeFastqBase;
 class MergeFastqPrompter : public MergeFastqBase {
     Q_OBJECT
 public:
-    MergeFastqPrompter(Actor *p = 0)
+    MergeFastqPrompter(Actor* p = 0)
         : MergeFastqBase(p) {
     }
 
@@ -150,13 +150,13 @@ protected:
 class MergeFastqWorker : public BaseNGSWorker {
     Q_OBJECT
 public:
-    MergeFastqWorker(Actor *a);
-    Task *tick();
+    MergeFastqWorker(Actor* a);
+    Task* tick();
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
-    Task *getTask(const BaseNGSSetting &settings) const;
+    Task* getTask(const BaseNGSSetting& settings) const;
 
     QStringList inputUrls;
 
@@ -170,7 +170,7 @@ public:
     MergeFastqWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new MergeFastqWorker(a);
     }
 };  // MergeFastqWorkerFactory
@@ -178,11 +178,11 @@ public:
 class MergeFastqTask : public BaseNGSTask {
     Q_OBJECT
 public:
-    MergeFastqTask(const BaseNGSSetting &settings);
+    MergeFastqTask(const BaseNGSSetting& settings);
 
 protected:
     void runStep();
-    QStringList getParameters(U2OpStatus &os);
+    QStringList getParameters(U2OpStatus& os);
 };
 
 }  // namespace LocalWorkflow

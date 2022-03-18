@@ -70,30 +70,30 @@ public:
      * Runs openWithProjectTask for the recent files/projects list item.
      * If a project or a document with the given URL does not exist asks about removing it from the recent files list.
      */
-    virtual void runOpenRecentFileOrProjectTask(const GUrl &url) = 0;
+    virtual void runOpenRecentFileOrProjectTask(const GUrl& url) = 0;
 
     /**
         Opens files and adds them to the current project. If project does not exists - creates anonymous one
         If the file is project file - loads it.
     */
-    virtual Task *openWithProjectTask(const QList<GUrl> &urls, const QVariantMap &hints = QVariantMap()) = 0;
+    virtual Task* openWithProjectTask(const QList<GUrl>& urls, const QVariantMap& hints = QVariantMap()) = 0;
 
     /** Creates new project. If URL is empty the project created is anonymous */
-    virtual Task *createNewProjectTask(const GUrl &url = GUrl()) = 0;
+    virtual Task* createNewProjectTask(const GUrl& url = GUrl()) = 0;
 
     /**
      * Returns a task to load a project or a document.
      * The method may return nullptr if something went wrong: for example the project/document is already loaded.
      */
-    virtual Task *createProjectLoadingTask(const GUrl &url, const QVariantMap &hints = QVariantMap()) = 0;
+    virtual Task* createProjectLoadingTask(const GUrl& url, const QVariantMap& hints = QVariantMap()) = 0;
 
     /** Creates new project instance */
-    virtual Project *createProject(const QString &name, const QString &url, QList<Document *> &documents, QList<GObjectViewState *> &states) = 0;
+    virtual Project* createProject(const QString& name, const QString& url, QList<Document*>& documents, QList<GObjectViewState*>& states) = 0;
 
-    virtual QAction *getAddExistingDocumentAction() = 0;
+    virtual QAction* getAddExistingDocumentAction() = 0;
 
     // This function can return NULL, don't forget to check the result.
-    Task *openWithProjectTask(const GUrl &url, const QVariantMap &hints = QVariantMap()) {
+    Task* openWithProjectTask(const GUrl& url, const QVariantMap& hints = QVariantMap()) {
         QList<GUrl> urls;
         urls << url;
         return openWithProjectTask(urls, hints);
@@ -105,36 +105,36 @@ class U2CORE_EXPORT Project : public StateLockableTreeItem {
     Q_OBJECT
     Q_PROPERTY(QString name WRITE setProjectName READ getProjectName)
     Q_PROPERTY(QString url WRITE setProjectURL READ getProjectURL)
-    Q_PROPERTY(QList<Document *> docs READ getDocuments)
+    Q_PROPERTY(QList<Document*> docs READ getDocuments)
 
 public:
     virtual ~Project();
 
-    virtual const QString &getProjectName() const = 0;
+    virtual const QString& getProjectName() const = 0;
 
-    virtual void setProjectName(const QString &name) = 0;
+    virtual void setProjectName(const QString& name) = 0;
 
-    virtual const QString &getProjectURL() const = 0;
+    virtual const QString& getProjectURL() const = 0;
 
-    virtual void setProjectURL(const QString &) = 0;
+    virtual void setProjectURL(const QString&) = 0;
 
-    virtual const QList<Document *> &getDocuments() const = 0;
+    virtual const QList<Document*>& getDocuments() const = 0;
 
-    Q_INVOKABLE virtual void addDocument(Document *d) = 0;
+    Q_INVOKABLE virtual void addDocument(Document* d) = 0;
 
-    Q_INVOKABLE virtual void removeDocument(Document *d, bool autodelete = true) = 0;
+    Q_INVOKABLE virtual void removeDocument(Document* d, bool autodelete = true) = 0;
 
-    Q_INVOKABLE virtual Document *findDocumentByURL(const QString &url) const = 0;
+    Q_INVOKABLE virtual Document* findDocumentByURL(const QString& url) const = 0;
 
-    Q_INVOKABLE virtual Document *findDocumentByURL(const GUrl &url) const = 0;
+    Q_INVOKABLE virtual Document* findDocumentByURL(const GUrl& url) const = 0;
 
-    virtual bool lockResources(int sizeMB, const QString &url, QString &error) = 0;
+    virtual bool lockResources(int sizeMB, const QString& url, QString& error) = 0;
 
-    virtual const QList<GObjectViewState *> &getGObjectViewStates() const = 0;
+    virtual const QList<GObjectViewState*>& getGObjectViewStates() const = 0;
 
-    virtual void addGObjectViewState(GObjectViewState *s) = 0;
+    virtual void addGObjectViewState(GObjectViewState* s) = 0;
 
-    virtual void removeGObjectViewState(GObjectViewState *s) = 0;
+    virtual void removeGObjectViewState(GObjectViewState* s) = 0;
 
     virtual void makeClean() = 0;
 
@@ -142,31 +142,31 @@ public:
 
     virtual void setObjectIdCounter(quint64 c) = 0;
 
-    static void setupToEngine(QScriptEngine *engine);
+    static void setupToEngine(QScriptEngine* engine);
 
-    virtual void removeRelations(const QString &docUrl) = 0;
+    virtual void removeRelations(const QString& docUrl) = 0;
 
-    virtual void updateDocInRelations(const QString &oldDocUrl, const QString &newDocUrl) = 0;
+    virtual void updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl) = 0;
 
 private:
-    static QScriptValue toScriptValue(QScriptEngine *engine, Project *const &in);
-    static void fromScriptValue(const QScriptValue &object, Project *&out);
+    static QScriptValue toScriptValue(QScriptEngine* engine, Project* const& in);
+    static void fromScriptValue(const QScriptValue& object, Project*& out);
 signals:
-    void si_projectURLChanged(const QString &oldURL);
+    void si_projectURLChanged(const QString& oldURL);
 
-    void si_projectRenamed(Project *p);
+    void si_projectRenamed(Project* p);
 
-    void si_documentAdded(Document *d);
+    void si_documentAdded(Document* d);
 
-    void si_documentRemoved(Document *d);
+    void si_documentRemoved(Document* d);
 
-    void si_objectViewStateAdded(GObjectViewState *);
+    void si_objectViewStateAdded(GObjectViewState*);
 
-    void si_objectViewStateRemoved(GObjectViewState *);
+    void si_objectViewStateRemoved(GObjectViewState*);
 };
 
 }  // namespace U2
-Q_DECLARE_METATYPE(U2::Project *)
-Q_DECLARE_METATYPE(QList<U2::Document *>)
+Q_DECLARE_METATYPE(U2::Project*)
+Q_DECLARE_METATYPE(QList<U2::Document*>)
 
 #endif

@@ -50,7 +50,7 @@ namespace U2 {
 static Logger log(ULOG_CAT_TEAMCITY);
 const QString GUITestService::GUITESTING_REPORT_PREFIX = "GUITesting";
 
-GUITestService::GUITestService(QObject *)
+GUITestService::GUITestService(QObject*)
     : Service(Service_GUITesting, tr("GUI test viewer"), tr("Service to support UGENE GUI testing")),
       runTestsAction(nullptr),
       testLauncher(nullptr),
@@ -62,9 +62,9 @@ GUITestService::~GUITestService() {
     delete runTestsAction;
 }
 
-GUITestService *GUITestService::getGuiTestService() {
-    QList<Service *> services = AppContext::getServiceRegistry()->findServices(Service_GUITesting);
-    return services.isEmpty() ? nullptr : qobject_cast<GUITestService *>(services.first());
+GUITestService* GUITestService::getGuiTestService() {
+    QList<Service*> services = AppContext::getServiceRegistry()->findServices(Service_GUITesting);
+    return services.isEmpty() ? nullptr : qobject_cast<GUITestService*>(services.first());
 }
 
 void GUITestService::sl_registerService() {
@@ -115,7 +115,7 @@ void GUITestService::setEnvVariablesForGuiTesting() {
     qputenv(ENV_UGENE_DEV, "1");
 }
 
-GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry *cmdLine) {
+GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry* cmdLine) {
     CHECK(cmdLine, NONE);
 
     LaunchOptions result = NONE;
@@ -152,20 +152,20 @@ void GUITestService::registerAllTestsTask() {
     testLauncher = createTestLauncherTask();
     AppContext::getTaskScheduler()->registerTopLevelTask(testLauncher);
 
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
 }
 
 void GUITestService::registerAllTestsTaskNoIgnored() {
     testLauncher = createTestLauncherTask(0, true);
     AppContext::getTaskScheduler()->registerTopLevelTask(testLauncher);
 
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
 }
 
-Task *GUITestService::createTestLauncherTask(int suiteNumber, bool noIgnored) const {
+Task* GUITestService::createTestLauncherTask(int suiteNumber, bool noIgnored) const {
     SAFE_POINT(nullptr == testLauncher, "", nullptr);
 
-    Task *task = new GUITestLauncher(suiteNumber, noIgnored);
+    Task* task = new GUITestLauncher(suiteNumber, noIgnored);
     return task;
 }
 
@@ -173,13 +173,13 @@ void GUITestService::registerTestSuiteTask() {
     testLauncher = createTestSuiteLauncherTask();
     AppContext::getTaskScheduler()->registerTopLevelTask(testLauncher);
 
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), this, SLOT(sl_taskStateChanged(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), this, SLOT(sl_taskStateChanged(Task*)));
 }
 
-Task *GUITestService::createTestSuiteLauncherTask() const {
+Task* GUITestService::createTestSuiteLauncherTask() const {
     Q_ASSERT(!testLauncher);
 
-    CMDLineRegistry *cmdLine = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
     Q_ASSERT(cmdLine);
 
     bool ok;
@@ -199,12 +199,12 @@ Task *GUITestService::createTestSuiteLauncherTask() const {
     }
     if (!ok) {
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = !useSameIni ? new GUITestLauncher(pathToSuite) : new GUITestLauncher(pathToSuite, false, iniTemplate);
+        Task* task = !useSameIni ? new GUITestLauncher(pathToSuite) : new GUITestLauncher(pathToSuite, false, iniTemplate);
         Q_ASSERT(task);
         return task;
     }
 
-    Task *task = !useSameIni ? new GUITestLauncher(suiteNumber) : new GUITestLauncher(suiteNumber, false, iniTemplate);
+    Task* task = !useSameIni ? new GUITestLauncher(suiteNumber) : new GUITestLauncher(suiteNumber, false, iniTemplate);
     Q_ASSERT(task);
 
     return task;
@@ -221,16 +221,16 @@ void GUITestService::sl_allStartUpPluginsLoaded() {
 }
 
 void GUITestService::runAllGUITests() {
-    UGUITestBase *db = UGUITestBase::getInstance();
-    QList<GUITest *> initTests = db->getTests(UGUITestBase::PreAdditional);
-    QList<GUITest *> postCheckTests = db->getTests(UGUITestBase::PostAdditionalChecks);
-    QList<GUITest *> postActionTests = db->getTests(UGUITestBase::PostAdditionalActions);
+    UGUITestBase* db = UGUITestBase::getInstance();
+    QList<GUITest*> initTests = db->getTests(UGUITestBase::PreAdditional);
+    QList<GUITest*> postCheckTests = db->getTests(UGUITestBase::PostAdditionalChecks);
+    QList<GUITest*> postActionTests = db->getTests(UGUITestBase::PostAdditionalActions);
 
-    QList<GUITest *> tests = db->getTests(UGUITestBase::Normal);
+    QList<GUITest*> tests = db->getTests(UGUITestBase::Normal);
     SAFE_POINT(!tests.isEmpty(), "", );
 
     QString runOneTestOnly = qgetenv("UGENE_GUI_TEST_NAME_RUN_ONLY");
-    for (GUITest *test : qAsConst(tests)) {
+    for (GUITest* test : qAsConst(tests)) {
         QString testName = test->getFullName();
         QString testNameForTeamCity = test->suite + "_" + test->name;
 
@@ -250,7 +250,7 @@ void GUITestService::runAllGUITests() {
 
         HI::GUITestOpStatus os;
         log.trace("GTRUNNER - runAllGUITests - going to run initial checks before " + testName);
-        for (GUITest *initTest : qAsConst(initTests)) {
+        for (GUITest* initTest : qAsConst(initTests)) {
             initTest->run(os);
         }
 
@@ -259,12 +259,12 @@ void GUITestService::runAllGUITests() {
         test->run(os);
         log.trace("GTRUNNER - runAllGUITests - finished running test " + testName);
 
-        for (GUITest *postCheckTest : qAsConst(postCheckTests)) {
+        for (GUITest* postCheckTest : qAsConst(postCheckTests)) {
             postCheckTest->run(os);
         }
 
         HI::GUITestOpStatus os2;
-        for (GUITest *postActionTest : qAsConst(postActionTests)) {
+        for (GUITest* postActionTest : qAsConst(postActionTests)) {
             postActionTest->run(os2);
         }
 
@@ -280,20 +280,20 @@ void GUITestService::runAllGUITests() {
 }
 
 void GUITestService::runGUITest() {
-    CMDLineRegistry *cmdLine = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
     SAFE_POINT(cmdLine != nullptr, "", );
     QString fullTestName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
     isTeamcityLogOn = cmdLine->hasParameter(CMDLineCoreOptions::TEAMCITY_OUTPUT);
 
     QString suiteName = fullTestName.split(":").first();
     QString testName = fullTestName.split(":").last();
-    UGUITestBase *testBase = UGUITestBase::getInstance();
-    GUITest *test = testBase->getTest(suiteName, testName);
+    UGUITestBase* testBase = UGUITestBase::getInstance();
+    GUITest* test = testBase->getTest(suiteName, testName);
 
     if (test == nullptr) {
         // Search by teamcity test name.
-        const QList<GUITest *> testList = testBase->getTests();
-        for (GUITest *test2 : qAsConst(testList)) {
+        const QList<GUITest*> testList = testBase->getTests();
+        for (GUITest* test2 : qAsConst(testList)) {
             QString teamcityTestName = UGUITest::getTeamcityTestName(test2->suite, test2->name);
             if (fullTestName == teamcityTestName) {
                 test = test2;
@@ -306,12 +306,12 @@ void GUITestService::runGUITest() {
 }
 
 void GUITestService::runGUICrazyUserTest() {
-    UGUITestBase *testBase = UGUITestBase::getInstance();
-    GUITest *test = testBase->getTest("", "simple_crazy_user");
+    UGUITestBase* testBase = UGUITestBase::getInstance();
+    GUITest* test = testBase->getTest("", "simple_crazy_user");
     runGUITest(test);
 }
 
-void GUITestService::runGUITest(GUITest *test) {
+void GUITestService::runGUITest(GUITest* test) {
     SAFE_POINT(test != nullptr, "GUITest is NULL", );
     if (isTeamcityLogOn) {
         QString testNameForTeamCity = test->suite + "_" + test->name;
@@ -324,9 +324,9 @@ void GUITestService::runGUITest(GUITest *test) {
 }
 
 void GUITestService::registerServiceTask() {
-    Task *registerServiceTask = AppContext::getServiceRegistry()->registerServiceTask(this);
+    Task* registerServiceTask = AppContext::getServiceRegistry()->registerServiceTask(this);
     SAFE_POINT(registerServiceTask != nullptr, "registerServiceTask is NULL", );
-    connect(new TaskSignalMapper(registerServiceTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_serviceRegistered()));
+    connect(new TaskSignalMapper(registerServiceTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_serviceRegistered()));
 
     AppContext::getTaskScheduler()->registerTopLevelTask(registerServiceTask);
 }
@@ -337,7 +337,7 @@ void GUITestService::serviceStateChangedCallback(ServiceState, bool enabledState
     }
 }
 
-void GUITestService::sl_taskStateChanged(Task *t) {
+void GUITestService::sl_taskStateChanged(Task* t) {
     if (t != testLauncher) {
         return;
     }
@@ -355,7 +355,7 @@ void GUITestService::sl_taskStateChanged(Task *t) {
     }
 }
 
-void GUITestService::writeTestResult(const QString &result) {
+void GUITestService::writeTestResult(const QString& result) {
     printf("%s\n", (QString(GUITESTING_REPORT_PREFIX) + ": " + result).toUtf8().data());
 }
 
@@ -399,9 +399,9 @@ void GUITestService::removeDir(QString dirName) {
 }
 
 void GUITestService::sl_testThreadFinish() {
-    GUITestThread *testThread = qobject_cast<GUITestThread *>(sender());
+    GUITestThread* testThread = qobject_cast<GUITestThread*>(sender());
     SAFE_POINT(nullptr != testThread, "testThread is NULL", );
-    HI::GUITest *test = testThread->getTest();
+    HI::GUITest* test = testThread->getTest();
     SAFE_POINT(nullptr != test, "GUITest is NULL", );
     if (isTeamcityLogOn) {
         QString testNameForTeamCity = test->suite + "_" + test->name;

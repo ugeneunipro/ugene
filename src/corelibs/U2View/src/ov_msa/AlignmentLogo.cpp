@@ -35,9 +35,9 @@ namespace U2 {
 /************************************************************************/
 /* LogoRenderArea                                                       */
 /************************************************************************/
-AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings &_s, QWidget *p)
+AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s, QWidget* p)
     : QWidget(p), settings(_s) {
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout();
     layout->addWidget(this);
     p->setLayout(layout);
 
@@ -68,7 +68,7 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings &_s
     sortCharsByHeight();
 }
 
-void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings &_s) {
+void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
     settings = _s;
 
     acceptableChars = new QVector<char>();
@@ -98,7 +98,7 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings &_s) {
 
 #define SPACER 1
 #define MIN_WIDTH 8
-void AlignmentLogoRenderArea::paintEvent(QPaintEvent *e) {
+void AlignmentLogoRenderArea::paintEvent(QPaintEvent* e) {
     QPainter p(this);
     p.fillRect(0, 0, width(), height(), Qt::white);
     QFont charFont("Helvetica");
@@ -107,13 +107,13 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent *e) {
 
     for (int pos = 0; pos < settings.len; pos++) {
         assert(pos < columns.size());
-        const QVector<char> &charsAt = columns.at(pos);
+        const QVector<char>& charsAt = columns.at(pos);
         int yLevel = height();
         foreach (char ch, charsAt) {
             QPointF baseline(pos * (bitWidth + SPACER), yLevel);
             int charHeight = heights[(int)uchar(ch)][pos] * bitHeight;
             QColor charColor = settings.colorScheme[(int)uchar(ch)];
-            AlignmentLogoItem *logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
+            AlignmentLogoItem* logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
             logoItem->paint(&p, nullptr, this);
             yLevel -= charHeight + SPACER;
         }
@@ -122,7 +122,7 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
 }
 
-void AlignmentLogoRenderArea::resizeEvent(QResizeEvent *e) {
+void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
     bitWidth = qMax(width() / settings.ma->getLength() - SPACER, MIN_WIDTH);
     bitHeight = (height() - s) * log(2.0) / log(s);
 
@@ -130,8 +130,8 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent *e) {
 }
 
 void AlignmentLogoRenderArea::evaluateHeights() {
-    const MultipleSequenceAlignment &ma = settings.ma;
-    int numRows = ma->getNumRows();
+    const MultipleSequenceAlignment& ma = settings.ma;
+    int numRows = ma->getRowCount();
     error = (s - 1) / (2 * log(2.0) * numRows);
 
     foreach (char ch, *acceptableChars) {
@@ -159,7 +159,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
         }
     }
 
-    int rows = settings.ma->getNumRows();
+    int rows = settings.ma->getRowCount();
     for (int pos = 0; pos < settings.len; pos++) {
         qreal h = getH(pos);
         foreach (char c, columns[pos]) {
@@ -171,7 +171,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
 qreal AlignmentLogoRenderArea::getH(int pos) {
     qreal h = 0.0;
-    int rows = settings.ma->getNumRows();
+    int rows = settings.ma->getRowCount();
     foreach (char ch, columns.at(pos)) {
         qreal freq = frequencies[(int)uchar(ch)][pos] / rows;
         h += -freq * log(freq) / log(2.0);
@@ -182,7 +182,7 @@ qreal AlignmentLogoRenderArea::getH(int pos) {
 
 void AlignmentLogoRenderArea::sortCharsByHeight() {
     for (int pos = 0; pos < columns.size(); pos++) {
-        QVector<char> &chars = columns[pos];
+        QVector<char>& chars = columns[pos];
         char temp;
         int count = chars.size();
         for (int j = 0; j < chars.size() - 1; j++) {
@@ -213,7 +213,7 @@ QRectF AlignmentLogoItem::boundingRect() const {
     return path.boundingRect();
 }
 
-void AlignmentLogoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void AlignmentLogoItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
 

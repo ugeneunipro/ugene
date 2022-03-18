@@ -48,7 +48,7 @@ const QString PhylipCmdlineTask::SEED_ARG = "seed";
 const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
-PhylipCmdlineTask::PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings)
+PhylipCmdlineTask::PhylipCmdlineTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), cmdlineTask(nullptr), msaObject(nullptr), treeObject(nullptr) {
     setTaskName(tr("PHYLIP command line wrapper task"));
     tpm = Progress_SubTasksBased;
@@ -85,7 +85,7 @@ Task::ReportResult PhylipCmdlineTask::report() {
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
     CHECK_OP(stateInfo, );
-    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleSequenceAlignment &>(inputMA), stateInfo);
+    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleSequenceAlignment&>(inputMA), stateInfo);
     CHECK_OP(stateInfo, );
     msaObject->setParent(this);
     config.inputObjects << msaObject;

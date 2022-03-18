@@ -43,18 +43,18 @@ class U2OpStatus;
 class U2FORMATS_EXPORT Database : public QObject {
     Q_OBJECT
 protected:
-    Database(const DbiConnection &dbi)
+    Database(const DbiConnection& dbi)
         : databaseDbi(dbi) {
     }
 
 public:
-    const DbiConnection &getDbi() const {
+    const DbiConnection& getDbi() const {
         return databaseDbi;
     }
 
-    static Database *loadDatabase(const QString &url, U2OpStatus &os);
+    static Database* loadDatabase(const QString& url, U2OpStatus& os);
 
-    static DbiConnection createEmptyDbi(const QString &url, U2OpStatus &os);
+    static DbiConnection createEmptyDbi(const QString& url, U2OpStatus& os);
 
 private:
     DbiConnection databaseDbi;

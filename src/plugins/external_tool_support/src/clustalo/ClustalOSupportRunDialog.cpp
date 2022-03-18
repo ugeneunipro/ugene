@@ -41,7 +41,7 @@
 namespace U2 {
 ////////////////////////////////////////
 // ClustalOSupportRunDialog
-ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignment &_ma, ClustalOSupportTaskSettings &_settings, QWidget *_parent)
+ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignment& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930933");
@@ -72,7 +72,7 @@ void ClustalOSupportRunDialog::accept() {
 
 ////////////////////////////////////////
 // ClustalOWithExtFileSpecifySupportRunDialog
-ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings &_settings, QWidget *_parent)
+ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRunDialog(ClustalOSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent),
       settings(_settings),
       saveController(nullptr) {

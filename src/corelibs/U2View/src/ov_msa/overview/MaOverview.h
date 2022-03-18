@@ -39,14 +39,14 @@ class MaEditorSequenceArea;
 class U2VIEW_EXPORT MaOverview : public QWidget {
     Q_OBJECT
 public:
-    MaOverview(MaEditorWgt *_ui);
+    MaOverview(MaEditorWgt* _ui);
     virtual bool isValid() const {
         return false;
     }
     virtual QPixmap getView() {
         return QPixmap();
     }
-    MaEditor *getEditor() const;
+    MaEditor* getEditor() const;
 
 public slots:
     void sl_visibleRangeChanged();
@@ -55,15 +55,15 @@ public slots:
     virtual void sl_redraw();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
 
-    virtual void drawOverview(QPainter &) {
+    virtual void drawOverview(QPainter&) {
     }
-    virtual void drawVisibleRange(QPainter &) {
+    virtual void drawVisibleRange(QPainter&) {
     }
-    virtual void drawSelection(QPainter &) {
+    virtual void drawSelection(QPainter&) {
     }
 
     void setVisibleRangeForEmptyAlignment();
@@ -76,9 +76,8 @@ protected:
     virtual int getContentWidgetWidth() const;
     virtual int getContentWidgetHeight() const;
 
-    MaEditor *editor;
-    MaEditorWgt *ui;
-    MaEditorSequenceArea *sequenceArea;
+    MaEditor* editor;
+    MaEditorWgt* ui;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;

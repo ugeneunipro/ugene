@@ -45,32 +45,29 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2. Open the samples tab.
-    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
     GTTabWidget::setCurrentIndex(os, tabs, 1);
     // GTWidget::click(os, GTWidget::findWidget(os, "samples"));
 
     // 3. Click the "Name filter" line edit.
-    QWidget *parent = GTWidget::findWidget(os, "palette");
-    QLineEdit *nameFilter = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
-    CHECK(nameFilter, );
+    QWidget* parent = GTWidget::findWidget(os, "palette");
+    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
     // hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
     GTKeyboardDriver::keySequence("HMM");
     // 4. Write "HMM".
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
-    QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
+    QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.size(); i++) {
-        QList<QTreeWidgetItem *> innerList;
+        QList<QTreeWidgetItem*> innerList;
         for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
-        foreach (QTreeWidgetItem *item, innerList) {
+        foreach (QTreeWidgetItem* item, innerList) {
             if (!item->isHidden()) {
                 count++;
             }
@@ -94,18 +91,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keySequence("align muscle");
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
-    QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
+    QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.size(); i++) {
-        QList<QTreeWidgetItem *> innerList;
+        QList<QTreeWidgetItem*> innerList;
         for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
-        foreach (QTreeWidgetItem *item, innerList) {
+        foreach (QTreeWidgetItem* item, innerList) {
             if (!item->isHidden()) {
                 count++;
             }
@@ -119,13 +114,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     int hiddenItemsCount = 0;
-    QList<QTreeWidgetItem *> newOuterList = samples->findItems("", Qt::MatchContains);
+    QList<QTreeWidgetItem*> newOuterList = samples->findItems("", Qt::MatchContains);
     for (int i = 0; i < newOuterList.size(); i++) {
-        QList<QTreeWidgetItem *> innerList;
+        QList<QTreeWidgetItem*> innerList;
         for (int j = 0; j < newOuterList.value(i)->childCount(); j++) {
             innerList.append(newOuterList.value(i)->child(j));
         }
-        foreach (QTreeWidgetItem *item, innerList) {
+        foreach (QTreeWidgetItem* item, innerList) {
             if (item->isHidden()) {
                 hiddenItemsCount++;
             }
@@ -139,13 +134,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2. Open the samples tab.
-    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
     GTTabWidget::setCurrentIndex(os, tabs, 1);
 
     // 3. Click the "Name filter" line edit.
-    QWidget *parent = GTWidget::findWidget(os, "palette");
-    QLineEdit *nameFilter = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
-    CHECK(nameFilter, );
+    QWidget* parent = GTWidget::findWidget(os, "palette");
+    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
 
     // 4. Write "NGS".
     // hack. GTLineEdit can not set focus on widget. Don't know why
@@ -153,18 +147,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTKeyboardDriver::keySequence("NGS");
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
-    QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
+    QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.size(); i++) {
-        QList<QTreeWidgetItem *> innerList;
+        QList<QTreeWidgetItem*> innerList;
         for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
-        for (QTreeWidgetItem *item : qAsConst(innerList)) {
+        for (QTreeWidgetItem* item : qAsConst(innerList)) {
             if (!item->isHidden()) {
                 count++;
             }

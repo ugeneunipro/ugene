@@ -27,13 +27,13 @@
 
 namespace U2 {
 
-QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext* ctx, QScriptEngine* eng) {
     // mouseClick( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Mouse Click can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -70,13 +70,13 @@ QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEn
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext* ctx, QScriptEngine* eng) {
     // void mouseDClick ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Mouse DClick can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -113,13 +113,13 @@ QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptE
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext* ctx, QScriptEngine* eng) {
     // void mouseMove ( QWidget * widget, QPoint pos = QPoint(), int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 0 && argsCount < 4) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Mouse Move can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -150,13 +150,13 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
     }
     return QScriptValue(eng, result);
 }
-QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext* ctx, QScriptEngine* eng) {
     // void mousePress ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Mouse Press can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -193,13 +193,13 @@ QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEn
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext* ctx, QScriptEngine* eng) {
     // void mouseRelease ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Mouse Release can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -236,13 +236,13 @@ QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScript
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext* ctx, QScriptEngine* eng) {
     // void keyClick ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Key Click can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -274,13 +274,13 @@ QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngi
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext* ctx, QScriptEngine* eng) {
     // void keyClicks ( QWidget * widget, const QString & sequence, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Key Clicks can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -312,13 +312,13 @@ QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEng
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext* ctx, QScriptEngine* eng) {
     // void keyEvent ( KeyAction action, QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 2 && argsCount < 6) {
-        QWidget *widget = (QWidget *)ctx->argument(1).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(1).toQObject();
         if (widget == nullptr) {
             result = " Key Event can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -350,13 +350,13 @@ QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngi
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext* ctx, QScriptEngine* eng) {
     // void keyPress ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Key Press can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -388,13 +388,13 @@ QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngi
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext* ctx, QScriptEngine* eng) {
     // void keyRelease ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
     // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
-        QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
+        QWidget* widget = (QWidget*)ctx->argument(0).toQObject();
         if (widget == nullptr) {
             result = " Key Release can't find widget ";
             ctx->throwError(" can't find widget ");
@@ -426,7 +426,7 @@ QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEn
     return QScriptValue(eng, result);
 }
 
-QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext* ctx, QScriptEngine* eng) {
     // void qSleep ( int ms )
     // bool result=false;
     QString result = "bad result";
@@ -447,7 +447,7 @@ QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext *ctx, QScriptEngine 
     }
     return QScriptValue(eng, result);
 }
-QScriptValue GTestScriptWrapper::qtestWaitE(QScriptContext *ctx, QScriptEngine *eng) {
+QScriptValue GTestScriptWrapper::qtestWaitE(QScriptContext* ctx, QScriptEngine* eng) {
     // void qWait ( int ms )
     // bool result=false;
     QString result = "bad result";
@@ -468,7 +468,7 @@ QScriptValue GTestScriptWrapper::qtestWaitE(QScriptContext *ctx, QScriptEngine *
     }
     return QScriptValue(eng, result);
 }
-void GTestScriptWrapper::setQTest(QScriptEngine *curEng) {
+void GTestScriptWrapper::setQTest(QScriptEngine* curEng) {
     QScriptValue qTestSV = (curEng->newArray());
 
     QScriptValue scriptFunctionMouseClickE = curEng->newFunction(qtestMouseClickE);

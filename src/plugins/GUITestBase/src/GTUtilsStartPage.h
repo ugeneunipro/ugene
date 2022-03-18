@@ -29,10 +29,10 @@ using namespace HI;
 
 class GTUtilsStartPage {
 public:
-    static void openStartPage(HI::GUITestOpStatus &os);
+    static void openStartPage(HI::GUITestOpStatus& os);
 
     /** Checks if the 'urlPart' is present or not in the recent files list. */
-    static void checkRecentListUrl(HI::GUITestOpStatus &os, const QString &urlPart, bool isPresent);
+    static void checkRecentListUrl(HI::GUITestOpStatus& os, const QString& urlPart, bool isPresent);
 };
 
 }  // namespace U2

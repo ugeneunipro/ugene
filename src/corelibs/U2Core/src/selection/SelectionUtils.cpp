@@ -33,10 +33,10 @@ namespace U2 {
 
 // Warn: works only for pointer type
 template<class T>
-static void removeDuplicatesPointersFromList(QList<T *> &list) {
-    QSet<const T *> tracked;
+static void removeDuplicatesPointersFromList(QList<T*>& list) {
+    QSet<const T*> tracked;
     for (int i = 0, n = list.size(); i < n; i++) {
-        const T *val = list.at(i);
+        const T* val = list.at(i);
         if (tracked.contains(val)) {
             list[i] = nullptr;
         } else {
@@ -46,10 +46,10 @@ static void removeDuplicatesPointersFromList(QList<T *> &list) {
     list.removeAll(nullptr);
 }
 
-QList<GObject *> SelectionUtils::findObjects(GObjectType t, const MultiGSelection *ms, UnloadedObjectFilter f) {
-    QList<GObject *> res;
-    foreach (const GSelection *s, ms->getSelections()) {
-        QList<GObject *> tmp = findObjects(t, s, f);
+QList<GObject*> SelectionUtils::findObjects(GObjectType t, const MultiGSelection* ms, UnloadedObjectFilter f) {
+    QList<GObject*> res;
+    foreach (const GSelection* s, ms->getSelections()) {
+        QList<GObject*> tmp = findObjects(t, s, f);
         res += tmp;
     }
 
@@ -57,10 +57,10 @@ QList<GObject *> SelectionUtils::findObjects(GObjectType t, const MultiGSelectio
     return res;
 }
 
-QList<GObject *> SelectionUtils::findObjectsKeepOrder(GObjectType t, const MultiGSelection *ms, UnloadedObjectFilter f) {
-    QList<GObject *> res;
-    foreach (const GSelection *s, ms->getSelections()) {
-        QList<GObject *> tmp = findObjectsKeepOrder(t, s, f);
+QList<GObject*> SelectionUtils::findObjectsKeepOrder(GObjectType t, const MultiGSelection* ms, UnloadedObjectFilter f) {
+    QList<GObject*> res;
+    foreach (const GSelection* s, ms->getSelections()) {
+        QList<GObject*> tmp = findObjectsKeepOrder(t, s, f);
         res += tmp;
     }
 
@@ -70,80 +70,80 @@ QList<GObject *> SelectionUtils::findObjectsKeepOrder(GObjectType t, const Multi
     return res;
 }
 
-QList<GObject *> SelectionUtils::findObjects(GObjectType t, const GSelection *s, UnloadedObjectFilter f) {
-    QList<GObject *> res = findObjectsKeepOrder(t, s, f);
+QList<GObject*> SelectionUtils::findObjects(GObjectType t, const GSelection* s, UnloadedObjectFilter f) {
+    QList<GObject*> res = findObjectsKeepOrder(t, s, f);
     return res;
 }
 
-QList<GObject *> SelectionUtils::findObjectsKeepOrder(GObjectType t, const GSelection *s, UnloadedObjectFilter f) {
-    QList<GObject *> res;
+QList<GObject*> SelectionUtils::findObjectsKeepOrder(GObjectType t, const GSelection* s, UnloadedObjectFilter f) {
+    QList<GObject*> res;
     GSelectionType stype = s->getSelectionType();
     if (stype == GSelectionTypes::DOCUMENTS) {
-        const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(s);
-        foreach (Document *d, ds->getSelectedDocuments()) {
-            const QList<GObject *> &objs = d->getObjects();
-            QList<GObject *> tmp = GObjectUtils::select(objs, t, f);
+        const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+        foreach (Document* d, ds->getSelectedDocuments()) {
+            const QList<GObject*>& objs = d->getObjects();
+            QList<GObject*> tmp = GObjectUtils::select(objs, t, f);
             res += tmp;
         }
     } else if (stype == GSelectionTypes::GOBJECTS) {
-        const GObjectSelection *os = qobject_cast<const GObjectSelection *>(s);
-        const QList<GObject *> &objs = os->getSelectedObjects();
+        const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
+        const QList<GObject*>& objs = os->getSelectedObjects();
         res = GObjectUtils::select(objs, t, f);
     }
     return res;
 }
 
-QSet<Document *> SelectionUtils::findDocumentsWithObjects(GObjectType t, const MultiGSelection *ms, UnloadedObjectFilter f, bool deriveDocsFromObjectSelection) {
-    QSet<Document *> res;
-    foreach (const GSelection *s, ms->getSelections()) {
+QSet<Document*> SelectionUtils::findDocumentsWithObjects(GObjectType t, const MultiGSelection* ms, UnloadedObjectFilter f, bool deriveDocsFromObjectSelection) {
+    QSet<Document*> res;
+    foreach (const GSelection* s, ms->getSelections()) {
         res += findDocumentsWithObjects(t, s, f, deriveDocsFromObjectSelection);
     }
     return res;
 }
 
-QSet<Document *> SelectionUtils::findDocumentsWithObjects(GObjectType t, const GSelection *s, UnloadedObjectFilter f, bool deriveDocsFromObjectSelection) {
-    QSet<Document *> res;
+QSet<Document*> SelectionUtils::findDocumentsWithObjects(GObjectType t, const GSelection* s, UnloadedObjectFilter f, bool deriveDocsFromObjectSelection) {
+    QSet<Document*> res;
     GSelectionType st = s->getSelectionType();
     if (st == GSelectionTypes::DOCUMENTS) {
         DocumentFormatConstraints c;
         c.supportedObjectTypes += t;
-        const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(s);
-        const QList<Document *> &docs = ds->getSelectedDocuments();
-        foreach (Document *d, docs) {
+        const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+        const QList<Document*>& docs = ds->getSelectedDocuments();
+        foreach (Document* d, docs) {
             if (!d->getObjects().isEmpty()) {
-                QList<GObject *> objs = d->findGObjectByType(t, f);
+                QList<GObject*> objs = d->findGObjectByType(t, f);
                 if (!objs.isEmpty()) {
                     res += d;
                 }
             } else if (f == UOF_LoadedAndUnloaded && !d->isLoaded()) {  // document is unloaded
-                DocumentFormat *df = d->getDocumentFormat();
+                DocumentFormat* df = d->getDocumentFormat();
                 if (df->checkConstraints(c)) {
                     res += d;
                 }
             }
         }
     } else if (st == GSelectionTypes::GOBJECTS && deriveDocsFromObjectSelection) {
-        QList<GObject *> objects = findObjects(t, s, f);
-        foreach (GObject *o, objects) {
+        QList<GObject*> objects = findObjects(t, s, f);
+        foreach (GObject* o, objects) {
             res += o->getDocument();
         }
     }
     return res;
 }
 
-bool SelectionUtils::isDocumentInSelection(const Document *doc, const MultiGSelection &ms, bool deriveDocsFromObjectSelection) {
-    foreach (const GSelection *s, ms.getSelections()) {
+bool SelectionUtils::isDocumentInSelection(const Document* doc, const MultiGSelection& ms, bool deriveDocsFromObjectSelection) {
+    foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::DOCUMENTS) {
-            const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(s);
-            const QList<Document *> &docs = ds->getSelectedDocuments();
-            if (docs.contains((Document *const &)doc)) {  // TODO? why cast
+            const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+            const QList<Document*>& docs = ds->getSelectedDocuments();
+            if (docs.contains((Document* const&)doc)) {  // TODO? why cast
                 return true;
             }
         } else if (st == GSelectionTypes::GOBJECTS && deriveDocsFromObjectSelection) {
-            const GObjectSelection *os = qobject_cast<const GObjectSelection *>(s);
-            const QList<GObject *> &objects = os->getSelectedObjects();
-            for (GObject *o : qAsConst(objects)) {
+            const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
+            const QList<GObject*>& objects = os->getSelectedObjects();
+            for (GObject* o : qAsConst(objects)) {
                 if (o->getDocument() == doc) {
                     return true;
                 }
@@ -153,26 +153,26 @@ bool SelectionUtils::isDocumentInSelection(const Document *doc, const MultiGSele
     return false;
 }
 
-QList<Document *> SelectionUtils::getSelectedDocs(const MultiGSelection &ms) {
-    foreach (const GSelection *s, ms.getSelections()) {
+QList<Document*> SelectionUtils::getSelectedDocs(const MultiGSelection& ms) {
+    foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::DOCUMENTS) {
-            const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(s);
+            const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
             return ds->getSelectedDocuments();
         }
     }
-    return QList<Document *>();
+    return QList<Document*>();
 }
 
-QList<GObject *> SelectionUtils::getSelectedObjects(const MultiGSelection &ms) {
-    foreach (const GSelection *s, ms.getSelections()) {
+QList<GObject*> SelectionUtils::getSelectedObjects(const MultiGSelection& ms) {
+    foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::GOBJECTS) {
-            const GObjectSelection *os = qobject_cast<const GObjectSelection *>(s);
+            const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
             return os->getSelectedObjects();
         }
     }
-    return QList<GObject *>();
+    return QList<GObject*>();
 }
 
 U2Region SelectionUtils::normalizeRegionBy3(U2Region reg, int seqLen, bool direct) {

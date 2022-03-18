@@ -52,43 +52,43 @@ public:
     };
     typedef QPair<ActionType, QVariant> Action;
 
-    NcbiSearchDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
+    NcbiSearchDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
-    void setField(const QVariant &actionData);
-    void setTerm(const QVariant &actionData);
+    void setField(const QVariant& actionData);
+    void setTerm(const QVariant& actionData);
     void addTerm();
-    void removeTerm(const QVariant &actionData);
-    void setDatabase(const QVariant &actionData);
-    void checkQuery(const QVariant &actionData);
-    void clickResultByNum(const QVariant &actionData);
-    void clickResultById(const QVariant &actionData);
-    void clickResultByDesc(const QVariant &actionData);
-    void clickResultBySize(const QVariant &actionData);
-    void selectResultsByNumbers(const QVariant &actionData);
-    void selectResultsByIds(const QVariant &actionData);
-    void selectResultsByDescs(const QVariant &actionData);
-    void selectResultsBySizes(const QVariant &actionData);
-    void setResultLimit(const QVariant &actionData);
+    void removeTerm(const QVariant& actionData);
+    void setDatabase(const QVariant& actionData);
+    void checkQuery(const QVariant& actionData);
+    void clickResultByNum(const QVariant& actionData);
+    void clickResultById(const QVariant& actionData);
+    void clickResultByDesc(const QVariant& actionData);
+    void clickResultBySize(const QVariant& actionData);
+    void selectResultsByNumbers(const QVariant& actionData);
+    void selectResultsByIds(const QVariant& actionData);
+    void selectResultsByDescs(const QVariant& actionData);
+    void selectResultsBySizes(const QVariant& actionData);
+    void setResultLimit(const QVariant& actionData);
     void clickSearch();
-    void clickDownload(const QVariant &actionData);
+    void clickDownload(const QVariant& actionData);
     void clickClose();
     void waitTasksFinish();
 
-    QWidget *dialog;
+    QWidget* dialog = nullptr;
     QList<Action> actions;
 };
 
 class NCBISearchDialogSimpleFiller : public Filler {
 public:
-    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os,
-                                 const QString &query,
+    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus& os,
+                                 const QString& query,
                                  bool doubleEnter = false,
                                  int _esultLimit = -1,
-                                 const QString &term = "",
-                                 const QString &resultToLoad = "");
+                                 const QString& term = "",
+                                 const QString& resultToLoad = "");
 
     void commonScenario() override;
 

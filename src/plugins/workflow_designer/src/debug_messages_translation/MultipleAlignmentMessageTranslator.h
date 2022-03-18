@@ -30,8 +30,8 @@ namespace U2 {
 
 class MultipleAlignmentMessageTranslator : public BaseMessageTranslator {
 public:
-    MultipleAlignmentMessageTranslator(const QVariant &atomicMessage,
-                                       Workflow::WorkflowContext *initContext);
+    MultipleAlignmentMessageTranslator(const QVariant& atomicMessage,
+                                       Workflow::WorkflowContext* initContext);
 
     QString getTranslation() const;
 

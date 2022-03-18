@@ -38,20 +38,20 @@ public:
         ugenedb
     };
 
-    ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os);
-    ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
-                            const QString &_exportToFile,
+    ExportAnnotationsFiller(const QString& exportToFile, fileFormat format, HI::GUITestOpStatus& os);
+    ExportAnnotationsFiller(HI::GUITestOpStatus& _os,
+                            const QString& _exportToFile,
                             fileFormat _format,
                             bool _addToProject = false,
                             bool _saveSequencesUnderAnnotations = true,
                             bool _saveSequenceNames = true,
                             GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ExportAnnotationsFiller(GUITestOpStatus &os, CustomScenario *scenario);
+    ExportAnnotationsFiller(GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 
 private:
-    void init(const QString &exportToFile);
+    void init(const QString& exportToFile);
 
     bool softMode;
     QString exportToFile;

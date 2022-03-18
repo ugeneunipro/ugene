@@ -47,7 +47,7 @@ QString Tokenizer::look() const {
     return tokens.first();
 }
 
-void Tokenizer::appendToken(const QString &t, bool skipEmpty) {
+void Tokenizer::appendToken(const QString& t, bool skipEmpty) {
     if (t.isEmpty() && skipEmpty) {
         return;
     }
@@ -60,7 +60,7 @@ void Tokenizer::appendToken(const QString &t, bool skipEmpty) {
     tokens.append(t);
 }
 
-void Tokenizer::addToken(const QString &t) {
+void Tokenizer::addToken(const QString& t) {
     QString tok = t.trimmed().replace("'", "\"");
     if (tok.isEmpty() || tok == Constants::SEMICOLON) {
         return;
@@ -105,21 +105,21 @@ void Tokenizer::addToken(const QString &t) {
 }
 
 void Tokenizer::removeCommentTokens() {
-    foreach (const QString &t, tokens) {
+    foreach (const QString& t, tokens) {
         if (t.startsWith(Constants::SERVICE_SYM)) {
             tokens.removeAll(t);
         }
     }
 }
 
-void Tokenizer::assertToken(const QString &etalon) {
+void Tokenizer::assertToken(const QString& etalon) {
     QString candidate = take();
     if (candidate != etalon) {
         throw ReadFailed(QObject::tr("Expected '%1', got %2").arg(etalon).arg(candidate));
     }
 }
 
-static bool isBlockLine(const QString &str) {
+static bool isBlockLine(const QString& str) {
     int bInd = str.indexOf(Constants::BLOCK_START);
     int eInd = str.indexOf(Constants::EQUALS_SIGN);
     if (bInd == -1) {
@@ -136,7 +136,7 @@ static bool isBlockLine(const QString &str) {
 static const int WIZARD_PAGE_DEPTH = 3;
 static const int ESTIMATIONS_DEPTH = 2;
 static const int ELEMENT_DEPTH = 1;
-void Tokenizer::tokenizeSchema(const QString &d) {
+void Tokenizer::tokenizeSchema(const QString& d) {
     depth = 0;
     QString data = d;
     QTextStream stream(&data);
@@ -178,7 +178,7 @@ void Tokenizer::tokenizeSchema(const QString &d) {
     } while (!stream.atEnd());
 }
 
-void Tokenizer::tokenize(const QString &d, int unparseableBlockDepth) {
+void Tokenizer::tokenize(const QString& d, int unparseableBlockDepth) {
     depth = 0;
     QString data = d;
     QTextStream stream(&data);
@@ -199,7 +199,7 @@ void Tokenizer::tokenize(const QString &d, int unparseableBlockDepth) {
     } while (!stream.atEnd());
 }
 
-static void skipDelimiters(QTextStream &s) {
+static void skipDelimiters(QTextStream& s) {
     while (!s.atEnd()) {
         qint64 curPos = s.pos();
         QChar ch;
@@ -212,7 +212,7 @@ static void skipDelimiters(QTextStream &s) {
     }
 }
 
-void Tokenizer::tokenizeBlock(const QString &line, QTextStream &s) {
+void Tokenizer::tokenizeBlock(const QString& line, QTextStream& s) {
     if (!line.contains(Constants::BLOCK_START)) {
         throw ReadFailed(QObject::tr("Expected '%1', near '%2'").arg(Constants::BLOCK_START).arg(line));
     }
@@ -252,7 +252,7 @@ void Tokenizer::tokenizeBlock(const QString &line, QTextStream &s) {
     }
 }
 
-void Tokenizer::tokenizeLine(const QString &l, QTextStream &s) {
+void Tokenizer::tokenizeLine(const QString& l, QTextStream& s) {
     QString line = l;
     QTextStream stream(&line);
     QString curToken;
@@ -312,17 +312,17 @@ void Tokenizer::tokenizeLine(const QString &l, QTextStream &s) {
 /************************************************************************/
 /* ParsedPairs */
 /************************************************************************/
-ParsedPairs::ParsedPairs(Tokenizer &tokenizer, bool bigBlocks) {
+ParsedPairs::ParsedPairs(Tokenizer& tokenizer, bool bigBlocks) {
     init(tokenizer, bigBlocks);
 }
 
-ParsedPairs::ParsedPairs(const QString &data, int unparseableBlockDepth) {
+ParsedPairs::ParsedPairs(const QString& data, int unparseableBlockDepth) {
     Tokenizer tokenizer;
     tokenizer.tokenize(data, unparseableBlockDepth);
     init(tokenizer, false);
 }
 
-void ParsedPairs::init(Tokenizer &tokenizer, bool bigBlocks) {
+void ParsedPairs::init(Tokenizer& tokenizer, bool bigBlocks) {
     while (tokenizer.notEmpty() && tokenizer.look() != Constants::BLOCK_END) {
         QString tok = tokenizer.take();
         QString next = tokenizer.take();
@@ -346,7 +346,7 @@ void ParsedPairs::init(Tokenizer &tokenizer, bool bigBlocks) {
     }
 }
 
-QPair<QString, QString> ParsedPairs::parseOneEqual(Tokenizer &tokenizer) {
+QPair<QString, QString> ParsedPairs::parseOneEqual(Tokenizer& tokenizer) {
     QPair<QString, QString> res;
     res.first = tokenizer.take();
     if (tokenizer.take() != Constants::EQUALS_SIGN) {
@@ -356,7 +356,7 @@ QPair<QString, QString> ParsedPairs::parseOneEqual(Tokenizer &tokenizer) {
     return res;
 }
 
-QString ParsedPairs::skipBlock(Tokenizer &tokenizer) {
+QString ParsedPairs::skipBlock(Tokenizer& tokenizer) {
     QString skipped;
     while (tokenizer.look() != Constants::BLOCK_END) {
         QString tok = tokenizer.take();

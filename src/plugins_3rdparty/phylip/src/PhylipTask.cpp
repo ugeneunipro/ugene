@@ -30,12 +30,12 @@
 
 namespace U2 {
 
-PhylipTask::PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, const CreatePhyTreeSettings &settings)
+PhylipTask::PhylipTask(const U2EntityRef& msaRef, const U2DbiRef& outDbiRef, const CreatePhyTreeSettings& settings)
     : CmdlineTask(tr("PHYLIP task"), TaskFlags_NR_FOSE_COSC), msaRef(msaRef), outDbiRef(outDbiRef), settings(settings), treeTask(nullptr) {
 }
 
 void PhylipTask::prepare() {
-    MultipleSequenceAlignmentObject *msaObject = new MultipleSequenceAlignmentObject("msa", msaRef);
+    MultipleSequenceAlignmentObject* msaObject = new MultipleSequenceAlignmentObject("msa", msaRef);
     msaObject->setParent(this);
 
     treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMultipleAlignment(), settings);
@@ -51,7 +51,7 @@ Task::ReportResult PhylipTask::report() {
 }
 
 U2DataId PhylipTask::saveTree() {
-    PhyTreeObject *treeObject = PhyTreeObject::createInstance(treeTask->getResult(), "Tree", outDbiRef, stateInfo);
+    PhyTreeObject* treeObject = PhyTreeObject::createInstance(treeTask->getResult(), "Tree", outDbiRef, stateInfo);
     CHECK_OP(stateInfo, U2DataId());
 
     U2DataId treeId = treeObject->getEntityRef().entityId;

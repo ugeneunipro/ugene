@@ -48,8 +48,8 @@ namespace U2 {
 
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
-void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode *root, int bootstrap_repl) {
-    PhyNode *current = nullptr;
+void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment& ma, node* p, double m, boolean njoin, node* start, PhyNode* root, int bootstrap_repl) {
+    PhyNode* current = nullptr;
 
     if (p == start) {
         current = root;
@@ -62,7 +62,7 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
             if (bootstrap_repl != 0) {
                 current->setName(QString::fromLatin1(p->nayme));
             } else {
-                assert(p->index - 1 < ma->getNumRows());
+                assert(p->index - 1 < ma->getRowCount());
                 current->setName(QString(ma->getMsaRow(p->index - 1)->getName()));
             }
         } else {
@@ -90,7 +90,7 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
     }
 }
 
-void replacePhylipRestrictedSymbols(QByteArray &name) {
+void replacePhylipRestrictedSymbols(QByteArray& name) {
     static const char badSymbols[] = {',', ':', '[', ']', '(', ')', ';'};
     static int sz = sizeof(badSymbols) / sizeof(char);
     for (int i = 0; i < sz; ++i) {
@@ -98,15 +98,15 @@ void replacePhylipRestrictedSymbols(QByteArray &name) {
     }
 }
 
-Task *NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
+Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
     return new PhylipCmdlineTask(ma, s);
 }
 
-CreatePhyTreeWidget *NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget* NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent) {
     return new NeighborJoinWidget(ma, parent);
 }
 
-NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s)
+NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s), memLocker(stateInfo) {
     setTaskName("NeighborJoin algorithm");
 }
@@ -118,7 +118,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
     PhyTree phyTree(nullptr);
 
-    if (inputMA->getNumRows() < 3) {
+    if (inputMA->getRowCount() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");
         result = phyTree;
         return;
@@ -150,7 +150,7 @@ void NeighborJoinCalculateTreeTask::run() {
             for (int replicateIndex = 0; replicateIndex < settings.replicates; replicateIndex++) {
                 stateInfo.progress = (int)(replicateIndex / (float)settings.replicates * 100);
 
-                const MultipleSequenceAlignment &curMSA = seqBoot->getMSA(replicateIndex);
+                const MultipleSequenceAlignment& curMSA = seqBoot->getMSA(replicateIndex);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
                 distanceMatrix->calculateOutOfAlignment(curMSA, settings);
 
@@ -175,14 +175,14 @@ void NeighborJoinCalculateTreeTask::run() {
                 }
 
                 // Fill data
-                vector *m = getMtx();
+                vector* m = getMtx();
                 for (int i = 0; i < sz; ++i) {
                     for (int j = 0; j < sz; ++j) {
                         m[i][j] = distanceMatrix->rawMatrix[i][j];
                     }
                 }
 
-                naym *nayme = getNayme();
+                naym* nayme = getNayme();
                 for (int rowIndex = 0; rowIndex < sz; ++rowIndex) {
                     const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(rowIndex);
                     QByteArray name = row->getName().toLatin1();
@@ -214,14 +214,14 @@ void NeighborJoinCalculateTreeTask::run() {
                 assert(0);
             }
 
-            PhyNode *rootPhy = new PhyNode();
+            PhyNode* rootPhy = new PhyNode();
             bool njoin = true;
 
             createPhyTreeFromPhylipTree(inputMA, root, 0.43429448222, njoin, root, rootPhy, settings.replicates);
 
             consens_free_res();
 
-            PhyTreeData *data = new PhyTreeData();
+            PhyTreeData* data = new PhyTreeData();
             data->setRootNode(rootPhy);
 
             phyTree = data;
@@ -254,14 +254,14 @@ void NeighborJoinCalculateTreeTask::run() {
             }
 
             // Fill data
-            vector *m = getMtx();
+            vector* m = getMtx();
             for (int i = 0; i < sz; ++i) {
                 for (int j = 0; j < sz; ++j) {
                     m[i][j] = distanceMatrix->rawMatrix[i][j];
                 }
             }
 
-            naym *nayme = getNayme();
+            naym* nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
                 const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
                 QByteArray name = row->getName().toLatin1();
@@ -270,9 +270,9 @@ void NeighborJoinCalculateTreeTask::run() {
             }
 
             // Calculate tree
-            const tree *curTree = neighbour_calc_tree();
+            const tree* curTree = neighbour_calc_tree();
 
-            PhyNode *root = new PhyNode();
+            PhyNode* root = new PhyNode();
             bool njoin = true;
 
             stateInfo.progress = 99;
@@ -280,14 +280,14 @@ void NeighborJoinCalculateTreeTask::run() {
 
             neighbour_free_resources();
 
-            PhyTreeData *data = new PhyTreeData();
+            PhyTreeData* data = new PhyTreeData();
             data->setRootNode(root);
 
             phyTree = data;
         }
-    } catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc&) {
         setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA->getName()));
-    } catch (const char *message) {
+    } catch (const char* message) {
         stateInfo.setError(QString("Phylip error %1").arg(message));
     }
 

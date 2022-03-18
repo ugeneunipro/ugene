@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-DNATranslation::DNATranslation(const QString &_id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst) {
+DNATranslation::DNATranslation(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst) {
     name = _name;
     id = _id;
     srcAlphabet = src;
@@ -84,7 +84,7 @@ DNATranslation::DNATranslation(const QString &_id, const QString &_name, const D
 
 QStringList DNATranslationRegistry::getDNATranlations() const {
     QStringList l;
-    foreach (DNATranslation *t, translations) {
+    foreach (DNATranslation* t, translations) {
         l << t->getTranslationName();
     }
     return l;
@@ -92,15 +92,15 @@ QStringList DNATranslationRegistry::getDNATranlations() const {
 
 QStringList DNATranslationRegistry::getDNATranslationIds() const {
     QStringList l;
-    foreach (DNATranslation *t, translations) {
+    foreach (DNATranslation* t, translations) {
         l << t->getTranslationId();
     }
     return l;
 }
 
-QStringList DNATranslationRegistry::getDNATranslationIds(const QString &name) const {
+QStringList DNATranslationRegistry::getDNATranslationIds(const QString& name) const {
     QStringList l;
-    foreach (DNATranslation *t, translations) {
+    foreach (DNATranslation* t, translations) {
         if (t->getTranslationName() == name) {
             l << t->getTranslationId();
         }
@@ -108,29 +108,29 @@ QStringList DNATranslationRegistry::getDNATranslationIds(const QString &name) co
     return l;
 }
 
-void DNATranslationRegistry::registerDNATranslation(DNATranslation *t) {
+void DNATranslationRegistry::registerDNATranslation(DNATranslation* t) {
     translations.push_back(t);
 }
 
-void DNATranslationRegistry::registerDNACodon(DNACodon *codon) {
+void DNATranslationRegistry::registerDNACodon(DNACodon* codon) {
     codons.push_back(codon);
 }
 
 DNATranslationRegistry::~DNATranslationRegistry() {
-    foreach (DNATranslation *t, translations) {
+    foreach (DNATranslation* t, translations) {
         delete t;
     }
     translations.clear();
 
-    foreach (DNACodon *c, codons) {
+    foreach (DNACodon* c, codons) {
         delete c;
     }
     codons.clear();
 }
 
-QList<DNATranslation *> DNATranslationRegistry::lookupTranslation(const DNAAlphabet *srcAlphabet, DNATranslationType type) {
-    QList<DNATranslation *> res;
-    foreach (DNATranslation *t, translations) {
+QList<DNATranslation*> DNATranslationRegistry::lookupTranslation(const DNAAlphabet* srcAlphabet, DNATranslationType type) {
+    QList<DNATranslation*> res;
+    foreach (DNATranslation* t, translations) {
         if (t->getSrcAlphabet() == srcAlphabet && t->getDNATranslationType() == type) {
             res.append(t);
         }
@@ -138,17 +138,17 @@ QList<DNATranslation *> DNATranslationRegistry::lookupTranslation(const DNAAlpha
     return res;
 }
 
-DNATranslation *DNATranslationRegistry::getStandardGeneticCodeTranslation(const DNAAlphabet *srcAlphabet) {
+DNATranslation* DNATranslationRegistry::getStandardGeneticCodeTranslation(const DNAAlphabet* srcAlphabet) {
     if (srcAlphabet->isNucleic()) {
         return lookupTranslation(srcAlphabet, DNATranslationID(1));
     }
     FAIL("Standard genetic code is used only with source nucleic alphabet", nullptr);
 }
 
-DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *srcAlphabet,
+DNATranslation* DNATranslationRegistry::lookupTranslation(const DNAAlphabet* srcAlphabet,
                                                           DNATranslationType type,
-                                                          const QString &id) {
-    foreach (DNATranslation *t, translations) {
+                                                          const QString& id) {
+    foreach (DNATranslation* t, translations) {
         if (t->getTranslationId() == id && t->getSrcAlphabet() == srcAlphabet && t->getDNATranslationType() == type) {
             return t;
         }
@@ -156,8 +156,8 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *src
     return nullptr;
 }
 
-DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *srcAlphabet, const QString &id) {
-    foreach (DNATranslation *t, translations) {
+DNATranslation* DNATranslationRegistry::lookupTranslation(const DNAAlphabet* srcAlphabet, const QString& id) {
+    foreach (DNATranslation* t, translations) {
         if (t->getTranslationId() == id && srcAlphabet == t->getSrcAlphabet()) {
             return t;
         }
@@ -165,8 +165,8 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *src
     return nullptr;
 }
 
-DNATranslation *DNATranslationRegistry::lookupTranslation(const QString &id) {
-    foreach (DNATranslation *t, translations) {
+DNATranslation* DNATranslationRegistry::lookupTranslation(const QString& id) {
+    foreach (DNATranslation* t, translations) {
         if (t->getTranslationId() == id) {
             return t;
         }
@@ -174,7 +174,7 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const QString &id) {
     return nullptr;
 }
 
-DNATranslation *DNATranslationRegistry::lookupComplementTranslation(const DNAAlphabet *srcAlphabet) {
+DNATranslation* DNATranslationRegistry::lookupComplementTranslation(const DNAAlphabet* srcAlphabet) {
     assert(srcAlphabet->isNucleic());
     if (srcAlphabet->getId() == BaseDNAAlphabetIds ::NUCL_DNA_DEFAULT()) {
         return lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
@@ -189,8 +189,8 @@ DNATranslation *DNATranslationRegistry::lookupComplementTranslation(const DNAAlp
     }
 }
 
-DNACodon *DNATranslationRegistry::lookupCodon(char symbol) {
-    foreach (DNACodon *c, codons) {
+DNACodon* DNATranslationRegistry::lookupCodon(char symbol) {
+    foreach (DNACodon* c, codons) {
         if (c->getSymbol() == symbol) {
             return c;
         }

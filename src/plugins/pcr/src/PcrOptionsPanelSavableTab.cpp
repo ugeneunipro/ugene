@@ -39,14 +39,14 @@
 static const QString PCR_PRODUCTS_TABLE_NAME = "productsTable";
 static const QString WIDGET_ID_SEPARATOR = "__";
 
-typedef QPair<U2::ADVSequenceObjectContext *, QList<U2::InSilicoPcrProduct>> AdvContextPcrProductPair;
+typedef QPair<U2::ADVSequenceObjectContext*, QList<U2::InSilicoPcrProduct>> AdvContextPcrProductPair;
 
 Q_DECLARE_METATYPE(AdvContextPcrProductPair)
 
 namespace U2 {
 
-PcrOptionsPanelSavableTab::PcrOptionsPanelSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
-    : U2SavableWidget(wrappedWidget, contextWindow), originalWrappedWidget(qobject_cast<InSilicoPcrOptionPanelWidget *>(wrappedWidget)) {
+PcrOptionsPanelSavableTab::PcrOptionsPanelSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
+    : U2SavableWidget(wrappedWidget, contextWindow), originalWrappedWidget(qobject_cast<InSilicoPcrOptionPanelWidget*>(wrappedWidget)) {
     SAFE_POINT(nullptr != originalWrappedWidget, "Invalid input widget", );
 }
 
@@ -55,11 +55,11 @@ PcrOptionsPanelSavableTab::~PcrOptionsPanelSavableTab() {
     widgetStateSaved = true;
 }
 
-QVariant PcrOptionsPanelSavableTab::getChildValue(const QString &childId) const {
-    InSilicoPcrProductsTable *productTable = qobject_cast<InSilicoPcrProductsTable *>(getChildWidgetById(childId));
+QVariant PcrOptionsPanelSavableTab::getChildValue(const QString& childId) const {
+    InSilicoPcrProductsTable* productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
 
     if (nullptr != productTable) {
-        const QList<InSilicoPcrProduct> &products = qobject_cast<InSilicoPcrProductsTable *>(productTable)->getAllProducts();
+        const QList<InSilicoPcrProduct>& products = qobject_cast<InSilicoPcrProductsTable*>(productTable)->getAllProducts();
         AdvContextPcrProductPair data(productTable->getCurrentSequenceContext(), products);
         return QVariant::fromValue<AdvContextPcrProductPair>(data);
     } else {
@@ -67,8 +67,8 @@ QVariant PcrOptionsPanelSavableTab::getChildValue(const QString &childId) const 
     }
 }
 
-void PcrOptionsPanelSavableTab::setChildValue(const QString &childId, const QVariant &value) {
-    InSilicoPcrProductsTable *productTable = qobject_cast<InSilicoPcrProductsTable *>(getChildWidgetById(childId));
+void PcrOptionsPanelSavableTab::setChildValue(const QString& childId, const QVariant& value) {
+    InSilicoPcrProductsTable* productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
 
     if (nullptr != productTable) {
         originalWrappedWidget->setResultTableShown(true);
@@ -80,11 +80,11 @@ void PcrOptionsPanelSavableTab::setChildValue(const QString &childId, const QVar
     }
 }
 
-bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString &childId, const QVariant &value) const {
+bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString& childId, const QVariant& value) const {
     if (PCR_PRODUCTS_TABLE_NAME == childId) {
         const AdvContextPcrProductPair data = value.value<AdvContextPcrProductPair>();
 
-        AnnotatedDNAView *dnaView = originalWrappedWidget->getDnaView();
+        AnnotatedDNAView* dnaView = originalWrappedWidget->getDnaView();
         SAFE_POINT(nullptr != dnaView, "Invalid sequence view detected", false);
 
         return dnaView->getSequenceContexts().contains(data.first);
@@ -93,24 +93,24 @@ bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString &childId, c
     }
 }
 
-QString PcrOptionsPanelSavableTab::getChildId(QWidget *child) const {
-    if (nullptr != qobject_cast<PrimerGroupBox *>(child->parent())) {
-        QWidget *parentGroupBox = qobject_cast<QWidget *>(child->parent());
+QString PcrOptionsPanelSavableTab::getChildId(QWidget* child) const {
+    if (nullptr != qobject_cast<PrimerGroupBox*>(child->parent())) {
+        QWidget* parentGroupBox = qobject_cast<QWidget*>(child->parent());
         return U2SavableWidget::getChildId(parentGroupBox) + WIDGET_ID_SEPARATOR + child->objectName();
     } else {
         return U2SavableWidget::getChildId(child);
     }
 }
 
-QWidget *PcrOptionsPanelSavableTab::getPrimerEditWidgetById(const QString &childId) const {
+QWidget* PcrOptionsPanelSavableTab::getPrimerEditWidgetById(const QString& childId) const {
     const QStringList ids = childId.split(WIDGET_ID_SEPARATOR);
     SAFE_POINT(2 == ids.size(), "Invalid widget ID", nullptr);
-    QWidget *primerGroup = wrappedWidget->findChild<QWidget *>(ids.first());
+    QWidget* primerGroup = wrappedWidget->findChild<QWidget*>(ids.first());
     SAFE_POINT(nullptr != primerGroup, "Invalid parent widget", nullptr);
-    return primerGroup->findChild<QWidget *>(ids.last());
+    return primerGroup->findChild<QWidget*>(ids.last());
 }
 
-QWidget *PcrOptionsPanelSavableTab::getChildWidgetById(const QString &childId) const {
+QWidget* PcrOptionsPanelSavableTab::getChildWidgetById(const QString& childId) const {
     if (childId.contains(WIDGET_ID_SEPARATOR)) {
         return getPrimerEditWidgetById(childId);
     } else {
@@ -118,7 +118,7 @@ QWidget *PcrOptionsPanelSavableTab::getChildWidgetById(const QString &childId) c
     }
 }
 
-bool PcrOptionsPanelSavableTab::childExists(const QString &childId) const {
+bool PcrOptionsPanelSavableTab::childExists(const QString& childId) const {
     if (childId.contains(WIDGET_ID_SEPARATOR)) {
         return nullptr != getPrimerEditWidgetById(childId);
     } else {

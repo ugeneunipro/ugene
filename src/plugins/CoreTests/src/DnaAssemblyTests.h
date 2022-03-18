@@ -43,8 +43,8 @@ public:
     void cleanup();
 
 private:
-    DnaAssemblyMultiTask *assemblyMultiTask;
-    LoadDocumentTask *loadResultTask;
+    DnaAssemblyMultiTask* assemblyMultiTask;
+    LoadDocumentTask* loadResultTask;
     QList<GUrl> shortReadUrls;
     QMap<QString, QString> customOptions;
     QString objName;
@@ -67,7 +67,7 @@ class GTest_AssemblycompareTwoSAMbyLength : public XmlTest {
 
 class DnaAssemblyTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

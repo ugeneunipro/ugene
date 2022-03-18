@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext *_ctx)
+DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930694");
@@ -62,7 +62,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext *_ctx)
 
     // Initializing and adding the annotations widget
     annotController = new CreateAnnotationWidgetController(annotModel, this);
-    QWidget *annotWidget = annotController->getWidget();
+    QWidget* annotWidget = annotController->getWidget();
     tabOutput->layout()->addWidget(annotWidget);
 
     // Setting the dialog icon to the standard UGENE icon
@@ -106,7 +106,7 @@ void DNAFlexDialog::accept() {
         QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
         return;
     }
-    const CreateAnnotationModel &annotModel = annotController->getModel();
+    const CreateAnnotationModel& annotModel = annotController->getModel();
     QString annotName = annotModel.data->name;
     QString annotGroup = annotModel.groupName;
 
@@ -118,7 +118,7 @@ void DNAFlexDialog::accept() {
     U2OpStatusImpl os;
     QByteArray seqData = ctx->getSequenceObject()->getWholeSequenceData(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
-    DNAFlexTask *task = new DNAFlexTask(
+    DNAFlexTask* task = new DNAFlexTask(
         settings,
         annotModel.getAnnotationObject(),
         annotName,
@@ -166,7 +166,7 @@ void DNAFlexDialog::sl_updateSizes(int index) {
     for (int i = 0; i < tabWidget->count(); i++) {
         tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     }
-    QWidget *widget = tabWidget->currentWidget();
+    QWidget* widget = tabWidget->currentWidget();
     widget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     widget->resize(widget->minimumSizeHint());
     widget->adjustSize();

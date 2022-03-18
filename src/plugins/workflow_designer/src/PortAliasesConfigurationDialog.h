@@ -30,16 +30,16 @@
 namespace U2 {
 namespace Workflow {
 
-typedef QPair<QString, QString> PortInfo;    // alias, description
+typedef QPair<QString, QString> PortInfo;  // alias, description
 struct PortAliasesCfgDlgModel {
-    QMap<Port *, QMap<Descriptor, QString>> aliases;
-    QMap<Port *, PortInfo> ports;
+    QMap<Port*, QMap<Descriptor, QString>> aliases;
+    QMap<Port*, PortInfo> ports;
 };
 
 class PortAliasesConfigurationDialog : public QDialog, public Ui_PortAliasesConfigurationDialog {
     Q_OBJECT
 public:
-    PortAliasesConfigurationDialog(const Schema &sc, QWidget *p = nullptr);
+    PortAliasesConfigurationDialog(const Schema& sc, QWidget* p = nullptr);
 
     /*
      * it removes empty aliases from model
@@ -47,25 +47,25 @@ public:
     PortAliasesCfgDlgModel getModel() const;
 
 private:
-    void initializeModel(const Schema &schema);
+    void initializeModel(const Schema& schema);
     void clearAliasTable();
 
 private slots:
     void sl_portSelected(int row);
     void sl_onDataChange(int row, int col);
-    void sl_portAliasChanged(const QString &newStr);
-    void sl_portDescriptionChanged(const QString &newStr);
+    void sl_portAliasChanged(const QString& newStr);
+    void sl_portDescriptionChanged(const QString& newStr);
 
 private:
     PortAliasesCfgDlgModel model;
-    QMap<int, Port *> portListMap;    // pairs (row, port)
+    QMap<int, Port*> portListMap;  // pairs (row, port)
     int currentRow;
 
     void accept();
 
-};    // PortAliasesConfigurationDialog
+};  // PortAliasesConfigurationDialog
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _PORT_ALIASES_DIALOG_CONTROLLER_H_
+#endif  // _PORT_ALIASES_DIALOG_CONTROLLER_H_

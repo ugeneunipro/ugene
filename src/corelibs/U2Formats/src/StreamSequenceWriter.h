@@ -40,20 +40,20 @@ namespace U2 {
  */
 
 class U2FORMATS_EXPORT StreamShortReadsWriter {
-    IOAdapter *io;
+    IOAdapter* io;
     SAMFormat format;
     int numSeqWritten;
     int refSeqLength;
     QByteArray refSeqName;
 
 public:
-    StreamShortReadsWriter(const GUrl &url, const QString &refName = QString(), int refLength = 0);
+    StreamShortReadsWriter(const GUrl& url, const QString& refName = QString(), int refLength = 0);
     ~StreamShortReadsWriter();
-    bool writeNextAlignedRead(int offset, const DNASequence &seq);
+    bool writeNextAlignedRead(int offset, const DNASequence& seq);
     void setRefSeqLength(int l) {
         refSeqLength = l;
     }
-    void setRefSeqName(const QString &name) {
+    void setRefSeqName(const QString& name) {
         refSeqName = QString(name).replace(QRegExp("\\s|\\t"), "_").toLatin1();
     }
     int getNumSeqWritten() {
@@ -76,16 +76,16 @@ public:
     StreamShortReadWriter();
     virtual ~StreamShortReadWriter();
 
-    bool init(const GUrl &url);
-    bool writeNextSequence(const DNASequence &seq);
-    bool writeNextSequence(const U2SequenceObject *seq);
-    const GUrl &getOutputPath() const {
+    bool init(const GUrl& url);
+    bool writeNextSequence(const DNASequence& seq);
+    bool writeNextSequence(const U2SequenceObject* seq);
+    const GUrl& getOutputPath() const {
         return outputPath;
     }
     void close();
 
 protected:
-    IOAdapter *io;
+    IOAdapter* io;
 
 private:
     GUrl outputPath;

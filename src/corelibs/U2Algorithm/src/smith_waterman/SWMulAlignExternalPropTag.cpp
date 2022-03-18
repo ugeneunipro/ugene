@@ -28,7 +28,7 @@ const QString timeFormat = "hh.mm.ss";
 
 namespace U2 {
 
-QString SWMulAlignExternalPropTag::expandTag(const QVariant & /*argument*/) const {
+QString SWMulAlignExternalPropTag::expandTag(const QVariant& /*argument*/) const {
     QString tagExpansion;
 
     switch (type) {

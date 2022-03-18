@@ -44,8 +44,8 @@
 
 namespace U2 {
 
-QAction *GUIUtils::getCheckedAction(QList<QAction *> actions) {
-    foreach (QAction *action, actions) {
+QAction* GUIUtils::getCheckedAction(QList<QAction*> actions) {
+    foreach (QAction* action, actions) {
         if (action->isChecked()) {
             return action;
         }
@@ -53,8 +53,8 @@ QAction *GUIUtils::getCheckedAction(QList<QAction *> actions) {
     return nullptr;
 }
 
-QAction *GUIUtils::findActionByData(QList<QAction *> actions, const QString &data) {
-    foreach (QAction *action, actions) {
+QAction* GUIUtils::findActionByData(QList<QAction*> actions, const QString& data) {
+    foreach (QAction* action, actions) {
         if (action->data() == data) {
             return action;
         }
@@ -62,9 +62,9 @@ QAction *GUIUtils::findActionByData(QList<QAction *> actions, const QString &dat
     return nullptr;
 }
 
-QAction *GUIUtils::findAction(const QList<QAction *> &actions, const QString &name) {
-    foreach (QAction *a, actions) {
-        const QString &aname = a->objectName();
+QAction* GUIUtils::findAction(const QList<QAction*>& actions, const QString& name) {
+    foreach (QAction* a, actions) {
+        const QString& aname = a->objectName();
         if (aname == name) {
             return a;
         }
@@ -72,13 +72,13 @@ QAction *GUIUtils::findAction(const QList<QAction *> &actions, const QString &na
     return nullptr;
 }
 
-QAction *GUIUtils::findActionAfter(const QList<QAction *> &actions, const QString &name) {
+QAction* GUIUtils::findActionAfter(const QList<QAction*>& actions, const QString& name) {
     bool found = false;
-    foreach (QAction *a, actions) {
+    foreach (QAction* a, actions) {
         if (found) {
             return a;
         }
-        const QString &aname = a->objectName();
+        const QString& aname = a->objectName();
         if (aname == name) {
             found = true;
         }
@@ -89,36 +89,36 @@ QAction *GUIUtils::findActionAfter(const QList<QAction *> &actions, const QStrin
     return actions.first();
 }
 
-QMenu *GUIUtils::findSubMenu(QMenu *m, const QString &name) {
-    QAction *action = findAction(m->actions(), name);
+QMenu* GUIUtils::findSubMenu(QMenu* m, const QString& name) {
+    QAction* action = findAction(m->actions(), name);
     if (action == nullptr) {
         return nullptr;
     }
     return action->menu();
 }
 
-void GUIUtils::updateActionToolTip(QAction *action) {
+void GUIUtils::updateActionToolTip(QAction* action) {
     const QString actionShortcutString = action->shortcut().toString(QKeySequence::NativeText);
     const QString toolTip = actionShortcutString.isEmpty() ? action->text() : QString("%1 (%2)").arg(action->text()).arg(actionShortcutString);
     action->setToolTip(toolTip);
 }
 
-void GUIUtils::updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut) {
+void GUIUtils::updateButtonToolTip(QAbstractButton* button, const QKeySequence& shortcut) {
     const QString actionShortcutString = shortcut.toString(QKeySequence::NativeText);
     const QString toolTip = actionShortcutString.isEmpty() ? button->text() : QString("%1 (%2)").arg(button->text()).arg(actionShortcutString);
     button->setToolTip(toolTip);
 }
 
-void GUIUtils::disableEmptySubmenus(QMenu *m) {
-    foreach (QAction *action, m->actions()) {
-        QMenu *am = action->menu();
+void GUIUtils::disableEmptySubmenus(QMenu* m) {
+    foreach (QAction* action, m->actions()) {
+        QMenu* am = action->menu();
         if (am != nullptr && am->actions().isEmpty()) {
             action->setEnabled(false);
         }
     }
 }
 
-QIcon GUIUtils::createSquareIcon(const QColor &c, int size) {
+QIcon GUIUtils::createSquareIcon(const QColor& c, int size) {
     int w = size;
     int h = size;
     QPixmap pix(w, h);
@@ -130,7 +130,7 @@ QIcon GUIUtils::createSquareIcon(const QColor &c, int size) {
     return QIcon(pix);
 }
 
-QIcon GUIUtils::createRoundIcon(const QColor &c, int size) {
+QIcon GUIUtils::createRoundIcon(const QColor& c, int size) {
     int w = size;
     int h = size;
 
@@ -148,7 +148,7 @@ QIcon GUIUtils::createRoundIcon(const QColor &c, int size) {
     return QIcon(pix);
 }
 
-bool GUIUtils::runWebBrowser(const QString &url) {
+bool GUIUtils::runWebBrowser(const QString& url) {
     bool useDefaultWebBrowser = AppContext::getAppSettings()->getUserAppsSettings()->useDefaultWebBrowser();
     if (url.isEmpty()) {
         QMessageBox::critical(nullptr, tr("Error!"), tr("Document URL is empty!"));
@@ -196,7 +196,7 @@ bool GUIUtils::runWebBrowser(const QString &url) {
     }
 }
 
-bool GUIUtils::isMutedLnF(QTreeWidgetItem *item) {
+bool GUIUtils::isMutedLnF(QTreeWidgetItem* item) {
     static QBrush disabledBrush;
     if (disabledBrush.style() == Qt::NoBrush) {
         disabledBrush = QApplication::palette().brush(QPalette::Disabled, QPalette::Foreground);
@@ -204,7 +204,7 @@ bool GUIUtils::isMutedLnF(QTreeWidgetItem *item) {
     return item->foreground(0) == disabledBrush;
 }
 
-void GUIUtils::setMutedLnF(QTreeWidgetItem *item, bool enableMute, bool recursive) {
+void GUIUtils::setMutedLnF(QTreeWidgetItem* item, bool enableMute, bool recursive) {
     QPalette::ColorGroup colorGroup = enableMute ? QPalette::Disabled : QPalette::Active;
     QBrush brush = QApplication::palette().brush(colorGroup, QPalette::Foreground);
     int count = item->columnCount();
@@ -214,7 +214,7 @@ void GUIUtils::setMutedLnF(QTreeWidgetItem *item, bool enableMute, bool recursiv
     if (recursive) {
         int childCount = item->childCount();
         for (int i = 0; i < childCount; ++i) {
-            QTreeWidgetItem *childItem = item->child(i);
+            QTreeWidgetItem* childItem = item->child(i);
             setMutedLnF(childItem, enableMute, recursive);
         }
     }
@@ -223,17 +223,29 @@ void GUIUtils::setMutedLnF(QTreeWidgetItem *item, bool enableMute, bool recursiv
 const QColor GUIUtils::WARNING_COLOR = QColor(255, 200, 200);
 const QColor GUIUtils::OK_COLOR = QColor(255, 255, 255);
 
-void GUIUtils::setWidgetWarning(QWidget *widget, bool value) {
+void GUIUtils::setWidgetWarning(QWidget* widget, bool value) {
     QColor color = value ? WARNING_COLOR : OK_COLOR;
     widget->setStyleSheet("background-color: " + color.name() + ";");
 }
 
-void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter &painter, const QString &message) {
+void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message) {
     painter.fillRect(widgetToPaintOn->rect(), Qt::gray);
 
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
     return;
+}
+
+void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {
+    SAFE_POINT(menu != nullptr, "menu is null", );
+    QList<QAction*> actions = menu->actions();
+    int markerIndex = actions.indexOf(insertionPointMarkerAction);
+    if (markerIndex == -1 || markerIndex == actions.size() - 1) {
+        menu->addAction(actionToInsert);
+        return;
+    }
+    QAction* actionBefore = actions[markerIndex + 1];
+    menu->insertAction(actionBefore, actionToInsert);
 }
 
 }  // namespace U2

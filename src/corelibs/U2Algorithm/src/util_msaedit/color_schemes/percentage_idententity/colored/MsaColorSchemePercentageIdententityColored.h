@@ -32,12 +32,12 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdententityColored : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdententityColored(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    MsaColorSchemePercentageIdententityColored(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj);
 
     QColor getBackgroundColor(int rowNum, int columnNum, char c) const override;
     QColor getFontColor(int rowNum, int columnNum, char c) const override;
 
-    void applySettings(const QVariantMap &settings) override;
+    void applySettings(const QVariantMap& settings) override;
 
     static const QList<char> NUCLEOTIDE_LIST;
 

@@ -26,25 +26,25 @@
 namespace U2 {
 namespace WorkflowSerialize {
 
-FlowGraph::FlowGraph(const QList<QPair<Port *, Port *>> &d)
+FlowGraph::FlowGraph(const QList<QPair<Port*, Port*>>& d)
     : dataflowLinks(d), findRecursion(0) {
     removeDuplicates();
     for (int i = 0; i < dataflowLinks.size(); ++i) {
-        const QPair<Port *, Port *> &pair = dataflowLinks.at(i);
+        const QPair<Port*, Port*>& pair = dataflowLinks.at(i);
         if (!graph.contains(pair.first)) {
-            graph[pair.first] = QList<Port *>();
+            graph[pair.first] = QList<Port*>();
         }
         graph.find(pair.first)->append(pair.second);
     }
 }
 
 void FlowGraph::removeDuplicates() {
-    QList<QPair<Port *, Port *>> links;
+    QList<QPair<Port*, Port*>> links;
     for (int i = 0; i < dataflowLinks.size(); ++i) {
-        const QPair<Port *, Port *> &p = dataflowLinks.at(i);
+        const QPair<Port*, Port*>& p = dataflowLinks.at(i);
         bool found = false;
         for (int j = 0; j < links.size(); ++j) {
-            const QPair<Port *, Port *> &pair = links.at(j);
+            const QPair<Port*, Port*>& pair = links.at(j);
             if (pair.first == p.first && pair.second == p.second) {
                 found = true;
                 break;
@@ -57,17 +57,17 @@ void FlowGraph::removeDuplicates() {
     dataflowLinks = links;
 }
 
-bool FlowGraph::findPath(Actor *from, Port *to) const {
+bool FlowGraph::findPath(Actor* from, Port* to) const {
     static const int RECURSION_MAX = 100;
     if (findRecursion == RECURSION_MAX) {
         throw ReadFailed(QObject::tr("Cannot create flow graph"));
     }
-    foreach (Port *p, from->getOutputPorts()) {
+    foreach (Port* p, from->getOutputPorts()) {
         if (graph[p].contains(to)) {
             return true;
         }
-        const QList<Port *> &p2 = graph[p];
-        for (Port *connection : qAsConst(p2)) {
+        const QList<Port*>& p2 = graph[p];
+        for (Port* connection : qAsConst(p2)) {
             if (findPath(connection->owner(), to)) {
                 return true;
             }
@@ -78,9 +78,9 @@ bool FlowGraph::findPath(Actor *from, Port *to) const {
 
 void FlowGraph::minimize() {
     for (int i = 0; i < dataflowLinks.size(); ++i) {
-        Port *src = dataflowLinks.at(i).first;
-        Port *dst = dataflowLinks.at(i).second;
-        foreach (Port *p, graph[src]) {
+        Port* src = dataflowLinks.at(i).first;
+        Port* dst = dataflowLinks.at(i).second;
+        foreach (Port* p, graph[src]) {
             findRecursion = 0;
             if (findPath(p->owner(), dst)) {
                 graph.find(src)->removeAll(dst);
