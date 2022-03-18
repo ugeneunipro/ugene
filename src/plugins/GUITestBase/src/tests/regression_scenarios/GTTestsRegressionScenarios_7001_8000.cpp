@@ -503,7 +503,6 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
 GUI_TEST_CLASS_DEFINITION(test_7152) {
     // Check that corner characters of an alignment has valid info shown in the status bar.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, 0));
@@ -1750,15 +1749,7 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 
-    // Overview is not visible for too big size
-    // See MSAEditor::initActions()
-    // Click the "Overview" button on the main toolbar
-    // Expected state: the overview is shown.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    GTWidget::click(os, showOverviewButton);
-
-    QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
+    QWidget* overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isVisible(), "Overview widget ,must be visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
 }
