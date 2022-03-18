@@ -195,6 +195,7 @@ void DotPlotViewContext::sl_removeDotPlot() {
     // get DotPlotSplitter that contained in dnaView
     DotPlotSplitter *splitter = getView(dnaView, false);
     if (splitter) {
+        dotPlot->sl_showDeleteDialog();
         splitter->removeView(dotPlot);
         delete dotPlot;
         dotPlot = nullptr;

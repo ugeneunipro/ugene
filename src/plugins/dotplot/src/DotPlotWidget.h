@@ -100,6 +100,7 @@ signals:
 public slots:
     bool sl_showSettingsDialog(bool disableLoad = false);
     void sl_filter();
+    void sl_showDeleteDialog();
 
 private slots:
     void sl_taskStateChanged();
@@ -108,7 +109,6 @@ private slots:
     void sl_showSaveImageDialog();
     bool sl_showSaveFileDialog();
     bool sl_showLoadFileDialog();
-    void sl_showDeleteDialog();
 
     void sl_onSequenceSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &);
 
@@ -167,6 +167,8 @@ private:
     QAction *loadDotPlotAction;
     QAction *deleteDotPlotAction;
     QAction *filterDotPlotAction;
+    
+    bool deleteDialogWasShownAndNotCancelled = false;
 
     int textSpace;
     static const int rulerNotchSize = 2;

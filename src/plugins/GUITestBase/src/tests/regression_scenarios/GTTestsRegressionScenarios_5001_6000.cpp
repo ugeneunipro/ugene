@@ -1537,6 +1537,21 @@ GUI_TEST_CLASS_DEFINITION(test_5417) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5421) {
+    // 1. Build doplot for "data/samples/Genbank/murine.gb" and "data/samples/Genbank/sars.gb".
+    // 2. Remove sars.gb from project
+    // Expected state: Save dialog appeared.
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    Runnable *buildDotPlot = new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb");
+    GTUtilsDialog::waitForDialog(os, buildDotPlot);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "sars.gb"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5425) {
     // Open de novo assembly dialog
     // Fill it and run

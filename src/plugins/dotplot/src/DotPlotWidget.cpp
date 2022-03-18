@@ -55,6 +55,7 @@
 #include "DotPlotDialog.h"
 #include "DotPlotFilterDialog.h"
 #include "DotPlotImageExportTask.h"
+#include "DotPlotPlugin.h"
 #include "DotPlotTasks.h"
 #include "DotPlotWidget.h"
 
@@ -778,7 +779,16 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
 // ask user if he wants to save dotplot first
 void DotPlotWidget::sl_showDeleteDialog() {
-    int answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+    if (deleteDialogWasShownAndNotCancelled) {
+        return;
+    }
+    bool isWidgetSender = qobject_cast<QAction *>(sender()) != nullptr;
+    int answer = 0;
+    if (isWidgetSender) {
+        answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+    } else {
+        answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No);
+    }    
     bool saveDotPlot;
 
     switch (answer) {
@@ -787,7 +797,7 @@ void DotPlotWidget::sl_showDeleteDialog() {
 
         case QMessageBox::Yes:
             saveDotPlot = sl_showSaveFileDialog();
-            if (!saveDotPlot) {  // cancel button pressed
+            if (!saveDotPlot && isWidgetSender) {  // cancel button pressed
                 return;
             }
             break;
@@ -795,8 +805,10 @@ void DotPlotWidget::sl_showDeleteDialog() {
         default:
             break;
     }
-
-    emit si_removeDotPlot();
+    deleteDialogWasShownAndNotCancelled = true;
+    if (isWidgetSender) {
+        emit si_removeDotPlot();
+    }
 }
 
 // dotplot results updated, need to update picture
