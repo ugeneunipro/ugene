@@ -3,6 +3,7 @@
 #ifndef COMMON_MD5_H__
 #define COMMON_MD5_H__
 
+#include <stddef.h>
 #include <stdint.h>
 
 namespace google_breakpad {
