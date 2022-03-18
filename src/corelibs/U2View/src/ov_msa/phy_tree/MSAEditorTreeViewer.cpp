@@ -81,7 +81,6 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     refreshTreeAction->setEnabled(false);
     connect(refreshTreeAction, SIGNAL(triggered()), SLOT(sl_refreshTree()));
 
-    toolBar->addSeparator();
     toolBar->addAction(refreshTreeAction);
     toolBar->addAction(syncModeAction);
 
