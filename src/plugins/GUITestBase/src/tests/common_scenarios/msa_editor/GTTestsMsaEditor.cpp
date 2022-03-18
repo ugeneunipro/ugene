@@ -2236,9 +2236,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2257,7 +2257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: tree appeared
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036_2) {
@@ -2272,9 +2272,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036_2) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2290,9 +2290,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036_3) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2308,11 +2308,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2328,11 +2328,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037_1) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2348,11 +2348,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037_2) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2369,14 +2369,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: unchecked
-    //     Bootatraping and consensus tree: checked
+    //     Bootstrapping and consensus tree: checked
     //     Number of replications: 100
     //     Seed: 5
     //     Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2393,14 +2393,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: unchecked
-    //     Bootatraping and consensus tree: checked
+    //     Bootstrapping and consensus tree: checked
     //     Number of replications: 100
     //     Seed: 5
     //     Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //     Press "Build"
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2426,7 +2426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_2) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2450,7 +2450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_3) {
     //     Press "Build"
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2475,7 +2475,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_4) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 

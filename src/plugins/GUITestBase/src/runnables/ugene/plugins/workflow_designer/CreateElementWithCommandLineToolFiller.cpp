@@ -48,27 +48,19 @@ CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(H
 void CreateElementWithCommandLineToolFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QString errorMessage;
-    bool firstPageResult = processFirstPage(dialog, errorMessage);
-    GT_CHECK(firstPageResult, errorMessage);
+    processFirstPage(dialog);
 
-    bool secondPageResult = processSecondPage(dialog, errorMessage);
-    GT_CHECK(secondPageResult, errorMessage);
+    processSecondPage(dialog);
 
-    bool thirdPageResult = processThirdPage(dialog, errorMessage);
-    GT_CHECK(thirdPageResult, errorMessage);
+    processThirdPage(dialog);
 
-    bool fourthPageResult = processFourthPage(dialog, errorMessage);
-    GT_CHECK(fourthPageResult, errorMessage);
+    processFourthPage(dialog);
 
-    bool fifthPageResult = processFifthPage(dialog, errorMessage);
-    GT_CHECK(fifthPageResult, errorMessage);
+    processFifthPage(dialog);
 
-    bool sixthPageResult = processSixthPage(dialog, errorMessage);
-    GT_CHECK(sixthPageResult, errorMessage);
+    processSixthPage(dialog);
 
-    bool seventhPageResult = processSeventhPage(dialog, errorMessage);
-    GT_CHECK(seventhPageResult, errorMessage);
+    processSeventhPage(dialog);
 }
 #undef GT_METHOD_NAME
 
@@ -152,7 +144,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
     processStringType(table, row, ColumnName::Value, type.second);
 }
 
-bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     if (!settings.elementName.isEmpty()) {
         auto nameEdit = GTWidget::findLineEdit(os, "leName", dialog);
 
@@ -185,19 +177,16 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog, Q
             break;
         }
         default:
-            CHECK_EXT(false, errorMessage = "Unexpected tool type", false);
-            break;
+            FAIL("Unexpected tool type",);
     }
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
     QWidget* pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
-    CHECK_EXT(nullptr != pbAddInput, errorMessage = "pbAddInput not found", false);
 
     auto tvInput = GTWidget::findTableView(os, "tvInput");
 
@@ -206,25 +195,20 @@ bool CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog, 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
     QWidget* pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
-    CHECK_EXT(nullptr != pbAdd, errorMessage = "pbAdd not found", false);
 
     auto tvAttributes = GTWidget::findTableView(os, "tvAttributes");
 
     fillTheTable(tvAttributes, pbAdd, settings.parameters);
 
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) {
     QWidget* pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
-    CHECK_EXT(nullptr != pbAddOutput, errorMessage = "pbAddOutput not found", false);
 
     auto tvOutput = GTWidget::findTableView(os, "tvOutput");
 
@@ -233,10 +217,9 @@ bool CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog, 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog) {
     auto teCommand = GTWidget::findTextEdit(os, "teCommand", dialog);
 
     GTTextEdit::setText(os, teCommand, settings.command);
@@ -247,11 +230,9 @@ bool CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog, Q
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
-
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog, QString& errorMessage) {
+void CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog) {
     auto teDescription = GTWidget::findTextEdit(os, "teDescription", dialog);
 
     if (teDescription->toPlainText().isEmpty()) {
@@ -265,18 +246,14 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog, Q
     }
 
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
-    return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget* /*dialog*/, QString& /*errorMessage*/) {
+void CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget* /*dialog*/) {
     MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
-
-    return true;
 }
 
 #undef GT_CLASS_NAME
