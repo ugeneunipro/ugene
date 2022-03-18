@@ -49,7 +49,7 @@ public:
     bool excludeGaps;
 };
 
-class MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetInterface {
+class U2VIEW_EXPORT MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetInterface {
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:
