@@ -149,8 +149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTWidget::click(os, syncModeButton);
 
     QStringList originalSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    CHECK_SET_ERR(originalSequenceNames2 == originalSequenceNames2,
-                  "Original sequence order must be restored");
+    CHECK_SET_ERR(originalSequenceNames2 == originalSequenceNames2, "Original sequence order must be restored");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_2) {
