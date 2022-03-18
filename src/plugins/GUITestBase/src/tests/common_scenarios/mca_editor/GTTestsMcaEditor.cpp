@@ -3188,12 +3188,10 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
 
     // close the view with COI
@@ -3219,7 +3217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
-    consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
+    consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::checkCurrentValue(os, consensusCombo, "Levitsky");
     CHECK_SET_ERR(GTUtilsOptionPanelMsa::getThreshold(os) == 68, "Consensus threshold for MSA was not saved");
 }

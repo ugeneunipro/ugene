@@ -36,10 +36,10 @@ void SaveProjectAsDialogFiller::commonScenario() {
     GTGlobals::sleep();
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* projectNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectNameEdit", dialog));
+    auto projectNameEdit = GTWidget::findLineEdit(os, "projectNameEdit", dialog);
     GTLineEdit::setText(os, projectNameEdit, projectName);
 
-    QLineEdit* projectFileEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
+    auto projectFileEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
     GTLineEdit::setText(os, projectFileEdit, projectFile);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

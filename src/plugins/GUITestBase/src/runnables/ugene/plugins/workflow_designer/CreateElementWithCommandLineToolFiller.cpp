@@ -154,32 +154,27 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 
 bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog, QString& errorMessage) {
     if (!settings.elementName.isEmpty()) {
-        QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leName", dialog));
-        CHECK_EXT(nullptr != nameEdit, errorMessage = "leName not found", false);
+        auto nameEdit = GTWidget::findLineEdit(os, "leName", dialog);
 
         GTLineEdit::setText(os, nameEdit, settings.elementName);
     }
 
     switch (settings.tooltype) {
         case CommandLineToolType::ExecutablePath: {
-            QRadioButton* rbCustomTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbCustomTool", dialog));
-            CHECK_EXT(nullptr != rbCustomTool, errorMessage = "rbCustomTool not found", false);
+            auto rbCustomTool = GTWidget::findRadioButton(os, "rbCustomTool", dialog);
 
             GTRadioButton::click(os, rbCustomTool);
-            QLineEdit* leToolPath = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leToolPath", dialog));
-            CHECK_EXT(nullptr != leToolPath, errorMessage = "leName not found", false);
+            auto leToolPath = GTWidget::findLineEdit(os, "leToolPath", dialog);
 
             GTLineEdit::setText(os, leToolPath, settings.tool);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {
-            QRadioButton* rbIntegratedTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
-            CHECK_EXT(nullptr != rbIntegratedTool, errorMessage = "rbIntegratedTool not found", false);
+            auto rbIntegratedTool = GTWidget::findRadioButton(os, "rbIntegratedTool", dialog);
 
             GTRadioButton::click(os, rbIntegratedTool);
             if (!settings.tool.isEmpty()) {
-                QComboBox* cbIntegratedTools = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "cbIntegratedTools", dialog));
-                CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
+                auto cbIntegratedTools = GTWidget::findComboBox(os, "cbIntegratedTools", dialog);
 
                 if (cbIntegratedTools->findText(settings.tool) == -1) {
                     GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
@@ -204,8 +199,7 @@ bool CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog, 
     QWidget* pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
     CHECK_EXT(nullptr != pbAddInput, errorMessage = "pbAddInput not found", false);
 
-    QTableView* tvInput = qobject_cast<QTableView*>(GTWidget::findWidget(os, "tvInput"));
-    CHECK_EXT(nullptr != tvInput, errorMessage = "tvInput not found", false);
+    auto tvInput = GTWidget::findTableView(os, "tvInput");
 
     fillTheTable(tvInput, pbAddInput, settings.input);
 
@@ -219,8 +213,7 @@ bool CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog, Q
     QWidget* pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
     CHECK_EXT(nullptr != pbAdd, errorMessage = "pbAdd not found", false);
 
-    QTableView* tvAttributes = qobject_cast<QTableView*>(GTWidget::findWidget(os, "tvAttributes"));
-    CHECK_EXT(nullptr != tvAttributes, errorMessage = "tvAttributes not found", false);
+    auto tvAttributes = GTWidget::findTableView(os, "tvAttributes");
 
     fillTheTable(tvAttributes, pbAdd, settings.parameters);
 
@@ -233,8 +226,7 @@ bool CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog, 
     QWidget* pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
     CHECK_EXT(nullptr != pbAddOutput, errorMessage = "pbAddOutput not found", false);
 
-    QTableView* tvOutput = qobject_cast<QTableView*>(GTWidget::findWidget(os, "tvOutput"));
-    CHECK_EXT(nullptr != tvOutput, errorMessage = "tvOutput not found", false);
+    auto tvOutput = GTWidget::findTableView(os, "tvOutput");
 
     fillTheTable(tvOutput, pbAddOutput, settings.output);
 
@@ -245,8 +237,7 @@ bool CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog, 
 }
 
 bool CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog, QString& errorMessage) {
-    QTextEdit* teCommand = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "teCommand", dialog));
-    CHECK_EXT(nullptr != teCommand, errorMessage = "teCommand not found", false);
+    auto teCommand = GTWidget::findTextEdit(os, "teCommand", dialog);
 
     GTTextEdit::setText(os, teCommand, settings.command);
 
@@ -261,15 +252,13 @@ bool CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog, Q
 }
 
 bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog, QString& errorMessage) {
-    QTextEdit* teDescription = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "teDescription", dialog));
-    CHECK_EXT(nullptr != teDescription, errorMessage = "teCommand not found", false);
+    auto teDescription = GTWidget::findTextEdit(os, "teDescription", dialog);
 
     if (teDescription->toPlainText().isEmpty()) {
         GTTextEdit::setText(os, teDescription, settings.description);
     }
 
-    QTextEdit* tePrompter = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "tePrompter", dialog));
-    CHECK_EXT(nullptr != tePrompter, errorMessage = "teCommand not found", false);
+    auto tePrompter = GTWidget::findTextEdit(os, "tePrompter", dialog);
 
     if (tePrompter->toPlainText().isEmpty()) {
         GTTextEdit::setText(os, tePrompter, settings.prompter);

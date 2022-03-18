@@ -67,7 +67,7 @@ void ExportToSequenceFormatFiller::commonScenario() {
     }
 
     if (saveFile) {
-        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectBox", dialog));
+        auto saveFileCheckBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 

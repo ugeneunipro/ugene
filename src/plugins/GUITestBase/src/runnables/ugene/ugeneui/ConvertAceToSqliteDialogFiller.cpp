@@ -57,8 +57,7 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
     }
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* leDest = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leDest", dialog));
-    GT_CHECK(leDest, "destination URL lineedit not found");
+    auto leDest = GTWidget::findLineEdit(os, "leDest", dialog);
     GTLineEdit::setText(os, leDest, leDestUrl);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

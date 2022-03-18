@@ -44,7 +44,7 @@ DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus& _os, CustomScenario* customSce
 void DotPlotFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QSpinBox* minLenBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minLenBox", dialog));
+    auto minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
     if (but1kpressed) {
         GTWidget::click(os, GTWidget::findWidget(os, "minLenHeuristicsButton", dialog));
         GTGlobals::sleep();
@@ -53,11 +53,11 @@ void DotPlotFiller::commonScenario() {
         GTSpinBox::setValue(os, minLenBox, minLen, GTGlobals::UseKeyBoard);
 
     if (identity) {
-        QSpinBox* identityBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "identityBox", dialog));
+        auto identityBox = GTWidget::findSpinBox(os, "identityBox", dialog);
         GTSpinBox::setValue(os, identityBox, identity, GTGlobals::UseKeyBoard);
     }
 
-    QCheckBox* invertedCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
+    auto invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
     GTCheckBox::setChecked(os, invertedCheckBox, invertedRepeats);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

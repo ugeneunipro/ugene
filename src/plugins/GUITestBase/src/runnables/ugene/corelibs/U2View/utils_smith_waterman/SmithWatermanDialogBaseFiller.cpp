@@ -73,10 +73,10 @@ void SmithWatermanDialogFiller::commonScenario() {
         return;
     }
 
-    QTabWidget* tabWidget = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabWidget", dialog));
+    auto tabWidget = GTWidget::findTabWidget(os, "tabWidget", dialog);
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 1);
-    QComboBox* resultViewVariants = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "resultViewVariants", dialog));
+    auto resultViewVariants = GTWidget::findComboBox(os, "resultViewVariants", dialog);
     int resultViewIndex;
     if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
         resultViewIndex = 0;
@@ -115,14 +115,14 @@ void SmithWatermanDialogFiller::commonScenario() {
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 0);
 
-    RegionSelector* regionSelector = qobject_cast<RegionSelector*>(GTWidget::findWidget(os, "range_selector", dialog));
+    auto regionSelector = GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog);
     GTRegionSelector::setRegion(os, regionSelector, s);
 
-    QTextEdit* textEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "teditPattern", dialog));
+    auto textEdit = GTWidget::findTextEdit(os, "teditPattern", dialog);
     GTTextEdit::setText(os, textEdit, pattern);
 
     if (autoSetupAlgorithmParams) {
-        QComboBox* comboRealization = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "comboRealization", dialog));
+        auto comboRealization = GTWidget::findComboBox(os, "comboRealization", dialog);
         QString realizationName;
         switch (realization) {
             case CLASSIC:
@@ -138,16 +138,16 @@ void SmithWatermanDialogFiller::commonScenario() {
         const int swRealizationIndex = comboRealization->findText(realizationName);
         GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
-        QComboBox* comboResultFilter = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "comboResultFilter", dialog));
+        auto comboResultFilter = GTWidget::findComboBox(os, "comboResultFilter", dialog);
         GTComboBox::selectItemByText(os, comboResultFilter, "filter-intersections");
 
-        QSpinBox* spinScorePercent = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinScorePercent", dialog));
+        auto spinScorePercent = GTWidget::findSpinBox(os, "spinScorePercent", dialog);
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);
 
-        QSpinBox* dblSpinGapOpen = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinGapOpen", dialog));
+        auto dblSpinGapOpen = GTWidget::findSpinBox(os, "spinGapOpen", dialog);
         GTSpinBox::setValue(os, dblSpinGapOpen, GAP_OPEN_PENALTY);
 
-        QSpinBox* dblSpinGapExtd = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinGapExtd", dialog));
+        auto dblSpinGapExtd = GTWidget::findSpinBox(os, "spinGapExtd", dialog);
         GTSpinBox::setValue(os, dblSpinGapExtd, GAP_EXTENDING_PENALTY);
     }
 
