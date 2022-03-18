@@ -185,7 +185,6 @@ MaEditorSelectionController::MaEditorSelectionController(MaEditor* _editor)
     : QObject(_editor), editor(_editor) {
     SAFE_POINT(editor != nullptr, "MAEditor is null!", );
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaEditorSelectionController::handleCollapseModelChange);
-    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MaEditorSelectionController::handleAlignmentChange);
 }
 
 const MaEditorSelection& MaEditorSelectionController::getSelection() const {
