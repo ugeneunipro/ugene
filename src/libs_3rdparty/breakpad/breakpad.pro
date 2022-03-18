@@ -67,7 +67,6 @@ HEADERS += src/client/linux/crash_generation/crash_generation_client.h \
            src/client/linux/minidump_writer/minidump_writer.h \
            src/client/linux/minidump_writer/proc_cpuinfo_reader.h \
            src/common/basictypes.h \
-           src/common/linux/breakpad_getcontext.h \
            src/common/linux/eintr_wrapper.h \
            src/common/linux/elf_gnu_compat.h \
            src/common/linux/elfutils-inl.h \
@@ -77,7 +76,6 @@ HEADERS += src/client/linux/crash_generation/crash_generation_client.h \
            src/common/linux/ignore_ret.h \
            src/common/linux/memory_mapped_file.h \
            src/common/linux/safe_readlink.h \
-           src/common/linux/ucontext_constants.h \
            src/common/memory_range.h \
            src/common/minidump_type_helper.h \
            src/third_party/lss/linux_syscall_support.h
@@ -93,7 +91,6 @@ SOURCES += src/client/linux/crash_generation/crash_generation_client.cc \
            src/client/linux/minidump_writer/linux_dumper.cc \
            src/client/linux/minidump_writer/linux_ptrace_dumper.cc \
            src/client/linux/minidump_writer/minidump_writer.cc \
-           src/common/linux/breakpad_getcontext.S \
            src/common/linux/elfutils.cc \
            src/common/linux/file_id.cc \
            src/common/linux/guid_creator.cc \
