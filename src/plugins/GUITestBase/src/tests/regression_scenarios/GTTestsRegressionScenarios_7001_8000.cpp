@@ -94,8 +94,8 @@
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -612,15 +612,15 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
 
 GUI_TEST_CLASS_DEFINITION(test_7191) {
     /*
-    * 1. Open data/samples/sars.gb
-    * 2. Delete sequence object
-    * 3. Export annotation object
-    * Expected state: there is no errors in the log
-    */
+     * 1. Open data/samples/sars.gb
+     * 2. Delete sequence object
+     * 3. Export annotation object
+     * Expected state: there is no errors in the log
+     */
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "NC_004718");
-    
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
     GTLogTracer lt;
@@ -2299,6 +2299,20 @@ GUI_TEST_CLASS_DEFINITION(test_7539) {
     tooltip = GTUtilsToolTip::getToolTip();
     CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
     CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7546) {
+    // Check that tree or msa with ambiguous names can't be synchronized.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/same_name_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7546.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: UGENE does not crash and Sync button is OFF.
+    QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be not available");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7548) {

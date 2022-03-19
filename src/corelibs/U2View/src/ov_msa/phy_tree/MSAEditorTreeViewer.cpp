@@ -217,13 +217,17 @@ bool MSAEditorTreeViewer::checkTreeAndMsaCanBeSynchronized() const {
     for (const QStringList& namesInGroup : qAsConst(groupStateGuidedByTree)) {
         treeNameList.append(namesInGroup);
     }
+    QSet<QString> treeNameSet = treeNameList.toSet();
+    bool treeHasUniqueNames = treeNameSet.size() == treeNameList.size();
+    CHECK(treeHasUniqueNames, false);  // Tree is ambiguous: there is no straight way to map tree branches to MSA sequences.
 
-    QStringList msaSequenceNameList = editor->getMaObject()->getMsa()->getRowNames();  // The list of sequences names in the MSA.
+    QStringList msaNameList = editor->getMaObject()->getMsa()->getRowNames();  // The list of sequences names in the MSA.
+    QSet<QString> msaNameSet = msaNameList.toSet();
+    bool msaHasUniqueNames = msaNameSet.size() == msaNameList.size();
+    CHECK(msaHasUniqueNames, false);  // MSA is ambiguos: : there is no straight way to map tree branches to MSA sequences.
 
     // Check that 2 name lists are identical.
-    treeNameList.sort();
-    msaSequenceNameList.sort();
-    return treeNameList == msaSequenceNameList;
+    return treeNameSet == msaNameSet;
 }
 
 void MSAEditorTreeViewer::sl_syncModeActionTriggered() {
