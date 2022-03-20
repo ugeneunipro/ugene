@@ -99,7 +99,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_timer()));
 
     exitButton = new QToolButton(this);
-    connect(exitButton, SIGNAL(clicked()), SLOT(sl_showDeleteDialog()));
+    connect(exitButton, &QToolButton::clicked, this, &DotPlotWidget::sl_showDeleteDialog);
     exitButton->setToolTip("Close");
     QIcon exitIcon = QIcon(QString(":dotplot/images/exit.png"));
     exitButton->setIcon(exitIcon);
@@ -109,6 +109,10 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     exitButton->setObjectName("exitButton");
 
     this->setObjectName("dotplot widget");
+}
+
+bool DotPlotWidget::isShowDeleteDialogOnDotPlotDestroying() const {
+    return showDeleteDialogOnDotPlotDestroying;
 }
 
 // init menu items, actions and connect signals
@@ -129,7 +133,7 @@ void DotPlotWidget::initActionsAndSignals() {
 
     deleteDotPlotAction = new QAction(tr("Remove"), this);
     deleteDotPlotAction->setObjectName("Remove");
-    connect(deleteDotPlotAction, SIGNAL(triggered()), SLOT(sl_showDeleteDialog()));
+    connect(deleteDotPlotAction, &QAction::triggered, this, &DotPlotWidget::sl_showDeleteDialog);
 
     filterDotPlotAction = new QAction(tr("Filter Results"), this);
     connect(filterDotPlotAction, SIGNAL(triggered()), SLOT(sl_filter()));
@@ -778,26 +782,21 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 }
 
 // ask user if he wants to save dotplot first
-void DotPlotWidget::sl_showDeleteDialog() {
-    if (deleteDialogWasShownAndNotCancelled) {
-        return;
-    }
-    bool isWidgetSender = qobject_cast<QAction *>(sender()) != nullptr;
+void DotPlotWidget::sl_showDeleteDialog(bool isCancelable) {
     int answer = 0;
-    if (isWidgetSender) {
+    if (isCancelable) {
         answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
     } else {
         answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No);
-    }    
-    bool saveDotPlot;
-
+    }
+    bool saveDotPlot = false;
     switch (answer) {
         case QMessageBox::Cancel:
             return;
 
         case QMessageBox::Yes:
             saveDotPlot = sl_showSaveFileDialog();
-            if (!saveDotPlot && isWidgetSender) {  // cancel button pressed
+            if (!saveDotPlot && isCancelable) {  // cancel button pressed
                 return;
             }
             break;
@@ -805,8 +804,8 @@ void DotPlotWidget::sl_showDeleteDialog() {
         default:
             break;
     }
-    deleteDialogWasShownAndNotCancelled = true;
-    if (isWidgetSender) {
+    showDeleteDialogOnDotPlotDestroying = false;
+    if (isCancelable) {
         emit si_removeDotPlot();
     }
 }

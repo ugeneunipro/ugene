@@ -1514,8 +1514,7 @@ GUI_TEST_CLASS_DEFINITION(test_5421) {
     // 2. Remove sars.gb from project
     // Expected state: Save dialog appeared.
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
-    Runnable *buildDotPlot = new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb");
-    GTUtilsDialog::waitForDialog(os, buildDotPlot);
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));

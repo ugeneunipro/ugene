@@ -89,6 +89,7 @@ public:
     QString getYSequenceName();
 
     void setSequences(U2SequenceObject* seqX, U2SequenceObject* seqY);
+    bool isShowDeleteDialogOnDotPlotDestroying() const;
 
     virtual bool onCloseEvent();
 
@@ -100,7 +101,7 @@ signals:
 public slots:
     bool sl_showSettingsDialog(bool disableLoad = false);
     void sl_filter();
-    void sl_showDeleteDialog();
+    void sl_showDeleteDialog(bool isCancelable = true);
 
 private slots:
     void sl_taskStateChanged();
@@ -168,7 +169,7 @@ private:
     QAction* deleteDotPlotAction;
     QAction* filterDotPlotAction;
     
-    bool deleteDialogWasShownAndNotCancelled = false;
+    bool showDeleteDialogOnDotPlotDestroying = true;
 
     int textSpace;
     static const int rulerNotchSize = 2;
