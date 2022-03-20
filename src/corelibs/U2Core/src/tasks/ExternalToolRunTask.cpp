@@ -71,6 +71,10 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
     }
 }
 
+ExternalToolRunTask::~ExternalToolRunTask() {
+    delete externalToolProcess;
+}
+
 void ExternalToolRunTask::run() {
     if (hasError() || isCanceled()) {
         return;
@@ -99,9 +103,9 @@ void ExternalToolRunTask::run() {
         helper->addOutputListener(listener);
     }
 
-        externalToolProcess->start(pRun.program, pRun.arguments);
+    externalToolProcess->start(pRun.program, pRun.arguments);
     bool started = externalToolProcess->waitForStarted(START_WAIT_MSEC);
-    
+
     if (!started) {
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (tool->isValid()) {
@@ -115,8 +119,13 @@ void ExternalToolRunTask::run() {
     }
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
-                killProcess(externalToolProcess);
+            killProcess(externalToolProcess);
+            externalToolProcess->waitForFinished(10000);
+            if (externalToolProcess->state() == QProcess::Running) {
+                algoLog.info(tr("Unable to cancel tool %1 for 10 seconds. Stop it manually by your OS task manager.").arg(toolName));
+            } else {
                 algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
+            }
             return;
         }
     }

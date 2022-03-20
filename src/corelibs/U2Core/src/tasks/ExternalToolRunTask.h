@@ -39,7 +39,7 @@ class ExternalToolListener;
 
 class U2CORE_EXPORT ProcessRun {
 public:
-    QPointer<QProcess> process;
+    QProcess* process;
     QString program;
     QStringList arguments;
 };
@@ -54,6 +54,7 @@ public:
      * Don't delete logParser, it will be deleted automatically.
      */
     ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser, const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), bool parseOutputFile = false);
+    ~ExternalToolRunTask();
 
     void addOutputListener(ExternalToolListener* outputListener);
 
@@ -85,7 +86,7 @@ private:
     QString outputFile;
     QStringList additionalPaths;
     QMap<QString, QString> additionalEnvVariables;
-    QPointer<QProcess> externalToolProcess;
+    QProcess* externalToolProcess;
     QScopedPointer<ExternalToolRunTaskHelper> helper;
     ExternalToolListener* listener;
     QString additionalProcessToKill;
