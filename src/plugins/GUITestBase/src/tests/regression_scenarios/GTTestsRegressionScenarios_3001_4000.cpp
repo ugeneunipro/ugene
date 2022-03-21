@@ -784,8 +784,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxAlgorithm"));
-    CHECK_SET_ERR(algorithmBox != nullptr, "Cannot find boxAlgorithm widget!");
+    auto algorithmBox = GTWidget::findComboBox(os, "boxAlgorithm");
 
     GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
@@ -1371,7 +1370,7 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
+    auto combo = GTWidget::findComboBox(os, "colorScheme");
     int initialItemsNumber = combo->count();
 
     // 3. Create a new color scheme, accept the preferences dialog.
@@ -1388,7 +1387,7 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
                                                                         << "Custom schemes" << colorSchemeName));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
+    combo = GTWidget::findComboBox(os, "colorScheme");
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
@@ -1402,7 +1401,7 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
                                                                         << "Custom schemes" << colorSchemeName));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
+    combo = GTWidget::findComboBox(os, "colorScheme");
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
 }
 
@@ -1450,8 +1449,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
 
     QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_A1#berezikov");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_A1#berezikov");
-    QToolButton* showDetView = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "show_hide_details_view", toolbar));
-    CHECK_SET_ERR(showDetView != nullptr, "Cannot find show_hide_details_view widget or cast it to QToolButton");
+    auto showDetView = GTWidget::findToolButton(os, "show_hide_details_view", toolbar);
     if (!showDetView->isChecked()) {
         GTWidget::click(os, showDetView);
     }
@@ -1459,8 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION", toolbar));
 
-    QSplitterHandle* splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_det_view_A1#berezikov"));
-    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
+    auto splitterHandle = GTWidget::findSplitterHandle(os, "qt_splithandle_det_view_A1#berezikov");
 
     QWidget* detView = GTWidget::findWidget(os, "render_area_A1#berezikov");
     QSize startSize = detView->size();
@@ -1492,8 +1489,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
     // Hide the chromatogram.
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION"));
 
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "single_sequence_view_splitter"));
-    CHECK_SET_ERR(splitter != nullptr, "Splitter was not found");
+    auto splitter = GTWidget::findSplitter(os, "single_sequence_view_splitter");
     GTSplitter::moveHandle(os, splitter, graphView->height() / 2, 2);
     GTThread::waitForMainThread();
 
@@ -1700,7 +1696,7 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 5));
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
     //    Select different highlighting schemes.
-    QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
+    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, "Gaps");
     //    Current state: the highlighting doesn't work for all sequences except the reference sequence.
 
@@ -1718,7 +1714,7 @@ GUI_TEST_CLASS_DEFINITION(test_3279) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 5));
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
     //    Set "Show distances column" option.
-    QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     //    Expected state: the addition column is shown, it contains distances to the reference sequence.
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
@@ -1916,7 +1912,7 @@ GUI_TEST_CLASS_DEFINITION(test_3313) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 5));
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
     // 4. Check the "Show distances column" option.
-    QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     // 5. Edit the msa fast enough, e.g. insert several gaps somewhere.
 
@@ -2638,8 +2634,7 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
     GTKeyboardDriver::keySequence("Montana_montana");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
+    auto combo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget* exportButton = GTWidget::findWidget(os, "exportHighlightning");
@@ -2692,8 +2687,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
     GTKeyboardDriver::keySequence("Montana_montana");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
+    auto combo = GTWidget::findComboBox(os, "highlightingScheme"));
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget* exportButton = GTWidget::findWidget(os, "exportHighlightning");
@@ -2849,7 +2843,7 @@ GUI_TEST_CLASS_DEFINITION(test_3473) {
 */
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QToolButton* a = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "CircularViewAction"));
+    auto a = GTWidget::findToolButton(os, "CircularViewAction");
     CHECK_SET_ERR(a->toolTip() == "Show circular view", QString("Unexpected tooltip: %1, must be %2").arg(a->toolTip()).arg("Show circular view"));
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
     CHECK_SET_ERR(a->toolTip() == "Remove circular view", QString("Unexpected tooltip: %1, must be %2").arg(a->toolTip()).arg("Remove circular view"));
@@ -3015,8 +3009,7 @@ GUI_TEST_CLASS_DEFINITION(test_3504) {
     GTWidget::click(os, tree);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QScrollBar* scroll = treeView->horizontalScrollBar();
     CHECK_SET_ERR(scroll != nullptr, "TreeView does not have a horisontal scroll bar");
     CHECK_SET_ERR(scroll->isVisible(), "Horisontal scroll bar is hidden");
@@ -3505,8 +3498,7 @@ GUI_TEST_CLASS_DEFINITION(test_3609_1) {
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "5000..199950"));
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
-    QLineEdit* goToPosLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "go_to_pos_line_edit"));
-    CHECK_SET_ERR(goToPosLineEdit != nullptr, "GoTo lineEdit is NULL");
+    auto goToPosLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit");
     bool inputResult = GTLineEdit::tryToSetText(os, goToPosLineEdit, "50000");
     CHECK_SET_ERR(inputResult == false, "Invalid goToPosition is accepted");
 
@@ -3536,8 +3528,7 @@ GUI_TEST_CLASS_DEFINITION(test_3609_2) {
     GTUtilsDialog::waitForDialog(os, new InsertSequenceFiller(os, "AAACCCTTTGGGAAA"));
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
-    QLineEdit* goToPosLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "go_to_pos_line_edit"));
-    CHECK_SET_ERR(goToPosLineEdit != nullptr, "GoTo lineEdit is NULL");
+    auto goToPosLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit");
 
     GTLineEdit::setText(os, goToPosLineEdit, "199960");
 

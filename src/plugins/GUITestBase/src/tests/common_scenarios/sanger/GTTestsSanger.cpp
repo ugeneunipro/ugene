@@ -80,8 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
-            QLineEdit* reference = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
-            CHECK_SET_ERR(reference, "referenceLineEdit is NULL");
+            auto reference = GTWidget::findLineEdit(os, "referenceLineEdit", dialog);
             GTLineEdit::setText(os, reference, settings.referenceUrl);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));

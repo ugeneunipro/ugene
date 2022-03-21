@@ -624,8 +624,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     class MainThreadScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-            QScrollArea* scroll = qobject_cast<QScrollArea*>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
-            CHECK_SET_ERR(scroll != nullptr, "annotated_DNA_scrollarea not found");
+            auto scroll = GTWidget::findScrollArea(os, "annotated_DNA_scrollarea");
             int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
             for (int i = 0; i < seqNum; i++) {
                 ADVSingleSequenceWidget* seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, i);
@@ -993,8 +992,7 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeWidget* tree = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "tree", dialog));
-            CHECK_SET_ERR(nullptr != tree, "tree widger not found");
+            auto tree = GTWidget::findTreeWidget(os, "tree", dialog);
 
             QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
             foreach (QTreeWidgetItem* item, items) {
@@ -1255,7 +1253,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
 
             QWidget* w = GTWidget::getActiveModalWidget(os);
 
-            QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table", w));
+            auto table = GTWidget::findTableView(os, "table", w);
             GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 0));
             GTMouseDriver::click();
 
@@ -1271,12 +1269,11 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
 
     GTUtilsWorkflowDesigner::click(os, "Sequence Marker");
 
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "markerTable"));
+    auto table = GTWidget::findTableView(os, "markerTable");
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 0));
     GTMouseDriver::click();
 
-    QToolButton* editButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "editButton"));
-    CHECK_SET_ERR(editButton != nullptr, "editButton not found!");
+    auto editButton = GTWidget::findToolButton(os, "editButton");
 
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, editButton);
@@ -1603,7 +1600,7 @@ GUI_TEST_CLASS_DEFINITION(test_1152) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::ControlModifier);
 
     // Expected state : 1 pattern is found
-    QLabel* resultLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto resultLabel = GTWidget::findLabel(os, "resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/1328", "Unexpected find algorithm result count");
 }
 
@@ -1930,8 +1927,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_1) {
             QWidget* addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
             GTWidget::click(os, addRefButton);
 
-            QLineEdit* resultFileNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "resultFileNameEdit", dialog));
-            CHECK_SET_ERR(resultFileNameEdit != nullptr, "resultFileNameEdit is NULL");
+            auto resultFileNameEdit = GTWidget::findLineEdit(os, "resultFileNameEdit", dialog);
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_1.sam"), "Incorrect output file");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -1954,9 +1950,8 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QCheckBox* samBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "samBox", dialog));
+            auto samBox = GTWidget::findCheckBox(os, "samBox", dialog);
             CHECK_OP(os, );
-            CHECK_SET_ERR(samBox != nullptr, "samBox is NULL");
             GTCheckBox::setChecked(os, samBox, false);
             CHECK_OP(os, );
 
@@ -1969,8 +1964,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
             GTWidget::click(os, setResultFileNameButton);
             CHECK_OP(os, );
 
-            QLineEdit* resultFileNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "resultFileNameEdit", dialog));
-            CHECK_SET_ERR(resultFileNameEdit != nullptr, "resultFileNameEdit is NULL");
+            auto resultFileNameEdit = GTWidget::findLineEdit(os, "resultFileNameEdit", dialog);
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_2.ugenedb"), "Incorrect output file");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -2171,7 +2165,7 @@ GUI_TEST_CLASS_DEFINITION(test_1204) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) {
-            QSpinBox* maxResultsSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "quantitySpinBox"));
+            auto maxResultsSpinBox = GTWidget::findSpinBox(os, "quantitySpinBox");
             GTSpinBox::setValue(os, maxResultsSpinBox, 5000, GTGlobals::UseKeyBoard);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
@@ -2451,8 +2445,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1245", GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
 
-            QLineEdit* lineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit"));
-            CHECK_SET_ERR(lineEdit != nullptr, "fileNameEdit not found");
+            auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit");
             CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extension");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -2711,7 +2704,7 @@ GUI_TEST_CLASS_DEFINITION(test_1259) {
     GTKeyboardDriver::keySequence("H");
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
-    QTextEdit* textEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "textPattern"));
+    auto textEdit = GTWidget::findTextEdit(os, "textPattern");
     QString text = textEdit->toPlainText();
     CHECK_SET_ERR(text == ">S\n", "Wrong pattern: " + text);
 }
@@ -2906,10 +2899,10 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algorithmBox", dialog));
+            auto algorithmBox = GTWidget::findComboBox(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
-            QLineEdit* saveLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
+            auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1295.nwk");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3158,8 +3151,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            CHECK_SET_ERR(nullptr != algorithmBox, "algorithmBox is NULL");
+            auto algorithmBox = GTWidget::findComboBox(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3755,12 +3747,10 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
-    QLabel* hint = qobject_cast<QLabel*>(GTWidget::findWidget(os, "HINT_HIGHLIGHTNING"));
-    CHECK_SET_ERR(hint != nullptr, "Hint not found");
+    auto hint = GTWidget::findLabel(os, "HINT_HIGHLIGHTNING");
     CHECK_SET_ERR(!hint->text().isEmpty(), "Hint is empty, but must not be");
 
-    QComboBox* highlightingBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "READS_HIGHLIGHTNING_COMBO"));
-    CHECK_SET_ERR(highlightingBox != nullptr, "READS_HIGHLIGHTNING_COMBO not found");
+    auto highlightingBox = GTWidget::findComboBox(os, "READS_HIGHLIGHTNING_COMBO");
     GTComboBox::selectItemByText(os, highlightingBox, "Nucleotide");
     CHECK_SET_ERR(hint->text().isEmpty(), "Hint is not empty, but must be");
 
@@ -3772,10 +3762,10 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
     class ExportSeqsAsMsaScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QCheckBox* addToProjectBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectBox", dialog));
+            auto addToProjectBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
             CHECK_SET_ERR(addToProjectBox->isChecked(), "'Add document to project' checkbox is not set");
 
-            QLineEdit* lineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
+            auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, lineEdit, sandBoxDir + "test_1393.aln");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3993,8 +3983,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     GTUtilsWorkflowDesigner::click(os, "Read HMM2 Profile");
 
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
 
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 0));
     GTMouseDriver::click();
@@ -4102,8 +4091,7 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Sequence Marker");
 
-    QToolButton* addButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "addButton"));
-    CHECK_SET_ERR(addButton != nullptr, "AddButton not found!");
+    auto addButton = GTWidget::findToolButton(os, "addButton");
 
     class OkClicker : public Filler {
     public:
@@ -4117,8 +4105,7 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, addButton);
 
-    QTableView* groupTable = qobject_cast<QTableView*>(GTWidget::findWidget(os, "markerTable"));
-    CHECK_SET_ERR(groupTable != nullptr, "MarkerTable not found");
+    auto groupTable = GTWidget::findTableView(os, "markerTable");
     for (int i = 1; i < 3; i++) {
         GTUtilsDialog::waitForDialog(os, new OkClicker(os));
         GTWidget::click(os, addButton);
@@ -4145,7 +4132,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxAlgorithm"));
+    auto algorithmBox = GTWidget::findComboBox(os, "boxAlgorithm");
     GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
@@ -4156,11 +4143,11 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
     GTKeyboardDriver::keySequence("TGAAGGAAAAAATGCT");
 
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart")), "1");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd")), "1000");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), "1");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), "1000");
 
     // Expected state : 1 pattern is found
-    QLabel* resultLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto resultLabel = GTWidget::findLabel(os, "resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/1", "Unexpected find algorithm result count");
 }
 
@@ -4180,7 +4167,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxAlgorithm"));
+    auto algorithmBox = GTWidget::findComboBox(os, "boxAlgorithm");
     GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
@@ -4192,11 +4179,11 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTKeyboardDriver::keySequence(" comment");
 
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart")), "1");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd")), "1000");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), "1");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), "1000");
 
     // Expected state : 1 pattern is found
-    QLabel* resultLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto resultLabel = GTWidget::findLabel(os, "resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/1", "Unexpected find algorithm result count");
 }
 
@@ -4972,7 +4959,7 @@ GUI_TEST_CLASS_DEFINITION(test_1531) {
 
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
-    QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
 
     QWidget* warningMessage = GTWidget::findWidget(os, "refSeqWarning");
@@ -5458,10 +5445,10 @@ GUI_TEST_CLASS_DEFINITION(test_1597) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTKeyboardDriver::keySequence("ACAATGTATGCCTCTTGGTTTCTTCTATC");
 
-    QLabel* obj = qobject_cast<QLabel*>(GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
+    auto obj = GTWidget::findLabel(os, "ArrowHeader_Save annotation(s) to");
     GTWidget::click(os, obj);
 
-    QRadioButton* newTable = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbCreateNewTable"));
+    auto newTable = GTWidget::findRadioButton(os, "rbCreateNewTable");
     GTWidget::click(os, newTable);
 
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
@@ -6027,8 +6014,7 @@ GUI_TEST_CLASS_DEFINITION(test_1653) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
-    QSpinBox* spin = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinBoxMatch"));
-    CHECK_SET_ERR(spin != nullptr, "spinBoxMatch not found!");
+    auto spin = GTWidget::findSpinBox(os, "spinBoxMatch"));
     CHECK_SET_ERR(spin->isHidden(), "Warning spinbox is unexpectedly visible");
 }
 
@@ -6127,11 +6113,11 @@ GUI_TEST_CLASS_DEFINITION(test_1661) {
 
     // 4. Use settings : Region - custom region; 1 - 10000.
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart")), "1");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd")), "10000");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), "1");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), "10000");
 
     // Expected state : nothing found
-    QLabel* resultLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "resultLabel"));
+    auto resultLabel = GTWidget::findLabel(os, "resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm result count");
 
     // 5. Use settings : Region - Whole sequence.
@@ -6239,9 +6225,9 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-8, 8));
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
-    QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    QComboBox* algoCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
+    auto algoCombo = GTWidget::findComboBox(os, "algoComboBox");
     GTComboBox::selectItemByText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
     CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
@@ -6653,14 +6639,14 @@ GUI_TEST_CLASS_DEFINITION(test_1687) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
 
     // 3. Be sure here is no reference sequence selected.
-    QLineEdit* refSeqEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit"));
+    auto refSeqEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
     CHECK_SET_ERR(refSeqEdit->text().isEmpty(), "Unexpected reference sequence in MSA");
 
-    QLabel* refSeqWarning = qobject_cast<QLabel*>(GTWidget::findWidget(os, "refSeqWarning"));
+    auto refSeqWarning = GTWidget::findLabel(os, "refSeqWarning");
     CHECK_SET_ERR(refSeqWarning->isHidden(), "Warning label is unexpectedly visible");
 
     // 4. Set 'Set distance column' checked
-    QCheckBox* check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto check = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, check);
 
     // Expected state : hint with green text appears at the bottom of the tab.
@@ -6964,7 +6950,7 @@ GUI_TEST_CLASS_DEFINITION(test_1731) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 5));
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
-    QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     GTUtilsTaskTreeView::waitTaskFinished(os, 200000);
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
@@ -7098,7 +7084,7 @@ GUI_TEST_CLASS_DEFINITION(test_1738) {
     GTWidget::click(os, GTAction::button(os, "Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* timeLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
+    auto timeLabel = GTWidget::findLabel(os, "timeLabel", GTUtilsDashboard::getDashboard(os));
     CHECK_SET_ERR(timeLabel->text().contains("00:00:0"), "Workflow is not stopped. Execution time is > 10 seconds");
 }
 

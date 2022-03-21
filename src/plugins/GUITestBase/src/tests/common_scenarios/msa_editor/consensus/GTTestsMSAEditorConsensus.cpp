@@ -53,8 +53,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "ClustalW");
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "              ");

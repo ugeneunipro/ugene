@@ -458,7 +458,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     GTUtilsProjectTreeView::openView(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLineEdit* nameFilterEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterEdit"));
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, "BBBB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -930,8 +930,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         }
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "shortReadsTable", dialog));
-            CHECK_SET_ERR(treeWidget != nullptr, "Tree widget is NULL");
+            auto treeWidget = GTWidget::findTreeWidget(os, "shortReadsTable", dialog);
             QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
             QTreeWidgetItem* firstItem = treeItems.first();
             QString path = firstItem->text(0);

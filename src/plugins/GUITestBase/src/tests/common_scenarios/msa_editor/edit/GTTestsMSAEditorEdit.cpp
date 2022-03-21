@@ -716,12 +716,10 @@ static void test_13(HI::GUITestOpStatus& os, int comboVal, int spinVal, const QS
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByIndex(os, consensusCombo, comboVal);
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, spinVal, GTGlobals::UseKeyBoard);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "Copy consensus"}, GTGlobals::UseMouse));
