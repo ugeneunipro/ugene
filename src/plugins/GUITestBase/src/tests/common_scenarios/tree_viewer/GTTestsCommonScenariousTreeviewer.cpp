@@ -152,7 +152,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     // Expected state: Phylogenetic tree appears
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
 
     // 4. Remove document "COI.nwk" from project view.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.nwk"));
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     // Expected state: Phylogenetic tree appears
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
 
     // 4. Remove document "COI.nwk" from project view.
     // GTUtilsDialog::waitForDialog(os,new MessageBoxDialogFiller(os,QMessageBox::No));
@@ -892,7 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTWidget::click(os, openButton);
 
     // Expected state: tree view has appeared together with the alignment
-    auto treeView = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 
     // 5. Close the tree view
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -919,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTWidget::click(os, buildButton);
 
     // Expected state: a new file with tree has been created and has appeared along with the alignment
-    treeView = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {

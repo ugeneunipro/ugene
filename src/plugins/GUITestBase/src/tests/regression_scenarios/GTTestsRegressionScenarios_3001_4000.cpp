@@ -1457,7 +1457,8 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION", toolbar));
 
-    auto splitterHandle = GTWidget::findSplitterHandle(os, "qt_splithandle_det_view_A1#berezikov");
+    QSplitterHandle* splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_det_view_A1#berezikov"));
+    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
 
     QWidget* detView = GTWidget::findWidget(os, "render_area_A1#berezikov");
     QSize startSize = detView->size();
@@ -2687,7 +2688,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
     GTKeyboardDriver::keySequence("Montana_montana");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
-    auto combo = GTWidget::findComboBox(os, "highlightingScheme"));
+    auto combo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget* exportButton = GTWidget::findWidget(os, "exportHighlightning");
@@ -4011,7 +4012,7 @@ GUI_TEST_CLASS_DEFINITION(test_3658) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Hide scripting options"}));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
     //    Expected state: scripting column is hidden
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
+    auto table = GTWidget::findTableView(os, "table");
     int count = table->model()->columnCount();
     CHECK_SET_ERR(count == 2, QString("wrong columns number. expected 2, actual: %1").arg(count));
 }
@@ -4481,7 +4482,7 @@ GUI_TEST_CLASS_DEFINITION(test_3755) {
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Select different highlighting schemes.
-    QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
+    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
     QWidget* w = GTWidget::findWidget(os, "thresholdSlider");
     QSlider* slider = qobject_cast<QSlider*>(w);
@@ -4844,12 +4845,12 @@ GUI_TEST_CLASS_DEFINITION(test_3817) {
 
     GTUtilsOptionPanelSequenceView::openSearchInShowHideWidget(os);
 
-    QComboBox* boxRegion = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "boxRegion"));
+    auto boxRegion = GTWidget::findComboBox(os, "boxRegion");
 
     GTComboBox::selectItemByText(os, boxRegion, "Custom region");
 
-    QLineEdit* editStart = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart"));
-    QLineEdit* editEnd = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd"));
+    auto editStart = GTWidget::findLineEdit(os, "editStart");
+    auto editEnd = GTWidget::findLineEdit(os, "editEnd");
 
     GTLineEdit::setText(os, editStart, "123");
     GTLineEdit::setText(os, editEnd, "1000");
@@ -4895,8 +4896,7 @@ GUI_TEST_CLASS_DEFINITION(test_3829) {
     class scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QAbstractButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(okButton != nullptr, "okButton is NULL");
             //    Agree with warning.
@@ -5028,7 +5028,7 @@ GUI_TEST_CLASS_DEFINITION(test_3868) {
     GTMouseDriver::moveTo(GTUtilsAnnotHighlightingTreeView::getItemCenter(os, "rep_origin"));
     GTMouseDriver::click();
 
-    QLineEdit* qualifiersEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editQualifiers"));
+    auto qualifiersEdit = GTWidget::findLineEdit(os, "editQualifiers");
     CHECK_SET_ERR(qualifiersEdit->text().contains("label"), "Label must be shown in annotation widget");
 }
 
@@ -5525,7 +5525,7 @@ GUI_TEST_CLASS_DEFINITION(test_3994) {
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Select different highlighting schemes.
-    QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
+    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
     QWidget* w = GTWidget::findWidget(os, "thresholdLessRb");
     GTRadioButton::click(os, qobject_cast<QRadioButton*>(w));

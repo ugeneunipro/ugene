@@ -1733,8 +1733,7 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* pushButton = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(pushButton != nullptr, "pushButton is NULL");
 
@@ -1864,7 +1863,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox* maxDistanceBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "maxDistBox", dialog));
+            auto maxDistanceBox = GTWidget::findSpinBox(os, "maxDistBox", dialog);
             GTSpinBox::checkLimits(os, maxDistanceBox, 0, 1000000);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2831,7 +2830,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
 
     // 2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
+    auto colorScheme = GTWidget::findComboBox(os, "colorScheme");
     GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
     // Zoom in multiple times to make chars bigger. (Do not zoom to max because it will move some chars out of the screen on Windows agents).
@@ -2879,7 +2878,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
 
     // 2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
+    auto colorScheme = GTWidget::findComboBox(os, "colorScheme");
     GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
     // Zoom to max.
@@ -3011,8 +3010,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 3. Skip the first page
-            QRadioButton* rbIntegratedTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
-            CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
+            auto rbIntegratedTool = GTWidget::findRadioButton(os, "rbIntegratedTool", dialog);
 
             GTRadioButton::click(os, rbIntegratedTool);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -3026,8 +3024,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
                 QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
                 CHECK_SET_ERR(nullptr != add, "Add button not found");
 
-                QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, dataTableNames[i]));
-                CHECK_SET_ERR(nullptr != table, "QTableView not found");
+                auto table = GTWidget::findTableView(os, dataTableNames[i]);
 
                 GTWidget::click(os, add);
                 GTWidget::click(os, add);
@@ -3071,8 +3068,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 3. Skip the first page
-            QRadioButton* rbIntegratedTool = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
-            CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
+            auto rbIntegratedTool = GTWidget::findRadioButton(os, "rbIntegratedTool", dialog);
 
             GTRadioButton::click(os, rbIntegratedTool);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -3086,8 +3082,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
                 QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
                 CHECK_SET_ERR(nullptr != add, "Add button not found");
 
-                QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, dataTableNames[i]));
-                CHECK_SET_ERR(nullptr != table, "QTableView not found");
+                auto table = GTWidget::findTableView(os, dataTableNames[i]);
 
                 QWidget* del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
                 CHECK_SET_ERR(nullptr != del, "Delete button not found");
@@ -3669,7 +3664,7 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
-    QComboBox* annsComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "annsComboBox"));
+    auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3804,8 +3799,7 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
 
     // 3. The "Copy" button is disabled.
-    QToolButton* copyButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "copyButton"));
-    CHECK_SET_ERR(copyButton != nullptr, "copyButton not found");
+    auto copyButton = GTWidget::findToolButton(os, "copyButton");
     CHECK_SET_ERR(!copyButton->isEnabled(), "copyButton is unexpectedly enabled");
 
     // 4. Select any region and press ctrl+c
@@ -4748,8 +4742,7 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QTreeWidget* tree = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "tree"));
-            CHECK_SET_ERR(tree, "tree widget not found");
+            auto tree = GTWidget::findTreeWidget(os, "tree");
 
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));
 
@@ -5426,12 +5419,10 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
     // Set "Sort by" as "Name" and "Sort order" as "Ascending"
-    QComboBox* sortByCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "sortByComboBox"));
-    CHECK_SET_ERR(sortByCombo != nullptr, "sortByCombo is NULL");
+    auto sortByCombo = GTWidget::findComboBox(os, "sortByComboBox");
     GTComboBox::selectItemByText(os, sortByCombo, "Name");
 
-    QComboBox* sortOrderCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "sortOrderComboBox"));
-    CHECK_SET_ERR(sortOrderCombo != nullptr, "sortOrderCombo is NULL");
+    auto sortOrderCombo = GTWidget::findComboBox(os, "sortOrderComboBox");
     GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     // Press "Sort" button
@@ -5516,7 +5507,7 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
     QLabel* detailsLinkLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "detailsLinkLabel"));
     CHECK_SET_ERR(detailsLinkLabel->isHidden(), "detailsLinkLabel unexpectedly shown");
 
-    QLabel* warningLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "warningLabel"));
+    auto warningLabel = GTWidget::findLabel(os, "warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
 }
 
@@ -5844,8 +5835,7 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* copyType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
 
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 
@@ -6226,12 +6216,10 @@ GUI_TEST_CLASS_DEFINITION(test_6959) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* sortByCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "sortByComboBox"));
-    CHECK_SET_ERR(sortByCombo != nullptr, "sortByCombo is NULL");
+    auto sortByCombo = GTWidget::findComboBox(os, "sortByComboBox");
     GTComboBox::selectItemByText(os, sortByCombo, "Name");
 
-    QComboBox* sortOrderCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "sortOrderComboBox"));
-    CHECK_SET_ERR(sortOrderCombo != nullptr, "sortOrderCombo is NULL");
+    auto sortOrderCombo = GTWidget::findComboBox(os, "sortOrderComboBox");
     GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));

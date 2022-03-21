@@ -2366,7 +2366,7 @@ GUI_TEST_CLASS_DEFINITION(test_2404) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
-    auto sa = GTWidget::findWidget(os, "OP_SCROLL_AREA");
+    auto sa = GTWidget::findScrollArea(os, "OP_SCROLL_AREA");
     QScrollBar* scroll = sa->verticalScrollBar();
     CHECK_SET_ERR(scroll != nullptr, "Scroll bar is NULL");
     CHECK_SET_ERR(scroll->isVisible(), "Scroll bar is invisible!");

@@ -210,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
-    auto table = GTWidget::findTableView(os, "table");
+    GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
     // GTGlobals::sleep(60000);

@@ -2937,7 +2937,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
     //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
-    // GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
     GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable"));
 
     //    Expected state:

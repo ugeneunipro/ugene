@@ -6014,7 +6014,7 @@ GUI_TEST_CLASS_DEFINITION(test_1653) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
-    auto spin = GTWidget::findSpinBox(os, "spinBoxMatch"));
+    auto spin = GTWidget::findSpinBox(os, "spinBoxMatch");
     CHECK_SET_ERR(spin->isHidden(), "Warning spinbox is unexpectedly visible");
 }
 

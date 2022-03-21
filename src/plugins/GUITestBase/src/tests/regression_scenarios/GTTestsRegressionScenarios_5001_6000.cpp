@@ -308,8 +308,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox* memSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "memBox"));
-            CHECK_SET_ERR(memSpinBox != nullptr, "No memorySpinBox");
+            auto memSpinBox = GTWidget::findSpinBox(os, "memBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -353,8 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox* memSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "memBox"));
-            CHECK_SET_ERR(memSpinBox != nullptr, "No memorySpinBox");
+            auto memSpinBox = GTWidget::findSpinBox(os, "memBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -387,7 +385,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_5029) {
     GTMenu::clickMainMenuItem(os, {"Settings", "Plugins..."});
-    QTreeWidget* tree = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "treeWidget"));
+    auto tree = GTWidget::findTreeWidget(os, "treeWidget");
     int numPlugins = tree->topLevelItemCount();
     CHECK_SET_ERR(numPlugins > 10, QString("Not all plugins were loaded. Loaded %1 plugins").arg(numPlugins));
 }
@@ -399,8 +397,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
 
     // 2. Set the consensus type to "Levitsky".
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     // 3. Add an additional sequence from file : "test/_common_data/fasta/amino_ext.fa".
@@ -875,7 +872,7 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
             GTRadioButton::click(os, "radioTranslation", dialog);
 
             // 2.1 Choose Classic algorithm
-            QComboBox* comboRealization = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "comboRealization", dialog));
+            auto comboRealization = GTWidget::findComboBox(os, "comboRealization", dialog);
             const int swRealizationIndex = comboRealization->findText("Classic 2");
             GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
@@ -1933,7 +1930,7 @@ GUI_TEST_CLASS_DEFINITION(test_5495) {
             GTLineEdit::setText(os, startEdit, QString::number(321));
             GTLineEdit::setText(os, endEdit, QString::number(123));
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox");
             QPushButton* goButton = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(goButton != nullptr, "Go button not found");
             CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
@@ -2696,8 +2693,7 @@ GUI_TEST_CLASS_DEFINITION(test_5663) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsNotifications::waitForNotification(os, false);
     QWidget* taskReportWindow = GTUtilsMdi::findWindow(os, "Task report [Download remote documents]");
-    QTextEdit* reportEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", taskReportWindow));
-    CHECK_SET_ERR(reportEdit != nullptr, "reportTextEdit is not found");
+    auto reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", taskReportWindow);
     QString html = reportEdit->toHtml();
     CHECK_SET_ERR(html.contains("Document was successfully downloaded"), "Report contains expected text");
 }
@@ -4785,12 +4781,10 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* startLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", dialog));
-            // GT_CHECK(startLineEdit != NULL, "Start lineEdit is NULL");
+            auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", dialog);
             GTLineEdit::setText(os, startLineEdit, "10");
 
-            QLineEdit* endLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", dialog));
-            // GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
+            auto endLineEdit = GTWidget::findLineEdit(os, "end_edit_line", dialog);
             GTLineEdit::setText(os, endLineEdit, "50");
 
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
