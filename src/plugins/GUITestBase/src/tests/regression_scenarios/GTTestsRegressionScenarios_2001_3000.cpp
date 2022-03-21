@@ -1444,7 +1444,7 @@ GUI_TEST_CLASS_DEFINITION(test_2314) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2316) {
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "samples/../workflow_samples/Alignment", "basic_align.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1501,7 +1501,7 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
 GUI_TEST_CLASS_DEFINITION(test_2270) {
     // 1. Open file "data/cmdline/snp.uwl"
     // Ecpected state: scheme opened in WD without problems
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "cmdline/", "snp.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4257,7 +4257,6 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/translateTest.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -42,8 +42,7 @@ using namespace HI;
 #define GT_METHOD_NAME "getNodes"
 QList<GraphicsButtonItem*> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus& os) {
     QList<GraphicsButtonItem*> result;
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    GT_CHECK_RESULT(treeView, "treeView not found", result);
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     const QList<QGraphicsItem*> itemList = treeView->scene()->items();
     for (QGraphicsItem* item : qAsConst(itemList)) {
         auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item);
@@ -85,7 +84,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatu
 QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
     if (treeView == nullptr) {
-        treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+        treeView = GTWidget::findGraphicsView(os, "treeView");
     }
     GT_CHECK_RESULT(treeView, "treeView not found", result);
     QList<QGraphicsItem*> list = treeView->scene()->items();
@@ -119,7 +118,7 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleLabels(HI::GUITestOpSt
 QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getDistances(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
     if (treeView == nullptr) {
-        treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+        treeView = GTWidget::findGraphicsView(os, "treeView");
     }
     GT_CHECK_RESULT(treeView, "treeView not found", result);
     QList<QGraphicsItem*> list = treeView->scene()->items();
@@ -183,8 +182,7 @@ QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getGlobalCenterCoord"
 QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item) {
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    GT_CHECK_RESULT(treeView, "treeView not found", QPoint());
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
 
     QPointF sceneCoord = item->mapToScene(item->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);

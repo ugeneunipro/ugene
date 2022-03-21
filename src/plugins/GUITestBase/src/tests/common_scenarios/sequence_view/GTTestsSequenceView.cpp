@@ -58,6 +58,7 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
@@ -462,6 +463,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     files << testDir + "_common_data/fasta/DNA.fa";
     files << testDir + "_common_data/fasta/DNA_1_seq.fa";
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Merge;
+    GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
     GTUtilsProject::openFiles(os, files);
 
     int length = GTUtilsSequenceView::getLengthOfSequence(os);

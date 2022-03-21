@@ -2449,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
 
     GTFileDialogUtils* ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc");
     GTUtilsDialog::waitForDialog(os, ob);
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
 
     QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
     GTWidget::click(os, button);
@@ -2991,17 +2991,17 @@ GUI_TEST_CLASS_DEFINITION(test_0981_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Runnable* filler1 = new InsertSequenceFiller(os,
-                                                 "qweqwea",
-                                                 InsertSequenceFiller::Resize,
-                                                 1,
-                                                 "",
-                                                 InsertSequenceFiller::FASTA,
-                                                 false,
-                                                 false,
-                                                 GTGlobals::UseMouse,
-                                                 true);
-    GTUtilsDialog::waitForDialog(os, filler1);
+    GTUtilsDialog::waitForDialog(os,
+                                 new InsertSequenceFiller(os,
+                                                          "qweqwea",
+                                                          InsertSequenceFiller::Resize,
+                                                          1,
+                                                          "",
+                                                          InsertSequenceFiller::FASTA,
+                                                          false,
+                                                          false,
+                                                          GTGlobals::UseMouse,
+                                                          true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 }
 
@@ -3013,7 +3013,9 @@ GUI_TEST_CLASS_DEFINITION(test_0981_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
     Runnable* filler1 = new ReplaceSubsequenceDialogFiller(os,
-                                                           "qweqwea");
+                                                           "qweqwea",
+                                                           false,
+                                                           true);
     GTUtilsDialog::waitForDialog(os, filler1);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
@@ -3200,7 +3202,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
 
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            GTUtilsDialog::waitForDialog(os, new LicenseAgreementDialogFiller(os));
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), algorithm);
 
             //    4. Press "Start prediction".

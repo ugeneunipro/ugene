@@ -1576,8 +1576,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Select character â„–3 in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
-    QLabel* posLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Position"));
-    CHECK_SET_ERR(posLabel, "Position label not found");
+    auto posLabel = GTWidget::findLabel(os, "Position");
     CHECK_SET_ERR(posLabel->text() == "Pos 3 / 14", "Expected text: Pos 3/14. Found: " + posLabel->text());
     // Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
@@ -1599,8 +1598,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {  // DIFFERENCE: Column label is tested
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Select character â„–3 in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
-    QLabel* colLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Column"));
-    CHECK_SET_ERR(colLabel, "Column label not found");
+    auto colLabel = GTWidget::findLabel(os, "Column");
     CHECK_SET_ERR(colLabel->text() == "Col 3 / 14", "Expected text: Col 3/14. Found: " + colLabel->text());
     // Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
@@ -2238,10 +2236,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2260,8 +2257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: tree appeared
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036_2) {
@@ -2276,10 +2272,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036_2) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2295,10 +2290,9 @@ GUI_TEST_CLASS_DEFINITION(test_0036_3) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
+    //     Distance matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2314,12 +2308,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2335,12 +2328,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037_1) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2356,12 +2348,11 @@ GUI_TEST_CLASS_DEFINITION(test_0037_2) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: checked
     //     Coefficient of variation: 0.50(50.00/99.00)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2378,15 +2369,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: unchecked
-    //     Bootatraping and consensus tree: checked
+    //     Bootstrapping and consensus tree: checked
     //     Number of replications: 100
     //     Seed: 5
     //     Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2403,15 +2393,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
-    //     Distanse matrix model: F84
+    //     Distance matrix model: F84
     //     Gamma distributed rates across sites: unchecked
-    //     Bootatraping and consensus tree: checked
+    //     Bootstrapping and consensus tree: checked
     //     Number of replications: 100
     //     Seed: 5
     //     Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //     Press "Build"
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2437,8 +2426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_2) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2462,8 +2450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_3) {
     //     Press "Build"
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2488,8 +2475,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_4) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
     // Expected state: tree appeared
 }
 
@@ -2985,8 +2971,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* copyType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
 
     GTComboBox::selectItemByText(os, copyType, "Mega");
 
@@ -3013,8 +2998,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* copyType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
 
     GTComboBox::selectItemByText(os, copyType, "CLUSTALW");
 
@@ -3076,8 +3060,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* copyType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
 
     GTComboBox::selectItemByText(os, copyType, "Rich text (HTML)");
 

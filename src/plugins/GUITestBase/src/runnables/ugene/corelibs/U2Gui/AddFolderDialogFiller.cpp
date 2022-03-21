@@ -40,8 +40,7 @@ AddFolderDialogFiller::AddFolderDialogFiller(HI::GUITestOpStatus& os, const QStr
 void AddFolderDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit", dialog));
-    GT_CHECK(nameEdit, "Folder name line edit is invalid");
+    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
     GTLineEdit::setText(os, nameEdit, folderName);
 
     switch (acceptMethod) {

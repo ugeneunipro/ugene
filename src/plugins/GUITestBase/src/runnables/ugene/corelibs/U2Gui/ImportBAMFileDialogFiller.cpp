@@ -61,13 +61,11 @@ void ImportBAMFileFiller::commonScenario() {
     }
 
     if (!destinationUrl.isEmpty()) {
-        QLineEdit* destinationUrlEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "destinationUrlEdit", dialog));
-        GT_CHECK(destinationUrlEdit, "destinationUrlEdit not found");
+        auto destinationUrlEdit = GTWidget::findLineEdit(os, "destinationUrlEdit", dialog);
         GTLineEdit::setText(os, destinationUrlEdit, destinationUrl);
     }
 
-    QCheckBox* importUnmapped = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "importUnmappedBox", dialog));
-    GT_CHECK(importUnmapped, "ImportUnmappedReads checkbox is NULL");
+    auto importUnmapped = GTWidget::findCheckBox(os, "importUnmappedBox", dialog);
     if (importUnmapped->isChecked() != importUnmappedReads) {
         GTCheckBox::setChecked(os, importUnmapped, importUnmapped);
     }

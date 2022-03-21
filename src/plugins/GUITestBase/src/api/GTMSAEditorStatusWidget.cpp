@@ -39,8 +39,7 @@ QWidget* GTMSAEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "length"
 int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus& os, QWidget* w) {
-    QLabel* label = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Column", w));
-    GT_CHECK_RESULT(label != nullptr, "label is NULL", -1);
+    auto label = GTWidget::findLabel(os, "Column", w);
 
     QString labelText = label->text();
     QString lengthString = labelText.section('/', -1, -1);

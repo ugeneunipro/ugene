@@ -232,9 +232,6 @@ void TreeViewer::setupCameraMenu(QMenu* m) {
 }
 
 void TreeViewer::buildStaticToolbar(QToolBar* tb) {
-    // Tree Settings
-    tb->addAction(treeSettingsAction);
-
     // Layout
     QToolButton* layoutButton = new QToolButton(tb);
     QMenu* layoutMenu = new QMenu(tr("Layout"), ui);
@@ -244,14 +241,6 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     layoutButton->setIcon(QIcon(":core/images/tree_layout.png"));
     layoutButton->setObjectName("Layout");
     tb->addWidget(layoutButton);
-
-    // Branch Settings
-    tb->addAction(branchesSettingsAction);
-
-    tb->addSeparator();
-    tb->addAction(collapseAction);
-    tb->addAction(rerootAction);
-    tb->addAction(swapAction);
 
     // Labels and Text Settings
     tb->addSeparator();
@@ -266,15 +255,9 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
     tb->addAction(textSettingsAction);
     tb->addAction(contAction);
-    // Zooming
-    tb->addSeparator();
-    tb->addAction(zoomToSelAction);
-    tb->addAction(zoomOutAction);
-    tb->addAction(zoomToAllAction);
 
     // Print and Capture
     tb->addSeparator();
-    tb->addAction(printAction);
 
     QToolButton* cameraButton = new QToolButton();
     QMenu* cameraMenu = new QMenu(tr("Export Tree Image"), ui);
@@ -285,6 +268,25 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     cameraMenu->menuAction()->setObjectName("Export Tree Image");
     cameraButton->setObjectName("cameraMenu");
     tb->addWidget(cameraButton);
+    tb->addAction(printAction);
+    tb->addSeparator();
+
+    // Tree Settings
+    tb->addAction(treeSettingsAction);
+
+    // Branch Settings
+    tb->addAction(branchesSettingsAction);
+
+    tb->addSeparator();
+    tb->addAction(collapseAction);
+    tb->addAction(rerootAction);
+    tb->addAction(swapAction);
+
+    // Zooming
+    tb->addSeparator();
+    tb->addAction(zoomToSelAction);
+    tb->addAction(zoomOutAction);
+    tb->addAction(zoomToAllAction);
 }
 
 void TreeViewer::buildMSAEditorStaticToolbar(QToolBar* tb) {

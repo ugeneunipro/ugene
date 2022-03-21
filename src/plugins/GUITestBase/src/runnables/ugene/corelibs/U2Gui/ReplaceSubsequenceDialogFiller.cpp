@@ -40,15 +40,17 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
     : Filler(_os, "EditSequenceDialog"),
       pasteDataHere(_pasteDataHere),
-      recalculateQuals(recalculateQuals) {
+      recalculateQuals(recalculateQuals),
+      expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario, bool _expectAlphabetChanged)
     : Filler(os, "EditSequenceDialog", scenario),
-      recalculateQuals(false) {
+      recalculateQuals(false),
+      expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -64,9 +66,9 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
-
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
+    if (expectAlphabetChanged) {
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 

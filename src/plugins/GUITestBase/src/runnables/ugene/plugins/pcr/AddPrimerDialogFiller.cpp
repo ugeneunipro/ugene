@@ -41,13 +41,11 @@ AddPrimerDialogFiller::AddPrimerDialogFiller(HI::GUITestOpStatus& os, const Para
 void AddPrimerDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* primerEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", dialog));
-    GT_CHECK(primerEdit, "primerEdit is NULL");
+    auto primerEdit = GTWidget::findLineEdit(os, "primerEdit", dialog);
     GTLineEdit::setText(os, primerEdit, parameters.primer);
 
     if (!parameters.name.isEmpty()) {
-        QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit", dialog));
-        GT_CHECK(nameEdit, "nameEdit is NULL");
+        auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
         GTLineEdit::setText(os, nameEdit, parameters.name);
     }
 

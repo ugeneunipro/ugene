@@ -39,20 +39,16 @@ ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(HI::GUITest
 void ExtractAssemblyRegionDialogFiller::commonScenario() {
     QWidget* widget = GTWidget::getActiveModalWidget(os);
 
-    QComboBox* docFormatCB = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "documentFormatComboBox", widget));
-    CHECK_SET_ERR(docFormatCB != nullptr, "docFormatCB widget is NULL");
+    auto docFormatCB = GTWidget::findComboBox(os, "documentFormatComboBox", widget);
     GTComboBox::selectItemByText(os, docFormatCB, format);
 
-    QLineEdit* startLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", widget));
-    CHECK_SET_ERR(startLineEdit != nullptr, "startLineEdit widget is NULL");
+    auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", widget);
     GTLineEdit::setText(os, startLineEdit, QString::number(regionToExtract.startPos));
 
-    QLineEdit* endLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", widget));
-    CHECK_SET_ERR(endLineEdit != nullptr, "endLineEdit widget is NULL");
+    auto endLineEdit = GTWidget::findLineEdit(os, "end_edit_line", widget);
     GTLineEdit::setText(os, endLineEdit, QString::number(regionToExtract.endPos()));
 
-    QLineEdit* filepathLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "filepathLineEdit", widget));
-    CHECK_SET_ERR(filepathLineEdit != nullptr, "filepathLineEdit widget is NULL");
+    auto filepathLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", widget);
     GTLineEdit::setText(os, filepathLineEdit, filepath);
 
     GTUtilsDialog::clickButtonBox(os, widget, QDialogButtonBox::Ok);

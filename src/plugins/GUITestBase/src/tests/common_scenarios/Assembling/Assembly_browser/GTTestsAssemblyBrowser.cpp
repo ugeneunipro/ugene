@@ -754,8 +754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("229"), "expected coverage value not found");
@@ -779,8 +778,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("157"), "expected coverage value not found");
@@ -801,8 +799,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //      3. Check expected coverage values
-    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("330"), "expected coverage value not found");

@@ -74,9 +74,7 @@ AssemblyBrowserUi* GTUtilsAssemblyBrowser::getView(HI::GUITestOpStatus& os, cons
         return view;
     }
     QString objectName = "assembly_browser_" + viewTitle;
-    AssemblyBrowserUi* view = qobject_cast<AssemblyBrowserUi*>(GTWidget::findWidget(os, objectName));
-    GT_CHECK_RESULT(view != nullptr, "Assembly browser wasn't found", nullptr);
-    return view;
+    return GTWidget::findExactWidget<AssemblyBrowserUi*>(os, objectName);
 }
 #undef GT_METHOD_NAME
 
@@ -101,8 +99,7 @@ bool GTUtilsAssemblyBrowser::hasReference(HI::GUITestOpStatus& os, QWidget* view
         view = getActiveAssemblyBrowserWindow(os);
     }
     QString objectName = "assembly_browser_" + view->objectName();
-    AssemblyBrowserUi* assemblyBrowser = qobject_cast<AssemblyBrowserUi*>(GTWidget::findWidget(os, objectName));
-    GT_CHECK_RESULT(assemblyBrowser != nullptr, "Assembly browser wasn't found", false);
+    auto assemblyBrowser = GTWidget::findExactWidget<AssemblyBrowserUi*>(os, objectName);
     return hasReference(os, assemblyBrowser);
 }
 #undef GT_METHOD_NAME
@@ -129,9 +126,7 @@ qint64 GTUtilsAssemblyBrowser::getLength(HI::GUITestOpStatus& os) {
     }
     GT_CHECK_RESULT(infoOptionsPanel != nullptr, "Information options panel wasn't found", 0);
 
-    QWidget* b = GTWidget::findWidget(os, "leLength", infoOptionsPanel);
-    QLineEdit* leLength = qobject_cast<QLineEdit*>(b);
-    GT_CHECK_RESULT(leLength != nullptr, "Length line edit wasn't found", 0);
+    auto leLength = GTWidget::findLineEdit(os, "leLength", infoOptionsPanel);
 
     bool isConverted = false;
     QString lengthString = leLength->text();
@@ -154,8 +149,7 @@ qint64 GTUtilsAssemblyBrowser::getReadsCount(HI::GUITestOpStatus& os) {
     }
     GT_CHECK_RESULT(infoOptionsPanel != nullptr, "Information options panel wasn't found", 0);
 
-    QLineEdit* leReads = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leReads", infoOptionsPanel));
-    GT_CHECK_RESULT(leReads != nullptr, "Length line edit wasn't found", 0);
+    auto leReads = GTWidget::findLineEdit(os, "leReads", infoOptionsPanel);
 
     bool isConverted = false;
     QString readsString = leReads->text();
@@ -171,7 +165,6 @@ qint64 GTUtilsAssemblyBrowser::getReadsCount(HI::GUITestOpStatus& os) {
 bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible(HI::GUITestOpStatus& os) {
     QWidget* window = getActiveAssemblyBrowserWindow(os);
     QWidget* coveredRegionsLabel = GTWidget::findWidget(os, "CoveredRegionsLabel", window);
-    GT_CHECK_RESULT(coveredRegionsLabel != nullptr, "coveredRegionsLabel is NULL", false);
     return coveredRegionsLabel->isVisible();
 }
 #undef GT_METHOD_NAME

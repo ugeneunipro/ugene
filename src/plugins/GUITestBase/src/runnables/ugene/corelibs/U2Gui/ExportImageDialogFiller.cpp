@@ -209,8 +209,7 @@ void ImageExportFormFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTLineEdit::setText(os, "fileNameEdit", QDir::toNativeSeparators(parameters.fileName), dialog);
 
-    QComboBox* formatsBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatsBox", dialog));
-    GT_CHECK(formatsBox, "formatsBox is NULL");
+    auto formatsBox = GTWidget::findComboBox(os, "formatsBox", dialog);
     GTComboBox::selectItemByText(os, formatsBox, parameters.format);
 
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);

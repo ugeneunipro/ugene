@@ -20,7 +20,7 @@ if [ -z "$UGENE_TEST_SUITE" ]; then UGENE_TEST_SUITE="PrecommitTests_x64.list"; 
 export UGENE_TOOLS_DIR="${TEAMCITY_WORK_DIR}/tools"
 
 # Disable crash handler
-export USE_CRASH_HANDLER=0
+export UGENE_USE_CRASH_HANDLER=0
 
 # Force English by default.
 export UGENE_TRANSLATION=en

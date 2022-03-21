@@ -109,10 +109,7 @@ public:
 
     static void saveProjectAs(HI::GUITestOpStatus& os, const QString& path);
 
-    /** Deprecated. This method leaves dialog fillers (like QMessageBoxFiller) that may conflict with other user dialogs. */
-    static void closeProject(HI::GUITestOpStatus& os);
-
-    static void closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog);
+    static void closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog, bool isExpectAppMessageBox = false);
 
 protected:
     static void openFilesDrop(HI::GUITestOpStatus& os, const QList<QUrl>& urls);

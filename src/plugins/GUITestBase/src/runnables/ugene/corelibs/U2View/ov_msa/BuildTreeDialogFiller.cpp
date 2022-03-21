@@ -89,9 +89,8 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os, CustomScen
 void BuildTreeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
     if (saveTree != "default") {
-        QLineEdit* saveLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit"));
+        auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit");
         GTLineEdit::setText(os, saveLineEdit, saveTree);
     }
 
@@ -137,8 +136,6 @@ BuildTreeDialogFillerPhyML::BuildTreeDialogFillerPhyML(HI::GUITestOpStatus& os, 
 #define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFillerPhyML::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
     GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmBox", dialog), "PhyML Maximum Likelihood");
 

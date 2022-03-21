@@ -59,16 +59,13 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
     setReads(os, settings.readUrls, dialog);
     CHECK_OP(os, );
 
-    QSpinBox* settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minIdentitySpinBox", dialog));
-    GT_CHECK(settingSpinBox, "minIdentitySpinBox is NULL");
+    auto settingSpinBox = GTWidget::findSpinBox(os, "minIdentitySpinBox", dialog);
     GTSpinBox::setValue(os, settingSpinBox, settings.minIdentity);
 
-    settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "qualitySpinBox", dialog));
-    GT_CHECK(settingSpinBox, "qualitySpinBox is NULL");
+    settingSpinBox = GTWidget::findSpinBox(os, "qualitySpinBox", dialog);
     GTSpinBox::setValue(os, settingSpinBox, settings.qualityThreshold);
 
-    QCheckBox* checkBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectCheckbox", dialog));
-    GT_CHECK(checkBox, "addToProjectCheckbox is NULL");
+    auto checkBox = GTWidget::findCheckBox(os, "addToProjectCheckbox", dialog);
     GTCheckBox::setChecked(os, checkBox, settings.addResultToProject);
 
     setDestination(os, settings.outAlignment, dialog);
@@ -80,8 +77,7 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setReference"
 void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus& os, const QString& referenceUrl, QWidget* dialog) {
-    QLineEdit* reference = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
-    GT_CHECK(reference, "referenceLineEdit is NULL");
+    auto reference = GTWidget::findLineEdit(os, "referenceLineEdit", dialog);
     GTLineEdit::setText(os, reference, referenceUrl);
 }
 #undef GT_METHOD_NAME
@@ -106,8 +102,7 @@ void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus& os, const QStr
 
 #define GT_METHOD_NAME "setDestination"
 void AlignToReferenceBlastDialogFiller::setDestination(GUITestOpStatus& os, const QString& destinationUrl, QWidget* dialog) {
-    QLineEdit* out = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "outputLineEdit", dialog));
-    GT_CHECK(out, "outputLineEdit is NULL");
+    auto out = GTWidget::findLineEdit(os, "outputLineEdit", dialog);
     GTLineEdit::setText(os, out, destinationUrl);
 }
 #undef GT_METHOD_NAME

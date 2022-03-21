@@ -101,10 +101,17 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     addAction(replaceCharacterAction);
     connect(replaceCharacterAction, SIGNAL(triggered()), SLOT(sl_replaceSelectedCharacter()));
 
-    fillWithGapsinsSymAction = new QAction(tr("Fill selection with gaps"), this);
-    fillWithGapsinsSymAction->setObjectName("fill_selection_with_gaps");
-    connect(fillWithGapsinsSymAction, SIGNAL(triggered()), SLOT(sl_fillCurrentSelectionWithGaps()));
-    addAction(fillWithGapsinsSymAction);
+    insertGapsAction = new QAction(tr("Insert gaps"), this);
+    insertGapsAction->setObjectName("insert_gaps");
+    insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
+    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
+    addAction(insertGapsAction);
+
+    replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
+    replaceWithGapsAction->setObjectName("replace_with_gaps");
+    replaceWithGapsAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Space));
+    connect(replaceWithGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_replaceSelectionWithGaps);
+    addAction(replaceWithGapsAction);
 
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
@@ -614,13 +621,22 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMaChanging(true);
 }
 
-void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
-    GCounter::increment("Fill selection with gaps", editor->getFactoryId());
-    if (!isAlignmentLocked()) {
-        emit si_startMaChanging();
-        insertGapsBeforeSelection();
-        emit si_stopMaChanging(true);
-    }
+void MaEditorSequenceArea::sl_insertGaps2SelectedArea() {
+    GCounter::increment("Insert gaps", editor->getFactoryId());
+    CHECK(!isAlignmentLocked(), );
+
+    emit si_startMaChanging();
+    insertGapsBeforeSelection();
+    emit si_stopMaChanging(true);
+}
+
+void U2::MaEditorSequenceArea::sl_replaceSelectionWithGaps() {
+    GCounter::increment("Replace with gaps", editor->getFactoryId());
+    CHECK(!isAlignmentLocked(), );
+
+    emit si_startMaChanging();
+    insertGapsBeforeSelection(-1, false);
+    emit si_stopMaChanging(true);
 }
 
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {
@@ -1129,7 +1145,7 @@ void MaEditorSequenceArea::keyReleaseEvent(QKeyEvent* ke) {
 void MaEditorSequenceArea::drawBackground(QPainter&) {
 }
 
-void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
+void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveSelectedRect) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
@@ -1162,7 +1178,9 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     maObj->insertGapByRowIndexList(selectedMaRowIndexes, selectionRect.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os, );
-    moveSelection(countOfGaps, 0, true);
+    if (moveSelectedRect) {
+        moveSelection(countOfGaps, 0, true);
+    }
     if (!editor->getSelection().isEmpty()) {
         ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
     }

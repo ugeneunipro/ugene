@@ -285,18 +285,6 @@ void GTUtilsDialog::waitForDialogWhichMustNotBeRun(GUITestOpStatus& os, Runnable
     waitForDialog(os, r, settings);
 }
 
-void GTUtilsDialog::waitForDialogWhichMayRunOrNot(GUITestOpStatus& os, Runnable* r) {
-    GUIDialogWaiter::WaitSettings settings;
-    Filler* f = dynamic_cast<Filler*>(r);
-    if (f) {
-        settings = f->getSettings();
-    }
-
-    settings.destiny = GUIDialogWaiter::NoMatter;
-    settings.timeout = 480000;
-    waitForDialog(os, r, settings);
-}
-
 #define GT_METHOD_NAME "checkNoActiveWaiters"
 void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus& os, int timeoutMillis) {
     bool isAllFinished = pool.isEmpty();

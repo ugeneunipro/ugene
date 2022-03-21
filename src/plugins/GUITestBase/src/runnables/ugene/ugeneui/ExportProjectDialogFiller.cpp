@@ -37,8 +37,7 @@ using namespace HI;
 void ExportProjectDialogChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* projectFileLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-    GT_CHECK(projectFileLineEdit != nullptr, "projectFilePathEdit is not found");
+    auto projectFileLineEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
 
     QString fullPath = projectFileLineEdit->text();
     QString actualName = projectName.contains('/') ? fullPath : QFileInfo(fullPath).fileName();
@@ -54,8 +53,7 @@ void ExportProjectDialogChecker::commonScenario() {
 void ExportProjectDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* projectFileLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-    GT_CHECK(projectFileLineEdit != nullptr, "LineEdit is NULL");
+    auto projectFileLineEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
     if (!projectName.isEmpty()) {
         GTLineEdit::setText(os, projectFileLineEdit, projectName);
     }

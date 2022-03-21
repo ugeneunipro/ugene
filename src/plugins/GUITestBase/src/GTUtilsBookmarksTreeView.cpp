@@ -50,15 +50,14 @@ const QString GTUtilsBookmarksTreeView::widgetName = ACTION_BOOKMARK_TREE_VIEW;
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget(GUITestOpStatus& os) {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, widgetName, nullptr, false));
+    auto treeWidget = GTWidget::findTreeWidget(os, widgetName, nullptr, false);
 
     if (!treeWidget) {
         GTUtilsProjectTreeView::toggleView(os);
         GTGlobals::sleep(3000);
     }
 
-    treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, widgetName));
-    return treeWidget;
+    return GTWidget::findTreeWidget(os, widgetName);
 }
 #undef GT_METHOD_NAME
 
