@@ -133,7 +133,10 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
 
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
-    memset(localFreqs.data(), 0, localFreqs.size() * 4);
+    for (int i = 0; i < 256; i++) {
+        localFreqs[i] = 0;
+    }
+    //memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
     int* freqsData = localFreqs.data();
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
@@ -147,6 +150,9 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     int selectedGlobalFreq = nSeq * ma->getLength();
     int thresholdScore = getThreshold();
     int minFreq = int(float(nSeq) * thresholdScore / 100);
+    if (minFreq == 0) {
+        minFreq = 1;
+    }
     for (int c = 'A'; c <= 'Y'; c++) {
         int localFreq = freqsData[uchar(c)];
         if (localFreq < minFreq) {
