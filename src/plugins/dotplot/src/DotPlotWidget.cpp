@@ -99,7 +99,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_timer()));
 
     exitButton = new QToolButton(this);
-    connect(exitButton, &QToolButton::clicked, this, &DotPlotWidget::sl_showDeleteDialog);
+    connect(exitButton, &QToolButton::clicked, this, [this]{ sl_showDeleteDialog(true); });
     exitButton->setToolTip("Close");
     QIcon exitIcon = QIcon(QString(":dotplot/images/exit.png"));
     exitButton->setIcon(exitIcon);
@@ -133,7 +133,7 @@ void DotPlotWidget::initActionsAndSignals() {
 
     deleteDotPlotAction = new QAction(tr("Remove"), this);
     deleteDotPlotAction->setObjectName("Remove");
-    connect(deleteDotPlotAction, &QAction::triggered, this, &DotPlotWidget::sl_showDeleteDialog);
+    connect(deleteDotPlotAction, &QAction::triggered, this, [this] { sl_showDeleteDialog(true); });
 
     filterDotPlotAction = new QAction(tr("Filter Results"), this);
     connect(filterDotPlotAction, SIGNAL(triggered()), SLOT(sl_filter()));

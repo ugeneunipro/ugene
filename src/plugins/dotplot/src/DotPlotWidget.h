@@ -101,7 +101,7 @@ signals:
 public slots:
     bool sl_showSettingsDialog(bool disableLoad = false);
     void sl_filter();
-    void sl_showDeleteDialog(bool isCancelable = true);
+    void sl_showDeleteDialog(bool isCancelable);
 
 private slots:
     void sl_taskStateChanged();
