@@ -120,6 +120,10 @@ void ExternalToolRunTask::run() {
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
             killProcess(externalToolProcess);
+            externalToolProcess->waitForFinished(2000); //wait 2 seconds to let OS kill process in previous method
+            if (externalToolProcess->state() == QProcess::Running) {
+                externalToolProcess->kill();
+            }
             externalToolProcess->waitForFinished(10000);
             if (externalToolProcess->state() == QProcess::Running) {
                 algoLog.info(tr("Unable to cancel tool %1 for 10 seconds. Stop it manually by your OS task manager.").arg(toolName));
