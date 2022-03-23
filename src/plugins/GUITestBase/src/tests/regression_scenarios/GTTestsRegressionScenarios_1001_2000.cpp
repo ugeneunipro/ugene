@@ -194,9 +194,11 @@ GUI_TEST_CLASS_DEFINITION(test_1001_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/human_T1_cutted.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 99, 99, true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Build dotplot..."}, GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -329,6 +331,7 @@ GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -409,6 +412,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         // 4) Click on human_T1.fa project tree view item
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
@@ -416,18 +420,12 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
-        // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
-
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
     }
-
-    //    GTKeyboardDriver::keyClick( GTKeyboardDriver::key["F4"], Qt::AltModifier);
-    //    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1021_1) {
@@ -443,15 +441,12 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         // 4) Click on human_T1.fa project tree view item
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-        // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
-        // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
@@ -459,9 +454,6 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
     }
-
-    //    GTKeyboardDriver::keyClick( GTKeyboardDriver::key["F4"], Qt::AltModifier);
-    //    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1021_2) {
@@ -477,15 +469,12 @@ GUI_TEST_CLASS_DEFINITION(test_1021_2) {
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         // 4) Click on human_T1.fa project tree view item
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-        // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
-        // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
@@ -513,16 +502,12 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
         }
 
         // 4) Click on human_T1.fa project tree view item
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-        // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
-        // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
-
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
@@ -549,15 +534,12 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         }
 
         // 4) Click on human_T1.fa project tree view item
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-        // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false});//Start page blocks this check. It is enought without it.
-        // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
