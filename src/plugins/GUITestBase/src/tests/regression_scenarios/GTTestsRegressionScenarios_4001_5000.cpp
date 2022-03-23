@@ -4882,6 +4882,37 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     CHECK_SET_ERR(nullptr == murineMdi, "'murine.gb' Sequence View is not closed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4783) {
+    // 1. Open _common_data/scenarios/_regression/4783/4783.aln
+    // 2. Open general option panel tab, set consensus algorithm "Levitsky" and treshold 90
+    // Expected state: consensus is BA
+    // 3. Remove "2" sequence
+    // Expected state: consensus is -A
+    // 4. Close view, and open again
+    // Expected state: consensus is -A
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4783/4783.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    auto consensusType = GTWidget::findComboBox(os, "consensusType");
+    GTComboBox::selectItemByText(os, consensusType, "Levitsky");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
+    GTSpinBox::setValue(os, thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
+    GTUtilsMSAEditorSequenceArea::checkConsensus(os, "BA");
+
+    GTUtilsMsaEditor::clickSequenceName(os, "2");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMSAEditorSequenceArea::checkConsensus(os, "-A");
+
+    GTUtilsMdi::closeWindow(os, "4783 [4783.aln]");
+
+    GTUtilsProjectTreeView::doubleClickItem(os, "4783.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMSAEditorSequenceArea::checkConsensus(os, "-A");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
 
