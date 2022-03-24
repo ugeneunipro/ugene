@@ -311,7 +311,7 @@ void Document::_addObject(GObject* obj) {
 }
 
 bool Document::removeObject(GObject* obj, DocumentObjectRemovalMode removalMode) {
-    if (removalMode == DocumentObjectRemovalMode::DocumentObjectRemovalMode_Silent) {
+    if (removalMode == DocumentObjectRemovalMode::DocumentObjectRemovalMode_Detach) {
         emit si_beforeObjectRemoved(obj);
 
         SAFE_POINT(obj->getParentStateLockItem() == this, "Invalid parent document!", false)

@@ -304,7 +304,7 @@ void ReadAnnotationsTask::run() {
             m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
             results.append(m);
 
-            SAFE_POINT(doc->removeObject(go, DocumentObjectRemovalMode_Silent),
+            SAFE_POINT(doc->removeObject(go, DocumentObjectRemovalMode_Detach),
                        QString("Cannot remove object '%1' from document '%2'")
                            .arg(go->getGObjectName(), doc->getName()), )
         } else {

@@ -343,7 +343,7 @@ enum DocumentObjectRemovalMode {
     DocumentObjectRemovalMode_Release,  // fake removal: the same as DocumentObjectRemovalMode_OnlyNotify.
     // Additionally, the object is excluded from the document's child objects list.
     // External code has to handle a proper object deallocation.
-    DocumentObjectRemovalMode_Silent  // sudo removes an object from the doc, removes an object, leaving it in the db.
+    DocumentObjectRemovalMode_Detach  // sudo removes an object from the doc, removes an object, leaving it in the db.
 };
 
 class DocumentChildEventsHelper;
