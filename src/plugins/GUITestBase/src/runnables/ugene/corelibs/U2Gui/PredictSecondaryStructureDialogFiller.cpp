@@ -56,15 +56,13 @@ PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI:
 void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* startLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", dialog));
-    GT_CHECK(startLineEdit != nullptr, "Start lineEdit is NULL");
+    auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", dialog);
     GTLineEdit::setText(os, startLineEdit, QString::number(startPos));
 
-    QLineEdit* endLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", dialog));
-    GT_CHECK(endLineEdit != nullptr, "Start lineEdit is NULL");
+    auto endLineEdit = GTWidget::findLineEdit(os, "end_edit_line", dialog);
     GTLineEdit::setText(os, endLineEdit, QString::number(endPos));
 
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+    auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
     QPushButton* button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button != nullptr, "ok button is NULL");

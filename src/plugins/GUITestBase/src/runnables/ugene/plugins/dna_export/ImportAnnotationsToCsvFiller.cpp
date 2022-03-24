@@ -192,7 +192,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GTCheckBox::setChecked(os, checkBox, addResultFileToProject);
 
     if (columnSeparator) {
-        QRadioButton* columnSeparator = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "columnSeparatorRadioButton", dialog));
+        auto columnSeparator = GTWidget::findRadioButton(os, "columnSeparatorRadioButton", dialog);
         GTRadioButton::click(os, columnSeparator);
 
         QLineEdit* separatorEdit = GTWidget::findLineEdit(os, "separatorEdit", dialog);

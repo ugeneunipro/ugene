@@ -96,7 +96,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             CHECK_SET_ERR(primerEdit->text() == "ATCG", "No upper-case");
 
             // 5. Remove the primer name.
-            QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit"));
+            auto nameEdit = GTWidget::findLineEdit(os, "nameEdit");
             GTLineEdit::setText(os, nameEdit, "");
 
             // Expected: The OK button is disabled.

@@ -369,8 +369,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     //    2. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
-    CHECK_SET_ERR(combo != nullptr, "colorScheme not found!");
+    auto combo = GTWidget::findComboBox(os, "colorScheme");
     GTComboBox::selectItemByText(os, combo, "No colors");
 
     //    3. Change Color Scheme.
@@ -419,8 +418,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
 
     //    5. Select Highlighting to "Gaps"
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
+    auto combo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, combo, "Gaps");
 
     //    6. Go to MSA overview context menu (right click on MSA Overview).
@@ -455,8 +453,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
 
     //    5. Change Highlighting.
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
+    auto combo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     //    Expected state: graph displays percent of highlighted cells in column.

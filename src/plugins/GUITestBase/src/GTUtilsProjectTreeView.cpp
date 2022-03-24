@@ -252,8 +252,7 @@ void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus& os, const QModelIn
 QTreeView* GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus& os) {
     openView(os);
 
-    QTreeView* treeView = qobject_cast<QTreeView*>(GTWidget::findWidget(os, widgetName));
-    return treeView;
+    return GTWidget::findTreeView(os, widgetName);
 }
 #undef GT_METHOD_NAME
 

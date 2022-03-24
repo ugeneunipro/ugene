@@ -61,28 +61,22 @@ MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, Cu
 void MAFFTSupportRunDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QCheckBox* gapOpenCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapOpenCheckBox", dialog));
-    GT_CHECK(gapOpenCheckBox, "gapOpenCheckBox is NULL");
+    auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
     GTCheckBox::setChecked(os, gapOpenCheckBox, parameters->checkBox_gapOpenCheckBox_checked);
 
-    QDoubleSpinBox* gapOpenSpinBox = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, "gapOpenSpinBox", dialog));
-    GT_CHECK(gapOpenSpinBox, "gapOpenSpinBox is NULL");
+    auto gapOpenSpinBox = GTWidget::findDoubleSpinBox(os, "gapOpenSpinBox", dialog);
     GTDoubleSpinbox::setValue(os, gapOpenSpinBox, parameters->doubleSpin_gapOpenSpinBox_value);
 
-    QCheckBox* gapExtCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapExtCheckBox", dialog));
-    GT_CHECK(gapExtCheckBox, "gapExtCheckBox is NULL");
+    auto gapExtCheckBox = GTWidget::findCheckBox(os, "gapExtCheckBox", dialog);
     GTCheckBox::setChecked(os, gapExtCheckBox, parameters->checkBox_gapExtCheckBox_checked);
 
-    QDoubleSpinBox* gapExtSpinBox = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, "gapExtSpinBox", dialog));
-    GT_CHECK(gapExtSpinBox, "gapExtSpinBox is NULL");
+    auto gapExtSpinBox = GTWidget::findDoubleSpinBox(os, "gapExtSpinBox", dialog);
     GTDoubleSpinbox::setValue(os, gapExtSpinBox, parameters->doubleSpin_gapExtSpinBox_value);
 
-    QCheckBox* maxNumberIterRefinementCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "maxNumberIterRefinementCheckBox", dialog));
-    GT_CHECK(maxNumberIterRefinementCheckBox, "maxNumberIterRefinementCheckBox is NULL");
+    auto maxNumberIterRefinementCheckBox = GTWidget::findCheckBox(os, "maxNumberIterRefinementCheckBox", dialog);
     GTCheckBox::setChecked(os, maxNumberIterRefinementCheckBox, parameters->checkBox_maxNumberIterRefinementCheckBox_checked);
 
-    QSpinBox* maxNumberIterRefinementSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "maxNumberIterRefinementSpinBox", dialog));
-    GT_CHECK(maxNumberIterRefinementSpinBox, "maxNumberIterRefinementSpinBox is NULL");
+    auto maxNumberIterRefinementSpinBox = GTWidget::findSpinBox(os, "maxNumberIterRefinementSpinBox", dialog);
     GTSpinBox::setValue(os, maxNumberIterRefinementSpinBox, parameters->spin_maxNumberIterRefinementSpinBox_value);
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Align", dialog));

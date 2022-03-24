@@ -363,8 +363,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* formatCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatCombo", dialog));
-            QCheckBox* withAnnotationsBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "withAnnotationsBox", dialog));
+            auto formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
+            auto withAnnotationsBox = GTWidget::findCheckBox(os, "withAnnotationsBox", dialog);
 
             CHECK_SET_ERR(!withAnnotationsBox->isEnabled(), "Export with annotations flag is enabled unexpectedly");
             CHECK_SET_ERR(!withAnnotationsBox->isChecked(), "Export with annotations flag is checked unexpectedly");

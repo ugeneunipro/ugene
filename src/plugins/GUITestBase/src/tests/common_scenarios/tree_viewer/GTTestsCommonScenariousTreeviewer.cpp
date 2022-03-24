@@ -152,8 +152,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     // Expected state: Phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
 
     // 4. Remove document "COI.nwk" from project view.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.nwk"));
@@ -198,8 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     // Expected state: Phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
+    GTWidget::findGraphicsView(os, "treeView");
 
     // 4. Remove document "COI.nwk" from project view.
     // GTUtilsDialog::waitForDialog(os,new MessageBoxDialogFiller(os,QMessageBox::No));
@@ -378,7 +376,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
     QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
     return globalCoord.y();
@@ -434,7 +432,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     QList<int> initPos;
@@ -492,7 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Names"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     foreach (QGraphicsItem* item, list) {
@@ -562,7 +560,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     // 2. Click on "Show sequence names" button on toolbar
     GTMenu::clickMainMenuItem(os, {"Actions", "Show Labels", "Show Names"}, GTGlobals::UseMouse);
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     foreach (QGraphicsItem* item, list) {
@@ -653,7 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // Expected state: phylogenetic tree appears
 
     // 2. Open context menu on branch and  select {change settings} menu item
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
@@ -687,7 +685,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: Phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
@@ -733,7 +731,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: Phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
@@ -776,7 +774,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
 
@@ -820,7 +818,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "D120911.tre");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //   Expected state: phylogenetic tree appears
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     QList<QGraphicsSimpleTextItem*> branchList;
@@ -894,8 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTWidget::click(os, openButton);
 
     // Expected state: tree view has appeared together with the alignment
-    QWidget* treeView = qobject_cast<QWidget*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
+    GTWidget::findWidget(os, "treeView");
 
     // 5. Close the tree view
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -922,8 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTWidget::click(os, buildButton);
 
     // Expected state: a new file with tree has been created and has appeared along with the alignment
-    treeView = qobject_cast<QWidget*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -944,8 +940,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
 
     // 4. Open the "Tree Setting" option panel tab
     //  it does automatically

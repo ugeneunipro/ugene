@@ -767,8 +767,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
             CHECK_SET_ERR(rangeSelector != nullptr, "range_selector not found");
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is visible");
 
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* okbutton = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(okbutton != nullptr, "ok button is NULL");
             CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
@@ -838,8 +837,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             GTComboBox::selectItemByText(os, formatsBox, "SVG");
 
             // export is not available
-            QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(okButton != nullptr, "ok button is NULL");
@@ -2048,8 +2046,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "annotated_DNA_splitter"));
-    CHECK_SET_ERR(splitter != nullptr, "Cannot find annotated_DNA_splitter");
+    auto splitter = GTWidget::findSplitter(os, "annotated_DNA_splitter");
     QWidget* bottomSplitterHandle = splitter->handle(splitter->count() - 1);  // GTWidget::findWidget(os, "qt_splithandle_", GTWidget::findWidget(os, "annotated_DNA_splitter"));
     CHECK_SET_ERR(bottomSplitterHandle != nullptr, "Cannot find bottom splitter handle");
     GTWidget::click(os, bottomSplitterHandle);

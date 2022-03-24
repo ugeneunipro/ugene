@@ -130,7 +130,7 @@ void CreateDocumentFiller::commonScenario() {
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
-        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
+        auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 
@@ -202,7 +202,7 @@ void CancelCreateDocumentFiller::commonScenario() {
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
-        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
+        auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 

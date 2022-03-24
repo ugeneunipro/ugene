@@ -45,7 +45,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2. Open the samples tab.
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
+    auto tabs = GTWidget::findTabWidget(os, "tabs");
     GTTabWidget::setCurrentIndex(os, tabs, 1);
     // GTWidget::click(os, GTWidget::findWidget(os, "samples"));
 
@@ -134,7 +134,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2. Open the samples tab.
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabs"));
+    auto tabs = GTWidget::findTabWidget(os, "tabs");
     GTTabWidget::setCurrentIndex(os, tabs, 1);
 
     // 3. Click the "Name filter" line edit.

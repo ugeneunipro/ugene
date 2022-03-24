@@ -1229,8 +1229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     //    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    QTreeWidget* w = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "WorkflowPaletteElements"));
-    CHECK_SET_ERR(w != nullptr, "WorkflowPaletteElements is null");
+    auto w = GTWidget::findTreeWidget(os, "WorkflowPaletteElements");
 
     QTreeWidgetItem* foundItem = nullptr;
     QList<QTreeWidgetItem*> outerList = w->findItems("", Qt::MatchContains);
@@ -1542,8 +1541,8 @@ GUI_TEST_CLASS_DEFINITION(test_0801) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionsPanel::runFindPatternWithHotKey("AAAGCTTTA", os);
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editStart")), "2");
-    GTLineEdit::setText(os, qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd")), "5");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), "2");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), "5");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0807) {
@@ -1703,13 +1702,11 @@ GUI_TEST_CLASS_DEFINITION(test_0814) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Logging);
 
-            QCheckBox* fileOut = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "fileOutCB"));
-            CHECK_SET_ERR(fileOut != nullptr, "No fileOutCB");
+            auto fileOut = GTWidget::findCheckBox(os, "fileOutCB");
             CHECK_SET_ERR(!fileOut->isChecked(), "CheckBox is checked!");
             GTCheckBox::setChecked(os, fileOut);
 
-            QLineEdit* fileName = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "outFileEdit"));
-            CHECK_SET_ERR(fileName != nullptr, "No outFileEdit");
+            auto fileName = GTWidget::findLineEdit(os, "outFileEdit");
             GTLineEdit::setText(os, fileName, name);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

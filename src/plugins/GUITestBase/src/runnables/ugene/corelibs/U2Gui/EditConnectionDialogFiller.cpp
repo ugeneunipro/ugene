@@ -57,20 +57,13 @@ EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus& os, 
 
 void EditConnectionDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QLineEdit* leName = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leName", dialog));
-    GT_CHECK(leName, "leName is NULL");
-    QLineEdit* leHost = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leHost", dialog));
-    GT_CHECK(leHost, "leHost is NULL");
-    QLineEdit* lePort = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "lePort", dialog));
-    GT_CHECK(lePort, "lePort is NULL");
-    QLineEdit* leDatabase = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leDatabase", dialog));
-    GT_CHECK(leDatabase, "leDatabase is NULL");
-    QLineEdit* leLogin = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leLogin", dialog));
-    GT_CHECK(leLogin, "leLogin is NULL");
-    QLineEdit* lePassword = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "lePassword", dialog));
-    GT_CHECK(lePassword, "lePassword is NULL");
-    QCheckBox* cbRemember = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "cbRemember", dialog));
-    GT_CHECK(cbRemember, "cbRemember is NULL");
+    auto leName = GTWidget::findLineEdit(os, "leName", dialog);
+    auto leHost = GTWidget::findLineEdit(os, "leHost", dialog);
+    auto lePort = GTWidget::findLineEdit(os, "lePort", dialog);
+    auto leDatabase = GTWidget::findLineEdit(os, "leDatabase", dialog);
+    auto leLogin = GTWidget::findLineEdit(os, "leLogin", dialog);
+    auto lePassword = GTWidget::findLineEdit(os, "lePassword", dialog);
+    auto cbRemember = GTWidget::findCheckBox(os, "cbRemember", dialog);
 
     if (parameters.checkDefaults) {
         GT_CHECK(lePort->text() == "3306", "Wrong default port");
@@ -101,18 +94,15 @@ AuthenticationDialogFiller::AuthenticationDialogFiller(HI::GUITestOpStatus& os, 
 void AuthenticationDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* leLogin = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leLogin", dialog));
-    GT_CHECK(leLogin, "leLogin is NULL");
+    auto leLogin = GTWidget::findLineEdit(os, "leLogin", dialog);
     if (leLogin->isEnabled()) {
         GTLineEdit::setText(os, leLogin, login);
     }
 
-    QLineEdit* lePassword = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "lePassword", dialog));
-    GT_CHECK(lePassword, "lePassword is NULL");
+    auto lePassword = GTWidget::findLineEdit(os, "lePassword", dialog);
     GTLineEdit::setText(os, lePassword, password);
 
-    QCheckBox* cbRemember = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "cbRemember", dialog));
-    GT_CHECK(cbRemember, "cbRemember is NULL");
+    auto cbRemember = GTWidget::findCheckBox(os, "cbRemember", dialog);
     GTCheckBox::setChecked(os, cbRemember, false);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -106,9 +106,9 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
     connect(trimRightEndAction, SIGNAL(triggered()), SLOT(sl_trimRightEnd()));
     addAction(trimRightEndAction);
 
-    fillWithGapsinsSymAction->setText(tr("Insert gap"));
-    fillWithGapsinsSymAction->setShortcut(Qt::Key_Space);
-    fillWithGapsinsSymAction->setShortcutContext(Qt::WidgetShortcut);
+    insertGapsAction->setText(tr("Insert gap"));
+    insertGapsAction->setShortcut(Qt::Key_Space);
+    insertGapsAction->setShortcutContext(Qt::WidgetShortcut);
 
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->setRange(100, 1000);
@@ -171,7 +171,7 @@ QAction* McaEditorSequenceArea::getInsertAction() const {
 }
 
 QAction* McaEditorSequenceArea::getInsertGapAction() const {
-    return fillWithGapsinsSymAction;
+    return insertGapsAction;
 }
 
 QAction* McaEditorSequenceArea::getRemoveGapBeforeSelectionAction() const {
@@ -337,7 +337,7 @@ void McaEditorSequenceArea::sl_updateActions() {
     updateTrimActions(canEditSelectedArea && isSingleSymbolSelected);
     insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    insertGapsAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection && !isEditing && canEditAlignment);
     removeColumnsOfGapsAction->setEnabled(canEditAlignment);
 }

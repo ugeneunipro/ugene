@@ -41,8 +41,7 @@ ItemToImportEditDialogFiller::ItemToImportEditDialogFiller(HI::GUITestOpStatus& 
 void ItemToImportEditDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    ImportOptionsWidget* optionsWidget = qobject_cast<ImportOptionsWidget*>(GTWidget::findWidget(os, "optionsWidget", dialog));
-    GT_CHECK(nullptr != optionsWidget, "optionsWidget is NULL");
+    auto optionsWidget = GTWidget::findExactWidget<ImportOptionsWidget*>(os, "optionsWidget", dialog);
 
     ImportOptionsWidgetFiller::fill(os, optionsWidget, data);
 }

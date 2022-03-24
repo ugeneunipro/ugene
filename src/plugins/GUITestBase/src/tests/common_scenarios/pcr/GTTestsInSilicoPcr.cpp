@@ -436,7 +436,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
 
     // 6. Choose "Inner" annotation extraction.
-    QComboBox* annsComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "annsComboBox"));
+    auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
     // 7. Click "Export product(s)".
@@ -532,8 +532,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // Expected: the temperature is N/A, the primer pair info contains the message about non-ACGTN symbols
     CHECK_SET_ERR(GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary).contains("N/A"), "The temperature is configured");
 
-    QLabel* warningLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "warningLabel"));
-    CHECK_SET_ERR(warningLabel != nullptr, "Cannot find warningLabel");
+    auto warningLabel = GTWidget::findLabel(os, "warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The primers contain a character from the Extended DNA alphabet."), "Incorrect warning message");
 }
 

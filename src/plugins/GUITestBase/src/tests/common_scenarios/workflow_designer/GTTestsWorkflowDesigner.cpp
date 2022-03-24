@@ -76,8 +76,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //  Expected state: workflow schema opened in Workflow designer
     //    2. Change item style (Minimal - Extended - Minimal - Extended)
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
-    CHECK_SET_ERR(sceneView, "scene not found");
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     QList<QPointF> posList;
 
@@ -106,8 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: workflow schema opened in Workflow designer
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Genbank"));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 3));
@@ -150,7 +148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     // Expected state: item style on loaded schema must be Minimal
     StyleId id;
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     foreach (QGraphicsItem* item, items) {
         WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
@@ -177,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     // Expected state: item style on loaded schema must be Minimal
     StyleId id;
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     foreach (QGraphicsItem* item, items) {
         WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
@@ -212,8 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    2. Clear dashboard (select all + del button)
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
-    CHECK_SET_ERR(sceneView, "scene not found");
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     QList<QPointF> posList;
 
@@ -273,7 +270,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    2. Select output port.
     WorkflowProcessItem* gr = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<WorkflowPortItem*> list = gr->getPortItems();
     foreach (WorkflowPortItem* p, list) {
         if (p && p->getPort()->getId() == "out-variations") {
@@ -284,7 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
             GTMouseDriver::click();
         }
     }
-    QTextEdit* doc = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "doc"));
+    auto doc = GTWidget::findTextEdit(os, "doc");
     CHECK_SET_ERR(doc->document()->toPlainText().contains("Output port \"Output variations"), "expected text not found");
 
     //    Expected state: in property editor 'Output port' item appears
@@ -297,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMouseDriver::moveTo(globalBottomRightPos);
     GTMouseDriver::click();
 
-    doc = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "doc"));
+    doc = GTWidget::findTextEdit(os, "doc");
     CHECK_SET_ERR(doc->document()->toPlainText().contains("Input port \"Input assembly"), "expected text not found");
     //    Expected state: in property editor 'Input port' item appears
 }

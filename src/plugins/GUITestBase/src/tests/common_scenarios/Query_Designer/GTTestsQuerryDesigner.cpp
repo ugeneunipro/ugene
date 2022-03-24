@@ -87,7 +87,7 @@ void test1(HI::GUITestOpStatus& os, QString s = "") {
         GTMouseDriver::click();
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         // check no elements on scene
-        QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+        auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
         QList<QGraphicsItem*> items = sceneView->items();
         CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");  // 2 - is equal empty scene
     }

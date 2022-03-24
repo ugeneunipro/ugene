@@ -74,6 +74,7 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
         MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, multiTreeViewer, 0.41, nameAreaContainer);  // Tree will occupy 41% of the current view.
         multiTreeViewer->addTreeView(treeView);
+        multiTreeViewer->setMinimumWidth(250);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
     } else {

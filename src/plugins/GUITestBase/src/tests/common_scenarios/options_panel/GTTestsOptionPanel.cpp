@@ -583,8 +583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsOptionPanelSequenceView::toggleCircularView(os);
 
     // 4. Select each available label position option
-    QComboBox* positionComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "labelPositionComboBox"));
-    CHECK_SET_ERR(positionComboBox != nullptr, "Position comboBox is NULL");
+    auto positionComboBox = GTWidget::findComboBox(os, "labelPositionComboBox");
     CHECK_SET_ERR(positionComboBox->count() == 4, "Wrong amount of available label position");
     GTComboBox::selectItemByIndex(os, positionComboBox, 0);
     GTComboBox::selectItemByIndex(os, positionComboBox, 1);
@@ -601,13 +600,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check font spinboxes bound values
-    QSpinBox* titleFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "fontSizeSpinBox"));
-    QSpinBox* rulerFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "rulerFontSizeSpinBox"));
-    QSpinBox* annotFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "labelFontSizeSpinBox"));
-
-    CHECK_SET_ERR(titleFontSpinBox != nullptr, "Title font size spinBox is NULL");
-    CHECK_SET_ERR(rulerFontSpinBox != nullptr, "Ruler font size spinBox is NULL");
-    CHECK_SET_ERR(annotFontSpinBox != nullptr, "Annotation font size spinBox is NULL");
+    auto titleFontSpinBox = GTWidget::findSpinBox(os, "fontSizeSpinBox");
+    auto rulerFontSpinBox = GTWidget::findSpinBox(os, "rulerFontSizeSpinBox");
+    auto annotFontSpinBox = GTWidget::findSpinBox(os, "labelFontSizeSpinBox");
 
     GTSpinBox::checkLimits(os, titleFontSpinBox, 7, 48);
     GTSpinBox::checkLimits(os, rulerFontSpinBox, 7, 24);
@@ -623,15 +618,10 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check default conditions of checkboxes, uncheck them
-    QCheckBox* titleCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "titleCheckBox"));
-    QCheckBox* lengthCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "lengthCheckBox"));
-    QCheckBox* rulerLineCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "rulerLineCheckBox"));
-    QCheckBox* rulerCoordsCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "rulerCoordsCheckBox"));
-
-    CHECK_SET_ERR(titleCheckBox != nullptr, "Show/hide title checkBox is NULL");
-    CHECK_SET_ERR(lengthCheckBox != nullptr, "Show/hide seqeuence length checkBox is NULL");
-    CHECK_SET_ERR(rulerLineCheckBox != nullptr, "Show/hide ruler line checkBox is NULL");
-    CHECK_SET_ERR(rulerCoordsCheckBox != nullptr, "Show/hide ruler coordinates checkBox is NULL");
+    auto titleCheckBox = GTWidget::findCheckBox(os, "titleCheckBox");
+    auto lengthCheckBox = GTWidget::findCheckBox(os, "lengthCheckBox");
+    auto rulerLineCheckBox = GTWidget::findCheckBox(os, "rulerLineCheckBox");
+    auto rulerCoordsCheckBox = GTWidget::findCheckBox(os, "rulerCoordsCheckBox");
 
     CHECK_SET_ERR(titleCheckBox->isChecked(), "Show/hide title checkBox is unchecked");
     CHECK_SET_ERR(lengthCheckBox->isChecked(), "Show/hide sequence length checkBox is unchecked");

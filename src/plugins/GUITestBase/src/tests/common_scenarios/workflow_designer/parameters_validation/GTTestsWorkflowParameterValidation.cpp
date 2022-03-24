@@ -53,8 +53,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 1));
@@ -110,8 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    2. Set some name for an output file
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
     QPoint writeAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment");
     GTMouseDriver::moveTo(writeAlignmentCenter);
     GTMouseDriver::click();
@@ -171,8 +169,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 3));
     GTMouseDriver::click();
     GTKeyboardDriver::keySequence("sequence.gb");
@@ -213,8 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
     // GTGlobals::sleep(60000);
@@ -273,8 +269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
-    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
-    CHECK_SET_ERR(table, "tableView not found");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 3));
     GTMouseDriver::click();
     GTKeyboardDriver::keySequence("sequence.gb");

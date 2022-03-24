@@ -53,8 +53,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "ClustalW");
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "              ");
@@ -80,12 +79,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 100);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "aagc+tattaataa");
@@ -110,12 +107,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC+TATTAATAA");
@@ -135,12 +130,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGc+TaTTAAtaa");
@@ -160,12 +153,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "--------------");
@@ -190,12 +181,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGCTTATTAATAA");
@@ -216,12 +205,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAG--T-TTAA---");
@@ -241,12 +228,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "WAGHH--HTWW---");
@@ -270,12 +255,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "WAGYYTWYTAW---");
@@ -295,12 +278,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
+    auto consensusCombo = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "W-------------");
@@ -308,15 +289,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 }
 
 void checkLimits(HI::GUITestOpStatus& os, int minVal, int maxVal) {
-    QSlider* thresholdSlider = qobject_cast<QSlider*>(GTWidget::findWidget(os, "thresholdSlider"));
-    CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider not found");
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
     int actualSliderMin = thresholdSlider->minimum();
     int actualSliderMax = thresholdSlider->maximum();
     CHECK_SET_ERR(actualSliderMin == minVal, QString("wrong minimal value for slider. Expected: %1, actual: %2").arg(minVal).arg(actualSliderMin));
     CHECK_SET_ERR(actualSliderMax == maxVal, QString("wrong maximum value for slider. Expected: %1, actual: %2").arg(maxVal).arg(actualSliderMin));
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     int actualSpinMin = thresholdSpinBox->minimum();
     int actualSpinMax = thresholdSpinBox->maximum();
     CHECK_SET_ERR(actualSpinMin == minVal, QString("wrong minimal value for spin. Expected: %1, actual: %2").arg(minVal).arg(actualSpinMin));
@@ -330,8 +309,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    QComboBox* consensusType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusType != nullptr, "consensus combobox not found");
+    auto consensusType = GTWidget::findComboBox(os, "consensusType");
     // 3. Select "Default" consensus mode. Limits are 1-100
     GTComboBox::selectItemByText(os, consensusType, "Default");
     checkLimits(os, 1, 100);
@@ -344,13 +322,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 void checkValues(HI::GUITestOpStatus& os, int expected) {
-    QSlider* thresholdSlider = qobject_cast<QSlider*>(GTWidget::findWidget(os, "thresholdSlider"));
-    CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider not found");
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
     int actualSliderValue = thresholdSlider->value();
     CHECK_SET_ERR(actualSliderValue == expected, QString("wrong value for slider. Executed: %1, actual: %2").arg(expected).arg(actualSliderValue));
 
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     int actualSpinValue = thresholdSpinBox->value();
     CHECK_SET_ERR(actualSpinValue == expected, QString("wrong value for Spin. Executed: %1, actual: %2").arg(expected).arg(actualSpinValue));
 }
@@ -363,10 +339,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* consensusType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
-    CHECK_SET_ERR(consensusType != nullptr, "consensus combobox not found");
-    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
-    CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
+    auto consensusType = GTWidget::findComboBox(os, "consensusType");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
     QWidget* thresholdResetButton = GTWidget::findWidget(os, "thresholdResetButton");
     CHECK_SET_ERR(thresholdResetButton != nullptr, "thresholdResetButton not found");
     // 3. Select "Default" consensus mode

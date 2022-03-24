@@ -61,8 +61,7 @@ ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus& os, 
 void ExportSelectedRegionFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* lineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
-    GT_CHECK(lineEdit != nullptr, "File name line edit not found");
+    auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
     defaultExportPath = GTLineEdit::copyText(os, lineEdit);
     GTLineEdit::setText(os, lineEdit, path + name);
 
@@ -70,17 +69,15 @@ void ExportSelectedRegionFiller::commonScenario() {
         QCheckBox* customSeqCheckBox = dialog->findChild<QCheckBox*>("customSeqNameBox");
         GT_CHECK(customSeqCheckBox != nullptr, "Sequence name checkbox not found");
         GTCheckBox::setChecked(os, customSeqCheckBox, true);
-        QLineEdit* sequenceNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceNameEdit", dialog));
-        GT_CHECK(sequenceNameEdit != nullptr, "Sequence name line edit not found");
+        auto sequenceNameEdit = GTWidget::findLineEdit(os, "sequenceNameEdit", dialog);
         GTLineEdit::setText(os, sequenceNameEdit, seqName);
     }
 
-    QCheckBox* translateButton = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "translateButton"));
-    CHECK_SET_ERR(translateButton != nullptr, "translateButton not found!");
+    auto translateButton = GTWidget::findCheckBox(os, "translateButton");
     GTCheckBox::setChecked(os, translateButton, translate);
 
     if (translate) {
-        QCheckBox* allTFramesButton = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "allTFramesButton"));
+        auto allTFramesButton = GTWidget::findCheckBox(os, "allTFramesButton");
         GTCheckBox::setChecked(os, allTFramesButton, saveAllAminoFrames);
     }
 

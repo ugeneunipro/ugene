@@ -220,7 +220,7 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& 
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
     QList<QAction*> actions;
-    actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
+    actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
             << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
     editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
@@ -246,7 +246,8 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
 
     QList<QAction*> actions = {
         getEditor()->getUI()->getEditorNameList()->getEditSequenceNameAction(),
-        fillWithGapsinsSymAction,
+        insertGapsAction,
+        replaceWithGapsAction,
         replaceCharacterAction,
         reverseComplementAction,
         reverseAction,
@@ -306,7 +307,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     ui->pasteAction->setEnabled(!readOnly);
     ui->pasteBeforeAction->setEnabled(!readOnly);
 
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
+    insertGapsAction->setEnabled(canEditSelectedArea && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && selection.isSingleBaseSelection());
     delColAction->setEnabled(canEditAlignment);
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());

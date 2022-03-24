@@ -90,7 +90,7 @@ void BuildTreeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (saveTree != "default") {
-        QLineEdit* saveLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit"));
+        auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit");
         GTLineEdit::setText(os, saveLineEdit, saveTree);
     }
 
