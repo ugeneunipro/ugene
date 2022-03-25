@@ -334,14 +334,8 @@ void ExternalToolSupportUtils::removeTmpDir(const QString& tmpDirUrl, U2OpStatus
         return;
     }
     QDir tmpDir(tmpDirUrl);
-    foreach (const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
-        if (!tmpDir.remove(file)) {
-            os.setError(tr("Can not remove files from temporary folder."));
-            return;
-        }
-    }
-    if (!tmpDir.rmdir(tmpDir.absolutePath())) {
-        os.setError(tr("Can not remove folder for temporary files."));
+    if (!tmpDir.removeRecursively()) {
+        os.setError(tr("Can not remove folder for temporary files, folder \"%1\".").arg(tmpDir.absolutePath()));
     }
 }
 
