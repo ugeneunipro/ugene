@@ -764,8 +764,6 @@ void BioStruct3DGLWidget::createActions() {
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
     createStructuralAlignmentActions();
-
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_onTaskFinished(Task*)));
 }
 
 void BioStruct3DGLWidget::createStructuralAlignmentActions() {
@@ -967,6 +965,7 @@ void BioStruct3DGLWidget::sl_showSurface() {
 
     QString surfaceType = qobject_cast<QAction*>(sender())->text();
     surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
+    connect(surfaceCalcTask, &Task::si_stateChanged, this, &BioStruct3DGLWidget::sl_onTaskFinished);
     AppContext::getTaskScheduler()->registerTopLevelTask(surfaceCalcTask);
 }
 
@@ -985,8 +984,8 @@ void BioStruct3DGLWidget::sl_selectSurfaceRenderer(QAction* action) {
     update();
 }
 
-void BioStruct3DGLWidget::sl_onTaskFinished(Task* task) {
-    if (surfaceCalcTask != task || surfaceCalcTask->getState() != Task::State_Finished) {
+void BioStruct3DGLWidget::sl_onTaskFinished() {
+    if (surfaceCalcTask->getState() != Task::State_Finished) {
         return;
     }
 

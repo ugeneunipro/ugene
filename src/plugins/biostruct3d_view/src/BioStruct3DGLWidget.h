@@ -267,7 +267,7 @@ private:
     QScopedPointer<MolecularSurface> molSurface;
     QScopedPointer<MolecularSurfaceRenderer> surfaceRenderer;
 
-    MolecularSurfaceCalcTask* surfaceCalcTask;
+    QPointer<MolecularSurfaceCalcTask> surfaceCalcTask;
 
     AnaglyphStatus anaglyphStatus;
     QScopedPointer<AnaglyphRenderer> anaglyph;
@@ -349,7 +349,7 @@ private slots:
 
     // used only for handling MolecularSurfaceCalcTask
     // should be in special MolecularSurfaceProxy
-    void sl_onTaskFinished(Task* task);
+    void sl_onTaskFinished();
 
 public:
     static const QString BACKGROUND_COLOR_NAME;
