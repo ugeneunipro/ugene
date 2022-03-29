@@ -115,9 +115,9 @@ static void registerHit(int* data, char c) {
 
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
-    globalFreqs.resize(256);
-    memset(globalFreqs.data(), 0, globalFreqs.size() * 4);
-
+    for (int i = 0; i < 256; i++) {
+        globalFreqs[i] = 0;
+    }
     int* freqsData = globalFreqs.data();
     int len = ma->getLength();
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
@@ -136,31 +136,24 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     for (int i = 0; i < 256; i++) {
         localFreqs[i] = 0;
     }
-    //memset(localFreqs.data(), 0, localFreqs.size() * 4);
-
     int* freqsData = localFreqs.data();
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         registerHit(freqsData, c);
     }
-
     // find all symbols with freq > threshold, select one with the lowest global freq
     char selectedChar = U2Msa::GAP_CHAR;
-    int selectedGlobalFreq = nSeq * ma->getLength();
+    double selectedGlobalPercentage = 100;
     int thresholdScore = getThreshold();
-    int minFreq = int(float(nSeq) * thresholdScore / 100);
-    if (minFreq == 0) {
-        minFreq = 1;
-    }
     for (int c = 'A'; c <= 'Y'; c++) {
-        int localFreq = freqsData[uchar(c)];
-        if (localFreq < minFreq) {
+        double localPercentage = (freqsData[uchar(c)]/nSeq) * 100;
+        if (localPercentage < thresholdScore) {
             continue;
         }
-        int globalFreq = globalFreqs[uchar(c)];
-        if (globalFreq < selectedGlobalFreq) {
-            selectedGlobalFreq = globalFreq;
+        double globalPercentage = ((double)globalFreqs[uchar(c)] / (double)(nSeq * ma->getLength())) * 100;
+        if (globalPercentage < selectedGlobalPercentage) {
+            selectedGlobalPercentage = globalPercentage;
             selectedChar = c;
         }
     }
