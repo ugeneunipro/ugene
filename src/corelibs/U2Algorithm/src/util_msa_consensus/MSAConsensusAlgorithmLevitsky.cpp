@@ -147,7 +147,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     double selectedGlobalPercentage = 100;
     int thresholdScore = getThreshold();
     for (int c = 'A'; c <= 'Y'; c++) {
-        double localPercentage = (freqsData[uchar(c)]/nSeq) * 100;
+        double localPercentage = ((double)freqsData[uchar(c)] / (double)nSeq) * 100;
         if (localPercentage < thresholdScore) {
             continue;
         }
