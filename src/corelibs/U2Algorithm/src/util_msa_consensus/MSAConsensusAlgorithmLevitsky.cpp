@@ -116,10 +116,8 @@ static void registerHit(int* data, char c) {
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
     , globalFreqs(QVarLengthArray<int>(256)) {
-    for (int i = 0; i < 256; i++) {
-        globalFreqs[i] = 0;
-    }
-    int* freqsData = globalFreqs.data();
+    int *freqsData = globalFreqs.data();
+    std::fill(freqsData, freqsData + 256, 0);
     int len = ma->getLength();
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
@@ -134,10 +132,8 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
 
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
-    for (int i = 0; i < 256; i++) {
-        localFreqs[i] = 0;
-    }
     int* freqsData = localFreqs.data();
+    std::fill(freqsData, freqsData + 256, 0);
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
