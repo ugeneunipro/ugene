@@ -253,10 +253,6 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString 
 
     editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
-        QList<QAction *> actions;
-        actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
-                << reverseAction << complementAction << delColAction << removeAllGapsAction;
-
         editMenu->addActions(actions);
     }
 
