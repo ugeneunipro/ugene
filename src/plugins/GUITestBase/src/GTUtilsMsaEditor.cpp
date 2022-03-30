@@ -496,6 +496,15 @@ void GTUtilsMsaEditor::zoomOut(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "resetZoom"
+void GTUtilsMsaEditor::resetZoom(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* resetZoomButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Reset Zoom");
+    GT_CHECK_RESULT(resetZoomButton->isEnabled(), "resetZoomButton is not enabled", );
+    GTWidget::click(os, resetZoomButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus& os) {
     getActiveMsaEditorWindow(os);

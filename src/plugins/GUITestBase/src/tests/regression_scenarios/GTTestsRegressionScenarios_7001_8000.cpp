@@ -2393,7 +2393,7 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7572) {
-    // 1. Open HIV-1.aln                       
+    // 1. Open HIV-1.aln
     // 2. Click the "Build Tree" button on the toolbar.
     // 3. Start building tree with Likelihood algorithm
     // 4. Cancel Tree building task
@@ -2417,14 +2417,26 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     GTUtilsTaskTreeView::checkTaskIsPresent(os, taskName);
     QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
     CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
-    GTLogTracer l;
     GTUtilsTaskTreeView::cancelTask(os, taskName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //We cant put it in macro because it will be autotriggered by log message from macro itself
-    bool messageNotFound = !l.checkMessage("QProcess: Destroyed while process");
+    // We can't put it in macro because it will be auto-triggered by log message from macro itself.
+    bool messageNotFound = !U2::GTLogTracer::checkMessage("QProcess: Destroyed while process");
     CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
 }
 
-}  // namespace GUITest_regression_scenarios
+GUI_TEST_CLASS_DEFINITION(test_7575) {
+    // Check that reset-zoom action does not crash UGENE.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
+    GTUtilsMsaEditor::zoomIn(os);
+    GTUtilsMsaEditor::zoomIn(os);
+    GTUtilsMsaEditor::zoomIn(os);
+
+    GTUtilsMSAEditorSequenceArea::scrollToPosition(os, {550, 1});
+    GTUtilsMsaEditor::resetZoom(os);
+    // Expected state: UGENE does not crash.
+}
+
+}  // namespace GUITest_regression_scenarios
 }  // namespace U2

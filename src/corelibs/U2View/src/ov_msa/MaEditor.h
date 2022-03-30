@@ -243,7 +243,7 @@ protected slots:
     void sl_gotoSelectedRead();
 
 private slots:
-    void sl_resetColumnWidthCache();
+    void resetColumnWidthCache();
 
 protected:
     virtual QWidget* createWidget() = 0;
