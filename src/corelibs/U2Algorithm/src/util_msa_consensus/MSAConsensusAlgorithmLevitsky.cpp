@@ -114,7 +114,8 @@ static void registerHit(int* data, char c) {
 }
 
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
-    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
+    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
+    , globalFreqs(QVarLengthArray<int>(256)) {
     for (int i = 0; i < 256; i++) {
         globalFreqs[i] = 0;
     }
@@ -144,14 +145,14 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
     char selectedChar = U2Msa::GAP_CHAR;
-    double selectedGlobalPercentage = 100;
-    int thresholdScore = getThreshold();
+    double selectedGlobalPercentage = 1;
+    double thresholdScore = getThreshold() / 100.0;
     for (int c = 'A'; c <= 'Y'; c++) {
-        double localPercentage = ((double)freqsData[uchar(c)] / (double)nSeq) * 100;
+        double localPercentage = (double)freqsData[uchar(c)] / nSeq;
         if (localPercentage < thresholdScore) {
             continue;
         }
-        double globalPercentage = ((double)globalFreqs[uchar(c)] / (double)(nSeq * ma->getLength())) * 100;
+        double globalPercentage = (double)globalFreqs[uchar(c)] / (nSeq * ma->getLength());
         if (globalPercentage < selectedGlobalPercentage) {
             selectedGlobalPercentage = globalPercentage;
             selectedChar = c;

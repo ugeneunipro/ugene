@@ -74,7 +74,7 @@ public:
     virtual MSAConsensusAlgorithmLevitsky* clone() const;
 
 private:
-    QVarLengthArray<int> globalFreqs = QVarLengthArray<int>(256);
+    QVarLengthArray<int> globalFreqs;
 };
 
 }  // namespace U2
