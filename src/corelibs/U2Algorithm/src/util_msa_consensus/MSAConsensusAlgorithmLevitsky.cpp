@@ -117,7 +117,7 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
     , globalFreqs(QVarLengthArray<int>(256)) {
     int *freqsData = globalFreqs.data();
-    std::fill(freqsData, freqsData + 256, 0);
+    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
     int len = ma->getLength();
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
@@ -133,7 +133,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     int* freqsData = localFreqs.data();
-    std::fill(freqsData, freqsData + 256, 0);
+    std::fill(localFreqs.begin(), localFreqs.end(), 0);
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
