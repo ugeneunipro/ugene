@@ -1498,10 +1498,10 @@ void DotPlotWidget::selectNearestRepeat(const QPointF& p) {
 }
 
 float DotPlotWidget::calculateDistance(float x, float y, const DotPlotResults& r) const {
-    // find nearest point on line segment to desired point
+    // find nearest point on line segment to desired point https://www.cyberforum.ru/post16063107.html
     // then calculate distance
-    double t = (double)(((x - r.x) + (y - r.y)) * r.len) / (2 * pow(r.len, 2));
-    t = std::min(1.0, std::max(0.0, t));
+    float t = (float)(((x - r.x) + (y - r.y)) * r.len) / (2 * pow(r.len, 2));
+    t = qBound<float>(0.0, t, 1.0);
     float nearestPointX = r.x + t * r.len;
     float nearestPointY = r.y + t * r.len;
     float ratioX = w / (float)sequenceX->getSequenceLength();
@@ -1523,7 +1523,7 @@ const DotPlotResults* DotPlotWidget::findNearestRepeat(const QPoint& p) {
     bool first = true;
     SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", nullptr);
     for (const DotPlotResults& r : qAsConst(*dpFilteredResults)) {
-        double distance = calculateDistance(p.x(), p.y(), r);
+        float distance = calculateDistance(p.x(), p.y(), r);
         if (distance < minDistance || first) {
             minDistance = distance;
             need = &r;
@@ -1537,7 +1537,7 @@ const DotPlotResults* DotPlotWidget::findNearestRepeat(const QPoint& p) {
         resultForCorrectCalculation.len = r.len;
         resultForCorrectCalculation.x = r.x;
         resultForCorrectCalculation.y = r.y + r.len;
-        double distance = calculateDistance(p.x(), p.y(), resultForCorrectCalculation);
+        float distance = calculateDistance(p.x(), p.y(), resultForCorrectCalculation);
         if (distance < minDistance || first) {
             minDistance = distance;
             need = &r;
