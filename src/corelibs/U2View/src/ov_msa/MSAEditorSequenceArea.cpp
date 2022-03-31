@@ -210,32 +210,9 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
 void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& menuType) {
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
     bool isMainMenu = menuType == MsaEditorMenuType::STATIC;
-    if (isContextMenu || isMainMenu) {
-        buildMenu(m);
-    }
-    if (!isContextMenu) {
+    if (!isContextMenu && !isMainMenu) {
         return;
     }
-    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != nullptr, "editMenu is null", );
-
-    QList<QAction*> actions;
-    actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
-            << reverseAction << complementAction << delColAction << removeAllGapsAction;
-
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
-    if (rect().contains(mapFromGlobal(QCursor::pos()))) {
-        editMenu->addActions(actions);
-    }
-
-    m->setObjectName("msa sequence area context menu");
-}
-
-void MSAEditorSequenceArea::initRenderer() {
-    renderer = new SequenceAreaRenderer(ui, this);
-}
-
-void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
     SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu is null", );
     loadSeqMenu->addAction(addSeqFromProjectAction);
@@ -263,6 +240,14 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
     exportMenu->addAction(createSubaligniment);
     exportMenu->addAction(saveSequence);
+
+    if (isContextMenu) {
+        m->setObjectName("msa sequence area context menu");
+    }
+}
+
+void MSAEditorSequenceArea::initRenderer() {
+    renderer = new SequenceAreaRenderer(ui, this);
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
@@ -308,6 +293,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     ui->pasteBeforeAction->setEnabled(!readOnly);
 
     insertGapsAction->setEnabled(canEditSelectedArea && !isEditing);
+    replaceWithGapsAction->setEnabled(canEditSelectedArea && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && selection.isSingleBaseSelection());
     delColAction->setEnabled(canEditAlignment);
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());

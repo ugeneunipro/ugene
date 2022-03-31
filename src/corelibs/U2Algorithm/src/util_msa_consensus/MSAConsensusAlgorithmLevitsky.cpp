@@ -114,11 +114,10 @@ static void registerHit(int* data, char c) {
 }
 
 MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
-    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
-    globalFreqs.resize(256);
-    memset(globalFreqs.data(), 0, globalFreqs.size() * 4);
-
-    int* freqsData = globalFreqs.data();
+    : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
+    , globalFreqs(QVarLengthArray<int>(256)) {
+    int *freqsData = globalFreqs.data();
+    std::fill(globalFreqs.begin(), globalFreqs.end(), 0);
     int len = ma->getLength();
     foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
@@ -133,28 +132,25 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
 
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
-    memset(localFreqs.data(), 0, localFreqs.size() * 4);
-
     int* freqsData = localFreqs.data();
+    std::fill(localFreqs.begin(), localFreqs.end(), 0);
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         registerHit(freqsData, c);
     }
-
     // find all symbols with freq > threshold, select one with the lowest global freq
     char selectedChar = U2Msa::GAP_CHAR;
-    int selectedGlobalFreq = nSeq * ma->getLength();
-    int thresholdScore = getThreshold();
-    int minFreq = int(float(nSeq) * thresholdScore / 100);
+    double selectedGlobalPercentage = 1;
+    double thresholdScore = getThreshold() / 100.0;
     for (int c = 'A'; c <= 'Y'; c++) {
-        int localFreq = freqsData[uchar(c)];
-        if (localFreq < minFreq) {
+        double localPercentage = (double)freqsData[uchar(c)] / nSeq;
+        if (localPercentage < thresholdScore) {
             continue;
         }
-        int globalFreq = globalFreqs[uchar(c)];
-        if (globalFreq < selectedGlobalFreq) {
-            selectedGlobalFreq = globalFreq;
+        double globalPercentage = (double)globalFreqs[uchar(c)] / (nSeq * ma->getLength());
+        if (globalPercentage < selectedGlobalPercentage) {
+            selectedGlobalPercentage = globalPercentage;
             selectedChar = c;
         }
     }

@@ -752,7 +752,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_13(os, 2, 75, "WAGYYTWYTAW");
+    test_13(os, 2, 75, "WAGYYKWYTAW");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
