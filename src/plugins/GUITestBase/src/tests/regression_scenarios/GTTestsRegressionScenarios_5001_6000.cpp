@@ -442,6 +442,21 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5059) {
+    //1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    //2. Select whole alignment.
+    //3. Press Delete.
+    //Expected: notification about impossible operation popped.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsNotifications::waitForNotification(os, true, "Impossible to delete whole alignment!");
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5069) {
     //    1. Load workflow "_common_data/regression/5069/crash.uwl".
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
