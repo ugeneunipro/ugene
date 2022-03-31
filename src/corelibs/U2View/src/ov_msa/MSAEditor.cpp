@@ -582,15 +582,6 @@ void MSAEditor::initActions() {
     sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
-    // Disable overview for very large alignments by default.
-    // UGENE's MSA overview calculation is too slow and having the overview ON when multiple large files
-    // are opened can lead to 100% CPU block.
-    static constexpr quint64 maxAlignmentSizeToHaveOverviewByDefault = 1000 * 1000;
-    quint64 alignmentSize = getAlignmentLen() * getNumSequences();
-    if (alignmentSize > maxAlignmentSizeToHaveOverviewByDefault) {
-        showOverviewAction->setChecked(false);
-        getMaEditorMultilineWgt()->getOverviewArea()->setVisible(false);
-    }
 }
 
 void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
