@@ -377,7 +377,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/random_primers2.fa");
     GTUtilsPcrPrimerDesign::openTab(os);
-    const QWidget *sequenceWidget = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *sequenceWidget = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     auto leftStart = GTWidget::findSpinBox(os, "sbLeftAreaStart", sequenceWidget),
          leftEnd = GTWidget::findSpinBox(os, "sbLeftAreaEnd", sequenceWidget),
          rightStart = GTWidget::findSpinBox(os, "sbRightAreaStart", sequenceWidget),
