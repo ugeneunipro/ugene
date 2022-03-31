@@ -83,6 +83,10 @@ void GTest::emptyValue(const QString &name) {
     stateInfo.setError(QString("Empty value for attribute: %1.").arg(name));
 }
 
+void GTest::wrongListSize(const QString& attribute, int actualSize, int expectedSize) {
+    stateInfo.setError(QString("Wrong list size: %1, there are %2, but expected %3.").arg(attribute).arg(QString::number(actualSize)).arg(QString::number(expectedSize)));
+}
+
 //////////////////////////////////////////////////////////////////////////
 // GTestSuite
 

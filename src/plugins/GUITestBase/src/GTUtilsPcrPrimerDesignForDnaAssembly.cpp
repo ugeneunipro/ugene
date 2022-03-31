@@ -51,17 +51,17 @@ static QWidget *getTabWgt(GUITestOpStatus &os) {
 }
 
 // Return the sequence generator widget. Doesn't open the tab.
-static QWidget *getGenSeqWgt(GUITestOpStatus &os, const QWidget *tab) {
+static QWidget *getGenSeqWgt(GUITestOpStatus &os, QWidget *tab) {
     return GTWidget::findWidget(os, "wgtGenerateSequence", tab == nullptr ? getTabWgt(os) : tab);
 }
 
 // Return the generated sequence table. Doesn't open the tab.
-static QTableWidget *getGenSeqTable(GUITestOpStatus &os, const QWidget *tab) {
+static QTableWidget *getGenSeqTable(GUITestOpStatus &os, QWidget *tab) {
     return GTWidget::findExactWidget<QTableWidget *>(os, "twGeneratedSequences", getGenSeqWgt(os, tab));
 }
 
 // Return the table of result sequences. Doesn't open the tab.
-static QTableWidget *getResultTable(GUITestOpStatus &os, const QWidget *tab) {
+static QTableWidget *getResultTable(GUITestOpStatus &os, QWidget *tab) {
     return GTWidget::findExactWidget<QTableWidget *>(os, "productsTable", tab);
 }
 
@@ -73,7 +73,7 @@ static QTableWidget *getResultTable(GUITestOpStatus &os, const QWidget *tab) {
  * At the moment the scroll doesn't work if the tasks/log are open.
  */
 #define GT_METHOD_NAME "scrollToWidget"
-static void scrollToWidget(GUITestOpStatus &os, const QWidget *scrollTo, const QWidget *tab) {
+static void scrollToWidget(GUITestOpStatus &os, const QWidget *scrollTo, QWidget *tab) {
     GT_CHECK(scrollTo != nullptr, "Can't scroll to nullptr")
     const auto isWidgetFullyVisible = [](const QWidget *w) {
         QRegion visibleRegion = w->visibleRegion();
@@ -120,7 +120,7 @@ static void checkTableIndex(GUITestOpStatus &os, int ind, const QTableWidget *ta
  * Clicks generated sequence at given index. Checks validity of the index before clicking. Indices are numbered starting
  * from 0. The table should not be nullptr.
  */
-static void selectGenSeq(GUITestOpStatus &os, int ind, QTableWidget *table, const QWidget *tab) {
+static void selectGenSeq(GUITestOpStatus &os, int ind, QTableWidget *table, QWidget *tab) {
     checkTableIndex(os, ind, table);
     scrollToWidget(os, table, tab == nullptr ? getTabWgt(os) : tab);
     GTMouseDriver::click(GTTableView::getCellPoint(os, table, ind, 0));
@@ -139,7 +139,7 @@ static void clickButtonInGenSeqWgt(GUITestOpStatus &os, const QString &btnName) 
  * spinboxes. Doesn't open the tab.
  */
 static void setRange(GUITestOpStatus &os, const QString &minSbName, const QString &maxSbName, const U2Range<int> &range,
-                     const QWidget *parent) {
+                     QWidget *parent) {
     QSpinBox *min = GTWidget::findSpinBox(os, minSbName, parent);
     QSpinBox *max = GTWidget::findSpinBox(os, maxSbName, parent);
     if (range.minValue <= min->maximum()) {

@@ -87,8 +87,7 @@ double XmlTest::getDouble(const QDomElement& element, const QString& attribute) 
     CHECK_EXT(success, wrongValue(attribute), 0);
     return result;
 }
-
-QPair<qint64, qint64> XmlTest::getPairQintFromQStringList(QStringList &listToPair) {
+QPair<qint64, qint64> XmlTest::getPairQintFromQStringList(QStringList& listToPair) {
     QPair<qint64, qint64> result;
     if (listToPair.size() != 2) {
         stateInfo.setError(QString("Expected list size not equal 2."));
@@ -106,17 +105,17 @@ QPair<qint64, qint64> XmlTest::getPairQintFromQStringList(QStringList &listToPai
     return result;
 }
 
-U2Range<int> XmlTest::getU2RangeInt(const QDomElement &element, const QString &attribute, const QString &splitter) {
+U2Range<int> XmlTest::getU2RangeInt(const QDomElement& element, const QString& attribute, const QString& splitter) {
     QPair<qint64, qint64> pair = getPairQint64(element, attribute, splitter);
     return U2Range<int>(pair.first, pair.second);
 }
 
-U2::U2Region XmlTest::getU2Region(const QDomElement &element, const QString &attribute) {
+U2::U2Region XmlTest::getU2Region(const QDomElement& element, const QString& attribute) {
     QPair<qint64, qint64> pair = getPairQint64(element, attribute, "..");
     return U2Region(pair.first, pair.second);
 }
 
-QPair<qint64, qint64> XmlTest::getPairQint64(const QDomElement &element, const QString &attribute, const QString &splitter) {
+QPair<qint64, qint64> XmlTest::getPairQint64(const QDomElement& element, const QString& attribute, const QString& splitter) {
     QPair<qint64, qint64> result;
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, result);
@@ -130,7 +129,7 @@ QPair<qint64, qint64> XmlTest::getPairQint64(const QDomElement &element, const Q
     return getPairQintFromQStringList(splittedList);
 }
 
-QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QString &attribute, const QString &splitter, int sizeToCheck) {
+QList<U2Region> XmlTest::getU2RegionList(const QDomElement& element, const QString& attribute, const QString& splitter, int sizeToCheck) {
     QList<U2Region> result;
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, result);
@@ -143,8 +142,8 @@ QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QStri
             return result;
         }
     }
-    
-    for (const QString &regionStr : qAsConst(splittedList)) {
+
+    for (const QString& regionStr : splittedList) {
         QStringList regionValues = regionStr.split("..");
         if (regionValues.size() != 2) {
             stateInfo.setError(QString("Wrong list size at region values, there are %1, but expected 2.").arg(QString::number(regionValues.size())));

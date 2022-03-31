@@ -32,6 +32,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -43,7 +44,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/PrimerLineEdit.h>
 #include <U2Gui/U2FileDialog.h>
@@ -331,8 +331,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_maxValueChanged() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
+    QString filter = FileFilters::createFileFilterByObjectTypes({ GObjectTypes::SEQUENCE }, true);
+    QString selectedFilter = FileFilters::createFileFilterByObjectTypes({ GObjectTypes::SEQUENCE });
     LastUsedDirHelper lod;
     QString file = U2FileDialog::getOpenFileName(nullptr, tr("Select a backbone sequence file"), lod, filter, &selectedFilter);
     CHECK(!file.isEmpty(), );
@@ -341,8 +341,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
-    const QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
+    QString filter = FileFilters::createFileFilterByObjectTypes({ GObjectTypes::SEQUENCE }, true);
+    QString selectedFilter = FileFilters::createFileFilterByObjectTypes({ GObjectTypes::SEQUENCE });
     LastUsedDirHelper lod;
     QString file = U2FileDialog::getOpenFileName(nullptr, tr("Select an \"Other sequences in PCR reaction\" file"), lod, filter, &selectedFilter);
     CHECK(!file.isEmpty(), );

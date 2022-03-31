@@ -89,6 +89,7 @@ protected:
     void failMissingValue(const QString& attribute);
     void wrongValue(const QString& attribute);
     void emptyValue(const QString& attribute);
+    void wrongListSize(const QString& attribute, int actualSize, int expectedSize);
 
     GTest* contextProvider;
     const GTestEnvironment* env;
