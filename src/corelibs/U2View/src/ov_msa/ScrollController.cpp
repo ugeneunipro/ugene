@@ -349,7 +349,7 @@ GScrollBar* ScrollController::getVerticalScrollBar() const {
 
 void ScrollController::updateScrollBarsOnFontOrZoomChange() {
     CHECK(!maEditor->isAlignmentEmpty(), );
-    SignalBlocker signalBlocker(hScrollBar);
+    QSignalBlocker signalBlocker(hScrollBar);
 
     // Keep the central point in place on zooming.
     double sequenceAreaWidth = ui->getSequenceArea()->width();
