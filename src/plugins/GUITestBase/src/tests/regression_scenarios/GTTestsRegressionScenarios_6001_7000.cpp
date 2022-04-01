@@ -4910,15 +4910,48 @@ GUI_TEST_CLASS_DEFINITION(test_6742) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList mainItems = {"Overview", "Show offsets", "Zoom In", "Zoom Out", "Zoom To Selection", "Reset Zoom", "Colors", "Highlighting", "Change Font", "Clear selection"};
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance"}, mainItems));
+    QStringList mainItems = {
+        "Overview",
+        "Show offsets",
+        "Zoom In",
+        "Zoom Out",
+        "Zoom To Selection",
+        "Reset Zoom",
+        "Colors",
+        "Highlighting",
+        "Change Font",
+        "Clear selection",
+    };
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance"}, mainItems, PopupChecker::Exists));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    QStringList colorsItems = {"No colors", "Jalview", "Percentage identity", "Percentage identity (colored)", "Percentage identity (gray)", "UGENE", "UGENE Sanger", "Weak similarities"};
+    mainItems.removeOne("Reset Zoom");
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance"}, mainItems, PopupChecker::IsEnabled));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+
+    QStringList colorsItems = {
+        "No colors",
+        "Jalview",
+        "Percentage identity",
+        "Percentage identity (colored)",
+        "Percentage identity (gray)",
+        "UGENE",
+        "UGENE Sanger",
+        "Weak similarities",
+    };
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Colors"}, colorsItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    QStringList highlightingItems = {"No highlighting", "Agreements", "Disagreements", "Gaps", "Conservation level", "Transitions", "Transversions", "Use dots"};
+    QStringList highlightingItems = {
+        "No highlighting",
+        "Agreements",
+        "Disagreements",
+        "Gaps",
+        "Conservation level",
+        "Transitions",
+        "Transversions",
+        "Use dots",
+    };
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Highlighting"}, highlightingItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
