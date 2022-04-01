@@ -351,24 +351,23 @@ void ScrollController::updateScrollBarsOnFontOrZoomChange() {
     CHECK(!maEditor->isAlignmentEmpty(), );
     QSignalBlocker signalBlocker(hScrollBar);
 
-    // Keep the central point in place on zooming.
+    // Keep the top-left point in place while zooming,
+    // so when zooming in an just opened alignment the start position is always visible.
     double sequenceAreaWidth = ui->getSequenceArea()->width();
-    double centerPointX = hScrollBar->value() + sequenceAreaWidth / 2.0;
+    double leftX = hScrollBar->value();
     double alignmentLength = maEditor->getAlignmentLen();
     double maxX = hScrollBar->maximum() + sequenceAreaWidth;
-    double centerPointPos = alignmentLength * centerPointX / (double)maxX;
+    double leftXPointPos = alignmentLength * leftX / (double)maxX;
     updateHorizontalScrollBarPrivate();
-    double basesPerWidth = sequenceAreaWidth / (double)maEditor->getColumnWidth();
-    setFirstVisibleBase(qMax(0, (int)(centerPointPos - basesPerWidth / 2)));
+    setFirstVisibleBase(qMax(0, (int)leftXPointPos));
 
     double sequenceAreaHeight = ui->getSequenceArea()->height();
-    double centerPointY = vScrollBar->value() + sequenceAreaHeight / 2.0;
+    double topY = vScrollBar->value();
     double numSequences = maEditor->getNumSequences();
-    double maxY = vScrollBar->maximum() + sequenceAreaHeight;
-    double centerColumnIndex = numSequences * centerPointY / (double)maxY;
+    double maxYPoint = vScrollBar->maximum() + sequenceAreaHeight;
+    double topColumnIndex = numSequences * topY / (double)maxYPoint;
     updateVerticalScrollBarPrivate();
-    double sequencesPerHeight = sequenceAreaHeight / (double)maEditor->getSequenceRowHeight();
-    setFirstVisibleViewRow(qMax(0, (int)(centerColumnIndex - sequencesPerHeight / 2)));
+    setFirstVisibleViewRow(qMax(0, (int)topColumnIndex));
 
     emit si_visibleAreaChanged();
 }
