@@ -804,7 +804,6 @@ GUI_TEST_CLASS_DEFINITION(test_5216) {
     // 2. Type to the project filter field "acct" then "acctt"
     GTUtilsProjectTreeView::filterProjectSequental(os, {"acct", "accttt"}, true);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    // GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5220) {
