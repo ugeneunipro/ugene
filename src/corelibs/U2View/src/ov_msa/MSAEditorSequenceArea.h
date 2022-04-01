@@ -211,6 +211,8 @@ private:
     /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
     void updateRowOrderActionsState();
 
+    void buildMenu(QMenu* m, bool isContextMenu);
+
     void reverseComplementModification(ModificationType& type);
 
     void updateCollapseModel(const MaModificationInfo& modInfo) override;

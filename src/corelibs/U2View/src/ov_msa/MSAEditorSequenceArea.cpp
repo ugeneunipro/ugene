@@ -244,15 +244,19 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString 
     if (!isContextMenu && !isMainMenu) {
         return;
     }
+    if (isContextMenu || isMainMenu) {
+        buildMenu(m, isContextMenu);
+    }
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
-    QList<QAction*> actions;
-    actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
-            << reverseAction << complementAction << delColAction << removeAllGapsAction;
-
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(),
+                           ui->delSelectionAction);
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
+        QList<QAction *> actions;
+        actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
+                << reverseAction << complementAction << delColAction << removeAllGapsAction;
+
         editMenu->addActions(actions);
     }
 
@@ -263,7 +267,7 @@ void MSAEditorSequenceArea::initRenderer() {
     renderer = new SequenceAreaRenderer(ui, this);
 }
 
-void MSAEditorSequenceArea::buildMenu(QMenu* m) {
+void MSAEditorSequenceArea::buildMenu(QMenu* m, bool isContextMenu) {
     QMenu* loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
     SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu is null", );
     loadSeqMenu->addAction(addSeqFromProjectAction);
@@ -294,10 +298,6 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     if (isContextMenu) {
         m->setObjectName("msa sequence area context menu");
     }
-}
-
-void MSAEditorSequenceArea::initRenderer() {
-    renderer = new SequenceAreaRenderer(ui, this);
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
