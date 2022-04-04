@@ -4879,6 +4879,8 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     // Expected state: consensus is -A
     // 4. Close view, and open again
     // Expected state: consensus is -A
+    // 5. Remove "1" sequence
+    // Expected state: consensus is BB
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4783/4783.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4900,6 +4902,13 @@ GUI_TEST_CLASS_DEFINITION(test_4783) {
     GTUtilsProjectTreeView::doubleClickItem(os, "4783.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "-A");
+
+    GTWidget::click(os, GTAction::button(os, "msa_action_undo"));
+
+    GTUtilsMsaEditor::clickSequenceName(os, "1");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMSAEditorSequenceArea::checkConsensus(os, "BB");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {

@@ -141,7 +141,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     }
     // find all symbols with freq > threshold, select one with the lowest global freq
     char selectedChar = U2Msa::GAP_CHAR;
-    double selectedGlobalPercentage = 1;
+    double selectedGlobalPercentage = 1.1;
     double thresholdScore = getThreshold() / 100.0;
     for (int c = 'A'; c <= 'Y'; c++) {
         double localPercentage = (double)freqsData[uchar(c)] / nSeq;
