@@ -2,11 +2,20 @@ include (QSpec.pri)
 
 # Input
 HEADERS += \
-            src/GTGlobals.h \
+           src/GTGlobals.h \
            src/base_dialogs/ColorDialogFiller.h \
            src/base_dialogs/DefaultDialogFiller.h \
            src/base_dialogs/FontDialogFiller.h \
            src/base_dialogs/MessageBoxFiller.h \
+           src/core/CustomScenario.h \
+           src/core/GUITest.h \
+           src/core/GUITestBase.h \
+           src/core/GUITestOpStatus.h \
+           src/core/GUITestsLauncher.h \
+           src/core/MainThreadRunnable.h \
+           src/core/MainThreadTimer.h \
+           src/core/TestThread.h \
+           src/core/global.h \
            src/drivers/GTKeyboardDriver.h \
            src/drivers/GTMouseDriver.h \
            src/primitives/GTAction.h \
@@ -26,8 +35,8 @@ HEADERS += \
            src/primitives/GTSpinBox.h \
            src/primitives/GTSplitter.h \
            src/primitives/GTTabBar.h \
-           src/primitives/GTTableView.h \
            src/primitives/GTTabWidget.h \
+           src/primitives/GTTableView.h \
            src/primitives/GTTextEdit.h \
            src/primitives/GTToolbar.h \
            src/primitives/GTTreeView.h \
@@ -38,20 +47,12 @@ HEADERS += \
            src/system/GTClipboard.h \
            src/system/GTFile.h \
            src/utils/GTKeyboardUtils.h \
+           src/utils/GTMouseUtils.h \
            src/utils/GTThread.h \
            src/utils/GTUtilsDialog.h \
            src/utils/GTUtilsMac.h \
-           src/utils/GTUtilsToolTip.h \
-           src/utils/GTMouseUtils.h \
-           src/core/GUITestOpStatus.h \
-           src/core/global.h \
-           src/core/CustomScenario.h \
-           src/core/GUITest.h \
-           src/core/MainThreadRunnable.h \
-           src/core/MainThreadTimer.h \
-           src/core/GUITestBase.h \
-           src/core/TestThread.h \
-           src/core/GUITestsLauncher.h
+           src/utils/GTUtilsText.h \
+           src/utils/GTUtilsToolTip.h
 
 SOURCES += \
            src/GTGlobals.cpp \
@@ -59,6 +60,13 @@ SOURCES += \
            src/base_dialogs/DefaultDialogFiller.cpp \
            src/base_dialogs/FontDialogFiller.cpp \
            src/base_dialogs/MessageBoxFiller.cpp \
+           src/core/CustomScenario.cpp \
+           src/core/GUITest.cpp \
+           src/core/GUITestBase.cpp \
+           src/core/GUITestsLauncher.cpp \
+           src/core/MainThreadRunnable.cpp \
+           src/core/MainThreadTimer.cpp \
+           src/core/TestThread.cpp \
            src/drivers/GTKeyboardDriver.cpp \
            src/drivers/GTKeyboardDriverLinux.cpp \
            src/drivers/GTKeyboardDriverMac.cpp \
@@ -84,8 +92,8 @@ SOURCES += \
            src/primitives/GTSpinBox.cpp \
            src/primitives/GTSplitter.cpp \
            src/primitives/GTTabBar.cpp \
-           src/primitives/GTTableView.cpp \
            src/primitives/GTTabWidget.cpp \
+           src/primitives/GTTableView.cpp \
            src/primitives/GTTextEdit.cpp \
            src/primitives/GTToolbar.cpp \
            src/primitives/GTTreeView.cpp \
@@ -96,18 +104,12 @@ SOURCES += \
            src/system/GTClipboard.cpp \
            src/system/GTFile.cpp \
            src/utils/GTKeyboardUtils.cpp \
+           src/utils/GTMouseUtils.cpp \
            src/utils/GTThread.cpp \
            src/utils/GTUtilsDialog.cpp \
            src/utils/GTUtilsMac.cpp \
-           src/utils/GTUtilsToolTip.cpp \
-           src/utils/GTMouseUtils.cpp \
-           src/core/CustomScenario.cpp \
-           src/core/GUITest.cpp \
-           src/core/MainThreadRunnable.cpp \
-           src/core/MainThreadTimer.cpp \
-           src/core/GUITestBase.cpp \
-           src/core/TestThread.cpp \
-           src/core/GUITestsLauncher.cpp
+           src/utils/GTUtilsText.cpp \
+           src/utils/GTUtilsToolTip.cpp
 
 # UGENE does not use either WebKit nor WebEngine anymore.
 # If the helper files below are needed add a special qmake parameter to include them into QSpec.

@@ -24,16 +24,17 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDialogButtonBox>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
 #include <QMdiArea>
+#include <QProgressBar>
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
-#include <QDialogButtonBox>
-#include <QProgressBar>
 
 #include "drivers/GTMouseDriver.h"
+#include "utils/GTUtilsText.h"
 #include "utils/GTThread.h"
 
 #ifdef Q_OS_DARWIN
@@ -388,7 +389,7 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
 
 #define GT_METHOD_NAME "createSubImage"
 QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const QRect& rect) {
-    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect!", QImage());
+    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
 }

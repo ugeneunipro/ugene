@@ -41,6 +41,7 @@
 #include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
 #include <utils/GTUtilsToolTip.h>
+#include <utils/GTUtilsText.h>
 
 #include <QApplication>
 #include <QDir>
@@ -1463,14 +1464,14 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
-                  QString("Illegal first result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal first result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Press 'Next', move to the next result.
     GTUtilsOptionPanelMsa::clickNext(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(21, 0, 3, 1),
-                  QString("Illegal second result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
     QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
@@ -1496,7 +1497,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
 
     selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
-                  QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal first (2) result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448_1) {

@@ -248,45 +248,39 @@ void MaEditor::resetCollapseModel() {
 
 void MaEditor::sl_zoomIn() {
     GCounter::increment("Zoom in", getFactoryId());
-    int pSize = font.pointSize();
 
+    ResizeMode oldResizeMode = resizeMode;
     if (resizeMode == ResizeMode_OnlyContent) {
-        setZoomFactor(zoomFactor * zoomMult);
-    } else if (pSize < maximumFontPointSize && resizeMode == ResizeMode_FontAndContent) {
-        font.setPointSize(pSize + 1);
-        setFont(font);
-    }
-
-    bool resizeModeChanged = false;
-
-    if (zoomFactor >= 1) {
-        ResizeMode oldMode = resizeMode;
-        resizeMode = ResizeMode_FontAndContent;
-        resizeModeChanged = resizeMode != oldMode;
+        setZoomFactor(qMax(zoomFactor * zoomMult, 1.0));
+    } else {
+        int pSize = font.pointSize();
+        if (pSize < maximumFontPointSize) {
+            font.setPointSize(pSize + 1);
+            setFont(font);
+        }
         setZoomFactor(1);
     }
     updateActions();
 
+    bool resizeModeChanged = resizeMode != oldResizeMode;
     emit si_zoomOperationPerformed(resizeModeChanged);
 }
 
 void MaEditor::sl_zoomOut() {
     GCounter::increment("Zoom out", getFactoryId());
+
+    ResizeMode oldResizeMode = resizeMode;
     int fontPointSize = font.pointSize();
-
-    bool resizeModeChanged = false;
-
     if (fontPointSize > minimumFontPointSize) {
         font.setPointSize(fontPointSize - 1);
         setFont(font);
+        setZoomFactor(1);
     } else {
         setZoomFactor(zoomFactor / zoomMult);
-        ResizeMode oldMode = resizeMode;
-        resizeMode = ResizeMode_OnlyContent;
-        resizeModeChanged = resizeMode != oldMode;
     }
     updateActions();
 
+    bool resizeModeChanged = resizeMode != oldResizeMode;
     emit si_zoomOperationPerformed(resizeModeChanged);
 }
 
@@ -355,14 +349,13 @@ void MaEditor::sl_resetZoom() {
     QFont f = getFont();
     CHECK(f.pointSize() != MOBJECT_DEFAULT_FONT_SIZE || zoomFactor != MOBJECT_DEFAULT_ZOOM_FACTOR, );
 
+    ResizeMode oldResizeMode = resizeMode;
     if (f.pointSize() != MOBJECT_DEFAULT_FONT_SIZE) {
         f.setPointSize(MOBJECT_DEFAULT_FONT_SIZE);
         setFont(f);
     }
-    if (zoomFactor != MOBJECT_DEFAULT_ZOOM_FACTOR) {
-        setZoomFactor(MOBJECT_DEFAULT_ZOOM_FACTOR);
-    }
-    ResizeMode oldResizeMode = resizeMode;
+    setZoomFactor(MOBJECT_DEFAULT_ZOOM_FACTOR);
+
     resizeMode = ResizeMode_FontAndContent;
     emit si_zoomOperationPerformed(resizeMode != oldResizeMode);
 
@@ -529,11 +522,13 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
 }
 
 void MaEditor::setZoomFactor(double newZoomFactor) {
+    CHECK(zoomFactor != newZoomFactor, );
     zoomFactor = newZoomFactor;
     updateResizeMode();
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     resetColumnWidthCache();
+    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
 }
 
 void MaEditor::updateActions() {

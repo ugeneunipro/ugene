@@ -44,6 +44,7 @@
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
+#include <utils/GTUtilsText.h>
 
 #include <QApplication>
 #include <QDir>
@@ -3837,8 +3838,8 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection,
                   QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-                      .arg(GTUtils::rectToString(expectedSelection))
-                      .arg(GTUtils::rectToString(actualSelection)));
+                      .arg(GTUtilsText::rectToString(expectedSelection))
+                      .arg(GTUtilsText::rectToString(actualSelection)));
 
     // 6. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
@@ -3847,8 +3848,8 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection,
                   QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-                      .arg(GTUtils::rectToString(expectedSelection))
-                      .arg(GTUtils::rectToString(actualSelection)));
+                      .arg(GTUtilsText::rectToString(expectedSelection))
+                      .arg(GTUtilsText::rectToString(actualSelection)));
 
     // 7. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
@@ -3857,8 +3858,8 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection,
                   QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
-                      .arg(GTUtils::rectToString(expectedSelection))
-                      .arg(GTUtils::rectToString(actualSelection)));
+                      .arg(GTUtilsText::rectToString(expectedSelection))
+                      .arg(GTUtilsText::rectToString(actualSelection)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6672) {
