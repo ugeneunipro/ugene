@@ -109,6 +109,9 @@ public:
     };
     static const float zoomMult;  // SANGER_TODO: should be dependable on the view
 
+    /** Extra space share around a rendered character in a cell relative to the actual font size. */
+    static const double FONT_BOX_TO_CELL_BOX_MULTIPLIER;
+
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj);
 
@@ -153,7 +156,7 @@ public:
     const MaEditorSelection& getSelection() const;
 
     virtual int getRowContentIndent(int rowId) const;
-    int getSequenceRowHeight() const;  // SANGER_TODO: order the methods
+    int getRowHeight() const;  // SANGER_TODO: order the methods
 
     int getColumnWidth() const;
 
@@ -285,7 +288,6 @@ protected:
 
     SNPSettings snp;
     double zoomFactor;
-    double fontPixelToPointSize;
     mutable int cachedColumnWidth;
 
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */

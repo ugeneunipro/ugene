@@ -496,6 +496,15 @@ void GTUtilsMsaEditor::zoomOut(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomToSelection"
+void GTUtilsMsaEditor::zoomToSelection(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* zoomToSelectionButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom To Selection");
+    GT_CHECK_RESULT(zoomToSelectionButton->isEnabled(), "zoomToSelectionButton is not enabled", );
+    GTWidget::click(os, zoomToSelectionButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "resetZoom"
 void GTUtilsMsaEditor::resetZoom(GUITestOpStatus& os) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");

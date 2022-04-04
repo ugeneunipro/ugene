@@ -2105,7 +2105,7 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
 
     GTUtilsMsaEditor::clickSequenceName(os, "Pc_Metavir10");
 
-    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase == 0, "1. Unexpected first visible base: " + QString::number(firstVisibleBase));
 
     QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, "Pc_Metavir10");
@@ -2113,23 +2113,23 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
 
     GTMouseDriver::doubleClick();
     int expectedCenter = 66;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "2. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "2. Unexpected last visible base: " + QString::number(lastVisibleBase));
 
     GTMouseDriver::doubleClick();
     expectedCenter = 1220;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "3. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "3. Unexpected last visible base: " + QString::number(lastVisibleBase));
 
     GTMouseDriver::doubleClick();
     expectedCenter = 66;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "4. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
 }
 
@@ -2436,6 +2436,26 @@ GUI_TEST_CLASS_DEFINITION(test_7575) {
     GTUtilsMSAEditorSequenceArea::scrollToPosition(os, {550, 1});
     GTUtilsMsaEditor::resetZoom(os);
     // Expected state: UGENE does not crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7576) {
+    // Check that zoom-to-selection in MSA keeps the selected region within the visible sequence area.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    QPoint topLeft = {500, 5};
+    QPoint bottomRight = {540, 15};
+    GTUtilsMSAEditorSequenceArea::selectArea(os, topLeft, bottomRight);
+    GTUtilsMsaEditor::zoomToSelection(os);
+    int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+    CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
+                  "Invalid visible X range: " + QString::number(firstVisibleBaseIndex) + ":" + QString::number(lastVisibleBaseIndex));
+
+    int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
+    int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
+    CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
+                  "Invalid visible Y range: " + QString::number(firstVisibleRowIndex) + ":" + QString::number(lastVisibleRowIndex));
 }
 
 }  // namespace GUITest_regression_scenarios
