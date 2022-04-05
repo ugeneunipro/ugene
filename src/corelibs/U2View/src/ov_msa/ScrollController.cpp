@@ -23,7 +23,6 @@
 
 #include "U2Core/U2SafePoints.h"
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -411,7 +410,7 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
-    SignalBlocker signalBlocker(hScrollBar);
+    QSignalBlocker signalBlocker(hScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
@@ -432,7 +431,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
 void ScrollController::updateVerticalScrollBarPrivate() {
     SAFE_POINT(vScrollBar != nullptr, "Vertical scrollbar is not initialized", );
-    SignalBlocker signalBlocker(vScrollBar);
+    QSignalBlocker signalBlocker(vScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
 
