@@ -512,7 +512,7 @@ void MaEditor::setFont(const QFont& f) {
     updateFontMetrics();
     font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
-    getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    //getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     emit si_fontChanged(font);
 
     Settings* s = AppContext::getSettings();
@@ -561,7 +561,7 @@ void MaEditor::setZoomFactor(double newZoomFactor) {
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     resetColumnWidthCache();
-    getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    //getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
 }
 
 void MaEditor::updateActions() {

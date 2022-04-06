@@ -59,7 +59,7 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
 }
 
 MSAEditor* MsaEditorWgt::getEditor() const {
-    return qobject_cast<MSAEditor*>(editor);
+    return qobject_cast<MSAEditor *>(editor);
 }
 
 MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {

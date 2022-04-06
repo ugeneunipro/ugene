@@ -57,7 +57,12 @@ public:
     MSAEditorMultiTreeViewer *getPhylTreeWidget() const {
         return multiTreeViewer;
     };
-    MSAEditorTreeViewer* getCurrentTree() const;
+    MSAEditorTreeViewer *getCurrentTree() const;
+
+    void setSimilaritySettings(const SimilarityStatisticsSettings *settings) override;
+    void refreshSimilarityColumn() override;
+    void showSimilarity() override;
+    void hideSimilarity() override;
 
 signals:
 
