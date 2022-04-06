@@ -665,7 +665,6 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) 
             if (!port->getLinks().isEmpty()) {
                 continue;
             }
-            bool aliased = false;
         }
 
         // check that every required attribute is aliased or has set value
