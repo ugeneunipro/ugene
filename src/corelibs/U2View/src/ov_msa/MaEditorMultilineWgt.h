@@ -53,6 +53,7 @@ class RowHeightController;
 class MsaUndoRedoFramework;
 class MultilineScrollController;
 class SequenceAreaRenderer;
+class SimilarityStatisticsSettings;
 class MSAEditorMultiTreeViewer;
 
 /************************************************************************/
@@ -135,6 +136,13 @@ public:
 
     MaEditorWgt *getActiveChild();
     void setActiveChild(MaEditorWgt *child);
+
+    virtual void setSimilaritySettings(const SimilarityStatisticsSettings *settings) {
+        Q_UNUSED(settings);
+    };
+    virtual void refreshSimilarityColumn() {};
+    virtual void showSimilarity() {};
+    virtual void hideSimilarity() {};
 
 signals:
     void si_startMaChanging();

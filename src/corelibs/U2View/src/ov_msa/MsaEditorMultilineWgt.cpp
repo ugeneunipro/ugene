@@ -27,6 +27,7 @@
 #include "MaEditorSequenceArea.h"
 #include "MSAEditor.h"
 #include "MSAEditorOverviewArea.h"
+#include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
 #include "MsaMultilineScrollArea.h"
@@ -330,6 +331,43 @@ void MsaEditorMultilineWgt::sl_changeColorScheme(const QString &id) {
     for (uint i = 0; i < getChildrenCount(); i++) {
         MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
         sequence->applyColorScheme(id);
+    }
+}
+void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSettings *settings)
+{
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        if (ui != nullptr) {
+            ui->setSimilaritySettings(settings);
+        }
+    }
+}
+
+void MsaEditorMultilineWgt::refreshSimilarityColumn()
+{
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        if (ui != nullptr) {
+            ui->refreshSimilarityColumn();
+        }
+    }
+}
+
+void MsaEditorMultilineWgt::showSimilarity() {
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        if (ui != nullptr) {
+            ui->showSimilarity();
+        }
+    }
+}
+
+void MsaEditorMultilineWgt::hideSimilarity() {
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        if (ui != nullptr) {
+            ui->hideSimilarity();
+        }
     }
 }
 
