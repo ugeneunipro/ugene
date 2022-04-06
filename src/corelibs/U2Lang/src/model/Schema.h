@@ -25,7 +25,6 @@
 #include <QFont>
 #include <QPair>
 
-#include <U2Lang/Aliasing.h>
 #include <U2Lang/Attribute.h>
 #include <U2Lang/PortMapping.h>
 
@@ -113,10 +112,6 @@ public:
 
     bool hasParamAliases() const;
     bool hasAliasHelp() const;
-    bool hasPortAliases() const;
-    const QList<PortAlias>& getPortAliases() const;
-    bool addPortAlias(const PortAlias& alias);
-    void setPortAliases(const QList<PortAlias>& aliases);
 
     // replaces dummy processes (schema-processes) by his schemas and set up correct links
     bool expand();
@@ -142,18 +137,12 @@ private:
     bool deepCopy;
     // keeps how ports are visually connected (it often repeats flows)
     ActorBindingsGraph graph;
-    // keeps new names of ports (and inner slots) for includes
-    QList<PortAlias> portAliases;
     // if you include this schema to another schema then here is new type name
     QString includedTypeName;
     QList<Wizard*> wizards;
 
 private:
     void setAliasedAttributes(Actor* proc, Actor* subProc);
-    void replaceInLinksAndSlots(Actor* proc, const PortAlias& portAlias);
-    void replaceOutLinks(Actor* proc, const PortAlias& portAlias);
-    void replaceOutSlots(Actor* proc, const PortAlias& portAlias);
-    void replacePortAliases(const PortAlias& subPortAlias);
 
     bool recursiveExpand(QList<QString>& schemaIds);
     void update(const QMap<ActorId, ActorId>& actorsMapping);
