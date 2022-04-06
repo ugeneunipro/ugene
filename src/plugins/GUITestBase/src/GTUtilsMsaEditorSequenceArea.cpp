@@ -40,6 +40,7 @@
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MsaEditorSimilarityColumn.h>
+#include <U2View/MultilineScrollController.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
 
@@ -410,7 +411,7 @@ int GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(GUITestOpStatus& os, b
 #define GT_METHOD_NAME "getLastVisibleRowIndex"
 int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(GUITestOpStatus& os, bool countClipped) {
     MSAEditor* editor = GTUtilsMsaEditor::getEditor(os);
-    int widgetHeight = editor->getUI()->getSequenceArea()->height();
+    int widgetHeight = editor->getMaEditorWgt()->getSequenceArea()->height();
     return editor->getUI()->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
 }
 #undef GT_METHOD_NAME

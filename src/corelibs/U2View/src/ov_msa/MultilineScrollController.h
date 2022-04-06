@@ -86,6 +86,9 @@ public:
     void vertScroll(const Directions &directions, bool byStep = true);
     int getViewHeight();
 
+    /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
+    void updateScrollBarsOnFontOrZoomChange() { Q_ASSERT(false); }
+
 signals:
     void si_visibleAreaChanged();
     void si_hScrollValueChanged();

@@ -332,7 +332,7 @@ void MaEditor::sl_zoomToSelection() {
         basesOffset = -(basesPerViewWidth - selectionRect.width()) / 2;
         rowsOffset = -(rowsPerViewHeight - selectionRect.height()) / 2;
     }
-    ScrollController* scrollController = getMaEditorMultilineWgt()->getScrollController();
+    MultilineScrollController* scrollController = getMaEditorMultilineWgt()->getScrollController();
     scrollController->setFirstVisibleBase(selectionRect.x() + basesOffset);
     scrollController->setFirstVisibleViewRow(selectionRect.y() + rowsOffset);
 
@@ -489,7 +489,7 @@ void MaEditor::setFont(const QFont& f) {
     updateFontMetrics();
     font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
-    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     emit si_fontChanged(font);
 
     Settings* s = AppContext::getSettings();
@@ -538,7 +538,7 @@ void MaEditor::setZoomFactor(double newZoomFactor) {
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     resetColumnWidthCache();
-    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    getMaEditorMultilineWgt()->getScrollController()->updateScrollBarsOnFontOrZoomChange();
 }
 
 void MaEditor::updateActions() {

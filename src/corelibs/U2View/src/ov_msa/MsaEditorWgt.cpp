@@ -175,7 +175,7 @@ QSize MsaEditorWgt::minimumSizeHint() const
         int newHeight = consensusArea->size().height()
                         + qMax(qMax(sequenceArea->minimumSizeHint().height(),
                                     nameList->minimumSizeHint().height()),
-                               (editor->getSequenceRowHeight() + 1))
+                               (editor->getRowHeight() + 1))
                         + 5;
         return QSize(s.width(), newHeight);
     }

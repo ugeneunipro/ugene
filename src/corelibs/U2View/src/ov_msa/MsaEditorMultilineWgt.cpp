@@ -162,7 +162,7 @@ bool MsaEditorMultilineWgt::updateChildrenCount()
     if (getMultilineMode()) {
         MaEditorWgt *child = nullptr;
         int rowCount = editor->getNumSequences();
-        int rowHeight = editor->getSequenceRowHeight();
+        int rowHeight = editor->getRowHeight();
         int headHeight = getUI(0)->getHeaderWidget()->height();
         int childrenAreaHeight = getChildrenScrollArea()->height();
         uint wantCount = childrenAreaHeight / (rowCount * rowHeight + headHeight) + 2;
