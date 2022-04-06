@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <base_dialogs/GTFileDialog.h>
 #include <cmath>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -40,14 +41,13 @@
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
-#include <utils/GTUtilsToolTip.h>
 #include <utils/GTUtilsText.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
-#include <QPlainTextEdit>
 #include <QRadioButton>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -2194,6 +2194,36 @@ GUI_TEST_CLASS_DEFINITION(test_7509) {
 
     // Close MCA editor -> UGENE should not crash.
     GTUtilsMdi::closeActiveWindow(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7511) {
+    // Check that Blast Search filters the list of available tool based on the selected file sequence alphabet.
+    class BlastToolListCheckScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            auto toolsCombo = GTWidget::findComboBox(os, "programNameComboBox");
+            auto selectFileButton = GTWidget::findToolButton(os, "browseInput", dialog);
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastn", "blastp", "blastx", "tblastx", "tblastn"});
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
+            GTWidget::click(os, selectFileButton);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            // Check that the list of tools is updated to nucleic tools.
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastn", "blastx", "tblastx"});
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/titin.fa"));
+            GTWidget::click(os, selectFileButton);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            //  Check that the list of tools is updated to amino tools.
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastp", "tblastn"});
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel); // Cancel "Blast" dialog.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel); // Cancel "Save project" popup.
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(os, new BlastToolListCheckScenario()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7517) {
