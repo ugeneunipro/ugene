@@ -24,7 +24,6 @@
 
 #include "U2Core/U2SafePoints.h"
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -69,7 +68,7 @@ void MultilineScrollController::init(GScrollBar *hScrollBar,
     connect(vScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_vScrollValueChanged()));
     connect(vScrollBar, SIGNAL(actionTriggered (int)), this, SLOT(sl_handleVScrollAction(int)));
     vScrollBar->setValue(0);
-    vScrollBar->setSingleStep(maEditor->getSequenceRowHeight());
+    vScrollBar->setSingleStep(maEditor->getRowHeight());
     vScrollBar->setPageStep(childrenScrollArea->height());
     vScrollBar->installEventFilter(this);
 
@@ -465,7 +464,7 @@ void MultilineScrollController::zoomVerticalScrollBarPrivate() {
 
 void MultilineScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
-    SignalBlocker signalBlocker(hScrollBar);
+    QSignalBlocker signalBlocker(hScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
@@ -499,7 +498,7 @@ void MultilineScrollController::updateHorizontalScrollBarPrivate() {
 
 void MultilineScrollController::updateVerticalScrollBarPrivate() {
     SAFE_POINT(nullptr != vScrollBar, "Multiline Vertical scrollbar is not initialized", );
-    SignalBlocker signalBlocker(vScrollBar);
+    QSignalBlocker signalBlocker(vScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );

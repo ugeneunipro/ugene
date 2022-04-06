@@ -72,7 +72,7 @@ QSize MsaEditorNameList::minimumSizeHint() const
 {
     QSize s = QWidget::minimumSizeHint();
     if (editor->getMultilineMode()) {
-        int newHeight = (editor->getSequenceRowHeight() + 1) * qMax(1, editor->getNumSequences());
+        int newHeight = (editor->getRowHeight() + 1) * qMax(1, editor->getNumSequences());
         return QSize(s.width(), newHeight);
     }
     return s;

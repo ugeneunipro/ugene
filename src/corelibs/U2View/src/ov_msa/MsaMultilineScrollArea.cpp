@@ -16,7 +16,7 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMulti
       maEditor(maEditor),
       maEditorUi(maEditorUi)
 {
-    verticalScrollBar()->setSingleStep(maEditor->getSequenceRowHeight());
+    verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
 }
 
 void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directions &directions,
