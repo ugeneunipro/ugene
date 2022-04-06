@@ -287,13 +287,20 @@ void MaEditor::sl_zoomOut() {
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
     QRect selectionRect = getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), )
-
+    CHECK(!selectionRect.isEmpty(), );
     MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
     double viewWidth = sequenceArea->width();
     double viewHeight = sequenceArea->height();
+
+    // Adjust selection width in bases with offsets view data:
+    // Offsets view shares the same font and its width may grow in size if sequence view font is increased.
+    // If offsets view grows the sequence view will reduce it width by the same amount of characters.
+    MSAEditorOffsetsViewController* offsetsViewController = ui->getOffsetsViewController();
+    int basesInOffsetsView = offsetsViewController->leftWidget->getWidthInBases() + offsetsViewController->rightWidget->getWidthInBases();
+    int adjustedSelectionWidth = selectionRect.width() + basesInOffsetsView;
+
     // Expected pixelsPerBase to fit the selection. Using int because getColumnWidth() returns int.
-    int targetPixelsPerBaseX = (int)(viewWidth / (selectionRect.width() * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
+    int targetPixelsPerBaseX = (int)(viewWidth / (adjustedSelectionWidth * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
     int targetPixelsPerBaseY = (int)(viewHeight / (selectionRect.height() * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
 
     QDesktopWidget* desktopWidget = QApplication::desktop();
@@ -322,26 +329,39 @@ void MaEditor::sl_zoomToSelection() {
         }
         setZoomFactor(newZoomFactor);
     }
+    updateActions();
+    emit si_zoomOperationPerformed(resizeMode != oldMode);
 
-    // Center zoomed region.
-    double resultPixelsPerCellX = getColumnWidth();
-    double resultPixelsPerCellY = getRowHeight();
-    SAFE_POINT(resultPixelsPerCellX > 0 && resultPixelsPerCellY > 0, "Invalid pixels per base/row", );
-    int basesPerViewWidth = (int)(viewWidth / (double)resultPixelsPerCellX);
-    int rowsPerViewHeight = (int)(viewHeight / (double)resultPixelsPerCellY);
+    // Wait util UI restructuring is finished and sequence view gets it final dims.
+    // UI is restructured due to the font/zoom change.
+    // Center the zoomed region next.
+    QTimer::singleShot(100, this, [&]() { scrollSelectionIntoView(); });
+}
+
+void MaEditor::scrollSelectionIntoView() {
+    QRect selectionRect = getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+
+    double viewWidth = sequenceArea->width();
+    double viewHeight = sequenceArea->height();
+    double pixelsPerCellX = getColumnWidth();
+    double pixelsPerCellY = getRowHeight();
+    SAFE_POINT(pixelsPerCellX > 0 && pixelsPerCellY > 0, "Invalid pixels per base/row", );
+
+    int basesPerViewWidth = (int)(viewWidth / (double)pixelsPerCellX);
+    int rowsPerViewHeight = (int)(viewHeight / (double)pixelsPerCellY);
     int basesOffset = 0;
     int rowsOffset = 0;
     if (basesPerViewWidth > selectionRect.width() && rowsPerViewHeight > selectionRect.height()) {
         basesOffset = -(basesPerViewWidth - selectionRect.width()) / 2;
         rowsOffset = -(rowsPerViewHeight - selectionRect.height()) / 2;
     }
-    ScrollController* scrollController = ui->getScrollController();
-    scrollController->setFirstVisibleBase(selectionRect.x() + basesOffset);
-    scrollController->setFirstVisibleViewRow(selectionRect.y() + rowsOffset);
-
-    updateActions();
-
-    emit si_zoomOperationPerformed(resizeMode != oldMode);
+    int firstVisibleBaseIndex = selectionRect.x() + basesOffset;
+    int firstVisibleRowIndex = selectionRect.y() + rowsOffset;
+    auto scrollController = ui->getScrollController();
+    scrollController->setFirstVisibleBase(firstVisibleBaseIndex);
+    scrollController->setFirstVisibleViewRow(firstVisibleRowIndex);
 }
 
 void MaEditor::sl_resetZoom() {

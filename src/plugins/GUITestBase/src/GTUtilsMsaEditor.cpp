@@ -502,6 +502,10 @@ void GTUtilsMsaEditor::zoomToSelection(GUITestOpStatus& os) {
     QWidget* zoomToSelectionButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom To Selection");
     GT_CHECK_RESULT(zoomToSelectionButton->isEnabled(), "zoomToSelectionButton is not enabled", );
     GTWidget::click(os, zoomToSelectionButton);
+
+    // 'zoomToSelection' is a 2 steps action: the second step (the centering) is run with a 100ms delay.
+    // See MaEditor::sl_zoomToSelection().
+    GTGlobals::sleep(200);
 }
 #undef GT_METHOD_NAME
 
