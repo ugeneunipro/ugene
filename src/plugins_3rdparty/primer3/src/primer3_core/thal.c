@@ -35,6 +35,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#define _CRT_SECURE_NO_DEPRECATE
 
 #include <limits.h>
 #include <errno.h>
@@ -44,7 +45,14 @@
 #include <setjmp.h>
 #include <ctype.h>
 #include <math.h>
+
+#if defined(_WIN32) || defined(WIN32) || defined (__WIN32__) || defined(__CYGWIN__) || defined(__MINGW32__)
+#define OS_WIN
+#endif
+
+#ifndef OS_WIN
 #include <unistd.h>
+#endif
 
 #if defined(__sun)
 #include <ieeefp.h>

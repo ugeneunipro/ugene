@@ -6,6 +6,10 @@
 #include <string.h>
 #include <stdio.h>
 
+#if defined(_WIN32) || defined(WIN32) || defined (__WIN32__) || defined(__CYGWIN__) || defined(__MINGW32__)
+#define OS_WIN
+#endif
+
 /* ALPHABET defines which characters are considered as nucleotides */
 #define ALPHABET "ACGTUacgtu"
 
@@ -260,7 +264,9 @@ formula_parameters *create_formula_parameters_from_list_file_prefix (const char 
 formula_parameters **create_default_formula_parameters (const char *list_name_prefix, const char *kmer_lists_path, pr_append_str *parse_err);
 formula_parameters **read_formula_parameters_from_file (const char *lists_file_name, unsigned int *nlist_parameters, parameters_builder *pbuilder, double *intercept, pr_append_str *parse_err);
 int add_variable_to_formula_parameters (char **list_values, unsigned int nvalues, parameters_builder *pbuilder, pr_append_str *parse_err);
+#ifndef OS_WIN
 void delete_formula_parameters (formula_parameters **fp, unsigned int nlists);
+#endif
 
 /*
  * 
