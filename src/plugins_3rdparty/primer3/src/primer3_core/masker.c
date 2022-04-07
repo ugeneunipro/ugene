@@ -1,14 +1,24 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <fcntl.h>
 #include <math.h>
-#include <unistd.h>
 #include <errno.h>
 
 #include "libprimer3.h"
+
+#ifdef OS_WIN
+#include <io.h>
+#include "win/mman.h"
+#else
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
+
 
 unsigned int glistmaker_code_match = 'G' << 24 | 'T' << 16 | '4' << 8 | 'C';
 
@@ -266,6 +276,61 @@ create_default_formula_parameters (const char *list_name_prefix, const char *kme
   return fp;
 }
 
+#ifdef OS_WIN
+// https://stackoverflow.com/a/735472/7273346
+size_t getline(char** lineptr, size_t* n, FILE* stream) {
+    char* bufptr = NULL;
+    char* p = bufptr;
+    size_t size;
+    int c;
+
+    if (lineptr == NULL) {
+        return -1;
+    }
+    if (stream == NULL) {
+        return -1;
+    }
+    if (n == NULL) {
+        return -1;
+    }
+    bufptr = *lineptr;
+    size = *n;
+
+    c = fgetc(stream);
+    if (c == EOF) {
+        return -1;
+    }
+    if (bufptr == NULL) {
+        bufptr = malloc(128);
+        if (bufptr == NULL) {
+            return -1;
+        }
+        size = 128;
+    }
+    p = bufptr;
+    while (c != EOF) {
+        if ((p - bufptr) > (size - 1)) {
+            size = size + 128;
+            bufptr = realloc(bufptr, size);
+            if (bufptr == NULL) {
+                return -1;
+            }
+        }
+        *p++ = c;
+        if (c == '\n') {
+            break;
+        }
+        c = fgetc(stream);
+    }
+
+    *p++ = '\0';
+    *lineptr = bufptr;
+    *n = size;
+
+    return p - bufptr - 1;
+}
+#endif
+
 formula_parameters ** 
 read_formula_parameters_from_file (const char *lists_file_name, unsigned int *nlist_parameters, parameters_builder *pbuilder, double *intercept, pr_append_str *parse_err)
 {
@@ -314,6 +379,7 @@ read_formula_parameters_from_file (const char *lists_file_name, unsigned int *nl
   return pbuilder->fp_array;
 }
 
+#ifndef OS_WIN
 void
 delete_formula_parameters (formula_parameters **fp, unsigned int nlists)
 {
@@ -326,6 +392,7 @@ delete_formula_parameters (formula_parameters **fp, unsigned int nlists)
   if (fp) free ((void *) fp);
   return;
 }
+#endif
 
 /*==================================================================================
  * 
@@ -853,7 +920,7 @@ mmap_by_filename (const char *filename, size_t *size)
   if (status < 0) {
     return NULL;
   }
-
+  
   handle = open (filename, O_RDONLY);
   if (handle < 0) {
     return NULL;

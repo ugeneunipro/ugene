@@ -40,8 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ctype.h>
 #include <string.h> /* strcmp() */
 #include <stdlib.h> /* free() */
-#include <getopt.h> /* getopt() */
-#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "libprimer3.h"
@@ -53,6 +51,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if defined(_WIN32) || defined(WIN32) || defined (__WIN32__) || defined(__CYGWIN__) || defined(__MINGW32__)
 #define OS_WIN
 #endif
+
+#ifdef OS_WIN
+#include "win/getopt.h"
+#else
+#include <getopt.h> /* getopt() */
+#include <unistd.h>
+#endif
+
 
 /* Some function prototypes */
 static void   print_usage();
