@@ -2486,12 +2486,12 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
         int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
         int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
         CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
-                      "Invalid visible X range: " + QString::number(firstVisibleBaseIndex) + ":" + QString::number(lastVisibleBaseIndex));
+                      QString("%1.Invalid visible X range: %2:%3").arg(i).arg(firstVisibleBaseIndex).arg(lastVisibleBaseIndex));
 
         int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
         int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
         CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
-                      "Invalid visible Y range: " + QString::number(firstVisibleRowIndex) + ":" + QString::number(lastVisibleRowIndex));
+                      QString("%1.Invalid visible Y range: %2:%3").arg(i).arg(firstVisibleRowIndex).arg(lastVisibleRowIndex));
 
         GTUtilsMsaEditor::resetZoom(os);
     }

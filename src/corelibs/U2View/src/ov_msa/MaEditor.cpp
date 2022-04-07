@@ -335,7 +335,7 @@ void MaEditor::sl_zoomToSelection() {
     // Wait util UI restructuring is finished and sequence view gets it final dims.
     // UI is restructured due to the font/zoom change.
     // Center the zoomed region next.
-    QTimer::singleShot(100, this, [&]() { scrollSelectionIntoView(); });
+    QTimer::singleShot(200, this, [&]() { scrollSelectionIntoView(); });
 }
 
 void MaEditor::scrollSelectionIntoView() {
