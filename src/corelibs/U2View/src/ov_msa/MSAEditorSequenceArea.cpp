@@ -303,6 +303,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m, bool isContextMenu) {
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
     Q_UNUSED(font);
     completeRedraw = true;
+    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     repaint();
 }
 
