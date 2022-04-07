@@ -3170,7 +3170,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     // Check progress bar text.
     QString taskProgressBarText = GTWidget::findProgressBar(os, "taskProgressBar", statusBar)->text();
     CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 2000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
