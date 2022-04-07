@@ -1813,8 +1813,7 @@ GUI_TEST_CLASS_DEFINITION(test_0829) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.checkMessage("Document is already added to the project"), "Message 'Document is already added to the project' found in log!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0830) {
