@@ -1770,52 +1770,6 @@ GUI_TEST_CLASS_DEFINITION(test_0828) {
     GTWidget::click(os, GTWidget::findToolButton(os, "addButton"));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0829) {
-    // 1. Add input files into CAP3, for example, 1.fa, 2.fa, 3.fa and press "Run". The result contig name will be "3.cap.ace".
-    // 2. Add input files into CAP3, for example, 4.fa, 5.fa, 3.fa and press "Run". The result contig name will be "3.cap.ace". But error occurs:
-    // Bug state:
-    //[20:46:07] 'CAP3SupportTask' task failed: Subtask {Opening view for document: 3.cap.ace} is failed: Subtask {Adding document to project: D:/Documents/tests/3.cap.ace} is failed: Document is already added to the project D:/Documents/tests/3.cap.ace.
-    // Expected state:
-    // Dialog with the following options appears: rewrite the existent file, rename the new file or cancel.
-    GTLogTracer lt;
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-    WorkflowProcessItem* readSeq = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    WorkflowProcessItem* cap3 = GTUtilsWorkflowDesigner::addElement(os, "Assembly Sequences with CAP3", true);
-
-    GTUtilsWorkflowDesigner::connect(os, readSeq, cap3);
-
-    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/1.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/2.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/3.fa");
-
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QApplication::activeWindow();
-    GTWidget::click(os,
-                    GTToolbar::getWidgetForActionObjectName(os,
-                                                            GTToolbar::getToolbar(os, "mwtoolbar_activemdi"),
-                                                            "toggleDashboard"));
-
-    GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::removeItem(os, "Assembly Sequences with CAP3");
-
-    readSeq = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    cap3 = GTUtilsWorkflowDesigner::addElement(os, "Assembly Sequences with CAP3");
-
-    GTUtilsWorkflowDesigner::connect(os, readSeq, cap3);
-
-    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/1.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/2.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/829/4.fa");
-
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!lt.checkMessage("Document is already added to the project"), "Message 'Document is already added to the project' found in log!");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0830) {
     // 1) Tools->DNA assembly->Config assembly with CAPS3
     // 2) Base ->
