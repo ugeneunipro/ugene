@@ -23,7 +23,6 @@
 
 #include "U2Core/U2SafePoints.h"
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -303,13 +302,15 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 }
 
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
-    if (maEditor->getAlignmentLen() == 0) {
-        return 0;
-    }
-    const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
-    const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
-    assert(firstVisibleBase < maEditor->getAlignmentLen());
-    return qMin(firstVisibleBase, maEditor->getAlignmentLen() - 1);
+    int alignmentLength = maEditor->getAlignmentLen();
+    CHECK(alignmentLength > 0, 0);
+    int additionalXOffset = getAdditionalXOffset();
+    bool removeClippedBase = !countClipped && additionalXOffset != 0;
+    int hScrollBarValue = hScrollBar->value();
+    int column = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBarValue);
+    int firstVisibleBase = column + (removeClippedBase && additionalXOffset != 0 ? 1 : 0);
+    SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
+    return qMin(firstVisibleBase, alignmentLength - 1);
 }
 
 int ScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
@@ -346,9 +347,28 @@ GScrollBar* ScrollController::getVerticalScrollBar() const {
     return vScrollBar;
 }
 
-void ScrollController::sl_zoomScrollBars() {
-    zoomHorizontalScrollBarPrivate();
-    zoomVerticalScrollBarPrivate();
+void ScrollController::updateScrollBarsOnFontOrZoomChange() {
+    CHECK(!maEditor->isAlignmentEmpty(), );
+    QSignalBlocker signalBlocker(hScrollBar);
+
+    // Keep the top-left point in place while zooming,
+    // so when zooming in an just opened alignment the start position is always visible.
+    double sequenceAreaWidth = ui->getSequenceArea()->width();
+    double leftX = hScrollBar->value();
+    double alignmentLength = maEditor->getAlignmentLen();
+    double maxX = hScrollBar->maximum() + sequenceAreaWidth;
+    double leftXPointPos = alignmentLength * leftX / (double)maxX;
+    updateHorizontalScrollBarPrivate();
+    setFirstVisibleBase(qMax(0, (int)leftXPointPos));
+
+    double sequenceAreaHeight = ui->getSequenceArea()->height();
+    double topY = vScrollBar->value();
+    double numSequences = maEditor->getNumSequences();
+    double maxYPoint = vScrollBar->maximum() + sequenceAreaHeight;
+    double topColumnIndex = numSequences * topY / (double)maxYPoint;
+    updateVerticalScrollBarPrivate();
+    setFirstVisibleViewRow(qMax(0, (int)topColumnIndex));
+
     emit si_visibleAreaChanged();
 }
 
@@ -388,53 +408,30 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
     return U2Region(vScrollBar->value(), widgetHeight);
 }
 
-void ScrollController::zoomHorizontalScrollBarPrivate() {
-    CHECK(!maEditor->isAlignmentEmpty(), );
-    SignalBlocker signalBlocker(hScrollBar);
-    Q_UNUSED(signalBlocker);
-
-    const int previousAlignmentWidth = hScrollBar->maximum() + ui->getSequenceArea()->width();
-    const double previousRelation = static_cast<double>(hScrollBar->value()) / previousAlignmentWidth;
-    updateHorizontalScrollBarPrivate();
-    hScrollBar->setValue(previousRelation * ui->getBaseWidthController()->getTotalAlignmentWidth());
-}
-
-void ScrollController::zoomVerticalScrollBarPrivate() {
-    CHECK(!maEditor->isAlignmentEmpty(), );
-    SignalBlocker signalBlocker(vScrollBar);
-    Q_UNUSED(signalBlocker);
-
-    const int previousAlignmentHeight = vScrollBar->maximum() + ui->getSequenceArea()->height();
-    const double previousRelation = static_cast<double>(vScrollBar->value()) / previousAlignmentHeight;
-    updateVerticalScrollBarPrivate();
-    vScrollBar->setValue(previousRelation * ui->getRowHeightController()->getTotalAlignmentHeight());
-}
-
 void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
-    SignalBlocker signalBlocker(hScrollBar);
-    Q_UNUSED(signalBlocker);
+    QSignalBlocker signalBlocker(hScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
-    const int alignmentLength = maEditor->getAlignmentLen();
-    const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceArea()->width();
+    int alignmentLength = maEditor->getAlignmentLen();
+    int columnWidth = maEditor->getColumnWidth();
+    int sequenceAreaWidth = ui->getSequenceArea()->width();
 
     hScrollBar->setMinimum(0);
-    hScrollBar->setMaximum(qMax(0, alignmentLength * columnWidth - sequenceAreaWidth));
+    int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
+    hScrollBar->setMaximum(hScrollBarMax);
     hScrollBar->setSingleStep(columnWidth);
     hScrollBar->setPageStep(sequenceAreaWidth);
 
-    const int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
+    int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
     SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
     hScrollBar->setVisible(numVisibleBases < alignmentLength);
 }
 
 void ScrollController::updateVerticalScrollBarPrivate() {
-    SAFE_POINT(nullptr != vScrollBar, "Vertical scrollbar is not initialized", );
-    SignalBlocker signalBlocker(vScrollBar);
-    Q_UNUSED(signalBlocker);
+    SAFE_POINT(vScrollBar != nullptr, "Vertical scrollbar is not initialized", );
+    QSignalBlocker signalBlocker(vScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
 

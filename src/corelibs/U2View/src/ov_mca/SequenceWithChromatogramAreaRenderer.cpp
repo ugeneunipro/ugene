@@ -55,7 +55,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     charWidth = fm.width('W');
     charHeight = fm.ascent();
 
-    heightBC = seqAreaWgt->getEditor()->getSequenceRowHeight();
+    heightBC = seqAreaWgt->getEditor()->getRowHeight();
     heightPD = getChromatogramHeight() - INDENT_BETWEEN_ROWS;
     heightQuality = charHeight;
 

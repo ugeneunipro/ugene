@@ -52,7 +52,6 @@ public:
     QList<QPair<Port*, Port*>> dataflowLinks;
     QList<QPair<Port*, Port*>> links;
     QMap<ActorId, ActorId>* idMap;
-    QList<PortAlias> portAliases;
     QList<Wizard*> wizards;
 
     bool isGraphDefined() const {

@@ -496,6 +496,28 @@ void GTUtilsMsaEditor::zoomOut(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomToSelection"
+void GTUtilsMsaEditor::zoomToSelection(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* zoomToSelectionButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom To Selection");
+    GT_CHECK_RESULT(zoomToSelectionButton->isEnabled(), "zoomToSelectionButton is not enabled", );
+    GTWidget::click(os, zoomToSelectionButton);
+
+    // 'zoomToSelection' is a 2 steps action: the second step (the centering) is run with a 200ms delay.
+    // See MaEditor::sl_zoomToSelection().
+    GTGlobals::sleep(500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "resetZoom"
+void GTUtilsMsaEditor::resetZoom(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* resetZoomButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Reset Zoom");
+    GT_CHECK_RESULT(resetZoomButton->isEnabled(), "resetZoomButton is not enabled", );
+    GTWidget::click(os, resetZoomButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus& os) {
     getActiveMsaEditorWindow(os);

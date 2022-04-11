@@ -30,7 +30,6 @@
 #include <U2Core/global.h>
 
 #include <U2Lang/ActorModel.h>
-#include <U2Lang/Aliasing.h>
 #include <U2Lang/Dataset.h>
 #include <U2Lang/GrouperOutSlot.h>
 #include <U2Lang/Port.h>
@@ -68,7 +67,6 @@ public:
                                                      bool pasteMode = false);
     static void parseActorBindings(Tokenizer& tokenizer, WorkflowSchemaReaderData& data);
     static void parseParameterAliases(Tokenizer& tokenizer, const QMap<QString, Actor*>& actorMap);
-    static void parsePortAliases(Tokenizer& tokenizer, const QMap<QString, Actor*>& actorMap, QList<PortAlias>& portAliases);
 
     static void finalizeGrouperSlots(const QMap<QString, Actor*>& actorMap);
 
@@ -99,7 +97,6 @@ public:
     static QString actorBindings(const ActorBindingsGraph& graph, const NamesMap& nmap, bool copyMode = false);
     static QString dataflowDefinition(const QList<Actor*>& procs, const NamesMap& nmap);
     static QString schemaParameterAliases(const QList<Actor*>& procs, const NamesMap& nmap);
-    static QString schemaPortAliases(const NamesMap& nmap, const QList<PortAlias>& portAliases);
     static NamesMap generateElementNames(const QList<Actor*>& procs);
     static QString schema2String(const Schema& schema, const Metadata* meta, bool copyMode = false);
     static QString items2String(const QList<Actor*>& actors, const Metadata* meta);

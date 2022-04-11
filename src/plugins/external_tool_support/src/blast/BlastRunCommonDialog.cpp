@@ -40,12 +40,18 @@ namespace U2 {
 
 using namespace LocalWorkflow;
 
+/** Composition based statistics tools. */
+static const QStringList COMP_TOOLS = {"blastp", "blastx", "tblastn"};
+
 ////////////////////////////////////////
 // BlastAllSupportRunCommonDialog
-BlastRunCommonDialog::BlastRunCommonDialog(QWidget* parent, bool _useCompValues, const QStringList& _compValues)
-    : QDialog(parent), useCompValues(_useCompValues), compValues(_compValues) {
+BlastRunCommonDialog::BlastRunCommonDialog(QWidget* parent, const DNAAlphabet* alphabet)
+    : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930723");
+
+    updateAvailableProgramsList(alphabet);
+
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -90,7 +96,7 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget* parent, bool _useCompValues,
 }
 
 void BlastRunCommonDialog::setupCompositionBasedStatistics() {
-    bool visible = useCompValues && compValues.contains(programNameComboBox->currentText());
+    bool visible = COMP_TOOLS.contains(programNameComboBox->currentText());
     compStatsLabel->setVisible(visible);
     compStatsComboBox->setVisible(visible);
 }
@@ -417,7 +423,7 @@ void BlastRunCommonDialog::getSettings(BlastTaskSettings& settingsSnapshot) {
         (settingsSnapshot.programName == "tblastx" && settingsSnapshot.threshold != 13)) {
         settingsSnapshot.isDefaultThreshold = false;
     }
-    if (useCompValues && compValues.contains(settings.programName)) {
+    if (COMP_TOOLS.contains(settings.programName)) {
         settingsSnapshot.compStats = settings.compStats;
     }
 }
@@ -432,6 +438,23 @@ bool BlastRunCommonDialog::checkSelectedToolPath() const {
     QString programName = programNameComboBox->currentText();
     QString toolId = BlastSupport::getToolIdByProgramName(programName);
     return BlastSupport::checkBlastTool(toolId);
+}
+
+void BlastRunCommonDialog::updateAvailableProgramsList(const DNAAlphabet* alphabet) {
+    QStringList nucleicTools({"blastn", "blastx", "tblastx"});
+    QStringList aminoTools({"blastp", "tblastn"});
+    QStringList newToolList = alphabet == nullptr || alphabet->isRaw() ? nucleicTools + aminoTools
+                              : alphabet->isNucleic()                  ? nucleicTools
+                                                                       : aminoTools;
+    newToolList.sort();
+    CHECK(activeToolList != newToolList, );  // Ignore the alphabet change if nothing is changed.
+
+    activeToolList = newToolList;
+    {
+        QSignalBlocker clearBlocker(programNameComboBox);
+        programNameComboBox->clear();
+    }
+    programNameComboBox->addItems(newToolList);
 }
 
 }  // namespace U2

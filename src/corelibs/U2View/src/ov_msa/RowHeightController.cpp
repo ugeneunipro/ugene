@@ -86,9 +86,7 @@ int RowHeightController::getTotalAlignmentHeight() const {
 }
 
 int RowHeightController::getSingleRowHeight() const {
-    const int fontHeight = QFontMetrics(ui->getEditor()->getFont(), ui).height();
-    const float zoomMult = ui->getEditor()->zoomMult;
-    return qRound(fontHeight * zoomMult);
+    return ui->getEditor()->getRowHeight();
 }
 
 int RowHeightController::getMaRowIndexByGlobalYPosition(int y) const {

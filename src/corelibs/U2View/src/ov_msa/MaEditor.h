@@ -109,6 +109,9 @@ public:
     };
     static const float zoomMult;  // SANGER_TODO: should be dependable on the view
 
+    /** Extra space share around a rendered character in a cell relative to the actual font size. */
+    static const double FONT_BOX_TO_CELL_BOX_MULTIPLIER;
+
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj);
 
@@ -153,7 +156,7 @@ public:
     const MaEditorSelection& getSelection() const;
 
     virtual int getRowContentIndent(int rowId) const;
-    int getSequenceRowHeight() const;  // SANGER_TODO: order the methods
+    int getRowHeight() const;  // SANGER_TODO: order the methods
 
     int getColumnWidth() const;
 
@@ -207,6 +210,12 @@ public:
     /** Returns undo-redo framework. The returned value is never null. */
     MaUndoRedoFramework* getUndoRedoFramework() const;
 
+    /**
+     * Centers selection on the screen if possible. Otherwise scrolls one of the selection corners into the view.
+     * Does not perform zoom/font-change operations.
+     */
+    void scrollSelectionIntoView();
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -243,7 +252,7 @@ protected slots:
     void sl_gotoSelectedRead();
 
 private slots:
-    void sl_resetColumnWidthCache();
+    void resetColumnWidthCache();
 
 protected:
     virtual QWidget* createWidget() = 0;
@@ -285,7 +294,6 @@ protected:
 
     SNPSettings snp;
     double zoomFactor;
-    double fontPixelToPointSize;
     mutable int cachedColumnWidth;
 
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */

@@ -1,0 +1,17 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/ann-ann.uwl"
+            in="!common_data_dir!cmdline/read-write/write/ann1.gb;cmdline/read-write/write/ann4.gb"
+            mode="0"
+    />
+
+    <load-document index="expected1" url="cmdline/read-write/write/ann1.gb" io="local_file" format="genbank"/>
+    <load-document index="expected2" url="cmdline/read-write/write/ann4.gb" io="local_file" format="genbank"/>
+    <load-document index="current1" url="workingDir/ann1.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="current2" url="workingDir/ann4.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-in-two-objects doc="current1" value="expected1"/>
+    <compare-annotations-in-two-objects doc="current2" value="expected2"/>
+
+</multi-test>

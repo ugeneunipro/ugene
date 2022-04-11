@@ -28,7 +28,6 @@
 #include <U2Gui/MainWindow.h>
 
 #include <U2Lang/ActorModel.h>
-#include <U2Lang/Aliasing.h>
 #include <U2Lang/AttributeInfo.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/SchemaConfig.h>
@@ -245,8 +244,6 @@ private slots:
     void sl_pause(bool isPause = true);
     void sl_configureParameterAliases();
     void sl_createGalaxyConfig();
-    void sl_configurePortAliases();
-    void sl_importSchemaToElement();
 
     void sl_toggleLock(bool = true);
     void sl_createScript();
@@ -359,8 +356,6 @@ private:
     QAction* editExternalToolAction;
     QAction* configureParameterAliasesAction;
     QAction* createGalaxyConfigAction;
-    QAction* configurePortAliasesAction;
-    QAction* importSchemaToElement;
     QAction* runAction;
     QAction* stopAction;
     QAction* validateAction;

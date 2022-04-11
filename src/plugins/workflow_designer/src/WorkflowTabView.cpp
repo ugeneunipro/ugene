@@ -30,7 +30,6 @@
 #include <QTabBar>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/SignalBlocker.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>
@@ -179,7 +178,7 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList& added, const Q
 
     int countBeforeAdding = 0;
     {
-        SignalBlocker signalBlocker(this);
+        QSignalBlocker signalBlocker(this);
         Q_UNUSED(signalBlocker);
 
         for (int i = count() - 1; i >= 0; --i) {

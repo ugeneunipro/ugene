@@ -1497,13 +1497,33 @@ void DotPlotWidget::selectNearestRepeat(const QPointF& p) {
     nearestSelecting = false;
 }
 
+float DotPlotWidget::calculateDistance(float x, float y, DotPlotResults r, bool isReverse) const {
+    //apply ratio to every coordinate
+    SAFE_POINT(r.x >= 0 && r.y >= 0 && r.len >= 0, "Wrong DotPlotResults, data member(s) have negative value!", 0.0);
+    if (isReverse) {
+        r = DotPlotResults(r.x, r.y + r.len, r.len);
+    }
+    float ratioX = w / (float)sequenceX->getSequenceLength();
+    float ratioY = h / (float)sequenceY->getSequenceLength();
+    float xLen = r.len * ratioX;
+    float yLen = isReverse ? -r.len * ratioY : r.len * ratioY;
+    x = x * ratioX * zoom.x() + shiftX;
+    y = y * ratioY * zoom.y() + shiftY;
+    r.x = r.x * ratioX * zoom.x() + shiftX;
+    r.y = r.y * ratioY * zoom.y() + shiftY;
+    // find nearest point on line segment to desired point https://www.cyberforum.ru/post16063107.html
+    // then calculate distance
+    float t = (float)(((x - r.x) * xLen + (y - r.y) * yLen)) / (pow(xLen, 2) + pow(yLen, 2));
+    t = qBound<float>(0.0, t, 1.0);
+    float nearestPointX = r.x + t * xLen;
+    float nearestPointY = r.y + t * yLen;
+    return pow(x - nearestPointX, 2) + pow(y - nearestPointY, 2);
+}
+
 // get sequence coords, return sequence coords of the nearest repeat
 const DotPlotResults* DotPlotWidget::findNearestRepeat(const QPoint& p) {
     const DotPlotResults* need = nullptr;
-    float minD = 0;
-
-    float x = p.x();
-    float y = p.y();
+    float minDistance = 0;
 
     SAFE_POINT(sequenceX, "sequenceX is NULL", nullptr);
     SAFE_POINT(sequenceY, "sequenceY is NULL", nullptr);
@@ -1511,52 +1531,25 @@ const DotPlotResults* DotPlotWidget::findNearestRepeat(const QPoint& p) {
     if ((sequenceX->getSequenceLength() <= 0) || (sequenceY->getSequenceLength() <= 0)) {
         return nullptr;
     }
-
-    float ratioX = w / (float)sequenceX->getSequenceLength();
-    float ratioY = h / (float)sequenceY->getSequenceLength();
-
-    ratioX *= ratioX;
-    ratioY *= ratioY;
-
     bool first = true;
-
     SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", nullptr);
-    // foreach (const DotPlotResults &r, *dpDirectResultListener->dotPlotList) {
-    foreach (const DotPlotResults& r, *dpFilteredResults) {
-        float halfLen = r.len / (float)2;
-        float midX = r.x + halfLen;
-        float midY = r.y + halfLen;
-
-        // square of the distance between two points. ratioX and ratioY are squared
-        float d = (x - midX) * (x - midX) * ratioX + (y - midY) * (y - midY) * ratioY;
-
-        if (d < minD || first) {
-            minD = d;
+    for (const DotPlotResults& r : qAsConst(*dpFilteredResults)) {
+        float distance = calculateDistance(p.x(), p.y(), r, false);
+        if (distance < minDistance || first) {
+            minDistance = distance;
             need = &r;
-
             nearestInverted = false;
         }
-
         first = false;
     }
-
     SAFE_POINT(dpRevComplResultsListener, "dpRevComplResultsListener is NULL", nullptr);
-    // foreach (const DotPlotResults &r, *dpRevComplResultsListener->dotPlotList) {
-    foreach (const DotPlotResults& r, *dpFilteredResultsRevCompl) {
-        float halfLen = r.len / (float)2;
-        float midX = r.x + halfLen;
-        float midY = r.y + halfLen;
-
-        // square of the distance between two points. ratioX and ratioY are squared
-        float d = (x - midX) * (x - midX) * ratioX + (y - midY) * (y - midY) * ratioY;
-
-        if (d < minD || first) {
-            minD = d;
+    for (const DotPlotResults& r : qAsConst(*dpFilteredResultsRevCompl)) {
+        float distance = calculateDistance(p.x(), p.y(), r, true);
+        if (distance < minDistance || first) {
+            minDistance = distance;
             need = &r;
-
             nearestInverted = true;
         }
-
         first = false;
     }
     return need;

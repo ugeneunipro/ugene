@@ -311,6 +311,30 @@ void Document::_addObject(GObject* obj) {
 }
 
 bool Document::removeObject(GObject* obj, DocumentObjectRemovalMode removalMode) {
+    if (removalMode == DocumentObjectRemovalMode::DocumentObjectRemovalMode_Detach) {
+        emit si_beforeObjectRemoved(obj);
+
+        SAFE_POINT(obj->getParentStateLockItem() == this, "Invalid parent document!", false)
+        CHECK(!obj->entityRef.isValid() || !objectsInUse.contains(obj->getEntityRef().entityId), false)
+
+        obj->setModified(false);
+
+        QList<StateLock*> oldLocks = locks;
+        locks.clear();
+        obj->setParentStateLockItem(nullptr);
+        locks = oldLocks;
+
+        objects.removeOne(obj);
+        id2Object.remove(obj->getEntityRef().entityId);
+        obj->setGHints(new GHintsDefaultImpl(obj->getGHintsMap()));
+
+        SAFE_POINT(objects.size() == getChildItems().size(), "Invalid child object count!", false)
+
+        emit si_objectRemoved(obj);
+        delete obj;
+        return true;
+    }
+
     SAFE_POINT(df->isObjectOpSupported(this, DocumentFormat::DocObjectOp_Remove, obj->getGObjectType()), "Unsupported format operation", false);
 
     emit si_beforeObjectRemoved(obj);

@@ -48,9 +48,6 @@ public:
      * If some match flag from the flags is not supported an error is set to 'os'.
      */
     static bool matchText(HI::GUITestOpStatus& os, const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags);
-
-    /** Returns "QRect(x, y, width, height)" text constructed from the rect values. */
-    static QString rectToString(const QRect& rect);
 };
 
 }  // namespace U2

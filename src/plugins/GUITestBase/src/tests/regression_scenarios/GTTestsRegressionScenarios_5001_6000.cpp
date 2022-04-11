@@ -442,6 +442,21 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5059) {
+    //1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    //2. Select whole alignment.
+    //3. Press Delete.
+    //Expected: notification about impossible operation popped.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsNotifications::waitForNotification(os, true, "Impossible to delete whole alignment!");
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5069) {
     //    1. Load workflow "_common_data/regression/5069/crash.uwl".
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -3146,6 +3161,31 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
     CHECK_SET_ERR(selectionContent2 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent2));
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong msa length");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5730) {
+    QFile originalFile(dataDir + "samples/Genbank/murine.gb");
+    QString dstPath = sandBoxDir + "/5730_murine.gb";
+    originalFile.copy(dstPath);
+
+    QFile copiedFile(dstPath);
+    CHECK_SET_ERR(copiedFile.exists(), "Unable to copy file");
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, sandBoxDir, "5730_murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesToAll));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "5730_murine.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export sequences..."}));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_004718");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
+
+    CHECK_SET_ERR(logTracer.checkMessage("Document is already added to the project"), "Expected messge not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {

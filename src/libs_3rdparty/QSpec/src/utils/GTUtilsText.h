@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,23 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SIGNAL_BLOCKER_H_
-#define _U2_SIGNAL_BLOCKER_H_
+#ifndef _HI_GUI_UTILS_TEXT_H_
+#define _HI_GUI_UTILS_TEXT_H_
 
-#include <U2Core/global.h>
+#include "GTGlobals.h"
 
-namespace U2 {
+namespace HI {
 
-class U2CORE_EXPORT SignalBlocker {
+class HI_EXPORT GTUtilsText {
 public:
-    SignalBlocker(QObject* const object);
-    ~SignalBlocker();
-
-private:
-    QObject* const object;
-    bool previousState;
+    /** Returns "QRect(x, y, width, height)" text constructed from the rect values. */
+    static QString rectToString(const QRect& rect);
 };
 
-}  // namespace U2
+}  // namespace HI
 
-#endif  // _U2_SIGNAL_BLOCKER_H_
+#endif

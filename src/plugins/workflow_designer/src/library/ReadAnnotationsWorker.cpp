@@ -29,6 +29,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/ZlibAdapter.h>
 
@@ -54,6 +55,30 @@ namespace {
 const QString MODE_ATTR("mode");
 const QString ANN_TABLE_NAME_ATTR("ann-table-name");
 const QString ANN_TABLE_DEFAULT_NAME("Unknown features");
+
+// Adds all annotations from the "from" table to the "to" table. Annotation groups with the same paths are merged into
+// one group. Checks the invariants of passed arguments.
+static void addTableToTable(AnnotationTableObject* from, const QScopedPointer<AnnotationTableObject>& to) {
+    SAFE_POINT(from != nullptr && to != nullptr, "Table is null", )
+
+    AnnotationGroup* fromRootGroup = from->getRootGroup();
+    AnnotationGroup* toRootGroup = to->getRootGroup();
+    SAFE_POINT(fromRootGroup != nullptr && toRootGroup != nullptr, "Root is null", )
+
+    QStringList groupPaths;
+    fromRootGroup->getSubgroupPaths(groupPaths);
+    for (const QString& groupPath : qAsConst(groupPaths)) {
+        AnnotationGroup* fromGroup = fromRootGroup->getSubgroup(groupPath, false);
+        AnnotationGroup* toGroup = toRootGroup->getSubgroup(groupPath, true);
+        SAFE_POINT(fromGroup != nullptr && toGroup != nullptr, QString("Group '%1' is null").arg(groupPath), )
+
+        QList<SharedAnnotationData> groupData;
+        for (Annotation* annotation : fromGroup->getAnnotations()) {
+            groupData += annotation->getData();
+        }
+        toGroup->addAnnotations(groupData);
+    }
+}
 }  // namespace
 
 /************************************************************************/
@@ -73,7 +98,7 @@ void ReadAnnotationsWorker::init() {
 
 Task* ReadAnnotationsWorker::createReadTask(const QString& url, const QString& datasetName) {
     bool mergeAnnotations = (mode != ReadAnnotationsProto::SPLIT);
-    return new ReadAnnotationsTask(url, datasetName, context, mergeAnnotations, mergeAnnotations ? getValue<QString>(ANN_TABLE_NAME_ATTR) : "");
+    return new ReadAnnotationsTask(url, datasetName, context, mode, mergeAnnotations ? getValue<QString>(ANN_TABLE_NAME_ATTR) : "");
 }
 
 QString ReadAnnotationsWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
@@ -95,13 +120,23 @@ void ReadAnnotationsWorker::onTaskFinished(Task* task) {
 
 void ReadAnnotationsWorker::sl_datasetEnded() {
     CHECK(datasetData.size() > 0, );
-    QList<SharedAnnotationData> anns;
+
+    U2OpStatusImpl os;
+    DbiOperationsBlock operationBlock(context->getDataStorage()->getDbiRef(), os);
+    SAFE_POINT_OP(os, )
+    QScopedPointer<AnnotationTableObject> mergedAnnotationTable(new AnnotationTableObject(
+        getValue<QString>(ANN_TABLE_NAME_ATTR), context->getDataStorage()->getDbiRef()));
+
     foreach (const QVariantMap& m, datasetData) {
         const QVariant annsVar = m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
-        anns << StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+        for (AnnotationTableObject* t : StorageUtils::getAnnotationTableObjects(context->getDataStorage(),
+                                                                                annsVar)) {
+            addTableToTable(t, mergedAnnotationTable);
+        }
     }
 
-    const SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(anns, getValue<QString>(ANN_TABLE_NAME_ATTR));
+    const SharedDbiDataHandler resultTableId =
+        context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.data());
 
     QVariantMap m;
     m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(resultTableId);
@@ -188,7 +223,11 @@ Worker* ReadAnnotationsWorkerFactory::createWorker(Actor* a) {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ReadAnnotationsTask::ReadAnnotationsTask(const QString& url, const QString& datasetName, WorkflowContext* context, bool mergeAnnotations, const QString& mergedAnnTableName)
+ReadAnnotationsTask::ReadAnnotationsTask(const QString& url,
+                                         const QString& datasetName,
+                                         WorkflowContext* context,
+                                         const ReadAnnotationsProto::Mode& mergeAnnotations,
+                                         const QString& mergedAnnTableName)
     : Task(tr("Read annotations from %1").arg(url), TaskFlag_None),
       url(url),
       datasetName(datasetName),
@@ -242,27 +281,43 @@ void ReadAnnotationsTask::run() {
     m[BaseSlots::URL_SLOT().getId()] = url;
     m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
 
-    QList<SharedAnnotationData> dataList;
+    bool isMerge = mergeAnnotations == ReadAnnotationsProto::MERGE && annsObjList.size() > 1;
+
+    // Only needed if merge mode.
+    QScopedPointer<AnnotationTableObject> mergedAnnotationTable;
+    if (isMerge) {
+        mergedAnnotationTable.reset(new AnnotationTableObject(mergedAnnTableName.isEmpty() ? ANN_TABLE_DEFAULT_NAME
+                                                                                           : mergedAnnTableName,
+                                                              context->getDataStorage()->getDbiRef()));
+    }
 
     for (GObject* go : qAsConst(annsObjList)) {
         auto annsObj = dynamic_cast<AnnotationTableObject*>(go);
         CHECK_EXT(annsObj != nullptr, stateInfo.setError("NULL annotations object"), );
 
-        if (!mergeAnnotations || annsObjList.size() == 1) {
-            doc->removeObject(go, DocumentObjectRemovalMode_Release);
+        // If "SPLIT" -- transfer (write to the result) tables of annotations from files as is.
+        // If "MERGE" and there is only one annotation table, transfer the table as is.
+        // If "MERGE_FILES", transfer the file tables as is and merge them in ReadAnnotationsWorker::sl_datasetEnded.
+        // Otherwise ("MERGE" with several tables of annotations in one file), merge these tables into one.
+        if (!isMerge) {
             const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsObj);
-            delete go;
             m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
             results.append(m);
+
+            SAFE_POINT(doc->removeObject(go, DocumentObjectRemovalMode_Detach),
+                       QString("Cannot remove object '%1' from document '%2'")
+                           .arg(go->getGObjectName(), doc->getName()), )
         } else {
-            foreach (Annotation* a, annsObj->getAnnotations()) {
-                dataList << a->getData();
-            }
+            U2OpStatusImpl os;
+            DbiOperationsBlock operationBlock(context->getDataStorage()->getDbiRef(), os);
+            SAFE_POINT_OP(os, )
+
+            addTableToTable(annsObj, mergedAnnotationTable);
         }
     }
 
-    if (mergeAnnotations && annsObjList.size() > 1) {
-        const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(dataList, mergedAnnTableName);
+    if (isMerge) {
+        SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.get());
         m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
         results.append(m);
     }

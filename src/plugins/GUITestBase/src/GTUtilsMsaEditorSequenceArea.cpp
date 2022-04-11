@@ -378,8 +378,8 @@ bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getFirstVisibleBase"
-int GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(GUITestOpStatus& os) {
+#define GT_METHOD_NAME "getFirstVisibleBaseIndex"
+int GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(GUITestOpStatus& os) {
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
 
     ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
@@ -389,14 +389,29 @@ int GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLastVisibleBase"
-int GTUtilsMSAEditorSequenceArea::getLastVisibleBase(GUITestOpStatus& os) {
+#define GT_METHOD_NAME "getLastVisibleBaseIndex"
+int GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(GUITestOpStatus& os) {
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
 
     ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
     int clippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), true);
     int notClippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), false);
     return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getFirstVisibleRowIndex"
+int GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(GUITestOpStatus& os, bool countClipped) {
+    MSAEditor* editor = GTUtilsMsaEditor::getEditor(os);
+    return editor->getUI()->getScrollController()->getFirstVisibleViewRowIndex(countClipped);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLastVisibleRowIndex"
+int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(GUITestOpStatus& os, bool countClipped) {
+    MSAEditor* editor = GTUtilsMsaEditor::getEditor(os);
+    int widgetHeight = editor->getUI()->getSequenceArea()->height();
+    return editor->getUI()->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
 }
 #undef GT_METHOD_NAME
 

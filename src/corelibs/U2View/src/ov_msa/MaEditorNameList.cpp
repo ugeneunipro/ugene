@@ -36,6 +36,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/Notification.h>
 
 #include "DrawHelper.h"
 #include "MSAEditor.h"
@@ -235,7 +236,10 @@ void MaEditorNameList::sl_removeSelectedRows() {
         U2Region yRegion = U2Region::fromYRange(selectedRect);
         selectedMaRowIndexes << editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(yRegion, true);
     }
-    CHECK(maObj->getRowCount() > selectedMaRowIndexes.size(), );  // Do allow to remove all rows.
+    if (maObj->getRowCount() == selectedMaRowIndexes.size()) {
+        NotificationStack::addNotification(tr("Impossible to delete whole alignment!"), NotificationType::Warning_Not);
+        return;
+    }
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

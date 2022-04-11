@@ -1,0 +1,13 @@
+<multi-test>
+    <!--
+        Run "Read Annotations->Write Annotations" workflow with data/samples/EMBL/AF177870.emb
+        Expected: no crash.
+    -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/ann-ann.uwl"
+            in="!common_data_dir!embl/111.embl;"
+            out="!tmp_data_dir!anns.gb"
+    />
+    <load-document index="anns" url="anns.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="anns" value="1"/>
+</multi-test>
