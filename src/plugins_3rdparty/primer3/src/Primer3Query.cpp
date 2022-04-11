@@ -163,8 +163,8 @@ void QDPrimerActor::setDefaultSettings() {
         settings.setProductSizeRange(sizeRange);
     }
     settings.setDoubleProperty("PRIMER_MAX_END_STABILITY", 9.0);
-    settings.setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200);
-    settings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400);
+    settings.setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200.0);
+    settings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
     settings.setIntProperty("PRIMER_LIBERAL_BASE", 1);
     settings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
     settings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 1);

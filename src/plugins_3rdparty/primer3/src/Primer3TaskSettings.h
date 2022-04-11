@@ -32,7 +32,8 @@
 #include <U2Core/U2Range.h>
 #include <U2Core/U2Region.h>
 
-#include "primer3_core/primer3.h"
+//#include "primer3_core/primer3.h"
+#include "primer3_core_new/libprimer3.h"
 
 namespace U2 {
 
@@ -66,11 +67,11 @@ public:
 
     bool getIntProperty(const QString& key, int* outValue) const;
     bool getDoubleProperty(const QString& key, double* outValue) const;
-    bool getAlignProperty(const QString& key, short* outValue) const;
+    bool getAlignProperty(const QString& key, double* outValue) const;
 
     bool setIntProperty(const QString& key, int value);
     bool setDoubleProperty(const QString& key, double value);
-    bool setAlignProperty(const QString& key, short value);
+    bool setAlignProperty(const QString& key, double value);
 
     QList<QString> getIntPropertyList() const;
     QList<QString> getDoublePropertyList() const;
@@ -115,7 +116,7 @@ public:
     QByteArray getRepeatLibrary() const;
     QByteArray getMishybLibrary() const;
 
-    primer_args* getPrimerArgs();
+    p3_global_settings* getPrimerSettings();
     seq_args* getSeqArgs();
 
     // span intron/exon boundary settings
@@ -152,7 +153,7 @@ private:
 private:
     QMap<QString, int*> intProperties;
     QMap<QString, double*> doubleProperties;
-    QMap<QString, short*> alignProperties;
+    QMap<QString, double*> alignProperties;
 
     // don't forget to change copy constructor and assignment operator when changing this!
     QByteArray sequenceName;
@@ -167,8 +168,10 @@ private:
     QByteArray mishybLibrary;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
 
-    primer_args primerArgs;
+    p3_global_settings* primerSettings;
     seq_args seqArgs;
+
+    p3retval* p3status;
 };
 
 }  // namespace U2
