@@ -101,7 +101,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject* obj, const Annotated
       dnaView(_dnaView), contexts(),
       rendererSettings(DEFAULT_RENDER_DETAIL_LEVEL),
       frameManager(manager), glFrame(new GLFrame(this)),
-      molSurface(0), surfaceRenderer(), surfaceCalcTask(0),
+      molSurface(0), surfaceRenderer(),
       anaglyphStatus(DISABLED),
       anaglyph(new AnaglyphRenderer(this, AnaglyphSettings::defaultSettings())),
 
@@ -764,6 +764,11 @@ void BioStruct3DGLWidget::createActions() {
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
     createStructuralAlignmentActions();
+
+    connect(AppContext::getTaskScheduler(),
+            &TaskScheduler::si_stateChanged,
+            this,
+            &BioStruct3DGLWidget::sl_onSurfaceCalcTaskFinished);
 }
 
 void BioStruct3DGLWidget::createStructuralAlignmentActions() {
@@ -964,8 +969,7 @@ void BioStruct3DGLWidget::sl_showSurface() {
     atoms = ctx.biostruct->getAllAtoms();
 
     QString surfaceType = qobject_cast<QAction*>(sender())->text();
-    surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
-    connect(surfaceCalcTask, &Task::si_stateChanged, this, &BioStruct3DGLWidget::sl_onTaskFinished);
+    auto surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
     AppContext::getTaskScheduler()->registerTopLevelTask(surfaceCalcTask);
 }
 
@@ -984,8 +988,12 @@ void BioStruct3DGLWidget::sl_selectSurfaceRenderer(QAction* action) {
     update();
 }
 
-void BioStruct3DGLWidget::sl_onTaskFinished() {
-    if (surfaceCalcTask->getState() != Task::State_Finished) {
+void BioStruct3DGLWidget::sl_onSurfaceCalcTaskFinished(Task* task) {
+    if (task->getState() != Task::State_Finished) {
+        return;
+    }
+    auto surfaceCalcTask = qobject_cast<MolecularSurfaceCalcTask*>(task);
+    if (surfaceCalcTask == nullptr) {
         return;
     }
 
