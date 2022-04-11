@@ -30,8 +30,12 @@
 #include <U2Core/U1AnnotationUtils.h>
 
 #include "Primer3Task.h"
-#include "primer3_core/boulder_input.h"
-#include "primer3_core/primer3_main.h"
+//#include "primer3_core/boulder_input.h"
+//#include "primer3_core/primer3_main.h"
+
+#include "primer3_core_new/p3_seq_lib.h"
+#include "primer3_core_new/libprimer3.h"
+#include "primer3_core_new/primer3_boulder_main.h"
 
 namespace U2 {
 
@@ -144,8 +148,8 @@ PrimerPair::PrimerPair()
       complAny(0),
       complEnd(0),
       productSize(0),
-      quality(0),
-      complMeasure(0) {
+      quality(0)/*,
+      complMeasure(0)*/ {
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
@@ -155,8 +159,8 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
-      quality(primerPair.pair_quality),
-      complMeasure(primerPair.compl_measure) {
+      quality(primerPair.pair_quality)/*,
+      complMeasure(primerPair.compl_measure)*/ {
     if (!leftPrimer.isNull()) {
         leftPrimer->setStart(leftPrimer->getStart() + offset);
     }
@@ -175,8 +179,8 @@ PrimerPair::PrimerPair(const PrimerPair& primerPair)
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
-      quality(primerPair.quality),
-      complMeasure(primerPair.complMeasure) {
+      quality(primerPair.quality)/*,
+      complMeasure(primerPair.complMeasure)*/ {
 }
 
 PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
@@ -187,7 +191,7 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
     quality = primerPair.quality;
-    complMeasure = primerPair.complMeasure;
+    //complMeasure = primerPair.complMeasure;
     return *this;
 }
 
@@ -202,7 +206,7 @@ bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     result &= complEnd == primerPair.complEnd;
     result &= productSize == primerPair.productSize;
     result &= quality == primerPair.quality;
-    result &= complMeasure == primerPair.complMeasure;
+    //result &= complMeasure == primerPair.complMeasure;
 
     return result;
 }
@@ -263,12 +267,12 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
         return false;
     }
 
-    if (complMeasure < pair.complMeasure) {
+    /*if (complMeasure < pair.complMeasure) {
         return true;
     }
     if (complMeasure > pair.complMeasure) {
         return false;
-    }
+    }*/
 
     if (leftPrimer->getStart() > pair.leftPrimer->getStart()) {
         return true;
@@ -374,29 +378,33 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
 }
 
 void Primer3Task::run() {
+    /* A place to put a string containing all error messages */
+    pr_append_str* combined_retval_err = NULL;
+    combined_retval_err = create_pr_append_str();
+
     if (!settings.getRepeatLibrary().isEmpty()) {
-        read_seq_lib(&settings.getPrimerArgs()->repeat_lib, settings.getRepeatLibrary().constData(), "mispriming library");
-        if (nullptr != settings.getPrimerArgs()->repeat_lib.error.data) {
-            pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->repeat_lib.error.data);
-            pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->repeat_lib.error.data);
+        settings.getPrimerSettings()->p_args.repeat_lib = read_and_create_seq_lib(settings.getRepeatLibrary().constData(), "mispriming library");
+        if (nullptr != settings.getPrimerSettings()->p_args.repeat_lib->error.data) {
+            pr_append_new_chunk_external(combined_retval_err, settings.getPrimerSettings()->p_args.repeat_lib->error.data);
+            //pr_append_new_chunk_external(&settings.getSeqArgs()->error, settings.getSeqArgs()->repeat_lib.error.data);
             return;
         }
     }
     if (!settings.getMishybLibrary().isEmpty()) {
-        read_seq_lib(&settings.getPrimerArgs()->io_mishyb_library, settings.getMishybLibrary().constData(), "internal oligo mishyb library");
-        if (nullptr != settings.getPrimerArgs()->io_mishyb_library.error.data) {
-            pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->io_mishyb_library.error.data);
-            pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->io_mishyb_library.error.data);
+        settings.getPrimerSettings()->o_args.repeat_lib = read_and_create_seq_lib(settings.getRepeatLibrary().constData(), "internal oligo mishyb library");
+        if (nullptr != settings.getPrimerSettings()->o_args.repeat_lib->error.data) {
+            pr_append_new_chunk_external(combined_retval_err, settings.getPrimerSettings()->o_args.repeat_lib->error.data);
+            //pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->io_mishyb_library.error.data);
             return;
         }
     }
 
     bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
-    int toReturn = settings.getPrimerArgs()->num_return;
+    int toReturn = settings.getPrimerSettings()->num_return;
     if (spanExonsEnabled) {
-        settings.getPrimerArgs()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
+        settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
-    primers_t primers = runPrimer3(settings.getPrimerArgs(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
+    primers_t primers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
 
     bestPairs.clear();
 

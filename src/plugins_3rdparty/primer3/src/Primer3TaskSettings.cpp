@@ -23,7 +23,9 @@
 #include <cstring>
 
 #include "Primer3TaskSettings.h"
-#include "primer3_core/boulder_input.h"
+
+//#include "primer3_core/boulder_input.h"
+#include "primer3_core_new/libprimer3.h"
 
 namespace U2 {
 
@@ -36,9 +38,11 @@ bool Primer3TaskSettings::checkIncludedRegion(const U2Region& r) const {
 }
 
 Primer3TaskSettings::Primer3TaskSettings() {
-    pr_set_default_global_args(&primerArgs);
+    primerSettings = p3_create_global_settings();
+    //p3status = 
 
-    std::memset(&primerArgs.glob_err, 0, sizeof(primerArgs.glob_err));
+    //TODO: glob_err - got lost, figure out
+    //std::memset(&primerArgs.glob_err, 0, sizeof(primerArgs.glob_err));
     std::memset(&seqArgs, 0, sizeof(seqArgs));
     seqArgs.start_codon_pos = PR_DEFAULT_START_CODON_POS;
     isCircular = false;
@@ -57,7 +61,7 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
       repeatLibrary(settings.repeatLibrary),
       mishybLibrary(settings.mishybLibrary),
       spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
-      primerArgs(settings.primerArgs),
+      primerSettings(new p3_global_settings(*settings.primerSettings)),
       seqArgs(settings.seqArgs) {
     initMaps();
 }
@@ -70,7 +74,7 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     rightInput = settings.rightInput;
     internalInput = settings.internalInput;
     sequenceQuality = settings.sequenceQuality;
-    primerArgs = settings.primerArgs;
+    primerSettings = new p3_global_settings(*settings.primerSettings);
     repeatLibrary = settings.repeatLibrary;
     mishybLibrary = settings.mishybLibrary;
     seqArgs = settings.seqArgs;
@@ -84,10 +88,11 @@ Primer3TaskSettings::~Primer3TaskSettings() {
         std::free(seqArgs.error.data);
         seqArgs.error.data = nullptr;
     }
-    if (nullptr != primerArgs.glob_err.data) {
+    //TODO: glob_err - got lost, figure out
+    /*if (nullptr != primerArgs.glob_err.data) {
         std::free(primerArgs.glob_err.data);
         primerArgs.glob_err.data = nullptr;
-    }
+    }*/
     if (nullptr != seqArgs.trimmed_seq) {
         std::free(seqArgs.trimmed_seq);
         seqArgs.trimmed_seq = nullptr;
@@ -114,8 +119,11 @@ Primer3TaskSettings::~Primer3TaskSettings() {
         seqArgs.warning.data = nullptr;
     }
 
-    free_seq_lib(&primerArgs.repeat_lib);
-    free_seq_lib(&primerArgs.io_mishyb_library);
+    //TODO: free_seq_lib - got lost, figure out
+    //free_seq_lib(primerSettings->p_args.repeat_lib);
+    //free_seq_lib(primerSettings->p_args.io_mishyb_library);
+
+    delete primerSettings;
 }
 
 bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {
@@ -134,7 +142,7 @@ bool Primer3TaskSettings::getDoubleProperty(const QString& key, double* outValue
     return true;
 }
 
-bool Primer3TaskSettings::getAlignProperty(const QString& key, short* outValue) const {
+bool Primer3TaskSettings::getAlignProperty(const QString& key, double* outValue) const {
     if (!alignProperties.contains(key)) {
         return false;
     }
@@ -157,7 +165,7 @@ bool Primer3TaskSettings::setDoubleProperty(const QString& key, double value) {
     *(doubleProperties.value(key)) = value;
     return true;
 }
-bool Primer3TaskSettings::setAlignProperty(const QString& key, short value) {
+bool Primer3TaskSettings::setAlignProperty(const QString& key, double value) {
     if (!alignProperties.contains(key)) {
         return false;
     }
@@ -199,25 +207,25 @@ QList<U2Region> Primer3TaskSettings::getTarget() const {
 
 QList<U2Region> Primer3TaskSettings::getProductSizeRange() const {
     QList<U2Region> result;
-    for (int i = 0; i < primerArgs.num_intervals; i++) {
-        result.append(U2Region(primerArgs.pr_min[i],
-                               primerArgs.pr_max[i] - primerArgs.pr_min[i] + 1));
+    for (int i = 0; i < primerSettings->num_intervals; i++) {
+        result.append(U2Region(primerSettings->pr_min[i],
+                               primerSettings->pr_max[i] - primerSettings->pr_min[i] + 1));
     }
     return result;
 }
 
 int Primer3TaskSettings::getMinProductSize() const {
     int min = INT_MAX;
-    for (int i = 0; i < primerArgs.num_intervals; i++) {
-        if (min > primerArgs.pr_min[i]) {
-            min = primerArgs.pr_min[i];
+    for (int i = 0; i < primerSettings->num_intervals; i++) {
+        if (min > primerSettings->pr_min[i]) {
+            min = primerSettings->pr_min[i];
         }
     }
     return min;
 }
 
 task Primer3TaskSettings::getTask() const {
-    return primerArgs.primer_task;
+    return primerSettings->primer_task;
 }
 
 QList<U2Region> Primer3TaskSettings::getInternalOligoExcludedRegion() const {
@@ -261,13 +269,13 @@ QByteArray Primer3TaskSettings::getError() const {
 }
 
 int Primer3TaskSettings::getFirstBaseIndex() const {
-    return primerArgs.first_base_index;
+    return primerSettings->first_base_index;
 }
 
 void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
     sequenceName = value;
     if (!value.isEmpty()) {
-        seqArgs.sequence_name = sequenceName.constData();
+        seqArgs.sequence_name = sequenceName.data();
     } else {
         seqArgs.sequence_name = nullptr;
     }
@@ -299,14 +307,14 @@ void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
         }
-        primerArgs.pr_min[i] = value[i].startPos;
-        primerArgs.pr_max[i] = value[i].endPos() - 1;
+        primerSettings->pr_min[i] = value[i].startPos;
+        primerSettings->pr_max[i] = value[i].endPos() - 1;
     }
-    primerArgs.num_intervals = value.size();
+    primerSettings->num_intervals = value.size();
 }
 
 void Primer3TaskSettings::setTask(const task& value) {
-    primerArgs.primer_task = value;
+    primerSettings->primer_task = value;
 }
 
 void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& value) {
@@ -393,8 +401,8 @@ QByteArray Primer3TaskSettings::getMishybLibrary() const {
     return mishybLibrary;
 }
 
-primer_args* Primer3TaskSettings::getPrimerArgs() {
-    return &primerArgs;
+p3_global_settings* Primer3TaskSettings::getPrimerSettings() {
+    return primerSettings;
 }
 
 seq_args* Primer3TaskSettings::getSeqArgs() {
@@ -402,111 +410,112 @@ seq_args* Primer3TaskSettings::getSeqArgs() {
 }
 
 void Primer3TaskSettings::initMaps() {
-    intProperties.insert("PRIMER_OPT_SIZE", &primerArgs.primer_opt_size);
-    intProperties.insert("PRIMER_MIN_SIZE", &primerArgs.primer_min_size);
-    intProperties.insert("PRIMER_MAX_SIZE", &primerArgs.primer_max_size);
-    intProperties.insert("PRIMER_NUM_NS_ACCEPTED", &primerArgs.num_ns_accepted);
-    intProperties.insert("PRIMER_MAX_POLY_X", &primerArgs.max_poly_x);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_POLY_X", &primerArgs.io_max_poly_x);
-    intProperties.insert("PRIMER_FILE_FLAG", &primerArgs.file_flag);
-    intProperties.insert("PRIMER_EXPLAIN_FLAG", &primerArgs.explain_flag);
-    intProperties.insert("PRIMER_FIRST_BASE_INDEX", &primerArgs.first_base_index);
-    doubleProperties.insert("PRIMER_MIN_TM", &primerArgs.min_tm);
-    doubleProperties.insert("PRIMER_MAX_TM", &primerArgs.max_tm);
-    doubleProperties.insert("PRIMER_MAX_GC", &primerArgs.max_gc);
-    doubleProperties.insert("PRIMER_MIN_GC", &primerArgs.min_gc);
-    alignProperties.insert("PRIMER_SELF_END", &primerArgs.self_end);
-    alignProperties.insert("PRIMER_SELF_ANY", &primerArgs.self_any);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_SIZE", &primerArgs.io_primer_opt_size);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_SIZE", &primerArgs.io_primer_min_size);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_SIZE", &primerArgs.io_primer_max_size);
-    alignProperties.insert("PRIMER_INTERNAL_OLIGO_SELF_ANY", &primerArgs.io_self_any);
-    alignProperties.insert("PRIMER_INTERNAL_OLIGO_SELF_END", &primerArgs.io_self_end);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_TM", &primerArgs.io_max_tm);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_TM", &primerArgs.io_min_tm);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_GC", &primerArgs.io_max_gc);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_GC", &primerArgs.io_min_gc);
-    intProperties.insert("PRIMER_DEFAULT_SIZE", &primerArgs.primer_opt_size);
+    intProperties.insert("PRIMER_OPT_SIZE", &primerSettings->p_args.opt_size);
+    intProperties.insert("PRIMER_MIN_SIZE", &primerSettings->p_args.min_size);
+    intProperties.insert("PRIMER_MAX_SIZE", &primerSettings->p_args.max_size);
+    intProperties.insert("PRIMER_NUM_NS_ACCEPTED", &primerSettings->p_args.num_ns_accepted);
+    intProperties.insert("PRIMER_MAX_POLY_X", &primerSettings->p_args.max_poly_x);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_POLY_X", &primerSettings->o_args.max_poly_x);
+    intProperties.insert("PRIMER_FILE_FLAG", &primerSettings->file_flag);
+    //TODO: explain_flag - got lost, figure out
+    //intProperties.insert("PRIMER_EXPLAIN_FLAG", &primerArgs.explain_flag);
+    intProperties.insert("PRIMER_FIRST_BASE_INDEX", &primerSettings->first_base_index);
+    doubleProperties.insert("PRIMER_MIN_TM", &primerSettings->p_args.min_tm);
+    doubleProperties.insert("PRIMER_MAX_TM", &primerSettings->p_args.max_tm);
+    doubleProperties.insert("PRIMER_MAX_GC", &primerSettings->p_args.max_gc);
+    doubleProperties.insert("PRIMER_MIN_GC", &primerSettings->p_args.min_gc);
+    alignProperties.insert("PRIMER_SELF_END", &primerSettings->p_args.max_self_end);
+    alignProperties.insert("PRIMER_SELF_ANY", &primerSettings->p_args.max_self_any);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_SIZE", &primerSettings->o_args.opt_size);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_SIZE", &primerSettings->o_args.min_size);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_SIZE", &primerSettings->o_args.max_size);
+    alignProperties.insert("PRIMER_INTERNAL_OLIGO_SELF_ANY", &primerSettings->o_args.max_self_any);
+    alignProperties.insert("PRIMER_INTERNAL_OLIGO_SELF_END", &primerSettings->o_args.max_self_end);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_TM", &primerSettings->o_args.max_tm);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_TM", &primerSettings->o_args.min_tm);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_GC", &primerSettings->o_args.max_gc);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_GC", &primerSettings->o_args.min_gc);
+    intProperties.insert("PRIMER_DEFAULT_SIZE", &primerSettings->p_args.opt_size);
     intProperties.insert("PRIMER_START_CODON_POSITION", &seqArgs.start_codon_pos);
-    doubleProperties.insert("PRIMER_OPT_TM", &primerArgs.opt_tm);
-    doubleProperties.insert("PRIMER_OPT_GC_PERCENT", &primerArgs.opt_gc_content);
-    doubleProperties.insert("PRIMER_MAX_DIFF_TM", &primerArgs.max_diff_tm);
-    intProperties.insert("PRIMER_TM_SANTALUCIA", &primerArgs.tm_santalucia);
-    intProperties.insert("PRIMER_SALT_CORRECTIONS", &primerArgs.salt_corrections);
-    doubleProperties.insert("PRIMER_SALT_CONC", &primerArgs.salt_conc);
-    doubleProperties.insert("PRIMER_DIVALENT_CONC", &primerArgs.divalent_conc);
-    doubleProperties.insert("PRIMER_DNTP_CONC", &primerArgs.dntp_conc);
-    doubleProperties.insert("PRIMER_DNA_CONC", &primerArgs.dna_conc);
-    intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerArgs.product_opt_size);
-    intProperties.insert("PRIMER_PICK_ANYWAY", &primerArgs.pick_anyway);
-    intProperties.insert("PRIMER_GC_CLAMP", &primerArgs.gc_clamp);
-    intProperties.insert("PRIMER_LIBERAL_BASE", &primerArgs.liberal_base);
-    intProperties.insert("PRIMER_NUM_RETURN", &primerArgs.num_return);
-    intProperties.insert("PRIMER_MIN_QUALITY", &primerArgs.min_quality);
-    intProperties.insert("PRIMER_MIN_END_QUALITY", &primerArgs.min_end_quality);
-    intProperties.insert("PRIMER_QUALITY_RANGE_MIN", &primerArgs.quality_range_min);
-    intProperties.insert("PRIMER_QUALITY_RANGE_MAX", &primerArgs.quality_range_max);
-    doubleProperties.insert("PRIMER_PRODUCT_MAX_TM", &primerArgs.product_max_tm);
-    doubleProperties.insert("PRIMER_PRODUCT_MIN_TM", &primerArgs.product_min_tm);
-    doubleProperties.insert("PRIMER_PRODUCT_OPT_TM", &primerArgs.product_opt_tm);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_TM", &primerArgs.io_opt_tm);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT", &primerArgs.io_opt_gc_content);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_SALT_CONC", &primerArgs.io_salt_conc);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DIVALENT_CONC", &primerArgs.io_divalent_conc);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DNTP_CONC", &primerArgs.io_dntp_conc);
-    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DNA_CONC", &primerArgs.io_dna_conc);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_NUM_NS", &primerArgs.io_num_ns_accepted);
-    intProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_QUALITY", &primerArgs.io_min_quality);
-    alignProperties.insert("PRIMER_MAX_MISPRIMING", &primerArgs.repeat_compl);
-    alignProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_MISHYB", &primerArgs.io_repeat_compl);
-    alignProperties.insert("PRIMER_PAIR_MAX_MISPRIMING", &primerArgs.pair_repeat_compl);
-    alignProperties.insert("PRIMER_MAX_TEMPLATE_MISPRIMING", &primerArgs.max_template_mispriming);
-    alignProperties.insert("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", &primerArgs.pair_max_template_mispriming);
-    alignProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_TEMPLATE_MISHYB", &primerArgs.io_max_template_mishyb);
-    intProperties.insert("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &primerArgs.lib_ambiguity_codes_consensus);
-    doubleProperties.insert("PRIMER_INSIDE_PENALTY", &primerArgs.inside_penalty);
-    doubleProperties.insert("PRIMER_OUTSIDE_PENALTY", &primerArgs.outside_penalty);
-    doubleProperties.insert("PRIMER_MAX_END_STABILITY", &primerArgs.max_end_stability);
-    intProperties.insert("PRIMER_LOWERCASE_MASKING", &primerArgs.lowercase_masking);
-    doubleProperties.insert("PRIMER_WT_TM_GT", &primerArgs.primer_weights.temp_gt);
-    doubleProperties.insert("PRIMER_WT_TM_LT", &primerArgs.primer_weights.temp_lt);
-    doubleProperties.insert("PRIMER_WT_GC_PERCENT_GT", &primerArgs.primer_weights.gc_content_gt);
-    doubleProperties.insert("PRIMER_WT_GC_PERCENT_LT", &primerArgs.primer_weights.gc_content_lt);
-    doubleProperties.insert("PRIMER_WT_SIZE_LT", &primerArgs.primer_weights.length_lt);
-    doubleProperties.insert("PRIMER_WT_SIZE_GT", &primerArgs.primer_weights.length_gt);
-    doubleProperties.insert("PRIMER_WT_COMPL_ANY", &primerArgs.primer_weights.compl_any);
-    doubleProperties.insert("PRIMER_WT_COMPL_END", &primerArgs.primer_weights.compl_end);
-    doubleProperties.insert("PRIMER_WT_NUM_NS", &primerArgs.primer_weights.num_ns);
-    doubleProperties.insert("PRIMER_WT_REP_SIM", &primerArgs.primer_weights.repeat_sim);
-    doubleProperties.insert("PRIMER_WT_SEQ_QUAL", &primerArgs.primer_weights.seq_quality);
-    doubleProperties.insert("PRIMER_WT_END_QUAL", &primerArgs.primer_weights.end_quality);
-    doubleProperties.insert("PRIMER_WT_POS_PENALTY", &primerArgs.primer_weights.pos_penalty);
-    doubleProperties.insert("PRIMER_WT_END_STABILITY", &primerArgs.primer_weights.end_stability);
-    doubleProperties.insert("PRIMER_WT_TEMPLATE_MISPRIMING", &primerArgs.primer_weights.template_mispriming);
-    doubleProperties.insert("PRIMER_IO_WT_TM_GT", &primerArgs.io_weights.temp_gt);
-    doubleProperties.insert("PRIMER_IO_WT_TM_LT", &primerArgs.io_weights.temp_lt);
-    doubleProperties.insert("PRIMER_IO_WT_GC_PERCENT_GT", &primerArgs.io_weights.gc_content_gt);
-    doubleProperties.insert("PRIMER_IO_WT_GC_PERCENT_LT", &primerArgs.io_weights.gc_content_lt);
-    doubleProperties.insert("PRIMER_IO_WT_SIZE_LT", &primerArgs.io_weights.length_lt);
-    doubleProperties.insert("PRIMER_IO_WT_SIZE_GT", &primerArgs.io_weights.length_gt);
-    doubleProperties.insert("PRIMER_IO_WT_COMPL_ANY", &primerArgs.io_weights.compl_any);
-    doubleProperties.insert("PRIMER_IO_WT_COMPL_END", &primerArgs.io_weights.compl_end);
-    doubleProperties.insert("PRIMER_IO_WT_NUM_NS", &primerArgs.io_weights.num_ns);
-    doubleProperties.insert("PRIMER_IO_WT_REP_SIM", &primerArgs.io_weights.repeat_sim);
-    doubleProperties.insert("PRIMER_IO_WT_SEQ_QUAL", &primerArgs.io_weights.seq_quality);
-    doubleProperties.insert("PRIMER_IO_WT_END_QUAL", &primerArgs.io_weights.end_quality);
-    doubleProperties.insert("PRIMER_IO_WT_TEMPLATE_MISHYB", &primerArgs.io_weights.template_mispriming);
-    doubleProperties.insert("PRIMER_PAIR_WT_PR_PENALTY", &primerArgs.pr_pair_weights.primer_quality);
-    doubleProperties.insert("PRIMER_PAIR_WT_IO_PENALTY", &primerArgs.pr_pair_weights.io_quality);
-    doubleProperties.insert("PRIMER_PAIR_WT_DIFF_TM", &primerArgs.pr_pair_weights.diff_tm);
-    doubleProperties.insert("PRIMER_PAIR_WT_COMPL_ANY", &primerArgs.pr_pair_weights.compl_any);
-    doubleProperties.insert("PRIMER_PAIR_WT_COMPL_END", &primerArgs.pr_pair_weights.compl_end);
-    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_TM_LT", &primerArgs.pr_pair_weights.product_tm_lt);
-    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_TM_GT", &primerArgs.pr_pair_weights.product_tm_gt);
-    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_SIZE_GT", &primerArgs.pr_pair_weights.product_size_gt);
-    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_SIZE_LT", &primerArgs.pr_pair_weights.product_size_lt);
-    doubleProperties.insert("PRIMER_PAIR_WT_REP_SIM", &primerArgs.pr_pair_weights.repeat_sim);
-    doubleProperties.insert("PRIMER_PAIR_WT_TEMPLATE_MISPRIMING", &primerArgs.pr_pair_weights.template_mispriming);
+    doubleProperties.insert("PRIMER_OPT_TM", &primerSettings->p_args.opt_tm);
+    doubleProperties.insert("PRIMER_OPT_GC_PERCENT", &primerSettings->p_args.opt_gc_content);
+    doubleProperties.insert("PRIMER_MAX_DIFF_TM", &primerSettings->max_diff_tm);
+    intProperties.insert("PRIMER_TM_SANTALUCIA", (int*)&primerSettings->tm_santalucia);
+    intProperties.insert("PRIMER_SALT_CORRECTIONS", (int*)&primerSettings->salt_corrections);
+    doubleProperties.insert("PRIMER_SALT_CONC", &primerSettings->p_args.salt_conc);
+    doubleProperties.insert("PRIMER_DIVALENT_CONC", &primerSettings->p_args.divalent_conc);
+    doubleProperties.insert("PRIMER_DNTP_CONC", &primerSettings->p_args.dntp_conc);
+    doubleProperties.insert("PRIMER_DNA_CONC", &primerSettings->p_args.dna_conc);
+    intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerSettings->product_opt_size);
+    intProperties.insert("PRIMER_PICK_ANYWAY", &primerSettings->pick_anyway);
+    intProperties.insert("PRIMER_GC_CLAMP", &primerSettings->gc_clamp);
+    intProperties.insert("PRIMER_LIBERAL_BASE", &primerSettings->liberal_base);
+    intProperties.insert("PRIMER_NUM_RETURN", &primerSettings->num_return);
+    intProperties.insert("PRIMER_MIN_QUALITY", &primerSettings->p_args.min_quality);
+    intProperties.insert("PRIMER_MIN_END_QUALITY", &primerSettings->p_args.min_end_quality);
+    intProperties.insert("PRIMER_QUALITY_RANGE_MIN", &primerSettings->quality_range_min);
+    intProperties.insert("PRIMER_QUALITY_RANGE_MAX", &primerSettings->quality_range_max);
+    doubleProperties.insert("PRIMER_PRODUCT_MAX_TM", &primerSettings->product_max_tm);
+    doubleProperties.insert("PRIMER_PRODUCT_MIN_TM", &primerSettings->product_min_tm);
+    doubleProperties.insert("PRIMER_PRODUCT_OPT_TM", &primerSettings->product_opt_tm);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_TM", &primerSettings->o_args.opt_tm);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT", &primerSettings->o_args.opt_gc_content);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_SALT_CONC", &primerSettings->o_args.salt_conc);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DIVALENT_CONC", &primerSettings->o_args.divalent_conc);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DNTP_CONC", &primerSettings->o_args.dntp_conc);
+    doubleProperties.insert("PRIMER_INTERNAL_OLIGO_DNA_CONC", &primerSettings->o_args.dna_conc);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_NUM_NS", &primerSettings->o_args.num_ns_accepted);
+    intProperties.insert("PRIMER_INTERNAL_OLIGO_MIN_QUALITY", &primerSettings->o_args.min_quality);
+    alignProperties.insert("PRIMER_MAX_MISPRIMING", &primerSettings->p_args.max_repeat_compl);
+    alignProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_MISHYB", &primerSettings->o_args.max_repeat_compl);
+    alignProperties.insert("PRIMER_PAIR_MAX_MISPRIMING", &primerSettings->pair_repeat_compl);
+    alignProperties.insert("PRIMER_MAX_TEMPLATE_MISPRIMING", &primerSettings->p_args.max_template_mispriming);
+    alignProperties.insert("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", &primerSettings->pair_max_template_mispriming);
+    alignProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_TEMPLATE_MISHYB", &primerSettings->o_args.max_template_mispriming);
+    intProperties.insert("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &primerSettings->lib_ambiguity_codes_consensus);
+    doubleProperties.insert("PRIMER_INSIDE_PENALTY", &primerSettings->inside_penalty);
+    doubleProperties.insert("PRIMER_OUTSIDE_PENALTY", &primerSettings->outside_penalty);
+    doubleProperties.insert("PRIMER_MAX_END_STABILITY", &primerSettings->max_end_stability);
+    intProperties.insert("PRIMER_LOWERCASE_MASKING", &primerSettings->lowercase_masking);
+    doubleProperties.insert("PRIMER_WT_TM_GT", &primerSettings->p_args.weights.temp_gt);
+    doubleProperties.insert("PRIMER_WT_TM_LT", &primerSettings->p_args.weights.temp_lt);
+    doubleProperties.insert("PRIMER_WT_GC_PERCENT_GT", &primerSettings->p_args.weights.gc_content_gt);
+    doubleProperties.insert("PRIMER_WT_GC_PERCENT_LT", &primerSettings->p_args.weights.gc_content_lt);
+    doubleProperties.insert("PRIMER_WT_SIZE_LT", &primerSettings->p_args.weights.length_lt);
+    doubleProperties.insert("PRIMER_WT_SIZE_GT", &primerSettings->p_args.weights.length_gt);
+    doubleProperties.insert("PRIMER_WT_COMPL_ANY", &primerSettings->p_args.weights.compl_any);
+    doubleProperties.insert("PRIMER_WT_COMPL_END", &primerSettings->p_args.weights.compl_end);
+    doubleProperties.insert("PRIMER_WT_NUM_NS", &primerSettings->p_args.weights.num_ns);
+    doubleProperties.insert("PRIMER_WT_REP_SIM", &primerSettings->p_args.weights.repeat_sim);
+    doubleProperties.insert("PRIMER_WT_SEQ_QUAL", &primerSettings->p_args.weights.seq_quality);
+    doubleProperties.insert("PRIMER_WT_END_QUAL", &primerSettings->p_args.weights.end_quality);
+    doubleProperties.insert("PRIMER_WT_POS_PENALTY", &primerSettings->p_args.weights.pos_penalty);
+    doubleProperties.insert("PRIMER_WT_END_STABILITY", &primerSettings->p_args.weights.end_stability);
+    doubleProperties.insert("PRIMER_WT_TEMPLATE_MISPRIMING", &primerSettings->p_args.weights.template_mispriming);
+    doubleProperties.insert("PRIMER_IO_WT_TM_GT", &primerSettings->o_args.weights.temp_gt);
+    doubleProperties.insert("PRIMER_IO_WT_TM_LT", &primerSettings->o_args.weights.temp_lt);
+    doubleProperties.insert("PRIMER_IO_WT_GC_PERCENT_GT", &primerSettings->o_args.weights.gc_content_gt);
+    doubleProperties.insert("PRIMER_IO_WT_GC_PERCENT_LT", &primerSettings->o_args.weights.gc_content_lt);
+    doubleProperties.insert("PRIMER_IO_WT_SIZE_LT", &primerSettings->o_args.weights.length_lt);
+    doubleProperties.insert("PRIMER_IO_WT_SIZE_GT", &primerSettings->o_args.weights.length_gt);
+    doubleProperties.insert("PRIMER_IO_WT_COMPL_ANY", &primerSettings->o_args.weights.compl_any);
+    doubleProperties.insert("PRIMER_IO_WT_COMPL_END", &primerSettings->o_args.weights.compl_end);
+    doubleProperties.insert("PRIMER_IO_WT_NUM_NS", &primerSettings->o_args.weights.num_ns);
+    doubleProperties.insert("PRIMER_IO_WT_REP_SIM", &primerSettings->o_args.weights.repeat_sim);
+    doubleProperties.insert("PRIMER_IO_WT_SEQ_QUAL", &primerSettings->o_args.weights.seq_quality);
+    doubleProperties.insert("PRIMER_IO_WT_END_QUAL", &primerSettings->o_args.weights.end_quality);
+    doubleProperties.insert("PRIMER_IO_WT_TEMPLATE_MISHYB", &primerSettings->o_args.weights.template_mispriming);
+    doubleProperties.insert("PRIMER_PAIR_WT_PR_PENALTY", &primerSettings->pr_pair_weights.primer_quality);
+    doubleProperties.insert("PRIMER_PAIR_WT_IO_PENALTY", &primerSettings->pr_pair_weights.io_quality);
+    doubleProperties.insert("PRIMER_PAIR_WT_DIFF_TM", &primerSettings->pr_pair_weights.diff_tm);
+    doubleProperties.insert("PRIMER_PAIR_WT_COMPL_ANY", &primerSettings->pr_pair_weights.compl_any);
+    doubleProperties.insert("PRIMER_PAIR_WT_COMPL_END", &primerSettings->pr_pair_weights.compl_end);
+    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_TM_LT", &primerSettings->pr_pair_weights.product_tm_lt);
+    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_TM_GT", &primerSettings->pr_pair_weights.product_tm_gt);
+    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_SIZE_GT", &primerSettings->pr_pair_weights.product_size_gt);
+    doubleProperties.insert("PRIMER_PAIR_WT_PRODUCT_SIZE_LT", &primerSettings->pr_pair_weights.product_size_lt);
+    doubleProperties.insert("PRIMER_PAIR_WT_REP_SIM", &primerSettings->pr_pair_weights.repeat_sim);
+    doubleProperties.insert("PRIMER_PAIR_WT_TEMPLATE_MISPRIMING", &primerSettings->pr_pair_weights.template_mispriming);
 }
 
 }  // namespace U2

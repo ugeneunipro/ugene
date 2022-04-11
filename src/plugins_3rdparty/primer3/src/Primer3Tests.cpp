@@ -21,7 +21,7 @@
 
 #include "Primer3Tests.h"
 
-#include "primer3_core/primer3.h"
+//#include "primer3_core/primer3.h"
 
 namespace U2 {
 
@@ -154,7 +154,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         foreach (QString key, settings.getAlignPropertyList()) {
             buf = elInput.attribute(key);
             if (!buf.isEmpty()) {
-                settings.setAlignProperty(key, (short)(buf.toDouble() * 100));
+                settings.setAlignProperty(key, buf.toDouble() * 100);
             }
         }
         // 1

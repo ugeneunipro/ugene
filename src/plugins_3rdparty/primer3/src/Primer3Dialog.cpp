@@ -203,11 +203,11 @@ void Primer3Dialog::reset() {
         }
     }
     foreach (QString key, defaultSettings.getAlignPropertyList()) {
-        short value = 0;
+        double value = 0.0;
         if (defaultSettings.getAlignProperty(key, &value)) {
             QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
             if (nullptr != spinBox) {
-                spinBox->setValue((double)value / 100);
+                spinBox->setValue(value / 100);
             }
         }
     }
@@ -375,7 +375,7 @@ bool Primer3Dialog::doDataExchange() {
     foreach (QString key, settings.getAlignPropertyList()) {
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
-            settings.setAlignProperty(key, (short)(spinBox->value() * 100));
+            settings.setAlignProperty(key, spinBox->value() * 100);
         }
     }
     if (!ui.edit_PRIMER_START_CODON_POSITION->text().isEmpty()) {
@@ -420,7 +420,7 @@ bool Primer3Dialog::doDataExchange() {
     }
     if (!ui.edit_PRIMER_OPT_GC_PERCENT->text().isEmpty()) {
         bool ok = false;
-        short value = (short)(ui.edit_PRIMER_OPT_GC_PERCENT->text().toDouble(&ok) * 100);
+        double value = ui.edit_PRIMER_OPT_GC_PERCENT->text().toDouble(&ok) * 100;
         if (ok) {
             settings.setAlignProperty("PRIMER_OPT_GC_PERCENT", value);
         } else {
@@ -440,7 +440,7 @@ bool Primer3Dialog::doDataExchange() {
     }
     if (!ui.edit_PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT->text().isEmpty()) {
         bool ok = false;
-        short value = (short)(ui.edit_PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT->text().toDouble(&ok) * 100);
+        double value = ui.edit_PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT->text().toDouble(&ok) * 100;
         if (ok) {
             settings.setAlignProperty("PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT", value);
         } else {

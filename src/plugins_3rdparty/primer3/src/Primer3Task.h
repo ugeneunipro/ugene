@@ -29,7 +29,8 @@
 
 #include "FindExonRegionsTask.h"
 #include "Primer3TaskSettings.h"
-#include "primer3_core/primer3.h"
+//#include "primer3_core/primer3.h"
+#include "primer3_core_new/libprimer3.h"
 
 struct primers_t;
 
@@ -103,7 +104,8 @@ private:
     short complEnd;
     int productSize;
     double quality;
-    double complMeasure;
+    //TODO: got lost, figure out
+    //double complMeasure;
 };
 
 class Primer3Task : public Task {
