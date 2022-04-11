@@ -127,47 +127,47 @@ typedef struct pr_append_str {
  */
 typedef struct oligo_weights {
 
-  double compl_any;
+    /**/double compl_any;
   double compl_any_th;
-  double compl_end;
+  /**/double compl_end;
   double compl_end_th;
-  double end_quality;
-  double end_stability;
-  double gc_content_gt;
-  double gc_content_lt;
+  /**/double end_quality;
+  /**/double end_stability;
+  /**/double gc_content_gt;
+  /**/double gc_content_lt;
   double hairpin_th;
-  double length_gt;
-  double length_lt;
-  double num_ns;
-  double pos_penalty;
-  double repeat_sim;
-  double seq_quality;
+  /**/double length_gt;
+  /**/double length_lt;
+  /**/double num_ns;
+  /**/double pos_penalty;
+  /**/double repeat_sim;
+  /**/double seq_quality;
   double temp_cutoff;
-  double temp_gt;
-  double temp_lt;
+  /**/double temp_gt;
+  /**/double temp_lt;
   double bound_gt;
   double bound_lt;
-  double template_mispriming;
+  /**/double template_mispriming;
   double template_mispriming_th;
   double failure_rate;
 
 } oligo_weights;
 
 typedef struct pair_weights {
-  double primer_quality;
-  double io_quality;
-  double diff_tm;
-  double compl_any;
+  /**/double primer_quality;
+  /**/double io_quality;
+  /**/double diff_tm;
+  /**/double compl_any;
   double compl_any_th;
-  double compl_end;
+  /**/double compl_end;
   double compl_end_th;
   double temp_cutoff;
-  double product_tm_lt;
-  double product_tm_gt;
-  double product_size_lt;
-  double product_size_gt;
-  double repeat_sim;
-  double template_mispriming;
+  /**/double product_tm_lt;
+  /**/double product_tm_gt;
+  /**/double product_size_lt;
+  /**/double product_size_gt;
+  /**/double repeat_sim;
+  /**/double template_mispriming;
   double template_mispriming_th;
 } pair_weights;
 
@@ -181,22 +181,22 @@ typedef struct sequencing_parameters {
 #include "p3_seq_lib.h"
 
 typedef struct args_for_one_oligo_or_primer {
-  seq_lib       *repeat_lib;
-  oligo_weights weights;
-  double opt_tm;
-  double min_tm;
-  double max_tm;
+  /**/seq_lib       *repeat_lib;
+  /**/oligo_weights weights;
+  /**/double opt_tm;
+  /**/double min_tm;
+  /**/double max_tm;
   double opt_bound;
   double min_bound;
   double max_bound;
-  double opt_gc_content;
-  double max_gc;
-  double min_gc;
+  /**/double opt_gc_content;
+  /**/double max_gc;
+  /**/double min_gc;
 
   /* Warning: also used for product Tm (TO DO: factor this out) */
-  double salt_conc;
+  /**/double salt_conc;
 
-  double divalent_conc;
+  /**/double divalent_conc;
   /*
     DIVALENT_CONC and DNTP_CONC are both needed for enabling use of
     divalent cations for calculation of melting temperature of short
@@ -212,19 +212,19 @@ typedef struct args_for_one_oligo_or_primer {
     Koressaar.)
   */
 
-  double dntp_conc;
+  /**/double dntp_conc;
 
-  double dna_conc;
+  /**/double dna_conc;
 
   double dmso_conc;
   double dmso_fact;
   double formamide_conc;
 
-  int    num_ns_accepted;
-  int    opt_size;
-  int    min_size;
-  int    max_size;
-  int    max_poly_x;      /* 
+  /**/int    num_ns_accepted;
+  /**/int    opt_size;
+  /**/int    min_size;
+  /**/int    max_size;
+  /**/int    max_poly_x;      /*
                            * Maximum length of mononucleotide sequence in an
                            * oligo.
                            */
@@ -235,20 +235,20 @@ typedef struct args_for_one_oligo_or_primer {
                                                junction. */
   int    min_3_prime_overlap_of_junction;
 
-  int    min_end_quality;
-  int    min_quality;       /* Minimum quality permitted for oligo sequence.*/
+  /**/int    min_end_quality;
+  /**/int    min_quality;       /* Minimum quality permitted for oligo sequence.*/
 
-  double max_self_any;  
-  double max_self_end;
+  /**/double max_self_any;
+  /**/double max_self_end;
   double max_self_any_th;
   double max_self_end_th;
   double max_hairpin_th;
-  double max_repeat_compl;   /* 
+  /**/double max_repeat_compl;   /*
                               * Acceptable complementarity with repeat
                               * sequences.
                               */
 
-  double max_template_mispriming;
+  /**/double max_template_mispriming;
   double max_template_mispriming_th;
 
   char *must_match_five_prime;
@@ -292,16 +292,16 @@ typedef struct p3_global_settings {
   /* ================================================== */
   /* Arguments that control behavior of choose_primers() */
 
-  task   primer_task; /* 2 if left primer only, 3 if right primer
+  /**/task   primer_task; /* 2 if left primer only, 3 if right primer
                        * only, 4 if internal oligo only.  */
 
   int    pick_left_primer;
   int    pick_right_primer;
   int    pick_internal_oligo;
 
-  int    file_flag;   /* TO DO, See if this can be factored out. */
+  /**/int    file_flag;   /* TO DO, See if this can be factored out. */
 
-  int    first_base_index;  /* 
+  /**/int    first_base_index;  /*
                              * The index of the first base in the input
                              * sequence.  This parameter is ignored within
                              * pr_choice; pr_choice's caller must assure that
@@ -310,17 +310,17 @@ typedef struct p3_global_settings {
                              * adjust base indexes.
                              */
 
-  int    liberal_base;   /* 
+  /**/int    liberal_base;   /*
                           * If non-0 then turn characters other than
                           * [ATGCNatgcn] into N.
                           */
 
-  int    num_return; /* The number of best primer pairs to return. */
+  /**/int    num_return; /* The number of best primer pairs to return. */
 
-  int    pick_anyway;    /* Pick even if input primer or oligos
+  /**/int    pick_anyway;    /* Pick even if input primer or oligos
                             violate constraints. */
 
-  int    lib_ambiguity_codes_consensus;
+  /**/int    lib_ambiguity_codes_consensus;
   /* If non-0, treat ambiguity codes in a mispriming/mishyb
      library as representing a consensus.  So, for example,
      S would match C or G.  N would match any nucleotide.
@@ -329,15 +329,15 @@ typedef struct p3_global_settings {
      match every oligo (very bad).
   */
 
-  int    quality_range_min;
-  int    quality_range_max;
+  /**/int    quality_range_min;
+  /**/int    quality_range_max;
 
   /* ================================================== */
   /* Arguments for individual oligos and/or primers */
-  args_for_one_oligo_or_primer p_args;
-  args_for_one_oligo_or_primer o_args;
+  /**/args_for_one_oligo_or_primer p_args;
+  /**/args_for_one_oligo_or_primer o_args;
 
-  tm_method_type tm_santalucia;  
+  /**/tm_method_type tm_santalucia;
   /* 
      tm_santalucia added by T.Koressaar for updated table
      thermodynamics.  Specifies details of melting temperature
@@ -368,7 +368,7 @@ typedef struct p3_global_settings {
      The default value is 0 only for backward compatibility.
   */
 
-  salt_correction_type salt_corrections; 
+  /**/salt_correction_type salt_corrections;
   /* 
      salt_corrections added by T.Koressaar for salt correction for Tm
      calculation.  A value of 1 (recommended) directs primer3 to use
@@ -399,7 +399,7 @@ typedef struct p3_global_settings {
   double annealing_temp;
   /* The actual annealing temperature of the PCR reaction. */
 
-  double max_end_stability;
+  /**/double max_end_stability;
   /* The maximum value allowed for the delta
    * G of disruption for the 5 3' bases of
    * a primer.
@@ -410,13 +410,13 @@ typedef struct p3_global_settings {
    * for the 5 3' bases of a primer.
    */
 
-  int    gc_clamp;  /* Required number of GCs at 3' end. */
+  /**/int    gc_clamp;  /* Required number of GCs at 3' end. */
 
   /* ================================================== */
   /* Start of arguments related to primer and/or oligo
      location in the template. */
 
-  int lowercase_masking; 
+  /**/int lowercase_masking;
   /* 
      lowercase_masking added by T.Koressaar. Enables design of primers
      from lowercase masked template.  A value of 1 directs primer3 to
@@ -434,7 +434,7 @@ typedef struct p3_global_settings {
   sequencing_parameters sequencing;  /* Used to calculate the position
                                         of sequencing primers */
 
-  double outside_penalty; /* Multiply this value times the number of NTs
+  /**/double outside_penalty; /* Multiply this value times the number of NTs
                            * from the 3' end to the the (unique) target to
                            * get the 'position penalty'.
                            * Meaningless if there are multiple targets
@@ -442,7 +442,7 @@ typedef struct p3_global_settings {
                            * that spans the target.
                            */
 
-  double inside_penalty;  /* Multiply this value times the number of NT
+  /**/double inside_penalty;  /* Multiply this value times the number of NT
                            * positions by which the primer overlaps
                            * the (unique) target to the 'position penalty'.
                            * Meaningless if there are multiple targets
@@ -456,24 +456,24 @@ typedef struct p3_global_settings {
   /* Warning: Use p3_empty_gs_product_size_range and
      p3_add_to_gs_product_size_range to set these next
      three slots. */
-  int    pr_min[PR_MAX_INTERVAL_ARRAY]; /* Minimum product sizes. */
-  int    pr_max[PR_MAX_INTERVAL_ARRAY]; /* Maximum product sizes. */
-  int    num_intervals;         /* 
+  /**/int    pr_min[PR_MAX_INTERVAL_ARRAY]; /* Minimum product sizes. */
+  /**/int    pr_max[PR_MAX_INTERVAL_ARRAY]; /* Maximum product sizes. */
+  /**/int    num_intervals;         /*
                                  * Number of product size intervals
                                  * (i.e. number of elements in pr_min and
                                  * pr_max)
                                  */
 
-  int    product_opt_size;
-  double product_max_tm;
-  double product_min_tm;
-  double product_opt_tm;
-  double pair_max_template_mispriming;
+  /**/int    product_opt_size;
+  /**/double product_max_tm;
+  /**/double product_min_tm;
+  /**/double product_opt_tm;
+  /**/double pair_max_template_mispriming;
   double pair_max_template_mispriming_th;
-  double pair_repeat_compl;
-  double pair_compl_any;
+  /**/double pair_repeat_compl;
+  /**/double pair_compl_any;
   double pair_compl_any_th;
-  double pair_compl_end;
+  /**/double pair_compl_end;
   double pair_compl_end_th;
    
   int thermodynamic_oligo_alignment;
@@ -509,12 +509,12 @@ typedef struct p3_global_settings {
      1 = Calculate and show secondary structure strings.
   */
 
-  double max_diff_tm; 
+  /**/double max_diff_tm;
   /* Maximum allowed difference between temperature of primer and
      temperature of product.  Cannot be calculated until product is
      known. */
 
-  pair_weights  pr_pair_weights;
+  /**/pair_weights  pr_pair_weights;
 
   int    min_left_three_prime_distance;
   int    min_internal_three_prime_distance;
@@ -658,31 +658,31 @@ int p3_ol_is_ok(const primer_rec *);
  * primers plus an internal oligo.
  */
 typedef struct primer_pair {
-  double pair_quality;  /* Penalty value of the primer pair */
+    /**/double pair_quality;  /* Penalty value of the primer pair */
 
-  double diff_tm;       /* Absolute value of the difference between melting
+    /**/double diff_tm;       /* Absolute value of the difference between melting
                          * temperatures for left and right primers. 
                          */
    
-  double product_tm;    /* Estimated melting temperature of the product. */
+    /**/double product_tm;    /* Estimated melting temperature of the product. */
 
-  double product_tm_oligo_tm_diff;
+    /**/double product_tm_oligo_tm_diff;
                         /* Difference in Tm between the primer with lowest Tm
                            the product Tm. */
 
-  double t_opt_a;
+    /**/double t_opt_a;
 
-  double compl_any;     /* 
+    /**/double compl_any;     /*
                          * Local complementarity score between left and right
                          * primers (* 100).
                          */
 
-  double compl_end;     /* 
+    /**/double compl_end;     /*
                          * 3'-anchored global complementatory score between *
                          * left and right primers (* 100).
                          */
   
-  double template_mispriming;
+    /**/double template_mispriming;
                         /* Maximum total mispriming score of both primers
                            to ectopic sites in the template, on "same"
                            strand (* 100). */
@@ -693,21 +693,21 @@ typedef struct primer_pair {
 
   char *template_mispriming_struct; /* Secondary structure of template_mispriming */
 
-  double repeat_sim;    /* Maximum total similarity of both primers to the
+  /**/double repeat_sim;    /* Maximum total similarity of both primers to the
                          * sequence from given file in fasta format.
                          */
-  primer_rec *left;     /* Left primer. */
-  primer_rec *right;    /* Right primer. */
-  primer_rec *intl;     /* Internal oligo. */
+  /**/primer_rec *left;     /* Left primer. */
+  /**/primer_rec *right;    /* Right primer. */
+  /**/primer_rec *intl;     /* Internal oligo. */
 
   char   must_use;
 
-  int    product_size;  /* Product size. */
-  int    target;        /* 
+  /**/int    product_size;  /* Product size. */
+  /**/int    target;        /*
                          * 1 if there is a target between the right and left
                          * primers.
                          */
-  char   *rep_name;
+  /**/char   *rep_name;
 } primer_pair;
 
 typedef int interval_array_t[PR_MAX_INTERVAL_ARRAY][2];
@@ -948,6 +948,18 @@ typedef struct p3retval {
   int upstream_stop_codon;  /* TO DO needs docs */
 
 } p3retval;
+
+typedef struct Primer3Context_ {
+    primer_rec* f;
+    primer_rec* r;
+    primer_rec* mid;
+    int f_len;
+    int r_len;
+    int mid_len;
+
+    dpal_args* lib_local_dpal_args;
+    dpal_args* lib_local_end_dpal_args;
+}Primer3Context;
 
 /* Deallocate a primer3 state */
 void destroy_secundary_structures(const p3_global_settings *pa, p3retval *retval);
