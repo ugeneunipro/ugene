@@ -2967,12 +2967,12 @@ p, li { white-space: pre-wrap; }
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="159"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="158"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Click the &quot;Add new step&quot; button and select a step. The following options are available:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.&lt;/li&gt;&lt;li&gt;LEADING: Cut bases off the start of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;TRAILING: Cut bases off the end of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;CROP: Cut the read to a specified length.&lt;/li&gt;&lt;li&gt;HEADCROP: Cut the specified number of bases from the start of the read.&lt;/li&gt;&lt;li&gt;MINLEN: Drop the read if it is below a specified length.&lt;/li&gt;&lt;li&gt;AVGQUAL: Drop the read if the average quality is below the specified level.&lt;/li&gt;&lt;li&gt;TOPHRED33: Convert quality scores to Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Convert quality scores to Phred-64.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt; &lt;head&gt; &lt;/ head&gt; &lt;body&gt; &lt;p&gt; Нажмите кнопку «Добавить новый шаг» и выберите шаг. Доступны следующие параметры: &lt;/ p&gt; &lt;ul&gt; &lt;li&gt; ILLUMINACLIP: вырезать адаптер и другие специфичные последовательности для рида. &lt;/ Li&gt; &lt;li&gt; SLIDINGWINDOW: выполнить обрезку скользящего окна, обрезав один раз среднее качество в пределах окна ниже порога. &lt;/ li&gt; &lt;li&gt; LEADING: обрезать базы от начала рида, если ниже порогового качества. &lt;/ li&gt; &lt;li&gt; TRAILING: обрезать базы от конца рида, если качество ниже порогового. &lt;/ li&gt; &lt;li&gt; CROP: обрезать рид до указанной длины. &lt;/ li&gt; &lt;li&gt; HEADCROP: вырезать указанное количество баз с начала рида. &lt;/ li&gt; &lt; li&gt; MINLEN: отбросить рид, если он меньше указанной длины. &lt;/ li&gt; &lt;li&gt; AVGQUAL: отбросить рид, если среднее качество ниже указанного уровня. &lt;/ li&gt; &lt;li&gt; TOPHRED33: преобразовать показатели качества в Phred-33. &lt;/ Li&gt; &lt;li&gt; TOPHRED64: преобразование показателей качества в Phred-64. &lt;/ Li&gt; &lt;/ ul&gt; &lt;/ body&gt; &lt;/ html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="174"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="173"/>
         <source>Add a step.</source>
         <translation>Добавить шаг.</translation>
     </message>
@@ -10768,7 +10768,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="182"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="181"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -11471,8 +11471,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PrepareInputForSpideyTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="191"/>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="204"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="195"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="208"/>
         <source>Failed to write DNA sequence  %1</source>
         <translation>Failed to write DNA sequence  %1</translation>
     </message>
@@ -11706,17 +11706,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideyAlignmentTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="81"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="85"/>
         <source>Output file not found</source>
         <translation>Выходной файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="86"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="90"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="98"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="102"/>
         <source>Failed to open result file %1</source>
         <translation>Failed to open result file %1</translation>
     </message>
@@ -11765,7 +11765,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="244"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="247"/>
+        <source>Create another annotation table?</source>
+        <translation>Создать новую таблицу аннотаций?</translation>
+    </message>
+    <message>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="248"/>
+        <source>The result of the &quot;SpideySupportTask&quot; should be saved to the annotation table, which has been removed. Create another annotation table? The result will be lost otherwise.</source>
+        <translation>Результат задачи &quot;SpideySupportTask&quot; должен был быть сохранен в таблицу аннотаций, которая была удалена. Создать новую таблицу аннотаций? В противном случае, результаты будут утеряны.</translation>
+    </message>
+    <message>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="268"/>
         <source>Failed to align mRNA to genomic sequence: no alignment is found.</source>
         <translation>Failed to align mRNA to genomic sequence: no alignment is found.</translation>
     </message>

@@ -82,6 +82,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
@@ -2458,6 +2459,38 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
     CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
                   "Invalid visible Y range: " + QString::number(firstVisibleRowIndex) + ":" + QString::number(lastVisibleRowIndex));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_7584) {
+    //Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class OkClicker : public Filler {
+    public:
+        OkClicker(HI::GUITestOpStatus& _os)
+            : Filler(_os, "CreateAnnotationDialog") {
+        }
+        void run() override {
+            QWidget* w = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
+        }
+    };
+
+    // Select Align->Align sequence to mRNA from context menu
+    // In "Select Item" dialog expand  human_T1 and select corresponding sequence
+    // Push OK -> "Save result to annotation" dialog appeas
+    // Click Create button in "Save result to annotation" dialog
+    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "human_T1.fa", "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "ADV_MENU_ALIGN", "Align sequence to mRNA" }));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    // Remove this file by Del button as quick as possible
+    GTUtilsProjectTreeView::click(os, "Annotations");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

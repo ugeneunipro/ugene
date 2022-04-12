@@ -103,8 +103,9 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
+    SplicedAlignmentTaskConfig settings;
     SpideyAlignmentTask* spideyAlignmentTask;
-    AnnotationTableObject* aObj;
+    QPointer<AnnotationTableObject> aObj;
 };
 
 }  // namespace U2
