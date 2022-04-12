@@ -2218,8 +2218,8 @@ GUI_TEST_CLASS_DEFINITION(test_7511) {
             //  Check that the list of tools is updated to amino tools.
             GTComboBox::checkValuesPresence(os, toolsCombo, {"blastp", "tblastn"});
 
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel); // Cancel "Blast" dialog.
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel); // Cancel "Save project" popup.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);  // Cancel "Blast" dialog.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);  // Cancel "Save project" popup.
         }
     };
     GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(os, new BlastToolListCheckScenario()));
@@ -2474,19 +2474,27 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    QPoint topLeft = {500, 5};
-    QPoint bottomRight = {540, 15};
-    GTUtilsMSAEditorSequenceArea::selectArea(os, topLeft, bottomRight);
-    GTUtilsMsaEditor::zoomToSelection(os);
-    int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
-    int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
-    CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
-                  "Invalid visible X range: " + QString::number(firstVisibleBaseIndex) + ":" + QString::number(lastVisibleBaseIndex));
+    QList<QPoint> topLeftPoints = {{500, 5}, {603, 17}};
+    QList<QPoint> bottomRightPoints = {{540, 15}, {603, 17}};
 
-    int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
-    int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
-    CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
-                  "Invalid visible Y range: " + QString::number(firstVisibleRowIndex) + ":" + QString::number(lastVisibleRowIndex));
+    for (int i = 0; i < topLeftPoints.size(); i++) {
+        QPoint topLeft = topLeftPoints[i];
+        QPoint bottomRight = bottomRightPoints[i];
+
+        GTUtilsMSAEditorSequenceArea::selectArea(os, topLeft, bottomRight);
+        GTUtilsMsaEditor::zoomToSelection(os);
+        int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+        int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+        CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
+                      QString("%1.Invalid visible X range: %2:%3").arg(i).arg(firstVisibleBaseIndex).arg(lastVisibleBaseIndex));
+
+        int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
+        int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
+        CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
+                      QString("%1.Invalid visible Y range: %2:%3").arg(i).arg(firstVisibleRowIndex).arg(lastVisibleRowIndex));
+
+        GTUtilsMsaEditor::resetZoom(os);
+    }
 }
 
 }  // namespace GUITest_regression_scenarios

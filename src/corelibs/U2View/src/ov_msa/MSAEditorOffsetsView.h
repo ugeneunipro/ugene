@@ -66,6 +66,9 @@ class MSAEditorOffsetsViewWidget : public QWidget {
 public:
     MSAEditorOffsetsViewWidget(MaEditorWgt* maEditorUi, MaEditor* editor, MaEditorSequenceArea* seqArea, bool showStartPos);
 
+    /** Returns number of characters needed to draw offsets. */
+    int getWidthInBases() const;
+
 private slots:
     void sl_completeRedraw();
 

@@ -3162,6 +3162,31 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong msa length");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5730) {
+    QFile originalFile(dataDir + "samples/Genbank/murine.gb");
+    QString dstPath = sandBoxDir + "/5730_murine.gb";
+    originalFile.copy(dstPath);
+
+    QFile copiedFile(dstPath);
+    CHECK_SET_ERR(copiedFile.exists(), "Unable to copy file");
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, sandBoxDir, "5730_murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesToAll));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "5730_murine.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export sequences..."}));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_004718");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
+
+    CHECK_SET_ERR(logTracer.checkMessage("Document is already added to the project"), "Expected messge not found in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5739) {
     class AddReadsWithReferenceScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {

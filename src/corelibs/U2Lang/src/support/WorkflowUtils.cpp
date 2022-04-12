@@ -656,12 +656,6 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) 
         }
     }
 
-    const QList<PortAlias>& portAliases = s.getPortAliases();
-    if (portAliases.isEmpty()) {
-        error = tr("The workflow has not any aliased ports");
-        return false;
-    }
-
     foreach (Actor* actor, s.getProcesses()) {
         // check that free input ports are aliased
         foreach (Port* port, actor->getPorts()) {
@@ -670,22 +664,6 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) 
             }
             if (!port->getLinks().isEmpty()) {
                 continue;
-            }
-            bool aliased = false;
-            foreach (const PortAlias& alias, portAliases) {
-                if (alias.getSourcePort() == port) {
-                    if (alias.getSlotAliases().isEmpty()) {
-                        error = tr("The aliased port %1.%2 has no aliased slots").arg(actor->getLabel()).arg(port->getDisplayName());
-                        return false;
-                    } else {
-                        aliased = true;
-                        break;
-                    }
-                }
-            }
-            if (!aliased) {
-                error = tr("The free port %1.%2 is not aliased").arg(actor->getLabel()).arg(port->getId());
-                return false;
             }
         }
 

@@ -54,7 +54,6 @@ const QString Constants::DOT = ".";
 const QString Constants::DASH = "-";
 const QString Constants::ITERATION_ID = "id";
 const QString Constants::PARAM_ALIASES_START = "parameter-aliases";
-const QString Constants::PORT_ALIASES_START = "port-aliases";
 const QString Constants::PATH_THROUGH = "path-through";
 const QString Constants::TRUE = "true";
 const QString Constants::FALSE = "false";
