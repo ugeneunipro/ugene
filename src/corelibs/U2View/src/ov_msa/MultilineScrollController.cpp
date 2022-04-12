@@ -409,7 +409,9 @@ int MultilineScrollController::getFirstVisibleViewRowIndex(bool countClipped) co
 }
 
 int MultilineScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
-    int lastVisibleViewRow = ui->getUI(0)->getRowHeightController()->getViewRowIndexByGlobalYPosition(maEditor->getMultilineMode() ? vScrollBar->value() + widgetHeight : ui->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped));
+    int lastVisibleViewRow = maEditor->getMultilineMode()
+                                 ? ui->getUI(0)->getRowHeightController()->getViewRowIndexByGlobalYPosition(vScrollBar->value() + widgetHeight)
+                                 : ui->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped);
     if (lastVisibleViewRow < 0) {
         lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
