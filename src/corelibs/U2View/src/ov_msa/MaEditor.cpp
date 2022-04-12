@@ -293,7 +293,7 @@ void MaEditor::sl_zoomToSelection() {
     // Adjust selection width in bases with offsets view data:
     // Offsets view shares the same font and its width may grow in size if sequence view font is increased.
     // If offsets view grows the sequence view will reduce it width by the same amount of characters.
-    MSAEditorOffsetsViewController* offsetsViewController = ui->getOffsetsViewController();
+    MSAEditorOffsetsViewController* offsetsViewController = getMaEditorWgt(0)->getOffsetsViewController();
     int basesInOffsetsView = offsetsViewController->leftWidget->getWidthInBases() + offsetsViewController->rightWidget->getWidthInBases();
     int adjustedSelectionWidth = selectionRect.width() + basesInOffsetsView;
 
@@ -339,7 +339,7 @@ void MaEditor::sl_zoomToSelection() {
 void MaEditor::scrollSelectionIntoView() {
     QRect selectionRect = getSelection().toRect();
     CHECK(!selectionRect.isEmpty(), );
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = getMaEditorWgt(0)->getSequenceArea();
 
     double viewWidth = sequenceArea->width();
     double viewHeight = sequenceArea->height();
@@ -355,13 +355,13 @@ void MaEditor::scrollSelectionIntoView() {
         basesOffset = -(basesPerViewWidth - selectionRect.width()) / 2;
         rowsOffset = -(rowsPerViewHeight - selectionRect.height()) / 2;
     }
-    MultilineScrollController* scrollController = getMaEditorMultilineWgt()->getScrollController();
-    scrollController->setFirstVisibleBase(selectionRect.x() + basesOffset);
-    scrollController->setFirstVisibleViewRow(selectionRect.y() + rowsOffset);
+    int firstVisibleBaseIndex = selectionRect.x() + basesOffset;
+    int firstVisibleRowIndex = selectionRect.y() + rowsOffset;
+    auto scrollController = getMaEditorMultilineWgt()->getScrollController();
+    scrollController->setFirstVisibleBase(firstVisibleBaseIndex);
+    scrollController->setFirstVisibleViewRow(firstVisibleRowIndex);
 
     updateActions();
-
-    emit si_zoomOperationPerformed(resizeMode != oldMode);
 }
 
 void MaEditor::sl_resetZoom() {

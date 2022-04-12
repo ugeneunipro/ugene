@@ -226,6 +226,12 @@ public:
     /** Returns undo-redo framework. The returned value is never null. */
     MaUndoRedoFramework *getUndoRedoFramework() const;
 
+    /**
+     * Centers selection on the screen if possible. Otherwise scrolls one of the selection corners into the view.
+     * Does not perform zoom/font-change operations.
+     */
+    void scrollSelectionIntoView();
+
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
