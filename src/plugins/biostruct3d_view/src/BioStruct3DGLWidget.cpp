@@ -42,6 +42,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -764,11 +765,6 @@ void BioStruct3DGLWidget::createActions() {
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
     createStructuralAlignmentActions();
-
-    connect(AppContext::getTaskScheduler(),
-            &TaskScheduler::si_stateChanged,
-            this,
-            &BioStruct3DGLWidget::sl_onSurfaceCalcTaskFinished);
 }
 
 void BioStruct3DGLWidget::createStructuralAlignmentActions() {
@@ -970,6 +966,13 @@ void BioStruct3DGLWidget::sl_showSurface() {
 
     QString surfaceType = qobject_cast<QAction*>(sender())->text();
     auto surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
+    connect(new TaskSignalMapper(surfaceCalcTask), &TaskSignalMapper::si_taskFinished, this, [this](Task* task) {
+        auto surfaceCalcTask = qobject_cast<MolecularSurfaceCalcTask*>(task);
+        SAFE_POINT(surfaceCalcTask != nullptr, L10N::nullPointerError(tr("Molecular surface calculation task for %1").arg(objectName())), );
+        molSurface.reset(surfaceCalcTask->getCalculatedSurface());
+        makeCurrent();
+        update();
+    });
     AppContext::getTaskScheduler()->registerTopLevelTask(surfaceCalcTask);
 }
 
@@ -983,21 +986,6 @@ void BioStruct3DGLWidget::sl_hideSurface() {
 void BioStruct3DGLWidget::sl_selectSurfaceRenderer(QAction* action) {
     QString msRendererName = action->text();
     surfaceRenderer.reset(MolecularSurfaceRendererRegistry::createMSRenderer(msRendererName));
-
-    makeCurrent();
-    update();
-}
-
-void BioStruct3DGLWidget::sl_onSurfaceCalcTaskFinished(Task* task) {
-    if (task->getState() != Task::State_Finished) {
-        return;
-    }
-    auto surfaceCalcTask = qobject_cast<MolecularSurfaceCalcTask*>(task);
-    if (surfaceCalcTask == nullptr) {
-        return;
-    }
-
-    molSurface.reset(surfaceCalcTask->getCalculatedSurface());
 
     makeCurrent();
     update();

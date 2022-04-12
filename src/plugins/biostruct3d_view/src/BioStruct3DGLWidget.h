@@ -345,10 +345,6 @@ private slots:
     void sl_hideSurface();
     void sl_selectSurfaceRenderer(QAction* surfaceRenderer);
 
-    // used only for handling MolecularSurfaceCalcTask
-    // should be in special MolecularSurfaceProxy
-    void sl_onSurfaceCalcTaskFinished(Task* task);
-
 public:
     static const QString BACKGROUND_COLOR_NAME;
 
