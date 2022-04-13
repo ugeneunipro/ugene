@@ -84,10 +84,11 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
 }
 
 Primer3TaskSettings::~Primer3TaskSettings() {
-    if (nullptr != seqArgs.error.data) {
+    //TODO: seqArgs.error - moved to p3retval, fix
+    /*if (nullptr != seqArgs.error.data) {
         std::free(seqArgs.error.data);
         seqArgs.error.data = nullptr;
-    }
+    }*/
     //TODO: glob_err - got lost, figure out
     /*if (nullptr != primerArgs.glob_err.data) {
         std::free(primerArgs.glob_err.data);
@@ -110,14 +111,16 @@ Primer3TaskSettings::~Primer3TaskSettings() {
         std::free(seqArgs.upcased_seq_r);
         seqArgs.upcased_seq_r = nullptr;
     }
-    if (nullptr != seqArgs.error.data) {
+    //TODO: seqArgs.error - moved to p3retval, fix
+    /*if (nullptr != seqArgs.error.data) {
         std::free(seqArgs.error.data);
         seqArgs.error.data = nullptr;
-    }
-    if (nullptr != seqArgs.warning.data) {
+    }*/
+    //TODO: seqArgs.warning - moved to p3retval, fix
+    /*if (nullptr != seqArgs.warning.data) {
         std::free(seqArgs.warning.data);
         seqArgs.warning.data = nullptr;
-    }
+    }*/
 
     //TODO: free_seq_lib - got lost, figure out
     //free_seq_lib(primerSettings->p_args.repeat_lib);
@@ -199,8 +202,8 @@ int Primer3TaskSettings::getSequenceSize() const {
 
 QList<U2Region> Primer3TaskSettings::getTarget() const {
     QList<U2Region> result;
-    for (int i = 0; i < seqArgs.num_targets; i++) {
-        result.append(U2Region(seqArgs.tar[i][0], seqArgs.tar[i][1]));
+    for (int i = 0; i < seqArgs.tar2.count; i++) {
+        result.append(U2Region(seqArgs.tar2.pairs[i][0], seqArgs.tar2.pairs[i][1]));
     }
     return result;
 }
@@ -230,8 +233,8 @@ task Primer3TaskSettings::getTask() const {
 
 QList<U2Region> Primer3TaskSettings::getInternalOligoExcludedRegion() const {
     QList<U2Region> result;
-    for (int i = 0; i < seqArgs.num_internal_excl; i++) {
-        result.append(U2Region(seqArgs.excl_internal[i][0], seqArgs.excl_internal[i][1]));
+    for (int i = 0; i < seqArgs.excl_internal2.count; i++) {
+        result.append(U2Region(seqArgs.excl_internal2.pairs[i][0], seqArgs.excl_internal2.pairs[i][1]));
     }
     return result;
 }
@@ -250,8 +253,8 @@ QByteArray Primer3TaskSettings::getInternalInput() const {
 
 QList<U2Region> Primer3TaskSettings::getExcludedRegion() const {
     QList<U2Region> result;
-    for (int i = 0; i < seqArgs.num_excl; i++) {
-        result.append(U2Region(seqArgs.excl[i][0], seqArgs.excl[i][1]));
+    for (int i = 0; i < seqArgs.excl2.count; i++) {
+        result.append(U2Region(seqArgs.excl2.pairs[i][0], seqArgs.excl2.pairs[i][1]));
     }
     return result;
 }
@@ -265,7 +268,9 @@ QVector<int> Primer3TaskSettings::getSequenceQuality() const {
 }
 
 QByteArray Primer3TaskSettings::getError() const {
-    return QByteArray(seqArgs.error.data);
+    //TODO: seqArgs.error - moved to p3retval, fix it
+    //return QByteArray(seqArgs.error.data);
+    return QByteArray();
 }
 
 int Primer3TaskSettings::getFirstBaseIndex() const {
@@ -284,7 +289,7 @@ void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
 void Primer3TaskSettings::setSequence(const QByteArray& value, bool isCirc) {
     sequence = value;
     isCircular = isCirc;
-    seqArgs.sequence = sequence.constData();
+    seqArgs.sequence = sequence.data();
 }
 
 void Primer3TaskSettings::setCircularity(bool isCirc) {
@@ -296,10 +301,10 @@ void Primer3TaskSettings::setTarget(const QList<U2Region>& value) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
         }
-        seqArgs.tar[i][0] = value[i].startPos;
-        seqArgs.tar[i][1] = value[i].length;
+        seqArgs.tar2.pairs[i][0] = value[i].startPos;
+        seqArgs.tar2.pairs[i][1] = value[i].length;
     }
-    seqArgs.num_targets = value.size();
+    seqArgs.tar2.count = value.size();
 }
 
 void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
@@ -322,16 +327,16 @@ void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& 
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
         }
-        seqArgs.excl_internal[i][0] = value[i].startPos;
-        seqArgs.excl_internal[i][1] = value[i].length;
+        seqArgs.excl_internal2.pairs[i][0] = value[i].startPos;
+        seqArgs.excl_internal2.pairs[i][1] = value[i].length;
     }
-    seqArgs.num_internal_excl = value.size();
+    seqArgs.excl_internal2.count = value.size();
 }
 
 void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
     leftInput = value;
     if (!value.isEmpty()) {
-        seqArgs.left_input = leftInput.constData();
+        seqArgs.left_input = leftInput.data();
     } else {
         seqArgs.left_input = nullptr;
     }
@@ -340,7 +345,7 @@ void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
 void Primer3TaskSettings::setRightInput(const QByteArray& value) {
     rightInput = value;
     if (!value.isEmpty()) {
-        seqArgs.right_input = rightInput.constData();
+        seqArgs.right_input = rightInput.data();
     } else {
         seqArgs.right_input = nullptr;
     }
@@ -349,7 +354,7 @@ void Primer3TaskSettings::setRightInput(const QByteArray& value) {
 void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
     internalInput = value;
     if (!value.isEmpty()) {
-        seqArgs.internal_input = internalInput.constData();
+        seqArgs.internal_input = internalInput.data();
     } else {
         seqArgs.internal_input = nullptr;
     }
@@ -360,10 +365,10 @@ void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
         }
-        seqArgs.excl[i][0] = value[i].startPos;
-        seqArgs.excl[i][1] = value[i].length;
+        seqArgs.excl2.pairs[i][0] = value[i].startPos;
+        seqArgs.excl2.pairs[i][1] = value[i].length;
     }
-    seqArgs.num_excl = value.size();
+    seqArgs.excl2.count = value.size();
 }
 
 void Primer3TaskSettings::setIncludedRegion(const U2Region& value) {
@@ -379,7 +384,7 @@ void Primer3TaskSettings::setIncludedRegion(const qint64& startPos, const qint64
 void Primer3TaskSettings::setSequenceQuality(const QVector<int>& value) {
     sequenceQuality = value;
     if (!value.isEmpty()) {
-        seqArgs.quality = sequenceQuality.constData();
+        seqArgs.quality = sequenceQuality.data();
     } else {
         seqArgs.quality = nullptr;
     }
