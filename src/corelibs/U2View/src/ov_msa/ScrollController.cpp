@@ -412,14 +412,14 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
     QSignalBlocker signalBlocker(hScrollBar);
 
-    maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty());
+    maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty() || maEditor->getMultilineMode());
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
     const int alignmentLength = maEditor->getAlignmentLen();
     const int columnWidth = maEditor->getColumnWidth();
     const int sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth;
 
-    maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth);
+    maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth || maEditor->getMultilineMode());
 
     hScrollBar->setMinimum(0);
     int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
