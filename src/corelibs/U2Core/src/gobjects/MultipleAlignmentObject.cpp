@@ -737,6 +737,30 @@ void MultipleAlignmentObject::releaseState() {
     }
 }
 
+bool MultipleAlignmentObject::isGapRemovePossible() const {
+    bool noGappedRow = false;
+    const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
+    for (const QVector<U2MsaGap>& vector : qAsConst(listGapModel)) {
+        if (vector.size() > 1) {
+            //if we have more than one set of gaps in a row - they are 100% removable
+            return true;
+        }
+    }
+    
+    bool notOnlyTrailGapsInRow = false;
+    for (int i = 0; i < getRowCount(); i++) {
+        //if remaining gaps isn't trailing we can remove them too
+        int gapLength = listGapModel[i].size() == 0 ? 0 : listGapModel[i][0].length;
+        MultipleAlignmentRow row = getRow(i);
+        qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
+        if (rowLengthWithoutTrailing + gapLength != getLength()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void MultipleAlignmentObject::loadDataCore(U2OpStatus& os) {
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );

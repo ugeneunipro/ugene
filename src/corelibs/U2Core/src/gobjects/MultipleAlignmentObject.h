@@ -173,6 +173,7 @@ public:
 
     void saveState();
     void releaseState();
+    bool isGapRemovePossible() const;
 
 signals:
     void si_startMaUpdating();
