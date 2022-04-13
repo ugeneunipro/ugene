@@ -826,12 +826,12 @@ typedef struct seq_args {
                            * "included region").
                            */
 
-  interval_array_t2 tar2; /* The targets.  tar2->pairs[i][0] is the start
+  /**/interval_array_t2 tar2; /* The targets.  tar2->pairs[i][0] is the start
                            * of the ith target, tar2->pairs[i][1] its length.  */
 
-  interval_array_t2 excl2;/* The number of excluded regions. */
+  /**/interval_array_t2 excl2;/* The number of excluded regions. */
 
-  interval_array_t2 excl_internal2; 
+  /**/interval_array_t2 excl_internal2;
                           /* Number of excluded regions for internal
                              oligo; similar to excl2.*/
 
@@ -847,26 +847,26 @@ typedef struct seq_args {
 
   int intl_overlap_junctions_count;
 
-  int incl_s;             /* The 0-based start of included region. */
-  int incl_l;             /* 
+  /**/int incl_s;             /* The 0-based start of included region. */
+  /**/int incl_l;             /*
                            * The length of the included region, which is
                            * also the length of the trimmed_seq field.
                            */
-  int  start_codon_pos;   /* Index of first base of the start codon. */
+  /**/int  start_codon_pos;   /* Index of first base of the start codon. */
   char start_codon_seq[4];  /* Sequence of the start codon, usually ATG\0 */
 
-  int  *quality;             /* Vector of quality scores. */
+  /**/int  *quality;             /* Vector of quality scores. */
   int  n_quality;            /* Number of valid elements in 'quality' */
   int  quality_storage_size; /* Amount of storage quality points to. */
 
-  char *sequence;         /* The template sequence itself as input, 
+  /**/char *sequence;         /* The template sequence itself as input,
                              not trimmed, not up-cased. */
-  char *sequence_name;    /* An identifier for the sequence. */
-  char *sequence_file;    /* Another identifier for the sequence. */
-  char *trimmed_seq;      /* The included region only, _UPCASED_. */
+  /**/char *sequence_name;    /* An identifier for the sequence. */
+  /**/char *sequence_file;    /* Another identifier for the sequence. */
+  /**/char *trimmed_seq;      /* The included region only, _UPCASED_. */
 
   /* Element add by T. Koressaar support lowercase masking: */
-  char *trimmed_orig_seq; /* Trimmed version of the original,
+  /**/char *trimmed_orig_seq; /* Trimmed version of the original,
                              mixed-case sequence. */
   
   /* Added by M. Lepamets */
@@ -874,17 +874,17 @@ typedef struct seq_args {
   char *trimmed_masked_seq_r; /* Masked version of the other strand
                                 of the trimmed seq */                           
 
-  char *upcased_seq;      /* Upper case version of sequence
+  /**/char *upcased_seq;      /* Upper case version of sequence
                              (_not_ trimmed). */
 
-  char *upcased_seq_r;    /* Upper case version of sequence, 
+  /**/char *upcased_seq_r;    /* Upper case version of sequence,
                              other strand (_not_ trimmed). */
 
-  char *left_input;       /* A left primer to check or design around. */
+  /**/char *left_input;       /* A left primer to check or design around. */
 
-  char *right_input;      /* A right primer to check or design around. */
+  /**/char *right_input;      /* A right primer to check or design around. */
 
-  char *internal_input;   /* An internal oligo to check or design around. */
+  /**/char *internal_input;   /* An internal oligo to check or design around. */
   
   int force_left_start;   /* The 0-based forced 5' start left primer. */
   int force_left_end;     /* The 0-based forced 3' end left primer. */
@@ -924,10 +924,10 @@ typedef struct oligo_array {
 typedef struct p3retval {
         
   /* Arrays of oligo (primer) records. */
-  oligo_array fwd, intl, rev;
+    /* moved from seq_args */oligo_array fwd, intl, rev;
         
   /* Array of best primer pairs */
-  pair_array_t best_pairs;
+    /* moved from seq_args */pair_array_t best_pairs;
 
   /* Enum to store type of output */
   p3_output_type output_type;
@@ -943,7 +943,7 @@ typedef struct p3retval {
    * the intial base of the leftmost stop codon that
    * is to the right of sa->start_codon_pos.
    */
-  int stop_codon_pos;
+  /* moved from seq_args */int stop_codon_pos;
 
   int upstream_stop_codon;  /* TO DO needs docs */
 
