@@ -42,7 +42,7 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
         } else if (vSliderPos == 0) {
             vertScroll(MultilineScrollController::SliderMinimum, byStep);
         } else {
-            int length = maEditorUi->getFirstVisibleBase(1) - maEditorUi->getFirstVisibleBase(0);
+            int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
             int width = maEditorUi->getSequenceAreaWidth();
 
             vbar->setValue(maEditorUi->getUI(0)->height() / 2);
@@ -54,8 +54,7 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
             if (vbar->value() == vbar->maximum()) {
                 int linesCount = maEditorUi->getChildrenCount();
                 int index = linesCount - 1;
-                int length = maEditorUi->getFirstVisibleBase(1)
-                             - maEditorUi->getFirstVisibleBase(0);
+                int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
                 int fullLength = maEditor->getAlignmentLen();
                 int newScrollValue = maEditorUi->getLastVisibleBase(0) + 1;
 
@@ -72,8 +71,7 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
         } else if (directions.testFlag(MultilineScrollController::Up)) {
             if (vbar->value() == vbar->minimum()) {
                 int index = 0;
-                int length = maEditorUi->getFirstVisibleBase(1)
-                             - maEditorUi->getFirstVisibleBase(0);
+                int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
                 int newScrollValue = maEditorUi->getFirstVisibleBase(index) - length;
 
                 if (maEditorUi->getFirstVisibleBase(index) > length) {
@@ -89,7 +87,7 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
         int currScroll = vbar->value();
         int linesCount = maEditorUi->getChildrenCount();
         int lastIndex = linesCount - 1;
-        int length = maEditorUi->getFirstVisibleBase(1) - maEditorUi->getFirstVisibleBase(0);
+        int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
         int fullLength = maEditor->getAlignmentLen();
         int firstBase = maEditorUi->getFirstVisibleBase(0);
         int lineHeight = maEditorUi->getUI(0)->height();

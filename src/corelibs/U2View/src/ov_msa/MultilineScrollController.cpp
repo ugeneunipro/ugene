@@ -163,9 +163,15 @@ void MultilineScrollController::sl_hScrollValueChanged()
 
         if ((h + ui->getSequenceAreaAllBaseWidth()) >= fullWidth) {
             h = fullWidth - ui->getSequenceAreaAllBaseWidth();
+            if (h <= 0) {
+                h = 0;
+                newScrollAreaValue = 0;
+            } else {
+                newScrollAreaValue = childrenScrollArea->verticalScrollBar()->maximum();
+            }
             hScrollBar->setValue(h);
-            newScrollAreaValue = childrenScrollArea->verticalScrollBar()->maximum();
         } else if (h <= 0) {
+            h = 0;
             newScrollAreaValue = 0;
         }
         childrenScrollArea->verticalScrollBar()->setValue(newScrollAreaValue);

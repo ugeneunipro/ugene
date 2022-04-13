@@ -24,6 +24,7 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include "MaEditorNameList.h"
+#include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
 #include "MSAEditor.h"
 #include "MSAEditorOverviewArea.h"
@@ -148,8 +149,12 @@ void MsaEditorMultilineWgt::createChildren()
             QSize s = child->minimumSizeHint();
             childrenCount = height() / s.height() + 3;
             uint l = editor->getAlignmentLen();
-            uint b = getSequenceAreaBaseLen(0);
-            if (b * childrenCount > l) {
+            uint aw = getSequenceAreaAllBaseWidth();
+            uint al = getSequenceAreaAllBaseLen();
+
+            // TODO:ichebyki: 0.66 is a heuristic value, need to define more smart
+            uint b = width() * 0.66 / (aw / al);
+            if (b * (childrenCount - 1) > l) {
                 childrenCount = l / b + (l % b > 0 ? 1 : 0);
             }
         }
@@ -369,6 +374,25 @@ void MsaEditorMultilineWgt::hideSimilarity() {
             ui->hideSimilarity();
         }
     }
+}
+
+void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
+    getScrollController()->centerBase(position, getUI(0)->width());
+    // Keep the vertical part of the selection but limit the horizontal to the given position.
+    // In case of 1-row selection it will procude a single cell selection as the result.
+    // If there is no active selection - select a cell of the first visible row on the screen.
+    int selectedBaseIndex = position - 1;
+    QList<QRect> selectedRects = editor->getSelection().getRectList();
+    if (selectedRects.isEmpty()) {
+        int firstVisibleViewRowIndex = getScrollController()->getFirstVisibleViewRowIndex();
+        selectedRects.append({selectedBaseIndex, firstVisibleViewRowIndex, 1, 1});
+    } else {
+        for (QRect& rect : selectedRects) {
+            rect.setX(selectedBaseIndex);
+            rect.setWidth(1);
+        }
+    }
+    editor->getSelectionController()->setSelection(selectedRects);
 }
 
 }  // namespace U2
