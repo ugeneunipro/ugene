@@ -54,6 +54,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
@@ -2363,6 +2364,13 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
         QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
         CHECK_SET_ERR(color == colorOfC, "Invalid color: " + color + ", position: " + QString::number(position.x()) + ", expected: " + colorOfC);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7555) {
+    // Check that among many empty assemblies in the file the one with reads is opened by default.
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/7555-reads-data-removed.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    CHECK_SET_ERR(GTUtilsAssemblyBrowser::getReadsCount(os) > 0, "No reads in the view");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7556) {

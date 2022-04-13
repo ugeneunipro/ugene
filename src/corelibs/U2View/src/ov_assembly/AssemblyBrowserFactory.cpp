@@ -26,6 +26,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "AssemblyBrowserState.h"
@@ -79,7 +80,31 @@ Task* AssemblyBrowserFactory::createViewTask(const MultiGSelection& multiSelecti
     }
 
     if (!asmObjects.isEmpty()) {
-        foreach (GObject* o, asmObjects) {
+        // Move up to MAX_VIEWS assembly objects with reads to the start of the list.
+        // So they will be selected to be opened with a higher priority than empty assemblies.
+
+        // Select assembly objects with reads first.
+        QList<GObject*> assemblyObjectsWithReads;
+        for (GObject* o : qAsConst(asmObjects)) {
+            if (auto assemblyObject = qobject_cast<AssemblyObject*>(o)) {
+                U2OpStatusImpl os;
+                if (assemblyObject->getReadCount(os) > 0) {
+                    assemblyObjectsWithReads.append(assemblyObject);
+                    if (assemblyObjectsWithReads.size() == MAX_VIEWS) {
+                        break;
+                    }
+                }
+            }
+        }
+        // Move them to the beginning of the list.
+        if (!assemblyObjectsWithReads.isEmpty()) {
+            for (GObject* o : qAsConst(assemblyObjectsWithReads)) {
+                asmObjects.removeOne(o);
+                asmObjects.prepend(o);
+            }
+        }
+
+        for (GObject* o : qAsConst(asmObjects)) {
             if (resTasks.size() == MAX_VIEWS) {
                 break;
             }
