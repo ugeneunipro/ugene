@@ -215,15 +215,23 @@ void MsaEditorMultilineWgt::updateChildren()
         }
         treeView = false;
     }
+
+    bool showStatistics = false;
     for (; uiChildCount > 0; uiChildCount--) {
         MsaEditorWgt *child = qobject_cast<MsaEditorWgt *>(uiChild[uiChildCount - 1]);
         SAFE_POINT(child != nullptr, "Can't delete sequence widget in multiline mode", );
+
+        const MsaEditorAlignmentDependentWidget *statWidget = child->getSimilarityWidget();
+        showStatistics = statWidget != nullptr && statWidget->isVisible();
 
         delete child;
         uiChild[uiChildCount - 1] = nullptr;
     }
 
     createChildren();
+    if (showStatistics) {
+        showSimilarity();
+    }
 }
 
 MSAEditor *MsaEditorMultilineWgt::getEditor() const {

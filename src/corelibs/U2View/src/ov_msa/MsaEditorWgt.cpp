@@ -101,6 +101,15 @@ void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* set
     similarityStatistics->setSettings(settings);
 }
 
+const SimilarityStatisticsSettings *MsaEditorWgt::getSimilaritySettings()
+{
+    if (similarityStatistics != nullptr) {
+        return static_cast<const SimilarityStatisticsSettings *>(
+            similarityStatistics->getSettings());
+    }
+    return nullptr;
+}
+
 void MsaEditorWgt::refreshSimilarityColumn() {
     dataList->updateWidget();
 }

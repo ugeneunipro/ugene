@@ -56,6 +56,7 @@ public:
     void addTreeView(GObjectViewWindow* treeView);
 
     void setSimilaritySettings(const SimilarityStatisticsSettings* settings);
+    const SimilarityStatisticsSettings* getSimilaritySettings();
 
     void refreshSimilarityColumn();
 
