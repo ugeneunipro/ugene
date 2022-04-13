@@ -162,8 +162,7 @@ InputIntFiller::InputIntFiller(GUITestOpStatus& os, int value)
 #define GT_METHOD_NAME "commonScenario"
 void InputIntFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QSpinBox* spinBox = dialog->findChild<QSpinBox*>();
-    GT_CHECK(NULL != spinBox, "NULL spinBox");
+    auto spinBox = GTWidget::findSpinBox(os, "", dialog);
 
     GTSpinBox::setValue(os, spinBox, value);
 

@@ -2662,7 +2662,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
-            QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
+            auto exportType = GTWidget::findComboBox(os, "comboBox", dialog);
             GTComboBox::selectItemByText(os, exportType, "Custom region", GTGlobals::UseMouse);
 
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
@@ -2690,14 +2690,14 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
+            auto exportType = GTWidget::findComboBox(os, "comboBox", dialog);
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             GTUtilsDialog::waitForDialog(os,
                                          new SelectSubalignmentFiller(os,
                                                                       RegionMsa(U2Region(1, 593),
                                                                                 {"Montana_montana", "Conocephalus_percaudata"})));
-            QPushButton* select = dialog->findChild<QPushButton*>("selectRegionButton");
+            auto select = GTWidget::findPushButton(os, "selectRegionButton", dialog);
             GTWidget::click(os, select);
 
             CHECK_SET_ERR(exportType->currentText() == "Custom region", "Wrong combo box text!");
@@ -2737,25 +2737,21 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QDialogButtonBox* box = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* ok = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(ok != nullptr, "ok button is NULL");
 
-            QSpinBox* startLineEdit = dialog->findChild<QSpinBox*>("startLineEdit");
-            CHECK_SET_ERR(startLineEdit != nullptr, "startLineEdit is NULL");
+            auto startLineEdit = GTWidget::findSpinBox(os, "startLineEdit", dialog);
             GTSpinBox::setValue(os, startLineEdit, 10);
 
-            QSpinBox* endLineEdit = dialog->findChild<QSpinBox*>("endLineEdit");
-            CHECK_SET_ERR(endLineEdit != nullptr, "endLineEdit is NULL");
+            auto endLineEdit = GTWidget::findSpinBox(os, "endLineEdit", dialog);
             GTSpinBox::setValue(os, endLineEdit, 5);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTWidget::click(os, ok);
 
             GTSpinBox::setValue(os, endLineEdit, 15);
-            QWidget* noneButton = dialog->findChild<QWidget*>("noneButton");
-            CHECK_SET_ERR(noneButton != nullptr, "noneButton is NULL");
+            auto noneButton = GTWidget::findWidget(os, "noneButton", dialog);
             GTWidget::click(os, noneButton);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -2773,7 +2769,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new SelectSubalignmentChecker(os));
-            QPushButton* select = dialog->findChild<QPushButton*>("selectRegionButton");
+            auto select = GTWidget::findPushButton(os, "selectRegionButton", dialog);
             GTWidget::click(os, select);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2801,16 +2797,13 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
-            CHECK_SET_ERR(exportType != nullptr, "Cannot find comboBox");
+            auto exportType = GTWidget::findComboBox(os, "comboBox", dialog);
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
-            QLabel* hintLabel = dialog->findChild<QLabel*>("hintLabel");
-            CHECK_SET_ERR(hintLabel != nullptr, "Cannot find hintLabel");
+            auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
-            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(buttonBox != nullptr, "Cannot find buttonBox");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* exportButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(exportButton != nullptr, "Cannot find Export button");
             CHECK_SET_ERR(!exportButton->isEnabled(), "Export button is enabled");
@@ -2903,16 +2896,13 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
-            CHECK_SET_ERR(exportType != nullptr, "Cannot find comboBox");
+            auto exportType = GTWidget::findComboBox(os, "comboBox", dialog);
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
-            QLabel* hintLabel = dialog->findChild<QLabel*>("hintLabel");
-            CHECK_SET_ERR(hintLabel != nullptr, "Cannot find hintLabel");
+            auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
-            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(buttonBox != nullptr, "Cannot find buttonBox");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* exportButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(exportButton != nullptr, "Cannot find Export button");
             CHECK_SET_ERR(!exportButton->isEnabled(), "Export button is enabled");
@@ -2922,7 +2912,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
                                                                       RegionMsa(U2Region(1, 593),
                                                                                 {"Sequence__1", "Sequence__2", "Sequnce__3", "Sequence__4"})));
 
-            QPushButton* select = dialog->findChild<QPushButton*>("selectRegionButton");
+            auto select = GTWidget::findPushButton(os, "selectRegionButton", dialog);
             GTWidget::click(os, select);
 
             CHECK_SET_ERR(exportType->currentText() == "Custom region", "Wrong combo box text!");

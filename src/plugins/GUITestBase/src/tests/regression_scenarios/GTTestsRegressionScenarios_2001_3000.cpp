@@ -1628,7 +1628,7 @@ GUI_TEST_CLASS_DEFINITION(test_2293) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* methodNamesBox = dialog->findChild<QComboBox*>("methodNamesBox");
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "Bowtie2") {
                     GTComboBox::selectItemByIndex(os, methodNamesBox, i);
@@ -3873,8 +3873,8 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* formatsBox = dialog->findChild<QComboBox*>("formatsBox");
-            QWidget* spin = dialog->findChild<QSpinBox*>("qualitySpinBox");
+            auto formatsBox = GTWidget::findComboBox(os, "formatsBox", dialog);
+            auto spin = GTWidget::findSpinBox(os, "qualitySpinBox", dialog);
 
             GTComboBox::selectItemByText(os, formatsBox, "SVG");
             CHECK_SET_ERR(!spin->isVisible(), "Quality spin box is visible!");

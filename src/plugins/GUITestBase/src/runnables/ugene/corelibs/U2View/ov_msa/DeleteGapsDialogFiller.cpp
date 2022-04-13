@@ -38,10 +38,10 @@ void DeleteGapsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (radioButNum == 1) {
-        QRadioButton* allColumnsOfGaps = dialog->findChild<QRadioButton*>("allRadioButton");
+        auto allColumnsOfGaps = GTWidget::findRadioButton(os, "allRadioButton", dialog);
         GTRadioButton::click(os, allColumnsOfGaps);
     } else {
-        QRadioButton* withNumberOfGaps = dialog->findChild<QRadioButton*>("absoluteRadioButton");
+        auto withNumberOfGaps = GTWidget::findRadioButton(os, "absoluteRadioButton", dialog);
         GTRadioButton::click(os, withNumberOfGaps);
     }
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -55,14 +55,14 @@ void RemoveGapColsDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QRadioButton* radio = dialog->findChild<QRadioButton*>(radioMap[button]);
+    auto radio = GTWidget::findRadioButton(os, radioMap[button], dialog);
     GTRadioButton::click(os, radio);
 
     if (button == Number) {
-        QSpinBox* box = dialog->findChild<QSpinBox*>("absoluteSpinBox");
+        auto box = GTWidget::findSpinBox(os, "absoluteSpinBox", dialog);
         GTSpinBox::setValue(os, box, spinValue);
     } else if (button == Percent) {
-        QSpinBox* box = dialog->findChild<QSpinBox*>("relativeSpinBox");
+        auto box = GTWidget::findSpinBox(os, "relativeSpinBox", dialog);
         GTSpinBox::setValue(os, box, spinValue);
     }
 

@@ -66,8 +66,7 @@ void ExportSelectedRegionFiller::commonScenario() {
     GTLineEdit::setText(os, lineEdit, path + name);
 
     if (!seqName.isEmpty()) {
-        QCheckBox* customSeqCheckBox = dialog->findChild<QCheckBox*>("customSeqNameBox");
-        GT_CHECK(customSeqCheckBox != nullptr, "Sequence name checkbox not found");
+        auto customSeqCheckBox = GTWidget::findCheckBox(os, "customSeqNameBox", dialog);
         GTCheckBox::setChecked(os, customSeqCheckBox, true);
         auto sequenceNameEdit = GTWidget::findLineEdit(os, "sequenceNameEdit", dialog);
         GTLineEdit::setText(os, sequenceNameEdit, seqName);
@@ -123,14 +122,12 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* fileNameEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
-    GT_CHECK(fileNameEdit != nullptr, "fileNameEdit not found");
+    auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
     GTLineEdit::setText(os, fileNameEdit, path);
 
     GTGlobals::sleep(200);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>();
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "", dialog);
     int index = comboBox->findText(comboBoxItems[format]);
 
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -138,14 +135,12 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     GTGlobals::sleep(200);
 
-    QCheckBox* projectCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectBox"));
-    GT_CHECK(projectCheckBox != nullptr, "addToProjectBox not found");
+    auto projectCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectBox"), dialog);
     GTCheckBox::setChecked(os, projectCheckBox, addToProject);
 
     GTGlobals::sleep(200);
 
-    QCheckBox* annotationsCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("withAnnotationsBox"));
-    GT_CHECK(annotationsCheckBox != nullptr, "Check box not found");
+    auto annotationsCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("withAnnotationsBox"), dialog);
     if (annotationsCheckBox->isEnabled()) {
         GTCheckBox::setChecked(os, annotationsCheckBox, exportWithAnnotations);
     }
@@ -154,9 +149,8 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "translateButton"), translate);
 
-    QRadioButton* mergeButton = dialog->findChild<QRadioButton*>(mergeRadioButtons[options]);
+    auto mergeButton = GTWidget::findRadioButton(os, mergeRadioButtons[options], dialog);
 
-    GT_CHECK(mergeButton != nullptr, "Radio button " + mergeRadioButtons[options] + " not found");
     if (mergeButton->isEnabled()) {
         GTRadioButton::click(os, mergeButton);
     }
@@ -164,8 +158,7 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     GTGlobals::sleep(200);
 
     if (gapLength) {
-        QSpinBox* mergeSpinBox = dialog->findChild<QSpinBox*>("mergeSpinBox");
-        GT_CHECK(mergeSpinBox != nullptr, "SpinBox not found");
+        auto mergeSpinBox = GTWidget::findSpinBox(os, "mergeSpinBox", dialog);
         GTSpinBox::setValue(os, mergeSpinBox, gapLength, useMethod);
     }
 

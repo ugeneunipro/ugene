@@ -45,30 +45,28 @@ ExportChromatogramFiller::ExportChromatogramFiller(HI::GUITestOpStatus& _os, con
 void ExportChromatogramFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
-    GT_CHECK(lineEdit != nullptr, "line edit not found");
+    auto lineEdit = GTWidget::findLineEdit(os, "", dialog);
 
     GTLineEdit::setText(os, lineEdit, path + name);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>();
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     if (addDocumentToProject) {
-        QCheckBox* checkBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectBox"));
+        auto checkBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectBox"), dialog);
         GTCheckBox::setChecked(os, checkBox, addDocumentToProject);
     }
 
     if (reversed) {
-        QCheckBox* checkBoxReversed = dialog->findChild<QCheckBox*>(QString::fromUtf8("reverseBox"));
+        auto checkBoxReversed = GTWidget::findCheckBox(os, QString::fromUtf8("reverseBox"), dialog);
         GTCheckBox::setChecked(os, checkBoxReversed, reversed);
     }
 
     if (complement) {
-        QCheckBox* checkBoxComplement = dialog->findChild<QCheckBox*>(QString::fromUtf8("complementBox"));
+        auto checkBoxComplement = GTWidget::findCheckBox(os, QString::fromUtf8("complementBox"), dialog);
         GTCheckBox::setChecked(os, checkBoxComplement, complement);
     }
 

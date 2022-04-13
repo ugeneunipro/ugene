@@ -1601,14 +1601,11 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
-            CHECK_SET_ERR(lineEdit != nullptr, "line edit leAnnotationName not found");
+            GTWidget::findLineEdit(os, "leAnnotationName", dialog);
 
-            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
-            CHECK_SET_ERR(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
+            GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
 
-            QLineEdit* lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
-            CHECK_SET_ERR(lineEdit1 != nullptr, "line edit leLocation not found");
+            GTWidget::findLineEdit(os, "leLocation", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

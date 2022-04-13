@@ -74,8 +74,7 @@ NotificationDialogFiller::NotificationDialogFiller(HI::GUITestOpStatus& os, cons
 void NotificationDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (!message.isEmpty()) {
-        QTextBrowser* tb = dialog->findChild<QTextBrowser*>();
-        GT_CHECK(tb != nullptr, "text browser not found");
+        auto tb = GTWidget::findTextBrowser(os, "", dialog);
         QString actualMessage = tb->toPlainText();
         GT_CHECK(actualMessage.contains(message), "unexpected message: " + actualMessage);
     }

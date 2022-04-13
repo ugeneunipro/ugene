@@ -42,14 +42,13 @@ MuscleDialogFiller::MuscleDialogFiller(HI::GUITestOpStatus& os, Mode _mode, bool
 void MuscleDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QComboBox* modeBox = dialog->findChild<QComboBox*>("confBox");
-    GT_CHECK(modeBox != nullptr, "combobox not found");
+    auto modeBox = GTWidget::findComboBox(os, "confBox", dialog);
     GTComboBox::selectItemByIndex(os, modeBox, mode);
 
-    QCheckBox* stableCB = dialog->findChild<QCheckBox*>("stableCB");
+    auto stableCB = GTWidget::findCheckBox(os, "stableCB", dialog);
     GTCheckBox::setChecked(os, stableCB, doNotReArr);
 
-    QCheckBox* translate2AminoCb = dialog->findChild<QCheckBox*>("translateCheckBox");
+    auto translate2AminoCb = GTWidget::findCheckBox(os, "translateCheckBox", dialog);
     GTCheckBox::setChecked(os, translate2AminoCb, translateToAmino);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -63,24 +63,20 @@ void ExportDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
-        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
-        GT_CHECK(lineEdit != nullptr, "line edit not found");
+        auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
         defaultExportString = GTLineEdit::copyText(os, lineEdit);
         GTLineEdit::setText(os, lineEdit, path + name);
 
-        QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
-        GT_CHECK(comboBox != nullptr, "ComboBox not found");
+        auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
         int index = comboBox->findText(comboBoxItems[format]);
 
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
         GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-        QCheckBox* compressCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("compressCheck"));
-        GT_CHECK(compressCheckBox != nullptr, "Check box not found");
+        auto compressCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("compressCheck"), dialog);
         GTCheckBox::setChecked(os, compressCheckBox, compressFile);
 
-        QCheckBox* addCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjCheck"));
-        GT_CHECK(addCheckBox != nullptr, "Check box not found");
+        auto addCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjCheck"), dialog);
         GTCheckBox::setChecked(os, addCheckBox, addToProject);
     }
 

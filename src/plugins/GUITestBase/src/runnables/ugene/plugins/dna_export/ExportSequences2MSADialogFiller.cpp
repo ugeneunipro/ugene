@@ -57,19 +57,17 @@ ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpSt
 void ExportSequenceAsAlignmentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
-    GT_CHECK(lineEdit != nullptr, "line edit not found");
+    auto lineEdit = GTWidget::findLineEdit(os, "", dialog);
 
     GTLineEdit::setText(os, lineEdit, path + name);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>();
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    QCheckBox* checkBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectBox"));
+    auto checkBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectBox"), dialog);
     GTCheckBox::setChecked(os, checkBox, addToProject);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

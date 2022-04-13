@@ -41,8 +41,7 @@ SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller
 void SequenceReadingModeSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>(QString::fromUtf8("buttonBox"));
-    GT_CHECK(buttonBox != nullptr, "buttonBox not found");
+    auto buttonBox = GTWidget::findDialogButtonBox(os, QString::fromUtf8("buttonBox"), dialog);
     if (cancel) {
         QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
         GT_CHECK(button != nullptr, "standard button not found");
@@ -50,27 +49,22 @@ void SequenceReadingModeSelectorDialogFiller::commonScenario() {
         return;
     }
     if (readingMode == Separate) {
-        QRadioButton* separateRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("separateRB"));
-        GT_CHECK(separateRB != nullptr, "radio button not found");
+        auto separateRB = GTWidget::findRadioButton(os, QString::fromUtf8("separateRB"), dialog);
         GTRadioButton::click(os, separateRB);
     }
     if (readingMode == Merge) {
-        QRadioButton* mergeRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("mergeRB"));
-        GT_CHECK(mergeRB != nullptr, "radio button not found");
+        auto mergeRB = GTWidget::findRadioButton(os, QString::fromUtf8("mergeRB"), dialog);
         GTRadioButton::click(os, mergeRB);
 
-        QSpinBox* mergeSpinBox = dialog->findChild<QSpinBox*>(QString::fromUtf8("mergeSpinBox"));
-        GT_CHECK(mergeSpinBox != nullptr, "merge spin box not found");
+        auto mergeSpinBox = GTWidget::findSpinBox(os, QString::fromUtf8("mergeSpinBox"), dialog);
         GTSpinBox::setValue(os, mergeSpinBox, bases, GTGlobals::UseKeyBoard);
     }
     if (readingMode == Join) {
-        QRadioButton* malignmentRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("malignmentRB"));
-        GT_CHECK(malignmentRB != nullptr, "radio button not found");
+        auto malignmentRB = GTWidget::findRadioButton(os, QString::fromUtf8("malignmentRB"), dialog);
         GTRadioButton::click(os, malignmentRB);
     }
     if (readingMode == Align) {
-        QRadioButton* refalignmentRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("refalignmentRB"));
-        GT_CHECK(refalignmentRB != nullptr, "radio button not found");
+        auto refalignmentRB = GTWidget::findRadioButton(os, QString::fromUtf8("refalignmentRB"), dialog);
         GTRadioButton::click(os, refalignmentRB);
     }
 

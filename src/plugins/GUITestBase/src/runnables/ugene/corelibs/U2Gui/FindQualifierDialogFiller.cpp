@@ -46,21 +46,17 @@ FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario
 void FindQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>("nameEdit");
-    GT_CHECK(nameEdit != nullptr, "nameEdit not found");
+    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
     GTLineEdit::setText(os, nameEdit, settings.name);
 
-    QLineEdit* valueEdit = dialog->findChild<QLineEdit*>("valueEdit");
-    GT_CHECK(valueEdit != nullptr, "valueEdit not found");
+    auto valueEdit = GTWidget::findLineEdit(os, "valueEdit", dialog);
     GTLineEdit::setText(os, valueEdit, settings.value);
 
     if (settings.exactMatch) {
-        QRadioButton* exactButton = dialog->findChild<QRadioButton*>("exactButton");
-        GT_CHECK(exactButton != nullptr, "exactButton not found");
+        auto exactButton = GTWidget::findRadioButton(os, "exactButton", dialog);
         GTRadioButton::click(os, exactButton);
     } else {
-        QRadioButton* containsButton = dialog->findChild<QRadioButton*>("containsButton");
-        GT_CHECK(containsButton != nullptr, "exactButton not found");
+        auto containsButton = GTWidget::findRadioButton(os, "containsButton", dialog);
         GTRadioButton::click(os, containsButton);
     }
 

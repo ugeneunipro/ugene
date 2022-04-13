@@ -1804,8 +1804,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
                 void run(HI::GUITestOpStatus& os) {
                     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-                    QTreeView* treeView = dialog->findChild<QTreeView*>();
-                    CHECK_SET_ERR(treeView != nullptr, "treeWidget is NULL");
+                    auto treeView = GTWidget::findTreeView(os, "", dialog);
 
                     //    Expected state: there are two possible tables to save annotation to.
                     int visibleItemCount = 0;
@@ -1905,8 +1904,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
                 void run(HI::GUITestOpStatus& os) {
                     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-                    QTreeView* treeView = dialog->findChild<QTreeView*>();
-                    CHECK_SET_ERR(treeView != nullptr, "treeWidget is NULL");
+                    auto treeView = GTWidget::findTreeView(os, "", dialog);
 
                     //    Expected state: there are two possible tables to save annotation to.
                     int visibleItemCount = 0;
@@ -2002,8 +2000,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QTreeView* treeView = dialog->findChild<QTreeView*>();
-            CHECK_SET_ERR(treeView != nullptr, "treeWidget is NULL");
+            auto treeView = GTWidget::findTreeView(os, "", dialog);
 
             //    Expected state: there are two possible tables to save annotation to.
             int visibleItemCount = 0;

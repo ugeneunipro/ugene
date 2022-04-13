@@ -1219,8 +1219,7 @@ GUI_TEST_CLASS_DEFINITION(test_4121) {
         }
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* cbFormat = dialog->findChild<QComboBox*>("cbFormat");
-            CHECK_SET_ERR(cbFormat != nullptr, "cbFormat not found");
+            auto cbFormat = GTWidget::findComboBox(os, "cbFormat", dialog);
 
             if (isRawPresent) {
                 CHECK_SET_ERR(cbFormat->findText("Raw sequence") != -1, "raw format is present");
@@ -1599,8 +1598,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox* memBox = dialog->findChild<QSpinBox*>("memBox");
-            CHECK_SET_ERR(memBox != nullptr, "memorySpinBox not found");
+            auto memBox = GTWidget::findSpinBox(os, "memBox", dialog);
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1615,10 +1613,9 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/FASTA/human_T1.fa"));
-            GTWidget::click(os, dialog->findChild<QToolButton*>("tbInFile"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "tbInFile", dialog));
 
-            QLineEdit* out = dialog->findChild<QLineEdit*>("outFileEdit");
-            CHECK_SET_ERR(out != nullptr, "outFileEdit not found");
+            auto out = GTWidget::findLineEdit(os, "outFileEdit", dialog);
             GTLineEdit::setText(os, out, sandBoxDir + "/test_4156.out");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2550,14 +2547,12 @@ GUI_TEST_CLASS_DEFINITION(test_4309) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
-            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
+            auto comboBox = GTWidget::findComboBox(os, "", dialog);
 
             QStringList formats = GTComboBox::getValues(os, comboBox);
             CHECK_SET_ERR(!formats.contains("Vector NTI sequence"), "VectorNTI format is present in annotations export dialog");
 
-            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(cancelButton != nullptr, "cancelButton is NULL");
@@ -3702,10 +3697,8 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* startEdit = dialog->findChild<QLineEdit*>("startEdit");
-            QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
-            CHECK_SET_ERR(startEdit != nullptr, "QLineEdit \"startEdit\" not found");
-            CHECK_SET_ERR(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
+            auto startEdit = GTWidget::findLineEdit(os, "startEdit", dialog);
+            auto endEdit = GTWidget::findLineEdit(os, "endEdit", dialog);
 
             GTLineEdit::setText(os, startEdit, QString::number(321));
             GTLineEdit::setText(os, endEdit, QString::number(123));
@@ -4377,7 +4370,7 @@ GUI_TEST_CLASS_DEFINITION(test_4712) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeView* treeView = dialog->findChild<QTreeView*>();
+            auto treeView = GTWidget::findTreeView(os, "", dialog);
             int visibleItemCount = 0;
             for (int i = 0; i < treeView->model()->rowCount(); ++i) {
                 if (Qt::NoItemFlags != treeView->model()->flags(treeView->model()->index(i, 0))) {
@@ -5733,11 +5726,9 @@ GUI_TEST_CLASS_DEFINITION(test_4965) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
-            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
+            auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
 
-            QCheckBox* compressCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("compressCheck"));
-            CHECK_SET_ERR(compressCheckBox != nullptr, "Check box not found");
+            auto compressCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("compressCheck"), dialog);
 
             QStringList checkFormats;
             checkFormats << "BAM"
