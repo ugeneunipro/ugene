@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <base_dialogs/GTFileDialog.h>
 #include <cmath>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -40,13 +41,13 @@
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsText.h>
 #include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
-#include <QPlainTextEdit>
 #include <QRadioButton>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -1463,14 +1464,14 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
-                  QString("Illegal first result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal first result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Press 'Next', move to the next result.
     GTUtilsOptionPanelMsa::clickNext(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(21, 0, 3, 1),
-                  QString("Illegal second result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
     QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
@@ -1496,7 +1497,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
 
     selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
-                  QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
+                  QString("Illegal first (2) result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448_1) {
@@ -2105,7 +2106,7 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
 
     GTUtilsMsaEditor::clickSequenceName(os, "Pc_Metavir10");
 
-    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase == 0, "1. Unexpected first visible base: " + QString::number(firstVisibleBase));
 
     QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, "Pc_Metavir10");
@@ -2113,23 +2114,23 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
 
     GTMouseDriver::doubleClick();
     int expectedCenter = 66;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "2. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "2. Unexpected last visible base: " + QString::number(lastVisibleBase));
 
     GTMouseDriver::doubleClick();
     expectedCenter = 1220;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "3. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "3. Unexpected last visible base: " + QString::number(lastVisibleBase));
 
     GTMouseDriver::doubleClick();
     expectedCenter = 66;
-    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "4. Unexpected first visible base: " + QString::number(firstVisibleBase));
-    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
 }
 
@@ -2193,6 +2194,36 @@ GUI_TEST_CLASS_DEFINITION(test_7509) {
 
     // Close MCA editor -> UGENE should not crash.
     GTUtilsMdi::closeActiveWindow(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7511) {
+    // Check that Blast Search filters the list of available tool based on the selected file sequence alphabet.
+    class BlastToolListCheckScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            auto toolsCombo = GTWidget::findComboBox(os, "programNameComboBox");
+            auto selectFileButton = GTWidget::findToolButton(os, "browseInput", dialog);
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastn", "blastp", "blastx", "tblastx", "tblastn"});
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
+            GTWidget::click(os, selectFileButton);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            // Check that the list of tools is updated to nucleic tools.
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastn", "blastx", "tblastx"});
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/titin.fa"));
+            GTWidget::click(os, selectFileButton);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            //  Check that the list of tools is updated to amino tools.
+            GTComboBox::checkValuesPresence(os, toolsCombo, {"blastp", "tblastn"});
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);  // Cancel "Blast" dialog.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);  // Cancel "Save project" popup.
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(os, new BlastToolListCheckScenario()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7517) {
@@ -2436,6 +2467,34 @@ GUI_TEST_CLASS_DEFINITION(test_7575) {
     GTUtilsMSAEditorSequenceArea::scrollToPosition(os, {550, 1});
     GTUtilsMsaEditor::resetZoom(os);
     // Expected state: UGENE does not crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7576) {
+    // Check that zoom-to-selection in MSA keeps the selected region within the visible sequence area.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    QList<QPoint> topLeftPoints = {{500, 5}, {603, 17}};
+    QList<QPoint> bottomRightPoints = {{540, 15}, {603, 17}};
+
+    for (int i = 0; i < topLeftPoints.size(); i++) {
+        QPoint topLeft = topLeftPoints[i];
+        QPoint bottomRight = bottomRightPoints[i];
+
+        GTUtilsMSAEditorSequenceArea::selectArea(os, topLeft, bottomRight);
+        GTUtilsMsaEditor::zoomToSelection(os);
+        int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+        int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+        CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
+                      QString("%1.Invalid visible X range: %2:%3").arg(i).arg(firstVisibleBaseIndex).arg(lastVisibleBaseIndex));
+
+        int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
+        int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
+        CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
+                      QString("%1.Invalid visible Y range: %2:%3").arg(i).arg(firstVisibleRowIndex).arg(lastVisibleRowIndex));
+
+        GTUtilsMsaEditor::resetZoom(os);
+    }
 }
 
 }  // namespace GUITest_regression_scenarios

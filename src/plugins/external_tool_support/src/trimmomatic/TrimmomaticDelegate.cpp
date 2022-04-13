@@ -25,7 +25,6 @@
 #include <QMenu>
 
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/SignalBlocker.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -275,7 +274,7 @@ void TrimmomaticPropertyDialog::sl_moveStepUp() {
     CHECK(selectedStepNum != 0, );
 
     {
-        SignalBlocker signalBlocker(listSteps);
+        QSignalBlocker signalBlocker(listSteps);
         Q_UNUSED(signalBlocker);
         listSteps->insertItem(selectedStepNum - 1, listSteps->takeItem(selectedStepNum));
     }
@@ -297,7 +296,7 @@ void TrimmomaticPropertyDialog::sl_moveStepDown() {
     CHECK(selectedStepNum != size - 1, );
 
     {
-        SignalBlocker signalBlocker(listSteps);
+        QSignalBlocker signalBlocker(listSteps);
         Q_UNUSED(signalBlocker);
         listSteps->insertItem(selectedStepNum + 1, listSteps->takeItem(selectedStepNum));
     }

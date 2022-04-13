@@ -23,7 +23,6 @@
 
 #include "U2Core/U2SafePoints.h"
 #include <U2Core/MultipleAlignmentObject.h>
-#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -305,10 +304,11 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
     int alignmentLength = maEditor->getAlignmentLen();
     CHECK(alignmentLength > 0, 0);
-    bool removeClippedBase = !countClipped && getAdditionalXOffset() != 0;
+    int additionalXOffset = getAdditionalXOffset();
+    bool removeClippedBase = !countClipped && additionalXOffset != 0;
     int hScrollBarValue = hScrollBar->value();
     int column = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBarValue);
-    int firstVisibleBase = column + (removeClippedBase ? 1 : 0);
+    int firstVisibleBase = column + (removeClippedBase && additionalXOffset != 0 ? 1 : 0);
     SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
     return qMin(firstVisibleBase, alignmentLength - 1);
 }
@@ -410,7 +410,7 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
-    SignalBlocker signalBlocker(hScrollBar);
+    QSignalBlocker signalBlocker(hScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
@@ -431,7 +431,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
 void ScrollController::updateVerticalScrollBarPrivate() {
     SAFE_POINT(vScrollBar != nullptr, "Vertical scrollbar is not initialized", );
-    SignalBlocker signalBlocker(vScrollBar);
+    QSignalBlocker signalBlocker(vScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
 

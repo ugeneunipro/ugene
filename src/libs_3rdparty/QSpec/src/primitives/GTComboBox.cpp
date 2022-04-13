@@ -186,12 +186,11 @@ void GTComboBox::checkValues(GUITestOpStatus& os, QComboBox* comboBox, const QSt
 
 #define GT_METHOD_NAME "checkValuesPresence"
 void GTComboBox::checkValuesPresence(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& values) {
-    Q_UNUSED(os)
-    GT_CHECK(NULL != comboBox, "ComboBox is NULL");
+    GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
 
-    for (const QString& s : values) {
+    for (const QString& s : qAsConst(values)) {
         int index = comboBox->findText(s);
-        GT_CHECK(index != -1, "text not found " + s);
+        GT_CHECK(index != -1, "ComboBox item with text not found: " + s);
     }
 }
 #undef GT_METHOD_NAME

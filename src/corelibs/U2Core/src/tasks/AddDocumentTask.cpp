@@ -85,7 +85,7 @@ Task::ReportResult AddDocumentTask::report() {
     } else if (document != nullptr) {
         Document* sameURLDoc = p->findDocumentByURL(document->getURL());
         if (sameURLDoc != nullptr) {
-            stateInfo.setError(tr("Document is already added to the project %1").arg(document->getURL().getURLString()));
+            taskLog.info(tr("Document is already added to the project %1").arg(document->getURL().getURLString()));
         } else {
             p->addDocument(document);
         }

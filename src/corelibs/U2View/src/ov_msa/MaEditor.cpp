@@ -21,6 +21,8 @@
 
 #include "MaEditor.h"
 
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QFontDialog>
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
@@ -57,6 +59,8 @@ SNPSettings::SNPSettings()
 }
 
 const float MaEditor::zoomMult = 1.25;
+
+const double MaEditor::FONT_BOX_TO_CELL_BOX_MULTIPLIER = 1.25;
 
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj)
     : GObjectView(factoryId, viewName),
@@ -186,17 +190,25 @@ int MaEditor::getRowContentIndent(int) const {
     return 0;
 }
 
-int MaEditor::getSequenceRowHeight() const {
+int MaEditor::getRowHeight() const {
     QFontMetrics fm(font, ui);
-    return fm.height() * zoomMult;
+    return qRound(fm.height() * FONT_BOX_TO_CELL_BOX_MULTIPLIER);
 }
 
 int MaEditor::getColumnWidth() const {
     if (cachedColumnWidth == 0) {
-        cachedColumnWidth = getUnifiedSequenceFontCharRect(font).width() * zoomMult;
-
-        cachedColumnWidth = (int)(cachedColumnWidth * zoomFactor);
-        cachedColumnWidth = qMax(cachedColumnWidth, MOBJECT_MIN_COLUMN_WIDTH);
+        double columnWidth;
+        if (resizeMode == ResizeMode_FontAndContent) {
+            columnWidth = getUnifiedSequenceFontCharRect(font).width() * FONT_BOX_TO_CELL_BOX_MULTIPLIER * zoomFactor;
+        } else {
+            columnWidth = getUnifiedSequenceFontCharRect(font).width() * FONT_BOX_TO_CELL_BOX_MULTIPLIER;
+            double rolledZoomFactor = zoomFactor;
+            while (rolledZoomFactor <= 1 && columnWidth > MOBJECT_MIN_COLUMN_WIDTH) {
+                rolledZoomFactor *= zoomMult;
+                columnWidth = columnWidth / zoomMult;
+            }
+        }
+        cachedColumnWidth = qMax((int)(columnWidth), MOBJECT_MIN_COLUMN_WIDTH);
     }
     return cachedColumnWidth;
 }
@@ -236,77 +248,120 @@ void MaEditor::resetCollapseModel() {
 
 void MaEditor::sl_zoomIn() {
     GCounter::increment("Zoom in", getFactoryId());
-    int pSize = font.pointSize();
 
+    ResizeMode oldResizeMode = resizeMode;
     if (resizeMode == ResizeMode_OnlyContent) {
-        setZoomFactor(zoomFactor * zoomMult);
-    } else if (pSize < maximumFontPointSize && resizeMode == ResizeMode_FontAndContent) {
-        font.setPointSize(pSize + 1);
-        setFont(font);
-    }
-
-    bool resizeModeChanged = false;
-
-    if (zoomFactor >= 1) {
-        ResizeMode oldMode = resizeMode;
-        resizeMode = ResizeMode_FontAndContent;
-        resizeModeChanged = resizeMode != oldMode;
+        setZoomFactor(qMax(zoomFactor * zoomMult, 1.0));
+    } else {
+        int pSize = font.pointSize();
+        if (pSize < maximumFontPointSize) {
+            font.setPointSize(pSize + 1);
+            setFont(font);
+        }
         setZoomFactor(1);
     }
     updateActions();
 
+    bool resizeModeChanged = resizeMode != oldResizeMode;
     emit si_zoomOperationPerformed(resizeModeChanged);
 }
 
 void MaEditor::sl_zoomOut() {
     GCounter::increment("Zoom out", getFactoryId());
+
+    ResizeMode oldResizeMode = resizeMode;
     int fontPointSize = font.pointSize();
-
-    bool resizeModeChanged = false;
-
     if (fontPointSize > minimumFontPointSize) {
         font.setPointSize(fontPointSize - 1);
         setFont(font);
+        setZoomFactor(1);
     } else {
-        SAFE_POINT(zoomMult > 0, QString("Incorrect value of MSAEditor::zoomMult"), );
         setZoomFactor(zoomFactor / zoomMult);
-        ResizeMode oldMode = resizeMode;
-        resizeMode = ResizeMode_OnlyContent;
-        resizeModeChanged = resizeMode != oldMode;
     }
     updateActions();
 
+    bool resizeModeChanged = resizeMode != oldResizeMode;
     emit si_zoomOperationPerformed(resizeModeChanged);
 }
 
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
-    int seqAreaWidth = ui->getSequenceArea()->width();
-    const MaEditorSelection& selection = getSelection();
-    CHECK(!selection.isEmpty(), )
-    QRect selectionRect = selection.getRectList()[0];  // We need width (equal on all rects) + top-left of the first rect.
-    float pixelsPerBase = (seqAreaWidth / float(selectionRect.width())) * zoomMult;
-    int fontPointSize = int(pixelsPerBase / fontPixelToPointSize);
-    if (fontPointSize >= minimumFontPointSize) {
-        fontPointSize = qMin(fontPointSize, maximumFontPointSize);
-        font.setPointSize(fontPointSize);
+    QRect selectionRect = getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+    double viewWidth = sequenceArea->width();
+    double viewHeight = sequenceArea->height();
+
+    // Adjust selection width in bases with offsets view data:
+    // Offsets view shares the same font and its width may grow in size if sequence view font is increased.
+    // If offsets view grows the sequence view will reduce it width by the same amount of characters.
+    MSAEditorOffsetsViewController* offsetsViewController = ui->getOffsetsViewController();
+    int basesInOffsetsView = offsetsViewController->leftWidget->getWidthInBases() + offsetsViewController->rightWidget->getWidthInBases();
+    int adjustedSelectionWidth = selectionRect.width() + basesInOffsetsView;
+
+    // Expected pixelsPerBase to fit the selection. Using int because getColumnWidth() returns int.
+    int targetPixelsPerBaseX = (int)(viewWidth / (adjustedSelectionWidth * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
+    int targetPixelsPerBaseY = (int)(viewHeight / (selectionRect.height() * FONT_BOX_TO_CELL_BOX_MULTIPLIER));
+
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    double pixelToPointX = 72.0 / desktopWidget->logicalDpiX();  // 72 points == 1 inch (https://en.wikipedia.org/wiki/Point_(typography)).
+    double pixelToPointY = 72.0 / desktopWidget->logicalDpiY();
+    int targetFontPointSize = qMin(
+        // Prefer the min value, so the font size will be smaller and selection will always fit.
+        (int)qMin(targetPixelsPerBaseX * pixelToPointX, targetPixelsPerBaseY * pixelToPointY),
+        maximumFontPointSize);
+    if (targetFontPointSize >= minimumFontPointSize) {
+        font.setPointSize(targetFontPointSize);
         setFont(font);
-        resizeMode = ResizeMode_FontAndContent;
         setZoomFactor(1);
     } else {
         if (font.pointSize() != minimumFontPointSize) {
             font.setPointSize(minimumFontPointSize);
             setFont(font);
         }
-        setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
-        resizeMode = ResizeMode_OnlyContent;
+        // Rendering mode with no characters shown because column width becomes too narrow.
+        // Column height remains at minimum font height.
+        double newZoomFactor = 1;
+        double selectedAreaWidth = selectionRect.width() * minimumFontPointSize / pixelToPointX;
+        while (selectedAreaWidth > viewWidth && selectedAreaWidth / selectionRect.width() > MOBJECT_MIN_COLUMN_WIDTH) {
+            newZoomFactor /= zoomMult;
+            selectedAreaWidth /= zoomMult;
+        }
+        setZoomFactor(newZoomFactor);
     }
-    ui->getScrollController()->setFirstVisibleBase(selectionRect.x());
-    ui->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
-
     updateActions();
-
     emit si_zoomOperationPerformed(resizeMode != oldMode);
+
+    // Wait util UI restructuring is finished and sequence view gets it final dims.
+    // UI is restructured due to the font/zoom change.
+    // Center the zoomed region next.
+    QTimer::singleShot(200, this, [&]() { scrollSelectionIntoView(); });
+}
+
+void MaEditor::scrollSelectionIntoView() {
+    QRect selectionRect = getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+
+    double viewWidth = sequenceArea->width();
+    double viewHeight = sequenceArea->height();
+    double pixelsPerCellX = getColumnWidth();
+    double pixelsPerCellY = getRowHeight();
+    SAFE_POINT(pixelsPerCellX > 0 && pixelsPerCellY > 0, "Invalid pixels per base/row", );
+
+    int basesPerViewWidth = (int)(viewWidth / (double)pixelsPerCellX);
+    int rowsPerViewHeight = (int)(viewHeight / (double)pixelsPerCellY);
+    int basesOffset = 0;
+    int rowsOffset = 0;
+    if (basesPerViewWidth > selectionRect.width() && rowsPerViewHeight > selectionRect.height()) {
+        basesOffset = -(basesPerViewWidth - selectionRect.width()) / 2;
+        rowsOffset = -(rowsPerViewHeight - selectionRect.height()) / 2;
+    }
+    int firstVisibleBaseIndex = selectionRect.x() + basesOffset;
+    int firstVisibleRowIndex = selectionRect.y() + rowsOffset;
+    auto scrollController = ui->getScrollController();
+    scrollController->setFirstVisibleBase(firstVisibleBaseIndex);
+    scrollController->setFirstVisibleViewRow(firstVisibleRowIndex);
 }
 
 void MaEditor::sl_resetZoom() {
@@ -314,14 +369,13 @@ void MaEditor::sl_resetZoom() {
     QFont f = getFont();
     CHECK(f.pointSize() != MOBJECT_DEFAULT_FONT_SIZE || zoomFactor != MOBJECT_DEFAULT_ZOOM_FACTOR, );
 
+    ResizeMode oldResizeMode = resizeMode;
     if (f.pointSize() != MOBJECT_DEFAULT_FONT_SIZE) {
         f.setPointSize(MOBJECT_DEFAULT_FONT_SIZE);
         setFont(f);
     }
-    if (zoomFactor != MOBJECT_DEFAULT_ZOOM_FACTOR) {
-        setZoomFactor(MOBJECT_DEFAULT_ZOOM_FACTOR);
-    }
-    ResizeMode oldResizeMode = resizeMode;
+    setZoomFactor(MOBJECT_DEFAULT_ZOOM_FACTOR);
+
     resizeMode = ResizeMode_FontAndContent;
     emit si_zoomOperationPerformed(resizeMode != oldResizeMode);
 
@@ -412,7 +466,8 @@ void MaEditor::initFont() {
 }
 
 void MaEditor::updateResizeMode() {
-    resizeMode = font.pointSize() >= minimumFontPointSize && zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
+    SAFE_POINT(font.pointSize() >= minimumFontPointSize, "Illegal font point size", );
+    resizeMode = zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
 void MaEditor::addCopyPasteMenu(QMenu* m) {
@@ -456,9 +511,6 @@ void MaEditor::setFont(const QFont& f) {
 }
 
 void MaEditor::updateFontMetrics() {
-    QFontInfo fontInfo(font);
-    fontPixelToPointSize = fontInfo.pixelSize() / fontInfo.pointSizeF();
-
     // Re-calculate the minimumFontPointSize based on the current font.
     // The minimum font size is computed using the similar logic with Assembly Browser:
     // it is equal to maximum font size value that can safely be rendered in the pre-defined on-screen cell of width = 7px.
@@ -490,11 +542,13 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
 }
 
 void MaEditor::setZoomFactor(double newZoomFactor) {
+    CHECK(zoomFactor != newZoomFactor, );
     zoomFactor = newZoomFactor;
     updateResizeMode();
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     resetColumnWidthCache();
+    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
 }
 
 void MaEditor::updateActions() {

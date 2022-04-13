@@ -66,8 +66,14 @@ public:
     static bool isCollapsed(GUITestOpStatus& os, QString seqName);
     static bool collapsingMode(GUITestOpStatus& os);
 
-    static int getFirstVisibleBase(GUITestOpStatus& os);
-    static int getLastVisibleBase(GUITestOpStatus& os);
+    static int getFirstVisibleBaseIndex(GUITestOpStatus& os);
+    static int getLastVisibleBaseIndex(GUITestOpStatus& os);
+
+    /** Returns index of the first visible view row index in the MSA sequence area. */
+    static int getFirstVisibleRowIndex(GUITestOpStatus& os, bool countClipped = false);
+
+    /** Returns index of the last visible view row index in the MSA sequence area. */
+    static int getLastVisibleRowIndex(GUITestOpStatus& os, bool countClipped = false);
 
     static int getLength(GUITestOpStatus& os);
     static int getNumVisibleBases(GUITestOpStatus& os);

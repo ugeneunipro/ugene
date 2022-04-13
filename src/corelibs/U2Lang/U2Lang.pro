@@ -12,7 +12,6 @@ HEADERS += src/library/BaseActorCategories.h \
            src/library/LastReadyScheduler.h \
            src/library/LocalDomain.h \
            src/model/ActorPrototypeRegistry.h \
-           src/model/Aliasing.h \
            src/model/Attribute.h \
            src/model/AttributeRelation.h \
            src/model/Configuration.h \
@@ -131,7 +130,6 @@ SOURCES += src/library/BaseActorCategories.cpp \
            src/library/LastReadyScheduler.cpp \
            src/library/LocalDomain.cpp \
            src/model/ActorPrototypeRegistry.cpp \
-           src/model/Aliasing.cpp \
            src/model/Attribute.cpp \
            src/model/AttributeRelation.cpp \
            src/model/Configuration.cpp \

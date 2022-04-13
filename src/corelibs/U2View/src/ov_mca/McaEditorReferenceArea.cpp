@@ -25,7 +25,6 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/SignalBlocker.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -249,7 +248,7 @@ void McaEditorReferenceArea::setReferenceSelection(QMouseEvent* e) {
 }
 
 void McaEditorReferenceArea::updateScrollBar() {
-    SignalBlocker signalBlocker(scrollBar);
+    QSignalBlocker signalBlocker(scrollBar);
     Q_UNUSED(signalBlocker);
 
     const QScrollBar* const hScrollbar = ui->getScrollController()->getHorizontalScrollBar();

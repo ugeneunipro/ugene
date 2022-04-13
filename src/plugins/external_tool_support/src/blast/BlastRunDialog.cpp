@@ -38,6 +38,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ProjectService.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -52,14 +53,10 @@
 
 namespace U2 {
 
-static QStringList getCompValues() {
-    return {"blastp", "blastx", "tblastn"};
-}
-
 ////////////////////////////////////////
 // BlastRunDialog
 BlastRunDialog::BlastRunDialog(ADVSequenceObjectContext* _seqCtx, QWidget* parent)
-    : BlastRunCommonDialog(parent, true, getCompValues()), seqCtx(_seqCtx) {
+    : BlastRunCommonDialog(parent, _seqCtx->getAlphabet()), seqCtx(_seqCtx) {
     sequenceObject = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
@@ -75,14 +72,6 @@ BlastRunDialog::BlastRunDialog(ADVSequenceObjectContext* _seqCtx, QWidget* paren
     settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
 
     settings.isNucleotideSeq = sequenceObject->getAlphabet()->getType() != DNAAlphabet_AMINO;
-    QStringList programsToKeep = settings.isNucleotideSeq
-                                     ? QStringList({"blastn", "blastx", "tblastx"})
-                                     : QStringList({"blastp", "tblastn"});
-    for (int i = programNameComboBox->count(); --i >= 0;) {
-        if (!programsToKeep.contains(programNameComboBox->itemText(i))) {
-            programNameComboBox->removeItem(i);
-        }
-    }
     connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
 }
 
@@ -133,12 +122,13 @@ void BlastRunDialog::sl_runQuery() {
 ////////////////////////////////////////
 // BlastWithExtFileRunDialog
 BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
-    : BlastRunCommonDialog(parent, true, getCompValues()) {
+    : BlastRunCommonDialog(parent, nullptr) {
     // Create input file widget.
     auto widget = new QWidget(parent);
     inputFileLineEdit = new FileLineEdit("", "", false, widget);
     inputFileLineEdit->setReadOnly(true);
     inputFileLineEdit->setText("");
+    inputFileLineEdit->setObjectName("inputFileLineEdit");
 
     auto selectToolPathButton = new QToolButton(widget);
     selectToolPathButton->setObjectName("browseInput");
@@ -252,6 +242,7 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document* doc) {
     }
 
     hasValidInput = true;
+    const DNAAlphabet* commonAlphabet = nullptr;
     foreach (GObject* obj, doc->getObjects()) {
         if (obj->getGObjectType() != GObjectTypes::SEQUENCE) {
             continue;
@@ -264,6 +255,8 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document* doc) {
         localSettings.querySequences = {seq->getWholeSequenceData(os)};
         CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
         localSettings.alphabet = seq->getAlphabet();
+        commonAlphabet = commonAlphabet == nullptr ? localSettings.alphabet
+                                                   : U2AlphabetUtils::deriveCommonAlphabet(localSettings.alphabet, commonAlphabet);
         if (localSettings.alphabet->getType() != DNAAlphabet_AMINO) {
             localSettings.isNucleotideSeq = true;
         }
@@ -287,6 +280,7 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document* doc) {
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }
+    updateAvailableProgramsList(commonAlphabet);
 
     sl_lineEditChanged();
 }
