@@ -25,7 +25,7 @@
 #include "Primer3TaskSettings.h"
 
 //#include "primer3_core/boulder_input.h"
-#include "primer3_core_new/libprimer3.h"
+#include "primer3_core/libprimer3.h"
 
 namespace U2 {
 

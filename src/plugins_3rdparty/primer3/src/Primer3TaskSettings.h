@@ -33,7 +33,7 @@
 #include <U2Core/U2Region.h>
 
 //#include "primer3_core/primer3.h"
-#include "primer3_core_new/libprimer3.h"
+#include "primer3_core/libprimer3.h"
 
 namespace U2 {
 
