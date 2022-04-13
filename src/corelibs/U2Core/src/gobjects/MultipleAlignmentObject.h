@@ -173,6 +173,9 @@ public:
 
     void saveState();
     void releaseState();
+    /*
+    * Returns true if there is removable gaps in alignment.
+    */
     bool isGapRemovePossible() const;
 
 signals:

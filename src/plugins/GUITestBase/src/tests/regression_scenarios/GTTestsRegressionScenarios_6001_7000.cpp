@@ -4527,6 +4527,31 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
     CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6703) {
+    //1. Open "_common_data/regression/6703/1.aln
+    //Expected state: 'Remove all gaps' button is disabled
+    //Close view
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    auto button = GTWidget::findButtonByText(os, "Remove all gaps");
+    CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
+    GTUtilsMdi::closeWindow(os, "1 [1.aln]");
+
+    //2. Open "_common_data/regression/6703/2.aln
+    //Expected state: 'Remove all gaps' button is enabled
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/2.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    button = GTWidget::findButtonByText(os, "Remove all gaps");
+    CHECK_SET_ERR(button->isEnabled(), "'Remove all gaps' unexpectedly disabled");
+    
+    //3. Do menu with corresponding action
+    // Expected state: 'Remove all gaps' button is disabled
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
+    GTMenu::showContextMenu(os, seq);
+    CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6705) {
     // 1. Select "Tools > NGS data analysis > Reads quality control" in the main menu.
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});

@@ -155,7 +155,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), SLOT(sl_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateActions()));
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MSAEditorSequenceArea::sl_updateActions);
 
     connect(getEditor()->gotoAction, &QAction::triggered, this, &MSAEditorSequenceArea::sl_goto);
 
