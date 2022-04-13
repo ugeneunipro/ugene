@@ -101,10 +101,6 @@ Task::ReportResult ObjectViewTask::report() {
     return ReportResult_Finished;
 }
 
-QList<QPointer<GObject>> ObjectViewTask::getSelectedObjects() const {
-    return selectedObjects;
-}
-
 Document* ObjectViewTask::createDocumentAndAddToProject(const QString& docUrl, Project* p, U2OpStatus& os) {
     SAFE_POINT(p != nullptr, "Project is NULL!", nullptr);
 

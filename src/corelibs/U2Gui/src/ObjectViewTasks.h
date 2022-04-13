@@ -54,9 +54,6 @@ public:
     virtual void open() {};
     virtual void update() {};
 
-    /** Returns list of selected objects. */
-    QList<QPointer<GObject>> getSelectedObjects() const;
-
     virtual void onDocumentLoaded(Document* d) {
         Q_UNUSED(d);
     }
