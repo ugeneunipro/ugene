@@ -115,7 +115,7 @@ void CreateDocumentFiller::commonScenario() {
     auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
-    auto comboBox = GTWidget::findComboBox(os, "", dialog);
+    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -183,7 +183,7 @@ void CancelCreateDocumentFiller::commonScenario() {
     auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
-    auto comboBox = GTWidget::findComboBox(os, "", dialog);
+    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

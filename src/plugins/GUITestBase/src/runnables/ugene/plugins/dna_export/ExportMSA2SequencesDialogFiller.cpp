@@ -52,10 +52,12 @@ ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus& 
 void ExportToSequenceFormatFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto lineEdit = GTWidget::findLineEdit(os, "", dialog);
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, path + name);
 
-    auto comboBox = GTWidget::findComboBox(os, "", dialog);
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

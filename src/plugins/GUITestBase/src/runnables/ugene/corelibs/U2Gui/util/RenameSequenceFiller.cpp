@@ -39,7 +39,8 @@ void RenameSequenceFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GT_CHECK(dialog->windowTitle() == "Rename Read" || dialog->windowTitle() == "Rename Sequence", "dialog not found");
 
-    auto nameEdit = GTWidget::findLineEdit(os, "", dialog);
+    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>();
+    GT_CHECK(nameEdit != nullptr, "Line edit not found");
 
     if (!oldName.isEmpty()) {
         QString actualText = nameEdit->text();

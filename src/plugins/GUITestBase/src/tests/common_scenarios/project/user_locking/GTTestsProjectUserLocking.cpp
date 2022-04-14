@@ -67,7 +67,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                 GTMouseDriver::click();
             }
 
-            auto comboBox = GTWidget::findComboBox(os, "", dialog);
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -113,7 +114,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                 GTMouseDriver::click();
             }
 
-            auto comboBox = GTWidget::findComboBox(os, "", dialog);
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);

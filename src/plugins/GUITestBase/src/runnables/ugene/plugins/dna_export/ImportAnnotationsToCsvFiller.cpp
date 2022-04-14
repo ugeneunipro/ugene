@@ -172,12 +172,14 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GTWidget::findLineEdit(os, QString::fromUtf8("saveFileName"), dialog);
     GTLineEdit::setText(os, GTWidget::findLineEdit(os, QString::fromUtf8("saveFileName"), dialog), resultFile);
 
-    auto comboBox = GTWidget::findComboBox(os, "", dialog);
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    auto spinBox = GTWidget::findSpinBox(os, "", dialog);
+    QSpinBox* spinBox = dialog->findChild<QSpinBox*>();
+    GT_CHECK(spinBox != nullptr, "SpinBox not found");
     GTSpinBox::setValue(os, spinBox, numberOfLines, useMethod);
 
     auto checkBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectCheck"), dialog);

@@ -36,7 +36,8 @@ void DatasetNameEditDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!datasetName.isEmpty()) {
-        auto line = GTWidget::findLineEdit(os, "", dialog);
+        QLineEdit* line = dialog->findChild<QLineEdit*>();
+        GT_CHECK(line, "lineEdit not found");
         GTLineEdit::setText(os, line, datasetName);
     }
     GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));

@@ -43,7 +43,8 @@ using namespace HI;
 void EditGroupAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto lineEdit = GTWidget::findLineEdit(os, "", dialog);
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, groupName);
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
