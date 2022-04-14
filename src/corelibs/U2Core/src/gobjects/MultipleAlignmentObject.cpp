@@ -737,7 +737,7 @@ void MultipleAlignmentObject::releaseState() {
     }
 }
 
-bool MultipleAlignmentObject::isGapRemovePossible() const {
+bool MultipleAlignmentObject::hasGaps() const {
     const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
     for (const QVector<U2MsaGap>& vector : qAsConst(listGapModel)) {
         if (vector.size() > 1) {

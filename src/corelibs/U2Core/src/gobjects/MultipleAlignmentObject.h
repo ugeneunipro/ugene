@@ -176,7 +176,7 @@ public:
     /*
     * Returns true if there is removable gaps in alignment.
     */
-    bool isGapRemovePossible() const;
+    bool hasGaps() const;
 
 signals:
     void si_startMaUpdating();
