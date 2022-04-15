@@ -51,9 +51,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
-#include <QProgressBar>
 #include <QPushButton>
-#include <QTableWidget>
 #include <QTextStream>
 #include <QThreadPool>
 
@@ -323,11 +321,12 @@ GUI_TEST_CLASS_DEFINITION(test_3052_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTUtilsDocument::unloadDocument(os, docName, false);
+    GTUtilsDocument::unloadDocument(os, docName, true);
     GTUtilsDocument::loadDocument(os, docName);
 
     GTUtilsLog::check(os, l);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_3072) {
     GTLogTracer l;
 
