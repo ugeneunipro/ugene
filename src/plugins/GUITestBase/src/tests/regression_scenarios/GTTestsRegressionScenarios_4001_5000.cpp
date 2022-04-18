@@ -2547,7 +2547,8 @@ GUI_TEST_CLASS_DEFINITION(test_4309) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto comboBox = GTWidget::findComboBox(os, "", dialog);
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
 
             QStringList formats = GTComboBox::getValues(os, comboBox);
             CHECK_SET_ERR(!formats.contains("Vector NTI sequence"), "VectorNTI format is present in annotations export dialog");
@@ -4370,7 +4371,7 @@ GUI_TEST_CLASS_DEFINITION(test_4712) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto treeView = GTWidget::findTreeView(os, "", dialog);
+            QTreeView* treeView = dialog->findChild<QTreeView*>();
             int visibleItemCount = 0;
             for (int i = 0; i < treeView->model()->rowCount(); ++i) {
                 if (Qt::NoItemFlags != treeView->model()->flags(treeView->model()->index(i, 0))) {

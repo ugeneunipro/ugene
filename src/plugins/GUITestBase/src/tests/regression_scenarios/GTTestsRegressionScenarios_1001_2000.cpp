@@ -6477,7 +6477,8 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
                 }
             }
 
-            auto tabWidget = GTWidget::findTabWidget(os, "", dialog);
+            QTabWidget* tabWidget = dialog->findChild<QTabWidget*>();
+            CHECK_SET_ERR(tabWidget != nullptr, "tabWidget not found");
             GTTabWidget::setCurrentIndex(os, tabWidget, 1);
 
             GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"));
@@ -7155,7 +7156,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
             //    Expected state: Showed "Rename Dashboard" dialog
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            auto line = GTWidget::findLineEdit(os, "", dialog);
+            QLineEdit* line = dialog->findChild<QLineEdit*>();
             //    6. Change name and press "Ok" button
             GTLineEdit::setText(os, line, "new_name");
             GTWidget::click(os, GTWidget::findButtonByText(os, "Ok", dialog));

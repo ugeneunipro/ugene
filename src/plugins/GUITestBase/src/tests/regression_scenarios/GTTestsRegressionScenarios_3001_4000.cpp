@@ -2652,7 +2652,8 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
             CHECK_SET_ERR(!GTLineEdit::copyText(os, filePath).isEmpty(), "Default file path is empty");
             GTLineEdit::setText(os, filePath, "");
 
-            auto exportButton = GTWidget::findPushButton(os, "", dialog);
+            QPushButton* exportButton = dialog->findChild<QPushButton*>();
+            CHECK_SET_ERR(exportButton != nullptr, "ExportButton is NULL");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTWidget::click(os, exportButton);

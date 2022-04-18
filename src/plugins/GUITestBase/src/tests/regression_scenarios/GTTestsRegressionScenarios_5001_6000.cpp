@@ -2693,7 +2693,8 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto comboBox = GTWidget::findComboBox(os, "", dialog);
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
 
             QStringList formats = GTComboBox::getValues(os, comboBox);
             CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
