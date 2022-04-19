@@ -22,6 +22,7 @@
 #ifndef _U2_MA_EDITOR_H_
 #define _U2_MA_EDITOR_H_
 
+#include <U2Core/U2SafePoints.h>
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -56,6 +57,10 @@ namespace U2 {
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
 class MaCollapseModel;
+class MaEditorWgt;
+class MaEditorMultilineWgt;
+class MaEditorOverviewArea;
+class MultipleAlignmentObject;
 class MaEditorSelection;
 class MaEditorSelectionController;
 class MaEditorWgt;
@@ -127,9 +132,20 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual MaEditorWgt* getUI() const {
+    virtual QWidget *getUI() const {
         return ui;
     }
+
+    virtual MaEditorWgt *getMaEditorWgt(uint index = 0) const {
+        SAFE_POINT(false, "The function getMaEditorWgt(index) must be overrided", nullptr);
+        Q_UNUSED(index);
+        return nullptr;
+    };
+
+    virtual MaEditorMultilineWgt *getMaEditorMultilineWgt() const {
+        SAFE_POINT(false, "The function getMaEditorMultilineWgt(index) must be overrided", nullptr);
+        return nullptr;
+    };
 
     virtual OptionsPanel* getOptionsPanel() {
         return optionsPanel;
@@ -208,13 +224,26 @@ public:
     MaCollapseModel* getCollapseModel() const;
 
     /** Returns undo-redo framework. The returned value is never null. */
-    MaUndoRedoFramework* getUndoRedoFramework() const;
+    MaUndoRedoFramework *getUndoRedoFramework() const;
 
     /**
      * Centers selection on the screen if possible. Otherwise scrolls one of the selection corners into the view.
      * Does not perform zoom/font-change operations.
      */
     void scrollSelectionIntoView();
+
+    virtual void initActionsAndSignals() {};
+    virtual void initChildrenActionsAndSignals() {};
+
+
+    virtual bool getMultilineMode() const {
+        return multilineMode;
+    }
+
+    virtual bool setMultilineMode(bool newmode) {
+        Q_UNUSED(newmode);
+        return false;
+    }
 
 signals:
     void si_fontChanged(const QFont& f);
@@ -224,6 +253,7 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint& cursorPosition);
+    void si_showOffsets(bool);
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint& pos) = 0;
@@ -251,20 +281,25 @@ protected slots:
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
 
+    virtual void sl_multilineViewAction() {
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
+        return;
+    };
+
 private slots:
     void resetColumnWidthCache();
 
 protected:
-    virtual QWidget* createWidget() = 0;
+    virtual QWidget *createWidget() = 0;
     virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
     void updateResizeMode();
 
-    virtual void addCopyPasteMenu(QMenu* m);
-    virtual void addEditMenu(QMenu* m) = 0;
-    virtual void addExportMenu(QMenu* m);
-    void addLoadMenu(QMenu* m);
+    virtual void addCopyPasteMenu(QMenu *m, uint uiIndex);
+    virtual void addEditMenu(QMenu *m) = 0;
+    virtual void addExportMenu(QMenu *m);
+    void addLoadMenu(QMenu *m);
 
     void setFont(const QFont& f);
 
@@ -276,8 +311,8 @@ protected:
 
     virtual void updateActions();
 
-    MultipleAlignmentObject* maObject;
-    MaEditorWgt* ui;
+    MultipleAlignmentObject *maObject;
+    QWidget *ui = nullptr;
 
     QFont font;
     ResizeMode resizeMode;
@@ -308,6 +343,8 @@ protected:
     /** Undo-redo support. */
     MaUndoRedoFramework* undoRedoFramework = nullptr;
 
+    bool multilineMode = false;
+
 public:
     QAction* saveAlignmentAction = nullptr;
     QAction* saveAlignmentAsAction = nullptr;
@@ -318,6 +355,7 @@ public:
     QAction* changeFontAction = nullptr;
     QAction* resetZoomAction = nullptr;
     QAction* exportHighlightedAction = nullptr;
+    QAction* multilineViewAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction* clearSelectionAction = nullptr;

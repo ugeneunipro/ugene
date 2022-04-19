@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_3112) {
 
     auto showOverviewButton = qobject_cast<QToolButton*>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not checked");
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is checked");
 
     // Modify the alignment.
     // Expected state: the overview task starts.
@@ -2688,7 +2688,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     // Check progress bar text.
     QString taskProgressBarText = GTWidget::findProgressBar(os, "taskProgressBar", statusBar)->text();
     CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
@@ -2732,7 +2732,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
-    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    MaEditorNameList *nameList = editor->getUI()->getUI(0)->getEditorNameList();
     CHECK_SET_ERR(nameList != nullptr, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 

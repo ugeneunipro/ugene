@@ -23,6 +23,7 @@
 #define _U2_MCA_EDITOR_H_
 
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/MaEditor.h>
 #include <U2View/MaEditorWgt.h>
@@ -57,8 +58,8 @@ public:
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject* getMaObject() const override;
-    McaEditorWgt* getUI() const override;
+    MultipleChromatogramAlignmentObject *getMaObject() const override;
+    McaEditorWgt *getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;
@@ -77,8 +78,13 @@ public:
 
     SequenceObjectContext* getReferenceContext() const;
 
-    QAction* getGotoSelectedReadAction() const {
+    QAction *getGotoSelectedReadAction() const {
         return gotoSelectedReadAction;
+    }
+
+    MaEditorWgt *getMaEditorWgt(uint index = 0) const override {
+        SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
+        return qobject_cast<McaEditorWgt *>(ui);
     }
 
 protected slots:
@@ -93,7 +99,7 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget* createWidget() override;
+    QWidget *createWidget() override;
     void initActions() override;
 
     QAction* showChromatogramsAction;
@@ -107,10 +113,10 @@ protected:
     /** Selection state controller. */
     McaEditorSelectionController* selectionController;
 
-    void addEditMenu(QMenu* menu) override;
-    void addAlignmentMenu(QMenu* menu);
-    void addAppearanceMenu(QMenu* menu);
-    void addNavigationMenu(QMenu* menu);
+    void addEditMenu(QMenu *menu) override;
+    void addAlignmentMenu(QMenu *menu);
+    void addAppearanceMenu(QMenu *menu);
+    void addNavigationMenu(QMenu *menu);
 };
 
 }  // namespace U2

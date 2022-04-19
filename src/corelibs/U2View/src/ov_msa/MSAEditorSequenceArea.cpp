@@ -81,6 +81,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     : MaEditorSequenceArea(_ui, hb, vb) {
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
+    setMinimumSize(minimumSizeHint());
 
     initRenderer();
 
@@ -157,8 +158,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), SLOT(sl_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)));
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MSAEditorSequenceArea::sl_updateActions);
 
-    connect(getEditor()->gotoAction, &QAction::triggered, this, &MSAEditorSequenceArea::sl_goto);
-
     setMouseTracking(true);
 
     updateColorAndHighlightSchemes();
@@ -177,6 +176,25 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
     return DNAAlphabet_AMINO == alphabet->getType();
 }
 
+QSize MSAEditorSequenceArea::sizeHint() const
+{
+    QSize s = QWidget::sizeHint();
+    if (editor->getMultilineMode()) {
+        return QSize(s.width(), minimumSizeHint().height() + 2);
+    }
+    return s;
+}
+
+QSize MSAEditorSequenceArea::minimumSizeHint() const
+{
+    QSize s = QWidget::minimumSizeHint();
+    if (editor->getMultilineMode()) {
+        int newHeight = (editor->getRowHeight() + 1) * qMax(1, editor->getNumSequences());
+        return QSize(s.width(), newHeight);
+    }
+    return s;
+}
+
 void MSAEditorSequenceArea::focusInEvent(QFocusEvent* fe) {
     QWidget::focusInEvent(fe);
     update();
@@ -188,7 +206,13 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
     update();
 }
 
-void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
+void MSAEditorSequenceArea::wheelEvent(QWheelEvent *we) {
+    if (!editor->getMultilineMode()) {
+        MaEditorSequenceArea::wheelEvent(we);
+    }
+}
+
+void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInfo) {
     if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
     }
@@ -198,6 +222,10 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     Q_UNUSED(v);
 
+    MaEditorWgt *child0 = editor->getMaEditorMultilineWgt()->getUI(0);
+    if (child0 != ui) {
+        return;
+    }
     t->addAction(editor->undoAction);
     t->addAction(editor->redoAction);
     t->addAction(removeAllGapsAction);
@@ -208,12 +236,39 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& menuType) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
+    if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
+        return;
+    }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
     bool isMainMenu = menuType == MsaEditorMenuType::STATIC;
     if (!isContextMenu && !isMainMenu) {
         return;
     }
+    if (isContextMenu || isMainMenu) {
+        buildMenu(m, isContextMenu);
+    }
+    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
+    SAFE_POINT(editMenu != nullptr, "editMenu is null", );
+
+    editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(),
+                           ui->delSelectionAction);
+    if (rect().contains(mapFromGlobal(QCursor::pos()))) {
+        QList<QAction *> actions;
+        actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
+                << reverseAction << complementAction << delColAction << removeAllGapsAction;
+
+        editMenu->addActions(actions);
+    }
+
+    m->setObjectName("msa sequence area context menu");
+}
+
+void MSAEditorSequenceArea::initRenderer() {
+    renderer = new SequenceAreaRenderer(ui, this);
+}
+
+void MSAEditorSequenceArea::buildMenu(QMenu* m, bool isContextMenu) {
     QMenu* loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
     SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu is null", );
     loadSeqMenu->addAction(addSeqFromProjectAction);
@@ -222,9 +277,8 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& 
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
-    QList<QAction*> actions = {
-        getEditor()->getUI()->getEditorNameList()->getEditSequenceNameAction(),
-        insertGapsAction,
+    QList<QAction *> actions = {
+        ui->getEditorNameList()->getEditSequenceNameAction(),
         replaceWithGapsAction,
         replaceCharacterAction,
         reverseComplementAction,
@@ -235,7 +289,7 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& 
     };
 
     editMenu->insertActions(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), actions);
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), ui->delSelectionAction);
 
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
@@ -247,13 +301,10 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& 
     }
 }
 
-void MSAEditorSequenceArea::initRenderer() {
-    renderer = new SequenceAreaRenderer(ui, this);
-}
-
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
     Q_UNUSED(font);
     completeRedraw = true;
+    ui->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     repaint();
 }
 
@@ -347,15 +398,6 @@ void MSAEditorSequenceArea::sl_delCol() {
         SAFE_POINT_OP(os, );
         msaObj->deleteColumnsWithGaps(os, gapCount);
     }
-}
-
-void MSAEditorSequenceArea::sl_goto() {
-    QDialog gotoDialog(this);
-    gotoDialog.setModal(true);
-    gotoDialog.setWindowTitle(tr("Go to Position"));
-    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
-    connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
-    gotoDialog.exec();
 }
 
 void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
@@ -894,8 +936,8 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
 
             QColor unused;
             bool highlight = false;
-            MSAEditorSequenceArea* sequenceArea = msaEditor->getUI()->getSequenceArea();
-            MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
+            MaEditorSequenceArea *sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+            MsaHighlightingScheme *scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);
 

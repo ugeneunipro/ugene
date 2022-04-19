@@ -40,6 +40,10 @@ private:
     void buildMenu(QMenu* menu);
 
     MSAEditor* getEditor() const;
+
+protected:
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 };
 
 }  // namespace U2

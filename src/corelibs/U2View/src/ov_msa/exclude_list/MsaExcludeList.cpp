@@ -109,18 +109,18 @@ void MsaExcludeListContext::initViewContext(GObjectView* view) {
         CHECK(!msaObjectPtr.isNull(), );
         msaObjectPtr->disconnect(this);
     });
-    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView*, QMenu* menu) {
-        QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
-        GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->cutSelectionAction, moveFromMsaAction);
+    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
+        QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
+            GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->getUI(0)->cutSelectionAction, moveFromMsaAction);
     });
     addViewAction(moveFromMsaAction);
 
     updateState(msaEditor);
 }
 
-MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getMainSplitter();
-    return mainSplitter->findChild<MsaExcludeListWidget*>();
+MsaExcludeListWidget *MsaExcludeListContext::findActiveExcludeList(MSAEditor *msaEditor) {
+    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
+    return mainSplitter->findChild<MsaExcludeListWidget *>();
 }
 
 MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEditor) {
@@ -128,7 +128,7 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
 
-    auto mainSplitter = msaEditor->getUI()->getMainSplitter();
+    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     excludeList = new MsaExcludeListWidget(mainSplitter, msaEditor, this);
     mainSplitter->insertWidget(1, excludeList);
     mainSplitter->setCollapsible(1, false);
@@ -136,8 +136,8 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     return excludeList;
 }
 
-void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getMainSplitter();
+void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor *msaEditor) {
+    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 

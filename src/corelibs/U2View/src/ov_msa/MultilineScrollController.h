@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCROLL_CONTROLLER_H_
-#define _U2_SCROLL_CONTROLLER_H_
+#ifndef _U2_MULTILINE_SCROLL_CONTROLLER_H_
+#define _U2_MULTILINE_SCROLL_CONTROLLER_H_
 
+#include <QScrollArea>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
@@ -29,9 +30,9 @@ namespace U2 {
 class GScrollBar;
 class MaEditor;
 class MaEditorSelection;
-class MaEditorWgt;
+class MaEditorMultilineWgt;
 
-class U2VIEW_EXPORT ScrollController : public QObject {
+class U2VIEW_EXPORT MultilineScrollController : public QObject {
     Q_OBJECT
 public:
     enum Direction {
@@ -39,46 +40,39 @@ public:
         Up = 1 << 0,
         Down = 1 << 1,
         Left = 1 << 2,
-        Right = 1 << 3
+        Right = 1 << 3,
+        SliderMaximum = 1 << 4,
+        SliderMinimum = 1 << 5,
+        SliderMoved = 1 << 6
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor *maEditor, MaEditorWgt *ui);
+    MultilineScrollController(MaEditor *maEditor, MaEditorMultilineWgt *ui);
 
-    void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar);
-
-    QPoint getScreenPosition() const;  // in pixels
-    QPoint getGlobalMousePosition(const QPoint& mousePos) const;
-
-    void updateVerticalScrollBar();
+    void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar, QScrollArea *childrenArea);
 
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
-    void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
+    void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
 
-    void centerBase(int baseIndex, int widgetWidth);
+    void centerBase(int baseNumber, int widgetWidth);
     void centerViewRow(int viewRowIndex, int widgetHeight);
-    void centerPoint(const QPoint& maPoint, const QSize& widgetSize);
+    void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
 
-    /** Returns true if the base is centered. See 'centerBase' for details. */
-    bool isBaseCentered(int baseIndex, int widgetWidth) const;
-
-    void setHScrollbarValue(int value);
-    void setVScrollbarValue(int value);
+    void setMultilineHScrollbarValue(int value);
+    void setMultilineVScrollbarValue(int value);
 
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleViewRow(int viewRowIndex);
     void setFirstVisibleMaRow(int maRowIndex);
+    void setCenterVisibleBase(int firstVisibleBase);
 
-    void scrollSmoothly(const Directions& directions);
+    void scrollSmoothly(const Directions &directions);
     void stopSmoothScrolling();
 
     void scrollStep(Direction direction);
     void scrollPage(Direction direction);
     void scrollToEnd(Direction direction);
-
-    void scrollToMovedSelection(int deltaX, int deltaY);
-    void scrollToMovedSelection(Direction direction);
 
     int getFirstVisibleBase(bool countClipped = false) const;
     int getLastVisibleBase(int widgetWidth, bool countClipped = false) const;
@@ -86,64 +80,55 @@ public:
     int getFirstVisibleViewRowIndex(bool countClipped = false) const;
     int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
-    /*
-     * Maps screen coordinates into QPoint(row, column).
-     * Returns QPoint(-1, -1) if geom. position can't be mapped to any base and reportOverflow is false.
-     * If reportOverflow is true and one of the coordinates has overflow, returns rowCount/columnsCount for it.
-     */
-    QPoint getViewPosByScreenPoint(const QPoint& point, bool reportOverflow = true) const;
+    GScrollBar *getHorizontalScrollBar() const;
+    GScrollBar *getVerticalScrollBar() const;
 
-    GScrollBar* getHorizontalScrollBar() const;
-    GScrollBar* getVerticalScrollBar() const;
+    void vertScroll(const Directions &directions, bool byStep = true);
+    int getViewHeight();
 
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
-    void updateScrollBarsOnFontOrZoomChange();
-    void setHScrollBarVisible(bool visible);
-    bool getHScrollBarVisible();
-
-    void setVScrollBarVisible(bool visible);
-    bool getVScrollBarVisible();
+    void updateScrollBarsOnFontOrZoomChange() { Q_ASSERT(false); }
 
 signals:
     void si_visibleAreaChanged();
+    void si_hScrollValueChanged();
+    void si_vScrollValueChanged();
 
 public slots:
     void sl_updateScrollBars();
-
-private slots:
-    void sl_collapsibleModelIsAboutToBeChanged();
-    void sl_collapsibleModelChanged();
+    void sl_zoomScrollBars();
+    void sl_hScrollValueChanged();
+    void sl_vScrollValueChanged();
+    void sl_handleVScrollAction(int action);
 
 private:
-    /**
-     * Returns 'hScrollBar' value with the 'baseIndex' base centered.
-     * For the 'overflow' situation returns safe scroll bar values.
-     */
-    int getHorizontalScrollBarValueWithBaseCentered(int baseIndex, int widgetWidth) const;
-
     int getAdditionalXOffset() const;  // in pixels;
     int getAdditionalYOffset() const;  // in pixels;
 
     U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;  // in pixels
     U2Region getVerticalRangeToDrawIn(int widgetHeight) const;  // in pixels
 
+    void zoomHorizontalScrollBarPrivate();
+    void zoomVerticalScrollBarPrivate();
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 
-    MaEditor* maEditor;
-    MaEditorWgt* ui;
-    GScrollBar* hScrollBar;
-    GScrollBar* vScrollBar;
+    bool eventFilter(QObject *object, QEvent *event);
+    bool vertEventFilter(QWheelEvent *event);
+
+
+    MaEditor *maEditor;
+    MaEditorMultilineWgt *ui;
+    QScrollArea *childrenScrollArea;
+    GScrollBar *hScrollBar;
+    GScrollBar *vScrollBar;
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
-
-    bool hScrollBarVisible = true;
-    bool vScrollBarVisible = true;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)
+Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)
 
 }  // namespace U2
 
-#endif  // _U2_SCROLL_CONTROLLER_H_
+#endif  // _U2_MULTILINE_SCROLL_CONTROLLER_H_

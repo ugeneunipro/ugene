@@ -43,7 +43,22 @@
 #include "ov_msa/DrawHelper.h"
 #include "ov_msa/ScrollController.h"
 
+
 namespace U2 {
+
+bool MaEditorWgtEventFilter::eventFilter(QObject *obj, QEvent *event)
+{
+    // TODO:ichebyki
+    // Maybe need to check QEvent::FocusIn || QEvent::Enter
+    // Also,there is a question about children (QEvent::ChildAdded)
+
+    // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
+    if (event->type() == QEvent::HoverEnter) {
+        maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(maEditorWgt);
+    }
+    // standard event processing
+    return QObject::eventFilter(obj, event);
+}
 
 /************************************************************************/
 /* MaEditorWgt */
@@ -65,7 +80,7 @@ MaEditorWgt::MaEditorWgt(MaEditor* _editor)
       scrollController(new ScrollController(editor, this)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(nullptr),
-      drawHelper(new DrawHelper(editor)),
+      drawHelper(new DrawHelper(this)),
       delSelectionAction(nullptr),
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
@@ -85,13 +100,9 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
-    return statusBar;
-}
-
-void MaEditorWgt::initWidgets() {
+void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setMinimumSize(300, 200);
+    setMinimumSize(300, 100);
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
@@ -105,18 +116,18 @@ void MaEditorWgt::initWidgets() {
 
     initSeqArea(shBar, cvBar);
     scrollController->init(shBar, cvBar);
-    sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    initOverviewArea();
+    sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     initNameList(nameListHorizontalScrollBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
-    initStatusBar();
+    initOverviewArea(overviewArea);
+    initStatusBar(statusBar);
 
     offsetsViewController = new MSAEditorOffsetsViewController(this, editor, sequenceArea);
-    offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    offsetsViewController->rightWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    offsetsViewController->rightWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     seqAreaHeader = new QWidget(this);
     seqAreaHeader->setObjectName("alignment_header_widget");
@@ -183,9 +194,12 @@ void MaEditorWgt::initWidgets() {
 
     maContainerLayout->addWidget(nameAndSequenceAreasSplitter);
     maContainerLayout->setStretch(0, 1);
-    maContainerLayout->addWidget(statusBar);
 
-    QWidget* maContainer = new QWidget(this);
+    if (addStatusBar) {
+        maContainerLayout->addWidget(statusBar);
+    }
+
+    QWidget *maContainer = new QWidget(this);
     maContainer->setLayout(maContainerLayout);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
@@ -197,9 +211,16 @@ void MaEditorWgt::initWidgets() {
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
-    mainSplitter->addWidget(overviewArea);
-    mainSplitter->setCollapsible(1, false);
-    MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
+    if (addOverviewArea) {
+        MsaEditorWgt *wgt = qobject_cast<MsaEditorWgt *>(this);
+        if (wgt == nullptr) {
+            mainSplitter->addWidget(overviewArea);
+            mainSplitter->setCollapsible(1, false);
+            MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
+        } else {
+            maContainerLayout->addWidget(overviewArea);
+        }
+    }
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
@@ -273,19 +294,7 @@ MaEditorConsensusArea* MaEditorWgt::getConsensusArea() const {
     return consensusArea;
 }
 
-MaEditorOverviewArea* MaEditorWgt::getOverviewArea() const {
-    return overviewArea;
-}
-
-MSAEditorOffsetsViewController* MaEditorWgt::getOffsetsViewController() const {
-    return offsetsViewController;
-}
-
-ScrollController* MaEditorWgt::getScrollController() const {
-    return scrollController;
-}
-
-BaseWidthController* MaEditorWgt::getBaseWidthController() const {
+BaseWidthController *MaEditorWgt::getBaseWidthController() const {
     return baseWidthController;
 }
 

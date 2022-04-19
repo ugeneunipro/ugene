@@ -1681,7 +1681,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt*>(os, "msa_editor_COI")->getEditor();
+    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt *>(os, "msa_editor_COI_0")->getEditor();
     QString initialFont = msaEditor->getFont().toString();
 
     // Click "change font button" on the toolbar.
@@ -1703,7 +1703,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
     GTWidget::click(os, GTAction::button(os, "Change Font"));
 
-    auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
+    auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI_0");
     MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();

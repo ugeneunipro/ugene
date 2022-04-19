@@ -47,14 +47,15 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     : QObject(maEditorUi) {
     seqArea = sa;
     editor = ed;
+    ui = maEditorUi;
 
-    leftWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, true);
+    leftWidget = new MSAEditorOffsetsViewWidget(ui, ed, seqArea, true);
     leftWidget->setObjectName("msa_editor_offsets_view_widget_left");
-    rightWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, false);
+    rightWidget = new MSAEditorOffsetsViewWidget(ui, ed, seqArea, false);
     rightWidget->setObjectName("msa_editor_offsets_view_widget_right");
 
-    connect(maEditorUi->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
-    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
+    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_updateOffsets()));
 
     MultipleAlignmentObject* mobj = editor->getMaObject();
     SAFE_POINT(nullptr != mobj, L10N::nullPointerError("multiple alignment object"), );
@@ -69,37 +70,40 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     toggleColumnsViewAction->setObjectName("show_offsets");
     toggleColumnsViewAction->setCheckable(true);
     toggleColumnsViewAction->setChecked(showOffsets);
-    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
+
+    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), editor, SIGNAL(si_showOffsets(bool)));
+    connect(editor, SIGNAL(si_showOffsets(bool)), SLOT(sl_showOffsets(bool)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
-    updateOffsets();
+
+    updateOffsets(toggleColumnsViewAction->isChecked());
 }
 
 void MSAEditorOffsetsViewController::sl_updateOffsets() {
-    updateOffsets();
+    updateOffsets(toggleColumnsViewAction->isChecked());
 }
 
 bool MSAEditorOffsetsViewController::eventFilter(QObject* o, QEvent* e) {
     if (o == seqArea) {
         if (e->type() == QEvent::Resize || e->type() == QEvent::Show) {
-            updateOffsets();
+            updateOffsets(toggleColumnsViewAction->isChecked());
         }
     }
     return false;
 }
 
 void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
-    updateOffsets();
+    updateOffsets(show);
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext settings is NULL", );
     s->setValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, show);
 }
 
-void MSAEditorOffsetsViewController::updateOffsets() {
+void MSAEditorOffsetsViewController::updateOffsets(bool show) {
     if (leftWidget->parentWidget() != nullptr) {
-        const bool vis = toggleColumnsViewAction->isChecked();
-        leftWidget->setVisible(vis);
-        rightWidget->setVisible(vis);
+        toggleColumnsViewAction->setChecked(show);
+        leftWidget->setVisible(show);
+        rightWidget->setVisible(show);
     }
 
     leftWidget->updateView();
@@ -109,9 +113,10 @@ void MSAEditorOffsetsViewController::updateOffsets() {
 MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditorWgt* maEditorUi, MaEditor* ed, MaEditorSequenceArea* sa, bool sp)
     : seqArea(sa),
       editor(ed),
+      ui(maEditorUi),
       showStartPos(sp),
       completeRedraw(true) {
-    connect(maEditorUi, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
+    connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
 }
 
 void MSAEditorOffsetsViewWidget::sl_completeRedraw() {
@@ -169,7 +174,10 @@ int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclA
 
 void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QLinearGradient gradient(0, 0, width(), 0);
-    QColor lg(0xDA, 0xDA, 0xDA);
+    // ichebyki: if you want gradient border just change the lg value
+    // QColor lg(0xDA, 0xDA, 0xDA);
+    QColor lg = Qt::white;
+
     QColor dg(0x4A, 0x4A, 0x4A);
     gradient.setColorAt(0.00, lg);
     gradient.setColorAt(0.25, Qt::white);
@@ -183,11 +191,15 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QFontMetrics fm(font, this);
     painter.setFont(font);
 
-    MaEditorWgt* ui = editor->getUI();
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
-    int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
+    bool countClippedBase = showStartPos
+                                ? COUNT_FIRST_CLIPPED_BASE
+                                : COUNT_LAST_CLIPPED_BASE;
+    int pos = showStartPos
+                  ? ui->getScrollController()->getFirstVisibleBase(countClippedBase)
+                  : ui->getScrollController()->getLastVisibleBase(seqArea->width(), countClippedBase);
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
@@ -197,9 +209,13 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
 
     foreach (const int rowNumber, visibleRows) {
         const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(rowNumber);
-        int offs = getBaseCounts(rowNumber, pos, !showStartPos);
-        int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
-        QString offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);
+        int offs = getBaseCounts(rowNumber, pos, !showStartPos ? countClippedBase : false);
+        int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, countClippedBase);
+        QString offset = offs + 1 > seqSize
+                             ? QString::number(seqSize + 1)
+                             : showStartPos
+                                   ? QString::number(offs + 1) + " "
+                                   : " " + QString::number(offs + 1);
         if (showStartPos && offs == 0) {
             painter.setPen(Qt::black);
             QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
@@ -214,15 +230,20 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
                 drawRefSequence(painter, rbr);
             }
             painter.drawText(rbr, Qt::AlignTop, "]");
-            offset = QString::number(offs);
+            //offset = QString::number(offs);
         } else {
             painter.setPen(dg);
         }
-        QRect tr(OFFS_WIDGET_BORDER + (showStartPos ? lbw : 0), yRange.startPos, widgetWidth - 2 * OFFS_WIDGET_BORDER - (showStartPos ? lbw : rbw), yRange.length);
+        QRect tr(OFFS_WIDGET_BORDER + (showStartPos ? lbw : 0),
+                 yRange.startPos, widgetWidth - 2 * OFFS_WIDGET_BORDER - (showStartPos ? lbw : rbw), yRange.length);
         if (rowNumber == refSeq) {
             drawRefSequence(painter, tr);
         }
-        painter.drawText(tr, Qt::AlignRight | Qt::AlignTop, offset);
+        painter.drawText(tr,
+                         showStartPos
+                             ? Qt::AlignRight | Qt::AlignTop
+                             : Qt::AlignLeft | Qt::AlignTop,
+                         offset);
     }
 }
 

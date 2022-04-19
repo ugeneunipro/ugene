@@ -201,7 +201,7 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus& os, int column) {
     MSAEditor* editor = getEditor(os);
     GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
-    BaseWidthController* baseWidthController = editor->getUI()->getBaseWidthController();
+    BaseWidthController *baseWidthController = editor->getUI()->getUI()->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
                                                    consensusArea->geometry().top())),
                  QSize(baseWidthController->getBaseWidth(),

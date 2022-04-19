@@ -71,11 +71,11 @@ MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
     return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
-McaEditorWgt* McaEditor::getUI() const {
-    return qobject_cast<McaEditorWgt*>(ui);
+McaEditorWgt *McaEditor::getUI() const {
+    return qobject_cast<McaEditorWgt *>(ui);
 }
 
-void McaEditor::buildStaticToolbar(QToolBar* tb) {
+void McaEditor::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(showChromatogramsAction);
     tb->addAction(showOverviewAction);
     tb->addSeparator();
@@ -160,7 +160,7 @@ void McaEditor::sl_showConsensusTab() {
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
-QWidget* McaEditor::createWidget() {
+QWidget *McaEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
     ui = new McaEditorWgt(this);
 
@@ -173,7 +173,7 @@ QWidget* McaEditor::createWidget() {
     QString objName = "mca_editor_" + maObject->getGObjectName();
     ui->setObjectName(objName);
 
-    connect(ui, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
+    connect(ui, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
     initActions();
 
@@ -236,7 +236,7 @@ void McaEditor::initActions() {
     connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
-    ui->getOverviewArea()->setVisible(overviewVisible);
+    getUI()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -310,8 +310,8 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     navigationMenu->addAction(mismatchController->getNextMismatchAction());
 }
 
-void McaEditor::addEditMenu(QMenu* menu) {
-    QMenu* editMenu = menu->addMenu(tr("Edit"));
+void McaEditor::addEditMenu(QMenu *menu) {
+    QMenu *editMenu = menu->addMenu(tr("Edit"));
     editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
     auto ui = getUI();
@@ -340,7 +340,7 @@ void McaEditor::addEditMenu(QMenu* menu) {
     editMenu->addAction(redoAction);
 }
 
-MaEditorSelectionController* McaEditor::getSelectionController() const {
+MaEditorSelectionController *McaEditor::getSelectionController() const {
     return selectionController;
 }
 }  // namespace U2

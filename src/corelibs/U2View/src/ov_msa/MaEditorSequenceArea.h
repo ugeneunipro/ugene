@@ -76,6 +76,8 @@ public:
     int getLastVisibleBase(bool countClipped) const;
     int getNumVisibleBases() const;
 
+    void setFirstVisibleBase(int firstVisibleBase);
+
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
@@ -154,10 +156,17 @@ public:
 
     QAction* getReplaceCharacterAction() const;
 
+    void applyColorScheme(const QString& id);
+
 public slots:
     void sl_changeColorSchemeOutside(const QString& id);
     void sl_delCurrentSelection();
     void sl_changeCopyFormat(const QString& formatId);
+
+    /** Switches between Original and Sequence row orders. */
+    virtual void sl_toggleSequenceRowOrder(bool isOrderBySequence) {
+        Q_UNUSED(isOrderBySequence);
+    };
 
 protected slots:
     void sl_changeColorScheme();
@@ -208,12 +217,12 @@ signals:
     void si_collapsingModeChanged();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
-    void paintEvent(QPaintEvent* event);
-    void wheelEvent(QWheelEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
+    virtual void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
     void keyPressEvent(QKeyEvent*);
     void keyReleaseEvent(QKeyEvent*);
@@ -269,7 +278,6 @@ protected:
     MsaHighlightingSchemeFactory* getDefaultHighlightingSchemeFactory() const;
 
     virtual void getColorAndHighlightingIds(QString& csid, QString& hsid);
-    void applyColorScheme(const QString& id);
 
     void processCharacterInEditMode(QKeyEvent* e);
     void processCharacterInEditMode(char newCharacter);
