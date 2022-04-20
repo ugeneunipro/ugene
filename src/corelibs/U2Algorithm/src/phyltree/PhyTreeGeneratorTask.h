@@ -33,13 +33,13 @@ namespace U2 {
 class U2ALGORITHM_EXPORT PhyTreeGeneratorTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
+    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma,
+                         const CreatePhyTreeSettings& settings,
+                         const TaskFlags& taskFlags = TaskFlag_NoRun | TaskFlag_FailOnSubtaskError);
 
     const PhyTree& getResult() const;
 
     const CreatePhyTreeSettings& getSettings() const;
-
-    ReportResult report() override;
 
 protected:
     const MultipleSequenceAlignment inputMA;

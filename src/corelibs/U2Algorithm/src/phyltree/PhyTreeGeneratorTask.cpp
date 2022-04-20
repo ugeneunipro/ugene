@@ -29,8 +29,8 @@
 
 namespace U2 {
 
-PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
-    : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), TaskFlag_NoRun | TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings) {
+PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings, const TaskFlags& taskFlags)
+    : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), taskFlags), inputMA(ma), settings(_settings) {
     tpm = Task::Progress_Manual;
 }
 
@@ -40,10 +40,6 @@ const PhyTree& PhyTreeGeneratorTask::getResult() const {
 
 const CreatePhyTreeSettings& PhyTreeGeneratorTask::getSettings() const {
     return settings;
-}
-
-Task::ReportResult PhyTreeGeneratorTask::report() {
-    return ReportResult_Finished;
 }
 
 PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
@@ -72,11 +68,11 @@ void PhyTreeGeneratorLauncherTask::prepare() {
 }
 
 Task::ReportResult PhyTreeGeneratorLauncherTask::report() {
-    CHECK(task != nullptr && !task->getStateInfo().isCoR(), ReportResult_Finished);
+    CHECK(!stateInfo.isCoR() && task != nullptr && !task->getStateInfo().isCoR(), ReportResult_Finished);
     PhyTree tree = task->getResult();
     SAFE_POINT(tree != nullptr, "Tree is not present!", ReportResult_Finished);
     QSet<PhyNode*> nodes = tree->getNodes();
-    for (PhyNode* node : nodes) {
+    for (PhyNode* node : qAsConst(nodes)) {
         bool ok = false;
         QString rowName = node->getName();
         CHECK_CONTINUE(!rowName.isEmpty());  // Not an inner node.
@@ -84,8 +80,8 @@ Task::ReportResult PhyTreeGeneratorLauncherTask::report() {
         CHECK_EXT(ok && index >= 0 && index < originalRowNameByIndex.length(),
                   setError(tr("Failed to map row name: %1").arg(rowName)),
                   ReportResult_Finished);
-        QString originalName = originalRowNameByIndex[index];
-        node->setName(originalName);
+        QString originalRowName = originalRowNameByIndex[index];
+        node->setName(originalRowName);
     }
     result = tree;
     return ReportResult_Finished;

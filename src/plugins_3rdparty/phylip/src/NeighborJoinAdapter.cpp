@@ -107,7 +107,7 @@ CreatePhyTreeWidget* NeighborJoinAdapter::createPhyTreeSettingsWidget(const Mult
 }
 
 NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
-    : PhyTreeGeneratorTask(ma, s), memLocker(stateInfo) {
+    : PhyTreeGeneratorTask(ma, s, TaskFlag_FailOnSubtaskError), memLocker(stateInfo) {
     setTaskName("NeighborJoin algorithm");
 }
 
