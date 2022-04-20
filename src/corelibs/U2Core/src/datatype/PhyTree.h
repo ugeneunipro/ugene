@@ -39,7 +39,10 @@ public:
     PhyTreeData();
     PhyTreeData(const PhyTreeData& other);
     ~PhyTreeData();
-    QList<const PhyNode*> collectNodes() const;
+
+    /** Returns all nodes in the tree. */
+    QSet<PhyNode*> getNodes() const;
+
     void print() const;
 
     void setRootNode(PhyNode* _rootNode) {
@@ -98,7 +101,10 @@ public:
     const PhyNode* getSecondNodeOfBranch(int branchNumber) const;
     double getBranchesDistance(int branchNumber) const;
     double getBranchesNodeValue(int branchNumber) const;
-    void validate(QList<const PhyNode*>& track) const;
+
+    /** Adds a node and all node children into the collection. */
+    void addIfNotPreset(QSet<PhyNode*>& nodes);
+
     bool isConnected(const PhyNode* node) const;
     PhyNode* clone() const;
 

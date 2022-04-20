@@ -139,6 +139,15 @@ void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus& os, const QStrin
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNoErrorsInLog"
+void GTUtilsLog::checkNoErrorsInLog(HI::GUITestOpStatus& os) {
+    QList<LogMessage*> messages = GTLogTracer::getMessages();
+    for (LogMessage* message : qAsConst(messages)) {
+        GT_CHECK(message->level != LogLevel_ERROR, "Found error message in log: " + message->text);
+    }
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

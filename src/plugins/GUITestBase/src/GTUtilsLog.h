@@ -62,6 +62,9 @@ public:
     static void checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
 
+    /** Checks that there is no errors in log. Fails if there are erorrs. */
+    static void checkNoErrorsInLog(HI::GUITestOpStatus& os);
+
     /** Waits for the message to appear in the log with the given timeout. */
     static void checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis = 30000);
 

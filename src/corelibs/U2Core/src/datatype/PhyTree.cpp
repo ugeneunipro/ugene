@@ -103,13 +103,12 @@ void PhyTreeData::print() const {
     rootNode->print(nodes, distance, tab);
 }
 
-QList<const PhyNode*> PhyTreeData::collectNodes() const {
-    QList<const PhyNode*> track;
-
+QSet<PhyNode*> PhyTreeData::getNodes() const {
+    QSet<PhyNode*> nodes;
     if (rootNode != nullptr) {
-        rootNode->validate(track);
+        rootNode->addIfNotPreset(nodes);
     }
-    return track;
+    return nodes;
 }
 
 const PhyNode* PhyNode::getSecondNodeOfBranch(int branchNumber) const {
@@ -126,18 +125,13 @@ double PhyNode::getBranchesNodeValue(int branchNumber) const {
     return branches.at(branchNumber)->nodeValue;
 }
 
-void PhyNode::validate(QList<const PhyNode*>& track) const {
-    if (track.contains(this)) {
-        return;
-    }
-    track.append(this);
-    foreach (PhyBranch* b, branches) {
+void PhyNode::addIfNotPreset(QSet<PhyNode*>& nodes) {
+    CHECK(!nodes.contains(this), );
+    nodes.insert(this);
+    for (PhyBranch* b : qAsConst(branches)) {
         assert(b->node1 != nullptr && b->node2 != nullptr);
-        if (b->node1 != this) {
-            b->node1->validate(track);
-        } else if (b->node2 != this) {
-            b->node2->validate(track);
-        }
+        b->node1->addIfNotPreset(nodes);
+        b->node2->addIfNotPreset(nodes);
     }
 }
 
