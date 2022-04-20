@@ -737,20 +737,15 @@ void MultipleAlignmentObject::releaseState() {
     }
 }
 
-bool MultipleAlignmentObject::hasGaps() const {
+bool MultipleAlignmentObject::hasNonTrailingGap() const {
     const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
-    for (const QVector<U2MsaGap>& vector : qAsConst(listGapModel)) {
-        if (vector.size() > 1) {
-            //if we have more than one set of gaps in a row - they are 100% removable
-            return true;
-        }
-    }    
     for (int i = 0; i < getRowCount(); i++) {
-        //if remaining gaps isn't trailing we can remove them too
-        int gapLength = listGapModel[i].size() == 0 ? 0 : listGapModel[i][0].length;
-        const MultipleAlignmentRow &row = getRow(i);
-        qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
-        if (rowLengthWithoutTrailing + gapLength != getLength()) {
+        if (listGapModel[i].isEmpty()) {
+            continue;
+        } else if (listGapModel[i].size() > 1) {
+            return true;
+        } 
+        if (listGapModel[i][0].startPos != getRow(i)->getRowLengthWithoutTrailing()) {
             return true;
         }
     }

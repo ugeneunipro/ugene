@@ -301,7 +301,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     reverseAction->setEnabled(canEditSelectedArea);
     complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
-    removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasGaps());
+    removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasNonTrailingGap());
 }
 
 void MSAEditorSequenceArea::sl_delCol() {
