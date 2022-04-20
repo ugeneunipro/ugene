@@ -356,7 +356,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
 }
 
 void MSAEditorSequenceArea::sl_delCol() {
-    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getRowCount());
+    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(editor->getUI(), editor->getMaObject()->getRowCount());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -463,7 +463,7 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
                                ? U2Region(0, msaObject->getLength())  // Whole alignment.
                                : U2Region::fromXRange(selection.getRectList().first());
 
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, this);
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, editor->getUI());
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -647,7 +647,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile() {
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
-    QStringList urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);
+    QStringList urls = U2FileDialog::getOpenFileNames(editor->getUI(), tr("Open file with sequences"), lod.dir, filter);
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
@@ -673,7 +673,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
 
-    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, this);
+    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, editor->getUI());
     QList<DNASequence> objectsToAdd;
     U2OpStatus2Log os;
     foreach (GObject* obj, objects) {
