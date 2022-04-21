@@ -200,6 +200,9 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
         }
     }
     docs.append(newDoc);
+    if (AppContext::getProject() != nullptr) {
+        AppContext::getProject()->addDocument(newDoc);
+    }
 }
 
 }  // namespace U2

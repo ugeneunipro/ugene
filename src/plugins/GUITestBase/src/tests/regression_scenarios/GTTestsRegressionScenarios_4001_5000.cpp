@@ -3235,6 +3235,37 @@ GUI_TEST_CLASS_DEFINITION(test_4489) {
     CHECK_SET_ERR(expectedColor == currentColor, QString("An unexpected color, maybe overview was not rendered: expected %1, got %2").arg(expectedColorString).arg(currentColorString));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4500) {
+    // 1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 2. Open Remove Subsequence dialog
+    //  - Fill the dialog : region to remove – 1..1000
+    //  - check Save to new file
+    //  - check Merge annotations to this file
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
+    GTKeyboardUtils::selectAll();
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, RemovePartFromSequenceDialogFiller::Remove, 
+                                     true, sandBoxDir + "4500_result.gb", RemovePartFromSequenceDialogFiller::Genbank));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Open result file
+    // Expected state annotation locations changed accordingly
+    GTUtilsSequenceView::openSequenceView(os, "4500_result.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList newRegions({"42..1658", "join(1970..2413, 2412..2873)", "2875..3999", "4048..4203"});
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    for (const QTreeWidgetItem* item : qAsConst(items)) {
+        if (!newRegions.contains(item->text(2)) ) {
+            CHECK_SET_ERR(false, "Unexpected CDS location " + item->text(2));
+        }
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4505) {
     //    1. Open "test/_common_data/scenarios/msa/Chikungunya_E1.fasta".
     GTLogTracer l;
