@@ -71,11 +71,11 @@ Task::ReportResult PhyTreeGeneratorLauncherTask::report() {
     CHECK(!stateInfo.isCoR() && task != nullptr && !task->getStateInfo().isCoR(), ReportResult_Finished);
     PhyTree tree = task->getResult();
     SAFE_POINT(tree != nullptr, "Tree is not present!", ReportResult_Finished);
-    QSet<PhyNode*> nodes = tree->getNodes();
+    QList<PhyNode*> nodes = tree->getNodesPreOrder();
     for (PhyNode* node : qAsConst(nodes)) {
         bool ok = false;
         QString rowName = node->getName();
-        CHECK_CONTINUE(!rowName.isEmpty());  // Not an inner node.
+        CHECK_CONTINUE(rowName.startsWith(RENAMED_ROW_PREFIX));  // Filter inner nodes. Name may be empty or equal to the distance (PhyML).
         int index = rowName.mid(RENAMED_ROW_PREFIX.length()).toInt(&ok);
         CHECK_EXT(ok && index >= 0 && index < originalRowNameByIndex.length(),
                   setError(tr("Failed to map row name: %1").arg(rowName)),

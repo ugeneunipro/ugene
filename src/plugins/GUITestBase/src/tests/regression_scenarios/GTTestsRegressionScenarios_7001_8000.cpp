@@ -2539,11 +2539,12 @@ GUI_TEST_CLASS_DEFINITION(test_7582) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
+    GTLogTracer logTracer;
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunBuildTreeScenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkNoErrorsInLog(os);
     GTUtilsMsaEditor::getTreeView(os);  // Check that tree view was opened.
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Found error in the log: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7584) {
