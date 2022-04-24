@@ -3338,7 +3338,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto separateRB = GTWidget::findRadioButton(os, QString::fromUtf8("separateRB"), dialog);
+            auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3379,7 +3379,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto separateRB = GTWidget::findRadioButton(os, QString::fromUtf8("separateRB"), dialog);
+            auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -253,7 +253,7 @@ void RemoteDBDialogFillerDeprecated::commonScenario() {
         GTComboBox::selectItemByIndex(os, formatBox, outFormatVal, useMethod);
     }
     if (!addToProject) {
-        auto addToProjectButton = GTWidget::findCheckBox(os, QString::fromUtf8("chbAddToProjectCheck"), dialog);
+        auto addToProjectButton = GTWidget::findCheckBox(os, "chbAddToProjectCheck", dialog);
         GTCheckBox::setChecked(os, addToProjectButton, false);
     }
     if (pressCancel) {
