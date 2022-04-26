@@ -72,7 +72,7 @@ QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
         QList<GObject*> writableMsaObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
         writableMsaObjects.removeOne(maObject);
         std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), [&](const GObject* o1, const GObject* o2) {
-            return o1->getGObjectName().compare(o2->getGObjectName(), Qt::CaseInsensitive);
+            return o1->getGObjectName() < o2->getGObjectName();
         });
 
         if (writableMsaObjects.isEmpty()) {
