@@ -173,9 +173,9 @@ public:
 
     void saveState();
     void releaseState();
-    /*
-    * Returns true if there is removable gaps in alignment.
-    */
+    /**
+     * Returns true if there are any gaps except trailing.
+     */
     bool hasNonTrailingGap() const;
 
 signals:
