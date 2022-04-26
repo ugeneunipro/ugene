@@ -79,7 +79,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
     seqObj->replaceRegion(regionToReplace, sequence2Insert, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    annotationForReport = FixAnnotationsUtils::fixAnnotations(&stateInfo, seqObj, regionToReplace, sequence2Insert, recalculateQualifiers, strat, docs);
+    annotationForReport = FixAnnotationsUtils::fixAnnotations(&stateInfo, seqObj, regionToReplace, sequence2Insert, docs, recalculateQualifiers, strat);
     if (!annotationForReport.isEmpty()) {
         setReportingEnabled(true);
     }

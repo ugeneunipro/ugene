@@ -30,6 +30,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
@@ -303,7 +304,7 @@ void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Reg
 
     U2OpStatusImpl os;
     seqObj->replaceRegion(region, sequence, os);
-    FixAnnotationsUtils::fixAnnotations(&os, seqObj, region, sequence, s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
+    FixAnnotationsUtils::fixAnnotations(&os, seqObj, region, sequence, AppContext::getProject()->getDocuments(), s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
     SAFE_POINT_OP(os, );
     ADVSequenceObjectContext* context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
     SAFE_POINT(context != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
