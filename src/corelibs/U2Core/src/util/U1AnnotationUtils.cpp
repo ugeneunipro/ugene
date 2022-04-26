@@ -579,15 +579,11 @@ FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject* seqOb
 
 void FixAnnotationsUtils::fixAnnotations() {
     QList<GObject*> annotationTablesList;
-    if (AppContext::getProject() != nullptr) {
-        annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
-    } else {
-        for (Document* d : qAsConst(docs)) {
-            QList<GObject*> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            for (GObject* table : qAsConst(allAnnotationTables)) {
-                if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
-                    annotationTablesList.append(table);
-                }
+    for (Document* d : qAsConst(docs)) {
+        QList<GObject*> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        for (GObject* table : qAsConst(allAnnotationTables)) {
+            if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
+                annotationTablesList.append(table);
             }
         }
     }
