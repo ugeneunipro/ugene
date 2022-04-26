@@ -103,13 +103,12 @@ void PhyTreeData::print() const {
     rootNode->print(nodes, distance, tab);
 }
 
-QList<const PhyNode*> PhyTreeData::collectNodes() const {
-    QList<const PhyNode*> track;
-
+QList<PhyNode*> PhyTreeData::getNodesPreOrder() const {
+    QList<PhyNode*> nodes;
     if (rootNode != nullptr) {
-        rootNode->validate(track);
+        rootNode->addIfNotPreset(nodes);
     }
-    return track;
+    return nodes;
 }
 
 const PhyNode* PhyNode::getSecondNodeOfBranch(int branchNumber) const {
@@ -126,18 +125,23 @@ double PhyNode::getBranchesNodeValue(int branchNumber) const {
     return branches.at(branchNumber)->nodeValue;
 }
 
-void PhyNode::validate(QList<const PhyNode*>& track) const {
-    if (track.contains(this)) {
-        return;
-    }
-    track.append(this);
-    foreach (PhyBranch* b, branches) {
+void PhyNode::addIfNotPreset(QList<PhyNode*>& nodes) {
+    CHECK(!nodes.contains(this), );
+    nodes.append(this);
+    for (PhyBranch* b : qAsConst(branches)) {
         assert(b->node1 != nullptr && b->node2 != nullptr);
-        if (b->node1 != this) {
-            b->node1->validate(track);
-        } else if (b->node2 != this) {
-            b->node2->validate(track);
-        }
+        b->node1->addIfNotPreset(nodes);
+        b->node2->addIfNotPreset(nodes);
+    }
+}
+
+void PhyNode::addIfNotPreset(QList<const PhyNode*>& nodes) const {
+    CHECK(!nodes.contains(this), );
+    nodes.append(this);
+    for (PhyBranch* b : qAsConst(branches)) {
+        assert(b->node1 != nullptr && b->node2 != nullptr);
+        b->node1->addIfNotPreset(nodes);
+        b->node2->addIfNotPreset(nodes);
     }
 }
 
@@ -254,17 +258,19 @@ PhyNode::~PhyNode() {
 }
 
 PhyNode* PhyNode::clone() const {
-    QSet<const PhyNode*> track;
-    addToTrack(track);
+    QList<const PhyNode*> nodesPreOrder;
+    addIfNotPreset(nodesPreOrder);
 
-    QSet<PhyBranch*> allBranches;
+    QList<PhyBranch*> allBranches;
     QMap<const PhyNode*, PhyNode*> nodeTable;
-    for (const PhyNode* n : qAsConst(track)) {
+    for (const PhyNode* n : qAsConst(nodesPreOrder)) {
         PhyNode* n2 = new PhyNode();
         n2->name = n->name;
         nodeTable[n] = n2;
         for (PhyBranch* b : qAsConst(n->branches)) {
-            allBranches.insert(b);
+            if (!allBranches.contains(b)) {
+                allBranches.append(b);
+            }
         }
     }
     for (PhyBranch* b : qAsConst(allBranches)) {
@@ -295,17 +301,6 @@ void PhyNode::print(QList<PhyNode*>& nodes, int tab, int distance) {
             int d = blist[i]->distance;
             blist[i]->node2->print(nodes, tab, d);
         }
-    }
-}
-
-void PhyNode::addToTrack(QSet<const PhyNode*>& track) const {
-    if (track.contains(this)) {
-        return;
-    }
-    track.insert(this);
-    foreach (PhyBranch* b, branches) {
-        b->node1->addToTrack(track);
-        b->node2->addToTrack(track);
     }
 }
 

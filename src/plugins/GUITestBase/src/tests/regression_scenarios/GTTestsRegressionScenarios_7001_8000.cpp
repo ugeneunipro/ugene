@@ -2525,8 +2525,30 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7582) {
+    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/same_name_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class RunBuildTreeScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "MrBayes");
+            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_7582.nwk", dialog);  // Set output file name.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunBuildTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::getTreeView(os);  // Check that tree view was opened.
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Found error in the log: " + logTracer.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7584) {
-    //Open "samples/FASTA/human_T1.fa".
+    // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2547,7 +2569,7 @@ GUI_TEST_CLASS_DEFINITION(test_7584) {
     // Click Create button in "Save result to annotation" dialog
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "human_T1.fa", "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "ADV_MENU_ALIGN", "Align sequence to mRNA" }));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ALIGN", "Align sequence to mRNA"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // Remove this file by Del button as quick as possible
@@ -2555,7 +2577,6 @@ GUI_TEST_CLASS_DEFINITION(test_7584) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
-
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

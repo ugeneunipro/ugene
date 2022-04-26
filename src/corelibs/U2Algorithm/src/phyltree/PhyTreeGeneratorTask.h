@@ -33,17 +33,13 @@ namespace U2 {
 class U2ALGORITHM_EXPORT PhyTreeGeneratorTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
-    ~PhyTreeGeneratorTask() {
-    }
-    void run();
-    PhyTree getResult() {
-        return result;
-    }
-    const CreatePhyTreeSettings& getSettings() {
-        return settings;
-    }
-    ReportResult report();
+    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma,
+                         const CreatePhyTreeSettings& settings,
+                         const TaskFlags& taskFlags = TaskFlag_NoRun | TaskFlag_FailOnSubtaskError);
+
+    const PhyTree& getResult() const;
+
+    const CreatePhyTreeSettings& getSettings() const;
 
 protected:
     const MultipleSequenceAlignment inputMA;
@@ -51,42 +47,23 @@ protected:
     CreatePhyTreeSettings settings;
 };
 
-class SeqNamesConvertor {
-public:
-    SeqNamesConvertor()
-        : lastIdStr("a") {
-    }
-
-    void replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma);
-    void restoreNames(const PhyTree& tree);
-
-private:
-    const QString& generateNewAlphabeticId();
-
-    QString lastIdStr;
-    QMap<QString, QString> namesMap;
-};
-
 class U2ALGORITHM_EXPORT PhyTreeGeneratorLauncherTask : public Task {
     Q_OBJECT
 public:
     PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
-    ~PhyTreeGeneratorLauncherTask() {};
-    PhyTree getResult() {
-        return result;
-    }
-    void prepare();
-    void run() {};
-    ReportResult report();
-private slots:
+    const PhyTree& getResult() const;
+    void prepare() override;
+    ReportResult report() override;
+
+public slots:
     void sl_onCalculationCanceled();
 
 private:
     MultipleSequenceAlignment inputMA;
+    QStringList originalRowNameByIndex;
     PhyTree result;
     CreatePhyTreeSettings settings;
-    PhyTreeGeneratorTask* task;
-    SeqNamesConvertor namesConvertor;
+    PhyTreeGeneratorTask* task = nullptr;
 };
 
 }  // namespace U2

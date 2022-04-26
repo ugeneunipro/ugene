@@ -44,7 +44,7 @@ public:
 class NeighborJoinCalculateTreeTask : public PhyTreeGeneratorTask {
 public:
     NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
-    void run();
+    void run() override;
 
 private:
     static QMutex runLock;
