@@ -2245,6 +2245,20 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7520) {
+    // 1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // 2. Add "Improve Reads with Trimmomatic" to the scene
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+
+    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(os, steps);
+
+    GTUtilsDialog::waitForDialog(os, addFiller);
+    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7531) {
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
