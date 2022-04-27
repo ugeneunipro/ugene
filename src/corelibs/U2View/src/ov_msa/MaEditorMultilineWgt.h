@@ -148,6 +148,7 @@ signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
+    void si_maEditorUIChanged();
 
 public slots:
     /** Switches between Original and Sequence row orders. */

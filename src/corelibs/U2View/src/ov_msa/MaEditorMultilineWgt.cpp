@@ -173,6 +173,9 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
         }
         updateChildren();
         scrollController->setMultilineVScrollbarValue(currentScroll);
+
+        emit si_maEditorUIChanged();
+
         return true;
     }
     return false;

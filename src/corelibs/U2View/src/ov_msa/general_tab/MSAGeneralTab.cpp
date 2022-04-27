@@ -98,6 +98,11 @@ void MSAGeneralTab::connectSignals() {
             SLOT(sl_alignmentChanged()));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_alignmentChanged()));
     connect(sequenceArea, SIGNAL(si_copyFormattedChanging(bool)), copyButton, SLOT(setEnabled(bool)));
+
+    // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
+    connect(msaEditor->getUI(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
+        initializeParameters();
+    });
 }
 
 void MSAGeneralTab::initializeParameters() {
