@@ -219,6 +219,11 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     sl_updateHint();
     sl_highlightingParametersChanged();
+
+    // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
+    connect(m->getUI(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
+        seqArea = msa->getMaEditorWgt()->getSequenceArea();
+    });
 }
 
 void MSAHighlightingTab::sl_sync() {
