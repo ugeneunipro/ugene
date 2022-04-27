@@ -160,8 +160,7 @@ void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& o
 
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const QPoint& position) {
-    MSAEditorSequenceArea* msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(msaSeqArea != nullptr, "MSA Editor sequence area is not found");
+    auto msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(msaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -232,8 +231,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "moveMouseToPosition"
 void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
-    MSAEditorSequenceArea* msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(msaSeqArea != nullptr, "MSA Editor sequence area is not found");
+    auto msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -348,7 +346,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
 
     int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
     GTMouseDriver::moveTo(globalCoord);
@@ -417,7 +415,7 @@ int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(GUITestOpStatus& os, bo
 
 #define GT_METHOD_NAME "getLength"
 int GTUtilsMSAEditorSequenceArea::getLength(GUITestOpStatus& os) {
-    QWidget* statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::length(os, statusWidget);
 }
 #undef GT_METHOD_NAME
