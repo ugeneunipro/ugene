@@ -73,10 +73,10 @@ void ExportDocumentDialogFiller::commonScenario() {
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
         GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-        auto compressCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("compressCheck"), dialog);
+        auto compressCheckBox = GTWidget::findCheckBox(os, "compressCheck", dialog);
         GTCheckBox::setChecked(os, compressCheckBox, compressFile);
 
-        auto addCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjCheck"), dialog);
+        auto addCheckBox = GTWidget::findCheckBox(os, "addToProjCheck", dialog);
         GTCheckBox::setChecked(os, addCheckBox, addToProject);
     }
 

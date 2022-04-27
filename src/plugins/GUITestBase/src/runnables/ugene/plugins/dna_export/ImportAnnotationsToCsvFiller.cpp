@@ -166,11 +166,11 @@ public:
 void ImportAnnotationsToCsvFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto readFileLineEdit = GTWidget::findLineEdit(os, QString::fromUtf8("readFileName"), dialog);
+    auto readFileLineEdit = GTWidget::findLineEdit(os, "readFileName", dialog);
     GTLineEdit::setText(os, readFileLineEdit, fileToRead);
 
-    GTWidget::findLineEdit(os, QString::fromUtf8("saveFileName"), dialog);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, QString::fromUtf8("saveFileName"), dialog), resultFile);
+    GTWidget::findLineEdit(os, "saveFileName", dialog);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "saveFileName", dialog), resultFile);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
@@ -182,7 +182,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GT_CHECK(spinBox != nullptr, "SpinBox not found");
     GTSpinBox::setValue(os, spinBox, numberOfLines, useMethod);
 
-    auto checkBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectCheck"), dialog);
+    auto checkBox = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
     GTCheckBox::setChecked(os, checkBox, addResultFileToProject);
 
     if (columnSeparator) {
@@ -199,16 +199,16 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
         GTRadioButton::click(os, "scriptRadioButton", dialog);
     }
 
-    auto firstLinesLineEdit = GTWidget::findLineEdit(os, QString::fromUtf8("prefixToSkipEdit"), dialog);
+    auto firstLinesLineEdit = GTWidget::findLineEdit(os, "prefixToSkipEdit", dialog);
     GTLineEdit::setText(os, firstLinesLineEdit, skipAllLinesStartsWith);
 
-    auto separatorsModeCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("separatorsModeCheck"), dialog);
+    auto separatorsModeCheckBox = GTWidget::findCheckBox(os, "separatorsModeCheck", dialog);
     GTCheckBox::setChecked(os, separatorsModeCheckBox, interpretMultipleAsSingle);
 
-    auto removeQuotesCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("removeQuotesCheck"), dialog);
+    auto removeQuotesCheckBox = GTWidget::findCheckBox(os, "removeQuotesCheck", dialog);
     GTCheckBox::setChecked(os, removeQuotesCheckBox, removeQuotesButton);
 
-    auto defaultAnnotationNameLineEdit = GTWidget::findLineEdit(os, QString::fromUtf8("defaultNameEdit"), dialog);
+    auto defaultAnnotationNameLineEdit = GTWidget::findLineEdit(os, "defaultNameEdit", dialog);
     GTLineEdit::setText(os, defaultAnnotationNameLineEdit, defaultAnnotationName);
 
     auto previewButton = GTWidget::findPushButton(os, "previewButton", dialog);

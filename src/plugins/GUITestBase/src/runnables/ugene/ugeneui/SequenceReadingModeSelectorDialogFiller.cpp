@@ -41,7 +41,7 @@ SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller
 void SequenceReadingModeSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    auto buttonBox = GTWidget::findDialogButtonBox(os, QString::fromUtf8("buttonBox"), dialog);
+    auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
     if (cancel) {
         QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
         GT_CHECK(button != nullptr, "standard button not found");
@@ -49,22 +49,22 @@ void SequenceReadingModeSelectorDialogFiller::commonScenario() {
         return;
     }
     if (readingMode == Separate) {
-        auto separateRB = GTWidget::findRadioButton(os, QString::fromUtf8("separateRB"), dialog);
+        auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
         GTRadioButton::click(os, separateRB);
     }
     if (readingMode == Merge) {
-        auto mergeRB = GTWidget::findRadioButton(os, QString::fromUtf8("mergeRB"), dialog);
+        auto mergeRB = GTWidget::findRadioButton(os, "mergeRB", dialog);
         GTRadioButton::click(os, mergeRB);
 
-        auto mergeSpinBox = GTWidget::findSpinBox(os, QString::fromUtf8("mergeSpinBox"), dialog);
+        auto mergeSpinBox = GTWidget::findSpinBox(os, "mergeSpinBox", dialog);
         GTSpinBox::setValue(os, mergeSpinBox, bases, GTGlobals::UseKeyBoard);
     }
     if (readingMode == Join) {
-        auto malignmentRB = GTWidget::findRadioButton(os, QString::fromUtf8("malignmentRB"), dialog);
+        auto malignmentRB = GTWidget::findRadioButton(os, "malignmentRB", dialog);
         GTRadioButton::click(os, malignmentRB);
     }
     if (readingMode == Align) {
-        auto refalignmentRB = GTWidget::findRadioButton(os, QString::fromUtf8("refalignmentRB"), dialog);
+        auto refalignmentRB = GTWidget::findRadioButton(os, "refalignmentRB", dialog);
         GTRadioButton::click(os, refalignmentRB);
     }
 

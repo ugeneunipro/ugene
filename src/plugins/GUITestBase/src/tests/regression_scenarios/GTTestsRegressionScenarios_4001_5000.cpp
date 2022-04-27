@@ -5760,7 +5760,7 @@ GUI_TEST_CLASS_DEFINITION(test_4965) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
 
-            auto compressCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("compressCheck"), dialog);
+            auto compressCheckBox = GTWidget::findCheckBox(os, "compressCheck", dialog);
 
             QStringList checkFormats;
             checkFormats << "BAM"
