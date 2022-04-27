@@ -152,8 +152,10 @@ MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMsaEditorWindow(os);
+    // There are more than one msa_editor_name_list in multiline mode, so at first we get line #0 widget
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
     auto result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
+    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME

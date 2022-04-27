@@ -59,6 +59,7 @@
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
+#include "tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
@@ -2532,6 +2533,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/multiline/options
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0001);
+
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor
     /////////////////////////////////////////////////////////////////////////
