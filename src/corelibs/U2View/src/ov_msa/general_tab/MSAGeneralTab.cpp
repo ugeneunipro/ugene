@@ -101,8 +101,20 @@ void MSAGeneralTab::connectSignals() {
 
     // MaEditor UI changed it's state, for example multiline mode, we need to re-init some internals
     connect(msaEditor->getUI(), &MaEditorMultilineWgt::si_maEditorUIChanged, this, [this]() {
-        initializeParameters();
+        reInitializeParameters();
+        updateState();
     });
+}
+
+void MSAGeneralTab::reInitializeParameters() {
+    // Consensus type combobox
+    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getMaEditorWgt()->getConsensusArea());
+
+    // Copy formatted
+    copyButton->setToolTip(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->toolTip());
+
+    QString currentCopyFormattedID = msaEditor->getMaEditorWgt()->getSequenceArea()->getCopyFormattedAlgorithmId();
+    copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 }
 
 void MSAGeneralTab::initializeParameters() {

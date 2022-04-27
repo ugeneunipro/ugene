@@ -44,6 +44,26 @@ MaConsensusModeWidget::MaConsensusModeWidget(QWidget* parent)
     setupUi(this);
 }
 
+void MaConsensusModeWidget::reInit(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
+    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
+    SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
+
+    consArea = _consArea;
+    maObject = _maObject;
+
+    initConsensusTypeCombo();
+
+    connect(this, SIGNAL(si_algorithmChanged(QString)), consArea, SLOT(sl_changeConsensusAlgorithm(QString)));
+    connect(this, SIGNAL(si_thresholdChanged(int)), consArea, SLOT(sl_changeConsensusThreshold(int)));
+
+    connect(consArea,
+            SIGNAL(si_consensusAlgorithmChanged(QString)),
+            SLOT(sl_algorithmChanged(QString)));
+    connect(consArea,
+            SIGNAL(si_consensusThresholdChanged(int)),
+            SLOT(sl_thresholdChanged(int)));
+}
+
 void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
     SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
@@ -117,10 +137,13 @@ void MaConsensusModeWidget::sl_algorithmChanged(const QString& algoId) {
 }
 
 void MaConsensusModeWidget::sl_algorithmSelectionChanged(int index) {
-    SAFE_POINT(index >= 0, "Incorrect consensus algorithm index is detected", );
-    QString selectedAlgorithmId = consensusType->itemData(index).toString();
-    updateState();
-    emit si_algorithmChanged(selectedAlgorithmId);
+    if (index >= 0) {
+        QString selectedAlgorithmId = consensusType->itemData(index).toString();
+        updateState();
+        emit si_algorithmChanged(selectedAlgorithmId);
+    } else {
+        // Incorrect consensus algorithm index is detected
+    }
 }
 
 void MaConsensusModeWidget::sl_thresholdSliderChanged(int value) {
@@ -161,6 +184,7 @@ void MaConsensusModeWidget::initConsensusTypeCombo() {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
     QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);
+    consensusType->clear();
     foreach (const MSAConsensusAlgorithmFactory* algo, algos) {
         consensusType->addItem(algo->getName(), algo->getId());
     }
