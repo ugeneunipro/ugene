@@ -262,11 +262,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
         virtual void run() {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QCheckBox* includeAreaCheckbox = dialog->findChild<QCheckBox*>("include_area_selection");
-            CHECK_SET_ERR(includeAreaCheckbox != nullptr, "includeAreaCheckbox is NULL");
+            auto includeAreaCheckbox = GTWidget::findCheckBox(os, "include_area_selection", dialog);
 
-            QCheckBox* includeRepeatCheckbox = dialog->findChild<QCheckBox*>("include_repeat_selection");
-            CHECK_SET_ERR(includeRepeatCheckbox != nullptr, "include_repeat_selection is NULL");
+            auto includeRepeatCheckbox = GTWidget::findCheckBox(os, "include_repeat_selection", dialog);
 
             switch (scenario) {
                 case 1:

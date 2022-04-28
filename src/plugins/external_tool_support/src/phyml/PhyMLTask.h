@@ -94,10 +94,10 @@ class PhyMLSupportTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
     PhyMLSupportTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
     void onExternalToolFailed(const QString& err);
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     static const QString TMP_FILE_NAME;
     static const QString RESULT_BOOTSTRAP_EXT;

@@ -55,7 +55,7 @@ void ScriptEditorDialogFiller::commonScenario() {
     GTLineEdit::setText(os, scriptPathEdit, url);
 
     QTextEdit* edit = nullptr;
-    foreach (QTextEdit* textEdit, dialog->findChildren<QTextEdit*>()) {
+    foreach (QTextEdit* textEdit,   dialog->findChildren<QTextEdit*>()) {
         if (!textEdit->isReadOnly()) {
             edit = textEdit;
         }

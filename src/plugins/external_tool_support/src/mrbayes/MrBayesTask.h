@@ -90,9 +90,9 @@ class MrBayesSupportTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
     MrBayesSupportTask(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s);
-    void prepare();
-    Task::ReportResult report();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    Task::ReportResult report() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     QString tmpDirUrl;

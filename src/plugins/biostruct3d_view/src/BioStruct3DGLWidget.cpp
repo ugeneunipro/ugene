@@ -42,6 +42,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -101,7 +102,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject* obj, const Annotated
       dnaView(_dnaView), contexts(),
       rendererSettings(DEFAULT_RENDER_DETAIL_LEVEL),
       frameManager(manager), glFrame(new GLFrame(this)),
-      molSurface(0), surfaceRenderer(), surfaceCalcTask(0),
+      molSurface(0), surfaceRenderer(),
       anaglyphStatus(DISABLED),
       anaglyph(new AnaglyphRenderer(this, AnaglyphSettings::defaultSettings())),
 
@@ -764,8 +765,6 @@ void BioStruct3DGLWidget::createActions() {
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
     createStructuralAlignmentActions();
-
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_onTaskFinished(Task*)));
 }
 
 void BioStruct3DGLWidget::createStructuralAlignmentActions() {
@@ -966,7 +965,15 @@ void BioStruct3DGLWidget::sl_showSurface() {
     atoms = ctx.biostruct->getAllAtoms();
 
     QString surfaceType = qobject_cast<QAction*>(sender())->text();
-    surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
+    auto surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
+    connect(new TaskSignalMapper(surfaceCalcTask), &TaskSignalMapper::si_taskSucceeded, this, [this](Task* task) {
+        auto surfaceTask = qobject_cast<MolecularSurfaceCalcTask*>(task);
+        SAFE_POINT(surfaceTask != nullptr,
+                   L10N::nullPointerError(tr("Molecular surface calculation task for %1").arg(objectName())), );
+        molSurface.reset(surfaceTask->getCalculatedSurface());
+        makeCurrent();
+        update();
+    });
     AppContext::getTaskScheduler()->registerTopLevelTask(surfaceCalcTask);
 }
 
@@ -980,17 +987,6 @@ void BioStruct3DGLWidget::sl_hideSurface() {
 void BioStruct3DGLWidget::sl_selectSurfaceRenderer(QAction* action) {
     QString msRendererName = action->text();
     surfaceRenderer.reset(MolecularSurfaceRendererRegistry::createMSRenderer(msRendererName));
-
-    makeCurrent();
-    update();
-}
-
-void BioStruct3DGLWidget::sl_onTaskFinished(Task* task) {
-    if (surfaceCalcTask != task || surfaceCalcTask->getState() != Task::State_Finished) {
-        return;
-    }
-
-    molSurface.reset(surfaceCalcTask->getCalculatedSurface());
 
     makeCurrent();
     update();

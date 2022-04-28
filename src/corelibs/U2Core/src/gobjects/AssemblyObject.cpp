@@ -31,7 +31,6 @@
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -189,6 +188,15 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
 
 U2EntityRef AssemblyObject::dbi2dbiClone(const AssemblyObject* const srcObj, const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) {
     return dbi2dbiExtractRegion(srcObj, dstDbiRef, os, U2_REGION_MAX, hints);
+}
+
+qint64 AssemblyObject::getReadCount(U2OpStatus& os) const {
+    U2EntityRef entityRef = getEntityRef();
+    DbiConnection dbiConnection(entityRef.dbiRef, os);
+    CHECK_OP(os, 0);
+
+    U2AssemblyDbi* assemblyDbi = dbiConnection.dbi->getAssemblyDbi();
+    return assemblyDbi->countReads(entityRef.entityId, U2_REGION_MAX, os);
 }
 
 }  // namespace U2

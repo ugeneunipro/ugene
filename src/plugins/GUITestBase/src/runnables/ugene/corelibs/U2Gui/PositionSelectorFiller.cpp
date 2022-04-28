@@ -34,8 +34,7 @@ namespace U2 {
 void GoToDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* posEdit = dialog->findChild<QLineEdit*>("go_to_pos_line_edit");
-    GT_CHECK(posEdit != nullptr, "Line edit not found");
+    auto posEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", dialog);
 
     GTLineEdit::setText(os, posEdit, QString::number(goTo));
 

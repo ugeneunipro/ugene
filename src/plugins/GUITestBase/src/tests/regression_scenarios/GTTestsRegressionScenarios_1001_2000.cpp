@@ -1337,8 +1337,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
 
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // getting an info string
-            QWidget* w = dialog->findChild<QWidget*>("about_widget");
-            CHECK_SET_ERR(w != nullptr, "aboutWidget not found");
+            auto w = GTWidget::findWidget(os, "about_widget", dialog);
 
             QObject* parent = w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent != nullptr, "parentObject not found");
@@ -1383,8 +1382,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {  // commit AboutDialogController.cpp
 #endif
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // getting an info string
-            QWidget* w = dialog->findChild<QWidget*>("about_widget");
-            CHECK_SET_ERR(w != nullptr, "aboutWidget not found");
+            auto w = GTWidget::findWidget(os, "about_widget", dialog);
 
             QObject* parent = w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent != nullptr, "parentObject not found");
@@ -2417,8 +2415,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
-            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
+            auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
             int index = comboBox->findText("FASTA");
 
             CHECK_SET_ERR(index != -1, QString("item \"FASTA\" in combobox not found"));
@@ -2465,8 +2462,7 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1246", GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
 
-            QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
-            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
+            auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
             int index = comboBox->findText("SAM");
 
             CHECK_SET_ERR(index != -1, QString("item \"SAM\" in combobox not found"));
@@ -3823,7 +3819,7 @@ GUI_TEST_CLASS_DEFINITION(test_1408) {
 
             GTWidget::click(os, GTWidget::findWidget(os, "guessButton", dialog));
 
-            QTableWidget* previewTable = dialog->findChild<QTableWidget*>("previewTable");
+            auto previewTable = GTWidget::findTableWidget(os, "previewTable", dialog);
             QRect rect = previewTable->visualItemRect(previewTable->item(1, 1));
             GTUtilsDialog::waitForDialog(os, new RoleFiller(os, new innerScenario()));
             GTWidget::click(os, previewTable, Qt::LeftButton, rect.center());
@@ -4042,7 +4038,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
         }
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* methodNamesBox = dialog->findChild<QComboBox*>("methodNamesBox");
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "Bowtie") {
                     GTComboBox::selectItemByIndex(os, methodNamesBox, i);

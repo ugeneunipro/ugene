@@ -37,8 +37,8 @@ public:
     PhylipCmdlineTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
     ~PhylipCmdlineTask();
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
     static const QString PHYLIP_CMDLINE;
     static const QString MATRIX_ARG;

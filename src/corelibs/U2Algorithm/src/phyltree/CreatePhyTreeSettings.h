@@ -48,7 +48,6 @@ public:
     double fraction;
     QString consensusID;
     int mb_ngen;
-    QStringList rowsOrder;
 
     QString mrBayesSettingsScript;
     QStringList extToolArguments;

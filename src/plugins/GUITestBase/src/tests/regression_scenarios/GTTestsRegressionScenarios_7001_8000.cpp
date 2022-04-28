@@ -54,6 +54,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
@@ -82,6 +83,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
@@ -2365,6 +2367,13 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7555) {
+    // Check that among many empty assemblies in the file the one with reads is opened by default.
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/7555-reads-data-removed.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    CHECK_SET_ERR(GTUtilsAssemblyBrowser::getReadsCount(os) > 0, "No reads in the view");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7556) {
     // Check that IQ-TREE parameter input widgets work in sync with a manual parameters input as text.
     // Check that in Tree-Sync mode Drag & Drop of sequences in the MSA name list is disabled.
@@ -2455,6 +2464,25 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7573) {
+    // Open data/samples/PDB/1CF7.PDB
+    // Right click 3D Model->Molecular Surface->SAS.
+    // Press Ctrl+S and save the project.
+    // Press Ctrl+S many times.
+    //     Expected: UGENE doesn't crash.
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SAS"}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1CF7"));
+
+    GTUtilsProject::saveProjectAs(os, sandBoxDir + "7573/A.uprj");
+    for (int i = 0; i < 50; i++) {
+        GTKeyboardDriver::keyClick('S', Qt::ControlModifier);
+    }
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7575) {
     // Check that reset-zoom action does not crash UGENE.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -2495,6 +2523,59 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
 
         GTUtilsMsaEditor::resetZoom(os);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7582) {
+    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/same_name_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class RunBuildTreeScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "MrBayes");
+            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_7582.nwk", dialog);  // Set output file name.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunBuildTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::getTreeView(os);  // Check that tree view was opened.
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Found error in the log: " + logTracer.getJoinedErrorString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7584) {
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class OkClicker : public Filler {
+    public:
+        OkClicker(HI::GUITestOpStatus& _os)
+            : Filler(_os, "CreateAnnotationDialog") {
+        }
+        void run() override {
+            QWidget* w = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
+        }
+    };
+
+    // Select Align->Align sequence to mRNA from context menu
+    // In "Select Item" dialog expand  human_T1 and select corresponding sequence
+    // Push OK -> "Save result to annotation" dialog appeas
+    // Click Create button in "Save result to annotation" dialog
+    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "human_T1.fa", "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ALIGN", "Align sequence to mRNA"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    // Remove this file by Del button as quick as possible
+    GTUtilsProjectTreeView::click(os, "Annotations");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }  // namespace GUITest_regression_scenarios

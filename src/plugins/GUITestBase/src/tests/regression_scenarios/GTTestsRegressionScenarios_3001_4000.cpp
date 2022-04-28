@@ -51,9 +51,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
-#include <QProgressBar>
 #include <QPushButton>
-#include <QTableWidget>
 #include <QTextStream>
 #include <QThreadPool>
 
@@ -323,11 +321,12 @@ GUI_TEST_CLASS_DEFINITION(test_3052_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTUtilsDocument::unloadDocument(os, docName, false);
+    GTUtilsDocument::unloadDocument(os, docName, true);
     GTUtilsDocument::loadDocument(os, docName);
 
     GTUtilsLog::check(os, l);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_3072) {
     GTLogTracer l;
 
@@ -2648,8 +2647,7 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* filePath = dialog->findChild<QLineEdit*>("fileNameEdit");
-            CHECK_SET_ERR(filePath != nullptr, "fileNameEdit is NULL");
+            auto filePath = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             CHECK_SET_ERR(!GTLineEdit::copyText(os, filePath).isEmpty(), "Default file path is empty");
             GTLineEdit::setText(os, filePath, "");
 
@@ -2701,11 +2699,9 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox* startPos = dialog->findChild<QSpinBox*>("startLineEdit");
-            CHECK_SET_ERR(startPos != nullptr, "startLineEdit is NULL");
+            auto startPos = GTWidget::findSpinBox(os, "startLineEdit", dialog);
 
-            QSpinBox* endPos = dialog->findChild<QSpinBox*>("endLineEdit");
-            CHECK_SET_ERR(endPos != nullptr, "endLineEdit is NULL");
+            auto endPos = GTWidget::findSpinBox(os, "endLineEdit", dialog);
 
             GTSpinBox::checkLimits(os, startPos, 1, 604);
             GTSpinBox::checkLimits(os, endPos, 1, 604);
@@ -3342,8 +3338,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* separateRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("separateRB"));
-            CHECK_SET_ERR(separateRB != nullptr, "radio button not found");
+            auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3384,8 +3379,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* separateRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("separateRB"));
-            CHECK_SET_ERR(separateRB != nullptr, "radio button not found");
+            auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4349,8 +4343,7 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            QSpinBox* memBox = dialog->findChild<QSpinBox*>("memBox");
-            CHECK_SET_ERR(memBox != nullptr, "memorySpinBox not found");
+            auto memBox = GTWidget::findSpinBox(os, "memBox", dialog);
             GTSpinBox::setValue(os, memBox, 200, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

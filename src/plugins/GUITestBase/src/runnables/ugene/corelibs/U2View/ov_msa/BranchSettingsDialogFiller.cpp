@@ -39,10 +39,10 @@ void BranchSettingsDialogFiller::commonScenario() {
 
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 0, 0, 255));
-    QPushButton* colorButton = dialog->findChild<QPushButton*>("colorButton");
+    auto colorButton = GTWidget::findPushButton(os, "colorButton", dialog);
     GTWidget::click(os, colorButton);
 
-    QSpinBox* thicknessSpinBox = dialog->findChild<QSpinBox*>("thicknessSpinBox");
+    auto thicknessSpinBox = GTWidget::findSpinBox(os, "thicknessSpinBox", dialog);
     GTSpinBox::setValue(os, thicknessSpinBox, 10);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

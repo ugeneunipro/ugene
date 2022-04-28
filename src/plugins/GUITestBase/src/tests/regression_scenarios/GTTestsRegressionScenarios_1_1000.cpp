@@ -544,7 +544,7 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QComboBox* methodNamesBox = dialog->findChild<QComboBox*>("methodNamesBox");
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "UGENE Genome Aligner") {
                     GTComboBox::selectItemByIndex(os, methodNamesBox, i);

@@ -45,12 +45,10 @@ using namespace HI;
 void EditQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>("nameEdit");
-    GT_CHECK(nameEdit != nullptr, "line edit not found");
+    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
     GTLineEdit::setText(os, nameEdit, qualifierName, noCheck);
 
-    QTextEdit* valueEdit = dialog->findChild<QTextEdit*>("valueEdit");
-    GT_CHECK(valueEdit != nullptr, "value line edit not found");
+    auto valueEdit = GTWidget::findTextEdit(os, "valueEdit", dialog);
     if (!valueName.isEmpty()) {
         GTTextEdit::setText(os, valueEdit, valueName);
     }

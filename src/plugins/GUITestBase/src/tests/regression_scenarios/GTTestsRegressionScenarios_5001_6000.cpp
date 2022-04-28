@@ -1951,10 +1951,8 @@ GUI_TEST_CLASS_DEFINITION(test_5495) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* startEdit = dialog->findChild<QLineEdit*>("startEdit");
-            QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
-            CHECK_SET_ERR(startEdit != nullptr, "QLineEdit \"startEdit\" not found");
-            CHECK_SET_ERR(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
+            auto startEdit = GTWidget::findLineEdit(os, "startEdit", dialog);
+            auto endEdit = GTWidget::findLineEdit(os, "endEdit", dialog);
 
             GTLineEdit::setText(os, startEdit, QString::number(321));
             GTLineEdit::setText(os, endEdit, QString::number(123));
@@ -2701,8 +2699,7 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
             QStringList formats = GTComboBox::getValues(os, comboBox);
             CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
 
-            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(cancelButton != nullptr, "cancelButton is NULL");
@@ -2758,14 +2755,12 @@ GUI_TEST_CLASS_DEFINITION(test_5681) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
-            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
+            auto comboBox = GTWidget::findComboBox(os, "", dialog);
 
             QStringList formats = GTComboBox::getValues(os, comboBox);
             CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
 
-            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(cancelButton != nullptr, "cancelButton is NULL");

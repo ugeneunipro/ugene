@@ -117,7 +117,6 @@ void MSAEditorTreeManager::buildTreeWithDialog() {
     CHECK(!dlg.isNull(), );
     CHECK(rc == QDialog::Accepted, );
 
-    settings.rowsOrder = msaObject->getMultipleAlignment()->getRowNames();
     buildTree(settings);
 }
 
@@ -139,7 +138,7 @@ void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSetting
     if (refreshExistingTree) {
         activeRefreshTasks[treeViewer] = treeGeneratorTask;
         connect(new TaskSignalMapper(treeGeneratorTask), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_treeRebuildingFinished(Task*)));
-        connect(treeViewer, SIGNAL(destroyed()), treeGeneratorTask, SLOT(sl_onCalculationCanceled()));
+        connect(treeViewer, &QObject::destroyed, treeGeneratorTask, &PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled);
     } else {
         connect(new TaskSignalMapper(treeGeneratorTask), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_openTree(Task*)));
     }

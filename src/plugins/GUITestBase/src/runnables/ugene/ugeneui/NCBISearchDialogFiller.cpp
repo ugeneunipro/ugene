@@ -351,8 +351,7 @@ bool NCBISearchDialogSimpleFiller::shownCorrect() {
 int NCBISearchDialogSimpleFiller::getResultNumber() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QTreeWidget* w = dialog->findChild<QTreeWidget*>("treeWidget");
-    GT_CHECK_RESULT(w, "treeWidget not found", -1);
+    auto w = GTWidget::findTreeWidget(os, "treeWidget", dialog);
     return w->topLevelItemCount();
 }
 #undef GT_METHOD_NAME

@@ -700,22 +700,21 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, dialog);
 
-            QRadioButton* radioButton = dialog->findChild<QRadioButton*>("currentViewButton");
+            auto radioButton = GTWidget::findRadioButton(os, "currentViewButton", dialog);
             GTRadioButton::click(os, radioButton);
 
-            QWidget* rangeSelector = dialog->findChild<QWidget*>("range_selector");
-            CHECK_SET_ERR(rangeSelector != nullptr, "range_selector not found");
+            auto rangeSelector = GTWidget::findWidget(os, "range_selector", dialog);
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is visible");
 
-            radioButton = dialog->findChild<QRadioButton*>("zoomButton");
+            radioButton = GTWidget::findRadioButton(os, "zoomButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(rangeSelector->isVisible(), "range_selector is hidden");
 
-            radioButton = dialog->findChild<QRadioButton*>("detailsButton");
+            radioButton = GTWidget::findRadioButton(os, "detailsButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(rangeSelector->isVisible(), "range_selector is hidden");
 
-            radioButton = dialog->findChild<QRadioButton*>("currentViewButton");
+            radioButton = GTWidget::findRadioButton(os, "currentViewButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is hidden");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -763,8 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, dialog);
 
-            QWidget* rangeSelector = dialog->findChild<QWidget*>("range_selector");
-            CHECK_SET_ERR(rangeSelector != nullptr, "range_selector not found");
+            auto rangeSelector = GTWidget::findWidget(os, "range_selector", dialog);
             CHECK_SET_ERR(!rangeSelector->isVisible(), "range_selector is visible");
 
             auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
@@ -772,15 +770,15 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
             CHECK_SET_ERR(okbutton != nullptr, "ok button is NULL");
             CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
 
-            QRadioButton* radioButton = dialog->findChild<QRadioButton*>("zoomButton");
+            auto radioButton = GTWidget::findRadioButton(os, "zoomButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(!okbutton->isEnabled(), "Export button is unexpectedly enabled");
 
-            QLineEdit* end = dialog->findChild<QLineEdit*>("end_edit_line");
+            auto end = GTWidget::findLineEdit(os, "end_edit_line", dialog);
             GTLineEdit::setText(os, end, "100");
             CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
 
-            radioButton = dialog->findChild<QRadioButton*>("detailsButton");
+            radioButton = GTWidget::findRadioButton(os, "detailsButton", dialog);
             GTRadioButton::click(os, radioButton);
             GTLineEdit::setText(os, end, "10000");
             CHECK_SET_ERR(!okbutton->isEnabled(), "Export button is unexpectedly enabled");
@@ -832,8 +830,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             // set SVG format
-            QComboBox* formatsBox = dialog->findChild<QComboBox*>("formatsBox");
-            CHECK_SET_ERR(formatsBox != nullptr, "formatBox is NULL");
+            auto formatsBox = GTWidget::findComboBox(os, "formatsBox", dialog);
             GTComboBox::selectItemByText(os, formatsBox, "SVG");
 
             // export is not available
@@ -844,16 +841,16 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             CHECK_SET_ERR(!okButton->isEnabled(), "Export button is expectedly enabled");
 
             // select Details -- export is disabled
-            QRadioButton* radioButton = dialog->findChild<QRadioButton*>("detailsButton");
+            auto radioButton = GTWidget::findRadioButton(os, "detailsButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
 
-            QLineEdit* end = dialog->findChild<QLineEdit*>("end_edit_line");
+            auto end = GTWidget::findLineEdit(os, "end_edit_line", dialog);
             GTLineEdit::setText(os, end, "2300");
             CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
 
             // set Zoom view export
-            radioButton = dialog->findChild<QRadioButton*>("zoomButton");
+            radioButton = GTWidget::findRadioButton(os, "zoomButton", dialog);
             GTRadioButton::click(os, radioButton);
             CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
             GTLineEdit::setText(os, end, "199000");
@@ -863,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             GTLineEdit::setText(os, end, "10000");
             CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
 
-            QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
+            auto fileEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, fileEdit, sandBoxDir + "seq_view_test_0030.svg");
 
             GTWidget::click(os, okButton);
@@ -1489,8 +1486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
-            CHECK_SET_ERR(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
+            auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
             GTRadioButton::click(os, gbFormatLocation);
 
             auto locationEdit = GTWidget::findLineEdit(os, "leLocation", dialog);

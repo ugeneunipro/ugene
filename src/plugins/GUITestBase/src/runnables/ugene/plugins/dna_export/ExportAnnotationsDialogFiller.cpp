@@ -88,8 +88,7 @@ void ExportAnnotationsFiller::init(const QString& exportToFileParam) {
 void ExportAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
-    GT_CHECK(lineEdit != nullptr, "line edit not found");
+    auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
     GTLineEdit::setText(os, lineEdit, exportToFile);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
@@ -99,20 +98,17 @@ void ExportAnnotationsFiller::commonScenario() {
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
     if (!addToProject) {
-        QCheckBox* addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
-        GT_CHECK(addToProjectButton != nullptr, "Check box not found");
+        auto addToProjectButton = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
         if (addToProjectButton->isEnabled()) {
             GTCheckBox::setChecked(os, addToProjectButton, false);
         }
     }
 
     if (!softMode) {
-        QCheckBox* checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceCheck"));
-        GT_CHECK(checkButton != nullptr, "Check box not found");
+        auto checkButton = GTWidget::findCheckBox(os, "exportSequenceCheck", dialog);
         GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
 
-        checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceNameCheck"));
-        GT_CHECK(checkButton != nullptr, "Check box not found");
+        checkButton = GTWidget::findCheckBox(os, "exportSequenceNameCheck", dialog);
         GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
     }
 
