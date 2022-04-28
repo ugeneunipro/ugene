@@ -3257,7 +3257,7 @@ GUI_TEST_CLASS_DEFINITION(test_4500) {
     // Expected state annotation locations changed accordingly
     GTUtilsSequenceView::openSequenceView(os, "4500_result.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QStringList newRegions({"42..1658", "join(1970..2413, 2412..2873)", "2875..3999", "4048..4203"});
+    QStringList newRegions({"42..1658", "join(1970..2413,2412..2873)", "2875..3999", "4048..4203"});
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     for (const QTreeWidgetItem* item : qAsConst(items)) {
         if (!newRegions.contains(item->text(2)) ) {
