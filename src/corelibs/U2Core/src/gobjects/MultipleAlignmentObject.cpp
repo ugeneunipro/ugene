@@ -740,12 +740,7 @@ void MultipleAlignmentObject::releaseState() {
 bool MultipleAlignmentObject::hasNonTrailingGap() const {
     const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
     for (int i = 0; i < getRowCount(); i++) {
-        if (listGapModel[i].isEmpty()) {
-            continue;
-        } else if (listGapModel[i].size() > 1) {
-            return true;
-        } 
-        if (listGapModel[i][0].startPos != getRow(i)->getRowLengthWithoutTrailing()) {
+        if (!listGapModel[i].isEmpty()) {
             return true;
         }
     }

@@ -139,10 +139,6 @@ QList<QVector<U2MsaGap>> MultipleAlignmentData::getGapModel() const {
     const int alignmentLength = getLength();
     for (const MultipleAlignmentRow& row : qAsConst(rows)) {
         gapModel << row->getGaps();
-        const int rowPureLength = row->getRowLengthWithoutTrailing();
-        if (rowPureLength < alignmentLength) {
-            gapModel.last() << U2MsaGap(rowPureLength, alignmentLength - rowPureLength);
-        }
     }
     return gapModel;
 }
