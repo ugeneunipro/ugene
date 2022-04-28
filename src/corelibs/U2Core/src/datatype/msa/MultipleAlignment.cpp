@@ -136,7 +136,6 @@ int MultipleAlignmentData::getRowCount() const {
 
 QList<QVector<U2MsaGap>> MultipleAlignmentData::getGapModel() const {
     QList<QVector<U2MsaGap>> gapModel;
-    const int alignmentLength = getLength();
     for (const MultipleAlignmentRow& row : qAsConst(rows)) {
         gapModel << row->getGaps();
     }
