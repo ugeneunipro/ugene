@@ -630,7 +630,7 @@ void GTUtilsProjectTreeView::itemActiveCheck(HI::GUITestOpStatus& os, QModelInde
 bool GTUtilsProjectTreeView::isVisible(HI::GUITestOpStatus& os) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget* documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, options);
+    auto documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, options);
     if (documentTreeWidget) {
         return true;
     } else {
