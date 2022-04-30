@@ -34,14 +34,12 @@ public:
 
     ExportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
 
-    void commonScenario();
+    void commonScenario() override;
 
     static QWidget* getDialog(HI::GUITestOpStatus& os);
     static void setExportTarget(HI::GUITestOpStatus& os, ExportTarget exportTarget);
     static void setFormat(HI::GUITestOpStatus& os, const QString& format);
     static void setFilePath(HI::GUITestOpStatus& os, const QString& filePath);
-    static void setDatabase(HI::GUITestOpStatus& os, const QString& database);
-    static void setFolder(HI::GUITestOpStatus& os, const QString& folder);
 };
 
 }  // namespace U2

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copies QT and other 3rd party libs (like mysql/openssl) to the UGENE dir.
+# Copies QT and other 3rd party libs (like openssl) to the UGENE dir.
 # As the result UGENE does not depend on libraries in other folders than its own.
 # Usage: copy_qt_files_to_ugene <QT_DIR> <EXTRA_LIBS_DIR> <UGENE_DIR>.
 QT_DIR=$1
@@ -52,14 +52,6 @@ mkdir "${UGENE_DIR}/platforms"
 cp "${QT_DIR}/plugins/platforms/libqxcb.so" "${UGENE_DIR}/platforms"
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms"/*.so
-
-# SQL drivers.
-rm -rf "${UGENE_DIR}/sqldrivers"
-mkdir "${UGENE_DIR}/sqldrivers"
-cp -r "${QT_DIR}/plugins/sqldrivers/libqsqlmysql.so" "${UGENE_DIR}/sqldrivers"
-# shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/sqldrivers"/*.so
-cp "${EXTRA_LIBS_DIR}/libmysqlclient.so.21" "${UGENE_DIR}/"
 
 # Image formats.
 rm -rf "${UGENE_DIR}/imageformats"

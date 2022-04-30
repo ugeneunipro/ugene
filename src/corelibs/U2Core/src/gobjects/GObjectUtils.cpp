@@ -158,20 +158,14 @@ QList<GObject*> findRelatedObjectsForLoadedObjects(const GObjectReference& obj, 
 
     const GObjectRelation objRelation(obj, role);
     QHash<Document*, U2DbiRef> doc2DbiRef;
-    foreach (GObject* object, fromObjects) {
-        Document* doc = object->getDocument();
-        SAFE_POINT(nullptr != doc, "Invalid parent document detected", res);
-        if (!doc->isDatabaseConnection()) {
-            if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
-                res.append(object);
-            }
-        } else {
-            const U2DbiRef dbiRef = object->getEntityRef().dbiRef;
-            if (obj.entityRef.dbiRef == dbiRef) {
-                doc2DbiRef.insert(doc, obj.entityRef.dbiRef);
-            } else if (objectHasInMemoryRelationToReference(object, obj, role)) {
-                res.append(object);
-            }
+    for (GObject* fromObject : qAsConst(fromObjects)) {
+        Document* doc = fromObject->getDocument();
+        SAFE_POINT(doc != nullptr, "Invalid parent document detected", res);
+        U2DbiRef fromDbiRef = fromObject->getEntityRef().dbiRef;
+        if (fromDbiRef == obj.entityRef.dbiRef) {
+            doc2DbiRef.insert(doc, obj.entityRef.dbiRef);
+        } else if (objectHasInMemoryRelationToReference(fromObject, obj, role)) {
+            res.append(fromObject);
         }
     }
 
@@ -267,7 +261,7 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const 
     GObject* firstMatchedByName = nullptr;
     foreach (GObject* o, fromObjects) {
         Document* parentDoc = o->getDocument();
-        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (parentDoc == nullptr || parentDoc->isDatabaseConnection())) {
+        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && parentDoc == nullptr) {
             continue;
         }
         if (o->getGObjectName() != r.objName) {

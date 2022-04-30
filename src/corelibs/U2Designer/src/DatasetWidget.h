@@ -25,8 +25,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatus.h>
 
-#include <U2Gui/SharedConnectionsDialog.h>
-
 #include "UrlItem.h"
 
 class QVBoxLayout;
@@ -58,7 +56,6 @@ private slots:
     void sl_itemChecked();
     void sl_selectAll();
     void sl_dataChanged();
-    void sl_sharedDbConnected();
 
 private:
     void addUrl(const QString& url);
@@ -69,8 +66,6 @@ private:
     Ui_DatasetWidget* ui;
     URLListController* ctrl;
     OptionsPopup* popup;
-    QObjectScopedPointer<SharedConnectionsDialog> connectToDbDialog;
-    bool waitingForDbToConnect;
 };
 
 class OptionsPopup : public QFrame {

@@ -58,8 +58,6 @@ public:
     // If the DB is unknown or invalid, the DB URL string is returned
     static QString getDbShortNameFromEntityUrl(const QString& url);
 
-    // Returned map contains DB URL <=> DB short name
-    static QVariantMap getKnownDbs();
     // Stores a new connection in app settings
     static void saveNewDbConnection(const QString& connectionName, const QString& connectionUrl);
 

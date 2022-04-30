@@ -122,9 +122,6 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
     setupActions();
 
     foreach (Document* doc, project->getDocuments()) {
-        if (settings.ignoreRemoteObjects && doc->isDatabaseConnection()) {
-            continue;
-        }
         sl_onDocumentAdded(doc);
     }
 
@@ -155,12 +152,8 @@ const GObjectSelection* ProjectTreeController::getGObjectSelection() const {
     return &objectSelection;
 }
 
-bool ProjectTreeController::isObjectInRecycleBin(GObject* obj) const {
-    Document* doc = obj->getDocument();
-    CHECK(doc != nullptr && ProjectUtils::isConnectedDatabaseDoc(doc), false);
-
-    QString objectPath = model->getObjectFolder(doc, obj);
-    return ProjectUtils::isFolderInRecycleBinSubtree(objectPath);
+bool ProjectTreeController::isObjectInRecycleBin(GObject*) const {
+    return false;  // Only shared DB objects could be in recycle bin.
 }
 
 const ProjectTreeControllerModeSettings& ProjectTreeController::getModeSettings() const {
@@ -243,7 +236,7 @@ void ProjectTreeController::sl_onDocumentRemoved(Document* doc) {
 void ProjectTreeController::sl_mergeData() {
     const QList<Document*>& docs = AppContext::getProject()->getDocuments();
     foreach (Document* doc, docs) {
-        if (!ProjectUtils::isConnectedDatabaseDoc(doc) || doc->isStateLocked()) {
+        if (doc->isStateLocked()) {
             continue;
         }
         DocumentFoldersUpdate update;
@@ -300,7 +293,6 @@ void ProjectTreeController::sl_updateSelection() {
 void ProjectTreeController::updateAddObjectAction() {
     QSet<Document*> docsItemsInSelection = getDocsInSelection(false);
     bool singleDocumentIsChosen = docsItemsInSelection.size() == 1;
-    bool isDatabaseDocument = docsItemsInSelection.size() > 0 && ProjectUtils::isConnectedDatabaseDoc(docsItemsInSelection.values().first());
     bool canAddObjectToDocument = true;
     for (Document* d : qAsConst(docsItemsInSelection)) {
         if (!DocumentUtils::canAddGObjectsToDocument(d, GObjectTypes::SEQUENCE)) {
@@ -308,7 +300,7 @@ void ProjectTreeController::updateAddObjectAction() {
             break;
         }
     }
-    addObjectToDocumentAction->setEnabled(canAddObjectToDocument && singleDocumentIsChosen && !isDatabaseDocument);
+    addObjectToDocumentAction->setEnabled(canAddObjectToDocument && singleDocumentIsChosen);
 }
 
 void ProjectTreeController::updateImportToDbAction() {
@@ -382,7 +374,7 @@ void ProjectTreeController::updateLoadDocumentActions() {
         if (!doc->isLoaded()) {
             hasUnloadedDocumentInSelection = true;
             break;
-        } else if (!ProjectUtils::isDatabaseDoc(doc)) {
+        } else {
             hasLoadedDocumentInSelection = true;
             break;
         }
@@ -510,7 +502,7 @@ void ProjectTreeController::sl_onUnloadSelectedDocuments() {
 
     QMap<Document*, StateLock*> locks;
     foreach (Document* doc, docsInSelection) {
-        if (doc->isLoaded() && !ProjectUtils::isDatabaseDoc(doc)) {
+        if (doc->isLoaded()) {
             docsToUnload.append(QPointer<Document>(doc));
             StateLock* lock = new StateLock(Document::UNLOAD_LOCK_NAME, StateLockFlag_LiveLock);
             doc->lockState(lock);
@@ -1061,15 +1053,7 @@ QSet<Document*> ProjectTreeController::getDocsInSelection(bool deriveFromObjects
 }
 
 QList<Folder> ProjectTreeController::getSelectedFolders() const {
-    QList<Folder> result;
-    foreach (Document* doc, documentSelection.getSelectedDocuments()) {
-        if (ProjectUtils::isConnectedDatabaseDoc(doc)) {
-            result << Folder(doc, U2ObjectDbi::ROOT_FOLDER);
-        }
-    }
-    result << folderSelection.getSelection();
-
-    return result;
+    return folderSelection.getSelection();
 }
 
 void ProjectTreeController::removeItems(const QList<Document*>& docs, QList<Folder> folders, QList<GObject*> objs) {
@@ -1142,7 +1126,7 @@ bool ProjectTreeController::removeObjects(const QList<GObject*>& objs, const QLi
         bool parentDocSelected = excludedDocs.contains(doc);
         if (parentDocSelected || parentFolderSelected) {
             continue;
-        } else if (!ProjectUtils::isDatabaseDoc(doc) || isObjectInRecycleBin(obj)) {
+        } else if (isObjectInRecycleBin(obj)) {
             objectSelection.removeFromSelection(obj);
             if (doc->removeObject(obj, DocumentObjectRemovalMode_Release)) {
                 objects2Doc.insert(obj, doc);

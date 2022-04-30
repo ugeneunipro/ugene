@@ -731,10 +731,6 @@ const U2DbiRef& Document::getDbiRef() const {
     return dbiRef;
 }
 
-bool Document::isDatabaseConnection() const {
-    return BaseDocumentFormats::DATABASE_CONNECTION == df->getFormatId();
-}
-
 void Document::setModified(bool modified, const QString& modType) {
     CHECK(!df->checkFlags(DocumentFormatFlag_DirectWriteOperations), );
     if (loadStateChangeMode && modified && modType == StateLockModType_AddChild) {  // ignore modification events during loading/unloading

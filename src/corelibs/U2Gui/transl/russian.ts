@@ -1467,39 +1467,6 @@ The items cannot be recovered once deleted.</source>
     </message>
 </context>
 <context>
-    <name>SharedConnectionsDialog</name>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="17"/>
-        <source>Shared Databases Connections</source>
-        <translation>Подключения к базам данных</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="43"/>
-        <source>Add</source>
-        <translation>Добавить</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="56"/>
-        <source>Delete</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="69"/>
-        <source>Edit</source>
-        <translation>Редактировать</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="101"/>
-        <source>Connect</source>
-        <translation>Подключиться</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.ui" line="114"/>
-        <source>Disconnect</source>
-        <translation>Отключиться</translation>
-    </message>
-</context>
-<context>
     <name>U2::AceImportWidget</name>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="59"/>
@@ -3240,41 +3207,6 @@ Do you want to continue?</translation>
         <source>An error occurred on pasting large amount of data.
 Text edit was cleared.</source>
         <translation>Произошла ошибка из-за большого количества данных.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SharedConnectionsDialog</name>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="246"/>
-        <source>Can&apos;t upgrade the shared database: </source>
-        <translation>Can&apos;t upgrade the shared database: </translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="304"/>
-        <source>Connect to the database %1</source>
-        <translation>Подключение к базе данных %1</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="456"/>
-        <source>Connection Error</source>
-        <translation>Ошибка подключения</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="457"/>
-        <source>Unable to connect to the database:
-check connection settings</source>
-        <translation>Unable to connect to the database:
-check connection settings</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="459"/>
-        <source>Cannot connect to the shared database: </source>
-        <translation>Cannot connect to the shared database: </translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/SharedConnectionsDialog.cpp" line="500"/>
-        <source>Upgrade</source>
-        <translation>Обновить</translation>
     </message>
 </context>
 <context>

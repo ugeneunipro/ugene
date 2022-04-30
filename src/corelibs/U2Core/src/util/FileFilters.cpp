@@ -94,9 +94,6 @@ QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QSt
     QList<DocumentFormatId> formatIds = formatRegistry->getRegisteredFormats();
     QStringList filters;
     for (const DocumentFormatId& id : qAsConst(formatIds)) {
-        if (id == BaseDocumentFormats::DATABASE_CONNECTION) {
-            continue;
-        }
         DocumentFormat* documentFormat = formatRegistry->getFormatById(id);
         filters << createSingleFileFilter(documentFormat);
     }
@@ -119,9 +116,6 @@ QString FileFilters::createFileFilter(const DocumentFormatConstraints& constrain
     QStringList filters;
     QList<DocumentFormatId> formatIds = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
     for (const DocumentFormatId& formatId : qAsConst(formatIds)) {
-        if (formatId == BaseDocumentFormats::DATABASE_CONNECTION) {
-            continue;
-        }
         DocumentFormat* documentFormat = formatRegistry->getFormatById(formatId);
         if (documentFormat->checkConstraints(constraints)) {
             filters << createSingleFileFilter(documentFormat);

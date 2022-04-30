@@ -97,7 +97,7 @@ QList<GObjectRelation> GObject::getObjectRelations() const {
     // fetch permanent object relations from DB
     // only for the first time for objects from shared DBs
     Document* parentDoc = getDocument();
-    if (!arePermanentRelationsFetched && !isUnloaded() && !(nullptr != parentDoc && !parentDoc->isDatabaseConnection())) {
+    if (!arePermanentRelationsFetched && !isUnloaded() && parentDoc == nullptr) {
         fetchPermanentGObjectRelations(res);
     }
 
@@ -253,27 +253,8 @@ void GObject::addObjectRelation(const GObject* obj, const GObjectRelationRole& r
     addObjectRelation(rel);
 }
 
-namespace {
-
-bool relationsAreEqualExceptDbId(const GObjectRelation& f, const GObjectRelation& s) {
-    return f.role == s.role && f.ref.objName == s.ref.objName && f.getDocURL() == s.getDocURL() && f.ref.objType == s.ref.objType &&
-           (!f.ref.entityRef.isValid() || !s.ref.entityRef.isValid() || f.ref.entityRef.dbiRef == s.ref.entityRef.dbiRef);
-}
-
-}  // namespace
-
 bool GObject::hasObjectRelation(const GObjectRelation& r) const {
-    Document* parentDoc = getDocument();
-    if (nullptr != parentDoc && !parentDoc->isDatabaseConnection()) {
-        foreach (const GObjectRelation& rel, getObjectRelations()) {
-            if (relationsAreEqualExceptDbId(rel, r)) {
-                return true;
-            }
-        }
-        return false;
-    } else {
-        return getObjectRelations().contains(r);
-    }
+    return getObjectRelations().contains(r);
 }
 
 bool GObject::hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const {
@@ -285,8 +266,8 @@ bool GObject::isUnloaded() const {
     return type == GObjectTypes::UNLOADED;
 }
 
-StateLock* GObject::getGObjectModLock(GObjectModLock type) const {
-    return modLocks.value(type, nullptr);
+StateLock* GObject::getGObjectModLock(GObjectModLock lock) const {
+    return modLocks.value(lock, nullptr);
 }
 
 void GObject::relatedObjectRelationChanged() {
@@ -360,24 +341,6 @@ void GObject::loadDataCore(U2OpStatus& /*os*/) {
 
 void GObject::setParentStateLockItem(StateLockableTreeItem* p) {
     StateLockableTreeItem::setParentStateLockItem(p);
-    checkIfBelongToSharedDatabase(p);
-}
-
-void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem* parent) {
-    Document* parentDoc = qobject_cast<Document*>(parent);
-    CHECK(nullptr != parentDoc, );
-
-    if (parentDoc->isDatabaseConnection()) {
-        if (!modLocks.contains(GObjectModLock_IO)) {
-            modLocks[GObjectModLock_IO] = new StateLock();
-            lockState(modLocks[GObjectModLock_IO]);
-        }
-    } else if (modLocks.contains(GObjectModLock_IO)) {
-        StateLock* lock = modLocks[GObjectModLock_IO];
-        unlockState(lock);
-        modLocks.remove(GObjectModLock_IO);
-        delete lock;
-    }
 }
 
 void GObject::removeAllLocks() {

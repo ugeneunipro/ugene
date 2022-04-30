@@ -71,17 +71,11 @@ void GObjectComboBoxController::updateCombo() {
 }
 
 void GObjectComboBoxController::connectDocument(Document* document) {
-    if (document->isDatabaseConnection()) {
-        return;
-    }
     connect(document, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
     connect(document, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
 }
 
 void GObjectComboBoxController::addDocumentObjects(Document* d) {
-    if (d->isDatabaseConnection()) {
-        return;
-    }
     // checks whether you need to add a new annotations table
     QString docUrl = settings.relationFilter.ref.docUrl;
     if (d->getURLString() == docUrl) {
@@ -112,9 +106,6 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
 }
 
 void GObjectComboBoxController::removeDocumentObjects(Document* d) {
-    if (d->isDatabaseConnection()) {
-        return;
-    }
     foreach (GObject* obj, d->getObjects()) {
         removeObject(obj);
     }

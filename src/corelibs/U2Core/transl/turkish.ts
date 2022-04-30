@@ -847,14 +847,6 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
     </message>
 </context>
 <context>
-    <name>U2::ConnectSharedDatabaseTask</name>
-    <message>
-        <location filename="../src/tasks/ConnectSharedDatabaseTask.cpp" line="35"/>
-        <source>Connecting to database: </source>
-        <translation>Veritabanına bağlanma: </translation>
-    </message>
-</context>
-<context>
     <name>U2::ConsoleShutdownTask</name>
     <message>
         <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="33"/>
@@ -1238,14 +1230,6 @@ UGENE kapatıldıktan sonra oturum veritabanı dosyası kaldırılır.</translat
         <location filename="../src/datatype/BaseTranslations.cpp" line="677"/>
         <source>Stop codon</source>
         <translation>Kodonu durdur</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DatabaseConnectionAdapterFactory</name>
-    <message>
-        <location filename="../src/io/DatabaseConnectionAdapter.cpp" line="33"/>
-        <source>Database connection</source>
-        <translation>Veritabanı bağlantısı</translation>
     </message>
 </context>
 <context>

@@ -73,41 +73,20 @@ void BaseDocWriter::init() {
 }
 
 void BaseDocWriter::takeParameters(U2OpStatus& os) {
-    Attribute* dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
-
-    const QString storage = (nullptr == dataStorageAttr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
-    if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storage) {
-        dataStorage = LocalFs;
-
-        Attribute* formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-        if (nullptr != formatAttr) {  // user sets format
-            QString formatId = formatAttr->getAttributeValue<QString>(context);
-            format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        }
-        if (nullptr == format) {
-            os.setError(tr("Document format not set"));
-            return;
-        }
-
-        fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
-        Attribute* a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-        if (a != nullptr) {
-            append = a->getAttributeValue<bool>(context);
-        } else {
-            append = true;
-        }
-    } else if (BaseAttributes::SHARED_DB_DATA_STORAGE() == storage) {
-        dataStorage = SharedDb;
-
-        const QString fullDbUrl = getValue<QString>(BaseAttributes::DATABASE_ATTRIBUTE().getId());
-        dstDbiRef = SharedDbUrlUtils::getDbRefFromEntityUrl(fullDbUrl);
-        CHECK_EXT(dstDbiRef.isValid(), os.setError(tr("Invalid database reference")), );
-
-        dstPathInDb = getValue<QString>(BaseAttributes::DB_PATH().getId());
-        CHECK_EXT(!dstPathInDb.isEmpty(), os.setError(tr("Empty destination path supplied")), );
-    } else {
-        os.setError(tr("Unexpected data storage attribute value"));
+    dataStorage = LocalFs;
+    Attribute* formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
+    if (formatAttr != nullptr) {  // user sets format
+        QString formatId = formatAttr->getAttributeValue<QString>(context);
+        format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     }
+    if (format == nullptr) {
+        os.setError(tr("Document format not set"));
+        return;
+    }
+
+    fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
+    Attribute* a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
+    append = a != nullptr ? a->getAttributeValue<bool>(context) : true;
 }
 
 namespace {

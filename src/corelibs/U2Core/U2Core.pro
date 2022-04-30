@@ -148,7 +148,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/TextObject.h \
            src/gobjects/UnloadedObject.h \
            src/gobjects/VariantTrackObject.h \
-           src/io/DatabaseConnectionAdapter.h \
            src/io/HttpFileAdapter.h \
            src/io/InputStream.h \
            src/io/IOAdapter.h \
@@ -190,7 +189,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/CloneObjectTask.h \
            src/tasks/CmdlineInOutTaskRunner.h \
            src/tasks/CmdlineTaskRunner.h \
-           src/tasks/ConnectSharedDatabaseTask.h \
            src/tasks/ConsoleShutdownTask.h \
            src/tasks/CopyDataTask.h \
            src/tasks/CopyDocumentTask.h \
@@ -388,7 +386,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/TextObject.cpp \
            src/gobjects/UnloadedObject.cpp \
            src/gobjects/VariantTrackObject.cpp \
-           src/io/DatabaseConnectionAdapter.cpp \
            src/io/HttpFileAdapter.cpp \
            src/io/IOAdapter.cpp \
            src/io/IOAdapterTextStream.cpp \
@@ -425,7 +422,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/CloneObjectTask.cpp \
            src/tasks/CmdlineInOutTaskRunner.cpp \
            src/tasks/CmdlineTaskRunner.cpp \
-           src/tasks/ConnectSharedDatabaseTask.cpp \
            src/tasks/ConsoleShutdownTask.cpp \
            src/tasks/CopyDataTask.cpp \
            src/tasks/CopyDocumentTask.cpp \

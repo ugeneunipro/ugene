@@ -35,8 +35,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Formats/DatabaseConnectionFormat.h>
-
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
@@ -1119,17 +1117,7 @@ QVariant ProjectViewModel::getDocumentDecorationData(Document* doc) const {
     if (!doc->isLoaded() && doc->getStateLocks().size() == 1 && doc->getDocumentModLock(DocumentModLock_UNLOADED_STATE) != nullptr) {
         showLockedIcon = false;
     }
-    if (showLockedIcon) {
-        if (doc->isDatabaseConnection()) {
-            return roDatabaseIcon;
-        }
-        return roDocumentIcon;
-    } else {
-        if (doc->isDatabaseConnection()) {
-            return databaseIcon;
-        }
-        return documentIcon;
-    }
+    return showLockedIcon ? roDocumentIcon : documentIcon;
 }
 
 QVariant ProjectViewModel::getDocumentToolTipData(Document* doc) const {
@@ -1174,8 +1162,8 @@ QVariant ProjectViewModel::data(GObject* obj, int role) const {
     SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected!", QVariant());
     SAFE_POINT(folders.contains(parentDoc), "Unknown document", QVariant());
 
-    const QString folder = folders[parentDoc]->getObjectFolder(obj);
-    const bool itemIsEnabled = !ProjectUtils::isConnectedDatabaseDoc(parentDoc) || !ProjectUtils::isFolderInRecycleBinSubtree(folder);
+    QString folder = folders[parentDoc]->getObjectFolder(obj);
+    bool itemIsEnabled = !ProjectUtils::isFolderInRecycleBinSubtree(folder);
 
     switch (role) {
         case Qt::TextColorRole:
@@ -1291,8 +1279,8 @@ bool ProjectViewModel::isWritableDoc(const Document* doc) {
     return !doc->isStateLocked();
 }
 
-bool ProjectViewModel::isDropEnabled(const Document* doc) {
-    return ProjectUtils::isConnectedDatabaseDoc(doc) && isWritableDoc(doc);
+bool ProjectViewModel::isDropEnabled(const Document*) {
+    return false;  // Was available only shared DB mode.
 }
 
 bool ProjectViewModel::isAcceptableFolder(Document* targetDoc, const QString& targetFolderPath, const Folder& folder) {
@@ -1458,8 +1446,7 @@ void ProjectViewModel::sl_objectAdded(GObject* obj) {
         return;
     }
 
-    // Only no database documents code:
-    if (!ProjectUtils::isDatabaseDoc(doc) || !doc->isLoaded()) {
+    if (!doc->isLoaded()) {
         insertObject(doc, obj, U2ObjectDbi::ROOT_FOLDER);
         emit si_modelChanged();
     }

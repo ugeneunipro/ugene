@@ -34,7 +34,6 @@ class DbiConnection;
 class U2DbiPool;
 
 #define SQLITE_DBI_ID "SQLiteDbi"
-#define MYSQL_DBI_ID "MysqlDbi"
 #define BAM_DBI_ID "SamtoolsBasedDbi"
 #define DEFAULT_DBI_ID SQLITE_DBI_ID
 #define WORKFLOW_SESSION_TMP_DBI_ALIAS "workflow_session"

@@ -66,7 +66,7 @@ private slots:
     void sl_saveDocTaskFinished();
 
 private:
-    Task* takeParameters(QString& formatId, SaveDocFlags& fl, QString& resultPath, U2DbiRef& dstDbiRef, DataStorage& storage);
+    Task* takeParameters(QString& formatId, SaveDocFlags& fl, QString& resultPath, DataStorage& storage);
     void updateResultPath(int metadataId, const QString& formatId, DataStorage storage, QString& resultPath, bool byDataset = false);
     QString fetchIncomingSequenceName(const QVariantMap& incomingData);
     bool getMergeAttribute() const;

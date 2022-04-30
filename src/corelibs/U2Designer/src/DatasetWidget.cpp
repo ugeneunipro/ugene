@@ -50,9 +50,7 @@ namespace U2 {
 URLListWidget::URLListWidget(URLListController* _ctrl)
     : QWidget(),
       ui(new Ui_DatasetWidget),
-      ctrl(_ctrl),
-      connectToDbDialog(new SharedConnectionsDialog(this)),
-      waitingForDbToConnect(false) {
+      ctrl(_ctrl) {
     ui->setupUi(this);
     popup = new OptionsPopup(this);
 
@@ -77,8 +75,6 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     connect(ui->downButton, SIGNAL(clicked()), SLOT(sl_downButton()));
     connect(ui->upButton, SIGNAL(clicked()), SLOT(sl_upButton()));
     connect(ui->deleteButton, SIGNAL(clicked()), SLOT(sl_deleteButton()));
-    connect(connectToDbDialog.data(), SIGNAL(si_connectionCompleted()), SLOT(sl_sharedDbConnected()));
-
     connect(ui->itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
 
     if (!readingFromDbIsSupported()) {
@@ -143,9 +139,7 @@ ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectTy
     SAFE_POINT(nullptr != proj, "Invalid project", settings);
 
     foreach (Document* doc, proj->getDocuments()) {
-        if (!doc->isDatabaseConnection()) {
-            settings.excludeDocList << doc;
-        }
+        settings.excludeDocList << doc;
     }
 
     return settings;
@@ -153,25 +147,7 @@ ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectTy
 
 }  // namespace
 
-void URLListWidget::sl_sharedDbConnected() {
-    SAFE_POINT(waitingForDbToConnect, "Unexpected database state", );
-    waitingForDbToConnect = false;
-    sl_addFromDbButton();
-}
-
 void URLListWidget::sl_addFromDbButton() {
-    CHECK(!waitingForDbToConnect, );
-    if (!ProjectUtils::areSharedDatabasesAvailable()) {
-        const int dialogResult = connectToDbDialog->exec();
-        CHECK(!connectToDbDialog.isNull(), );
-        if (QDialog::Accepted == dialogResult) {
-            waitingForDbToConnect = true;
-        }
-        return;
-    } else {
-        waitingForDbToConnect = false;
-    }
-
     const QSet<GObjectType> compatTypes = ctrl->getCompatibleObjTypes();
     SAFE_POINT(!compatTypes.isEmpty(), "Invalid object types", );
     const ProjectTreeControllerModeSettings settings = createProjectTreeSettings(compatTypes);
@@ -179,15 +155,6 @@ void URLListWidget::sl_addFromDbButton() {
     QList<Folder> folders;
     QList<GObject*> objects;
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
-
-    foreach (const Folder& f, folders) {
-        // FIXME when readers for different data types appear
-        addUrl(SharedDbUrlUtils::createDbFolderUrl(f, U2ObjectTypeUtils::toDataType(*compatTypes.begin())));
-    }
-
-    foreach (GObject* obj, objects) {
-        addUrl(SharedDbUrlUtils::createDbObjectUrl(obj));
-    }
 }
 
 void URLListWidget::addUrl(const QString& url) {
