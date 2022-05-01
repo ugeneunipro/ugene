@@ -196,6 +196,7 @@ void CoreLib::init() {
         Descriptor pd(BasePorts::IN_TEXT_PORT_ID(), tr("Plain text"), tr("Plain text"));
         p << new PortDescriptor(pd, dtl, true);
         Attribute* accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+        accumulateObjsAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         a << accumulateObjsAttr;
         IntegralBusActorPrototype* proto = new WriteDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, pd.getId(), a, true, false);
         proto->setPrompter(new WriteDocPrompter(tr("Save text from <u>%1</u> to <u>%2</u>."), BaseSlots::TEXT_SLOT().getId()));
@@ -221,6 +222,7 @@ void CoreLib::init() {
             a << docFormatAttr;
             WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false);
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
+            docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
 
             QVariantMap m;
             foreach (const DocumentFormatId& fid, supportedFormats) {
@@ -258,15 +260,18 @@ void CoreLib::init() {
             p << new PortDescriptor(pd, typeSet, true);
             Attribute* accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             a << accumulateAttr;
+            accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             Attribute* docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, format);
             a << docFormatAttr;
             Attribute* splitAttr = new Attribute(BaseAttributes::SPLIT_SEQ_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, 1);
             splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::FASTA));
+            splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             a << splitAttr;
-            auto proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, false, false);
+            WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false, false);
             proto->setPortValidator(pd.getId(), new WriteSequencePortValidator());
             proto->setValidator(new WriteSequenceValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BasePorts::IN_SEQ_PORT_ID(), BaseSlots::URL_SLOT().getId()));
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
+            docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
 
             QVariantMap m;
             foreach (const DocumentFormatId& fid, supportedFormats) {

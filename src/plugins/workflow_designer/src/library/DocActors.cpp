@@ -92,34 +92,27 @@ bool ReadDocActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* param
 /****************************
  * WriteDocActorProto
  *****************************/
-WriteDocActorProto::WriteDocActorProto(const DocumentFormatId& _fid,
-                                       const Descriptor& _desc,
-                                       const QList<PortDescriptor*>& _ports,
-                                       const QString& portId,
-                                       const QList<Attribute*>& _attrs,
-                                       bool addValidator,
-                                       bool addPortValidator)
+WriteDocActorProto::WriteDocActorProto(const DocumentFormatId& _fid, const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QString& portId, const QList<Attribute*>& _attrs, bool canWriteToSharedDB, bool addValidator, bool addPortValidator)
     : DocActorProto(_fid, _desc, _ports, _attrs), outPortId(portId) {
-    construct(addValidator, addPortValidator);
+    construct(canWriteToSharedDB, addValidator, addPortValidator);
 }
 
-WriteDocActorProto::WriteDocActorProto(const Descriptor& _desc,
-                                       const GObjectType& t,
-                                       const QList<PortDescriptor*>& _ports,
-                                       const QString& portId,
-                                       const QList<Attribute*>& _attrs,
-                                       bool addValidator,
-                                       bool addPortValidator)
+WriteDocActorProto::WriteDocActorProto(const Descriptor& _desc, const GObjectType& t, const QList<PortDescriptor*>& _ports, const QString& portId, const QList<Attribute*>& _attrs, bool canWriteToSharedDB, bool addValidator, bool addPortValidator)
     : DocActorProto(_desc, t, _ports, _attrs), outPortId(portId) {
-    construct(addValidator, addPortValidator);
+    construct(canWriteToSharedDB, addValidator, addPortValidator);
 }
 
 bool WriteDocActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
     return DocActorProto::isAcceptableDrop(md, params, BaseAttributes::URL_OUT_ATTRIBUTE().getId());
 }
 
-void WriteDocActorProto::construct(bool addValidator, bool addPortValidator) {
+void WriteDocActorProto::construct(bool canWriteToSharedDb, bool addValidator, bool addPortValidator) {
     QMap<QString, PropertyDelegate*> delegateMap;
+
+    if (canWriteToSharedDb) {
+        attrs.prepend(new Attribute(BaseAttributes::DATA_STORAGE_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, BaseAttributes::LOCAL_FS_DATA_STORAGE()));
+        delegateMap[BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::DATA_STORAGE_ATTRIBUTE_VALUES_MAP());
+    }
 
     urlAttr = new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false);
     attrs << urlAttr;
@@ -127,6 +120,12 @@ void WriteDocActorProto::construct(bool addValidator, bool addPortValidator) {
     attrs << suffixAttr;
     Attribute* fileModeAttr = new Attribute(BaseAttributes::FILE_MODE_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, SaveDoc_Roll);
     attrs << fileModeAttr;
+
+    if (canWriteToSharedDb) {
+        urlAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
+        suffixAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
+        fileModeAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
+    }
 
     delegateMap[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(prepareDocumentFilter(), QString(), false, false, true, 0, fid);
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
@@ -221,17 +220,42 @@ QString WriteDocPrompter::composeRichDoc() {
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
     const QString outPortId = target->getInputPorts().first()->getId();
-    QString url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)),
-                                 BaseAttributes::URL_OUT_ATTRIBUTE().getId(),
-                                 BaseSlots::URL_SLOT().getId(),
-                                 generatedStr);
-    url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
+    Attribute* dataStorageAttr = target->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
+    SAFE_POINT(nullptr != dataStorageAttr, "Invalid attribute", QString());
+    const QVariant dataStorage = dataStorageAttr->getAttributePureValue();
+
+    QString url;
+    const bool storeToDb = dataStorage == BaseAttributes::SHARED_DB_DATA_STORAGE();
+    if (storeToDb) {
+        Attribute* dbPathAttr = target->getParameter(BaseAttributes::DB_PATH().getId());
+        SAFE_POINT(nullptr != dbPathAttr, "Invalid attribute", QString());
+        url = dbPathAttr->getAttributePureValue().toString();
+        url = getHyperlink(BaseAttributes::DB_PATH().getId(), url);
+    } else if (dataStorage == BaseAttributes::LOCAL_FS_DATA_STORAGE()) {
+        url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)), BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId(), generatedStr);
+        url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
+    } else {
+        FAIL("Unexpected attribute value", QString());
+    }
+
     QString result = spec;
     QString producers = getProducers(outPortId, slot);
     if (producers.isEmpty()) {
         producers = unsetStr;
     }
-    return result.arg(producers).arg(url);
+    if (storeToDb) {
+        Attribute* dbAttr = target->getParameter(BaseAttributes::DATABASE_ATTRIBUTE().getId());
+        SAFE_POINT(nullptr != dbAttr, "Invalid attribute", QString());
+        const QString dbUrl = dbAttr->getAttributePureValue().toString();
+        QString dbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(dbUrl);
+        dbName = dbName.isEmpty() ? unsetStr : getHyperlink(BaseAttributes::DATABASE_ATTRIBUTE().getId(), dbName);
+
+        result = spec.left(spec.size() - 1);  // remove last dot
+        result += tr(" in the ") + "<u>%3</u>" + tr(" database.");
+        return result.arg(producers).arg(url).arg(dbName);
+    } else {
+        return result.arg(producers).arg(url);
+    }
 }
 
 /****************************

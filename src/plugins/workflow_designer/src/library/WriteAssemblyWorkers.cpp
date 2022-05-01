@@ -174,6 +174,7 @@ void WriteAssemblyWorkerFactory::init() {
     Attribute* docFormatAttr = nullptr;
     {
         docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
+        docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         attrs << docFormatAttr;
 
         Descriptor indexDescr(INDEX_ATTRIBUTE_ID,
@@ -182,6 +183,7 @@ void WriteAssemblyWorkerFactory::init() {
 
         Attribute* indexAttr = new Attribute(indexDescr, BaseTypes::BOOL_TYPE(), false, true);
         indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::BAM));
+        indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         attrs << indexAttr;
     }
 

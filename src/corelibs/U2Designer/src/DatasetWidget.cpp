@@ -75,6 +75,7 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
     connect(ui->downButton, SIGNAL(clicked()), SLOT(sl_downButton()));
     connect(ui->upButton, SIGNAL(clicked()), SLOT(sl_upButton()));
     connect(ui->deleteButton, SIGNAL(clicked()), SLOT(sl_deleteButton()));
+
     connect(ui->itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
 
     if (!readingFromDbIsSupported()) {
@@ -155,6 +156,15 @@ void URLListWidget::sl_addFromDbButton() {
     QList<Folder> folders;
     QList<GObject*> objects;
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
+
+    foreach (const Folder& f, folders) {
+        // FIXME when readers for different data types appear
+        addUrl(SharedDbUrlUtils::createDbFolderUrl(f, U2ObjectTypeUtils::toDataType(*compatTypes.begin())));
+    }
+
+    foreach (GObject* obj, objects) {
+        addUrl(SharedDbUrlUtils::createDbObjectUrl(obj));
+    }
 }
 
 void URLListWidget::addUrl(const QString& url) {
