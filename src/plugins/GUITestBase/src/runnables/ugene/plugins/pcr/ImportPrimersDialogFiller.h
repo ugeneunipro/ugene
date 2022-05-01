@@ -29,15 +29,11 @@ using namespace HI;
 
 class ImportPrimersDialogFiller : public Filler {
 public:
-    enum ImportSource { LocalFiles,
-                        SharedDb };
-
     ImportPrimersDialogFiller(HI::GUITestOpStatus& os, const QStringList& fileList);
     ImportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
-    static void setImportTarget(HI::GUITestOpStatus& os, ImportSource importSource);
     static void addFile(HI::GUITestOpStatus& os, const QString& filePath);
     static void addObjects(HI::GUITestOpStatus& os, const QString& databaseName, const QStringList& objectNames);
     static void addObjects(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& databaseAndObjectNames);

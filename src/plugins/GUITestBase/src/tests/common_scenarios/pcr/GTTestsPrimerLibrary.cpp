@@ -271,8 +271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //        File path: any valid path;
     //    and accept the dialog.
     class ExportToFastaScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
+        void run(HI::GUITestOpStatus& os) override {
             ExportPrimersDialogFiller::setFormat(os, "FASTA");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0006/primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -324,8 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //        File path: any valid path;
     //    and accept the dialog.
     class ExportToGenbankScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
+        void run(HI::GUITestOpStatus& os) override {
             ExportPrimersDialogFiller::setFormat(os, "GenBank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -374,8 +372,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //        Files: "_common_data/fasta/random_primers.fa"
     //    and accept the dialog.
     class ImportFromMultifasta : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+        void run(HI::GUITestOpStatus& os) override {
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -418,8 +415,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //               "_common_data/fasta/random_primers.fa2"
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+        void run(HI::GUITestOpStatus& os) override {
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers2.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -528,8 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //               "_common_data/cmdline/primers/primer_degenerated_2.fasta"
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+        void run(HI::GUITestOpStatus& os) override {
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_1.fasta");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_2.fasta");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);

@@ -29,15 +29,11 @@ using namespace HI;
 
 class ExportPrimersDialogFiller : public Filler {
 public:
-    enum ExportTarget { LocalFile,
-                        SharedDb };
-
     ExportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
     static QWidget* getDialog(HI::GUITestOpStatus& os);
-    static void setExportTarget(HI::GUITestOpStatus& os, ExportTarget exportTarget);
     static void setFormat(HI::GUITestOpStatus& os, const QString& format);
     static void setFilePath(HI::GUITestOpStatus& os, const QString& filePath);
 };
