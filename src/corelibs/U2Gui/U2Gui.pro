@@ -120,7 +120,6 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/project/ProjectFilterNames.h \
            src/util/project/ProjectFilterProxyModel.h \
            src/util/project/ProjectTreeController.h \
-           src/util/project/ProjectUpdater.h \
            src/util/project/ProjectUtils.h \
            src/util/project/ProjectViewFilterModel.h \
            src/util/project/ProjectViewModel.h \
@@ -276,7 +275,6 @@ SOURCES += src/MainWindow.cpp \
            src/util/project/ProjectFilterNames.cpp \
            src/util/project/ProjectFilterProxyModel.cpp \
            src/util/project/ProjectTreeController.cpp \
-           src/util/project/ProjectUpdater.cpp \
            src/util/project/ProjectUtils.cpp \
            src/util/project/ProjectViewFilterModel.cpp \
            src/util/project/ProjectViewModel.cpp \

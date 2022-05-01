@@ -61,7 +61,6 @@
 #include "FilteredProjectItemDelegate.h"
 #include "FolderNameDialog.h"
 #include "ProjectFilterProxyModel.h"
-#include "ProjectUpdater.h"
 #include "ProjectUtils.h"
 #include "ProjectViewFilterModel.h"
 
@@ -71,7 +70,6 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
     : QObject(parent),
       tree(tree),
       settings(settings),
-      updater(nullptr),
       model(nullptr),
       filterModel(nullptr),
       previousItemDelegate(nullptr),
@@ -89,14 +87,11 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
         filterModel = new ProjectViewFilterModel(model, settings, this);
     }
 
-    updater = new ProjectUpdater();
-
     connect(project, SIGNAL(si_documentAdded(Document*)), SLOT(sl_onDocumentAdded(Document*)));
     connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_onDocumentRemoved(Document*)));
 
     tree->setDragDropMode(QAbstractItemView::InternalMove);
     tree->setModel(proxyModel == nullptr ? qobject_cast<QAbstractItemModel*>(model) : qobject_cast<QAbstractItemModel*>(proxyModel));
-    updater->start();
 
     tree->setSelectionMode(settings.allowMultipleSelection ? QAbstractItemView::ExtendedSelection : QAbstractItemView::SingleSelection);
     tree->setEditTriggers(tree->editTriggers() & ~QAbstractItemView::DoubleClicked);
@@ -129,14 +124,6 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
     connectToResourceTracker();
 
     sl_updateSelection();
-}
-
-ProjectTreeController::~ProjectTreeController() {
-    if (updater != nullptr) {
-        updater->stop();
-        // TODO
-        // delete updater;
-    }
 }
 
 const DocumentSelection* ProjectTreeController::getDocumentSelection() const {
@@ -214,7 +201,6 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
 
 void ProjectTreeController::sl_onDocumentAdded(Document* doc) {
     model->addDocument(doc);
-    updater->addDocument(doc);
     connectDocument(doc);
     sl_updateActions();
 
@@ -224,7 +210,6 @@ void ProjectTreeController::sl_onDocumentAdded(Document* doc) {
 void ProjectTreeController::sl_onDocumentRemoved(Document* doc) {
     disconnectDocument(doc);
     model->removeDocument(doc);
-    updater->removeDocument(doc);
     sl_updateActions();
 }
 
@@ -421,8 +406,7 @@ void ProjectTreeController::sl_doubleClicked(const QModelIndex& index) {
     }
 }
 
-void ProjectTreeController::sl_documentContentChanged(Document* doc) {
-    updater->invalidate(doc);
+void ProjectTreeController::sl_documentContentChanged(Document*) {
     if (proxyModel != nullptr) {
         proxyModel->invalidate();
     }
@@ -579,10 +563,8 @@ void ProjectTreeController::sl_onDocumentLoadedStateChanged() {
     SAFE_POINT(doc != nullptr, "NULL document", );
 
     if (doc->isLoaded()) {
-        updater->addDocument(doc);
         connectDocument(doc);
     } else {
-        updater->removeDocument(doc);
         disconnectDocument(doc);
         connect(doc, SIGNAL(si_loadedStateChanged()), SLOT(sl_onDocumentLoadedStateChanged()));
     }
@@ -611,22 +593,6 @@ void ProjectTreeController::sl_onRename() {
 }
 
 void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex& index) {
-    Document* doc = nullptr;
-    switch (ProjectViewModel::itemType(index)) {
-        case ProjectViewModel::OBJECT:
-            doc = ProjectViewModel::toObject(index)->getDocument();
-            break;
-        case ProjectViewModel::FOLDER:
-            doc = ProjectViewModel::toFolder(index)->getDocument();
-            break;
-        case ProjectViewModel::DOCUMENT:
-            doc = ProjectViewModel::toDocument(index);
-            break;
-        default:
-            FAIL("Unexpected project view item type", );
-    }
-    updater->invalidate(doc);
-
     tree->selectionModel()->setCurrentIndex(proxyModel == nullptr ? index : proxyModel->mapFromSource(index), QItemSelectionModel::Select);
     tree->setFocus();
 }
@@ -694,10 +660,6 @@ void ProjectTreeController::restoreSelectedObjects() {
         }
     }
 
-    foreach (Document* doc, docs) {
-        updater->invalidate(doc);
-    }
-
     if (restoreFailed) {
         QMessageBox::warning(QApplication::activeWindow(), tr("Unable to Restore"), tr("UGENE is unable to restore some object from Recycle Bin because its original location does not exist. "
                                                                                        "You can still restore the objects by dragging them with mouse from Recycle Bin."),
@@ -726,10 +688,6 @@ void ProjectTreeController::restoreSelectedFolders() {
         } else {
             restoreFailed = true;
         }
-    }
-
-    foreach (Document* doc, docs) {
-        updater->invalidate(doc);
     }
 
     if (restoreFailed) {
@@ -761,7 +719,6 @@ void ProjectTreeController::sl_onCreateFolder() {
         QString path = Folder::createPath(folderPath, d->getResult());
         Document* doc = folder.getDocument();
         model->createFolder(doc, path);
-        updater->invalidate(doc);
     }
 }
 
@@ -1123,7 +1080,6 @@ bool ProjectTreeController::removeObjects(const QList<GObject*>& objs, const QLi
             QCoreApplication::processEvents();
             objectIsBeingRecycled = nullptr;
         }
-        updater->invalidate(doc);
     }
 
     if (removeFromDbi && !objects2Doc.isEmpty()) {
@@ -1172,9 +1128,6 @@ bool ProjectTreeController::removeFolders(const QList<Folder>& folders, const QL
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onFolderRemovalTaskFinished()));
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
-    foreach (Document* doc, relatedDocs) {
-        updater->invalidate(doc);
-    }
     return deletedSuccessfully;
 }
 
@@ -1187,7 +1140,6 @@ void ProjectTreeController::sl_onObjRemovalTaskFinished() {
     foreach (Document* doc, doc2ObjIds.keys()) {
         if (model->hasDocument(doc)) {
             model->excludeFromObjIgnoreFilter(doc, doc2ObjIds[doc]);
-            updater->invalidate(doc);
         }
     }
     task2ObjectsBeingDeleted.remove(removalTask);
@@ -1204,7 +1156,6 @@ void ProjectTreeController::sl_onFolderRemovalTaskFinished() {
     QHash<Document*, QSet<QString>>& doc2Paths = task2FoldersBeingDeleted[removalTask];
     foreach (Document* doc, doc2Paths.keys()) {
         model->excludeFromFolderIgnoreFilter(doc, doc2Paths[doc]);
-        updater->invalidate(doc);
     }
     task2FoldersBeingDeleted.remove(removalTask);
 }

@@ -40,7 +40,6 @@ class GObjectView;
 class MWMDIWindow;
 class ProjectFilterProxyModel;
 class ProjectViewFilterModel;
-class ProjectUpdater;
 class ProjectViewModel;
 class Task;
 
@@ -48,7 +47,6 @@ class U2GUI_EXPORT ProjectTreeController : public QObject {
     Q_OBJECT
 public:
     ProjectTreeController(EditableTreeView* tree, const ProjectTreeControllerModeSettings& settings, QObject* parent);
-    ~ProjectTreeController();
 
     const DocumentSelection* getDocumentSelection() const;
     const GObjectSelection* getGObjectSelection() const;
@@ -158,7 +156,6 @@ private:
 
     EditableTreeView* tree;
     ProjectTreeControllerModeSettings settings;
-    ProjectUpdater* updater;
     ProjectViewModel* model;
     ProjectViewFilterModel* filterModel;
     QAbstractItemDelegate* previousItemDelegate;
