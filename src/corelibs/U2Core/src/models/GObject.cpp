@@ -94,20 +94,17 @@ QList<GObjectRelation> GObject::getObjectRelations() const {
     SAFE_POINT(hints != nullptr, "Object hints is NULL", QList<GObjectRelation>());
     QList<GObjectRelation> res = hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
 
-    // fetch permanent object relations from DB
-    // only for the first time for objects from shared DBs
-    Document* parentDoc = getDocument();
-    if (!arePermanentRelationsFetched && !isUnloaded() && parentDoc == nullptr) {
+    // Fetch permanent object relations from DB.
+    if (!arePermanentRelationsFetched && !isUnloaded()) {
         fetchPermanentGObjectRelations(res);
     }
-
     return res;
 }
 
 void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const {
     Document* parentDoc = getDocument();
     // take into account the case when the object was not added to document
-    CHECK(nullptr != parentDoc && entityRef.dbiRef.isValid(), );
+    CHECK(parentDoc != nullptr && entityRef.dbiRef.isValid(), );
 
     U2OpStatusImpl os;
     DbiConnection con(entityRef.dbiRef, os);
@@ -253,8 +250,23 @@ void GObject::addObjectRelation(const GObject* obj, const GObjectRelationRole& r
     addObjectRelation(rel);
 }
 
+static bool relationsAreEqualExceptDbId(const GObjectRelation& f, const GObjectRelation& s) {
+    return f.role == s.role && f.ref.objName == s.ref.objName && f.getDocURL() == s.getDocURL() && f.ref.objType == s.ref.objType &&
+           (!f.ref.entityRef.isValid() || !s.ref.entityRef.isValid() || f.ref.entityRef.dbiRef == s.ref.entityRef.dbiRef);
+}
+
 bool GObject::hasObjectRelation(const GObjectRelation& r) const {
-    return getObjectRelations().contains(r);
+    Document* parentDoc = getDocument();
+    if (parentDoc != nullptr) {
+        foreach (const GObjectRelation& rel, getObjectRelations()) {
+            if (relationsAreEqualExceptDbId(rel, r)) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return getObjectRelations().contains(r);
+    }
 }
 
 bool GObject::hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const {

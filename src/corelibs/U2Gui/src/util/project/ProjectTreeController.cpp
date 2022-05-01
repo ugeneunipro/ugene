@@ -91,17 +91,12 @@ ProjectTreeController::ProjectTreeController(EditableTreeView* tree, const Proje
 
     updater = new ProjectUpdater();
 
-    QTimer* timer = new QTimer(this);
-    timer->setInterval(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
-    connect(timer, SIGNAL(timeout()), SLOT(sl_mergeData()));
-
     connect(project, SIGNAL(si_documentAdded(Document*)), SLOT(sl_onDocumentAdded(Document*)));
     connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_onDocumentRemoved(Document*)));
 
     tree->setDragDropMode(QAbstractItemView::InternalMove);
     tree->setModel(proxyModel == nullptr ? qobject_cast<QAbstractItemModel*>(model) : qobject_cast<QAbstractItemModel*>(proxyModel));
     updater->start();
-    timer->start();
 
     tree->setSelectionMode(settings.allowMultipleSelection ? QAbstractItemView::ExtendedSelection : QAbstractItemView::SingleSelection);
     tree->setEditTriggers(tree->editTriggers() & ~QAbstractItemView::DoubleClicked);
@@ -230,20 +225,6 @@ void ProjectTreeController::sl_onDocumentRemoved(Document* doc) {
     disconnectDocument(doc);
     model->removeDocument(doc);
     updater->removeDocument(doc);
-    sl_updateActions();
-}
-
-void ProjectTreeController::sl_mergeData() {
-    const QList<Document*>& docs = AppContext::getProject()->getDocuments();
-    foreach (Document* doc, docs) {
-        if (doc->isStateLocked()) {
-            continue;
-        }
-        DocumentFoldersUpdate update;
-        if (updater->takeData(doc, update)) {
-            model->merge(doc, update);
-        }
-    }
     sl_updateActions();
 }
 

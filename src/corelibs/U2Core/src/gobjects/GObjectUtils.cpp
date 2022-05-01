@@ -148,24 +148,16 @@ QList<GObject*> findRelatedObjectsForUnloadedObjects(const GObjectReference& obj
     return res;
 }
 
-bool objectHasInMemoryRelationToReference(GObject* object, const GObjectReference& reference, GObjectRelationRole role) {
-    SAFE_POINT(nullptr != object && reference.isValid(), "Invalid object reference detected", false);
-    return object->getGHints()->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>().contains(GObjectRelation(reference, role));
-}
-
 QList<GObject*> findRelatedObjectsForLoadedObjects(const GObjectReference& obj, GObjectRelationRole role, const QSet<GObject*>& fromObjects) {
     QList<GObject*> res;
 
     const GObjectRelation objRelation(obj, role);
     QHash<Document*, U2DbiRef> doc2DbiRef;
-    for (GObject* fromObject : qAsConst(fromObjects)) {
-        Document* doc = fromObject->getDocument();
+    foreach (GObject* object, fromObjects) {
+        Document* doc = object->getDocument();
         SAFE_POINT(doc != nullptr, "Invalid parent document detected", res);
-        U2DbiRef fromDbiRef = fromObject->getEntityRef().dbiRef;
-        if (fromDbiRef == obj.entityRef.dbiRef) {
-            doc2DbiRef.insert(doc, obj.entityRef.dbiRef);
-        } else if (objectHasInMemoryRelationToReference(fromObject, obj, role)) {
-            res.append(fromObject);
+        if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
+            res.append(object);
         }
     }
 

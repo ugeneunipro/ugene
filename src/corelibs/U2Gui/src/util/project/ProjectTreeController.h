@@ -66,7 +66,6 @@ public:
 private slots:
     void sl_onDocumentAdded(Document* doc);
     void sl_onDocumentRemoved(Document* doc);
-    void sl_mergeData();
     void sl_updateSelection();
     void sl_updateActions();
     void sl_doubleClicked(const QModelIndex& index);
