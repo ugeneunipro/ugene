@@ -1360,10 +1360,8 @@ void ProjectViewModel::sl_objectAdded(GObject* obj) {
         return;
     }
 
-    if (!doc->isLoaded()) {
-        insertObject(doc, obj, U2ObjectDbi::ROOT_FOLDER);
-        emit si_modelChanged();
-    }
+    insertObject(doc, obj, U2ObjectDbi::ROOT_FOLDER);
+    emit si_modelChanged();
 }
 
 void ProjectViewModel::sl_objectRemoved(GObject* obj) {
