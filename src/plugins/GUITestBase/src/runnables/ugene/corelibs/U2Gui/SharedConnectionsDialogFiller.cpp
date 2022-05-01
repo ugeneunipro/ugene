@@ -113,7 +113,7 @@ void establishConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogF
     waitForConnection(os, action);
 
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWidget* connectButton = GTWidget::findWidget(os, "pbConnect", dialog);
+    auto connectButton = GTWidget::findWidget(os, "pbConnect", dialog);
     GTWidget::checkEnabled(os, connectButton);
     GTWidget::click(os, connectButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -134,9 +134,9 @@ void deleteConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFill
 }
 
 void stopConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFiller::Action& action) {
-    QWidget* cnctBtn = GTWidget::findWidget(os, "pbConnect");
-    QWidget* dcntBtn = GTWidget::findWidget(os, "pbDisconnect");
-    QWidget* editBtn = GTWidget::findWidget(os, "pbEdit");
+    auto cnctBtn = GTWidget::findWidget(os, "pbConnect");
+    auto dcntBtn = GTWidget::findWidget(os, "pbDisconnect");
+    auto editBtn = GTWidget::findWidget(os, "pbEdit");
 
     GTWidget::click(os, GTWidget::findWidget(os, "pbDisconnect"));
     GTGlobals::sleep(2000);

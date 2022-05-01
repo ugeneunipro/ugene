@@ -208,8 +208,7 @@ void ExportCoverageDialogFiller::checkCompress(const QVariant& actionData) {
 void ExportCoverageDialogFiller::checkOptionsVisibility(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected groupbox visibility state from the action data");
-    QWidget* gbAdditionalOptions = GTWidget::findWidget(os, "gbAdditionalOptions", dialog);
-    GT_CHECK(nullptr != gbAdditionalOptions, "An additional options widget wasn't found");
+    auto gbAdditionalOptions = GTWidget::findWidget(os, "gbAdditionalOptions", dialog);
     GT_CHECK(gbAdditionalOptions->isVisible() == actionData.toBool(), "An unexpected additional options groupbox visibility state");
 }
 #undef GT_METHOD_NAME
