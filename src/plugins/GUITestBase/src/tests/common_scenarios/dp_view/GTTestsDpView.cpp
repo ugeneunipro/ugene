@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has closed.
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -121,7 +121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -203,7 +203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu", true));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }

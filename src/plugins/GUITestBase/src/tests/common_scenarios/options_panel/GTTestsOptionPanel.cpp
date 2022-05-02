@@ -63,7 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
+    auto w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
     QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>A:&nbsp;&nbsp;"
@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
+    auto w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
     QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>A:&nbsp;&nbsp;</td><td>31 &nbsp;&nbsp;"
@@ -109,7 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget* w = GTWidget::findWidget(os, "Dinucleotides");
+    auto w = GTWidget::findWidget(os, "Dinucleotides");
     GTWidget::click(os, w);
     QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>AA:&nbsp;&nbsp;</td><td>"
@@ -157,7 +157,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget* w = GTWidget::findWidget(os, "Dinucleotides");
+    auto w = GTWidget::findWidget(os, "Dinucleotides");
     GTWidget::click(os, w);
     QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>AA:&nbsp;&nbsp;"
@@ -221,7 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
+    auto w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
 
     QPoint point = GTMouseDriver::getMousePosition();
@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
+    auto w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
 
     QLabel* l = w->findChild<QLabel*>();
@@ -489,16 +489,14 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
-    QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(w0 != nullptr, "ADV single sequence widget 0 is NULL");
+    auto w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     GTWidget::click(os, w0);
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>70 </td></tr>"
                         "</table>");
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    QWidget* w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
-    CHECK_SET_ERR(w1 != nullptr, "ADV single sequence widget 1 is NULL");
+    auto w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     GTWidget::click(os, w1);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 nt</td></tr>"
@@ -519,8 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    QWidget* w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
-    CHECK_SET_ERR(w2 != nullptr, "ADV single sequence widget 2 is NULL");
+    auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     GTWidget::click(os, w2);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 aa</td></tr>"
@@ -538,8 +535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check the hint: it is visible
-    QWidget* openCvWidget = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
+    auto openCvWidget = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
     // 4. Open CV
@@ -644,8 +640,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsOptionPanelSequenceView::toggleCircularView(os);
 
     // 3. Check font combobox and bold attribute button
-    QWidget* boldButton = GTWidget::findWidget(os, "boldButton");
-    CHECK_SET_ERR(boldButton != nullptr, "Bold button is NULL");
+    auto boldButton = GTWidget::findWidget(os, "boldButton");
     GTWidget::click(os, boldButton);
     CHECK_SET_ERR(qobject_cast<QPushButton*>(boldButton)->isChecked(), "Bold button is not checked");
 
@@ -673,8 +668,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
                                                                                 "NC_004718");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
-    QWidget* openCvWidget = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
+    auto openCvWidget = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
     GTWidget::click(os, GTWidget::findWidget(os, "openCvButton"));
@@ -702,8 +696,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget1), "CV opened");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
-    QWidget* openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget1 != nullptr, "No hint widget");
+    auto openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget1->isVisible(), "Hint label and OpenCV button should be visible");
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "NC_014267.1.gb");
@@ -713,10 +706,9 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     ADVSingleSequenceWidget* seqWidget2 = seqWidgets.first();
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget2), "No CV opened");
 
-    QWidget* parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
+    auto parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS", parent));
-    QWidget* openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
-    CHECK_SET_ERR(openCvWidget2 != nullptr, "No hint widget");
+    auto openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
     CHECK_SET_ERR(openCvWidget2->isHidden(), "Hint label and OpenCV button should be hidden");
 }
 
@@ -728,7 +720,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Codons"
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget* reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    auto reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
     GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -790,7 +782,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Amino Acids".
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget* reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
+    auto reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
     GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -384,10 +384,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os) == 0, "Wrong first base idx");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os) == 13, "Wrong last base idx");
 
-    QWidget* msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    QLabel* line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
-    QLabel* column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
-    QLabel* selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
+    auto msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    auto column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
+    auto selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
 
     //  Select 1 base.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
@@ -430,9 +430,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os) == 0, "Wrong first base idx");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os) == 13, "Wrong last base idx");
 
-    QWidget* msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    QLabel* line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
-    QLabel* column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
+    auto msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    auto column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
     CHECK_SET_ERR(line->text() == "Seq 4 / 10", "1. Sequence is " + line->text());
@@ -1706,7 +1706,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
     GTWidget::click(os, GTAction::button(os, "Change Font"));
 
-    QWidget* nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
+    auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
     MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
@@ -1881,8 +1881,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Phaneroptera_falcata"));
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_Phaneroptera_falcata");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_Phaneroptera_falcata");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_Phaneroptera_falcata");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1976,8 +1975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -1993,8 +1991,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_1) {  // DIFFERENCE: Percentage is used
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2010,8 +2007,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2027,8 +2023,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2044,8 +2039,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_4) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2107,8 +2101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     //         Profile mode: Counts
     //         Exclude gakls: checked
     //         Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2128,8 +2121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033_1) {
     //         Profile mode: Counts
     //         Exclude gakls: checked
     //         Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2149,8 +2141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //         Profile mode: Counts(Percents)
     //         Exclude gakls: checked(unchecked)
     //         Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2170,8 +2161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034_1) {
     //         Profile mode: Counts(Percents)
     //         Exclude gakls: checked(unchecked)
     //         Click "Generate"
-    QWidget* profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
-    CHECK_SET_ERR(profile, "Alignment profile widget not found");
+    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2691,7 +2681,6 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto exportType = GTWidget::findComboBox(os, "comboBox", dialog);
-            CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             GTUtilsDialog::waitForDialog(os,
                                          new SelectSubalignmentFiller(os,
@@ -3226,7 +3215,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QWidget* logoWidget = GTWidget::findWidget(os, "logoWidget", dialog);
+            auto logoWidget = GTWidget::findWidget(os, "logoWidget", dialog);
             int initHeight = logoWidget->geometry().height();
             CHECK_SET_ERR(initHeight == 0, QString("logoWidget has too big height: %1").arg(initHeight));
 
@@ -3263,7 +3252,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWidget* alphabetColorsFrame = GTWidget::findWidget(os, "alphabetColorsFrame", dialog);
+            auto alphabetColorsFrame = GTWidget::findWidget(os, "alphabetColorsFrame", dialog);
 
             int cellWidth = alphabetColorsFrame->geometry().width() / 6;
             QStringList initialColors;
@@ -3589,7 +3578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    QWidget* column = GTWidget::findWidget(os, "msa_editor_similarity_column");
+    auto column = GTWidget::findWidget(os, "msa_editor_similarity_column");
     CHECK_SET_ERR(!column->isVisible(), "similarity column unexpectidly found");
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
@@ -3848,7 +3837,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
 GUI_TEST_CLASS_DEFINITION(test_0075) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* overview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     QImage initialImage = GTWidget::getImage(os, overview);
 
@@ -3873,12 +3862,12 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* overview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
     //    Show simple overview
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, overview);
 
-    QWidget* simple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto simple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QColor initColor = GTWidget::getColor(os, simple, simple->geometry().center());
     QString initColorS = initColor.name();
     //    Press on overview with mouse left button
@@ -3917,7 +3906,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     if (vis) {
         GTWidget::click(os, button);
     } else {
-        QWidget* extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "msa_editor_tree_view_container_widget"));
+        auto extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "msa_editor_tree_view_container_widget"));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Refresh tree"}));
         GTWidget::click(os, extButton);
     }
@@ -3937,7 +3926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
     //    Shrink tree view to show horizontal scrollbar
     //    Move wheel
-    QWidget* parent = GTWidget::findWidget(os, "qt_scrollarea_hcontainer", GTWidget::findWidget(os, "treeView"));
+    auto parent = GTWidget::findWidget(os, "qt_scrollarea_hcontainer", GTWidget::findWidget(os, "treeView"));
     QScrollBar* hbar = parent->findChild<QScrollBar*>();
     int val = hbar->value();
 
