@@ -79,7 +79,7 @@ QPoint GTUtilsPcr::getResultPoint(HI::GUITestOpStatus& os, int number) {
 }
 
 QPoint GTUtilsPcr::getDetailsPoint(HI::GUITestOpStatus& os) {
-    QWidget* warning = GTWidget::findWidget(os, "detailsLinkLabel");
+    auto warning = GTWidget::findWidget(os, "detailsLinkLabel");
     QPoint result = warning->geometry().center();
     result.setX(result.x() / 2);
     return warning->parentWidget()->mapToGlobal(result);

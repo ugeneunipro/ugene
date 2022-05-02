@@ -216,7 +216,6 @@ bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus& os) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == NULL", false);
     auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
-    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == NULL", false);
     return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME

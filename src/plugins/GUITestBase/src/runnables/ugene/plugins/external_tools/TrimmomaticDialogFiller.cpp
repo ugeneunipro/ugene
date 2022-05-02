@@ -142,7 +142,6 @@ void TrimmomaticDialogFiller::addSteps() {
             GT_CHECK(!widgetName.isEmpty(), "widgetName not found");
 
             auto widget = GTWidget::findWidget(os, "widgetStepSettings", dialog);
-            GT_CHECK(widget != nullptr, "widgetStepSettings not found");
 
             auto l = qobject_cast<QVBoxLayout*>(widget->layout());
             GT_CHECK(l != nullptr, "layout not found");
@@ -212,7 +211,7 @@ void TrimmomaticDialogFiller::moveSteps() {
         auto stepString = STEPS.value(step.first.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
-        QListWidget* listSteps = GTWidget::findListWidget(os, "listSteps", dialog);
+        auto listSteps = GTWidget::findListWidget(os, "listSteps", dialog);
 
         GTListWidget::click(os, listSteps, stepString, Qt::LeftButton, step.first.second);
 
@@ -237,7 +236,6 @@ void TrimmomaticDialogFiller::removeSteps() {
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
         auto listSteps = GTWidget::findListWidget(os, "listSteps", dialog);
-        GT_CHECK(listSteps != nullptr, "listSteps not found");
 
         GTListWidget::click(os, listSteps, stepString, Qt::LeftButton, step.second);
 

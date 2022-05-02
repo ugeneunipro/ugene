@@ -142,7 +142,7 @@ QStringList ExtractSelectedAsMSADialogFiller::getSequences(HI::GUITestOpStatus& 
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QStringList result;
 
-    QTableWidget* sequencesTableWidget = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
+    auto sequencesTableWidget = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
         QCheckBox* box = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         GT_CHECK_RESULT(box != nullptr, "cell widget is not checkbox", QStringList());

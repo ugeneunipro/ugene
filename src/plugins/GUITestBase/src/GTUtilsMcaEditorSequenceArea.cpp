@@ -85,7 +85,7 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus& os, int rowNumbe
 
 #define GT_METHOD_NAME "clickToPosition"
 void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
-    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+    auto mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -109,7 +109,7 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QP
 
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const QPoint& position) {
-    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+    auto mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -149,7 +149,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
 
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
-    QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
+    auto nameList = GTWidget::findWidget(os, "mca_editor_name_list");
     RowHeightController* rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
     int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
@@ -329,7 +329,7 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatu
 #define GT_METHOD_NAME "moveCursorToReferencePositionCenter"
 void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOpStatus& os, qint64 position, const QPoint& movePointAdjustment) {
     QPoint selectedPoint(position, 2);
-    McaEditorSequenceArea* mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
+    auto mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(selectedPoint.x())
@@ -345,7 +345,7 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
     QPoint cursorPosition(centerX + movePointAdjustment.x(), centerY + movePointAdjustment.y());
     GT_CHECK(mcaSeqArea->rect().contains(cursorPosition, false), "Position is not visible");
 
-    QWidget* refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
+    auto refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
     GTMouseDriver::moveTo(refSeqView->mapToGlobal(cursorPosition));
     GTThread::waitForMainThread();
 }

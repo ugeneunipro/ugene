@@ -50,11 +50,11 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
-        QLineEdit* fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
+        auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
     if (formatVal >= 0) {
-        QComboBox* formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
+        auto formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
         GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
     }
     if (includeGaps) {

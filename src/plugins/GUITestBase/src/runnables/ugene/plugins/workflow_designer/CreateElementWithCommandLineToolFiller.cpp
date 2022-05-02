@@ -186,7 +186,7 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
 }
 
 void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
-    QWidget* pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
+    auto pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
 
     auto tvInput = GTWidget::findTableView(os, "tvInput");
 
@@ -198,7 +198,7 @@ void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) 
 }
 
 void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
-    QWidget* pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
+    auto pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
 
     auto tvAttributes = GTWidget::findTableView(os, "tvAttributes");
 
@@ -208,7 +208,7 @@ void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
 }
 
 void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) {
-    QWidget* pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
+    auto pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
 
     auto tvOutput = GTWidget::findTableView(os, "tvOutput");
 
