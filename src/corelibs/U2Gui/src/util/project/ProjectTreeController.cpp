@@ -1064,7 +1064,7 @@ bool ProjectTreeController::removeObjects(const QList<GObject*>& objs, const QLi
         bool parentDocSelected = excludedDocs.contains(doc);
         if (parentDocSelected || parentFolderSelected) {
             continue;
-        } else if (isObjectInRecycleBin(obj)) {
+        } else {
             objectSelection.removeFromSelection(obj);
             if (doc->removeObject(obj, DocumentObjectRemovalMode_Release)) {
                 objects2Doc.insert(obj, doc);
@@ -1074,11 +1074,6 @@ bool ProjectTreeController::removeObjects(const QList<GObject*>& objs, const QLi
             } else {
                 deletedSuccessfully = false;
             }
-        } else if (!isObjectInRecycleBin(obj)) {
-            objectIsBeingRecycled = obj;
-            model->moveObject(doc, obj, ProjectUtils::RECYCLE_BIN_FOLDER_PATH);
-            QCoreApplication::processEvents();
-            objectIsBeingRecycled = nullptr;
         }
     }
 

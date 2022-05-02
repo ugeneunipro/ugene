@@ -2109,7 +2109,6 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3439) {
-    // Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Alignment");
@@ -2117,16 +2116,7 @@ GUI_TEST_CLASS_DEFINITION(test_3439) {
     // Validate workflow
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    // there is should be 2 errors
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 2 validation errors");
-    // set parameter "Data storage" to "Shared UGENE database"
-    GTUtilsWorkflowDesigner::click(os, "Write Alignment", QPoint(-30, -30));
-    GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
-    // Validate workflow
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    // there is should be 3 errors
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 3, "Errors count dont match, should be 2 validation errors");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 1 validation error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3441) {

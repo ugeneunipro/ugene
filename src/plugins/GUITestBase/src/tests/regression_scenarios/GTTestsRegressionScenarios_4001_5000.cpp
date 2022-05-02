@@ -985,38 +985,29 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
-            //    Expected: the dialog is modal, the "OK" button is disabled.
+        void run(HI::GUITestOpStatus& os) override {
+            // Expected: the dialog is modal, the "OK" button is disabled.
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(GTUtilsDialog::buttonBox(os, dialog) != nullptr, "ButtonBox is NULL");
 
             QWidget* okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(nullptr != okButton, "Export button is NULL");
+            CHECK_SET_ERR(okButton != nullptr, "Export button is NULL");
             CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
 
-            //    3. Add human_T1.fa.
+            // 3. Add human_T1.fa.
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Add file(s)", dialog));
 
-            //    4. Click the added item.
+            // 4. Click the added item.
             const QString filePath = QDir::cleanPath(QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath());
             GTListWidget::click(os, GTWidget::findListWidget(os, "lwFiles", dialog), filePath);
 
-            //    Expected: the "Remove" button is enabled.
+            // Expected: the "Remove" button is enabled.
             QWidget* removeButton = GTWidget::findWidget(os, "pbRemoveFile", dialog);
             CHECK_SET_ERR(nullptr != removeButton, "Remove button is NULL");
             CHECK_SET_ERR(removeButton->isEnabled(), "Remove button is unexpectedly disabled");
 
-            //    5. Choose "Shared database" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Shared database");
-
-            //    Expected: the "OK" button is disabled.
-            CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
-
-            //    6. Choose "Local file(s)" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Local file(s)");
-
-            //    Expected: the "OK" button is enabled.
+            // Expected: the "OK" button is enabled.
             CHECK_SET_ERR(okButton->isEnabled(), "OK button is unexpectedly disabled");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -3020,8 +3011,7 @@ GUI_TEST_CLASS_DEFINITION(test_4500) {
     GTKeyboardUtils::selectAll();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, RemovePartFromSequenceDialogFiller::Remove, 
-                                     true, sandBoxDir + "4500_result.gb", RemovePartFromSequenceDialogFiller::Genbank));
+    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, RemovePartFromSequenceDialogFiller::Remove, true, sandBoxDir + "4500_result.gb", RemovePartFromSequenceDialogFiller::Genbank));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 3. Open result file
@@ -3031,7 +3021,7 @@ GUI_TEST_CLASS_DEFINITION(test_4500) {
     QStringList newRegions({"42..1658", "join(1970..2413,2412..2873)", "2875..3999", "4048..4203"});
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     for (const QTreeWidgetItem* item : qAsConst(items)) {
-        if (!newRegions.contains(item->text(2)) ) {
+        if (!newRegions.contains(item->text(2))) {
             CHECK_SET_ERR(false, "Unexpected CDS location " + item->text(2));
         }
     }
