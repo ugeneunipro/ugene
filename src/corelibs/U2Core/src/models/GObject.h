@@ -164,11 +164,9 @@ private:
     virtual void setParentStateLockItem(StateLockableTreeItem* p);
     void setRelationsInDb(QList<GObjectRelation>& list) const;
     void setupHints(QVariantMap hintsMap);
-    void fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const;
 
     void removeAllLocks();
 
-    bool arePermanentRelationsFetched;
     QMap<GObjectModLock, StateLock*> modLocks;
 };
 

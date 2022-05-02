@@ -37,7 +37,7 @@
 namespace U2 {
 
 GObject::GObject(QString _type, const QString& _name, const QVariantMap& hintsMap)
-    : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
+    : dataLoaded(false), type(_type), name(_name) {
     SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
 }
@@ -92,57 +92,7 @@ void GObject::setGObjectNameNotDbi(const QString& newName) {
 
 QList<GObjectRelation> GObject::getObjectRelations() const {
     SAFE_POINT(hints != nullptr, "Object hints is NULL", QList<GObjectRelation>());
-    QList<GObjectRelation> res = hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
-
-    // Fetch permanent object relations from DB.
-    if (!arePermanentRelationsFetched && !isUnloaded()) {
-        fetchPermanentGObjectRelations(res);
-    }
-    return res;
-}
-
-void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const {
-    Document* parentDoc = getDocument();
-    // take into account the case when the object was not added to document
-    CHECK(parentDoc != nullptr && entityRef.dbiRef.isValid(), );
-
-    U2OpStatusImpl os;
-    DbiConnection con(entityRef.dbiRef, os);
-    SAFE_POINT_OP(os, );
-
-    U2ObjectRelationsDbi* rDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
-
-    const QList<U2ObjectRelation> rawDbRelations = rDbi->getObjectRelations(entityRef.entityId, os);
-    SAFE_POINT_OP(os, );
-
-    const QString docUrl = parentDoc->getURLString();
-    QList<GObjectRelation> dbRelations;
-    foreach (const U2ObjectRelation& relation, rawDbRelations) {
-        if (nullptr != parentDoc->findGObjectByName(relation.referencedName)) {
-            GObjectReference reference(docUrl, relation.referencedName, relation.referencedType);
-            reference.entityRef = U2EntityRef(entityRef.dbiRef, relation.referencedObject);
-            const GObjectRelation relationFromDb(reference, relation.relationRole);
-            dbRelations.append(relationFromDb);
-
-            if (!res.contains(relationFromDb)) {
-                res.append(relationFromDb);
-            }
-        }
-    }
-
-    QList<GObjectRelation> relationsMissedFromDb;
-    foreach (const GObjectRelation& relation, res) {
-        if (!dbRelations.contains(relation)) {
-            relationsMissedFromDb.append(relation);
-        }
-    }
-    if (!relationsMissedFromDb.isEmpty()) {
-        const_cast<GObject*>(this)->setRelationsInDb(relationsMissedFromDb);
-    }
-
-    hints->set(GObjectHint_RelatedObjects, QVariant::fromValue<QList<GObjectRelation>>(res));
-    const_cast<GObject*>(this)->arePermanentRelationsFetched = true;
+    return hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
 }
 
 void GObject::setObjectRelations(const QList<GObjectRelation>& list) {
