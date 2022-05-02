@@ -1975,7 +1975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
+    GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -1991,7 +1991,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_1) {  // DIFFERENCE: Percentage is used
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
+    GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2007,7 +2007,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
+    GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2023,7 +2023,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
+    GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2039,7 +2039,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_4) {  // TODO: check statistic result
     //    Exptcted state: generate alignment profile dialog appeared
 
     //    3. Fill dialog: Profile mode:Counts. Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
+    GTWidget::findWidget(os, "Alignment profile for ma2_gapped");
     //    Expected state: Alignment profile generated
 }
 
@@ -2101,7 +2101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     //         Profile mode: Counts
     //         Exclude gakls: checked
     //         Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
+    GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2121,7 +2121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033_1) {
     //         Profile mode: Counts
     //         Exclude gakls: checked
     //         Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
+    GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2141,7 +2141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     //         Profile mode: Counts(Percents)
     //         Exclude gakls: checked(unchecked)
     //         Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
+    GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
@@ -2161,7 +2161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034_1) {
     //         Profile mode: Counts(Percents)
     //         Exclude gakls: checked(unchecked)
     //         Click "Generate"
-    auto profile = GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
+    GTWidget::findWidget(os, "Distance matrix for ma2_gapped");
     // Expected state: Alignment profile file created
 }
 
