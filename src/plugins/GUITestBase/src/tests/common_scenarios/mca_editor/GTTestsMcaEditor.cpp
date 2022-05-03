@@ -3094,7 +3094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Select transparent square  and move it by mouse  down
-    QWidget* simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
+    auto simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
     GTWidget::click(os, simple);
     QStringList list = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     QPoint p = GTMouseDriver::getMousePosition();
@@ -3236,7 +3236,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    ScaleBar* scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
+    auto scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
 
     QAbstractButton* plusButton = scaleBar->getPlusButton();
     GTWidget::click(os, plusButton);
@@ -3737,7 +3737,6 @@ GUI_TEST_CLASS_DEFINITION(test_0045_3) {
 
     // 4. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
     auto mcaEditorWidget = GTWidget::findWidget(os, "Mapped reads [test_0045_3.ugenedb] 2");
-    CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb] 2\"");
 
     GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 80, true, mcaEditorWidget);
 

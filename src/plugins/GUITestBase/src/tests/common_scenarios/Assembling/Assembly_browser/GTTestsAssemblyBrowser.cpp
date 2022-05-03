@@ -85,7 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
     // Expected state: coordinates is not negative
     // CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
-    QWidget* assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
+    auto assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
 
     QObject* l = assRuler->findChild<QObject*>("start position");
     CHECK_SET_ERR(l != nullptr, "first QObject for taking cursor name not found");
