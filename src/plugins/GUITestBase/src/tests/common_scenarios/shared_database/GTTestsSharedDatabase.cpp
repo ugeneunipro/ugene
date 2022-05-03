@@ -2123,7 +2123,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0002) {
     Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseMalignmentObjectPath);
-    auto msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
+    GTWidget::findWidget(os, malignmentVisibleNameWidget);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);
 
@@ -2230,7 +2230,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0006) {
     Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTreeObjectPath);
-    auto treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
+    GTWidget::findWidget(os, treeVisibleNameWidget);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
