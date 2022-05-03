@@ -86,8 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
-            QWidget* addReadButton = GTWidget::findWidget(os, "addReadButton");
-            CHECK_SET_ERR(addReadButton, "addReadButton is NULL");
+            auto addReadButton = GTWidget::findWidget(os, "addReadButton");
             foreach (const QString& read, settings.readUrls) {
                 GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, read));
                 GTWidget::click(os, addReadButton);

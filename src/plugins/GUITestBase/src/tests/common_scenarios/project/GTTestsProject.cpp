@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     CHECK_SET_ERR(fse1.bold(), "se1 are not marked with bold text");
     CHECK_SET_ERR(fse2.bold(), "se2 are not marked with bold text");
 
-    QWidget* w = GTWidget::findWidget(os, "render_area_se1");
+    auto w = GTWidget::findWidget(os, "render_area_se1");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_REMOVE", ACTION_EDIT_SELECT_SEQUENCE_FROM_VIEW}));
     GTMenu::showContextMenu(os, w);

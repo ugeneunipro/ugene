@@ -92,15 +92,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    QWidget* w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
-    QWidget* w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
-    QWidget* w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
+    auto w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
+    auto w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
-    QWidget* button0 = GTWidget::findWidget(os, "CircularViewAction", w0, false);
+    auto button0 = GTWidget::findWidget(os, "CircularViewAction", w0, false);
     CHECK_SET_ERR(button0 == nullptr, "b0 is not NULL");
 
-    QWidget* button1 = GTWidget::findWidget(os, "CircularViewAction", w1, false);
+    auto button1 = GTWidget::findWidget(os, "CircularViewAction", w1, false);
     CHECK_SET_ERR(button1 == nullptr, "b1 is not NULL");
 
     GTWidget::findWidget(os, "CircularViewAction", w2);
@@ -111,10 +111,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    QWidget* w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
-    QWidget* w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
-    QWidget* w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
+    auto w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
+    auto w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
     QAbstractButton* b0 = GTAction::button(os, "complement_action", w0, false);
     CHECK_SET_ERR(b0 == nullptr, "b0 is not NULL");
@@ -130,15 +130,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    QWidget* w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
-    QWidget* w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
-    QWidget* w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
+    auto w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
+    auto w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
-    QWidget* b0 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w0, false);
+    auto b0 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w0, false);
     CHECK_SET_ERR(b0 == nullptr, "b0 is not NULL");
 
-    QWidget* b1 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w1, false);
+    auto b1 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w1, false);
     CHECK_SET_ERR(b1 == nullptr, "b1 is not NULL");
 
     GTWidget::findWidget(os, "translationsMenuToolbarButton", w2);
@@ -159,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     Runnable* chooser = new PopupChooser(os, {"toggleDetailsView"});
     GTUtilsDialog::waitForDialog(os, chooser);
     GTWidget::click(os, toggleViewButton);
@@ -183,12 +183,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"));
+    auto ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"));
     if (ext_button != nullptr && ext_button->isVisible()) {
         GTWidget::click(os, ext_button);
     }
 
-    QWidget* toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     Runnable* chooser = new PopupChooser(os, {"toggleAllSequenceViews"});
     GTUtilsDialog::waitForDialog(os, chooser);
     GTWidget::click(os, toggleViewButton);
@@ -212,7 +212,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     Runnable* chooser = new PopupChooser(os, {"toggleDetailsView"});
     GTUtilsDialog::waitForDialog(os, chooser);
     GTWidget::click(os, toggleViewButton);
@@ -306,15 +306,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsDocument::checkDocument(os, "multy_fa.fa");
 
-    QWidget* toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
-    CHECK_SET_ERR(toggleAutoAnnotationsButton != nullptr, "toggleAutoAnnotationsButton is NULL");
+    auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     CHECK_SET_ERR(toggleAutoAnnotationsButton->isEnabled() == false, "toggleAutoAnnotationsButton is enabled, expected disabled");
 
     GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsDocument::checkDocument(os, "human_T1.fa");
 
     toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
-    CHECK_SET_ERR(toggleAutoAnnotationsButton != nullptr, "toggleAutoAnnotationsButton is NULL");
     CHECK_SET_ERR(toggleAutoAnnotationsButton->isEnabled() == true, "toggleAutoAnnotationsButton is disabled, expected enabled");
 
     GTUtilsDialog::waitForDialog(os, new AllActionsPopupChooser(os));
@@ -328,7 +326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
+    auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
@@ -363,7 +361,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
+    auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
@@ -425,7 +423,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 1. Enable Auto-annotations
-    QWidget* toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
+    auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
@@ -625,7 +623,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
-    QWidget* toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleZoomView"}));
     GTWidget::click(os, toggleViewButton);
 
@@ -964,7 +962,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  Click "Amino translations" button on mdi toolbar
-    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    auto translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     class UncheckComplement : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
@@ -1091,7 +1089,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QImage init = GTWidget::getImage(os, panView);
     //    Create custom ruler
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Rulers", "Create new ruler"}));
@@ -1123,11 +1121,11 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Double click on pan view
-    QWidget* panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, panView, Qt::LeftButton, QPoint(panView->rect().right() - 50, panView->rect().center().y()));
     GTMouseDriver::doubleClick();
     //    Expected: Sequence scrolled to clicked position
-    QWidget* det = GTWidget::findWidget(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto det = GTWidget::findWidget(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QScrollBar* scrollBar = det->findChild<QScrollBar*>();
     CHECK_SET_ERR(scrollBar->value() > 150000, QString("Unexpected value: %1").arg(scrollBar->value()));
 }
@@ -1169,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     //    Press zoom to selection button
     GTUtilsDialog::waitForDialog(os, new ZoomToRangeDialogFiller(os));
     GTWidget::click(os, GTAction::button(os, "zoom_to_range_human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
-    PanView* pan = GTWidget::findExactWidget<PanView*>(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto pan = GTWidget::findExactWidget<PanView*>(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     U2Region r = pan->getVisibleRange();
     CHECK_SET_ERR(r.startPos == 9999, QString("Unexpected start: %1").arg(r.startPos));
     CHECK_SET_ERR(r.length == 1001, QString("Unexpected length: %1").arg(r.length));
@@ -1184,7 +1182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037_1) {
     //    Press zoom to selection button
     GTUtilsDialog::waitForDialog(os, new ZoomToRangeDialogFiller(os));
     GTWidget::click(os, GTAction::button(os, "zoom_to_range_human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
-    PanView* pan = GTWidget::findExactWidget<PanView*>(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto pan = GTWidget::findExactWidget<PanView*>(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     U2Region r = pan->getVisibleRange();
     CHECK_SET_ERR(r.startPos == 0, QString("Unexpected start: %1").arg(r.startPos));
     CHECK_SET_ERR(r.length == 199950, QString("Unexpected length: %1").arg(r.length));
@@ -1195,7 +1193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* exportButton = GTWidget::findWidget(os, "export_image");
+    auto exportButton = GTWidget::findWidget(os, "export_image");
     //    Export image
     //    GTUtilsDialog::waitForDialog(os, new ExportSequenceImage(os, sandBoxDir + "seq_view_test_0037_1.png"));
     //    GTWidget::click(os, exportButton);
@@ -1226,7 +1224,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     GTWidget::click(os, wrapButton);
     GTUtilsProjectTreeView::toggleView(os, GTGlobals::UseKey);
 
-    DetView* det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QScrollBar* scroll = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
 
     GTWidget::click(os, scroll);
@@ -1243,7 +1241,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     GTWidget::click(os, wrapButton);
 
-    DetView* det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, det);
     qint64 initLength = det->getVisibleRange().length;
 
@@ -1381,7 +1379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     QImage init = GTWidget::getImage(os, pan);
     // show restriction sites
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Restriction Sites"}));
-    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
+    auto qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -1755,8 +1753,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     GTWidget::click(os, GTAction::button(os, zoomIn));
     GTWidget::click(os, GTAction::button(os, zoomIn));
 
-    QWidget* chromView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
-    CHECK_SET_ERR(chromView != nullptr, "Cannot find chromatogram_view_A1#berezikov");
+    auto chromView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
 
     QImage image = GTWidget::getImage(os, chromView);
 
@@ -1807,14 +1804,14 @@ GUI_TEST_CLASS_DEFINITION(test_0059_1) {
 GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* nameLabel = GTWidget::findWidget(os, "nameLabel");
+    auto nameLabel = GTWidget::findWidget(os, "nameLabel");
     GTMouseDriver::moveTo(GTWidget::getWidgetCenter(nameLabel) + QPoint(2 * nameLabel->geometry().width() / 3, 0));
     GTMouseDriver::doubleClick();
 
-    QWidget* overViewSe2 = GTWidget::findWidget(os, "overview_NC_001363", nullptr, false);
-    QWidget* DetailsViewSe2 = GTWidget::findWidget(os, "det_view_NC_001363", nullptr, false);
-    QWidget* zoomViewSe2 = GTWidget::findWidget(os, "pan_view_NC_001363", nullptr, false);
-    QWidget* toolBarSe2 = GTWidget::findWidget(os, "tool_bar_NC_001363", nullptr, false);
+    auto overViewSe2 = GTWidget::findWidget(os, "overview_NC_001363", nullptr, false);
+    auto DetailsViewSe2 = GTWidget::findWidget(os, "det_view_NC_001363", nullptr, false);
+    auto zoomViewSe2 = GTWidget::findWidget(os, "pan_view_NC_001363", nullptr, false);
+    auto toolBarSe2 = GTWidget::findWidget(os, "tool_bar_NC_001363", nullptr, false);
     CHECK_SET_ERR(overViewSe2->isVisible() == false &&
                       DetailsViewSe2->isVisible() == false &&
                       zoomViewSe2->isVisible() == false,
@@ -1883,8 +1880,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061_3) {
                  << "D";
     GTUtilsDialog::waitForDialog(os, new StructuralAlignmentDialogFiller(os, chainIndexes));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Structural Alignment", "align_with"}));
-    QWidget* widget3d = GTWidget::findWidget(os, "1-1CF7");
-    CHECK_SET_ERR(nullptr != widget3d, "3D widget was not found");
+    auto widget3d = GTWidget::findWidget(os, "1-1CF7");
     GTWidget::click(os, widget3d, Qt::RightButton);
 }
 
@@ -2059,8 +2055,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTThread::waitForMainThread();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleStart(os), "Start position of visible range was changed on reduce at the bottom");
 
-    QWidget* topSplitterHandle = GTWidget::findWidget(os, "qt_splithandle_det_view_NC_004718");
-    CHECK_SET_ERR(topSplitterHandle != nullptr, "Cannot find qt_splithandle_det_view_NC_004718");
+    auto topSplitterHandle = GTWidget::findWidget(os, "qt_splithandle_det_view_NC_004718");
     GTWidget::click(os, topSplitterHandle);
     p1 = GTMouseDriver::getMousePosition();
     p2 = QPoint(p1.x(), p1.y() - 100);
@@ -2089,8 +2084,7 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QWidget* showDetViewButton = GTWidget::findWidget(os, "show_hide_details_view");
-    CHECK_SET_ERR(showDetViewButton != nullptr, "Cannot find show_hide_details_view button");
+    auto showDetViewButton = GTWidget::findWidget(os, "show_hide_details_view");
     GTWidget::click(os, showDetViewButton);
 
     ADVSingleSequenceWidget* seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
@@ -2340,8 +2334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
-            CHECK_SET_ERR(regionSelector != nullptr, "region_selector_with_excluded not found");
+            auto regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
 
             auto start = GTWidget::findLineEdit(os, "startLineEdit", regionSelector);
             GTLineEdit::setText(os, start, "5000");

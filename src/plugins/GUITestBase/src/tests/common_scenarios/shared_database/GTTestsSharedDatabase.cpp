@@ -85,8 +85,7 @@ void checkButtonStateForConnectionItem(HI::GUITestOpStatus& os, const QString& c
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTListWidget::click(os, GTWidget::findListWidget(os, "lwConnections", dialog), connectionName);
 
-    QWidget* button = GTWidget::findButtonByText(os, buttonText, dialog);
-    CHECK_SET_ERR(nullptr != button, "Button is NULL");
+    auto button = GTWidget::findButtonByText(os, buttonText, dialog);
     CHECK_SET_ERR(isEnabled == button->isEnabled(), QString("Button '%1' has an incorrect state").arg(buttonText));
 }
 
@@ -640,21 +639,13 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
         class ReadOnlyCheckScenario : public CustomScenario {
             void run(HI::GUITestOpStatus& os) {
                 QWidget* dialog = GTWidget::getActiveModalWidget(os);
-                QWidget* leName = GTWidget::findWidget(os, "leName", dialog);
-                QWidget* leHost = GTWidget::findWidget(os, "leHost", dialog);
-                QWidget* lePort = GTWidget::findWidget(os, "lePort", dialog);
-                QWidget* leDatabase = GTWidget::findWidget(os, "leDatabase", dialog);
-                QWidget* leLogin = GTWidget::findWidget(os, "leLogin", dialog);
-                QWidget* lePassword = GTWidget::findWidget(os, "lePassword", dialog);
-                QWidget* cbRememberMe = GTWidget::findWidget(os, "cbRemember", dialog);
-
-                CHECK_SET_ERR(nullptr != leName, "Connection name field is NULL");
-                CHECK_SET_ERR(nullptr != leHost, "Host field is NULL");
-                CHECK_SET_ERR(nullptr != lePort, "Port field is NULL");
-                CHECK_SET_ERR(nullptr != leDatabase, "Database name field is NULL");
-                CHECK_SET_ERR(nullptr != leLogin, "Login field is NULL");
-                CHECK_SET_ERR(nullptr != lePassword, "Password field is NULL");
-                CHECK_SET_ERR(nullptr != cbRememberMe, "Remember me checkbox is NULL");
+                auto leName = GTWidget::findWidget(os, "leName", dialog);
+                auto leHost = GTWidget::findWidget(os, "leHost", dialog);
+                auto lePort = GTWidget::findWidget(os, "lePort", dialog);
+                auto leDatabase = GTWidget::findWidget(os, "leDatabase", dialog);
+                auto leLogin = GTWidget::findWidget(os, "leLogin", dialog);
+                auto lePassword = GTWidget::findWidget(os, "lePassword", dialog);
+                auto cbRememberMe = GTWidget::findWidget(os, "cbRemember", dialog);
 
                 CHECK_SET_ERR(!leName->isEnabled(), "Connection name field is unexpectedly enabled");
                 CHECK_SET_ERR(!leHost->isEnabled(), "Host field is unexpectedly enabled");
@@ -2132,8 +2123,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0002) {
     Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseMalignmentObjectPath);
-    QWidget* msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
-    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
+    auto msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);
 
@@ -2164,8 +2154,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
     }
-    QWidget* assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
-    CHECK_SET_ERR(nullptr != assemblyView, "View wasn't opened");
+    auto assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
 
     bool hasReference = GTUtilsAssemblyBrowser::hasReference(os, assemblyView);
     CHECK_SET_ERR(hasReference, "Reference is not found");
@@ -2216,8 +2205,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseChromatogramObjectPath);
 
-    QWidget* seqView = GTWidget::findWidget(os, sequenceObjectName);
-    CHECK_SET_ERR(nullptr != seqView, "Sequence view wasn't opened");
+    auto seqView = GTWidget::findWidget(os, sequenceObjectName);
 
     QWidget* chromaView = seqView->findChild<QWidget*>("chromatogram_view_" + sequenceObjectName);
     CHECK_SET_ERR(nullptr != chromaView, "Chromatogram view wasn't opened");
@@ -2242,8 +2230,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0006) {
     Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTreeObjectPath);
-    QWidget* treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
-    CHECK_SET_ERR(nullptr != treeView, "View wasn't opened");
+    auto treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2311,9 +2298,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    QWidget* seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
+    auto seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == seqView, "Sequence view is not closed");
-    QWidget* msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
+    auto msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
     CHECK_SET_ERR(nullptr == msaView, "MSA Editor is not closed");
 
     const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");

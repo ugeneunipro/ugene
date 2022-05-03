@@ -483,7 +483,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Project filter clear button is invisible
-    QWidget* clearButton = GTWidget::findWidget(os, "project filter clear button");
+    auto clearButton = GTWidget::findWidget(os, "project filter clear button");
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 
     // 3. Type to the project filter field "polyprotein"
