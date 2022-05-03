@@ -347,8 +347,9 @@ bool Document::removeObject(GObject* obj, DocumentObjectRemovalMode removalMode)
             break;
         case DocumentObjectRemovalMode_Release:
             return _removeObject(obj, false);
+        case DocumentObjectRemovalMode_Detach:
+            break;  // Do nothing.
     }
-
     return true;
 }
 
