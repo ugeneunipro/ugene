@@ -346,6 +346,14 @@ void MsaEditorMultilineWgt::sl_changeColorScheme(const QString &id) {
         sequence->applyColorScheme(id);
     }
 }
+
+void MsaEditorMultilineWgt::sl_triggerUseDots(int checkState) {
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        sequence->sl_triggerUseDots(checkState);
+    }
+}
+
 void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSettings *settings)
 {
     for (uint i = 0; i < getChildrenCount(); i++) {

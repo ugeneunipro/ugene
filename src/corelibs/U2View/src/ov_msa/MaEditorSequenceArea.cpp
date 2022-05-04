@@ -674,8 +674,12 @@ void MaEditorSequenceArea::sl_completeRedraw() {
     update();
 }
 
-void MaEditorSequenceArea::sl_triggerUseDots() {
-    useDotsAction->trigger();
+void MaEditorSequenceArea::sl_triggerUseDots(int checkState) {
+    bool currState = useDotsAction->isChecked();
+    if ((currState && checkState == Qt::Unchecked) ||
+            (!currState && checkState == Qt::Checked)) {
+        useDotsAction->trigger();
+    }
 }
 
 void MaEditorSequenceArea::sl_useDots() {

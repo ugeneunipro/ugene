@@ -2540,6 +2540,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::statistic_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::highlighting_test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor

@@ -62,6 +62,14 @@ namespace U2 {
 namespace GUITest_common_scenarios_options_panel_MSA_multiline_options {
 using namespace HI;
 
+namespace {
+void setHighlightingType(HI::GUITestOpStatus &os, const QString &type)
+{
+    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
+    GTComboBox::selectItemByText(os, highlightingScheme, type);
+}
+}
+
 GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     const QString seqName = "Phaneroptera_falcata";
 
@@ -195,6 +203,65 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001) {
 
     //    Expected state:
     // Must not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
+{
+    //    1. Open file data/samples/CLUSTALW/COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open highlighting option panel tab
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    auto w = GTUtilsMsaEditor::getSequenceArea(os);
+    QImage initImg = GTWidget::getImage(os, w);
+
+    // 3. Check "use dots" checkbox
+    setHighlightingType(os, "Agreements");
+    auto useDots = GTWidget::findCheckBox(os, "useDots");
+    GTCheckBox::setChecked(os, useDots, true);
+
+    // Expected state: no effect
+    QImage img = GTWidget::getImage(os, w);
+    CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
+
+    // 4. Select Phaneroptera_falcata as reference.
+    GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+
+    // Expected state: not highlighted changed to dots
+    img = GTWidget::getImage(os, w);
+    CHECK_SET_ERR(img != initImg,
+                  "image not changed"); // no way to check dots. Can only check that sequence area changed
+
+    // 5. Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 4. Remove Phaneroptera_falcata as reference.
+    GTUtilsOptionPanelMsa::removeReference(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    w = GTUtilsMsaEditor::getSequenceArea(os);
+    initImg = GTWidget::getImage(os, w);
+
+    // 6. Check "use dots" checkbox
+    setHighlightingType(os, "Agreements");
+    useDots = GTWidget::findCheckBox(os, "useDots");
+    GTCheckBox::setChecked(os, useDots, true);
+
+    // Expected state: no effect
+    img = GTWidget::getImage(os, w);
+    CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
+
+    // 4. Select Phaneroptera_falcata as reference.
+    GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+
+    // Expected state: not highlighted changed to dots
+    img = GTWidget::getImage(os, w);
+    CHECK_SET_ERR(img != initImg,
+                  "image not changed"); // no way to check dots. Can only check that sequence area changed
 }
 
 }  // namespace GUITest_common_scenarios_options_panel_MSA_multiline_options

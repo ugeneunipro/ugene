@@ -168,6 +168,9 @@ public slots:
         Q_UNUSED(isOrderBySequence);
     };
 
+    void sl_triggerUseDots(int checkState);
+    void sl_useDots();
+
 protected slots:
     void sl_changeColorScheme();
     void sl_insertGaps2SelectedArea();
@@ -179,9 +182,6 @@ protected slots:
     void sl_completeRedraw();
 
     virtual void sl_updateActions() = 0;
-
-    void sl_triggerUseDots();
-    void sl_useDots();
 
     void sl_registerCustomColorSchemes();
     void sl_colorSchemeFactoryUpdated();
