@@ -264,5 +264,40 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
                   "image not changed"); // no way to check dots. Can only check that sequence area changed
 }
 
+GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
+{
+    const QString seqName = "Phaneroptera_falcata";
+
+    // Open file data/samples/CLUSTALW/COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton* reset_zoom = GTAction::button(os, "Reset Zoom");
+    GTWidget::click(os, reset_zoom);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select seq.
+    GTUtilsMsaEditor::selectRowsByName(os, {seqName});
+
+    QAbstractButton* zoom_to_sel = GTAction::button(os, "Zoom To Selection");
+    GTWidget::click(os, zoom_to_sel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    reset_zoom = GTAction::button(os, "Reset Zoom");
+    GTWidget::click(os, reset_zoom);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, zoom_to_sel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, reset_zoom);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Must not crash
+}
+
 }  // namespace GUITest_common_scenarios_options_panel_MSA_multiline_options
 }  // namespace U2

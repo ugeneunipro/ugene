@@ -309,7 +309,9 @@ int ScrollController::getFirstVisibleBase(bool countClipped) const {
     int hScrollBarValue = hScrollBar->value();
     int column = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBarValue);
     int firstVisibleBase = column + (removeClippedBase && additionalXOffset != 0 ? 1 : 0);
-    SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
+
+    // The following comment is a fix for UGENE-7605
+    // SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
     return qMin(firstVisibleBase, alignmentLength - 1);
 }
 
