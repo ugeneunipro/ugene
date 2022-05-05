@@ -142,6 +142,10 @@ private:
      * Updates ranges of the area spinboxes, connects signals.
      */
     void initAreaSpinboxes() const;
+    /**
+     * Updates ranges of the GC content spinboxes, connects signals.
+     */
+    void initGcContentSpinboxes() const;
 
     /**
      * Return the selected in @twGeneratedSequences sequence

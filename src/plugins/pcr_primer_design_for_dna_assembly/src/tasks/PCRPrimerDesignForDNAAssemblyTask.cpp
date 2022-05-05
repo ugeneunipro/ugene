@@ -563,8 +563,14 @@ bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteAr
                       candidatePrimerDeltaG <= settings.gibbsFreeEnergy.maxValue;
     bool goodMeltTemp = settings.meltingPoint.minValue <= candidatePrimerMeltingTemp &&
                       candidatePrimerMeltingTemp <= settings.meltingPoint.maxValue;
+    bool goodGcContent = true;
+    if (settings.gcContent.canConvert<U2Range<int>>()) {
+        double candidatePrimerGcContent = PrimerStatisticsCalculator(primer).getGC();
+        auto gcRange = settings.gcContent.value<U2Range<int>>();
+        goodGcContent = gcRange.minValue <= candidatePrimerGcContent && candidatePrimerGcContent <= gcRange.maxValue;
+    }
 
-    return goodDeltaG && goodMeltTemp;
+    return goodDeltaG && goodMeltTemp && goodGcContent;
 }
 
 bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray& primer) const {

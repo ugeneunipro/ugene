@@ -129,8 +129,15 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(pbStart, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_start);
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
+    connect(cbGcContent, &QCheckBox::stateChanged, [this](bool enabled) {
+        sbMinRequireGcContent->setEnabled(enabled);
+        lblGcContentSbSeparator->setEnabled(enabled);
+        sbMaxRequireGcContent->setEnabled(enabled);
+    });
+
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     initAreaSpinboxes();  // Must be after sbArea->setValue and restoreWidgetState.
+    initGcContentSpinboxes();  // Also must be after restoreWidgetState.
 
     sl_updateParametersRanges();
     const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
@@ -205,6 +212,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.meltingPoint.maxValue = spMaxRequireMeltingTeml->value();
     settings.overlapLength.minValue = spMinRequireOverlapLength->value();
     settings.overlapLength.maxValue = spMaxRequireOverlapLength->value();
+    if (cbGcContent->isChecked()) {
+        settings.gcContent.setValue(U2Range<int>(sbMinRequireGcContent->value(), sbMaxRequireGcContent->value()));
+    }
 
     settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
     settings.meltingPointExclude = spExcludeMeltingTeml->value();
@@ -533,6 +543,18 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::initAreaSpinboxes() const {
     connect(sbLeftAreaEnd, updateSignal, [this] { sbLeftAreaStart->setMaximum(sbLeftAreaEnd->value()); });
     connect(sbRightAreaStart, updateSignal, [this] { sbRightAreaEnd->setMinimum(sbRightAreaStart->value()); });
     connect(sbRightAreaEnd, updateSignal, [this] { sbRightAreaStart->setMaximum(sbRightAreaEnd->value()); });
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::initGcContentSpinboxes() const {
+    sbMinRequireGcContent->setMaximum(sbMaxRequireGcContent->value());
+    sbMaxRequireGcContent->setMinimum(sbMinRequireGcContent->value());
+    auto updateSignal = &QSpinBox::editingFinished;
+    connect(sbMinRequireGcContent,
+            updateSignal,
+            [this] { sbMaxRequireGcContent->setMinimum(sbMinRequireGcContent->value() + 1); });
+    connect(sbMaxRequireGcContent,
+            updateSignal,
+            [this] { sbMinRequireGcContent->setMaximum(sbMaxRequireGcContent->value() - 1); });
 }
 
 QString PCRPrimerDesignForDNAAssemblyOPWidget::getSelectedSequence() const {
