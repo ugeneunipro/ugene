@@ -61,7 +61,7 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    QPointer<AnnotationTableObject> aObj;
+    QPointer<AnnotationTableObject> annotationTableObject;
     ORFFindTask* fTask;
     ORFAlgorithmSettings cfg;
     QString groupName;

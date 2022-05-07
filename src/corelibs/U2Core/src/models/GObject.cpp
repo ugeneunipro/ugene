@@ -196,7 +196,7 @@ void GObject::removeObjectRelation(const GObjectRelation& ref) {
 }
 
 void GObject::addObjectRelation(const GObject* obj, const GObjectRelationRole& role) {
-    GObjectRelation rel(obj, role);
+    GObjectRelation rel(obj->getReference(), role);
     addObjectRelation(rel);
 }
 
@@ -220,7 +220,7 @@ bool GObject::hasObjectRelation(const GObjectRelation& r) const {
 }
 
 bool GObject::hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const {
-    GObjectRelation rel(obj, role);
+    GObjectRelation rel(obj->getReference(), role);
     return hasObjectRelation(rel);
 }
 
@@ -327,6 +327,10 @@ int GObject::getObjectVersion() const {
     int version = objectDbi->getObjectVersion(entityRef.entityId, os);
     CHECK_OP(os, -1);
     return version;
+}
+
+GObjectReference GObject::getReference() const {
+    return GObjectReference(this);
 }
 
 //////////////////////////////////////////////////////////////////////////

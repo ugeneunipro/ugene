@@ -5,13 +5,13 @@
     <load-document index="doc" url="genbank/70Bp_new.gb" io="local_file" format="genbank"/>
 
     <find-object-by-name index="seq" doc="doc" name="A sequence" type="OT_SEQUENCE"/>
-    <find-object-by-name index="aobj" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="annotationTableObject" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
 
-    <digest-into-fragments sequence="seq" annotation-table="aobj"
+    <digest-into-fragments sequence="seq" annotation-table="annotationTableObject"
                            url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="Tsp509I" search-for-enzymes="true"/>
 
     <ligate-fragments index="result" seq-context="seq"
-                      annotation-context="aobj" fragments="70Bp_new.gb:Fragment 1;70Bp_new.gb:Fragment 2"
+                      annotation-context="annotationTableObject" fragments="70Bp_new.gb:Fragment 1;70Bp_new.gb:Fragment 2"
                       check-overhangs="false" circular="false"/>
 
     <find-object-by-name index="newseq" doc="result" name="result" type="OT_SEQUENCE"/>

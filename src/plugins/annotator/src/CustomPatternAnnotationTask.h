@@ -101,7 +101,7 @@ private:
     QMap<Task*, PatternInfo> taskFeatureNames;
     QList<SharedAnnotationData> annotations;
     U2SequenceObject dnaObj;
-    AnnotationTableObject* aTableObj;
+    QPointer<AnnotationTableObject> annotationTableObject;
     QByteArray sequence;
     SharedFeatureStore featureStore;
     QStringList filteredFeatures;

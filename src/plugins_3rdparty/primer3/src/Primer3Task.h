@@ -187,7 +187,7 @@ private:
 
     Primer3TaskSettings settings;
 
-    AnnotationTableObject* aobj;
+    QPointer<AnnotationTableObject> annotationTableObject;
     U2SequenceObject* seqObj;
     QString groupName;
     QString annName;

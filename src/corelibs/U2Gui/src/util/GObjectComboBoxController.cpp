@@ -107,7 +107,7 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
 
 void GObjectComboBoxController::removeDocumentObjects(Document* d) {
     foreach (GObject* obj, d->getObjects()) {
-        removeObject(obj);
+        removeObject(obj->getReference());
     }
 }
 
@@ -152,7 +152,7 @@ void GObjectComboBoxController::addObject(GObject* obj) {
     }
 
 #ifdef _DEBUG
-    int n = findItem(combo, obj);
+    int n = findItem(combo, obj->getReference());
     assert(n == -1);
 #endif
     connect(obj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
@@ -237,9 +237,9 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
     }
     GObject* obj = qobject_cast<GObject*>(sender());
     if (obj->isStateLocked()) {
-        removeObject(obj);
+        removeObject(obj->getReference());
     } else {
-        if (findItem(combo, obj) == -1) {
+        if (findItem(combo, obj->getReference()) == -1) {
             updateCombo();
         }
     }

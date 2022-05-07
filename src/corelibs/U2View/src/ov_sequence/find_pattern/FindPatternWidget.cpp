@@ -261,7 +261,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
         annotModel.hideLocation = true;
         annotModel.hideUsePatternNames = false;
         annotModel.useAminoAnnotationTypes = annotatedDnaView->getActiveSequenceContext()->getAlphabet()->isAmino();
-        annotModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject();
+        annotModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject()->getReference();
         annotModel.sequenceLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
 
         createAnnotationController = new CreateAnnotationWidgetController(annotModel, this, CreateAnnotationWidgetController::OptionsPanel);
@@ -986,7 +986,7 @@ void FindPatternWidget::updateAnnotationsWidget() {
 
     annotationModel.newDocUrl.clear();
     annotationModel.hideLocation = true;
-    annotationModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject();
+    annotationModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject()->getReference();
     annotationModel.sequenceLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
     createAnnotationController->updateWidgetForAnnotationModel(annotationModel);
 }
@@ -1356,7 +1356,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
         group.clear();
     }
     createAnnotationController->countDescriptionUsage();
-    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, annotationsToCreate, group));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, {{group, annotationsToCreate}}));
 
     annotationModelIsPrepared = false;
     updateAnnotationsWidget();

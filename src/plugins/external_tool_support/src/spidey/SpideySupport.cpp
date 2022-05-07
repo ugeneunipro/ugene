@@ -170,7 +170,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
 
     if (rnaObj && dnaObj) {
         CreateAnnotationModel m;
-        m.sequenceObjectRef = dnaObj;
+        m.sequenceObjectRef = dnaObj->getReference();
         m.hideLocation = true;
         m.hideAnnotationType = true;
         m.hideAnnotationName = true;
