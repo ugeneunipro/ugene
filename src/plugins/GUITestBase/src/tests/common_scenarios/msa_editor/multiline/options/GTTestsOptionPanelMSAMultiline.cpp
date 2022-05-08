@@ -285,10 +285,10 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     // Select seq.
     GTUtilsMsaEditor::selectRowsByName(os, {seqName});
 
+    reset_zoom = GTAction::button(os, "Reset Zoom");
     QAbstractButton* zoom_to_sel = GTAction::button(os, "Zoom To Selection");
     GTWidget::click(os, zoom_to_sel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    reset_zoom = GTAction::button(os, "Reset Zoom");
     GTWidget::click(os, reset_zoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, zoom_to_sel);
