@@ -70,7 +70,38 @@ void setHighlightingType(HI::GUITestOpStatus &os, const QString &type)
 }
 }
 
-GUI_TEST_CLASS_DEFINITION(general_test_0001) {
+GUI_TEST_CLASS_DEFINITION(general_test_0001)
+{
+    // UGENE-7042
+
+    // 1. Open file data/samples/CLUSTALW/COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Find seq area #1
+    auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
+    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #1"));
+
+    // 4. Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    mmode = GTAction::button(os, "Multiline View");
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 5. Find seq area #0, but not #1
+    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #0"));
+    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
+    CHECK_SET_ERR(w == nullptr, QString("Unexpectedly found sequence area #1"));
+}
+
+GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     const QString seqName = "Phaneroptera_falcata";
 
     //    1. Open file data/samples/CLUSTALW/COI.aln
@@ -104,7 +135,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
-GUI_TEST_CLASS_DEFINITION(general_test_0002)
+
+GUI_TEST_CLASS_DEFINITION(general_test_0003)
 {
     const QString seqName = "IXI_234";
 
@@ -146,7 +178,10 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002)
     // Must not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(statistic_test_0001) {
+GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
+{
+    // UGENE-7588
+
     const QString seqName = "IXI_234";
 
     //    1. Open file test/_common_data/clustal/align.aln
@@ -207,6 +242,8 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
 {
+    // UGENE-7603
+
     //    1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -266,6 +303,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
 
 GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
 {
+    // UGENE-7605
+
     const QString seqName = "Phaneroptera_falcata";
 
     // Open file data/samples/CLUSTALW/COI.aln

@@ -56,9 +56,13 @@ const QString GTUtilsMSAEditorSequenceArea::highlightingColor = "#9999cc";
 #define GT_CLASS_NAME "GTUtilsMSAEditorSequenceArea"
 
 #define GT_METHOD_NAME "getSequenceArea"
-MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpStatus& os) {
-    // There are more than one msa_editor_sequence_area in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpStatus& os, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #index widget
+    MaEditorWgt *activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
     return GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 }
 #undef GT_METHOD_NAME
@@ -83,9 +87,14 @@ void GTUtilsMSAEditorSequenceArea::moveTo(GUITestOpStatus& os, const QPoint& p) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPositionRect"
-QRect GTUtilsMSAEditorSequenceArea::getPositionRect(GUITestOpStatus& os, const QPoint& position) {
-    // There are more than one msa_editor_sequence_area in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+QRect GTUtilsMSAEditorSequenceArea::getPositionRect(GUITestOpStatus &os,
+                                                    const QPoint &position,
+                                                    int index)
+{
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #index widget
+    MaEditorWgt *activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QRect());
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 
     MsaEditorWgt *msaEditorWidget = qobject_cast<MsaEditorWgt *>(msaEditArea->getEditor()->getUI()->getUI());
@@ -100,9 +109,11 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(GUITestOpStatus& os, const Q
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "convertCoordinates"
-QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, const QPoint p) {
-    // There are more than one msa_editor_sequence_area in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, const QPoint p, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #0 widget
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QPoint());
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 
     MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI());
@@ -530,9 +541,11 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus& os, int r
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectColumnInConsensus"
-void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, int columnNumber) {
-    // There are more than one msa_editor_sequence_area in multiline mode, so at first we get line #0 widget
-    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, int columnNumber, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #0 widget
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    GT_CHECK(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index));
     const MSAEditorSequenceArea* msaEditArea = qobject_cast<MSAEditorSequenceArea*>(
         GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", );

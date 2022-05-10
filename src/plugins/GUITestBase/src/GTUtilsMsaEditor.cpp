@@ -168,8 +168,8 @@ MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus& os) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceNameRect"
-MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus& os) {
-    return GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus& os, int index) {
+    return GTUtilsMSAEditorSequenceArea::getSequenceArea(os, index);
 }
 #undef GT_METHOD_NAME
 

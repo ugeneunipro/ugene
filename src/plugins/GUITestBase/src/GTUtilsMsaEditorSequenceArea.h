@@ -32,14 +32,15 @@ namespace U2 {
 
 class GTUtilsMSAEditorSequenceArea {
 public:
-    static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os);
+    // The "index" is line index while multiline mode
+    static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus& os, const QRect& expectedRect);
 
     static void checkConsensus(GUITestOpStatus& os, QString cons);
     // may be used for selecting visible columns only
-    static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber);
+    static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber, int index = 0);
 
     // MSAEditorNameList
 
@@ -88,8 +89,8 @@ public:
     static void selectArea(GUITestOpStatus& os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus& os);
     /** Returns on-screen (global) bounding rectangle for the base position. */
-    static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position);
-    static QPoint convertCoordinates(GUITestOpStatus& os, const QPoint p);
+    static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position, int index = 0);
+    static QPoint convertCoordinates(GUITestOpStatus& os, const QPoint p, int index = 0);
     static void click(GUITestOpStatus& os, const QPoint& screenMaPoint = QPoint(0, 0));
 
     /** Calls context menu Copy/Paste->Copy. */
