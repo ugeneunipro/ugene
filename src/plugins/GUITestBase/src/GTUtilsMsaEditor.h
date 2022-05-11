@@ -183,6 +183,10 @@ public:
 
     /** Returns active Exclude List widget instance. */
     static QListWidget* getExcludeListWidget(HI::GUITestOpStatus& os);
+
+    // Press "Multiline View" button on toolbar
+    static bool getMultilineMode(HI::GUITestOpStatus &os);
+    static void setMultilineMode(HI::GUITestOpStatus &os, bool mode);
 };
 
 }  // namespace U2

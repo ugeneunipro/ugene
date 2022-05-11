@@ -59,6 +59,7 @@
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
+#include "tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.h"
 #include "tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
@@ -2535,14 +2536,16 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
 
     /////////////////////////////////////////////////////////////////////////
-    // Common scenarios/msa_editor/multiline/options
+    // Common scenarios/msa_editor/multiline
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::general_test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::statistic_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::highlighting_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA_multiline_options::zoom_to_selection_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::general_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::zoom_to_selection_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::menu_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::statistic_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::highlighting_test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor

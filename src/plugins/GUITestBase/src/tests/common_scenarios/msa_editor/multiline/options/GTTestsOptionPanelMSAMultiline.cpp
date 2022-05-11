@@ -56,10 +56,12 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include <U2View/BaseWidthController.h>
+#include <U2View/RowHeightController.h>
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_options_panel_MSA_multiline_options {
+namespace GUITest_common_scenarios_MSA_editor_multiline_options {
 using namespace HI;
 
 namespace {
@@ -68,37 +70,6 @@ void setHighlightingType(HI::GUITestOpStatus &os, const QString &type)
     auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, type);
 }
-}
-
-GUI_TEST_CLASS_DEFINITION(general_test_0001)
-{
-    // UGENE-7042
-
-    // 1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 2. Switch to multiline mode
-    // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 3. Find seq area #1
-    auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
-    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #1"));
-
-    // 4. Switch to multiline mode
-    // Press "Multiline View" button on toolbar
-    mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 5. Find seq area #0, but not #1
-    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #0"));
-    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
-    CHECK_SET_ERR(w == nullptr, QString("Unexpectedly found sequence area #1"));
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0002) {
@@ -110,9 +81,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
 
     //    1.1. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton* mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
 
     //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
@@ -138,6 +107,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(general_test_0003)
 {
+    // UGENE-7591
+
     const QString seqName = "IXI_234";
 
     //    1. Open file test/_common_data/clustal/align.aln
@@ -155,6 +126,9 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
                                  new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
 
     // 4. Insert seq from clipboard
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "align.aln");
@@ -301,42 +275,5 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
                   "image not changed"); // no way to check dots. Can only check that sequence area changed
 }
 
-GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
-{
-    // UGENE-7605
-
-    const QString seqName = "Phaneroptera_falcata";
-
-    // Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QAbstractButton* reset_zoom = GTAction::button(os, "Reset Zoom");
-    GTWidget::click(os, reset_zoom);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Switch to multiline mode
-    // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Select seq.
-    GTUtilsMsaEditor::selectRowsByName(os, {seqName});
-
-    reset_zoom = GTAction::button(os, "Reset Zoom");
-    QAbstractButton* zoom_to_sel = GTAction::button(os, "Zoom To Selection");
-    GTWidget::click(os, zoom_to_sel);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, reset_zoom);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, zoom_to_sel);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, reset_zoom);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Must not crash
-}
-
-}  // namespace GUITest_common_scenarios_options_panel_MSA_multiline_options
+}  // namespace GUITest_common_scenarios_MSA_editor_multiline_options
 }  // namespace U2

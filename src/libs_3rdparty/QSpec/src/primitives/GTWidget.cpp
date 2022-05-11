@@ -109,7 +109,13 @@ QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QW
             break; // Parent widget was removed while waiting.
         }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
-        GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
+        if (matchedWidgets.size() >= 2) {
+            GT_CHECK_RESULT(matchedWidgets.size() < 2,
+                            QString("There are %1 widgets with name '%2'")
+                                .arg(matchedWidgets.size())
+                                .arg(objectName),
+                            nullptr);
+        }
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
             break;

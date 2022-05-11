@@ -19,23 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_GTTESTS_MSA_EDITOR_MULTILINE_OPTIONS_H
-#define U2_GTTESTS_MSA_EDITOR_MULTILINE_OPTIONS_H
+#ifndef U2_GTTESTS_MSA_EDITOR_MULTILINE_H
+#define U2_GTTESTS_MSA_EDITOR_MULTILINE_H
 
 #include <harness/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_MSA_editor_multiline_options {
+namespace GUITest_common_scenarios_MSA_editor_multiline {
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_MSA_editor_multiline_options"
+#define GUI_TEST_SUITE "GUITest_common_scenarios_MSA_editor_multiline"
 
-GUI_TEST_CLASS_DECLARATION(general_test_0002)
-GUI_TEST_CLASS_DECLARATION(general_test_0003)
-GUI_TEST_CLASS_DECLARATION(statistic_test_0001)
-GUI_TEST_CLASS_DECLARATION(highlighting_test_0001)
+GUI_TEST_CLASS_DECLARATION(general_test_0001)
+GUI_TEST_CLASS_DECLARATION(zoom_to_selection_test_0001)
+GUI_TEST_CLASS_DECLARATION(vscroll_test_0001)
+GUI_TEST_CLASS_DECLARATION(menu_test_0001)
 
-}  // namespace GUITest_common_scenarios_MSA_editor_multiline_options
+}  // namespace GUITest_common_scenarios_MSA_editor_multiline
 
 }  // namespace U2
-#endif  // U2_GTTESTS_MSA_EDITOR_MULTILINE_OPTIONS_H
+#endif  // U2_GTTESTS_MSA_EDITOR_MULTILINE_H

@@ -87,6 +87,7 @@ public:
     // selects area in MSA coordinates, if some p coordinate less than 0, it becomes max valid coordinate
     // zero-based position
     static void selectArea(GUITestOpStatus& os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectArea(GUITestOpStatus& os, int multilineIndex, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus& os);
     /** Returns on-screen (global) bounding rectangle for the base position. */
     static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position, int index = 0);
@@ -97,8 +98,12 @@ public:
     static void copySelectionByContextMenu(GUITestOpStatus& os);
 
     // scrolls to the position (in the MSA zero-based coordinates)
+    static void scrollToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& position);
     static void scrollToPosition(GUITestOpStatus& os, const QPoint& position);
+    static void scrollToBottom(GUITestOpStatus& os);
+    static void moveMouseToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& globalMaPosition);
     static void moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
+    static void clickToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& globalMaPosition);
     static void clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
 
     static void selectSequence(GUITestOpStatus& os, const QString& seqName);

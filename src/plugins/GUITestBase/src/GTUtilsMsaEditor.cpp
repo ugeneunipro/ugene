@@ -677,6 +677,34 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getMultilineMode"
+bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus &os)
+{
+    // Get state of the "Multiline View" button on toolbar
+    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", false);
+    return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setMultilineMode"
+void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus &os, bool newMode)
+{
+    // Press "Multiline View" button on toolbar
+    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", );
+    bool oldMode = getMultilineMode(os);
+    if (oldMode == newMode) {
+        return;
+    }
+    CHECK_SET_ERR_RESULT(mmode->isVisible(), "\"Multiline View\" button is not visible", );
+    CHECK_SET_ERR_RESULT(mmode->isEnabled(), "\"Multiline View\" button is disabled", );
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR_RESULT(oldMode != getMultilineMode(os), "Multiline mode is not changed", );
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2
