@@ -523,22 +523,25 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const MultipleSequenceAlignment& ali, int requiredGapsCount) {
-    const int rowsCount = ali->getRowCount();
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QList<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount) {
+    const int rowsCount = rows.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
     }
 
     QList<U2Region> regionsToDelete;
-    for (int columnNumber = 0; columnNumber < ali->getLength(); columnNumber++) {
+    for (int columnNumber = 0; columnNumber < alignmentLength; columnNumber++) {
         int gapCount = 0;
         for (int j = 0; j < rowsCount; j++) {
-            if (MsaRowUtils::isGap(ali->getRow(j)->getUngappedLength(), ali->getGapModel()[j], columnNumber)) {
+            if (MsaRowUtils::isGap(rows[j]->getUngappedLength(), maGapModel[j], columnNumber)) {
                 gapCount++;
+            }
+            if (gapCount == requiredGapsCount) {
+                break;
             }
         }
 
-        if (gapCount >= requiredGapsCount) {
+        if (gapCount == requiredGapsCount) {
             if (!regionsToDelete.isEmpty() && regionsToDelete.last().endPos() == static_cast<qint64>(columnNumber)) {
                 regionsToDelete.last().length++;
             } else {
@@ -552,7 +555,7 @@ QList<U2Region> MSAUtils::getColumnsWithGaps(const MultipleSequenceAlignment& al
 
 void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount) {
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
-    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa, requiredGapsCount);
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getRows(), msa->getLength(), requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
         msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getRowCount(), true);
     }
