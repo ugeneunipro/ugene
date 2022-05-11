@@ -64,6 +64,26 @@ namespace U2 {
 namespace GUITest_common_scenarios_MSA_editor_multiline {
 using namespace HI;
 
+namespace {
+void enumerateMenu(QMenu *menu, QList<QString> *textItems)
+{
+    foreach (QAction *action, menu->actions()) {
+        if (action->isSeparator()) {
+            qDebug("this action is a separator");
+        } else if (action->menu()) {
+            qDebug("action: %s", qUtf8Printable(action->text()));
+            textItems->append(action->text());
+            qDebug(">>> this action is associated with a submenu, iterating it recursively...");
+            enumerateMenu(action->menu(), textItems);
+            qDebug("<<< finished iterating the submenu");
+        } else {
+            qDebug("action: %s", qUtf8Printable(action->text()));
+            textItems->append(action->text());
+        }
+    }
+}
+}
+
 GUI_TEST_CLASS_DEFINITION(general_test_0001)
 {
     // UGENE-7042
@@ -191,7 +211,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     int lastWgtIndex = 0;
     MaEditorWgt *lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        MaEditorWgt *w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         if (w == nullptr)
             break;
         lastWgt = w;
@@ -200,7 +220,19 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     CHECK_SET_ERR(lastWgt != nullptr, QString("Can't find any sequence area"));
     CHECK_SET_ERR(lastWgtIndex > 1, QString("Not in multiline mode"));
 
+    // Select region
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(1, 2));
+
+    // Show context menu
+    QMenu *menu = GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    CHECK_SET_ERR(menu != nullptr, QString("No conrext menu"));
+
+    // Check menu length
+    QList<QString> allItems;
+    enumerateMenu(menu, &allItems);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 2));
+    QSet<QString> allSet = allItems.toSet();
+    CHECK_SET_ERR(allSet.size() == allItems.size(), "Context menu contains repeated items");
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline
