@@ -2601,5 +2601,19 @@ GUI_TEST_CLASS_DEFINITION(test_7607) {
     CHECK_SET_ERR(actualTree == expectedTree, "Actual tree does not match the expected tree");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7609) {
+    // Open _common_data/clustal/non_unique_row_names.aln.
+    // Open and close the "Tree Settings" tab of the Options Panel.
+    // Select the first sequence in the alignment.
+    // Press Delete 2 times.
+    // No crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/non_unique_row_names.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

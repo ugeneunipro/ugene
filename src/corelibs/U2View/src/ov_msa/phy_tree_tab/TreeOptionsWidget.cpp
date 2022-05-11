@@ -420,7 +420,9 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
     buildTreeButton->setObjectName("BuildTreeButton");
     buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled());
 
-    connect(msaEditor->buildTreeAction, &QAction::changed, [this, msaEditor]() { buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled()); });
+    connect(msaEditor->buildTreeAction, &QAction::changed, this, [this, msaEditor]() {
+        buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled());
+    });
     connect(buildTreeButton, &QPushButton::clicked, [msaEditor]() { msaEditor->buildTreeAction->trigger(); });
 
     mainLayout->addLayout(buttonLayout);
