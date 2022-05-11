@@ -523,17 +523,17 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, int length, int requiredGapsCount) {
-    const int rowsCount = maGapModel.size();
+QList<U2Region> MSAUtils::getColumnsWithGaps(const MultipleSequenceAlignment& ali, int requiredGapsCount) {
+    const int rowsCount = ali->getRowCount();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
     }
 
     QList<U2Region> regionsToDelete;
-    for (int columnNumber = 0; columnNumber < length; columnNumber++) {
+    for (int columnNumber = 0; columnNumber < ali->getLength(); columnNumber++) {
         int gapCount = 0;
         for (int j = 0; j < rowsCount; j++) {
-            if (MsaRowUtils::isGap(length, maGapModel[j], columnNumber)) {
+            if (MsaRowUtils::isGap(ali->getRow(j)->getUngappedLength(), ali->getGapModel()[j], columnNumber)) {
                 gapCount++;
             }
         }
@@ -552,7 +552,7 @@ QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maG
 
 void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount) {
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
-    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getLength(), requiredGapsCount);
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa, requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
         msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getRowCount(), true);
     }
