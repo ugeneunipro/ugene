@@ -44,4 +44,4 @@ public:
 
 }  // namespace U2
 
-#endif  // _U2_MYSQL_OBJECT_RELATIONS_DBI_H_
+#endif  // _U2_SQLITE_OBJECT_RELATIONS_DBI_H_

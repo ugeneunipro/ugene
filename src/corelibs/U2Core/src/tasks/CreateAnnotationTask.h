@@ -30,12 +30,22 @@ namespace U2 {
 
 class U2CORE_EXPORT CreateAnnotationsTask : public Task {
     Q_OBJECT
+
+    CreateAnnotationsTask(bool isAnnotationObjectShared);
+
 public:
-    // Adds annotations to the object. Waits object to be unlocked if needed
-    // Works only in a context of active project
-    CreateAnnotationsTask(AnnotationTableObject* o, const QList<SharedAnnotationData>& data, const QString& group = QString());
-    CreateAnnotationsTask(const GObjectReference& ref, const QList<SharedAnnotationData>& data, const QString& group = QString());
-    CreateAnnotationsTask(AnnotationTableObject* annotationTableObject, const QMap<QString, QList<SharedAnnotationData>>& annotationsByGroupMap);
+    /**
+     * Adds annotations to the object.
+     *
+     * 'isAnnotationObjectShared'- for the shared annotation object the task will add all annotations in main UI thread.
+     *   if the annotation object is not 'shared' the annotations can be created in a separate thread, thus reducing the UI thread lock time.
+     */
+    CreateAnnotationsTask(AnnotationTableObject* annotationTableObject,
+                          const QMap<QString, QList<SharedAnnotationData>>& annotationsByGroupMap,
+                          bool isAnnotationObjectShared = true);
+
+    /** Adds annotations to the object. Loads object if needed. Works only in project context. */
+    CreateAnnotationsTask(const GObjectReference& ref, const QList<SharedAnnotationData>& data, const QString& groupName = "");
 
     void run() override;
     ReportResult report() override;
@@ -45,9 +55,7 @@ public:
     QList<Annotation*> getResultAnnotations() const;
 
 private:
-    void initAnnObjectRef();
-
-    GObjectReference aRef;
+    GObjectReference annotationTableObjectRef;
     QPointer<AnnotationTableObject> annotationTableObjectPointer;
     QMap<AnnotationGroup*, QList<Annotation*>> annotationsByGroupMap;
     QMap<QString, QList<SharedAnnotationData>> annotationDatasByGroupNameMap;

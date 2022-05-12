@@ -35,34 +35,6 @@ namespace U2 {
 const int ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS = 100;
 const QString ProjectUtils::RECYCLE_BIN_FOLDER_PATH = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER;
 
-QList<Document*> ProjectUtils::getConnectedSharedDatabases() {
-    QList<Document*> result;
-    Project* proj = AppContext::getProject();
-    CHECK(nullptr != proj, result);
-
-    foreach (Document* doc, proj->getDocuments()) {
-        if (doc->isDatabaseConnection()) {
-            result << doc;
-        }
-    }
-
-    return result;
-}
-
-bool ProjectUtils::areSharedDatabasesAvailable() {
-    return !getConnectedSharedDatabases().isEmpty();
-}
-
-bool ProjectUtils::isConnectedDatabaseDoc(const Document* doc) {
-    CHECK(nullptr != doc, false);
-    return (BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId()) && (doc->isLoaded());
-}
-
-bool ProjectUtils::isDatabaseDoc(const Document* doc) {
-    CHECK(nullptr != doc, false);
-    return BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId();
-}
-
 bool ProjectUtils::isFolderInRecycleBin(const QString& folderPath) {
     return folderPath.startsWith(RECYCLE_BIN_FOLDER_PATH + U2ObjectDbi::PATH_SEP);
 }

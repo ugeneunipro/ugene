@@ -35,15 +35,6 @@ workflow "New workflow"{
             read-msa.url-in {
                 alias:in;
             }
-            write-sequence.data-storage {
-                alias:storage;
-            }
-            write-sequence.database {
-                alias:db;
-            }
-            write-sequence.db-path {
-                alias:out_path;
-            }
             write-sequence.document-format {
                 alias:format;
             }

@@ -6,12 +6,12 @@
 
 
     <find-object-by-name index="seq" doc="doc" name="A sequence" type="OT_SEQUENCE"/>
-    <find-object-by-name index="aobj" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="annotationTableObject" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
 
-    <digest-into-fragments sequence="seq" annotation-table="aobj"
+    <digest-into-fragments sequence="seq" annotation-table="annotationTableObject"
                            url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="AgsI,BsaJI" search-for-enzymes="true"/>
 
-    <find-annotation-by-name index="a1" obj="aobj" name="Fragment 1"/>
+    <find-annotation-by-name index="a1" obj="annotationTableObject" name="Fragment 1"/>
     <check-annotation-location annotation="a1" location="1..39" complement="0"/>
     <check-annotation-qualifier annotation="a1" qualifier="left_end_term" value=""/>
     <check-annotation-qualifier annotation="a1" qualifier="left_end_seq" value=""/>
@@ -20,7 +20,7 @@
     <check-annotation-qualifier annotation="a1" qualifier="right_end_seq" value="G"/>
     <check-annotation-qualifier annotation="a1" qualifier="right_end_type" value="sticky"/>
 
-    <find-annotation-by-name index="a2" obj="aobj" name="Fragment 2"/>
+    <find-annotation-by-name index="a2" obj="annotationTableObject" name="Fragment 2"/>
     <check-annotation-location annotation="a2" location="41..56" complement="0"/>
     <check-annotation-qualifier annotation="a2" qualifier="left_end_term" value="AgsI"/>
     <check-annotation-qualifier annotation="a2" qualifier="left_end_seq" value="G"/>
@@ -29,7 +29,7 @@
     <check-annotation-qualifier annotation="a2" qualifier="right_end_seq" value="CCTG"/>
     <check-annotation-qualifier annotation="a2" qualifier="right_end_type" value="sticky"/>
 
-    <find-annotation-by-name index="a3" obj="aobj" name="Fragment 3"/>
+    <find-annotation-by-name index="a3" obj="annotationTableObject" name="Fragment 3"/>
     <check-annotation-location annotation="a3" location="61..70" complement="0"/>
     <check-annotation-qualifier annotation="a3" qualifier="left_end_term" value="BsaJI"/>
     <check-annotation-qualifier annotation="a3" qualifier="left_end_seq" value="CCTG"/>

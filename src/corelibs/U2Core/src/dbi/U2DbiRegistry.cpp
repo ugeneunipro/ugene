@@ -38,8 +38,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Formats/MysqlDbiUtils.h>
-
 namespace U2 {
 
 static const QString SESSION_TMP_DBI_ALIAS("session");
@@ -367,17 +365,7 @@ void U2DbiPool::releaseDbi(U2Dbi* dbi, U2OpStatus& os) {
     dbiById.remove(id);
     dbiCountersById.remove(id);
 
-    if (MYSQL_DBI_ID == dbi->getDbiRef().dbiFactoryId) {
-        const QString dbiUrl = id2Url(id);
-        if (MAX_CONNECTIONS_PER_DBI < getCountOfConnectionsInPool(dbiUrl)) {
-            flushPool(dbiUrl);
-        }
-
-        suspendedDbis.insert(id, dbi);
-        dbiSuspendStartTime.insert(dbi, QDateTime::currentMSecsSinceEpoch());
-    } else {
-        deallocateDbi(dbi, os);
-    }
+    deallocateDbi(dbi, os);
 }
 
 int U2DbiPool::getCountOfConnectionsInPool(const QString& url) const {
@@ -506,12 +494,7 @@ QString getDbiUrlByRef(const U2DbiRef& ref, U2OpStatus& os) {
 QString U2DbiPool::getId(const U2DbiRef& ref, U2OpStatus& os) {
     const QString url = U2DbiUtils::ref2Url(ref);
     SAFE_POINT_EXT(!url.isEmpty(), os.setError(tr("Invalid dbi reference")), "");
-
-    if (ref.dbiFactoryId == MYSQL_DBI_ID) {
-        return url + DBI_ID_DELIMETER + QString::number((qint64)QThread::currentThread());
-    } else {
-        return url;
-    }
+    return url;
 }
 
 bool U2DbiPool::isDbiFromMainThread(const QString& dbiId) {
@@ -523,19 +506,9 @@ QStringList U2DbiPool::getIds(const U2DbiRef& ref, U2OpStatus& os) const {
     const QString url = getDbiUrlByRef(ref, os);
     CHECK_OP(os, QStringList());
     QStringList result;
-
-    if (ref.dbiFactoryId == MYSQL_DBI_ID) {
-        foreach (const QString& id, dbiById.keys()) {
-            if (id2Url(id) == url) {
-                result << id;
-            }
-        }
-    } else {
-        if (dbiById.contains(url)) {
-            result << url;
-        }
+    if (dbiById.contains(url)) {
+        result << url;
     }
-
     return result;
 }
 

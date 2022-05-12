@@ -177,7 +177,7 @@ QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getReadsCount"
 int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus& os) {
-    QWidget* statusBar = GTWidget::findWidget(os, "mca_editor_status_bar", getEditorUi(os));
+    auto statusBar = GTWidget::findWidget(os, "mca_editor_status_bar", getEditorUi(os));
     auto readsCountLabel = GTWidget::findLabel(os, "Line", statusBar);
 
     QRegExp readsCounRegExp("Ln \\d+|\\- / (\\d+)");

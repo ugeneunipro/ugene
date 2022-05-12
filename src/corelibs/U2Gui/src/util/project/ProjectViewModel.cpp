@@ -35,8 +35,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Formats/DatabaseConnectionFormat.h>
-
 #include <U2Gui/ObjectViewModel.h>
 
 #include "ConnectionHelper.h"
@@ -402,92 +400,6 @@ void ProjectViewModel::findFoldersDiff(QStringList oldFolders, QStringList newFo
         } else {
             added << *newI;
             newI++;
-        }
-    }
-}
-
-void ProjectViewModel::merge(Document* doc, const DocumentFoldersUpdate& update) {
-    // TODO
-    GTIMER(c, t, "ProjectViewModel::merge");
-    SAFE_POINT(folders.contains(doc), "Unknown document", );
-    U2OpStatus2Log os;
-    ConnectionHelper con(doc->getDbiRef(), os);
-    CHECK_OP(os, );
-
-    DocumentFolders* docFolders = folders[doc];
-    DocumentFoldersUpdate lastUpdate = docFolders->getLastUpdate();
-
-    // folders
-    QStringList deletedFolders;
-    QStringList addedFolders;
-    findFoldersDiff(lastUpdate.folders, update.folders, addedFolders, deletedFolders);
-
-    // NOTE: this cycle supposes that @addedFolders is sorted
-    foreach (const QString& path, addedFolders) {
-        if (!docFolders->isFolderIgnored(path)) {
-            insertFolder(doc, path);
-        }
-    }
-
-    // objects
-    QSet<U2DataId> deletedObjectIds = lastUpdate.objectIdFolders.keys().toSet();  // use QSet to speed up the further search within it
-    QHash<U2Object, QString>::ConstIterator it = update.u2objectFolders.constBegin();
-    for (; it != update.u2objectFolders.constEnd(); it++) {
-        const U2Object& entity = it.key();
-        const U2DataId id = entity.id;
-        const QString path = it.value();
-
-        if (docFolders->isObjectIgnored(id) || docFolders->isFolderIgnored(path)) {
-            continue;
-        }
-
-        // current object is not removed from DB
-        deletedObjectIds.remove(id);
-
-        if (!lastUpdate.objectIdFolders.contains(id)) {  // new object -> add it
-            if (doc->isStateLocked()) {
-                coreLog.error("Document is locked");
-                continue;
-            }
-            GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), id, entity.visualName);
-            if (nullptr != obj) {
-                doc->addObject(obj);
-                insertObject(doc, obj, path);
-            }
-        } else if (docFolders->hasObject(id)) {  // existing object
-            GObject* obj = docFolders->getObject(id);
-            SAFE_POINT(nullptr != obj, "NULL object", );
-
-            QString oldFolder = docFolders->getObjectFolder(obj);
-            if (oldFolder != path) {  // new object folder -> move it
-                removeObject(doc, obj);
-                insertObject(doc, obj, path);
-            }
-            if (entity.visualName != obj->getGObjectName()) {
-                setData(getIndexForObject(obj), entity.visualName, Qt::DisplayRole);
-            }
-        }
-    }
-
-    // delete deleted objects
-    if (!doc->isStateLocked()) {
-        foreach (const U2DataId& id, deletedObjectIds) {
-            if (!docFolders->hasObject(id) || docFolders->isObjectIgnored(id)) {
-                continue;
-            }
-            GObject* obj = docFolders->getObject(id);
-            SAFE_POINT(nullptr != obj, "NULL object", );
-            doc->removeObject(obj, DocumentObjectRemovalMode_Release);
-            delete obj;
-        }
-    }
-
-    // delete deleted folders
-    std::sort(deletedFolders.begin(), deletedFolders.end());
-    while (!deletedFolders.isEmpty()) {
-        QString path = deletedFolders.takeLast();
-        if (!docFolders->isFolderIgnored(path)) {
-            removeFolder(doc, path);
         }
     }
 }
@@ -1119,17 +1031,7 @@ QVariant ProjectViewModel::getDocumentDecorationData(Document* doc) const {
     if (!doc->isLoaded() && doc->getStateLocks().size() == 1 && doc->getDocumentModLock(DocumentModLock_UNLOADED_STATE) != nullptr) {
         showLockedIcon = false;
     }
-    if (showLockedIcon) {
-        if (doc->isDatabaseConnection()) {
-            return roDatabaseIcon;
-        }
-        return roDocumentIcon;
-    } else {
-        if (doc->isDatabaseConnection()) {
-            return databaseIcon;
-        }
-        return documentIcon;
-    }
+    return showLockedIcon ? roDocumentIcon : documentIcon;
 }
 
 QVariant ProjectViewModel::getDocumentToolTipData(Document* doc) const {
@@ -1174,8 +1076,8 @@ QVariant ProjectViewModel::data(GObject* obj, int role) const {
     SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected!", QVariant());
     SAFE_POINT(folders.contains(parentDoc), "Unknown document", QVariant());
 
-    const QString folder = folders[parentDoc]->getObjectFolder(obj);
-    const bool itemIsEnabled = !ProjectUtils::isConnectedDatabaseDoc(parentDoc) || !ProjectUtils::isFolderInRecycleBinSubtree(folder);
+    QString folder = folders[parentDoc]->getObjectFolder(obj);
+    bool itemIsEnabled = !ProjectUtils::isFolderInRecycleBinSubtree(folder);
 
     switch (role) {
         case Qt::TextColorRole:
@@ -1291,8 +1193,8 @@ bool ProjectViewModel::isWritableDoc(const Document* doc) {
     return !doc->isStateLocked();
 }
 
-bool ProjectViewModel::isDropEnabled(const Document* doc) {
-    return ProjectUtils::isConnectedDatabaseDoc(doc) && isWritableDoc(doc);
+bool ProjectViewModel::isDropEnabled(const Document*) {
+    return false;  // Was available only shared DB mode.
 }
 
 bool ProjectViewModel::isAcceptableFolder(Document* targetDoc, const QString& targetFolderPath, const Folder& folder) {
@@ -1458,11 +1360,8 @@ void ProjectViewModel::sl_objectAdded(GObject* obj) {
         return;
     }
 
-    // Only no database documents code:
-    if (!ProjectUtils::isDatabaseDoc(doc) || !doc->isLoaded()) {
-        insertObject(doc, obj, U2ObjectDbi::ROOT_FOLDER);
-        emit si_modelChanged();
-    }
+    insertObject(doc, obj, U2ObjectDbi::ROOT_FOLDER);
+    emit si_modelChanged();
 }
 
 void ProjectViewModel::sl_objectRemoved(GObject* obj) {

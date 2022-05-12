@@ -89,7 +89,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"

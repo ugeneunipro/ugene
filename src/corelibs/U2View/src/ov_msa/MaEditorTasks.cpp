@@ -193,19 +193,16 @@ void OpenSavedMaEditorTask::open() {
         return;
     }
     GObject* obj = nullptr;
-    if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
-        obj = doc->getObjectById(ref.entityRef.entityId);
-    } else {
-        // TODO: this methods does not work! UGENE-4904
-        //        obj = doc->findGObjectByName(ref.objName);
-        QList<GObject*> objs = doc->findGObjectByType(ref.objType);
-        foreach (GObject* curObj, objs) {
-            if (curObj->getGObjectName() == ref.objName) {
-                obj = curObj;
-                break;
-            }
+    // TODO: this methods does not work! UGENE-4904
+    //        obj = doc->findGObjectByName(ref.objName);
+    QList<GObject*> objs = doc->findGObjectByType(ref.objType);
+    foreach (GObject* curObj, objs) {
+        if (curObj->getGObjectName() == ref.objName) {
+            obj = curObj;
+            break;
         }
     }
+
     if (obj == nullptr || obj->getGObjectType() != type) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));

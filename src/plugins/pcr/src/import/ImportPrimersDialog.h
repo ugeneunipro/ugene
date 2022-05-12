@@ -38,28 +38,21 @@ public:
 
 private slots:
     void sl_updateState();
-    void sl_connectClicked();
     void sl_addFileClicked();
     void sl_removeFileClicked();
     void sl_addObjectClicked();
     void sl_removeObjectClicked();
-    void sl_connectionComplete();
     void sl_selectionChanged();
     void sl_contentChanged();
     void accept();
 
 private:
-    void init();
     void connectSignals();
     ProjectTreeControllerModeSettings prepareProjectItemsSelectionSettings() const;
 
-    bool waitForConnection;
     QMap<QListWidgetItem*, QString> item2file;
     QMap<QListWidgetItem*, Folder> item2folder;
     QMap<QListWidgetItem*, GObject*> item2object;
-
-    static const QString LOCAL_FILES;
-    static const QString SHARED_DB;
 };
 
 }  // namespace U2

@@ -76,7 +76,7 @@ QList<Task*> DNAFlexTask::onSubTaskFinished(Task* subTask) {
         QList<SharedAnnotationData> annots = getAnnotationsFromResults(results);
 
         if (!annots.isEmpty()) {
-            resultsList.append(new CreateAnnotationsTask(annotObject, annots, annotGroup));
+            resultsList.append(new CreateAnnotationsTask(annotObject, {{annotGroup, annots}}));
         }
     }
     return resultsList;

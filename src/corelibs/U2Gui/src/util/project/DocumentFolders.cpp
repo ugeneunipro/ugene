@@ -67,36 +67,11 @@ DocumentFolders::DocumentFolders()
     : doc(nullptr) {
 }
 
-void DocumentFolders::init(Document* doc, U2OpStatus& os) {
+void DocumentFolders::init(Document* document, U2OpStatus&) {
     GTIMER(c, t, "DocumentFolders::init");
-    this->doc = doc;
-    if (ProjectUtils::isConnectedDatabaseDoc(doc)) {
-        setLastUpdate(DocumentFoldersUpdate(doc->getDbiRef(), os));
-        CHECK_OP(os, );
-
-        foreach (GObject* obj, doc->getObjects()) {
-            U2DataId id = obj->getEntityRef().entityId;
-            if (hasFolderInfo(id)) {
-                addObject(obj, getFolderByObjectId(id));
-            } else {
-                coreLog.error("Unknown object id");
-            }
-        }
-
-        foreach (const QString& path, allFolders()) {
-            const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
-            QString fullPath;
-            foreach (const QString& folder, pathList) {
-                fullPath += U2ObjectDbi::PATH_SEP + folder;
-                if (!hasFolder(fullPath)) {
-                    foldersMap[fullPath] = new Folder(doc, fullPath);
-                }
-            }
-        }
-    } else {
-        foreach (GObject* obj, doc->getObjects()) {
-            addObject(obj, U2ObjectDbi::ROOT_FOLDER);
-        }
+    doc = document;
+    foreach (GObject* obj, doc->getObjects()) {
+        addObject(obj, U2ObjectDbi::ROOT_FOLDER);
     }
 }
 

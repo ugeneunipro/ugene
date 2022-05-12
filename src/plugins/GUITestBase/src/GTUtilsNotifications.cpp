@@ -114,7 +114,7 @@ void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus& os, 
     clickOnNotificationWidget(os);
 
     QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Task report ");
-    QTextEdit* reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
+    auto reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
     QString html = reportEdit->toHtml();
     for (const QString& textToken : qAsConst(textTokens)) {
         CHECK_SET_ERR(html.contains(textToken), "Report contains expected text: " + textToken);

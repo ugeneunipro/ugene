@@ -9,14 +9,14 @@
     <find-object-by-name index="source" doc="doc" name="SYNPBR322 features" type="OT_ANNOTATIONS"/>
 
 
-    <find-enzymes result-name="aobj" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="AvaI"
+    <find-enzymes result-name="annotationTableObject" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="AvaI"
                   result="AvaI:1425..1430"/>
 
-    <digest-into-fragments sequence="seq" annotation-table="aobj" circular="true"
+    <digest-into-fragments sequence="seq" annotation-table="annotationTableObject" circular="true"
                            url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="AvaI"/>
 
     <ligate-fragments index="result" seq-context="seq"
-                      annotation-context="aobj;source" fragments="pBR322.gb:Fragment 1"
+                      annotation-context="annotationTableObject;source" fragments="pBR322.gb:Fragment 1"
                       check-overhangs="true" circular="true"/>
 
 

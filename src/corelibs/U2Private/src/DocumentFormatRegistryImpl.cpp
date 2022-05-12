@@ -35,7 +35,6 @@
 #include <U2Formats/AprImporter.h>
 #include <U2Formats/BedFormat.h>
 #include <U2Formats/ClustalWAlnFormat.h>
-#include <U2Formats/DatabaseConnectionFormat.h>
 #include <U2Formats/DifferentialFormat.h>
 #include <U2Formats/EMBLPlainTextFormat.h>
 #include <U2Formats/FastaFormat.h>
@@ -46,7 +45,6 @@
 #include <U2Formats/GenbankPlainTextFormat.h>
 #include <U2Formats/MSFFormat.h>
 #include <U2Formats/MegaFormat.h>
-#include <U2Formats/MysqlDbi.h>
 #include <U2Formats/NEXUSFormat.h>
 #include <U2Formats/NewickFormat.h>
 #include <U2Formats/PDBFormat.h>
@@ -129,111 +127,46 @@ void DocumentFormatRegistryImpl::init() {
     RawDataUdrSchema::init(os);
     SAFE_POINT_OP(os, );
 
-    PlainTextFormat* text = new PlainTextFormat(this);
-    registerFormat(text);
+    registerFormat(new PlainTextFormat(this));
+    registerFormat(new FastaFormat(this));
+    registerFormat(new GenbankPlainTextFormat(this));
+    registerFormat(new EMBLPlainTextFormat(this));
+    registerFormat(new SwissProtPlainTextFormat(this));
+    registerFormat(new ABIFormat(this));
+    registerFormat(new SCFFormat(this));
+    registerFormat(new RawDNASequenceFormat(this));
+    registerFormat(new ClustalWAlnFormat(this));
+    registerFormat(new StockholmFormat(this));
+    registerFormat(new NewickFormat(this));
+    registerFormat(new PDBFormat(this));
+    registerFormat(new FastqFormat(this));
+    registerFormat(new ASNFormat(this));
+    registerFormat(new MSFFormat(this));
+    registerFormat(new BedFormat(this));
+    registerFormat(new GFFFormat(this));
+    registerFormat(new GTFFormat(this));
+    registerFormat(new FpkmTrackingFormat(this));
+    registerFormat(new NEXUSFormat(this));
+    registerFormat(new SAMFormat(this));
+    registerFormat(new MegaFormat(this));
+    registerFormat(new ACEFormat(this));
+    registerFormat(new AprFormat(this));
 
-    FastaFormat* fasta = new FastaFormat(this);
-    registerFormat(fasta);
+    importSupport.addDocumentImporter(new AceImporter());
+    importSupport.addDocumentImporter(new AprImporter());
 
-    GenbankPlainTextFormat* gb = new GenbankPlainTextFormat(this);
-    registerFormat(gb);
-
-    EMBLPlainTextFormat* em = new EMBLPlainTextFormat(this);
-    registerFormat(em);
-
-    SwissProtPlainTextFormat* sp = new SwissProtPlainTextFormat(this);
-    registerFormat(sp);
-
-    ABIFormat* abi = new ABIFormat(this);
-    registerFormat(abi);
-
-    SCFFormat* scf = new SCFFormat(this);
-    registerFormat(scf);
-
-    RawDNASequenceFormat* rsf = new RawDNASequenceFormat(this);
-    registerFormat(rsf);
-
-    ClustalWAlnFormat* aln = new ClustalWAlnFormat(this);
-    registerFormat(aln);
-
-    StockholmFormat* stf = new StockholmFormat(this);
-    registerFormat(stf);
-
-    NewickFormat* nwf = new NewickFormat(this);
-    registerFormat(nwf);
-
-    PDBFormat* pdb = new PDBFormat(this);
-    registerFormat(pdb);
-
-    FastqFormat* ftq = new FastqFormat(this);
-    registerFormat(ftq);
-
-    ASNFormat* asn = new ASNFormat(this);
-    registerFormat(asn);
-
-    MSFFormat* msf = new MSFFormat(this);
-    registerFormat(msf);
-
-    BedFormat* bed = new BedFormat(this);
-    registerFormat(bed);
-
-    GFFFormat* gff = new GFFFormat(this);
-    registerFormat(gff);
-
-    GTFFormat* gtf = new GTFFormat(this);
-    registerFormat(gtf);
-
-    FpkmTrackingFormat* fpkmTr = new FpkmTrackingFormat(this);
-    registerFormat(fpkmTr);
-
-    NEXUSFormat* nexus = new NEXUSFormat(this);
-    registerFormat(nexus);
-
-    SAMFormat* sam = new SAMFormat(this);
-    registerFormat(sam);
-
-    MegaFormat* meg = new MegaFormat(this);
-    registerFormat(meg);
-
-    ACEFormat* aceFormat = new ACEFormat(this);
-    registerFormat(aceFormat);
-
-    AprFormat* apr = new AprFormat(this);
-    registerFormat(apr);
-
-    AceImporter* aceImporter = new AceImporter();
-    importSupport.addDocumentImporter(aceImporter);
-
-    AprImporter* aprImporter = new AprImporter();
-    importSupport.addDocumentImporter(aprImporter);
-
-    PDWFormat* pdw = new PDWFormat(this);
-    registerFormat(pdw);
-
-    SimpleSNPVariationFormat* snp = new SimpleSNPVariationFormat(this);
-    registerFormat(snp);
-
-    VCF4VariationFormat* vcf4 = new VCF4VariationFormat(this);
-    registerFormat(vcf4);
-
-    DifferentialFormat* diff = new DifferentialFormat(this);
-    registerFormat(diff);
-
-    PhylipInterleavedFormat* phIn = new PhylipInterleavedFormat(this);
-    registerFormat(phIn);
-
-    PhylipSequentialFormat* phSeq = new PhylipSequentialFormat(this);
-    registerFormat(phSeq);
-
-    registerFormat(new DatabaseConnectionFormat(this));
+    registerFormat(new PDWFormat(this));
+    registerFormat(new SimpleSNPVariationFormat(this));
+    registerFormat(new VCF4VariationFormat(this));
+    registerFormat(new DifferentialFormat(this));
+    registerFormat(new PhylipInterleavedFormat(this));
+    registerFormat(new PhylipSequentialFormat(this));
     registerFormat(new VectorNtiSequenceFormat(this));
 
     AppContext::getDbiRegistry()->registerDbiFactory(new SQLiteDbiFactory());
-    AppContext::getDbiRegistry()->registerDbiFactory(new MysqlDbiFactory());
 
     DocumentFormatFlags flags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed);
-    DbiDocumentFormat* sdbi = new DbiDocumentFormat(SQLiteDbiFactory::ID, BaseDocumentFormats::UGENEDB, tr("UGENE Database"), QStringList() << "ugenedb", flags);
-    registerFormat(sdbi);
+    registerFormat(new DbiDocumentFormat(SQLiteDbiFactory::ID, BaseDocumentFormats::UGENEDB, tr("UGENE Database"), QStringList() << "ugenedb", flags));
 }
 
 }  // namespace U2

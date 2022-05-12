@@ -89,7 +89,8 @@ QList<Task*> HmmerSearchTask::onSubTaskFinished(Task* subTask) {
     } else if (subTask == parseTask) {
         removeTempDir();
         if (settings.annotationTable != nullptr) {
-            Task* createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            const QList<SharedAnnotationData>& annotations = parseTask->getAnnotations();
+            Task* createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, {{settings.pattern.groupName, annotations}});
             createAnnotationsTask->setSubtaskProgressWeight(5);
             result << createAnnotationsTask;
         }

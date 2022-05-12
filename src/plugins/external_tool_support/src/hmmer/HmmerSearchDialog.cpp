@@ -81,7 +81,7 @@ void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
     // Annotations widget
     CreateAnnotationModel annModel;
     annModel.hideLocation = true;
-    annModel.sequenceObjectRef = seqObj;
+    annModel.sequenceObjectRef = seqObj->getReference();
     annModel.useAminoAnnotationTypes = seqObj->getAlphabet()->isAmino();
     annModel.data->type = U2FeatureTypes::MiscSignal;
     annModel.data->name = ANNOTATIONS_DEFAULT_NAME;

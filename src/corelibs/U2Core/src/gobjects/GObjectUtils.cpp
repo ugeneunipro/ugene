@@ -148,11 +148,6 @@ QList<GObject*> findRelatedObjectsForUnloadedObjects(const GObjectReference& obj
     return res;
 }
 
-bool objectHasInMemoryRelationToReference(GObject* object, const GObjectReference& reference, GObjectRelationRole role) {
-    SAFE_POINT(nullptr != object && reference.isValid(), "Invalid object reference detected", false);
-    return object->getGHints()->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>().contains(GObjectRelation(reference, role));
-}
-
 QList<GObject*> findRelatedObjectsForLoadedObjects(const GObjectReference& obj, GObjectRelationRole role, const QSet<GObject*>& fromObjects) {
     QList<GObject*> res;
 
@@ -160,18 +155,9 @@ QList<GObject*> findRelatedObjectsForLoadedObjects(const GObjectReference& obj, 
     QHash<Document*, U2DbiRef> doc2DbiRef;
     foreach (GObject* object, fromObjects) {
         Document* doc = object->getDocument();
-        SAFE_POINT(nullptr != doc, "Invalid parent document detected", res);
-        if (!doc->isDatabaseConnection()) {
-            if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
-                res.append(object);
-            }
-        } else {
-            const U2DbiRef dbiRef = object->getEntityRef().dbiRef;
-            if (obj.entityRef.dbiRef == dbiRef) {
-                doc2DbiRef.insert(doc, obj.entityRef.dbiRef);
-            } else if (objectHasInMemoryRelationToReference(object, obj, role)) {
-                res.append(object);
-            }
+        SAFE_POINT(doc != nullptr, "Invalid parent document detected", res);
+        if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
+            res.append(object);
         }
     }
 
@@ -267,7 +253,7 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const 
     GObject* firstMatchedByName = nullptr;
     foreach (GObject* o, fromObjects) {
         Document* parentDoc = o->getDocument();
-        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (parentDoc == nullptr || parentDoc->isDatabaseConnection())) {
+        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && parentDoc == nullptr) {
             continue;
         }
         if (o->getGObjectName() != r.objName) {

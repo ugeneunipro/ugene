@@ -40,7 +40,7 @@ public:
         : docUrl(_docUrl), objName(_objName), entityRef(_entityRef), objType(_type) {
     }
 
-    GObjectReference(const GObject* obj, bool deriveLoadedType = true);
+    explicit GObjectReference(const GObject* obj, bool deriveLoadedType = true);
 
     bool isValid() const {
         return !docUrl.isEmpty() && !objName.isEmpty() && !objType.isEmpty();

@@ -86,7 +86,7 @@ void ORFSettingsKeys::read(ORFAlgorithmSettings& cfg, const Settings* s) {
 
 FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& _entityRef, const ORFAlgorithmSettings& settings, const QString& gName, const QString& annDescription)
     : Task(tr("Find ORFs and save to annotations"), TaskFlags_NR_FOSCOE),
-      aObj(aobj),
+      annotationTableObject(aobj),
       cfg(settings),
       groupName(gName),
       annDescription(annDescription),
@@ -101,7 +101,8 @@ FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject* aobj
 }
 
 QList<Task*> FindORFsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
-    CHECK(subTask == fTask, QList<Task*>());
+    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), {});
+    CHECK(subTask == fTask, {});
 
     const QList<ORFFindResult> results = fTask->popResults();
     QList<SharedAnnotationData> annotationList;
@@ -112,7 +113,7 @@ QList<Task*> FindORFsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
 
     U1AnnotationUtils::addDescriptionQualifier(annotationList, annDescription);
 
-    return QList<Task*>() << new CreateAnnotationsTask(aObj, annotationList, groupName);
+    return {new CreateAnnotationsTask(annotationTableObject, {{groupName, annotationList}})};
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -128,8 +128,7 @@ void ImportToDatabaseDialogFiller::addFiles(const Action& action) {
     foreach (const QString& filePath, filePaths) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, filePath));
 
-        QWidget* addFilesButton = GTWidget::findWidget(os, "pbAddFiles");
-        GT_CHECK(nullptr != addFilesButton, "addFilesButton is NULL");
+        auto addFilesButton = GTWidget::findWidget(os, "pbAddFiles");
         GTWidget::click(os, addFilesButton);
 
         GTGlobals::sleep(200);
@@ -147,8 +146,7 @@ void ImportToDatabaseDialogFiller::addDirs(const Action& action) {
         QFileInfo fi(dirPath);
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, fi.dir().path(), fi.fileName(), GTFileDialogUtils::Choose));
 
-        QWidget* addDirsButton = GTWidget::findWidget(os, "pbAddFolder");
-        GT_CHECK(nullptr != addDirsButton, "addDirsButton is NULL");
+        auto addDirsButton = GTWidget::findWidget(os, "pbAddFolder");
         GTWidget::click(os, addDirsButton);
 
         GTGlobals::sleep(200);
@@ -164,8 +162,7 @@ void ImportToDatabaseDialogFiller::addProjectItems(const Action& action) {
     QMap<QString, QStringList> projectItems = convertProjectItemsMap(action.data.value(Action::ACTION_DATA__PROJECT_ITEMS_LIST).toMap());
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, projectItems));
 
-    QWidget* addProjectItemsButton = GTWidget::findWidget(os, "pbAddObjects");
-    GT_CHECK(addProjectItemsButton != nullptr, "addProjectItemsButton is NULL");
+    auto addProjectItemsButton = GTWidget::findWidget(os, "pbAddObjects");
     GTWidget::click(os, addProjectItemsButton);
 }
 #undef GT_METHOD_NAME
@@ -214,8 +211,7 @@ void ImportToDatabaseDialogFiller::editGeneralOptions(const Action& action) {
 
     GTUtilsDialog::waitForDialog(os, new CommonImportOptionsDialogFiller(os, action.data));
 
-    QWidget* optionsButton = GTWidget::findWidget(os, "pbOptions");
-    GT_CHECK(nullptr != optionsButton, "optionsButton is NULL");
+    auto optionsButton = GTWidget::findWidget(os, "pbOptions");
     GTWidget::click(os, optionsButton);
 }
 #undef GT_METHOD_NAME
@@ -250,8 +246,7 @@ void ImportToDatabaseDialogFiller::resetPrivateOptions(const Action& action) {
 void ImportToDatabaseDialogFiller::remove(const Action& action) {
     GT_CHECK(Action::REMOVE == action.type, "Invalid action type");
 
-    QWidget* removeButton = GTWidget::findWidget(os, "pbRemove");
-    GT_CHECK(nullptr != removeButton, "removeButton is NULL");
+    auto removeButton = GTWidget::findWidget(os, "pbRemove");
     GTWidget::click(os, removeButton);
 }
 #undef GT_METHOD_NAME
@@ -260,8 +255,7 @@ void ImportToDatabaseDialogFiller::remove(const Action& action) {
 void ImportToDatabaseDialogFiller::import(const Action& action) {
     GT_CHECK(Action::IMPORT == action.type, "Invalid action type");
 
-    QWidget* importButton = GTWidget::findWidget(os, "import_button");
-    GT_CHECK(nullptr != importButton, "importButton is NULL");
+    auto importButton = GTWidget::findWidget(os, "import_button");
     GTWidget::click(os, importButton);
 }
 #undef GT_METHOD_NAME
@@ -270,8 +264,7 @@ void ImportToDatabaseDialogFiller::import(const Action& action) {
 void ImportToDatabaseDialogFiller::cancel(const Action& action) {
     GT_CHECK(Action::CANCEL == action.type, "Invalid action type");
 
-    QWidget* cancelButton = GTWidget::findWidget(os, "cancel_button");
-    GT_CHECK(nullptr != cancelButton, "cancelButton is NULL");
+    auto cancelButton = GTWidget::findWidget(os, "cancel_button");
     GTWidget::click(os, cancelButton);
 }
 #undef GT_METHOD_NAME

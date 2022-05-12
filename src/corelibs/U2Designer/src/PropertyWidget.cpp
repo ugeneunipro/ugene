@@ -378,58 +378,6 @@ void ComboBoxWithUrlWidget::sl_browse() {
 }
 
 /************************************************************************/
-/* ComboBoxWithDbUrlWidget */
-/************************************************************************/
-ComboBoxWithDbUrlWidget::ComboBoxWithDbUrlWidget(QWidget* parent)
-    : ComboBoxWithUrlWidget(SharedDbUrlUtils::getKnownDbs(), false, parent) {
-}
-
-void ComboBoxWithDbUrlWidget::sl_browse() {
-    QObjectScopedPointer<EditConnectionDialog> editDialog = new EditConnectionDialog(this);
-    editDialog->setWindowTitle(tr("Add New Connection"));
-
-    const int dialogResult = editDialog->exec();
-    CHECK(!editDialog.isNull(), );
-
-    if (QDialog::Accepted == dialogResult) {
-        const QString dbUrlWithoutProvider = editDialog->getFullDbiUrl();
-        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);  // TODO: fix this hardcoded value when other shared DB providers appear
-        const QString dbUrl = SharedDbUrlUtils::createDbUrl(dbiRef);
-        SharedDbUrlUtils::saveNewDbConnection(editDialog->getName(), dbUrlWithoutProvider);
-        updateComboValues();
-        setValue(dbUrl);
-    }
-}
-
-void ComboBoxWithDbUrlWidget::updateComboValues() {
-    const QString currentText = comboBox->currentText();
-    const QVariantMap sharedDbs = SharedDbUrlUtils::getKnownDbs();
-
-    comboBox->clear();
-    foreach (const QString& key, sharedDbs.keys()) {
-        comboBox->addItem(key, sharedDbs[key]);
-    }
-
-    const int curIndex = comboBox->findText(currentText);
-    if (-1 != curIndex) {
-        comboBox->setCurrentIndex(curIndex);
-    } else if (comboBox->count() > 0) {
-        comboBox->setCurrentIndex(0);
-    }
-}
-
-QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
-    QVariantMap result;
-    CHECK(comboBox->count() != 0, result);
-
-    for (int i = 0; i < comboBox->count(); ++i) {
-        result.insert(comboBox->itemText(i), comboBox->itemData(i));
-    }
-
-    return result;
-}
-
-/************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
 ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap& _items, QWidget* parent, const QSharedPointer<StringFormatter>& formatter, bool isSorted)

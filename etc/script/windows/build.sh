@@ -90,9 +90,6 @@ copy_with_pdb "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 mkdir "${BUNDLE_DIR}/styles"
 copy_with_pdb "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
 
-mkdir "${BUNDLE_DIR}/sqldrivers"
-copy_with_pdb "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUNDLE_DIR}/sqldrivers"
-
 mkdir "${BUNDLE_DIR}\imageformats"
 copy_with_pdb "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUNDLE_DIR}/imageformats"
 copy_with_pdb "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUNDLE_DIR}/imageformats"

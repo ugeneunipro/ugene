@@ -188,7 +188,7 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus& os, const
 #define GT_METHOD_NAME "getNotifications"
 QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus& os) {
     const QString notificationsWidgetName = "NotificationsDashboardWidget";
-    QWidget* notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
+    auto notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
     auto tableLayout = qobject_cast<QGridLayout*>(notificationsWidget->layout());
     QList<Notification> notifications;
 

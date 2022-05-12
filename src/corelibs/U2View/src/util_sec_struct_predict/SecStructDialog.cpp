@@ -172,7 +172,7 @@ void SecStructDialog::showResults() {
 
 void SecStructDialog::sl_onSaveAnnotations() {
     CreateAnnotationModel m;
-    m.sequenceObjectRef = ctx->getSequenceObject();
+    m.sequenceObjectRef = ctx->getSequenceObject()->getReference();
     m.hideLocation = true;
     m.hideAnnotationType = true;
     m.hideAnnotationName = true;
@@ -186,11 +186,12 @@ void SecStructDialog::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
-    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
+    AnnotationTableObject* annotationObject = m.getAnnotationObject();
+    ctx->getAnnotatedDNAView()->tryAddObject(annotationObject);
 
     U1AnnotationUtils::addDescriptionQualifier(results, m.description);
 
-    CreateAnnotationsTask* t = new CreateAnnotationsTask(m.getAnnotationObject(), results, m.groupName);
+    auto t = new CreateAnnotationsTask(annotationObject, {{m.groupName, results}});
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     QDialog::accept();
