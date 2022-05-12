@@ -29,10 +29,8 @@
 
 #include "FindExonRegionsTask.h"
 #include "Primer3TaskSettings.h"
-//#include "primer3_core/primer3.h"
 #include "primer3_core/libprimer3.h"
 
-struct primers_t;
 
 namespace U2 {
 
@@ -116,8 +114,8 @@ public:
     void run();
     Task::ReportResult report();
     void sumStat(Primer3TaskSettings* st);
-    void selectPairsSpanningExonJunction(primers_t& primers, int toReturn);
-    void selectPairsSpanningIntron(primers_t& primers, int toReturn);
+    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
+    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
@@ -130,6 +128,8 @@ private:
     Primer3TaskSettings settings;
     QList<PrimerPair> bestPairs;
     QList<Primer> singlePrimers;
+
+    p3retval* resultPrimers = nullptr;
 
     int offset;
 };

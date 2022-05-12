@@ -13,6 +13,7 @@ HEADERS += src/Primer3Dialog.h \
 		   src/primer3_core/masker.h \
 		   src/primer3_core/oligotm.h \
 		   src/primer3_core/p3_seq_lib.h \
+		   src/primer3_core/primer3_boulder_main.h \
 		   src/primer3_core/print_boulder.h \
 		   src/primer3_core/read_boulder.h \
 		   src/primer3_core/thal.h \

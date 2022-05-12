@@ -360,10 +360,10 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }
         if (n_quality != 0 && n_quality != sequenceLength)
             stateInfo.setError(GTest::tr("Error in sequence quality data"));  //??? may be remove from this place
-        if ((settings.getPrimerArgs()->min_quality != 0 || settings.getPrimerArgs()->io_min_quality != 0) && n_quality == 0)
+        if ((settings.getPrimerSettings()->p_args.min_quality != 0 || settings.getPrimerSettings()->o_args.min_quality != 0) && n_quality == 0)
             stateInfo.setError(GTest::tr("Sequence quality data missing"));  //??? may be remove from this place
-        if (settings.getPrimerArgs()->min_quality != 0 && settings.getPrimerArgs()->min_end_quality < settings.getPrimerArgs()->min_quality)
-            settings.getPrimerArgs()->min_end_quality = settings.getPrimerArgs()->min_quality;
+        if (settings.getPrimerSettings()->p_args.min_quality != 0 && settings.getPrimerSettings()->p_args.min_end_quality < settings.getPrimerSettings()->p_args.min_quality)
+            settings.getPrimerSettings()->p_args.min_end_quality = settings.getPrimerSettings()->p_args.min_quality;
     }
 }
 

@@ -39,7 +39,7 @@ bool Primer3TaskSettings::checkIncludedRegion(const U2Region& r) const {
 
 Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings();
-    //p3status = 
+    p3Retval = create_p3retval();
 
     //TODO: glob_err - got lost, figure out
     //std::memset(&primerArgs.glob_err, 0, sizeof(primerArgs.glob_err));
@@ -61,8 +61,13 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
       repeatLibrary(settings.repeatLibrary),
       mishybLibrary(settings.mishybLibrary),
       spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
-      primerSettings(new p3_global_settings(*settings.primerSettings)),
       seqArgs(settings.seqArgs) {
+
+    primerSettings = p3_create_global_settings();
+    *primerSettings = *settings.primerSettings;
+    p3Retval = create_p3retval();
+    *p3Retval = *settings.p3Retval;
+
     initMaps();
 }
 
@@ -74,11 +79,16 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     rightInput = settings.rightInput;
     internalInput = settings.internalInput;
     sequenceQuality = settings.sequenceQuality;
-    primerSettings = new p3_global_settings(*settings.primerSettings);
     repeatLibrary = settings.repeatLibrary;
     mishybLibrary = settings.mishybLibrary;
     seqArgs = settings.seqArgs;
     spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
+
+    primerSettings = p3_create_global_settings();
+    *primerSettings = *settings.primerSettings;
+    p3Retval = create_p3retval();
+    *p3Retval = *settings.p3Retval;
+
     initMaps();
     return *this;
 }
@@ -125,8 +135,8 @@ Primer3TaskSettings::~Primer3TaskSettings() {
     //TODO: free_seq_lib - got lost, figure out
     //free_seq_lib(primerSettings->p_args.repeat_lib);
     //free_seq_lib(primerSettings->p_args.io_mishyb_library);
-
-    delete primerSettings;
+    p3_destroy_global_settings(primerSettings);
+    destroy_p3retval(p3Retval);
 }
 
 bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {
@@ -412,6 +422,10 @@ p3_global_settings* Primer3TaskSettings::getPrimerSettings() {
 
 seq_args* Primer3TaskSettings::getSeqArgs() {
     return &seqArgs;
+}
+
+p3retval* Primer3TaskSettings::getP3RetVal() {
+    return p3Retval;
 }
 
 void Primer3TaskSettings::initMaps() {
