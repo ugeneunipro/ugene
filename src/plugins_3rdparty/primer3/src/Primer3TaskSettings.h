@@ -118,6 +118,7 @@ public:
 
     p3_global_settings* getPrimerSettings();
     seq_args* getSeqArgs();
+    p3retval* getP3RetVal();
 
     // span intron/exon boundary settings
 
@@ -171,7 +172,7 @@ private:
     p3_global_settings* primerSettings;
     seq_args seqArgs;
 
-    p3retval* p3status;
+    p3retval* p3Retval = nullptr; 
 };
 
 }  // namespace U2

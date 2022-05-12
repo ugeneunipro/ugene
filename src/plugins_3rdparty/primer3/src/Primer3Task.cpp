@@ -379,6 +379,7 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
 
 void Primer3Task::run() {
     /* A place to put a string containing all error messages */
+    //TODO: check this palce again
     pr_append_str* combined_retval_err = NULL;
     combined_retval_err = create_pr_append_str();
 
@@ -404,19 +405,19 @@ void Primer3Task::run() {
     if (spanExonsEnabled) {
         settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
-    primers_t primers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
+    resultPrimers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
 
     bestPairs.clear();
 
     if (settings.getSpanIntronExonBoundarySettings().enabled) {
         if (settings.getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
-            selectPairsSpanningExonJunction(primers, toReturn);
+            selectPairsSpanningExonJunction(resultPrimers, toReturn);
         } else {
-            selectPairsSpanningIntron(primers, toReturn);
+            selectPairsSpanningIntron(resultPrimers, toReturn);
         }
     } else {
-        for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-            bestPairs.append(PrimerPair(primers.best_pairs.pairs[index], offset));
+        for (int index = 0; index < resultPrimers->best_pairs.num_pairs; index++) {
+            bestPairs.append(PrimerPair(resultPrimers->best_pairs.pairs[index], offset));
         }
     }
 
@@ -424,20 +425,21 @@ void Primer3Task::run() {
     settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
 
     if (settings.getTask() == pick_left_only) {
-        if (primers.left != nullptr) {
-            for (int i = 0; i < settings.getSeqArgs()->left_expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(primers.left + i)));
+        if (resultPrimers->fwd.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(Primer(*(resultPrimers->fwd.oligo + i)));
             }
         }
     } else if (settings.getTask() == pick_right_only) {
-        if (primers.right != nullptr) {
-            for (int i = 0; i < settings.getSeqArgs()->right_expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(primers.right + i)));
+        if (resultPrimers->rev.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->rev.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(Primer(*(resultPrimers->rev.oligo + i)));
             }
         }
     }
 
-    if (primers.best_pairs.num_pairs > 0) {
+    // do not need, there is a special function exists
+    /*if (resultPrimers->best_pairs.num_pairs > 0) {
         std::free(primers.best_pairs.pairs);
         primers.best_pairs.pairs = nullptr;
     }
@@ -452,7 +454,7 @@ void Primer3Task::run() {
     if (nullptr != primers.intl) {
         std::free(primers.intl);
         primers.intl = nullptr;
-    }
+    }*/
 }
 
 Task::ReportResult Primer3Task::report() {
@@ -463,38 +465,38 @@ Task::ReportResult Primer3Task::report() {
 }
 
 void Primer3Task::sumStat(Primer3TaskSettings* st) {
-    st->getSeqArgs()->left_expl.considered += settings.getSeqArgs()->left_expl.considered;
-    st->getSeqArgs()->left_expl.ns += settings.getSeqArgs()->left_expl.ns;
-    st->getSeqArgs()->left_expl.target += settings.getSeqArgs()->left_expl.target;
-    st->getSeqArgs()->left_expl.excluded += settings.getSeqArgs()->left_expl.excluded;
-    st->getSeqArgs()->left_expl.gc += settings.getSeqArgs()->left_expl.gc;
-    st->getSeqArgs()->left_expl.gc_clamp += settings.getSeqArgs()->left_expl.gc_clamp;
-    st->getSeqArgs()->left_expl.temp_min += settings.getSeqArgs()->left_expl.temp_min;
-    st->getSeqArgs()->left_expl.temp_max += settings.getSeqArgs()->left_expl.temp_max;
-    st->getSeqArgs()->left_expl.compl_any += settings.getSeqArgs()->left_expl.compl_any;
-    st->getSeqArgs()->left_expl.compl_end += settings.getSeqArgs()->left_expl.compl_end;
-    st->getSeqArgs()->left_expl.poly_x += settings.getSeqArgs()->left_expl.poly_x;
-    st->getSeqArgs()->left_expl.stability += settings.getSeqArgs()->left_expl.stability;
-    st->getSeqArgs()->left_expl.ok += settings.getSeqArgs()->left_expl.ok;
+    st->getP3RetVal()->fwd.expl.considered += resultPrimers->fwd.expl.considered;
+    st->getP3RetVal()->fwd.expl.ns += resultPrimers->fwd.expl.ns;
+    st->getP3RetVal()->fwd.expl.target += resultPrimers->fwd.expl.target;
+    st->getP3RetVal()->fwd.expl.excluded += resultPrimers->fwd.expl.excluded;
+    st->getP3RetVal()->fwd.expl.gc += resultPrimers->fwd.expl.gc;
+    st->getP3RetVal()->fwd.expl.gc_clamp += resultPrimers->fwd.expl.gc_clamp;
+    st->getP3RetVal()->fwd.expl.temp_min += resultPrimers->fwd.expl.temp_min;
+    st->getP3RetVal()->fwd.expl.temp_max += resultPrimers->fwd.expl.temp_max;
+    st->getP3RetVal()->fwd.expl.compl_any += resultPrimers->fwd.expl.compl_any;
+    st->getP3RetVal()->fwd.expl.compl_end += resultPrimers->fwd.expl.compl_end;
+    st->getP3RetVal()->fwd.expl.poly_x += resultPrimers->fwd.expl.poly_x;
+    st->getP3RetVal()->fwd.expl.stability += resultPrimers->fwd.expl.stability;
+    st->getP3RetVal()->fwd.expl.ok += resultPrimers->fwd.expl.ok;
 
-    st->getSeqArgs()->right_expl.considered += settings.getSeqArgs()->right_expl.considered;
-    st->getSeqArgs()->right_expl.ns += settings.getSeqArgs()->right_expl.ns;
-    st->getSeqArgs()->right_expl.target += settings.getSeqArgs()->right_expl.target;
-    st->getSeqArgs()->right_expl.excluded += settings.getSeqArgs()->right_expl.excluded;
-    st->getSeqArgs()->right_expl.gc += settings.getSeqArgs()->right_expl.gc;
-    st->getSeqArgs()->right_expl.gc_clamp += settings.getSeqArgs()->right_expl.gc_clamp;
-    st->getSeqArgs()->right_expl.temp_min += settings.getSeqArgs()->right_expl.temp_min;
-    st->getSeqArgs()->right_expl.temp_max += settings.getSeqArgs()->right_expl.temp_max;
-    st->getSeqArgs()->right_expl.compl_any += settings.getSeqArgs()->right_expl.compl_any;
-    st->getSeqArgs()->right_expl.compl_end += settings.getSeqArgs()->right_expl.compl_end;
-    st->getSeqArgs()->right_expl.poly_x += settings.getSeqArgs()->right_expl.poly_x;
-    st->getSeqArgs()->right_expl.stability += settings.getSeqArgs()->right_expl.stability;
-    st->getSeqArgs()->right_expl.ok += settings.getSeqArgs()->right_expl.ok;
+    st->getP3RetVal()->rev.expl.considered += resultPrimers->rev.expl.considered;
+    st->getP3RetVal()->rev.expl.ns += resultPrimers->rev.expl.ns;
+    st->getP3RetVal()->rev.expl.target += resultPrimers->rev.expl.target;
+    st->getP3RetVal()->rev.expl.excluded += resultPrimers->rev.expl.excluded;
+    st->getP3RetVal()->rev.expl.gc += resultPrimers->rev.expl.gc;
+    st->getP3RetVal()->rev.expl.gc_clamp += resultPrimers->rev.expl.gc_clamp;
+    st->getP3RetVal()->rev.expl.temp_min += resultPrimers->rev.expl.temp_min;
+    st->getP3RetVal()->rev.expl.temp_max += resultPrimers->rev.expl.temp_max;
+    st->getP3RetVal()->rev.expl.compl_any += resultPrimers->rev.expl.compl_any;
+    st->getP3RetVal()->rev.expl.compl_end += resultPrimers->rev.expl.compl_end;
+    st->getP3RetVal()->rev.expl.poly_x += resultPrimers->rev.expl.poly_x;
+    st->getP3RetVal()->rev.expl.stability += resultPrimers->rev.expl.stability;
+    st->getP3RetVal()->rev.expl.ok += resultPrimers->rev.expl.ok;
 
-    st->getSeqArgs()->pair_expl.considered += settings.getSeqArgs()->pair_expl.considered;
-    st->getSeqArgs()->pair_expl.product += settings.getSeqArgs()->pair_expl.product;
-    st->getSeqArgs()->pair_expl.compl_end += settings.getSeqArgs()->pair_expl.compl_end;
-    st->getSeqArgs()->pair_expl.ok += settings.getSeqArgs()->pair_expl.ok;
+    st->getP3RetVal()->best_pairs.expl.considered += resultPrimers->best_pairs.expl.considered;
+    st->getP3RetVal()->best_pairs.expl.product += resultPrimers->best_pairs.expl.product;
+    st->getP3RetVal()->best_pairs.expl.compl_end += resultPrimers->best_pairs.expl.compl_end;
+    st->getP3RetVal()->best_pairs.expl.ok += resultPrimers->best_pairs.expl.ok;
 }
 
 // TODO: reuse functions from U2Region!
@@ -525,7 +527,7 @@ static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qi
     return false;
 }
 
-void Primer3Task::selectPairsSpanningExonJunction(primers_t& primers, int toReturn) {
+void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toReturn) {
     int minLeftOverlap = settings.getSpanIntronExonBoundarySettings().minLeftOverlap;
     int minRightOverlap = settings.getSpanIntronExonBoundarySettings().minRightOverlap;
 
@@ -536,8 +538,8 @@ void Primer3Task::selectPairsSpanningExonJunction(primers_t& primers, int toRetu
         junctionPositions.push_back(end);
     }
 
-    for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-        const primer_pair& pair = primers.best_pairs.pairs[index];
+    for (int index = 0; index < primers->best_pairs.num_pairs; index++) {
+        const primer_pair& pair = primers->best_pairs.pairs[index];
         const primer_rec* left = pair.left;
         const primer_rec* right = pair.right;
 
@@ -551,11 +553,11 @@ void Primer3Task::selectPairsSpanningExonJunction(primers_t& primers, int toRetu
     }
 }
 
-void Primer3Task::selectPairsSpanningIntron(primers_t& primers, int toReturn) {
+void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
     const QList<U2Region>& regions = settings.getExonRegions();
 
-    for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-        const primer_pair& pair = primers.best_pairs.pairs[index];
+    for (int index = 0; index < primers->best_pairs.num_pairs; index++) {
+        const primer_pair& pair = primers->best_pairs.pairs[index];
         const primer_rec* left = pair.left;
         const primer_rec* right = pair.right;
 
@@ -787,9 +789,9 @@ QString Primer3ToAnnotationsTask::generateReport() const {
         t->sumStat(&searchTask->settings);
     }
 
-    oligo_stats leftStats = searchTask->settings.getSeqArgs()->left_expl;
-    oligo_stats rightStats = searchTask->settings.getSeqArgs()->right_expl;
-    pair_stats pairStats = searchTask->settings.getSeqArgs()->pair_expl;
+    oligo_stats leftStats = searchTask->settings.getP3RetVal()->fwd.expl;
+    oligo_stats rightStats = searchTask->settings.getP3RetVal()->rev.expl;
+    pair_stats pairStats = searchTask->settings.getP3RetVal()->best_pairs.expl;
 
     if (!leftStats.considered) {
         leftStats.considered = leftStats.ns + leftStats.target + leftStats.excluded + leftStats.gc + leftStats.gc_clamp + leftStats.temp_min + leftStats.temp_max + leftStats.compl_any + leftStats.compl_end + leftStats.poly_x + leftStats.stability + leftStats.ok;

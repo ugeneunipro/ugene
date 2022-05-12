@@ -921,13 +921,13 @@ typedef struct oligo_array {
  * The return value for for primer3. 
  * After use, free memory with destroy_p3retval().
  */
-typedef struct p3retval {
+typedef struct p3retval {/*primers_t*/
         
   /* Arrays of oligo (primer) records. */
-    /* moved from seq_args */oligo_array fwd, intl, rev;
+    /* moved from seq_args */oligo_array fwd, intl, rev;/* primer_rec *left, intl, right */
         
   /* Array of best primer pairs */
-    /* moved from seq_args */pair_array_t best_pairs;
+    /* moved from seq_args */pair_array_t best_pairs; /**/
 
   /* Enum to store type of output */
   p3_output_type output_type;
@@ -1279,6 +1279,8 @@ void p3_set_gs_min_3_internal_overlap_of_junction(p3_global_settings *p, int min
  */
 p3retval *choose_primers(const p3_global_settings *pa, 
                          seq_args *sa);
+
+p3retval* create_p3retval(void);
 
 /* For testing/debugging: print the values in pa and sa to stdout. */
 void p3_print_args(const p3_global_settings *pa, seq_args *sa) ;
