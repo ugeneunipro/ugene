@@ -33,7 +33,13 @@ namespace GUITest_common_scenarios_MSA_editor_multiline {
 GUI_TEST_CLASS_DECLARATION(general_test_0001)
 GUI_TEST_CLASS_DECLARATION(zoom_to_selection_test_0001)
 GUI_TEST_CLASS_DECLARATION(vscroll_test_0001)
+GUI_TEST_CLASS_DECLARATION(vscroll_test_0002)
+GUI_TEST_CLASS_DECLARATION(vscroll_test_0003)
 GUI_TEST_CLASS_DECLARATION(menu_test_0001)
+GUI_TEST_CLASS_DECLARATION(goto_test_0001)
+GUI_TEST_CLASS_DECLARATION(overview_test_0001)
+GUI_TEST_CLASS_DECLARATION(overview_test_0002)
+GUI_TEST_CLASS_DECLARATION(overview_test_0003)
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline
 

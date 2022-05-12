@@ -82,6 +82,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     //    1.1. Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
@@ -129,6 +130,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
 
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Insert seq from clipboard
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "align.aln");
@@ -273,6 +275,40 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
     img = GTWidget::getImage(os, w);
     CHECK_SET_ERR(img != initImg,
                   "image not changed"); // no way to check dots. Can only check that sequence area changed
+}
+
+GUI_TEST_CLASS_DEFINITION(search_test_0001)
+{
+    // UGENE-7525
+
+    // Open file test/_common_data/clustal/align.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Open search option panel tab
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // Set search string
+    GTUtilsOptionPanelMsa::enterPattern(os, "RHR");
+
+    // Check selection
+    QRect expectedRect(66, 0, 3, 1);
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
+
+    // Check visible bases and selection
+    int firstBaseIdx0 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 0);
+    int lastBaseIdx0 = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, 0);
+    int firstBaseIdx1 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 1);
+    int lastBaseIdx1 = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, 1);
+
+    CHECK_SET_ERR(firstBaseIdx0 == 0 && qAbs(lastBaseIdx0 - firstBaseIdx1) <= 2
+                      && firstBaseIdx1 < 66 && 68 < lastBaseIdx1,
+                  "Selection must be on second multiline");
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_options

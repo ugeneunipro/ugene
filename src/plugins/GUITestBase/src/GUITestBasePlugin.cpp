@@ -2541,11 +2541,18 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::general_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::zoom_to_selection_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::menu_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::goto_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::statistic_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::highlighting_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::search_test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor

@@ -36,6 +36,7 @@ public:
     static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
+    static void checkSelectedRect(GUITestOpStatus& os, int multilineIndex, const QRect& expectedRect);
     static void checkSelectedRect(GUITestOpStatus& os, const QRect& expectedRect);
 
     static void checkConsensus(GUITestOpStatus& os, QString cons);
@@ -67,8 +68,8 @@ public:
     static bool isCollapsed(GUITestOpStatus& os, QString seqName);
     static bool collapsingMode(GUITestOpStatus& os);
 
-    static int getFirstVisibleBaseIndex(GUITestOpStatus& os);
-    static int getLastVisibleBaseIndex(GUITestOpStatus& os);
+    static int getFirstVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex = 0);
+    static int getLastVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex = 0);
 
     /** Returns index of the first visible view row index in the MSA sequence area. */
     static int getFirstVisibleRowIndex(GUITestOpStatus& os, bool countClipped = false);
