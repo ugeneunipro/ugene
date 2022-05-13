@@ -67,6 +67,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -1660,6 +1661,39 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
 
     // Check that there is no removed item in the recent files list and UGENE does not crash.
     GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7454) {
+    // Open data/samples/PDB/1CF7.PDB.
+    // Increase the width of the Project View.
+    // Open any tab in the Options Panel and increase its width.
+    //     Expected: the current Sequence View is narrow.
+    // Find the action toolbar extension for the first sequence in the Sequence View (">>" button). Press ">>"->
+    //         "X Remove sequence".
+    //     Expected: no crash.
+    GTUtilsProject::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QPoint splitterCenter = [&os] {
+        auto projectView = GTWidget::findWidget(os, "project_view");
+        QRect rect = projectView->geometry();
+        return projectView->mapToGlobal({rect.right() + 4, rect.center().y()});
+    }();
+    auto delta = [&os]() -> QPoint {
+        QWidgetList windows = GTMainWindow::getMainWindowsAsWidget(os);
+        CHECK_SET_ERR_RESULT(windows.size() == 2, "Main windows count: expected 2", {})
+        return {int(windows[windows[0]->objectName() == "main_window" ? 0 : 1]->width() * 0.5), 0};
+    }();
+    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove sequence"}));
+    GTWidget::click(os,
+                    GTWidget::findWidget(os,
+                                         "qt_toolbar_ext_button",
+                                         GTWidget::findToolBar(os, "views_tool_bar_1CF7 chain A sequence")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {

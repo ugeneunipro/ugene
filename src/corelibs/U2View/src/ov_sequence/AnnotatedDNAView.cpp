@@ -469,7 +469,8 @@ bool AnnotatedDNAView::onObjectRemoved(GObject* o) {
             emit si_sequenceRemoved(seqCtx);
             seqContexts.removeOne(seqCtx);
             removeAutoAnnotations(seqCtx);
-            delete seqCtx;
+            seqCtx->disconnect();
+            seqCtx->deleteLater();
         }
     }
 
@@ -736,7 +737,8 @@ void AnnotatedDNAView::removeSequenceWidget(ADVSequenceWidget* sequenceWidget) {
     updateMultiViewActions();
     emit si_sequenceWidgetRemoved(sequenceWidget);
     scrolledWidgetLayout->removeWidget(sequenceWidget);
-    delete sequenceWidget;  // v->deleteLater(); //problem: updates for 'v' after seqCtx is destroyed
+    sequenceWidget->disconnect();
+    sequenceWidget->deleteLater();
     updateScrollAreaHeight();
 }
 
