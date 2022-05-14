@@ -42,6 +42,8 @@ namespace U2 {
 #define MSAE_MENU_ADVANCED "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD "MSAE_MENU_LOAD_SEQ"
 
+#define MSAE_MULTILINE_MODE "multiline_mode"
+
 #define MOBJECT_MIN_COLUMN_WIDTH 1
 
 #define MOBJECT_SETTINGS_COLOR_NUCL "color_nucl"

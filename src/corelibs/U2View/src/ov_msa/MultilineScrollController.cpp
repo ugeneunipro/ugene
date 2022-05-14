@@ -484,7 +484,7 @@ void MultilineScrollController::updateHorizontalScrollBarPrivate() {
 
     QSplitter *splitter = qobject_cast<QSplitter *>(hScrollBar->parent());
     if (splitter != nullptr) {
-        if (maEditor->getMultilineMode()) {
+        if (maEditor->getMultilineMode() && ui->getChildrenCount() > 0) {
             const int vScrollBarWidth = vScrollBar->width();
             const int nameListWidth = ui->getUI(ui->getChildrenCount() - 1)->getEditorNameList()->width() + 2;
             splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

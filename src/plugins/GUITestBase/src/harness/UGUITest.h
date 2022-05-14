@@ -29,6 +29,8 @@
 #include <QTimer>
 
 #include <U2Core/global.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/Settings.h>
 
 namespace U2 {
 using namespace HI;
@@ -110,15 +112,53 @@ public:
 #define SUITENAME(className) QString(GUI_TEST_SUITE)
 
 #define GUI_TEST_CLASS_DECLARATION(className) \
-    class className : public UGUITest { \
+    class className : public UGUITest \
+    { \
+        using UGUITest::UGUITest; \
+\
     public: \
-        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList& labelList = QStringList()) \
-            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
-        } \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, \
+                  const QStringList &labelList = QStringList()) \
+            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) \
+        {} \
 \
     protected: \
-        void run(HI::GUITestOpStatus& os) override; \
+        void run(HI::GUITestOpStatus &os) override; \
     };
+
+#define GUI_TEST_CLASS_DECLARATION_MSA_MODE(className, mode) \
+    class className##_MSA_##mode : public className \
+    { \
+        using className::className; \
+\
+    public: \
+        className##_MSA_##mode(int timeout = DEFAULT_GUI_TEST_TIMEOUT, \
+                           const QStringList &labelList = QStringList()) \
+            : className(TESTNAME(className##_MSA_##mode), \
+                        SUITENAME(className##_MSA_##mode), \
+                        timeout, \
+                        labelList.toSet()) \
+        {} \
+\
+    protected: \
+        void run(HI::GUITestOpStatus &os) override \
+        { \
+            Settings *s = AppContext::getSettings(); \
+            if (s != nullptr) { \
+                if (QString(#mode) == "MM") { \
+                    s->setValue(QString("msaeditor/") + "multiline_mode", true); \
+                } else { \
+                    s->setValue(QString("msaeditor/") + "multiline_mode", false); \
+                } \
+            } \
+            className::run(os); \
+        } \
+    };
+
+#define GUI_TEST_CLASS_DECLARATION_MSA(className) \
+    GUI_TEST_CLASS_DECLARATION(className); \
+    GUI_TEST_CLASS_DECLARATION_MSA_MODE(className, SM); \
+    GUI_TEST_CLASS_DECLARATION_MSA_MODE(className, MM); \
 
 #define GUI_TEST_CLASS_DEFINITION(className) \
     void className::run(HI::GUITestOpStatus& os)

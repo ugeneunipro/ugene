@@ -164,7 +164,7 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
 {
     bool oldmode = multilineMode;
     multilineMode = newmode;
-    if (oldmode != newmode) {
+    if (oldmode != newmode && getUI(0) != nullptr) {
         int currentScroll = getUI(0)->getScrollController()->getHorizontalScrollBar()->value();
         if (multilineMode) {
             uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);

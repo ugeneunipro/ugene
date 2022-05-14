@@ -96,8 +96,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
 
     // 2. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Find seq area #1
@@ -106,8 +105,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
 
     // 4. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Find seq area #0, but not #1
@@ -133,8 +131,7 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select seq.
@@ -164,8 +161,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Find seq last area
@@ -203,8 +199,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GScrollBar *vscroll = qobject_cast<GScrollBar *>(
@@ -251,8 +246,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GScrollBar *hscroll = qobject_cast<GScrollBar *>(
@@ -300,8 +294,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Find seq last area
@@ -338,12 +331,6 @@ GUI_TEST_CLASS_DEFINITION(goto_test_0001)
 
     // Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Switch to multiline mode
-    // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check goto

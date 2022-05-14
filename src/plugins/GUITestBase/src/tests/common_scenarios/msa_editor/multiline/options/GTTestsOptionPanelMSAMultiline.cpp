@@ -181,8 +181,7 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
 
     //    5. Switch multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton* mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    6. uncheck showDistancesColumn checkbox
@@ -192,8 +191,7 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
 
     //    7. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    8. uncheck showDistancesColumn checkbox
@@ -203,8 +201,7 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
 
     //    9. Switch multiline mode
     // Press "Multiline View" button on toolbar
-    mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    10. uncheck showDistancesColumn checkbox
@@ -248,8 +245,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
 
     // 5. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
-    GTWidget::click(os, mmode);
+    GTUtilsMsaEditor::setMultilineMode(os, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Remove Phaneroptera_falcata as reference.
@@ -304,11 +300,11 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001)
     int firstBaseIdx0 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 0);
     int lastBaseIdx0 = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, 0);
     int firstBaseIdx1 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 1);
-    int lastBaseIdx1 = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, 1);
+    int lastBaseIdxN = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os,
+                            GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount() - 1);
 
-    CHECK_SET_ERR(firstBaseIdx0 == 0 && qAbs(lastBaseIdx0 - firstBaseIdx1) <= 2
-                      && firstBaseIdx1 < 66 && 68 < lastBaseIdx1,
-                  "Selection must be on second multiline");
+    CHECK_SET_ERR(firstBaseIdx0 < 66 && 68 < lastBaseIdxN,
+                  "Selection must be between fist and last bases");
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_options

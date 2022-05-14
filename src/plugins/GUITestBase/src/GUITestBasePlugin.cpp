@@ -121,9 +121,24 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
     return resultLabelList;
 }
 
+/** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
+static QStringList nightly_msa_mm(QString mode, const QStringList& labelList = QStringList()) {
+    QStringList resultLabelList = labelList;
+    resultLabelList << "MSA_" + mode << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
+    return resultLabelList;
+}
+
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
+
+/** Registers a GUI test included into nightly build with a default timeout. */
+#define REGISTER_TEST_MSA_MODE(TestClass, mode) \
+    guiTestBase->registerTest( \
+        new TestClass##_MSA_##mode(DEFAULT_GUI_TEST_TIMEOUT, nightly_msa_mm(#mode)));
+#define REGISTER_TEST_MSA(TestClass) \
+    REGISTER_TEST_MSA_MODE(TestClass, SM); \
+    REGISTER_TEST_MSA_MODE(TestClass, MM)
 
 /** Registers a GUI test included into nightly build with a custom timeout. */
 #define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \
@@ -2175,11 +2190,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_4);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002_1);
@@ -2355,7 +2370,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0082);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0083);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0090);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0090);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0091);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0092);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_1);
@@ -2544,7 +2559,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::menu_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::goto_test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_MSA_editor_multiline::goto_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0003);

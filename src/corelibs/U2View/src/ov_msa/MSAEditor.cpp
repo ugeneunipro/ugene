@@ -491,6 +491,10 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
 QWidget *MSAEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
 
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != nullptr, "AppContext settings is NULL", nullptr);
+    multilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
+
     ui = new MsaEditorMultilineWgt(this, multilineMode);
     new MoveToObjectMaController(this, ui);
 
@@ -1001,6 +1005,11 @@ void MSAEditor::sl_multilineViewAction() {
         updateActions();
         buildStaticToolbar(staticToolBar);
         fillMenu(staticMenu, staticMenuType);
+
+        Settings *s = AppContext::getSettings();
+        if (s != nullptr) {
+            s->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
+        }
     }
 }
 
