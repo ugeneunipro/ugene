@@ -140,7 +140,8 @@ void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<in
 QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps() const {
     QList<QVector<U2MsaGap>> gapModel = getGapModel();
     gapModel.prepend(getReferenceGapModel());
-    return MSAUtils::getColumnsWithGaps(gapModel, getRows(), getLength());
+    //requiredGapsCount = rows + 1 (reference)
+    return MSAUtils::getColumnsWithGaps(gapModel, getRows(), getLength(), getRows().size() + 1);
 }
 
 QVector<U2MsaGap> MultipleChromatogramAlignmentObject::getReferenceGapModel() const {
