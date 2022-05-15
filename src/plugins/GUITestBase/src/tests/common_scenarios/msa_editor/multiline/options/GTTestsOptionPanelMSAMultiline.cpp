@@ -297,13 +297,11 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001)
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
     // Check visible bases and selection
-    int firstBaseIdx0 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 0);
-    int lastBaseIdx0 = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, 0);
-    int firstBaseIdx1 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 1);
-    int lastBaseIdxN = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os,
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 0);
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os,
                             GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount() - 1);
 
-    CHECK_SET_ERR(firstBaseIdx0 < 66 && 68 < lastBaseIdxN,
+    CHECK_SET_ERR(firstBaseIdx < 66 && 68 < lastBaseIdx,
                   "Selection must be between fist and last bases");
 }
 
