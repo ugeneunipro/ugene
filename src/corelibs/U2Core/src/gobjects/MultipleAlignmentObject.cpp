@@ -739,10 +739,9 @@ void MultipleAlignmentObject::releaseState() {
 
 bool MultipleAlignmentObject::hasNonTrailingGap() const {
     const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
-    for (int i = 0; i < getRowCount(); i++) {
-        if (!listGapModel[i].isEmpty()) {
-            return true;
-        }
+    if (std::any_of(listGapModel.constBegin(), listGapModel.constEnd(), 
+                    [](const QVector<U2MsaGap>& data) { return !data.isEmpty(); })) {
+        return true;
     }
     return false;
 }
