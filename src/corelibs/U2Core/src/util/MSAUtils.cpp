@@ -532,8 +532,9 @@ QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maG
     QList<U2Region> regionsToDelete;
     for (int columnNumber = 0; columnNumber < alignmentLength; columnNumber++) {
         int gapCount = 0;
-        for (int j = 0; j < rowsCount; j++) {
-            if (MsaRowUtils::isGap(rows[j]->getUngappedLength(), maGapModel[j], columnNumber)) {
+        for (int j = 0; j < maGapModel.size(); j++) {
+            int ungappedLength = (j == rows.size()) ? alignmentLength : rows[j]->getUngappedLength();
+            if (MsaRowUtils::isGap(ungappedLength, maGapModel[j], columnNumber)) {
                 gapCount++;
             }
             if (gapCount == requiredGapsCount) {
