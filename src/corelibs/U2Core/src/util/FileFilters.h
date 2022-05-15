@@ -40,6 +40,13 @@ public:
     /** Returns "All files" filter line. */
     static QString createAllFilesFilter();
 
+    /**
+     * Builds QT File Dialog compatible file filter string from the given list of filters
+     * and adds 'All Files (*.*)' option with the correct order.
+     * It is recommended to use this method instead of adding 'All Files' filter manually.
+     */
+    static QString withAllFileFilter(const QStringList& filters);
+
     /** Creates a single filter. No 'All files' included. */
     static QString createSingleFileFilter(const QString& name, const QStringList& extensions, bool addGzipVariant);
 

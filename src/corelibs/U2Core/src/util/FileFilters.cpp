@@ -64,8 +64,15 @@ QString FileFilters::createSingleFileFilterByDocumentFormatId(const QString& doc
     return createSingleFileFilter(documentFormat);
 }
 
+QString FileFilters::withAllFileFilter(const QStringList& filters) {
+    QStringList resultFilters = filters;
+    resultFilters.sort();
+    resultFilters.prepend(createAllFilesFilter());
+    return resultFilters.join(FILTER_SEPARATOR);
+}
+
 QString FileFilters::createFileFilter(const QString& name, const QStringList& extensions, bool useGzipVariant) {
-    return createSingleFileFilter(name, extensions, useGzipVariant) + FILTER_SEPARATOR + createAllFilesFilter();
+    return withAllFileFilter({createSingleFileFilter(name, extensions, useGzipVariant)});
 }
 
 QString FileFilters::createFileFilter(const QMap<QString, QStringList>& formatExtensionsByName, bool addGzipVariant) {
@@ -75,18 +82,17 @@ QString FileFilters::createFileFilter(const QMap<QString, QStringList>& formatEx
         filters << createSingleFileFilter(name, formatExtensionsByName[name], addGzipVariant);
     }
 
-    filters << createAllFilesFilter();
-    return filters.join(FILTER_SEPARATOR);
+    return withAllFileFilter(filters);
 }
 
 QString FileFilters::createFileFilter(const QString& name, const QStringList& extensions) {
-    return createSingleFileFilter(name, extensions, false) + FILTER_SEPARATOR + createAllFilesFilter();
+    return withAllFileFilter({createSingleFileFilter(name, extensions, false)});
 }
 
 QString FileFilters::createFileFilterByDocumentFormatId(const DocumentFormatId& documentFormatId) {
     DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(documentFormat != nullptr, "Document format not found: " + documentFormatId, createAllFilesFilter());
-    return createSingleFileFilter(documentFormat) + FILTER_SEPARATOR + createAllFilesFilter();
+    return withAllFileFilter({createSingleFileFilter(documentFormat)});
 }
 
 QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QStringList>& extraFormats) {
@@ -106,9 +112,7 @@ QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QSt
     for (const QString& name : qAsConst(extraFormatFilterNames)) {
         filters << createSingleFileFilter(name, extraFormats.value(name), false);
     }
-    filters.sort();
-    filters.prepend(createAllFilesFilter());
-    return filters.join(FILTER_SEPARATOR);
+    return withAllFileFilter(filters);
 }
 
 QString FileFilters::createFileFilter(const DocumentFormatConstraints& constraints) {
@@ -121,9 +125,7 @@ QString FileFilters::createFileFilter(const DocumentFormatConstraints& constrain
             filters << createSingleFileFilter(documentFormat);
         }
     }
-    filters.sort();
-    filters.prepend(createAllFilesFilter());
-    return filters.join(FILTER_SEPARATOR);
+    return withAllFileFilter(filters);
 }
 
 QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats) {
