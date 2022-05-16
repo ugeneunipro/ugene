@@ -43,6 +43,7 @@ private slots:
     void sl_testFinished();
     void sl_filterChanged(const QString& nameFilter);
     void sl_filterCleared();
+    void sl_listToStdout();
 
 private:
     void revisible(const QString& nameFilter);

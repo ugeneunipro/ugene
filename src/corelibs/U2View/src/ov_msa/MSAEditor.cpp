@@ -493,12 +493,17 @@ QWidget *MSAEditor::createWidget() {
 
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext settings is NULL", nullptr);
-    multilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
+    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
 
+    // Use false for multilineMode while creating widget
+    multilineMode = false;
     ui = new MsaEditorMultilineWgt(this, multilineMode);
     new MoveToObjectMaController(this, ui);
 
-    multilineViewAction->setChecked(multilineMode);
+    // Now restore multiline mode from settings
+    setMultilineMode(sMultilineMode);
+    multilineViewAction->setChecked(sMultilineMode);
+
     initActions(); // one time exec
     initChildrenActionsAndSignals();
     updateActions();

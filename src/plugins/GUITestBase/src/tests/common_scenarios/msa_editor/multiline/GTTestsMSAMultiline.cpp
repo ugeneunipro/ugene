@@ -103,9 +103,9 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
     auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
     CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #1"));
 
-    // 4. Switch to multiline mode
+    // 4. Switch to singleline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(os, false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Find seq area #0, but not #1

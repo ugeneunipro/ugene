@@ -25,6 +25,7 @@
 #include <harness/UGUITestBase.h>
 
 #include <QMessageBox>
+#include <QTextStream>
 #include <QTreeView>
 #include <QTreeWidgetItem>
 
@@ -74,6 +75,8 @@ GUITestRunner::GUITestRunner(UGUITestBase* guiTestBase, QWidget* parent)
 
     connect(startAllButton, SIGNAL(clicked(bool)), this, SLOT(sl_runAllGUITests()));
 
+    connect(listToStdout, SIGNAL(clicked(bool)), this, SLOT(sl_listToStdout()));
+
     show();
     filter->setFocus();
 
@@ -98,12 +101,31 @@ void GUITestRunner::sl_runSelected() {
         }
     }
 }
+
 void GUITestRunner::sl_runAllGUITests() {
     GUITestService::setEnvVariablesForGuiTesting();
     if (GUITestService::getGuiTestService()->isEnabled()) {
         hide();
         GUITestService::getGuiTestService()->runAllGUITests();
         show();
+    }
+}
+
+void GUITestRunner::sl_listToStdout()
+{
+    QList<QTreeWidgetItem *> selectedItems = tree->selectedItems();
+    QTreeWidgetItemIterator it(tree);
+    QTextStream out(stdout);
+    while (*it) {
+        auto parent = (*it)->parent();
+        if (parent != nullptr) {
+            QString suite = parent->text(0);
+            QString name = (*it)->text(0);
+            if (suite.toLower().contains("msa") || name.toLower().contains("msa")) {
+                out << suite << ":" << name << endl;
+            }
+        }
+        ++it;
     }
 }
 

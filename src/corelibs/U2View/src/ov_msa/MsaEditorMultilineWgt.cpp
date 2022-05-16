@@ -52,9 +52,9 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
 
     this->setObjectName("msa_editor_vertical_childs_layout_" +
                         editor->getMaObject()->getGObjectName());
-    this->setMultilineMode(multiline);
 
     createChildren();
+    this->setMultilineMode(multiline);
 
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
         this->updateSize();

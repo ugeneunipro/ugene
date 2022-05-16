@@ -2395,33 +2395,33 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0009);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0010);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0011);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0012);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0013);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0015);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_1);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_2);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_3);
-    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0017);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0010);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0011);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0012);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0013);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0014);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0015);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0016_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0016_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0016_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_align_sequences_to_msa::test_0017);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors
     /////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/consensus
