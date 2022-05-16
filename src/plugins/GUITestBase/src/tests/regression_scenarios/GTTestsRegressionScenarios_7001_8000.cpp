@@ -28,6 +28,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
+#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -67,7 +68,6 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -1679,15 +1679,8 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
         QRect rect = projectView->geometry();
         return projectView->mapToGlobal({rect.right() + 4, rect.center().y()});
     }();
-    auto delta = [&os]() -> QPoint {
-        QWidgetList windows = GTMainWindow::getMainWindowsAsWidget(os);
-        CHECK_SET_ERR_RESULT(windows.size() == 2, "Main windows count: expected 2", {})
-        return {int(windows[windows[0]->objectName() == "main_window" ? 0 : 1]->width() * 0.5), 0};
-    }();
+    QPoint delta(GTMainWindow::getMainWindowWidgetByName(os, "main_window")->width() * 0.6, 0);
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
-
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    GTUtilsOptionsPanel::resizeToMaximum(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove sequence"}));
     GTWidget::click(os,
