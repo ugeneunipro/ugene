@@ -1666,7 +1666,6 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
 GUI_TEST_CLASS_DEFINITION(test_7454) {
     // Open data/samples/PDB/1CF7.PDB.
     // Increase the width of the Project View.
-    // Open any tab in the Options Panel and increase its width.
     //     Expected: the current Sequence View is narrow.
     // Find the action toolbar extension for the first sequence in the Sequence View (">>" button). Press ">>"->
     //         "X Remove sequence".
