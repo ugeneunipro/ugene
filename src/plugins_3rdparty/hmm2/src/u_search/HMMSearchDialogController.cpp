@@ -71,7 +71,7 @@ void HMMSearchDialogController::init(const U2SequenceObject* seqObj) {
 
     CreateAnnotationModel cm;
     cm.hideLocation = true;
-    cm.sequenceObjectRef = seqObj;
+    cm.sequenceObjectRef = seqObj->getReference();
     cm.useAminoAnnotationTypes = seqObj->getAlphabet()->isAmino();
     cm.data->type = U2FeatureTypes::MiscSignal;
     cm.data->name = "hmm_signal";
@@ -253,7 +253,7 @@ QList<Task*> HMMSearchToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         QList<SharedAnnotationData> annotations = searchTask->getResultsAsAnnotations(aType, aname);
         U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
         if (!annotations.isEmpty()) {
-            createAnnotationsTask = new CreateAnnotationsTask(aobj, annotations, agroup);
+            createAnnotationsTask = new CreateAnnotationsTask(aobj, {{agroup, annotations}});
             createAnnotationsTask->setSubtaskProgressWeight(0);
             res.append(createAnnotationsTask);
         }

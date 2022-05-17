@@ -98,7 +98,6 @@ private slots:
     void sl_onAddExistingDocument();
 
     void sl_downloadRemoteFile();
-    void sl_accessSharedDatabase();
     void sl_searchGenbankEntry();
 
 private:
@@ -107,7 +106,6 @@ private:
     QAction* openProjectAction;
     QAction* pasteAction;
     QAction* downloadRemoteFileAction;
-    QAction* accessSharedDatabaseAction;
     QAction* searchGenbankEntryAction;
     QAction* newDocumentFromTextAction;
 

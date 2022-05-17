@@ -347,8 +347,9 @@ bool Document::removeObject(GObject* obj, DocumentObjectRemovalMode removalMode)
             break;
         case DocumentObjectRemovalMode_Release:
             return _removeObject(obj, false);
+        case DocumentObjectRemovalMode_Detach:
+            break;  // Do nothing.
     }
-
     return true;
 }
 
@@ -729,10 +730,6 @@ bool Document::unload(bool deleteObjects) {
 
 const U2DbiRef& Document::getDbiRef() const {
     return dbiRef;
-}
-
-bool Document::isDatabaseConnection() const {
-    return BaseDocumentFormats::DATABASE_CONNECTION == df->getFormatId();
 }
 
 void Document::setModified(bool modified, const QString& modType) {

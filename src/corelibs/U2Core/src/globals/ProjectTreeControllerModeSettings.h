@@ -73,7 +73,6 @@ public:
           loadTaskProvider(nullptr),
           groupMode(ProjectTreeGroupMode_ByDocument),
           allowSelectUnloaded(false),
-          ignoreRemoteObjects(false),
           objectFilter(nullptr),
           documentFilter(nullptr),
           markActive(false) {
@@ -89,7 +88,6 @@ public:
     LoadDocumentTaskProvider* loadTaskProvider;  // use custom LoadDocumentTask factory instead of default
     ProjectTreeGroupMode groupMode;  // group mode for objects
     bool allowSelectUnloaded;  // ability to select unloaded objects
-    bool ignoreRemoteObjects;  // do not load from remote database
 
     // Note that objectFilter and documentFilter are called only on object add/remove ops!
     // WARN: object and document filters live-range is controlled by the side created these objects

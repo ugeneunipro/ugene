@@ -37,27 +37,15 @@ public:
     ExportPrimersDialog(const QList<Primer>& primers, QWidget* parent);
 
 private slots:
-    void sl_updateState();
-    void sl_connect();
-    void sl_connectionCompleted();
-    void sl_documentAdded(Document* document);
-    void sl_documentRemoved(Document* document);
-    void sl_folderBrowse();
     void accept();
 
 private:
     void init();
-    void initDatabases();
     void initSaveController();
     void connectSignals();
     void connectProjectSignals();
-    bool isFileMode() const;
-
     QList<Primer> primers;
     SaveDocumentController* saveController;
-
-    static const QString LOCAL_FILE;
-    static const QString SHARED_DB;
 };
 
 }  // namespace U2

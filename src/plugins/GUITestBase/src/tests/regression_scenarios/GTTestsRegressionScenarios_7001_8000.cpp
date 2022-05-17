@@ -2578,5 +2578,42 @@ GUI_TEST_CLASS_DEFINITION(test_7584) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7607) {
+    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class BuildTreeWithMrBayesScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "MrBayes");
+            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_7607.nwk", dialog);  // Set output file name.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new BuildTreeWithMrBayesScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString expectedTree = GTFile::readAll(os, testDir + "_common_data/regression/7607/test_7607_expected.nwk");
+    QString actualTree = GTFile::readAll(os, sandBoxDir + "test_7607.nwk");
+    CHECK_SET_ERR(actualTree == expectedTree, "Actual tree does not match the expected tree");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7609) {
+    // Open _common_data/clustal/non_unique_row_names.aln.
+    // Open and close the "Tree Settings" tab of the Options Panel.
+    // Select the first sequence in the alignment.
+    // Press Delete 2 times.
+    // No crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/non_unique_row_names.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

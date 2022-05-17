@@ -232,7 +232,7 @@ void PWMSearchDialogController::sl_onSaveAnnotations() {
     }
 
     CreateAnnotationModel m;
-    m.sequenceObjectRef = ctx->getSequenceObject();
+    m.sequenceObjectRef = ctx->getSequenceObject()->getReference();
     m.hideLocation = true;
     m.useAminoAnnotationTypes = ctx->getAlphabet()->isAmino();
     m.sequenceLen = ctx->getSequenceObject()->getSequenceLength();
@@ -253,7 +253,7 @@ void PWMSearchDialogController::sl_onSaveAnnotations() {
         list.append(data);
     }
 
-    CreateAnnotationsTask* t = new CreateAnnotationsTask(m.getAnnotationObject(), list, m.groupName);
+    auto t = new CreateAnnotationsTask(m.getAnnotationObject(), {{m.groupName, list}});
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

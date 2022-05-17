@@ -131,9 +131,6 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus& ts, Project* project, const Q
 
     // save documents
     foreach (Document* gbDoc, project->getDocuments()) {
-        if (ProjectUtils::isDatabaseDoc(gbDoc)) {
-            continue;
-        }
         gbDoc->getDocumentFormat()->updateFormatSettings(gbDoc);
 
         QString docUrl = gbDoc->getURLString();
@@ -292,17 +289,6 @@ ProjectParserRegistry* ProjectParserRegistry::instance() {
 
 //////////////////////////////////////////////////////////////////////////
 // Parser for v1.0 format
-
-namespace {
-GUrl getUrl(const QString& docUrl, const DocumentFormatId& format) {
-    if (BaseDocumentFormats::DATABASE_CONNECTION == format) {
-        return GUrl(docUrl, GUrl_Network);
-    } else {
-        return docUrl;
-    }
-}
-}  // namespace
-
 Project* ProjectParser10::createProjectFromXMLModel(const QString& pURL, const QDomDocument& xmlDoc, U2OpStatus& os) {
     GCOUNTER(cvar, "ProjectParser10: createProjectFromXMLModel");
 
@@ -358,11 +344,6 @@ Project* ProjectParser10::createProjectFromXMLModel(const QString& pURL, const Q
 
         DocumentFormatId format = docElement.attribute("format");
         projectContainsInvalidFormats |= BaseDocumentFormats::isInvalidId(format);
-        if (BaseDocumentFormats::equal(BaseDocumentFormats::DATABASE_CONNECTION, format)) {
-            ioLog.info(tr("Database document: %1, ignoring").arg(docUrl));
-            continue;
-        }
-
         docUrls.insert(docUrl);
 
         bool readonly = docElement.attribute("readonly").toInt() != 0;
@@ -406,7 +387,9 @@ Project* ProjectParser10::createProjectFromXMLModel(const QString& pURL, const Q
             }
         }
         QString lockReason = instanceLock ? tr("The last loaded state was locked by format") : QString();
-        Document* d = df->createNewUnloadedDocument(iof, getUrl(docUrl, format), os, fs, unloadedObjects, lockReason);
+        GUrl result;
+        result = docUrl;
+        Document* d = df->createNewUnloadedDocument(iof, result, os, fs, unloadedObjects, lockReason);
         CHECK_OP_EXT(os, qDeleteAll(documents), nullptr);
         d->setUserModLock(readonly);
         documents.append(d);

@@ -104,7 +104,7 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         annotations << ad;
     }
     U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
-    res << new CreateAnnotationsTask(aobj, annotations, group);
+    res << new CreateAnnotationsTask(aobj, {{group, annotations}});
     return res;
 }
 

@@ -32,7 +32,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectUtils.h>
-#include <U2Gui/SharedConnectionsDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "ImportPrimerFromObjectTask.h"
@@ -42,59 +41,36 @@
 
 namespace U2 {
 
-const QString ImportPrimersDialog::LOCAL_FILES = QObject::tr("Local file(s)");
-const QString ImportPrimersDialog::SHARED_DB = QObject::tr("Shared database");
-
 ImportPrimersDialog::ImportPrimersDialog(QWidget* parent)
-    : QDialog(parent),
-      waitForConnection(false) {
+    : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930783");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    init();
     connectSignals();
     sl_updateState();
 }
 
 void ImportPrimersDialog::sl_updateState() {
-    const bool isLocalFilesMode = (LOCAL_FILES == cbSource->currentText());
-
-    pbConnect->setVisible(!isLocalFilesMode);
-    filesContainer->setVisible(isLocalFilesMode);
-    objectsContainer->setVisible(!isLocalFilesMode);
-
     sl_selectionChanged();
     sl_contentChanged();
-}
-
-void ImportPrimersDialog::sl_connectClicked() {
-    QObjectScopedPointer<SharedConnectionsDialog> connectionDialog = new SharedConnectionsDialog(this);
-    connectionDialog->exec();
 }
 
 void ImportPrimersDialog::sl_addFileClicked() {
     LastUsedDirHelper dirHelper("ImportPrimersDialog");
     const QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
-    QFileDialog::Options additionalOptions;
-    Q_UNUSED(additionalOptions);
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        additionalOptions = QFileDialog::DontUseNativeDialog;
-    }
-#endif
-    const QStringList fileList = U2FileDialog::getOpenFileNames(this,
-                                                                tr("Select primers to import"),
-                                                                dirHelper.dir,
-                                                                filter,
-                                                                nullptr,
-                                                                QFileDialog::DontConfirmOverwrite | QFileDialog::ReadOnly | additionalOptions);
+    QStringList fileList = U2FileDialog::getOpenFileNames(this,
+                                                          tr("Select primers to import"),
+                                                          dirHelper.dir,
+                                                          filter,
+                                                          nullptr,
+                                                          QFileDialog::DontConfirmOverwrite | QFileDialog::ReadOnly);
     CHECK(!fileList.isEmpty(), );
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
 
-    foreach (const QString& filePath, fileList) {
-        QListWidgetItem* item = new QListWidgetItem(QIcon(":/core/images/document.png"), filePath);
+    for (const QString& filePath : qAsConst(fileList)) {
+        auto item = new QListWidgetItem(QIcon(":/core/images/document.png"), filePath);
         item2file.insert(item, filePath);
         lwFiles->addItem(item);
     }
@@ -108,15 +84,6 @@ void ImportPrimersDialog::sl_removeFileClicked() {
 }
 
 void ImportPrimersDialog::sl_addObjectClicked() {
-    CHECK(!waitForConnection, );
-    if (!ProjectUtils::areSharedDatabasesAvailable()) {
-        waitForConnection = true;
-        QPointer<SharedConnectionsDialog> connectDialog = new SharedConnectionsDialog(this);
-        connect(connectDialog.data(), SIGNAL(si_connectionCompleted()), SLOT(sl_connectionComplete()));
-        connectDialog->exec();
-        return;
-    }
-
     ProjectTreeControllerModeSettings settings = prepareProjectItemsSelectionSettings();
     QList<Folder> folders;
     QList<GObject*> objects;
@@ -143,46 +110,19 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
     }
 }
 
-void ImportPrimersDialog::sl_connectionComplete() {
-    SharedConnectionsDialog* connectionDialog = qobject_cast<SharedConnectionsDialog*>(sender());
-    if (Q_LIKELY(nullptr != connectionDialog)) {
-        connectionDialog->deleteLater();
-    } else {
-        coreLog.error("ImportPrimersDialog::sl_connectionComplete(): an unexpected slot caller");
-    }
-    waitForConnection = false;
-    sl_addObjectClicked();
-}
-
 void ImportPrimersDialog::sl_selectionChanged() {
-    const bool isLocalFilesMode = (LOCAL_FILES == cbSource->currentText());
-    QListWidget* listWidget = isLocalFilesMode ? lwFiles : lwObjects;
-    QPushButton* removeButton = isLocalFilesMode ? pbRemoveFile : pbRemoveObject;
-    removeButton->setEnabled(!listWidget->selectedItems().isEmpty());
+    pbRemoveFile->setEnabled(!lwFiles->selectedItems().isEmpty());
 }
 
 void ImportPrimersDialog::sl_contentChanged() {
-    const bool isLocalFilesMode = (LOCAL_FILES == cbSource->currentText());
-    QListWidget* listWidget = isLocalFilesMode ? lwFiles : lwObjects;
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(listWidget->count() > 0);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(lwFiles->count() > 0);
 }
 
 void ImportPrimersDialog::accept() {
     QList<Task*> tasks;
-    if (LOCAL_FILES == cbSource->currentText()) {
-        foreach (const QString& filePath, item2file) {
-            tasks << new ImportPrimersFromFileTask(filePath);
-        }
-    } else {
-        foreach (const Folder& folder, item2folder) {
-            tasks << new ImportPrimersFromFolderTask(folder);
-        }
-
-        foreach (GObject* object, item2object) {
-            tasks << new ImportPrimerFromObjectTask(object);
-        }
+    foreach (const QString& filePath, item2file) {
+        tasks << new ImportPrimersFromFileTask(filePath);
     }
-
     if (!tasks.isEmpty()) {
         AppContext::getTaskScheduler()->registerTopLevelTask(new ImportPrimersMultiTask(tasks));
     }
@@ -190,14 +130,7 @@ void ImportPrimersDialog::accept() {
     QDialog::accept();
 }
 
-void ImportPrimersDialog::init() {
-    cbSource->addItem(LOCAL_FILES);
-    cbSource->addItem(SHARED_DB);
-}
-
 void ImportPrimersDialog::connectSignals() {
-    connect(cbSource, SIGNAL(currentIndexChanged(QString)), SLOT(sl_updateState()));
-    connect(pbConnect, SIGNAL(clicked()), SLOT(sl_connectClicked()));
     connect(pbAddFile, SIGNAL(clicked()), SLOT(sl_addFileClicked()));
     connect(pbRemoveFile, SIGNAL(clicked()), SLOT(sl_removeFileClicked()));
     connect(pbAddObject, SIGNAL(clicked()), SLOT(sl_addObjectClicked()));
@@ -213,11 +146,6 @@ void ImportPrimersDialog::connectSignals() {
 ProjectTreeControllerModeSettings ImportPrimersDialog::prepareProjectItemsSelectionSettings() const {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
-    foreach (Document* document, AppContext::getProject()->getDocuments()) {
-        if (!document->isDatabaseConnection()) {
-            settings.excludeDocList << document;
-        }
-    }
     return settings;
 }
 

@@ -487,8 +487,6 @@ public:
         documentOwnsDbiResources = value;
     }
 
-    virtual bool isDatabaseConnection() const;
-
     static void setupToEngine(QScriptEngine* engine);
 
     Document* getSimpleCopy(DocumentFormat* df, IOAdapterFactory* io, const GUrl& url) const;

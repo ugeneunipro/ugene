@@ -50,7 +50,7 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointe
     CreateAnnotationModel m;
     m.hideLocation = true;
     m.data->name = QString("graph_cutoffs");
-    m.sequenceObjectRef = ctx->getSequenceObject();
+    m.sequenceObjectRef = ctx->getSequenceObject()->getReference();
     m.useUnloadedObjects = false;
     m.useAminoAnnotationTypes = ctx->getAlphabet()->isAmino();
     m.sequenceLen = ctx->getSequenceObject()->getSequenceLength();
@@ -143,7 +143,7 @@ void SaveGraphCutoffsDialogController::accept() {
     auto annotationObject = annotationModel.getAnnotationObject();
     tryAddObject(annotationObject);
 
-    auto task = new CreateAnnotationsTask(annotationObject, data, annotationModel.groupName);
+    auto task = new CreateAnnotationsTask(annotationObject, {{annotationModel.groupName, data}});
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     QDialog::accept();
 }

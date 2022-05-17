@@ -41,15 +41,6 @@ workflow "New workflow"{
             extract-msa-consensus-string.threshold {
                 alias:threshold;
             }
-            write-text.data-storage {
-                alias:storage;
-            }
-            write-text.database {
-                alias:db;
-            }
-            write-text.db-path {
-                alias:out_path;
-            }
             write-text.url-out {
                 alias:out;
             }

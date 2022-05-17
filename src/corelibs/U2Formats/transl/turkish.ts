@@ -74,7 +74,6 @@
         <translation>Verilen url ile dosya açılamıyor: %1.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="484"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Geçersiz veritabanı kullanıcı izinleri ayarlandı, bu nedenle UGENE bu veritabanını kullanamaz. Sorunu gidermek için sistem yöneticinize bağlanın.</translation>
     </message>
@@ -89,7 +88,6 @@
         <translation>Veri yazılamıyor. Veritabanı kapatıldı veya veriler değiştirildi.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="786"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Beklenmeyen sayıda değiştirilmiş nesne. Beklenen: 1, gerçek: %1</translation>
     </message>
@@ -896,29 +894,6 @@
         <location filename="../src/PDWFormat.cpp" line="153"/>
         <source>Document is empty.</source>
         <translation>Belge boş.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DocumentFormat</name>
-    <message>
-        <location filename="../src/DatabaseConnectionFormat.cpp" line="42"/>
-        <source>Database connection</source>
-        <translation>Veritabanı bağlantısı</translation>
-    </message>
-    <message>
-        <location filename="../src/DatabaseConnectionFormat.cpp" line="43"/>
-        <source>A fake format that was added to implement shared database connection within existing document model.</source>
-        <translation>Mevcut belge modelinde paylaşılan veritabanı bağlantısını uygulamak için eklenen sahte bir biçim.</translation>
-    </message>
-    <message>
-        <location filename="../src/DatabaseConnectionFormat.cpp" line="77"/>
-        <source>You have no permissions to modify the content of this database</source>
-        <translation>Bu veritabanının içeriğini değiştirme izniniz yok</translation>
-    </message>
-    <message>
-        <location filename="../src/DatabaseConnectionFormat.cpp" line="96"/>
-        <source>Empty object name</source>
-        <translation>Boş nesne adı</translation>
     </message>
 </context>
 <context>
@@ -1944,14 +1919,6 @@
     </message>
 </context>
 <context>
-    <name>U2::MysqlUpgradeTask</name>
-    <message>
-        <location filename="../src/tasks/MysqlUpgradeTask.cpp" line="33"/>
-        <source>Upgrade mysql database</source>
-        <translation>Mysql veritabanını yükseltme</translation>
-    </message>
-</context>
-<context>
     <name>U2::NEXUSFormat</name>
     <message>
         <location filename="../src/NEXUSFormat.cpp" line="53"/>
@@ -2413,373 +2380,14 @@
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
-        <location filename="../src/mysql_dbi/MysqlAssemblyDbi.cpp" line="89"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="81"/>
         <source>There is no assembly object with the specified id.</source>
         <translation>Belirtilen kimliğe sahip bir derleme nesnesi yok.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="224"/>
         <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
         <source>Unsupported attribute type: %1</source>
         <translation>Desteklenmeyen öznitelik türü: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="357"/>
-        <source>Required attribute is not found</source>
-        <translation>Gerekli öznitelik bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="272"/>
-        <source>Database url is incorrect</source>
-        <translation>Veritabanı url&apos;si yanlış</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="278"/>
-        <source>User login is not specified</source>
-        <translation>Kullanıcı girişi belirtilmedi</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="284"/>
-        <source>Host is not specified</source>
-        <translation>Ana bilgisayar belirtilmedi</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="290"/>
-        <source>Database name is not specified</source>
-        <translation>Veritabanı adı belirtilmedi</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="306"/>
-        <source>Error opening MySQL database: %1</source>
-        <translation>MySQL veritabanı açılırken hata oluştu: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="387"/>
-        <source>Not a %1 MySQL database: %2, %3</source>
-        <translation>%1 MySQL veritabanı değil: %2, %3</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="395"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
-        <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
-        <translation>Uyarı! Veritabanı daha yeni bir %1 sürümüyle oluşturuldu: %2. Tüm veritabanı özellikleri desteklenmeyebilir! Mevcut %1 sürümü: %3.</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="500"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
-        <source>Illegal database state: %1</source>
-        <translation>Yasadışı veritabanı durumu: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="530"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
-        <source>Can&apos;t synchronize database state</source>
-        <translation>Veritabanı durumu senkronize edilemiyor</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="155"/>
-        <source>Annotation table object is not found.</source>
-        <translation>Ek açıklama tablosu nesnesi bulunamadı.</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="186"/>
-        <source>Feature is not found.</source>
-        <translation>Özellik bulunamadı.</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="145"/>
-        <source>An object single modification step not found</source>
-        <translation>Bir nesne tek değişiklik adımı bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="181"/>
-        <source>Failed to find user step ID</source>
-        <translation>Kullanıcı adımı kimliği bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="389"/>
-        <source>Not main thread</source>
-        <translation>Ana konu değil</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="401"/>
-        <source>Can&apos;t create a common user modifications step, previous one is not complete</source>
-        <translation>Ortak bir kullanıcı değişiklikleri adımı oluşturulamıyor, önceki adım tamamlanmadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="464"/>
-        <source>Can&apos;t create a common multiple modifications step, previous one is not complete</source>
-        <translation>Ortak bir çoklu değişiklik adımı oluşturulamıyor, önceki adım tamamlanmadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="500"/>
-        <source>Failed to create a common user modifications step</source>
-        <translation>Ortak bir kullanıcı değişiklikleri adımı oluşturulamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="521"/>
-        <source>Failed to create a common multiple modifications step</source>
-        <translation>Ortak bir çoklu değişiklik adımı oluşturulamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="111"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="127"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="226"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="648"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
-        <source>Msa object not found</source>
-        <translation>Msa nesnesi bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="187"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="824"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="864"/>
-        <source>Msa row not found</source>
-        <translation>Msa satırı bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="609"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="634"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1141"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1150"/>
-        <source>Unexpected modification type &apos;%1&apos;</source>
-        <translation>Beklenmeyen değişiklik türü &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="699"/>
-        <source>Invalid row position: %1</source>
-        <translation>Geçersiz satır konumu: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1071"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1202"/>
-        <source>An error occurred during updating an alignment alphabet</source>
-        <translation>Bir hizalama alfabesi güncellenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1089"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1217"/>
-        <source>An error occurred during reverting adding of rows</source>
-        <translation>Satır ekleme geri alınırken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1107"/>
-        <source>An error occurred during reverting addition of a row</source>
-        <translation>Bir satırın eklenmesi geri alınırken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1120"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1237"/>
-        <source>An error occurred during reverting removing of rows</source>
-        <translation>Satırların kaldırılması geri alınırken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1133"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1252"/>
-        <source>An error occurred during reverting removing of a row</source>
-        <translation>Bir satırın kaldırılması geri alınırken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1147"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1263"/>
-        <source>An error occurred during updating an alignment gaps</source>
-        <translation>Hizalama boşlukları güncellenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1160"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1273"/>
-        <source>An error occurred during updating an alignment row order</source>
-        <translation>Hizalama satırı sırası güncellenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1174"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1283"/>
-        <source>An error occurred during updating a row info</source>
-        <translation>Bir satır bilgisi güncellenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1189"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1298"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1324"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1334"/>
-        <source>An error occurred during updating an msa length</source>
-        <translation>MSA uzunluğunu güncellerken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1227"/>
-        <source>An error occurred during addition of a row</source>
-        <translation>Bir satır eklenirken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="607"/>
-        <source>Can&apos;t undo an operation for the object</source>
-        <translation>Nesne için bir işlemi geri alamazsınız</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="670"/>
-        <source>Can&apos;t redo an operation for the object</source>
-        <translation>Nesne için bir işlemi yeniden yapamazsınız</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="811"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="917"/>
-        <source>Object not found</source>
-        <translation>Nesne bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="865"/>
-        <source>Folder not found: %1 (canonical: %2)</source>
-        <translation>Klasör bulunamadı: %1 (standart: %2)</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
-        <source>Not an object, id: %1, type: %2</source>
-        <translation>Nesne değil, kimlik: %1, yazın: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1073"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="302"/>
-        <source>Unknown object type! Id: %1, type: %2</source>
-        <translation>Bilinmeyen nesne türü! Kimlik: %1, tür: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1117"/>
-        <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
-        <translation>Bilinmeyen bir işlem geri alınamıyor: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1132"/>
-        <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
-        <translation>Bilinmeyen bir işlem yeniden yapılamıyor: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1163"/>
-        <source>An error occurred during updating an object name</source>
-        <translation>Nesne adı güncellenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1181"/>
-        <source>An error occurred during updating an object name!</source>
-        <translation>Nesne adı güncellenirken hata oluştu!</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="79"/>
-        <source>Sequence object not found</source>
-        <translation>Sıra nesnesi bulunamadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="131"/>
-        <source>Internal error occurred during the sequence processing</source>
-        <translation>Sıralı işleme sırasında dahili hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="132"/>
-        <source>An exception was thrown during reading sequence data from dbi</source>
-        <translation>Dbi&apos;den sıra verileri okunurken bir istisna atıldı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="395"/>
-        <source>An error occurred during reverting replacing sequence data</source>
-        <translation>Sıralı verileri değiştirirken geri dönerken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="410"/>
-        <source>An error occurred during replacing sequence data</source>
-        <translation>Sıra verilerini değiştirirken bir hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="164"/>
-        <source>Invalid variant track type: %1</source>
-        <translation>Geçersiz varyant izleme türü: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="193"/>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="226"/>
-        <source>Sequence name is not set</source>
-        <translation>Sıra adı ayarlanmadı</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="328"/>
-        <source>New variant public ID is empty</source>
-        <translation>Yeni varyant genel kimliği boş</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="344"/>
-        <source>New variant track ID is empty</source>
-        <translation>Yeni varyant izleme kimliği boş</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="124"/>
-        <source>Packed data are empty</source>
-        <translation>Paketlenmiş veriler boş</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="131"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="459"/>
-        <source>Packing method prefix is not supported: %1</source>
-        <translation>Paketleme yöntemi öneki desteklenmiyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="139"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="467"/>
-        <source>Data are corrupted, no name end marker found: %1</source>
-        <translation>Veriler bozuk, ad sonu işareti bulunamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="148"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
-        <source>Data are corrupted, no sequence end marker found: %1</source>
-        <translation>Veriler bozuk, dizi sonu işaretçisi bulunamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="157"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="485"/>
-        <source>Data are corrupted, no CIGAR end marker found: %1</source>
-        <translation>Veriler bozuk, CIGAR uç işaretçisi bulunamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="176"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="504"/>
-        <source>Data are corrupted, no rnext end marker found: %1</source>
-        <translation>Veriler bozuk, rnext bitiş işaretçisi bulunamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="191"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="519"/>
-        <source>Can not convert pnext to a number: %1</source>
-        <translation>Pnext bir sayıya dönüştürülemiyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="406"/>
-        <source>Bound values: </source>
-        <translation>Sınır değerler: </translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="426"/>
-        <source>Cannot start a transaction</source>
-        <translation>Bir işlem başlatılamıyor</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlMultiTableAssemblyAdapter.cpp" line="502"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
-        <source>Failed to detect assembly storage format: %1</source>
-        <translation>Derleme depolama biçimi algılanamadı: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlMultiTableAssemblyAdapter.cpp" line="514"/>
-        <source>Failed to parse range: %1, full: %2</source>
-        <translation>Aralık ayrıştırılamadı: %1, dolu: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/util/MysqlMultiTableAssemblyAdapter.cpp" line="528"/>
-        <location filename="../src/mysql_dbi/util/MysqlMultiTableAssemblyAdapter.cpp" line="533"/>
-        <location filename="../src/mysql_dbi/util/MysqlMultiTableAssemblyAdapter.cpp" line="539"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="149"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="153"/>
-        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="158"/>
-        <source>Failed to parse packed row range info %1</source>
-        <translation>Paketlenmiş satır aralığı bilgisi %1 ayrıştırılamadı</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="96"/>
@@ -2891,7 +2499,6 @@
         <translation>Beklenmeyen satır sayısı. Sorgu: &apos;%1&apos;, satırlar: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="823"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
         <source>Object not found.</source>
@@ -2917,14 +2524,6 @@
         <location filename="../src/sqlite_dbi/assembly/RTreeAssemblyAdapter.cpp" line="64"/>
         <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
         <translation>RTree dizini oluşturma sırasında hata: %1! SQLite kitaplığında RTree indeks desteği olup olmadığını kontrol edin!</translation>
-    </message>
-    <message>
-        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="61"/>
-        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="75"/>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="54"/>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="65"/>
-        <source>An error occurred during updating UDR</source>
-        <translation>UDR güncellenirken bir hata oluştu</translation>
     </message>
 </context>
 <context>

@@ -49,7 +49,7 @@ const QString PlasmidFeatureTypes::REGULATORY("Regulatory");
 const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
 
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatureTypes)
-    : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), aTableObj(aObj),
+    : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), annotationTableObject(aObj),
       featureStore(store), filteredFeatures(filteredFeatureTypes) {
     GCOUNTER(cvar, "CustomPatternAnnotationTask");
 }
@@ -109,6 +109,8 @@ void CustomPatternAnnotationTask::prepare() {
 }
 
 QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
+    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), {});
+
     QList<Task*> subTasks;
 
     if (!taskFeatureNames.contains(subTask)) {
@@ -149,7 +151,8 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (taskFeatureNames.isEmpty() && annotations.size() > 0) {
-        subTasks.append(new CreateAnnotationsTask(aTableObj, annotations, featureStore->getName()));
+        const QString& groupName = featureStore->getName();
+        subTasks.append(new CreateAnnotationsTask(annotationTableObject, {{groupName, annotations}}));
     }
 
     return subTasks;

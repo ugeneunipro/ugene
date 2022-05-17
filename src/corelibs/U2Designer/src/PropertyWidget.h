@@ -235,23 +235,6 @@ private slots:
 };
 
 /************************************************************************/
-/* ComboBoxWithDbUrlWidget */
-/************************************************************************/
-class ComboBoxWithDbUrlWidget : public ComboBoxWithUrlWidget {
-    Q_OBJECT
-public:
-    ComboBoxWithDbUrlWidget(QWidget* parent = nullptr);
-
-    QVariantMap getItems() const;
-
-protected:
-    virtual void sl_browse();
-
-private:
-    void updateComboValues();
-};
-
-/************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public ComboBoxWidgetBase {

@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -32,53 +33,56 @@
 
 namespace U2 {
 
-CreateAnnotationsTask::CreateAnnotationsTask(AnnotationTableObject* ao, const QList<SharedAnnotationData>& data, const QString& g)
-    : Task(tr("Create annotations"), TaskFlags_FOSE_COSC), annotationTableObjectPointer(ao) {
-    annotationDatasByGroupNameMap.insert(g, data);
+static TaskFlags getCreateAnnotationsTaskFlags(bool isAnnotationObjectShared) {
+    // CreateAnnotationsTask can't be run safely in a thread on the object that is shared and can be accessed/modified in parallel.
+    return isAnnotationObjectShared
+               ? TaskFlags_FOSE_COSC | TaskFlag_RunInMainThread
+               : TaskFlags_FOSE_COSC;
+}
 
-    initAnnObjectRef();
-    CHECK_OP(stateInfo, );
+CreateAnnotationsTask::CreateAnnotationsTask(bool isAnnotationObjectShared)
+    : Task(tr("Create annotations"), getCreateAnnotationsTaskFlags(isAnnotationObjectShared)) {
     tpm = Progress_Manual;
 }
 
-CreateAnnotationsTask::CreateAnnotationsTask(const GObjectReference& r, const QList<SharedAnnotationData>& data, const QString& g)
-    : Task(tr("Create annotations"), TaskFlags_FOSE_COSC), aRef(r) {
-    annotationDatasByGroupNameMap.insert(g, data);
+CreateAnnotationsTask::CreateAnnotationsTask(const GObjectReference& r, const QList<SharedAnnotationData>& data, const QString& groupName)
+    : CreateAnnotationsTask(true) {
+    annotationTableObjectRef = r;
+    annotationDatasByGroupNameMap = {{groupName, data}};
 
-    GObject* ao = GObjectUtils::selectObjectByReference(aRef, UOF_LoadedAndUnloaded);
-    if (ao != nullptr && ao->isUnloaded()) {
-        addSubTask(new LoadUnloadedDocumentTask(ao->getDocument()));
+    GObject* objectByReference = GObjectUtils::selectObjectByReference(annotationTableObjectRef, UOF_LoadedAndUnloaded);
+    if (objectByReference != nullptr) {
+        if (objectByReference->isUnloaded()) {
+            addSubTask(new LoadUnloadedDocumentTask(objectByReference->getDocument()));
+        } else if (auto resolvedAnnotationsObject = qobject_cast<AnnotationTableObject*>(objectByReference)) {
+            annotationTableObjectPointer = resolvedAnnotationsObject;
+        }
     }
-    tpm = Progress_Manual;
+    if (getSubtasks().isEmpty() && annotationTableObjectPointer.isNull()) {
+        setError(tr("Failed to resolve object reference: %1 %2").arg(r.docUrl).arg(r.objName));
+    }
 }
 
-CreateAnnotationsTask::CreateAnnotationsTask(AnnotationTableObject* annotationTableObject, const QMap<QString, QList<SharedAnnotationData>>& annotationsByGroupMap)
-    : Task(tr("Create annotations"), TaskFlags_FOSE_COSC), annotationTableObjectPointer(annotationTableObject), annotationDatasByGroupNameMap(annotationsByGroupMap) {
-    initAnnObjectRef();
-    CHECK_OP(stateInfo, );
-    tpm = Progress_Manual;
-}
-
-void CreateAnnotationsTask::initAnnObjectRef() {
-    AnnotationTableObject* parentObject = getAnnotationTableObject();
-    CHECK_EXT(parentObject != nullptr, setError(tr("Annotation table has been removed unexpectedly")), );
-    aRef.objName = parentObject->getGObjectName();
+CreateAnnotationsTask::CreateAnnotationsTask(AnnotationTableObject* annotationTableObject,
+                                             const QMap<QString, QList<SharedAnnotationData>>& annotationsByGroupMap,
+                                             bool isAnnotationObjectShared)
+    : CreateAnnotationsTask(isAnnotationObjectShared) {
+    annotationTableObjectPointer = annotationTableObject;
+    annotationDatasByGroupNameMap = annotationsByGroupMap;
 }
 
 void CreateAnnotationsTask::run() {
     AnnotationTableObject* annotationTableObject = getAnnotationTableObject();
     CHECK_EXT(annotationTableObject != nullptr, setError(tr("Annotation table has been removed unexpectedly")), );
+    CHECK_EXT(!annotationTableObject->isStateLocked(), setError(L10N::errorObjectIsReadOnly(annotationTableObject->getGObjectName())), );
 
-    DbiOperationsBlock opBlock(annotationTableObject->getEntityRef().dbiRef, stateInfo);
-    CHECK_OP(stateInfo, );
-
-    const U2DataId rootFeatureId = annotationTableObject->getRootFeatureId();
-    const U2DbiRef dbiRef = annotationTableObject->getEntityRef().dbiRef;
+    U2DataId rootFeatureId = annotationTableObject->getRootFeatureId();
+    U2DbiRef dbiRef = annotationTableObject->getEntityRef().dbiRef;
 
     DbiOperationsBlock dbiOperationsBlock(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
 
-    const QList<QString>& groupNameList = annotationDatasByGroupNameMap.keys();
+    QList<QString> groupNameList = annotationDatasByGroupNameMap.keys();
     for (const QString& groupName : qAsConst(groupNameList)) {
         const QList<SharedAnnotationData>& annotationsInGroup = annotationDatasByGroupNameMap[groupName];
         if (groupName.isEmpty()) {
@@ -106,7 +110,7 @@ Task::ReportResult CreateAnnotationsTask::report() {
     }
     AnnotationTableObject* annotationObject = getAnnotationTableObject();
     if (annotationObject == nullptr) {
-        setError(tr("Annotation object '%1' not found in active project: %2").arg(aRef.objName).arg(aRef.docUrl));
+        setError(tr("Annotation object '%1' not found in active project: %2").arg(annotationTableObjectRef.objName).arg(annotationTableObjectRef.docUrl));
         return ReportResult_Finished;
     }
 
@@ -125,11 +129,11 @@ Task::ReportResult CreateAnnotationsTask::report() {
 }
 
 AnnotationTableObject* CreateAnnotationsTask::getAnnotationTableObject() const {
-    if (aRef.isValid()) {
-        SAFE_POINT(annotationTableObjectPointer.isNull(), "Unexpected annotation table object content!", nullptr);
-        return qobject_cast<AnnotationTableObject*>(GObjectUtils::selectObjectByReference(aRef, UOF_LoadedOnly));
+    if (!annotationTableObjectPointer.isNull()) {
+        return annotationTableObjectPointer.data();
     }
-    return annotationTableObjectPointer.data();
+    GObject* object = GObjectUtils::selectObjectByReference(annotationTableObjectRef, UOF_LoadedOnly);
+    return qobject_cast<AnnotationTableObject*>(object);
 }
 
 int CreateAnnotationsTask::getAnnotationCount() const {

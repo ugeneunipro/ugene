@@ -353,10 +353,9 @@ QVariant ProjectViewFilterModel::getObjectData(const QModelIndex& index, int rol
         GObject* object = toObject(index)->getObject();
         Document* parentDoc = object->getDocument();
         if (parentDoc != nullptr) {
-            const QString objectPath = srcModel->getObjectFolder(parentDoc, object);
-            const bool isDatabase = parentDoc->isDatabaseConnection();
-            const QString itemDocInfo = parentDoc->getName() + (isDatabase ? ": " + objectPath : QString());
-            const QString objectName = getStyledObjectName(object, toGroup(index.parent()));
+            QString objectPath = srcModel->getObjectFolder(parentDoc, object);
+            QString itemDocInfo = parentDoc->getName();
+            QString objectName = getStyledObjectName(object, toGroup(index.parent()));
             result = QString("%1<p style=\"margin-top:0px;font-size:small;\">%2</p>").arg(objectName).arg(itemDocInfo);
         }
     }

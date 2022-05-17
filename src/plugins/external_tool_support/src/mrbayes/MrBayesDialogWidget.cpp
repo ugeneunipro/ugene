@@ -248,21 +248,20 @@ QString MrBayesWidget::generateMrBayesSettingsScript() {
     temp = tempSpin->value();
     burnin = burninSpin->value();
 
-    script = script.append("mcmc ngen=%1 samplefreq=%2 printfreq=%3 nchains=%4 temp=%5 savebrlens=yes "
-                           "starttree=random;\n")
+    script = script.append("set seed=%1;\n").arg(seed);
+    script = script.append("set swapseed=%1;\n").arg(seed);
+
+    script = script.append("mcmc ngen=%1 samplefreq=%2 printfreq=%3 nchains=%4 temp=%5 savebrlens=yes starttree=random;\n")
                  .arg(ngen)
                  .arg(sfreq)
                  .arg(printfreq)
                  .arg(nchains)
-                 .arg(temp)
-                 .arg(seed);
+                 .arg(temp);
 
-    if (sfreq < burnin)
+    if (sfreq < burnin) {
         burnin = 0;
+    }
     script = script.append("sumt burnin=%1;\n").arg(burnin);
-
-    script = script.append("set seed=%1;\n").arg(seed);
-
     script.append("End;\n");
     return script;
 }

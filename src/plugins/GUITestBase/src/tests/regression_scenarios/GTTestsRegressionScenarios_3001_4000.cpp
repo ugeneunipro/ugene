@@ -92,7 +92,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -118,7 +117,6 @@
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
@@ -223,48 +221,6 @@ GUI_TEST_CLASS_DEFINITION(test_3034) {
     GTUtilsLog::check(os, l);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3035) {
-    // check read only user
-    QString conName = "test_3035_db";
-    GTDatabaseConfig::initTestConnectionInfo(conName, GTDatabaseConfig::database(), true, true);
-
-    {
-        QList<SharedConnectionsDialogFiller::Action> actions;
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, conName);
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
-        GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-    }
-    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-    // import, remove, drag'n'drop, empty recycle bin, restore from recycle bin. is prohibited
-    GTUtilsProjectTreeView::click(os, "Recycle bin", Qt::RightButton);
-    CHECK_SET_ERR(QApplication::activePopupWidget() == nullptr, "popup menu unexpectidly presents on recyble bin");
-    GTUtilsProjectTreeView::click(os, "export_tests", Qt::RightButton);
-    CHECK_SET_ERR(QApplication::activePopupWidget() == nullptr, "popup menu unexpectidly presents on export_tests");
-
-    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "export_tests");
-    QModelIndex index = GTUtilsProjectTreeView::findIndex(os, "et0001_sequence", parent);
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, index));
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"action_project__edit_menu"}, PopupChecker::NotExists));
-    GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"action_project__remove_selected_action"}, PopupChecker::NotExists));
-    GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
-    GTMouseDriver::click(Qt::RightButton);
-    QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == "et0001_sequence", QString("unexpected window title: %1 ").arg(name));
-
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_3035.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action", "export sequences"}));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, index));
-    GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "test_3035_1.aln", ExportSequenceAsAlignmentFiller::Clustalw));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action", "export sequences as alignment"}));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, index));
-    GTMouseDriver::click(Qt::RightButton);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3052) {
     GTLogTracer l;
 
@@ -327,17 +283,6 @@ GUI_TEST_CLASS_DEFINITION(test_3052_1) {
     GTUtilsLog::check(os, l);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3072) {
-    GTLogTracer l;
-
-    // 1. Connect to shared database(eg.ugene_gui_test_win);
-    Document* dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // 2. Add folder;
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", "regression_test_3072");
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3073) {
     //    1. Open "human_T1.fa";
     //    2. Create few annotations (new file MyDocument_n.gb appeared);
@@ -383,44 +328,6 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "human_T1.fa"), "Sequence file is not loaded!");
 
     GTUtilsLog::check(os, l);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3074) {
-    //    Disconnect from the shared database with opened msa from this database
-
-    //    1. Connect to the "ugene_gui_test" database.
-
-    //    2. Double click the object "/view_test_0002/[m] COI".
-    //    Expected: the msa is opened in the MSA Editor.
-
-    //    3. Remove the database document from the project tree view.
-    //    Expected state: the MSA Editor is closed, UGENE doesn't crash.
-
-    GTLogTracer logTracer;
-
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
-
-    QWidget* msaView = GTWidget::findWidget(os, "COI");
-    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
-
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-
-    GTUtilsLog::check(os, logTracer);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3079) {
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    //    1. Remove any folder to the recycle bin
-    QModelIndex fol = GTUtilsProjectTreeView::findIndex(os, "test_3079_inner");
-    QModelIndex bin = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::dragAndDrop(os, fol, bin);
-    //    2. Try to remove any folder or sequence from the database to the folder from the first step
-    fol = GTUtilsProjectTreeView::findIndex(os, "test_3079_inner");
-    QModelIndex seq = GTUtilsProjectTreeView::findIndex(os, "test_3079.fa");
-    GTUtilsProjectTreeView::dragAndDrop(os, seq, fol);
-    //    Current state: UGENE crashes
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3085_1) {
@@ -521,36 +428,6 @@ GUI_TEST_CLASS_DEFINITION(test_3101) {
     // Expected state : Task finished with error, but without assert call
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3102) {
-    // 1. Go to 'File->Connect to UGENE shared database...'
-    //     Expected state: Showed dialog 'Shared Databases Connections'
-    //     In list of connections showed 'UGENE public database'
-    GTLogTracer logTracer;
-
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    CHECK_SET_ERR(nullptr != databaseDoc, "UGENE public databased connection error");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3103) {
-    // 1. Go to 'File->Connect to UGENE shared database...'
-    // Expected state: Showed dialog 'Shared Databases Connections'
-    // 2. Click on 'Add' button
-    // Expected state: Showed dailog 'Connection Settings' and 'Port' field filled with port 3306
-    {
-        QList<SharedConnectionsDialogFiller::Action> actions;
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::ADD);
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
-        GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-    }
-    {
-        EditConnectionDialogFiller::Parameters params;
-        params.checkDefaults = true;
-        params.accept = false;
-        GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params, EditConnectionDialogFiller::FROM_SETTINGS));
-    }
-    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3112) {
     // Open big alignment, e.g. "_common_data/clustal/big.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
@@ -597,49 +474,6 @@ GUI_TEST_CLASS_DEFINITION(test_3112) {
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "5: There are no active tasks");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3124) {
-    // 1. Connect to a shared database.
-    // 2. Right click on the document->Add->Import to the database.
-    // 3. Click "Add files".
-    // 4. Choose "data/samples/Genbank/PBR322.gb".
-    // 5. Click "Import".
-    // Expected state : the file is imported, there are no errors in the log.
-
-    GTLogTracer logTracer;
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
-
-    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, "/test", QStringList() << dataDir + "samples/Genbank/PBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsLog::check(os, logTracer);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3125) {
-    // 1. Connect to a shared database.
-    // 2. Find a msa in the database (or import a new one).
-    // 3. Find menu items: {Actions -> Export -> Save subalignment}
-    // and {Actions -> Export -> Save sequence}
-
-    // Expected state: actions are enabled, you can export a subalignment and a sequence.
-    // Current state: actions are disabled.
-    GTLogTracer logTracer;
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
-    GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
-
-    QWidget* msaView = GTWidget::findWidget(os, "COI");
-    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/3125.aln", {"Phaneroptera_falcata"}, 6, 600));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-
-    GTUtilsLog::check(os, logTracer);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3126) {
     //    1. Open "test/_common_data/ace/ace_test_1.ace".
     //    2. Click "OK" in the import dialog.
@@ -684,88 +518,6 @@ GUI_TEST_CLASS_DEFINITION(test_3128_1) {
     GTMouseDriver::moveTo(p2);
     GTMouseDriver::click();
     // Expected state: UGENE does not crash.
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3130) {
-    //    1. Create an invalid connection to a shared database (e.g. wring login/password).
-    //    2. Connect.
-    //    Expected: the error message is shown.
-    //    3. Connect again.
-    //    Expected:  the error message is shown, UGENE does not crash.
-    GTDatabaseConfig::initTestConnectionInfo("test_3133");
-
-    EditConnectionDialogFiller::Parameters parameters;
-    parameters.connectionName = "test_3133";
-    parameters.host = GTDatabaseConfig::host();
-    parameters.port = QString::number(GTDatabaseConfig::port());
-    parameters.database = GTDatabaseConfig::database();
-    parameters.login = GTDatabaseConfig::login() + "_test_3130";
-    parameters.password = GTDatabaseConfig::password();
-    GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, parameters, EditConnectionDialogFiller::MANUAL));
-
-    QList<SharedConnectionsDialogFiller::Action> actions;
-    actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, "test_3133");
-    actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::EDIT, "test_3133");
-
-    SharedConnectionsDialogFiller::Action connectAction(SharedConnectionsDialogFiller::Action::CONNECT, "test_3133");
-    connectAction.expectedResult = SharedConnectionsDialogFiller::Action::WRONG_DATA;
-    actions << connectAction;
-    actions << connectAction;
-    actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
-
-    GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-
-    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3133) {
-    // 1. Connect to a shared database (e.g. ugene_gui_test).
-    Document* dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    QString dbName = dbDoc->getName();
-    GTUtilsProjectTreeView::findIndex(os, dbName);
-    CHECK_OP(os, );
-    // 2. Save the project.
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "test_3133", testDir + "_common_data/scenarios/sandbox/test_3133"));
-    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
-
-    // 3. Close the project.
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
-    // 4. Open the saved project.
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "test_3133.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected state: project view is present, there are no documents presented.
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, dbName, {false});
-    CHECK_SET_ERR(!idx.isValid(), "The database document is in the project");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3137) {
-    GTLogTracer l;
-
-    // 1. Connect to shared database(eg.ugene_gui_test_win);
-    Document* dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // 2. Add folder;
-    QString folderName = GTUtils::genUniqueString("regression_test_3137");
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folderName);
-
-    // 3. Import some file to this folder(eg.COI.aln);
-    GTUtilsSharedDatabaseDocument::importFiles(os, dbDoc, "/" + folderName, QStringList() << dataDir + "samples/CLUSTALW/COI.aln");
-
-    // 4. Delete folder;
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folderName));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(Qt::RightButton);
-
-    // 5. Wait for several seconds;
-    GTGlobals::sleep(10000);
-
-    // Expected state : folder does not appear.
-    GTGlobals::FindOptions findOptions(false);
-    findOptions.depth = 1;
-    QModelIndex innerFolderNotFoundIndex = GTUtilsProjectTreeView::findIndex(os, folderName, findOptions);
-    CHECK_SET_ERR(!innerFolderNotFoundIndex.isValid(), "The '" + folderName + "' folder was found in the database but expected to disappear");
-
-    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3138) {
@@ -894,43 +646,6 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     //    Expected state: Imported file opened in Assembly Viewer without errors.
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3144) {
-    GTLogTracer l;
-
-    // 1.Connect to a shared database.
-    Document* dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    QString folder1Name = GTUtils::genUniqueString("regression_test_3144_1");
-    QString folder2Name = GTUtils::genUniqueString("regression_test_3144_2");
-
-    // 2. Create a folder "regression_test_3144_1" in the root folder.
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folder1Name);
-
-    // 3. Create a folder "regression_test_3144_2" in the folder "regression_test_3144_1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/" + folder1Name, folder2Name);
-
-    // 4. Remove the folder "regression_test_3144_2".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder2Name));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(Qt::RightButton);
-
-    // Expected state : the folder "regression_test_3144_2" is moved to the "Recycle bin".
-    QModelIndex rbIndex = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::checkItem(os, folder2Name, rbIndex);
-
-    // 5. Remove the folder "regression_test_3144_1".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder1Name));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(Qt::RightButton);
-
-    // Expected state : folders "regression_test_3144_1" is shown in the "Recycle bin", folder "regression_test_3144_2" disappears.
-    rbIndex = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
-    GTUtilsProjectTreeView::checkItem(os, folder1Name, rbIndex);
-    GTUtilsProjectTreeView::checkItem(os, folder2Name, rbIndex);
-
-    GTUtilsLog::check(os, l);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3155) {
     // 1. Open "human_T1"
     // Expected state: "Circular search" checkbox does not exist
@@ -950,29 +665,6 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
     };
     GTUtilsDialog::waitForDialog(os, new CancelClicker(os));
     GTWidget::click(os, GTAction::button(os, "Find ORFs"));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3156) {
-    //    1. Connect to a shared database
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    GTUtilsProjectTreeView::expandProjectView(os);
-
-    QString folderName = GTUtils::genUniqueString("test_3156");
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", folderName);
-
-    //    2. Open file "data/samples/Genbank/murine.gb"
-    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_3156_murine.gb");
-    GTFileDialog::openFile(os, sandBoxDir, "test_3156_murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //    3. Drag the document item onto the DB item in project view
-    QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "test_3156_murine.gb");
-    QModelIndex targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
-    GTUtilsProjectTreeView::dragAndDrop(os, documentIndex, targetFolderIndex);
-
-    //    Expected state: a new folder has appeared in the DB, objects from the document have been imported into it.
-    targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
-    GTUtilsProjectTreeView::checkItem(os, "test_3156_murine.gb", targetFolderIndex);
 }
 
 class test_3165_messageBoxDialogFiller : public MessageBoxDialogFiller {
@@ -1404,17 +1096,6 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3250) {
-    // 1. Connect to a shared database.
-    // 2. Right click on the document in the project view.
-    // Expected: there are no the "Export/Import" menu for the database connection.
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "ugene_gui_test");
-    GTMouseDriver::moveTo(p);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Export/Import"}, PopupChecker::NotExists));
-    GTMouseDriver::click(Qt::RightButton);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3253) {
     // Open "data/samples/ABIF/A01.abi".
     // Minimize annotation tree view.
@@ -1531,40 +1212,6 @@ GUI_TEST_CLASS_DEFINITION(test_3263) {
         CHECK_SET_ERR(geometry == CV_ADV_single_sequence_widget_1->geometry(), "geometry changed");
     }
     //    See the result on the attached screenshot.
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3266) {
-    // 1. Connect to a shared database.
-    Document* doc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    QString folder1 = GTUtils::genUniqueString("regression_3266_1");
-    QString folder2 = GTUtils::genUniqueString("regression_3266_2");
-
-    // 2. Create a folder "1" somewhere.
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/", folder1);
-
-    // 3. Create a folder "2" in the folder "1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/" + folder1, folder2);
-
-    // 4. Remove the folder "2".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder2));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(Qt::RightButton);
-
-    // Expected state: the folder "2" is in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder2);
-
-    // 5. Create another folder "2" in the folder "1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/" + folder1, folder2);
-
-    // 6. Remove the folder "1".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(Qt::RightButton);
-
-    // Expected state: folders "1" and "2" both are in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder1);
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3270) {
@@ -1828,42 +1475,6 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar value is not changed");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3307) {
-    // 1. Connect to shared database
-    const QString folderName = "view_test_0001";
-    const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
-    const QString sequenceVisibleName = "NC_001363";
-    const QString sequenceVisibleWidgetName = "NC_001363";
-    const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
-
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // 2. Open any sequence from database
-    GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
-    QWidget* seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(nullptr != seqView, "View wasn't opened");
-
-    // 3. Use context menu on sequence area. Choose "new annotation"
-
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann1", "1.. 20"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"create_annotation_action"}));
-    GTMenu::showContextMenu(os, seqView);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
-    QString name;
-    for (const QString& key : qAsConst(keys)) {
-        if (key.startsWith("MyDocument")) {
-            name = key;
-            break;
-        }
-    }
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
-    GTMouseDriver::click();
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3308) {
     //    1. Open "data/samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
@@ -1877,28 +1488,6 @@ GUI_TEST_CLASS_DEFINITION(test_3308) {
     QWidget* widget3d = GTWidget::findWidget(os, "1-1CF7");
     CHECK_SET_ERR(nullptr != widget3d, "3D widget was not found");
     GTWidget::click(os, widget3d, Qt::RightButton);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3312) {
-    GTLogTracer logTracer;
-
-    // 1. Connect to a shared database.
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // 2. Get any msa object in it.
-    GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/test_3312/COI_3312");
-
-    QWidget* msaView = GTWidget::findWidget(os, "COI_3312");
-    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
-
-    // 3. Rename the object.
-    // Expected state: object is successfully renamed, there are no errors in the log.
-    GTUtilsProjectTreeView::rename(os, "COI_3312", "COI_3312_renamed");
-    GTUtilsProjectTreeView::rename(os, "COI_3312_renamed", "COI_3312");
-
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-
-    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3313) {
@@ -2056,28 +1645,6 @@ GUI_TEST_CLASS_DEFINITION(test_3332) {
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     // Expected state: nothing happens.
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 604, "Wrong msa length");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3333) {
-    //    1. Connect to the UGENE public database.
-
-    //    2. Drag and drop the object "/genomes/Arabidopsis thaliana (TAIR 10)/INFO" to the "/genomes/Arabidopsis thaliana (TAIR 10)" folder.
-    //    Expected state: nothing happens, there are no errors in the log.
-    Document* connection = GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTLogTracer logTracer;
-
-    const QModelIndex object = GTUtilsSharedDatabaseDocument::getItemIndex(os, connection, "/genomes/Arabidopsis thaliana (TAIR 10)/INFO");
-    const QModelIndex folder = GTUtilsSharedDatabaseDocument::getItemIndex(os, connection, "/genomes/Arabidopsis thaliana (TAIR 10)");
-    GTUtilsProjectTreeView::dragAndDrop(os, object, folder);
-
-    GTUtilsLog::check(os, logTracer);
-
-    GTGlobals::FindOptions options;
-    options.depth = 1;
-    int objectsCount = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "", GTUtilsSharedDatabaseDocument::getItemIndex(os, connection, "/genomes/Arabidopsis thaliana (TAIR 10)"), 0, options).size();
-    CHECK_SET_ERR(8 == objectsCount, QString("An unexpected objects count in the folder: expect %1, got %2").arg(8).arg(objectsCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3335) {
@@ -2542,7 +2109,6 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3439) {
-    // Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Alignment");
@@ -2550,16 +2116,7 @@ GUI_TEST_CLASS_DEFINITION(test_3439) {
     // Validate workflow
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    // there is should be 2 errors
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 2 validation errors");
-    // set parameter "Data storage" to "Shared UGENE database"
-    GTUtilsWorkflowDesigner::click(os, "Write Alignment", QPoint(-30, -30));
-    GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
-    // Validate workflow
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    // there is should be 3 errors
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 3, "Errors count dont match, should be 2 validation errors");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Write Alignment") == 1, "Errors count dont match, should be 1 validation error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3441) {
@@ -3860,71 +3417,6 @@ GUI_TEST_CLASS_DEFINITION(test_3634) {
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3639) {
-    GTLogTracer logTracer;
-
-    // 2. Open "human_T1.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 1. Connect to any shared database with write permissions.
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // 3. Select "human_T1.fa" document and a 'Recycle bin" folder in the project view.
-    GTGlobals::FindOptions options;
-    options.depth = 1;
-    QModelIndex humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, humanT1Doc));
-    GTMouseDriver::click();
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Recycle bin"));
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTMouseDriver::click();
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    // 4. Remove items with "del" key.
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-    // Expected state: the document is removed, the folder is not removed, no message boxes appear.
-    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
-    GTUtilsProjectTreeView::getItemCenter(os, "Recycle bin");
-    options.failIfNotFound = false;
-    humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
-    CHECK_SET_ERR(!humanT1Doc.isValid(), "The document is not removed");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3640) {
-    GTLogTracer logTracer;
-
-    // 2. Open any document.
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    // 1. Connect to a read-only shared database (e.g. to the UGENE public database).
-    GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-
-    // 3. Select the document and any folder in the database in the project view.
-    GTGlobals::FindOptions options;
-    options.depth = 1;
-    QModelIndex humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, humanT1Doc));
-    GTMouseDriver::click();
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));
-
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTMouseDriver::click();
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    // 4. Remove selected items via "del" key.
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-    // Expected state: the document is removed, the folder is not removed.
-    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
-    GTUtilsProjectTreeView::findIndex(os, "genomes");
-    options.failIfNotFound = false;
-    humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
-    CHECK_SET_ERR(!humanT1Doc.isValid(), "The document is not removed");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3649) {
     // 1. Open "_common_data/smith-waterman2/simple/05/search.txt".
     GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/simple/05", "search.txt");
@@ -3953,40 +3445,6 @@ GUI_TEST_CLASS_DEFINITION(test_3649) {
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
 
     // Expected: UGENE does not crash.
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3656) {
-    //    1. Connect to the public database
-    //    2. Go to /genomes/Human (hg 19)
-    //    3. Right click on "chr2", then choose { Export/Import -> Export Sequences... }
-    //    Expected state: the "Export Sequences" dialog has appeared.
-    //    4. Press "OK"
-    //    Expected state: Export task has launched and successfully finished.
-    //    Current state: UGENE hangs for a half of minute, then Export task is launched.
-
-    GTLogTracer lt;
-    GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTThread::waitForMainThread();
-
-    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
-
-    QModelIndex prnt = GTUtilsProjectTreeView::findIndex(os, "Human (hg19)");
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "chr2", prnt);
-    GTThread::waitForMainThread();
-    GTUtils::checkExportServiceIsEnabled(os);
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, idx));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "test_3656.fa"));
-    GTMouseDriver::click(Qt::RightButton);
-
-    QString exportTaskName = "Opening view for document: test_3656.fa";
-    GTUtilsTaskTreeView::checkTaskIsPresent(os, exportTaskName);
-
-    GTUtilsTaskTreeView::cancelTask(os, exportTaskName);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3658) {
@@ -4100,66 +3558,6 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3697) {
-    //    1. Create a connection to some shared database
-    //    2. Create the second connection with the same parameters except connection name
-    //    Current state: the second connection is not created, after acceptance of the 'Connection settings' dialog nothing had happened - no connection, no message.
-    //    Extected state: message is shown
-
-    //    Additional scenario:
-    //    1. Open WD
-    //    2. Add Read Sequence element and
-    //    3. Deselect Read Sequence element (click on empty space) and select it again
-    //    Current state: Connection Duplicate Detected dialog appeared.
-    //    Expected state: no message
-
-    GTLogTracer l;
-
-    QString conName1 = "test_3697: ugene_gui_test I";
-    {
-        QList<SharedConnectionsDialogFiller::Action> actions;
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::ADD);
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
-
-        GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-    }
-
-    EditConnectionDialogFiller::Parameters params1;
-    params1.connectionName = conName1;
-    params1.host = GTDatabaseConfig::host();
-    params1.port = QString::number(GTDatabaseConfig::port());
-    params1.database = GTDatabaseConfig::database();
-    params1.login = "login";
-    params1.password = "password";
-    GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params1, EditConnectionDialogFiller::MANUAL));
-
-    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-
-    QString conName2 = "test_3697: ugene_gui_test II";
-    {
-        QList<SharedConnectionsDialogFiller::Action> actions;
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::ADD);
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
-
-        GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-    }
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
-    EditConnectionDialogFiller::Parameters params2 = params1;
-    params2.connectionName = conName2;
-    GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params2, EditConnectionDialogFiller::MANUAL));
-    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-
-    GTUtilsLog::check(os, l);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3702) {
     // 1. Open human_T1.fa
     // 2. Drag'n' drop it from the project to welcome screen
@@ -4267,24 +3665,6 @@ GUI_TEST_CLASS_DEFINITION(test_3724) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Statistics", "Generate distance matrix..."}));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3728) {
-    //    1. Connect to UGENE public database.
-    GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: objects appear in alphabetic order in folders
-    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, GTUtilsProjectTreeView::getTreeView(os), "genomes");
-    QStringList strList;
-    QString prev = "";
-    for (int i = 0; i < 5; i++) {
-        QString s = parent.child(i, 0).data(Qt::DisplayRole).toString();
-        int res = QString::compare(prev, s);
-        CHECK_SET_ERR(res < 0, "order is not alphabet " + prev + s);
-        prev = s;
-    }
-
-    //    Current state: object order is nearly random and is not the same in successive UGENE launches
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3730) {
@@ -4444,26 +3824,6 @@ GUI_TEST_CLASS_DEFINITION(test_3749) {
     GTMouseDriver::click(Qt::LeftButton);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(1, 10), QPoint(1, 10)));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3753) {
-    // 1. Export any document from the public database
-    // 2. Rename an object from the exported document
-    //  Expected state: object renamed
-    //  Current state: UGENE hangs
-    GTLogTracer lt;
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    CHECK_OP(os, );
-
-    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_sequence"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0001_export.fasta", false, "sequence_test_3753"));
-    GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsProjectTreeView::rename(os, "sequence_test_3753", "test3753_renamed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3755) {
@@ -4911,39 +4271,6 @@ GUI_TEST_CLASS_DEFINITION(test_3829) {
     GTUtilsOptionPanelSequenceView::checkTabIsOpened(os, GTUtilsOptionPanelSequenceView::Statistics);
     //    Expected state: you can't set region that is not inside the sequence.
     //    Current state: an incorrect selected region is set, crashes and safe points are possible with the region.
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3819) {
-    //    1. Connect to a shared database, that contains an assembly.
-    //    2. Open the assembly.
-    //    Expected state: an Assembly Browser opens, there are some reads in the reads area after zooming.
-
-    GTLogTracer logTracer;
-
-    const QString folderName = "view_test_0003";
-    const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
-    const QString assemblyVisibleName = "chrM";
-    const QString assemblyVisibleNameWidget = " [as] chrM";
-
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
-    for (QModelIndex index : qAsConst(list)) {
-        if (index.data() == "[as] chrM") {
-            GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
-        }
-    }
-    QWidget* assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
-    CHECK_SET_ERR(nullptr != assemblyView, "View wasn't opened");
-
-    GTUtilsAssemblyBrowser::zoomToMax(os);
-    GTUtilsAssemblyBrowser::goToPosition(os, 1);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"copy_read_information"}, GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
-
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3843) {

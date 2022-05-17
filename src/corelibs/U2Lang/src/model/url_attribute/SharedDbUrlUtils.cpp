@@ -196,17 +196,6 @@ U2DbiRef SharedDbUrlUtils::getDbRefFromEntityUrl(const QString& url) {
     return U2DbiRef(url.left(dbProviderSepPos), url.mid(dbProviderSepPos + 1, -1 != dbUrlSepPos ? dbUrlSepPos - dbProviderSepPos - 1 : -1));
 }
 
-QVariantMap SharedDbUrlUtils::getKnownDbs() {
-    QVariantMap result;
-    Settings* appSettings = AppContext::getSettings();
-    const QStringList recentList = appSettings->getAllKeys(CONN_SETTINGS_PATH);
-    foreach (const QString& shortName, recentList) {
-        // TODO: fix this when other DB providers emerge
-        result.insert(shortName, MYSQL_DBI_ID + DB_PROVIDER_SEP + appSettings->getValue(CONN_SETTINGS_PATH + shortName).toString());
-    }
-    return result;
-}
-
 QString SharedDbUrlUtils::getDbUrlFromEntityUrl(const QString& url) {
     int dbProviderSepPos = -1;
     int dbUrlSepPos = -1;

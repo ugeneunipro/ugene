@@ -31,7 +31,6 @@ const IOAdapterId BaseIOAdapters::HTTP_FILE("http_file");
 const IOAdapterId BaseIOAdapters::GZIPPED_HTTP_FILE("http_file_gzip");
 const IOAdapterId BaseIOAdapters::VFS_FILE("memory_buffer");
 const IOAdapterId BaseIOAdapters::STRING("string");
-const IOAdapterId BaseIOAdapters::DATABASE_CONNECTION("database_connection");
 
 qint64 IOAdapter::readUntil(char* buf, qint64 maxSize, const QBitArray& readTerminators, TerminatorHandling th, bool* terminatorFound) {
     const qint64 CHUNK = (qint64)1024;
