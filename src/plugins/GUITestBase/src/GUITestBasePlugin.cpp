@@ -2196,201 +2196,201 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_3);
     REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0001_4);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0002_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0002_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0002_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0002_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0002_4);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0003);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0004_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0004_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0004_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0004_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0005_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0005_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0007);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0008_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0008_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0008_3);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0009);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0009_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0009_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0009_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0009_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0010);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0010_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0010_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0010);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0010_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0010_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0011);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0011_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0011_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0011);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0011_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0011_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0012);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0012);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0013);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0013_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0013_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0013);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0013_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0013_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0014_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0014_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0014);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0014_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0014_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0016);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0016_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0016_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0016);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0016_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0016_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0017);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0017_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0017_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0017);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0017_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0017_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0018);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0019);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0018);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0019);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0020);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0020_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0021);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0021_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0021_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0022);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0022_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0022_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0023);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0024);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0026);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0026_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0026_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0027);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0027_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0027_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0029);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0029_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0029_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0020);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0020_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0021);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0021_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0021_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0022);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0022_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0022_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0023);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0024);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0026);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0026_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0026_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0027);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0027_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0027_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0029);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0029_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0029_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0031);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0031_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0031_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0031_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0031_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0031);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0031_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0031_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0031_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0031_4);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0032);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0032_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0032);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0032_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0033);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0033_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0033);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0033_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0034);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0034_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0034);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0034_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0035);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0035_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0035);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0035_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0036);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0036_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0036_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0036_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0036);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0036_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0036_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0036_3);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0037);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0037_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0037_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0037);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0037_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0037_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0038);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0038_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0038_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0038_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0038_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0038);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0038_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0038_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0038_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0038_4);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_4);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_5);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_6);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0039_7);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0040);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0041);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_5);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_6);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0039_7);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0040);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0041);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0042);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0042_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0042_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0043);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0044);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0042);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0042_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0042_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0043);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0044);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0045);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0045_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0046);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0047);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0048);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0049);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0050);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0052);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_3);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_4);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_5);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0053_6);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0045);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0045_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0046);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0047);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0048);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0049);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0050);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0052);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_4);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_5);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0053_6);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0054);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0054_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0055);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0056);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0057);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0054);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0054_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0055);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0056);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0057);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0059);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0060);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0061);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0062);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0063);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0064);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0065);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0066);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0059);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0060);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0061);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0062);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0063);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0064);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0065);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0066);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0069);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0070);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0071);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0072);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0073);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0074);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0075);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0069);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0070);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0071);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0072);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0073);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0074);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0075);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0076);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0077);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0078);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0076);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0077);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0078);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0079);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0080);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0081);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0082);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0083);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0079);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0080);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0081);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0082);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0083);
 
     REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0090);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0091);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0092);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0094);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0095);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0096);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0091);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0092);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0093_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0093_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0094);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0095);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor::test_0096);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/exclude_list
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_exclude_list::test_0009);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
@@ -2426,129 +2426,129 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/consensus
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0001);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0002_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0002_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0002_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0002_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0003_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0003_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0003_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0003_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0004_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0004_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0004_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0004_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_consensus::test_0006);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/tree
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_tree::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_tree::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_tree::test_0003_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_tree::test_0003_2);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0001_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0001_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0003_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0003_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0003_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0003_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0004_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0004_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0004_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0004_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0005_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0005_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0005_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0005_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0006_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0006_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0006_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0006_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0007_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0007_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0008_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0008_1);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0009);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0009_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0009_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0009_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0009_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0010);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0010);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0011);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0011_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0011_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0011_3);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0011);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0011_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0011_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0011_3);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0012);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0012);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0013);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0013_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0013_2);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0013);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0013_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0013_2);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0015);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0014);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0015);
 
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0016);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_edit::test_0016);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/replace_character
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0005_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0006_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0009);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0010);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0011);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0012);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0013);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0015);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0016);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0017);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0018);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0005_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0006_1);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0010);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0011);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0012);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0013);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0014);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0015);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0016);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0017);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_replace_character::test_0018);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/overview
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0009);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0010);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0011);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0012);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0013);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0015);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0017);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0019);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0001);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0002);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0003);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0004);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0005);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0006);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0007);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0008);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0009);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0010);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0011);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0012);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0013);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0014);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0015);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0017);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0019);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0020);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0021);
+    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_overview::test_0022);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/multiline

@@ -32,10 +32,10 @@ namespace GUITest_common_scenarios_msa_editor_tree {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_common_scenarios_msa_editor_tree"
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
-GUI_TEST_CLASS_DECLARATION(test_0003_1)
-GUI_TEST_CLASS_DECLARATION(test_0003_2)
+GUI_TEST_CLASS_DECLARATION_MSA(test_0001)
+GUI_TEST_CLASS_DECLARATION_MSA(test_0002)
+GUI_TEST_CLASS_DECLARATION_MSA(test_0003_1)
+GUI_TEST_CLASS_DECLARATION_MSA(test_0003_2)
 
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_common_scenarios_msa_editor_tree
