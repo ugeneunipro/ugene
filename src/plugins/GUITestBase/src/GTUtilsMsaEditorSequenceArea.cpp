@@ -400,12 +400,13 @@ QString GTUtilsMSAEditorSequenceArea::getSimilarityValue(GUITestOpStatus& os, in
 
 #define GT_METHOD_NAME "clickCollapseTriangle"
 void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QString seqName) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    auto msaEditWgt = msaEditArea->getEditor()->getUI()->getUI(0);
 
     int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
-    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
-    QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getUI(0)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
+    auto nameList = GTWidget::findExactWidget<QWidget*>(os, "msa_editor_name_list", msaEditWgt);
+    QPoint localCoord = QPoint(15, msaEditWgt->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
@@ -488,7 +489,7 @@ int GTUtilsMSAEditorSequenceArea::getNumVisibleBases(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getSelectedRect"
 QRect GTUtilsMSAEditorSequenceArea::getSelectedRect(GUITestOpStatus& os) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     return msaEditArea->getEditor()->getSelection().toRect();
 }
@@ -539,7 +540,7 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const QSt
 
 #define GT_METHOD_NAME "selectSequence"
 void GTUtilsMSAEditorSequenceArea::selectSequence(GUITestOpStatus& os, const int row) {
-    GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     click(os, QPoint(-5, row));
 }
@@ -564,7 +565,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus& os, const
 
 #define GT_METHOD_NAME "getSelectedSequencesNum"
 int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(GUITestOpStatus& os) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     return msaEditArea->getEditor()->getSelection().getCountOfSelectedRows();
 }
@@ -636,7 +637,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, 
 
 #define GT_METHOD_NAME "hasAminoAlphabet"
 bool GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(GUITestOpStatus& os) {
-    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area");
+    auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     return msaEditArea->hasAminoAlphabet();
 }
