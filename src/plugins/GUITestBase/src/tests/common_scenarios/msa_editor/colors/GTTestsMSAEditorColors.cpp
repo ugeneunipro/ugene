@@ -45,12 +45,27 @@ namespace U2 {
 namespace GUITest_common_scenarios_msa_editor_colors {
 using namespace HI;
 
+void checkColor(HI::GUITestOpStatus& os, const QPoint& p, const QString& expectedColor, int Xmove = 0, int Ymove = 0) {
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+
+    GTUtilsMSAEditorSequenceArea::click(os, p);
+    QPoint p1 = GTMouseDriver::getMousePosition();
+    p1.setY(p1.y() + Ymove);
+    p1.setX(p1.x() + Xmove);
+
+    const QImage content = GTWidget::getImage(os, seq);
+    const QRgb rgb = content.pixel(seq->mapFromGlobal(p1));
+    const QColor color(rgb);
+
+    CHECK_SET_ERR(color.name() == expectedColor, "Expected: " + expectedColor + " ,found: " + color.name());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->UGENE} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "UGENE"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -77,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use context menu {Colors->No Colors} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
     GTMenu::showContextMenu(os, seq);
     //    Expected state: background for symbols must be white
@@ -102,7 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->Jalview} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
     GTMenu::showContextMenu(os, seq);
     // Expected state: background for symbols must be:
@@ -130,9 +145,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    2. Use context menu {Colors->Persentage identity} in MSA editor area.
     //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
     //    Intensity of colour depends on the frequency of appearance in the column.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
-    GTMenu::showContextMenu(os, seq);
     //    Symbols and columns at the descending order
     //    1. A,G,T at 2,3,9
     //    2. A at 10
