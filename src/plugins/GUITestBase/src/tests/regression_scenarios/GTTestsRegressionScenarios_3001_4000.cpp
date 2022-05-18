@@ -561,7 +561,8 @@ GUI_TEST_CLASS_DEFINITION(test_3139) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(nullptr != seqArea, "MSA Editor isn't opened.!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3140) {
@@ -611,7 +612,8 @@ GUI_TEST_CLASS_DEFINITION(test_3142) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick/COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* msaWidget = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(msaWidget != nullptr, "MSASequenceArea not found");
 
     GTUtilsLog::check(os, l);
 }
@@ -1321,7 +1323,7 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTWidget::getColor(os, seqArea, QPoint(1, 1));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -1971,7 +1973,8 @@ GUI_TEST_CLASS_DEFINITION(test_3437) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected: file opened in msa editor
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(w != nullptr, "msa editor not opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3402) {
@@ -2664,7 +2667,7 @@ GUI_TEST_CLASS_DEFINITION(test_3545) {
     //    Select sequence "_common_data\fasta\NC_008253.fna" and press "Open"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta", "NC_008253.fna"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // Close MSAEditor
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -3791,7 +3794,7 @@ GUI_TEST_CLASS_DEFINITION(test_3755) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTWidget::getColor(os, seqArea, QPoint(2, 1));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -3935,7 +3938,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTLogTracer logTracer;
-    // QMenu* menu = GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    // QMenu* menu = GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     // GTMenu::clickMenuItemByName(os, menu, {"Build HMMER3 profile"});
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Advanced", "Build HMMER3 profile"}));
     GTUtilsDialog::add(os, new OkClicker(os));
@@ -4343,7 +4346,7 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
     length = GTUtilsMSAEditorSequenceArea::getLength(os);
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/3870.fa", GTUtilsMSAEditorSequenceArea::getNameList(os), length - 60, length - 1, true, false, false, false, true, "FASTA"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // QFile resFile(testDir + "_common_data/scenarios/sandbox/3870.fa");
     // QFile templateFile(testDir + "_common_data/scenarios/_regression/3870/3870.fa");
@@ -4799,7 +4802,7 @@ GUI_TEST_CLASS_DEFINITION(test_3994) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(1, 0));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));

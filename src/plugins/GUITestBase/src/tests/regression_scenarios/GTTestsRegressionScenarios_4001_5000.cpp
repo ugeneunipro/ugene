@@ -4011,7 +4011,7 @@ GUI_TEST_CLASS_DEFINITION(test_4701) {
                   "1 Mecopoda_elongata__Sumatra_ is not collapsed");
 
     // Press the Remove All Gaps button.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -4566,7 +4566,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     // Expected state subalignment pasted correctly
     GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
 
@@ -4789,7 +4789,7 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QModelIndex aminoExtIdx = GTUtilsProjectTreeView::findIndex(os, "amino_ext");
-    GTUtilsProjectTreeView::dragAndDrop(os, aminoExtIdx, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, aminoExtIdx, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -4956,13 +4956,13 @@ GUI_TEST_CLASS_DEFINITION(test_4804_3) {
 
     //    2. Add  extended amino sequence by drag and drop
     QModelIndex toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_amino_seq");
-    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Add  extended DNA sequence by drag and drop
     toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_dna_seq");
-    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended amino acid\" to \"Raw\"");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
