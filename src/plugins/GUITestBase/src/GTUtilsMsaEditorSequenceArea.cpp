@@ -160,8 +160,7 @@ void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& o
 
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const QPoint& position) {
-    MSAEditorSequenceArea* msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(msaSeqArea != nullptr, "MSA Editor sequence area is not found");
+    auto msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(msaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -232,8 +231,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "moveMouseToPosition"
 void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
-    MSAEditorSequenceArea* msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(msaSeqArea != nullptr, "MSA Editor sequence area is not found");
+    auto msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -348,7 +346,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
 
     int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
     GTMouseDriver::moveTo(globalCoord);
@@ -417,7 +415,7 @@ int GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(GUITestOpStatus& os, bo
 
 #define GT_METHOD_NAME "getLength"
 int GTUtilsMSAEditorSequenceArea::getLength(GUITestOpStatus& os) {
-    QWidget* statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::length(os, statusWidget);
 }
 #undef GT_METHOD_NAME
@@ -451,10 +449,9 @@ void GTUtilsMSAEditorSequenceArea::dragAndDropSelection(GUITestOpStatus& os, con
 
 #define GT_METHOD_NAME "offsetsVisible"
 bool GTUtilsMSAEditorSequenceArea::offsetsVisible(GUITestOpStatus& os) {
-    QWidget* leftOffsetWidget = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_left");
-    QWidget* rightOffsetWidget = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right");
+    auto leftOffsetWidget = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_left");
+    auto rightOffsetWidget = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right");
 
-    GT_CHECK_RESULT((leftOffsetWidget != nullptr) && (rightOffsetWidget != nullptr), "offset widgets are NULL", false);
     GT_CHECK_RESULT(leftOffsetWidget->isVisible() == rightOffsetWidget->isVisible(), "offset widget visibility states are not the same", false);
 
     return leftOffsetWidget->isVisible();
@@ -568,8 +565,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, 
 
     const int posX = msaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(columnNumber) + shift.x();
 
-    QWidget* consArea = GTWidget::findWidget(os, "consArea");
-    CHECK_SET_ERR(consArea != nullptr, "consArea is NULL");
+    auto consArea = GTWidget::findWidget(os, "consArea");
 
     const int posY = consArea->mapToGlobal(consArea->rect().center()).y();
     GTMouseDriver::moveTo(QPoint(posX, posY));
@@ -595,8 +591,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(GUITestOpStatus& os, co
         row++;
     }
     QPoint center = convertCoordinates(os, QPoint(-5, row));
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
-    GT_CHECK_RESULT(nameList != nullptr, "name list is NULL", false);
+    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
 
     int initCoord = center.y() - getRowHeight(os, row) / 2;
     int finalCoord = center.y() + getRowHeight(os, row) / 2;
@@ -838,22 +833,19 @@ void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus& os, con
 #undef GT_METHOD_NAME
 
 void GTUtilsMSAEditorSequenceArea::zoomIn(GUITestOpStatus& os) {
-    QWidget* zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
-    CHECK_SET_ERR(nullptr != zoomInButton, "Can't find the 'Zoom in' button");
+    auto zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
 
     GTWidget::click(os, zoomInButton);
 }
 
 void GTUtilsMSAEditorSequenceArea::zoomOut(GUITestOpStatus& os) {
-    QWidget* zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
-    CHECK_SET_ERR(nullptr != zoomOutButton, "Can't find the 'Zoom out' button");
+    auto zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
 
     GTWidget::click(os, zoomOutButton);
 }
 
 void GTUtilsMSAEditorSequenceArea::zoomToMax(GUITestOpStatus& os) {
-    QWidget* zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
-    CHECK_SET_ERR(nullptr != zoomInButton, "Can't find the 'Zoom in' button");
+    auto zoomInButton = GTWidget::findButtonByText(os, "Zoom in");
 
     while (zoomInButton->isEnabled()) {
         GTWidget::click(os, zoomInButton);
@@ -861,8 +853,7 @@ void GTUtilsMSAEditorSequenceArea::zoomToMax(GUITestOpStatus& os) {
 }
 
 void GTUtilsMSAEditorSequenceArea::zoomToMin(GUITestOpStatus& os) {
-    QWidget* zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
-    CHECK_SET_ERR(nullptr != zoomOutButton, "Can't find the 'Zoom out' button");
+    auto zoomOutButton = GTWidget::findButtonByText(os, "Zoom out");
 
     while (zoomOutButton->isEnabled()) {
         GTWidget::click(os, zoomOutButton);

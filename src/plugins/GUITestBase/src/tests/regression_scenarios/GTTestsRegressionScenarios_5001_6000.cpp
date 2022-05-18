@@ -88,7 +88,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -721,8 +720,7 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //        Files: "_common_data/fasta/random_primers.fa"
     //    and accept the dialog.
     class ImportFromMultifasta : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+        void run(HI::GUITestOpStatus& os) override {
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -793,18 +791,6 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                   QString("Incorrect count of items in the Project View after the second insertion: expected %1, got %2")
                       .arg(expectedDocumentsCount)
                       .arg(documentsCount));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5216) {
-    // 1. Connect to the public database
-    // GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTLogTracer lt;
-    // 2. Type to the project filter field "acct" then "acctt"
-    GTUtilsProjectTreeView::filterProjectSequental(os, {"acct", "accttt"}, true);
-    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    // GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5220) {
@@ -3720,20 +3706,6 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
 
     // Expected: no errors in the log
     CHECK_SET_ERR(errors.isEmpty(), "Some errors in the log");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5762) {
-    // 1. Connect to a shared database.
-    // 2. Right click on the document->Add->Import to the database.
-    // 3. Click "Add files".
-    // 4. Choose "data/samples/ABIF/A01.abi".
-    // 5. Click "Import".
-    // Expected state : the file is imported, there are no errors in the log.
-    GTLogTracer logTracer;
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, "/regression5761", QStringList() << dataDir + "samples/ABIF/A01.abi");
-    GTUtilsNotifications::waitForNotification(os, false, "Aligned reads (16)");
-    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5769_1) {

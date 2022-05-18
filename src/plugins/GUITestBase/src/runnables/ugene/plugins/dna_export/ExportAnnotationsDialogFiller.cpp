@@ -98,17 +98,17 @@ void ExportAnnotationsFiller::commonScenario() {
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
     if (!addToProject) {
-        auto addToProjectButton = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectCheck"), dialog);
+        auto addToProjectButton = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
         if (addToProjectButton->isEnabled()) {
             GTCheckBox::setChecked(os, addToProjectButton, false);
         }
     }
 
     if (!softMode) {
-        auto checkButton = GTWidget::findCheckBox(os, QString::fromUtf8("exportSequenceCheck"), dialog);
+        auto checkButton = GTWidget::findCheckBox(os, "exportSequenceCheck", dialog);
         GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
 
-        checkButton = GTWidget::findCheckBox(os, QString::fromUtf8("exportSequenceNameCheck"), dialog);
+        checkButton = GTWidget::findCheckBox(os, "exportSequenceNameCheck", dialog);
         GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
     }
 

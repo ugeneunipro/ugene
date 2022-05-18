@@ -173,6 +173,10 @@ public:
 
     void saveState();
     void releaseState();
+    /**
+     * Returns true if there are any gaps except trailing.
+     */
+    bool hasNonTrailingGap() const;
 
 signals:
     void si_startMaUpdating();

@@ -318,11 +318,11 @@ bool MsaRowUtils::isGap(int dataLength, const QVector<U2MsaGap>& gapModel, int p
         gapsLength += gap.length;
     }
 
-    if (dataLength + gapsLength <= position) {
-        return true;
+    if (dataLength + gapsLength > position) {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const QVector<U2MsaGap>& gapModel, int position) {

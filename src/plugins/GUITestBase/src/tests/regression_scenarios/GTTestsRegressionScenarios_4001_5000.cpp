@@ -95,7 +95,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
@@ -917,65 +916,6 @@ GUI_TEST_CLASS_DEFINITION(test_4099) {
     }
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4100) {
-    //    1. Create or open a file with a few annotations
-    //    2. Import that file to shared database and open it
-    //    Expected state: annotations in database are the same as the annotations from step 1
-
-    ADVSingleSequenceWidget* wgt = GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/genbank/", "JQ040024.1.gb", "JQ040025");
-    CHECK_SET_ERR(wgt != nullptr, "No ADVSignleSequenceWidget found");
-    ADVSequenceObjectContext* ctx = wgt->getActiveSequenceContext();
-    CHECK_SET_ERR(ctx != nullptr, "Sequence context is NULL");
-    QSet<AnnotationTableObject*> annTables = ctx->getAnnotationObjects();
-
-    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    QList<ImportToDatabaseDialogFiller::Action> actions;
-    QVariantMap addFileAction;
-    addFileAction.insert(ImportToDatabaseDialogFiller::Action::ACTION_DATA__PATHS_LIST, testDir + "_common_data/genbank/JQ040024.1.gb");
-    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::ADD_FILES, addFileAction);
-    actions << ImportToDatabaseDialogFiller::Action(ImportToDatabaseDialogFiller::Action::IMPORT, QVariantMap());
-
-    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, actions));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__add_menu", "action_project__import_to_database"}));
-    GTUtilsProjectTreeView::click(os, "ugene_gui_test", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
-
-    GTUtilsSharedDatabaseDocument::doubleClickItem(os, databaseDoc, "JQ040024.1");
-    QModelIndex idx = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, "/JQ040024.1/JQ040025");
-    GTUtilsProjectTreeView::doubleClickItem(os, idx);
-
-    ADVSingleSequenceWidget* wgtDB = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgtDB != nullptr, "No ADVSingleSequenceWidget fond");
-    ctx = wgtDB->getActiveSequenceContext();
-    CHECK_SET_ERR(ctx != nullptr, "Sequence context is NULL");
-    QSet<AnnotationTableObject*> annTablesDB = ctx->getAnnotationObjects();
-
-    CHECK_SET_ERR(annTables.size() == annTablesDB.size(), "Number of annotation tables imported is incorrect");
-    CHECK_SET_ERR(annTables.size() == 1, "Number of annotation tables is incorrect");
-
-    CHECK_SET_ERR(annTables.values().first() != nullptr, "AnnotationTable is NULL");
-    QList<Annotation*> annInitial = annTables.values().first()->getAnnotations();
-    CHECK_SET_ERR(annTablesDB.values().first() != nullptr, "AnnotationTable is NULL");
-    QList<Annotation*> annImported = annTablesDB.values().first()->getAnnotations();
-
-    foreach (Annotation* ann, annInitial) {
-        bool found = false;
-        foreach (Annotation* aImported, annImported) {
-            if (*ann->getData() == *aImported->getData()) {
-                found = true;
-                break;
-            }
-        }
-        CHECK_SET_ERR(found == true, QString("Annotation '%1' was not imported").arg(ann->getName()));
-    }
-
-    GTUtilsSharedDatabaseDocument::doubleClickItem(os, databaseDoc, "JQ040024.1");
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_4104) {
     GTLogTracer l;
     // 1. Open the attached workflow file.
@@ -1037,93 +977,6 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 4));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4110) {
-    GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_4110_human_T1.fa");
-    GTUtilsMdi::click(os, GTGlobals::Close);
-
-    //    1. Connect to the shared database "ugene_gui_test_win" located on "ugene-quad-ubuntu".
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    //    2. Open sequence view for sequence from ugene_gui_test_win:/view_test_0001/NC_001363.
-    QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, "test_4110");
-    QModelIndex sequenceIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363", folderIndex);
-    QModelIndex annotationIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", folderIndex);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, sequenceIndex));
-    GTMouseDriver::doubleClick();
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTThread::waitForMainThread();
-
-    //    Expected state: sequence is opened with its annotations on the same view.
-    QList<QTreeWidgetItem*> annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    int num = annotationsInFile.size();
-    CHECK_SET_ERR(num == 14, QString("1: unexpected annotations number: %1").arg(num));
-
-    //    3. Open file "data/samples/FASTA/human_T1.fa".
-    GTFileDialog::openFile(os, sandBoxDir + "test_4110_human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //    4. Drag&drop annotation object "ugene_gui_test_win:/view_test_0001/NC_001363 features" to the sequence view.
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    QWidget* panOrDetView = GTUtilsSequenceView::getPanOrDetView(os);
-    GTUtilsProjectTreeView::dragAndDrop(os, annotationIndex, panOrDetView);
-    GTThread::waitForMainThread();
-
-    //    Expected state: annotations successfully associated with a new sequence.
-    annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    num = annotationsInFile.size();
-    CHECK_SET_ERR(num == 14, QString("2: unexpected annotations number: %1").arg(num));
-
-    //    5. Close both sequence views.
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
-
-    //    6. Open a sequence view for "human_T1" again.
-    GTUtilsProjectTreeView::doubleClickItem(os, "test_4110_human_T1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTThread::waitForMainThread();
-
-    //    Expected state: it still displays annotations along with the sequence
-    annotationsInFile = GTTreeWidget::getItems(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    num = annotationsInFile.size();
-    CHECK_SET_ERR(num == 14, QString("3: unexpected annotations number: %1").arg(num));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4111) {
-    GTLogTracer l;
-    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/bowtie/index/",
-                                                 "e_coli.1.ebwt",
-                                                 testDir + "_common_data/fastq/",
-                                                 "short_sample.fastq",
-                                                 AlignShortReadsFiller::Parameters::Bowtie);
-
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_4111.ugenedb"));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4113) {
-    //    1. Connect to a shared DB.
-    //    2. Import the folder "data/samples/Assembly" to it
-    //    3. Import ugenedb file
-    //    Expected state: import is completed successfully
-
-    GTLogTracer l;
-
-    Document* doc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    GTUtilsSharedDatabaseDocument::importDirs(os, doc, "/test_4113", QStringList() << dataDir + "/samples/Assembly/");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsSharedDatabaseDocument::importFiles(os, doc, "/test_4113", QStringList() << testDir + "/_common_data/ugenedb/scerevisiae.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsLog::check(os, l);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_4116) {
     //    1. Open the Primer Library.
     GTUtilsPrimerLibrary::openLibrary(os);
@@ -1132,38 +985,29 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
-            //    Expected: the dialog is modal, the "OK" button is disabled.
+        void run(HI::GUITestOpStatus& os) override {
+            // Expected: the dialog is modal, the "OK" button is disabled.
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(GTUtilsDialog::buttonBox(os, dialog) != nullptr, "ButtonBox is NULL");
 
             QWidget* okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(nullptr != okButton, "Export button is NULL");
+            CHECK_SET_ERR(okButton != nullptr, "Export button is NULL");
             CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
 
-            //    3. Add human_T1.fa.
+            // 3. Add human_T1.fa.
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Add file(s)", dialog));
 
-            //    4. Click the added item.
+            // 4. Click the added item.
             const QString filePath = QDir::cleanPath(QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath());
             GTListWidget::click(os, GTWidget::findListWidget(os, "lwFiles", dialog), filePath);
 
-            //    Expected: the "Remove" button is enabled.
+            // Expected: the "Remove" button is enabled.
             QWidget* removeButton = GTWidget::findWidget(os, "pbRemoveFile", dialog);
             CHECK_SET_ERR(nullptr != removeButton, "Remove button is NULL");
             CHECK_SET_ERR(removeButton->isEnabled(), "Remove button is unexpectedly disabled");
 
-            //    5. Choose "Shared database" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Shared database");
-
-            //    Expected: the "OK" button is disabled.
-            CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
-
-            //    6. Choose "Local file(s)" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Local file(s)");
-
-            //    Expected: the "OK" button is enabled.
+            // Expected: the "OK" button is enabled.
             CHECK_SET_ERR(okButton->isEnabled(), "OK button is unexpectedly disabled");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -1456,88 +1300,6 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
 
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new Scenario_test_4148()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4150) {
-    QString fileName = GTUtils::genUniqueString("test_4150_murine.gb");
-    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + fileName);
-
-    // Connect to the ugene-quad-ubuntu shared DB
-    Document* dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-
-    // Create a new folder "qwe" there
-    QString folderName = GTUtils::genUniqueString("test_4150");
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folderName);
-
-    // Open file "data/samples/Genbank/murine.gb"
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    // Close the sequence view
-    GTUtilsMdi::closeActiveWindow(os);
-
-    // Drag&drop the sequence document to "qwe" in the DB
-    QModelIndex from = GTUtilsProjectTreeView::findIndex(os, fileName);
-    QModelIndex to = GTUtilsProjectTreeView::findIndex(os, folderName);
-
-    class Scenario4150ProjectSelector : public CustomScenario {
-    public:
-        Scenario4150ProjectSelector(const QString& fileName)
-            : fileName(fileName) {
-        }
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeView* treeView = GTWidget::findWidgetByType<QTreeView*>(os, dialog, "Failed to find tree widget");
-            QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, fileName);
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, documentIndex));
-            GTMouseDriver::click();
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-        QString fileName;
-    };
-
-    class Scenario4150 : public CustomScenario {
-    public:
-        Scenario4150(const QString& fileName)
-            : fileName(fileName) {
-        }
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, new Scenario4150ProjectSelector(fileName)));
-            GTWidget::click(os, GTWidget::findWidget(os, "pbAddObjects", dialog));
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-        QString fileName;
-    };
-
-    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, new Scenario4150(fileName)));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__add_menu", "action_project__import_to_database"}));
-    GTUtilsProjectTreeView::click(os, folderName, Qt::RightButton);
-    to = GTUtilsProjectTreeView::findIndex(os, folderName);
-
-    // Double click on the sequence object from the "murine.gb" file
-    QModelIndex seqFile = GTUtilsProjectTreeView::findIndex(os, "NC_001363", from);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqFile));
-    GTMouseDriver::doubleClick();
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    // Expected state: sequence view has opened, it contains a single set of annotations
-    QList<QTreeWidgetItem*> annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
-    int num = annotationsInFile.size();
-    CHECK_SET_ERR(num == 14, QString("unexpected annotations number: %1").arg(num));
-
-    // Do double click on the sequence object from the "murine.gb" folder
-    GTUtilsMdi::closeActiveWindow(os);
-
-    QModelIndex murineFol = GTUtilsProjectTreeView::findIndex(os, fileName, to);
-    QModelIndex seqFol = GTUtilsProjectTreeView::findIndex(os, "NC_001363", murineFol);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqFol));
-    GTMouseDriver::doubleClick();
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    // Expected state: sequence view has opened, it contains a single set of annotations
-    annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
-    num = annotationsInFile.size();
-    CHECK_SET_ERR(num == 14, QString("unexpected annotations number: %1").arg(num));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4151) {
@@ -3235,6 +2997,36 @@ GUI_TEST_CLASS_DEFINITION(test_4489) {
     CHECK_SET_ERR(expectedColor == currentColor, QString("An unexpected color, maybe overview was not rendered: expected %1, got %2").arg(expectedColorString).arg(currentColorString));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4500) {
+    // 1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 2. Open Remove Subsequence dialog
+    //  - Fill the dialog : region to remove – 1..1000
+    //  - check Save to new file
+    //  - check Merge annotations to this file
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
+    GTKeyboardUtils::selectAll();
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, RemovePartFromSequenceDialogFiller::Remove, true, sandBoxDir + "4500_result.gb", RemovePartFromSequenceDialogFiller::Genbank));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Open result file
+    // Expected state annotation locations changed accordingly
+    GTUtilsSequenceView::openSequenceView(os, "4500_result.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList newRegions({"42..1658", "join(1970..2413,2412..2873)", "2875..3999", "4048..4203"});
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    for (const QTreeWidgetItem* item : qAsConst(items)) {
+        if (!newRegions.contains(item->text(2))) {
+            CHECK_SET_ERR(false, "Unexpected CDS location " + item->text(2));
+        }
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4505) {
     //    1. Open "test/_common_data/scenarios/msa/Chikungunya_E1.fasta".
     GTLogTracer l;
@@ -4365,34 +4157,6 @@ GUI_TEST_CLASS_DEFINITION(test_4710_1) {
     corner = GTTabWidget::getTabCornerWidget(os, dashboardWidget, dashboardWidget->currentIndex());
     CHECK_SET_ERR(corner->isEnabled(), "close tab button is unexpectidly disabled");
     //    Expected result: Close dashboard tab button is enabled
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4712) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeView* treeView = dialog->findChild<QTreeView*>();
-            int visibleItemCount = 0;
-            for (int i = 0; i < treeView->model()->rowCount(); ++i) {
-                if (Qt::NoItemFlags != treeView->model()->flags(treeView->model()->index(i, 0))) {
-                    ++visibleItemCount;
-                }
-            }
-            CHECK_SET_ERR(visibleItemCount == 0, "Should be zero items");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-        }
-    };
-
-    //    1. Open "data/samples/ABIF/A01.abi".
-    GTFileDialog::openFile(os, dataDir + "samples/ABIF/A01.abi");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open "data/samples/ABIF/A01.abi".
-    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    //    3. Click context menu item "Edit existing sequence"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit existing sequence"}));
-    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, new Scenario()));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4714_1) {
@@ -5729,7 +5493,7 @@ GUI_TEST_CLASS_DEFINITION(test_4965) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
 
-            auto compressCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("compressCheck"), dialog);
+            auto compressCheckBox = GTWidget::findCheckBox(os, "compressCheck", dialog);
 
             QStringList checkFormats;
             checkFormats << "BAM"

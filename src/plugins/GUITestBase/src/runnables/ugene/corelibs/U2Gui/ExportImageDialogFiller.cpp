@@ -173,7 +173,7 @@ void SelectSubalignmentFiller::commonScenario() {
 
     GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
 
-    QTableWidget* table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
+    auto table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
 
     QPoint p = table->geometry().topRight();
     p.setX(p.x() - 2);

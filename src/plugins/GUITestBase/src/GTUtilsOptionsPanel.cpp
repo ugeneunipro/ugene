@@ -68,7 +68,7 @@ void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getActiveOptionsWidget"
 QWidget* GTUtilsOptionsPanel::getActiveOptionsWidget(GUITestOpStatus& os) {
-    QWidget* contentWidget = GTWidget::findWidget(os, "object_view_window_content_widget");
+    auto contentWidget = GTWidget::findWidget(os, "object_view_window_content_widget");
     auto optionsPanelWidget = GTWidget::findWidgetByType<OptionsPanelWidget*>(os, contentWidget, "OptionsPanelWidget is not found!");
     return optionsPanelWidget->getOptionsWidget();
 }

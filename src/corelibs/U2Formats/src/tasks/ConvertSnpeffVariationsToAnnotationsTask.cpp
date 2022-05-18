@@ -176,8 +176,7 @@ QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinis
         foreach (const QString& chromosome, annotationsData.keys()) {
             AnnotationTableObject* annotationTableObject = new AnnotationTableObject(chromosome, dstDbiRef);
             annotationTableObjects << annotationTableObject;
-
-            createAnnotationsTasks << new CreateAnnotationsTask(annotationTableObject, annotationsData[chromosome], "Variations");
+            createAnnotationsTasks << new CreateAnnotationsTask(annotationTableObject, {{"Variations", annotationsData[chromosome]}}, false);
         }
         newSubtasks << createAnnotationsTasks;
     }

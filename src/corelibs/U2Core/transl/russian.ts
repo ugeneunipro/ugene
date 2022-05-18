@@ -832,14 +832,6 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
-    <name>U2::ConnectSharedDatabaseTask</name>
-    <message>
-        <location filename="../src/tasks/ConnectSharedDatabaseTask.cpp" line="35"/>
-        <source>Connecting to database: </source>
-        <translation>Подключение к базе данных: </translation>
-    </message>
-</context>
-<context>
     <name>U2::ConsoleShutdownTask</name>
     <message>
         <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="33"/>
@@ -1223,14 +1215,6 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/datatype/BaseTranslations.cpp" line="672"/>
         <source>Stop codon</source>
         <translation>Стоп-кодон</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DatabaseConnectionAdapterFactory</name>
-    <message>
-        <location filename="../src/io/DatabaseConnectionAdapter.cpp" line="33"/>
-        <source>Database connection</source>
-        <translation>Подключение к базе данных</translation>
     </message>
 </context>
 <context>

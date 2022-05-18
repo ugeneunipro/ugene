@@ -223,7 +223,7 @@ void CollocationsDialogController::sl_saveClicked() {
     assert(resultsList->count() > 0);
 
     CreateAnnotationModel m;
-    m.sequenceObjectRef = ctx->getSequenceGObject();
+    m.sequenceObjectRef = ctx->getSequenceGObject()->getReference();
     m.hideLocation = true;
     m.useAminoAnnotationTypes = ctx->getAlphabet()->isAmino();
     m.sequenceLen = ctx->getSequenceObject()->getSequenceLength();
@@ -245,7 +245,7 @@ void CollocationsDialogController::sl_saveClicked() {
         list.append(data);
     }
 
-    ADVCreateAnnotationsTask* t = new ADVCreateAnnotationsTask(ctx->getAnnotatedDNAView(), m.getAnnotationObject(), m.groupName, list);
+    auto t = new ADVCreateAnnotationsTask(ctx->getAnnotatedDNAView(), m.getAnnotationObject()->getReference(), m.groupName, list);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

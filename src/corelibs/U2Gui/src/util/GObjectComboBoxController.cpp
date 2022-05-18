@@ -71,17 +71,11 @@ void GObjectComboBoxController::updateCombo() {
 }
 
 void GObjectComboBoxController::connectDocument(Document* document) {
-    if (document->isDatabaseConnection()) {
-        return;
-    }
     connect(document, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
     connect(document, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
 }
 
 void GObjectComboBoxController::addDocumentObjects(Document* d) {
-    if (d->isDatabaseConnection()) {
-        return;
-    }
     // checks whether you need to add a new annotations table
     QString docUrl = settings.relationFilter.ref.docUrl;
     if (d->getURLString() == docUrl) {
@@ -112,11 +106,8 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
 }
 
 void GObjectComboBoxController::removeDocumentObjects(Document* d) {
-    if (d->isDatabaseConnection()) {
-        return;
-    }
     foreach (GObject* obj, d->getObjects()) {
-        removeObject(obj);
+        removeObject(obj->getReference());
     }
 }
 
@@ -161,7 +152,7 @@ void GObjectComboBoxController::addObject(GObject* obj) {
     }
 
 #ifdef _DEBUG
-    int n = findItem(combo, obj);
+    int n = findItem(combo, obj->getReference());
     assert(n == -1);
 #endif
     connect(obj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
@@ -246,9 +237,9 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
     }
     GObject* obj = qobject_cast<GObject*>(sender());
     if (obj->isStateLocked()) {
-        removeObject(obj);
+        removeObject(obj->getReference());
     } else {
-        if (findItem(combo, obj) == -1) {
+        if (findItem(combo, obj->getReference()) == -1) {
             updateCombo();
         }
     }

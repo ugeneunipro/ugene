@@ -155,6 +155,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)), SLOT(sl_alphabetChanged(const MaModificationInfo&, const DNAAlphabet*)));
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MSAEditorSequenceArea::sl_updateActions);
 
     connect(getEditor()->gotoAction, &QAction::triggered, this, &MSAEditorSequenceArea::sl_goto);
 
@@ -288,6 +289,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     const MaEditorSelection& selection = editor->getSelection();
     bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
+
     ui->delSelectionAction->setEnabled(canEditSelectedArea);
     ui->pasteAction->setEnabled(!readOnly);
     ui->pasteBeforeAction->setEnabled(!readOnly);
@@ -299,7 +301,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     reverseAction->setEnabled(canEditSelectedArea);
     complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
-    removeAllGapsAction->setEnabled(canEditAlignment);
+    removeAllGapsAction->setEnabled(canEditAlignment && maObj->hasNonTrailingGap());
 }
 
 void MSAEditorSequenceArea::sl_delCol() {

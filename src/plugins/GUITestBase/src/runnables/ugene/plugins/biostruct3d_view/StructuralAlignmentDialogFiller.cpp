@@ -37,7 +37,7 @@ void StructuralAlignmentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!chainIndexes.isEmpty()) {
-        QWidget* refEditor = GTWidget::findWidget(os, "ref_editor", dialog);
+        auto refEditor = GTWidget::findWidget(os, "ref_editor", dialog);
         auto combo = GTWidget::findComboBox(os, "chainCombo", refEditor);
         for (const QString& curString : qAsConst(chainIndexes)) {
             int index = combo->findText(curString, Qt::MatchContains);

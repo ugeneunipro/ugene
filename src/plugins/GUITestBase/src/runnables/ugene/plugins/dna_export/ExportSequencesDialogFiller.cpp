@@ -136,12 +136,12 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     GTGlobals::sleep(200);
 
-    auto projectCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("addToProjectBox"), dialog);
+    auto projectCheckBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
     GTCheckBox::setChecked(os, projectCheckBox, addToProject);
 
     GTGlobals::sleep(200);
 
-    auto annotationsCheckBox = GTWidget::findCheckBox(os, QString::fromUtf8("withAnnotationsBox"), dialog);
+    auto annotationsCheckBox = GTWidget::findCheckBox(os, "withAnnotationsBox", dialog);
     if (annotationsCheckBox->isEnabled()) {
         GTCheckBox::setChecked(os, annotationsCheckBox, exportWithAnnotations);
     }

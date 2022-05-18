@@ -89,7 +89,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
@@ -4523,6 +4522,46 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
     CHECK_SET_ERR(undo->isEnabled(), "Undo button should be enabled");
     GTWidget::click(os, undo);
     CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6703) {
+    //1. Open "_common_data/regression/6703/1.aln
+    //Expected state: 'Remove all gaps' button is disabled
+    //Close view
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    auto button = GTWidget::findButtonByText(os, "Remove all gaps");
+    CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
+    GTUtilsMdi::closeWindow(os, "1 [1.aln]");
+
+    //2. Open "_common_data/regression/6703/2.aln
+    //Expected state: 'Remove all gaps' button is enabled
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/2.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    button = GTWidget::findButtonByText(os, "Remove all gaps");
+    CHECK_SET_ERR(button->isEnabled(), "'Remove all gaps' unexpectedly disabled");
+    
+    //3. Do menu with corresponding action
+    //Expected state: 'Remove all gaps' button is disabled
+    QWidget* seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
+    GTMenu::showContextMenu(os, seqArea);
+    CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
+    GTUtilsMdi::closeWindow(os, "2 [2.aln]");
+
+    //4. Open "_common_data/regression/6703/3.aln
+    //Expected state: 'Remove all gaps' button is enabled
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/3.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    button = GTWidget::findButtonByText(os, "Remove all gaps");
+    CHECK_SET_ERR(button->isEnabled(), "'Remove all gaps' unexpectedly disabled");
+
+    //5. Do menu with corresponding action
+    //Expected state: 'Remove all gaps' button is disabled
+    seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
+    GTMenu::showContextMenu(os, seqArea);
+    CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6705) {

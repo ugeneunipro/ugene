@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // the rest part of the test checks that a newly created association can be used for sequence export
 
     QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "Ca21chr5 features");
-    QWidget* seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -479,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     QModelIndex annIdx = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
-    QWidget* seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, annIdx, seqArea);

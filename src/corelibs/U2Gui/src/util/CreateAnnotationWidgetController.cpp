@@ -369,7 +369,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
         ann->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
         d->addObject(ann);
         occ->setSelectedObject(ann);
-        model.annotationObjectRef = ann;
+        model.annotationObjectRef = ann->getReference();
     }
     SAFE_POINT(v.isEmpty(), "Annotation model is not valid", false);
     if (!model.annotationObjectRef.isValid() && w->isNewTableOptionSelected()) {
@@ -386,7 +386,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
         aobj->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
         d->addObject(aobj);
         AppContext::getProject()->addDocument(d);
-        model.annotationObjectRef = aobj;
+        model.annotationObjectRef = aobj->getReference();
     }
 
     return true;

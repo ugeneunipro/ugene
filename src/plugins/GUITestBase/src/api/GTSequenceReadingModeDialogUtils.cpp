@@ -147,7 +147,7 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
 
 #define GT_METHOD_NAME "clickButton"
 void GTSequenceReadingModeDialogUtils::clickButton() {
-    auto buttonBox = GTWidget::findDialogButtonBox(os, QString::fromUtf8("buttonBox"), dialog);
+    auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
     QList<QAbstractButton*> buttonList = buttonBox->buttons();
     GT_CHECK(buttonList.size() != 0, "button not found");

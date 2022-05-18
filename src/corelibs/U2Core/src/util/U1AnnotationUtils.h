@@ -130,7 +130,9 @@ public:
 
 class U2CORE_EXPORT FixAnnotationsUtils {
 public:
-    static QMap<Annotation*, QList<QPair<QString, QString>>> fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, QList<Document*> docs = QList<Document*>());
+    static QMap<Annotation*, QList<QPair<QString, QString>>> fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, 
+                                                                            QList<Document*> docs, bool recalculateQualifiers = false, 
+                                                                            U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize);
 
 private:
     FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, QList<Document*> docs = QList<Document*>());

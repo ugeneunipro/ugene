@@ -199,7 +199,6 @@ void DownloadRemoteFileDialogFiller::checkForceSequenceDownloadVisibility(const 
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get expected visibility state from the action data");
     auto chbForceDownloadSequence = GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog);
-    GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
     GT_CHECK(actionData.toBool() == chbForceDownloadSequence->isVisible(), "Force download sequence checkbox has incorrect invisibility state");
 }
 #undef GT_METHOD_NAME
@@ -209,7 +208,6 @@ void DownloadRemoteFileDialogFiller::checkForceSequenceDownload(const QVariant& 
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     auto chbForceDownloadSequence = GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog);
-    GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
     GT_CHECK(actionData.toBool() == chbForceDownloadSequence->isChecked(), "Force download sequence checkbox has incorrect state");
 }
 #undef GT_METHOD_NAME
@@ -253,7 +251,7 @@ void RemoteDBDialogFillerDeprecated::commonScenario() {
         GTComboBox::selectItemByIndex(os, formatBox, outFormatVal, useMethod);
     }
     if (!addToProject) {
-        auto addToProjectButton = GTWidget::findCheckBox(os, QString::fromUtf8("chbAddToProjectCheck"), dialog);
+        auto addToProjectButton = GTWidget::findCheckBox(os, "chbAddToProjectCheck", dialog);
         GTCheckBox::setChecked(os, addToProjectButton, false);
     }
     if (pressCancel) {

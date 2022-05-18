@@ -143,12 +143,7 @@ void OpenSavedTreeViewerTask::open() {
         stateInfo.setError(L10N::errorDocumentNotFound(ref.docUrl));
         return;
     }
-    GObject* obj = nullptr;
-    if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
-        obj = doc->getObjectById(ref.entityRef.entityId);
-    } else {
-        obj = doc->findGObjectByName(ref.objName);
-    }
+    GObject* obj = doc->findGObjectByName(ref.objName);
     if (obj == nullptr || obj->getGObjectType() != GObjectTypes::PHYLOGENETIC_TREE) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Phylogeny tree object not found: %1").arg(ref.objName));

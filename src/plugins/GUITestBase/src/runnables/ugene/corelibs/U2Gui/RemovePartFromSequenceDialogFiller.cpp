@@ -60,14 +60,14 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!range.isEmpty()) {
-        auto removeLocationEdit = GTWidget::findLineEdit(os, QString::fromUtf8("removeLocationEdit"), dialog);
+        auto removeLocationEdit = GTWidget::findLineEdit(os, "removeLocationEdit", dialog);
         GTLineEdit::setText(os, removeLocationEdit, range);
     }
     if (removeType == Resize) {
-        auto resizeRB = GTWidget::findRadioButton(os, QString::fromUtf8("resizeRB"), dialog);
+        auto resizeRB = GTWidget::findRadioButton(os, "resizeRB", dialog);
         GTRadioButton::click(os, resizeRB);
     } else {
-        auto removeRB = GTWidget::findRadioButton(os, QString::fromUtf8("removeRB"), dialog);
+        auto removeRB = GTWidget::findRadioButton(os, "removeRB", dialog);
         GTRadioButton::click(os, removeRB);
     }
 
@@ -75,14 +75,14 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
 
     GTGlobals::sleep(1000);
     if (saveNew) {
-        auto saveToAnotherBox = GTWidget::findGroupBox(os, QString::fromUtf8("saveToAnotherBox"), dialog);
+        auto saveToAnotherBox = GTWidget::findGroupBox(os, "saveToAnotherBox", dialog);
         GTGroupBox::setChecked(os, saveToAnotherBox, true);
-        auto filepathEdit = GTWidget::findLineEdit(os, QString::fromUtf8("filepathEdit"), dialog);
+        auto filepathEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
 
         GTLineEdit::setText(os, filepathEdit, saveToFile);
     }
     if (format != FASTA) {
-        auto formatBox = GTWidget::findComboBox(os, QString::fromUtf8("formatBox"), dialog);
+        auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);
         int index = formatBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 

@@ -1136,7 +1136,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     QAbstractButton* complement = GTAction::button(os, "complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton* complement1 = GTAction::button(os, "complement_action");
@@ -1167,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     QAbstractButton* complement = GTAction::button(os, "complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton* complement1 = GTAction::button(os, "complement_action");
@@ -1198,7 +1198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     QAbstractButton* complement = GTAction::button(os, "complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton* complement1 = GTAction::button(os, "complement_action");

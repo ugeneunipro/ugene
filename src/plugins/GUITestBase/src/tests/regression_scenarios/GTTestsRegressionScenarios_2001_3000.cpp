@@ -89,7 +89,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
@@ -4899,7 +4898,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910_2) {
             CHECK_SET_ERR(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
             GTLineEdit::setText(os, regionEdit, "0..5000");
 
-            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>(QString::fromUtf8("buttonBox"));
+            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
             CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(nullptr != button, "cancel button is null");
@@ -4935,7 +4934,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
             CHECK_SET_ERR(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
             GTLineEdit::setText(os, regionEdit, "1..199951");
 
-            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>(QString::fromUtf8("buttonBox"));
+            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
             CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(nullptr != button, "cancel button is null");

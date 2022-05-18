@@ -106,7 +106,7 @@ Document* ObjectViewTask::createDocumentAndAddToProject(const QString& docUrl, P
 
     GUrl url(docUrl);
     Document* doc = nullptr;
-    if (GUrl_File == url.getType()) {
+    if (url.getType() == GUrl_File) {
         QFileInfo fi(docUrl);
         CHECK_EXT(fi.exists(), os.setError(L10N::errorFileNotFound(docUrl)), nullptr);
 
@@ -116,20 +116,6 @@ Document* ObjectViewTask::createDocumentAndAddToProject(const QString& docUrl, P
 
         DocumentFormat* df = dfs.first().format;
         doc = df->createNewUnloadedDocument(iof, GUrl(docUrl), os);
-    } else if (GUrl_Network == url.getType()) {
-        IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::DATABASE_CONNECTION);
-        SAFE_POINT_EXT(nullptr != ioAdapterFactory, os.setError("Database connection IO adapter factory is NULL"), nullptr);
-
-        DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::DATABASE_CONNECTION);
-        SAFE_POINT_EXT(nullptr != format, os.setError("Database connection format is NULL"), nullptr);
-
-        if (!AppContext::getPasswordStorage()->contains(docUrl) && !AppContext::getCredentialsAsker()->askWithFixedLogin(docUrl)) {
-            return nullptr;
-        }
-
-        QVariantMap hints;
-        hints.insert(DocumentFormat::DBI_REF_HINT, QVariant::fromValue<U2DbiRef>(U2DbiRef(MYSQL_DBI_ID, docUrl)));
-        doc = format->loadDocument(ioAdapterFactory, url, hints, os);
     } else {
         FAIL("Unexpected parent document location", nullptr);
     }

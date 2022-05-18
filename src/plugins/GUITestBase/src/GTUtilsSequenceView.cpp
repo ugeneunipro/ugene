@@ -313,7 +313,7 @@ QWidget* GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus& os, int numbe
 
 #define GT_METHOD_NAME "getSeqWidgetByNumber"
 ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOpStatus& os, int number, const GTGlobals::FindOptions& options) {
-    QWidget* widget = GTWidget::findWidget(os,
+    auto widget = GTWidget::findWidget(os,
                                            QString("ADV_single_sequence_widget_%1").arg(number),
                                            getActiveSequenceViewWindow(os),
                                            options);
@@ -586,7 +586,7 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus& /*os*/, GSequence
 #define GT_METHOD_NAME "toggleGraphByName"
 void GTUtilsSequenceView::toggleGraphByName(HI::GUITestOpStatus& os, const QString& graphName, int sequenceViewIndex) {
     QWidget* sequenceWidget = getSeqWidgetByNumber(os, sequenceViewIndex);
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {graphName}));
     GTWidget::click(os, graphAction);
 }

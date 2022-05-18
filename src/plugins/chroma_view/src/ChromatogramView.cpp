@@ -296,7 +296,6 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
     s.objectConstraints.insert(&ac);
     ac.alphabetType = ctx->getSequenceObject()->getAlphabet()->getType();
     s.groupMode = ProjectTreeGroupMode_ByDocument;
-    s.ignoreRemoteObjects = true;
     foreach (GObject* o, dnaView->getObjects()) {
         s.excludeObjectList.append(o);
     }

@@ -38,7 +38,6 @@ public:
     static const DocumentFormatId BAM;
     static const DocumentFormatId BED;
     static const DocumentFormatId CLUSTAL_ALN;
-    static const DocumentFormatId DATABASE_CONNECTION;
     static const DocumentFormatId DIFF;
     static const DocumentFormatId FASTA;
     static const DocumentFormatId FASTQ;

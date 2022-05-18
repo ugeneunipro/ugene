@@ -74,7 +74,7 @@ void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
 bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget* innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
+    auto innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
     return nullptr != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME

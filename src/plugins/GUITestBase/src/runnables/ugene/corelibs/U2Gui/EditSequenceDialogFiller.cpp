@@ -86,7 +86,7 @@ void InsertSequenceFiller::commonScenario() {
     auto insertPositionSpin = GTWidget::findSpinBox(os, "insertPositionSpin", dialog);
     GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
 
-    auto checkButton = GTWidget::findGroupBox(os, QString::fromUtf8("saveToAnotherBox"), dialog);
+    auto checkButton = GTWidget::findGroupBox(os, "saveToAnotherBox", dialog);
 
     if ((saveToNewFile && !checkButton->isChecked()) || (!saveToNewFile && checkButton->isChecked())) {
         QPoint checkPos;
@@ -108,7 +108,7 @@ void InsertSequenceFiller::commonScenario() {
     GTGlobals::sleep(1000);
 
     if (saveToNewFile) {
-        auto checkButton1 = GTWidget::findCheckBox(os, QString::fromUtf8("mergeAnnotationsBox"), dialog);
+        auto checkButton1 = GTWidget::findCheckBox(os, "mergeAnnotationsBox", dialog);
         GTCheckBox::setChecked(os, checkButton1, mergeAnnotations);
 
         auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);

@@ -75,8 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -115,8 +114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -155,8 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -417,8 +414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::doubleClick();
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -554,8 +550,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::doubleClick();
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -737,7 +732,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
@@ -769,7 +764,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
@@ -802,8 +797,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));

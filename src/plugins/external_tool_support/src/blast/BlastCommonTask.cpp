@@ -180,7 +180,7 @@ QList<Task*> BlastCommonTask::onSubTaskFinished(Task* subTask) {
                 }
 
                 QList<SharedAnnotationData> resultAnnotations = getResultAnnotations();
-                res.append(new CreateAnnotationsTask(settings.aobj, resultAnnotations, settings.groupName));
+                res.append(new CreateAnnotationsTask(settings.aobj, {{settings.groupName, resultAnnotations}}));
             }
             if (res.isEmpty()) {
                 setReportingEnabled(true);
@@ -635,7 +635,7 @@ QList<Task*> BlastMultiTask::onSubTaskFinished(Task* subTask) {
         QList<SharedAnnotationData> resultAnnotations = blastTask->getResultAnnotations();
         if (!resultAnnotations.isEmpty()) {
             doc->addObject(settings.aobj);
-            res.append(new CreateAnnotationsTask(settings.aobj, resultAnnotations, settings.groupName));
+            res.append(new CreateAnnotationsTask(settings.aobj, {{settings.groupName, resultAnnotations}}));
         }
     }
     return res;

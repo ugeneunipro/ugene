@@ -495,11 +495,7 @@ void WriteAnnotationsWorkerFactory::init() {
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
             new URLDelegate(FileFilters::createFileFilterByDocumentFormatId(format), "", false, false, true, nullptr, format);
         delegates[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
-
         delegates[BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::DATA_STORAGE_ATTRIBUTE_VALUES_MAP());
-
-        delegates[BaseAttributes::DATABASE_ATTRIBUTE().getId()] = new ComboBoxWithDbUrlsDelegate;
-
         delegates[MERGE_TABLES_LOCAL] = new ComboBoxWithBoolsDelegate;
         delegates[MERGE_TABLES_SHARED] = new ComboBoxWithBoolsDelegate;
     }

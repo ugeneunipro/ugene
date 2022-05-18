@@ -561,7 +561,8 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 s
     return newLocation;
 }
 
-QMap<Annotation*, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, QList<Document*> docs) {
+QMap<Annotation*, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, 
+                                                                                      QList<Document*> docs, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str) {
     FixAnnotationsUtils fixer(os, seqObj, regionToReplace, sequence2Insert, recalculateQualifiers, str, docs);
     fixer.fixAnnotations();
     return fixer.annotationForReport;
@@ -579,15 +580,11 @@ FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject* seqOb
 
 void FixAnnotationsUtils::fixAnnotations() {
     QList<GObject*> annotationTablesList;
-    if (AppContext::getProject() != nullptr) {
-        annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
-    } else {
-        for (Document* d : qAsConst(docs)) {
-            QList<GObject*> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            for (GObject* table : qAsConst(allAnnotationTables)) {
-                if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
-                    annotationTablesList.append(table);
-                }
+    for (Document* d : qAsConst(docs)) {
+        QList<GObject*> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        for (GObject* table : qAsConst(allAnnotationTables)) {
+            if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
+                annotationTablesList.append(table);
             }
         }
     }

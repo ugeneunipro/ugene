@@ -109,7 +109,7 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVar
         QMap<QString, QVariant>::iterator iter = map.begin();
         while (iter != map.end()) {
             const QString& parameterName = iter.key();
-            QWidget* w = GTWidget::findWidget(os, parameterName + " widget", wizard->currentPage(), {false});
+            auto w = GTWidget::findWidget(os, parameterName + " widget", wizard->currentPage(), {false});
             if (w != nullptr) {
                 expandWizardParameterIfNeeded(os, parameterName, dialog);
                 QScrollArea* area = wizard->currentPage()->findChild<QScrollArea*>();
@@ -139,7 +139,7 @@ void GTUtilsWizard::setParameter(HI::GUITestOpStatus& os, const QString& paramet
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
 
-    QWidget* w = GTWidget::findWidget(os, parameterName + " widget", dialog);
+    auto w = GTWidget::findWidget(os, parameterName + " widget", dialog);
     QScrollArea* area = wizard->currentPage()->findChild<QScrollArea*>();
     if (area != nullptr) {
         area->ensureWidgetVisible(w);
@@ -157,7 +157,7 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus& os, const QString& par
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
 
-    QWidget* w = GTWidget::findWidget(os, parameterName + " widget", dialog);
+    auto w = GTWidget::findWidget(os, parameterName + " widget", dialog);
 
     QComboBox* combo = qobject_cast<QComboBox*>(w);
     if (combo != nullptr) {

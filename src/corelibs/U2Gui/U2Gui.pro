@@ -120,7 +120,6 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/project/ProjectFilterNames.h \
            src/util/project/ProjectFilterProxyModel.h \
            src/util/project/ProjectTreeController.h \
-           src/util/project/ProjectUpdater.h \
            src/util/project/ProjectUtils.h \
            src/util/project/ProjectViewFilterModel.h \
            src/util/project/ProjectViewModel.h \
@@ -128,8 +127,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/shared_db/EditConnectionDialog.h \
            src/util/shared_db/ImportOptionsWidget.h \
            src/util/shared_db/ImportToDatabaseDialog.h \
-           src/util/shared_db/ItemToImportEditDialog.h \
-           src/util/shared_db/SharedConnectionsDialog.h
+           src/util/shared_db/ItemToImportEditDialog.h
 
 FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/AuthenticationDialog.ui \
@@ -163,8 +161,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/shared_db/EditConnectionDialog.ui \
          src/util/shared_db/ImportOptionsWidget.ui \
          src/util/shared_db/ImportToDatabaseDialog.ui \
-         src/util/shared_db/ItemToImportEditDialog.ui \
-         src/util/shared_db/SharedConnectionsDialog.ui
+         src/util/shared_db/ItemToImportEditDialog.ui
 
 SOURCES += src/MainWindow.cpp \
            src/Notification.cpp \
@@ -278,7 +275,6 @@ SOURCES += src/MainWindow.cpp \
            src/util/project/ProjectFilterNames.cpp \
            src/util/project/ProjectFilterProxyModel.cpp \
            src/util/project/ProjectTreeController.cpp \
-           src/util/project/ProjectUpdater.cpp \
            src/util/project/ProjectUtils.cpp \
            src/util/project/ProjectViewFilterModel.cpp \
            src/util/project/ProjectViewModel.cpp \
@@ -286,8 +282,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/shared_db/EditConnectionDialog.cpp \
            src/util/shared_db/ImportOptionsWidget.cpp \
            src/util/shared_db/ImportToDatabaseDialog.cpp \
-           src/util/shared_db/ItemToImportEditDialog.cpp \
-           src/util/shared_db/SharedConnectionsDialog.cpp \
+           src/util/shared_db/ItemToImportEditDialog.cpp
 
 RESOURCES += U2Gui.qrc
 TRANSLATIONS += transl/russian.ts

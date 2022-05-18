@@ -152,8 +152,7 @@ MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
     QWidget* activeWindow = getActiveMsaEditorWindow(os);
-    MaEditorNameList* result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
-    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
+    auto result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -444,7 +443,7 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(GUITestOpStatus& os, const QString&
 
 #define GT_METHOD_NAME "getSequencesCount"
 int GTUtilsMsaEditor::getSequencesCount(GUITestOpStatus& os) {
-    QWidget* statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::getSequencesCount(os, statusWidget);
 }
 #undef GT_METHOD_NAME
@@ -541,7 +540,7 @@ void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus& os, const QString&
 
 #define GT_METHOD_NAME "closeActiveTreeTab"
 void GTUtilsMsaEditor::closeActiveTreeTab(GUITestOpStatus& os) {
-    QWidget* treeTabWidget = GTWidget::findWidget(os, "msa_editor_tree_tab_area", getActiveMsaEditorWindow(os));
+    auto treeTabWidget = GTWidget::findWidget(os, "msa_editor_tree_tab_area", getActiveMsaEditorWindow(os));
 
     QTabBar* tabBar = treeTabWidget->findChild<QTabBar*>();
     GT_CHECK(tabBar != nullptr, "Tree tab widget must have a tab bar!");

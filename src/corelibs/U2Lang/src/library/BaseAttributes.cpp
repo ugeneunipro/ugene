@@ -75,7 +75,7 @@ const QVariantMap BaseAttributes::DATA_STORAGE_ATTRIBUTE_VALUES_MAP() {
     QVariantMap resultMap;
 
     resultMap[LOCAL_FS_DATA_STORAGE()] = LOCAL_FS_DATA_STORAGE();
-    resultMap[SHARED_DB_DATA_STORAGE()] = SHARED_DB_DATA_STORAGE();
+//    resultMap[SHARED_DB_DATA_STORAGE()] = SHARED_DB_DATA_STORAGE();
 
     return resultMap;
 }

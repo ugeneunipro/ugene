@@ -160,7 +160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     QString dashboardErrMsg = "Unsupported document format: ";
 
     auto hasDashboardNotification = [&](const QString& errMsg) {
-        QWidget* notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
+        auto notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
         return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
     };
 

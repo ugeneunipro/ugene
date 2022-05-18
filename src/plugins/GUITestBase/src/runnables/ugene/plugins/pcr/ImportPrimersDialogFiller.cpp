@@ -32,7 +32,6 @@
 
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
 
 namespace U2 {
 
@@ -59,21 +58,6 @@ void ImportPrimersDialogFiller::commonScenario() {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setImportTarget"
-void ImportPrimersDialogFiller::setImportTarget(HI::GUITestOpStatus& os, ImportSource importSource) {
-    switch (importSource) {
-        case LocalFiles:
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", getDialog(os)), "Local file(s)");
-            break;
-        case SharedDb:
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", getDialog(os)), "Shared database");
-            break;
-        default:
-            os.setError("Unexpected import source");
-    }
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "addFile"
 void ImportPrimersDialogFiller::addFile(HI::GUITestOpStatus& os, const QString& filePath) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, filePath));
@@ -81,16 +65,6 @@ void ImportPrimersDialogFiller::addFile(HI::GUITestOpStatus& os, const QString& 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "connectDatabase"
-void ImportPrimersDialogFiller::connectDatabase(HI::GUITestOpStatus& os, const QString& databaseName) {
-    QList<SharedConnectionsDialogFiller::Action> actions;
-    actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, databaseName);
-    actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT);
-    GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-    GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", getDialog(os)));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addObject"
 void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus& os, const QString& databaseName, const QStringList& objectNames) {

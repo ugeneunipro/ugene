@@ -121,8 +121,7 @@ void NcbiSearchDialogFiller::setField(const QVariant& actionData) {
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the field name from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
-    QWidget* blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
+    auto blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
     GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME
@@ -132,8 +131,7 @@ void NcbiSearchDialogFiller::setTerm(const QVariant& actionData) {
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the query term from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
-    QWidget* blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
+    auto blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
     GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME

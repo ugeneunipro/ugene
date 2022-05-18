@@ -32,7 +32,6 @@ const DocumentFormatId BaseDocumentFormats::ACE("ace");
 const DocumentFormatId BaseDocumentFormats::BAM("bam");
 const DocumentFormatId BaseDocumentFormats::BED("bed");
 const DocumentFormatId BaseDocumentFormats::CLUSTAL_ALN("clustal");
-const DocumentFormatId BaseDocumentFormats::DATABASE_CONNECTION("database_connection");
 const DocumentFormatId BaseDocumentFormats::DIFF("diff");
 const DocumentFormatId BaseDocumentFormats::FASTA("fasta");
 const DocumentFormatId BaseDocumentFormats::FASTQ("fastq");
@@ -79,7 +78,6 @@ StrStrMap initInvalidFormatIdsMap() {
     invalidIds2trueIds.insert("BAM", BaseDocumentFormats::BAM);
     invalidIds2trueIds.insert("BED", BaseDocumentFormats::BED);
     invalidIds2trueIds.insert("CLUSTAL", BaseDocumentFormats::CLUSTAL_ALN);
-    invalidIds2trueIds.insert("database_connection", BaseDocumentFormats::DATABASE_CONNECTION);
     invalidIds2trueIds.insert("Diff", BaseDocumentFormats::DIFF);
     invalidIds2trueIds.insert("FASTA", BaseDocumentFormats::FASTA);
     invalidIds2trueIds.insert("FASTQ", BaseDocumentFormats::FASTQ);
@@ -124,7 +122,6 @@ StrStrMap initFormatIdsMap() {
     anyIds2trueIds.insert(BaseDocumentFormats::BAM, BaseDocumentFormats::BAM);
     anyIds2trueIds.insert(BaseDocumentFormats::BED, BaseDocumentFormats::BED);
     anyIds2trueIds.insert(BaseDocumentFormats::CLUSTAL_ALN, BaseDocumentFormats::CLUSTAL_ALN);
-    anyIds2trueIds.insert(BaseDocumentFormats::DATABASE_CONNECTION, BaseDocumentFormats::DATABASE_CONNECTION);
     anyIds2trueIds.insert(BaseDocumentFormats::DIFF, BaseDocumentFormats::DIFF);
     anyIds2trueIds.insert(BaseDocumentFormats::FASTA, BaseDocumentFormats::FASTA);
     anyIds2trueIds.insert(BaseDocumentFormats::FASTQ, BaseDocumentFormats::FASTQ);

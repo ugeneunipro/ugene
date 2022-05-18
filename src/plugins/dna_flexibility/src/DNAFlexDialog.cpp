@@ -57,7 +57,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     annotModel.hideAnnotationType = true;
     annotModel.hideLocation = true;  // hides location field and does not check it in validate()
     annotModel.data->name = "dna_flex";
-    annotModel.sequenceObjectRef = ctx->getSequenceObject();
+    annotModel.sequenceObjectRef = ctx->getSequenceObject()->getReference();
     annotModel.sequenceLen = sequenceLength;
 
     // Initializing and adding the annotations widget

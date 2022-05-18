@@ -84,7 +84,7 @@ void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus& os, const 
 
 #define GT_METHOD_NAME "setReads"
 void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus& os, const QStringList& readUrls, QWidget* dialog) {
-    QWidget* addReadButton = GTWidget::findWidget(os, "addReadButton");
+    auto addReadButton = GTWidget::findWidget(os, "addReadButton");
     auto readsListWidget = GTWidget::findListWidget(os, "readsListWidget", dialog);
 
     QStringList uniqueReads;

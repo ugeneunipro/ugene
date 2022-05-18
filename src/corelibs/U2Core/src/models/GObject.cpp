@@ -37,7 +37,7 @@
 namespace U2 {
 
 GObject::GObject(QString _type, const QString& _name, const QVariantMap& hintsMap)
-    : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
+    : dataLoaded(false), type(_type), name(_name) {
     SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
 }
@@ -92,60 +92,7 @@ void GObject::setGObjectNameNotDbi(const QString& newName) {
 
 QList<GObjectRelation> GObject::getObjectRelations() const {
     SAFE_POINT(hints != nullptr, "Object hints is NULL", QList<GObjectRelation>());
-    QList<GObjectRelation> res = hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
-
-    // fetch permanent object relations from DB
-    // only for the first time for objects from shared DBs
-    Document* parentDoc = getDocument();
-    if (!arePermanentRelationsFetched && !isUnloaded() && !(nullptr != parentDoc && !parentDoc->isDatabaseConnection())) {
-        fetchPermanentGObjectRelations(res);
-    }
-
-    return res;
-}
-
-void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const {
-    Document* parentDoc = getDocument();
-    // take into account the case when the object was not added to document
-    CHECK(nullptr != parentDoc && entityRef.dbiRef.isValid(), );
-
-    U2OpStatusImpl os;
-    DbiConnection con(entityRef.dbiRef, os);
-    SAFE_POINT_OP(os, );
-
-    U2ObjectRelationsDbi* rDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
-
-    const QList<U2ObjectRelation> rawDbRelations = rDbi->getObjectRelations(entityRef.entityId, os);
-    SAFE_POINT_OP(os, );
-
-    const QString docUrl = parentDoc->getURLString();
-    QList<GObjectRelation> dbRelations;
-    foreach (const U2ObjectRelation& relation, rawDbRelations) {
-        if (nullptr != parentDoc->findGObjectByName(relation.referencedName)) {
-            GObjectReference reference(docUrl, relation.referencedName, relation.referencedType);
-            reference.entityRef = U2EntityRef(entityRef.dbiRef, relation.referencedObject);
-            const GObjectRelation relationFromDb(reference, relation.relationRole);
-            dbRelations.append(relationFromDb);
-
-            if (!res.contains(relationFromDb)) {
-                res.append(relationFromDb);
-            }
-        }
-    }
-
-    QList<GObjectRelation> relationsMissedFromDb;
-    foreach (const GObjectRelation& relation, res) {
-        if (!dbRelations.contains(relation)) {
-            relationsMissedFromDb.append(relation);
-        }
-    }
-    if (!relationsMissedFromDb.isEmpty()) {
-        const_cast<GObject*>(this)->setRelationsInDb(relationsMissedFromDb);
-    }
-
-    hints->set(GObjectHint_RelatedObjects, QVariant::fromValue<QList<GObjectRelation>>(res));
-    const_cast<GObject*>(this)->arePermanentRelationsFetched = true;
+    return hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
 }
 
 void GObject::setObjectRelations(const QList<GObjectRelation>& list) {
@@ -249,22 +196,18 @@ void GObject::removeObjectRelation(const GObjectRelation& ref) {
 }
 
 void GObject::addObjectRelation(const GObject* obj, const GObjectRelationRole& role) {
-    GObjectRelation rel(obj, role);
+    GObjectRelation rel(obj->getReference(), role);
     addObjectRelation(rel);
 }
 
-namespace {
-
-bool relationsAreEqualExceptDbId(const GObjectRelation& f, const GObjectRelation& s) {
+static bool relationsAreEqualExceptDbId(const GObjectRelation& f, const GObjectRelation& s) {
     return f.role == s.role && f.ref.objName == s.ref.objName && f.getDocURL() == s.getDocURL() && f.ref.objType == s.ref.objType &&
            (!f.ref.entityRef.isValid() || !s.ref.entityRef.isValid() || f.ref.entityRef.dbiRef == s.ref.entityRef.dbiRef);
 }
 
-}  // namespace
-
 bool GObject::hasObjectRelation(const GObjectRelation& r) const {
     Document* parentDoc = getDocument();
-    if (nullptr != parentDoc && !parentDoc->isDatabaseConnection()) {
+    if (parentDoc != nullptr) {
         foreach (const GObjectRelation& rel, getObjectRelations()) {
             if (relationsAreEqualExceptDbId(rel, r)) {
                 return true;
@@ -277,7 +220,7 @@ bool GObject::hasObjectRelation(const GObjectRelation& r) const {
 }
 
 bool GObject::hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const {
-    GObjectRelation rel(obj, role);
+    GObjectRelation rel(obj->getReference(), role);
     return hasObjectRelation(rel);
 }
 
@@ -285,8 +228,8 @@ bool GObject::isUnloaded() const {
     return type == GObjectTypes::UNLOADED;
 }
 
-StateLock* GObject::getGObjectModLock(GObjectModLock type) const {
-    return modLocks.value(type, nullptr);
+StateLock* GObject::getGObjectModLock(GObjectModLock lock) const {
+    return modLocks.value(lock, nullptr);
 }
 
 void GObject::relatedObjectRelationChanged() {
@@ -360,24 +303,6 @@ void GObject::loadDataCore(U2OpStatus& /*os*/) {
 
 void GObject::setParentStateLockItem(StateLockableTreeItem* p) {
     StateLockableTreeItem::setParentStateLockItem(p);
-    checkIfBelongToSharedDatabase(p);
-}
-
-void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem* parent) {
-    Document* parentDoc = qobject_cast<Document*>(parent);
-    CHECK(nullptr != parentDoc, );
-
-    if (parentDoc->isDatabaseConnection()) {
-        if (!modLocks.contains(GObjectModLock_IO)) {
-            modLocks[GObjectModLock_IO] = new StateLock();
-            lockState(modLocks[GObjectModLock_IO]);
-        }
-    } else if (modLocks.contains(GObjectModLock_IO)) {
-        StateLock* lock = modLocks[GObjectModLock_IO];
-        unlockState(lock);
-        modLocks.remove(GObjectModLock_IO);
-        delete lock;
-    }
 }
 
 void GObject::removeAllLocks() {
@@ -402,6 +327,10 @@ int GObject::getObjectVersion() const {
     int version = objectDbi->getObjectVersion(entityRef.entityId, os);
     CHECK_OP(os, -1);
     return version;
+}
+
+GObjectReference GObject::getReference() const {
+    return GObjectReference(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
