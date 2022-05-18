@@ -205,7 +205,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
     CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed");
 
     // There must be no error message on the screen.
-    QLabel* errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
+    auto errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
     CHECK_SET_ERR(errorLabel == nullptr, "Found 'Failed to initialize OpenGL' label");
 }
 
@@ -650,7 +650,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193) {
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
     // 5. Set 3' perfect match to 3
-    QSpinBox* perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
+    auto perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
     GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
 
     // 6. Click the find button.
@@ -1476,7 +1476,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
-    QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     GTKeyboardDriver::keyClick('M');
@@ -2157,7 +2157,7 @@ GUI_TEST_CLASS_DEFINITION(test_7507) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget* sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* glWidget = GTWidget::findWidget(os, "1-4RTE", sequenceViewWindow);
+    auto glWidget = GTWidget::findWidget(os, "1-4RTE", sequenceViewWindow);
 
     GTUtilsDialog::waitForDialog(os,
                                  new PopupCheckerByText(os,

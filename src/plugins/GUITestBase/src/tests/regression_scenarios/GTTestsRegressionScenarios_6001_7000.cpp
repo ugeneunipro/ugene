@@ -1936,7 +1936,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
 
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsAssemblyBrowser::scrollToStart(os, Qt::Horizontal);
-    QWidget* refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
+    auto refArea = GTWidget::findWidget(os, "Assembly reference sequence area");
     QString color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
     QString colorOfG = "#09689c";
     CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfG, 10), QString("color is %1, expected: %2").arg(color).arg(colorOfG));
@@ -2237,8 +2237,7 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     }
 
     // Set Threshold to 900.
-    QSlider* colorThresholdSlider = GTWidget::findSlider(os, "colorThresholdSlider");
-    CHECK_SET_ERR(colorThresholdSlider != nullptr, "Can't find colorThresholdSlider");
+    auto colorThresholdSlider = GTWidget::findSlider(os, "colorThresholdSlider");
 
     GTSlider::setValue(os, colorThresholdSlider, 900);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3018,8 +3017,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
 
             for (int i = 0; i < addButtonNames.size(); i++) {
                 // 4. Add two rows and text "name"
-                QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
-                CHECK_SET_ERR(nullptr != add, "Add button not found");
+                auto add = GTWidget::findWidget(os, addButtonNames[i], dialog);
 
                 auto table = GTWidget::findTableView(os, dataTableNames[i]);
 
@@ -3036,8 +3034,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
                 QString expectedString = baseModel->data(baseModel->index(1, 0)).toString();
                 CHECK_SET_ERR(expectedString == "name", QString("Expected string not found, expected: name, current: %1").arg(expectedString));
 
-                QWidget* del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
-                CHECK_SET_ERR(nullptr != del, "Delete button not found");
+                auto del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
 
                 GTWidget::click(os, del);
                 GTWidget::click(os, del);
@@ -3076,13 +3073,11 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
 
             for (int i = 0; i < addButtonNames.size(); i++) {
                 // 4. Add two rows, remove one and text "name"
-                QWidget* add = GTWidget::findWidget(os, addButtonNames[i], dialog);
-                CHECK_SET_ERR(nullptr != add, "Add button not found");
+                auto add = GTWidget::findWidget(os, addButtonNames[i], dialog);
 
                 auto table = GTWidget::findTableView(os, dataTableNames[i]);
 
-                QWidget* del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
-                CHECK_SET_ERR(nullptr != del, "Delete button not found");
+                auto del = GTWidget::findWidget(os, deleteButtonNames[i], dialog);
 
                 GTWidget::click(os, add);
                 GTWidget::click(os, add);
@@ -3121,8 +3116,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click "Hide overview", "Hide zoom view" and "Hide details view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
 
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
 
@@ -3137,7 +3131,6 @@ GUI_TEST_CLASS_DEFINITION(test_6616_1) {
 
     // Expected state: Overiview, Details view and Zoom view are invisible
     toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
 
     QStringList views = {
         "show_hide_overview",
@@ -3145,11 +3138,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_1) {
         "show_hide_zoom_view",
     };
     foreach (const QString& v, views) {
-        QWidget* widget = GTWidget::findWidget(os, v, toolbar);
-        CHECK_SET_ERR(widget != nullptr, QString("Cannot find %1 widget").arg(v));
-
-        QToolButton* button = qobject_cast<QToolButton*>(widget);
-        CHECK_SET_ERR(button != nullptr, QString("Cannot find %1 QToolButton").arg(v));
+        auto button = GTWidget::findToolButton(os, v, toolbar);
         CHECK_SET_ERR(!button->isChecked(), QString("%1 QToolButton should bew unchecked").arg(v));
     }
 }
@@ -3172,8 +3161,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_2) {
     GTWidget::click(os, GTAction::button(os, compStrand));
 
     // 3. Choose "Translate selection" mode
-    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+    auto translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"translate_selection_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3194,7 +3182,6 @@ GUI_TEST_CLASS_DEFINITION(test_6616_2) {
     CHECK_SET_ERR(!compStrand->isChecked(), "Show complementary strand mode should be disabled");
 
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"translate_selection_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3207,7 +3194,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
 
     // 2. Choose "Set up frames manually" mode and disable the all frames
     GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    auto translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"set_up_frames_manually_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3228,7 +3215,6 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     // Expected state: "Set up frames manually" mode is choosen and the all frames are disable
     GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"set_up_frames_manually_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3245,8 +3231,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Choose "Show all frames" mode
-    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+    auto translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"show_all_frames_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3259,7 +3244,6 @@ GUI_TEST_CLASS_DEFINITION(test_6616_4) {
 
     // Expected state: "Show all frames" mode is choosen
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"show_all_frames_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -3311,14 +3295,9 @@ GUI_TEST_CLASS_DEFINITION(test_6620) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Details view is visible
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_SZYD_Cas9_5B70");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_SZYD_Cas9_5B70");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_SZYD_Cas9_5B70");
 
-    QWidget* widget = GTWidget::findWidget(os, "show_hide_details_view", toolbar);
-    CHECK_SET_ERR(widget != nullptr, "Cannot find show_hide_details_view widget");
-
-    QToolButton* button = qobject_cast<QToolButton*>(widget);
-    CHECK_SET_ERR(button != nullptr, "Cannot find show_hide_details_view QToolButton");
+    auto button = GTWidget::findToolButton(os, "show_hide_details_view", toolbar);
     CHECK_SET_ERR(button->isChecked(), "show_hide_details_view QToolButton should bew checked");
 }
 
@@ -4043,7 +4022,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684) {
     class BuildDotPlotScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox* minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            auto minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
             CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match: " + QString::number(minLenBox->value()));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4061,10 +4040,10 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
     class BuildDotPlot100Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox* minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            auto minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
             CHECK_SET_ERR(minLenBox->value() == 100, "1. Min lengths value doesn't match: " + QString::number(minLenBox->value()));
 
-            QCheckBox* invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
+            auto invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
             CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4074,10 +4053,10 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
     class BuildDotPlot70Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox* minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            auto minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
             CHECK_SET_ERR(minLenBox->value() == 70, "2. Min lengths value doesn't match: " + QString::number(minLenBox->value()));
 
-            QCheckBox* invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
+            auto invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
             CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -4599,8 +4578,7 @@ GUI_TEST_CLASS_DEFINITION(test_6709) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Show/hide amino acid translations > Translation selection"
-    QWidget* translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+    auto translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"translate_selection_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
@@ -5909,7 +5887,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QToolButton* toDnaButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
+    auto toDnaButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
     GTWidget::click(os, toDnaButton);
 
     auto copyType = GTWidget::findComboBox(os, "copyType");
@@ -5932,7 +5910,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     // Check that button is present.
-    QToolButton* button = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
+    auto button = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
     CHECK_SET_ERR(button->isVisible(), QString("Check 1. Conversion button must be present"));
 
     // Lock the document and check that the button is not present.
@@ -5949,8 +5927,8 @@ GUI_TEST_CLASS_DEFINITION(test_6903_2) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    QToolButton* nucleicButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
-    QToolButton* aminoButton = GTWidget::findToolButton(os, "convertAminoAlphabetButton");
+    auto nucleicButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
+    auto aminoButton = GTWidget::findToolButton(os, "convertAminoAlphabetButton");
     CHECK_SET_ERR(nucleicButton->isVisible(), QString("Convert to nucleic button must be visible"));
     CHECK_SET_ERR(nucleicButton->text() == "RNA", QString("Wrong button text in DNA mode, expected 'RNA', got '" + nucleicButton->text() + "'"));
     CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must not be visible"));

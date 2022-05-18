@@ -3510,8 +3510,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
     };
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
@@ -3625,7 +3624,7 @@ GUI_TEST_CLASS_DEFINITION(test_4621) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWidget* enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
+            auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             CHECK_SET_ERR(nullptr != enzymesSelectorWidget, "enzymesSelectorWidget is NULL");
 
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
@@ -3864,7 +3863,7 @@ GUI_TEST_CLASS_DEFINITION(test_4687) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check warning message visibility
-    QWidget* label = GTWidget::findWidget(os, "lblMessage");
+    auto label = GTWidget::findWidget(os, "lblMessage");
     CHECK_SET_ERR(label->isVisible(), "Label should be visible");
 
     // 4. Undo changes
@@ -3952,8 +3951,7 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    QWidget* widget = GTWidget::findWidget(os, "outputContainerWidget");
-    CHECK_SET_ERR(widget != nullptr, QString("%1 not found").arg("outputContainerWidget"));
+    auto widget = GTWidget::findWidget(os, "outputContainerWidget");
     if (widget->isHidden()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
     }
@@ -4020,7 +4018,7 @@ GUI_TEST_CLASS_DEFINITION(test_4701) {
                   "1 Mecopoda_elongata__Sumatra_ is not collapsed");
 
     // Press the Remove All Gaps button.
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -4435,8 +4433,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
     };
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
@@ -4452,7 +4449,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     GTThread::waitForMainThread();
 
-    QWidget* simpleOverviewWidget = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto simpleOverviewWidget = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(simpleOverviewWidget->isVisible(), "simple overview is not visiable");
 
     // Check Simple Overview has an empty gray color.
@@ -4607,7 +4604,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber(os);
     CHECK_SET_ERR(1 == sequenceWidgetsNumber, QString("Expected 1 sequence widget, got %2").arg(sequenceWidgetsNumber));
     GTGlobals::FindOptions findOptions(false);
-    QWidget* dotplotWidget = GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os), findOptions);
+    auto dotplotWidget = GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os), findOptions);
     CHECK_SET_ERR(nullptr == dotplotWidget, "A dotplot widget unexpectedly found");
 
     //    6. Select all documents in project. Press delete.
@@ -5145,7 +5142,7 @@ GUI_TEST_CLASS_DEFINITION(test_4860) {
     GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAA");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* next = GTWidget::findWidget(os, "nextPushButton");
+    auto next = GTWidget::findWidget(os, "nextPushButton");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).size() == 1, "Incorrect selection: selected region should be only one");
     qint64 startPosPrev = GTUtilsSequenceView::getSelection(os).first().startPos;
     qint64 startPosNext = -1;
@@ -5171,8 +5168,7 @@ GUI_TEST_CLASS_DEFINITION(test_4871) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    QWidget* widget = GTWidget::findWidget(os, "outputContainerWidget");
-    CHECK_SET_ERR(widget != nullptr, QString("%1 not found").arg("outputContainerWidget"));
+    auto widget = GTWidget::findWidget(os, "outputContainerWidget");
     if (widget->isHidden()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
     }
@@ -5264,7 +5260,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, testDir + "_common_data/scenarios/sandbox/", "90-JRI-07.scf", ExportChromatogramFiller::SCF, false, false, true));
     GTMouseDriver::click(Qt::RightButton);
-    QWidget* parent = GTWidget::findWidget(os, "90-JRI-07 sequence [90-JRI-07.scf] 2");
+    auto parent = GTWidget::findWidget(os, "90-JRI-07 sequence [90-JRI-07.scf] 2");
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent);
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -5441,8 +5437,7 @@ GUI_TEST_CLASS_DEFINITION(test_4938) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
-    QWidget* annTree = GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
-    CHECK_SET_ERR(annTree != nullptr, "Cannot find OP_ANNOT_HIGHLIGHT_TREE");
+    auto annTree = GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
     CHECK_SET_ERR(annTree->isVisible(), "OP_ANNOT_HIGHLIGHT_TREE is not visible")
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "CDS  (0, 4)");
@@ -5567,7 +5562,7 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu on 3D view : {"Coloring schemes"->"Molecular chains"}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Coloring Scheme", "Molecular Chains"}));
-    QWidget* widget3d = GTWidget::findWidget(os, "1-1CF7");
+    auto widget3d = GTWidget::findWidget(os, "1-1CF7");
     GTWidget::click(os, widget3d, Qt::RightButton);
 
     // Expected: the color scheme is changed without errors.
@@ -5659,7 +5654,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
-    QWidget* textPattern = GTWidget::findWidget(os, "textPattern");
+    auto textPattern = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern);
     GTKeyboardDriver::keyClick('(');
 
@@ -5672,7 +5667,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     // Remove entered pattern, enter a valid pattern:
     //.
 
-    QWidget* textPattern1 = GTWidget::findWidget(os, "textPattern");
+    auto textPattern1 = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern1);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick('.');

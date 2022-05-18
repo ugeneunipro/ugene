@@ -141,8 +141,8 @@ GUI_TEST_CLASS_DEFINITION(test_5004) {
 
     // Show DNA Flexibility graph, expected state: no errors in log.
     GTLogTracer lt;
-    QWidget* sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    auto sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"DNA Flexibility"}));
     GTWidget::click(os, graphAction);
 
@@ -555,7 +555,7 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* msaEditorView = GTWidget::findWidget(os, "msa_editor_COI");
+    auto msaEditorView = GTWidget::findWidget(os, "msa_editor_COI");
     MsaEditorWgt* msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
     MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
     MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
@@ -587,7 +587,7 @@ GUI_TEST_CLASS_DEFINITION(test_5136) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SAS"}));
-    QWidget* widget3d = GTWidget::findWidget(os, "1-1CF7");
+    auto widget3d = GTWidget::findWidget(os, "1-1CF7");
     GTWidget::click(os, widget3d, Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1020,7 +1020,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
 
     //  Expected state: UGENE doesn't crash, the 3d structure is shown.
     int minimumExpectedColors = 10;
-    QWidget* biostructWidget = GTWidget::findWidget(os, "1-");
+    auto biostructWidget = GTWidget::findWidget(os, "1-");
     QImage initialImage = GTWidget::getImage(os, biostructWidget, true);
     QSet<QRgb> colorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
     CHECK_SET_ERR(colorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors");
@@ -1533,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
-            QMenu* menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            auto menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
             GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -1598,7 +1598,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
 
-            QMenu* menu = GTWidget::findMenuWidget(os, "stepsMenu");
+            auto menu = GTWidget::findMenuWidget(os, "stepsMenu");
             GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -1833,7 +1833,6 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
             GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
 
             auto addToProjectCheck = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
-            CHECK_SET_ERR(nullptr != addToProjectCheck, "addToProjectCheck is NULL");
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
             CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
@@ -1953,8 +1952,7 @@ GUI_TEST_CLASS_DEFINITION(test_5495) {
     };
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
@@ -3947,8 +3945,7 @@ GUI_TEST_CLASS_DEFINITION(test_5783) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
@@ -4491,13 +4488,13 @@ GUI_TEST_CLASS_DEFINITION(test_5849) {
 
     // Click the "Undo" button.
     GTWidget::click(os, undoButton);
-    QWidget* msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
 
     // Expected state: the selection has been cleared.
-    QLabel* line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
-    QLabel* column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
-    QLabel* position = GTWidget::findLabel(os, "Position", msaEditorStatusBar);
-    QLabel* selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
+    auto line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    auto column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
+    auto position = GTWidget::findLabel(os, "Position", msaEditorStatusBar);
+    auto selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
 
     CHECK_SET_ERR(line->text() == "Seq - / 2", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col - / 4", "Column is " + column->text());
@@ -4670,8 +4667,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NM_001135099");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NM_001135099");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NM_001135099");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "NM_001135099 features");
@@ -4753,8 +4749,7 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     ADVSingleSequenceWidget* wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
