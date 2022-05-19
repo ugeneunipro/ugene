@@ -616,8 +616,8 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
     int default_version = 2;
     int dump_args = 0;
 
-    p3_global_settings* global_pa;
-    seq_args* sarg;
+    //p3_global_settings* global_pa;
+    //seq_args* sarg;
     read_boulder_record_results read_boulder_record_res = { 0,0 };
 
     // Settings file path. In this case, we don't need it
@@ -774,24 +774,24 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
 
     /* Allocate the space for global settings and fill in default parameters */
     /*if (default_version == 1)
-        global_pa = p3_create_global_settings_default_version_1();
+        primerSettings = p3_create_global_settings_default_version_1();
     else if (default_version == 2)
-        global_pa = p3_create_global_settings();
+        primerSettings = p3_create_global_settings();
     else {
         print_usage();
         exit(-1);
     }*/
     /* Load default thal parameters */
     thal_results o;
-    if (get_thermodynamic_values(&global_pa->thermodynamic_parameters, &o)) {
+    if (get_thermodynamic_values(&primerSettings->thermodynamic_parameters, &o)) {
         fprintf(stderr, "%s\n", o.msg);
         exit(-1);
     }
 
-    //if (!global_pa) {
+    //if (!primerSettings) {
     //    exit(-2); /* Out of memory. */
     //}
-    //global_pa->dump = dump_args;
+    //primerSettings->dump = dump_args;
 
     /* Settings files have to be read in just below, and
        the functions need a temporary sarg */
@@ -806,12 +806,12 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
 //            settings,
 //            echo_settings && !format_output,
 //            strict_tags,
-//            global_pa, sarg, &fatal_parse_err,
+//            primerSettings, sarg, &fatal_parse_err,
 //            &nonfatal_parse_err, &warnings, &read_boulder_record_res);
 //        destroy_pr_append_str_data(&p3_settings_path);
 //        /* Check if masking template flag was given */
 //#if !defined(OS_WIN)
-//        if (global_pa->mask_template == 1)
+//        if (primerSettings->mask_template == 1)
 //            validate_kmer_lists_path();
 //#endif
 //    }
@@ -863,57 +863,57 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
         retval = NULL;
 
         /* See read_boulder.h for documentation on read_boulder_record().*/
-        if (!read_boulder_record(stdin,
-            &strict_tags,
-            &io_version,
-            !format_output,
-            all_parameters,
-            global_pa,
-            sarg,
-            &fatal_parse_err,
-            &nonfatal_parse_err,
-            &warnings,
-            &read_boulder_record_res)) {
-            break; /* There were no more boulder records */
-        }
+        //if (!read_boulder_record(stdin,
+        //    &strict_tags,
+        //    &io_version,
+        //    !format_output,
+        //    all_parameters,
+        //    primerSettings,
+        //    sarg,
+        //    &fatal_parse_err,
+        //    &nonfatal_parse_err,
+        //    &warnings,
+        //    &read_boulder_record_res)) {
+        //    break; /* There were no more boulder records */
+        //}
 
 #if !defined(OS_WIN)
-        if (global_pa->mask_template) {
-            global_pa->lowercase_masking = global_pa->mask_template;
+        if (primerSettings->mask_template) {
+            primerSettings->lowercase_masking = primerSettings->mask_template;
         }
 
         /* Check if template masking flag was given */
-        if (global_pa->mask_template == 1)
+        if (primerSettings->mask_template == 1)
             validate_kmer_lists_path();
 
         /* Check that we found the kmer lists in case masking flag was set to 1. */
-        if (global_pa->mask_template == 1 && kmer_lists_path == NULL) {
+        if (primerSettings->mask_template == 1 && kmer_lists_path == NULL) {
             printf("PRIMER_ERROR=masking template chosen, but path to kmer lists not specified\n=\n");
             exit(-1);
         }
         /* Set up some masking parameters */
         /* edited by M. Lepamets */
-        if (global_pa->mask_template == 1) {
-            global_pa->mp.window_size = DEFAULT_WORD_LEN_2;
+        if (primerSettings->mask_template == 1) {
+            primerSettings->mp.window_size = DEFAULT_WORD_LEN_2;
 
-            if (global_pa->pick_right_primer == 0) global_pa->mp.mdir = fwd;
-            else if (global_pa->pick_left_primer == 0) global_pa->mp.mdir = rev;
+            if (primerSettings->pick_right_primer == 0) primerSettings->mp.mdir = fwd;
+            else if (primerSettings->pick_left_primer == 0) primerSettings->mp.mdir = rev;
             /* Check if masking parameters (k-mer list usage) have changed */
-            if (global_pa->masking_parameters_changed == 1) {
-                delete_formula_parameters(global_pa->mp.fp, global_pa->mp.nlists);
-                global_pa->mp.fp = create_default_formula_parameters(global_pa->mp.list_prefix, kmer_lists_path, &fatal_parse_err);
-                global_pa->masking_parameters_changed = 0;
+            if (primerSettings->masking_parameters_changed == 1) {
+                delete_formula_parameters(primerSettings->mp.fp, primerSettings->mp.nlists);
+                primerSettings->mp.fp = create_default_formula_parameters(primerSettings->mp.list_prefix, kmer_lists_path, &fatal_parse_err);
+                primerSettings->masking_parameters_changed = 0;
             }
         }
 #endif
         input_found = 1;
-        if ((global_pa->primer_task == generic)
-            && (global_pa->pick_internal_oligo == 1)) {
-            PR_ASSERT(global_pa->pick_internal_oligo);
-        }
+        /*if ((primerSettings->primer_task == generic)
+            && (primerSettings->pick_internal_oligo == 1)) {
+            PR_ASSERT(primerSettings->pick_internal_oligo);
+        }*/
 
         /* If there are fatal errors, write the proper message and exit */
-        if (fatal_parse_err.data != NULL) {
+        /*if (fatal_parse_err.data != NULL) {
             if (format_output) {
                 format_error(stdout, sarg->sequence_name, fatal_parse_err.data);
             } else {
@@ -924,11 +924,11 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
             destroy_p3retval(retval);
             destroy_seq_args(sarg);
             exit(-4);
-        }
+        }*/
 
         /* If there are nonfatal errors, write the proper message
          * and skip to the end of the loop */
-        if (!pr_is_empty(&nonfatal_parse_err)) {
+        /*if (!pr_is_empty(&nonfatal_parse_err)) {
             if (format_output) {
                 format_error(stdout, sarg->sequence_name,
                     nonfatal_parse_err.data);
@@ -936,57 +936,59 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
                 print_boulder_error(nonfatal_parse_err.data);
             }
             goto loop_wrap_up;
-        }
+        }*/
 
         /* Print any warnings and continue processing */
-        if (!pr_is_empty(&warnings)) {
+        /*if (!pr_is_empty(&warnings)) {
             if (format_output) {
                 format_warning(stdout, sarg->sequence_name,
                     warnings.data);
             } else {
                 print_boulder_warning(warnings.data);
             }
-        }
+        }*/
 
-        if (read_boulder_record_res.file_flag && sarg->sequence_name == NULL) {
-            /* We will not have a base name for the files */
-            if (default_version == 2) {
-                if (format_output) {
-                    format_error(stdout, NULL,
-                        "Need SEQUENCE_ID if P3_FILE_FLAG is not 0");
-                } else {
-                    print_boulder_error("Need SEQUENCE_ID if P3_FILE_FLAG is not 0");
-                }
-            } else {
-                if (format_output) {
-                    format_error(stdout, NULL,
-                        "Need PRIMER_SEQUENCE_ID if PRIMER_FILE_FLAG is not 0");
-                } else {
-                    print_boulder_error("Need PRIMER_SEQUENCE_ID if PRIMER_FILE_FLAG is not 0");
-                }
-            }
-            goto loop_wrap_up;
-        }
+        //if (read_boulder_record_res.file_flag && sarg->sequence_name == NULL) {
+        //    /* We will not have a base name for the files */
+        //    if (default_version == 2) {
+        //        if (format_output) {
+        //            format_error(stdout, NULL,
+        //                "Need SEQUENCE_ID if P3_FILE_FLAG is not 0");
+        //        } else {
+        //            print_boulder_error("Need SEQUENCE_ID if P3_FILE_FLAG is not 0");
+        //        }
+        //    } else {
+        //        if (format_output) {
+        //            format_error(stdout, NULL,
+        //                "Need PRIMER_SEQUENCE_ID if PRIMER_FILE_FLAG is not 0");
+        //        } else {
+        //            print_boulder_error("Need PRIMER_SEQUENCE_ID if PRIMER_FILE_FLAG is not 0");
+        //        }
+        //    }
+        //    goto loop_wrap_up;
+        //}
 
         /* Pick the primers - the central function */
-        p3_set_gs_primer_file_flag(global_pa,
+        p3_set_gs_primer_file_flag(primerSettings,
             read_boulder_record_res.file_flag);
-        retval = choose_primers(global_pa, sarg);
+        retval = choose_primers(primerSettings, seqArgs);
+        return retval;
+
         if (NULL == retval) exit(-2); /* Out of memory. */
 
         /* If it was necessary to use a left_input, right_input,
            or internal_oligo_input primer that was
            unacceptable, then add warnings. */
-        if (global_pa->pick_anyway && format_output) {
-            if (sarg->left_input) {
+        if (primerSettings->pick_anyway && format_output) {
+            if (seqArgs->left_input) {
                 add_must_use_warnings(&retval->warnings,
                     "Left primer", &retval->fwd.expl);
             }
-            if (sarg->right_input) {
+            if (seqArgs->right_input) {
                 add_must_use_warnings(&retval->warnings,
                     "Right primer", &retval->rev.expl);
             }
-            if (sarg->internal_input) {
+            if (seqArgs->internal_input) {
                 add_must_use_warnings(&retval->warnings,
                     "Hybridization probe", &retval->intl.expl);
             }
@@ -999,19 +1001,19 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
                returned when there were no errors. */
             if (read_boulder_record_res.file_flag) {
                 /* Create files with left, right, and internal oligos. */
-                p3_print_oligo_lists(retval, sarg, global_pa,
+                p3_print_oligo_lists(retval, seqArgs, primerSettings,
                     &retval->per_sequence_err,
-                    sarg->sequence_name);
+                    seqArgs->sequence_name);
             }
         }
 
         if (format_output) {
-            print_format_output(stdout, &io_version, global_pa,
-                sarg, retval, pr_release,
+            print_format_output(stdout, &io_version, primerSettings,
+                seqArgs, retval, pr_release,
                 read_boulder_record_res.explain_flag);
         } else {
             /* Use boulder output */
-            print_boulder(io_version, global_pa, sarg, retval,
+            print_boulder(io_version, primerSettings, seqArgs, retval,
                 read_boulder_record_res.explain_flag);
         }
 
@@ -1020,17 +1022,19 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
             /* Check for errors and print them */
             if (NULL != retval->glob_err.data) {
                 fprintf(stderr, "%s: %s\n", pr_program_name, retval->glob_err.data);
-                destroy_secundary_structures(global_pa, retval);
+                destroy_secundary_structures(primerSettings, retval);
                 destroy_p3retval(retval);
-                destroy_seq_args(sarg);
+                destroy_seq_args(seqArgs);
                 exit(-4);
             }
         }
-        destroy_secundary_structures(global_pa, retval); /* This works even if retval is NULL */
+        destroy_secundary_structures(primerSettings, retval); /* This works even if retval is NULL */
         destroy_p3retval(retval); /* This works even if retval is NULL */
         retval = NULL;
-        destroy_seq_args(sarg);
-        sarg = NULL;
+        //TODO - fix
+        return NULL;
+        destroy_seq_args(seqArgs);
+        seqArgs = NULL;
 
     }   /* while (1) (processing boulder io records) ...
            End of the primary working loop */
@@ -1039,15 +1043,15 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
     destroy_thal_structures();
 
 #if !defined(OS_WIN)  
-    if (global_pa->mask_template == 1) {
-        delete_formula_parameters(global_pa->mp.fp, global_pa->mp.nlists);
-        /* free(global_pa->mp.list_prefix); */
+    if (primerSettings->mask_template == 1) {
+        delete_formula_parameters(primerSettings->mp.fp, primerSettings->mp.nlists);
+        /* free(primerSettings->mp.list_prefix); */
     }
 #endif
 
-    p3_destroy_global_settings(global_pa);
-    global_pa = NULL;
-    destroy_seq_args(sarg);
+    p3_destroy_global_settings(primerSettings);
+    primerSettings = NULL;
+    destroy_seq_args(seqArgs);
     destroy_pr_append_str_data(&nonfatal_parse_err);
     destroy_pr_append_str_data(&fatal_parse_err);
     destroy_pr_append_str_data(&warnings);

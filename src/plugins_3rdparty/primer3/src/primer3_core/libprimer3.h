@@ -964,6 +964,8 @@ typedef struct Primer3Context_ {
 /* Deallocate a primer3 state */
 void destroy_secundary_structures(const p3_global_settings *pa, p3retval *retval);
 void destroy_p3retval(p3retval *);
+p3retval* create_p3retval(void);
+p3retval* copy_p3retval(p3retval *);
 
 void destroy_dpal_thal_arg_holder();
        
@@ -1071,6 +1073,8 @@ p3_global_settings *p3_create_global_settings();
 p3_global_settings *p3_create_global_settings_default_version_1();
 
 void p3_destroy_global_settings(p3_global_settings *);
+
+p3_global_settings* p3_copy_global_settings(p3_global_settings*);
 
 void p3_set_gs_prmin (p3_global_settings * p , int val, int i);
 void p3_set_gs_prmax (p3_global_settings * p , int val, int i);
@@ -1279,8 +1283,6 @@ void p3_set_gs_min_3_internal_overlap_of_junction(p3_global_settings *p, int min
  */
 p3retval *choose_primers(const p3_global_settings *pa, 
                          seq_args *sa);
-
-p3retval* create_p3retval(void);
 
 /* For testing/debugging: print the values in pa and sa to stdout. */
 void p3_print_args(const p3_global_settings *pa, seq_args *sa) ;

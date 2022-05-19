@@ -169,7 +169,7 @@ private:
     QByteArray mishybLibrary;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
 
-    p3_global_settings* primerSettings;
+    p3_global_settings* primerSettings = nullptr;
     seq_args seqArgs;
 
     p3retval* p3Retval = nullptr; 

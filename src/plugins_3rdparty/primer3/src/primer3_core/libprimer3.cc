@@ -605,6 +605,43 @@ p3_destroy_global_settings(p3_global_settings *a)
   }
 }
 
+p3_global_settings* 
+p3_copy_global_settings(p3_global_settings* a) {
+    if (a == NULL) {
+        return NULL;
+    }
+
+    p3_global_settings* b = p3_create_global_settings();
+    thal_parameters temp_tp = b->thermodynamic_parameters;
+    masker_parameters temp_mp = b->mp;
+    *b = *a;
+
+    strcpy(temp_tp.dangle_dh, a->thermodynamic_parameters.dangle_dh);
+    strcpy(temp_tp.dangle_ds, a->thermodynamic_parameters.dangle_ds);
+    strcpy(temp_tp.loops_dh, a->thermodynamic_parameters.loops_dh);
+    strcpy(temp_tp.loops_ds, a->thermodynamic_parameters.loops_ds);
+    strcpy(temp_tp.stack_dh, a->thermodynamic_parameters.stack_dh);
+    strcpy(temp_tp.stack_ds, a->thermodynamic_parameters.stack_ds);
+    strcpy(temp_tp.stackmm_dh, a->thermodynamic_parameters.stackmm_dh);
+    strcpy(temp_tp.stackmm_ds, a->thermodynamic_parameters.stackmm_ds);
+    strcpy(temp_tp.tetraloop_dh, a->thermodynamic_parameters.tetraloop_dh);
+    strcpy(temp_tp.tetraloop_ds, a->thermodynamic_parameters.tetraloop_ds);
+    strcpy(temp_tp.triloop_dh, a->thermodynamic_parameters.triloop_dh);
+    strcpy(temp_tp.triloop_ds, a->thermodynamic_parameters.triloop_ds);
+    strcpy(temp_tp.tstack_tm_inf_ds, a->thermodynamic_parameters.tstack_tm_inf_ds);
+    strcpy(temp_tp.tstack_dh, a->thermodynamic_parameters.tstack_dh);
+    strcpy(temp_tp.tstack2_dh, a->thermodynamic_parameters.tstack2_dh);
+    strcpy(temp_tp.tstack2_ds, a->thermodynamic_parameters.tstack2_ds);
+    b->thermodynamic_parameters = temp_tp;
+
+    strcpy(temp_mp.list_prefix, a->mp.list_prefix);
+    // TODO: not for windows
+    //mp.fp
+    b->mp = temp_mp;
+
+    return b;
+}
+
 static void
 pr_set_default_global_args_2(p3_global_settings *a) 
 /* Write the default values for default_values=2 into
@@ -947,6 +984,29 @@ create_p3retval(void)
   memset(&state->best_pairs.expl, 0, sizeof(state->best_pairs.expl));
 
   return state;
+}
+p3retval* copy_p3retval(p3retval* a)
+{
+    if (a == NULL) {
+        return NULL;
+    }
+
+    p3retval* b = create_p3retval();
+    std::vector<primer_rec*> tmp_oligos = { b->fwd.oligo, b->intl.oligo, b->rev.oligo };
+    std::vector<primer_rec*> oligos_2_copy_from = { a->fwd.oligo, a->intl.oligo, a->rev.oligo };
+    for (int i = 0; i < tmp_oligos.size(); i++) {
+        primer_rec* to = tmp_oligos[i];
+        primer_rec* from = oligos_2_copy_from[i];
+        std::copy(from, from + sizeof(primer_rec), to);
+    }
+
+    *b = *a;
+
+    b->fwd.oligo = tmp_oligos[0];
+    b->intl.oligo = tmp_oligos[1];
+    b->rev.oligo = tmp_oligos[2];
+
+    return nullptr;
 }
 /* ============================================================ */
 /* BEGIN functions for dpal_arg_holder                          */
