@@ -469,7 +469,7 @@ bool AnnotatedDNAView::onObjectRemoved(GObject* o) {
             emit si_sequenceRemoved(seqCtx);
             seqContexts.removeOne(seqCtx);
             removeAutoAnnotations(seqCtx);
-            seqCtx->deleteLater();
+            delete seqCtx;
         }
     }
 
@@ -736,7 +736,7 @@ void AnnotatedDNAView::removeSequenceWidget(ADVSequenceWidget* sequenceWidget) {
     updateMultiViewActions();
     emit si_sequenceWidgetRemoved(sequenceWidget);
     scrolledWidgetLayout->removeWidget(sequenceWidget);
-    sequenceWidget->deleteLater();
+    delete sequenceWidget;
     updateScrollAreaHeight();
 }
 

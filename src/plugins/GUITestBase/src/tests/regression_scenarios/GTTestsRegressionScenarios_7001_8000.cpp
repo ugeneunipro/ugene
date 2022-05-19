@@ -1673,11 +1673,9 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsProject::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QPoint splitterCenter = [&os] {
-        auto projectView = GTWidget::findWidget(os, "project_view");
-        QRect rect = projectView->geometry();
-        return projectView->mapToGlobal({rect.right() + 4, rect.center().y()});
-    }();
+    QRect rect = GTWidget::findWidget(os, "project_view")->geometry();
+    QPoint splitterCenter =
+        GTWidget::findWidget(os, "project_view")->mapToGlobal({rect.right() + 4, rect.center().y()});
     QPoint delta(GTMainWindow::getMainWindowWidgetByName(os, "main_window")->width() * 0.6, 0);
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
 
