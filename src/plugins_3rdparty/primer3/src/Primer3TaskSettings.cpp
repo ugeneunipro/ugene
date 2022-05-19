@@ -63,11 +63,9 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
       spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
       seqArgs(settings.seqArgs) {
 
-    primerSettings = p3_create_global_settings();
-    *primerSettings = *settings.primerSettings;
-    p3Retval = create_p3retval();
-    *p3Retval = *settings.p3Retval;
-
+    primerSettings = p3_copy_global_settings(settings.primerSettings);
+    p3Retval = copy_p3retval(settings.p3Retval);
+    
     initMaps();
 }
 
@@ -84,11 +82,9 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     seqArgs = settings.seqArgs;
     spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
 
-    primerSettings = p3_create_global_settings();
-    *primerSettings = *settings.primerSettings;
-    p3Retval = create_p3retval();
-    *p3Retval = *settings.p3Retval;
-
+    primerSettings = p3_copy_global_settings(settings.primerSettings);
+    p3Retval = copy_p3retval(settings.p3Retval);
+    
     initMaps();
     return *this;
 }
@@ -425,6 +421,11 @@ seq_args* Primer3TaskSettings::getSeqArgs() {
 }
 
 p3retval* Primer3TaskSettings::getP3RetVal() {
+    //TODO: figure out where to create
+    if (p3Retval == nullptr) {
+        p3Retval = create_p3retval();
+    }
+    
     return p3Retval;
 }
 
