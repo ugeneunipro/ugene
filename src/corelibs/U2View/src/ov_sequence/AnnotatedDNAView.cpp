@@ -736,7 +736,7 @@ void AnnotatedDNAView::removeSequenceWidget(ADVSequenceWidget* sequenceWidget) {
     updateMultiViewActions();
     emit si_sequenceWidgetRemoved(sequenceWidget);
     scrolledWidgetLayout->removeWidget(sequenceWidget);
-    delete sequenceWidget;
+    delete sequenceWidget;  // v->deleteLater(); //problem: updates for 'v' after seqCtx is destroyed
     updateScrollAreaHeight();
 }
 
