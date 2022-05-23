@@ -2257,7 +2257,7 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
     //Expected state: they should be correct (different with "simple clip" tooltip)    
 
     class TrimmomaticCustomScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto addButton = GTWidget::findToolButton(os, "buttonAdd", dialog);
 
@@ -2275,7 +2275,6 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
                                     " (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.");
             CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
 
-            tooltip.clear();
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(os, "palindromeLabel")));
             tooltip = GTUtilsToolTip::getToolTip();
             CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
