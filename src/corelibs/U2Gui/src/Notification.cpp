@@ -344,6 +344,7 @@ void NotificationStack::add(const QString& text, const NotificationType& type, Q
             });
         }
         notificationToRemove->deleteLater();
+        notifications.pop_front();
     }
 
     auto newNotification = new Notification(this, text, type, action);
