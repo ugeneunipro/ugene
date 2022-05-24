@@ -2275,7 +2275,7 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
 
     // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
     
     // 3. Check tooltips for "Palindrome clip threshold" label and value
     //Expected state: they should be correct (different with "simple clip" tooltip)    
