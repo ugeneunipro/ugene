@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QDialog>
+#include <QTimer>
 #include <QToolButton>
 #include <QWidgetAction>
 
@@ -802,7 +803,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap& m) {
 
 // QT 4.5.0 bug workaround
 void ADVSingleSequenceWidget::sl_closeView() {
-    closeView();
+    QTimer::singleShot(0, this, [this] { closeView(); });
 }
 
 void ADVSingleSequenceWidget::sl_saveScreenshot() {

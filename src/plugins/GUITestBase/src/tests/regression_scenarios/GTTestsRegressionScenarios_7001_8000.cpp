@@ -28,6 +28,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
+#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -205,7 +206,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
     CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed");
 
     // There must be no error message on the screen.
-    QLabel* errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
+    auto errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
     CHECK_SET_ERR(errorLabel == nullptr, "Found 'Failed to initialize OpenGL' label");
 }
 
@@ -650,7 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193) {
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
     // 5. Set 3' perfect match to 3
-    QSpinBox* perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
+    auto perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
     GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
 
     // 6. Click the find button.
@@ -1476,7 +1477,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
-    QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     GTKeyboardDriver::keyClick('M');
@@ -1660,6 +1661,29 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
 
     // Check that there is no removed item in the recent files list and UGENE does not crash.
     GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7454) {
+    // Open data/samples/PDB/1CF7.PDB.
+    // Increase the width of the Project View.
+    //     Expected: the current Sequence View is narrow.
+    // Find the action toolbar extension for the first sequence in the Sequence View (">>" button). Press ">>"->
+    //         "X Remove sequence".
+    //     Expected: no crash.
+    GTUtilsProject::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QRect rect = GTWidget::findWidget(os, "project_view")->geometry();
+    QPoint splitterCenter =
+        GTWidget::findWidget(os, "project_view")->mapToGlobal({rect.right() + 4, rect.center().y()});
+    QPoint delta(GTMainWindow::getMainWindowWidgetByName(os, "main_window")->width() * 0.6, 0);
+    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove sequence"}));
+    GTWidget::click(os,
+                    GTWidget::findWidget(os,
+                                         "qt_toolbar_ext_button",
+                                         GTWidget::findToolBar(os, "views_tool_bar_1CF7 chain A sequence")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
@@ -2157,7 +2181,7 @@ GUI_TEST_CLASS_DEFINITION(test_7507) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget* sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* glWidget = GTWidget::findWidget(os, "1-4RTE", sequenceViewWindow);
+    auto glWidget = GTWidget::findWidget(os, "1-4RTE", sequenceViewWindow);
 
     GTUtilsDialog::waitForDialog(os,
                                  new PopupCheckerByText(os,

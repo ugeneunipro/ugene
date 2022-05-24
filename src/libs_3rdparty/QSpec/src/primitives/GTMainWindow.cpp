@@ -62,6 +62,17 @@ QList<QWidget*> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getMainWindowWidgetByName"
+QWidget* GTMainWindow::getMainWindowWidgetByName(GUITestOpStatus& os, const QString& name) {
+    for (QWidget* w : GTMainWindow::getMainWindowsAsWidget(os)) {
+        if (w->objectName() == name) {
+            return w;
+        }
+    }
+    GT_FAIL(QString("There is no window named '%1'").arg(name), nullptr)
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkTitle"
 void GTMainWindow::checkTitle(GUITestOpStatus& os, const QString& title) {
     QList<QWidget*> mainWindowWidgets = getMainWindowsAsWidget(os);
