@@ -343,8 +343,7 @@ void NotificationStack::add(const QString& text, const NotificationType& type, Q
                 return n1->getOnScreenStartTimeMillis() < n2->getOnScreenStartTimeMillis();
             });
         }
-        notifications.removeOne(notificationToRemove);
-        notificationToRemove->deleteLater();
+        emit notificationToRemove->si_deleteRequested();
     }
 
     auto newNotification = new Notification(this, text, type, action);
