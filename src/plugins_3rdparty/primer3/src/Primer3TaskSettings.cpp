@@ -405,7 +405,6 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_FILE_FLAG", &primerSettings->file_flag);
     //TODO: explain_flag - got lost, figure out
     //intProperties.insert("PRIMER_EXPLAIN_FLAG", &primerArgs.explain_flag);
-    intProperties.insert("PRIMER_FIRST_BASE_INDEX", &primerSettings->first_base_index);
     doubleProperties.insert("PRIMER_MIN_TM", &primerSettings->p_args.min_tm);
     doubleProperties.insert("PRIMER_MAX_TM", &primerSettings->p_args.max_tm);
     doubleProperties.insert("PRIMER_MAX_GC", &primerSettings->p_args.max_gc);
