@@ -167,7 +167,6 @@ void QDPrimerActor::setDefaultSettings() {
     settings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
     settings.setIntProperty("PRIMER_LIBERAL_BASE", 1);
     settings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
-    settings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 1);
 }
 
 QDPrimerActorPrototype::QDPrimerActorPrototype() {
