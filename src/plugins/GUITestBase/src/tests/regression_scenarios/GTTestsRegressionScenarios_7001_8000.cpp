@@ -2395,11 +2395,21 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7550) {
-    auto clickFindProducts = [&os] {
-        if (GTUtilsMdi::activeWindow(os)->objectName() != "123 [cant_translate.fa]") {
-            GTUtilsMdi::closeActiveWindow(os);
+    class Click101TimesScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            for (auto notificationStack = AppContext::getMainWindow()->getNotificationStack();
+                 notificationStack->count() < 100;) {
+                if (GTUtilsMdi::activeWindow(os)->objectName() != "123 [cant_translate.fa]") {
+                    GTUtilsMdi::closeActiveWindow(os);
+                }
+                GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+            }
+            if (GTUtilsMdi::activeWindow(os)->objectName() != "123 [cant_translate.fa]") {
+                GTUtilsMdi::closeActiveWindow(os);
+            }
+            GTUtilsOptionPanelSequenceView::pressFindProducts(os);
         }
-        GTUtilsOptionPanelSequenceView::pressFindProducts(os);
     };
     // Open the _common_data/fasta/cant_translate.fa.
     // Open the "In Silico PCR" tab.
@@ -2412,10 +2422,7 @@ GUI_TEST_CLASS_DEFINITION(test_7550) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAAAAAAAAAAAAA");
     GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AAAAAAAAAAAAAAA");
-    for (auto notificationStack = AppContext::getMainWindow()->getNotificationStack(); notificationStack->count() < 100;
-         clickFindProducts()) {
-    }
-    clickFindProducts();
+    GTThread::runInMainThread(os, new Click101TimesScenario());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7555) {
