@@ -301,6 +301,16 @@ typedef struct p3_global_settings {
 
   /**/int    file_flag;   /* TO DO, See if this can be factored out. */
 
+  /* 
+   * For have-no-idea-who-reason we have used 1 as default previously.
+   * It had no sence, because, read the description carefully, "This parameter is ignored within pr_choice()".
+   * pr_choice() is the name of the obsolete function, which previously has been used for the primers picking process.
+   * Now it's replaced with "choose_primers()".
+   * Now this parameter is in use and it should be used if we need to shift regions we inputed (we count symbols from 1 in the GUI interface, but from 0 in code).
+   * But we do it by our oun when we read parameters!
+   * So, actually, this parameter is useless at all!!!!!
+   * BUT: regions are not replaced!!!! (TODO)
+  */
   /**/int    first_base_index;  /*
                              * The index of the first base in the input
                              * sequence.  This parameter is ignored within
@@ -1009,6 +1019,7 @@ const  primer_rec *p3_get_oa_i(const oligo_array *x, int i);
 
 /* Functions for seq_args -- create, destroy, set, set slots */
 seq_args *create_seq_arg();
+seq_args* copy_seq_arg(seq_args* a);
 void destroy_seq_args(seq_args *);
 int p3_set_sa_sequence(seq_args *sargs, const char *sequence);
 void p3_set_sa_primer_sequence_quality(seq_args *sargs, int quality);
