@@ -405,7 +405,8 @@ void Primer3Task::run() {
     if (spanExonsEnabled) {
         settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
-    resultPrimers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
+    
+    resultPrimers = choose_primers(settings.getPrimerSettings(), settings.getSeqArgs());
 
     bestPairs.clear();
 
@@ -437,30 +438,19 @@ void Primer3Task::run() {
             }
         }
     }
-
-    // do not need, there is a special function exists
-    /*if (resultPrimers->best_pairs.num_pairs > 0) {
-        std::free(primers.best_pairs.pairs);
-        primers.best_pairs.pairs = nullptr;
-    }
-    if (nullptr != primers.left) {
-        std::free(primers.left);
-        primers.left = nullptr;
-    }
-    if (nullptr != primers.right) {
-        std::free(primers.right);
-        primers.right = nullptr;
-    }
-    if (nullptr != primers.intl) {
-        std::free(primers.intl);
-        primers.intl = nullptr;
-    }*/
 }
 
 Task::ReportResult Primer3Task::report() {
-    if (!settings.getError().isEmpty()) {
-        stateInfo.setError(settings.getError());
+    if (resultPrimers->glob_err.storage_size != 0) {
+        stateInfo.setError(resultPrimers->glob_err.data);
     }
+    if (resultPrimers->per_sequence_err.storage_size != 0) {
+        stateInfo.setError(resultPrimers->per_sequence_err.data);
+    }
+    if (resultPrimers->warnings.storage_size != 0) {
+        stateInfo.addWarning(resultPrimers->warnings.data);
+    }
+    
     return Task::ReportResult_Finished;
 }
 

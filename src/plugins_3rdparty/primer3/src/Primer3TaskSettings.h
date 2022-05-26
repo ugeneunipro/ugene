@@ -92,7 +92,6 @@ public:
     U2Region getIncludedRegion() const;
     QVector<int> getSequenceQuality() const;
 
-    QByteArray getError() const;
     int getFirstBaseIndex() const;
 
     void setSequenceName(const QByteArray& value);
