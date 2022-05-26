@@ -979,7 +979,7 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
         /* If it was necessary to use a left_input, right_input,
            or internal_oligo_input primer that was
            unacceptable, then add warnings. */
-        if (primerSettings->pick_anyway && format_output) {
+        /*if (primerSettings->pick_anyway && format_output) {
             if (seqArgs->left_input) {
                 add_must_use_warnings(&retval->warnings,
                     "Left primer", &retval->fwd.expl);
@@ -992,7 +992,7 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
                 add_must_use_warnings(&retval->warnings,
                     "Hybridization probe", &retval->intl.expl);
             }
-        }
+        }*/
 
         if (pr_is_empty(&retval->glob_err)
             && pr_is_empty(&retval->per_sequence_err)) {

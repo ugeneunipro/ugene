@@ -234,12 +234,6 @@ QVector<int> Primer3TaskSettings::getSequenceQuality() const {
     return sequenceQuality;
 }
 
-QByteArray Primer3TaskSettings::getError() const {
-    //TODO: seqArgs.error - moved to p3retval, fix it
-    //return QByteArray(seqArgs.error.data);
-    return QByteArray();
-}
-
 int Primer3TaskSettings::getFirstBaseIndex() const {
     return primerSettings->first_base_index;
 }

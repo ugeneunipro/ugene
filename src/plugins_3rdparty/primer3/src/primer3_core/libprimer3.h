@@ -309,7 +309,6 @@ typedef struct p3_global_settings {
    * Now this parameter is in use and it should be used if we need to shift regions we inputed (we count symbols from 1 in the GUI interface, but from 0 in code).
    * But we do it by our oun when we read parameters!
    * So, actually, this parameter is useless at all!!!!!
-   * BUT: regions are not replaced!!!! (TODO)
   */
   /**/int    first_base_index;  /*
                              * The index of the first base in the input
