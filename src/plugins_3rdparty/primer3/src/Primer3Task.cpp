@@ -148,8 +148,7 @@ PrimerPair::PrimerPair()
       complAny(0),
       complEnd(0),
       productSize(0),
-      quality(0)/*,
-      complMeasure(0)*/ {
+      quality(0) {
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
@@ -159,8 +158,7 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
-      quality(primerPair.pair_quality)/*,
-      complMeasure(primerPair.compl_measure)*/ {
+      quality(primerPair.pair_quality) {
     if (!leftPrimer.isNull()) {
         leftPrimer->setStart(leftPrimer->getStart() + offset);
     }
@@ -179,8 +177,7 @@ PrimerPair::PrimerPair(const PrimerPair& primerPair)
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
-      quality(primerPair.quality)/*,
-      complMeasure(primerPair.complMeasure)*/ {
+      quality(primerPair.quality) {
 }
 
 PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
@@ -191,7 +188,6 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
     quality = primerPair.quality;
-    //complMeasure = primerPair.complMeasure;
     return *this;
 }
 
@@ -266,13 +262,6 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (quality > pair.quality) {
         return false;
     }
-
-    /*if (complMeasure < pair.complMeasure) {
-        return true;
-    }
-    if (complMeasure > pair.complMeasure) {
-        return false;
-    }*/
 
     if (leftPrimer->getStart() > pair.leftPrimer->getStart()) {
         return true;

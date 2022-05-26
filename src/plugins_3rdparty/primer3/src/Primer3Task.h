@@ -102,8 +102,6 @@ private:
     short complEnd;
     int productSize;
     double quality;
-    //TODO: got lost, figure out
-    //double complMeasure;
 };
 
 class Primer3Task : public Task {
