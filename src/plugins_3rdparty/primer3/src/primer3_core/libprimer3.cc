@@ -1223,6 +1223,86 @@ create_seq_arg()
   return r;
 }
 
+seq_args*
+copy_seq_arg(seq_args* a)
+{
+    if (NULL == a) return NULL; /* Out of memory */
+
+    seq_args* b = create_seq_arg();
+
+    *b = *a;
+
+    // TODO: do it in a correct way
+    if (a->quality != NULL) {
+        b->quality = new int;
+        std::copy(a->quality, a->quality + sizeof(int), b->quality);
+    }
+
+    if (a->sequence != NULL) {
+        b->sequence = (char*)malloc(strlen(a->sequence) + 1);
+        strcpy(b->sequence, a->sequence);
+        //b->sequence = copy;
+    }
+    if (a->sequence_name != NULL) {
+        b->sequence_name = (char*)malloc(strlen(a->sequence_name) + 1);
+        strcpy(b->sequence_name, a->sequence_name);
+    }
+    if (a->sequence_file != NULL) {
+        b->sequence_file = (char*)malloc(strlen(a->sequence_file) + 1);
+        strcpy(b->sequence_file, a->sequence_file);
+    }
+    if (a->trimmed_seq != NULL) {
+        b->trimmed_seq = (char*)malloc(strlen(a->trimmed_seq) + 1);
+        strcpy(b->trimmed_seq, a->trimmed_seq);
+    }
+    if (a->trimmed_orig_seq != NULL) {
+        b->trimmed_orig_seq = (char*)malloc(strlen(a->trimmed_orig_seq) + 1);
+        strcpy(b->trimmed_orig_seq, a->trimmed_orig_seq);
+    }
+    if (a->trimmed_masked_seq != NULL) {
+        b->trimmed_masked_seq = (char*)malloc(strlen(a->trimmed_masked_seq) + 1);
+        strcpy(b->trimmed_masked_seq, a->trimmed_masked_seq);
+    }
+    if (a->trimmed_masked_seq_r != NULL) {
+        b->trimmed_masked_seq_r = (char*)malloc(strlen(a->trimmed_masked_seq_r) + 1);
+        strcpy(b->trimmed_masked_seq_r, a->trimmed_masked_seq_r);
+    }
+    if (a->upcased_seq != NULL) {
+        b->upcased_seq = (char*)malloc(strlen(a->upcased_seq) + 1);
+        strcpy(b->upcased_seq, a->upcased_seq);
+    }
+    if (a->upcased_seq_r != NULL) {
+        b->upcased_seq_r = (char*)malloc(strlen(a->upcased_seq_r) + 1);
+        strcpy(b->upcased_seq_r, a->upcased_seq_r);
+    }
+    if (a->left_input != NULL) {
+        b->left_input = (char*)malloc(strlen(a->left_input) + 1);
+        strcpy(b->left_input, a->left_input);
+    }
+    if (a->right_input != NULL) {
+        b->right_input = (char*)malloc(strlen(a->right_input) + 1);
+        strcpy(b->right_input, a->right_input);
+    }
+    if (a->internal_input != NULL) {
+        b->internal_input = (char*)malloc(strlen(a->internal_input) + 1);
+        strcpy(b->internal_input, a->internal_input);
+    }
+    if (a->overhang_left != NULL) {
+        b->overhang_left = (char*)malloc(strlen(a->overhang_left) + 1);
+        strcpy(b->overhang_left, a->overhang_left);
+    }
+    if (a->overhang_right != NULL) {
+        b->overhang_right = (char*)malloc(strlen(a->overhang_right) + 1);
+        strcpy(b->overhang_right, a->overhang_right);
+    }
+    if (a->overhang_right_rv != NULL) {
+        b->overhang_right_rv = (char*)malloc(strlen(a->overhang_right_rv) + 1);
+        strcpy(b->overhang_right_rv, a->overhang_right_rv);
+    }
+
+    return b;
+}
+
 /* Free a seq_arg data structure */
 void
 destroy_seq_args(seq_args *sa) 

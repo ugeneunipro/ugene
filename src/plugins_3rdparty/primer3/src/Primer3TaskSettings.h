@@ -170,8 +170,7 @@ private:
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
 
     p3_global_settings* primerSettings = nullptr;
-    seq_args seqArgs;
-
+    seq_args* seqArgs = nullptr;
     p3retval* p3Retval = nullptr; 
 };
 
