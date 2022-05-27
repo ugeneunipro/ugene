@@ -1006,7 +1006,7 @@ p3retval* copy_p3retval(p3retval* a)
     b->intl.oligo = tmp_oligos[1];
     b->rev.oligo = tmp_oligos[2];
 
-    return nullptr;
+    return b;
 }
 /* ============================================================ */
 /* BEGIN functions for dpal_arg_holder                          */
@@ -1232,10 +1232,9 @@ copy_seq_arg(seq_args* a)
 
     *b = *a;
 
-    // TODO: do it in a correct way
     if (a->quality != NULL) {
-        b->quality = new int;
-        std::copy(a->quality, a->quality + sizeof(int), b->quality);
+        b->quality = new int[a->n_quality];
+        std::copy(a->quality, a->quality + sizeof(int) * a->n_quality, b->quality);
     }
 
     if (a->sequence != NULL) {

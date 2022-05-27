@@ -24,7 +24,6 @@
 
 #include "Primer3TaskSettings.h"
 
-//#include "primer3_core/boulder_input.h"
 #include "primer3_core/libprimer3.h"
 
 namespace U2 {
@@ -88,9 +87,6 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
 }
 
 Primer3TaskSettings::~Primer3TaskSettings() {
-    //TODO: free_seq_lib - got lost, figure out
-    //free_seq_lib(primerSettings->p_args.repeat_lib);
-    //free_seq_lib(primerSettings->p_args.io_mishyb_library);
     p3_destroy_global_settings(primerSettings);
     destroy_seq_args(seqArgs);
     destroy_p3retval(p3Retval);
@@ -372,20 +368,15 @@ QByteArray Primer3TaskSettings::getMishybLibrary() const {
     return mishybLibrary;
 }
 
-p3_global_settings* Primer3TaskSettings::getPrimerSettings() {
+p3_global_settings* Primer3TaskSettings::getPrimerSettings() const {
     return primerSettings;
 }
 
-seq_args* Primer3TaskSettings::getSeqArgs() {
+seq_args* Primer3TaskSettings::getSeqArgs() const {
     return seqArgs;
 }
 
-p3retval* Primer3TaskSettings::getP3RetVal() {
-    //TODO: figure out where to create
-    if (p3Retval == nullptr) {
-        p3Retval = create_p3retval();
-    }
-    
+p3retval* Primer3TaskSettings::getP3RetVal() const {
     return p3Retval;
 }
 
@@ -397,8 +388,6 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_MAX_POLY_X", &primerSettings->p_args.max_poly_x);
     intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_POLY_X", &primerSettings->o_args.max_poly_x);
     intProperties.insert("PRIMER_FILE_FLAG", &primerSettings->file_flag);
-    //TODO: explain_flag - got lost, figure out
-    //intProperties.insert("PRIMER_EXPLAIN_FLAG", &primerArgs.explain_flag);
     doubleProperties.insert("PRIMER_MIN_TM", &primerSettings->p_args.min_tm);
     doubleProperties.insert("PRIMER_MAX_TM", &primerSettings->p_args.max_tm);
     doubleProperties.insert("PRIMER_MAX_GC", &primerSettings->p_args.max_gc);

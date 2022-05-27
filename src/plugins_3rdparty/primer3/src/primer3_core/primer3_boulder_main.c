@@ -1031,7 +1031,6 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
         destroy_secundary_structures(primerSettings, retval); /* This works even if retval is NULL */
         destroy_p3retval(retval); /* This works even if retval is NULL */
         retval = NULL;
-        //TODO - fix
         return NULL;
         destroy_seq_args(seqArgs);
         seqArgs = NULL;

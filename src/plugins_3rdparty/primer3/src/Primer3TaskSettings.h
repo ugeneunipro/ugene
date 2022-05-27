@@ -114,10 +114,9 @@ public:
 
     QByteArray getRepeatLibrary() const;
     QByteArray getMishybLibrary() const;
-
-    p3_global_settings* getPrimerSettings();
-    seq_args* getSeqArgs();
-    p3retval* getP3RetVal();
+    p3_global_settings* getPrimerSettings() const;
+    seq_args* getSeqArgs() const;
+    p3retval* getP3RetVal() const;
 
     // span intron/exon boundary settings
 
