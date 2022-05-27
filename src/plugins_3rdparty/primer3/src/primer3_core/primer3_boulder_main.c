@@ -57,7 +57,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #else
 #include <getopt.h> /* getopt() */
 #include <unistd.h>
-#include "primer3_boulder_main.h"
 #endif
 
 
