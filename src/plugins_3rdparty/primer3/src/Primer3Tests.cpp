@@ -21,8 +21,6 @@
 
 #include "Primer3Tests.h"
 
-//#include "primer3_core/primer3.h"
-
 namespace U2 {
 
 #define DBFILEPATH_ATTR "dbfile"
