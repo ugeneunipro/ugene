@@ -47,6 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <ctype.h> /* toupper */
 #include <unordered_map>
+#include <vector>
 
 #ifdef __GLIBCXX__
 namespace std
