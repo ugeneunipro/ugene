@@ -202,7 +202,6 @@ bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     result &= complEnd == primerPair.complEnd;
     result &= productSize == primerPair.productSize;
     result &= quality == primerPair.quality;
-    //result &= complMeasure == primerPair.complMeasure;
 
     return result;
 }
@@ -367,28 +366,6 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
 }
 
 void Primer3Task::run() {
-    /* A place to put a string containing all error messages */
-    //TODO: check this palce again
-    pr_append_str* combined_retval_err = NULL;
-    combined_retval_err = create_pr_append_str();
-
-    if (!settings.getRepeatLibrary().isEmpty()) {
-        settings.getPrimerSettings()->p_args.repeat_lib = read_and_create_seq_lib(settings.getRepeatLibrary().constData(), "mispriming library");
-        if (nullptr != settings.getPrimerSettings()->p_args.repeat_lib->error.data) {
-            pr_append_new_chunk_external(combined_retval_err, settings.getPrimerSettings()->p_args.repeat_lib->error.data);
-            //pr_append_new_chunk_external(&settings.getSeqArgs()->error, settings.getSeqArgs()->repeat_lib.error.data);
-            return;
-        }
-    }
-    if (!settings.getMishybLibrary().isEmpty()) {
-        settings.getPrimerSettings()->o_args.repeat_lib = read_and_create_seq_lib(settings.getRepeatLibrary().constData(), "internal oligo mishyb library");
-        if (nullptr != settings.getPrimerSettings()->o_args.repeat_lib->error.data) {
-            pr_append_new_chunk_external(combined_retval_err, settings.getPrimerSettings()->o_args.repeat_lib->error.data);
-            //pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->io_mishyb_library.error.data);
-            return;
-        }
-    }
-
     bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
     int toReturn = settings.getPrimerSettings()->num_return;
     if (spanExonsEnabled) {
