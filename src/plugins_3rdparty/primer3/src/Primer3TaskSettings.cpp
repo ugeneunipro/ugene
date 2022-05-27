@@ -234,24 +234,29 @@ int Primer3TaskSettings::getFirstBaseIndex() const {
     return primerSettings->first_base_index;
 }
 
+namespace {
+    
+    void copyByteArray2CharPointer(char* to, QByteArray from) {
+        if (to != nullptr) {
+            free(to);
+            to = nullptr;
+        }
+        if (!from.isEmpty()) {
+            to = (char*)malloc(strlen(from) + 1);
+            strcpy(to, from);
+        }
+    }
+}
+
 void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
     sequenceName = value;
-    if (!value.isEmpty()) {
-        seqArgs->sequence_name = sequenceName.data();
-    } else {
-        seqArgs->sequence_name = nullptr;
-    }
+    copyByteArray2CharPointer(seqArgs->sequence_name, sequenceName);
 }
 
 void Primer3TaskSettings::setSequence(const QByteArray& value, bool isCirc) {
     sequence = value;
     isCircular = isCirc;
-    char* sequenceData = sequence.data();
-    if (seqArgs->sequence != nullptr) {
-        free(seqArgs->sequence);
-    }
-    seqArgs->sequence = (char*)malloc(strlen(sequenceData) + 1);
-    strcpy(seqArgs->sequence, sequenceData);
+    copyByteArray2CharPointer(seqArgs->sequence, sequence);
 }
 
 void Primer3TaskSettings::setCircularity(bool isCirc) {
@@ -297,29 +302,17 @@ void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& 
 
 void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
     leftInput = value;
-    if (!value.isEmpty()) {
-        seqArgs->left_input = leftInput.data();
-    } else {
-        seqArgs->left_input = nullptr;
-    }
+    copyByteArray2CharPointer(seqArgs->left_input, leftInput);
 }
 
 void Primer3TaskSettings::setRightInput(const QByteArray& value) {
     rightInput = value;
-    if (!value.isEmpty()) {
-        seqArgs->right_input = rightInput.data();
-    } else {
-        seqArgs->right_input = nullptr;
-    }
+    copyByteArray2CharPointer(seqArgs->right_input, rightInput);
 }
 
 void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
     internalInput = value;
-    if (!value.isEmpty()) {
-        seqArgs->internal_input = internalInput.data();
-    } else {
-        seqArgs->internal_input = nullptr;
-    }
+    copyByteArray2CharPointer(seqArgs->internal_input, internalInput);
 }
 
 void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
@@ -345,10 +338,13 @@ void Primer3TaskSettings::setIncludedRegion(const qint64& startPos, const qint64
 
 void Primer3TaskSettings::setSequenceQuality(const QVector<int>& value) {
     sequenceQuality = value;
-    if (!value.isEmpty()) {
-        seqArgs->quality = sequenceQuality.data();
-    } else {
+    if (seqArgs->quality != nullptr) {
+        free(seqArgs->quality);
         seqArgs->quality = nullptr;
+    }
+    if (!sequenceQuality.isEmpty()) {
+        seqArgs->quality = new int[sequenceQuality.size()];
+        std::copy(sequenceQuality.begin(), sequenceQuality.end(), seqArgs->quality);
     }
 }
 
