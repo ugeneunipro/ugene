@@ -58,7 +58,6 @@ SettingsImpl::SettingsImpl(QSettings::Scope scope) {
 
     if (scope == QSettings::UserScope) {
         // check for local cfg file -> portable APP
-        bool localCfg = false;
         QDir dir(QDir::current());
         QFileInfoList dirEntries = dir.entryInfoList();
         foreach (const QFileInfo& entry, dirEntries) {
@@ -199,6 +198,10 @@ void SettingsImpl::sync() {
 
 QString SettingsImpl::fileName() const {
     return settings->fileName();
+}
+
+bool U2::SettingsImpl::isLocalConfig() {
+    return localCfg;
 }
 
 }  // namespace U2

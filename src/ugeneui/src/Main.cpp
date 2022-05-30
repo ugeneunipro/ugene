@@ -1060,7 +1060,7 @@ int main(int argc, char** argv) {
     appContext->setAutoAnnotationsSupport(nullptr);
     delete aaSupport;
 
-    bool deleteSettingsFile = userAppSettings->resetSettings();
+    bool resetSettingsFile = userAppSettings->resetSettings();
     QString iniFile = AppContext::getSettings()->fileName();
 
     appContext->setAppSettingsGUI(nullptr);
@@ -1069,16 +1069,21 @@ int main(int argc, char** argv) {
     appContext->setAppSettings(nullptr);
     delete appSettings;
 
+    bool isSettingsFileLocal = settings->isLocalConfig();
     appContext->setSettings(nullptr);
     delete settings;
 
     appContext->setGlobalSettings(nullptr);
     delete globalSettings;
 
-    if (deleteSettingsFile) {
+    if (resetSettingsFile) {
 #ifndef Q_OS_DARWIN
-        QFile ff;
-        ff.remove(iniFile);
+        QFile ff(iniFile);
+        ff.remove();
+        if (isSettingsFileLocal) {
+            ff.open(QIODevice::WriteOnly);
+            ff.close();
+        }
 #else
         ResetSettingsMac::reset();
 #endif  // !Q_OS_DARWIN

@@ -37,6 +37,7 @@ U2Test.dll
 U2Test.map
 U2View.dll
 U2View.map
+UGENE.ini
 breakpad.dll
 breakpad.map
 cudart64_110.dll

@@ -49,6 +49,11 @@ public:
 
     virtual void sync() = 0;
     virtual QString fileName() const = 0;
+    /**
+     * @return true if the UGENE "ini" file is stored in the UGENE root directory.
+     * False othervise.
+     */
+    virtual bool isLocalConfig() = 0;
 };
 
 }  // namespace U2

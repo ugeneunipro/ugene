@@ -52,9 +52,12 @@ public:
 
     virtual QString fileName() const;
 
+    bool isLocalConfig() override;
+
 private:
     mutable QMutex threadSafityLock;
     QSettings* settings;
+    bool localCfg = false;
 };
 }  // namespace U2
 #endif
