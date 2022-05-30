@@ -122,6 +122,7 @@ void Primer3ADVContext::sl_showDialog() {
         defaultSettings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
         defaultSettings.setIntProperty("PRIMER_LIBERAL_BASE", 1);
         defaultSettings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
+        defaultSettings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
 
         QObjectScopedPointer<Primer3Dialog> dialog = new Primer3Dialog(defaultSettings, seqCtx);
         dialog->exec();

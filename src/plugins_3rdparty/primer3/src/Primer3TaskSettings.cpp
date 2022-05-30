@@ -384,6 +384,7 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_MAX_POLY_X", &primerSettings->p_args.max_poly_x);
     intProperties.insert("PRIMER_INTERNAL_OLIGO_MAX_POLY_X", &primerSettings->o_args.max_poly_x);
     intProperties.insert("PRIMER_FILE_FLAG", &primerSettings->file_flag);
+    intProperties.insert("PRIMER_FIRST_BASE_INDEX", &primerSettings->first_base_index);
     doubleProperties.insert("PRIMER_MIN_TM", &primerSettings->p_args.min_tm);
     doubleProperties.insert("PRIMER_MAX_TM", &primerSettings->p_args.max_tm);
     doubleProperties.insert("PRIMER_MAX_GC", &primerSettings->p_args.max_gc);
