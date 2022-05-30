@@ -100,4 +100,4 @@ mkdir "${BUNDLE_DIR}/platforms"
 copy_with_pdb "${QT_DIR}/plugins/platforms/qwindows.dll" "${BUNDLE_DIR}/platforms"
 echo "##teamcity[blockClosed name='bundle']"
 
-touch UGENE.ini
+touch "${BUNDLE_DIR}/UGENE.ini"
