@@ -131,7 +131,7 @@ protected:
 
 private:
     void setValue(int x, int y, int val, bool isMatch) {
-        U2_ASSERT(((qint32)val & MATCH_MASK) == 0);
+        U2_ASSERT(((quint32)val & MATCH_MASK) == 0);
         int valueWithMatchMask = int((quint32)val | (isMatch ? Flag_Match : Flag_Mismatch));
         set(x, y, valueWithMatchMask);
     }

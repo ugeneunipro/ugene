@@ -83,12 +83,16 @@ private:
     }
 
     int transposeX(int x) const {
+#ifndef U2_SUPPRESS_GCC_5_4_FALSE_WARNINGS
         U2_ASSERT(x >= 0 && x < sizeX);
+#endif
         return (column0 + x) % sizeX;
     }
 
     int transposeY(int y) const {
+#ifndef U2_SUPPRESS_GCC_5_4_FALSE_WARNINGS
         U2_ASSERT(y >= 0 && y < sizeY);
+#endif
         return y;
     }
 
