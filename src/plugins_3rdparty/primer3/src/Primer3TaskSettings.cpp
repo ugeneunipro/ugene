@@ -236,27 +236,27 @@ int Primer3TaskSettings::getFirstBaseIndex() const {
 
 namespace {
     
-    void copyByteArray2CharPointer(char* to, QByteArray from) {
-        if (to != nullptr) {
-            free(to);
-            to = nullptr;
+    void copyByteArray2CharPointer(char** to, QByteArray from) {
+        if (*to != nullptr) {
+            free(*to);
+            *to = nullptr;
         }
         if (!from.isEmpty()) {
-            to = (char*)malloc(strlen(from) + 1);
-            strcpy(to, from);
+            *to = (char*)malloc(strlen(from) + 1);
+            strcpy(*to, from);
         }
     }
 }
 
 void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
     sequenceName = value;
-    copyByteArray2CharPointer(seqArgs->sequence_name, sequenceName);
+    copyByteArray2CharPointer(&seqArgs->sequence_name, sequenceName);
 }
 
 void Primer3TaskSettings::setSequence(const QByteArray& value, bool isCirc) {
     sequence = value;
     isCircular = isCirc;
-    copyByteArray2CharPointer(seqArgs->sequence, sequence);
+    copyByteArray2CharPointer(&seqArgs->sequence, sequence);
 }
 
 void Primer3TaskSettings::setCircularity(bool isCirc) {
@@ -302,17 +302,17 @@ void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& 
 
 void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
     leftInput = value;
-    copyByteArray2CharPointer(seqArgs->left_input, leftInput);
+    copyByteArray2CharPointer(&seqArgs->left_input, leftInput);
 }
 
 void Primer3TaskSettings::setRightInput(const QByteArray& value) {
     rightInput = value;
-    copyByteArray2CharPointer(seqArgs->right_input, rightInput);
+    copyByteArray2CharPointer(&seqArgs->right_input, rightInput);
 }
 
 void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
     internalInput = value;
-    copyByteArray2CharPointer(seqArgs->internal_input, internalInput);
+    copyByteArray2CharPointer(&seqArgs->internal_input, internalInput);
 }
 
 void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
