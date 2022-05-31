@@ -42,6 +42,7 @@
 #include <U2Gui/ExportAnnotationsDialog.h>
 #include <U2Gui/ExportDocumentDialogController.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/Notification.h>
 
 namespace U2 {
 
@@ -125,10 +126,14 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     }
 
     Project* project = AppContext::getProject();
-    if (nullptr != project && project->findDocumentByURL(dstUrl)) {
-        QMessageBox::critical(QApplication::activeWindow(), QObject::tr("Error"), QObject::tr("Document with the same URL is added to the project.\n"
-                                                                                              "Remove it from the project first."));
-        return;
+    if (project != nullptr) {
+        Document* desiredDoc = project->findDocumentByURL(dstUrl);
+        if (desiredDoc != nullptr) {
+            const QString message = QObject::tr("Document is already added to the project, it will be overritten.").arg(dstUrl);
+            NotificationStack::addNotification(message, Info_Not);
+            coreLog.info(message);
+            project->removeDocument(desiredDoc);
+        }
     }
     bool addToProject = dialog->getAddToProjectFlag();
 
