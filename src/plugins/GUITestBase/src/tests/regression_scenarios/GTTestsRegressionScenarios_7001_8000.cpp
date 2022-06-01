@@ -2715,12 +2715,12 @@ GUI_TEST_CLASS_DEFINITION(test_7609) {
     GTUtilsMsaEditor::removeRows(os, 0, 0);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7610) {
+GUI_TEST_CLASS_DEFINITION(test_7611) {
     // Check that export 3D struct to PDF works correctly (doesn't fail with error or an empty document).
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString pdfFilePath = sandBoxDir + "test_7610.pdf";
+    QString pdfFilePath = sandBoxDir + "test_7611.pdf";
 
     class ExportImageScenario : public CustomScenario {
     public:
