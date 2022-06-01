@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -4998,6 +4998,422 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>870</x>
      <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_MAX_SELF_ANY_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_90</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_MAX_SELF_END_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_95</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_MAX_HAIRPIN_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_96</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_WT_SELF_ANY_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_97</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>90</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_WT_SELF_END_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_98</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>118</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_WT_HAIRPIN_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_99</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>52</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_108</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_104</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_PAIR_WT_COMPL_ANY_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_PAIR_WT_COMPL_END_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_107</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_WT_SELF_ANY_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>988</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_109</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_106</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_WT_SELF_END_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>988</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_110</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>822</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>edit_PRIMER_INTERNAL_WT_HAIRPIN_TH</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>988</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_111</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>529</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>778</x>
+     <y>229</y>
     </hint>
    </hints>
   </connection>
