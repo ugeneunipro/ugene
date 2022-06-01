@@ -3143,10 +3143,10 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5730) {
+    
     QFile originalFile(dataDir + "samples/Genbank/murine.gb");
     QString dstPath = sandBoxDir + "/5730_murine.gb";
     originalFile.copy(dstPath);
-
     QFile copiedFile(dstPath);
     CHECK_SET_ERR(copiedFile.exists(), "Unable to copy file");
 
@@ -3156,6 +3156,7 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTFileDialog::openFile(os, sandBoxDir, "5730_murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     
+    //Sequence + annotations
     GTLogTracer logTracer;
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesToAll));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "5730_murine.gb"));
@@ -3165,6 +3166,27 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
     CHECK_SET_ERR(logTracer.checkMessage("Document is already added to the project"), "Expected messge not found in the log");
+    
+    //Other objects
+    QFile originalFile2(dataDir + "samples/CLUSTALW/COI.aln");
+    dstPath = sandBoxDir + "/5730_COI.aln";
+    originalFile2.copy(dstPath);
+
+    QFile copiedFile2(dstPath);
+    CHECK_SET_ERR(copiedFile2.exists(), "Unable to copy file");
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, sandBoxDir, "5730_COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer logTracer2;
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export object..."}));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "5730_COI.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsProjectTreeView::callContextMenu(os, "HIV-1", "HIV-1.aln");
+
+    CHECK_SET_ERR(logTracer2.checkMessage("Document is already added to the project, it will be overritten."), "Expected messge not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {
