@@ -33,7 +33,6 @@
 
 #include <QColor>
 #include <QGraphicsItem>
-#include <QGraphicsView>
 #include <QMainWindow>
 #include <QRgb>
 
@@ -175,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 7. Click  OK button
     // Expected state: Phylogenetic tree appears
-    auto w1 = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -227,7 +226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 7. Click  OK button
     // Expected state: phylogenetic tree appears
-    auto w1 = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -372,12 +371,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::findGraphicsView(os, "treeView");
 }
 
-int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
-    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
-    return globalCoord.y();
-}
+//int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
+//    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+//    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
+//    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
+//    return globalCoord.y();
+//}
+
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Tree layouts test
     //    1. Open file _common_data/scenario/tree_view/COI.nwk
@@ -631,11 +631,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
 
-    auto treeView = GTWidget::findWidget(os, "treeView");
-    // 3. Close the opened view
-
-    // 4. Activate bookmark
-    // Expected state: UGENE not crash
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
