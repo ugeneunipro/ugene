@@ -565,8 +565,6 @@ void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol,
         return;
     }
 
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
     if (format == GL2PS_EPS) {
         // hack -> make widget aspect ratio 1:1
         if (width() > height()) {
@@ -575,9 +573,26 @@ void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol,
         }
     }
 
+    glFrame->updateViewPort();
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
     while (state == GL2PS_OVERFLOW) {
         buffsize += 2048 * 2048;
-        gl2psBeginPage(title.constData(), "Unipro UGENE BioStruct3D Viewer plugin", viewport, format, sort, options, GL_RGBA, 0, nullptr, nbcol, nbcol, nbcol, buffsize, fp, fileName);
+        gl2psBeginPage(title.constData(),
+                       "Unipro UGENE BioStruct3D Viewer plugin",
+                       viewport,
+                       format,
+                       sort,
+                       options,
+                       GL_RGBA,
+                       0,
+                       nullptr,
+                       nbcol,
+                       nbcol,
+                       nbcol,
+                       buffsize,
+                       fp,
+                       fileName);
         paintGL();
         state = gl2psEndPage();
     }
