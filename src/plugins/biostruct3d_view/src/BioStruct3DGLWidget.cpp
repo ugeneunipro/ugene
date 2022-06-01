@@ -777,6 +777,7 @@ void BioStruct3DGLWidget::createActions() {
     connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
 
     exportImageAction = new QAction(tr("Export Image..."), this);
+    exportImageAction->setObjectName("bioStruct3DExportImageAction");
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
     createStructuralAlignmentActions();

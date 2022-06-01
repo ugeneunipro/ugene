@@ -69,6 +69,7 @@ ExportImageDialog::ExportImageDialog(ImageExportController* factory,
       origFilename(file),
       source(invoSource) {
     SAFE_POINT(exportController != nullptr, tr("Image export task factory is NULL"), );
+    setObjectName("ExportImageDialog");
     init();
 }
 

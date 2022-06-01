@@ -2279,9 +2279,9 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
     // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
     GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
-    
+
     // 3. Check tooltips for "Palindrome clip threshold" label and value
-    //Expected state: they should be correct (different with "simple clip" tooltip)    
+    // Expected state: they should be correct (different with "simple clip" tooltip)
 
     class TrimmomaticCustomScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
@@ -2298,7 +2298,7 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(os, "palindromeThreshold")));
             QString tooltip = GTUtilsToolTip::getToolTip();
             QString expedtedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
-                                    " Therefore the threshold can be in the range of 30. Even though this threshold is very high" 
+                                    " Therefore the threshold can be in the range of 30. Even though this threshold is very high"
                                     " (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.");
             CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
 
@@ -2713,6 +2713,39 @@ GUI_TEST_CLASS_DEFINITION(test_7609) {
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7610) {
+    // Check that export 3D struct to PDF works correctly (doesn't fail with error or an empty document).
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString pdfFilePath = sandBoxDir + "test_7610.pdf";
+
+    class ExportImageScenario : public CustomScenario {
+    public:
+        ExportImageScenario(const QString& _pdfFilePath)
+            : pdfFilePath(_pdfFilePath) {
+        }
+
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "formatsBox", dialog, "PDF");
+            GTLineEdit::setText(os, "fileNameEdit", pdfFilePath, dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+        QString pdfFilePath;
+    };
+
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "ExportImageDialog", new ExportImageScenario(pdfFilePath)));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"bioStruct3DExportImageAction"}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1CF7"));
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkNoErrorsInLog(os);
+    qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
+    CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
 }
 
 }  // namespace GUITest_regression_scenarios
