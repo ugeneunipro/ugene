@@ -33,7 +33,6 @@
 
 #include <QColor>
 #include <QGraphicsItem>
-#include <QGraphicsView>
 #include <QMainWindow>
 #include <QRgb>
 
@@ -372,12 +371,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::findGraphicsView(os, "treeView");
 }
 
-int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
-    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
-    return globalCoord.y();
-}
+//int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
+//    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+//    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
+//    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
+//    return globalCoord.y();
+//}
+
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Tree layouts test
     //    1. Open file _common_data/scenario/tree_view/COI.nwk
