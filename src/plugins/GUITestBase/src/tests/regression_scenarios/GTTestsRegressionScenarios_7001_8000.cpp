@@ -2738,7 +2738,7 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
         QString pdfFilePath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "ExportImageDialog", new ExportImageScenario(pdfFilePath)));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "ImageExportForm", new ExportImageScenario(pdfFilePath)));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"bioStruct3DExportImageAction"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1CF7"));
 
