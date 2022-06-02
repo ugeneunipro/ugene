@@ -73,7 +73,7 @@ public:
         return printAction;
     }
     QAction* getContAction() const {
-        return contAction;
+        return alignTreeLabelsAction;
     }
     QAction* getNameLabelsAction() const {
         return nameLabelsAction;
@@ -183,7 +183,7 @@ private:
     QAction* nodeLabelsAction;
     QAction* distanceLabelsAction;
     QAction* textSettingsAction;
-    QAction* contAction;
+    QAction* alignTreeLabelsAction;
 
     QAction* zoomToSelAction;
     QAction* zoomToAllAction;
@@ -204,7 +204,7 @@ private:
 
     void setupLayoutSettingsMenu(QMenu* m);
     void setupShowLabelsMenu(QMenu* m);
-    void setupCameraMenu(QMenu* m);
+    void setupExportTreeImageMenu(QMenu* m);
 
 protected:
     TreeViewerUI* ui;
