@@ -175,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 7. Click  OK button
     // Expected state: Phylogenetic tree appears
-    auto w1 = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -227,7 +227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 7. Click  OK button
     // Expected state: phylogenetic tree appears
-    auto w1 = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -631,7 +631,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
 
-    auto treeView = GTWidget::findWidget(os, "treeView");
+    GTWidget::findWidget(os, "treeView");
     // 3. Close the opened view
 
     // 4. Activate bookmark
