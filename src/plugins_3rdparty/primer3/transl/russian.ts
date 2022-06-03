@@ -1368,6 +1368,11 @@
         <source>The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
         <translation>The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</translation>
     </message>
+    <message>
+        <location filename="../src/Primer3Task.cpp" line="854"/>
+        <source>Object with annotations was removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::QDPrimerActor</name>

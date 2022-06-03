@@ -28,8 +28,6 @@
 #include <QStack>
 #include <QVBoxLayout>
 
-#include <U2Core/PhyTree.h>
-#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/GraphicsButtonItem.h>

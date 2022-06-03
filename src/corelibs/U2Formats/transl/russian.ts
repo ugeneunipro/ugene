@@ -2458,11 +2458,21 @@
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
+        <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
+        <source>Failed to detect assembly storage format: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="149"/>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="153"/>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="158"/>
         <source>Failed to parse packed row range info %1</source>
         <translation>Failed to parse packed row range info %1</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="81"/>
+        <source>There is no assembly object with the specified id.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="96"/>
@@ -2480,6 +2490,36 @@
         <translation>Packed data are empty!</translation>
     </message>
     <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="453"/>
+        <source>Packing method prefix is not supported: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="461"/>
+        <source>Data are corrupted, no name end marker found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="470"/>
+        <source>Data are corrupted, no sequence end marker found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="479"/>
+        <source>Data are corrupted, no CIGAR end marker found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="498"/>
+        <source>Data are corrupted, no rnext end marker found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="513"/>
+        <source>Can not convert pnext to a number: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="225"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Error checking SQLite database: %1!</translation>
@@ -2495,9 +2535,19 @@
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
+        <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
         <source>Database is already opened!</source>
         <translation>База данных уже открыта!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="332"/>
+        <source>Illegal database state: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="338"/>
@@ -2520,6 +2570,11 @@
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="414"/>
+        <source>Can&apos;t synchronize database state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="433"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
@@ -2533,6 +2588,11 @@
         <location filename="../src/sqlite_dbi/SQLiteModDbi.cpp" line="147"/>
         <source>An object single modification step not found!</source>
         <translation>An object single modification step not found!</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="390"/>
+        <source>Msa object not found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="542"/>
@@ -2549,9 +2609,20 @@
         <translation>Msa row not found!</translation>
     </message>
     <message>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1319"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1329"/>
+        <source>An error occurred during updating an msa length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
         <source>Not an object! Id: %1, type: %2</source>
         <translation>Not an object! Id: %1, type: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
+        <source>Unknown object type! Id: %1, type: %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
@@ -2605,6 +2676,11 @@
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="65"/>
         <source>An error occurred during updating UDR</source>
         <translation>An error occurred during updating UDR</translation>
+    </message>
+    <message>
+        <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
+        <source>Unsupported attribute type: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

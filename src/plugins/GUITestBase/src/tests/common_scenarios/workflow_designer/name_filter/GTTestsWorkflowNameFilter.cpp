@@ -50,7 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // GTWidget::click(os, GTWidget::findWidget(os, "samples"));
 
     // 3. Click the "Name filter" line edit.
-    QWidget* parent = GTWidget::findWidget(os, "palette");
+    auto parent = GTWidget::findWidget(os, "palette");
     auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
     // hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTTabWidget::setCurrentIndex(os, tabs, 1);
 
     // 3. Click the "Name filter" line edit.
-    QWidget* parent = GTWidget::findWidget(os, "palette");
+    auto parent = GTWidget::findWidget(os, "palette");
     auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
 
     // 4. Write "NGS".

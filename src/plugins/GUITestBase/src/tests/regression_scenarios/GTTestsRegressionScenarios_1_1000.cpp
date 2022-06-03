@@ -574,7 +574,7 @@ GUI_TEST_CLASS_DEFINITION(test_0597) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Open graph.
-    QWidget* sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Karlin Signature Difference"}));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -588,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0597) {
         void commonScenario() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit* newTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
+            auto newTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             GTLineEdit::setText(os, newTablePath, sandBoxDir + "test_0597");
 
             auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
@@ -610,11 +610,11 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "Mycobacterium.fna");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
 
     // 2. Show DNA Flexibility graph
     // Expected state: 'Calculate graph points' task is started
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget);
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"DNA Flexibility"}));
     GTWidget::click(os, graphAction);
     GTUtilsTask::waitTaskStart(os, "Calculate graph points", 30000);
@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0746) {
     // 2. Make 'Detailed view' visible (if not)
     // Expected state: 'Show amino translation' and 'Complement strand' buttons are enabled (not grey)
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/764/short.fa");
-    QWidget* toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     Runnable* chooser = new PopupChooser(os, {"toggleDetailsView"});
     GTUtilsDialog::waitForDialog(os, chooser);
     GTWidget::click(os, toggleViewButton);
@@ -1435,7 +1435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
     //    3. Press right mouse button in the graph area, choose {Graph -> Graph settings...}.
-    QWidget* graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
+    auto graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, graphView);
     QImage init = GTWidget::getImage(os, graphView);
     // init.save("/home/vmalin/init", "BMP");
@@ -1501,7 +1501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 #endif
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dir);
     //    4) Click on appeared item in the file list
-    QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
+    auto datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     auto items = GTWidget::findListWidget(os, "itemsArea", datasetWidget);
     GTListWidget::click(os, items, "Genbank", Qt::RightButton);
     //    Expected state:
@@ -1567,7 +1567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     class ResetAndApplyScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) {
-            QWidget* nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            auto nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
             GTWidget::click(os, nextButton);
             GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
             GTWidget::click(os, nextButton);
@@ -1601,7 +1601,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     class ApplyScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) {
-            QWidget* nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            auto nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
             GTWidget::click(os, nextButton);
             GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
             GTWidget::click(os, nextButton);
@@ -1814,7 +1814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     //  = > The Circular View with the Restriction Site Map is shown.
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction", GTWidget::findWidget(os, "views_tool_bar_NC_004718")));
 
-    QWidget* restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
+    auto restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
     CHECK_SET_ERR(nullptr != restrictionMapTreeWidget && restrictionMapTreeWidget->isVisible(),
                   "Restriction map widget isn't visible unexpectedly");
 
@@ -2193,7 +2193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868) {
     GTUtilsTaskTreeView::waitTaskFinished(os);  // Navigation starts a new task. Wait for it to finish.
 
     // Take the screenshot.
-    QWidget* readsArea = GTWidget::findWidget(os, "assembly_reads_area");
+    auto readsArea = GTWidget::findWidget(os, "assembly_reads_area");
     GTWidget::click(os, readsArea);  // Click on the center of render area to set a predefined hover state.
     QImage initialImage = GTWidget::getImage(os, readsArea);
 
@@ -2442,7 +2442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0898) {
 
     //    3. Try to find consensus above reads area.
     //    Expected state: you found consensus.
-    QWidget* consArea = GTWidget::findWidget(os, "Consensus area");
+    auto consArea = GTWidget::findWidget(os, "Consensus area");
     CHECK_SET_ERR(consArea->isVisible(), "consensus area is not visiable");
 
     //    4. Open {Assembly Browser Settings} on options panel.

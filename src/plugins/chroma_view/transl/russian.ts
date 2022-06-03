@@ -56,7 +56,7 @@
     </message>
     <message>
         <location filename="../src/ChromatogramView.cpp" line="211"/>
-        <location filename="../src/ChromatogramView.cpp" line="351"/>
+        <location filename="../src/ChromatogramView.cpp" line="350"/>
         <source>The sequence is locked</source>
         <translation>Последовательность заблокирована</translation>
     </message>
@@ -69,12 +69,12 @@
 <context>
     <name>U2::ChromatogramViewRenderArea</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="500"/>
+        <location filename="../src/ChromatogramView.cpp" line="499"/>
         <source>Chromatogram view (zoom in to see base calls)</source>
         <translation>Хроматограмма (приближайте масштаб)</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="708"/>
+        <location filename="../src/ChromatogramView.cpp" line="707"/>
         <source>original sequence</source>
         <translation>Исходная последовательность</translation>
     </message>

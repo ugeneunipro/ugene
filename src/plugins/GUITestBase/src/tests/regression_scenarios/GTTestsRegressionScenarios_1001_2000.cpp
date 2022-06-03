@@ -224,7 +224,7 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWidget* enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
+            auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -241,8 +241,7 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
 GUI_TEST_CLASS_DEFINITION(test_1011) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* pw = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(pw != nullptr, "cant get panview idget");
+    auto pw = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QList<QScrollBar*> widgetList = pw->findChildren<QScrollBar*>();
     CHECK_SET_ERR(widgetList.size() == 2, "scroll bars count should be 2");
     foreach (QScrollBar* sbar, widgetList) {
@@ -1745,8 +1744,7 @@ GUI_TEST_CLASS_DEFINITION(test_1165) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. open context menu in msa, "Add"->"Sequence from file...",
     // 3. browse the file "data/samples/FASTA/human_T1.fa".
-    QWidget* nameList;
-    nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
     GTFileDialogUtils* ob = new GTFileDialogUtils(os, dataDir + "/samples/FASTA/", "human_T1.fa");
@@ -1855,7 +1853,7 @@ GUI_TEST_CLASS_DEFINITION(test_1182) {
     GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os, port));
     GTMouseDriver::click();
 
-    QWidget* paramBox = GTWidget::findWidget(os, "paramBox");
+    auto paramBox = GTWidget::findWidget(os, "paramBox");
     QTableWidget* table = paramBox->findChild<QTableWidget*>();
     QList<QTableWidgetItem*> tableItems = table->findItems("Group size (by Grouper)", Qt::MatchExactly);
     CHECK_SET_ERR(tableItems.size() == 1, QString("unexpected items number: %1").arg(tableItems.size()));
@@ -1897,14 +1895,14 @@ GUI_TEST_CLASS_DEFINITION(test_1186_1) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1186_1.sam", GTFileDialogUtils::Save, GTGlobals::UseMouse));
             CHECK_OP(os, );
 
-            QWidget* setResultFileNameButton = GTWidget::findWidget(os, "setResultFileNameButton", dialog);
+            auto setResultFileNameButton = GTWidget::findWidget(os, "setResultFileNameButton", dialog);
             CHECK_OP(os, );
 
             GTWidget::click(os, setResultFileNameButton);
             CHECK_OP(os, );
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/", "human_T1.fa"));
-            QWidget* addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
+            auto addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
             GTWidget::click(os, addRefButton);
 
             auto resultFileNameEdit = GTWidget::findLineEdit(os, "resultFileNameEdit", dialog);
@@ -1937,8 +1935,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1186_2.ugenedb", GTFileDialogUtils::Save, GTGlobals::UseMouse));
             CHECK_OP(os, );
-
-            QWidget* setResultFileNameButton = GTWidget::findWidget(os, "setResultFileNameButton", dialog);
+            auto setResultFileNameButton = GTWidget::findWidget(os, "setResultFileNameButton", dialog);
             CHECK_OP(os, );
 
             GTWidget::click(os, setResultFileNameButton);
@@ -1946,6 +1943,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 
             auto resultFileNameEdit = GTWidget::findLineEdit(os, "resultFileNameEdit", dialog);
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_2.ugenedb"), "Incorrect output file");
+
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
@@ -1970,15 +1968,15 @@ GUI_TEST_CLASS_DEFINITION(test_1189) {
 
     // 4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    QComboBox* regBox = (QComboBox*)GTWidget::findWidget(os, "boxRegion");
+    auto regBox = GTWidget::findComboBox(os, "boxRegion");
     GTComboBox::selectItemByIndex(os, regBox, 2);
 
     // 5) Ensure that two lineedits became visible and contain correct region
-    QLineEdit* start = (QLineEdit*)GTWidget::findWidget(os, "editStart");
+    auto start = GTWidget::findLineEdit(os, "editStart");
     CHECK_SET_ERR(start->isVisible(), "editStart line is not visiable");
     CHECK_SET_ERR(start->text() == "100", "Wrong startValue. Current value is: " + start->text());
 
-    QLineEdit* end = (QLineEdit*)GTWidget::findWidget(os, "editEnd");
+    auto end = GTWidget::findLineEdit(os, "editEnd");
     CHECK_SET_ERR(end->isVisible(), "editEnd line is not visiable");
     CHECK_SET_ERR(end->text() == "200", "Wrong endValue. Current value is: " + end->text());
 }
@@ -2000,15 +1998,15 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
 
     // 4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    QComboBox* regBox = (QComboBox*)GTWidget::findWidget(os, "boxRegion");
+    auto regBox = GTWidget::findComboBox(os, "boxRegion");
     GTComboBox::selectItemByIndex(os, regBox, 2);
 
     // 5) Ensure that two lineedits became visible and contain correct region
-    QLineEdit* start = (QLineEdit*)GTWidget::findWidget(os, "editStart");
+    auto start = GTWidget::findLineEdit(os, "editStart");
     CHECK_SET_ERR(start->isVisible(), "editStart line is not visiable");
     CHECK_SET_ERR(start->text() != "1", "Wrong startValue: 1.");  // 1 is default
 
-    QLineEdit* end = (QLineEdit*)GTWidget::findWidget(os, "editEnd");
+    auto end = GTWidget::findLineEdit(os, "editEnd");
     CHECK_SET_ERR(end->isVisible(), "editEnd line is not visiable");
     CHECK_SET_ERR(start->text() != "199950", "Wrong endValue: 199950.");  // 199950 is the length of human_T1 and is default value.
 }
@@ -2363,8 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
 
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    QWidget* parent = GTWidget::findWidget(os, "test_1234.fa");
-    CHECK_SET_ERR(nullptr != parent, "Failed to find parent widget!");
+    auto parent = GTWidget::findWidget(os, "test_1234.fa");
 
     ADVSingleSequenceWidget* seq0 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent));
     ADVSingleSequenceWidget* seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1", parent));
@@ -2661,7 +2658,7 @@ GUI_TEST_CLASS_DEFINITION(test_1257) {
 
     GTKeyboardDriver::keySequence(">S");
 
-    QWidget* prevButton = GTWidget::findWidget(os, "prevPushButton");
+    auto prevButton = GTWidget::findWidget(os, "prevPushButton");
     CHECK_SET_ERR(!prevButton->isEnabled(), "prevPushButton is unexpectidly enabled")
 }
 
@@ -2779,7 +2776,7 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            QWidget* w = GTWidget::findWidget(os, "Disable BAQ computation label", dialog);
+            auto w = GTWidget::findWidget(os, "Disable BAQ computation label", dialog);
             QWidget* parent = qobject_cast<QWidget*>(w->parent());
             QString s = parent->toolTip();
             CHECK_SET_ERR(s.contains("<html>Disable"), "unexpected tooltip: " + s);
@@ -4219,16 +4216,16 @@ GUI_TEST_CLASS_DEFINITION(test_1457) {
     //    2. Find navigation tool on the toolbar.
     //    Expected state: navigation tool is disabled.
     QToolBar* mwtoolbar_activemdi = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
-    QWidget* go_to_pos_line_edit = GTWidget::findWidget(os, "go_to_pos_line_edit", mwtoolbar_activemdi);
-    QWidget* go = GTWidget::findWidget(os, "Go!", mwtoolbar_activemdi);
+    auto go_to_pos_line_edit = GTWidget::findWidget(os, "go_to_pos_line_edit", mwtoolbar_activemdi);
+    auto go = GTWidget::findWidget(os, "Go!", mwtoolbar_activemdi);
     CHECK_SET_ERR(!go_to_pos_line_edit->isEnabled(), "go_to_pos_line_edit on toolbar is enabled");
     CHECK_SET_ERR(!go->isEnabled(), "go button on toolbar is enabled");
     //    3. Open navigation tab on the options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_NAVIGATION"));
     //    Expected state: navigation tool on the options panel is disabled.
-    QWidget* OP_OPTIONS_WIDGET = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
-    QWidget* go_to_pos_line_edit_op = GTWidget::findWidget(os, "go_to_pos_line_edit", OP_OPTIONS_WIDGET);
-    QWidget* go_op = GTWidget::findWidget(os, "Go!", OP_OPTIONS_WIDGET);
+    auto OP_OPTIONS_WIDGET = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
+    auto go_to_pos_line_edit_op = GTWidget::findWidget(os, "go_to_pos_line_edit", OP_OPTIONS_WIDGET);
+    auto go_op = GTWidget::findWidget(os, "Go!", OP_OPTIONS_WIDGET);
     CHECK_SET_ERR(!go_to_pos_line_edit_op->isEnabled(), "go_to_pos_line_edit on option panel is enabled");
     CHECK_SET_ERR(!go_op->isEnabled(), "go button on option panel is enabled");
     //    4. Zoom to any location.
@@ -4342,7 +4339,7 @@ GUI_TEST_CLASS_DEFINITION(test_1442_1) {
 
     GTWidget::findWidget(os, "Matrix viewer");  // check that matrix view is presented
 
-    QWidget* logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
+    auto logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
     CHECK_SET_ERR(logoWidget->isVisible(), "Logo widget is unexpectedly invisible");
 }
 
@@ -4358,7 +4355,7 @@ GUI_TEST_CLASS_DEFINITION(test_1442_2) {
 
     GTWidget::findWidget(os, "Matrix viewer");  // check that matrix view is presented
 
-    QWidget* logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
+    auto logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
     CHECK_SET_ERR(!logoWidget->isVisible(), "Logo widget is unexpectedly visible");
 }
 
@@ -4591,7 +4588,7 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     // 3. Try to copy something from the log widget to the clipboard by hotkey(Ctrl + C).
     // Expected state : you've got in the clipboard selected text from the log widget.
     uiLog.error("log must contain some text");
-    QWidget* logView = GTWidget::findWidget(os, "dock_log_view");
+    auto logView = GTWidget::findWidget(os, "dock_log_view");
     GTWidget::click(os, logView);
 
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -4791,7 +4788,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514) {
     //    Expected state: there are the MSA Editor with the Tree view inside it.
 
     //    3. Zoom out the tree to its minimum size.
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    auto treeView = GTWidget::findWidget(os, "treeView");
     QAbstractButton* zoomOut = GTAction::button(os, "Zoom Out");
     QAbstractButton* zoomIn = GTAction::button(os, "Zoom In");
     QAbstractButton* resetZoom = GTAction::button(os, "Reset Zoom");
@@ -4940,7 +4937,7 @@ GUI_TEST_CLASS_DEFINITION(test_1531) {
     auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
 
-    QWidget* warningMessage = GTWidget::findWidget(os, "refSeqWarning");
+    auto warningMessage = GTWidget::findWidget(os, "refSeqWarning");
     CHECK_SET_ERR(warningMessage->isHidden(), QString("Reference sequence warning must be hidden"));
 
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::General);
@@ -5402,7 +5399,7 @@ GUI_TEST_CLASS_DEFINITION(test_1595) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
     //    5) Select some of the added items in the list.
-    QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
+    auto datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     auto items = GTWidget::findListWidget(os, "itemsArea", datasetWidget);
     GTListWidget::click(os, items, "sars.gb");
     //    6) Press Delete button.
@@ -5665,7 +5662,7 @@ GUI_TEST_CLASS_DEFINITION(test_1606) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SES"}));
-    QWidget* widget3d = GTWidget::findWidget(os, "1-1EZG");
+    auto widget3d = GTWidget::findWidget(os, "1-1EZG");
     GTWidget::click(os, widget3d, Qt::RightButton);
     GTUtilsLog::check(os, l);
 }
@@ -6022,7 +6019,7 @@ GUI_TEST_CLASS_DEFINITION(test_1654) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
-    QWidget* createAnnotationsButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
+    auto createAnnotationsButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
     CHECK_SET_ERR(!createAnnotationsButton->isEnabled(), "Create annotations button is enabled!");
 }
 
@@ -6053,7 +6050,7 @@ GUI_TEST_CLASS_DEFINITION(test_1658) {
     GTGlobals::sleep(500);
     //    Expected state: MSA view opens without tree view, no error messages in log appear
 
-    QWidget* treeWidget = GTWidget::findWidget(os, "treeView", nullptr, {false});
+    auto treeWidget = GTWidget::findWidget(os, "treeView", nullptr, {false});
     CHECK_SET_ERR(treeWidget == nullptr, "tree view unexpectidly presents");
 }
 
@@ -6292,7 +6289,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_4) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     // Expected result: "Search in Sequence" tab has been opened, other tabs have been closed
-    QWidget* prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, {false});
+    auto prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, {false});
     CHECK_SET_ERR(nullptr == prevButton, "Annotations options panel is not closed");
     GTWidget::findWidget(os, "FindPatternWidget");
     CHECK_SET_ERR(GTWidget::findWidget(os, "textPattern")->hasFocus(), "Find pattern field has no focus");
@@ -6659,8 +6656,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
     CHECK_SET_ERR(tasksCount == 1, QString("An unexpected top level tasks count: expect %1, got %2. Workflow didn't launch?").arg(1).arg(tasksCount));
 
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
-    QWidget* samplesWidget = GTWidget::findWidget(os, "samples");
-    CHECK_SET_ERR(samplesWidget != nullptr, "Samples widget is NULL");
+    auto samplesWidget = GTWidget::findWidget(os, "samples");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
     GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
@@ -6707,7 +6703,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget* sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
+    auto pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Render Style", "Ball-and-Stick"}));
@@ -6721,7 +6717,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTThread::waitForMainThread();
 
     sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* pdb1Widget = GTWidget::findWidget(os, "1-1A5H");
+    auto pdb1Widget = GTWidget::findWidget(os, "1-1A5H");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Render Style", "Ball-and-Stick"}));
     GTMenu::showContextMenu(os, pdb1Widget);
     // Close PDB 1 view.
@@ -7091,7 +7087,7 @@ GUI_TEST_CLASS_DEFINITION(test_1759) {
             if (GTUtilsWizard::getPageTitle(os) != "Tophat settings") {
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             }
-            QWidget* version = GTWidget::findWidget(os, "Bowtie version widget", dialog);
+            auto version = GTWidget::findWidget(os, "Bowtie version widget", dialog);
             CHECK_SET_ERR(version->isVisible(), "version widget is not visiable");
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);

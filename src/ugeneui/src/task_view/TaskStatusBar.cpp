@@ -34,6 +34,13 @@
 
 namespace U2 {
 
+// Returns a string with the number of notifications, taking into account stack limits.
+static QString notificationCountToString(int notificationCount) {
+    return notificationCount < NotificationStack::MAX_STACK_SIZE
+               ? QString::number(notificationCount)
+               : QString::number(NotificationStack::MAX_STACK_SIZE - 1) + '+';
+}
+
 TaskStatusBar::TaskStatusBar() {
     nReports = 0;
     tvConnected = false;
@@ -266,7 +273,8 @@ bool TaskStatusBar::eventFilter(QObject* o, QEvent* e) {
         }
     } else if (t == QEvent::ToolTip && o == notificationLabel) {
         QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
-        QToolTip::showText(hEvent->globalPos(), tr("%1 notification(s)").arg(nStack->count()));
+        QToolTip::showText(hEvent->globalPos(),
+                           tr("%1 notification(s)").arg(notificationCountToString(nStack->count())));
     }
     return false;
 }
@@ -301,7 +309,7 @@ void TaskStatusBar::sl_notificationChanged() {
         font.setBold(true);
         painter.setFont(font);
         QRect rect(0, 0, 16, 16);
-        painter.drawText(rect, Qt::AlignRight, QString::number(nStack->count()));
+        painter.drawText(rect, Qt::AlignRight, notificationCountToString(nStack->count()));
         painter.end();
         notificationLabel->setPixmap(iconWithNumber);
     }
