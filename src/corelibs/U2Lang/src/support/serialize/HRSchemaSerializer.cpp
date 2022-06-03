@@ -1105,9 +1105,9 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
             int innerBlocks = 0;
             do {
                 QString takenToken = data.tokenizer.take();
-                if (Constants::BLOCK_START == takenToken) {
+                if (takenToken == Constants::BLOCK_START) {
                     innerBlocks++;
-                }else if (Constants::BLOCK_END == takenToken) {
+                } else if (takenToken == Constants::BLOCK_END) {
                     innerBlocks--;
                 }
             } while (innerBlocks != 0);
