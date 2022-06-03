@@ -43,7 +43,38 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="edit_PRIMER_TASK"/>
+          <widget class="QComboBox" name="edit_PRIMER_TASK">
+           <item>
+            <property name="text">
+             <string>generic</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pick_sequencing_primers</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pick_primer_list</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>check_primers</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pick_cloning_primers</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pick_discriminative_primers</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_38">
@@ -70,7 +101,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
-          <widget class="QCheckBox" name="checkbox_PICK_LEFT">
+          <widget class="QCheckBox" name="checkbox_PRIMER_PICK_LEFT_PRIMER">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -86,21 +117,21 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_34">
+          <widget class="QLabel" name="label_PRIMER_LEFT_INPUT">
            <property name="text">
             <string>or use left primer below</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLineEdit" name="edit_PRIMER_LEFT_INPUT">
+          <widget class="QLineEdit" name="edit_SEQUENCE_PRIMER">
            <property name="enabled">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="label_35">
+          <widget class="QLabel" name="label_PRIMER_INTERNAL_OLIGO_INPUT">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -110,14 +141,14 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_OLIGO_INPUT">
+          <widget class="QLineEdit" name="edit_SEQUENCE_INTERNAL_OLIGO">
            <property name="enabled">
             <bool>false</bool>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QCheckBox" name="checkbox_PICK_RIGHT">
+          <widget class="QCheckBox" name="checkbox_PRIMER_PICK_RIGHT_PRIMER">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -136,21 +167,21 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLabel" name="label_36">
+          <widget class="QLabel" name="label_PRIMER_RIGHT_INPUT">
            <property name="text">
             <string>or use right primer below (5' to 3' on opposite strand)</string>
            </property>
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QLineEdit" name="edit_PRIMER_RIGHT_INPUT">
+          <widget class="QLineEdit" name="edit_SEQUENCE_PRIMER_REVCOMP">
            <property name="enabled">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QCheckBox" name="checkbox_PICK_HYBRO">
+          <widget class="QCheckBox" name="checkbox_PRIMER_PICK_INTERNAL_OLIGO">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -195,7 +226,7 @@
            <item>
             <widget class="QLabel" name="label_EXCLUDED_REGION">
              <property name="text">
-              <string>Excluded regions</string>
+              <string>Excluded Regions</string>
              </property>
             </widget>
            </item>
@@ -465,7 +496,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QLabel" name="label_PRIMER_PRODUCT_SIZE_RANGE">
              <property name="text">
-              <string>Product size ranges</string>
+              <string>Product Size Ranges</string>
              </property>
             </widget>
            </item>
@@ -719,7 +750,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="1" column="10">
-          <widget class="QComboBox" name="combobox_PRIMER_TM_SANTALUCIA">
+          <widget class="QComboBox" name="combobox_PRIMER_TM_FORMULA">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -1635,13 +1666,20 @@ p, li { white-space: pre-wrap; }
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_PRIMER_INSIDE_PENALTY">
+           <property name="toolTip">
+            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
+           </property>
            <property name="text">
             <string>Inside target penalty</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INSIDE_PENALTY"/>
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INSIDE_PENALTY">
+           <property name="toolTip">
+            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
+           </property>
+          </widget>
          </item>
          <item row="1" column="2">
           <widget class="QLabel" name="label_PRIMER_OUTSIDE_PENALTY">
@@ -1914,14 +1952,17 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies the salt correction formula for the melting temperature calculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="currentText">
+            <string>SantaLucia 1998</string>
+           </property>
            <item>
             <property name="text">
-             <string>SantaLucia 1998</string>
+             <string>Schildkraut and Lifson 1965</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Schildkraut and Lifson 1965</string>
+             <string>SantaLucia 1998</string>
             </property>
            </item>
            <item>
@@ -4588,12 +4629,12 @@ p, li { white-space: pre-wrap; }
   <tabstop>edit_PRIMER_MAX_END_STABILITY</tabstop>
   <tabstop>edit_PRIMER_MAX_LIBRARY_MISPRIMING</tabstop>
   <tabstop>edit_PRIMER_PAIR_MAX_LIBRARY_MISPRIMING</tabstop>
-  <tabstop>checkbox_PICK_LEFT</tabstop>
-  <tabstop>edit_PRIMER_LEFT_INPUT</tabstop>
-  <tabstop>checkbox_PICK_HYBRO</tabstop>
-  <tabstop>edit_PRIMER_INTERNAL_OLIGO_INPUT</tabstop>
-  <tabstop>checkbox_PICK_RIGHT</tabstop>
-  <tabstop>edit_PRIMER_RIGHT_INPUT</tabstop>
+  <tabstop>checkbox_PRIMER_PICK_LEFT_PRIMER</tabstop>
+  <tabstop>edit_SEQUENCE_PRIMER</tabstop>
+  <tabstop>checkbox_PRIMER_PICK_INTERNAL_OLIGO</tabstop>
+  <tabstop>edit_SEQUENCE_INTERNAL_OLIGO</tabstop>
+  <tabstop>checkbox_PRIMER_PICK_RIGHT_PRIMER</tabstop>
+  <tabstop>edit_SEQUENCE_PRIMER_REVCOMP</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>edit_PRIMER_MIN_SIZE</tabstop>
   <tabstop>edit_PRIMER_OPT_SIZE</tabstop>
@@ -4682,9 +4723,9 @@ p, li { white-space: pre-wrap; }
  <resources/>
  <connections>
   <connection>
-   <sender>checkbox_PICK_HYBRO</sender>
+   <sender>checkbox_PRIMER_PICK_INTERNAL_OLIGO</sender>
    <signal>clicked(bool)</signal>
-   <receiver>edit_PRIMER_INTERNAL_OLIGO_INPUT</receiver>
+   <receiver>edit_SEQUENCE_INTERNAL_OLIGO</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4698,9 +4739,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkbox_PICK_LEFT</sender>
+   <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
    <signal>clicked(bool)</signal>
-   <receiver>edit_PRIMER_LEFT_INPUT</receiver>
+   <receiver>edit_SEQUENCE_PRIMER</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4714,9 +4755,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkbox_PICK_RIGHT</sender>
+   <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
    <signal>clicked(bool)</signal>
-   <receiver>edit_PRIMER_RIGHT_INPUT</receiver>
+   <receiver>edit_SEQUENCE_PRIMER_REVCOMP</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4954,9 +4995,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkbox_PICK_HYBRO</sender>
+   <sender>checkbox_PRIMER_PICK_INTERNAL_OLIGO</sender>
    <signal>clicked(bool)</signal>
-   <receiver>label_35</receiver>
+   <receiver>label_PRIMER_INTERNAL_OLIGO_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4970,9 +5011,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkbox_PICK_LEFT</sender>
+   <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
    <signal>clicked(bool)</signal>
-   <receiver>label_34</receiver>
+   <receiver>label_PRIMER_LEFT_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4986,9 +5027,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkbox_PICK_RIGHT</sender>
+   <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
    <signal>clicked(bool)</signal>
-   <receiver>label_36</receiver>
+   <receiver>label_PRIMER_RIGHT_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

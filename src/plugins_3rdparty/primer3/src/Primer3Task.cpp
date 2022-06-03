@@ -558,10 +558,10 @@ void Primer3SWTask::prepare() {
                                settings.getSequenceSize() - settings.getIncludedRegion().startPos + 1);
             U2Region startRegion(1, settings.getIncludedRegion().endPos() - settings.getSequenceSize());
 
-            if (settings.checkIncludedRegion(startRegion)) {
+            if (settings.isIncludedRegionValid(startRegion)) {
                 addPrimer3Subtasks(settings, startRegion, regionTasks);
             }
-            if (settings.checkIncludedRegion(endRegion)) {
+            if (settings.isIncludedRegionValid(endRegion)) {
                 addPrimer3Subtasks(settings, endRegion, regionTasks);
             }
             return;

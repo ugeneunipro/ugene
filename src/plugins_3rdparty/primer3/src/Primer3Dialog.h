@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-class Primer3Dialog : public QDialog {
+class Primer3Dialog : public QDialog, private Ui_Primer3Dialog {
     Q_OBJECT
 public:
     Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context);
@@ -46,13 +46,13 @@ public:
     bool prepareAnnotationObject();
 
 public:
-    enum IntervalDefinition {
+    enum class IntervalDefinition {
         Start_Length,
         Start_End
     };
 
-    static bool parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition way = Start_Length);
-    static QString intervalListToString(const QList<U2Region>& intervalList, const QString& delimiter, IntervalDefinition way = Start_Length);
+    static bool parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition way = IntervalDefinition::Start_Length);
+    static QString intervalListToString(const QList<U2Region>& intervalList, const QString& delimiter, IntervalDefinition way = IntervalDefinition::Start_Length);
 
 private:
     void reset();
@@ -60,9 +60,14 @@ private:
 
     void showInvalidInputMessage(QWidget* field, QString fieldLabel);
 
-private:
-    Ui_Primer3Dialog ui;
+private slots:
+    void sl_pbReset_clicked();
+    void sl_pbPick_clicked();
+    void sl_saveSettings();
+    void sl_loadSettings();
 
+
+private:
     CreateAnnotationWidgetController* createAnnotationWidgetController;
     U2Region selection;
     int sequenceLength;
@@ -73,11 +78,6 @@ private:
     Primer3TaskSettings settings;
     RegionSelector* rs;
     ADVSequenceObjectContext* context;
-private slots:
-    void sl_pbReset_clicked();
-    void sl_pbPick_clicked();
-    void sl_saveSettings();
-    void sl_loadSettings();
 };
 
 }  // namespace U2

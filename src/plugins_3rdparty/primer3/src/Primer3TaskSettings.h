@@ -98,7 +98,7 @@ public:
     void setCircularity(bool isCircular);
     void setTarget(const QList<U2Region>& value);
     void setProductSizeRange(const QList<U2Region>& value);
-    void setTask(const task& value);
+    void setTaskByName(const QString& taskName);
     void setInternalOligoExcludedRegion(const QList<U2Region>& value);
     void setLeftInput(const QByteArray& value);
     void setRightInput(const QByteArray& value);
@@ -143,7 +143,7 @@ public:
         return isCircular;
     }
 
-    bool checkIncludedRegion(const U2Region& r) const;
+    bool isIncludedRegionValid(const U2Region& r) const;
 
 private:
     void initMaps();

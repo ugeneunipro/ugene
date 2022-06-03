@@ -87,7 +87,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     }
 
     const QString& sizeRangesAttr = cfg->getParameter(SIZE_RANGES_ATTR)->getAttributeValueWithoutScript<QString>();
-    ok = Primer3Dialog::parseIntervalList(sizeRangesAttr, "-", &list, Primer3Dialog::Start_End);
+    ok = Primer3Dialog::parseIntervalList(sizeRangesAttr, "-", &list, Primer3Dialog::IntervalDefinition::Start_End);
     if (ok) {
         settings.setProductSizeRange(list);
     } else {
