@@ -28,8 +28,10 @@
 
 namespace U2 {
 
-bool Primer3TaskSettings::checkIncludedRegion(const U2Region& r) const {
+bool Primer3TaskSettings::isIncludedRegionValid(const U2Region& r) const {
     int minProductSize = getMinProductSize();
+    auto task = getTask();
+    
     if (minProductSize > r.length && getTask() != pick_hyb_probe_only && getTask() != pick_left_only && getTask() != pick_right_only) {
         return false;
     }
@@ -285,8 +287,8 @@ void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
     primerSettings->num_intervals = value.size();
 }
 
-void Primer3TaskSettings::setTask(const task& value) {
-    primerSettings->primer_task = value;
+void Primer3TaskSettings::setTaskByName(const QString& taskName) {
+    p3_set_gs_primer_task(primerSettings, taskName.toLocal8Bit().data());
 }
 
 void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& value) {
@@ -405,7 +407,7 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_OPT_TM", &primerSettings->p_args.opt_tm);
     doubleProperties.insert("PRIMER_OPT_GC_PERCENT", &primerSettings->p_args.opt_gc_content);
     doubleProperties.insert("PRIMER_MAX_DIFF_TM", &primerSettings->max_diff_tm);
-    intProperties.insert("PRIMER_TM_SANTALUCIA", (int*)&primerSettings->tm_santalucia);
+    intProperties.insert("PRIMER_TM_FORMULA", (int*)&primerSettings->tm_santalucia);
     intProperties.insert("PRIMER_SALT_CORRECTIONS", (int*)&primerSettings->salt_corrections);
     doubleProperties.insert("PRIMER_SALT_CONC", &primerSettings->p_args.salt_conc);
     doubleProperties.insert("PRIMER_DIVALENT_CONC", &primerSettings->p_args.divalent_conc);

@@ -275,34 +275,35 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         // 119
         buf = elInput.attribute("PRIMER_TASK");
         if (!buf.isEmpty()) {
-            if (0 == buf.compare("pick_pcr_primers", Qt::CaseInsensitive)) {
-                settings.setTask(pick_pcr_primers);
-            } else if (0 == buf.compare("pick_pcr_primers_and_hyb_probe", Qt::CaseInsensitive)) {
-                settings.setTask(pick_pcr_primers_and_hyb_probe);
-            } else if (0 == buf.compare("pick_left_only", Qt::CaseInsensitive)) {
-                settings.setTask(pick_left_only);
-            } else if (0 == buf.compare("pick_right_only", Qt::CaseInsensitive)) {
-                settings.setTask(pick_right_only);
-            } else if (0 == buf.compare("pick_hyb_probe_only", Qt::CaseInsensitive)) {
-                settings.setTask(pick_hyb_probe_only);
-            } else {
-                stateInfo.setError(GTest::tr("Unrecognized PRIMER_TASK"));  //??? may be remove from this place
-            }
+            settings.setTaskByName(buf);
+            //if (0 == buf.compare("pick_pcr_primers", Qt::CaseInsensitive)) {
+            //    settings.setTask(pick_pcr_primers);
+            //} else if (0 == buf.compare("pick_pcr_primers_and_hyb_probe", Qt::CaseInsensitive)) {
+            //    settings.setTask(pick_pcr_primers_and_hyb_probe);
+            //} else if (0 == buf.compare("pick_left_only", Qt::CaseInsensitive)) {
+            //    settings.setTask(pick_left_only);
+            //} else if (0 == buf.compare("pick_right_only", Qt::CaseInsensitive)) {
+            //    settings.setTask(pick_right_only);
+            //} else if (0 == buf.compare("pick_hyb_probe_only", Qt::CaseInsensitive)) {
+            //    settings.setTask(pick_hyb_probe_only);
+            //} else {
+            //    stateInfo.setError(GTest::tr("Unrecognized PRIMER_TASK"));  //??? may be remove from this place
+            //}
         }
         // 10
         buf = elInput.attribute("PRIMER_PICK_INTERNAL_OLIGO");
         if (!buf.isEmpty()) {
             int pick_internal_oligo = buf.toInt();
-            if ((pick_internal_oligo == 1 || pick_internal_oligo == 0) &&
-                (settings.getTask() == pick_left_only ||
-                 settings.getTask() == pick_right_only ||
-                 settings.getTask() == pick_hyb_probe_only)) {
-                stateInfo.setError(GTest::tr("Contradiction in primer_task definition"));  //??? may be remove from this place
-            } else if (pick_internal_oligo == 1) {
-                settings.setTask(pick_pcr_primers_and_hyb_probe);
-            } else if (pick_internal_oligo == 0) {
-                settings.setTask(pick_pcr_primers);
-            }
+            //if ((pick_internal_oligo == 1 || pick_internal_oligo == 0) &&
+            //    (settings.getTask() == pick_left_only ||
+            //     settings.getTask() == pick_right_only ||
+            //     settings.getTask() == pick_hyb_probe_only)) {
+            //    stateInfo.setError(GTest::tr("Contradiction in primer_task definition"));  //??? may be remove from this place
+            //} else if (pick_internal_oligo == 1) {
+            //    settings.setTask(pick_pcr_primers_and_hyb_probe);
+            //} else if (pick_internal_oligo == 0) {
+            //    settings.setTask(pick_pcr_primers);
+            //}
         }
         // 120
         buf = elInput.attribute("PRIMER_SEQUENCE_QUALITY");
