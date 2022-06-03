@@ -2738,12 +2738,15 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
         QString pdfFilePath;
     };
 
+    GTLogTracer logTracer;
+
     GTUtilsDialog::waitForDialog(os, new Filler(os, "ImageExportForm", new ExportImageScenario(pdfFilePath)));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"bioStruct3DExportImageAction"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1CF7"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkNoErrorsInLog(os);
+
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
 }
