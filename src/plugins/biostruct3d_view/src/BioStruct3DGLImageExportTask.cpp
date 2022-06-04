@@ -43,10 +43,10 @@ void BioStruct3DImageExportToPDFTask::run() {
 
     int opt = GL2PS_NONE;
 
-    if (settings.format == "ps") {
+    if (settings.format.toLower() == "ps") {
         glWidget->writeImage2DToFile(GL2PS_PS, opt, 2, qPrintable(settings.fileName));
         return;  // TODO: need check on error
-    } else if (settings.format == "pdf") {
+    } else if (settings.format.toLower() == "pdf") {
         glWidget->writeImage2DToFile(GL2PS_PDF, opt, 2, qPrintable(settings.fileName));
         return;  // TODO: need check on error
     }
