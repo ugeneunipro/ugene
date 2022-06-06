@@ -1101,6 +1101,16 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
                 data.meta->estimationsCode = code;
             }
             data.tokenizer.assertToken(Constants::BLOCK_END);
+        } else if (Constants::LEGACY_TOKENS_TO_SKIP.contains(tok)) {
+            int innerBlocks = 0;
+            do {
+                QString takenToken = data.tokenizer.take();
+                if (takenToken == Constants::BLOCK_START) {
+                    innerBlocks++;
+                } else if (takenToken == Constants::BLOCK_END) {
+                    innerBlocks--;
+                }
+            } while (innerBlocks != 0);
         } else {
             throw ReadFailed(Constants::UNDEFINED_META_BLOCK.arg(tok));
         }

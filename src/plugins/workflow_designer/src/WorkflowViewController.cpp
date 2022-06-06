@@ -75,7 +75,6 @@
 #include "CreateScriptWorker.h"
 #include "DashboardsManagerDialog.h"
 #include "GalaxyConfigConfigurationDialogImpl.h"
-#include "ImportSchemaDialog.h"
 #include "ItemViewStyle.h"
 #include "SceneSerializer.h"
 #include "SchemaAliasesConfigurationDialogImpl.h"

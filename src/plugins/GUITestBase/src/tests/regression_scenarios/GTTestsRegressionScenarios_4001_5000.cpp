@@ -4482,6 +4482,16 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     CHECK_SET_ERR(c.name() == "#ededed", "3. Simple overview has wrong color: " + c.name());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4779) {
+    GTLogTracer l;
+    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4779/ReadAlignmentMuscleElement.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4779/ReadAlignmentMusclePortAlias.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     // 1. Open "COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
