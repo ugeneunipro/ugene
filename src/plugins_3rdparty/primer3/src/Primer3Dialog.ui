@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1061</width>
-    <height>899</height>
+    <width>892</width>
+    <height>962</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -206,7 +206,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_17">
+        <layout class="QGridLayout" name="gridLayout_10">
          <item row="0" column="0" rowspan="2">
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
@@ -262,6 +262,20 @@
             <widget class="QLabel" name="label_94">
              <property name="text">
               <string>Force Left Primer End</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>Five Matches on Primer's 5'</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_36">
+             <property name="text">
+              <string>Five Matches on Internal Oligo's  5'</string>
              </property>
             </widget>
            </item>
@@ -386,6 +400,26 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_START">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_92">
+             <property name="text">
+              <string>Force Right Primer Start</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="2">
             <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_RIGHT_START">
              <property name="sizePolicy">
@@ -412,15 +446,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_92">
-             <property name="text">
-              <string>Force Right Primer Start</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_START">
+           <item row="2" column="0">
+            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_END">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -428,22 +455,9 @@ p, li { white-space: pre-wrap; }
               </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 3' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
-           </item>
-           <item row="2" column="3">
-            <spacer name="horizontalSpacer_45">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="2" column="1">
             <widget class="QLabel" name="label_93">
@@ -465,18 +479,73 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_END">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="2" column="3">
+            <spacer name="horizontalSpacer_45">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 3' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_FIVE_PRIME"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Five Matches on Primer's 3'</string>
              </property>
             </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_THREE_PRIME"/>
+           </item>
+           <item row="3" column="3">
+            <spacer name="horizontalSpacer_55">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_123">
+             <property name="text">
+              <string>Five Matches on Internal Oligo's 3'</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME"/>
+           </item>
+           <item row="4" column="3">
+            <spacer name="horizontalSpacer_56">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -668,13 +737,6 @@ p, li { white-space: pre-wrap; }
         </layout>
        </item>
        <item>
-        <widget class="Line" name="line_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -686,6 +748,13 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1606,14 +1675,14 @@ p, li { white-space: pre-wrap; }
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_PRIMER_NUM_NS_ACCEPTED">
+          <widget class="QLabel" name="label_PRIMER_MAX_NS_ACCEPTED">
            <property name="text">
             <string>Max #N's accepted</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_NUM_NS_ACCEPTED">
+          <widget class="QSpinBox" name="edit_PRIMER_MAX_NS_ACCEPTED">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1917,12 +1986,12 @@ p, li { white-space: pre-wrap; }
          <item row="6" column="0">
           <widget class="QLabel" name="label_PRIMER_SALT_CONC">
            <property name="text">
-            <string>Concentration of monovalent cations</string>
+            <string>Concentration of Monovalent Cations</string>
            </property>
           </widget>
          </item>
          <item row="6" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_SALT_CONC">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_SALT_MONOVALENT">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1988,12 +2057,12 @@ p, li { white-space: pre-wrap; }
          <item row="7" column="0">
           <widget class="QLabel" name="label_PRIMER_DIVALENT_CONC">
            <property name="text">
-            <string>Concentration of divalent cations</string>
+            <string>Concentration of Divalent Cations</string>
            </property>
           </widget>
          </item>
          <item row="7" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_DIVALENT_CONC">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_SALT_DIVALENT">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2200,26 +2269,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="checkbox_SHOW_DEBUGGING">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Show debugging info</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS">
-           <property name="text">
-            <string>Treat ambiguity codes in libraries as consensus</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="checkbox_PRIMER_LOWERCASE_MASKING">
            <property name="text">
@@ -2237,13 +2286,70 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS">
+           <property name="text">
+            <string>Treat ambiguity codes in libraries as consensus</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkbox_SHOW_DEBUGGING">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Show debugging info</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkbox_FORMAT_OUTPUT">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Use formatted output</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QCheckBox" name="checkbox_PRIMER_EXPLAIN_FLAG">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;If this flag is 1 (non-0), produce &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_LEFT_EXPLAIN&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_LEFT_EXPLAIN&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_RIGHT_EXPLAIN&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_RIGHT_EXPLAIN&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_INTERNAL_EXPLAIN&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_INTERNAL_EXPLAIN&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; and/or &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_PAIR_EXPLAIN&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_PAIR_EXPLAIN&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; output tags as appropriate. These output tags are intended to provide information on the number of oligos and primer pairs that Primer3 examined and counts of the number discarded for various reasons. If -format_output is set similar information is produced in the user-oriented output.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Print Statistics</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Print secondary structures</string>
            </property>
           </widget>
          </item>
@@ -3385,22 +3491,31 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <layout class="QGridLayout" name="gridLayout_9">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_26">
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_45">
                <property name="text">
-                <string>Product size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_28">
-               <property name="text">
-                <string>Product Tm</string>
+                <string>Lt:</string>
                </property>
               </widget>
              </item>
              <item row="0" column="2">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_WT_PRODUCT_SIZE_LT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_WT_PRODUCT_TM_GT">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -3431,31 +3546,10 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_45">
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_28">
                <property name="text">
-                <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="label_46">
-               <property name="text">
-                <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="label_47">
-               <property name="text">
-                <string>Gt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QLabel" name="label_48">
-               <property name="text">
-                <string>Gt:</string>
+                <string>Product Tm</string>
                </property>
               </widget>
              </item>
@@ -3475,19 +3569,31 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
-             <item row="1" column="4">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_WT_PRODUCT_TM_GT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_48">
+               <property name="text">
+                <string>Gt:</string>
                </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_26">
+               <property name="text">
+                <string>Product size</string>
                </property>
-               <property name="maximum">
-                <double>9999.989999999999782</double>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_47">
+               <property name="text">
+                <string>Gt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_46">
+               <property name="text">
+                <string>Lt:</string>
                </property>
               </widget>
              </item>
@@ -4542,13 +4648,6 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_6">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <layout class="QHBoxLayout" name="rangeSelectorLayout"/>
@@ -4644,19 +4743,17 @@ p, li { white-space: pre-wrap; }
   <tabstop>edit_PRIMER_MAX_TM</tabstop>
   <tabstop>edit_PRIMER_MIN_GC</tabstop>
   <tabstop>edit_PRIMER_MAX_GC</tabstop>
-  <tabstop>edit_PRIMER_NUM_NS_ACCEPTED</tabstop>
+  <tabstop>edit_PRIMER_MAX_NS_ACCEPTED</tabstop>
   <tabstop>edit_PRIMER_MAX_POLY_X</tabstop>
   <tabstop>edit_PRIMER_OUTSIDE_PENALTY</tabstop>
   <tabstop>edit_PRIMER_FIRST_BASE_INDEX</tabstop>
   <tabstop>edit_PRIMER_GC_CLAMP</tabstop>
-  <tabstop>edit_PRIMER_SALT_CONC</tabstop>
+  <tabstop>edit_PRIMER_SALT_MONOVALENT</tabstop>
   <tabstop>combobox_PRIMER_SALT_CORRECTIONS</tabstop>
-  <tabstop>edit_PRIMER_DIVALENT_CONC</tabstop>
+  <tabstop>edit_PRIMER_SALT_DIVALENT</tabstop>
   <tabstop>edit_PRIMER_DNTP_CONC</tabstop>
   <tabstop>edit_PRIMER_DNA_CONC</tabstop>
   <tabstop>checkbox_PRIMER_LIBERAL_BASE</tabstop>
-  <tabstop>checkbox_SHOW_DEBUGGING</tabstop>
-  <tabstop>checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS</tabstop>
   <tabstop>checkbox_PRIMER_LOWERCASE_MASKING</tabstop>
   <tabstop>edit_SEQUENCE_INTERNAL_EXCLUDED_REGION</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MIN_SIZE</tabstop>
@@ -5455,6 +5552,54 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>778</x>
      <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_SHOW_DEBUGGING</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkbox_FORMAT_OUTPUT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>853</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>482</x>
+     <y>853</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_SHOW_DEBUGGING</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkbox_PRIMER_EXPLAIN_FLAG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>853</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>875</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_SHOW_DEBUGGING</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>853</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>482</x>
+     <y>875</y>
     </hint>
    </hints>
   </connection>
