@@ -17,7 +17,7 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
 
 public:
     MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMultilineWgt *ui);
-    void vertScroll(const MultilineScrollController::Directions &directions, bool byStep);
+    void scrollVert(const MultilineScrollController::Directions &directions, bool byStep);
 
 protected:
     void wheelEvent(QWheelEvent *we) override;

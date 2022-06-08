@@ -67,6 +67,18 @@ MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpSt
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getConsensusArea"
+MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(GUITestOpStatus& os, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #index widget
+    MaEditorWgt *activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
+    return GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "consArea", activeWindow);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "callContextMenu"
 void GTUtilsMSAEditorSequenceArea::callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords) {
     if (innerCoords.isNull()) {
@@ -627,7 +639,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, 
 
     const int posX = msaEditArea->getEditor()->getUI()->getUI(index)->getBaseWidthController()->getBaseScreenCenter(columnNumber) + shift.x();
 
-    auto consArea = GTWidget::findWidget(os, "consArea");
+    auto consArea = GTUtilsMSAEditorSequenceArea::getConsensusArea(os, index);
 
     const int posY = consArea->mapToGlobal(consArea->rect().center()).y();
     GTMouseDriver::moveTo(QPoint(posX, posY));

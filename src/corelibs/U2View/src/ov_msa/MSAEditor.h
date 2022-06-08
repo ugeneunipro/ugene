@@ -144,8 +144,13 @@ public:
         return qobject_cast<MsaEditorWgt *>(getUI()->getUI(index));
     }
 
+    // Return multiline widget (parent of the all sequences' widget
+    // Can be nuulptr if widget is not yet created, but is used in for example
+    // in font metric calculating in MaEditor
+    // Don't want to update MaEditor
     MaEditorMultilineWgt *getMaEditorMultilineWgt() const override {
-        return qobject_cast<MsaEditorMultilineWgt *>(ui);
+        MsaEditorMultilineWgt *res = qobject_cast<MsaEditorMultilineWgt *>(ui);
+        return res;
     }
 
     void initChildrenActionsAndSignals() override;

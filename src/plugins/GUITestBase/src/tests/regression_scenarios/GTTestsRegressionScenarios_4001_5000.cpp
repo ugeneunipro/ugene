@@ -4566,7 +4566,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     // Expected state subalignment pasted correctly
     GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
 

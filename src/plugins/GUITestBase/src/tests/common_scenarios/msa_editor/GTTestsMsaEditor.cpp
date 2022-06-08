@@ -1491,7 +1491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
     // 3. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString initial = GTClipboard::text(os);
@@ -1501,7 +1501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: UGENE not crashes, deletion is not performed
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -2691,7 +2691,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     // check quality
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0046", "JPG", 50));

@@ -67,43 +67,28 @@ public:
     /** Returns MA editor instance. The instance is always defined and is never null. */
     MaEditor *getEditor() const;
 
-    MaEditorOverviewArea *getOverviewArea() const {
-        return overviewArea;
-    }
+    // Return overview area widget
+    MaEditorOverviewArea *getOverviewArea() const;
 
+    // Status bar widget
     MaEditorStatusBar *getStatusBar() const;
 
-    MultilineScrollController *getScrollController() const {
-        return scrollController;
-    }
+    // Get multiline scroll controller
+    MultilineScrollController *getScrollController() const;
 
-    QScrollArea *getChildrenScrollArea() const {
-        return scrollArea;
-    }
+    // Get scroll area wich contain all MaEditorWidget(s)
+    QScrollArea *getChildrenScrollArea() const;
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
 
-    virtual MaEditorWgt *getUI(uint index = 0) const
-    {
-        if (index < uiChildCount && index < uiChildLength) {
-            return uiChild[index];
-        }
-        return nullptr;
-    }
+    // Get MaEditorWgt from multiline widget by index
+    // Can be nullptr
+    virtual MaEditorWgt *getUI(uint index = 0) const;
 
-    virtual uint getUIIndex(MaEditorWgt *_ui) const
-    {
-        if (_ui == nullptr) {
-            return 0;
-        }
-        for (uint index = 0; index < uiChildCount && index < uiChildLength; index++) {
-            if (_ui == uiChild[index]) {
-                return index;
-            }
-        }
-        return 0;
-    }
+    // Get index of the known MaEditorWgt from multiline widget
+    // If not found will be 0
+    virtual uint getUIIndex(MaEditorWgt *_ui) const;
 
     virtual void updateSize(bool recurse = true) {
         Q_UNUSED(recurse);
@@ -124,16 +109,22 @@ public:
     virtual void addChild(MaEditorWgt *child, int index = -1) = 0;
     virtual bool updateChildrenCount() = 0;
 
+    // Return lines count in multiline widget
     uint getChildrenCount() const {
         return uiChildCount;
     }
 
+    // Current multiline mode
     bool getMultilineMode() const {
         return multilineMode;
     }
 
+    // Set multiline mode
+    // If mode was changed return true
+    // Else return false
     bool setMultilineMode(bool newmode);
 
+    // Return MaEditorWgt widget which has input focus
     MaEditorWgt *getActiveChild();
     void setActiveChild(MaEditorWgt *child);
 

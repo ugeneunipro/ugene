@@ -19,7 +19,7 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMulti
     verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
 }
 
-void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directions &directions,
+void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions &directions,
                                         bool byStep)
 {
     QScrollBar *vbar = verticalScrollBar();
@@ -38,9 +38,9 @@ void MsaMultilineScrollArea::vertScroll(const MultilineScrollController::Directi
         int vSliderPos = vScrollBar->sliderPosition();
 
         if (vSliderPos == vScrollBar->maximum()) {
-            vertScroll(MultilineScrollController::SliderMaximum, byStep);
+            scrollVert(MultilineScrollController::SliderMaximum, byStep);
         } else if (vSliderPos == 0) {
-            vertScroll(MultilineScrollController::SliderMinimum, byStep);
+            scrollVert(MultilineScrollController::SliderMinimum, byStep);
         } else {
             int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
             int width = maEditorUi->getSequenceAreaWidth();
@@ -132,11 +132,11 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
             event->accept();
             return;
         } else if (direction < 0) {
-            vertScroll(MultilineScrollController::Down, true);
+            scrollVert(MultilineScrollController::Down, true);
             event->accept();
             return;
         } else if (direction > 0) {
-            vertScroll(MultilineScrollController::Up, true);
+            scrollVert(MultilineScrollController::Up, true);
             event->accept();
             return;
         }

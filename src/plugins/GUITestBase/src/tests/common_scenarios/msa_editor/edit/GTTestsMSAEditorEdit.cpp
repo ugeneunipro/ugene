@@ -540,7 +540,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
     // Expected state: Zychia_baranovi TTAA
 
@@ -551,7 +551,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
     // 4. Click Redo button on toolbar panel.msa_action_redo
@@ -575,7 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
     // Expected state: Zychia_baranovi TTAA
 
@@ -585,7 +585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
     // 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
@@ -678,7 +678,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
         GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
     }
     // Expected state: First sequwnce is AAGACTTCTTTTAA
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -700,7 +700,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     QString clipboardTest = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardTest == "GCTTAT", "\n Expected: \nGCTTAT\nFound:\n" + clipboardTest);
     // 3. Select region 6..12 for Conocephalus_discolor sequence. Use context menu {Copy->Copy selection}.
-    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 4), QPoint(11, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 

@@ -56,12 +56,10 @@ void MaConsensusModeWidget::reInit(MultipleAlignmentObject* _maObject, MaEditorC
     connect(this, SIGNAL(si_algorithmChanged(QString)), consArea, SLOT(sl_changeConsensusAlgorithm(QString)));
     connect(this, SIGNAL(si_thresholdChanged(int)), consArea, SLOT(sl_changeConsensusThreshold(int)));
 
-    connect(consArea,
-            SIGNAL(si_consensusAlgorithmChanged(QString)),
-            SLOT(sl_algorithmChanged(QString)));
-    connect(consArea,
-            SIGNAL(si_consensusThresholdChanged(int)),
-            SLOT(sl_thresholdChanged(int)));
+    connect(consArea, &MaEditorConsensusArea::si_consensusAlgorithmChanged,
+            this, &MaConsensusModeWidget::sl_algorithmChanged);
+    connect(consArea, &MaEditorConsensusArea::si_consensusThresholdChanged,
+            this, &MaConsensusModeWidget::sl_thresholdChanged);
 }
 
 void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {

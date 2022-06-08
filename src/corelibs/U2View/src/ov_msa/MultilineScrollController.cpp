@@ -138,7 +138,7 @@ void MultilineScrollController::vertScroll(const Directions &directions, bool by
         MsaMultilineScrollArea *scroller = qobject_cast<MsaMultilineScrollArea *>(
             childrenScrollArea);
         CHECK(scroller != nullptr, );
-        scroller->vertScroll(directions, byStep);
+        scroller->scrollVert(directions, byStep);
     }
 
     ui->setUpdatesEnabled(true);

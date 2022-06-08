@@ -278,4 +278,37 @@ void MaEditorMultilineWgt::sl_goto() {
     gotoDialog.exec();
 }
 
+MaEditorOverviewArea *MaEditorMultilineWgt::getOverviewArea() const {
+    return overviewArea;
+}
+
+MultilineScrollController *MaEditorMultilineWgt::getScrollController() const {
+    return scrollController;
+}
+
+QScrollArea *MaEditorMultilineWgt::getChildrenScrollArea() const {
+    return scrollArea;
+}
+
+MaEditorWgt *MaEditorMultilineWgt::getUI(uint index) const
+{
+    if (index < uiChildCount && index < uiChildLength) {
+        return uiChild[index];
+    }
+    return nullptr;
+}
+
+uint MaEditorMultilineWgt::getUIIndex(MaEditorWgt *_ui) const
+{
+    if (_ui == nullptr) {
+        return 0;
+    }
+    for (uint index = 0; index < uiChildCount && index < uiChildLength; index++) {
+        if (_ui == uiChild[index]) {
+            return index;
+        }
+    }
+    return 0;
+}
+
 }  // namespace U2
