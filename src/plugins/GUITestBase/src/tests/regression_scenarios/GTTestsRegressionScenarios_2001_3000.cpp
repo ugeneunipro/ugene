@@ -1416,7 +1416,7 @@ GUI_TEST_CLASS_DEFINITION(test_2314) {
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
 
     //    3. Select to the whole last column by clicking consensus area.
-    QWidget* consArea = GTWidget::findWidget(os, "consArea");
+    auto consArea = GTWidget::findWidget(os, "consArea");
     GTWidget::click(os, consArea, Qt::LeftButton, QPoint(consArea->geometry().right() - 1, consArea->geometry().height() / 2));
 
     //    3.1 Move the selected column with a mouse to the right. Do not click -> it will reset the selection.
@@ -1473,11 +1473,11 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
             GTComboBox::selectItemByText(os, methodNamesBox, "Bowtie2");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1093/refrence.fa"));
-            QWidget* addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
+            auto addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
             GTWidget::click(os, addRefButton);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1093/read.fa"));
-            QWidget* addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
+            auto addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
             GTWidget::click(os, addShortreadsButton);
 
             auto seedCheckBox = GTWidget::findCheckBox(os, "seedlenCheckBox", dialog);
@@ -1722,7 +1722,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
 
     //    4. Set the cursor to the 14 line (the "Mecopoda_elongata__Ishigaki__J" sequence), 45 base.
 
-    QWidget* documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, {false});
+    auto documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, {false});
     if (documentTreeWidget != nullptr) {
         GTUtilsProjectTreeView::toggleView(os);
     }
@@ -2335,16 +2335,13 @@ GUI_TEST_CLASS_DEFINITION(test_2403) {
     GTWidget::resizeWidget(os, mw, QSize(300, mw->size().height()));
 
     // 3. Click on the "Show full toolbar" button.
-    QWidget* toolbarWidget = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    CHECK_SET_ERR(nullptr != toolbarWidget, "Toolbar  is not present");
-    QWidget* expandWidget = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbarWidget);
-    CHECK_SET_ERR(nullptr != expandWidget, "\"Show full toolbar\" button  is not present");
+    auto toolbarWidget = GTWidget::findWidget(os, "mwtoolbar_activemdi");
+    auto expandWidget = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbarWidget);
 
     GTWidget::click(os, expandWidget);
 
     // Expected: all toolbar actions appears.
-    QWidget* toggleWidget = GTWidget::findWidget(os, "toggleViewButton", toolbarWidget);
-    CHECK_SET_ERR(nullptr != toggleWidget, "\"Toggle view\" button  is not present");
+    GTWidget::findWidget(os, "toggleViewButton", toolbarWidget);
 
     GTWidget::click(os, expandWidget);
 }
@@ -2442,13 +2439,12 @@ GUI_TEST_CLASS_DEFINITION(test_2410) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 166740, 166755));
 
-    QWidget* sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(nullptr != sequenceWidget, "sequenceWidget is not present");
+    auto sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
 
     GTWidget::click(os, sequenceWidget);
     GTKeyboardUtils::selectAll();
 
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable* chooser = new PopupChooser(os, {"GC Content (%)"});
     GTUtilsDialog::waitForDialog(os, chooser);
 
@@ -2457,7 +2453,7 @@ GUI_TEST_CLASS_DEFINITION(test_2410) {
 
     GTWidget::click(os, GTAction::button(os, "action_zoom_in_human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
 
-    QWidget* renderArea = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea", sequenceWidget);
+    auto renderArea = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea", sequenceWidget);
     const QPoint mouseInitialPos(4 * renderArea->width() / 7, renderArea->height() / 2);
     GTWidget::click(os, renderArea, Qt::LeftButton, mouseInitialPos);
 
@@ -2923,7 +2919,7 @@ GUI_TEST_CLASS_DEFINITION(test_2538) {
     GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCenterCoord(os, GTUtilsPhyTree::getNodes(os).at(1)));
     GTMouseDriver::click();
 
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    auto treeView = GTWidget::findWidget(os, "treeView");
 
     const QImage initImg = GTWidget::getImage(os, treeView);
 
@@ -2974,7 +2970,7 @@ GUI_TEST_CLASS_DEFINITION(test_2542) {
 
     // State:
     // Align button not active if file locked for writing (user locking or format didn't support writing) and selected aligning in current file option
-    QWidget* button = GTWidget::findWidget(os, "alignButton");
+    auto button = GTWidget::findWidget(os, "alignButton");
 
     CHECK_SET_ERR(!button->isEnabled(), "Align button is enabled");
 }
@@ -3173,7 +3169,7 @@ GUI_TEST_CLASS_DEFINITION(test_2568) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    4. Click to browse a reference file and choose a reference
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
-            QWidget* browse = GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog));
+            auto browse = GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog));
             GTWidget::click(os, browse);
             //    Expected: the file is chosen. (The file's folder is DIR)
 
@@ -3227,8 +3223,7 @@ GUI_TEST_CLASS_DEFINITION(test_2577) {
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // Expected state: options panel "General" tab opens.
-    QWidget* panel = GTWidget::findWidget(os, "OP_MSA_GENERAL");
-    CHECK_SET_ERR(nullptr != panel, "General OP tab does not appear");
+    GTWidget::findWidget(os, "OP_MSA_GENERAL");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2578) {
@@ -3243,8 +3238,7 @@ GUI_TEST_CLASS_DEFINITION(test_2578) {
     auto combo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
-    QWidget* exportButton = GTWidget::findWidget(os, "exportHighlightning");
-    CHECK_SET_ERR(nullptr != exportButton, "exportButton not found");
+    auto exportButton = GTWidget::findWidget(os, "exportHighlightning");
     CHECK_SET_ERR(!exportButton->isEnabled(), "exportButton is enabled unexpectedly");
 
     //    4. Select any reference sequence.
@@ -3506,7 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622) {
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
     // 5. Write "X+" in the pattern string.
-    QWidget* textPattern = GTWidget::findWidget(os, "textPattern");
+    auto textPattern = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern);
     GTKeyboardDriver::keyClick('X');
     GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
@@ -3532,7 +3526,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622_1) {
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
     // 5. Write "X+" in the pattern string.
-    QWidget* textPattern = GTWidget::findWidget(os, "textPattern");
+    auto textPattern = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern);
     GTKeyboardDriver::keyClick('X');
     GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
@@ -3839,7 +3833,7 @@ GUI_TEST_CLASS_DEFINITION(test_2690) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "ann1"));
     GTMouseDriver::click();
     //    6. Click the "next annotation" button.
-    QWidget* nextAnnotationButton = GTWidget::findWidget(os, "nextAnnotationButton");
+    auto nextAnnotationButton = GTWidget::findWidget(os, "nextAnnotationButton");
     GTWidget::click(os, nextAnnotationButton);
     //    Expected state: the second annotation is selected.
     QString str = GTUtilsAnnotationsTreeView::getSelectedItem(os);
@@ -3892,7 +3886,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
     GTUtilsDialog::waitForDialog(os, new ImageQualityChecker(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "Save circular view as image", GTGlobals::UseMouse));
 
-    QWidget* circularView = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
+    auto circularView = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
     GTWidget::click(os, circularView, Qt::RightButton);
 }
@@ -4022,11 +4016,9 @@ GUI_TEST_CLASS_DEFINITION(test_2730) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/abcd.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* parent = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(parent != nullptr, "ADV_single_sequence_widget_0 not found!");
+    auto parent = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
 
-    QWidget* menuAction = GTWidget::findWidget(os, "AutoAnnotationUpdateAction", parent);
-    CHECK_SET_ERR(menuAction != nullptr, "AutoAnnotationUpdateAction not found!");
+    auto menuAction = GTWidget::findWidget(os, "AutoAnnotationUpdateAction", parent);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Plasmid features"}));
     GTWidget::click(os, menuAction);
     // Close file - UGENE does not crash.
@@ -4055,7 +4047,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737) {
     GTUtilsAnnotationsTreeView::deleteItem(os, "name3");
 
     // Expected state: there is no annotations is annotation tree.
-    QWidget* annotationsTree = GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
+    auto annotationsTree = GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
     CHECK_SET_ERR(!annotationsTree->isVisible(), "Annotations tree is shown");
 }
 
@@ -4547,7 +4539,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
     // Expected state: DotPlot closed and UGENE didn't crash
     GTUtilsMdi::activateWindow(os, "NC_001363 [murine.gb]");
 
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363", GTUtilsMdi::activeWindow(os));
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363", GTUtilsMdi::activeWindow(os));
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
 }
 
@@ -4755,8 +4747,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     //    2. Sequence view context menu -> Analyze -> Restriction sites.
@@ -4819,7 +4810,7 @@ GUI_TEST_CLASS_DEFINITION(test_2907) {
 
     // 2. In annotations tree view go to element Auto - annotations->enzyme->EcoRI(0, 1)->EcoRI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Restriction Sites"}));
-    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
+    auto qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -5088,12 +5079,10 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     QWidget* zoomIn = GTAction::button(os, "tbZoomIn_NC_001363 [murine.gb]");
     CHECK_SET_ERR(zoomIn != nullptr, "zoomIn action on CV not found");
 
-    QWidget* splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
-    CHECK_SET_ERR(splitterHandler != nullptr, "SplitterHandle not found");
+    auto splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
     GTWidget::click(os, splitterHandler);
 
-    QWidget* mainToolBar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    CHECK_SET_ERR(mainToolBar != nullptr, "mwtoolbar_activemdi not found");
+    auto mainToolBar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
     QPoint bottomLeftToolBar = mainToolBar->geometry().bottomLeft();
     bottomLeftToolBar = mainToolBar->mapToGlobal(bottomLeftToolBar);
 
@@ -5346,7 +5335,7 @@ GUI_TEST_CLASS_DEFINITION(test_2991) {
 */
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets/", "extended_amino_1000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* w = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto w = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     auto label = GTWidget::findLabel(os, "nameLabel", w);
     CHECK_SET_ERR(label->text().contains("[amino ext]"), QString("Unexpected label of sequence name: %1, must contain %2").arg(label->text()).arg("[amino ext]"));
 }

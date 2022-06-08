@@ -357,7 +357,7 @@ GUI_TEST_CLASS_DEFINITION(test_4030) {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     // Expected state: hint about reference sequence is hidden
-    QWidget* label = GTWidget::findWidget(os, "refSeqWarning");
+    auto label = GTWidget::findWidget(os, "refSeqWarning");
     CHECK_SET_ERR(!label->isVisible(), "Label is shown");
 }
 
@@ -366,10 +366,10 @@ GUI_TEST_CLASS_DEFINITION(test_4033) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWidget* cbExistingTable = GTWidget::findWidget(os, "cbExistingTable", dialog);
-            QWidget* tbBrowseExistingTable = GTWidget::findWidget(os, "tbBrowseExistingTable", dialog);
-            QWidget* leNewTablePath = GTWidget::findWidget(os, "leNewTablePath", dialog);
-            QWidget* tbBrowseNewTable = GTWidget::findWidget(os, "tbBrowseNewTable", dialog);
+            auto cbExistingTable = GTWidget::findWidget(os, "cbExistingTable", dialog);
+            auto tbBrowseExistingTable = GTWidget::findWidget(os, "tbBrowseExistingTable", dialog);
+            auto leNewTablePath = GTWidget::findWidget(os, "leNewTablePath", dialog);
+            auto tbBrowseNewTable = GTWidget::findWidget(os, "tbBrowseNewTable", dialog);
 
             GTWidget::click(os, GTWidget::findWidget(os, "rbExistingTable", dialog));
             CHECK_SET_ERR(cbExistingTable->isEnabled() && tbBrowseExistingTable->isEnabled(), "Create annotation dialog controls are disabled unexpectedly");
@@ -405,8 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_4034.gb"));
@@ -651,21 +650,21 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* hSeqScroll = GTWidget::findWidget(os, "horizontal_sequence_scroll");
+    auto hSeqScroll = GTWidget::findWidget(os, "horizontal_sequence_scroll");
     CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bar at the bottom of sequence area is invisible");
 
-    QWidget* vSeqScroll = GTWidget::findWidget(os, "vertical_sequence_scroll");
+    auto vSeqScroll = GTWidget::findWidget(os, "vertical_sequence_scroll");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the right side of sequence area is visible");
 
-    QWidget* parent = GTWidget::findWidget(os, "COI [COI.aln]", GTWidget::findWidget(os, "COI [COI.aln]_SubWindow"));
-    QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
+    auto parent = GTWidget::findWidget(os, "COI [COI.aln]", GTWidget::findWidget(os, "COI [COI.aln]_SubWindow"));
+    auto hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
 
     auto splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter");
 
     QSplitterHandle* handle = splitter->handle(1);
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     GTWidget::click(os, handle);
 
     QPoint p = GTMouseDriver::getMousePosition();
@@ -1003,8 +1002,7 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
             GTListWidget::click(os, GTWidget::findListWidget(os, "lwFiles", dialog), filePath);
 
             // Expected: the "Remove" button is enabled.
-            QWidget* removeButton = GTWidget::findWidget(os, "pbRemoveFile", dialog);
-            CHECK_SET_ERR(nullptr != removeButton, "Remove button is NULL");
+            auto removeButton = GTWidget::findWidget(os, "pbRemoveFile", dialog);
             CHECK_SET_ERR(removeButton->isEnabled(), "Remove button is unexpectedly disabled");
 
             // Expected: the "OK" button is enabled.
@@ -1128,11 +1126,11 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
             GTComboBox::selectItemByText(os, methodNamesBox, "UGENE Genome Aligner");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
-            QWidget* addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
+            auto addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
             GTWidget::click(os, addRefButton);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
-            QWidget* addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
+            auto addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
             GTWidget::click(os, addShortreadsButton);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "out.ugenedb", GTFileDialogUtils::Save));
@@ -1274,11 +1272,11 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
-            QWidget* addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
+            auto addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
             GTWidget::click(os, addRefButton);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
-            QWidget* addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
+            auto addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
             GTWidget::click(os, addShortreadsButton);
 
             QStringList aligners;
@@ -1308,8 +1306,7 @@ GUI_TEST_CLASS_DEFINITION(test_4151) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Hide all views.
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_all_views", toolbar));
 
     // Expected state: Vertical scroll bar isn't shown.
@@ -1322,7 +1319,7 @@ GUI_TEST_CLASS_DEFINITION(test_4153) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
-    QWidget* overview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
     CHECK_OP(os, );
     GTWidget::click(os, overview, Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1336,8 +1333,7 @@ GUI_TEST_CLASS_DEFINITION(test_4153) {
 
     GTSlider::setValue(os, thresholdSlider, 78);
 
-    QWidget* simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(overview != nullptr, "Simple overview is null");
+    auto simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
 
     QPoint rightBottom = simpleOverview->rect().topRight();
     rightBottom += QPoint(-3, 3);
@@ -1510,7 +1506,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
+    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
     if (!labelsColorButton->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
     }
@@ -1579,7 +1575,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
+    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
     if (!labelsColorButton->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
     }
@@ -2084,8 +2080,8 @@ GUI_TEST_CLASS_DEFINITION(test_4272) {
     //    Open any sequence
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* mainTb = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    QWidget* qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", mainTb, {false});
+    auto mainTb = GTWidget::findWidget(os, "mwtoolbar_activemdi");
+    auto qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", mainTb, {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -2635,15 +2631,14 @@ GUI_TEST_CLASS_DEFINITION(test_4373) {
 
     GTUtilsCv::commonCvBtn::click(os);
 
-    QWidget* splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
+    auto splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
     GTWidget::click(os, splitterHandler);
 
-    QWidget* mainToolBar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    CHECK_SET_ERR(mainToolBar != nullptr, "mwtoolbar_activemdi not found");
+    auto mainToolBar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
 
     QPoint point = mainToolBar->geometry().bottomLeft();
     point = mainToolBar->mapToGlobal(point);
-    QWidget* cv = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
+    auto cv = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     point.setY(cv->mapToGlobal(cv->geometry().topLeft()).y() + 100);
 
     GTMouseDriver::press();
@@ -2651,9 +2646,9 @@ GUI_TEST_CLASS_DEFINITION(test_4373) {
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
-    QWidget* toolBar = GTWidget::findWidget(os, "circular_view_local_toolbar");
+    auto toolBar = GTWidget::findWidget(os, "circular_view_local_toolbar");
 
-    QWidget* extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolBar);
+    auto extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolBar);
     CHECK_SET_ERR(extButton->isVisible() && extButton->isEnabled(), "qt_toolbar_ext_button is not visible and disabled");
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Show/hide restriction sites map"}));
@@ -2682,8 +2677,7 @@ GUI_TEST_CLASS_DEFINITION(test_4383) {
 
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
-    QWidget* msaOffsetRight = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right", activeWindow);
-    CHECK_SET_ERR(msaOffsetRight != nullptr, "MsaOffset Left not found");
+    auto msaOffsetRight = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right", activeWindow);
 
     GTMouseDriver::moveTo(msaOffsetRight->mapToGlobal(QPoint(msaOffsetRight->rect().left() - 2, 7)));
     GTMouseDriver::press();
