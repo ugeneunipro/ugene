@@ -363,6 +363,24 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
 }
 
 void Primer3Task::run() {
+    QByteArray repeatLibPath = settings.getRepeatLibraryPath();
+    if (!repeatLibPath.isEmpty()) {
+        auto primerSettings = settings.getPrimerSettings();
+        p3_set_gs_primer_mispriming_library(primerSettings, repeatLibPath.data());
+        if (primerSettings->p_args.repeat_lib->error.storage_size != 0) {
+            stateInfo.setError(primerSettings->p_args.repeat_lib->error.data);
+        }
+    }
+
+    QByteArray mishybLibPath = settings.getMishybLibraryPath();
+    if (!mishybLibPath.isEmpty()) {
+        auto primerSettings = settings.getPrimerSettings();
+        p3_set_gs_primer_internal_oligo_mishyb_library(primerSettings, mishybLibPath.data());
+        if (primerSettings->o_args.repeat_lib->error.storage_size != 0) {
+            stateInfo.setError(primerSettings->o_args.repeat_lib->error.data);
+        }
+    }
+
     bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
     int toReturn = settings.getPrimerSettings()->num_return;
     if (spanExonsEnabled) {

@@ -66,15 +66,12 @@ public:
 
     bool getIntProperty(const QString& key, int* outValue) const;
     bool getDoubleProperty(const QString& key, double* outValue) const;
-    bool getAlignProperty(const QString& key, double* outValue) const;
 
     bool setIntProperty(const QString& key, int value);
     bool setDoubleProperty(const QString& key, double value);
-    bool setAlignProperty(const QString& key, double value);
 
     QList<QString> getIntPropertyList() const;
     QList<QString> getDoublePropertyList() const;
-    QList<QString> getAlignPropertyList() const;
 
     QByteArray getSequenceName() const;
     QByteArray getSequence() const;
@@ -108,11 +105,11 @@ public:
     void setIncludedRegion(const qint64& startPos, const qint64& length);
     void setSequenceQuality(const QVector<int>& value);
 
-    void setRepeatLibrary(const QByteArray& value);
-    void setMishybLibrary(const QByteArray& value);
+    void setRepeatLibraryPath(const QByteArray& value);
+    void setMishybLibraryPath(const QByteArray& value);
 
-    QByteArray getRepeatLibrary() const;
-    QByteArray getMishybLibrary() const;
+    QByteArray getRepeatLibraryPath() const;
+    QByteArray getMishybLibraryPath() const;
     p3_global_settings* getPrimerSettings() const;
     seq_args* getSeqArgs() const;
     p3retval* getP3RetVal() const;
@@ -145,27 +142,23 @@ public:
 
     bool isIncludedRegionValid(const U2Region& r) const;
 
+    int getExplainFlag() const;
+
+
 private:
     void initMaps();
 
 private:
     QMap<QString, int*> intProperties;
     QMap<QString, double*> doubleProperties;
-    QMap<QString, double*> alignProperties;
 
     // don't forget to change copy constructor and assignment operator when changing this!
-    QByteArray sequenceName;
-    QByteArray sequence;
     bool isCircular;
-    QByteArray leftInput;
-    QByteArray rightInput;
-    QByteArray internalInput;
-    QVector<int> sequenceQuality;
-
-    QByteArray repeatLibrary;
-    QByteArray mishybLibrary;
+    QByteArray repeatLibraryPath;
+    QByteArray mishybLibraryPath;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
 
+    int explain = 0;
     p3_global_settings* primerSettings = nullptr;
     seq_args* seqArgs = nullptr;
     p3retval* p3Retval = nullptr; 
