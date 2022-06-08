@@ -200,16 +200,7 @@ void Primer3Dialog::reset() {
             }
         }
     }
-    for (const auto& key : defaultSettings.getAlignPropertyList()) {
-        double value = 0.0;
-        if (defaultSettings.getAlignProperty(key, &value)) {
-            QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-            if (spinBox != nullptr) {
-                // TODO: ?
-                spinBox->setValue(value / 100);
-            }
-        }
-    }
+
     //TODO
     edit_SEQUENCE_TARGET->setText(intervalListToString(defaultSettings.getTarget(), ","));
     //edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intervalListToString(defaultSettings.getOverlapJunctionList(), ","));
@@ -335,10 +326,10 @@ void Primer3Dialog::reset() {
     combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(0);
     {
         for (int i = 0; i < repeatLibraries.size(); i++) {
-            if (repeatLibraries[i].second == settings.getRepeatLibrary()) {
+            if (repeatLibraries[i].second == settings.getRepeatLibraryPath()) {
                 combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(i);
             }
-            if (repeatLibraries[i].second == settings.getMishybLibrary()) {
+            if (repeatLibraries[i].second == settings.getMishybLibraryPath()) {
                 combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(i);
             }
         }
@@ -407,12 +398,6 @@ bool Primer3Dialog::doDataExchange() {
             settings.setDoubleProperty(key, spinBox->value());
         }
     }
-    for (const auto& key : settings.getAlignPropertyList()) {
-        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
-            settings.setAlignProperty(key, spinBox->value() * 100);
-        }
-    }
 
     {
         QList<U2Region> list;
@@ -463,7 +448,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<U2Region> list;
         if (parseIntervalList(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->text(), ",", &list)) {
-            //settings.setInternalOligoExcludedRegion(list);
+            settings.setInternalOligoExcludedRegion(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION, tr("Internal Oligo Excluded Region"));
             return false;
@@ -506,6 +491,7 @@ bool Primer3Dialog::doDataExchange() {
         }
         settings.setSequenceQuality(qualityList);
     }
+
     settings.setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
     settings.setIntProperty("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
     settings.setIntProperty("PRIMER_LIBERAL_BASE", checkbox_PRIMER_LIBERAL_BASE->isChecked());
@@ -529,8 +515,9 @@ bool Primer3Dialog::doDataExchange() {
         if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
             checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
             checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
-            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be presented."));
-            return false;
+            //TODO
+            /*QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be presented."));
+            return false;*/
         }
         break;
     case check_primers:
@@ -548,12 +535,13 @@ bool Primer3Dialog::doDataExchange() {
 
     {
         int index = combobox_PRIMER_MISPRIMING_LIBRARY->currentIndex();
-        settings.setRepeatLibrary(repeatLibraries[index].second);
+        settings.setRepeatLibraryPath(repeatLibraries[index].second);
     }
     {
         int index = combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentIndex();
-        settings.setMishybLibrary(repeatLibraries[index].second);
+        settings.setMishybLibraryPath(repeatLibraries[index].second);
     }
+
     {
         QList<U2Region> list;
         if (parseIntervalList(edit_PRIMER_PRODUCT_SIZE_RANGE->text(), "-", &list, IntervalDefinition::Start_End)) {
@@ -619,12 +607,6 @@ void Primer3Dialog::sl_saveSettings() {
         }
     }
     for (const auto& key : settings.getDoublePropertyList()) {
-        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
-            diagSettings.setValue(key, spinBox->value());
-        }
-    }
-    for (const auto& key : settings.getAlignPropertyList()) {
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             diagSettings.setValue(key, spinBox->value());

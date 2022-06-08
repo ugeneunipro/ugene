@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -398,6 +398,15 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;start&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <number>-2000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-2000000</number>
+             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -410,6 +419,15 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
              </property>
             </widget>
            </item>
@@ -430,6 +448,15 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the right primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
              </property>
             </widget>
            </item>
@@ -457,6 +484,15 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 3' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
+             </property>
             </widget>
            </item>
            <item row="2" column="1">
@@ -476,6 +512,15 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 3' end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the right primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
              </property>
             </widget>
            </item>
@@ -632,20 +677,20 @@ p, li { white-space: pre-wrap; }
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of primer pairs to return.&lt;/p&gt;&lt;p&gt;Primer pairs returned are sorted by their &amp;quot;quality&amp;quot;, in other words by the value of the objective function (where a lower number indicates a better primer pair).&lt;/p&gt;&lt;p&gt;Caution: setting this parameter to a large value will increase running time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="minimum">
-                <number>0</number>
+                <number>1</number>
                </property>
                <property name="maximum">
-                <number>9999</number>
+                <number>999999999</number>
                </property>
                <property name="value">
-                <number>0</number>
+                <number>5</number>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
               <widget class="QLabel" name="label_PRIMER_MAX_END_STABILITY">
                <property name="text">
-                <string>Max 3' stability</string>
+                <string>Max 3' Stability</string>
                </property>
               </widget>
              </item>
@@ -662,6 +707,9 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
+               </property>
+               <property name="value">
+                <double>100.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -692,6 +740,9 @@ p, li { white-space: pre-wrap; }
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
+               <property name="value">
+                <double>12.000000000000000</double>
+               </property>
               </widget>
              </item>
              <item row="1" column="1">
@@ -714,6 +765,9 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
+               </property>
+               <property name="value">
+                <double>24.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -783,6 +837,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>100.000000000000000</double>
            </property>
+           <property name="value">
+            <double>30.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="3" column="0">
@@ -815,6 +872,15 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-100000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>100000.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -849,6 +915,15 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-100000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>-100000.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="0" column="0">
@@ -868,6 +943,15 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>27</number>
            </property>
           </widget>
          </item>
@@ -915,6 +999,15 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>18</number>
+           </property>
           </widget>
          </item>
          <item row="1" column="9">
@@ -934,6 +1027,15 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>20</number>
            </property>
           </widget>
          </item>
@@ -988,6 +1090,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-100000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1044,6 +1152,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>5.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="1" column="6">
@@ -1086,6 +1197,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>57.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1170,6 +1284,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>62.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="1" column="5">
@@ -1185,6 +1302,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>59.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1262,6 +1382,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>100.000000000000000</double>
            </property>
+           <property name="value">
+            <double>70.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="3" column="2">
@@ -1275,6 +1398,9 @@ p, li { white-space: pre-wrap; }
           <widget class="QDoubleSpinBox" name="edit_PRIMER_OPT_GC_PERCENT">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>50.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1309,6 +1435,12 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Same as &amp;quot;Max 3' Self Complementarity&amp;quot; but is based on thermodynamical approach - the stability of structure is analyzed. The value of tag is expressed as melting temperature. See &amp;quot;TH: Max Self Complementarity&amp;quot; for details.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>47.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="4" column="2">
@@ -1329,12 +1461,24 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;This is the most stable monomer structure of internal oligo calculated by thermodynamic approach. The hairpin loops, bulge loops, internal loops, internal single mismatches, dangling ends, terminal mismatches have been considered. This parameter is calculated only if PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT=1. The default value is 10 degrees lower than the default value of PRIMER_MIN_TM. For example the structure:&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      -///------\\\-&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ACGCTGTGCTGCGA 3'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;with melting temperature 53.7263 (calculated according to by default values of Primer3) and&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      //////----\\\\\\&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' CCGCAGTAAGCTGCGG 3'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;with melting temperature 71.0918 (calculated according to by default values of Primer3) For details about papers used for calculating hairpins see &amp;quot;TH: Max Self Complementarity&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>47.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="3" column="1">
             <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_MAX_COMPL_END_TH">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Same as &amp;quot;Max 3' Pair Complementarity&amp;quot; but for calculating the score (melting temperature of structure) thermodynamical approach is used.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>47.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1349,6 +1493,12 @@ p, li { white-space: pre-wrap; }
             <widget class="QDoubleSpinBox" name="edit_PRIMER_MAX_SELF_ANY">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_MAX_SELF_ANY describes the tendency of a primer to bind to itself (interfering with target sequence binding). It will score ANY binding occurring within the entire primer sequence.&lt;br/&gt;It is the maximum allowable local alignment score when testing a single primer for (local) self-complementarity. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATCGNA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      || | |&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   3' TA-CGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;is allowed (and yields a score of 1.75), but the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATCCGNA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      ||  | |&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   3' TA--CGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;is not considered. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable local alignment between two oligos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>8.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1369,6 +1519,12 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The same as &amp;quot;Max Self Complementarity&amp;quot; but all calculations are based on thermodynamical approach. The melting temperature of the most stable structure is calculated. To calculate secondary structures nearest-neighbor parameters for perfect matches, single internal mismatches, terminal mismatches, dangling ends have been used. Also parameters for increments for length dependence of bulge and internal loops have been used. This parameter is calculated only if &amp;quot;Use Thermodynamic Oligo Alignment&amp;quot; is true. The default value is 10 degrees lower than the default value of PRIMER_MIN_TM. For example, the alignment width length 15nt&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  5' ATTAGATAGAGCATC 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  3' TAATCTATCTCGTAG 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;is allowed (and yields a melting temperature of 32.1493 width by default Primer3 parameters), but the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;     T        C&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  5'  GCGGCCGC GCGC 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  3'  CGCCGGCG CGCG 5'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;     A        A&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;is not considered (Tm=57.0997 and the length of oligo is 14nt). See Primer 3 manual for details.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>47.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1437,6 +1593,12 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;&amp;quot;TH: Max Pair Complementarity&amp;quot; describes the tendency of the left primer to bind to the right primer. It is similar to &amp;quot;TH: Max Self Complementarity&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="maximum">
+              <double>99.989999999999995</double>
+             </property>
+             <property name="value">
+              <double>47.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="4" column="3">
@@ -1464,6 +1626,9 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_PAIR_MAX_COMPL_END tries to bind the 3'-END of the left primer to the right primer and scores the best binding it can find. It is similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_END&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_END&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="value">
+              <double>3.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="1" column="4">
@@ -1484,12 +1649,18 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_MAX_SELF_END tries to bind the 3'-END to a identical primer and scores the best binding it can find. This is critical for primer quality because it allows primers use itself as a target and amplify a short piece (forming a primer-dimer). These primers are then unable to bind and amplify the target sequence.&lt;br/&gt;PRIMER_MAX_SELF_END is the maximum allowable 3'-anchored global alignment score when testing a single primer for self-complementarity. The 3'-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers, for example&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATGCCCTAGCTTCCGGATG 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;                ||| |||||&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;             3' AAGTCCTACATTTAGCCTAGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;or&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5` AGGCTATGGGCCTCGCGA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;                  ||||||&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;               3' AGCGCTCCGGGTATCGGA 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate primers, Primer3 assumes that the sequence from which to choose primers is presented 5'-&amp;gt;3'. It is nonsensical to provide a larger value for this parameter than for the Maximum (local) Complementarity parameter (&lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_ANY&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_ANY&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;) because the score of a local alignment will always be at least as great as the score of a global alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="value">
+              <double>3.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="2" column="3">
             <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_MAX_COMPL_ANY">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_PAIR_MAX_COMPL_ANY describes the tendency of the left primer to bind to the right primer. It is the maximum allowable local alignment score when testing for complementarity between left and right primers. It is similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_ANY&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_ANY&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="value">
+              <double>8.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1573,6 +1744,9 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; but assesses alternative binding sites in the template using thermodynamic models (when PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT=1). This parameter specifies the maximum allowed melting temperature of an oligo (primer) at an &amp;quot;ectopic&amp;quot; site within the template sequence; 47.0 would be a reasonable choice if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_TM&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MIN_TM&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; is 57.0.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="value">
+              <double>40.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="0" column="2">
@@ -1595,6 +1769,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
+             </property>
+             <property name="value">
+              <double>12.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1623,6 +1800,9 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum allowed summed melting temperatures of both primers at ectopic sites within the template (with the two primers in an orientation that would allow PCR amplification.) The melting temperatures are calculated as for &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING_TH&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING_TH&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="value">
+              <double>70.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="1" column="2">
@@ -1645,6 +1825,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
+             </property>
+             <property name="value">
+              <double>24.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1718,6 +1901,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <number>9999999</number>
            </property>
+           <property name="value">
+            <number>4</number>
+           </property>
           </widget>
          </item>
          <item row="0" column="4">
@@ -1747,6 +1933,12 @@ p, li { white-space: pre-wrap; }
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INSIDE_PENALTY">
            <property name="toolTip">
             <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
+           </property>
+           <property name="minimum">
+            <double>-1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>-1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1789,7 +1981,7 @@ p, li { white-space: pre-wrap; }
          <item row="2" column="0">
           <widget class="QLabel" name="label_PRIMER_FIRST_BASE_INDEX">
            <property name="text">
-            <string>First base index</string>
+            <string>First Base Index</string>
            </property>
           </widget>
          </item>
@@ -1857,6 +2049,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum number of Gs or Cs allowed in the last five 3' bases of a left or right primer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
           </widget>
          </item>
          <item row="3" column="2">
@@ -1913,6 +2111,15 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;When returning multiple primer pairs, the minimum number of base pairs between the 3' ends of any two left primers.&lt;br/&gt;&lt;br/&gt;Primers with 3' ends at positions e.g. 30 and 31 in the template sequence have a three-prime distance of 1.&lt;br/&gt;&lt;br/&gt;In addition to positive values, the values -1 and 0 are acceptable and have special interpretations:&lt;br/&gt;&lt;br/&gt;-1 indicates that a given left primer can appear in multiple primer pairs returned by Primer3. This is the default behavior.&lt;br/&gt;&lt;br/&gt;0 indicates that a left primer is acceptable if it was not already used. In other words, two left primers are allowed to have the same 3' position provided their 5' positions differ.&lt;br/&gt;&lt;br/&gt;For &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; &amp;gt; 0: A left primer is acceptable if:&lt;br/&gt;&lt;br/&gt;NOT(3' end of left primer closer than &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; to the 3' end of a previously used left primer)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>-1</number>
+           </property>
           </widget>
          </item>
          <item row="4" column="2">
@@ -1926,6 +2133,15 @@ p, li { white-space: pre-wrap; }
           <widget class="QSpinBox" name="edit_PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Analogous to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, but for right primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>-1</number>
            </property>
           </widget>
          </item>
@@ -1954,6 +2170,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 5' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>7</number>
+           </property>
           </widget>
          </item>
          <item row="5" column="2">
@@ -1967,6 +2189,12 @@ p, li { white-space: pre-wrap; }
           <widget class="QSpinBox" name="edit_PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 3' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>4</number>
            </property>
           </widget>
          </item>
@@ -2004,6 +2232,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>50.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="6" column="2">
@@ -2022,7 +2253,7 @@ p, li { white-space: pre-wrap; }
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies the salt correction formula for the melting temperature calculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="currentText">
-            <string>SantaLucia 1998</string>
+            <string>Schildkraut and Lifson 1965</string>
            </property>
            <item>
             <property name="text">
@@ -2072,6 +2303,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of divalent salt cations (usually MgCl^(2+)) in the PCR.&lt;/p&gt;&lt;p&gt;Primer3 converts concentration of divalent cations to concentration of monovalent cations using following formula:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Monovalent cations] = [Monovalent cations] + 120*(([divalent cations] - [dNTP])^0.5)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In addition, if the specified concentration of dNTPs is larger than the concentration of divalent cations then the effect of the divalent cations is not considered.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="singleStep">
+            <double>0.500000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.500000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="7" column="2">
@@ -2092,6 +2329,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of the sum of all deoxyribonucleotide triphosphates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.600000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="7" column="4">
@@ -2110,7 +2353,7 @@ p, li { white-space: pre-wrap; }
          <item row="8" column="0">
           <widget class="QLabel" name="label_PRIMER_DNA_CONC">
            <property name="text">
-            <string>Annealing oligo concentration</string>
+            <string>Annealing Oligo Concentration</string>
            </property>
           </widget>
          </item>
@@ -2124,6 +2367,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A value to use as nanomolar (nM) concentration of each annealing oligo over the course the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to esimate oligo melting temperatures.&lt;/p&gt;&lt;p&gt;The default (50nM) works well with the standard protocol used at the Whitehead/MIT Center for Genome Research --0.5 microliters of 20 micromolar concentration for each primer in a 20 microliter reaction with 10 nanograms template, 0.025 units/microliter Taq polymerase in 0.1 mM each dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) using 35 cycles with an annealing temperature of 56 degrees Celsius.&lt;/p&gt;&lt;p&gt;The value of this parameter is less than the actual concentration of oligos in the initial reaction mix because  it is the concentration of annealing oligos, which in turn depends on the amount of template (including PCR product) in a given cycle. This concentration increases a great deal during a PCR; fortunately PCR seems quite robust for a variety of oligo melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>50.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2178,6 +2424,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>500</number>
+           </property>
           </widget>
          </item>
          <item row="9" column="2">
@@ -2191,6 +2443,12 @@ p, li { white-space: pre-wrap; }
           <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_INTERVAL">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>250</number>
            </property>
           </widget>
          </item>
@@ -2219,6 +2477,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>50</number>
+           </property>
           </widget>
          </item>
          <item row="10" column="2">
@@ -2232,6 +2496,12 @@ p, li { white-space: pre-wrap; }
           <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_ACCURACY">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>20</number>
            </property>
           </widget>
          </item>
@@ -2413,6 +2683,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>60.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="2" column="0">
@@ -2433,8 +2706,14 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="maximum">
-            <number>9999</number>
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>18</number>
            </property>
           </widget>
          </item>
@@ -2462,7 +2741,7 @@ p, li { white-space: pre-wrap; }
          <item row="0" column="0">
           <widget class="QLabel" name="label_59">
            <property name="text">
-            <string>Hyb oligo size</string>
+            <string>Internal Oligo Size</string>
            </property>
           </widget>
          </item>
@@ -2479,6 +2758,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>57.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2517,6 +2799,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>100.000000000000000</double>
            </property>
+           <property name="value">
+            <double>20.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="1" column="3">
@@ -2536,6 +2821,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>80.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2558,7 +2846,10 @@ p, li { white-space: pre-wrap; }
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="maximum">
-            <number>9999</number>
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>20</number>
            </property>
           </widget>
          </item>
@@ -2573,6 +2864,9 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="value">
+            <double>63.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="0" column="7">
@@ -2586,6 +2880,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>27</number>
+           </property>
           </widget>
          </item>
          <item row="0" column="6">
@@ -2596,7 +2896,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="2" column="5">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_GC_PERCENT_2">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_GC_PERCENT">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2605,6 +2905,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>50.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2637,6 +2940,12 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>Equivalent parameter of PRIMER_MAX_SELF_ANY_TH for the internal oligo</string>
            </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>47.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="0" column="2">
@@ -2647,7 +2956,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OLIGO_SELF_ANY">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_SELF_ANY">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2659,6 +2968,9 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>47.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2679,6 +2991,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>Same as PRIMER_INTERNAL_MAX_SELF_END but for calculating the score (melting temperature of structure) thermodynamical approach is used</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>47.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2703,6 +3021,9 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>47.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="2" column="0">
@@ -2722,6 +3043,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="toolTip">
             <string>The most stable monomer structure of internal oligo calculated by thermodynamic approach. See PRIMER_MAX_HAIRPIN_TH for details</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>47.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2765,7 +3092,7 @@ p, li { white-space: pre-wrap; }
          <item row="0" column="0">
           <widget class="QLabel" name="label_74">
            <property name="text">
-            <string>Internal oligo min sequence quality</string>
+            <string>Internal Oligo Min Sequence Quality</string>
            </property>
           </widget>
          </item>
@@ -2804,14 +3131,14 @@ p, li { white-space: pre-wrap; }
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max #Ns for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="maximum">
-            <number>9999</number>
+            <number>999999999</number>
            </property>
           </widget>
          </item>
          <item row="1" column="2">
           <widget class="QLabel" name="label_78">
            <property name="text">
-            <string>Internal oligo max poly-X</string>
+            <string>Internal Oligo Max Poly-X</string>
            </property>
           </widget>
          </item>
@@ -2827,14 +3154,17 @@ p, li { white-space: pre-wrap; }
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max poly-X for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="maximum">
-            <number>9999</number>
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>5</number>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_73">
            <property name="text">
-            <string>Internal oligo mishyb library</string>
+            <string>Internal Oligo Mishyb Library</string>
            </property>
           </widget>
          </item>
@@ -2854,7 +3184,7 @@ p, li { white-space: pre-wrap; }
          <item row="2" column="2">
           <widget class="QLabel" name="label_79">
            <property name="text">
-            <string>Internal oligo max mishyb</string>
+            <string>Internal Oligo Max Library Mishyb	</string>
            </property>
           </widget>
          </item>
@@ -2872,12 +3202,15 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>12.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_75">
            <property name="text">
-            <string>Internal oligo conc of monovalent cations</string>
+            <string>Internal Oligo Conc of monovalent cations</string>
            </property>
           </widget>
          </item>
@@ -2895,12 +3228,15 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>50.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="3" column="2">
           <widget class="QLabel" name="label_80">
            <property name="text">
-            <string>Internal oligo DNA concentration</string>
+            <string>Internal Oligo DNA Concentration</string>
            </property>
           </widget>
          </item>
@@ -2918,12 +3254,15 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="value">
+            <double>50.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="4" column="0">
           <widget class="QLabel" name="label_76">
            <property name="text">
-            <string>Internal oligo conc of divalent cations</string>
+            <string>Internal Oligo conc of divalent cations</string>
            </property>
           </widget>
          </item>
@@ -2941,12 +3280,18 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
+           <property name="singleStep">
+            <double>0.500000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.500000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="4" column="2">
           <widget class="QLabel" name="label_81">
            <property name="text">
-            <string>Internal oligo [dNTP]</string>
+            <string>Internal Oligo [dNTP]</string>
            </property>
           </widget>
          </item>
@@ -3187,7 +3532,11 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_ANY_TH"/>
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_ANY_TH">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_98">
@@ -3197,7 +3546,11 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_END_TH"/>
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_END_TH">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_99">
@@ -3207,7 +3560,11 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_HAIRPIN_TH"/>
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_HAIRPIN_TH">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_104">
@@ -3217,7 +3574,11 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH"/>
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
              </item>
              <item row="4" column="0">
               <widget class="QLabel" name="label_17">
@@ -3883,14 +4244,14 @@ p, li { white-space: pre-wrap; }
              <item row="0" column="0">
               <widget class="QLabel" name="label_38">
                <property name="text">
-                <string>Internal oligo Tm</string>
+                <string>Internal oligo Size</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_40">
                <property name="text">
-                <string>Internal oligo size</string>
+                <string>Internal oligo Tm</string>
                </property>
               </widget>
              </item>
@@ -4764,7 +5125,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>edit_PRIMER_INTERNAL_MAX_TM</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MIN_GC</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MAX_GC</tabstop>
-  <tabstop>edit_PRIMER_INTERNAL_OLIGO_SELF_ANY</tabstop>
+  <tabstop>edit_PRIMER_INTERNAL_MAX_SELF_ANY</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MAX_SELF_END</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MAX_NS_ACCEPTED</tabstop>
   <tabstop>edit_PRIMER_INTERNAL_MAX_POLY_X</tabstop>

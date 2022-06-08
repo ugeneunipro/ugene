@@ -1234,14 +1234,17 @@ copy_seq_arg(seq_args* a)
     *b = *a;
 
     if (a->quality != NULL) {
-        b->quality = new int[a->n_quality];
-        std::copy(a->quality, a->quality + sizeof(int) * a->n_quality, b->quality);
+        p3_set_sa_empty_quality(b);
+        b->quality_storage_size = 0;
+        for (int i = 0; i < a->n_quality; i++) {
+            int v = a->quality[i];
+            p3_sa_add_to_quality_array(b, v);
+        }
     }
 
     if (a->sequence != NULL) {
         b->sequence = (char*)malloc(strlen(a->sequence) + 1);
         strcpy(b->sequence, a->sequence);
-        //b->sequence = copy;
     }
     if (a->sequence_name != NULL) {
         b->sequence_name = (char*)malloc(strlen(a->sequence_name) + 1);
@@ -4910,6 +4913,9 @@ static int
 _set_string(char **loc, const char *new_string) {
   if (*loc) {
     free(*loc);
+  }
+  if (strlen(new_string) == 0) {
+      return 0;
   }
   if (!(*loc = (char *) malloc(strlen(new_string) + 1)))
     return 1; /* ENOMEM */
