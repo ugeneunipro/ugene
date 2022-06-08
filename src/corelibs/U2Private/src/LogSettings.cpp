@@ -39,7 +39,7 @@ LoggerSettings::LoggerSettings()
 QVector<QString> LogCategories::localizedLevelNames;
 
 const QString& LogCategories::getLocalizedLevelName(const LogLevel& logLevel) {
-    SAFE_POINT(logLevel > 0 && logLevel < LogLevel_NumLevels,
+    SAFE_POINT(logLevel >= 0 && logLevel < LogLevel_NumLevels,
                "Illegal log level: " + QString::number(logLevel),
                localizedLevelNames[LogLevel_TRACE]);
     return localizedLevelNames[logLevel];
