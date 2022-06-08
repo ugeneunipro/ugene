@@ -23,7 +23,6 @@
 #define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_TASK_SETTINGS_H_
 
 #include <QString>
-#include <QVariant>
 
 #include <U2Core/U2Range.h>
 #include <U2Core/U2Region.h>
@@ -39,7 +38,8 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
     U2Range<int> gibbsFreeEnergy;
     U2Range<int> meltingPoint;
     U2Range<int> overlapLength;
-    QVariant gcContent;
+    U2Range<int> gcContent = {-1, -1};  // Must contain valid closed interval from 0 to 100 or [-1,-1] if GC-content is
+                                        // not set by the user.
 
     //Parameters to exclude in whole primers
     int gibbsFreeEnergyExclude = 0;

@@ -48,7 +48,4 @@ U2Range<T> operator+(const U2Range<T>& r1, const U2Range<T>& r2) {
 }
 
 }  // namespace U2
-
-Q_DECLARE_METATYPE(U2::U2Range<int>)
-
 #endif

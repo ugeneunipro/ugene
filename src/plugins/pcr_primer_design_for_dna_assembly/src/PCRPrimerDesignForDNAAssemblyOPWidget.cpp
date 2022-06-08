@@ -213,7 +213,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.overlapLength.minValue = spMinRequireOverlapLength->value();
     settings.overlapLength.maxValue = spMaxRequireOverlapLength->value();
     if (cbGcContent->isChecked()) {
-        settings.gcContent.setValue(U2Range<int>(sbMinRequireGcContent->value(), sbMaxRequireGcContent->value()));
+        settings.gcContent.minValue = sbMinRequireGcContent->value();
+        settings.gcContent.maxValue = sbMaxRequireGcContent->value();
     }
 
     settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();

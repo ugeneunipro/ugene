@@ -559,16 +559,14 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
 bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteArray& primer) const {
     auto candidatePrimerDeltaG = PrimerStatistics::getDeltaG(primer);
     auto candidatePrimerMeltingTemp = PrimerStatistics::getMeltingTemperature(primer);
+    auto candidatePrimerGcContent = PrimerStatisticsCalculator(primer).getGC();
     bool goodDeltaG = settings.gibbsFreeEnergy.minValue <= candidatePrimerDeltaG &&
                       candidatePrimerDeltaG <= settings.gibbsFreeEnergy.maxValue;
     bool goodMeltTemp = settings.meltingPoint.minValue <= candidatePrimerMeltingTemp &&
                       candidatePrimerMeltingTemp <= settings.meltingPoint.maxValue;
-    bool goodGcContent = true;
-    if (settings.gcContent.canConvert<U2Range<int>>()) {
-        double candidatePrimerGcContent = PrimerStatisticsCalculator(primer).getGC();
-        auto gcRange = settings.gcContent.value<U2Range<int>>();
-        goodGcContent = gcRange.minValue <= candidatePrimerGcContent && candidatePrimerGcContent <= gcRange.maxValue;
-    }
+    bool goodGcContent = settings.gcContent.minValue < 0  // gcContent=[-1,-1], means it is not set.
+                         || (settings.gcContent.minValue <= candidatePrimerGcContent &&
+                             candidatePrimerGcContent <= settings.gcContent.maxValue);
 
     return goodDeltaG && goodMeltTemp && goodGcContent;
 }
