@@ -61,7 +61,7 @@ private:
     };
     void findSecondaryForwardReversePrimers(SecondaryPrimer type);
     void findSecondaryReversePrimer(SecondaryPrimer type, const QByteArray& forwardCandidatePrimerSequence);
-    bool areMetlingTempAndDeltaGood(const QByteArray& primer) const;
+    bool areParamsOfPrimingSequencesGood(const QByteArray& primer) const;
     bool hasUnwantedConnections(const QByteArray& primer) const;
     void updatePrimerRegion(int& primerEnd, int& primerLength) const;
 

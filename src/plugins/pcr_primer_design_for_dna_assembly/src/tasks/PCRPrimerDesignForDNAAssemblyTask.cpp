@@ -134,7 +134,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             // The nucleotide sequence of the corresponding region
             QByteArray b1ForwardCandidatePrimerSequence = sequence.mid(b1ForwardCandidatePrimerRegion.startPos, b1ForwardCandidatePrimerRegion.length);
             //Check if candidate primer melting temperature and deltaG fit to settings
-            bool areSettingsGood = areMetlingTempAndDeltaGood(b1ForwardCandidatePrimerSequence);
+            bool areSettingsGood = areParamsOfPrimingSequencesGood(b1ForwardCandidatePrimerSequence);
             // If they are not - increase primer size (if it's not too big)
             // If it's too big, move to the left and reset length to minimum...
             if (!areSettingsGood) {
@@ -326,7 +326,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
             }
             QByteArray b1ReverseCandidatePrimerSequence = reverseComplementSequence.mid(b1ReverseCandidatePrimerRegion.startPos, b1ReverseCandidatePrimerRegion.length);
             //Check if candidate primer melting temperature and deltaG fit to settings
-            bool areB1ReverseSettingsGood = areMetlingTempAndDeltaGood(b1ReverseCandidatePrimerSequence);
+            bool areB1ReverseSettingsGood = areParamsOfPrimingSequencesGood(b1ReverseCandidatePrimerSequence);
             if (!areB1ReverseSettingsGood) {
                 updatePrimerRegion(b1ReverseCandidatePrimerEnd, b1ReversePrimerLength);
                 continue;
@@ -390,7 +390,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryForwardReversePrimers(Secon
         QByteArray forwardCandidatePrimerSequence = sequence.mid(forwardCandidatePrimerRegion.startPos, forwardCandidatePrimerRegion.length);
 
         //Check if candidate primer melting temperature and deltaG fit to settings
-        bool areSettingsGood = areMetlingTempAndDeltaGood(forwardCandidatePrimerSequence);
+        bool areSettingsGood = areParamsOfPrimingSequencesGood(forwardCandidatePrimerSequence);
         if (!areSettingsGood) {
             updatePrimerRegion(forwardCandidatePrimerEnd, forwardPrimerLength);
             continue;
@@ -469,7 +469,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
         QByteArray reverseCandidatePrimerSequence = reverseComplementSequence.mid(reverseCandidatePrimerRegion.startPos, reverseCandidatePrimerRegion.length);
 
         //Check if candidate primer melting temperature and deltaG fit to settings
-        bool areSettingsGood = areMetlingTempAndDeltaGood(reverseCandidatePrimerSequence);
+        bool areSettingsGood = areParamsOfPrimingSequencesGood(reverseCandidatePrimerSequence);
         if (!areSettingsGood) {
             updatePrimerRegion(reverseCandidatePrimerEnd, reversePrimerLength);
             continue;
@@ -556,7 +556,7 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     }
 }
 
-bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteArray& primer) const {
+bool PCRPrimerDesignForDNAAssemblyTask::areParamsOfPrimingSequencesGood(const QByteArray& primer) const {
     auto candidatePrimerDeltaG = PrimerStatistics::getDeltaG(primer);
     auto candidatePrimerMeltingTemp = PrimerStatistics::getMeltingTemperature(primer);
     auto candidatePrimerGcContent = PrimerStatisticsCalculator(primer).getGC();
