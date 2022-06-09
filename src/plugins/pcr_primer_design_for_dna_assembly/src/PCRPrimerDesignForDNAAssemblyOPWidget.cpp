@@ -74,6 +74,7 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::SELECT_AREAS_FOR_PRIMING_SH
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID = "open-backbone-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::GENERATE_SEQUENCE_SHOW_HIDE_ID = "generate-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID = "other-sequences-in-pcr-reaction-show-hide-id";
+const QString PCRPrimerDesignForDNAAssemblyOPWidget::EXTRA_OPTIONS_SHOW_HIDE_ID = "find-additional-primers-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME =
     QApplication::translate("PCRPrimerDesignForDNAAssemblyOPWidget", "PCR Primer Design for DNA assembly");
 
@@ -111,6 +112,10 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                            tr("Other sequences in PCR reaction"),
                                            wgtOtherSequencesInPcr,
                                            true);
+    extraOptionsShowHideGroup->init(EXTRA_OPTIONS_SHOW_HIDE_ID,
+                                    tr("Extra options"),
+                                    wgtExtraOptions,
+                                    true);
 
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
 

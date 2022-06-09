@@ -175,6 +175,7 @@ private:
     static const QString OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID;
     static const QString GENERATE_SEQUENCE_SHOW_HIDE_ID;
     static const QString OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID;
+    static const QString EXTRA_OPTIONS_SHOW_HIDE_ID;
     static const QString PCR_TABLE_OBJECT_NAME;
 };
 
