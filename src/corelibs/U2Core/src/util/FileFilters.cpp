@@ -22,7 +22,6 @@
 #include "FileFilters.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
@@ -115,26 +114,25 @@ QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QSt
     return withAllFilesFilter(filters);
 }
 
-QString FileFilters::createFileFilter(const DocumentFormatConstraints& constraints) {
-    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
+QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats) {
+    SAFE_POINT(!objectTypes.isEmpty(), "createFileFilterByObjectTypes with no object types", withAllFilesFilter({}));
+
     QStringList filters;
+    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> formatIds = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
     for (const DocumentFormatId& formatId : qAsConst(formatIds)) {
         DocumentFormat* documentFormat = formatRegistry->getFormatById(formatId);
-        if (documentFormat->checkConstraints(constraints)) {
-            filters << createSingleFileFilter(documentFormat);
+        for (const auto& objectType : qAsConst(objectTypes)) {
+            DocumentFormatConstraints constraints;
+            constraints.flagsToSupport.setFlag(DocumentFormatFlag_SupportWriting, useWriteOnlyFormats);
+            constraints.supportedObjectTypes.insert(objectType);
+            if (documentFormat->checkConstraints(constraints)) {
+                filters << createSingleFileFilter(documentFormat);
+                break;
+            }
         }
     }
     return withAllFilesFilter(filters);
-}
-
-QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats) {
-    DocumentFormatConstraints constraints;
-    if (useWriteOnlyFormats) {
-        constraints.flagsToSupport.setFlag(DocumentFormatFlag_SupportWriting, true);
-    }
-    constraints.supportedObjectTypes += objectTypes.toSet();
-    return createFileFilter(constraints);
 }
 
 }  // namespace U2
