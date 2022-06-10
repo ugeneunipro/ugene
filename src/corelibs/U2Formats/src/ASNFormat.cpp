@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <time.h>
+#include "ASNFormat.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -27,17 +27,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "ASNFormat.h"
 #include "DocumentFormatUtils.h"
 #include "PDBFormat.h"
 #include "StdResidueDictionary.h"
@@ -172,7 +167,7 @@ AsnNode* ASNFormat::findFirstNodeByName(AsnNode* rootElem, const QString& nodeNa
         return rootElem;
     }
 
-    foreach (AsnNode* node, rootElem->children) {
+    for (AsnNode* node : qAsConst(rootElem->getChildren())) {
         AsnNode* child = findFirstNodeByName(node, nodeName);
         if (child != nullptr) {
             return child;
@@ -187,7 +182,7 @@ AsnNodeList ASNFormat::findNodesByName(AsnNode* root, const QString& nodeName, A
         nodes.append(root);
     }
 
-    foreach (AsnNode* child, root->children) {
+    for (AsnNode* child : qAsConst(root->getChildren())) {
         findNodesByName(child, nodeName, nodes);
     }
 
@@ -249,7 +244,7 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode* rootNode, Bio
         if (modelsNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
-        loadBioStructModels(modelsNode->children, struc);
+        loadBioStructModels(modelsNode->getChildren(), struc);
 
         // TODO: implement loading bonds from file
         // loadIntraResidueBonds(struc);
@@ -298,32 +293,32 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode* modelNode, Ato
     AsnNode* aCoordsNode = modelNode->findChildByName("coordinates literal atomic");
 
     bool ok = false;
-    AsnNode* numAtomsNode = aCoordsNode->getChildById(0);
+    AsnNode* numAtomsNode = aCoordsNode->getChild(0);
     int numAtoms = numAtomsNode->value.toInt(&ok);
     Q_ASSERT(ok == true);
 
-    AsnNode* atomPntrsNode = aCoordsNode->getChildById(1);
+    AsnNode* atomPntrsNode = aCoordsNode->getChild(1);
     Q_ASSERT(atomPntrsNode->name == "atoms");
-    AsnNode* chainIds = atomPntrsNode->getChildById(1);
-    AsnNode* resIds = atomPntrsNode->getChildById(2);
-    AsnNode* atomIds = atomPntrsNode->getChildById(3);
+    AsnNode* chainIds = atomPntrsNode->getChild(1);
+    AsnNode* resIds = atomPntrsNode->getChild(2);
+    AsnNode* atomIds = atomPntrsNode->getChild(3);
 
-    AsnNode* sitesNode = aCoordsNode->getChildById(2);
+    AsnNode* sitesNode = aCoordsNode->getChild(2);
     Q_ASSERT(sitesNode->name == "sites");
-    AsnNode* sfNode = sitesNode->getChildById(0);
-    AsnNode* xCoords = sitesNode->getChildById(1);
-    AsnNode* yCoords = sitesNode->getChildById(2);
-    AsnNode* zCoords = sitesNode->getChildById(3);
-    int scaleFactor = sfNode->value.toInt();
+    AsnNode* sfNode = sitesNode->getChild(0);
+    AsnNode* xCoords = sitesNode->getChild(1);
+    AsnNode* yCoords = sitesNode->getChild(2);
+    AsnNode* zCoords = sitesNode->getChild(3);
+    double scaleFactor = sfNode->value.toInt();
 
     for (int i = 0; i < numAtoms; ++i) {
-        int chainId = chainIds->children.at(i)->value.toInt();
-        int resId = resIds->children.at(i)->value.toInt();
-        int atomId = atomIds->children.at(i)->value.toInt();
-        float x = (float)xCoords->children.at(i)->value.toInt() / scaleFactor;
-        float y = (float)yCoords->children.at(i)->value.toInt() / scaleFactor;
-        float z = (float)zCoords->children.at(i)->value.toInt() / scaleFactor;
-        AtomData* a = new AtomData();
+        int chainId = chainIds->getChild(i)->value.toInt();
+        int resId = resIds->getChild(i)->value.toInt();
+        int atomId = atomIds->getChild(i)->value.toInt();
+        double x = xCoords->getChild(i)->value.toInt() / scaleFactor;
+        double y = yCoords->getChild(i)->value.toInt() / scaleFactor;
+        double z = zCoords->getChild(i)->value.toInt() / scaleFactor;
+        auto a = new AtomData();
         a->chainIndex = chainId;
         a->residueIndex = ResidueIndex(resId, ' ');
         a->coord3d = Vector3D(x, y, z);
@@ -347,7 +342,7 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode* modelNode, Ato
     }
 }
 
-const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode* resNode, ResidueData* residue) {
+StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode* resNode, ResidueData* residue) {
     /*
         Residue ::= SEQUENCE {
             id          Residue-id,
@@ -365,7 +360,7 @@ const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode* resNod
 
     */
 
-    AsnNode* resGraphPntrNode = resNode->getChildById(2);
+    AsnNode* resGraphPntrNode = resNode->getChild(2);
     const StdResidueDictionary* dictionary = nullptr;
     int stdResidueId = 0;
     bool ok = false;
@@ -374,13 +369,13 @@ const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode* resNod
         stdResidueId = resGraphPntrNode->value.split(' ').at(1).toInt(&ok);
     } else if (resGraphPntrNode->name.contains("standard")) {
         dictionary = standardDictionary;
-        stdResidueId = resGraphPntrNode->getChildById(1)->value.toInt(&ok);
+        stdResidueId = resGraphPntrNode->getChild(1)->value.toInt(&ok);
     } else {
         Q_ASSERT(0);
     }
 
     Q_ASSERT(ok == true);
-    const StdResidue stdResidue = dictionary->getResidueById(stdResidueId);
+    StdResidue stdResidue = dictionary->getResidueById(stdResidueId);
     residue->name = stdResidue.name;
     residue->acronym = stdResidue.code;
     return stdResidue;
@@ -402,12 +397,12 @@ void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode* moleculeNode, Mol
 
     */
 
-    int chainId = moleculeNode->getChildById(0)->value.toInt();
+    int chainId = moleculeNode->getChild(0)->value.toInt();
 
     AsnNode* resideusNode = moleculeNode->findChildByName("residue-sequence");
-    foreach (AsnNode* resNode, resideusNode->children) {
+    for (AsnNode* resNode : qAsConst(resideusNode->getChildren())) {
         // Load residue id
-        AsnNode* idNode = resNode->getChildById(0);
+        AsnNode* idNode = resNode->getChild(0);
         int resId = idNode->value.toInt();
         // Load residue
         ResidueData* resData = new ResidueData();
@@ -432,13 +427,13 @@ void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode*> modelNodes,
 
     for (AsnNode* modelNode : qAsConst(modelNodes)) {
         // Load model id
-        AsnNode* idNode = modelNode->getChildById(0);
+        AsnNode* idNode = modelNode->getChild(0);
         int modelId = idNode->value.toInt();
         // Load model
         AtomCoordSet atomCoords;
         AsnNode* modelCoordsNode = modelNode->findChildByName("model-coordinates");
         QMap<int, Molecule3DModel> molModels;
-        loadModelCoordsFromNode(modelCoordsNode->getChildById(0), atomCoords, molModels, struc);
+        loadModelCoordsFromNode(modelCoordsNode->getChild(0), atomCoords, molModels, struc);
         struc.modelMap.insert(modelId, atomCoords);
         foreach (int chainId, struc.moleculeMap.keys()) {
             Q_ASSERT(molModels.contains(chainId));
@@ -476,10 +471,10 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode* graphNode, BioStruc
 
     AsnNode* moleculesNode = graphNode->findChildByName("molecule-graphs");
 
-    foreach (AsnNode* molNode, moleculesNode->children) {
+    for (AsnNode* molNode : qAsConst(moleculesNode->getChildren())) {
         // Load molecule id
         bool ok = false;
-        int molId = molNode->getChildById(0)->value.toInt(&ok);
+        int molId = molNode->getChild(0)->value.toInt(&ok);
         SAFE_POINT(ok, "Invalid type conversion", );
         // Load molecule data
         AsnNode* const descrNode = molNode->findChildByName("descr");
@@ -518,15 +513,15 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode* setsNode,
 
    */
 
-    for (AsnNode* featureSet : qAsConst(setsNode->children)) {
-        QByteArray descr = featureSet->findChildByName("descr")->getChildById(0)->value;
+    for (AsnNode* featureSet : qAsConst(setsNode->getChildren())) {
+        QByteArray descr = featureSet->findChildByName("descr")->getChild(0)->value;
         if (descr != "PDB secondary structure") {
             continue;
         }
 
-        AsnNode* features = featureSet->getChildById(2);
+        AsnNode* features = featureSet->getChild(2);
         Q_ASSERT(features->name == "features");
-        for (AsnNode* featureNode : qAsConst(features->children)) {
+        for (AsnNode* featureNode : qAsConst(features->getChildren())) {
             loadBioStructFeature(featureNode, struc);
         }
     }
@@ -571,11 +566,11 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode* featureNode, BioS
         return;
     }
 
-    AsnNode* locatioNode = featureNode->findChildByName("location subgraph residues interval")->getChildById(0);
+    AsnNode* locatioNode = featureNode->findChildByName("location subgraph residues interval")->getChild(0);
     bool idOK = false, fromOK = false, toOK = false;
-    int chainId = locatioNode->getChildById(0)->value.toInt(&idOK);
-    int from = locatioNode->getChildById(1)->value.toInt(&fromOK);
-    int to = locatioNode->getChildById(2)->value.toInt(&toOK);
+    int chainId = locatioNode->getChild(0)->value.toInt(&idOK);
+    int from = locatioNode->getChild(1)->value.toInt(&fromOK);
+    int to = locatioNode->getChild(2)->value.toInt(&toOK);
     Q_ASSERT(idOK && fromOK && toOK);
     SecondaryStructure* ssData = new SecondaryStructure();
     ssData->chainIndex = chainId;
@@ -648,7 +643,7 @@ AsnNode* ASNFormat::AsnParser::loadAsnTree() {
             throw AsnParserError(ASNFormat::tr("no root element"));
         }
 
-        AsnNode* rootElem = new AsnNode(curElementName, ASN_ROOT);
+        auto rootElem = new AsnNode(curElementName, ASN_ROOT, nullptr);
         parseNextElement(rootElem);
         if (states.count() != 0) {
             throw AsnParserError(ASNFormat::tr("states stack is not empty"));
@@ -708,15 +703,13 @@ void ASNFormat::AsnParser::parseNextElement(AsnNode* node) {
     while (!curState.atEnd) {
         if (readNextElement()) {
             if (curElementKind == ASN_VALUE) {
-                AsnNode* child = new AsnNode(curElementName, curElementKind);
+                auto child = new AsnNode(curElementName, curElementKind, node);
                 child->value = curElementValue;
-                node->children.append(child);
             } else if (curElementKind == ASN_SEQ) {
                 saveState();
-                AsnNode* child = new AsnNode(curElementName, curElementKind);
+                auto child = new AsnNode(curElementName, curElementKind, node);
                 parseNextElement(child);
                 restoreState();
-                node->children.append(child);
             }
         } else if (fileAtEnd) {
             break;
@@ -732,7 +725,7 @@ bool ASNFormat::AsnParser::readNextElement() {
     bool insideQuotes = false;
     while (io->getChar(&ch)) {
         if (ch == '\"') {
-            insideQuotes = insideQuotes ? false : true;
+            insideQuotes = !insideQuotes;
         }
 
         if ((ch == '{') && (!insideQuotes)) {
@@ -783,7 +776,7 @@ void ASNFormat::AsnParser::saveState() {
 }
 
 void ASNFormat::AsnParser::restoreState() {
-    Q_ASSERT(states.size() >= 1);
+    Q_ASSERT(!states.empty());
     curState = states.pop();
 }
 
@@ -810,7 +803,7 @@ void ASNFormat::AsnParser::processValue() {
 
 void ASNFormat::AsnParser::dbgPrintAsnTree(const AsnNode* rootElem, int deepness) {
     ++deepness;
-    foreach (const AsnNode* node, rootElem->children) {
+    for (const AsnNode* node: qAsConst(rootElem->getChildren())) {
         QString str;
         for (int i = 0; i < deepness; ++i) {
             str += "  ";
@@ -820,7 +813,7 @@ void ASNFormat::AsnParser::dbgPrintAsnTree(const AsnNode* rootElem, int deepness
             str += QString(" value = %1").arg(QString(node->value));
         }
         ioLog.trace(str);
-        if (node->children.count() != 0) {
+        if (node->getChildren().count() != 0) {
             dbgPrintAsnTree(node, deepness);
         }
     }
@@ -869,37 +862,40 @@ void ASNFormat::AsnParser::dbgPrintCurrentState() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-AsnNode::AsnNode()
-    : name(""), kind(ASN_NO_KIND) {
-}
-
-AsnNode::AsnNode(const QByteArray& _name, AsnElementKind _kind)
-    : name(_name), kind(_kind) {
-}
-
-AsnNode::~AsnNode() {
-    if (kind == ASN_ROOT) {
-        deleteChildren(this);
+AsnNode::AsnNode(const QByteArray& _name, const AsnElementKind& _kind, AsnNode* _parent)
+    : name(_name), kind(_kind), parent(_parent) {
+    if (parent != nullptr) {
+        parent->children.append(this);
     }
 }
 
-void AsnNode::deleteChildren(AsnNode* node) {
-    foreach (AsnNode* child, node->children) {
-        deleteChildren(child);
+AsnNode::~AsnNode() {
+    if (parent != nullptr) {
+        parent->children.removeOne(this);
+    }
+    QList<AsnNode*> childrenCopy = children;
+    children.clear();
+    for (AsnNode* child : qAsConst(childrenCopy)) {
         delete child;
     }
 }
 
-AsnNode* AsnNode::findChildByName(const QByteArray& name) {
-    foreach (AsnNode* child, children) {
-        if (child->name == name)
+const QList<AsnNode*>& AsnNode::getChildren() const {
+    return children;
+}
+
+AsnNode* AsnNode::findChildByName(const QByteArray& childName) const {
+    for (AsnNode* child : qAsConst(children)) {
+        if (child->name == childName) {
             return child;
+        }
     }
     return nullptr;
 }
 
-AsnNode* AsnNode::getChildById(int id) {
-    return children.at(id);
+AsnNode* AsnNode::getChild(int index) const {
+    SAFE_POINT(index >= 0 && index < children.size(), "Invalid child node index: " + QString::number(index) + ", count: " + children.size(), nullptr);
+    return children.at(index);
 }
 
 }  // namespace U2
