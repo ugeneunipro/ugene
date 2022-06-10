@@ -89,9 +89,9 @@ void buildStdAtomFromNode(AsnNode* atomNode, StdAtom& atom) {
     */
 
     // Load atom name
-    atom.name = atomNode->getChildById(1)->value.trimmed();
+    atom.name = atomNode->getChild(1)->value.trimmed();
     // Load atom number
-    QByteArray elementName = atomNode->getChildById(3)->value;
+    QByteArray elementName = atomNode->getChild(3)->value;
     atom.atomicNum = PDBFormat::getElementNumberByName(elementName.toUpper());
 }
 
@@ -114,22 +114,22 @@ void buildStdResidueFromNode(AsnNode* residueNode, StdResidue& residue) {
     // we are making some assumptions about children indexes due to real file contents
 
     // Load residue name
-    AsnNode* descrNode = residueNode->getChildById(1);
-    residue.name = descrNode->getChildById(0)->value;
+    AsnNode* descrNode = residueNode->getChild(1);
+    residue.name = descrNode->getChild(0)->value;
 
     // Load residue type
-    QByteArray residueTypeName = residueNode->getChildById(2)->value;
+    QByteArray residueTypeName = residueNode->getChild(2)->value;
     residue.type = StdResidueDictionary::getResidueTypeByName(residueTypeName);
 
     // Load residue code
-    AsnNode* codeNode = residueNode->getChildById(3);
-    residue.code = codeNode->getChildById(0)->value.at(0);
+    AsnNode* codeNode = residueNode->getChild(3);
+    residue.code = codeNode->getChild(0)->value.at(0);
 
     // Load residue atoms
-    AsnNode* atomsNode = residueNode->getChildById(4);
-    foreach (AsnNode* node, atomsNode->children) {
+    AsnNode* atomsNode = residueNode->getChild(4);
+    for (AsnNode* node : qAsConst(atomsNode->getChildren())) {
         bool ok = false;
-        int atomId = node->getChildById(0)->value.toInt(&ok);
+        int atomId = node->getChild(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);
         StdAtom atom;
         buildStdAtomFromNode(node, atom);
@@ -137,12 +137,12 @@ void buildStdResidueFromNode(AsnNode* residueNode, StdResidue& residue) {
     }
 
     // Load intra residue bonds
-    AsnNode* bondsNode = residueNode->getChildById(5);
-    foreach (AsnNode* node, bondsNode->children) {
+    AsnNode* bondsNode = residueNode->getChild(5);
+    for (AsnNode* node : qAsConst(bondsNode->getChildren())) {
         StdBond bond;
         bool id1OK = false, id2OK = false;
-        bond.atom1Id = node->getChildById(0)->value.toInt(&id1OK);
-        bond.atom2Id = node->getChildById(1)->value.toInt(&id2OK);
+        bond.atom1Id = node->getChild(0)->value.toInt(&id1OK);
+        bond.atom2Id = node->getChild(1)->value.toInt(&id2OK);
         Q_ASSERT(id1OK && id2OK);
         residue.bonds.append(bond);
     }
@@ -165,9 +165,9 @@ void StdResidueDictionary::buildDictionaryFromAsnTree(AsnNode* rootElem) {
     AsnNode* resGraphsNode = rootElem->findChildByName("residue-graphs");
 
     // Load residues
-    foreach (AsnNode* child, resGraphsNode->children) {
+    for (AsnNode* child : qAsConst(resGraphsNode->getChildren())) {
         bool ok = false;
-        int id = child->getChildById(0)->value.toInt(&ok);
+        int id = child->getChild(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);
         StdResidue residue;
         buildStdResidueFromNode(child, residue);
@@ -233,9 +233,9 @@ StdResidueDictionary* StdResidueDictionary::createFromAsnTree(AsnNode* rootElem)
 
     StdResidueDictionary* localDictionary = new StdResidueDictionary();
     // Load residues
-    foreach (AsnNode* child, resGraphsNode->children) {
+    for (AsnNode* child : qAsConst(resGraphsNode->getChildren())) {
         bool ok = false;
-        int id = child->getChildById(0)->value.toInt(&ok);
+        int id = child->getChild(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);
         StdResidue residue;
         buildStdResidueFromNode(child, residue);

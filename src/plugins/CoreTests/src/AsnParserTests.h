@@ -32,14 +32,22 @@ namespace U2 {
 
 class AsnNode;
 
+class AsnNodeContextObject : public QObject {
+    Q_OBJECT
+public:
+    AsnNodeContextObject(AsnNode* node);
+    ~AsnNodeContextObject();
+    AsnNode* const node;
+};
+
 class GTest_LoadAsnTree : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_LoadAsnTree, "load-asn-tree");
 
-    ReportResult report();
+    ReportResult report() override;
 
-    virtual void cleanup();
+    void cleanup() override;
 
 private:
     QString asnTreeContextName;
@@ -52,14 +60,14 @@ class GTest_FindFirstNodeByName : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindFirstNodeByName, "find-first-node-by-name");
 
-    ReportResult report();
-    void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     QString rootContextName;
     QString nodeContextName;
     QString nodeName;
-    bool contextAdded;
+    bool contextAdded = false;
 };
 
 class GTest_CheckNodeType : public XmlTest {
@@ -67,7 +75,7 @@ class GTest_CheckNodeType : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeType, "check-node-type");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString nodeContextName;
@@ -79,7 +87,7 @@ class GTest_CheckNodeValue : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeValue, "check-node-value");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString nodeContextName;
@@ -90,11 +98,11 @@ class GTest_CheckNodeChildrenCount : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckNodeChildrenCount, "check-node-children-count");
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString nodeContextName;
-    int numChildren;
+    int numChildren =0;
 };
 
 class AsnParserTests {

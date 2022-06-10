@@ -35,7 +35,6 @@ public:
     double x, y, z;
 
     explicit Vector3D(double xi = 0.0, double yi = 0.0, double zi = 0.0);
-    Vector3D(const Vector3D&) = default;
 
     bool operator==(const Vector3D& other) const;
     bool operator!=(const Vector3D& other) const;
@@ -48,7 +47,6 @@ public:
     Vector3D& dot(const Matrix44& m);
     void set(double xs, double ys, double zs);
     double length(void) const;
-    double lengthSquared(void) const;
     void normalize(void);
 };
 
