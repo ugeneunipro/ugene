@@ -49,22 +49,21 @@ enum AsnElementKind {
     ASN_ROOT
 };
 
-class U2FORMATS_EXPORT AsnNode {
+class U2FORMATS_EXPORT AsnNode : public QObject {
+    Q_OBJECT
+
 public:
-    AsnNode(const QByteArray& name, const AsnElementKind& kind, AsnNode* parent);
+    AsnNode();
+    AsnNode(const QByteArray& _name, AsnElementKind _kind);
     ~AsnNode();
-    const QByteArray name;
-    QByteArray value;
-    AsnElementKind kind = ASN_NO_KIND;
-
-    AsnNode* findChildByName(const QByteArray& childName) const;
-    AsnNode* getChild(int index) const;
-
-    const QList<AsnNode*>& getChildren() const;
+    QByteArray name, value;
+    AsnElementKind kind;
+    QList<AsnNode*> children;
+    AsnNode* findChildByName(const QByteArray& name);
+    AsnNode* getChildById(int id);
 
 private:
-    AsnNode* parent = nullptr;
-    QList<AsnNode*> children;
+    static void deleteChildren(AsnNode* node);
 };
 
 typedef QList<AsnNode*> AsnNodeList;
@@ -137,7 +136,7 @@ public:
     static AsnNodeList findNodesByName(AsnNode* root, const QString& nodeName, AsnNodeList& lst);
 
 private:
-    struct AsnBaseException : public std::exception {
+    struct AsnBaseException {
         QString msg;
         AsnBaseException(const QString& what)
             : msg(what) {
@@ -184,7 +183,7 @@ private:
         void loadModelCoordsFromNode(AsnNode* node, AtomCoordSet& coordSet, QMap<int, Molecule3DModel>& molModels, const BioStruct3D& struc);
         void loadMoleculeFromNode(AsnNode* moleculeNode, MoleculeData* molecule);
         void loadIntraResidueBonds(BioStruct3D& struc);
-        StdResidue loadResidueFromNode(AsnNode* resNode, ResidueData* residue);
+        const StdResidue loadResidueFromNode(AsnNode* resNode, ResidueData* residue);
 
         // chain_id -> molecule name
         static QMap<char, QString> loadMoleculeNames(AsnNode* biostructGraphDescr);
