@@ -2675,7 +2675,7 @@ GUI_TEST_CLASS_DEFINITION(test_0938) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_NAVIGATION"));
 
-    QWidget* parent = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
+    auto parent = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
     CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit", parent) != nullptr, "go_to_pos_line_edit not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "Go!", parent) != nullptr, "Go! button not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED", parent) != nullptr, "Covered regions widget not found");
@@ -2732,10 +2732,10 @@ GUI_TEST_CLASS_DEFINITION(test_0947) {
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    auto sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     GTWidget::click(os, sequenceWidget);
 
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable* chooser = new PopupChooser(os, {"GC Content (%)"});
     GTUtilsDialog::waitForDialog(os, chooser);
 
@@ -2891,7 +2891,7 @@ GUI_TEST_CLASS_DEFINITION(test_0967_2) {
     // 2. Minimize and then restore the main window: log view should be not hidden.
 
     GTKeyboardDriver::keyClick('3', Qt::AltModifier);
-    QWidget* logView = GTWidget::findWidget(os, "dock_log_view");
+    auto logView = GTWidget::findWidget(os, "dock_log_view");
     CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
@@ -2907,7 +2907,7 @@ GUI_TEST_CLASS_DEFINITION(test_0967_3) {
     // 2. Minimize and then restore the main window:  Tasks View should be not hidden.
 
     GTKeyboardDriver::keyClick('2', Qt::AltModifier);
-    QWidget* tasksView = GTWidget::findWidget(os, "taskViewTree");
+    auto tasksView = GTWidget::findWidget(os, "taskViewTree");
     CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
