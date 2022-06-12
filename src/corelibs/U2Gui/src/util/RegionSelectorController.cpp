@@ -278,14 +278,14 @@ void RegionSelectorController::sl_onValueEdited() {
     SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
 
     if (gui.startLineEdit->text().isEmpty() || gui.endLineEdit->text().isEmpty()) {
-        GUIUtils::setWidgetWarning(gui.startLineEdit, gui.startLineEdit->text().isEmpty());
-        GUIUtils::setWidgetWarning(gui.endLineEdit, gui.endLineEdit->text().isEmpty());
+        GUIUtils::setWidgetWarningStyle(gui.startLineEdit, gui.startLineEdit->text().isEmpty());
+        GUIUtils::setWidgetWarningStyle(gui.endLineEdit, gui.endLineEdit->text().isEmpty());
         return;
     }
 
     const U2Region region = getRegion();
-    GUIUtils::setWidgetWarning(gui.startLineEdit, region.isEmpty());
-    GUIUtils::setWidgetWarning(gui.endLineEdit, region.isEmpty());
+    GUIUtils::setWidgetWarningStyle(gui.startLineEdit, region.isEmpty());
+    GUIUtils::setWidgetWarningStyle(gui.endLineEdit, region.isEmpty());
 }
 
 void RegionSelectorController::init() {

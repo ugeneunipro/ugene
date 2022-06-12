@@ -62,8 +62,6 @@ public:
         PatternsWithBadAlphabetInFile,
         PatternsWithBadRegionInFile,
         PleaseInputAtLeastOneSearchPatternTip,
-        AnnotationNotValidName,
-        AnnotationNotValidFastaParsedName,
         NoPatternToSearch,
         SearchRegionIncorrect,
         PatternWrongRegExp,

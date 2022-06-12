@@ -112,12 +112,12 @@ void MakeBlastDbDialog::sl_lineEditChanged() {
     bool hasSpacesInInputFiles = false;
     bool pathWarning = databasePathLineEdit->text().contains(' ');
     QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
-    GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
+    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, pathWarning);
     databasePathLineEdit->setToolTip(pathTooltip);
 
     bool nameWarning = baseNamelineEdit->text().contains(' ');
     QString nameTooltip = nameWarning ? tr("Output database path contain space characters.") : "";
-    GUIUtils::setWidgetWarning(baseNamelineEdit, nameWarning);
+    GUIUtils::setWidgetWarningStyle(baseNamelineEdit, nameWarning);
     baseNamelineEdit->setToolTip(nameTooltip);
 
     bool hasSpacesInOutputDBPath = pathWarning || nameWarning;
