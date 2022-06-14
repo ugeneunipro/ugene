@@ -1234,9 +1234,9 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
                       "GGCAGAAACC";
     GTUtilsOptionPanelSequenceView::enterPattern(os, pattern, true);
 
-    //    Expected state: there is a warning: "annotation names are invalid...".
-    QString warning = GTUtilsOptionPanelSequenceView::getHintText(os);
-    CHECK_SET_ERR(warning.contains("annotation names are invalid"), QString("An incorrect warning: '%1'").arg(warning));
+    //    Expected state: there is an info message: "annotation name is not set".
+    QString hintText = GTUtilsOptionPanelSequenceView::getHintText(os);
+    CHECK_SET_ERR(hintText.contains("Info: annotation name is not set"), QString("Incorrect hint text: '%1'").arg(hintText));
 
     //    5. Click "Create annotations" button.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1256,8 +1256,8 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
     GTUtilsOptionPanelSequenceView::enterPattern(os, pattern, true);
 
     //    Expected state: there are no warnings.
-    warning = GTUtilsOptionPanelSequenceView::getHintText(os);
-    CHECK_SET_ERR(!warning.contains("Warning"), QString("An unexpected warning: '%1'").arg(warning));
+    hintText = GTUtilsOptionPanelSequenceView::getHintText(os);
+    CHECK_SET_ERR(!hintText.contains("Warning") && !hintText.contains("annotation name is not set"), QString("Incorrect hint text: '%1'").arg(hintText));
 
     //    6. Click "Create annotations" button.
     GTUtilsTaskTreeView::waitTaskFinished(os);
