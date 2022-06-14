@@ -96,7 +96,16 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
     // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3
     bool aWasNotFoundYet = true;
     int progressStage = 100 / regionsBetweenIslandsForward.size();
-    for (int i = 0; i < regionsBetweenIslandsForward.size(); i++) {
+
+    // Only optional parameter "Find additional primers" is taken into account:
+    // if only A primers are to be searched and they are found, returns false (stop searching),
+    // if only A primers are to be searched and they are not found yet, or if all primers (A, B1, B2, B3) are to be
+    //     searched, returns true (continue searching)
+    auto continueSearchingPrimers = [&aWasNotFoundYet, this] {
+        return settings.findAdditionalPrimers || aWasNotFoundYet;
+    };
+
+    for (int i = 0; i < regionsBetweenIslandsForward.size() && continueSearchingPrimers(); i++) {
         const auto& regionBetweenIslandsForward = regionsBetweenIslandsForward[i];
         stateInfo.setProgress(((double)i / (double)regionsBetweenIslandsForward.size()) * 100);
         //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
@@ -115,7 +124,8 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         int stateProgress = getProgress();
 
         //While the primer start position is in the region between islands
-        while (b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength > regionBetweenIslandsForward.startPos) {
+        while (b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength > regionBetweenIslandsForward.startPos &&
+               continueSearchingPrimers()) {
             //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
             stateInfo.setProgress(stateProgress + (((double)currentIteration / (double)iterationsNumber)) * progressStage);
             currentIteration++;
@@ -170,6 +180,12 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                         aForward = b1Forward;
                         aReverse = b1Reverse;
                         aWasNotFoundYet = false;
+                    }
+                    //We need to find only A primers?
+                    if (!settings.findAdditionalPrimers) {
+                        b1Forward = U2Region();
+                        b1Reverse = U2Region();
+                        continue;
                     }
 
                     //Now we need to find B2 and B3

@@ -65,6 +65,9 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
 
     //Other sequences in PCR
     QString otherSequencesInPcrUrl;
+
+    //Find additional primers
+    bool findAdditionalPrimers;
 };
 
 }

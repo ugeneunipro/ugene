@@ -115,7 +115,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     extraOptionsShowHideGroup->init(EXTRA_OPTIONS_SHOW_HIDE_ID,
                                     tr("Extra options"),
                                     wgtExtraOptions,
-                                    true);
+                                    false);
 
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
 
@@ -242,6 +242,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.backboneSequenceUrl = leBackboneFilePath->text();
 
     settings.otherSequencesInPcrUrl = leOtherSequencesInPcrFilePath->text();
+
+    settings.findAdditionalPrimers = cbFindAdditionalPrimers->isChecked();
 
     auto activeSequenceContext = annDnaView->getActiveSequenceContext();
     SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
