@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -238,13 +238,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_88">
-             <property name="text">
-              <string>Included Region</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QLabel" name="label_89">
              <property name="text">
               <string>Start Codon Position</string>
@@ -283,8 +276,28 @@
          </item>
          <item row="0" column="1">
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="3" column="1">
-            <spacer name="horizontalSpacer_40">
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="edit_SEQUENCE_TARGET">
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;start,length&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;pairs where start is the index of the first base of a Target, and length is its length.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="edit_SEQUENCE_OVERLAP_JUNCTION_LIST">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;If this list is not empty, then the forward OR the reverse primer must overlap one of these junction points by at least &amp;quot;3 Prime Junction Overlap&amp;quot; nucleotides at the 3' end and at least &amp;quot;5 Prime Junction Overlap&amp;quot; nucleotides at the 5' end.&lt;br/&gt;&lt;br/&gt;In more detail: The junction associated with a given position is the space immediately to the right of that position in the template sequence on the strand given as input.&lt;br/&gt;&lt;br/&gt;For example:&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;Overlap Junction List=20&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;# 1-based indexes&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;3 Prime Junction Overlap&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;=4&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;sequence: atcataggccatgcctgagc^gctacgact&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          ok           ...gagc^gcta-3'  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          not ok       ...gagc^gct-3'   (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          ok           3'-ctcg^cgat...  (right pimer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          not ok        3'-tcg^cgat...  (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;5 Prime Junction Overlap&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;=5&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         ok           5'-tgagc^gccg...  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         not ok        5'-gagc^gccg...  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         ok           ...tgagc^gctac-5' (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         not ok       ...tgagc^gcta-5'  (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <spacer name="horizontalSpacer_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -303,48 +316,8 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLineEdit" name="edit_SEQUENCE_TARGET">
-             <property name="toolTip">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of &lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;start,length&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;pairs where start is the index of the first base of a Target, and length is its length.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLineEdit" name="edit_SEQUENCE_INCLUDED_REGION">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;A sub-region of the given sequence in which to pick primers. For example, often the first dozen or so bases of a sequence are vector, and should be excluded from consideration. The value for this parameter has the form&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;start&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;where &lt;/span&gt;&lt;span style=&quot; font-family:'monospace'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;start&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; is the index of the first base to consider, and &lt;/span&gt;&lt;span style=&quot; font-family:'monospace'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;length&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; is the number of subsequent bases in the primer-picking region.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLineEdit" name="edit_SEQUENCE_OVERLAP_JUNCTION_LIST">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;If this list is not empty, then the forward OR the reverse primer must overlap one of these junction points by at least &amp;quot;3 Prime Junction Overlap&amp;quot; nucleotides at the 3' end and at least &amp;quot;5 Prime Junction Overlap&amp;quot; nucleotides at the 5' end.&lt;br/&gt;&lt;br/&gt;In more detail: The junction associated with a given position is the space immediately to the right of that position in the template sequence on the strand given as input.&lt;br/&gt;&lt;br/&gt;For example:&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;Overlap Junction List=20&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;# 1-based indexes&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;3 Prime Junction Overlap&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;=4&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;sequence: atcataggccatgcctgagc^gctacgact&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          ok           ...gagc^gcta-3'  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          not ok       ...gagc^gct-3'   (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          ok           3'-ctcg^cgat...  (right pimer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;          not ok        3'-tcg^cgat...  (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;5 Prime Junction Overlap&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;=5&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         ok           5'-tgagc^gccg...  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         not ok        5'-gagc^gccg...  (left primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         ok           ...tgagc^gctac-5' (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;         not ok       ...tgagc^gcta-5'  (right primer)&lt;/span&gt;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <spacer name="horizontalSpacer_41">
+           <item row="3" column="1">
+            <spacer name="horizontalSpacer_40">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -363,8 +336,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <spacer name="horizontalSpacer_7">
+           <item row="2" column="1">
+            <spacer name="horizontalSpacer_39">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -376,8 +349,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="2" column="1">
-            <spacer name="horizontalSpacer_39">
+           <item row="1" column="1">
+            <spacer name="horizontalSpacer_7">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -1399,6 +1372,9 @@ p, li { white-space: pre-wrap; }
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-99999999999999997748809823456034029568.000000000000000</double>
+           </property>
            <property name="value">
             <double>50.000000000000000</double>
            </property>
@@ -1720,7 +1696,7 @@ p, li { white-space: pre-wrap; }
             <string>Use Thermodynamic Template Alignment	</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -1728,6 +1704,9 @@ p, li { white-space: pre-wrap; }
           <layout class="QGridLayout" name="gridLayout_8">
            <item row="0" column="0">
             <widget class="QLabel" name="label_PRIMER_MAX_TEMPLATE_MISPRIMING_TH">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>TH: Max Template Mispriming</string>
              </property>
@@ -1735,6 +1714,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="0" column="1">
             <widget class="QDoubleSpinBox" name="edit_PRIMER_MAX_TEMPLATE_MISPRIMING_TH">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1743,6 +1725,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; but assesses alternative binding sites in the template using thermodynamic models (when PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT=1). This parameter specifies the maximum allowed melting temperature of an oligo (primer) at an &amp;quot;ectopic&amp;quot; site within the template sequence; 47.0 would be a reasonable choice if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_TM&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MIN_TM&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; is 57.0.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <double>-1.000000000000000</double>
              </property>
              <property name="value">
               <double>40.000000000000000</double>
@@ -1767,6 +1752,9 @@ p, li { white-space: pre-wrap; }
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-1.000000000000000</double>
+             </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
              </property>
@@ -1790,6 +1778,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>TH: Pair Max Template Mispriming</string>
              </property>
@@ -1797,8 +1788,14 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="1" column="1">
             <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum allowed summed melting temperatures of both primers at ectopic sites within the template (with the two primers in an orientation that would allow PCR amplification.) The melting temperatures are calculated as for &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING_TH&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING_TH&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <double>-1.000000000000000</double>
              </property>
              <property name="value">
               <double>70.000000000000000</double>
@@ -1822,6 +1819,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed similarity of both primers to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <double>-1.000000000000000</double>
              </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
@@ -3568,6 +3568,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_104">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string>TH: Template Mispriming</string>
                </property>
@@ -3575,6 +3578,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item row="3" column="1">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4011,6 +4017,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_107">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string>TH: Template Mispriming Weight</string>
                </property>
@@ -4018,6 +4027,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item row="2" column="1">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>

@@ -8391,6 +8391,30 @@ p3_sa_add_to_overlap_junctions_array(seq_args *sargs, int overlap)
 }
 
 int
+p3_set_sa_p_args_must_match_five_prime(p3_global_settings* pa, const char* must_match_prime)
+{
+    return _set_string(&pa->p_args.must_match_five_prime, must_match_prime);
+}
+
+int
+p3_set_sa_p_args_must_match_three_prime(p3_global_settings* pa, const char* must_match_prime)
+{
+    return _set_string(&pa->p_args.must_match_three_prime, must_match_prime);
+}
+
+int
+p3_set_sa_o_args_must_match_five_prime(p3_global_settings* pa, const char* must_match_prime)
+{
+    return _set_string(&pa->o_args.must_match_five_prime, must_match_prime);
+}
+
+int
+p3_set_sa_o_args_must_match_three_prime(p3_global_settings* pa, const char* must_match_prime)
+{
+    return _set_string(&pa->o_args.must_match_three_prime, must_match_prime);
+}
+
+int
 p3_sa_add_to_intl_overlap_junctions_array(seq_args *sargs, int overlap)
 {
   int c = sargs->intl_overlap_junctions_count;

@@ -143,7 +143,37 @@ QList<U2Region> Primer3TaskSettings::getTarget() const {
     return result;
 }
 
+QList<int> Primer3TaskSettings::getOverlapJunctionList() const {
+    QList<int> result;
+    for (int i = 0; i < seqArgs->primer_overlap_junctions_count; i++) {
+        result.append(seqArgs->primer_overlap_junctions[i]);
+    }
+    return result;
+}
+
 QList<U2Region> Primer3TaskSettings::getProductSizeRange() const {
+    QList<U2Region> result;
+    for (int i = 0; i < primerSettings->num_intervals; i++) {
+        result.append(U2Region(primerSettings->pr_min[i],
+                               primerSettings->pr_max[i] - primerSettings->pr_min[i] + 1));
+    }
+    return result;
+}
+
+QList<QList<int>> Primer3TaskSettings::getOkRegion() const {
+    QList<QList<int>> result;
+    for (int i = 0; i < seqArgs->ok_regions.count; i++) {
+        QList<int> v;
+        v << seqArgs->ok_regions.left_pairs[i][0]
+          << seqArgs->ok_regions.left_pairs[i][1]
+          << seqArgs->ok_regions.right_pairs[i][0]
+          << seqArgs->ok_regions.right_pairs[i][1];
+        result.append(v);
+    }
+    return result;
+}
+
+QList<U2Region> Primer3TaskSettings::getIncludedRegions() const {
     QList<U2Region> result;
     for (int i = 0; i < primerSettings->num_intervals; i++) {
         result.append(U2Region(primerSettings->pr_min[i],
@@ -172,6 +202,22 @@ QList<U2Region> Primer3TaskSettings::getInternalOligoExcludedRegion() const {
         result.append(U2Region(seqArgs->excl_internal2.pairs[i][0], seqArgs->excl_internal2.pairs[i][1]));
     }
     return result;
+}
+
+QString Primer3TaskSettings::getPrimerMustMatchFivePrime() const {
+    return primerSettings->p_args.must_match_five_prime;
+}
+
+QString Primer3TaskSettings::getPrimerMustMatchThreePrime() const {
+    return primerSettings->p_args.must_match_three_prime;
+}
+
+QString Primer3TaskSettings::getInternalPrimerMustMatchFivePrime() const {
+    return primerSettings->o_args.must_match_five_prime;
+}
+
+QString Primer3TaskSettings::getInternalPrimerMustMatchThreePrime() const {
+    return primerSettings->o_args.must_match_three_prime;
 }
 
 QByteArray Primer3TaskSettings::getLeftInput() const {
@@ -226,27 +272,23 @@ void Primer3TaskSettings::setCircularity(bool isCirc) {
 }
 
 void Primer3TaskSettings::setTarget(const QList<U2Region>& value) {
+    seqArgs->tar2.count = 0;
     for (int i = 0; i < value.size(); i++) {
         p3_add_to_sa_tar2(seqArgs, value[i].startPos, value[i].length);
-        /*if (i >= PR_MAX_INTERVAL_ARRAY) {
-            break;
-        }
-        seqArgs->tar2.pairs[i][0] = value[i].startPos;
-        seqArgs->tar2.pairs[i][1] = value[i].length;*/
     }
-    //seqArgs->tar2.count = value.size();
+}
+
+void Primer3TaskSettings::setOverlapJunctionList(const QList<int>& value) {
+    for (int v : value) {
+        p3_sa_add_to_overlap_junctions_array(seqArgs, v);
+    }
 }
 
 void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
+    p3_empty_gs_product_size_range(primerSettings);
     for (int i = 0; i < value.size(); i++) {
         p3_add_to_gs_product_size_range(primerSettings, value[i].startPos, value[i].endPos() - 1);
-        /*if (i >= PR_MAX_INTERVAL_ARRAY) {
-            break;
-        }
-        primerSettings->pr_min[i] = value[i].startPos;
-        primerSettings->pr_max[i] = value[i].endPos() - 1;*/
     }
-    //primerSettings->num_intervals = value.size();
 }
 
 void Primer3TaskSettings::setTaskByName(const QString& taskName) {
@@ -254,15 +296,26 @@ void Primer3TaskSettings::setTaskByName(const QString& taskName) {
 }
 
 void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& value) {
+    seqArgs->excl_internal2.count = 0;
     for (int i = 0; i < value.size(); i++) {
         p3_add_to_sa_excl_internal2(seqArgs, value[i].startPos, value[i].length);
-        /*if (i >= PR_MAX_INTERVAL_ARRAY) {
-            break;
-        }
-        seqArgs->excl_internal2.pairs[i][0] = value[i].startPos;
-        seqArgs->excl_internal2.pairs[i][1] = value[i].length;*/
     }
-    //seqArgs->excl_internal2.count = value.size();
+}
+
+void Primer3TaskSettings::setPrimerMustMatchFivePrime(const QByteArray& value) const {
+    p3_set_sa_p_args_must_match_five_prime(primerSettings, value);
+}
+
+void Primer3TaskSettings::setPrimerMustMatchThreePrime(const QByteArray& value) const {
+    p3_set_sa_p_args_must_match_three_prime(primerSettings, value);
+}
+
+void Primer3TaskSettings::setInternalPrimerMustMatchFivePrime(const QByteArray& value) const {
+    p3_set_sa_o_args_must_match_five_prime(primerSettings, value);
+}
+
+void Primer3TaskSettings::setInternalPrimerMustMatchThreePrime(const QByteArray& value) const {
+    p3_set_sa_o_args_must_match_three_prime(primerSettings, value);
 }
 
 void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
@@ -278,15 +331,17 @@ void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
 }
 
 void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
+    seqArgs->excl2.count = 0;
     for (int i = 0; i < value.size(); i++) {
         p3_add_to_sa_excl2(seqArgs, value[i].startPos, value[i].length);
-        /*if (i >= PR_MAX_INTERVAL_ARRAY) {
-            break;
-        }
-        seqArgs->excl2.pairs[i][0] = value[i].startPos;
-        seqArgs->excl2.pairs[i][1] = value[i].length;*/
     }
-    //seqArgs->excl2.count = value.size();
+}
+
+void Primer3TaskSettings::setOkRegion(QList<QList<int>> value) {
+    seqArgs->ok_regions.count = 0;
+    for (const QList<int>& v : value) {
+        p3_add_to_sa_ok_regions(seqArgs, v.value(0), v.value(1), v.value(2), v.value(3));
+    }
 }
 
 void Primer3TaskSettings::setIncludedRegion(const U2Region& value) {
@@ -375,6 +430,8 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_PICK_LEFT_PRIMER", &primerSettings->pick_left_primer);
     intProperties.insert("PRIMER_PICK_RIGHT_PRIMER ", &primerSettings->pick_right_primer);
     intProperties.insert("PRIMER_PICK_INTERNAL_OLIGO ", &primerSettings->pick_internal_oligo);
+    intProperties.insert("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", &primerSettings->thermodynamic_oligo_alignment);
+    intProperties.insert("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT ", &primerSettings->thermodynamic_template_alignment);
     intProperties.insert("PRIMER_LIBERAL_BASE", &primerSettings->liberal_base);
     intProperties.insert("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &primerSettings->lib_ambiguity_codes_consensus);
     intProperties.insert("PRIMER_LOWERCASE_MASKING", &primerSettings->lowercase_masking);

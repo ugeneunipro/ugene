@@ -52,7 +52,11 @@ public:
     };
 
     static bool parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition way = IntervalDefinition::Start_Length);
+    static bool parseIntList(const QString& inputString, QList<int>* outputList);
+    static bool parseOkRegions(const QString& inputString, QList<QList<int>>* outputList);
     static QString intervalListToString(const QList<U2Region>& intervalList, const QString& delimiter, IntervalDefinition way = IntervalDefinition::Start_Length);
+    static QString intListToString(const QList<int>& intList, const QString& delimiter);
+    static QString okRegions2String(const QList<QList<int>>& regionLins);
 
 private:
     void reset();
@@ -78,6 +82,8 @@ private:
     Primer3TaskSettings settings;
     RegionSelector* rs;
     ADVSequenceObjectContext* context;
+
+    static const QRegularExpression MUST_MATCH_END_REGEX;
 };
 
 }  // namespace U2
