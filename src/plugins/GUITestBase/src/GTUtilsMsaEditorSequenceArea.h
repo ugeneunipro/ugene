@@ -25,6 +25,7 @@
 #include <GTGlobals.h>
 
 #include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MSAEditorConsensusArea.h>
 
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
@@ -34,13 +35,13 @@ class GTUtilsMSAEditorSequenceArea {
 public:
     // The "index" is line index while multiline mode
     static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
-    static MSAEditorSequenceArea* getConsensusArea(GUITestOpStatus& os, int index = 0);
+    static MSAEditorConsensusArea* getConsensusArea(GUITestOpStatus& os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus& os, int multilineIndex, const QRect& expectedRect);
     static void checkSelectedRect(GUITestOpStatus& os, const QRect& expectedRect);
 
-    static void checkConsensus(GUITestOpStatus& os, QString cons);
+    static void checkConsensus(GUITestOpStatus& os, QString cons, int index = 0);
     // may be used for selecting visible columns only
     static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber, int index = 0);
 

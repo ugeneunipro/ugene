@@ -60,6 +60,7 @@
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.h"
+#include "tests/common_scenarios/msa_editor/multiline/colors/GTTestsColorsMSAMultiline.h"
 #include "tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
@@ -2419,9 +2420,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     // Common scenarios/msa_editor/colors
     /////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0004);
-    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0006);
-    REGISTER_TEST_MSA(GUITest_common_scenarios_msa_editor_colors::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/consensus
@@ -2568,6 +2569,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::statistic_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::highlighting_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::search_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_colors::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor
