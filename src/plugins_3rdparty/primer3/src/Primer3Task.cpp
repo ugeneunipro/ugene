@@ -45,6 +45,7 @@ Primer::Primer()
       gcContent(0),
       selfAny(0),
       selfEnd(0),
+      hairpin(0.0),
       endStability(0) {
 }
 
@@ -55,6 +56,7 @@ Primer::Primer(const primer_rec& primerRec)
       gcContent(primerRec.gc_content),
       selfAny(primerRec.self_any),
       selfEnd(primerRec.self_end),
+      hairpin(primerRec.hairpin_th),
       endStability(primerRec.end_stability) {
 }
 
@@ -102,6 +104,10 @@ short Primer::getSelfAny() const {
 
 short Primer::getSelfEnd() const {
     return selfEnd;
+}
+
+double Primer::getHairpin() const {
+    return hairpin;
 }
 
 double Primer::getEndStability() const {
@@ -160,7 +166,9 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
         leftPrimer->setStart(leftPrimer->getStart() + offset);
     }
     if (!rightPrimer.isNull()) {
-        rightPrimer->setStart(rightPrimer->getStart() + offset);
+        // Primer3 calculates all positions from 5' to 3' sequence ends - 
+        // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
+        rightPrimer->setStart((rightPrimer->getStart() - rightPrimer->getLength() + 1) + offset);
     }
     if (!internalOligo.isNull()) {
         internalOligo->setStart(internalOligo->getStart() + offset);
@@ -387,7 +395,14 @@ void Primer3Task::run() {
         settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
     
+    thal_results o;
+    if (get_thermodynamic_values(&settings.getPrimerSettings()->thermodynamic_parameters, &o)) {
+        taskLog.error(tr("Can't load thermodynamic values: \"%1\", skip thermodynamic calculations").arg(o.msg));
+    }
+
     resultPrimers = choose_primers(settings.getPrimerSettings(), settings.getSeqArgs());
+
+    destroy_thal_structures();
 
     bestPairs.clear();
 
@@ -886,6 +901,7 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->qualifiers.append(U2Qualifier("any", QString::number(0.01 * primer.getSelfAny())));
     annotationData->qualifiers.append(U2Qualifier("3'", QString::number(0.01 * primer.getSelfEnd())));
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
+    annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer.getHairpin())));
 
     // recalculate gc content
     QByteArray primerSequence;

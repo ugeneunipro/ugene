@@ -49,6 +49,7 @@ public:
     double getGcContent() const;
     short getSelfAny() const;
     short getSelfEnd() const;
+    double getHairpin() const;
     double getEndStability() const;
 
     void setStart(int start);
@@ -66,6 +67,7 @@ private:
     double gcContent;
     short selfAny;
     short selfEnd;
+    double hairpin;
     double endStability;
 };
 

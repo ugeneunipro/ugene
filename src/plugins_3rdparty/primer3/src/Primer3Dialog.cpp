@@ -40,6 +40,8 @@
 
 namespace U2 {
 
+const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([NAGCTRYWSMKBHDV]){5}$");
+
 Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
       defaultSettings(defaultSettings),
@@ -147,6 +149,36 @@ QString Primer3Dialog::intervalListToString(const QList<U2Region>& intervalList,
     return result;
 }
 
+QString Primer3Dialog::intListToString(const QList<int>& intList, const QString& delimiter) {
+    QString result;
+    bool first = true;
+    for (int num : intList) {
+        if (!first) {
+            result += " ";
+        }
+        result += QString::number(num);
+        result += delimiter;
+        first = false;
+    }
+    return result;
+}
+
+QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
+    QString result;
+    bool first = true;
+    for (const auto& numList : regionLins) {
+        if (!first) {
+            result += " ";
+        }
+        for (int num : numList) {
+            result += QString::number(num);
+            result += ",";
+        }
+        first = false;
+    }
+    return result;
+}
+
 bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
     QStringList intervalStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -181,6 +213,46 @@ bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString&
     return true;
 }
 
+bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputList) {
+    QList<int> result;
+    QStringList intStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    for (const auto& numString : intStringList) {
+        bool ok = false;
+        int num = numString.toInt(&ok);
+        if (!ok) {
+            return false;
+        }
+
+        result << num;
+    }
+    *outputList = result;
+    return true;
+}
+
+bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>* outputList) {
+    QList<QList<int>> result;
+    QStringList intStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    for (const auto& numList : intStringList) {
+        QStringList numStringList = numList.split(",");
+        if (numStringList.size() != 4) {
+            return false;
+        }
+
+        QList<int> res;
+        for (int i = 0; i < 4; i++) {
+            bool ok = false;
+            res << numStringList[i].toInt(&ok);
+            if (!ok) {
+                return false;
+            }
+        }
+        
+        result << res;
+    }
+    *outputList = result;
+    return true;
+}
+
 void Primer3Dialog::reset() {
     for (const auto& key : defaultSettings.getIntPropertyList()) {
         int value = 0;
@@ -201,14 +273,16 @@ void Primer3Dialog::reset() {
         }
     }
 
-    //TODO
     edit_SEQUENCE_TARGET->setText(intervalListToString(defaultSettings.getTarget(), ","));
-    //edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intervalListToString(defaultSettings.getOverlapJunctionList(), ","));
+    edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getOverlapJunctionList(), ""));
     edit_SEQUENCE_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getExcludedRegion(), ","));
-    //edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(intervalListToString(defaultSettings.getOkRegion(), ","));
-    //edit_SEQUENCE_INCLUDED_REGION->setText(intervalListToString(defaultSettings.getIncludedRegion(), ","));
-    edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getInternalOligoExcludedRegion(), ","));
+    edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(okRegions2String(defaultSettings.getOkRegion()));
     edit_PRIMER_PRODUCT_SIZE_RANGE->setText(intervalListToString(defaultSettings.getProductSizeRange(), "-", IntervalDefinition::Start_End));
+    edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getInternalOligoExcludedRegion(), ","));
+    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getPrimerMustMatchFivePrime());
+    edit_PRIMER_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getPrimerMustMatchThreePrime());
+    edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchFivePrime());
+    edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchThreePrime());
     edit_SEQUENCE_PRIMER->setText(defaultSettings.getLeftInput());
     edit_SEQUENCE_PRIMER_REVCOMP->setText(defaultSettings.getRightInput());
     edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
@@ -241,6 +315,16 @@ void Primer3Dialog::reset() {
         int value = 0;
         defaultSettings.getIntProperty("PRIMER_LIBERAL_BASE", &value);
         checkbox_PRIMER_LIBERAL_BASE->setChecked(value);
+    }
+    {
+        int value = 0;
+        defaultSettings.getIntProperty("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", &value);
+        checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->setChecked(value);
+    }
+    {
+        int value = 0;
+        defaultSettings.getIntProperty("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", &value);
+        checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->setChecked(value);
     }
     {
         int value = 0;
@@ -409,10 +493,9 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
     {
-        QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text(), ",", &list)) {
-            //TODO
-            //settings.setOverlapJunctionList()(list);
+        QList<int> list;
+        if (parseIntList(edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text(), &list)) {
+            settings.setOverlapJunctionList(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_OVERLAP_JUNCTION_LIST, tr("Overlap Junction List"));
             return false;
@@ -428,48 +511,73 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
     {
-        QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), ",", &list)) {
-            //settings.setOkRegion()(list);
+        QList<QList<int>> list;
+        if (parseOkRegions(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), &list)) {
+            settings.setOkRegion(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST, tr("Pair OK Region List"));
             return false;
         }
     }
     {
-        QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_INCLUDED_REGION->text(), ",", &list)) {
-            //settings.setIncludedRegion(list);
-        } else {
-            showInvalidInputMessage(edit_SEQUENCE_INCLUDED_REGION, tr("Included Region"));
-            return false;
+        QString text = edit_PRIMER_MUST_MATCH_FIVE_PRIME->text();
+        if (!text.isEmpty()) {
+            if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
+                settings.setPrimerMustMatchFivePrime(text.toLocal8Bit());
+            } else {
+                showInvalidInputMessage(edit_PRIMER_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Primer's 5'"));
+                return false;
+            }
         }
     }
     {
-        QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->text(), ",", &list)) {
-            settings.setInternalOligoExcludedRegion(list);
-        } else {
-            showInvalidInputMessage(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION, tr("Internal Oligo Excluded Region"));
-            return false;
+        QString text = edit_PRIMER_MUST_MATCH_THREE_PRIME->text();
+        if (!text.isEmpty()) {
+            if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
+                settings.setPrimerMustMatchThreePrime(text.toLocal8Bit());
+            } else {
+                showInvalidInputMessage(edit_PRIMER_MUST_MATCH_THREE_PRIME, tr("Five Matches on Primer's 3'"));
+                return false;
+            }
         }
     }
-
+    {
+        QString text = edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->text();
+        if (!text.isEmpty()) {
+            if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
+                settings.setInternalPrimerMustMatchFivePrime(text.toLocal8Bit());
+            } else {
+                showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Internal Oligo's  5'"));
+                return false;
+            }
+        }
+    }
+    {
+        QString text = edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->text();
+        if (!text.isEmpty()) {
+            if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
+                settings.setInternalPrimerMustMatchThreePrime(text.toLocal8Bit());
+            } else {
+                showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME, tr("Five Matches on Internal Oligo's 3'"));
+                return false;
+            }
+        }
+    }
 
     if (checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked()) {
         settings.setLeftInput(edit_SEQUENCE_PRIMER->text().toLatin1());
     } else {
         settings.setLeftInput("");
     }
-    if (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
-        settings.setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
-    } else {
-        settings.setRightInput("");
-    }
     if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked()) {
         settings.setInternalInput(edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1());
     } else {
         settings.setInternalInput("");
+    }
+    if (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
+        settings.setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
+    } else {
+        settings.setRightInput("");
     }
 
     {
@@ -495,11 +603,13 @@ bool Primer3Dialog::doDataExchange() {
     settings.setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
     settings.setIntProperty("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
     settings.setIntProperty("PRIMER_LIBERAL_BASE", checkbox_PRIMER_LIBERAL_BASE->isChecked());
+    settings.setIntProperty("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->isChecked());
+    settings.setIntProperty("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->isChecked());
     settings.setIntProperty("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->isChecked());
     settings.setIntProperty("PRIMER_LOWERCASE_MASKING", checkbox_PRIMER_LOWERCASE_MASKING->isChecked());
     settings.setIntProperty("PRIMER_PICK_ANYWAY", checkbox_PRIMER_PICK_ANYWAY->isChecked());
     settings.setIntProperty("PRIMER_EXPLAIN_FLAG", checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
-
+    settings.setIntProperty("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT->isChecked());
 
     settings.setTaskByName(edit_PRIMER_TASK->currentText());
     switch (settings.getTask()) {
@@ -512,16 +622,15 @@ bool Primer3Dialog::doDataExchange() {
     case generic:
     case pick_sequencing_primers:
     case pick_primer_list:
-        if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
+        if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
             checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
-            checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
-            //TODO
-            /*QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be presented."));
-            return false;*/
+            checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
+            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be presented."));
+            return false;
         }
         break;
     case check_primers:
-        if ((checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() && edit_SEQUENCE_PRIMER->text().isEmpty()) ||
+        if ((checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER->text().isEmpty()) ||
             (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() && edit_SEQUENCE_INTERNAL_OLIGO->text().isEmpty()) ||
             (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty())) {
             QMessageBox::critical(this, windowTitle(), tr("Some primers on the \"Main\" settings page are enabled, but not presented."));
@@ -614,19 +723,21 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     diagSettings.setValue("PRIMER_TASK", edit_PRIMER_TASK->currentText());
+    diagSettings.setValue("SEQUENCE_PRIMER", edit_SEQUENCE_PRIMER->text());
+    diagSettings.setValue("SEQUENCE_INTERNAL_OLIGO", edit_SEQUENCE_INTERNAL_OLIGO->text());
+    diagSettings.setValue("SEQUENCE_PRIMER_REVCOMP", edit_SEQUENCE_PRIMER_REVCOMP->text());
     diagSettings.setValue("SEQUENCE_TARGET", edit_SEQUENCE_TARGET->text());
     diagSettings.setValue("SEQUENCE_OVERLAP_JUNCTION_LIST", edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text());
     diagSettings.setValue("SEQUENCE_EXCLUDED_REGION", edit_SEQUENCE_EXCLUDED_REGION->text());
     diagSettings.setValue("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST", edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text());
-    diagSettings.setValue("SEQUENCE_INCLUDED_REGION", edit_SEQUENCE_INCLUDED_REGION->text());
+    diagSettings.setValue("PRIMER_MUST_MATCH_FIVE_PRIME", edit_PRIMER_MUST_MATCH_FIVE_PRIME->text());
+    diagSettings.setValue("PRIMER_MUST_MATCH_THREE_PRIME", edit_PRIMER_MUST_MATCH_THREE_PRIME->text());
+    diagSettings.setValue("PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME", edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->text());
+    diagSettings.setValue("PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME", edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->text());
     diagSettings.setValue("PRIMER_PRODUCT_SIZE_RANGE", edit_PRIMER_PRODUCT_SIZE_RANGE->text());
+
     diagSettings.setValue("SEQUENCE_INTERNAL_EXCLUDED_REGION", edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->text());
-
     diagSettings.setValue("SEQUENCE_QUALITY", edit_SEQUENCE_QUALITY->toPlainText());
-
-    diagSettings.setValue("SEQUENCE_PRIMER", edit_SEQUENCE_PRIMER->text());
-    diagSettings.setValue("SEQUENCE_INTERNAL_OLIGO", edit_SEQUENCE_INTERNAL_OLIGO->text());
-    diagSettings.setValue("SEQUENCE_PRIMER_REVCOMP", edit_SEQUENCE_PRIMER_REVCOMP->text());
 
     diagSettings.setValue("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
     diagSettings.setValue("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
@@ -635,10 +746,14 @@ void Primer3Dialog::sl_saveSettings() {
     diagSettings.setValue("PRIMER_PICK_INTERNAL_OLIGO", checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
     diagSettings.setValue("PRIMER_PICK_RIGHT_PRIMER", checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
     diagSettings.setValue("PRIMER_LIBERAL_BASE", checkbox_PRIMER_LIBERAL_BASE->isChecked());
+    diagSettings.setValue("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->isChecked());
+    diagSettings.setValue("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->isChecked());
+
     diagSettings.setValue("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->isChecked());
     diagSettings.setValue("PRIMER_LOWERCASE_MASKING", checkbox_PRIMER_LOWERCASE_MASKING->isChecked());
     diagSettings.setValue("PRIMER_PICK_ANYWAY", checkbox_PRIMER_PICK_ANYWAY->isChecked());
     diagSettings.setValue("PRIMER_EXPLAIN_FLAG", checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
+    diagSettings.setValue("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT->isChecked());
 
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
@@ -663,38 +778,20 @@ void Primer3Dialog::sl_loadSettings() {
 
     QSettings diagSettings(lod.url, QSettings::IniFormat);
 
-    for (const auto& key : diagSettings.childKeys()) {
-
-    }
-
-    /*QStringList groupKeys = diagSettings.childKeys();
-    foreach (const QString& key, settings.getIntPropertyList()) {
+    QStringList groupKeys = diagSettings.childKeys();
+    for (const auto& key : groupKeys) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-        if (nullptr != spinBox && groupKeys.contains(key)) {
+        if (spinBox != nullptr && groupKeys.contains(key)) {
             spinBox->setValue(diagSettings.value(key).toInt());
         }
-    }
-
-    groupKeys = diagSettings.childKeys();
-    foreach (const QString& key, settings.getDoublePropertyList()) {
-        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox && groupKeys.contains(key)) {
-            spinBox->setValue(diagSettings.value(key).toDouble());
+        QDoubleSpinBox* doubleSpinBox = findChild<QDoubleSpinBox*>("edit_" + key);
+        if (doubleSpinBox != nullptr && groupKeys.contains(key)) {
+            doubleSpinBox->setValue(diagSettings.value(key).toDouble());
         }
     }
-    diagSettings.endGroup();
 
-    diagSettings.beginGroup("AlignProperties");
-    groupKeys = diagSettings.childKeys();
-    foreach (const QString& key, settings.getAlignPropertyList()) {
-        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox && groupKeys.contains(key)) {
-            spinBox->setValue(diagSettings.value(key).toDouble());
-        }
-    }
-    diagSettings.endGroup();
 
-    diagSettings.beginGroup("GeneralProperties");
+    /*diagSettings.beginGroup("GeneralProperties");
     groupKeys = diagSettings.childKeys();
     ui.edit_PRIMER_START_CODON_POSITION->setText(
         diagSettings.value("PRIMER_START_CODON_POSITION").toString());
