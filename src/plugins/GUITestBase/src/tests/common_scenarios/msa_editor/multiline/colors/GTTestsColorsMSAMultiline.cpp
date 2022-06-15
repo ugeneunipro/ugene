@@ -148,5 +148,154 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0002) {
+    //    Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //    Open "Color schemes" dialog.
+    //    Open "Create color scheme" dialog.
+    //    Set wrong scheme names: space only, empty, with forbidden
+    //    characters, duplicating existing scnemes.
+    //    Check error hint in dialog
+
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0061", NewColorSchemeCreator::nucl));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                                        << "Custom schemes"
+                                                                        << "Create new color scheme"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+
+    class customColorSchemeCreator : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            auto validLabel = GTWidget::findLabel(os, "validLabel", dialog);
+            auto schemeName = GTWidget::findLineEdit(os, "schemeName", dialog);
+
+            GTLineEdit::setText(os, schemeName, "   ");
+            CHECK_SET_ERR(validLabel->text() == "Warning: Name can't contain only spaces.", "unexpected hint: " + validLabel->text());
+            GTLineEdit::setText(os, schemeName, "");
+            CHECK_SET_ERR(validLabel->text() == "Warning: Name of scheme is empty.", "unexpected hint: " + validLabel->text());
+            GTLineEdit::setText(os, schemeName, "name*");
+            CHECK_SET_ERR(validLabel->text() == "Warning: Name has to consist of letters, digits, spaces<br>or underscore symbols only.", "unexpected hint: " + validLabel->text());
+            GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0061");
+            CHECK_SET_ERR(validLabel->text() == "Warning: Color scheme with the same name already exists.", "unexpected hint: " + validLabel->text());
+
+            auto alphabetComboBox = (GTWidget::findComboBox(os, "alphabetComboBox", dialog));
+            GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    class customAppSettingsFiller : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, new customColorSchemeCreator()));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "addSchemaButton", dialog));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                                        << "Custom schemes"
+                                                                        << "Create new color scheme"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0003) {
+    //    Highlighting scheme options should be saved on the alphabet changing for an amino acid MSA
+
+    //    1. Open "_common_data/fasta/RAW.fa".
+    GTUtilsProject::openFileExpectRawSequence(os, testDir + "_common_data/fasta/RAW.fa", "RAW263");
+
+    //    2. Open "data/samples/CLUSTALW/ty3.aln.gz".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //    3. Open "Highlighting" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+    //    4. Select "Conservation level" highlighting scheme.
+    GTUtilsOptionPanelMsa::setHighlightingScheme(os, "Conservation level");
+
+    //    5. Set the next highlighting scheme options:
+    //        threshold: 70%
+    //        comparison: less or equal
+    //        use dots: checked.
+    int expectedThreshold = 70;
+    GTUtilsOptionPanelMsa::ThresholdComparison expectedThresholdComparison = GTUtilsOptionPanelMsa::LessOrEqual;
+    bool expectedIsUseDotsOptionsSet = true;
+
+    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+
+    //    6. Drag and drop "RAW263" sequence object from the Project View to the MSA Editor.
+    GTUtilsMsaEditor::dragAndDropSequenceFromProject(os, {"RAW.fa", "RAW263"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
+    const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();
+    CHECK_SET_ERR(isAlphabetRaw, "Alphabet is not RAW after the symbol replacing");
+
+    int threshold = GTUtilsOptionPanelMsa::getThreshold(os);
+    GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
+    bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+
+    CHECK_SET_ERR(expectedThreshold == threshold,
+                  QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
+    CHECK_SET_ERR(expectedThresholdComparison == thresholdComparison,
+                  QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
+    CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
+                  QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
+
+    //    6. Set the next highlighting scheme options:
+    //        threshold: 30%
+    //        comparison: greater or equal
+    //        use dots: unchecked.
+    expectedThreshold = 30;
+    expectedThresholdComparison = GTUtilsOptionPanelMsa::GreaterOrEqual;
+    expectedIsUseDotsOptionsSet = false;
+
+    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+
+    //    7. Press "Undo" button on the toolbar.
+    GTUtilsMsaEditor::undo(os);
+
+    //    Expected state: the alignment alphabet is changed to Amino Acid, highlighting scheme options are the same.
+    const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+    CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino acid after the undoing");
+
+    threshold = GTUtilsOptionPanelMsa::getThreshold(os);
+    thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
+    isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+
+    CHECK_SET_ERR(expectedThreshold == threshold,
+                  QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
+    CHECK_SET_ERR(expectedThresholdComparison == thresholdComparison,
+                  QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
+    CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
+                  QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
+}
+
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_colors
 }  // namespace U2

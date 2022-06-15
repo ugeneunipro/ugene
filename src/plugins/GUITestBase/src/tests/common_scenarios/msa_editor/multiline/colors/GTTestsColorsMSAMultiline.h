@@ -31,6 +31,8 @@ namespace GUITest_common_scenarios_MSA_editor_multiline_colors {
 #define GUI_TEST_SUITE "GUITest_common_scenarios_MSA_editor_multiline_colors"
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0002)
+GUI_TEST_CLASS_DECLARATION(test_0003)
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_colors
 
