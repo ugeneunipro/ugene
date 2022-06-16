@@ -112,8 +112,8 @@ static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask &task,
 
     const QStringList &primersNames = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME;
     QList<U2Region> regions = task.getResults();
-    SAFE_POINT(regions.size() == primersNames.size(),
-               QString("The number of resulting primers (%1) isn't equal to the number of primer names (%2)")
+    SAFE_POINT(regions.size() == primersNames.size() * 2,
+               QString("The number of resulting primers (%1) isn't equal to the number of primer names (%2) * 2")
                    .arg(regions.size())
                    .arg(primersNames.size()),
                errMsg())
@@ -140,8 +140,8 @@ static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask &task,
     for (int i = 0; i + 1 < regions.size(); i += 2) {
         QVector<U2Region> reverseRegion = {regions[i + 1]};
         U2Region::mirror(sequence.size(), reverseRegion);
-        ans += checkPrimerAndGetInfo(regions[i], primersNames[i], true, sequence, backbone);
-        ans += checkPrimerAndGetInfo(reverseRegion.first(), primersNames[i + 1], false, revComplSeq, backbone);
+        ans += checkPrimerAndGetInfo(regions[i], primersNames[i/2] + " Forward", true, sequence, backbone);
+        ans += checkPrimerAndGetInfo(reverseRegion.first(), primersNames[i/2] + " Reverse", false, revComplSeq, backbone);
     }
     // User primers.
     if (!areUserPrimersBad) {

@@ -22,6 +22,7 @@
 #ifndef _U2_EXTRACT_PRIMER_TASK_H_
 #define _U2_EXTRACT_PRIMER_TASK_H_
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
@@ -42,6 +43,7 @@ struct ExtractPrimerTaskSettings {
     QString outputFileUrl;
     QByteArray backboneSequence;
     PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings direction = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
+    QPair<U2Region, U2Region> forwardAndReverseLocation;
 };
 
 class ExtractPrimerTask : public Task {
@@ -51,10 +53,13 @@ public:
     ~ExtractPrimerTask();
 
     void run() override;
+
     /* Moves the document to the main thread */
     Document *takeResult();
 
 private:
+    void markBackbone(DNASequence& productSequence, QList<SharedAnnotationData>& annotations, U2Region& fragmentRegion);
+    void markFragment(DNASequence& productSequence, QList<SharedAnnotationData>& annotations, U2Region& fragmentRegion);
     DNASequence getProductSequence();
     QString getProductName() const;
 

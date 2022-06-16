@@ -38,9 +38,10 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/PrimerValidator.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -82,6 +83,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
       annDnaView(_annDnaView),
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
     setupUi(this);
+    warningLabel->setAlignment(Qt::AlignLeft);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength } };
@@ -150,6 +152,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
             &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
+    connect(pbExportProduct, SIGNAL(clicked()), SLOT(sl_extractProduct()));
+    connect(pbExportForward, SIGNAL(clicked()), SLOT(sl_extractProduct()));
+    connect(pbExportReverse, SIGNAL(clicked()), SLOT(sl_extractProduct()));
 
     connect(pbFindReverseComplement, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectReverseComplementInTable);
     connect(pbAddToForward5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ForwardSequence);
@@ -362,7 +367,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     }
     CHECK(pcrTask->isFinished(), );
     pbStart->setEnabled(true);
-    productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
+    QPair<int, int> primerLengths(pcrTask->getSettings().forwardUserPrimer.length(), pcrTask->getSettings().reverseUserPrimer.length());
+    productsTable->setCurrentProducts(pcrTask->getResults(), primerLengths, annDnaView);
     createResultAnnotations();
     backboneSequence = pcrTask->getBackboneSequence();
     lastRunSettings = pcrTask->getSettings();
@@ -370,6 +376,14 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
+    auto signalSender = sender();
+    ResultTable::FragmentLocation location = ResultTable::Whole;
+    if (signalSender == pbExportForward) {
+        location = ResultTable::Forward;
+    }else if (signalSender == pbExportReverse) {
+        location = ResultTable::Reverse;
+    }
+    warningLabel->setVisible(false);
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
@@ -384,12 +398,19 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
     }
     settings.direction = lastRunSettings.insertTo;
     settings.backboneSequence = backboneSequence;
-    Annotation *selectedAnnotation = productsTable->getSelectedAnnotation();
-    if (selectedAnnotation != nullptr) {
-        CHECK(selectedAnnotation->getRegions().size() == 1, );
-        settings.fragmentLocation = selectedAnnotation->getRegions().first();
-        settings.fragmentName = selectedAnnotation->getName();
+    QList<QPair<QString, U2Region> > selectedFragments = productsTable->getSelectedFragment(location);
+    if (!selectedFragments.isEmpty()) {
+        settings.fragmentName = selectedFragments.first().first;
+        settings.fragmentLocation = selectedFragments.first().second;
+        if (location == ResultTable::Whole) {
+            settings.forwardAndReverseLocation.first = selectedFragments[1].second;
+            settings.forwardAndReverseLocation.second = selectedFragments[2].second;
+        }
         AppContext::getTaskScheduler()->registerTopLevelTask(new ExtractPrimerAndOpenDocumentTask(settings));
+    } else {
+        warningLabel->setStyleSheet(warningLabel->styleSheet() + "color: " + Theme::errorColorLabelStr());
+        warningLabel->setText(tr("Error: unable to extract - no product selected."));
+        warningLabel->setVisible(true);
     }
 }
 
@@ -447,8 +468,10 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     for (const U2Region &region : qAsConst(results)) {
         if (region != U2Region()) {
             SharedAnnotationData data(new AnnotationData());
-            data->setStrand(index % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
-            data->name = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index);
+            bool isDirect = index % 2 == 0;
+            data->setStrand(isDirect ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
+            data->name = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index / 2);
+            data->name += isDirect ? " Forward" : " Reverse";
             data->location->regions.append(region);
             annotations.append(data);
             emptyResults = false;
@@ -487,9 +510,11 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     CHECK(sequenceContext != nullptr, )
 
+    warningLabel->setStyleSheet(warningLabel->styleSheet() + "color: " + Theme::infoColorLabelHtmlStr());
+    warningLabel->setText(tr("Info: choose a nucleic sequence for running PCR Primer Design."));
     bool isDna = sequenceContext->getAlphabet()->isDNA();
     runPcrPrimerDesignWidget->setEnabled(isDna);
-    alphabetWarningLabel->setVisible(!isDna);
+    warningLabel->setVisible(!isDna);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, QSpinBox* end, const U2Region &region) const {

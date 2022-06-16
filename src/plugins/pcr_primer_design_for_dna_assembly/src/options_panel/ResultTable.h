@@ -36,19 +36,24 @@ struct ResultTableData {
     AnnotatedDNAView *associatedView = nullptr;
     AnnotationGroup *associatedGroup = nullptr;
     QList<U2Region> currentProducts;
+    QPair<int, int> primerLengths;
 };
 
 class ResultTable : public QTableWidget {
     Q_OBJECT
 public:
     ResultTable(QWidget *parent);
-
-    void setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *associatedView);
+    enum FragmentLocation {
+        Whole,
+        Forward,
+        Reverse
+    };
+    void setCurrentProducts(const QList<U2Region> &currentProducts, const QPair<int, int> &primersLengths, AnnotatedDNAView *associatedView);
     void setAnnotationGroup(AnnotationGroup *associatedGroup);
-    Annotation* getSelectedAnnotation() const;
+    QList<QPair<QString, U2Region> > getSelectedFragment(FragmentLocation location) const;
     ResultTableData getPCRPrimerProductTableData() const;
 
-    static constexpr int MAXIMUM_ROW_COUNT = 8;
+    static constexpr int MAXIMUM_ROW_COUNT = 4;
 private slots:
     void sl_selectionChanged();
 
@@ -56,6 +61,7 @@ private:
     AnnotatedDNAView *associatedView = nullptr;
     AnnotationGroup *associatedGroup = nullptr;
     QList<U2Region> currentProducts;
+    QPair<int, int> primerLengths;
 };
 
 }    // namespace U2

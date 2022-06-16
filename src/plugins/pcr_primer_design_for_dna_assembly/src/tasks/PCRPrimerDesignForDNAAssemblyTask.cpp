@@ -44,16 +44,7 @@
 
 namespace U2 {
 
-const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
-    "A Forward",
-    "A Reverse",
-    "B1 Forward",
-    "B1 Reverse",
-    "B2 Forward",
-    "B2 Reverse",
-    "B3 Forward",
-    "B3 Reverse"
-};
+const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {"A", "B1", "B2", "B3"};
 
 PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
     : Task(tr("PCR Primer Design For DNA Assembly Task"), TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
@@ -86,8 +77,6 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
     U2Region reverseComplementArea = DNASequenceUtils::reverseComplementRegion(settings.rightArea, reverseComplementSequence.size());
     findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea, settings.overlapLength.maxValue, reverseComplementSequence, true);
     addSubTask(findUnwantedIslandsReverseComplement);
-
-
 }
 
 void PCRPrimerDesignForDNAAssemblyTask::run() {

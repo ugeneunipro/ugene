@@ -28,7 +28,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
@@ -72,15 +71,62 @@ void ExtractPrimerTask::run() {
 
     DNASequence productSequence = getProductSequence();
     CHECK_OP(stateInfo, );
-    U2EntityRef productRef = U2SequenceUtils::import(stateInfo, dbiRef, productSequence);
-    CHECK_OP(stateInfo, );
 
     QList<SharedAnnotationData> annotations;
-    int resultIndex = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.indexOf(settings.fragmentName);
-    bool isForward = resultIndex % 2 == 0;
+    if (settings.forwardAndReverseLocation == QPair<U2Region, U2Region>()) {
+        //primer
+        U2Region fragmentRegion(0, productSequence.length());
+        markBackbone(productSequence, annotations, fragmentRegion);
+        if (!settings.backboneSequence.isEmpty()) {
+            markFragment(productSequence, annotations, fragmentRegion);
+        }
+    } else {
+        QString originalFragmentName = settings.fragmentName;
+        U2Region originalFragmentLocation = settings.fragmentLocation;
+        U2Region fragmentRegion;
+        //forward primer        
+        //settings.fragmentLocation = U2Region(0, settings.forwardAndReverseLocation.first.length);
+        settings.fragmentName = originalFragmentName + " Forward";
+        fragmentRegion = U2Region(0, settings.forwardAndReverseLocation.first.length);
+        markBackbone(productSequence, annotations, fragmentRegion);
+        markFragment(productSequence, annotations, fragmentRegion);
+        // product
+        settings.fragmentName = originalFragmentName;
+        fragmentRegion = U2Region(settings.forwardAndReverseLocation.first.endPos() - originalFragmentLocation.startPos,
+                          originalFragmentLocation.length - settings.forwardAndReverseLocation.first.length - settings.forwardAndReverseLocation.second.length);
+        if (!settings.backboneSequence.isEmpty()) {
+            fragmentRegion.startPos += settings.backboneSequence.length();
+        }
+        markFragment(productSequence, annotations, fragmentRegion);
+        //reverse primer
+        fragmentRegion = U2Region(settings.forwardAndReverseLocation.second.startPos - originalFragmentLocation.startPos, 
+                                             settings.forwardAndReverseLocation.second.length);
+        if (!settings.backboneSequence.isEmpty()) {
+            fragmentRegion.startPos += settings.backboneSequence.length();
+        }
+        settings.fragmentName = originalFragmentName + " Reverse";
+        markBackbone(productSequence, annotations, fragmentRegion);
+        markFragment(productSequence, annotations, fragmentRegion);
+    }
 
-    U2Region fragmentRegion(0, productSequence.length());
+    U2EntityRef productRef = U2SequenceUtils::import(stateInfo, dbiRef, productSequence);
+    CHECK_OP(stateInfo, );
+    auto sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
+    sequenceObject->setWholeSequence(productSequence);
+    doc->addObject(sequenceObject);
+
+    if (!annotations.isEmpty()) {
+        auto annotationsTableObject = new AnnotationTableObject(productSequence.getName() + " annotations", dbiRef);
+        doc->addObject(annotationsTableObject);
+        annotationsTableObject->addObjectRelation(sequenceObject, ObjectRole_Sequence);
+        annotationsTableObject->addAnnotations(annotations, RESULT_ANNOTATION_GROUP_NAME);
+    }
+    result = doc.take();
+}
+
+void ExtractPrimerTask::markBackbone(DNASequence& productSequence, QList<SharedAnnotationData>& annotations, U2Region& fragmentRegion) {
     if (!settings.backboneSequence.isEmpty()) {
+        bool isForward = !settings.fragmentName.contains("Reverse");
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
         U2Strand backboneStrand = U2Strand(U2Strand::Direct);
@@ -89,7 +135,7 @@ void ExtractPrimerTask::run() {
                 backboneStrand = U2Strand(U2Strand::Complementary);
             }
             productSequence.seq.prepend(settings.backboneSequence);
-            fragmentRegion.startPos =+ settings.backboneSequence.length();
+            fragmentRegion.startPos = +settings.backboneSequence.length();
             backboneAnnotationData->location->regions.append(U2Region(0, settings.backboneSequence.length()));
         } else {
             if (settings.direction == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone3) {
@@ -101,19 +147,15 @@ void ExtractPrimerTask::run() {
         backboneAnnotationData->setStrand(backboneStrand);
         annotations.append(backboneAnnotationData);
     }
+}
+
+void ExtractPrimerTask::markFragment(DNASequence& productSequence, QList<SharedAnnotationData>& annotations, U2Region& fragmentRegion) {
+    bool isForward = !settings.fragmentName.contains("Reverse");
     SharedAnnotationData fragmentAnnotationData(new AnnotationData());
     fragmentAnnotationData->setStrand(isForward ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
     fragmentAnnotationData->name = settings.fragmentName;
     fragmentAnnotationData->location->regions.append(fragmentRegion);
     annotations.append(fragmentAnnotationData);
-    auto sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
-    sequenceObject->setWholeSequence(productSequence);
-    doc->addObject(sequenceObject);
-    auto annotationsTableObject = new AnnotationTableObject(productSequence.getName() + " annotations", dbiRef);
-    doc->addObject(annotationsTableObject);
-    annotationsTableObject->addObjectRelation(sequenceObject, ObjectRole_Sequence);
-    annotationsTableObject->addAnnotations(annotations, RESULT_ANNOTATION_GROUP_NAME);
-    result = doc.take();
 }
 
 Document *ExtractPrimerTask::takeResult() {

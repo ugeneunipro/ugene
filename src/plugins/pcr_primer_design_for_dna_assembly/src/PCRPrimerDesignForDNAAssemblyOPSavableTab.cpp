@@ -63,7 +63,7 @@ void PCRPrimerDesignForDNAAssemblyOPSavableTab::setChildValue(const QString &chi
     auto toolButton = qobject_cast<QToolButton*>(getChildWidgetById(childId));
     if (productTable != nullptr) {
         const ResultTableData data = value.value<ResultTableData>();
-        productTable->setCurrentProducts(data.currentProducts, data.associatedView);
+        productTable->setCurrentProducts(data.currentProducts, data.primerLengths, data.associatedView);
         productTable->setAnnotationGroup(data.associatedGroup);
         if (data.currentProducts.count(U2Region()) < ResultTable::MAXIMUM_ROW_COUNT) {
             productTable->show();

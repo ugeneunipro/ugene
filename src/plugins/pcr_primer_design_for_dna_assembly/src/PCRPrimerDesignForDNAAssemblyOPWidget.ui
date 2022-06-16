@@ -997,17 +997,38 @@
         </attribute>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="pbExportProduct">
+        <property name="text">
+         <string>Export product</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbExportForward">
+        <property name="text">
+         <string>Export forward</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbExportReverse">
+        <property name="text">
+         <string>Export reverse</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="alphabetWarningLabel">
+    <widget class="QLabel" name="warningLabel">
      <property name="styleSheet">
       <string notr="true">color: green;
 font-weight: 600;</string>
      </property>
      <property name="text">
-      <string>Info: choose a nucleic sequence for running PCR Primer Design</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
