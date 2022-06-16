@@ -54,7 +54,10 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
     : isCircular(settings.isCircular),
       repeatLibraryPath(settings.repeatLibraryPath),
       mishybLibraryPath(settings.mishybLibraryPath),
-      spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings) {
+      spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
+      showDebugging(settings.showDebugging),
+      formatOutput(settings.formatOutput),
+      explain(settings.explain) {
 
     primerSettings = p3_copy_global_settings(settings.primerSettings);
     seqArgs = copy_seq_arg(settings.seqArgs);
@@ -68,6 +71,9 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     repeatLibraryPath = settings.repeatLibraryPath;
     mishybLibraryPath = settings.mishybLibraryPath;
     spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
+    showDebugging = settings.showDebugging;
+    formatOutput = settings.formatOutput;
+    explain = settings.explain;
 
     primerSettings = p3_copy_global_settings(settings.primerSettings);
     seqArgs = copy_seq_arg(settings.seqArgs);
@@ -258,6 +264,18 @@ int Primer3TaskSettings::getFirstBaseIndex() const {
     return primerSettings->first_base_index;
 }
 
+bool Primer3TaskSettings::isShowDebugging() const {
+    return showDebugging;
+}
+
+bool Primer3TaskSettings::isFormatOutput() const {
+    return formatOutput;
+}
+
+bool Primer3TaskSettings::isExplain() const {
+    return explain;
+}
+
 void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
     p3_set_sa_sequence_name(seqArgs, value);
 }
@@ -371,6 +389,18 @@ void Primer3TaskSettings::setMishybLibraryPath(const QByteArray& value) {
     mishybLibraryPath = value;
 }
 
+void Primer3TaskSettings::setShowDebugging(bool value) {
+    showDebugging = value;
+}
+
+void Primer3TaskSettings::setFormatOutput(bool value) {
+    formatOutput = value;
+}
+
+void Primer3TaskSettings::setExplain(bool value) {
+    explain = value;
+}
+
 QByteArray Primer3TaskSettings::getRepeatLibraryPath() const {
     return repeatLibraryPath;
 }
@@ -436,7 +466,6 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &primerSettings->lib_ambiguity_codes_consensus);
     intProperties.insert("PRIMER_LOWERCASE_MASKING", &primerSettings->lowercase_masking);
     intProperties.insert("PRIMER_PICK_ANYWAY", &primerSettings->pick_anyway);
-    intProperties.insert("PRIMER_EXPLAIN_FLAG", &explain);
     intProperties.insert("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", &primerSettings->show_secondary_structure_alignment);
 
     doubleProperties.insert("PRIMER_MAX_END_STABILITY", &primerSettings->max_end_stability);
@@ -536,6 +565,7 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_INTERNAL_WT_LIBRARY_MISHYB", &primerSettings->o_args.weights.repeat_sim);
     doubleProperties.insert("PRIMER_INTERNAL_WT_SEQ_QUAL", &primerSettings->o_args.weights.seq_quality);
     doubleProperties.insert("PRIMER_INTERNAL_WT_END_QUAL", &primerSettings->o_args.weights.end_quality);
+
 }
 
 }  // namespace U2

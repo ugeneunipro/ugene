@@ -608,8 +608,11 @@ bool Primer3Dialog::doDataExchange() {
     settings.setIntProperty("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->isChecked());
     settings.setIntProperty("PRIMER_LOWERCASE_MASKING", checkbox_PRIMER_LOWERCASE_MASKING->isChecked());
     settings.setIntProperty("PRIMER_PICK_ANYWAY", checkbox_PRIMER_PICK_ANYWAY->isChecked());
-    settings.setIntProperty("PRIMER_EXPLAIN_FLAG", checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
     settings.setIntProperty("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT->isChecked());
+
+    settings.setShowDebugging(checkbox_SHOW_DEBUGGING->isChecked());
+    settings.setFormatOutput(checkbox_FORMAT_OUTPUT->isChecked());
+    settings.setExplain(checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
 
     settings.setTaskByName(edit_PRIMER_TASK->currentText());
     switch (settings.getTask()) {
