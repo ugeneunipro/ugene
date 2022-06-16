@@ -65,8 +65,8 @@ private:
     void showInvalidInputMessage(QWidget* field, QString fieldLabel);
 
 private slots:
-    void sl_pbReset_clicked();
-    void sl_pbPick_clicked();
+    void sl_resetClicked();
+    void sl_pickClicked();
     void sl_saveSettings();
     void sl_loadSettings();
 
@@ -83,6 +83,7 @@ private:
     RegionSelector* rs;
     ADVSequenceObjectContext* context;
 
+    static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
 };
 
