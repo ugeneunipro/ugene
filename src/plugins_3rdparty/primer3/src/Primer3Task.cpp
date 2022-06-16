@@ -31,6 +31,8 @@
 
 #include "Primer3Task.h"
 
+#include "primer3_core/primer3_boulder_main.h"
+#include "primer3_core/print_boulder.h"
 #include "primer3_core/p3_seq_lib.h"
 #include "primer3_core/libprimer3.h"
 
@@ -395,14 +397,47 @@ void Primer3Task::run() {
         settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
     
-    thal_results o;
-    if (get_thermodynamic_values(&settings.getPrimerSettings()->thermodynamic_parameters, &o)) {
-        taskLog.error(tr("Can't load thermodynamic values: \"%1\", skip thermodynamic calculations").arg(o.msg));
-    }
+    resultPrimers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), settings.isShowDebugging(), settings.isFormatOutput(), settings.isExplain());
 
-    resultPrimers = choose_primers(settings.getPrimerSettings(), settings.getSeqArgs());
+    // Enable thermodynamic calculations
+    //thal_results o;
+    //if (get_thermodynamic_values(&settings.getPrimerSettings()->thermodynamic_parameters, &o)) {
+    //    taskLog.error(tr("Can't load thermodynamic values: \"%1\", skip thermodynamic calculations").arg(o.msg));
+    //}
 
-    destroy_thal_structures();
+    //resultPrimers = choose_primers(settings.getPrimerSettings(), settings.getSeqArgs());
+
+    //if (settings.isShowDebugging()) {
+    //    if (settings.getPrimerSettings()->pick_anyway && settings.isFormatOutput()) {
+    //        if (settings.getSeqArgs()->left_input) {
+    //            add_must_use_warnings(&resultPrimers->warnings,
+    //                "Left primer", &resultPrimers->fwd.expl);
+    //        }
+    //        if (settings.getSeqArgs()->right_input) {
+    //            add_must_use_warnings(&resultPrimers->warnings,
+    //                "Right primer", &resultPrimers->rev.expl);
+    //        }
+    //        if (settings.getSeqArgs()->internal_input) {
+    //            add_must_use_warnings(&resultPrimers->warnings,
+    //                "Hybridization probe", &resultPrimers->intl.expl);
+    //        }
+    //    }
+
+    //    /*if (settings.isFormatOutput()) {
+    //        int io_version = 4;
+    //        print_format_output(stdout, &io_version, settings.getPrimerSettings(),
+    //            settings.getSeqArgs(), resultPrimers, "libprimer3 release 2.6.1",
+    //            settings.isExplain());
+    //    } else {
+    //        int io_version = 4;
+    //        print_boulder(io_version, settings.getPrimerSettings(), settings.getSeqArgs(), resultPrimers,
+    //            settings.isExplain());
+    //    }*/
+
+
+    //}
+
+    //destroy_thal_structures();
 
     bestPairs.clear();
 

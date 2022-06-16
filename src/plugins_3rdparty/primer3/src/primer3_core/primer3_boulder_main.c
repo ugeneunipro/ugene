@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h> /* free() */
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "libprimer3.h"
 #include "format_output.h"
 #include "read_boulder.h"
 #include "print_boulder.h"
@@ -598,7 +597,81 @@ sig_handler(int signal)
     exit(signal);
 }
 
-p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int* cancelFlag, int* progress) {
+p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, bool showDebugging, bool formatOutput, bool explain) {
+
+    // Enable thermodynamic calculations
+    thal_results o;
+    if (get_thermodynamic_values(&primerSettings->thermodynamic_parameters, &o)) {
+        //taskLog.error(tr("Can't load thermodynamic values: \"%1\", skip thermodynamic calculations").arg(o.msg));
+    }
+
+    p3retval* resultPrimers = choose_primers(primerSettings, seqArgs);
+
+    if (showDebugging) {
+        if (primerSettings->pick_anyway && formatOutput) {
+            if (seqArgs->left_input) {
+                add_must_use_warnings(&resultPrimers->warnings,
+                    "Left primer", &resultPrimers->fwd.expl);
+            }
+            if (seqArgs->right_input) {
+                add_must_use_warnings(&resultPrimers->warnings,
+                    "Right primer", &resultPrimers->rev.expl);
+            }
+            if (seqArgs->internal_input) {
+                add_must_use_warnings(&resultPrimers->warnings,
+                    "Hybridization probe", &resultPrimers->intl.expl);
+            }
+        }
+
+        if (formatOutput) {
+            int io_version = 4;
+            print_format_output(stdout, &io_version, primerSettings,
+                seqArgs, resultPrimers, libprimer3_release(),
+                explain);
+        } else {
+            int io_version = 4;
+            print_boulder(io_version, primerSettings, seqArgs, resultPrimers,
+                explain);
+        }
+
+
+    }
+
+    destroy_thal_structures();
+
+    return resultPrimers;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //p3retval primers;
 
 
@@ -780,11 +853,11 @@ p3retval* runPrimer3(p3_global_settings* primerSettings, seq_args* seqArgs, int*
         exit(-1);
     }*/
     /* Load default thal parameters */
-    thal_results o;
+    /*thal_results o;
     if (get_thermodynamic_values(&primerSettings->thermodynamic_parameters, &o)) {
         fprintf(stderr, "%s\n", o.msg);
         exit(-1);
-    }
+    }*/
 
     //if (!primerSettings) {
     //    exit(-2); /* Out of memory. */

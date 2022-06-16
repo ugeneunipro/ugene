@@ -97,6 +97,10 @@ public:
 
     int getFirstBaseIndex() const;
 
+    bool isShowDebugging() const;
+    bool isFormatOutput() const;
+    bool isExplain() const;
+
     void setSequenceName(const QByteArray& value);
     void setSequence(const QByteArray& value, bool isCircular = false);
     void setCircularity(bool isCircular);
@@ -120,6 +124,10 @@ public:
 
     void setRepeatLibraryPath(const QByteArray& value);
     void setMishybLibraryPath(const QByteArray& value);
+
+    void setShowDebugging(bool value);
+    void setFormatOutput(bool value);
+    void setExplain(bool value);
 
     QByteArray getRepeatLibraryPath() const;
     QByteArray getMishybLibraryPath() const;
@@ -171,7 +179,9 @@ private:
     QByteArray mishybLibraryPath;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
 
-    int explain = 0;
+    bool showDebugging = false;
+    bool formatOutput = false;
+    bool explain = false;
     p3_global_settings* primerSettings = nullptr;
     seq_args* seqArgs = nullptr;
     p3retval* p3Retval = nullptr; 

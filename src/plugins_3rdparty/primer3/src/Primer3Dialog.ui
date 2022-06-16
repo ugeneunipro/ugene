@@ -2580,7 +2580,7 @@ p, li { white-space: pre-wrap; }
          <item row="0" column="0">
           <widget class="QCheckBox" name="checkbox_SHOW_DEBUGGING">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="text">
             <string>Show debugging info</string>
