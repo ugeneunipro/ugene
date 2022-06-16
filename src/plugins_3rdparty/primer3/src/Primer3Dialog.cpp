@@ -23,12 +23,16 @@
 
 #include <QMessageBox>
 #include <QSettings>
+#include <QTextStream>
 
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -39,6 +43,21 @@
 #include "Primer3Dialog.h"
 
 namespace U2 {
+
+const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
+                        { "SEQUENCE_PRIMER",
+                          "SEQUENCE_INTERNAL_OLIGO",
+                          "SEQUENCE_PRIMER_REVCOMP",
+                          "SEQUENCE_OVERLAP_JUNCTION_LIST",
+                          "SEQUENCE_EXCLUDED_REGION",
+                          "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
+                          "SEQUENCE_INTERNAL_EXCLUDED_REGION",
+                          "PRIMER_MUST_MATCH_FIVE_PRIME",
+                          "PRIMER_MUST_MATCH_THREE_PRIME",
+                          "PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME",
+                          "PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME",
+                          "PRIMER_PRODUCT_SIZE_RANGE",
+    };
 
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([NAGCTRYWSMKBHDV]){5}$");
 
@@ -54,8 +73,8 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequ
 
     pickPrimersButton->setDefault(true);
 
-    connect(pickPrimersButton, SIGNAL(clicked()), SLOT(sl_pbPick_clicked()));
-    connect(resetButton, SIGNAL(clicked()), SLOT(sl_pbReset_clicked()));
+    connect(pickPrimersButton, SIGNAL(clicked()), SLOT(sl_pickClicked()));
+    connect(resetButton, SIGNAL(clicked()), SLOT(sl_resetClicked()));
     connect(saveSettingsButton, SIGNAL(clicked()), SLOT(sl_saveSettings()));
     connect(loadSettingsButton, SIGNAL(clicked()), SLOT(sl_loadSettings()));
 
@@ -683,7 +702,7 @@ void Primer3Dialog::showInvalidInputMessage(QWidget* field, QString fieldLabel) 
     QMessageBox::critical(this, windowTitle(), tr("The field '%1' has invalid value").arg(fieldLabel));
 }
 
-void Primer3Dialog::sl_pbPick_clicked() {
+void Primer3Dialog::sl_pickClicked() {
     bool isRegionOk = false;
     rs->getRegion(&isRegionOk);
     if (!isRegionOk) {
@@ -710,66 +729,73 @@ void Primer3Dialog::sl_saveSettings() {
         fileName += ".txt";
     }
 
-    QSettings diagSettings(fileName, QSettings::IniFormat);
+    QFile file(fileName);
+    if (file.exists()) {
+        file.remove();
+    }
+    if (!file.open(QIODevice::ReadWrite)) {
+        QMessageBox::critical(this, windowTitle(), tr("Can't write to \"%1\"").arg(fileName));
+        return;
+    }
+
+    QTextStream stream(&file);
 
     for (const auto& key : settings.getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
-            diagSettings.setValue(key, spinBox->value());
+        if (spinBox != nullptr) {
+            stream << key << "=" << spinBox->value() << endl;
+            continue;
+        }
+        QCheckBox* checkbox = findChild<QCheckBox*>("checkbox_" + key);
+        if (checkbox != nullptr) {
+            stream << key << "=" << (int)checkbox->isChecked() << endl;
         }
     }
     for (const auto& key : settings.getDoublePropertyList()) {
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
-            diagSettings.setValue(key, spinBox->value());
+        if (spinBox != nullptr) {
+            stream << key << "=" << spinBox->value() << endl;
         }
     }
 
-    diagSettings.setValue("PRIMER_TASK", edit_PRIMER_TASK->currentText());
-    diagSettings.setValue("SEQUENCE_PRIMER", edit_SEQUENCE_PRIMER->text());
-    diagSettings.setValue("SEQUENCE_INTERNAL_OLIGO", edit_SEQUENCE_INTERNAL_OLIGO->text());
-    diagSettings.setValue("SEQUENCE_PRIMER_REVCOMP", edit_SEQUENCE_PRIMER_REVCOMP->text());
-    diagSettings.setValue("SEQUENCE_TARGET", edit_SEQUENCE_TARGET->text());
-    diagSettings.setValue("SEQUENCE_OVERLAP_JUNCTION_LIST", edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text());
-    diagSettings.setValue("SEQUENCE_EXCLUDED_REGION", edit_SEQUENCE_EXCLUDED_REGION->text());
-    diagSettings.setValue("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST", edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text());
-    diagSettings.setValue("PRIMER_MUST_MATCH_FIVE_PRIME", edit_PRIMER_MUST_MATCH_FIVE_PRIME->text());
-    diagSettings.setValue("PRIMER_MUST_MATCH_THREE_PRIME", edit_PRIMER_MUST_MATCH_THREE_PRIME->text());
-    diagSettings.setValue("PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME", edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->text());
-    diagSettings.setValue("PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME", edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->text());
-    diagSettings.setValue("PRIMER_PRODUCT_SIZE_RANGE", edit_PRIMER_PRODUCT_SIZE_RANGE->text());
+    for (const auto& par : LINE_EDIT_PARAMETERS) {
+        QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par);
+        if (lineEdit != nullptr) {
+            auto text = lineEdit->text();
+            if (!text.isEmpty()) {
+                stream << par << "=" << text << endl;
+            }
+        }
+    }
 
-    diagSettings.setValue("SEQUENCE_INTERNAL_EXCLUDED_REGION", edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->text());
-    diagSettings.setValue("SEQUENCE_QUALITY", edit_SEQUENCE_QUALITY->toPlainText());
+    U2OpStatusImpl os;
+    stream << "SEQUENCE_TEMPLATE" << "=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
+    stream << "SEQUENCE_ID" << "=" << context->getSequenceObject()->getSequenceName() << endl;
 
-    diagSettings.setValue("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
-    diagSettings.setValue("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
+    auto qualityText = edit_SEQUENCE_QUALITY->toPlainText();
+    if (!qualityText.isEmpty()) {
+        stream << "SEQUENCE_QUALITY" << "=" << qualityText << endl;
+    }
+    
+    stream << "PRIMER_TASK" << "=" << edit_PRIMER_TASK->currentText() << endl;
 
-    diagSettings.setValue("PRIMER_PICK_LEFT_PRIMER", checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    diagSettings.setValue("PRIMER_PICK_INTERNAL_OLIGO", checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
-    diagSettings.setValue("PRIMER_PICK_RIGHT_PRIMER", checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    diagSettings.setValue("PRIMER_LIBERAL_BASE", checkbox_PRIMER_LIBERAL_BASE->isChecked());
-    diagSettings.setValue("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->isChecked());
-    diagSettings.setValue("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->isChecked());
-
-    diagSettings.setValue("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->isChecked());
-    diagSettings.setValue("PRIMER_LOWERCASE_MASKING", checkbox_PRIMER_LOWERCASE_MASKING->isChecked());
-    diagSettings.setValue("PRIMER_PICK_ANYWAY", checkbox_PRIMER_PICK_ANYWAY->isChecked());
-    diagSettings.setValue("PRIMER_EXPLAIN_FLAG", checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
-    diagSettings.setValue("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT->isChecked());
-
+    stream << "PRIMER_TM_FORMULA" << "=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
+    stream << "PRIMER_SALT_CORRECTIONS" << "=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
+    
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : repeatLibraries) {
-        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText()) {
-            pathPrimerMisprimingLibrary = lib.second;
+        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
+            stream << "PRIMER_MISPRIMING_LIBRARY" << "=" << lib.second << endl;
         }
-        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText()) {
-            pathPrimerInternalOligoLibrary = lib.second;
+        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
+            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY" << "=" << lib.second << endl;
         }
     }
-    diagSettings.setValue("PRIMER_MISPRIMING_LIBRARY", pathPrimerMisprimingLibrary);
-    diagSettings.setValue("PRIMER_INTERNAL_MISHYB_LIBRARY", pathPrimerInternalOligoLibrary);
+
+    stream << "=" << endl;
+
+    file.close();
 }
 
 void Primer3Dialog::sl_loadSettings() {
@@ -779,73 +805,91 @@ void Primer3Dialog::sl_loadSettings() {
         return;
     }
 
-    QSettings diagSettings(lod.url, QSettings::IniFormat);
-
-    QStringList groupKeys = diagSettings.childKeys();
-    for (const auto& key : groupKeys) {
-        QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-        if (spinBox != nullptr && groupKeys.contains(key)) {
-            spinBox->setValue(diagSettings.value(key).toInt());
-        }
-        QDoubleSpinBox* doubleSpinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (doubleSpinBox != nullptr && groupKeys.contains(key)) {
-            doubleSpinBox->setValue(diagSettings.value(key).toDouble());
-        }
+    QFile file(lod.url);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(this, windowTitle(), tr("Can't read to \"%1\"").arg(lod.url));
+        return;
     }
 
+    auto intPropList = settings.getIntPropertyList();
+    auto doublePropList = settings.getDoublePropertyList();
+    
+    QTextStream stream(&file);
+    while(!stream.atEnd()) {
+        auto line = stream.readLine();
+        auto par = line.split('=');
+        CHECK_CONTINUE(par.size() == 2);
 
-    /*diagSettings.beginGroup("GeneralProperties");
-    groupKeys = diagSettings.childKeys();
-    ui.edit_PRIMER_START_CODON_POSITION->setText(
-        diagSettings.value("PRIMER_START_CODON_POSITION").toString());
-    ui.edit_PRIMER_PRODUCT_MIN_TM->setText(
-        diagSettings.value("PRIMER_PRODUCT_MIN_TM").toString());
-    ui.edit_PRIMER_PRODUCT_OPT_TM->setText(
-        diagSettings.value("PRIMER_PRODUCT_OPT_TM").toString());
-    ui.edit_PRIMER_PRODUCT_MAX_TM->setText(
-        diagSettings.value("PRIMER_PRODUCT_MAX_TM").toString());
-    ui.edit_PRIMER_OPT_GC_PERCENT->setText(
-        diagSettings.value("PRIMER_OPT_GC_PERCENT").toString());
-    ui.edit_PRIMER_INSIDE_PENALTY->setText(
-        diagSettings.value("PRIMER_INSIDE_PENALTY").toString());
-    ui.edit_PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT->setText(
-        diagSettings.value("PRIMER_INTERNAL_OLIGO_OPT_GC_PERCENT").toString());
-    ui.edit_EXCLUDED_REGION->setText(
-        diagSettings.value("EXCLUDED_REGION").toString());
-    ui.edit_PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION->setText(
-        diagSettings.value("PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION").toString());
-    ui.edit_TARGET->setText(diagSettings.value("TARGET").toString());
-    ui.edit_PRIMER_PRODUCT_SIZE_RANGE->setText(
-        diagSettings.value("PRIMER_PRODUCT_SIZE_RANGE").toString());
-    ui.edit_PRIMER_LEFT_INPUT->setText(diagSettings.value("PRIMER_LEFT_INPUT").toString());
-    ui.edit_PRIMER_RIGHT_INPUT->setText(diagSettings.value("PRIMER_RIGHT_INPUT").toString());
-    ui.edit_PRIMER_INTERNAL_OLIGO_INPUT->setText(
-        diagSettings.value("PRIMER_INTERNAL_OLIGO_INPUT").toString());
+        if (intPropList.contains(par.first())) {
+            QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + par.first());
+            if (spinBox != nullptr) {
+                bool ok = false;
+                int v = par.last().toInt(&ok);
+                CHECK_CONTINUE(ok);
 
-    ui.combobox_PRIMER_TM_SANTALUCIA->setCurrentIndex(
-        diagSettings.value("PRIMER_TM_FORMULA").toInt());
-    ui.combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex(
-        diagSettings.value("PRIMER_SALT_CORRECTIONS").toInt());
+                spinBox->setValue(v);
+                continue;
+            }
+            QCheckBox* checkbox = findChild<QCheckBox*>("checkbox_" + par.first());
+            if (checkbox != nullptr) {
+                bool ok = false;
+                int v = par.last().toInt(&ok);
+                CHECK_CONTINUE(ok);
+                
+                checkbox->setChecked((bool)v);
+                continue;
+            }
 
-    ui.checkbox_PRIMER_LIBERAL_BASE->setChecked(
-        diagSettings.value("PRIMER_LIBERAL_BASE").toBool());
-    ui.checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->setChecked(
-        diagSettings.value("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS").toBool());
-    ui.checkbox_PRIMER_LOWERCASE_MASKING->setChecked(
-        diagSettings.value("PRIMER_LOWERCASE_MASKING").toBool());
-    ui.checkbox_PICK_HYBRO->setChecked(diagSettings.value("PICK_HYBRO").toBool());
-    ui.checkbox_PICK_LEFT->setChecked(diagSettings.value("PICK_LEFT").toBool());
-    ui.checkbox_PICK_RIGHT->setChecked(diagSettings.value("PICK_RIGHT").toBool());
+        } else if (doublePropList.contains(par.first())) {
+            QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + par.first());
+            if (spinBox != nullptr) {
+                bool ok = false;
+                double v = par.last().toDouble(&ok);
+                CHECK_CONTINUE(ok);
 
-    ui.combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(
-        diagSettings.value("PRIMER_MISPRIMING_LIBRARY").toInt());
-    ui.combobox_PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY->setCurrentIndex(
-        diagSettings.value("PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY").toInt());
+                spinBox->setValue(v);
+                continue;
+            }
+        } else if (LINE_EDIT_PARAMETERS.contains(par.first())) {
+            QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par.first());
+            if (lineEdit != nullptr) {
+                lineEdit->setText(par.last());
+                continue;
+            }
+        } else if (par.first() == "SEQUENCE_QUALITY") {
+            edit_SEQUENCE_QUALITY->setPlainText(par.last());
+        } else if (par.first() == "PRIMER_TASK") {
+            edit_PRIMER_TASK->setCurrentText(par.last());
+        } else if (par.first() == "PRIMER_TM_FORMULA") {
+            bool ok = false;
+            int v = par.last().toInt(&ok);
+            CHECK_CONTINUE(!ok);
 
-    diagSettings.endGroup();*/
+            combobox_PRIMER_TM_FORMULA->setCurrentIndex((bool)v);
+        } else if (par.first() == "PRIMER_SALT_CORRECTIONS") {
+            bool ok = false;
+            int v = par.last().toInt(&ok);
+            CHECK_CONTINUE(!ok);
+
+            combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex((bool)v);
+        } else if (par.first() == "PRIMER_MISPRIMING_LIBRARY") {
+            for (const auto& lib : repeatLibraries) {
+                if (par.last() == lib.second) {
+                    combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentText(lib.first);
+                }
+            }
+        } else if (par.first() == "PRIMER_INTERNAL_MISHYB_LIBRARY") {
+            for (const auto& lib : repeatLibraries) {
+                if (par.last() == lib.second) {
+                    combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentText(lib.first);
+                }
+            }
+        }
+    }
+    file.close();
 }
 
-void Primer3Dialog::sl_pbReset_clicked() {
+void Primer3Dialog::sl_resetClicked() {
     reset();
     rs->reset();
 }
