@@ -828,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7279) {
-    // Check that selection and sequence order does not change after KAlign alignment.
+    // Check that UGENE prints a detailed error message in case if input parameters are invalid.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
