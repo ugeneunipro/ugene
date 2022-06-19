@@ -827,6 +827,19 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
     CHECK_SET_ERR(alignedSequence.left(20) == unalignedSequence.mid(1).left(20), "Aligned sequence must match the original sequence");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7279) {
+    // Check that selection and sequence order does not change after KAlign alignment.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "test_7279.nwk", 2, 99.99));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(logTracer.getJoinedErrorString().contains("Failed to compute distance matrix: distance matrix contains infinite values"),
+                  "Expected error message is not found");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7293) {
     // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
     // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).

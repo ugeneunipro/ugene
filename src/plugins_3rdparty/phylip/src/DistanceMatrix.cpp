@@ -259,7 +259,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma
         }
     } catch (const std::bad_alloc&) {
         errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma->getName());
-        if (nullptr != gnode) {
+        if (gnode != nullptr) {
             for (int i = 0; i < spp; i++) {
                 free(gnode[i]);
             }
@@ -694,32 +694,32 @@ inline bool isFiniteNumber(double x) {
     return (x <= DBL_MAX && x >= -DBL_MAX);
 }
 
-bool DistanceMatrix::isValid() {
+QString DistanceMatrix::validate() const {
     int sz = rawMatrix.count();
     int zeroCounter = 0;
     // The matrix must be square and must not have infinite numbers
-    for (int i = 0; i < sz; ++i) {
+    for (int i = 0; i < sz; i++) {
         int sz2 = rawMatrix[i].count();
         if (sz2 != sz) {
-            return false;
+            return PhylipPlugin::tr("invalid distance matrix size: %1x%2").arg(sz).arg(sz2);
         }
-        for (int j = 0; j < sz; ++j) {
+        for (int j = 0; j < sz; j++) {
             double value = rawMatrix[i][j];
             if (!isFiniteNumber(value)) {
-                return false;
+                return PhylipPlugin::tr("distance matrix contains infinite values");
             }
             if (value == 0) {
-                ++zeroCounter;
+                zeroCounter++;
             }
         }
     }
 
     if (zeroCounter == sz * sz) {
         // All numbers are zeroes!
-        return false;
+        return PhylipPlugin::tr("distance matrix contains only zeros");
     }
 
-    return true;
+    return "";
 }
 
 }  // namespace U2

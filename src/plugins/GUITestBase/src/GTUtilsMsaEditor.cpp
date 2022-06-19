@@ -534,6 +534,12 @@ bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "buildPhylogeneticTree"
 void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus& os, const QString& pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));
+    clickBuildTreeButton(os);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickBuildTreeButton"
+void GTUtilsMsaEditor::clickBuildTreeButton(GUITestOpStatus& os) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
 }
 #undef GT_METHOD_NAME

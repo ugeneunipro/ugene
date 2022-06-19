@@ -94,18 +94,18 @@ void BuildTreeDialogFiller::commonScenario() {
         GTLineEdit::setText(os, saveLineEdit, saveTree);
     }
 
-    if (0 != model) {
+    if (model != 0) {
         GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cbModel", dialog), model);
     }
 
-    if (0 != alpha) {
+    if (alpha != 0) {
         GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbGamma", dialog), true);
         GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, "sbAlpha", dialog), alpha, GTGlobals::UseKeyBoard);
     } else {
         GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbGamma", dialog), false);
     }
 
-    if (0 != replicates) {
+    if (replicates != 0) {
         GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
         GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbEnableBootstrapping"), true);
         GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "sbReplicatesNumber"), replicates, GTGlobals::UseKeyBoard);
