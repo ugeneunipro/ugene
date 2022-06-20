@@ -128,7 +128,11 @@ ResultTableData ResultTable::getPCRPrimerProductTableData() const {
 }
 
 void ResultTable::sl_selectionChanged() {
-    QPair<QString, U2Region> location = getSelectedFragment(ResultTable::Whole).first();
+    QList<QPair<QString, U2Region>> selectedResultList = getSelectedFragment(ResultTable::Whole);
+    if (selectedResultList.isEmpty()) {
+        return;
+    }
+    QPair<QString, U2Region> location = selectedResultList.first();
     if (location != QPair<QString, U2Region>()) {
         for (ADVSequenceObjectContext *context : qAsConst(associatedView->getSequenceContexts())) {
             if (context->getAnnotationObjects(true).contains(associatedGroup->getAnnotations().first()->getGObject())) {

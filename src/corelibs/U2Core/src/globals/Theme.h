@@ -45,6 +45,10 @@ public:
         return "#FF8B19";
     }
 
+    static QString warningColorLabelStr() {
+        return "rgb(255, 139, 25)";
+    }
+
     static QColor infoHintColor() {
         return QColor("green");
     }

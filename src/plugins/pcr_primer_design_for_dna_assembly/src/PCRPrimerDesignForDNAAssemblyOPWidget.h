@@ -119,6 +119,11 @@ private slots:
      */
     void sl_updateSequenceList(const QString&);
 
+    /*
+    * Result table item selection changed.
+    */
+    void sl_tableItemSelectionChanged();
+
 private:
     void createResultAnnotations();
     /**
@@ -147,6 +152,11 @@ private:
      * Return the selected in @twGeneratedSequences sequence
      */
     QString getSelectedSequence() const;
+
+    /*
+    * Enable\disable group of export buttons.
+    */
+    void setExportButtonsEnabled(bool enabled);
 
     AnnotatedDNAView *annDnaView = nullptr;
 

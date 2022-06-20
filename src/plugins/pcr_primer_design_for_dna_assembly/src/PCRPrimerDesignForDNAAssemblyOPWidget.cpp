@@ -161,9 +161,12 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(pbAddToForward3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ForwardSequence);
     connect(pbAddToReverse5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ReverseSequence);
     connect(pbAddToReverse3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ReverseSequence);
+    
+    connect(productsTable, &QTableWidget::itemSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_tableItemSelectionChanged);
 
     leFilter->setValidator(new PrimerValidator(this, false));
     connect(leFilter, &QLineEdit::textEdited, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList);
+    setExportButtonsEnabled(false);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
@@ -246,11 +249,13 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     };
     SAFE_POINT(checkArea(settings.leftArea) && checkArea(settings.rightArea),
                "Invalid areas, PCR Primer Design For DNA Assembly Task cannot be started", )
-
+    pbStart->setEnabled(false);
+    warningLabel->setVisible(false);
+    setExportButtonsEnabled(false);
+    productsTable->clearSelection();
     pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(pcrTask);
-    pbStart->setEnabled(false);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
@@ -372,6 +377,14 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     createResultAnnotations();
     backboneSequence = pcrTask->getBackboneSequence();
     lastRunSettings = pcrTask->getSettings();
+    if (!backboneSequence.isEmpty()) {
+        QString insertToStr = lastRunSettings.insertTo == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5 ? "5'/5'" : "5'/3'";
+        warningLabel->setStyleSheet("color: " + Theme::warningColorLabelStr());
+        warningLabel->setText(tr("Warning: Result forward and reverse primers contain the backbone sequence on the %1 end."
+                                 " The exported product will contain it too, and, consequently, won't be a subsequence of the original primer.")
+                                  .arg(insertToStr));
+        warningLabel->setVisible(true);
+    }
     pcrTask = nullptr;
 }
 
@@ -397,7 +410,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
         settings.originalSequenceFileName = sequenceContext->getSequenceObject()->getSequenceName();
     }
     settings.direction = lastRunSettings.insertTo;
-    settings.backboneSequence = backboneSequence;
+    settings.backboneSequence = backboneSequence;    
     QList<QPair<QString, U2Region> > selectedFragments = productsTable->getSelectedFragment(location);
     if (!selectedFragments.isEmpty()) {
         settings.fragmentName = selectedFragments.first().first;
@@ -408,7 +421,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(new ExtractPrimerAndOpenDocumentTask(settings));
     } else {
-        warningLabel->setStyleSheet(warningLabel->styleSheet() + "color: " + Theme::errorColorLabelStr());
+        warningLabel->setStyleSheet("color: " + Theme::errorColorLabelStr());
         warningLabel->setText(tr("Error: unable to extract - no product selected."));
         warningLabel->setVisible(true);
     }
@@ -449,6 +462,10 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ReverseSequence() {
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList(const QString& text) {
     twGeneratedSequences->updateSequenceList(text);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_tableItemSelectionChanged() {
+    setExportButtonsEnabled(!productsTable->selectedItems().isEmpty());
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_annotationCreationTaskFinished() {
@@ -510,7 +527,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     CHECK(sequenceContext != nullptr, )
 
-    warningLabel->setStyleSheet(warningLabel->styleSheet() + "color: " + Theme::infoColorLabelHtmlStr());
+    warningLabel->setStyleSheet("color: " + Theme::infoColorLabelHtmlStr());
     warningLabel->setText(tr("Info: choose a nucleic sequence for running PCR Primer Design."));
     bool isDna = sequenceContext->getAlphabet()->isDNA();
     runPcrPrimerDesignWidget->setEnabled(isDna);
@@ -570,4 +587,11 @@ QString PCRPrimerDesignForDNAAssemblyOPWidget::getSelectedSequence() const {
 
     return sequence;
 }
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::setExportButtonsEnabled(bool enabled) {
+    pbExportProduct->setEnabled(enabled);
+    pbExportForward->setEnabled(enabled);
+    pbExportReverse->setEnabled(enabled);
+}
+
 }
