@@ -134,14 +134,14 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(pbStart, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_start);
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
-    connect(cbGcContent, &QCheckBox::stateChanged, [this](bool enabled) {
+    connect(chbGcContent, &QCheckBox::stateChanged, [this](bool enabled) {
         sbMinRequireGcContent->setEnabled(enabled);
         lblGcContentSbSeparator->setEnabled(enabled);
         sbMaxRequireGcContent->setEnabled(enabled);
     });
-    connect(cbExcludeGibbs, &QCheckBox::stateChanged, [this](bool enabled) { sbExcludeGibbs->setEnabled(enabled); });
-    connect(cbExcludeMeltingTeml, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeMeltingTeml->setEnabled(enabled); });
-    connect(cbExcludeComplementLength, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeComplementLength->setEnabled(enabled); });
+    connect(chbExcludeGibbs, &QCheckBox::stateChanged, [this](bool enabled) { sbExcludeGibbs->setEnabled(enabled); });
+    connect(chbExcludeMeltingTeml, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeMeltingTeml->setEnabled(enabled); });
+    connect(chbExcludeComplementLength, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeComplementLength->setEnabled(enabled); });
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     initAreaSpinboxes();  // Must be after sbArea->setValue and restoreWidgetState.
@@ -220,18 +220,18 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.meltingPoint.maxValue = spMaxRequireMeltingTeml->value();
     settings.overlapLength.minValue = spMinRequireOverlapLength->value();
     settings.overlapLength.maxValue = spMaxRequireOverlapLength->value();
-    if (cbGcContent->isChecked()) {
+    if (chbGcContent->isChecked()) {
         settings.gcContent.minValue = sbMinRequireGcContent->value();
         settings.gcContent.maxValue = sbMaxRequireGcContent->value();
     }
 
-    if (cbExcludeGibbs->isChecked()) {
+    if (chbExcludeGibbs->isChecked()) {
         settings.paramsToExclude.gibbsFreeEnergy = sbExcludeGibbs->value();
     }
-    if (cbExcludeMeltingTeml->isChecked()) {
+    if (chbExcludeMeltingTeml->isChecked()) {
         settings.paramsToExclude.meltingPoint = spExcludeMeltingTeml->value();
     }
-    if (cbExcludeComplementLength->isChecked()) {
+    if (chbExcludeComplementLength->isChecked()) {
         settings.paramsToExclude.complementLength = spExcludeComplementLength->value();
     }
 
@@ -252,7 +252,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     settings.otherSequencesInPcrUrl = leOtherSequencesInPcrFilePath->text();
 
-    settings.findAdditionalPrimers = cbFindAdditionalPrimers->isChecked();
+    settings.findAdditionalPrimers = chbFindAdditionalPrimers->isChecked();
 
     auto activeSequenceContext = annDnaView->getActiveSequenceContext();
     SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );

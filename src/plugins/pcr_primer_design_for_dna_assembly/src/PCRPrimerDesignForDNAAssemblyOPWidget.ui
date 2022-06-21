@@ -339,7 +339,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="cbGcContent">
+            <widget class="QCheckBox" name="chbGcContent">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -632,7 +632,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_17">
            <item>
-            <widget class="QCheckBox" name="cbExcludeGibbs">
+            <widget class="QCheckBox" name="chbExcludeGibbs">
              <property name="styleSheet">
               <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
              </property>
@@ -645,7 +645,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="cbExcludeMeltingTeml">
+            <widget class="QCheckBox" name="chbExcludeMeltingTeml">
              <property name="styleSheet">
               <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
              </property>
@@ -658,7 +658,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="cbExcludeComplementLength">
+            <widget class="QCheckBox" name="chbExcludeComplementLength">
              <property name="styleSheet">
               <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
              </property>
@@ -1082,7 +1082,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QCheckBox" name="cbFindAdditionalPrimers">
+          <widget class="QCheckBox" name="chbFindAdditionalPrimers">
            <property name="text">
             <string>Find additional primers</string>
            </property>
