@@ -38,6 +38,8 @@ public:
     // invariant: keep the ranges in ascending order
     QVector<U2Region> ranges;
     QList<Annotation*> annotations;
+
+    bool containsAnnotationWithName(const QString& name) const;
 };
 
 class PVRowsManager {
@@ -48,7 +50,7 @@ public:
     void addAnnotation(Annotation* a);
     void removeAnnotation(Annotation* f);
 
-    bool contains(const QString& key) const;
+    bool containsAnnotationWithName(const QString& name) const;
     int getRowCount() const;
     PVRowData* getRow(int row) const;
 
@@ -62,7 +64,6 @@ public:
 
 private:
     QList<PVRowData*> rows;
-    QHash<QString, QList<PVRowData*>> rowByName;  // rows may have same names
     QHash<Annotation*, PVRowData*> rowByAnnotation;
 };
 
