@@ -139,6 +139,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
         lblGcContentSbSeparator->setEnabled(enabled);
         sbMaxRequireGcContent->setEnabled(enabled);
     });
+    connect(cbExcludeGibbs, &QCheckBox::stateChanged, [this](bool enabled) { sbExcludeGibbs->setEnabled(enabled); });
+    connect(cbExcludeMeltingTeml, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeMeltingTeml->setEnabled(enabled); });
+    connect(cbExcludeComplementLength, &QCheckBox::stateChanged, [this](bool enabled) { spExcludeComplementLength->setEnabled(enabled); });
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     initAreaSpinboxes();  // Must be after sbArea->setValue and restoreWidgetState.
@@ -222,9 +225,15 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
         settings.gcContent.maxValue = sbMaxRequireGcContent->value();
     }
 
-    settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
-    settings.meltingPointExclude = spExcludeMeltingTeml->value();
-    settings.complementLengthExclude = spExcludeComplementLength->value();
+    if (cbExcludeGibbs->isChecked()) {
+        settings.paramsToExclude.gibbsFreeEnergy = sbExcludeGibbs->value();
+    }
+    if (cbExcludeMeltingTeml->isChecked()) {
+        settings.paramsToExclude.meltingPoint = spExcludeMeltingTeml->value();
+    }
+    if (cbExcludeComplementLength->isChecked()) {
+        settings.paramsToExclude.complementLength = spExcludeComplementLength->value();
+    }
 
     if (backbone5->isChecked()) {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;

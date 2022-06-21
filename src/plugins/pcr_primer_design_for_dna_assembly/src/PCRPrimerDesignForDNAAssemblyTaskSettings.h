@@ -27,6 +27,8 @@
 #include <U2Core/U2Range.h>
 #include <U2Core/U2Region.h>
 
+#include "OptionalParametersToExclude.h"
+
 namespace U2 {
 
 struct PCRPrimerDesignForDNAAssemblyTaskSettings {
@@ -42,9 +44,7 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
                                         // not set by the user.
 
     //Parameters to exclude in whole primers
-    int gibbsFreeEnergyExclude = 0;
-    int meltingPointExclude = 0;
-    int complementLengthExclude = 0;
+    OptionalParametersToExclude paramsToExclude;
 
     //Areas fpr priming search
     //Insert to backbone bearings

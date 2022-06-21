@@ -11,6 +11,7 @@ HEADERS += src/options_panel/GeneratedSequencesTable.h \
            src/tasks/UnwantedStructuresInBackboneDialog.h \
            src/utils/PCRPrimerDesignTaskReportUtils.h \
            src/utils/UnwantedConnectionsUtils.h \
+           src/OptionalParametersToExclude.h \
            src/PCRPrimerDesignForDNAAssemblyOPSavableTab.h \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.h \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h \
@@ -28,6 +29,7 @@ SOURCES += src/options_panel/GeneratedSequencesTable.cpp \
            src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp \
            src/utils/PCRPrimerDesignTaskReportUtils.cpp \
            src/utils/UnwantedConnectionsUtils.cpp \
+           src/OptionalParametersToExclude.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPSavableTab.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.cpp \

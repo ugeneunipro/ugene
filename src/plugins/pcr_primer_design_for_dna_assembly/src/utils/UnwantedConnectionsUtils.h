@@ -28,6 +28,8 @@
 
 namespace U2 {
 
+struct OptionalParametersToExclude;
+
 class UnwantedConnectionsUtils {
 public:
     UnwantedConnectionsUtils() = delete;
@@ -50,69 +52,67 @@ public:
                                     int unwantedDimerLength);
 
     /**
-     * Return true if @forwardSequence has selfdimers with:
-     *  - Gibbs free energy <= than @unwantedDeltaG,
-     *  - the melting temperature >= than @unwantedMeltingTemperatur,
-     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence has selfdimers that meet
+     * following criteria if they have parameters set (if specified parameter is absent, criterion is ignored):
+     *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,
+     *  - the melting temperature >= than @optionalThresholds.meltingPoint,
+     *  - the length of the dimer >= than @optionalThresholds.complementLength.
      * Othervise return false.
      * Return the report in @report if unwanted connections exist.
      * @forwardSequence sequence we are looking for selfdimers in.
-     * @unwantedDeltaG the Gibbs free energy threshold.
-     * @unwantedMeltingTemperatur the melting temperature threshold.
-     * @unwantedDimerLength the dimer length threshold.
+     * @optionalThresholds optional thresholds.
      * @report report for the existed unwanted connections.
      * @return true if unwanted connections exist, otherwise false.
      */
     static bool isUnwantedSelfDimer(const QByteArray &forwardSequence,
-                                    double unwantedDeltaG,
-                                    double unwantedMeltingTemperature,
-                                    int unwantedDimerLength,
+                                    const OptionalParametersToExclude& optionalThresholds,
                                     QString &report);
 
     /**
-     * Return true if @forwardSequence and @reverseSequence have heterodimers with:
-     *  - Gibbs free energy <= than @unwantedDeltaG,
-     *  - the melting temperature >= than @unwantedMeltingTemperatur,
-     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Same as overloaded method with report, but without report.
+     * @see isUnwantedSelfDimer(const QByteArray&, const OptionalParametersToExclude&, QString&)
+     */
+    static bool isUnwantedSelfDimer(const QByteArray& forwardSequence,
+                                    const OptionalParametersToExclude& optionalThresholds);
+
+    /**
+     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
+     * heterodimers that meet following criteria if they have parameters set (if specified parameter is absent,
+     * criterion is ignored):
+     *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,
+     *  - the melting temperature >= than @optionalThresholds.meltingPoint,
+     *  - the length of the dimer >= than @optionalThresholds.complementLength.
      * Othervise return false.
      * @forwardSequence sequence we are looking for selfdimers in.
-     * @unwantedDeltaG the Gibbs free energy threshold.
-     * @unwantedMeltingTemperatur the melting temperature threshold.
-     * @unwantedDimerLength the dimer length threshold.
+     * @optionalThresholds optional thresholds.
      * @return true if unwanted connections exist, otherwise false.
      */
     static bool isUnwantedHeteroDimer(const QByteArray &forwardSequence,
                                       const QByteArray &reverseSequence,
-                                      double unwantedDeltaG,
-                                      double unwantedMeltingTemperature,
-                                      int unwantedDimerLength);
+                                      const OptionalParametersToExclude& optionalThresholds);
 
     /**
-     * Return true if @forwardSequence and @reverseSequence have heterodimers with:
-     *  - Gibbs free energy <= than @unwantedDeltaG,
-     *  - the melting temperature >= than @unwantedMeltingTemperatur,
-     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
+     * heterodimers that meet following criteria if they have parameters set (if specified parameter is absent,
+     * criterion is ignored):
+     *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,
+     *  - the melting temperature >= than @optionalThresholds.meltingPoint,
+     *  - the length of the dimer >= than @optionalThresholds.complementLength.
      * Othervise return false.
      * Return the report in @report if unwanted connections exist.
      * @forwardSequence sequence we are looking for selfdimers in.
-     * @unwantedDeltaG the Gibbs free energy threshold.
-     * @unwantedMeltingTemperatur the melting temperature threshold.
-     * @unwantedDimerLength the dimer length threshold.
+     * @optionalThresholds optional thresholds.
      * @report report for the existed unwanted connections.
      * @return true if unwanted connections exist, otherwise false.
      */
     static bool isUnwantedHeteroDimer(const QByteArray& forwardSequence,
                                       const QByteArray& reverseSequence,
-                                      double unwantedDeltaG,
-                                      double unwantedMeltingTemperature,
-                                      int unwantedDimerLength,
+                                      const OptionalParametersToExclude& optionalThresholds,
                                       QString &report);
 
 private:
     static bool areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
-                                                           double unwantedDeltaG,
-                                                           double unwantedMeltingTemperature,
-                                                           int unwantedDimerLength,
+                                                           const OptionalParametersToExclude& thresholds,
                                                            QString &report);
 
 

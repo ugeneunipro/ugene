@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>274</width>
-    <height>1147</height>
+    <height>1262</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -632,35 +632,41 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_17">
            <item>
-            <widget class="QLabel" name="label_3">
+            <widget class="QCheckBox" name="cbExcludeGibbs">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
+             </property>
              <property name="text">
               <string>Gibbs free energy</string>
              </property>
-             <property name="wordWrap">
+             <property name="checked">
               <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_11">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+            <widget class="QCheckBox" name="cbExcludeMeltingTeml">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
              </property>
              <property name="text">
               <string>Melting point</string>
              </property>
-             <property name="wordWrap">
+             <property name="checked">
               <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_4">
+            <widget class="QCheckBox" name="cbExcludeComplementLength">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox:checked{color:black}QCheckBox:unchecked{color:grey}</string>
+             </property>
              <property name="text">
               <string>Max complementary motifs length</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>

@@ -25,6 +25,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/PrimerStatistics.h>
 
+#include "../OptionalParametersToExclude.h"
 #include "PCRPrimerDesignForDNAAssemblyPlugin.h"
 
 namespace U2 {
@@ -34,56 +35,62 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequ
                                                    double unwantedMeltingTemperature,
                                                    int unwantedDimerLength) {
     QString unused;
-    return isUnwantedSelfDimer(forwardSequence, unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength,
+    return isUnwantedSelfDimer(forwardSequence, {unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength},
                                unused);
 }
 
 bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray &forwardSequence,
-                                                   double unwantedDeltaG,
-                                                   double unwantedMeltingTemperature,
-                                                   int unwantedDimerLength,
+                                                   const OptionalParametersToExclude& optionalThresholds,
                                                    QString &report) {
     PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter);
     report = PCRPrimerDesignForDNAAssemblyPlugin::tr("<b>Self-dimer:</b><br>");
-    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature,
-                                                      unwantedDimerLength, report);
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), optionalThresholds, report);
+}
+
+bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequence,
+                                                   const OptionalParametersToExclude& optionalThresholds) {
+    QString unused;
+    return isUnwantedSelfDimer(forwardSequence, optionalThresholds, unused);
 }
 
 bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray &forwardSequence,
                                                      const QByteArray &reverseSequence,
-                                                     double unwantedDeltaG,
-                                                     double unwantedMeltingTemperature,
-                                                     int unwantedDimerLength) {
+                                                     const OptionalParametersToExclude& optionalThresholds) {
     QString unused;
-    return isUnwantedHeteroDimer(forwardSequence, reverseSequence, unwantedDeltaG, unwantedMeltingTemperature,
-                                 unwantedDimerLength, unused);
+    return isUnwantedHeteroDimer(forwardSequence, reverseSequence, optionalThresholds, unused);
 }
 
 bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSequence,
                                                      const QByteArray& reverseSequence,
-                                                     double unwantedDeltaG,
-                                                     double unwantedMeltingTemperature,
-                                                     int unwantedDimerLength,
+                                                     const OptionalParametersToExclude& optionalThresholds,
                                                      QString &report) {
     PrimersPairStatistics calc(forwardSequence, reverseSequence);
     report = PCRPrimerDesignForDNAAssemblyPlugin::tr("<b>Hetero-dimer:</b><br>");
-    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature,
-                                                      unwantedDimerLength, report);
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), optionalThresholds, report);
 }
 
 bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
-                                                                          double unwantedDeltaG,
-                                                                          double unwantedMeltingTemperature,
-                                                                          int unwantedDimerLength,
+                                                                          const OptionalParametersToExclude& thresholds,
                                                                           QString &report) {
-    if (dimersInfo.dimersOverlap.isEmpty()) {
+    if (dimersInfo.dimersOverlap.isEmpty() || !thresholds.isAnyParameterSet()) {
         return false;
     }
     double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
     int dimerLength = dimersInfo.dimer.length();
-    bool isDeltaGUnwanted = dimersInfo.deltaG <= unwantedDeltaG;
-    bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature <= dimerMeltingTemp;
-    bool isLengthUnwanted = unwantedDimerLength <= dimerLength;
+    bool isDeltaGUnwanted = true;
+    bool isMeltingTemperatureUnwanted = true;
+    bool isLengthUnwanted = true;
+
+    if (thresholds.gibbsFreeEnergy.canConvert<double>()) {
+        isDeltaGUnwanted = dimersInfo.deltaG <= thresholds.gibbsFreeEnergy.toDouble();
+    }
+    if (thresholds.meltingPoint.canConvert<double>()) {
+        isMeltingTemperatureUnwanted = thresholds.meltingPoint.toDouble() <= dimerMeltingTemp;
+    }
+    if (thresholds.complementLength.canConvert<int>()) {
+        isLengthUnwanted = thresholds.complementLength.toInt() <= dimerLength;
+    }
+
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
     report += PCRPrimerDesignForDNAAssemblyPlugin::tr(dimersInfo.getReportWithMeltingTemp().toLocal8Bit());
     if (isUnwantedParameter) {
