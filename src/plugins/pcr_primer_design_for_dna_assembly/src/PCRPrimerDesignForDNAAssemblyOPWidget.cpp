@@ -225,6 +225,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
         settings.gcContent.maxValue = sbMaxRequireGcContent->value();
     }
 
+    settings.disablePrimerIf = OptionalParametersToExclude::ExclusionCriteria(cmbExclusionConditions->currentIndex());
     if (chbExcludeGibbs->isChecked()) {
         settings.paramsToExclude.gibbsFreeEnergy = sbExcludeGibbs->value();
     }

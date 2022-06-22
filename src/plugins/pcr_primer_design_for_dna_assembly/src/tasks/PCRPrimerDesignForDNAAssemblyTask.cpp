@@ -364,8 +364,10 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
                 if (!hasUnwanted) {
                     //If there are no unwanted connections - check hetero-dimers between B1 Forward and B1 Reverse
                     bool hasB1ForwardReverseHeteroDimer =
-                        UnwantedConnectionsUtils::isUnwantedHeteroDimer(b1ForwardCandidatePrimerSequence, b1ReverseCandidatePrimerSequence,
-                            settings.paramsToExclude);
+                        UnwantedConnectionsUtils::isUnwantedHeteroDimer(b1ForwardCandidatePrimerSequence,
+                                                                        b1ReverseCandidatePrimerSequence,
+                                                                        settings.disablePrimerIf,
+                                                                        settings.paramsToExclude);
 
                     if (hasB1ForwardReverseHeteroDimer) {
                         taskLog.details(tr("\"B1 Forward\" and \"B1 Reverse\" have unwanted hetero-dimers, move on"));
@@ -507,8 +509,10 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
             if (!hasUnwanted) {
                 //If there are no unwanted connections - check hetero-dimers between Forward and Reverse
                 bool hasForwardReverseHeteroDimer =
-                    UnwantedConnectionsUtils::isUnwantedHeteroDimer(forwardCandidatePrimerSequence, reverseCandidatePrimerSequence,
-                        settings.paramsToExclude);
+                    UnwantedConnectionsUtils::isUnwantedHeteroDimer(forwardCandidatePrimerSequence,
+                                                                    reverseCandidatePrimerSequence,
+                                                                    settings.disablePrimerIf,
+                                                                    settings.paramsToExclude);
                 if (hasForwardReverseHeteroDimer) {
                     taskLog.details(tr("\"%1\" and \"%2\" have unwanted hetero-dimers, move on").arg(forwardPrimerName).arg(reversePrimerName));
                     updatePrimerRegion(reverseCandidatePrimerEnd, reversePrimerLength);
@@ -552,18 +556,31 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     const auto saveOnePrimerReports = [this](const QByteArray &primer,
             PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports &saveTo) {
         QString report_;
-        if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, settings.paramsToExclude, report_)) {
+        if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer,
+                                                          settings.disablePrimerIf,
+                                                          settings.paramsToExclude,
+                                                          report_)) {
             saveTo.selfdimer = report_;
         }
-        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence, settings.paramsToExclude, report_)) {
+        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+                                                            sequence,
+                                                            settings.disablePrimerIf,
+                                                            settings.paramsToExclude,
+                                                            report_)) {
             saveTo.fileSeq = report_;
         }
-        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence, settings.paramsToExclude,
+        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+                                                            reverseComplementSequence,
+                                                            settings.disablePrimerIf,
+                                                            settings.paramsToExclude,
                                                             report_)) {
             saveTo.fileRevComplSeq = report_;
         }
         for (const QByteArray &otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
-            if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, otherSeqInPcr, settings.paramsToExclude,
+            if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+                                                                otherSeqInPcr,
+                                                                settings.disablePrimerIf,
+                                                                settings.paramsToExclude,
                                                                 report_)) {
                 saveTo.other << report_;
             }
@@ -576,7 +593,11 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     saveOnePrimerReports(reverse, userPrimersReports.reverse);
 
     QString report_;
-    if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, settings.paramsToExclude, report_)) {
+    if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward,
+                                                        reverse,
+                                                        settings.disablePrimerIf,
+                                                        settings.paramsToExclude,
+                                                        report_)) {
         userPrimersReports.heterodimer = report_;
     }
 }
@@ -600,15 +621,23 @@ bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray&
     if (!settings.paramsToExclude.isAnyParameterSet()) {
         return false;
     }
-    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, settings.paramsToExclude);
+    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(primer,
+                                                                             settings.disablePrimerIf,
+                                                                             settings.paramsToExclude);
     bool hasUnwantedHeteroDimer = false;
-    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence,
-        settings.paramsToExclude);
-    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence,
-        settings.paramsToExclude);
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+                                                                              sequence,
+                                                                              settings.disablePrimerIf,
+                                                                              settings.paramsToExclude);
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+                                                                              reverseComplementSequence,
+                                                                              settings.disablePrimerIf,
+                                                                              settings.paramsToExclude);
     for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
         hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
-            otherSeqInPcr, settings.paramsToExclude);
+                                                                                  otherSeqInPcr,
+                                                                                  settings.disablePrimerIf,
+                                                                                  settings.paramsToExclude);
     }
 
     //TODO: hairpins

@@ -44,6 +44,7 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
                                         // not set by the user.
 
     //Parameters to exclude in whole primers
+    OptionalParametersToExclude::ExclusionCriteria disablePrimerIf;
     OptionalParametersToExclude paramsToExclude;
 
     //Areas fpr priming search

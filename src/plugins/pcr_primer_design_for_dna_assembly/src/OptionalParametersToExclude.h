@@ -29,6 +29,12 @@ namespace U2 {
 // Parameters to exclude in whole primers. Fields must be null or convertible to int/double. Field is null if the user
 // hasn't set parameter, which means it shouldn't be taken into account.
 struct OptionalParametersToExclude {
+    // How many conditions must be held to disable primer:
+    enum class ExclusionCriteria {
+        Any,  // at least one
+        All  // all.
+    };  // Order matters and depends on ui file.
+
     QVariant gibbsFreeEnergy;
     QVariant meltingPoint;
     QVariant complementLength;
