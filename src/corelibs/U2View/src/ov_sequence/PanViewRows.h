@@ -32,6 +32,8 @@ class PVRowData {
 public:
     PVRowData(const QString& key);
 
+    static const QString RESTRICTION_SITE_NAME;
+
     bool fitToRow(const QVector<U2Region>& locations);
 
     QString key;

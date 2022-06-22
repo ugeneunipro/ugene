@@ -28,6 +28,8 @@
 
 namespace U2 {
 
+const QString PVRowData::RESTRICTION_SITE_NAME = QObject::tr("Restriction Site");
+
 PVRowsManager::~PVRowsManager() {
     qDeleteAll(rows);
 }
@@ -76,7 +78,8 @@ bool PVRowData::fitToRow(const QVector<U2Region>& location) {
 
 bool PVRowData::containsAnnotationWithName(const QString& name) const {
     SAFE_POINT(!annotations.isEmpty(), "No annotations in the row", false);
-    return annotations.first()->getName() == name;
+    QString annotationName = annotations.first()->getData()->type == U2FeatureTypes::RestrictionSite ? RESTRICTION_SITE_NAME : annotations.first()->getData()->name;
+    return annotationName == name;
 }
 
 inline bool compare_rows(PVRowData* x, PVRowData* y) {
@@ -91,17 +94,10 @@ void PVRowsManager::addAnnotation(Annotation* a) {
     const SharedAnnotationData& data = a->getData();
     const QVector<U2Region> location = data->getRegions();
 
-    QString name;
-    bool isRestrictionSite = data->type == U2FeatureTypes::RestrictionSite;
-    if (isRestrictionSite) {
-        name = QObject::tr("Restriction Site");
-    } else {
-        name = data->name;
-    }
-
+    QString name = data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
     if (containsAnnotationWithName(name)) {
         foreach (PVRowData* row, rows) {
-            if (row->fitToRow(location) && row->containsAnnotationWithName(name)) {
+            if (row->fitToRow(location)) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
                 return;
