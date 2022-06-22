@@ -75,12 +75,8 @@ bool PVRowData::fitToRow(const QVector<U2Region>& location) {
 }
 
 bool PVRowData::containsAnnotationWithName(const QString& name) const {
-    for (Annotation* a : annotations) {
-        if (a->getName() == name) {
-            return true;
-        }
-    }
-    return false;
+    SAFE_POINT(!annotations.isEmpty(), "No annotations in the row", false);
+    return annotations.first()->getName() == name;
 }
 
 inline bool compare_rows(PVRowData* x, PVRowData* y) {

@@ -85,6 +85,7 @@
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -2416,6 +2417,25 @@ GUI_TEST_CLASS_DEFINITION(test_7539) {
     tooltip = GTUtilsToolTip::getToolTip();
     CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
     CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7540) {
+    //1. Open file with two equal annotations.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/7540/7540.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidgetItem *miscFeature = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
+    GTTreeWidget::click(os, miscFeature);
+    //2. Select one and cheange it location, then name.
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "misc_feature", "2..8"));
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+
+    GTTreeWidget::click(os, miscFeature);
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "misc_feature1", "2..8"));
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+    //3. Open Annotation Highlighting Tab.
+    //Expected state: no crash or SAFE_POINT triggering.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7546) {
