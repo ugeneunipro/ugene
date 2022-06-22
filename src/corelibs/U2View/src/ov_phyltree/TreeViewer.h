@@ -163,8 +163,8 @@ public:
     }
 
 protected:
-    virtual QWidget* createWidget();
-    virtual void onObjectRenamed(GObject* obj, const QString& oldName);
+    QWidget* createWidget() override;
+    void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 private slots:
     void sl_onPhyTreeChanged();

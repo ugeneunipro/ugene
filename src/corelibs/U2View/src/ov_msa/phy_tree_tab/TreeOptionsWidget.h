@@ -85,6 +85,7 @@ private slots:
     void sl_valueChanged();
 
     void sl_onOptionChanged(TreeViewOption option, const QVariant& value);
+
     /* Slot for handling scene selection changes */
     void sl_selectionChanged();
 
@@ -104,15 +105,21 @@ private:
 
     void updateRelations(TreeViewOption option, QVariant newValue);
 
+    /**
+     * Synchronizes current options panel with the active tree widget settings.
+     * Called on every tree widget switch in MSA Editor.
+     */
+    void syncSettingsWithActiveTreeView();
+
     TreeViewerUI* getTreeViewer() const;
 
-    MSAEditor* editor;
-    TreeViewerUI* treeViewer;
+    MSAEditor* editor = nullptr;
+    TreeViewerUI* treeViewer = nullptr;
 
     TreeOpWidgetViewSettings viewSettings;
 
-    bool showFontSettings;
-    bool showPenSettings;
+    bool showFontSettings = false;
+    bool showPenSettings = false;
 
     QWidget* contentWidget;
 
@@ -120,7 +127,7 @@ private:
 
     QMap<QString, TreeViewOption> optionsMap;
 
-    bool isUpdating;
+    bool isUpdating = false;
 };
 
 class U2VIEW_EXPORT AddTreeWidget : public QWidget {

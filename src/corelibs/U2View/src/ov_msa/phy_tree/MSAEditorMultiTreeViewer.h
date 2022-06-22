@@ -51,6 +51,9 @@ public:
 signals:
     void si_tabsCountChanged(int tabsCount);
 
+    /** Emitted when active tree tab changes. */
+    void si_activeTreeViewChanged();
+
 public slots:
     void sl_onTabCloseRequested(QWidget*);
 

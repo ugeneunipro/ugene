@@ -139,13 +139,11 @@ void MsaEditorWgt::initStatusBar() {
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
-    if (nullptr == multiTreeViewer) {
-        return nullptr;
-    }
-    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
-    if (nullptr == page) {
-        return nullptr;
-    }
+    CHECK(treeViewer != nullptr, nullptr);
+
+    auto page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
+    CHECK(page != nullptr, nullptr);
+
     return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
 }
 
