@@ -54,7 +54,7 @@ public:
                                     int unwantedDimerLength);
 
     /**
-     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence has selfdimers that meet
+     * Returns true if at least one of @optionalThresholds is non-null and @forwardSequence has selfdimers that meet
      * one or all (depending on @criterion) of the following conditions, if they have parameters set (if specified
      * parameter is absent, condition is ignored):
      *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,
@@ -84,7 +84,7 @@ public:
                                     const OptionalParametersToExclude& optionalThresholds);
 
     /**
-     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
+     * Returns true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
      * heterodimers that meet one or all (depending on @criterion) of the following conditions, if they have parameters
      * set (if specified parameter is absent, condition is ignored):
      *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,
@@ -103,7 +103,7 @@ public:
                                       const OptionalParametersToExclude& optionalThresholds);
 
     /**
-     * Return true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
+     * Returns true if at least one of @optionalThresholds is non-null and @forwardSequence and @reverseSequence have
      * heterodimers that meet one or all (depending on @criterion) of the following conditions, if they have parameters
      * set (if specified parameter is absent, condition is ignored):
      *  - Gibbs free energy <= than @optionalThresholds.gibbsFreeEnergy,

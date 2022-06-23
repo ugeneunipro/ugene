@@ -181,7 +181,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                         aReverse = b1Reverse;
                         aWasNotFoundYet = false;
                     }
-                    //We need to find only A primers?
+                    // We need to find only A primers?
                     if (!settings.findAdditionalPrimers) {
                         b1Forward = U2Region();
                         b1Reverse = U2Region();
