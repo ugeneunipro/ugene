@@ -124,6 +124,7 @@ void TreeOptionsWidget::createGroups() {
     mainLayout->addWidget(branchesOpGroup);
 
     initializeOptionsMap();
+    createGeneralSettingsWidgets();
     updateAllWidgets();
     connectSlots();
 }
@@ -131,7 +132,6 @@ void TreeOptionsWidget::createGroups() {
 void TreeOptionsWidget::updateAllWidgets() {
     showFontSettings = viewSettings.showFontSettings;
     showPenSettings = viewSettings.showPenSettings;
-    createGeneralSettingsWidgets();
 
     QString fontLabel = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
     updateShowFontOpLabel(fontLabel);
@@ -259,14 +259,8 @@ void TreeOptionsWidget::connectSlots() {
     if (editor != nullptr) {
         auto multiTreeViewer = editor->getUI()->getMultiTreeViewer();
         SAFE_POINT(multiTreeViewer != nullptr, "Tree options widget is instantiated with no active tree view", );
-        connect(multiTreeViewer, &MSAEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { syncSettingsWithActiveTreeView(); });
+        connect(multiTreeViewer, &MSAEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
     }
-}
-
-void TreeOptionsWidget::syncSettingsWithActiveTreeView() {
-    auto treeViewerUi = getTreeViewer();
-    int layoutIndex = treeViewerUi->getTreeLayout();
-    layoutCombo->setCurrentIndex(layoutIndex);
 }
 
 void TreeOptionsWidget::sl_valueChanged() {
@@ -285,13 +279,12 @@ void TreeOptionsWidget::sl_valueChanged() {
 }
 
 void TreeOptionsWidget::createGeneralSettingsWidgets() {
-    layoutCombo->addItem(tr("Rectangular"), TreeLayout::RECTANGULAR_LAYOUT);
-    layoutCombo->addItem(tr("Circular"), TreeLayout::CIRCULAR_LAYOUT);
-    layoutCombo->addItem(tr("Unrooted"), TreeLayout::UNROOTED_LAYOUT);
-
-    treeViewCombo->addItem(TreeSettingsDialog::getDefaultTreeModeText());
-    treeViewCombo->addItem(TreeSettingsDialog::getPhylogramTreeModeText());
-    treeViewCombo->addItem(TreeSettingsDialog::getCladogramTreeModeText());
+    layoutCombo->addItems({tr("Rectangular"),
+                           tr("Circular"),
+                           tr("Unrooted")});
+    treeViewCombo->addItems({TreeSettingsDialog::getDefaultTreeModeText(),
+                             TreeSettingsDialog::getPhylogramTreeModeText(),
+                             TreeSettingsDialog::getCladogramTreeModeText()});
 }
 
 void TreeOptionsWidget::updateFormatSettings() {
@@ -397,7 +390,7 @@ void TreeOptionsWidget::updateShowPenOpLabel(QString newText) {
 
 void TreeOptionsWidget::updateRelations(TreeViewOption option, QVariant newValue) {
     if (option == BRANCHES_TRANSFORMATION_TYPE) {
-        TREE_TYPE type = static_cast<TREE_TYPE>(newValue.toUInt());
+        TreeType type = static_cast<TreeType>(newValue.toUInt());
         scalebarGroup->setEnabled(type == PHYLOGRAM);
     } else if (option == TREE_LAYOUT) {
         TreeLayout layout = static_cast<TreeLayout>(newValue.toUInt());

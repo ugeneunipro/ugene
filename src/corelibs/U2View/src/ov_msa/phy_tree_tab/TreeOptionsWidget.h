@@ -96,7 +96,10 @@ private:
     void createGroups();
     void createGeneralSettingsWidgets();
     void updateFormatSettings();
+
+    /** Synchronizes current options panel with the active tree widget settings. */
     void updateAllWidgets();
+
     void connectSlots();
 
     void updateButtonColor(QPushButton* button, const QColor& newColor);
@@ -104,12 +107,6 @@ private:
     void updateShowPenOpLabel(QString newText);
 
     void updateRelations(TreeViewOption option, QVariant newValue);
-
-    /**
-     * Synchronizes current options panel with the active tree widget settings.
-     * Called on every tree widget switch in MSA Editor.
-     */
-    void syncSettingsWithActiveTreeView();
 
     TreeViewerUI* getTreeViewer() const;
 

@@ -429,6 +429,7 @@ void MSAEditorTreeViewerUI::onSettingsChanged(TreeViewOption option, const QVari
             break;
         case BRANCHES_TRANSFORMATION_TYPE:
             updateScene(false);
+            TreeViewerUI::onSettingsChanged(option, newValue);
             break;
         default:
             TreeViewerUI::onSettingsChanged(option, newValue);

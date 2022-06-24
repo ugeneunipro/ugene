@@ -714,7 +714,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
 
 void TreeViewerUI::updateScene(bool fitSceneToView) {
     qreal avgW = 0;
-    TREE_TYPE type = static_cast<TREE_TYPE>(getOptionValue(BRANCHES_TRANSFORMATION_TYPE).toUInt());
+    TreeType type = static_cast<TreeType>(getOptionValue(BRANCHES_TRANSFORMATION_TYPE).toUInt());
     if (type != PHYLOGRAM) {
         avgW = avgWidth();
         legend->setVisible(false);

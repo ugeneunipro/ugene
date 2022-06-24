@@ -1528,7 +1528,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    4. Fill build tree dialog with defaulb values
@@ -1544,7 +1544,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check/prepare tree widgets.
@@ -1593,7 +1593,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto treeView = GTWidget::findWidget(os, "treeView");
@@ -1645,7 +1645,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto showNamesCheck = GTWidget::findCheckBox(os, "showNamesCheck");
@@ -1764,7 +1764,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1839,7 +1839,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Disable sync mode to allow resize of the view.
@@ -1922,7 +1922,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     // Click to empty space near the node to reset selection
     QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(nodes.size() == 16,
@@ -2382,7 +2382,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // set some values
@@ -2439,7 +2439,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // find widgets

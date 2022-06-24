@@ -58,9 +58,9 @@ public slots:
     void sl_onTabCloseRequested(QWidget*);
 
 private:
-    MsaEditorTreeTabArea* treeTabArea;
-    QWidget* titleWidget;
-    MSAEditor* editor;
+    MsaEditorTreeTabArea* treeTabArea = nullptr;
+    QWidget* titleWidget = nullptr;
+    MSAEditor* editor = nullptr;
     QList<QWidget*> treeViewList;
     QStringList tabsNameList;
 };

@@ -4332,6 +4332,46 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4721) {
+    // Build 2 trees and check that layout settings are preserved while switching between trees.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "tree_test_4721_1", 0, 0, true));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
+    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "tree_test_4721_2", 0, 0, true));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
+    treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to the first tree and check the settings are restored.
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0);
+    layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
+    treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTComboBox::checkCurrentValue(os, layoutCombo, "Circular");
+    GTComboBox::checkCurrentValue(os, treeViewCombo, "Cladogram");
+
+    // Switch to the second tree and check the settings are restored.
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 1);
+    layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
+    treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTComboBox::checkCurrentValue(os, layoutCombo, "Unrooted");
+    GTComboBox::checkCurrentValue(os, treeViewCombo, "Phylogram");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4728) {
     // 1. Open 'fa1.fa'
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");

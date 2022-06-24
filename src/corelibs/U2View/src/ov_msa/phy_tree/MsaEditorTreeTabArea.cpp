@@ -140,7 +140,12 @@ MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor* msaEditor, QWidget* parent
     currentLayout->addWidget(treeTabWidget);
     setLayout(currentLayout);
 
-    treeTabWidget->connect(treeTabWidget, &QTabWidget::currentChanged, this, [this] { emit si_activeTabChanged(treeTabWidget->currentIndex()); });
+    connect(treeTabWidget, &QTabWidget::currentChanged, this, [this] {
+        int currentIndex = treeTabWidget->currentIndex();
+        if (currentIndex >= 0) {  // Do not report empty state (on destruction).
+            emit si_activeTabChanged(currentIndex);
+        }
+    });
 }
 
 MsaEditorTreeTab* MsaEditorTreeTabArea::createTabWidget() {
