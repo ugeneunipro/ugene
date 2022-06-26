@@ -76,12 +76,6 @@ bool PVRowData::fitToRow(const QVector<U2Region>& location) {
     return true;
 }
 
-bool PVRowData::containsAnnotationWithName(const QString& name) const {
-    SAFE_POINT(!annotations.isEmpty(), "No annotations in the row", false);
-    QString annotationName = annotations.first()->getData()->type == U2FeatureTypes::RestrictionSite ? RESTRICTION_SITE_NAME : annotations.first()->getData()->name;
-    return annotationName == name;
-}
-
 inline bool compare_rows(PVRowData* x, PVRowData* y) {
     return x->key.compare(y->key) > 0;
 }
@@ -95,8 +89,9 @@ void PVRowsManager::addAnnotation(Annotation* a) {
     const QVector<U2Region> location = data->getRegions();
 
     QString name = data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
-    if (containsAnnotationWithName(name)) {
-        foreach (PVRowData* row, rows) {
+    if (hasRowWithName(name)) {
+        const QList<PVRowData*> constRows(rows);
+        for (PVRowData* row : qAsConst(constRows)) {
             if (row->fitToRow(location)) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
@@ -160,9 +155,10 @@ int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 
-bool PVRowsManager::containsAnnotationWithName(const QString& name) const {
-    for (PVRowData* row : rows) {
-        if (row->containsAnnotationWithName(name)) {
+bool PVRowsManager::hasRowWithName(const QString& name) const {
+    const QList<PVRowData*> constRows(rows);
+    for (PVRowData* row : qAsConst(constRows)) {
+        if (row->key == name) {
             return true;
         }
     }
