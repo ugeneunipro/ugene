@@ -981,36 +981,6 @@
           </layout>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>Insert to backbone bearings</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_23">
-              <item>
-               <widget class="QRadioButton" name="backbone5">
-                <property name="text">
-                 <string>5' insert to 5' backbone</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="backbone3">
-                <property name="text">
-                 <string>5' insert to 3' backbone</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
           <widget class="QGroupBox" name="groupBox_3">
            <property name="title">
             <string>Backbone length</string>
@@ -1060,6 +1030,36 @@
                  <widget class="QSpinBox" name="sbBackbone5Length"/>
                 </item>
                </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>Insert to backbone bearings</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_23">
+              <item>
+               <widget class="QRadioButton" name="backbone5">
+                <property name="text">
+                 <string>5' insert to 5' backbone</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="backbone3">
+                <property name="text">
+                 <string>5' insert to 3' backbone</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
