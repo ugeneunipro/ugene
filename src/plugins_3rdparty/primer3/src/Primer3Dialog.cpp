@@ -417,15 +417,22 @@ bool Primer3Dialog::doDataExchange() {
 
         settings.setSpanIntronExonBoundarySettings(s);
     }
+    auto qwe = settings.getIntPropertyList();
     for (const auto& key : settings.getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
+        if (spinBox != nullptr) {
             settings.setIntProperty(key, spinBox->value());
+            continue;
+        }
+        QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key);
+        if (checkBox != nullptr) {
+            settings.setIntProperty(key, checkBox->isChecked());
+            continue;
         }
     }
     for (const auto& key : settings.getDoublePropertyList()) {
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-        if (nullptr != spinBox) {
+        if (spinBox != nullptr) {
             settings.setDoubleProperty(key, spinBox->value());
         }
     }
@@ -549,13 +556,6 @@ bool Primer3Dialog::doDataExchange() {
 
     settings.setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
     settings.setIntProperty("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
-    settings.setIntProperty("PRIMER_LIBERAL_BASE", checkbox_PRIMER_LIBERAL_BASE->isChecked());
-    settings.setIntProperty("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->isChecked());
-    settings.setIntProperty("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->isChecked());
-    settings.setIntProperty("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->isChecked());
-    settings.setIntProperty("PRIMER_LOWERCASE_MASKING", checkbox_PRIMER_LOWERCASE_MASKING->isChecked());
-    settings.setIntProperty("PRIMER_PICK_ANYWAY", checkbox_PRIMER_PICK_ANYWAY->isChecked());
-    settings.setIntProperty("PRIMER_SECONDARY_STRUCTURE_ALIGNMENT", checkbox_PRIMER_SECONDARY_STRUCTURE_ALIGNMENT->isChecked());
 
     settings.setShowDebugging(checkbox_SHOW_DEBUGGING->isChecked());
     settings.setFormatOutput(checkbox_FORMAT_OUTPUT->isChecked());
