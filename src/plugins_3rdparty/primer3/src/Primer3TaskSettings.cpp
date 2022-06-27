@@ -458,10 +458,10 @@ void Primer3TaskSettings::initMaps() {
     //intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerSettings->product_opt_size);
     //boolean
     intProperties.insert("PRIMER_PICK_LEFT_PRIMER", &primerSettings->pick_left_primer);
-    intProperties.insert("PRIMER_PICK_RIGHT_PRIMER ", &primerSettings->pick_right_primer);
-    intProperties.insert("PRIMER_PICK_INTERNAL_OLIGO ", &primerSettings->pick_internal_oligo);
+    intProperties.insert("PRIMER_PICK_RIGHT_PRIMER", &primerSettings->pick_right_primer);
+    intProperties.insert("PRIMER_PICK_INTERNAL_OLIGO", &primerSettings->pick_internal_oligo);
     intProperties.insert("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", &primerSettings->thermodynamic_oligo_alignment);
-    intProperties.insert("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT ", &primerSettings->thermodynamic_template_alignment);
+    intProperties.insert("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", &primerSettings->thermodynamic_template_alignment);
     intProperties.insert("PRIMER_LIBERAL_BASE", &primerSettings->liberal_base);
     intProperties.insert("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &primerSettings->lib_ambiguity_codes_consensus);
     intProperties.insert("PRIMER_LOWERCASE_MASKING", &primerSettings->lowercase_masking);
