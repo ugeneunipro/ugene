@@ -47,8 +47,8 @@ public:
     int getLength() const;
     double getMeltingTemperature() const;
     double getGcContent() const;
-    short getSelfAny() const;
-    short getSelfEnd() const;
+    double getSelfAny() const;
+    double getSelfEnd() const;
     double getHairpin() const;
     double getEndStability() const;
 
@@ -56,8 +56,8 @@ public:
     void setLength(int length);
     void setMeltingTemperature(double meltingTemperature);
     void setGcContent(double gcContent);
-    void setSelfAny(short selfAny);
-    void setSelfEnd(short selfEnd);
+    void setSelfAny(double selfAny);
+    void setSelfEnd(double selfEnd);
     void setEndStability(double endStability);
 
 private:
@@ -65,8 +65,8 @@ private:
     int length;
     double meltingTemperature;
     double gcContent;
-    short selfAny;
-    short selfEnd;
+    double selfAny;
+    double selfEnd;
     double hairpin;
     double endStability;
 };
@@ -82,15 +82,15 @@ public:
     Primer* getLeftPrimer() const;
     Primer* getRightPrimer() const;
     Primer* getInternalOligo() const;
-    short getComplAny() const;
-    short getComplEnd() const;
+    double getComplAny() const;
+    double getComplEnd() const;
     int getProductSize() const;
 
     void setLeftPrimer(Primer* leftPrimer);
     void setRightPrimer(Primer* rightPrimer);
     void setInternalOligo(Primer* internalOligo);
-    void setComplAny(short complAny);
-    void setComplEnd(short complEnd);
+    void setComplAny(double complAny);
+    void setComplEnd(double complEnd);
     void setProductSize(int productSize);
 
     bool operator<(const PrimerPair& pair) const;
@@ -100,8 +100,8 @@ private:
     QScopedPointer<Primer> leftPrimer;
     QScopedPointer<Primer> rightPrimer;
     QScopedPointer<Primer> internalOligo;
-    short complAny;
-    short complEnd;
+    double complAny;
+    double complEnd;
     int productSize;
     double quality;
 };

@@ -63,13 +63,13 @@ bool readPrimer(QDomElement element, QString prefix, Primer* outPrimer, bool int
     {
         QString buf = element.attribute(prefix + "_SELF_ANY");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfAny((short)(buf.toDouble() * 100));
+            outPrimer->setSelfAny((buf.toDouble() * 100));
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_END");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfEnd((short)(buf.toDouble() * 100));
+            outPrimer->setSelfEnd((buf.toDouble() * 100));
         }
     }
     if (!internalOligo) {
@@ -104,13 +104,13 @@ PrimerPair readPrimerPair(QDomElement element, QString suffix) {
     {
         QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
         if (!buf.isEmpty()) {
-            result.setComplAny((short)(buf.toDouble() * 100));
+            result.setComplAny((buf.toDouble() * 100));
         }
     }
     {
         QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
         if (!buf.isEmpty()) {
-            result.setComplEnd((short)(buf.toDouble() * 100));
+            result.setComplEnd((buf.toDouble() * 100));
         }
     }
     {
@@ -444,10 +444,10 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     if (!checkPrimer(primerPair.getInternalOligo(), expectedPrimerPair.getInternalOligo(), "PRIMER_INTERNAL_OLIGO" + suffix, true)) {
         return false;
     }
-    if (!checkAlignProperty(primerPair.getComplAny(), expectedPrimerPair.getComplAny(), "PRIMER_PAIR" + suffix + "_COMPL_ANY")) {
+    if (!checkDoubleProperty(primerPair.getComplAny(), expectedPrimerPair.getComplAny(), "PRIMER_PAIR" + suffix + "_COMPL_ANY")) {
         return false;
     }
-    if (!checkAlignProperty(primerPair.getComplEnd(), expectedPrimerPair.getComplEnd(), "PRIMER_PAIR" + suffix + "_COMPL_END")) {
+    if (!checkDoubleProperty(primerPair.getComplEnd(), expectedPrimerPair.getComplEnd(), "PRIMER_PAIR" + suffix + "_COMPL_END")) {
         return false;
     }
     if (!checkIntProperty(primerPair.getProductSize(), expectedPrimerPair.getProductSize(), "PRIMER_PRODUCT_SIZE" + suffix)) {
@@ -493,10 +493,10 @@ bool GTest_Primer3::checkPrimer(const Primer* primer, const Primer* expectedPrim
     if (!checkDoubleProperty(primer->getGcContent(), expectedPrimer->getGcContent(), prefix + "_GC_PERCENT")) {
         return false;
     }
-    if (!checkAlignProperty(primer->getSelfAny(), expectedPrimer->getSelfAny(), prefix + "_SELF_ANY")) {
+    if (!checkDoubleProperty(primer->getSelfAny(), expectedPrimer->getSelfAny(), prefix + "_SELF_ANY")) {
         return false;
     }
-    if (!checkAlignProperty(primer->getSelfEnd(), expectedPrimer->getSelfEnd(), prefix + "_SELF_END")) {
+    if (!checkDoubleProperty(primer->getSelfEnd(), expectedPrimer->getSelfEnd(), prefix + "_SELF_END")) {
         return false;
     }
     if (!internalOligo) {
@@ -518,14 +518,6 @@ bool GTest_Primer3::checkIntProperty(int value, int expectedValue, QString name)
 bool GTest_Primer3::checkDoubleProperty(double value, double expectedValue, QString name) {
     if (qAbs(value - expectedValue) > qAbs(value / 1000)) {
         stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2, but Actual:%3").arg(name).arg(expectedValue).arg(value));
-        return false;
-    }
-    return true;
-}
-
-bool GTest_Primer3::checkAlignProperty(short value, short expectedValue, QString name) {
-    if (value != expectedValue) {
-        stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2, but Actual:%3").arg(name).arg((double)expectedValue / 100).arg((double)value / 100));
         return false;
     }
     return true;

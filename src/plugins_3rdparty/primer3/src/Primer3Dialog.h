@@ -72,17 +72,18 @@ private slots:
 
 
 private:
-    CreateAnnotationWidgetController* createAnnotationWidgetController;
+    CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
     U2Region selection;
     int sequenceLength;
 
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
-    Primer3TaskSettings defaultSettings;
+    const Primer3TaskSettings defaultSettings;
     Primer3TaskSettings settings;
-    RegionSelector* rs;
-    ADVSequenceObjectContext* context;
+    RegionSelector* rs = nullptr;
+    ADVSequenceObjectContext* context = nullptr;
 
+    static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
 };
