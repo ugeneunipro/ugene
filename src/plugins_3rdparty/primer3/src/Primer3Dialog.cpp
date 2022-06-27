@@ -44,6 +44,15 @@
 
 namespace U2 {
 
+const QMap<task, QString> Primer3Dialog::TASK_ENUM_STRING_MAP = {
+                        {task::generic, "generic"},
+                        {task::pick_sequencing_primers,"pick_sequencing_primers"},
+                        {task::pick_primer_list, "pick_primer_list"},
+                        {task::check_primers, "check_primers"},
+                        {task::pick_cloning_primers, "pick_cloning_primers"},
+                        {task::pick_discriminative_primers, "pick_discriminative_primers"}
+    };
+
 const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                         { "SEQUENCE_PRIMER",
                           "SEQUENCE_INTERNAL_OLIGO",
@@ -67,9 +76,6 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequ
       context(context) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
-
-    //QPushButton* pbPick = pickPrimersButton;
-    //QPushButton* pbReset = resetButton;
 
     pickPrimersButton->setDefault(true);
 
@@ -279,6 +285,11 @@ void Primer3Dialog::reset() {
             QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
             if (spinBox != nullptr) {
                 spinBox->setValue(value);
+                continue;
+            }
+            QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key);
+            if (checkBox != nullptr) {
+                checkBox->setChecked(value);
             }
         }
     }
@@ -319,7 +330,6 @@ void Primer3Dialog::reset() {
         edit_SEQUENCE_QUALITY->setPlainText(qualityString);
     }
 
-    //TODO: for
     {
         int value = 0;
         defaultSettings.getIntProperty("PRIMER_TM_FORMULA", &value);
@@ -330,94 +340,12 @@ void Primer3Dialog::reset() {
         defaultSettings.getIntProperty("PRIMER_SALT_CORRECTIONS", &value);
         combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex(value);
     }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_LIBERAL_BASE", &value);
-        checkbox_PRIMER_LIBERAL_BASE->setChecked(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT", &value);
-        checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT->setChecked(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT", &value);
-        checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT->setChecked(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS", &value);
-        checkbox_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS->setChecked(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_LOWERCASE_MASKING", &value);
-        checkbox_PRIMER_LOWERCASE_MASKING->setChecked(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_PICK_ANYWAY", &value);
-        checkbox_PRIMER_PICK_ANYWAY->setChecked(value);
-    }
-
 
     {
-        task task = task::generic;
-        switch (defaultSettings.getTask()) {
-            // Shouldn't be here cuz deprecated
-            /*case pick_pcr_primers_and_hyb_probe:
-                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(true);
-                break; 
-            case pick_left_only:
-                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(false);
-                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(false);
-                break;
-            case pick_right_only:
-                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(false);
-                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(false);
-                break;
-            case pick_hyb_probe_only:
-                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(false);
-                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(false);
-                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(true);
-                break;
-            case pick_pcr_primers:
-                [[fallthrough]]*/
-            case generic:
-                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(true);
-                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(false);
-                task = task::generic;
-                break;
-            //TODO: Could be calculated from parameters
-            /*case pick_cloning_primers:
-
-                break;
-            case pick_discriminative_primers:
-
-                break;*/
-            case pick_sequencing_primers:
-
-                task = task::pick_sequencing_primers;
-                break;
-            case pick_primer_list:
-
-                task = task::pick_primer_list;
-                break;
-
-            case check_primers:
-
-                task = task::check_primers;
-                break;
-            default:
-                coreLog.error(tr("The unknown or deprecated Primer3 task"));            
-        }
+        QString task = TASK_ENUM_STRING_MAP.value(defaultSettings.getTask(), "generic");
+        edit_PRIMER_TASK->setCurrentText(task);
     }
+
     edit_SEQUENCE_PRIMER->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
     label_PRIMER_LEFT_INPUT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
     edit_SEQUENCE_PRIMER_REVCOMP->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());

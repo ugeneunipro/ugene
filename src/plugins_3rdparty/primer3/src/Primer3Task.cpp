@@ -100,11 +100,11 @@ double Primer::getGcContent() const {
     return gcContent;
 }
 
-short Primer::getSelfAny() const {
+double Primer::getSelfAny() const {
     return selfAny;
 }
 
-short Primer::getSelfEnd() const {
+double Primer::getSelfEnd() const {
     return selfEnd;
 }
 
@@ -132,11 +132,11 @@ void Primer::setGcContent(double newGcContent) {
     gcContent = newGcContent;
 }
 
-void Primer::setSelfAny(short newSelfAny) {
+void Primer::setSelfAny(double newSelfAny) {
     selfAny = newSelfAny;
 }
 
-void Primer::setSelfEnd(short newSelfEnd) {
+void Primer::setSelfEnd(double newSelfEnd) {
     selfEnd = newSelfEnd;
 }
 
@@ -225,11 +225,11 @@ Primer* PrimerPair::getInternalOligo() const {
     return internalOligo.data();
 }
 
-short PrimerPair::getComplAny() const {
+double PrimerPair::getComplAny() const {
     return complAny;
 }
 
-short PrimerPair::getComplEnd() const {
+double PrimerPair::getComplEnd() const {
     return complEnd;
 }
 
@@ -249,11 +249,11 @@ void PrimerPair::setInternalOligo(Primer* newInternalOligo) {
     internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*newInternalOligo));
 }
 
-void PrimerPair::setComplAny(short newComplAny) {
+void PrimerPair::setComplAny(double newComplAny) {
     complAny = newComplAny;
 }
 
-void PrimerPair::setComplEnd(short newComplEnd) {
+void PrimerPair::setComplEnd(double newComplEnd) {
     complEnd = newComplEnd;
 }
 
@@ -893,8 +893,8 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->setStrand(strand);
 
     annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));
-    annotationData->qualifiers.append(U2Qualifier("any", QString::number(0.01 * primer.getSelfAny())));
-    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(0.01 * primer.getSelfEnd())));
+    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer.getSelfAny())));
+    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer.getSelfEnd())));
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
     annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer.getHairpin())));
 
