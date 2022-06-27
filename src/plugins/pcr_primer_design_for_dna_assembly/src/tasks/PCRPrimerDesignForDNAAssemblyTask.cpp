@@ -80,11 +80,13 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
         addSubTask(loadOtherSequencesInPcr);
     }
 
-    findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, settings.overlapLength.maxValue, sequence, false);
+    findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, sequence, false);
     addSubTask(findUnwantedIslands);
 
     U2Region reverseComplementArea = DNASequenceUtils::reverseComplementRegion(settings.rightArea, reverseComplementSequence.size());
-    findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea, settings.overlapLength.maxValue, reverseComplementSequence, true);
+    findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea,
+                                                                       reverseComplementSequence,
+                                                                       true);
     addSubTask(findUnwantedIslandsReverseComplement);
 
 
@@ -114,7 +116,6 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         if (regionBetweenIslandsForward.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
             continue;
         }
-        const int amplifiedFragmentLeftEdge = settings.leftArea.endPos() - 1;
         int b1ForwardCandidatePrimerEnd = regionBetweenIslandsForward.endPos();
         int b1ForwardPrimerLength = settings.overlapLength.minValue;
 
@@ -132,14 +133,6 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             CHECK_OP(stateInfo, );
 
             const U2Region b1ForwardCandidatePrimerRegion(b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength, b1ForwardPrimerLength);
-            // The amplified fragment shouldn't contain the all primer
-            // So move the primer untill at least one character out of the amplified fragment
-            if (amplifiedFragmentLeftEdge < b1ForwardCandidatePrimerRegion.startPos) {
-                b1ForwardCandidatePrimerEnd--;
-                // For progress state
-                iterationsNumber -= (settings.overlapLength.maxValue - settings.overlapLength.minValue);
-                continue;
-            }
 
             // The nucleotide sequence of the corresponding region
             QByteArray b1ForwardCandidatePrimerSequence = sequence.mid(b1ForwardCandidatePrimerRegion.startPos, b1ForwardCandidatePrimerRegion.length);
@@ -334,7 +327,6 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
             continue;
         }
 
-        int amplifiedFragmentEdgeReverse = reverseComplementSequence.size() - settings.rightArea.startPos;
         int b1ReverseCandidatePrimerEnd = regionBetweenIslandsReverse.endPos();
         int b1ReversePrimerLength = settings.overlapLength.minValue;
 
@@ -343,12 +335,6 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
             CHECK_OP(stateInfo, );
 
             const U2Region b1ReverseCandidatePrimerRegion(b1ReverseCandidatePrimerEnd - b1ReversePrimerLength, b1ReversePrimerLength);
-            // The amplified fragment shouldn't contain the all primer
-            // So move the primer untill at least one character out of the amplified fragment
-            if (amplifiedFragmentEdgeReverse < b1ReverseCandidatePrimerRegion.startPos) {
-                b1ReverseCandidatePrimerEnd--;
-                continue;
-            }
             QByteArray b1ReverseCandidatePrimerSequence = reverseComplementSequence.mid(b1ReverseCandidatePrimerRegion.startPos, b1ReverseCandidatePrimerRegion.length);
             //Check if candidate primer melting temperature and deltaG fit to settings
             bool areB1ReverseSettingsGood = areParamsOfPrimingSequencesGood(b1ReverseCandidatePrimerSequence);

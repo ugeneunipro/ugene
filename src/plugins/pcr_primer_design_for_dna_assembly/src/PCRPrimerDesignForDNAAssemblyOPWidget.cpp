@@ -245,9 +245,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.bachbone3Length = sbBackbone3Length->value();
 
     settings.leftArea.startPos = sbLeftAreaStart->value() - 1;
-    settings.leftArea.length = sbLeftAreaEnd->value() - sbLeftAreaStart->value();
+    settings.leftArea.length = sbLeftAreaEnd->value() - settings.leftArea.startPos;
     settings.rightArea.startPos = sbRightAreaStart->value() - 1;
-    settings.rightArea.length = sbRightAreaEnd->value() - sbRightAreaStart->value();
+    settings.rightArea.length = sbRightAreaEnd->value() - settings.rightArea.startPos;
 
     settings.backboneSequenceUrl = leBackboneFilePath->text();
 
@@ -265,7 +265,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     qint64 sequenceLength = activeSequenceContext->getSequenceLength();
     auto checkArea = [sequenceLength](const U2Region &area) {
-        return area.startPos >= 0 && area.length >= 0 && area.endPos() < sequenceLength;
+        return area.startPos >= 0 && area.length > 0 && area.endPos() < sequenceLength;
     };
     SAFE_POINT(checkArea(settings.leftArea) && checkArea(settings.rightArea),
                "Invalid areas, PCR Primer Design For DNA Assembly Task cannot be started", )

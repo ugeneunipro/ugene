@@ -30,19 +30,18 @@
 
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence, bool _isComplement)
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea,
+                                                 const QByteArray& _sequence,
+                                                 bool _isComplement)
     : Task(tr("Find Unwanted Islands Task"), TaskFlags_FOSCOE),
       searchArea(_searchArea),
-      possibleOverlap(_possibleOverlap),
       sequence(_sequence),
       isComplement(_isComplement) {}
 
 void FindUnwantedIslandsTask::run() {
     taskLog.details(tr("Searching of unwanted islands and areas between them "
-                       "in the region \"%1\" (+ %2 nucleotides to the %3, deep into the amplified fragment) has been started")
-                        .arg(regionToString(searchArea))
-                        .arg(possibleOverlap)
-                        .arg(isComplement ? tr("left") : tr("right")));
+                       "in the region \"%1\" has been started")
+                        .arg(regionToString(searchArea)));
     taskLog.details(tr("The following unwanted parameters are used. Free Gibbs energy: %1 kj/mol, "
                        "melting temperature: %2 C, maximum dimer length: %3 nt")
                        .arg(UNWANTED_DELTA_G).arg(UNWANTED_MELTING_TEMPERATURE).arg(UNWANTED_MAX_LENGTH));
@@ -52,9 +51,8 @@ void FindUnwantedIslandsTask::run() {
     int leftNucleotide = searchArea.startPos;
     /**
      * Index of the right nucleotide in the searching area.
-     * @settings.overlapLength.maxValue is the area extending deep into the amplified fragment.
      */
-    const int rightNucleotide = searchArea.endPos() + possibleOverlap;
+    const int rightNucleotide = searchArea.endPos() - 1;
     auto text2LogAboutFoundRegion = [this](const U2Region& reg) {
         taskLog.details(tr("The region between unwanted islands has been found: %1").arg(regionToString(reg)));
     };
@@ -129,7 +127,7 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
 
 QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {
     U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
-    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos() + 1);
+    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos());
 }
 
 
