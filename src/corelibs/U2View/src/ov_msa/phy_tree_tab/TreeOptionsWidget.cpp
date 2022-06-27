@@ -77,7 +77,7 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetVie
 TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& _viewSettings)
     : treeViewer(tree->getTreeViewerUI()), viewSettings(_viewSettings),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())) {
-    SAFE_POINT(treeViewer != nullptr, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
+    SAFE_POINT(treeViewer != nullptr, "Invalid parameter were passed into constructor TreeOptionsWidget", );
 
     contentWidget = new QWidget();
     setupUi(contentWidget);
@@ -308,7 +308,12 @@ void TreeOptionsWidget::updateFormatSettings() {
 
 TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     SAFE_POINT(editor != nullptr || treeViewer != nullptr, QString("Invalid parameter in constructor TreeOptionsWidget"), nullptr);
-    return treeViewer != nullptr ? treeViewer : editor->getUI()->getCurrentTree()->getTreeViewerUI();
+    if (treeViewer != nullptr) {
+        return treeViewer;
+    }
+    MSAEditorTreeViewer* msaTreeViewer = editor->getUI()->getCurrentTree();
+    SAFE_POINT(msaTreeViewer != nullptr, "MSAEditorTreeViewer not found", nullptr);
+    return msaTreeViewer->getTreeViewerUI();
 }
 
 void TreeOptionsWidget::sl_fontTypeChanged() {

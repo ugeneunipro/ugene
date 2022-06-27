@@ -139,8 +139,6 @@ void MsaEditorWgt::initStatusBar() {
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
-    CHECK(treeViewer != nullptr, nullptr);
-
     auto page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
     CHECK(page != nullptr, nullptr);
 

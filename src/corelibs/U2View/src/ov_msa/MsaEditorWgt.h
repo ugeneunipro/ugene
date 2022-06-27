@@ -82,7 +82,6 @@ private:
     MsaEditorSimilarityColumn* dataList;
     MSAEditorMultiTreeViewer* multiTreeViewer;
     MsaEditorAlignmentDependentWidget* similarityStatistics;
-    MSAEditorTreeViewer* treeViewer;
 };
 
 }  // namespace U2
