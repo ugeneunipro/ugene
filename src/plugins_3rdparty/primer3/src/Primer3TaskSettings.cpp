@@ -179,15 +179,6 @@ QList<QList<int>> Primer3TaskSettings::getOkRegion() const {
     return result;
 }
 
-QList<U2Region> Primer3TaskSettings::getIncludedRegions() const {
-    QList<U2Region> result;
-    for (int i = 0; i < primerSettings->num_intervals; i++) {
-        result.append(U2Region(primerSettings->pr_min[i],
-                               primerSettings->pr_max[i] - primerSettings->pr_min[i] + 1));
-    }
-    return result;
-}
-
 int Primer3TaskSettings::getMinProductSize() const {
     int min = INT_MAX;
     for (int i = 0; i < primerSettings->num_intervals; i++) {

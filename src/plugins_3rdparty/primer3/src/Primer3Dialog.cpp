@@ -57,6 +57,7 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                         { "SEQUENCE_PRIMER",
                           "SEQUENCE_INTERNAL_OLIGO",
                           "SEQUENCE_PRIMER_REVCOMP",
+                          "SEQUENCE_TARGET",
                           "SEQUENCE_OVERLAP_JUNCTION_LIST",
                           "SEQUENCE_EXCLUDED_REGION",
                           "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
@@ -575,7 +576,7 @@ bool Primer3Dialog::doDataExchange() {
         if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
             checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
             checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
-            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be presented."));
+            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be enabled."));
             return false;
         }
         break;
@@ -583,7 +584,7 @@ bool Primer3Dialog::doDataExchange() {
         if ((checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER->text().isEmpty()) ||
             (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() && edit_SEQUENCE_INTERNAL_OLIGO->text().isEmpty()) ||
             (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty())) {
-            QMessageBox::critical(this, windowTitle(), tr("Some primers on the \"Main\" settings page are enabled, but not presented."));
+            QMessageBox::critical(this, windowTitle(), tr("If you use \"check_primers\" task you should set all enabled primers on the \"Main\" page."));
             return false;
         }
         break;
@@ -667,7 +668,6 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     QTextStream stream(&file);
-
     for (const auto& key : settings.getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
@@ -697,27 +697,30 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     U2OpStatusImpl os;
-    stream << "SEQUENCE_TEMPLATE" << "=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
-    stream << "SEQUENCE_ID" << "=" << context->getSequenceObject()->getSequenceName() << endl;
+    stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
+    stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
+    bool isRegionOk = false;
+    auto region = rs->getRegion(&isRegionOk);
+    stream << "SEQUENCE_INCLUDED_REGION=" << region.startPos << "," << region.length << endl;
 
     auto qualityText = edit_SEQUENCE_QUALITY->toPlainText();
     if (!qualityText.isEmpty()) {
-        stream << "SEQUENCE_QUALITY" << "=" << qualityText << endl;
+        stream << "SEQUENCE_QUALITY=" << qualityText << endl;
     }
     
-    stream << "PRIMER_TASK" << "=" << edit_PRIMER_TASK->currentText() << endl;
+    stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;
 
-    stream << "PRIMER_TM_FORMULA" << "=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
-    stream << "PRIMER_SALT_CORRECTIONS" << "=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
+    stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
+    stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
     
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : repeatLibraries) {
         if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
-            stream << "PRIMER_MISPRIMING_LIBRARY" << "=" << lib.second << endl;
+            stream << "PRIMER_MISPRIMING_LIBRARY=" << lib.second << endl;
         }
         if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
-            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY" << "=" << lib.second << endl;
+            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << lib.second << endl;
         }
     }
 
