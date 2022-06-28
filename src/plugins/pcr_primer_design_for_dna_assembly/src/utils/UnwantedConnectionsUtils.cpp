@@ -83,17 +83,23 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     if (dimersInfo.dimersOverlap.isEmpty() || !thresholds.isAnyParameterSet()) {
         return false;
     }
-    double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
-    int dimerLength = dimersInfo.dimer.length();
 
     QList<bool> conditionResult;
     if (thresholds.gibbsFreeEnergy.canConvert<double>()) {
         conditionResult += dimersInfo.deltaG <= thresholds.gibbsFreeEnergy.toDouble();
     }
     if (thresholds.meltingPoint.canConvert<double>()) {
-        conditionResult += thresholds.meltingPoint.toDouble() <= dimerMeltingTemp;
+        QByteArray dimer = dimersInfo.dimer.toLocal8Bit();
+        double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimer);
+        double reverseDimerMeltingTemp =
+            PrimerStatistics::getMeltingTemperature(DNASequenceUtils::reverseComplement(dimer));
+        double unwantedMeltingTemperature = thresholds.meltingPoint.toDouble();
+
+        conditionResult += unwantedMeltingTemperature <= dimerMeltingTemp &&
+                           unwantedMeltingTemperature <= reverseDimerMeltingTemp;
     }
     if (thresholds.complementLength.canConvert<int>()) {
+        int dimerLength = dimersInfo.dimer.length();
         conditionResult += thresholds.complementLength.toInt() <= dimerLength;
     }
 
