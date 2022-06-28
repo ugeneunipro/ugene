@@ -48,10 +48,11 @@ Primer::Primer()
       selfAny(0),
       selfEnd(0),
       hairpin(0.0),
-      endStability(0) {
+      endStability(0),
+      type(oligo_type::OT_LEFT) {
 }
 
-Primer::Primer(const primer_rec& primerRec)
+Primer::Primer(const primer_rec& primerRec, oligo_type _type)
     : start(primerRec.start),
       length(primerRec.length),
       meltingTemperature(primerRec.temp),
@@ -59,7 +60,13 @@ Primer::Primer(const primer_rec& primerRec)
       selfAny(primerRec.self_any),
       selfEnd(primerRec.self_end),
       hairpin(primerRec.hairpin_th),
-      endStability(primerRec.end_stability) {
+      endStability(primerRec.end_stability),
+      type(_type) {
+    if (type == oligo_type::OT_RIGHT) {
+        // Primer3 calculates all positions from 5' to 3' sequence ends - 
+        // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
+        start = start - length + 1;
+    }
 }
 
 bool Primer::operator==(const Primer& p) const {
@@ -71,7 +78,9 @@ bool Primer::operator==(const Primer& p) const {
     result &= gcContent == p.gcContent;
     result &= selfAny == p.selfAny;
     result &= selfEnd == p.selfEnd;
+    result &= hairpin == p.hairpin;
     result &= endStability == p.endStability;
+    result &= type == p.type;
 
     return result;
 }
@@ -120,6 +129,10 @@ void Primer::setStart(int newStart) {
     start = newStart;
 }
 
+oligo_type Primer::getType() const {
+    return type;
+}
+
 void Primer::setLength(int newLength) {
     length = newLength;
 }
@@ -157,9 +170,9 @@ PrimerPair::PrimerPair()
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
-    : leftPrimer((nullptr == primerPair.left) ? nullptr : new Primer(*primerPair.left)),
-      rightPrimer((nullptr == primerPair.right) ? nullptr : new Primer(*primerPair.right)),
-      internalOligo((nullptr == primerPair.intl) ? nullptr : new Primer(*primerPair.intl)),
+    : leftPrimer((nullptr == primerPair.left) ? nullptr : new Primer(*primerPair.left, oligo_type::OT_LEFT)),
+      rightPrimer((nullptr == primerPair.right) ? nullptr : new Primer(*primerPair.right, oligo_type::OT_RIGHT)),
+      internalOligo((nullptr == primerPair.intl) ? nullptr : new Primer(*primerPair.intl, oligo_type::OT_INTL)),
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
@@ -168,9 +181,7 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
         leftPrimer->setStart(leftPrimer->getStart() + offset);
     }
     if (!rightPrimer.isNull()) {
-        // Primer3 calculates all positions from 5' to 3' sequence ends - 
-        // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
-        rightPrimer->setStart((rightPrimer->getStart() - rightPrimer->getLength() + 1) + offset);
+        rightPrimer->setStart(rightPrimer->getStart() + offset);
     }
     if (!internalOligo.isNull()) {
         internalOligo->setStart(internalOligo->getStart() + offset);
@@ -400,7 +411,6 @@ void Primer3Task::run() {
     resultPrimers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), settings.isShowDebugging(), settings.isFormatOutput(), settings.isExplain());
 
     bestPairs.clear();
-
     if (settings.getSpanIntronExonBoundarySettings().enabled) {
         if (settings.getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
             selectPairsSpanningExonJunction(resultPrimers, toReturn);
@@ -413,19 +423,23 @@ void Primer3Task::run() {
         }
     }
 
-    int maxCount = 0;
-    settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
-
-    if (settings.getTask() == pick_left_only) {
+    if (bestPairs.isEmpty()) {
+        singlePrimers.clear();
+        int maxCount = 0;
+        settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
         if (resultPrimers->fwd.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(resultPrimers->fwd.oligo + i)));
+                singlePrimers.append(Primer(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT));
             }
         }
-    } else if (settings.getTask() == pick_right_only) {
         if (resultPrimers->rev.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->rev.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(resultPrimers->rev.oligo + i)));
+                singlePrimers.append(Primer(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT));
+            }
+        }
+        if (resultPrimers->intl.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->intl.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(Primer(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL));
             }
         }
     }
@@ -623,8 +637,8 @@ Task::ReportResult Primer3SWTask::report() {
     }
 
     for (Primer3Task* task : qAsConst(circRegionTasks)) {
-        // Relocate primers that were found for sequence split in the center.
-        foreach (PrimerPair p, task->getBestPairs()) {
+        // relocate primers that were found for sequence splitted in the center
+        for (PrimerPair p : qAsConst(task->getBestPairs())) {
             relocatePrimerOverMedian(p.getLeftPrimer());
             relocatePrimerOverMedian(p.getRightPrimer());
             if (!bestPairs.contains(p)) {
@@ -632,10 +646,11 @@ Task::ReportResult Primer3SWTask::report() {
             }
         }
 
-        foreach (Primer p, task->getSinglePrimers()) {
-            relocatePrimerOverMedian(&p);
-            if (!singlePrimers.contains(p)) {
-                singlePrimers.append(p);
+        for (const auto& p : task->getSinglePrimers()) {
+            Primer primer = p;
+            relocatePrimerOverMedian(&primer);
+            if (!singlePrimers.contains(primer)) {
+                singlePrimers.append(primer);
             }
         }
     }
@@ -659,9 +674,13 @@ void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, 
                                                                0,
                                                                CHUNK_SIZE / 2,
                                                                false);
-    foreach (const U2Region& region, regions) {
-        Primer3TaskSettings regionSettings = taskSettings;
-        regionSettings.setIncludedRegion(region);
+    for (const U2Region& region : qAsConst(regions)) {
+        Primer3TaskSettings regionSettings = settings;
+        U2Region newRegion(0, -1);
+        if (regionSettings.getTask() != task::pick_sequencing_primers) {
+            newRegion = region;
+        }
+        regionSettings.setIncludedRegion(newRegion);
         Primer3Task* task = new Primer3Task(regionSettings);
         list.append(task);
         addSubTask(task);
@@ -840,7 +859,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
 
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
     int index = 0;
-    foreach (const PrimerPair& pair, bestPairs) {
+    for (const PrimerPair& pair : bestPairs) {
         QList<SharedAnnotationData> annotations;
         if (pair.getLeftPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, *pair.getLeftPrimer(), pair.getProductSize(), U2Strand::Direct));
@@ -855,12 +874,14 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         index++;
     }
 
-    if (settings.getTask() == pick_left_only || settings.getTask() == pick_right_only) {
-        const QList<Primer> singlePrimers = searchTask->getSinglePrimers();
+    const auto& singlePrimers = searchTask->getSinglePrimers();
+    if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
-        U2Strand s = settings.getTask() == pick_left_only ? U2Strand::Direct : U2Strand::Complementary;
-        foreach (const Primer& p, singlePrimers) {
-            annotations.append(oligoToAnnotation(annName, p, 0, s));
+        for (const auto& primer : singlePrimers) {
+            auto type = primer.getType();
+            U2Strand s = type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
+            QString annotationName = type == OT_INTL ? "internalOligo" : annName;
+            annotations.append(oligoToAnnotation(annotationName, primer, 0, s));
         }
         U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
 

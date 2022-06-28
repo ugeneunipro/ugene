@@ -80,7 +80,6 @@ public:
     QList<int> getOverlapJunctionList() const;
     QList<U2Region> getProductSizeRange() const;
     QList<QList<int>> getOkRegion() const;
-    QList<U2Region> getIncludedRegions() const;
     int getMinProductSize() const;
     task getTask() const;
     QList<U2Region> getInternalOligoExcludedRegion() const;

@@ -39,7 +39,7 @@ class AnnotationTableObject;
 class Primer {
 public:
     Primer();
-    Primer(const primer_rec& primerRec);
+    Primer(const primer_rec& primerRec, oligo_type type);
     bool operator==(const Primer& primer) const;
     static bool areEqual(const Primer* p1, const Primer* p2);
 
@@ -51,6 +51,7 @@ public:
     double getSelfEnd() const;
     double getHairpin() const;
     double getEndStability() const;
+    oligo_type getType() const;
 
     void setStart(int start);
     void setLength(int length);
@@ -69,6 +70,7 @@ private:
     double selfEnd;
     double hairpin;
     double endStability;
+    oligo_type type;
 };
 
 class PrimerPair {
@@ -147,7 +149,7 @@ public:
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
     }
-    const QList<Primer>& getSinglePrimers() const {
+    QList<Primer> getSinglePrimers() const {
         return singlePrimers;
     }
 
