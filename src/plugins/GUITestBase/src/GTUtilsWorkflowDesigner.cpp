@@ -1062,7 +1062,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             break;
         }
         case (lineEditWithFileSelector): {
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "mainWidget", parent), value.toString());
+            GTLineEdit::setText(os, "mainWidget", value.toString(), parent);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
         }

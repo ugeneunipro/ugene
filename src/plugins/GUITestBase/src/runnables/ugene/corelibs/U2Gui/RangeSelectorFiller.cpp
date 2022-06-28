@@ -33,14 +33,11 @@ namespace U2 {
 void ZoomToRangeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto from = GTWidget::findLineEdit(os, "start_edit_line", dialog);
-    auto to = GTWidget::findLineEdit(os, "end_edit_line", dialog);
-
     if (minVal != -1) {
-        GTLineEdit::setText(os, from, QString::number(minVal));
+        GTLineEdit::setText(os, "start_edit_line", QString::number(minVal), dialog);
     }
     if (maxVal != -1) {
-        GTLineEdit::setText(os, to, QString::number(maxVal));
+        GTLineEdit::setText(os, "end_edit_line", QString::number(maxVal), dialog);
     }
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Ok", dialog));

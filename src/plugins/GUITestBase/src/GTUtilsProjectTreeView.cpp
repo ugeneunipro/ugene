@@ -398,8 +398,7 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QStrin
 #ifdef Q_OS_DARWIN
     GTGlobals::sleep(3000);
 #endif
-    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
-    GTLineEdit::setText(os, nameFilterEdit, searchField);
+    GTLineEdit::setText(os, "nameFilterEdit", searchField);
     GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -408,9 +407,8 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QStrin
 #define GT_METHOD_NAME "filterProjectSequental"
 void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus& os, const QStringList& searchField, bool waitUntilSearchEnd) {
     openView(os);
-    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     foreach (const QString& str, searchField) {
-        GTLineEdit::setText(os, nameFilterEdit, str);
+        GTLineEdit::setText(os, "nameFilterEdit", str);
         GTGlobals::sleep(3000);
     }
     if (waitUntilSearchEnd) {

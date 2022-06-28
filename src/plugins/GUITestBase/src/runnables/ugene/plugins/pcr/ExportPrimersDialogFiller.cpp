@@ -61,7 +61,7 @@ void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus& os, const QString
 
 #define GT_METHOD_NAME "setFilePath"
 void ExportPrimersDialogFiller::setFilePath(HI::GUITestOpStatus& os, const QString& filePath) {
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFilePath", getDialog(os)), filePath);
+    GTLineEdit::setText(os, "leFilePath", filePath, getDialog(os));
 }
 #undef GT_METHOD_NAME
 

@@ -42,7 +42,7 @@ public:
     static void setText(GUITestOpStatus& os, const QString& lineEditName, const QString& text, QWidget* parent, bool noCheck = false, bool useCopyPaste = true);
 #else
     static void setText(GUITestOpStatus& os, QLineEdit* lineEdit, const QString& text, bool noCheck = false, bool useCopyPaste = false);
-    static void setText(GUITestOpStatus& os, const QString& lineEditName, const QString& text, QWidget* parent, bool noCheck = false, bool useCopyPaste = false);
+    static void setText(GUITestOpStatus& os, const QString& lineEditName, const QString& text, QWidget* parent = nullptr, bool noCheck = false, bool useCopyPaste = false);
 #endif
     static QString getText(GUITestOpStatus& os, QLineEdit* lineEdit);
     static QString getText(GUITestOpStatus& os, const QString& lineEditName, QWidget* parent = NULL);

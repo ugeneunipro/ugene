@@ -46,11 +46,9 @@ FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario
 void FindQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, nameEdit, settings.name);
+    GTLineEdit::setText(os, "nameEdit", settings.name, dialog);
 
-    auto valueEdit = GTWidget::findLineEdit(os, "valueEdit", dialog);
-    GTLineEdit::setText(os, valueEdit, settings.value);
+    GTLineEdit::setText(os, "valueEdit", settings.value, dialog);
 
     if (settings.exactMatch) {
         auto exactButton = GTWidget::findRadioButton(os, "exactButton", dialog);

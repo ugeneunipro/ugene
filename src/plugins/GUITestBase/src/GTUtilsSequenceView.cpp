@@ -277,9 +277,7 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus& os, qint64 position)
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
 
-    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
-
-    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
+    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(position), toolbar);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME

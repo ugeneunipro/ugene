@@ -146,7 +146,7 @@ bool checkTypePresenceInOptionsPanelWidget(HI::GUITestOpStatus& os, const QStrin
 }
 
 void setGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), name);
+    GTLineEdit::setText(os, "leGroupName", name, dialog);
 }
 
 void checkGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
@@ -158,20 +158,20 @@ void clickSelectGroupButton(HI::GUITestOpStatus& os, QWidget* dialog = nullptr) 
 }
 
 void setAnnotationName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName", dialog), name);
+    GTLineEdit::setText(os, "leAnnotationName", name, dialog);
 }
 
 void setSimpleLocation(HI::GUITestOpStatus& os, int startPos, int endPos, bool complement, QWidget* dialog) {
     GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbSimpleFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leRegionStart", dialog), QString::number(startPos));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leRegionEnd", dialog), QString::number(endPos));
+    GTLineEdit::setText(os, "leRegionStart", QString::number(startPos), dialog);
+    GTLineEdit::setText(os, "leRegionEnd", QString::number(endPos), dialog);
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbComplement", dialog), complement);
     GTThread::waitForMainThread();
 }
 
 void setGenbankLocation(HI::GUITestOpStatus& os, const QString& locationString, QWidget* dialog) {
     GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leLocation", dialog), locationString);
+    GTLineEdit::setText(os, "leLocation", locationString, dialog);
 }
 
 void setExistingTable(HI::GUITestOpStatus& os, QWidget* dialog = nullptr, const QString& tableName = "") {
@@ -184,7 +184,7 @@ void setExistingTable(HI::GUITestOpStatus& os, QWidget* dialog = nullptr, const 
 void setNewTable(HI::GUITestOpStatus& os, QWidget* dialog = nullptr, const QString& tablePath = "") {
     GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable", dialog));
     if (!tablePath.isEmpty()) {
-        GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leNewTablePath", dialog), tablePath);
+        GTLineEdit::setText(os, "leNewTablePath", tablePath, dialog);
     }
 }
 
@@ -2089,7 +2089,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
             //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
             const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-            const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath", dialog)->text();
+            const QString actualPath = GTLineEdit::getText(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                           QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2162,7 +2162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
             //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
             const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-            const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath", dialog)->text();
+            const QString actualPath = GTLineEdit::getText(os, "leNewTablePath", dialog);
             CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                           QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2229,7 +2229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 
     //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
     const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
-    const QString actualPath = GTWidget::findLineEdit(os, "leNewTablePath")->text();
+    const QString actualPath = GTLineEdit::getText(os, "leNewTablePath");
     CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
                   QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
@@ -2998,7 +2998,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
             setAnnotationName(os, "test_0041_1", dialog);
             setGenbankLocation(os, "1..100", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "");
+            GTLineEdit::setText(os, "leDescription", "", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3021,7 +3021,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             setAnnotationName(os, "test_0041_2", dialog);
             setGenbankLocation(os, "100..200", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "test_0041_2 description");
+            GTLineEdit::setText(os, "leDescription", "test_0041_2 description", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3056,7 +3056,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
             //    3. Ensure that description field is empty. Accept the dialog.
             setAnnotationName(os, "test_0042_1", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "");
+            GTLineEdit::setText(os, "leDescription", "", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3082,7 +3082,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
             //    5. Enter any description. Accept the dialog.
             setAnnotationName(os, "test_0042_2", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), "test_0042_2 description");
+            GTLineEdit::setText(os, "leDescription", "test_0042_2 description", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3112,7 +3112,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     //    3. Ensure that description field is empty. Click "Create annotations" button.
     setAnnotationName(os, "test_0043_1");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription"), "");
+    GTLineEdit::setText(os, "leDescription", "");
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3124,7 +3124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     //    4. Set any description. Click "Create annotations" button.
     setAnnotationName(os, "test_0043_2");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription"), "test_0043_2 description");
+    GTLineEdit::setText(os, "leDescription", "test_0043_2 description");
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

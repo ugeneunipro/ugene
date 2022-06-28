@@ -39,14 +39,12 @@ namespace U2 {
 void EditAnnotationFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto lineEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
-    GTLineEdit::setText(os, lineEdit, annotationName);
+    GTLineEdit::setText(os, "leAnnotationName", annotationName, dialog);
 
     auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
     GTRadioButton::click(os, gbFormatLocation);
 
-    auto lineEdit1 = GTWidget::findLineEdit(os, "leLocation", dialog);
-    GTLineEdit::setText(os, lineEdit1, location);
+    GTLineEdit::setText(os, "leLocation", location, dialog);
 
     if (complementStrand != false) {
         auto complementStrand = GTWidget::findToolButton(os, "tbDoComplement", dialog);

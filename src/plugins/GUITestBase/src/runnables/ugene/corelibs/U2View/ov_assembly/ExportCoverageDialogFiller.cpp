@@ -121,7 +121,7 @@ void ExportCoverageDialogFiller::commonScenario() {
 void ExportCoverageDialogFiller::enterFilePath(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't a get file path from the action data");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFilePath", dialog), actionData.toString());
+    GTLineEdit::setText(os, "leFilePath", actionData.toString(), dialog);
 }
 #undef GT_METHOD_NAME
 

@@ -115,10 +115,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
         return;
     }
 
-    auto lineEdit = GTWidget::findLineEdit(os, NEW_DOC_NAME, dialog);
-
-    GTLineEdit::clear(os, lineEdit);
-    GTLineEdit::setText(os, lineEdit, GTSequenceReadingModeDialog::newDocName);
+    GTLineEdit::setText(os, NEW_DOC_NAME, GTSequenceReadingModeDialog::newDocName, dialog);
 }
 #undef GT_METHOD_NAME
 

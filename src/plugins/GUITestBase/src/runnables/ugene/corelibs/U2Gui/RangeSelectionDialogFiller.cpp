@@ -147,8 +147,7 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
         auto multipleButton = GTWidget::findRadioButton(os, "miltipleButton", dialog);
         GTRadioButton::click(os, multipleButton);
 
-        auto regionEdit = GTWidget::findLineEdit(os, "multipleRegionEdit", dialog);
-        GTLineEdit::setText(os, regionEdit, multipleRange);
+        GTLineEdit::setText(os, "multipleRegionEdit", multipleRange, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

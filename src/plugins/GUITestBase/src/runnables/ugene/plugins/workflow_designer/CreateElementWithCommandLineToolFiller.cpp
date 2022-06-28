@@ -146,9 +146,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 
 void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     if (!settings.elementName.isEmpty()) {
-        auto nameEdit = GTWidget::findLineEdit(os, "leName", dialog);
-
-        GTLineEdit::setText(os, nameEdit, settings.elementName);
+        GTLineEdit::setText(os, "leName", settings.elementName, dialog);
     }
 
     switch (settings.tooltype) {
@@ -156,9 +154,7 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
             auto rbCustomTool = GTWidget::findRadioButton(os, "rbCustomTool", dialog);
 
             GTRadioButton::click(os, rbCustomTool);
-            auto leToolPath = GTWidget::findLineEdit(os, "leToolPath", dialog);
-
-            GTLineEdit::setText(os, leToolPath, settings.tool);
+            GTLineEdit::setText(os, "leToolPath", settings.tool, dialog);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {

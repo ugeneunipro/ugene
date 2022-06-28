@@ -153,8 +153,7 @@ void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getReference"
 QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus& os) {
     openTab(os, General);
-    auto leReference = GTWidget::findLineEdit(os, "sequenceLineEdit");
-    return leReference->text();
+    return GTLineEdit::getText(os, "sequenceLineEdit");
 }
 #undef GT_METHOD_NAME
 
@@ -509,8 +508,8 @@ void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus& os, const QString
 #define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus& os, int from, int to) {
     openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), QString::number(from));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), QString::number(to));
+    GTLineEdit::setText(os, "editStart", QString::number(from));
+    GTLineEdit::setText(os, "editEnd", QString::number(to));
 }
 #undef GT_METHOD_NAME
 

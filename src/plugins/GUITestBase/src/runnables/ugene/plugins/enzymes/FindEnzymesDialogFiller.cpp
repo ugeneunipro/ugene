@@ -66,24 +66,16 @@ void FindEnzymesDialogFiller::commonScenario() {
     if (searchStart != -1 && searchEnd != -1) {
         auto regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
 
-        auto start = GTWidget::findLineEdit(os, "startLineEdit", regionSelector);
-        GTLineEdit::setText(os, start, QString::number(searchStart));
-
-        auto end = GTWidget::findLineEdit(os, "endLineEdit", regionSelector);
-        GTWidget::click(os, end);
-        GTLineEdit::setText(os, end, QString::number(searchEnd));
+        GTLineEdit::setText(os, "startLineEdit", QString::number(searchStart), regionSelector);
+        GTLineEdit::setText(os, "endLineEdit", QString::number(searchEnd), regionSelector);
     }
 
     if (excludeStart != -1 && excludeEnd != -1) {
         auto exclude = GTWidget::findCheckBox(os, "excludeCheckBox");
         GTCheckBox::setChecked(os, exclude);
 
-        auto start = GTWidget::findLineEdit(os, "excludeStartLineEdit");
-        GTLineEdit::setText(os, start, QString::number(excludeStart));
-
-        auto end = GTWidget::findLineEdit(os, "excludeEndLinEdit");
-        GTWidget::click(os, end);
-        GTLineEdit::setText(os, end, QString::number(excludeEnd));
+        GTLineEdit::setText(os, "excludeStartLineEdit", QString::number(excludeStart));
+        GTLineEdit::setText(os, "excludeEndLinEdit", QString::number(excludeEnd));
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
