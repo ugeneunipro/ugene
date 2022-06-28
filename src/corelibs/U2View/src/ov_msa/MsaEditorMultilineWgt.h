@@ -71,6 +71,7 @@ public slots:
     void sl_changeColorScheme(const QString & id);
     void sl_onPosChangeRequest(int position);
     void sl_triggerUseDots(int checkState);
+    void sl_cursorPositionChanged(const QPoint&);
 
 protected:
     void initScrollArea(QScrollArea *_scrollArea = nullptr) override;

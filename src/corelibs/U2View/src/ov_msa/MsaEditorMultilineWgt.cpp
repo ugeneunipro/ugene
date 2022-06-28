@@ -59,6 +59,10 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
         this->updateSize();
     });
+
+    connect(editor,
+            SIGNAL(si_cursorPositionChanged(const QPoint&)),
+            SLOT(sl_cursorPositionChanged(const QPoint&)));
 }
 
 MaEditorWgt *MsaEditorMultilineWgt::createChild(MaEditor *editor,
@@ -351,6 +355,12 @@ void MsaEditorMultilineWgt::sl_triggerUseDots(int checkState) {
     for (uint i = 0; i < getChildrenCount(); i++) {
         MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
         sequence->sl_triggerUseDots(checkState);
+    }
+}
+
+void MsaEditorMultilineWgt::sl_cursorPositionChanged(const QPoint &point) {
+    if (multilineMode) {
+        scrollController->scrollToPoint(point, size());
     }
 }
 

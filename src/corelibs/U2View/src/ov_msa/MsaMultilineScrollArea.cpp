@@ -17,6 +17,30 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMulti
       maEditorUi(maEditorUi)
 {
     verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
+    this->installEventFilter(this);
+
+}
+
+bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == this
+        && maEditor->getMultilineMode()
+        && event->type() == QEvent::KeyPress)
+    {
+        auto key = static_cast<QKeyEvent *>(event)->key();
+        if ( key == Qt::Key_Left
+            || key == Qt::Key_Right
+            || key == Qt::Key_Up
+            || key == Qt::Key_Down
+            || key == Qt::Key_Home
+            || key == Qt::Key_End)
+        {
+            // ignore navigation keys
+            return true;
+        }
+    }
+    // default behavior
+    return QObject::eventFilter(obj, event);
 }
 
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions &directions,

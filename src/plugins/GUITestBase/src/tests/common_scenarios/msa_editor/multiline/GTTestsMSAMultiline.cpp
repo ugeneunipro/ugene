@@ -573,8 +573,8 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
 
     //    Press on some sequence in nameList
     GTUtilsMsaEditor::clickSequence(os, 2);
-    auto hscroll = GTWidget::findScrollBar(os, "horizontal_names_scroll");
-    auto vscroll = GTWidget::findScrollBar(os, "vertical_sequence_scroll");
+    auto hscroll = GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(os, 0);
+    auto vscroll = GTWidget::findScrollBar(os, "multiline_vertical_sequence_scroll");
 
     //    Check keys:
     //    right,

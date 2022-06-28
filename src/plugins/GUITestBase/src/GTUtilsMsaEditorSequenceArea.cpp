@@ -79,6 +79,18 @@ MSAEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(GUITestOp
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getHorizontalNamesScroll"
+QScrollBar* GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(GUITestOpStatus& os, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #index widget
+    MaEditorWgt *activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
+    return GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll", activeWindow);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "callContextMenu"
 void GTUtilsMSAEditorSequenceArea::callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords) {
     if (innerCoords.isNull()) {

@@ -35,7 +35,8 @@ class GTUtilsMSAEditorSequenceArea {
 public:
     // The "index" is line index while multiline mode
     static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
-    static MSAEditorConsensusArea* getConsensusArea(GUITestOpStatus& os, int index = 0);
+    static MSAEditorConsensusArea *getConsensusArea(GUITestOpStatus &os, int index = 0);
+    static QScrollBar *getHorizontalNamesScroll(GUITestOpStatus &os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus& os, int multilineIndex, const QRect& expectedRect);
