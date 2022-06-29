@@ -659,7 +659,7 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
     CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    auto column = GTWidget::findWidget(os, "msa_editor_similarity_column");
+    auto column = GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, 0);
     CHECK_SET_ERR(!column->isVisible(), "similarity column unexpectidly found");
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);

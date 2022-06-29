@@ -26,7 +26,7 @@
 
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorConsensusArea.h>
-
+#include "U2View/MsaEditorSimilarityColumn.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
 namespace U2 {
@@ -36,6 +36,7 @@ public:
     // The "index" is line index while multiline mode
     static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
     static MSAEditorConsensusArea *getConsensusArea(GUITestOpStatus &os, int index = 0);
+    static MsaEditorSimilarityColumn *getSimilarityColumn(GUITestOpStatus &os, int index = 0);
     static QScrollBar *getHorizontalNamesScroll(GUITestOpStatus &os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
@@ -66,7 +67,8 @@ public:
      */
     static QStringList getVisibleNames(GUITestOpStatus& os, bool asShownInNameList = false);
 
-    static QString getSimilarityValue(GUITestOpStatus& os, int row);
+    // "index" is a line index in multiline mode
+    static QString getSimilarityValue(GUITestOpStatus& os, int row, int index = 0);
     static void clickCollapseTriangle(GUITestOpStatus& os, QString seqName);
     static bool isCollapsed(GUITestOpStatus& os, QString seqName);
     static bool collapsingMode(GUITestOpStatus& os);

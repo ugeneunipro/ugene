@@ -91,6 +91,18 @@ QScrollBar* GTUtilsMSAEditorSequenceArea::getHorizontalNamesScroll(GUITestOpStat
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getSimilarityColumn"
+MsaEditorSimilarityColumn* GTUtilsMSAEditorSequenceArea::getSimilarityColumn(GUITestOpStatus& os, int index) {
+    // There are more than one msa_editor_sequence_area in multiline mode, so
+    // at first we get line #index widget
+    MaEditorWgt *activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
+    return GTWidget::findExactWidget<MsaEditorSimilarityColumn*>(os, "msa_editor_similarity_column", activeWindow);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "callContextMenu"
 void GTUtilsMSAEditorSequenceArea::callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords) {
     if (innerCoords.isNull()) {
@@ -414,9 +426,9 @@ void GTUtilsMSAEditorSequenceArea::removeSequence(GUITestOpStatus& os, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSimilarityValue"
-QString GTUtilsMSAEditorSequenceArea::getSimilarityValue(GUITestOpStatus& os, int row) {
+QString GTUtilsMSAEditorSequenceArea::getSimilarityValue(GUITestOpStatus& os, int row, int index) {
     // bad solution, but better then nothing
-    auto simCol = GTWidget::findExactWidget<MsaEditorSimilarityColumn*>(os, "msa_editor_similarity_column");
+    auto simCol = GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, index);
 
     return simCol->getTextForRow(row);
 }

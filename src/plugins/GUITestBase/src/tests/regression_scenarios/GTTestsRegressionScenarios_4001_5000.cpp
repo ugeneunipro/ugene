@@ -1245,7 +1245,7 @@ GUI_TEST_CLASS_DEFINITION(test_4141) {
     // 3. Check "Show distances column"
     // Expected state : distances column has appeared between the name list and the sequence area
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "showDistancesColumnCheck"));
-    GTWidget::findWidget(os, "msa_editor_similarity_column");
+    GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, 0);
     CHECK_SET_ERR(QApplication::activeWindow() == appWindow, "Active window changed");
 }
 
