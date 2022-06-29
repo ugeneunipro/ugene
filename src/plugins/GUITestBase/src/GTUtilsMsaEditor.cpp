@@ -99,7 +99,8 @@ MSAEditor* GTUtilsMsaEditor::getEditor(GUITestOpStatus& os) {
 MsaEditorWgt* GTUtilsMsaEditor::getEditorUi(GUITestOpStatus& os) {
     checkMsaEditorWindowIsActive(os);
     MsaEditorWgt* msaEditorWgt = nullptr;
-    // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
+    // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?),
+    // so can't use GTWidget::findWidget here.
     for (int time = 0; time < GT_OP_WAIT_MILLIS && msaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         MainWindow* mainWindow = AppContext::getMainWindow();
@@ -110,7 +111,8 @@ MsaEditorWgt* GTUtilsMsaEditor::getEditorUi(GUITestOpStatus& os) {
         msaEditorWgt = activeWindow->findChild<MsaEditorWgt*>();
     }
     GT_CHECK_RESULT(msaEditorWgt != nullptr, "MSA Editor widget is not found", nullptr);
-    return msaEditorWgt;
+    // Get #0 editor widget
+    return qobject_cast<MsaEditorWgt*>(msaEditorWgt->getEditor()->getMaEditorWgt(0));
 }
 #undef GT_METHOD_NAME
 

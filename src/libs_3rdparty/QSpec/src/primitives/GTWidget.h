@@ -75,6 +75,7 @@ public:
     static QWidget* findWidget(GUITestOpStatus& os, const QString& objectName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& = {});
 
     static QPoint getWidgetCenter(QWidget* widget);
+    static QPoint getWidgetVisibleCenter(QWidget* widget);
 
     static QAbstractButton* findButtonByText(GUITestOpStatus& os, const QString& text, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& = {});
 

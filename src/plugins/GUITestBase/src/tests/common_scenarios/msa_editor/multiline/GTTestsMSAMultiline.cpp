@@ -516,7 +516,7 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
     //    end
-    auto hbar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll");
+    auto hbar = GTWidget::findScrollBar(os, "multiline_horizontal_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End);
     CHECK_SET_ERR(hbar->value() == hbar->maximum(), QString("end key scrollbar value: %1").arg(hbar->value()))
     //    home

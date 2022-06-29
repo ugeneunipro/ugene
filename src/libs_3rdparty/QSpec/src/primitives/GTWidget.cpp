@@ -248,6 +248,15 @@ QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
 
+QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
+    QRegion region = widget->visibleRegion();
+    QVector<QRect> rects = region.rects();
+    for (QVector<QRect>::iterator it = rects.begin(), end = rects.end(); it != end; ++it) {
+        return widget->mapToGlobal(it->center());
+    }
+    return widget->mapToGlobal(widget->rect().center());
+}
+
 #define GT_METHOD_NAME "findButtonByText"
 QAbstractButton* GTWidget::findButtonByText(GUITestOpStatus& os, const QString& text, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     QList<QAbstractButton*> resultButtonList;

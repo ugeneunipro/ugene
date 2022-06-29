@@ -33,7 +33,9 @@ bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
             || key == Qt::Key_Up
             || key == Qt::Key_Down
             || key == Qt::Key_Home
-            || key == Qt::Key_End)
+            || key == Qt::Key_End
+            || key == Qt::Key_PageUp
+            || key == Qt::Key_PageDown)
         {
             // ignore navigation keys
             return true;
