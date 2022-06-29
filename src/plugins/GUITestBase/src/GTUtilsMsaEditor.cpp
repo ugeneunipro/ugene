@@ -161,13 +161,12 @@ MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMsaEditorWindow(os);
-    return GTWidget::findExactWidget<MSAEditorConsensusArea*>(os, "consArea", activeWindow);
+MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus& os, int index) {
+    return GTUtilsMSAEditorSequenceArea::getConsensusArea(os, index);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
+#define GT_METHOD_NAME "getSequenceArea"
 MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus& os, int index) {
     return GTUtilsMSAEditorSequenceArea::getSequenceArea(os, index);
 }

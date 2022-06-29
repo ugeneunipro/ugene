@@ -67,7 +67,7 @@ public:
     static QWidget* getSimpleOverview(HI::GUITestOpStatus& os);
     static MSAEditorTreeViewerUI* getTreeView(HI::GUITestOpStatus& os);
     static MaEditorNameList* getNameListArea(HI::GUITestOpStatus& os);
-    static MSAEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus& os);
+    static MSAEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus& os, int index = 0);
     static MSAEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus& os, int index = 0);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus& os, const QString& sequenceName);
