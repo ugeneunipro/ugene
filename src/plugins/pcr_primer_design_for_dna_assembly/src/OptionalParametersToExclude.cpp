@@ -24,7 +24,6 @@
 namespace U2 {
 
 bool OptionalParametersToExclude::isAnyParameterSet() const {
-    return gibbsFreeEnergy.canConvert<double>() || meltingPoint.canConvert<double>() ||
-           complementLength.canConvert<int>();
+    return gibbsFreeEnergy.isValid() || meltingPoint.isValid() || complementLength.isValid();
 }
 }  // namespace U2

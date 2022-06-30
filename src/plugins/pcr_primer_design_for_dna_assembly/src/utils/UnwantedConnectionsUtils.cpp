@@ -85,10 +85,10 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     }
 
     QList<bool> conditionResult;
-    if (thresholds.gibbsFreeEnergy.canConvert<double>()) {
+    if (thresholds.gibbsFreeEnergy.isValid()) {
         conditionResult += dimersInfo.deltaG <= thresholds.gibbsFreeEnergy.toDouble();
     }
-    if (thresholds.meltingPoint.canConvert<double>()) {
+    if (thresholds.meltingPoint.isValid()) {
         QByteArray dimer = dimersInfo.dimer.toLocal8Bit();
         double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimer);
         double reverseDimerMeltingTemp =
@@ -98,7 +98,7 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
         conditionResult += unwantedMeltingTemperature <= dimerMeltingTemp &&
                            unwantedMeltingTemperature <= reverseDimerMeltingTemp;
     }
-    if (thresholds.complementLength.canConvert<int>()) {
+    if (thresholds.complementLength.isValid()) {
         int dimerLength = dimersInfo.dimer.length();
         conditionResult += thresholds.complementLength.toInt() <= dimerLength;
     }
