@@ -492,7 +492,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48
     //     "Disable primer if" -> "All conditions hold"
     //     "Left area" -> 1-87
-    //     "Right area" -> 377-426
+    //     "Right area" -> 337-426
     //     "Find additional primers" -> ☑
     // Click "Start" and wait the task for finish.
     //     Expected: in the table 8 results:
@@ -563,7 +563,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48
     //     "Disable primer if" -> "All conditions hold"
     //     "Left area" -> 1-87
-    //     "Right area" -> 377-426
+    //     "Right area" -> 337-426
     //     "Find additional primers" -> ☑
     // Set common_data/pcr_primer_design/backbone.fa as "Open the backbone sequence".
     // Click "Start" and wait the task for finish.
@@ -734,7 +734,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 51
     //     "Disable primer if" -> "All conditions hold"
     //     "Left area" -> 1-87
-    //     "Right area" -> 377-426
+    //     "Right area" -> 337-426
     //     "Find additional primers" -> ☑
     // Set common_data/pcr_primer_design/other_in_pcr.fa as "Other sequences in PCR reaction".
     // Click "Start" and wait the task for finish.
