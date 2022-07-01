@@ -44,7 +44,8 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
                                         // not set by the user.
 
     //Parameters to exclude in whole primers
-    OptionalParametersToExclude::ExclusionCriteria disablePrimerIf;
+    OptionalParametersToExclude::ExclusionCriteria disablePrimerIf =
+        OptionalParametersToExclude::ExclusionCriteria::Any;
     OptionalParametersToExclude paramsToExclude;
 
     //Areas fpr priming search
@@ -68,7 +69,7 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
     QString otherSequencesInPcrUrl;
 
     //Find additional primers
-    bool findAdditionalPrimers;
+    bool findAdditionalPrimers = false;
 };
 
 }
