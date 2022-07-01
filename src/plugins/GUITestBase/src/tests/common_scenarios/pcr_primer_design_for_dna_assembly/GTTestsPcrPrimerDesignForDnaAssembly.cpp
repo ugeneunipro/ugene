@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -489,7 +489,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Open common_data/pcr_primer_design/gfp.fa.
     // Open the PCR Primer Design tab.
-    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48.
+    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48
+    //     "Disable primer if" -> "All conditions hold"
+    //     "Left area" -> 1-87
+    //     "Right area" -> 377-426
+    //     "Find additional primers" -> â˜‘
     // Click "Start" and wait the task for finish.
     //     Expected: in the table 8 results:
     //               A Forward   67-87
@@ -516,6 +520,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 48;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
+    GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -552,7 +560,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Open common_data/pcr_primer_design/gfp.fa.
     // Open the PCR Primer Design tab.
-    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48.
+    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 48
+    //     "Disable primer if" -> "All conditions hold"
+    //     "Left area" -> 1-87
+    //     "Right area" -> 377-426
+    //     "Find additional primers" -> â˜‘
     // Set common_data/pcr_primer_design/backbone.fa as "Open the backbone sequence".
     // Click "Start" and wait the task for finish.
     //     Expected: in the table 6 results:
@@ -576,6 +588,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 48;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
+    GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
     GTUtilsPcrPrimerDesign::setBackbone(os, testDir + "_common_data/pcr_primer_design/backbone.fa");
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -619,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                           "candidate:",
                                       dialog);
             GTTextEdit::containsString(os, GTWidget::findTextEdit(os, "unwantedTextEdit", dialog),
-                                       "Delta G: -20.7 kcal/mole Base Pairs: 12 Melting temperature: 36°C");
+                                       "Delta G: -20.7 kcal/mole Base Pairs: 12 Melting temperature: 36Â°C");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::No);
         }
     };
@@ -630,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Click "Start".
     //     Expected: the "The unwanted structures have been found in the following backbone sequence candidate" dialog
     //               has appeared.
-    //     Expected: the bottom text field contains "Delta G: -20.7 kcal/mole Base Pairs: 12 Melting temperature: 36°C".
+    //     Expected: the bottom text field contains "Delta G: -20.7 kcal/mole Base Pairs: 12 Melting temperature: 36Â°C".
     // Click "No" and wait the task for finish.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
@@ -651,7 +667,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                           "candidate:",
                                       dialog);
             GTTextEdit::containsString(os, GTWidget::findTextEdit(os, "unwantedTextEdit", dialog),
-                                       "Delta G: -11.7 kcal/mole Base Pairs: 6 Melting temperature: 20°C");
+                                       "Delta G: -11.7 kcal/mole Base Pairs: 6 Melting temperature: 20Â°C");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::No);
         }
     };
@@ -663,7 +679,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Click "Start".
     //     Expected: the "The unwanted structures have been found in the following backbone sequence candidate" dialog
     //               has appeared.
-    //     Expected: the bottom text field contains "Delta G: -11.7 kcal/mole Base Pairs: 6 Melting temperature: 20°C".
+    //     Expected: the bottom text field contains "Delta G: -11.7 kcal/mole Base Pairs: 6 Melting temperature: 20Â°C".
     // Click "No" and wait the task for finish.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
@@ -688,6 +704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsPcrPrimerDesign::setUserPrimer(os, "AGGAGAAGA", U2Strand::Direct);
     GTLogTracer lt("No reverse user primer");
     GTUtilsPcrPrimerDesign::clickStart(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsMessage(os, lt);
 }
 
@@ -698,7 +715,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Set "Reverse user primer" as "TCTCTCTGGCTGC".
     // Click "Start" and wait the task for finish.
     // Open the task report.
-    //     Expected: the report contains "Delta G: -24.5 kcal/mole Base Pairs: 13 Melting temperature: 42°C".
+    //     Expected: the report contains "Delta G: -24.5 kcal/mole Base Pairs: 13 Melting temperature: 42Â°C".
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     GTUtilsPcrPrimerDesign::setUserPrimer(os, "GCAGCCAGAGAGA", U2Strand::Direct);
@@ -714,7 +731,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Open common_data/pcr_primer_design/gfp.fa.
     // Open the PCR Primer Design tab.
-    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 51.
+    // Set "Parameters of priming sequences" -> "Melting point" -> Minimum = 51
+    //     "Disable primer if" -> "All conditions hold"
+    //     "Left area" -> 1-87
+    //     "Right area" -> 377-426
+    //     "Find additional primers" -> â˜‘
     // Set common_data/pcr_primer_design/other_in_pcr.fa as "Other sequences in PCR reaction".
     // Click "Start" and wait the task for finish.
     //     Expected: in the table 2 results:
@@ -725,6 +746,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 51;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
+    GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
     GTUtilsPcrPrimerDesign::setOtherSequences(os, testDir + "_common_data/pcr_primer_design/other_in_pcr.fa");
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

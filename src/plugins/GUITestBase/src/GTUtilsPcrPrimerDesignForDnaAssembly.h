@@ -55,11 +55,18 @@ public:
     struct ParametersOfPrimingSequences {
         U2Range<int> gibbsFreeEnergy {-40, -30},  // Min -999999999, max seq_len.
             meltingPoint {57, 65},  // Min 0, max seq_len.
-            overlapLength {18, 25};  // Min 0, max seq_len.
+            overlapLength {18, 25},  // Min 0, max seq_len.
+            gcContent {-1, -1};  // Min 0, max 100. GC-content=[-1,-1] means parameter is disabled.
     };
-    // For paired spinboxes with correspond names.
+    // For optional spinboxes with correspond names. Fields must be null or convertible to int.
     struct ParametersToExcludeInWholePrimers {
-        int gibbsFreeEnergy = -7,  // Min -999999999, max 0.
+        // Options for "Disable primers if" combobox. Order matters and depends on ui file.
+        enum class DisableIf {
+            OneConditionHolds,
+            AllConditionsHold
+        };
+        DisableIf disableIf = DisableIf::AllConditionsHold;
+        QVariant gibbsFreeEnergy = -7,  // Min -999999999, max 0.
             meltingPoint = 20,  // Min 0, max 999999999.
             motifLen = 3;  // Min 0, max 999999999.
     };
@@ -149,6 +156,12 @@ public:
      * selection dialog.
      */
     static void setOtherSequences(GUITestOpStatus &os, const QString &path, bool useButton = false);
+
+    /**
+     * Expands "Extra options" group, switches on or off the "Find additional primers" checkbox depending on search
+     * parameter. Does not collapse the group back.
+     */
+    static void findAdditionalPrimers(GUITestOpStatus& os, bool search = false);
 
     /**
      * Clicks single (if clickType=Single) or double (if clickType=Double) on a resulting sequence with a given sequence

@@ -29,6 +29,8 @@
 #include "GTUtilsTaskTreeView.h"
 #include "base_dialogs/GTFileDialog.h"
 #include "drivers/GTMouseDriver.h"
+#include "primitives/GTCheckBox.h"
+#include "primitives/GTComboBox.h"
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTRadioButton.h"
 #include "primitives/GTSpinBox.h"
@@ -245,6 +247,12 @@ void GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(GUITestOpStatus &os
     setRange(os, "sbMinRequireGibbs", "sbMaxRequireGibbs", params.gibbsFreeEnergy, parent);
     setRange(os, "spMinRequireMeltingTeml", "spMaxRequireMeltingTeml", params.meltingPoint, parent);
     setRange(os, "spMinRequireOverlapLength", "spMaxRequireOverlapLength", params.overlapLength, parent);
+
+    bool gcContentSet = params.gcContent.minValue >= 0;
+    GTCheckBox::setChecked(os, "chbGcContent", gcContentSet, parent);
+    if (gcContentSet) {
+        setRange(os, "sbMinRequireGcContent", "sbMaxRequireGcContent", params.gcContent, parent);
+    }
 }
 
 void GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(GUITestOpStatus &os,
@@ -252,9 +260,20 @@ void GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(GUITestOpStatu
     QWidget *tab = getTabWgt(os);
     QWidget *parent = GTWidget::findWidget(os, "wgtParameters2ExcludeInWholePrimers", tab);
     scrollToWidget(os, parent, tab);
-    GTSpinBox::setValue(os, "sbExcludeGibbs", params.gibbsFreeEnergy, parent);
-    GTSpinBox::setValue(os, "spExcludeMeltingTeml", params.meltingPoint, parent);
-    GTSpinBox::setValue(os, "spExcludeComplementLength", params.motifLen, parent);
+    GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cmbExclusionConditions", parent), static_cast<int>(params.disableIf));
+
+    auto setOptionalSpinbox = [&os, parent](const QString& checkboxName,
+                                            const QString& spinboxName,
+                                            const QVariant& optionalParameter) {
+        bool isSet = optionalParameter.canConvert<int>();
+        GTCheckBox::setChecked(os, checkboxName, isSet, parent);
+        if (isSet) {
+            GTSpinBox::setValue(os, spinboxName, optionalParameter.toInt(), parent);
+        }
+    };
+    setOptionalSpinbox("chbExcludeGibbs", "sbExcludeGibbs", params.gibbsFreeEnergy);
+    setOptionalSpinbox("chbExcludeMeltingTeml", "spExcludeMeltingTeml", params.meltingPoint);
+    setOptionalSpinbox("chbExcludeComplementLength", "spExcludeComplementLength", params.motifLen);
 }
 
 void GTUtilsPcrPrimerDesign::configureInsertToBackboneBearings(GUITestOpStatus &os,
@@ -309,6 +328,18 @@ void GTUtilsPcrPrimerDesign::setOtherSequences(GUITestOpStatus &os, const QStrin
     } else {
         GTLineEdit::setText(os, "leOtherSequencesInPcrFilePath", path, parent);
     }
+}
+
+void GTUtilsPcrPrimerDesign::findAdditionalPrimers(GUITestOpStatus& os, bool search) {
+    QWidget* tab = getTabWgt(os);
+    auto extraOptionsArrow = GTWidget::findLabel(os, "ArrowHeader_Extra options", tab);
+    auto parent = GTWidget::findWidget(os, "wgtExtraOptions", tab);
+    scrollToWidget(os, extraOptionsArrow, tab);
+
+    if (!parent->isVisible()) {
+        GTWidget::click(os, extraOptionsArrow);
+    }
+    GTCheckBox::setChecked(os, "chbFindAdditionalPrimers", search, parent);
 }
 
 void GTUtilsPcrPrimerDesign::clickInResultsTable(GUITestOpStatus &os, int num, const ClickType &clickType) {
