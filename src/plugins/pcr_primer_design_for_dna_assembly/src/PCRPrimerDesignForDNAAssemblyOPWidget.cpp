@@ -265,7 +265,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     qint64 sequenceLength = activeSequenceContext->getSequenceLength();
     auto checkArea = [sequenceLength](const U2Region &area) {
-        return area.startPos >= 0 && area.length > 0 && area.endPos() < sequenceLength;
+        return area.startPos >= 0 && area.length > 0 && area.endPos() <= sequenceLength;
     };
     SAFE_POINT(checkArea(settings.leftArea) && checkArea(settings.rightArea),
                "Invalid areas, PCR Primer Design For DNA Assembly Task cannot be started", )
