@@ -34,6 +34,7 @@ namespace U2 {
 #define ENERGY_ATTR "gibbsFreeEnergy"
 #define MELTING_POINT_ATTR "meltingPoint"
 #define OVERLAP_ATTR "overlapLength"
+#define DISABLE_IF_ATTR "disablePrimerIf"
 #define ENERGY_EXCLUDE_ATTR "gibbsFreeEnergyExclude"
 #define MELTING_POINT_EXCLUDE_ATTR "meltingPointExclude"
 #define COMPL_LENGTH_EXCLUDE_ATTR "complementLengthExclude"
@@ -43,6 +44,7 @@ namespace U2 {
 #define RESULT_ATTR "expectedResultsList"
 #define BACKBONE_URL_ATTR "backboneSequenceUrl"
 #define OTHER_SEQ_PCR_URL_ATTR "otherSequencesInPcrUrl"
+#define ADDITIONAL_PRIMERS_ATTR "findAdditionalPrimers"
 
 void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_NAME_ATTR);
@@ -51,6 +53,16 @@ void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QD
     settings.meltingPoint = getU2RangeInt(el, MELTING_POINT_ATTR, ";");
     settings.overlapLength = getU2RangeInt(el, OVERLAP_ATTR, ";");
 
+    if (el.hasAttribute(DISABLE_IF_ATTR)) {
+        QString disableIfParameter = el.attribute(DISABLE_IF_ATTR);
+        if (disableIfParameter == "one") {
+            settings.disablePrimerIf = OptionalParametersToExclude::ExclusionCriteria::Any;
+        } else if (disableIfParameter == "all") {
+            settings.disablePrimerIf = OptionalParametersToExclude::ExclusionCriteria::All;
+        } else {
+            wrongValue(DISABLE_IF_ATTR);
+        }
+    }
     auto setOptionalInt = [this, &el](const QString& attribute, QVariant& setTo) {
         if (el.hasAttribute(attribute)) {
             setTo = getInt(el, attribute);
@@ -89,6 +101,11 @@ void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QD
             return;
         }
         settings.otherSequencesInPcrUrl = env->getVar("COMMON_DATA_DIR") + "/" + buf;
+    }
+
+    if (el.hasAttribute(ADDITIONAL_PRIMERS_ATTR)) {
+        checkBooleanAttribute(el, ADDITIONAL_PRIMERS_ATTR, true);
+        settings.findAdditionalPrimers = el.attribute(ADDITIONAL_PRIMERS_ATTR) == XmlTest::TRUE_VALUE;
     }
 }
 
