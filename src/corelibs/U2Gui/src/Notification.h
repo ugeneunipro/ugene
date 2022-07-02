@@ -53,7 +53,16 @@ class U2GUI_EXPORT Notification : public QLabel {
     Q_OBJECT
 
 public:
-    Notification(NotificationStack* stack, const QString& message, const NotificationType& type, QAction* action = nullptr);
+    /**
+     * Creates new notification label widget.
+     * If 'parent' is provided the widget is created in the 'embedded' state.
+     * If 'parent' is null the widget is styled as 'floating'.
+     */
+    Notification(NotificationStack* stack,
+                 const QString& message,
+                 const NotificationType& type,
+                 QAction* action = nullptr,
+                 QWidget* parent = nullptr);
 
     const QString& getText() const;
 
@@ -72,12 +81,6 @@ public:
 
     /** Increments counter 'duplicate notification' counter. */
     void incrementCounter();
-
-    /**
-     * Switches notification to the embedded visual state:
-     * In the embedded state notification is shown inside NotificationWidget.
-     */
-    void switchEmbeddedVisualState();
 
     /**
      * Returns timestamp in UNIX epoch millis when the notification was shown on screen.
@@ -214,8 +217,8 @@ private:
     /** Returns bottom position of the stack widget & on-screen floating notifications. Uses screen global coordinates. */
     QPoint getStackBottomRightPoint() const;
 
-    // Adds notification as a child to notification widget
-    void moveToNotificationWidget(Notification* t);
+    /** Creates a copy of the notification label widget (Notification) in the notification widgets container (NotificationWidget). */
+    void addCopyToEmbeddedNotificationWidget(Notification* notification);
 
     /** The widget this stack is created for. */
     QWidget* parentWidget;

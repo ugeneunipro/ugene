@@ -21,6 +21,8 @@
 
 #include "NotificationWidget.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 Header::Header(QWidget* w)
@@ -151,6 +153,7 @@ bool NotificationWidget::event(QEvent* event) {
 }
 
 void NotificationWidget::addNotification(QWidget* w) {
+    SAFE_POINT(w->parentWidget() == this, "Invalid parent widget", );
     int newWidth = width();
     int newHeight = height() + TT_HEIGHT;
     if (height() + TT_HEIGHT >= TS_HEIGHT) {

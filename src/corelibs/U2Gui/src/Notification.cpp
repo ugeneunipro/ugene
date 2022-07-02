@@ -35,35 +35,41 @@
 
 namespace U2 {
 
-Notification::Notification(NotificationStack* _stack, const QString& _text, const NotificationType& _type, QAction* _action)
-    : action(_action), stack(_stack), text(_text), type(_type) {
+Notification::Notification(NotificationStack* _stack, const QString& _text, const NotificationType& _type, QAction* _action, QWidget* parent)
+    : QLabel(parent), action(_action), stack(_stack), text(_text), type(_type) {
     SAFE_POINT(stack != nullptr, "Stack must be defined", );
+
+    bool isFloatingMode = parent == nullptr;
+
+    QBoxLayout* layout = new QHBoxLayout(this);  // Main layout of the Notification widget.
+    setLayout(layout);
 
     setFixedWidth(TT_WIDTH);
     setMinimumHeight(TT_HEIGHT);
 
+    setFrameStyle(QFrame::StyledPanel);
+    if (isFloatingMode) {
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+    } else {
+        setAttribute(Qt::WA_Hover);
+    }
+
     timestamp = QDateTime::currentMSecsSinceEpoch();
 
-    setFrameStyle(QFrame::StyledPanel);
     closeButton = new QLabel(this);
-    QBoxLayout* h = new QHBoxLayout(this);
-    setLayout(h);
+    closeButton->setHidden(isFloatingMode);
+    closeButton->setAttribute(Qt::WA_Hover);
+    closeButton->setFixedSize(16, 16);
+    closeButton->installEventFilter(this);
 
     updateDisplayText();
-
     updateStyle(false);
     updateCloseButtonStyle(false);
 
-    setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+    layout->addStretch();
+    layout->addWidget(closeButton);
 
-    closeButton->installEventFilter(this);
-    h->addStretch();
-    h->addWidget(closeButton);
-    closeButton->hide();
     setMouseTracking(true);
-
-    closeButton->setAttribute(Qt::WA_Hover);
-    closeButton->setFixedSize(16, 16);
 }
 
 void Notification::updateDisplayText() {
@@ -236,17 +242,13 @@ void Notification::showFloatingOnScreen() {
     }
 }
 
-void Notification::switchEmbeddedVisualState() {
-    closeButton->show();
-    setAttribute(Qt::WA_Hover);
-}
-
 void Notification::hideFloatingOnScreen() {
     hide();
     lastOnScreenHeight = TT_HEIGHT;
     onScreenTimer.stop();
     onScreenStartTimeMillis = 0;
     emit si_notificationHideEvent();
+    this->deleteLater();
 }
 
 void Notification::sl_updateNotificationState() {
@@ -380,19 +382,24 @@ void NotificationStack::updateOnScreenNotificationPositions() {
 }
 
 void NotificationStack::sl_onNotificationHidden() {
-    auto hiddenNotification = qobject_cast<Notification*>(sender());
-    SAFE_POINT(hiddenNotification != nullptr, "Sender is not a Notification!", );
+    auto notification = qobject_cast<Notification*>(sender());
+    SAFE_POINT(notification != nullptr, "Sender is not a Notification!", );
 
-    // TODO: on-screen notifications must always be inside of the notification widget from the very beginning.
-    moveToNotificationWidget(hiddenNotification);
+    disconnect(notification);
+    notifications.removeOne(notification);
+
+    addCopyToEmbeddedNotificationWidget(notification);
     updateOnScreenNotificationPositions();
 }
 
-void NotificationStack::moveToNotificationWidget(Notification* t) {
-    t->switchEmbeddedVisualState();
-    t->show();
-    t->setParent(notificationWidget);
-    notificationWidget->addNotification(t);
+void NotificationStack::addCopyToEmbeddedNotificationWidget(Notification* notification) {
+    auto embeddedNotification = new Notification(this,
+                                                 notification->getText(),
+                                                 notification->getType(),
+                                                 notification->getAction(),
+                                                 notificationWidget);
+    notificationWidget->addNotification(embeddedNotification);
+    connect(embeddedNotification, &Notification::si_deleteRequested, this, &NotificationStack::sl_onNotificationDeleteRequest);
 }
 
 void NotificationStack::sl_onNotificationDeleteRequest() {
