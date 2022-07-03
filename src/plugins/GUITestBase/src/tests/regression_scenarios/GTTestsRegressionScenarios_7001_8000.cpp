@@ -2420,21 +2420,21 @@ GUI_TEST_CLASS_DEFINITION(test_7539) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7540) {
-    //1. Open file with two equal annotations.
+    // 1. Open file with two equal annotations.
     GTFileDialog::openFile(os, testDir + "_common_data/regression/7540/7540.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *miscFeature = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
+    QTreeWidgetItem* miscFeature = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTTreeWidget::click(os, miscFeature);
-    //2. Select one and cheange it location, then name.
+    // 2. Select one and cheange it location, then name.
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "misc_feature", "2..8"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
     GTTreeWidget::click(os, miscFeature);
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "misc_feature1", "2..8"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    //3. Open Annotation Highlighting Tab.
-    //Expected state: no crash or SAFE_POINT triggering.
+    // 3. Open Annotation Highlighting Tab.
+    // Expected state: no crash or SAFE_POINT triggering.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
 }
 
@@ -2475,28 +2475,14 @@ GUI_TEST_CLASS_DEFINITION(test_7550) {
     class Click103TimesScenario : public CustomScenario {
     public:
         void run(GUITestOpStatus& os) override {
-            for (auto notificationStack = AppContext::getMainWindow()->getNotificationStack();
-                 notificationStack->count() < 100;) {
-                GTUtilsMdi::activateWindow(os, "123 [cant_translate.fa]");
-                GTUtilsOptionPanelSequenceView::pressFindProducts(os);
-            }
-            for (int i = 0; i < 3; i++) {
-                GTUtilsMdi::activateWindow(os, "123 [cant_translate.fa]");
-                GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+            auto stack = AppContext::getMainWindow()->getNotificationStack();
+            for (int i = 0; i < 103; i++) {
+                stack->addNotification("Notification " + QString::number(i + 1));
+                GTGlobals::sleep(200);
             }
         }
     };
-    // Open the _common_data/fasta/cant_translate.fa.
-    // Open the "In Silico PCR" tab.
-    // Set "AAAAAAAAAAAAAAA" as forward and reverse primers.
-    // Click "Find product(s) anyway" 100 times.
-    // Click "Find product(s) anyway" a few more times.
-    //     Expected state: the number of notifications is "99+", there is no crash.
-    GTUtilsMdi::closeActiveWindow(os);
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/cant_translate.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAAAAAAAAAAAAA");
-    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AAAAAAAAAAAAAAA");
+    // Create 100+ notifications. Check that UGENE does not crash.
     GTThread::runInMainThread(os, new Click103TimesScenario());
 }
 
