@@ -529,8 +529,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
 
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -549,13 +549,11 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "render_area_Primers_DNA"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 5;
     settings.primersName = "linear";
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-
-    GTMouseDriver::click();
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
