@@ -126,6 +126,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    CHECK_OP(stateInfo, );
     if (pos > seqlen) {
         pos %= seqlen;
     }
@@ -148,14 +149,13 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
 }
 
 QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QString& enzymeId) const {
+    CHECK_OP(stateInfo, {});
     QList<SharedAnnotationData> res;
-    if (hasError() || isCanceled()) {
-        return res;
-    }
     QString cutStr;
     QString dbxrefStr;
     QList<FindEnzymesAlgResult> searchResultList = searchResultMap.value(enzymeId);
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
+        CHECK_OP(stateInfo, {});
         const SEnzymeData& enzyme = searchResult.enzyme;
         if (!enzyme->accession.isEmpty()) {
             QString accession = enzyme->accession;
@@ -176,6 +176,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
     }
 
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
+        CHECK_OP(stateInfo, {});
         const SEnzymeData& enzyme = searchResult.enzyme;
         if (isCircular && searchResult.pos + enzyme->seq.size() > seqlen) {
             if (seqlen < searchResult.pos) {
@@ -238,6 +239,9 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef,
       maxResults(maxResults),
       resultListener(l),
       isCircular(isCircular) {
+}
+
+void FindSingleEnzymeTask::prepare() {
     U2SequenceObject dnaSeq("sequence", sequenceObjectRef);
 
     SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
@@ -276,6 +280,7 @@ void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2
 }
 
 void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) {
+    CHECK_OP(ti, );
     if (enzyme->seq.isEmpty()) {
         return;
     }
