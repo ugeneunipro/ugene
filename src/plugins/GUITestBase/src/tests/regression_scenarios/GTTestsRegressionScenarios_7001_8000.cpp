@@ -2771,7 +2771,7 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7635) {
-    // Checks that notification container widget contains all floating notifications.
+    // Checks that notification container widget contains all available notifications.
     class Create10NotificationsScenario : public CustomScenario {
     public:
         void run(GUITestOpStatus&) override {
