@@ -155,7 +155,6 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
     QString dbxrefStr;
     QList<FindEnzymesAlgResult> searchResultList = searchResultMap.value(enzymeId);
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
-        CHECK_OP(stateInfo, {});
         const SEnzymeData& enzyme = searchResult.enzyme;
         if (!enzyme->accession.isEmpty()) {
             QString accession = enzyme->accession;
@@ -176,7 +175,6 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
     }
 
     for (const FindEnzymesAlgResult& searchResult : qAsConst(searchResultList)) {
-        CHECK_OP(stateInfo, {});
         const SEnzymeData& enzyme = searchResult.enzyme;
         if (isCircular && searchResult.pos + enzyme->seq.size() > seqlen) {
             if (seqlen < searchResult.pos) {
