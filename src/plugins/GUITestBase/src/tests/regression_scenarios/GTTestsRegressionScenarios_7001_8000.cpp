@@ -2474,7 +2474,7 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
 GUI_TEST_CLASS_DEFINITION(test_7550) {
     class Click103TimesScenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus&) override {
             auto stack = AppContext::getMainWindow()->getNotificationStack();
             for (int i = 0; i < 103; i++) {
                 stack->addNotification("Notification " + QString::number(i + 1));
