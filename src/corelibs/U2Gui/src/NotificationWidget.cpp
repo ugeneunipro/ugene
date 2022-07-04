@@ -106,6 +106,7 @@ void Header::mouseMoveEvent(QMouseEvent* me) {
 
 NotificationWidget::NotificationWidget(QWidget* w)
     : QFrame(w) {
+    setObjectName("NotificationWidget");
     setFrameShape(Panel);
     setWindowFlags(Qt::ToolTip);
     setMouseTracking(true);
