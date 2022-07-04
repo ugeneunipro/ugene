@@ -2785,7 +2785,7 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
     GTThread::runInMainThread(os, new Create10NotificationsScenario());
 
     QString counterValue = GTUtilsNotifications::getNotificationCounterValue(os);
-    CHECK_SET_ERR(counterValue == "10", "Invalid notifiaction counter value: " + counterValue);
+    CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
 
     auto containerWidget = GTUtilsNotifications::openNotificationContainerWidget(os);
     QList<QWidget*> notifications = GTWidget::findChildren<QWidget>(os, containerWidget, [](QWidget* w) { return qobject_cast<Notification*>(w) != nullptr; });
@@ -2793,7 +2793,7 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
 
     // Check that counter value was not reset after the widget is opened.
     counterValue = GTUtilsNotifications::getNotificationCounterValue(os);
-    CHECK_SET_ERR(counterValue == "10", "Invalid notifiaction counter value: " + counterValue);
+    CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
 }
 
 }  // namespace GUITest_regression_scenarios
