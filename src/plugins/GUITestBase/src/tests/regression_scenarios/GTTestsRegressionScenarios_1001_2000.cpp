@@ -6031,6 +6031,7 @@ GUI_TEST_CLASS_DEFINITION(test_1658) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI_1658.nwk", 0, 0, true));
     QAbstractButton* tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     //    3. Make sure that the "Display tree with alignment editor" button is checked
     //    4. Press the "Build" button
     //    Expected state: tree view appears, it's syncronized with MSA view

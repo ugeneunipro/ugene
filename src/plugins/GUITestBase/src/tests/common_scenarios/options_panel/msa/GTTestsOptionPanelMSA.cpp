@@ -1590,6 +1590,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsProjectTreeView::toggleView(os); // Close project view to make all actions on toolbar available.
+
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));

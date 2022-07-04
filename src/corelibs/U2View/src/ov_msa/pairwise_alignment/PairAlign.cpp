@@ -423,9 +423,6 @@ void PairAlign::sl_alignButtonPressed() {
 }
 
 void PairAlign::sl_outputFileChanged() {
-    if (saveController->getSaveFileName().isEmpty()) {
-        saveController->setPath(getDefaultFilePath());
-    }
     checkState();
 }
 

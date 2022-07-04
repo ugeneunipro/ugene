@@ -112,10 +112,11 @@ bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus& os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTabIsOpened"
-void GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab) {
+QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab) {
     QString name = innerWidgetNames[tab];
     auto innerTabWidget = GTWidget::findWidget(os, name);
-    GT_CHECK(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name);
+    GT_CHECK_RESULT(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name, nullptr);
+    return innerTabWidget;
 }
 #undef GT_METHOD_NAME
 
@@ -554,6 +555,18 @@ QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus& os) {
     checkTabIsOpened(os, General);
     auto label = GTWidget::findLabel(os, "alignmentAlphabet");
     return label->text();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setOutputFile"
+void GTUtilsOptionPanelMsa::setOutputFile(HI::GUITestOpStatus& os, const QString& outputFilePath) {
+    auto tabWidget = checkTabIsOpened(os, PairwiseAlignment);
+    auto outputLineEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
+    if (!outputLineEdit->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
+    }
+
+    GTLineEdit::setText(os, outputLineEdit, outputFilePath, tabWidget);
 }
 #undef GT_METHOD_NAME
 

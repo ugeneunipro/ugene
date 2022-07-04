@@ -3893,6 +3893,8 @@ GUI_TEST_CLASS_DEFINITION(test_3770) {
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::countTasks(os, "Download remote documents") == 0, "Task was not canceled");

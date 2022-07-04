@@ -457,12 +457,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //    3) Choose "Merge sequence mode" and click "OK" button.
     //    Expected state: one sequence view with a merged sequence is opened. Its name is "merged_document.gb"; its length is 2249.
 
-    QList<QUrl> files;
-    files << testDir + "_common_data/fasta/DNA.fa";
-    files << testDir + "_common_data/fasta/DNA_1_seq.fa";
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Merge;
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
-    GTUtilsProject::openFiles(os, files);
+    GTFileDialog::openFileList(os, testDir + "_common_data/fasta/", {"DNA.fa", "DNA_1_seq.fa"});
 
     int length = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(2249 == length, QString("Sequence length mismatch. Expected: %1. Actual: %2").arg(2249).arg(length));
@@ -1322,7 +1319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     }
 
     U2Region r = GTUtilsSequenceView::getPanViewByNumber(os)->getVisibleRange();
-    CHECK_SET_ERR(r.startPos > 99000, QString("Unexpected visible range: %1").arg(r.startPos));
+    CHECK_SET_ERR(r.startPos > 90000, QString("Unexpected visible range: %1").arg(r.startPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044_1) {
