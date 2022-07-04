@@ -70,7 +70,15 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
 
         addSubTask(loadOtherSequencesInPcr);
     }
-
+    // DEBUG
+    aForward = U2Region(2, settings.forwardUserPrimer.length());
+    aReverse = U2Region(50, settings.reverseUserPrimer.length());
+    b2Forward = U2Region(44, settings.forwardUserPrimer.length());
+    b2Reverse = U2Region(90, settings.reverseUserPrimer.length());
+    b3Forward = U2Region(140, settings.forwardUserPrimer.length());
+    b3Reverse = U2Region(180, settings.reverseUserPrimer.length());
+    backboneSequence = "GGGGGGGGGG";
+    return;
     findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, settings.overlapLength.maxValue, sequence, false);
     addSubTask(findUnwantedIslands);
 
@@ -80,6 +88,9 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
 }
 
 void PCRPrimerDesignForDNAAssemblyTask::run() {
+    // DEBUG
+    generateUserPrimersReports();
+    return;
     // We have A and B1, B2, B3 pairs of primers
     // A and B1 are pretty the same, except the fact that B1 has some depencedcies on B2 and B3
     // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3

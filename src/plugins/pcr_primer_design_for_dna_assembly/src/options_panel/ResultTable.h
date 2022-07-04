@@ -61,7 +61,7 @@ private:
     AnnotatedDNAView *associatedView = nullptr;
     AnnotationGroup *associatedGroup = nullptr;
     QList<U2Region> currentProducts;
-    QPair<int, int> primerLengths;
+    QPair<int, int> primerLengths; //Lengths of <forward, reverse> primers
 };
 
 }    // namespace U2

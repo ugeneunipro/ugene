@@ -43,8 +43,8 @@ ResultTable::ResultTable(QWidget *parent)
     setHorizontalHeaderLabels(headerLabels);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
-    connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
-    connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
+    connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &ResultTable::sl_selectionChanged);
+    connect(this, &ResultTable::clicked, this, &ResultTable::sl_selectionChanged);
 }
 
 void ResultTable::setCurrentProducts(const QList<U2Region>& _currentProducts, const QPair<int, int>& _primersLengths, AnnotatedDNAView* _associatedView) {

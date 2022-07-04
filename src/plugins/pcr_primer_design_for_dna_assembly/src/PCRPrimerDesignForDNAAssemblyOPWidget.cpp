@@ -151,10 +151,10 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
             &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
             &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
-    connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
-    connect(pbExportProduct, SIGNAL(clicked()), SLOT(sl_extractProduct()));
-    connect(pbExportForward, SIGNAL(clicked()), SLOT(sl_extractProduct()));
-    connect(pbExportReverse, SIGNAL(clicked()), SLOT(sl_extractProduct()));
+    connect(productsTable, &QAbstractItemView::doubleClicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct);
+    connect(pbExportProduct, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct);
+    connect(pbExportForward, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct);
+    connect(pbExportReverse, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct);
 
     connect(pbFindReverseComplement, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectReverseComplementInTable);
     connect(pbAddToForward5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ForwardSequence);
