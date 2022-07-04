@@ -372,6 +372,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     }
     CHECK(pcrTask->isFinished(), );
     pbStart->setEnabled(true);
+    // Lengths of QPair<forward, reverse> primers
     QPair<int, int> primerLengths(pcrTask->getSettings().forwardUserPrimer.length(), pcrTask->getSettings().reverseUserPrimer.length());
     productsTable->setCurrentProducts(pcrTask->getResults(), primerLengths, annDnaView);
     createResultAnnotations();

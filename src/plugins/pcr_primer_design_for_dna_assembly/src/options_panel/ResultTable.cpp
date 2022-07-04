@@ -48,6 +48,7 @@ ResultTable::ResultTable(QWidget *parent)
 }
 
 void ResultTable::setCurrentProducts(const QList<U2Region>& _currentProducts, const QPair<int, int>& _primersLengths, AnnotatedDNAView* _associatedView) {
+    // Lengths of QPair<forward, reverse> primers
     SAFE_POINT(_currentProducts.size() == MAXIMUM_ROW_COUNT * 2, "Should be 8 results", );
     currentProducts = _currentProducts;
     primerLengths = _primersLengths;
@@ -75,6 +76,7 @@ void ResultTable::setAnnotationGroup(AnnotationGroup *_associatedGroup) {
 }
 
 QList<QPair<QString, U2Region> > ResultTable::getSelectedFragment(FragmentLocation location) const {
+    //Lengths of QPair<forward, reverse> primers
     QList<QPair<QString, U2Region> > fragmentList;
     QModelIndexList selectedIndexesList = selectedIndexes();
     if (selectedIndexesList.isEmpty()) {
@@ -128,6 +130,7 @@ ResultTableData ResultTable::getPCRPrimerProductTableData() const {
 }
 
 void ResultTable::sl_selectionChanged() {
+    //QPair <Name, location>
     QList<QPair<QString, U2Region>> selectedResultList = getSelectedFragment(ResultTable::Whole);
     if (selectedResultList.isEmpty()) {
         return;
