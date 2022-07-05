@@ -65,7 +65,7 @@ public:
             OneConditionHolds,
             AllConditionsHold
         };
-        DisableIf disableIf = DisableIf::AllConditionsHold;
+        DisableIf disableIf = DisableIf::OneConditionHolds;
         QVariant gibbsFreeEnergy = -7,  // Min -999999999, max 0.
             meltingPoint = 20,  // Min 0, max 999999999.
             motifLen = 3;  // Min 0, max 999999999.

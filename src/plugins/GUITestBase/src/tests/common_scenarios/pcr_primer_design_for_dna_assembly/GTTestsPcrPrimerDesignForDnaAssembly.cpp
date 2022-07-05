@@ -520,7 +520,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 48;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
-    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers excludeParams;
+    excludeParams.disableIf = GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers::DisableIf::AllConditionsHold;
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, excludeParams);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
     GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
@@ -588,7 +590,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 48;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
-    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers excludeParams;
+    excludeParams.disableIf = GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers::DisableIf::AllConditionsHold;
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, excludeParams);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
     GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
@@ -746,7 +750,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPcrPrimerDesign::ParametersOfPrimingSequences params;
     params.meltingPoint.minValue = 51;
     GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(os, params);
-    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, {});
+    GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers excludeParams;
+    excludeParams.disableIf = GTUtilsPcrPrimerDesign::ParametersToExcludeInWholePrimers::DisableIf::AllConditionsHold;
+    GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(os, excludeParams);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{1, 87}}, GTUtilsPcrPrimerDesign::AreaType::Left);
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{337, 426}}, GTUtilsPcrPrimerDesign::AreaType::Right);
     GTUtilsPcrPrimerDesign::findAdditionalPrimers(os, true);
