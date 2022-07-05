@@ -74,14 +74,7 @@ public:
 
     QAction* getAction() const;
 
-    /** Increments counter of the notification and re-sets on-screen timeout. */
     bool eventFilter(QObject* target, QEvent* event) override;
-
-    /** Start on-screen timer. The notification must be positioned & shown by the external controller. */
-    void showFloatingOnScreen();
-
-    /** Hides on-screen notification. Emits si_notificationHideEvent. */
-    void hideFloatingOnScreen();
 
     /** Increments counter 'duplicate notification' counter. */
     void incrementCounter();
@@ -130,16 +123,16 @@ private:
 
     const QString text;
 
-    /** Time the notification is created/updated. Unix epoch millis. */
+    /**
+     * Time the notification is created/updated. Unix epoch millis.
+     * Every notification update triggers a floating notification shown on the screen.
+     */
     qint64 timestamp;
 
     const NotificationType type;
 
     /** Floating widget related to the current notification. Set only for embedded widgets. */
     QPointer<Notification> floatingNotification;
-
-    /** Timestamp in millis (Unix epoch) when the notification was shown on the screen. */
-    qint64 lastUpdateTimeMillis = 0;
 
     /** Counter for duplicate notifications. */
     int counter = 0;

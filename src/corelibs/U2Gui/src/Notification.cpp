@@ -60,7 +60,6 @@ Notification::Notification(NotificationStack* _stack,
     }
 
     timestamp = QDateTime::currentMSecsSinceEpoch();
-    lastUpdateTimeMillis = timestamp;
 
     closeButton = new QLabel(this);
     closeButton->setHidden(isFloatingMode);
@@ -212,10 +211,7 @@ QAction* Notification::getAction() const {
 void Notification::incrementCounter() {
     counter++;
     timestamp = QDateTime::currentMSecsSinceEpoch();
-
     updateDisplayText();
-
-    lastUpdateTimeMillis = QDateTime::currentMSecsSinceEpoch();
 }
 
 NotificationStack::NotificationStack(QWidget* _parentWidget)
@@ -257,8 +253,14 @@ void NotificationStack::add(const QString& text, const NotificationType& type, Q
             Notification* floatingNotification = n->floatingNotification;
             if (floatingNotification != nullptr) {
                 floatingNotification->incrementCounter();
-                updateOnScreenNotificationPositions();
+            } else {
+                floatingNotification = new Notification(this, text, type, action);  // Add new floating notification.
+                floatingNotification->counter = n->counter;
+                floatingNotification->updateDisplayText();
+                floatingNotifications.append(floatingNotification);
+                n->floatingNotification = floatingNotification;
             }
+            updateOnScreenNotificationPositions();
             emit si_changed();
             return;
         }
@@ -267,7 +269,7 @@ void NotificationStack::add(const QString& text, const NotificationType& type, Q
     if (notifications.count() >= MAX_STACK_SIZE) {
         // Replace the oldest notification. If all notifications are on-screen -> select the oldest on-screen one.
         auto notificationToRemove = *std::min_element(notifications.begin(), notifications.end(), [](auto n1, auto n2) {
-            return n1->lastUpdateTimeMillis < n2->lastUpdateTimeMillis;
+            return n1->timestamp < n2->timestamp;
         });
         remove(notificationToRemove);
     }
@@ -405,7 +407,7 @@ void NotificationStack::activate(Notification* notification) {
 void NotificationStack::sl_updateNotificationState() {
     QList<Notification*> notificationsToRemove;
     for (auto notification : qAsConst(floatingNotifications)) {
-        qint64 onScreenTimeMillis = QDateTime::currentMSecsSinceEpoch() - notification->lastUpdateTimeMillis;
+        qint64 onScreenTimeMillis = QDateTime::currentMSecsSinceEpoch() - notification->timestamp;
         if (onScreenTimeMillis >= Notification::ON_SCREEN_TIMEOUT_MILLIS) {
             notificationsToRemove.append(notification);
         }
