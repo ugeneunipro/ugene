@@ -64,6 +64,7 @@ private:
     QPoint offset;
 };
 
+/** Notification widgets container. */
 class NotificationWidget : public QFrame {
     Q_OBJECT
 

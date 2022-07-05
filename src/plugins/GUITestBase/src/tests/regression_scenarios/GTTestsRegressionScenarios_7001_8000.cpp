@@ -2774,5 +2774,31 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7635) {
+    // Checks that notification container widget contains all available notifications.
+    class Create10NotificationsScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus&) override {
+            auto stack = AppContext::getMainWindow()->getNotificationStack();
+            for (int i = 0; i < 10; i++) {
+                stack->addNotification("Notification " + QString::number(i + 1));
+                GTGlobals::sleep(200);
+            }
+        }
+    };
+    GTThread::runInMainThread(os, new Create10NotificationsScenario());
+
+    QString counterValue = GTUtilsNotifications::getNotificationCounterValue(os);
+    CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
+
+    auto containerWidget = GTUtilsNotifications::openNotificationContainerWidget(os);
+    QList<QWidget*> notifications = GTWidget::findChildren<QWidget>(os, containerWidget, [](QWidget* w) { return qobject_cast<Notification*>(w) != nullptr; });
+    CHECK_SET_ERR(notifications.count() == 10, "Invalid notification widgets count: " + QString::number(notifications.count()));
+
+    // Check that counter value was not reset after the widget is opened.
+    counterValue = GTUtilsNotifications::getNotificationCounterValue(os);
+    CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

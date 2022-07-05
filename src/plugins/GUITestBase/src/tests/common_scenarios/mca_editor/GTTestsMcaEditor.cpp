@@ -1393,7 +1393,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     // 2. Push "Ctrl+Alt+v"
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
@@ -1402,22 +1401,22 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTUtilsDialog::checkNoActiveWaiters(os);
+//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+//    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+//    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
-    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+//    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
+//    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+//    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
-    GTUtilsDialog::checkNoActiveWaiters(os);
+//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+//    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
+//    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1527,48 +1526,38 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-#ifndef Q_OS_LINUX
-    // In linux, OS intercept this hotkey
+    if (!isOsLinux()) {
+        // In linux, OS intercept this hotkey
 
-    // 2. Push "Ctrl+Alt+a"
-    // Expected state : Notification "There are no ambiguous characters in the alignment.
-    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-#endif
+        // 2. Push "Ctrl+Alt+a"
+        // Expected state : Notification "There are no ambiguous characters in the alignment.
+        GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
+        GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        GTUtilsDialog::checkNoActiveWaiters(os);
+    }
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next ambiguous character"});
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017_2) {

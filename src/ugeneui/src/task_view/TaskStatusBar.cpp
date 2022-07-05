@@ -75,6 +75,7 @@ TaskStatusBar::TaskStatusBar() {
     lampLabel = new QLabel();
     notificationLabel = new QLabel();
     notificationLabel->setPixmap(notificationEmpty);
+    notificationLabel->setObjectName("notificationLabel");
     l->addWidget(lampLabel);
     l->addWidget(notificationLabel);
 
@@ -263,18 +264,20 @@ void TaskStatusBar::sl_taskStateChanged() {
 }
 
 bool TaskStatusBar::eventFilter(QObject* o, QEvent* e) {
-    Q_UNUSED(o);
-    QEvent::Type t = e->type();
-    if (t == QEvent::MouseButtonDblClick) {
-        if (o == notificationLabel) {
+    QEvent::Type type = e->type();
+    if (o == notificationLabel) {
+        if (type == QEvent::MouseButtonDblClick || type == QEvent::MouseButtonRelease) {  // Show notifications on click() or doubleClick().
             nStack->showStack();
-        } else {
-            AppContext::getMainWindow()->getDockManager()->toggleDock(DOCK_TASK_VIEW);
+            return true;
+        } else if (type == QEvent::ToolTip) {
+            QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
+            QToolTip::showText(hEvent->globalPos(), tr("%1 notification(s)").arg(notificationCountToString(nStack->count())));
+            return true;
         }
-    } else if (t == QEvent::ToolTip && o == notificationLabel) {
-        QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
-        QToolTip::showText(hEvent->globalPos(),
-                           tr("%1 notification(s)").arg(notificationCountToString(nStack->count())));
+    }
+    if (type == QEvent::MouseButtonDblClick) {
+        AppContext::getMainWindow()->getDockManager()->toggleDock(DOCK_TASK_VIEW);
+        return true;
     }
     return false;
 }
@@ -313,6 +316,7 @@ void TaskStatusBar::sl_notificationChanged() {
         painter.end();
         notificationLabel->setPixmap(iconWithNumber);
     }
+    notificationLabel->setProperty("notifications-count", QString::number(nStack->count()));
 }
 
 void TaskStatusBar::sl_taskProgressChanged() {
