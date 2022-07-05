@@ -1484,29 +1484,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     GTFile::setReadWrite(os, dirPath);
 }
 
-GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
-    // 1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Open Pairwise alignment option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
-    // 3. Add Phaneroptera_falcata sequence
-    // 4. Add Isophya_altaica_EF540820 sequence
-    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
-    // 5. Use empty path in output settings
-    expandOutputSettings(os);
-    auto outputFileLineEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
-    QString initialText = outputFileLineEdit->text();
-    CHECK_SET_ERR(!initialText.isEmpty(), "line edit is empty");
-    GTWidget::click(os, outputFileLineEdit);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    QString finalText = outputFileLineEdit->text();
-    // Expected state: empty path can not be set
-    CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
-}
-
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

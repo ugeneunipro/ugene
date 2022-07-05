@@ -34,6 +34,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTScrollBar.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
@@ -3637,41 +3638,47 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     for (int i = 0; i < 3; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Right);
     }
-    CHECK_SET_ERR(hscroll->value() == 3, QString("right key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
+    int value = GTScrollBar::getValue(os, hscroll);
+    CHECK_SET_ERR(value == 3, QString("right key works wrong. Scrollbar has value: %1").arg(value));
 
     //    left
     for (int i = 0; i < 2; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Left);
     }
-    CHECK_SET_ERR(hscroll->value() == 1, QString("left key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
+    value = GTScrollBar::getValue(os, hscroll);
+    CHECK_SET_ERR(value == 1, QString("left key works wrong. Scrollbar has value: %1").arg(value));
 
     //    page down
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    CHECK_SET_ERR(vscroll->value() > 20, QString("page down key works wrong: %1").arg(vscroll->value()));
+    value = GTScrollBar::getValue(os, vscroll);
+    CHECK_SET_ERR(value > 20, QString("page down key works wrong: %1").arg(value));
 
     //    page up
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    CHECK_SET_ERR(vscroll->value() == 0, QString("page up key works wrong: %1").arg(vscroll->value()));
+    CHECK_SET_ERR(GTScrollBar::getValue(os, vscroll) == 0, QString("page up key works wrong: %1").arg(vscroll->value()));
 
     //    end
     GTKeyboardDriver::keyClick(Qt::Key_End);
-    CHECK_SET_ERR(vscroll->value() > 1650, QString("end key works wrong: %1").arg(vscroll->value()));
+    value = GTScrollBar::getValue(os, vscroll);
+    CHECK_SET_ERR(value > 1650, QString("end key works wrong: %1").arg(value));
 
     //    home
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    CHECK_SET_ERR(vscroll->value() == 0, QString("end key works wrong: %1").arg(vscroll->value()));
+    value = GTScrollBar::getValue(os, vscroll);
+    CHECK_SET_ERR(value == 0, QString("end key works wrong: %1").arg(value));
 
     //    mouse wheel
     for (int i = 0; i < 3; i++) {
         GTMouseDriver::scroll(-1);
     }
-    const int scrolledValue = vscroll->value();
-    CHECK_SET_ERR(scrolledValue > 0, QString("scroll down works wrong. Scrollbar has value: %1").arg(vscroll->value()));
+    value = GTScrollBar::getValue(os, vscroll);
+    CHECK_SET_ERR(value > 0, QString("scroll down works wrong. Scrollbar has value: %1").arg(value));
 
     for (int i = 0; i < 2; i++) {
         GTMouseDriver::scroll(1);
     }
-    CHECK_SET_ERR(0 < vscroll->value() && vscroll->value() < scrolledValue, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
+    int value2 = GTScrollBar::getValue(os, vscroll);
+    CHECK_SET_ERR(value2 > 0 && value2 < value, QString("scroll up works wrong. Scrollbar has value: %1, old value: %2").arg(value2).arg(value));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0070) {
