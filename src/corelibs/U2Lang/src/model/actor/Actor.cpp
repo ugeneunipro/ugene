@@ -484,32 +484,6 @@ static bool validateCodePage(const QString& url) {
     return true;
 }
 
-/**
- * UGENE-5595
- * The following validation is very simple:
- *   - convert attr's value from QString to 8Bite byte array
- *   - then, convert back 8Bit to QString
- *   - both QString must be equal
- */
-static bool validateCodePage(Attribute* attr, NotificationsList& infoList) {
-    SAFE_POINT(nullptr != attr, "NULL attribute!", false);
-
-    QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
-    if (urlsList.isEmpty()) {
-        return true;
-    }
-
-    // Verify each URL
-    bool res = true;
-    foreach (const QString& url, urlsList) {
-        if (!validateCodePage(url)) {
-            res = false;
-            infoList << WorkflowNotification(L10N::warningCharactersCodePage(attr->getDisplayName()), "", WorkflowNotification::U2_WARNING);
-        }
-    }
-    return res;
-}
-
 bool Actor::validate(NotificationsList& notificationList) const {
     bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc& desc, customValidators) {
@@ -531,14 +505,6 @@ bool Actor::validate(NotificationsList& notificationList) const {
         if (urlType != NotAnUrl) {
             bool urlAttrValid = validateUrlAttribute(attr, urlType, notificationList);
             urlsRes = urlsRes && urlAttrValid;
-        }
-
-        if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
-            // UGENE-5595
-            bool urlAttrValid = validateCodePage(attr, notificationList);
-            Q_UNUSED(urlAttrValid)
-            // we think that this is a warning, so I commented the following line
-            // urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {
