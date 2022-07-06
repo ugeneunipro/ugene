@@ -28,7 +28,12 @@ bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
         && event->type() == QEvent::KeyPress)
     {
         auto key = static_cast<QKeyEvent *>(event)->key();
-        if ( key == Qt::Key_Left
+        if ( key == Qt::Key_Escape
+            || key == Qt::Key_Delete
+            || key == Qt::Key_Backspace
+            || key == Qt::Key_Insert
+            || key == Qt::Key_Space
+            || key == Qt::Key_Left
             || key == Qt::Key_Right
             || key == Qt::Key_Up
             || key == Qt::Key_Down
@@ -37,7 +42,7 @@ bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
             || key == Qt::Key_PageUp
             || key == Qt::Key_PageDown)
         {
-            // ignore navigation keys
+            // ignore MSA sequence view widget keys
             return true;
         }
     }
