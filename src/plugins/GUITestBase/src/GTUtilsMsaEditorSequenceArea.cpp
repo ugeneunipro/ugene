@@ -218,10 +218,10 @@ void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& o
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToPosition"
-void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& position) {
-    auto msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, multilineIndex);
+void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const QPoint& position) {
+    auto msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     CHECK_SET_ERR_RESULT(msaSeqArea != nullptr,
-                         QString("Can't find sequence area #%1").arg(multilineIndex), );
+                         QString("Can't find sequence area #%1").arg(0), );
     GT_CHECK(msaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(position.x())
@@ -231,7 +231,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, int mul
 
     // scroll down
     auto vBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll",
-                                        GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(multilineIndex));
+                                        GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0));
 
     QStyleOptionSlider vScrollBarOptions;
     vScrollBarOptions.initFrom(vBar);
@@ -246,7 +246,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, int mul
 
     // scroll right
     auto hBar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll",
-                                        GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(multilineIndex));
+                                        GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0));
 
     QStyleOptionSlider hScrollBarOptions;
     hScrollBarOptions.initFrom(hBar);
@@ -267,13 +267,6 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, int mul
     }
 
     SAFE_POINT(msaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "scrollToPosition"
-void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position)
-{
-    scrollToPosition(os, 0, position);
 }
 #undef GT_METHOD_NAME
 
@@ -300,10 +293,10 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveMouseToPosition"
-void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& globalMaPosition) {
-    auto msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, multilineIndex);
+void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
+    auto msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     CHECK_SET_ERR_RESULT(msaSeqArea != nullptr,
-                         QString("Can't find sequence area #%1").arg(multilineIndex), );
+                         QString("Can't find sequence area #%1").arg(0), );
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
                  .arg(globalMaPosition.x())
@@ -311,31 +304,35 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, int 
                  .arg(msaSeqArea->getEditor()->getAlignmentLen())
                  .arg(msaSeqArea->getViewRowCount()));
 
-    scrollToPosition(os, globalMaPosition);
-    const QPoint positionCenter(msaSeqArea->getEditor()->getUI()->getUI(multilineIndex)->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-                                msaSeqArea->getEditor()->getUI()->getUI(multilineIndex)->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
+    auto ui = GTUtilsMsaEditor::getEditor(os)->getMaEditorMultilineWgt();
+    QPoint positionCenter;
+    uint muiCount = msaSeqArea->getEditor()->getUI()->getChildrenCount();
+    uint multilineIndex = 0;
+    if (GTUtilsMsaEditor::getMultilineMode(os)) {
+        ui->getScrollController()->centerPoint(globalMaPosition, msaSeqArea->size());
+    } else {
+        scrollToPosition(os, globalMaPosition);
+    }
+    do {
+        msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, multilineIndex);
+        MaEditorWgt *mui = ui->getUI(multilineIndex);
+        positionCenter = QPoint(mui->getBaseWidthController()->getBaseScreenCenter(
+                                    globalMaPosition.x()),
+                                mui->getRowHeightController()
+                                    ->getScreenYRegionByViewRowIndex(globalMaPosition.y())
+                                    .center());
+        multilineIndex++;
+    } while (multilineIndex < muiCount
+             && !msaSeqArea->rect().contains(positionCenter, false));
     GT_CHECK(msaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
-
     GTMouseDriver::moveTo(msaSeqArea->mapToGlobal(positionCenter));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "moveMouseToPosition"
-void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
-    moveMouseToPosition(os, 0, globalMaPosition);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "clickToPosition"
-void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus& os, int multilineIndex, const QPoint& globalMaPosition) {
-    GTUtilsMSAEditorSequenceArea::moveMouseToPosition(os, multilineIndex, globalMaPosition);
-    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickToPosition"
 void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition) {
-    clickToPosition(os, 0, globalMaPosition);
+    GTUtilsMSAEditorSequenceArea::moveMouseToPosition(os, globalMaPosition);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
