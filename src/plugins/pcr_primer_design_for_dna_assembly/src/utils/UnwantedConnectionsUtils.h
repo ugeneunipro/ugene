@@ -30,8 +30,6 @@
 
 namespace U2 {
 
-struct OptionalParametersToExclude;
-
 class UnwantedConnectionsUtils {
 public:
     UnwantedConnectionsUtils() = delete;
