@@ -682,7 +682,7 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
 bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus &os)
 {
     // Get state of the "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    QAbstractButton *mmode = GTAction::button(os, getEditor(os)->multilineViewAction);
     CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", false);
     return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
 }
