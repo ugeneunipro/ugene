@@ -162,6 +162,7 @@ void HangChecker::sl_check() {
                 if (!waiter->isFinished && waiter->isExpectedName(dialog->objectName(), waiter->getSettings().objectName)) {
                     found = true;
                     mightHung = false;
+                    break;
                 }
             }
 

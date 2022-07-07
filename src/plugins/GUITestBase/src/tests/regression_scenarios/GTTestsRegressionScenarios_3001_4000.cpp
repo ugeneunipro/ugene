@@ -3983,17 +3983,21 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
-            GTLineEdit::setText(os, fileNameEdit, sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png");
+            QString badFileName = isOsWindows()
+                                      ? sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png"
+                                      : "///bad-name";
+            GTLineEdit::setText(os, fileNameEdit, badFileName);
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "cannot be created"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new CircularViewExportImage(os, new Scenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "Save circular view as image", GTGlobals::UseMouse));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTFile::check(os, sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3779) {

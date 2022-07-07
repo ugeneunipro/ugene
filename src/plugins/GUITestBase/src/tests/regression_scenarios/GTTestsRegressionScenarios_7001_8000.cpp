@@ -2061,13 +2061,20 @@ GUI_TEST_CLASS_DEFINITION(test_7491) {
      * Expected state: no errors in the log
      */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save anyway"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save));
+
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsDialog::checkNoActiveWaiters(os, 20000);
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save));
     GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save anyway"));
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
