@@ -918,12 +918,73 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     // Check initial state of MSA editor & Exclude list with no selection.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
+    CHECK_SET_ERR(excludeListWidget == nullptr, "Exclude list must not be opened by default");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_COPY, "exclude_list_move_from_msa_action"}, PopupChecker::IsDisabled));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+
+    auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+    auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, toolbar, "exclude_list_toggle_action");
+    CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked by default");
+
+    // Open Exclude List.
+    GTWidget::click(os, toggleExcludeListButton);
+
+    // Check Exclude List state.
+    CHECK_SET_ERR(toggleExcludeListButton->isChecked(), "Toggle exclude list button must be checked");
+    excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
+
+    GTWidget::findLabelByText(os, "Exclude list is empty", excludeListWidget);
+
+    // Check buttons.
+    auto selectFileButton = GTWidget::findToolButton(os, "exclude_list_select_file_button", excludeListWidget);
+    CHECK_SET_ERR(selectFileButton->text() == "COI.exclude-list.fasta", "Invalid select file button text: " + selectFileButton->text());
+    CHECK_SET_ERR(selectFileButton->isEnabled(), "selectFileButton must be enabled");
+
+    auto saveAsButton = GTWidget::findToolButton(os, "exclude_list_save_as_button", excludeListWidget);
+    CHECK_SET_ERR(saveAsButton->isEnabled(), "saveAsButton must be enabled");
+
+    auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", excludeListWidget);
+    CHECK_SET_ERR(!moveToMsaButton->isEnabled(), "moveToMsa button must not be enabled");
+
+    auto moveFromMsaButton = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", excludeListWidget);
+    CHECK_SET_ERR(!moveFromMsaButton->isEnabled(), "moveToExcludeList button must not be enabled");
+
+    auto nameListArea = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeListWidget);
+    CHECK_SET_ERR(nameListArea->isVisible(), "Name list must be visible");
+
+    auto sequenceViewArea = GTWidget::findPlainTextEdit(os, "exclude_list_sequence_view", excludeListWidget);
+    CHECK_SET_ERR(sequenceViewArea->isVisible(), "Sequence area must be visible");
+
+    // Hide exclude list.
+    GTWidget::click(os, toggleExcludeListButton);
+    CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked");
+    GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
+    // Check initial state of MSA editor & Exclude list with no selection.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+
+    // Switch to multiline mode
+    // Press "Multiline View" button on toolbar
+    GTUtilsMsaEditor::setMultilineMode(os, true);
 
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
@@ -969,6 +1030,8 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     GTWidget::click(os, toggleExcludeListButton);
     CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked");
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_test_0001) {

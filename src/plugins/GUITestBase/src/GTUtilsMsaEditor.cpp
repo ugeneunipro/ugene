@@ -681,13 +681,10 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getMultilineMode"
 bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus &os)
 {
+    auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+
     // Get state of the "Multiline View" button on toolbar
-    QWidget *mmodeWidget
-        = GTToolbar::getWidgetForActionObjectName(os,
-                                                  GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                                  "Multiline View");
-    CHECK_SET_ERR_RESULT(mmodeWidget != nullptr, "No \"Multiline View\" button widget", false);
-    QAbstractButton *mmode = qobject_cast<QAbstractButton *>(mmodeWidget);
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "Multiline View");
     CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", false);
     return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
 }
@@ -696,8 +693,10 @@ bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus &os)
 #define GT_METHOD_NAME "setMultilineMode"
 void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus &os, bool newMode)
 {
+    auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+
     // Press "Multiline View" button on toolbar
-    QAbstractButton *mmode = GTAction::button(os, "Multiline View");
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "Multiline View");
     CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", );
     bool oldMode = getMultilineMode(os);
     if (oldMode == newMode) {
