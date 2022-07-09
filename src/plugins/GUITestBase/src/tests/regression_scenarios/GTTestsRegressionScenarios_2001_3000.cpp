@@ -774,18 +774,18 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
 
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    const QString colorSchemeName = name + "_Scheme";
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
-    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::amino));
+    QString colorSchemeName = name + "_Scheme";
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                              << "Custom schemes"
+                                                              << "Create new color scheme"));
+    GTUtilsDialog::add(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::amino));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                              << "Custom schemes" << colorSchemeName));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -1932,8 +1932,8 @@ GUI_TEST_CLASS_DEFINITION(test_2352) {
 
     QString randomBinaryFile = QCoreApplication::applicationFilePath();
 
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, randomBinaryFile, randomBinaryFile, false, false, false, 5, 5, true));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::add(os, new BuildDotPlotFiller(os, randomBinaryFile, randomBinaryFile, false, false, false, 5, 5, true));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 }
 
@@ -2126,7 +2126,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
               projectFile(_projectFile) {
         }
 
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             auto projectNameEdit = GTWidget::findLineEdit(os, "projectNameEdit", dialog);
@@ -2135,11 +2135,11 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
             auto projectFileEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
             GTLineEdit::setText(os, projectFileEdit, projectFolder + "/" + projectFile);
 
-#ifdef Q_OS_DARWIN
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Create", dialog));
-#else
-            GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+            if (isOsMac()) {
+                GTWidget::click(os, GTWidget::findButtonByText(os, "Create", dialog));
+            } else {
+                GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            }
         }
 
     private:
@@ -2162,8 +2162,8 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
     // 2. Specify the path to an existing project
     // 3. Press "Create" button by using keyboard
     //    Expected state: only one dialog with warning message appeared
-    GTUtilsDialog::waitForDialog(os, new CreateProjectFiller(os, projectName, projectFolder, projectFile));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "Project file already exists"));
+    GTUtilsDialog::add(os, new CreateProjectFiller(os, projectName, projectFolder, projectFile));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "Project file already exists"));
 
     GTMenu::clickMainMenuItem(os, {"File", "New project..."});
 }
@@ -2645,11 +2645,11 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Set any reference sequence.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Set this sequence as reference"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Set this sequence as reference"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton, QPoint(10, 10));
 
     //    3. Open context menu, open the "Highlighting" submenu, set the "Agreements" type.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Highlighting", "Agreements"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Appearance", "Highlighting", "Agreements"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
     //    4. Open context menu again, open the "Export" submenu, choose the "Export highlighted" menu item.
@@ -2658,8 +2658,8 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
     //    5. Set any valid filename, other settings should be default. Click "Export".
     //    Expected state: exporting successfully completes, UGENE doesn't crash.
     //    Current state: UGENE crashes.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export highlighted"}));
-    GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "test_2459.txt"));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Export", "Export highlighted"}));
+    GTUtilsDialog::add(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "test_2459.txt"));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 }
 
@@ -2675,8 +2675,8 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsMsaEditor::removeRows(os, 1, list.size() - 1);
 
     // 3. Align the result one-line-msa by kalign with default values.
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTUtilsDialog::add(os, new KalignDialogFiller(os));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2685,7 +2685,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     QAbstractButton* redo = GTAction::button(os, "msa_action_redo");
-    CHECK_SET_ERR(nullptr != redo, "There is no REDO button");
+    CHECK_SET_ERR(redo != nullptr, "There is no REDO button");
     CHECK_SET_ERR(redo->isEnabled() == false, "REDO button is enabled");
 }
 
@@ -2892,21 +2892,21 @@ GUI_TEST_CLASS_DEFINITION(test_2519) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Go to position 20000.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 20000));
+    GTUtilsDialog::add(os, new GoToDialogFiller(os, 20000));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
 
     // 3. Call context menu, select menu item {Edit sequence -> Remove subsequence...}.
     // Expected state: a "Remove subsequence" dialog appears.
     // 4. Set the region (1..190950), other settings should be default, click the "Remove" button.
     // Expected state: UGENE doesn't crash.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
-    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..190950"));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
+    GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "1..190950"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // 5. Call this dialog again, remove region (1..8999).
     // Expected state: UGENE doesn't crash.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
-    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..8999"));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
+    GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "1..8999"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
 
@@ -2982,8 +2982,8 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    2. Use context menu { Edit sequence -> Remove subsequence... }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "action_edit_remove_sub_sequences"));
-    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "10..20"));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "action_edit_remove_sub_sequences"));
+    GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "10..20"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     //    Expected state: "Remove subsequence" dialog has appeared
@@ -3023,9 +3023,9 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
             clickButton(button);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
-    GTUtilsDialog::waitForDialog(os, new CustomSaver(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
+    GTUtilsDialog::add(os, new CustomSaver(os));
     GTUtilsProjectTreeView::click(os, "test_2544.fa", Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -3051,8 +3051,8 @@ GUI_TEST_CLASS_DEFINITION(test_2545) {
 
 GUI_TEST_CLASS_DEFINITION(test_2549) {
     // this needed to ensure that log view has text
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/gtf/invalid", "AB375112_annotations.gtf"));
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, testDir + "_common_data/gtf/invalid", "AB375112_annotations.gtf"));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 
     GTKeyboardDriver::keyClick('3', Qt::AltModifier);
@@ -3336,8 +3336,8 @@ GUI_TEST_CLASS_DEFINITION(test_2581_2) {
 
     //    3. Press the "Align" button
     //    Expected state: after a few seconds alignment has finished, UGENE does not crash
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Align", "Align with ClustalO..."}));
-    GTUtilsDialog::waitForDialog(os, new ClustalOSupportRunDialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Align", "Align with ClustalO..."}));
+    GTUtilsDialog::add(os, new ClustalOSupportRunDialogFiller(os));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3353,9 +3353,9 @@ GUI_TEST_CLASS_DEFINITION(test_2581_3) {
 
     //    3. Press the "Align" button
     //    Expected state: after a few seconds alignment has finished, UGENE does not crash
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Align", "Align with MAFFT..."}));
     MAFFTSupportRunDialogFiller::Parameters parameters;
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Align", "Align with MAFFT..."}));
-    GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, &parameters));
+    GTUtilsDialog::add(os, new MAFFTSupportRunDialogFiller(os, &parameters));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3444,8 +3444,8 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Export subalignment from this msa to any MSA format
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/2605.aln", {"SEQUENCE_1"}, 6, 237));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/2605.aln", {"SEQUENCE_1"}, 6, 237));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     // Expected state: export successfull, no any messages in log like "There is no sequence objects in given file, unable to convert it in multiple alignment"
@@ -3571,8 +3571,8 @@ GUI_TEST_CLASS_DEFINITION(test_2632) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 }
 
@@ -3808,8 +3808,8 @@ GUI_TEST_CLASS_DEFINITION(test_2683) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
     //    Expected state: in appeared wizard there is a page "Cuffdiff Samples"
     //    where user can divide input datasets into samples for Cuffdiff tool.
@@ -3901,8 +3901,8 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
         }
     };
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"No-new-transcripts", "Single-end"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new test_2709_canceler()));
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"No-new-transcripts", "Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Tuxedo Wizard", new test_2709_canceler()));
     GTUtilsWorkflowDesigner::addSample(os, "tuxedo");
     //    Expected state: "No novel junctions" tophat parameter set to true by default
     GTUtilsWorkflowDesigner::click(os, "Map RNA-Seq Reads with TopHat");
@@ -4107,7 +4107,6 @@ GUI_TEST_CLASS_DEFINITION(test_2761_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Select some area in the MSA.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 2), QPoint(5, 5));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
     //    3. Context menu of the area -> Export -> Save subalignment.
 
     class customFiller : public ExtractSelectedAsMSADialogFiller {
@@ -4122,7 +4121,8 @@ GUI_TEST_CLASS_DEFINITION(test_2761_1) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new customFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new customFiller(os));
     GTMouseDriver::click(Qt::RightButton);
     //    4. Set the destination path to the dir without write permissions.
     //    5. Click "Extract".
@@ -4135,7 +4135,6 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Select some area in the MSA.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 2), QPoint(5, 5));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
     //    3. Context menu of the area -> Export -> Save subalignment.
 
     class customFiller : public ExtractSelectedAsMSADialogFiller {
@@ -4150,7 +4149,8 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new customFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new customFiller(os));
     GTMouseDriver::click(Qt::RightButton);
     //    4. Set the destination path to the dir that does not exists
     //    5. Click "Extract".
@@ -4636,7 +4636,7 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Run "Phylip Neighbor Joining" with default parameters.
     // Expected state: tree view has been appeared.
     GTWidget::findWidget(os, "treeView");
-    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeSettings); // close project tree view to get more space.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeSettings);  // close project tree view to get more space.
 
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.
@@ -4687,15 +4687,15 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
 
     //    3. Create a new custom nucleotide color scheme.
     QString colorSchemeName = GTUtils::genUniqueString(name);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
-    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                              << "Custom schemes"
+                                                              << "Create new color scheme"));
+    GTUtilsDialog::add(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
     MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     GTMenu::showContextMenu(os, msaSeqArea);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
+                                                              << "Custom schemes" << colorSchemeName));
     GTMenu::showContextMenu(os, msaSeqArea);
 
     combo = GTWidget::findComboBox(os, "highlightingScheme");
@@ -4709,7 +4709,6 @@ GUI_TEST_CLASS_DEFINITION(test_2899) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Open "RNA-seq analysis with Tuxedo tools" sample.
     //    3. Click the "Setup" button (default values: Full, Single-end).
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
 
     class custom : public CustomScenario {
     public:
@@ -4737,8 +4736,8 @@ GUI_TEST_CLASS_DEFINITION(test_2899) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
-
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Tuxedo Wizard", new custom()));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 }
 

@@ -153,10 +153,10 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(5, 4));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7014.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
-    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -253,10 +253,10 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // Export -> Save subalignment.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
-    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -284,10 +284,10 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "s1");
 
     // Call Export -> Save subalignment context menu.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
-    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -605,8 +605,8 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     for (int i = 0; i < 8; i++) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
-        GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
+        GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+        GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
         GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
@@ -781,10 +781,10 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
         }
     };
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
-    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Save"));
+    GTUtilsDialog::add(os, new WorkflowMetaDialogFiller(os, testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
     GTUtilsMdi::click(os, GTGlobals::Close);
 }
 
@@ -815,8 +815,8 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
     CHECK_SET_ERR(sequenceNameList2 != sequenceNameList1, "Name list must change as the result of sorting");
 
     // Align with KAlign now.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::add(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -981,8 +981,8 @@ GUI_TEST_CLASS_DEFINITION(test_7368) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
     GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
 }
 

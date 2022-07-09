@@ -406,8 +406,8 @@ void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus& os, const 
 #define GT_METHOD_NAME "createQualifier"
 void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus& os, const QString& qualifierName, const QString& qualifierValue, QTreeWidgetItem* annotation) {
     selectItems(os, {annotation});
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "add_qualifier_action"}));
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, qualifierName, qualifierValue));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "add_qualifier_action"}));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotation));
     GTMouseDriver::click(Qt::RightButton);
 }
