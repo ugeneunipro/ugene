@@ -137,8 +137,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {  // DIFFERENCE: add sequence is checked
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/Raw/", "raw.seq"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "/samples/Raw/", "raw.seq"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // Expected state: raw sequence appeared in alignment.
@@ -406,8 +406,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     const QStringList expectedChangedMsa = {"AAGCTTCTTT", "AAGTTACTAA", "TAG---TTAT", "AAGC---TAT", "TAGTTATTAA", "TAGTTATTAA", "TAGTTATTAA", "AAGCTTT---", "A--AGAATAA", "AAGCTTTTAA"};
 
     // fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Number, 3));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Number, 3));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
@@ -437,8 +437,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     const QStringList expectedChangedMsa = {"AAGCCTTT", "AAGTCTAA", "TAG-TTAT", "AAGC-TAT", "TAGTTTAA", "TAGTTTAA", "TAGTTTAA", "AAGCT---", "A--AATAA", "AAGCTTAA"};
 
     // fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent, 15));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent, 15));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
@@ -468,8 +468,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     const QStringList expectedChangedMsa = {"AAGCTTCTTTTAA", "AAGTTACTAA---", "TAG---TTATTAA", "AAGC---TATTAA", "TAGTTATTAA---", "TAGTTATTAA---", "TAGTTATTAA---", "AAGCTTT---TAA", "A--AGAATAATTA", "AAGCTTTTAA---"};
 
     // fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Column));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Column));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
@@ -557,8 +557,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     const QStringList expectedChangedMsa = {"AAG---AATAATTA", "AAG---TCTATTAA", "AAGACTTCTTTTAA", "AAG---TCTTTTAA", "AAG---CCTTTTAA", "AAG---CTTACTAA", "TAG---TTTATTAA", "TAG---CTTATTAA", "TAG---CTTATTAA", "TAG---CTTATTAA"};
 
     // Use context {Edit->Align with MUSCLE}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, false));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, false));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -588,8 +588,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     const QStringList expectedChangedMsa = {"AAGACTTCTTTTAA", "AAGCTTACT---AA", "TAGTTTATT---AA", "AAGTCTATT---AA", "TAGCTTATT---AA", "TAGCTTATT---AA", "TAGCTTATT---AA", "AAGTCTTTT---AA", "AAGAATAAT---TA", "AAGCCTTTT---AA"};
 
     // Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseKey));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new KalignDialogFiller(os));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -619,8 +619,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     const QStringList expectedChangedMsa = {"AAGACTTCTTTTAA", "AAG-CTTACT--AA", "TAG-TTTATT--AA", "AAG-TCTATT--AA", "TAG-CTTATT--AA", "TAG-CTTATT--AA", "TAG-CTTATT--AA", "AAG-TCTTTT--AA", "AAG-AATAAT--TA", "AAG-CCTTTT--AA"};
 
     // Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os, 100));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new KalignDialogFiller(os, 100));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -651,8 +651,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     const QStringList expectedChangedMsa = {"---AAGACTTCTTTTAA", "---AAGCTT---ACTAA", "---TAGT---TTATTAA", "---AAGTC---TATTAA", "---TAGCTT---ATTAA", "---TAGCTT---ATTAA", "---TAGCTT---ATTAA", "---AAGTCTTT---TAA", "A---AGAAT--AATTA-", "---AAGCCT---TTTAA"};
 
     // Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new ClustalWDialogFiller(os));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);

@@ -48,11 +48,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
+    GTUtilsDialog::add(os, alignShortReadsFiller);
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "output.ugenedb"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "output.ugenedb"));
     CHECK_OP(os, );
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
@@ -75,11 +75,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
+    GTUtilsDialog::add(os, alignShortReadsFiller);
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "GUITest_dna_assembly_conversions/test_0002.ugenedb"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "GUITest_dna_assembly_conversions/test_0002.ugenedb"));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );

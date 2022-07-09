@@ -78,8 +78,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTWidget::click(os, GTWidget::findWidget(os, "exportTreeImageButton"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
@@ -104,8 +104,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "treeView"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");

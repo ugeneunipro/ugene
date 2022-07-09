@@ -679,18 +679,18 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     //    4. Open exported file
     //    Expected state: there are two annotation table objects
 
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_3_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_3_19.gb"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_3_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_3_18.gb"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT483", "ann_1");
@@ -700,14 +700,14 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
 
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_18.gb");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_19.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -735,15 +735,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "annotation");
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"annotation"});
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -767,15 +767,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -800,8 +800,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
     GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
@@ -809,8 +809,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
 
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsLog::check(os, l);
 }
@@ -943,7 +943,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     QModelIndex documentProjectTreeIndex = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
     QWidget* sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
 
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, documentProjectTreeIndex, sequenceView);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -956,17 +956,17 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"5'UTR", "exon"});
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "sars.gb");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTUtilsProject::openFile(os, sandBoxDir + "ann_export_test_0012_3.gtf");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

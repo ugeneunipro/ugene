@@ -737,9 +737,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     // Expected: file dialog appears.
     // 5. Choose "samples/CLUSTALW/COI.aln".
     // Expected: the document is loaded, error notification is shown.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
@@ -748,8 +748,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
+    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -772,8 +772,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
+    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
