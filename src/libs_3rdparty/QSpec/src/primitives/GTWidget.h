@@ -38,6 +38,7 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QPlainTextEdit>
+#include <QPointer>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSlider>
@@ -252,20 +253,28 @@ public:
         // object->findChildren for UX objects (widgets, actions) must be run in the main thread only to avoid parallel modification on GUI restructuring.
         class FindChildrenScenario : public CustomScenario {
         public:
-            FindChildrenScenario(QObject* _parent, std::function<bool(ChildType*)>& _matchFn, QList<ChildType*>& _result)
-                : parent(_parent), matchFn(_matchFn), result(_result) {
+            FindChildrenScenario(QObject* parent, std::function<bool(ChildType*)>& _matchFn, QList<ChildType*>& _result)
+                : parentPtr(parent), matchFn(_matchFn), result(_result) {
+                if (parent != nullptr) {
+                    useParent = true;
+                    parentObjectName = parent->objectName();
+                }
             }
 
-            QObject* parent = nullptr;
+            QPointer<QObject> parentPtr;
+            bool useParent = false;
+            QString parentObjectName;
             std::function<bool(ChildType*)>& matchFn;
             QList<ChildType*>& result;
 
             void run(HI::GUITestOpStatus& os) override {
                 // If parent is null, start from QMainWindows.
                 QList<QObject*> roots;
+                QObject* parent = parentPtr;
                 if (parent != nullptr) {
                     roots << parent;
                 } else {
+                    GT_CHECK(!useParent, "Parent object was destroyed before run(): " + parentObjectName);
                     QList<QWidget*> topLevelWidgets = GTMainWindow::getMainWindowsAsWidget(os);
                     for (const auto& topLevelWidget : qAsConst(topLevelWidgets)) {
                         roots << topLevelWidget;
