@@ -1273,7 +1273,6 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     // Accept the offering.
     // Expected state: the file reloading failed, an error message in the log appears.
     GTLogTracer logTracer;
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "was modified. Do you want to reload"));
 
     QFile file(sandboxFastqFile);
@@ -1281,8 +1280,11 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     QString badContent = GTFile::readAll(os, testDir + "_common_data/regression/6238/6238.fastq");
     file.write(badContent.toLocal8Bit());
     file.close();
-
     GTUtilsDialog::checkNoActiveWaiters(os, 20000);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
+
     GTUtilsLog::checkContainsError(os, logTracer, "Failed to detect");
 }
 
