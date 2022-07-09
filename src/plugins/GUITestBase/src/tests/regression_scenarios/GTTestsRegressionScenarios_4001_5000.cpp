@@ -1150,7 +1150,6 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     QFile::remove(sandBoxDir + "out.ugenedb");
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new Scenario_test_4124()));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -5255,12 +5254,9 @@ GUI_TEST_CLASS_DEFINITION(test_4885_2) {
     //    2. Build a tree. The result tree should be synchronised with the msa.
     GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_4885_2.nwk");
 
-    //    3. Doubleclick the first symbol of the first sequence.
-    //    Expected state: UGENE doesn't ask about confirmation of the modification.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "The alignment has been modified"));
-
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::doubleClick();
+    // Test will fail if there is any opened dialog (like 'Alignment is modified').
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4885_3) {

@@ -289,7 +289,6 @@ void GTWidget::close(GUITestOpStatus& os, QWidget* widget) {
         }
 
         void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->close();
             GTGlobals::sleep(100);

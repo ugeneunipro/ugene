@@ -1637,7 +1637,6 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
     parameters.useBestMode = false;
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The short reads can't be mapped to the reference sequence!"));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5013,11 +5012,8 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new Scenario()));
     GTWidget::click(os, GTUtilsMsaEditor::getNameListArea(os), Qt::RightButton);
-
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new RenameSequenceFiller(os, "test_1551"));
-    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1554) {

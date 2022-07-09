@@ -150,7 +150,7 @@ void setGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog 
 }
 
 void checkGroupName(HI::GUITestOpStatus& os, const QString& name, QWidget* dialog = nullptr) {
-    GTLineEdit::checkText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), name);
+    GTLineEdit::checkText(os, "leGroupName", dialog, name);
 }
 
 void clickSelectGroupButton(HI::GUITestOpStatus& os, QWidget* dialog = nullptr) {
@@ -459,20 +459,20 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     openFileOpenSearchTabAndSetPattern(os, testDir + "_common_data/fasta/AMINO.fa", "DDDEEEEEEE");
 
     //    4. Ensure that the default type is "misc_feature".
-    const QString defaultType = getTypeFromOptionsPanelWidget(os);
-    CHECK_SET_ERR("misc_feature" == defaultType,
+    QString defaultType = getTypeFromOptionsPanelWidget(os);
+    CHECK_SET_ERR(defaultType == "misc_feature",
                   QString("An unexpected default type: expect '%1', got '%2'")
                       .arg("misc_feature")
                       .arg(defaultType));
 
     //    5. Ensure that there is no type "bHLH Domain".
-    const bool bhlhPresent = checkTypePresenceInOptionsPanelWidget(os, "bHLH Domain");
+    bool bhlhPresent = checkTypePresenceInOptionsPanelWidget(os, "bHLH Domain");
     CHECK_SET_ERR(!bhlhPresent,
                   QString("Nucleotide type is unexpectedly present for amino sequence: '%1'")
                       .arg("bHLH Domain"));
 
     //    6. Ensure that there is a type "transit_peptide".
-    const bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "transit_peptide");
+    bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "transit_peptide");
     CHECK_SET_ERR(transitPeptidePresent,
                   QString("Universal type is unexpectedly missed for amino sequence: '%1'")
                       .arg("transit_peptide"));
@@ -568,15 +568,13 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Ensure that the group name is "<auto>".
             checkGroupName(os, "<auto>", dialog);
 
             //    4. Click "Predefined group names" button.
-            //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
             //    5. Set the annotation name. Accept the dialog.
@@ -587,18 +585,20 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario()));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the group has the same name as the annotation.
-    const QStringList expectedGroupNames = {"test_0008  (0, 1)"};
-    const QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
-    CHECK_SET_ERR(expectedGroupNames == groupNames, QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ").arg(groupNames.join(", "))));
+    QStringList expectedGroupNames = {"test_0008  (0, 1)"};
+    QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
+    CHECK_SET_ERR(expectedGroupNames == groupNames,
+                  QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
-    const QStringList expectedAnnotationNames = {"test_0008"};
-    const QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0008  (0, 1)");
-    CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
+    QStringList expectedAnnotationNames = {"test_0008"};
+    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0008  (0, 1)");
+    CHECK_SET_ERR(expectedAnnotationNames == annotationNames,
+                  QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -618,8 +618,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
             checkGroupName(os, "<auto>", dialog);
 
             //    4. Click "Predefined group names" button.
-            //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
             //    5. Set the annotation name. Accept the dialog.
@@ -655,8 +653,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     checkGroupName(os, "<auto>");
 
     //    4. Click "Predefined group names" button.
-    //    Expected state: nothing happens, there is no popup menus.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
     clickSelectGroupButton(os);
 
     //    5. Set the annotation name. Create annotations.
@@ -2608,7 +2604,6 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    25. Cancel the dialog.
             // Dialog is applied to check boundaries.
             setSimpleLocation(os, 199950, 1, false, dialog);
-            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };

@@ -51,8 +51,8 @@ namespace GUITest_posterior_actions {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     Q_UNUSED(os);
-    // Release all hold keyboard modifier keys
 
+    // Release all hold keyboard modifier keys
     Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
         GTKeyboardDriver::keyRelease(Qt::Key_Shift);
@@ -78,22 +78,12 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
 
     QWidget* popupWidget = QApplication::activePopupWidget();
     while (popupWidget != nullptr) {
-#ifdef Q_OS_DARWIN
-        GTUtilsMac fakeClock;
-        fakeClock.startWorkaroundForMacCGEvents(1, true);
-        fakeClock.startWorkaroundForMacCGEvents(16000, false);
-#endif
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
     QWidget* modalWidget = QApplication::activeModalWidget();
     while (modalWidget != nullptr) {
-#ifdef Q_OS_DARWIN
-        GTUtilsMac fakeClock;
-        fakeClock.startWorkaroundForMacCGEvents(1, true);
-        fakeClock.startWorkaroundForMacCGEvents(16000, false);
-#endif
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
     }
@@ -107,18 +97,12 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
-#ifdef Q_OS_DARWIN
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-    fakeClock.startWorkaroundForMacCGEvents(16000, false);
-#endif
-
     if (AppContext::getProject() != nullptr) {
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
+        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No), 10000, true);
+        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os), 10000, true);
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         if (isOsMac()) {
@@ -130,14 +114,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
             GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
         }
         GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
-        GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
+        GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     }
-
-#ifdef Q_OS_DARWIN
-    GTUtilsMac fakeClock2;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-    fakeClock2.startWorkaroundForMacCGEvents(16000, false);
-#endif
 
     GTUtilsMdi::closeAllWindows(os);
     AppContext::getTaskScheduler()->cancelAllTasks();

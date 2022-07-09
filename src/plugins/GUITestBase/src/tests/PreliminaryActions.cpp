@@ -51,22 +51,20 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-#ifdef Q_OS_WIN
-    QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
-#endif
+    if (isOsWindows()) {
+        QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
+    }
 
-    GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
+    GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
 
-#ifndef Q_OS_WIN
-    GTMouseDriver::release(Qt::RightButton);
-    GTMouseDriver::release();
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
-    uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
-#endif
-
-    GTUtilsDialog::startHangChecking(os);
+    if (!isOsWindows()) {
+        GTMouseDriver::release(Qt::RightButton);
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+        GTKeyboardDriver::keyRelease(Qt::Key_Alt);
+        uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
+    }
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {
