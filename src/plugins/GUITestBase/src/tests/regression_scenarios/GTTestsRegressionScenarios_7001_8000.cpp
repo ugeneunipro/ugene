@@ -2157,12 +2157,18 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsMsaEditor::clickSequenceName(os, "Pc_Metavir10");
+    // Delete first sequences so the tested sequence will be scrolled into the view.
+    GTUtilsMsaEditor::selectRows(os, 0, 15);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    
+    QString sequenceName = "Pc_Metavir10";
+    GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {sequenceName});
 
     int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstVisibleBase == 0, "1. Unexpected first visible base: " + QString::number(firstVisibleBase));
 
-    QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, "Pc_Metavir10");
+    QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, sequenceName);
     GTMouseDriver::moveTo(rect.center());
 
     GTMouseDriver::doubleClick();
