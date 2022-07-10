@@ -862,7 +862,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
 
     //    UGENE doesn't crash
-    const QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
     CHECK_SET_ERR(currentScheme == "UGENE", QString("An unexpected color scheme is set: expect '%1', got '%2'").arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Colors", "UGENE"}, PopupChecker::IsChecked));

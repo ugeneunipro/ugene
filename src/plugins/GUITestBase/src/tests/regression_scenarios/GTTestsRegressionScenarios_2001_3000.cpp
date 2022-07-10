@@ -4754,8 +4754,8 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
     //    3. Press "OK".
     //    Expected: the 8 regions of auto-annotations are created.
     const QStringList defaultEnzymes = {"BamHI", "BglII", "ClaI", "DraI", "EcoRI", "EcoRV", "HindIII", "PstI", "SalI", "SmaI", "XmaI"};
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4763,8 +4763,8 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
 
     //    4. Repeast 2-3.
     //    Expected: there are still 8 regions of auto-annotations. Old regions are removed, new ones are added.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const int secondAnnotationsCount = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "enzyme  (8, 0)").size();
@@ -5317,15 +5317,15 @@ GUI_TEST_CLASS_DEFINITION(test_2987) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QDir().mkpath(sandBoxDir + "test_3305");
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1..5)", sandBoxDir + "test_2987/test_2987.gb"));
+    GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1..5)", sandBoxDir + "test_2987/test_2987.gb"));
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "create_annotation_action"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_2987/test_2987", ExportAnnotationsFiller::csv, os));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
+    GTUtilsDialog::add(os, new ExportAnnotationsFiller(sandBoxDir + "test_2987/test_2987", ExportAnnotationsFiller::csv, os));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "test_2987.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
-    const QFile csvFile(sandBoxDir + "test_2987/test_2987");
+    QFile csvFile(sandBoxDir + "test_2987/test_2987");
     CHECK_SET_ERR(!(csvFile.exists() && csvFile.size() == 0), "An empty file exists");
 }
 

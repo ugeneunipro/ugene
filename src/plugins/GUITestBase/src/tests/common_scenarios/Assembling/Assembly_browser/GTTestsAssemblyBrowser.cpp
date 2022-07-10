@@ -739,7 +739,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     // Expected: the document is loaded, error notification is shown.
     GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+
     GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {

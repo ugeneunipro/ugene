@@ -1453,9 +1453,9 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Use context menu on annotation in tree view
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
     GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
     GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Check {add-> Objects with annotations} action
     GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]");

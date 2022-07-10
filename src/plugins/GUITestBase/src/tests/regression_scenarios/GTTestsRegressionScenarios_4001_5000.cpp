@@ -1931,8 +1931,8 @@ GUI_TEST_CLASS_DEFINITION(test_4221) {
     parameters.resultDir = sandBoxDir;
     parameters.resultFileName = "test_4221.sam";
     parameters.indexAlgorithm = AlignShortReadsFiller::BwaParameters::Is;
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_4221.ugenedb"));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_4221.ugenedb"));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4729,9 +4729,10 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     // 7. Click "No" in the appeared message box.
     // Expected result: An error notification appears - "A problem occurred during doing BLAST. The sequence is no more available".
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
-    GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
     QFile::remove(sandBoxDir + "regression_test_4784_2.fa");
     GTGlobals::sleep(5000);  // Wait until UGENE detects the change.
+    GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
@@ -4752,9 +4753,9 @@ GUI_TEST_CLASS_DEFINITION(test_4785_1) {
     // Expected result : An error notification appears :
     // A problem occurred during aligning profile to profile with MUSCLE.The original alignment is no more available.
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
-    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     QFile::remove(sandBoxDir + "test_4785.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
@@ -4777,9 +4778,9 @@ GUI_TEST_CLASS_DEFINITION(test_4785_2) {
     // Expected result : An error notification appears :
     // A problem occurred during aligning profile to profile with MUSCLE.The original alignment is no more available.
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
-    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     QFile::remove(sandBoxDir + "test_4785.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
@@ -4934,15 +4935,17 @@ GUI_TEST_CLASS_DEFINITION(test_4804_2) {
 
     //    2. Add rna extended sequence via menu {Actions->Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Extended RNA\"");
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Extended RNA\"");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/standard_amino.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Extended RNA\" to \"Raw\"");
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Extended RNA\" to \"Raw\"");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_3) {
@@ -4956,13 +4959,15 @@ GUI_TEST_CLASS_DEFINITION(test_4804_3) {
 
     //    2. Add  extended amino sequence by drag and drop
     QModelIndex toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_amino_seq");
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Add  extended DNA sequence by drag and drop
     toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_dna_seq");
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Extended amino acid\" to \"Raw\"");
     GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Extended amino acid\" to \"Raw\"");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_4) {
@@ -4971,9 +4976,8 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
 
     // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
-
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -4984,9 +4988,8 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
 
     // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
-
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }

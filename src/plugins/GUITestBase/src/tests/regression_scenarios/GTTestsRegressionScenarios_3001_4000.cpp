@@ -3092,12 +3092,12 @@ GUI_TEST_CLASS_DEFINITION(test_3609_3) {
 
     QWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_INSERT_SUBSEQUENCE));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_INSERT_SUBSEQUENCE}));
     GTUtilsDialog::add(os, new InsertSequenceFiller(os, "AAACCCTTTGGGAAA"));
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_GOTO_ACTION));
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 199960));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_GOTO_ACTION}));
+    GTUtilsDialog::add(os, new GoToDialogFiller(os, 199960));
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
     GTUtilsLog::check(os, l);

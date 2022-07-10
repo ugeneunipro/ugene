@@ -2394,8 +2394,8 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit configuration..."}));
+    GTUtilsDialog::add(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", {}, Qt::RightButton);
 
     //    11. Edit the element again.
@@ -2424,8 +2424,8 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 2");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit configuration..."}));
+    GTUtilsDialog::add(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
 }
 
@@ -2473,7 +2473,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     QAbstractButton* realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
     //         Expected result : no sequences are selected.
     //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect());
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, {});
     CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 
     //         Select all sequences in the alignment.
@@ -2493,7 +2493,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Click "align_selected_sequences_to_alignment".
     //         Expected result : the sequences are realigned.
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2540,7 +2540,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2561,7 +2561,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6135,9 +6135,8 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw DNA-Seq Data Processing", {"Single-end"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw DNA-Seq Data Processing Wizard", new custom()));
-
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Raw DNA-Seq Data Processing", {"Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Raw DNA-Seq Data Processing Wizard", new custom()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Raw DNA-Seq data processing..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

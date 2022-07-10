@@ -1907,8 +1907,8 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     // 8. Select "Actions"->"Cloning"->"Digest into Fragments..." in main menu.
     // Expected state: there is only one enzyme in the "Available enzymes" field with 1 cut.
     // Bug state: there is one enzyme but with 2 cuts.
-    GTUtilsDialog::add(os, new DigestSequenceDialogFiller(os, new DigestCircularSequenceScenario));
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
+    GTUtilsDialog::add(os, new DigestSequenceDialogFiller(os, new DigestCircularSequenceScenario));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -2038,8 +2038,8 @@ GUI_TEST_CLASS_DEFINITION(test_0854) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::add(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2396,24 +2396,20 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "SAMtools");
 
-    GTFileDialogUtils* ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc");
-    GTUtilsDialog::add(os, ob);
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc"));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
-
-    QAbstractButton* button = GTAction::button(os, "AddElementWithCommandLineTool");
-    GTWidget::click(os, button);
+    GTWidget::click(os, GTAction::button(os, "AddElementWithCommandLineTool"));
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/896/_input/url_out_in_exttool.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsDialog::add(os, new PopupChooser(os, {"editConfiguration"}));
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.tool = "SAMtools";
     settings.command = "%USUPP_SAMTOOLS% view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam";
     GTUtilsDialog::add(os, new CreateElementWithCommandLineToolFiller(os, settings));
-
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "SAMtools"));
-    GTUtilsDialog::add(os, new PopupChooser(os, {"editConfiguration"}));
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
 

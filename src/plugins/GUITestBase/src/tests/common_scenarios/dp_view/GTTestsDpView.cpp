@@ -57,9 +57,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //     {Minimum repeat length} 8bp
     //     {repeats identity} 80%
     // 5. Click OK button
-    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::add(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", testDir + "_common_data/scenarios/dp_view/dp2.fa"));
-
+    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -78,8 +77,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     // DIFFERENCE: ONE SEQUENCE USED
-    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::add(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
+    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
     GTUtilsDialog::checkNoActiveWaiters(os);

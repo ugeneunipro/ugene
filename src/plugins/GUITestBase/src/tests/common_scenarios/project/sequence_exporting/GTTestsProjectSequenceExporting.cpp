@@ -308,12 +308,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_annotations"}, GTGlobals::UseKey));
 
     GTUtilsDialog::add(os,
-                                 new ExportAnnotationsFiller(os,
-                                                             testDir + "_common_data/scenarios/sandbox/1.csv",
-                                                             ExportAnnotationsFiller::csv,
-                                                             true,
-                                                             true,
-                                                             false));
+                       new ExportAnnotationsFiller(os,
+                                                   testDir + "_common_data/scenarios/sandbox/1.csv",
+                                                   ExportAnnotationsFiller::csv,
+                                                   true,
+                                                   true,
+                                                   false));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -429,7 +429,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // the rest part of the test checks that a newly created association can be used for sequence export
@@ -437,11 +436,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "Ca21chr5 features");
     auto seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0010.fa"));
     GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);

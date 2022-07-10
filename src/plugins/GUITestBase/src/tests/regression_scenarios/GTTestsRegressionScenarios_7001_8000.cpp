@@ -1042,11 +1042,11 @@ GUI_TEST_CLASS_DEFINITION(test_7388) {
     GTUtils::checkExportServiceIsEnabled(os);
 
     // Export subalignment with only gaps inside.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
 
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7388.aln", {"s1", "s2"}, 16, 24);
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
-    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1055,7 +1055,7 @@ GUI_TEST_CLASS_DEFINITION(test_7388) {
     GTUtilsMsaEditor::selectRows(os, 0, 1);
 
     // Check that "Copy" works as expected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     QString clipboardText1 = GTClipboard::text(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1063,7 +1063,7 @@ GUI_TEST_CLASS_DEFINITION(test_7388) {
                   "1. Unexpected clipboard text: " + clipboardText1);
 
     // Check that "Copy (custom format)" works as expected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QString clipboardText2 = GTClipboard::text(os);
@@ -1769,9 +1769,8 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
     model.length = 5;
     model.window = 5;
     model.numberOfSequences = 100 * 1000;
-
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTUtilsDialog::add(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join), 45000);
     GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

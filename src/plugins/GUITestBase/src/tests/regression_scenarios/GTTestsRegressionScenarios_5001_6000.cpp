@@ -1052,9 +1052,9 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/CVU55762.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList defaultEnzymes = {"ClaI"};
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
+    QStringList defaultEnzymes = {"ClaI"};
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "det_view_CVU55762"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTLogTracer lt;
@@ -1213,8 +1213,8 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/PBR322.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
@@ -1222,13 +1222,13 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
     GTUtilsAnnotationsTreeView::findItem(os, "EcoRI");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Mark as circular"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "'EcoRI' item is found, but should not.");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Mark as circular"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1438,8 +1438,8 @@ GUI_TEST_CLASS_DEFINITION(test_5382) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -1570,9 +1570,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina SE reads"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new IlluminaAssemblyWizardScenario()));
-
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina SE reads"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new IlluminaAssemblyWizardScenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads de novo assembly (with SPAdes)..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1637,9 +1636,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina PE reads"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
-
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina PE reads"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads de novo assembly (with SPAdes)..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1674,9 +1672,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina PE and Nanopore reads"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
-
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina PE and Nanopore reads"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads de novo assembly (with SPAdes)..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1965,9 +1962,9 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
     //    3. Click Ok.
     GTLogTracer logTracer;
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/text/text.txt"));
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "ABIF"));
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, testDir + "_common_data/text/text.txt"));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "ABIF"));
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

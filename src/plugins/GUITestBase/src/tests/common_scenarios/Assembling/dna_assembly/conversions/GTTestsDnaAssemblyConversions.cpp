@@ -118,22 +118,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTLogTracer l;
-    AlignShortReadsFiller::Parameters parameters(
-        testDir + "_common_data/e_coli/",
-        "NC_008253.gb",
-        testDir + "_common_data/e_coli/",
-        "e_coli_1000.gff");
+    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/", "NC_008253.gb", testDir + "_common_data/e_coli/", "e_coli_1000.gff");
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    CHECK_OP(os, );
-
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
+
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
+
     // UGENE can hang up here
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

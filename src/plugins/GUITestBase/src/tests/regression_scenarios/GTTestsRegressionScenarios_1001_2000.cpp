@@ -355,16 +355,16 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     // 2. In MSA context menu choose "Statistics" > "Generate distance matrix".
     // 3. Try to generate distance matrix with both "Hamming dissimilarity" and "Identity" algorithms.
-    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, true, true, true));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, true, true, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
 
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
-    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, false, true, true));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, false, true, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
@@ -382,14 +382,14 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     // 5. Finally, try to save results as *.html and *.csv files.
-    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::HTML, sandBoxDir + "test_1020.html"));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::HTML, sandBoxDir + "test_1020.html"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     CHECK_SET_ERR(QFileInfo(sandBoxDir + "test_1020.html").exists(), "Distance matrix file not found");
 
-    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::CSV, sandBoxDir + "test_1020.csv"));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::CSV, sandBoxDir + "test_1020.csv"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     CHECK_SET_ERR(QFileInfo(sandBoxDir + "test_1020.csv").exists(), "Distance matrix file not found");
@@ -1656,7 +1656,7 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
             QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("BamHI", Qt::MatchStartsWith);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes starting with 'BamHI'");
 
-            const QPoint enzymePosition = availableEnzymeWidget->mapToGlobal(availableEnzymeWidget->visualItemRect(items.first()).center());
+            QPoint enzymePosition = availableEnzymeWidget->mapToGlobal(availableEnzymeWidget->visualItemRect(items.first()).center());
             GTMouseDriver::moveTo(enzymePosition);
             GTMouseDriver::click();
 
@@ -1684,8 +1684,8 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
     // Expected state : "Find restriction sites" dialog has appeared. It contains a checkbox "Circular molecule"
     // 5. Choose "Circular molecule" mode
     // 6. Press "Ok"
-    GTUtilsDialog::add(os, new DigestSequenceDialogFiller(os, new DigestCircularSequenceScenario));
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
+    GTUtilsDialog::add(os, new DigestSequenceDialogFiller(os, new DigestCircularSequenceScenario));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1745,11 +1745,10 @@ GUI_TEST_CLASS_DEFINITION(test_1165) {
     // 3. browse the file "data/samples/FASTA/human_T1.fa".
     auto nameList = GTWidget::findWidget(os, "msa_editor_name_list");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
-    GTFileDialogUtils* ob = new GTFileDialogUtils(os, dataDir + "/samples/FASTA/", "human_T1.fa");
-    GTUtilsDialog::waitForDialog(os, ob);
-
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "/samples/FASTA/", "human_T1.fa"));
     GTMenu::showContextMenu(os, nameList);
+
     // 4. Then choose any sequence in sequence names area (except that which you've just added), press "Delete"
     // Expected state: UGENE not crashes
     GTWidget::click(os, nameList);
@@ -1942,7 +1941,6 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 
             auto resultFileNameEdit = GTWidget::findLineEdit(os, "resultFileNameEdit", dialog);
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_2.ugenedb"), "Incorrect output file");
-
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
@@ -2701,9 +2699,9 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     // 2. Find any pattern. A new annotation document is created
     GTUtilsOptionsPanel::runFindPatternWithHotKey("AGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGG", os);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
     // 3. Delete created annotations document
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
@@ -2726,8 +2724,8 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     // delete new doc
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click(Qt::RightButton);
@@ -5790,8 +5788,6 @@ GUI_TEST_CLASS_DEFINITION(test_1627) {
     //    Expected state: the dotplot settings dialog appeared.
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dpm1.fa", testDir + "_common_data/scenarios/dp_view/dpm2.fa"));
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
     //    3. Set next fields of the "Dotplot" dilog and click the "OK" button:
     //        {Minimum repeat length} 8bp
     //        {Repeats identity} 80%
@@ -5799,6 +5795,8 @@ GUI_TEST_CLASS_DEFINITION(test_1627) {
 
     //    Expected state: dotplot appeared, there is not any errors in the log window.
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."}, GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1628) {
@@ -6873,8 +6871,6 @@ GUI_TEST_CLASS_DEFINITION(test_1720) {
     GTUtilsLog::check(os, l);
     // Expected state: project view with document "D11266.gb", no error messages in log appear
 }
-
-
 
 GUI_TEST_CLASS_DEFINITION(test_1731) {
     // 1. Open \data\samples\CLUSTALW\ty3.aln.gz

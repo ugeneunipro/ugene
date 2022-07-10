@@ -136,7 +136,7 @@ void GUIDialogWaiter::checkDialog() {
                 qDebug("-------------------------");
                 qDebug("GT_DEBUG_MESSAGE !!! GUIDialogWaiter::TIMEOUT Id = %d, going to finish waiting", waiterId);
                 qDebug("-------------------------");
-                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId), );
+                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId) + ", objectName = " + settings.objectName, );
             }
         }
     } catch (GUITestOpStatus*) {
