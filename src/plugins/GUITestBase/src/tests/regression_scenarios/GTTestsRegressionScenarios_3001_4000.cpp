@@ -1381,11 +1381,9 @@ GUI_TEST_CLASS_DEFINITION(test_3287) {
     ImageExportFormFiller::Parameters params;
     params.fileName = testDir + "_common_data/scenarios/sandbox/test_3287.bmp";
     params.format = "BMP";
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"export_overview_as_image_action"}));
-    GTUtilsDialog::waitForDialog(os, new ImageExportFormFiller(os, params));
-
-    auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
-    GTWidget::click(os, overview, Qt::RightButton);
+    GTUtilsDialog::add(os, new PopupChooser(os, {"export_overview_as_image_action"}));
+    GTUtilsDialog::add(os, new ImageExportFormFiller(os, params));
+    GTWidget::click(os, GTWidget::findWidget(os, "msa_overview_area_graph"), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QImage image(params.fileName);

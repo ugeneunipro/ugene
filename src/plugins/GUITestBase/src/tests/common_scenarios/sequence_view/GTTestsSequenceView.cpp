@@ -2287,8 +2287,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     const QStringList defaultEnzymes = {"ClaI", "DraI", "EcoRI"};
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", nullptr, {false}) == nullptr, "ClaI is unexpectedly found");
@@ -2296,8 +2296,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "EcoRI is unexpectedly found");

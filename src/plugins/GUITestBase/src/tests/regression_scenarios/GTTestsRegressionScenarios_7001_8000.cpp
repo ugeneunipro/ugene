@@ -1770,7 +1770,7 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
     model.window = 5;
     model.numberOfSequences = 100 * 1000;
     GTUtilsDialog::add(os, new DNASequenceGeneratorDialogFiller(os, model));
-    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join), 45000);
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join), 90000);
     GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

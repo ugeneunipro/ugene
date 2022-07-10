@@ -5786,12 +5786,12 @@ GUI_TEST_CLASS_DEFINITION(test_1627) {
     //        {File with first sequence:} _common_data/scenarios/dp_view/dpm1.fa
     //        {File with second sequence:} _common_data/scenarios/dp_view/dpm2.fa
     //    Expected state: the dotplot settings dialog appeared.
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dpm1.fa", testDir + "_common_data/scenarios/dp_view/dpm2.fa"));
+    GTUtilsDialog::add(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dpm1.fa", testDir + "_common_data/scenarios/dp_view/dpm2.fa"));
 
     //    3. Set next fields of the "Dotplot" dilog and click the "OK" button:
     //        {Minimum repeat length} 8bp
     //        {Repeats identity} 80%
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80));
+    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80));
 
     //    Expected state: dotplot appeared, there is not any errors in the log window.
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."}, GTGlobals::UseMouse);

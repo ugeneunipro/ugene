@@ -4586,9 +4586,9 @@ GUI_TEST_CLASS_DEFINITION(test_2866) {
                                                  "e_coli_1000.fastq",
                                                  AlignShortReadsFiller::Parameters::Bowtie);
 
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_2866.ugenedb"));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Yes"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_2866.ugenedb"));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);

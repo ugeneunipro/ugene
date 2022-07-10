@@ -96,21 +96,15 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Reference sequence} _common_data/e_coli/NC_008253.fa
     //     {Short reads} _common_data/bam/scerevisiae.bam.bai
     GTLogTracer l;
-    AlignShortReadsFiller::Parameters parameters(
-        testDir + "_common_data/e_coli/",
-        "NC_008253.gb",
-        testDir + "_common_data/bam/",
-        "scerevisiae.bam.bai",
-        AlignShortReadsFiller::Parameters::Bwa);
+    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/",
+                                                 "NC_008253.gb",
+                                                 testDir + "_common_data/bam/",
+                                                 "scerevisiae.bam.bai",
+                                                 AlignShortReadsFiller::Parameters::Bwa);
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    CHECK_OP(os, );
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
     //     3. Click start:
     //     Expected: the error dialog appears. It tells that the short reads file has the unknown format.

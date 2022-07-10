@@ -543,8 +543,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtils::checkExportServiceIsEnabled(os);
 
-    GTUtilsDialog::add(os, new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, true));
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
+    GTUtilsDialog::add(os, new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, true));
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {

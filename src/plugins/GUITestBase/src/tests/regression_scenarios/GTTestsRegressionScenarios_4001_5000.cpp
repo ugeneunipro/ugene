@@ -4752,11 +4752,9 @@ GUI_TEST_CLASS_DEFINITION(test_4785_1) {
     // 4. Delete "test_4785.aln"
     // Expected result : An error notification appears :
     // A problem occurred during aligning profile to profile with MUSCLE.The original alignment is no more available.
+    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
     QFile::remove(sandBoxDir + "test_4785.aln");
-
-    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
-    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_2) {

@@ -2502,6 +2502,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Open "empty_mult_seq.fa".
     //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsProject::closeProject(os, true, true);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");

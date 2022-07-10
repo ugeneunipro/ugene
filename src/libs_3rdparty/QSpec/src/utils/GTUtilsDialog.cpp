@@ -62,7 +62,7 @@ static QString getWaiterInfo(GUIDialogWaiter* waiter) {
             info = metaObject != nullptr ? metaObject->className() : qObject->objectName();
         }
     }
-    return info.isEmpty() ? "unnamed waiter" : info;
+    return info.isEmpty() ? "unnamed waiter " + QString::number(waiter->waiterId) : info;
 }
 
 static GUIDialogWaiter* getFirstOrNull(const QList<GUIDialogWaiter*>& waiterList) {
