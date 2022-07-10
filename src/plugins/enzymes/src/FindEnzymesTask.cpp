@@ -263,6 +263,7 @@ void FindSingleEnzymeTask::prepare() {
 }
 
 void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    CHECK_OP(stateInfo, );
     if (isCircular && pos >= region.length) {
         return;
     }

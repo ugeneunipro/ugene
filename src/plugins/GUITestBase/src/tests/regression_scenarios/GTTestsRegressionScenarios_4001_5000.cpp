@@ -4736,8 +4736,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
-    // 1. Open "COI.aln"
-    // Expected state : a file browser appeared
+    // 1. Open an alignment.
     GTFile::copy(os, testDir + "_common_data/clustal/3000_sequences.aln", sandBoxDir + "test_4785.aln");
     GTFileDialog::openFile(os, sandBoxDir, "test_4785.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4750,11 +4749,10 @@ GUI_TEST_CLASS_DEFINITION(test_4785_1) {
     GTUtilsTaskTreeView::checkTaskIsPresent(os, "MUSCLE");
 
     // 4. Delete "test_4785.aln"
-    // Expected result : An error notification appears :
-    // A problem occurred during aligning profile to profile with MUSCLE.The original alignment is no more available.
-    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
+    // Expected result : a problem occurred during aligning profile to profile with MUSCLE.The original alignment is no more available.
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
     QFile::remove(sandBoxDir + "test_4785.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_2) {

@@ -406,12 +406,12 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     // Go to MSA overview context menu (right click on MSA Overview).
     // Select {Calculation method -> Gaps}.
     auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Gaps"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Calculation method", "Gaps"}));
     GTMenu::showContextMenu(os, overviewGraph);
 
     // Expected state: graph overview displays percent of gaps in each column.
     // Save graphView.
-    const QImage img = GTWidget::getImage(os, overviewGraph);
+    QImage img = GTWidget::getImage(os, overviewGraph);
 
     //    4. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -422,12 +422,12 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     //    6. Go to MSA overview context menu (right click on MSA Overview).
     //    7. Select {Calculation method -> Highlighting}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
     GTMenu::showContextMenu(os, overviewGraph);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
 
     //    Expected state: graph didn't change.
-    const QImage img1 = GTWidget::getImage(os, overviewGraph);
+    QImage img1 = GTWidget::getImage(os, overviewGraph);
     CHECK_SET_ERR(img == img1, "overview changed");
 }
 
