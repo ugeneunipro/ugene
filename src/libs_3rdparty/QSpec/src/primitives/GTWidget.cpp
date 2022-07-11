@@ -54,8 +54,7 @@ void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouse
 #endif
 
     if (p.isNull()) {
-        QRect rect = widget->rect();
-        p = rect.center();
+        p = getWidgetVisibleCenter(widget);
 #ifdef Q_OS_DARWIN
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
@@ -249,6 +248,15 @@ QPoint GTWidget::getWidgetCenter(QWidget* widget) {
 }
 
 QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
+    QRegion region = widget->visibleRegion();
+    QVector<QRect> rects = region.rects();
+    for (QVector<QRect>::iterator it = rects.begin(), end = rects.end(); it != end; ++it) {
+        return it->center();
+    }
+    return widget->rect().center();
+}
+
+QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
     QRegion region = widget->visibleRegion();
     QVector<QRect> rects = region.rects();
     for (QVector<QRect>::iterator it = rects.begin(), end = rects.end(); it != end; ++it) {

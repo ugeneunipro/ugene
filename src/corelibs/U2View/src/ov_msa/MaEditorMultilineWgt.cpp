@@ -111,11 +111,13 @@ void MaEditorMultilineWgt::initWidgets() {
     treeSplitter->setContentsMargins(0, 0, 0, 0);
 
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    mainSplitter->setObjectName("maeditor_multilinewgt_main_splitter");
     mainSplitter->setContentsMargins(0, 0, 0, 0);
     mainSplitter->setHandleWidth(0);
     mainSplitter->addWidget(multilineArea);
 
     QSplitter *shBarSplitter = new QSplitter(Qt::Horizontal, this);
+    shBarSplitter->setObjectName("maeditor_multilinewgt_shbar_splitter");
     shBarSplitter->setFixedHeight(20);
     shBarSplitter->setContentsMargins(0, 0, 0, 0);
     shBarSplitter->setHandleWidth(0);
