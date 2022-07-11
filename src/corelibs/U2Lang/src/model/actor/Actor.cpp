@@ -102,10 +102,10 @@ void Actor::setupVariablesForPort(AttributeScript* _script, bool inputOnly) {
                 _script->setScriptVar(var, QVariant());
             }
         } else {
-            QString id = prefix + dataTypePtr->getId();
+            QString newId = prefix + dataTypePtr->getId();
             QString displayName = dataTypePtr->getDisplayName();
-            QString doc = prefix + dataTypePtr->getDocumentation();
-            _script->setScriptVar(Descriptor(id, displayName, doc), QVariant());
+            QString docText = prefix + dataTypePtr->getDocumentation();
+            _script->setScriptVar(Descriptor(newId, displayName, docText), QVariant());
         }
     }
 }
@@ -134,8 +134,8 @@ ActorId Actor::getOwner() const {
     return owner;
 }
 
-void Actor::setOwner(const ActorId& owner) {
-    this->owner = owner;
+void Actor::setOwner(const ActorId& newOwner) {
+    owner = newOwner;
 }
 
 void Actor::updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap) {
@@ -156,8 +156,8 @@ ActorId Actor::getId() const {
     return id;
 }
 
-void Actor::setId(const ActorId& id) {
-    this->id = id;
+void Actor::setId(const ActorId& newId) {
+    id = newId;
 }
 
 QString Actor::getLabel() const {
@@ -173,8 +173,8 @@ void Actor::setLabel(const QString& l) {
     emit si_labelChanged();
 }
 
-Port* Actor::getPort(const QString& id) const {
-    return ports.value(id);
+Port* Actor::getPort(const QString& portId) const {
+    return ports.value(portId);
 }
 
 QList<Port*> Actor::getPorts() const {
