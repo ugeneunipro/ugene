@@ -1021,7 +1021,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     //  Expected state: UGENE doesn't crash, the 3d structure is shown.
     int minimumExpectedColors = 10;
     auto biostructWidget = GTWidget::findWidget(os, "1-");
-    QImage initialImage = GTWidget::getImage(os, biostructWidget, true);
+    QImage initialImage = GTWidget::getImage(os, biostructWidget);
     QSet<QRgb> colorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
     CHECK_SET_ERR(colorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors");
 
@@ -1033,7 +1033,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     // Select "Model" renderer. Select "Space Fill".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Render Style", "Space Fill"}));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
-    QImage spaceFillImage = GTWidget::getImage(os, biostructWidget, true);
+    QImage spaceFillImage = GTWidget::getImage(os, biostructWidget);
     CHECK_SET_ERR(spaceFillImage != initialImage, "Space Fill image is the same as Ball-and-Stick!");
 
     // Select "Model" renderer. Select "Ball-and-stick" again.
@@ -1041,7 +1041,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     GTWidget::click(os, biostructWidget, Qt::RightButton);
 
     //  Expected state: UGENE doesn't crash, the 3d structure is shown.
-    QImage currentImage = GTWidget::getImage(os, biostructWidget, true);
+    QImage currentImage = GTWidget::getImage(os, biostructWidget);
     CHECK_SET_ERR(currentImage == initialImage, "Current image is not equal to initial");
 }
 

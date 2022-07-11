@@ -199,15 +199,16 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto biostructWidget = GTWidget::findWidget(os, "1-1CF7");
-    QImage image1 = GTWidget::getImage(os, biostructWidget, true);
+    QImage image1 = GTWidget::getImage(os, biostructWidget);
     QSet<QRgb> colors;
     for (int i = 0; i < image1.width(); i++) {
         for (int j = 0; j < image1.height(); j++) {
             colors << image1.pixel(i, j);
         }
     }
-    // Usually 875 colors are drawn for 1CF7.pdb.
-    CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed");
+    
+// Usually 875 colors are drawn for 1CF7.pdb.
+    CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed, number of colors: " + QString::number(colors.size()));
 
     // There must be no error message on the screen.
     auto errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
