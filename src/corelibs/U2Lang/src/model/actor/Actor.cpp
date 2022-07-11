@@ -476,14 +476,6 @@ static bool validateUrlAttribute(Attribute* attr, UrlAttributeType urlType, Noti
     return res;
 }
 
-static bool validateCodePage(const QString& url) {
-    QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
-    if (url.compare(url2, Qt::CaseSensitive) != 0) {
-        return false;
-    }
-    return true;
-}
-
 bool Actor::validate(NotificationsList& notificationList) const {
     bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc& desc, customValidators) {
