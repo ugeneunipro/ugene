@@ -22,8 +22,6 @@
 #include "WeightMatrixIO.h"
 
 #include <QFile>
-#include <QMessageBox>
-#include <QTextStream>
 #include <QVector>
 
 #include <U2Core/AppContext.h>
@@ -31,6 +29,7 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -67,40 +66,25 @@ QString WeightMatrixIO::getPWMFileFilter() {
 #define MATRIX_VAL_SEPARATOR ';'
 
 PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si) {
-    PFMatrix matrix;
-    QVarLengthArray<int> res;
-    int len = -1, msize = 0;
-
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         si.setError(L10N::errorOpeningFileRead(url));
-        return matrix;
+        return {};
     }
-    QByteArray text;
-    int size = io->left();
-    if (size > 0) {
-        text.reserve(size);
-    }
+    IOAdapterReader reader(io.data());
+    return readPFMatrix(reader, si);
+}
 
-    QByteArray block(BUFF_SIZE, '\0');
-    qint64 blockLen = 0;
-    while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray(block.data(), blockLen));
-        if (text.size() > 1000 * 1000) {
-            si.setError(L10N::errorFileTooLarge(url));
-            break;
-        }
-    }
-    io->close();
-    if (si.hasError()) {
-        return matrix;
-    }
+PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterReader& reader, TaskStateInfo& si) {
+    QString url = reader.getURL().getURLString();
+    PFMatrix matrix;
+    QVarLengthArray<int> res;
+    int len = -1;
+    int matrixSize = 0;
 
-    QTextStream reader(text);
-    QString line;
-
-    while (!reader.atEnd() && !si.hasError()) {
-        line = reader.readLine();
+    while (!reader.atEnd() && matrixSize <= 16) {
+        QString line = reader.readLine(si, 10000);
+        CHECK_OP(si, {});
         if (line.isEmpty()) {
             continue;
         }
@@ -130,19 +114,16 @@ PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory* iof, const QString& url,
             res.append(val);
         }
 
-        msize++;
+        matrixSize++;
     }
+    CHECK_OP(si, {});
 
-    if (si.hasError()) {
+    if (matrixSize != 4 && matrixSize != 16) {
+        si.setError(tr("Incorrect size of weight matrix: %1").arg(matrixSize));
         return matrix;
     }
 
-    if (msize != 4 && msize != 16) {
-        si.setError(tr("Incorrect size of weight matrix: %1").arg(msize));
-        return matrix;
-    }
-
-    matrix = PFMatrix(res, (msize == 4) ? PFM_MONONUCLEOTIDE : PFM_DINUCLEOTIDE);
+    matrix = PFMatrix(res, (matrixSize == 4) ? PFM_MONONUCLEOTIDE : PFM_DINUCLEOTIDE);
 
     QStringList splitUrl = url.split("/");
     QString name = splitUrl.last();
@@ -170,40 +151,25 @@ PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory* iof, const QString& url,
 }
 
 PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si) {
-    PWMatrix matrix;
-    QVarLengthArray<float> res;
-    int len = -1, msize = 0;
-
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         si.setError(L10N::errorOpeningFileRead(url));
-        return matrix;
+        return {};
     }
-    QByteArray text;
-    int size = io->left();
-    if (size > 0) {
-        text.reserve(size);
-    }
+    IOAdapterReader reader(io.data());
+    return readPWMatrix(reader, si);
+}
 
-    QByteArray block(BUFF_SIZE, '\0');
-    qint64 blockLen = 0;
-    while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray(block.data(), blockLen));
-        if (text.size() > 1000 * 1000) {
-            si.setError(L10N::errorFileTooLarge(url));
-            break;
-        }
-    }
-    io->close();
-    if (si.hasError()) {
-        return matrix;
-    }
+PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterReader& reader, TaskStateInfo& si) {
+    QString url = reader.getURL().getURLString();
+    PWMatrix matrix;
+    QVarLengthArray<float> res;
+    int len = -1;
+    int matrixSize = 0;
 
-    QTextStream reader(text);
-    QString line;
-
-    while (!reader.atEnd() && !si.hasError()) {
-        line = reader.readLine();
+    while (!reader.atEnd() && matrixSize <= 16) {
+        QString line = reader.readLine(si, 10000);
+        CHECK_OP(si, {});
         if (line.isEmpty()) {
             continue;
         }
@@ -234,50 +200,56 @@ PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory* iof, const QString& url,
             }
             res.append(val);
         }
-        msize++;
+        matrixSize++;
     }
+    CHECK_OP(si, {});
 
-    if (si.hasError()) {
+    if (matrixSize != 4 && matrixSize != 16) {
+        si.setError(tr("Incorrect size of weight matrix: %1").arg(matrixSize));
         return matrix;
     }
 
-    if (msize != 4 && msize != 16) {
-        si.setError(tr("Incorrect size of weight matrix: %1").arg(msize));
-        return matrix;
-    }
-
-    matrix = PWMatrix(res, (msize == 4) ? PWM_MONONUCLEOTIDE : PWM_DINUCLEOTIDE);
+    matrix = PWMatrix(res, matrixSize == 4 ? PWM_MONONUCLEOTIDE : PWM_DINUCLEOTIDE);
     return matrix;
 }
 
 void WeightMatrixIO::writePFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PFMatrix& model) {
-    assert(model.getLength() >= 0);
-    QByteArray res;
-    int size = (model.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
+    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
+    if (!io->open(url, IOAdapterMode_Write)) {
+        si.setError(L10N::errorOpeningFileWrite(url));
+        return;
+    }
+    IOAdapterWriter writer(io.data());
+    writePFMatrix(writer, si, model);
+}
+
+void WeightMatrixIO::writePFMatrix(IOAdapterWriter& writer, TaskStateInfo& si, const PFMatrix& model) {
+    SAFE_POINT(model.getLength() >= 0, "Model is empty", );
+    QString res;
+    int size = model.getType() == PFM_MONONUCLEOTIDE ? 4 : 16;
     for (int i = 0; i < size; i++) {
         for (int j = 0, n = model.getLength(); j < n; j++) {
             res.append(QString("%1").arg(model.getValue(i, j), 4));
         }
         res.append("\n");
     }
+    writer.write(si, res);
+}
 
+void WeightMatrixIO::writePWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PWMatrix& model) {
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Write)) {
         si.setError(L10N::errorOpeningFileWrite(url));
         return;
     }
-    int len = io->writeBlock(res);
-    if (len != res.size()) {
-        si.setError(L10N::errorWritingFile(url));
-        return;
-    }
-    io->close();
+    IOAdapterWriter writer(io.data());
+    writePWMatrix(writer, si, model);
 }
 
-void WeightMatrixIO::writePWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PWMatrix& model) {
-    assert(model.getLength() >= 0);
-    QByteArray res;
-    int size = (model.getType() == PWM_MONONUCLEOTIDE) ? 4 : 16;
+void WeightMatrixIO::writePWMatrix(IOAdapterWriter& writer, TaskStateInfo& si, const PWMatrix& model) {
+    SAFE_POINT(model.getLength() >= 0, "Model is empty", );
+    QString res;
+    int size = model.getType() == PWM_MONONUCLEOTIDE ? 4 : 16;
     for (int i = 0; i < size; i++) {
         if (model.getType() == PWM_MONONUCLEOTIDE) {
             res.append(DiProperty::fromIndex(i));
@@ -292,18 +264,7 @@ void WeightMatrixIO::writePWMatrix(IOAdapterFactory* iof, const QString& url, Ta
         }
         res.append("\n");
     }
-
-    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
-    if (!io->open(url, IOAdapterMode_Write)) {
-        si.setError(L10N::errorOpeningFileWrite(url));
-        return;
-    }
-    int len = io->writeBlock(res);
-    if (len != res.size()) {
-        si.setError(L10N::errorWritingFile(url));
-        return;
-    }
-    io->close();
+    writer.write(si, res);
 }
 
 void PFMatrixReadTask::run() {

@@ -27,8 +27,6 @@
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/PFMatrixObject.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/PWMatrixObject.h>
@@ -37,7 +35,6 @@
 #include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ViewMatrixDialogController.h"
