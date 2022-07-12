@@ -108,13 +108,10 @@ QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QW
             break; // Parent widget was removed while waiting.
         }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
-        if (matchedWidgets.size() >= 2) {
-            GT_CHECK_RESULT(matchedWidgets.size() < 2,
-                            QString("There are %1 widgets with name '%2'")
-                                .arg(matchedWidgets.size())
-                                .arg(objectName),
-                            nullptr);
-        }
+#ifdef _DEBUG
+        if (matchedWidgets.size() >= 2)
+#endif
+        GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
             break;
@@ -247,22 +244,22 @@ QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
 
-QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
-    QRegion region = widget->visibleRegion();
-    QVector<QRect> rects = region.rects();
-    for (QVector<QRect>::iterator it = rects.begin(), end = rects.end(); it != end; ++it) {
-        return it->center();
-    }
-    return widget->rect().center();
+QPoint GTWidget::getWidgetVisibleCenter(QWidget *widget) {
+    return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
 }
 
 QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
-    QRegion region = widget->visibleRegion();
-    QVector<QRect> rects = region.rects();
-    for (QVector<QRect>::iterator it = rects.begin(), end = rects.end(); it != end; ++it) {
-        return widget->mapToGlobal(it->center());
+    QRect rect = widget->rect();
+    QRect gRect(widget->mapToGlobal(rect.topLeft()), rect.size());
+    QWidget *parent = widget->parentWidget();
+    while (parent) {
+        QRect pRect = parent->rect();
+        QRect gParentRect(widget->mapToGlobal(pRect.topLeft()), pRect.size());
+
+        gRect = gRect.intersected(gParentRect);
+        parent = parent->parentWidget();
     }
-    return widget->mapToGlobal(widget->rect().center());
+    return gRect.center();
 }
 
 #define GT_METHOD_NAME "findButtonByText"

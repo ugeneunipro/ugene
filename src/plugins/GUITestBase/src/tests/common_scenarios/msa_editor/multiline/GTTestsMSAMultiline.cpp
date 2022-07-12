@@ -669,9 +669,9 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
     CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
 }
 
-GUI_TEST_CLASS_DEFINITION(image_xport_test_0001) {
-    // fail to export big alignment
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "big.aln");
+GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
+    // 1. Open file data/samples/CLUSTALW/COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
@@ -690,6 +690,9 @@ GUI_TEST_CLASS_DEFINITION(image_xport_test_0001) {
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
+#ifdef _DEBUG
+            if (!hintLabel->isVisible())
+#endif
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
             auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
@@ -705,6 +708,7 @@ GUI_TEST_CLASS_DEFINITION(image_xport_test_0001) {
     GTUtilsDialog::waitForDialog(os, new CustomFiller_0048(os));
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {

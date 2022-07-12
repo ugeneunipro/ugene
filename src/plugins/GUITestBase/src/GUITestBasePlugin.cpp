@@ -2569,7 +2569,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::keys_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::consensus_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::similarity_test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::image_xport_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::image_export_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::drag_n_drop_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::bookmark_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::bookmark_test_0002);
