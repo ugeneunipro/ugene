@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class IOAdapterFactory;
+class IOAdapterReader;
 
 class WeightMatrixIO : public QObject {
     Q_OBJECT
@@ -47,10 +47,10 @@ public:
     static QString getAllMatrixFileFilter(bool isSingleFileFilterMode = false);
     static QString getPFMFileFilter(bool isSingleFileFilterMode = false);
     static QString getPWMFileFilter();
-    static PFMatrix readPFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si);
-    static PWMatrix readPWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si);
-    static void writePFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PFMatrix& model);
-    static void writePWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PWMatrix& model);
+    static PFMatrix readPFMatrix(IOAdapterReader& reader, TaskStateInfo& si);
+    static PWMatrix readPWMatrix(IOAdapterReader& reader, TaskStateInfo& si);
+    static void writePFMatrix(IOAdapterReader& reader, TaskStateInfo& si, const PFMatrix& model);
+    static void writePWMatrix(IOAdapterReader& reader, TaskStateInfo& si, const PWMatrix& model);
 };
 
 class PFMatrixReadTask : public Task {
