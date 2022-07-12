@@ -670,8 +670,8 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
-    // 1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    // fail to export big alignment
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
@@ -709,6 +709,7 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
@@ -980,6 +981,7 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
@@ -1036,6 +1038,7 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
