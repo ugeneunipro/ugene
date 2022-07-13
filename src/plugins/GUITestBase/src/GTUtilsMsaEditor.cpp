@@ -705,7 +705,8 @@ void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus &os, bool newMode)
     CHECK_SET_ERR_RESULT(mmode->isVisible(), "\"Multiline View\" button is not visible", );
     CHECK_SET_ERR_RESULT(mmode->isEnabled(), "\"Multiline View\" button is disabled", );
     GTWidget::click(os, mmode);
-    GTThread::waitForMainThread();
+    //GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR_RESULT(oldMode != getMultilineMode(os), "Multiline mode is not changed", );
 }
 #undef GT_METHOD_NAME
