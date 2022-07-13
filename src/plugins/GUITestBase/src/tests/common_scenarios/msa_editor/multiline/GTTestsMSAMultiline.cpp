@@ -101,7 +101,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
     // 2. Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Find seq area #1
     auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
@@ -110,7 +109,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
     // 4. Switch to singleline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Find seq area #0, but not #1
     w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
@@ -119,7 +117,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
     CHECK_SET_ERR(w == nullptr, QString("Unexpectedly found sequence area #1"));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
@@ -139,7 +136,6 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select seq.
     GTUtilsMsaEditor::selectRowsByName(os, {seqName});
@@ -156,7 +152,6 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Must not crash
 }
@@ -172,7 +167,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Find seq last area
     int lastWgtIndex = 0;
@@ -201,7 +195,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
                       .arg(minVal).arg(maxVal).arg(curVal));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
@@ -213,7 +206,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GScrollBar *vscroll = qobject_cast<GScrollBar *>(
         GTWidget::findWidget(os, "multiline_vertical_sequence_scroll"));
@@ -251,7 +243,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
     CHECK_SET_ERR(lastBaseIdx == 603, QString("Not at the end"));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
@@ -263,7 +254,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GScrollBar *hscroll = qobject_cast<GScrollBar *>(
         GTWidget::findWidget(os, "multiline_horizontal_sequence_scroll"));
@@ -300,7 +290,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
     CHECK_SET_ERR(lastBaseIdx == 603, QString("Not at the end"));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(menu_test_0001)
@@ -314,7 +303,6 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Find seq last area
     int lastWgtIndex = 0;
@@ -344,7 +332,6 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     CHECK_SET_ERR(allSet.size() == allItems.size(), "Context menu contains repeated items");
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(goto_test_0001)
@@ -362,7 +349,6 @@ GUI_TEST_CLASS_DEFINITION(goto_test_0001)
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
@@ -372,7 +358,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
 
@@ -395,7 +380,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
     CHECK_SET_ERR(histogramModeImage != clustalModeImage, "overview was not changed (histogram)");
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
@@ -406,7 +390,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto overview = GTWidget::findWidget(os, "msa_overview_area_graph");
     //    Show simple overview
@@ -436,7 +419,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
     CHECK_SET_ERR(initColorS1 != finalColorS1, "color was not changed(2)")
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0003) {
@@ -447,7 +429,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0003) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Go to MSA Overview context menu (right click on msa overview).
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
@@ -463,7 +444,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0003) {
     CHECK_SET_ERR(c.name() == "#eda2a2", "simple overview has wrong color. Expected: #eda2a2, Found: " + c.name());
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
@@ -474,7 +454,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
@@ -506,7 +485,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
     CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
@@ -517,7 +495,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
     //    Check keys: arrows
@@ -594,7 +571,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     CHECK_SET_ERR(scrollBarOffset >= minCharWidth && scrollBarOffset <= maxCharWidth, QString("scroll up works wrong. Scrollbar has value: %1").arg(hbar->value()));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
@@ -605,7 +581,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Press on some sequence in nameList
     GTUtilsMsaEditor::clickSequence(os, 2);
@@ -654,7 +629,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
     CHECK_SET_ERR(0 < vscroll->value() && vscroll->value() < scrolledValue, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(consensus_test_0001) {
@@ -665,7 +639,6 @@ GUI_TEST_CLASS_DEFINITION(consensus_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Select some area on consensus with mouse
     GTUtilsMsaEditor::selectColumns(os, 1, 10, GTGlobals::UseMouse);
@@ -674,7 +647,6 @@ GUI_TEST_CLASS_DEFINITION(consensus_test_0001) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(1, 0), QPoint(10, 17)));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
@@ -685,7 +657,6 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Open "Statistics" OP tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
@@ -711,7 +682,6 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
     CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
@@ -722,7 +692,6 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class CustomFiller_0048 : public Filler {
     public:
@@ -755,7 +724,6 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
@@ -768,7 +736,6 @@ GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     int oldLength = GTUtilsMSAEditorSequenceArea::getLength(os);
     // 2. Select the first column.
@@ -796,7 +763,6 @@ GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
     CHECK_SET_ERR(4 == newLength - oldLength, QString("Wrong length of changed alignment"));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
@@ -807,7 +773,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
@@ -865,7 +830,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
@@ -875,7 +839,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Create a bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
@@ -923,7 +886,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark wasn't deleted");
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
@@ -934,7 +896,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Create a bookmark. Rename "New bookmark" to "start bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
@@ -975,7 +936,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
     CHECK_SET_ERR(firstBase == endBookmarkFirstBase, QString("End bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(endBookmarkFirstBase));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
@@ -1039,7 +999,6 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
@@ -1096,7 +1055,6 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
@@ -1109,7 +1067,6 @@ GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1158,7 +1115,6 @@ GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
     CHECK_SET_ERR(byTreeSequenceNames1 == byTreeSequenceNames2, "by-tree sequence name list is not restored");
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0001) {
@@ -1169,7 +1125,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select one character.
     // Expected result : the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
@@ -1190,7 +1145,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0001) {
     CHECK_SET_ERR(selectionContent == "G", QString("Incorrect selection content: expected - %1, received - %2").arg("G").arg(selectionContent));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
@@ -1201,7 +1155,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select a gap after the last sequence character.
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 9));
@@ -1221,7 +1174,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0003) {
@@ -1232,7 +1184,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0003) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select a gap before the first sequence character.
     GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
@@ -1251,7 +1202,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0003) {
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0004) {
@@ -1262,7 +1212,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0004) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select a last character in sequence.
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 9));
@@ -1278,7 +1227,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0004) {
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0005) {
@@ -1289,7 +1237,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0005) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select a character in sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 9), QPoint(0, 9));
@@ -1318,7 +1265,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0005) {
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
@@ -1329,7 +1275,6 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     static constexpr QPoint TOP_LEFT = QPoint(0, 0);
     static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);

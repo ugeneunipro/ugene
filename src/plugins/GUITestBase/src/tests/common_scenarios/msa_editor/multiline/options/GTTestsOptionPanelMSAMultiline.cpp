@@ -82,7 +82,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     //    1.1. Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
@@ -130,7 +129,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
 
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Insert seq from clipboard
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "align.aln");
@@ -182,7 +180,6 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
     //    5. Switch multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    6. uncheck showDistancesColumn checkbox
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
@@ -192,7 +189,6 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
     //    7. Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    8. uncheck showDistancesColumn checkbox
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
@@ -202,7 +198,6 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
     //    9. Switch multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    10. uncheck showDistancesColumn checkbox
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
@@ -246,7 +241,6 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
     // 5. Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Remove Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::removeReference(os);
@@ -284,7 +278,6 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001)
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Open search option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);

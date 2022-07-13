@@ -78,7 +78,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Open "Highlighting" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -156,7 +155,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Open "Color schemes" dialog.
     //    Open "Create color scheme" dialog.
@@ -227,7 +225,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Open "Highlighting" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
