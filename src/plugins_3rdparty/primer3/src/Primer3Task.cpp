@@ -330,18 +330,20 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
       settings(settingsArg) {
     GCOUNTER(cvar, "Primer3Task");
-    {
-        U2Region region = settings.getIncludedRegion();
+
+    /*{
+        U2Region region = settings.getSequenceRange();
         region.startPos -= settings.getFirstBaseIndex();
         settings.setIncludedRegion(region);
-    }
-    offset = settings.getIncludedRegion().startPos;
-    settings.setSequence(settings.getSequence().mid(
-        settings.getIncludedRegion().startPos, settings.getIncludedRegion().length));
-    settings.setSequenceQuality(settings.getSequenceQuality().mid(
-        settings.getIncludedRegion().startPos, settings.getIncludedRegion().length));
-    settings.setIncludedRegion(0, settings.getIncludedRegion().length);
-    if (!PR_START_CODON_POS_IS_NULL(settings.getSeqArgs())) {
+    }*/
+    const auto& sequenceRange = settings.getSequenceRange();
+    offset = sequenceRange.startPos;
+
+    settings.setSequence(settings.getSequence().mid(sequenceRange.startPos, sequenceRange.length));
+    settings.setSequenceQuality(settings.getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
+    //settings.setIncludedRegion(0, sequenceRange.length);
+
+    /*if (!PR_START_CODON_POS_IS_NULL(settings.getSeqArgs())) {
         int startCodonPosition = PR_DEFAULT_START_CODON_POS;
         if (settings.getIntProperty("PRIMER_START_CODON_POSITION", &startCodonPosition)) {
             settings.setIntProperty("PRIMER_START_CODON_POSITION",
@@ -350,10 +352,21 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
     }
     {
         QList<U2Region> regionList;
-        foreach (U2Region region, settings.getTarget()) {
+        for (U2Region region : settings.getTarget()) {
             region.startPos -= settings.getFirstBaseIndex();
             region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
+            if (clipRegion(region, settings.getSequenceRange())) {
+                regionList.append(region);
+            }
+        }
+        settings.setTarget(regionList);
+    }
+    {
+        QList<U2Region> regionList;
+        for (int pos : settings.getOverlapJunctionList()) {
+            pos -= settings.getFirstBaseIndex();
+            pos -= offset;
+            if (clipRegion(region, settings.getSequenceRange())) {
                 regionList.append(region);
             }
         }
@@ -364,7 +377,7 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
         foreach (U2Region region, settings.getExcludedRegion()) {
             region.startPos -= settings.getFirstBaseIndex();
             region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
+            if (clipRegion(region, settings.getSequenceRange())) {
                 regionList.append(region);
             }
         }
@@ -375,12 +388,12 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
         foreach (U2Region region, settings.getInternalOligoExcludedRegion()) {
             region.startPos -= settings.getFirstBaseIndex();
             region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
+            if (clipRegion(region, settings.getSequenceRange())) {
                 regionList.append(region);
             }
         }
         settings.setInternalOligoExcludedRegion(regionList);
-    }
+    }*/
 }
 
 void Primer3Task::run() {
@@ -423,7 +436,7 @@ void Primer3Task::run() {
         }
     }
 
-    if (bestPairs.isEmpty()) {
+    if (bestPairs.isEmpty() && settings.getTask() != task::generic) {
         singlePrimers.clear();
         int maxCount = 0;
         settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
@@ -587,47 +600,42 @@ Primer3SWTask::Primer3SWTask(const Primer3TaskSettings& settingsArg)
 }
 
 void Primer3SWTask::prepare() {
-    if ((settings.getIncludedRegion().startPos < settings.getFirstBaseIndex()) ||
-        (settings.getIncludedRegion().length <= 0)) {
-        setError("invalid included region");
-        return;
-    }
-
     // selected region covers circular junction
-    if (settings.getIncludedRegion().endPos() > settings.getSequenceSize() + settings.getFirstBaseIndex()) {
-        if (!settings.isSequenceCircular()) {
-            U2Region endRegion(settings.getIncludedRegion().startPos,
-                               settings.getSequenceSize() - settings.getIncludedRegion().startPos + 1);
-            U2Region startRegion(1, settings.getIncludedRegion().endPos() - settings.getSequenceSize());
+    const auto& sequenceRange = settings.getSequenceRange();
+    int sequenceSize = settings.getSequenceSize();
+    int fbs = settings.getFirstBaseIndex();
+    if (sequenceRange.endPos() > sequenceSize + fbs) {
+        SAFE_POINT_EXT(settings.isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
-            if (settings.isIncludedRegionValid(startRegion)) {
-                addPrimer3Subtasks(settings, startRegion, regionTasks);
-            }
-            if (settings.isIncludedRegionValid(endRegion)) {
-                addPrimer3Subtasks(settings, endRegion, regionTasks);
-            }
-            return;
-        } else {
-            QByteArray seq = settings.getSequence();
-            seq.append(seq.left(settings.getIncludedRegion().endPos() - settings.getSequenceSize() - settings.getFirstBaseIndex()));
-            settings.setSequence(seq);
-        }
+        QByteArray seq = settings.getSequence();
+        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
+        settings.setSequence(seq);
     }
 
-    addPrimer3Subtasks(settings, regionTasks);
+    /*Primer3TaskSettings regionSettings = settings;
+    if (regionSettings.getTask() != task::pick_sequencing_primers) {
+        regionSettings.setIncludedRegion(U2Region(0, -1));
+    }*/
+    Primer3Task* task = new Primer3Task(settings);
+    regionTasks.append(task);
+    addSubTask(task);
 
-    if (settings.isSequenceCircular() && settings.getIncludedRegion().startPos == 1 &&
-        settings.getIncludedRegion().length == settings.getSequenceSize()) {
-        // Based on conversation with Vladimir Trifonov:
-        // Consider the start position in the center of the sequence and find primers for it.
-        // This should be enough for circular primers search.
-        QByteArray oppositeSeq = settings.getSequence().right(median);
-        oppositeSeq.append(settings.getSequence().left(settings.getSequenceSize() - median));
-        Primer3TaskSettings circSettings = settings;
-        circSettings.setSequence(oppositeSeq, true);
 
-        addPrimer3Subtasks(circSettings, circRegionTasks);
-    }
+
+    //if (settings.isSequenceCircular() && sequenceRange.startPos == 0 &&
+    //    sequenceRange.length == sequenceSize) {
+    //    // Based on conversation with Vladimir Trifonov:
+    //    // Consider the start position in the center of the sequence and find primers for it.
+    //    // This should be enough for circular primers search.
+    //    QByteArray oppositeSeq = settings.getSequence().right(median);
+    //    oppositeSeq.append(settings.getSequence().left(settings.getSequenceSize() - median));
+    //    Primer3TaskSettings circSettings = settings;
+    //    circSettings.setSequence(oppositeSeq, true);
+
+    //    addPrimer3Subtasks(circSettings, circRegionTasks);
+    //} else {
+    //    addPrimer3Subtasks(settings, regionTasks);
+    //}
 }
 
 Task::ReportResult Primer3SWTask::report() {
@@ -687,8 +695,8 @@ void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, 
     }
 }
 
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& list) {
-    addPrimer3Subtasks(taskSettings, taskSettings.getIncludedRegion(), list);
+void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& list) {
+    addPrimer3Subtasks(settings, settings.getSequenceRange(), list);
 }
 
 void Primer3SWTask::relocatePrimerOverMedian(Primer* primer) {

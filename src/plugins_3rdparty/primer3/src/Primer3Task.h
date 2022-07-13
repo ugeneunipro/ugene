@@ -133,7 +133,7 @@ private:
 
     p3retval* resultPrimers = nullptr;
 
-    int offset;
+    int offset = 0;
 };
 
 class Primer3ToAnnotationsTask;

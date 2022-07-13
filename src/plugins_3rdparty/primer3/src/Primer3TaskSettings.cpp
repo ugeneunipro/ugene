@@ -41,6 +41,14 @@ int Primer3TaskSettings::getExplainFlag() const {
     return explain;
 }
 
+void Primer3TaskSettings::setSequenceRange(const U2Region& region) {
+    sequenceRange = region;
+}
+
+const U2Region& Primer3TaskSettings::getSequenceRange() const {
+    return sequenceRange;
+}
+
 Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings();
     p3Retval = create_p3retval();
@@ -55,6 +63,7 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
       repeatLibraryPath(settings.repeatLibraryPath),
       mishybLibraryPath(settings.mishybLibraryPath),
       spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
+      sequenceRange(settings.sequenceRange),
       showDebugging(settings.showDebugging),
       formatOutput(settings.formatOutput),
       explain(settings.explain) {
@@ -71,6 +80,7 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     repeatLibraryPath = settings.repeatLibraryPath;
     mishybLibraryPath = settings.mishybLibraryPath;
     spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
+    sequenceRange = settings.sequenceRange;
     showDebugging = settings.showDebugging;
     formatOutput = settings.formatOutput;
     explain = settings.explain;
@@ -309,6 +319,10 @@ void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& 
     for (int i = 0; i < value.size(); i++) {
         p3_add_to_sa_excl_internal2(seqArgs, value[i].startPos, value[i].length);
     }
+}
+
+void Primer3TaskSettings::setStartCodonSequence(const QByteArray& value) const {
+    p3_sa_set_start_codon_sequence(seqArgs, value);
 }
 
 void Primer3TaskSettings::setPrimerMustMatchFivePrime(const QByteArray& value) const {

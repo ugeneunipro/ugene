@@ -108,6 +108,7 @@ public:
     void setProductSizeRange(const QList<U2Region>& value);
     void setTaskByName(const QString& taskName);
     void setInternalOligoExcludedRegion(const QList<U2Region>& value);
+    void setStartCodonSequence(const QByteArray& value) const;
     void setPrimerMustMatchFivePrime(const QByteArray& value) const;
     void setPrimerMustMatchThreePrime(const QByteArray& value) const;
     void setInternalPrimerMustMatchFivePrime(const QByteArray& value) const;
@@ -164,6 +165,9 @@ public:
 
     int getExplainFlag() const;
 
+    void setSequenceRange(const U2Region& region);
+    const U2Region& getSequenceRange() const;
+
 
 private:
     void initMaps();
@@ -177,6 +181,7 @@ private:
     QByteArray repeatLibraryPath;
     QByteArray mishybLibraryPath;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
+    U2Region sequenceRange;
 
     bool showDebugging = false;
     bool formatOutput = false;
