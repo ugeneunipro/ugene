@@ -63,6 +63,7 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                           "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
                           "SEQUENCE_INCLUDED_REGION",
                           "SEQUENCE_INTERNAL_EXCLUDED_REGION",
+                          "SEQUENCE_START_CODON_SEQUENCE",
                           "PRIMER_MUST_MATCH_FIVE_PRIME",
                           "PRIMER_MUST_MATCH_THREE_PRIME",
                           "PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME",
@@ -312,6 +313,7 @@ void Primer3Dialog::reset() {
     edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(okRegions2String(defaultSettings.getOkRegion()));
     edit_PRIMER_PRODUCT_SIZE_RANGE->setText(intervalListToString(defaultSettings.getProductSizeRange(), "-", IntervalDefinition::Start_End));
     edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getInternalOligoExcludedRegion(), ","));
+    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getStartCodonSequence());
     edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getPrimerMustMatchFivePrime());
     edit_PRIMER_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getPrimerMustMatchThreePrime());
     edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchFivePrime());

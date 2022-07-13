@@ -211,6 +211,10 @@ QList<U2Region> Primer3TaskSettings::getInternalOligoExcludedRegion() const {
     return result;
 }
 
+QString Primer3TaskSettings::getStartCodonSequence() const {
+    return seqArgs->start_codon_seq;
+}
+
 QString Primer3TaskSettings::getPrimerMustMatchFivePrime() const {
     return primerSettings->p_args.must_match_five_prime;
 }
