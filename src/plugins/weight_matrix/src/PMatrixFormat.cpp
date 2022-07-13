@@ -50,8 +50,10 @@ PFMatrixFormat::PFMatrixFormat(QObject* p)
 }
 
 FormatCheckResult PFMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    QStringList qsl = dataPrefix.split("\n");
-    qsl.removeAll(QString());
+    QString dataPrefixCopy = dataPrefix;
+    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    qsl.removeAll("");
+
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 4 or 5
         return FormatDetection_NotMatched;
     }
@@ -156,8 +158,10 @@ PWMatrixFormat::PWMatrixFormat(QObject* p)
 }
 
 FormatCheckResult PWMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    QStringList qsl = dataPrefix.split("\n");
-    qsl.removeAll(QString());
+    QString dataPrefixCopy = dataPrefix;
+    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    qsl.removeAll("");
+
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 5 or 6
         return FormatDetection_NotMatched;
     }
