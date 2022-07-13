@@ -83,6 +83,7 @@ public:
     int getMinProductSize() const;
     task getTask() const;
     QList<U2Region> getInternalOligoExcludedRegion() const;
+    QString getStartCodonSequence() const;
     QString getPrimerMustMatchFivePrime() const;
     QString getPrimerMustMatchThreePrime() const;
     QString getInternalPrimerMustMatchFivePrime() const;
