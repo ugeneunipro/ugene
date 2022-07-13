@@ -217,7 +217,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_86">
+            <widget class="QLabel" name="label_OVERLAP_JUNCTION_LIST">
              <property name="text">
               <string>Overlap Junction List</string>
              </property>
@@ -231,9 +231,16 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_87">
+            <widget class="QLabel" name="label_PAIR_OK">
              <property name="text">
               <string>Pair OK Region List</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_INCLUDED_REGION">
+             <property name="text">
+              <string>Included region</string>
              </property>
             </widget>
            </item>
@@ -241,6 +248,13 @@
             <widget class="QLabel" name="label_89">
              <property name="text">
               <string>Start Codon Position</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_START_CODON_SEQUENCE">
+             <property name="text">
+              <string>Start Codon Sequence</string>
              </property>
             </widget>
            </item>
@@ -362,79 +376,18 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <widget class="QSpinBox" name="edit_SEQUENCE_START_CODON_POSITION">
+           <item row="4" column="0">
+            <widget class="QLineEdit" name="edit_SEQUENCE_INCLUDED_REGION">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;start&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="minimum">
-              <number>-2000000</number>
-             </property>
-             <property name="maximum">
-              <number>999999999</number>
-             </property>
-             <property name="value">
-              <number>-2000000</number>
+              <string>A sub-region of the given sequence in which to pick primers. For example, often the first dozen or so bases of a sequence are vector, and should be excluded from consideration. The value for this parameter has the form
+
+&lt;start&gt;,&lt;length&gt;
+where &lt;start&gt; is the index of the first base to consider, and &lt;length&gt; is the number of subsequent bases in the primer-picking region.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_START">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="minimum">
-              <number>-1000000</number>
-             </property>
-             <property name="maximum">
-              <number>999999999</number>
-             </property>
-             <property name="value">
-              <number>-1000000</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_92">
-             <property name="text">
-              <string>Force Right Primer Start</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_RIGHT_START">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the right primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="minimum">
-              <number>-1000000</number>
-             </property>
-             <property name="maximum">
-              <number>999999999</number>
-             </property>
-             <property name="value">
-              <number>-1000000</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <spacer name="horizontalSpacer_44">
+           <item row="4" column="1">
+            <spacer name="horizontalSpacer_41">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -446,7 +399,18 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="2" column="0">
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_93">
+             <property name="text">
+              <string>Force Right Primer End</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
             <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_END">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -468,14 +432,155 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="label_93">
-             <property name="text">
-              <string>Force Right Primer End</string>
+           <item row="2" column="3">
+            <spacer name="horizontalSpacer_44">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0">
+            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_LEFT_START">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
              </property>
             </widget>
            </item>
+           <item row="3" column="3">
+            <spacer name="horizontalSpacer_45">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="3">
+            <spacer name="horizontalSpacer_56">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Five Matches on Primer's 3'</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_FIVE_PRIME"/>
+           </item>
+           <item row="5" column="2">
+            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME"/>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="label_123">
+             <property name="text">
+              <string>Five Matches on Internal Oligo's 3'</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QSpinBox" name="edit_SEQUENCE_START_CODON_POSITION">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;start&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New'; font-style:italic; color:#000000;&quot;&gt;&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-2000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-2000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <spacer name="horizontalSpacer_55">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="2" column="2">
+            <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_RIGHT_START">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Forces the 5' end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the right primer can be anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>999999999</number>
+             </property>
+             <property name="value">
+              <number>-1000000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_THREE_PRIME"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="label_92">
+             <property name="text">
+              <string>Force Right Primer Start</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
             <widget class="QSpinBox" name="edit_SEQUENCE_FORCE_RIGHT_END">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -497,73 +602,12 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="2" column="3">
-            <spacer name="horizontalSpacer_45">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_FIVE_PRIME"/>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="label_35">
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="edit_SEQUENCE_START_CODON_SEQUENCE">
              <property name="text">
-              <string>Five Matches on Primer's 3'</string>
+              <string>ATG</string>
              </property>
             </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLineEdit" name="edit_PRIMER_MUST_MATCH_THREE_PRIME"/>
-           </item>
-           <item row="3" column="3">
-            <spacer name="horizontalSpacer_55">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Minimum</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME"/>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLabel" name="label_123">
-             <property name="text">
-              <string>Five Matches on Internal Oligo's 3'</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QLineEdit" name="edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME"/>
-           </item>
-           <item row="4" column="3">
-            <spacer name="horizontalSpacer_56">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>

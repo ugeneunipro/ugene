@@ -69,12 +69,12 @@ private slots:
     void sl_pickClicked();
     void sl_saveSettings();
     void sl_loadSettings();
+    void sl_taskChanged(const QString& text);
 
 
 private:
     CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
     U2Region selection;
-    int sequenceLength;
 
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
@@ -86,6 +86,10 @@ private:
     static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
+    static const QRegularExpression MUST_MATCH_START_CODON_SEQUENCE_REGEX;
+    // Picking primers becomes too inaccurate even if sequence is more than 1000 bases length and no one uses Primer3 in this cases
+    // Let the upper bound be 10 times more
+    static constexpr int MAXIMUM_ALLOWED_SEQUENCE_LENGTH = 10000;
 };
 
 }  // namespace U2

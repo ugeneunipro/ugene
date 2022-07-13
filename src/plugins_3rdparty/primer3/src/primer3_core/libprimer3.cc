@@ -7042,7 +7042,7 @@ _pr_data_control(const p3_global_settings *pa,
 
   if (pa->p_args.opt_size < pa->p_args.min_size) {
     pr_append_new_chunk(glob_err,
-                        "PRIMER_{OPT,DEFAULT}_SIZE < PRIMER_MIN_SIZE");
+                        "PRIMER_{OPT,DEFAULT}_SIZE &lt; PRIMER_MIN_SIZE");
     return 1;
   }
 
@@ -7060,7 +7060,7 @@ _pr_data_control(const p3_global_settings *pa,
 
   if (pa->o_args.opt_size < pa->o_args.min_size) {
     pr_append_new_chunk(glob_err,
-                        "PRIMER_INTERNAL_{OPT,DEFAULT}_SIZE < MIN_SIZE");
+                        "PRIMER_INTERNAL_{OPT,DEFAULT}_SIZE &lt; MIN_SIZE");
     return 1;
   }
 
@@ -7114,7 +7114,7 @@ _pr_data_control(const p3_global_settings *pa,
   /* There must be at least one primer returned */
   if (pa->num_return < 1) {
     pr_append_new_chunk(glob_err,
-                        "PRIMER_NUM_RETURN < 1");
+                        "PRIMER_NUM_RETURN &lt; 1");
     return 1;
   }
 
@@ -7155,10 +7155,10 @@ _pr_data_control(const p3_global_settings *pa,
       && pa->pick_right_primer == 1) {
     if (pa->primer_task == check_primers) {
       pr_append_new_chunk(warning,
-                          "SEQUENCE_INCLUDED_REGION length < min PRIMER_PRODUCT_SIZE_RANGE");
+                          "SEQUENCE_INCLUDED_REGION length &lt; min PRIMER_PRODUCT_SIZE_RANGE");
     } else if (pa->primer_task != pick_primer_list) {
       pr_append_new_chunk(nonfatal_err,
-                          "SEQUENCE_INCLUDED_REGION length < min PRIMER_PRODUCT_SIZE_RANGE");
+                          "SEQUENCE_INCLUDED_REGION length &lt; min PRIMER_PRODUCT_SIZE_RANGE");
     }
 
     if (pa->primer_task == generic) {
@@ -7204,7 +7204,7 @@ _pr_data_control(const p3_global_settings *pa,
   if (NULL != sa->quality) {
     if(pa->p_args.min_quality != 0 && pa->p_args.min_quality < pa->quality_range_min) {
       pr_append_new_chunk(glob_err,
-                          "PRIMER_MIN_QUALITY < PRIMER_QUALITY_RANGE_MIN");
+                          "PRIMER_MIN_QUALITY &lt; PRIMER_QUALITY_RANGE_MIN");
       return 1;
     }
     if (pa->p_args.min_quality != 0 && pa->p_args.min_quality > pa->quality_range_max) {
@@ -7214,7 +7214,7 @@ _pr_data_control(const p3_global_settings *pa,
     }
     if (pa->o_args.min_quality != 0 && pa->o_args.min_quality <pa->quality_range_min) {
       pr_append_new_chunk(glob_err,
-                          "PRIMER_INTERNAL_MIN_QUALITY < PRIMER_QUALITY_RANGE_MIN");
+                          "PRIMER_INTERNAL_MIN_QUALITY &lt; PRIMER_QUALITY_RANGE_MIN");
       return 1;
     }
     if (pa->o_args.min_quality != 0 && pa->o_args.min_quality > pa->quality_range_max) {
@@ -7429,7 +7429,7 @@ _pr_data_control(const p3_global_settings *pa,
 
     if (strlen(sa->internal_input) < (unsigned) pa->o_args.min_size)
       pr_append_new_chunk(warning,
-                          "Specified internal oligo < PRIMER_INTERNAL_MIN_SIZE");
+                          "Specified internal oligo &lt; PRIMER_INTERNAL_MIN_SIZE");
 
     if (!strstr_nocase(sa->sequence, sa->internal_input))
       pr_append_new_chunk(nonfatal_err,
@@ -7456,7 +7456,7 @@ _pr_data_control(const p3_global_settings *pa,
                           "Specified left primer > PRIMER_MAX_SIZE");
     if (strlen(sa->left_input) < (unsigned) pa->p_args.min_size)
       pr_append_new_chunk(warning,
-                          "Specified left primer < PRIMER_MIN_SIZE");
+                          "Specified left primer &lt; PRIMER_MIN_SIZE");
     if (!strstr_nocase(sa->sequence, sa->left_input))
       pr_append_new_chunk(nonfatal_err,
                           "Specified left primer not in sequence");
@@ -7479,7 +7479,7 @@ _pr_data_control(const p3_global_settings *pa,
     }
     if (strlen(sa->right_input) < (unsigned) pa->p_args.min_size)
       pr_append_new_chunk(warning,
-                          "Specified right primer < PRIMER_MIN_SIZE");
+                          "Specified right primer &lt; PRIMER_MIN_SIZE");
     if (strlen(sa->right_input) > (unsigned) pa->p_args.max_size) {
       pr_append_new_chunk(warning,
                           "Specified right primer > PRIMER_MAX_SIZE");
@@ -8388,6 +8388,12 @@ p3_sa_add_to_overlap_junctions_array(seq_args *sargs, int overlap)
   if (c >= PR_MAX_INTERVAL_ARRAY) return 1;
   sargs->primer_overlap_junctions[sargs->primer_overlap_junctions_count++] = overlap;
   return 0;
+}
+
+void p3_sa_set_start_codon_sequence(seq_args* sargs, const char start_codon_seq[4]) {
+    for (int i = 0; i < 4; i++) {
+        sargs->start_codon_seq[i] = start_codon_seq[i];
+    }
 }
 
 int

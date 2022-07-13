@@ -61,6 +61,7 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                           "SEQUENCE_OVERLAP_JUNCTION_LIST",
                           "SEQUENCE_EXCLUDED_REGION",
                           "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
+                          "SEQUENCE_INCLUDED_REGION",
                           "SEQUENCE_INTERNAL_EXCLUDED_REGION",
                           "PRIMER_MUST_MATCH_FIVE_PRIME",
                           "PRIMER_MUST_MATCH_THREE_PRIME",
@@ -70,6 +71,7 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
     };
 
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([NAGCTRYWSMKBHDV]){5}$");
+const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^([A-Z]){3}$");
 
 Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
@@ -84,6 +86,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequ
     connect(resetButton, SIGNAL(clicked()), SLOT(sl_resetClicked()));
     connect(saveSettingsButton, SIGNAL(clicked()), SLOT(sl_saveSettings()));
     connect(loadSettingsButton, SIGNAL(clicked()), SLOT(sl_loadSettings()));
+    connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_taskChanged);
 
     tabWidget->setCurrentIndex(0);
 
@@ -101,8 +104,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequ
     if (!context->getSequenceSelection()->getSelectedRegions().isEmpty()) {
         selection = context->getSequenceSelection()->getSelectedRegions().first();
     }
-    sequenceLength = context->getSequenceLength();
-    rs = new RegionSelector(this, sequenceLength, false, context->getSequenceSelection(), true);
+    rs = new RegionSelector(this, context->getSequenceLength(), false, context->getSequenceSelection(), true);
     rangeSelectorLayout->addWidget(rs);
 
     repeatLibraries.append(QPair<QString, QByteArray>(tr("NONE"), ""));
@@ -466,12 +468,38 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
     {
+        QList<U2Region> list;
+        if (parseIntervalList(edit_SEQUENCE_INCLUDED_REGION->text(), ",", &list)) {
+            if (list.size() > 1) {
+                QMessageBox::critical(this, windowTitle(), tr("The \"Include region\" should be the only one"));
+                return false;
+            } else if (list.size() == 1) {
+                const auto & region = list.first();
+                settings.setIncludedRegion(region.startPos, region.length);
+            }
+        } else {
+            showInvalidInputMessage(edit_SEQUENCE_INCLUDED_REGION, tr("Include Regions"));
+            return false;
+        }
+    }
+    {
         QList<QList<int>> list;
         if (parseOkRegions(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), &list)) {
             settings.setOkRegion(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST, tr("Pair OK Region List"));
             return false;
+        }
+    }
+    {
+        QString text = edit_SEQUENCE_START_CODON_SEQUENCE->text();
+        if (!text.isEmpty()) {
+            if (MUST_MATCH_START_CODON_SEQUENCE_REGEX.match(text).hasMatch()) {
+                settings.setStartCodonSequence(text.toLocal8Bit());
+            } else {
+                showInvalidInputMessage(edit_SEQUENCE_START_CODON_SEQUENCE, tr("Start Codon Sequence"));
+                return false;
+            }
         }
     }
     {
@@ -607,16 +635,28 @@ bool Primer3Dialog::doDataExchange() {
         if (parseIntervalList(edit_PRIMER_PRODUCT_SIZE_RANGE->text(), "-", &list, IntervalDefinition::Start_End)) {
             settings.setProductSizeRange(list);
             bool isRegionOk = false;
-            U2Region includedRegion = rs->getRegion(&isRegionOk);
+            U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
             if (!isRegionOk) {
                 rs->showErrorMessage();
                 return false;
             }
-            if (!settings.isIncludedRegionValid(includedRegion)) {
-                QMessageBox::critical(this, windowTitle(), tr("Included region is too small for current product size ranges"));
+            if (!settings.isIncludedRegionValid(sequenceRangeRegion)) {
+                QMessageBox::critical(this, windowTitle(), tr("Sequence range region is too small for current product size ranges"));
                 return false;
             }
-            settings.setIncludedRegion(includedRegion.startPos + settings.getFirstBaseIndex(), includedRegion.length);
+            if (sequenceRangeRegion.length > MAXIMUM_ALLOWED_SEQUENCE_LENGTH) {
+                QMessageBox::critical(this, windowTitle(), tr("The priming sequence is too long, please, decrease the region"));
+                return false;
+            }
+            
+            if (sequenceRangeRegion.endPos() > context->getSequenceLength() + settings.getFirstBaseIndex() && !context->getSequenceObject()->isCircular()) {
+                QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
+                                                              "Either make the priming region end \"%1\" less or equel than the sequence size \"%2\" plus the first base index value \"%3\""
+                                                              "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings.getFirstBaseIndex()));
+                return false;
+            }
+
+            settings.setSequenceRange(sequenceRangeRegion);
         } else {
             showInvalidInputMessage(edit_PRIMER_PRODUCT_SIZE_RANGE, tr("Product Size Ranges"));
             return false;
@@ -701,7 +741,7 @@ void Primer3Dialog::sl_saveSettings() {
     stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
     bool isRegionOk = false;
     auto region = rs->getRegion(&isRegionOk);
-    stream << "SEQUENCE_INCLUDED_REGION=" << region.startPos << "," << region.length << endl;
+    //stream << "SEQUENCE_INCLUDED_REGION=" << region.startPos << "," << region.length << endl;
 
     auto qualityText = edit_SEQUENCE_QUALITY->toPlainText();
     if (!qualityText.isEmpty()) {
@@ -823,6 +863,37 @@ void Primer3Dialog::sl_loadSettings() {
 void Primer3Dialog::sl_resetClicked() {
     reset();
     rs->reset();
+}
+
+void Primer3Dialog::sl_taskChanged(const QString& text) {
+    auto setSequenceParametersEnabled = [&](bool target, bool junctionList, bool pairOk, bool excludedRegion, bool includedRegion) {
+        label_TARGET->setEnabled(target);
+        edit_SEQUENCE_TARGET->setEnabled(target);
+        label_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
+        edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
+        label_PAIR_OK->setEnabled(pairOk);
+        edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
+        label_EXCLUDED_REGION->setEnabled(excludedRegion);
+        edit_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
+        label_INCLUDED_REGION->setEnabled(includedRegion);
+        edit_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
+    };
+
+    if (text == "generic") {
+        setSequenceParametersEnabled(true, true, true, true, true);
+    } else if (text == "pick_sequencing_primers") {
+        setSequenceParametersEnabled(true, false, false, false, false);
+    } else if (text == "pick_primer_list") {
+        setSequenceParametersEnabled(true, true, true, true, true);
+    } else if (text == "check_primers") {
+        setSequenceParametersEnabled(false, false, false, false, false);
+    } else if (text == "pick_cloning_primers") {
+        setSequenceParametersEnabled(false, false, false, false, true);
+    } else if (text == "pick_discriminative_primers") {
+        setSequenceParametersEnabled(true, false, false, false, false);
+    } else {
+        FAIL("Unexpected task value", );
+    }
 }
 
 QString Primer3Dialog::checkModel() {
