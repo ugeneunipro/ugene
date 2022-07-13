@@ -103,6 +103,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     text = sequenceLineEdit->text();
     CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0003)
@@ -150,6 +152,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Must not crash
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
@@ -206,6 +210,8 @@ GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
 
     //    Expected state:
     // Must not crash
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
@@ -265,6 +271,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
     img = GTWidget::getImage(os, w);
     CHECK_SET_ERR(img != initImg,
                   "image not changed"); // no way to check dots. Can only check that sequence area changed
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(search_test_0001)
@@ -296,6 +304,8 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001)
 
     CHECK_SET_ERR(firstBaseIdx < 66 && 68 < lastBaseIdx,
                   "Selection must be between fist and last bases");
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_options

@@ -1331,6 +1331,8 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
 
     // Expected: selection hasn't been changed
     check();
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline

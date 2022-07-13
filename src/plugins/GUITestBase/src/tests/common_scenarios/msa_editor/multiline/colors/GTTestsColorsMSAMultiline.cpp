@@ -145,6 +145,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                   QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
     CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -210,6 +212,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -292,6 +296,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                   QString("Threshold comparison is incorrect: expected %1, got %2").arg(expectedThresholdComparison).arg(thresholdComparison));
     CHECK_SET_ERR(expectedIsUseDotsOptionsSet == isUseDotsOptionsSet,
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_colors
