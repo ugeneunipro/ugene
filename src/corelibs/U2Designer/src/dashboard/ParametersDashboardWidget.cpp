@@ -141,8 +141,8 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
     return result;
 }
 
-ParametersDashboardWidget::ParametersDashboardWidget(const QString& dashboardDir, const QDomElement& dom, const WorkflowMonitor* monitor)
-    : dashboardDir(dashboardDir), monitor(monitor) {
+ParametersDashboardWidget::ParametersDashboardWidget(const QString& _dashboardDir, const QDomElement& dom, const WorkflowMonitor* _monitor)
+    : dashboardDir(_dashboardDir), monitor(_monitor) {
     setObjectName("ParametersDashboardWidget");
     setMinimumWidth(1100);
 
@@ -181,6 +181,10 @@ ParametersDashboardWidget::ParametersDashboardWidget(const QString& dashboardDir
     }
     nameListWidgetLayout->addStretch();
     showWorkerParameters(0);
+
+    if (monitor != nullptr) {
+        connect(monitor, &WorkflowMonitor::si_dirSet, this, [&](const QString& newDashboardDir) { dashboardDir = newDashboardDir; });
+    }
 }
 
 void ParametersDashboardWidget::sl_workerLabelClicked() {
