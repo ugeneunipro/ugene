@@ -60,10 +60,9 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget(os);
 
-    auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
-    GTWidget::click(os, GTWidget::findWidget(os, "selectNoneButton", enzymesSelectorWidget));
-
     if (!settings.clickFindAll) {
+        auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
+        GTWidget::click(os, GTWidget::findWidget(os, "selectNoneButton", enzymesSelectorWidget));
         auto enzymesTree = GTWidget::findTreeWidget(os, "tree", enzymesSelectorWidget);
         for (const QString& enzyme : qAsConst(settings.enzymes)) {
             QTreeWidgetItem* item = GTTreeWidget::findItem(os, enzymesTree, enzyme);
