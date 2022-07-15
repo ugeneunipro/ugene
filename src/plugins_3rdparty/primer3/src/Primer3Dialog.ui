@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>892</width>
-    <height>953</height>
+    <width>1078</width>
+    <height>1149</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -116,33 +116,18 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_PRIMER_LEFT_INPUT">
-           <property name="text">
-            <string>or use left primer below</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLineEdit" name="edit_SEQUENCE_PRIMER">
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkbox_PRIMER_PICK_INTERNAL_OLIGO">
            <property name="enabled">
             <bool>true</bool>
            </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="label_PRIMER_INTERNAL_OLIGO_INPUT">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="text">
-            <string>or use oligo below</string>
+            <string>Pick hybridization probe (internal oligo)</string>
            </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="edit_SEQUENCE_INTERNAL_OLIGO">
-           <property name="enabled">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
             <bool>false</bool>
            </property>
           </widget>
@@ -166,10 +151,41 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_PRIMER_LEFT_INPUT">
+           <property name="text">
+            <string>or use left primer below</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_PRIMER_INTERNAL_OLIGO_INPUT">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>or use oligo below</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="2">
           <widget class="QLabel" name="label_PRIMER_RIGHT_INPUT">
            <property name="text">
             <string>or use right primer below (5' to 3' on opposite strand)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLineEdit" name="edit_SEQUENCE_PRIMER">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="edit_SEQUENCE_INTERNAL_OLIGO">
+           <property name="enabled">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -180,21 +196,46 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="checkbox_PRIMER_PICK_INTERNAL_OLIGO">
-           <property name="enabled">
-            <bool>true</bool>
+         <item row="3" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_SEQUENCE_OVERHANG_LEFT">
+             <property name="text">
+              <string>5' Overhang:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_SEQUENCE_OVERHANG_LEFT"/>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <spacer name="horizontalSpacer_57">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-           <property name="text">
-            <string>Pick hybridization probe (internal oligo)</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>208</width>
+             <height>20</height>
+            </size>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
+          </spacer>
+         </item>
+         <item row="3" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLabel" name="label_SEQUENCE_OVERHANG_RIGHT">
+             <property name="text">
+              <string>5' Overhang:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_SEQUENCE_OVERHANG_RIGHT"/>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -839,116 +880,25 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
       <layout class="QVBoxLayout" name="verticalLayout_16">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="3" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_MIN_GC">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-</string>
-           </property>
-           <property name="maximum">
-            <double>100.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>30.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_PRIMER_GC_PERCENT">
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_PRIMER_PRODUCT_MIN_TM">
            <property name="text">
-            <string>Primer GC%</string>
+            <string>Min</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_10">
+         <item row="2" column="11">
+          <spacer name="horizontalSpacer_20">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>13</width>
-             <height>17</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="2" column="7">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_PRODUCT_MAX_TM">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <double>-100000.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>100000.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>100000.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="10">
-          <widget class="QComboBox" name="combobox_PRIMER_TM_FORMULA">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies details of melting temperature calculation.&lt;/p&gt;&lt;p&gt;First method uses the table of thermodynamic parameters from the paper [Breslauer KJ, et. al (1986), Proc Natl Acad Sci 83:4746-50 http://dx.doi.org/10.1073/pnas.83.11.3746]&lt;/p&gt;&lt;p&gt;Second method (recommended) was suggested in the paper [SantaLucia JR (1998), Proc Natl Acad Sci 95:1460-65 http://dx.doi.org/10.1073/pnas.95.4.1460].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>SantaLucia 1998</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Breslauer et. al 1986</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_PRODUCT_MIN_TM">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <double>-100000.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>100000.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>-100000.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_PRIMER_SIZE">
-           <property name="text">
-            <string>Primer size</string>
-           </property>
-          </widget>
          </item>
          <item row="0" column="7">
           <widget class="QSpinBox" name="edit_PRIMER_MAX_SIZE">
@@ -972,41 +922,15 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="0" column="10">
-          <spacer name="horizontalSpacer_15">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_PRIMER_MIN_SIZE">
+         <item row="3" column="4">
+          <widget class="QLabel" name="label_PRIMER_OPT_GC_PERCENT">
            <property name="text">
-            <string>Min</string>
+            <string>Opt</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="9">
-          <spacer name="horizontalSpacer_18">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_SIZE">
+         <item row="2" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_PRODUCT_MAX_TM">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1014,84 +938,21 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="minimum">
-            <number>1</number>
+            <double>-100000.000000000000000</double>
            </property>
            <property name="maximum">
-            <number>999999999</number>
+            <double>100000.000000000000000</double>
            </property>
            <property name="value">
-            <number>18</number>
+            <double>100000.000000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="1" column="9">
-          <widget class="QLabel" name="label_PRIMER_TM_SANTALUCIA">
-           <property name="text">
-            <string>Table of thermodynamic parameters</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QSpinBox" name="edit_PRIMER_OPT_SIZE">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>20</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_PRIMER_OPT_SIZE">
-           <property name="text">
-            <string>Opt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="8">
-          <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="4">
-          <widget class="QLabel" name="label_PRIMER_PRODUCT_OPT_TM">
-           <property name="text">
-            <string>Opt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_PRIMER_TM">
-           <property name="text">
-            <string>Primer Tm</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_PRIMER_MAX_SIZE">
+         <item row="1" column="6">
+          <widget class="QLabel" name="label_PRIMER_MAX_TM">
            <property name="text">
             <string>Max</string>
            </property>
@@ -1116,8 +977,21 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <spacer name="horizontalSpacer_2">
+         <item row="0" column="8">
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="1">
+          <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -1128,6 +1002,37 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="2" column="4">
+          <widget class="QLabel" name="label_PRIMER_PRODUCT_OPT_TM">
+           <property name="text">
+            <string>Opt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="6">
+          <widget class="QLabel" name="label_PRIMER_MAX_GC_PERCENT">
+           <property name="text">
+            <string>Max</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_PRIMER_MIN_SIZE">
+           <property name="text">
+            <string>Min</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="10">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_ANNEALING_TEMP">
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>52.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="1">
           <spacer name="horizontalSpacer_31">
@@ -1142,8 +1047,8 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </spacer>
          </item>
-         <item row="0" column="11">
-          <spacer name="horizontalSpacer_21">
+         <item row="0" column="10">
+          <spacer name="horizontalSpacer_15">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -1154,6 +1059,13 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_PRIMER_OPT_SIZE">
+           <property name="text">
+            <string>Opt</string>
+           </property>
+          </widget>
          </item>
          <item row="2" column="10">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_MAX_DIFF_TM">
@@ -1174,22 +1086,8 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="6">
-          <widget class="QLabel" name="label_PRIMER_MAX_TM">
-           <property name="text">
-            <string>Max</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="6">
-          <widget class="QLabel" name="label_PRIMER_MAX_GC_PERCENT">
-           <property name="text">
-            <string>Max</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="8">
-          <spacer name="horizontalSpacer_12">
+         <item row="3" column="11">
+          <spacer name="horizontalSpacer_19">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -1220,53 +1118,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_PRIMER_MIN_TM">
-           <property name="text">
-            <string>Min</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_PRIMER_PRODUCT_MIN_TM">
-           <property name="text">
-            <string>Min</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="4">
-          <widget class="QLabel" name="label_PRIMER_OPT_GC_PERCENT">
-           <property name="text">
-            <string>Opt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="8">
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="11">
-          <spacer name="horizontalSpacer_20">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="1" column="4">
           <widget class="QLabel" name="label_PRIMER_OPT_TM">
            <property name="text">
@@ -1274,8 +1125,35 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="0" column="9">
-          <spacer name="horizontalSpacer_16">
+         <item row="1" column="10">
+          <widget class="QComboBox" name="combobox_PRIMER_TM_FORMULA">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies details of melting temperature calculation.&lt;/p&gt;&lt;p&gt;First method uses the table of thermodynamic parameters from the paper [Breslauer KJ, et. al (1986), Proc Natl Acad Sci 83:4746-50 http://dx.doi.org/10.1073/pnas.83.11.3746]&lt;/p&gt;&lt;p&gt;Second method (recommended) was suggested in the paper [SantaLucia JR (1998), Proc Natl Acad Sci 95:1460-65 http://dx.doi.org/10.1073/pnas.95.4.1460].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>SantaLucia 1998</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Breslauer et. al 1986</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="9">
+          <widget class="QLabel" name="label_PRIMER_TM_SANTALUCIA">
+           <property name="text">
+            <string>Table of thermodynamic parameters</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="8">
+          <spacer name="horizontalSpacer_11">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -1287,8 +1165,55 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </spacer>
          </item>
-         <item row="1" column="7">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_MAX_TM">
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>13</width>
+             <height>17</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="label_PRIMER_MIN_GC_PERCENT">
+           <property name="text">
+            <string>Min</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="9">
+          <widget class="QLabel" name="label_PRIMER_MAX_DIFF_TM">
+           <property name="text">
+            <string>Max Tm difference</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="9">
+          <widget class="QLabel" name="label_124">
+           <property name="text">
+            <string>Annealing Temperature</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="8">
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="5">
+          <widget class="QSpinBox" name="edit_PRIMER_OPT_SIZE">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1296,13 +1221,16 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum melting temperatures (Celsius) for a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick oligos with temperatures smaller than Min or larger than Max, and with default conditions will try to pick primers with melting temperatures close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
            </property>
            <property name="maximum">
-            <double>9999.989999999999782</double>
+            <number>999999999</number>
            </property>
            <property name="value">
-            <double>62.000000000000000</double>
+            <number>20</number>
            </property>
           </widget>
          </item>
@@ -1332,6 +1260,19 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
+         <item row="0" column="9">
+          <spacer name="horizontalSpacer_16">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_PRIMER_PRODUCT_TM">
            <property name="text">
@@ -1339,49 +1280,16 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="3" column="5">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_OPT_GC_PERCENT">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>13</width>
-             <height>17</height>
-            </size>
+           <property name="minimum">
+            <double>-99999999999999997748809823456034029568.000000000000000</double>
            </property>
-          </spacer>
-         </item>
-         <item row="3" column="10">
-          <spacer name="horizontalSpacer_13">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="11">
-          <spacer name="horizontalSpacer_19">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="9">
-          <widget class="QLabel" name="label_PRIMER_MAX_DIFF_TM">
-           <property name="text">
-            <string>Max Tm difference</string>
+           <property name="value">
+            <double>50.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1404,23 +1312,214 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QLabel" name="label_PRIMER_MIN_GC_PERCENT">
+         <item row="0" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_SIZE">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>18</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>13</width>
+             <height>17</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_PRIMER_MAX_SIZE">
+           <property name="text">
+            <string>Max</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_MIN_GC">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</string>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>30.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="11">
+          <spacer name="horizontalSpacer_21">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_PRODUCT_MIN_TM">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-100000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>-100000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_PRIMER_SIZE">
+           <property name="text">
+            <string>Primer size</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_PRIMER_MIN_TM">
            <property name="text">
             <string>Min</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="5">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_OPT_GC_PERCENT">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <item row="1" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_MAX_TM">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="minimum">
-            <double>-99999999999999997748809823456034029568.000000000000000</double>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum melting temperatures (Celsius) for a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick oligos with temperatures smaller than Min or larger than Max, and with default conditions will try to pick primers with melting temperatures close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
            </property>
            <property name="value">
-            <double>50.000000000000000</double>
+            <double>62.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_PRIMER_GC_PERCENT">
+           <property name="text">
+            <string>Primer GC%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_PRIMER_TM">
+           <property name="text">
+            <string>Primer Tm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_135">
+           <property name="text">
+            <string>Primer Bound</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLabel" name="label_136">
+           <property name="text">
+            <string>Min</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="4">
+          <widget class="QLabel" name="label_137">
+           <property name="text">
+            <string>Opt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="6">
+          <widget class="QLabel" name="label_138">
+           <property name="text">
+            <string>Max</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_MIN_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>-10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="5">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_OPT_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>97.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_MAX_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>110.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1901,314 +2000,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_PRIMER_MAX_NS_ACCEPTED">
-           <property name="text">
-            <string>Max #N's accepted</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_MAX_NS_ACCEPTED">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of unknown bases (N) allowable in any primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_PRIMER_MAX_POLY_X">
-           <property name="text">
-            <string>Max poly-X</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_MAX_POLY_X">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999999</number>
-           </property>
-           <property name="value">
-            <number>4</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <spacer name="horizontalSpacer_27">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_PRIMER_INSIDE_PENALTY">
-           <property name="toolTip">
-            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
-           </property>
-           <property name="text">
-            <string>Inside target penalty</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INSIDE_PENALTY">
-           <property name="toolTip">
-            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
-           </property>
-           <property name="minimum">
-            <double>-1.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>-1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_PRIMER_OUTSIDE_PENALTY">
-           <property name="text">
-            <string>Outside target penalty</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_OUTSIDE_PENALTY">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and does not overlap the target, then multiply this value times the number of nucleotide positions from the 3' end to the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include nearness to the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
-          <spacer name="horizontalSpacer_34">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_PRIMER_FIRST_BASE_INDEX">
-           <property name="text">
-            <string>First Base Index</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_FIRST_BASE_INDEX">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter is the index of the first base in the input sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_PRIMER_GC_CLAMP">
-           <property name="text">
-            <string>CG clamp</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_GC_CLAMP">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Require the specified number of consecutive Gs and Cs at the 3' end of both the left and right primer.&lt;/p&gt;&lt;p&gt;This parameter has no effect on the internal oligo if one is requested.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999999</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4">
-          <spacer name="horizontalSpacer_26">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_112">
-           <property name="text">
-            <string>Max GC in primer 3' end</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_MAX_END_GC">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum number of Gs or Cs allowed in the last five 3' bases of a left or right primer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <spacer name="verticalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::MinimumExpanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="3">
-          <spacer name="verticalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>13</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="4">
-          <spacer name="horizontalSpacer_30">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_113">
-           <property name="text">
-            <string>3' End Distance Between Left Primers</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;When returning multiple primer pairs, the minimum number of base pairs between the 3' ends of any two left primers.&lt;br/&gt;&lt;br/&gt;Primers with 3' ends at positions e.g. 30 and 31 in the template sequence have a three-prime distance of 1.&lt;br/&gt;&lt;br/&gt;In addition to positive values, the values -1 and 0 are acceptable and have special interpretations:&lt;br/&gt;&lt;br/&gt;-1 indicates that a given left primer can appear in multiple primer pairs returned by Primer3. This is the default behavior.&lt;br/&gt;&lt;br/&gt;0 indicates that a left primer is acceptable if it was not already used. In other words, two left primers are allowed to have the same 3' position provided their 5' positions differ.&lt;br/&gt;&lt;br/&gt;For &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; &amp;gt; 0: A left primer is acceptable if:&lt;br/&gt;&lt;br/&gt;NOT(3' end of left primer closer than &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; to the 3' end of a previously used left primer)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <number>-1</number>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>-1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QLabel" name="label_115">
-           <property name="text">
-            <string>3' End Distance Between Right Primers	</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Analogous to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, but for right primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <number>-1</number>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>-1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="4">
-          <spacer name="horizontalSpacer_50">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_114">
-           <property name="text">
-            <string>5 Prime Junction Overlap</string>
-           </property>
-          </widget>
-         </item>
          <item row="5" column="1">
           <widget class="QSpinBox" name="edit_PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION">
            <property name="toolTip">
@@ -2222,43 +2013,23 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="5" column="2">
-          <widget class="QLabel" name="label_116">
+         <item row="10" column="2">
+          <widget class="QLabel" name="label_119">
            <property name="text">
-            <string>3 Prime Junction Overlap</string>
+            <string>Sequencing Interval</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
+         <item row="11" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_ACCURACY">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 3' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
            <property name="value">
-            <number>4</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="4">
-          <spacer name="horizontalSpacer_51">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_PRIMER_SALT_CONC">
-           <property name="text">
-            <string>Concentration of Monovalent Cations</string>
+            <number>20</number>
            </property>
           </widget>
          </item>
@@ -2281,12 +2052,187 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="6" column="2">
-          <widget class="QLabel" name="label_PRIMER_SALT_CORRECTIONS">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_112">
            <property name="text">
-            <string>Salt correction formula</string>
+            <string>Max GC in primer 3' end</string>
            </property>
           </widget>
+         </item>
+         <item row="5" column="4">
+          <spacer name="horizontalSpacer_51">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_PRIMER_DNA_CONC">
+           <property name="text">
+            <string>Annealing Oligo Concentration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="4">
+          <spacer name="horizontalSpacer_35">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="11" column="4">
+          <spacer name="horizontalSpacer_53">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_PRIMER_DIVALENT_CONC">
+           <property name="text">
+            <string>Concentration of Divalent Cations</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <spacer name="horizontalSpacer_34">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_PRIMER_OUTSIDE_PENALTY">
+           <property name="text">
+            <string>Outside target penalty</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_MAX_END_GC">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum number of Gs or Cs allowed in the last five 3' bases of a left or right primer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Analogous to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, but for right primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_LEAD">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>50</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 3' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <spacer name="horizontalSpacer_27">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_PRIMER_MAX_POLY_X">
+           <property name="text">
+            <string>Max poly-X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_114">
+           <property name="text">
+            <string>5 Prime Junction Overlap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <widget class="QLabel" name="label_120">
+           <property name="text">
+            <string>Sequencing Accuracy</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <spacer name="horizontalSpacer_26">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="6" column="3">
           <widget class="QComboBox" name="combobox_PRIMER_SALT_CORRECTIONS">
@@ -2316,26 +2262,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </item>
           </widget>
          </item>
-         <item row="6" column="4">
-          <spacer name="horizontalSpacer_24">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_PRIMER_DIVALENT_CONC">
-           <property name="text">
-            <string>Concentration of Divalent Cations</string>
-           </property>
-          </widget>
-         </item>
          <item row="7" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_SALT_DIVALENT">
            <property name="sizePolicy">
@@ -2352,13 +2278,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="value">
             <double>1.500000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="2">
-          <widget class="QLabel" name="label_PRIMER_DNTP_CONC">
-           <property name="text">
-            <string>Concentration of dNTPs</string>
            </property>
           </widget>
          </item>
@@ -2381,6 +2300,270 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_PRIMER_FIRST_BASE_INDEX">
+           <property name="text">
+            <string>First Base Index</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4">
+          <spacer name="horizontalSpacer_30">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="label_118">
+           <property name="text">
+            <string>Sequencing Lead</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;When returning multiple primer pairs, the minimum number of base pairs between the 3' ends of any two left primers.&lt;br/&gt;&lt;br/&gt;Primers with 3' ends at positions e.g. 30 and 31 in the template sequence have a three-prime distance of 1.&lt;br/&gt;&lt;br/&gt;In addition to positive values, the values -1 and 0 are acceptable and have special interpretations:&lt;br/&gt;&lt;br/&gt;-1 indicates that a given left primer can appear in multiple primer pairs returned by Primer3. This is the default behavior.&lt;br/&gt;&lt;br/&gt;0 indicates that a left primer is acceptable if it was not already used. In other words, two left primers are allowed to have the same 3' position provided their 5' positions differ.&lt;br/&gt;&lt;br/&gt;For &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; &amp;gt; 0: A left primer is acceptable if:&lt;br/&gt;&lt;br/&gt;NOT(3' end of left primer closer than &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; to the 3' end of a previously used left primer)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_117">
+           <property name="text">
+            <string>Sequencing Spacing</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_INTERVAL">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>250</number>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="4">
+          <spacer name="horizontalSpacer_52">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_OUTSIDE_PENALTY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and does not overlap the target, then multiply this value times the number of nucleotide positions from the 3' end to the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include nearness to the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="label_116">
+           <property name="text">
+            <string>3 Prime Junction Overlap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_FIRST_BASE_INDEX">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter is the index of the first base in the input sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999999</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLabel" name="label_PRIMER_SALT_CORRECTIONS">
+           <property name="text">
+            <string>Salt correction formula</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <spacer name="verticalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>13</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLabel" name="label_115">
+           <property name="text">
+            <string>3' End Distance Between Right Primers	</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_PRIMER_MAX_NS_ACCEPTED">
+           <property name="text">
+            <string>Max #N's accepted</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INSIDE_PENALTY">
+           <property name="toolTip">
+            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
+           </property>
+           <property name="minimum">
+            <double>-1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>-1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_MAX_POLY_X">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999999</number>
+           </property>
+           <property name="value">
+            <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_113">
+           <property name="text">
+            <string>3' End Distance Between Left Primers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QLabel" name="label_125">
+           <property name="text">
+            <string>DMSO Concentration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_PRIMER_INSIDE_PENALTY">
+           <property name="toolTip">
+            <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
+           </property>
+           <property name="text">
+            <string>Inside target penalty</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="4">
+          <spacer name="horizontalSpacer_50">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_PRIMER_GC_CLAMP">
+           <property name="text">
+            <string>CG clamp</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
+          <widget class="QLabel" name="label_PRIMER_DNTP_CONC">
+           <property name="text">
+            <string>Concentration of dNTPs</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_MAX_NS_ACCEPTED">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of unknown bases (N) allowable in any primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999999</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_GC_CLAMP">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Require the specified number of consecutive Gs and Cs at the 3' end of both the left and right primer.&lt;/p&gt;&lt;p&gt;This parameter has no effect on the internal oligo if one is requested.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999999</number>
+           </property>
+          </widget>
+         </item>
          <item row="7" column="4">
           <spacer name="horizontalSpacer_23">
            <property name="orientation">
@@ -2394,10 +2577,52 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </spacer>
          </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="label_PRIMER_DNA_CONC">
+         <item row="3" column="2">
+          <spacer name="verticalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="6" column="4">
+          <spacer name="horizontalSpacer_24">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="10" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_SPACING">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>500</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_PRIMER_SALT_CONC">
            <property name="text">
-            <string>Annealing Oligo Concentration</string>
+            <string>Concentration of Monovalent Cations</string>
            </property>
           </widget>
          </item>
@@ -2417,150 +2642,46 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="8" column="2">
-          <spacer name="horizontalSpacer_22">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="8" column="3">
-          <spacer name="horizontalSpacer_25">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="8" column="4">
-          <spacer name="horizontalSpacer_35">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="9" column="0">
-          <widget class="QLabel" name="label_117">
+          <widget class="QLabel" name="label_126">
            <property name="text">
-            <string>Sequencing Spacing</string>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_SPACING">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>500</number>
+            <string>Formamide Concentration</string>
            </property>
           </widget>
          </item>
          <item row="9" column="2">
-          <widget class="QLabel" name="label_119">
+          <widget class="QLabel" name="label_127">
            <property name="text">
-            <string>Sequencing Interval</string>
+            <string>DMSO Factor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_DMSO_CONC">
+           <property name="maximum">
+            <double>9999.989999999999782</double>
            </property>
           </widget>
          </item>
          <item row="9" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_INTERVAL">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_DMSO_FACTOR">
            <property name="maximum">
-            <number>999999999</number>
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
            </property>
            <property name="value">
-            <number>250</number>
+            <double>0.600000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="9" column="4">
-          <spacer name="horizontalSpacer_52">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="10" column="0">
-          <widget class="QLabel" name="label_118">
-           <property name="text">
-            <string>Sequencing Lead</string>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="1">
-          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_LEAD">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
+         <item row="9" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_FORMAMIDE_CONC">
            <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>50</number>
+            <double>9999.989999999999782</double>
            </property>
           </widget>
-         </item>
-         <item row="10" column="2">
-          <widget class="QLabel" name="label_120">
-           <property name="text">
-            <string>Sequencing Accuracy</string>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="3">
-          <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_ACCURACY">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>20</number>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="4">
-          <spacer name="horizontalSpacer_53">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -2680,20 +2801,30 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
+        <layout class="QFormLayout" name="formLayout_6">
+         <item row="0" column="0">
           <widget class="QLabel" name="label_58">
            <property name="text">
             <string>Internal Oligo Excluded Region</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="0" column="1">
           <widget class="QLineEdit" name="edit_SEQUENCE_INTERNAL_EXCLUDED_REGION">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&amp;lt;start&amp;gt;,&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_86">
+           <property name="text">
+            <string>Internal Oligo Overlap Positions</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST"/>
          </item>
         </layout>
        </item>
@@ -2706,36 +2837,10 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_14">
-         <item row="2" column="3">
-          <widget class="QLabel" name="label_67">
-           <property name="text">
-            <string>Opt:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_TM">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-           <property name="value">
-            <double>60.000000000000000</double>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_61">
+          <widget class="QLabel" name="label_131">
            <property name="text">
-            <string>Internal Oligo GC%</string>
+            <string>Internal Oligo Bound</string>
            </property>
           </widget>
          </item>
@@ -2761,36 +2866,22 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="6">
-          <widget class="QLabel" name="label_69">
+         <item row="1" column="3">
+          <widget class="QLabel" name="label_66">
+           <property name="text">
+            <string>Opt:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_68">
            <property name="text">
             <string>Max:</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_62">
-           <property name="text">
-            <string>Min:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="label_63">
-           <property name="text">
-            <string>Min:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_59">
-           <property name="text">
-            <string>Internal Oligo Size</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MIN_TM">
+         <item row="1" column="5">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_TM">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2804,21 +2895,74 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <double>9999.989999999999782</double>
            </property>
            <property name="value">
-            <double>57.000000000000000</double>
+            <double>60.000000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QLabel" name="label_64">
+         <item row="3" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_GC">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>80.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_61">
+           <property name="text">
+            <string>Internal Oligo GC%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_TM">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="value">
+            <double>63.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_62">
            <property name="text">
             <string>Min:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_60">
+         <item row="2" column="3">
+          <widget class="QLabel" name="label_133">
            <property name="text">
-            <string>Internal Oligo Tm</string>
+            <string>Opt:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="6">
+          <widget class="QLabel" name="label_70">
+           <property name="text">
+            <string>Max:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLabel" name="label_69">
+           <property name="text">
+            <string>Max:</string>
            </property>
           </widget>
          </item>
@@ -2829,7 +2973,35 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_60">
+           <property name="text">
+            <string>Internal Oligo Tm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_59">
+           <property name="text">
+            <string>Internal Oligo Size</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLabel" name="label_64">
+           <property name="text">
+            <string>Min:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_63">
+           <property name="text">
+            <string>Min:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MIN_GC">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -2848,68 +3020,16 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
-          <widget class="QLabel" name="label_66">
-           <property name="text">
-            <string>Opt:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="7">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_GC">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="value">
-            <double>80.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="6">
-          <widget class="QLabel" name="label_70">
-           <property name="text">
-            <string>Max:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_OPT_SIZE">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MIN_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
-            <number>999999999</number>
+            <double>9999.989999999999782</double>
            </property>
            <property name="value">
-            <number>20</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="7">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_TM">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="value">
-            <double>63.000000000000000</double>
+            <double>-10.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2932,14 +3052,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_68">
-           <property name="text">
-            <string>Max:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="5">
+         <item row="3" column="5">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_GC_PERCENT">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -2955,6 +3068,91 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
+         <item row="0" column="5">
+          <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_OPT_SIZE">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_132">
+           <property name="text">
+            <string>Min:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QLabel" name="label_67">
+           <property name="text">
+            <string>Opt:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="6">
+          <widget class="QLabel" name="label_134">
+           <property name="text">
+            <string>Max:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MIN_TM">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>57.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_OPT_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>97.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="7">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_BOUND">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>110.000000000000000</double>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -2966,13 +3164,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_15">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_90">
-           <property name="text">
-            <string>TH: Internal Oligo Self Complementarity</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_SELF_ANY_TH">
            <property name="sizePolicy">
@@ -2989,39 +3180,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="value">
             <double>47.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_71">
-           <property name="text">
-            <string>Internal Oligo Self Complementarity</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_SELF_ANY">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max self complemntarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-           <property name="value">
-            <double>47.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_95">
-           <property name="text">
-            <string>TH: Internal Oligo Max 3' End Self Complementarity	</string>
            </property>
           </widget>
          </item>
@@ -3044,10 +3202,42 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_77">
+         <item row="2" column="3">
+          <spacer name="horizontalSpacer_54">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_95">
            <property name="text">
-            <string>Internal Oligo Max 3' End Self Complementarity</string>
+            <string>TH: Internal Oligo Max 3' End Self Complementarity	</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_SELF_ANY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max self complemntarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>47.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -3070,12 +3260,32 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_96">
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_71">
            <property name="text">
-            <string>TH: Internal Oligo Hairpin</string>
+            <string>Internal Oligo Self Complementarity</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_90">
+           <property name="text">
+            <string>TH: Internal Oligo Self Complementarity</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <spacer name="horizontalSpacer_42">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="2" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_HAIRPIN_TH">
@@ -3096,31 +3306,19 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <spacer name="horizontalSpacer_42">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_96">
+           <property name="text">
+            <string>TH: Internal Oligo Hairpin</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          </widget>
          </item>
-         <item row="2" column="3">
-          <spacer name="horizontalSpacer_54">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_77">
+           <property name="text">
+            <string>Internal Oligo Max 3' End Self Complementarity</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          </widget>
          </item>
         </layout>
        </item>
@@ -3133,10 +3331,93 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_20">
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_78">
+           <property name="text">
+            <string>Internal Oligo Max Poly-X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="label_80">
+           <property name="text">
+            <string>Internal Oligo DNA Concentration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
+          <widget class="QLabel" name="label_130">
+           <property name="text">
+            <string>Internal Oligo Formamide Concentration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="combobox_PRIMER_INTERNAL_MISHYB_LIBRARY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer mispriming library, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_74">
            <property name="text">
             <string>Internal Oligo Min Sequence Quality</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DNTP_CONC">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of the dNTPs for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_72">
+           <property name="text">
+            <string>Max #Ns</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLabel" name="label_81">
+           <property name="text">
+            <string>Internal Oligo [dNTP]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DNA_CONC">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer DNA concentration for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>50.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -3156,10 +3437,65 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_72">
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_SALT_MONOVALENT">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of monovalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>50.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_128">
            <property name="text">
-            <string>Max #Ns</string>
+            <string>Internal Oligo DMSO Concentration</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_SALT_DIVALENT">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of divalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="singleStep">
+            <double>0.500000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.500000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_139">
+           <property name="text">
+            <string>Internal Oligo 5 Prime Junction Overlap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_75">
+           <property name="text">
+            <string>Internal Oligo Conc of monovalent cations</string>
            </property>
           </widget>
          </item>
@@ -3179,10 +3515,71 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_78">
+         <item row="4" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_LIBRARY_MISHYB">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer max library mispriming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+           <property name="value">
+            <double>12.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="3">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_FORMAMIDE_CONC">
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION">
+           <property name="value">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_73">
            <property name="text">
-            <string>Internal Oligo Max Poly-X</string>
+            <string>Internal Oligo Mishyb Library</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_140">
+           <property name="text">
+            <string>Internal Oligo 3 Prime Junction Overlap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLabel" name="label_79">
+           <property name="text">
+            <string>Internal Oligo Max Library Mishyb	</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_76">
+           <property name="text">
+            <string>Internal Oligo conc of divalent cations</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DMSO_CONC">
+           <property name="maximum">
+            <double>9999.989999999999782</double>
            </property>
           </widget>
          </item>
@@ -3205,153 +3602,47 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_73">
-           <property name="text">
-            <string>Internal Oligo Mishyb Library</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="combobox_PRIMER_INTERNAL_MISHYB_LIBRARY">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer mispriming library, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_79">
-           <property name="text">
-            <string>Internal Oligo Max Library Mishyb	</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_MAX_LIBRARY_MISHYB">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer max library mispriming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-           <property name="value">
-            <double>12.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_75">
-           <property name="text">
-            <string>Internal Oligo Conc of monovalent cations</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_SALT_MONOVALENT">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of monovalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-           <property name="value">
-            <double>50.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QLabel" name="label_80">
-           <property name="text">
-            <string>Internal Oligo DNA Concentration</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DNA_CONC">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer DNA concentration for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
-           </property>
-           <property name="value">
-            <double>50.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_76">
-           <property name="text">
-            <string>Internal Oligo conc of divalent cations</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_SALT_DIVALENT">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of divalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
+         <item row="8" column="1">
+          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DMSO_FACTOR">
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
            <property name="singleStep">
-            <double>0.500000000000000</double>
+            <double>0.100000000000000</double>
            </property>
            <property name="value">
-            <double>1.500000000000000</double>
+            <double>0.600000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="4" column="2">
-          <widget class="QLabel" name="label_81">
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_129">
            <property name="text">
-            <string>Internal Oligo [dNTP]</string>
+            <string>Internal Oligo DMSO Factor</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="3">
-          <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DNTP_CONC">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+         <item row="2" column="3">
+          <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
+           <property name="value">
+            <number>4</number>
            </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of the dNTPs for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE">
+           <property name="minimum">
+            <number>-1</number>
            </property>
-           <property name="maximum">
-            <double>9999.989999999999782</double>
+           <property name="value">
+            <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_141">
+           <property name="text">
+            <string>Min Internal Oligo End Distance</string>
            </property>
           </widget>
          </item>
@@ -3398,21 +3689,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </item>
            <item>
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Tm</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Size  </string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
+             <item row="3" column="0">
               <widget class="QLabel" name="label_8">
                <property name="text">
                 <string>GC%</string>
@@ -3426,65 +3703,26 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="label_12">
+             <item row="3" column="4">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_GC_PERCENT_GT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QLabel" name="label_16">
                <property name="text">
-                <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TM_LT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="maximum">
-                <double>9999.989999999999782</double>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SIZE_LT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="maximum">
-                <double>9999.989999999999782</double>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_GC_PERCENT_LT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="maximum">
-                <double>9999.989999999999782</double>
+                <string>Gt:</string>
                </property>
               </widget>
              </item>
@@ -3495,22 +3733,29 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
-              <widget class="QLabel" name="label_15">
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_12">
                <property name="text">
-                <string>Gt:</string>
+                <string>Lt:</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="3">
-              <widget class="QLabel" name="label_16">
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_7">
                <property name="text">
-                <string>Gt:</string>
+                <string>Size  </string>
                </property>
               </widget>
              </item>
-             <item row="0" column="4">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TM_GT">
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>Lt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_GC_PERCENT_LT">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -3541,8 +3786,8 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="2" column="4">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_GC_PERCENT_GT">
+             <item row="0" column="4">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TM_GT">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -3554,6 +3799,87 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>Gt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SIZE_LT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Tm</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TM_LT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_BOUND_LT">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="4">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_BOUND_GT">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_145">
+               <property name="text">
+                <string>Bound</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_146">
+               <property name="text">
+                <string>Lt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_147">
+               <property name="text">
+                <string>Gt:</string>
                </property>
               </widget>
              </item>
@@ -4304,20 +4630,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_40">
-               <property name="text">
-                <string>Internal oligo Tm</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_41">
-               <property name="text">
-                <string>Internal oligo GC%</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="1">
               <widget class="QLabel" name="label_49">
                <property name="text">
@@ -4329,29 +4641,6 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <widget class="QLabel" name="label_50">
                <property name="text">
                 <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_51">
-               <property name="text">
-                <string>Lt:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_SIZE_LT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="maximum">
-                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
@@ -4371,7 +4660,23 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="0" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_SIZE_LT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_GC_PERCENT_LT">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -4394,15 +4699,31 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
-              <widget class="QLabel" name="label_53">
-               <property name="text">
-                <string>Gt:</string>
+             <item row="3" column="4">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_GC_PERCENT_GT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
-             <item row="2" column="3">
-              <widget class="QLabel" name="label_54">
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_51">
+               <property name="text">
+                <string>Lt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_53">
                <property name="text">
                 <string>Gt:</string>
                </property>
@@ -4424,6 +4745,13 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_40">
+               <property name="text">
+                <string>Internal oligo Tm</string>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="4">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_TM_GT">
                <property name="sizePolicy">
@@ -4440,17 +4768,50 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
               </widget>
              </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_41">
+               <property name="text">
+                <string>Internal oligo GC%</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QLabel" name="label_54">
+               <property name="text">
+                <string>Gt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_142">
+               <property name="text">
+                <string>Internal oligo Bound</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_143">
+               <property name="text">
+                <string>Lt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_144">
+               <property name="text">
+                <string>Gt:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_BOUND_LT">
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
+              </widget>
+             </item>
              <item row="2" column="4">
-              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_GC_PERCENT_GT">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
+              <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_WT_BOUND_GT">
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>

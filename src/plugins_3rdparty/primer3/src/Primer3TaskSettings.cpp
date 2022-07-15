@@ -167,6 +167,14 @@ QList<int> Primer3TaskSettings::getOverlapJunctionList() const {
     return result;
 }
 
+QList<int> Primer3TaskSettings::getInternalOverlapJunctionList() const {
+    QList<int> result;
+    for (int i = 0; i < seqArgs->intl_overlap_junctions_count; i++) {
+        result.append(seqArgs->intl_overlap_junctions[i]);
+    }
+    return result;
+}
+
 QList<U2Region> Primer3TaskSettings::getProductSizeRange() const {
     QList<U2Region> result;
     for (int i = 0; i < primerSettings->num_intervals; i++) {
@@ -243,6 +251,14 @@ QByteArray Primer3TaskSettings::getInternalInput() const {
     return seqArgs->internal_input;
 }
 
+QByteArray Primer3TaskSettings::getOverhangLeft() const {
+    return seqArgs->overhang_left;
+}
+
+QByteArray Primer3TaskSettings::getOverhangRight() const {
+    return seqArgs->overhang_right;
+}
+
 QList<U2Region> Primer3TaskSettings::getExcludedRegion() const {
     QList<U2Region> result;
     for (int i = 0; i < seqArgs->excl2.count; i++) {
@@ -307,6 +323,12 @@ void Primer3TaskSettings::setOverlapJunctionList(const QList<int>& value) {
     }
 }
 
+void Primer3TaskSettings::setInternalOverlapJunctionList(const QList<int>& value) {
+    for (int v : value) {
+        p3_sa_add_to_intl_overlap_junctions_array(seqArgs, v);
+    }
+}
+
 void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
     p3_empty_gs_product_size_range(primerSettings);
     for (int i = 0; i < value.size(); i++) {
@@ -349,8 +371,16 @@ void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
     p3_set_sa_left_input(seqArgs, value);
 }
 
+void Primer3TaskSettings::setLeftOverhang(const QByteArray& value) {
+    p3_set_sa_overhang_left(seqArgs, value);
+}
+
 void Primer3TaskSettings::setRightInput(const QByteArray& value) {
     p3_set_sa_right_input(seqArgs, value);
+}
+
+void Primer3TaskSettings::setRightOverhang(const QByteArray& value) {
+    p3_set_sa_overhang_right(seqArgs, value);
 }
 
 void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
@@ -464,7 +494,9 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_MIN_END_QUALITY", &primerSettings->p_args.min_end_quality);
     intProperties.insert("PRIMER_QUALITY_RANGE_MIN", &primerSettings->quality_range_min);
     intProperties.insert("PRIMER_QUALITY_RANGE_MAX", &primerSettings->quality_range_max);
-    //intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerSettings->product_opt_size);
+    intProperties.insert("PRIMER_INTERNAL_MIN_3_PRIME_OVERLAP_OF_JUNCTION", &primerSettings->o_args.min_3_prime_overlap_of_junction);
+    intProperties.insert("PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION", &primerSettings->o_args.min_5_prime_overlap_of_junction);
+    intProperties.insert("PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE", &primerSettings->min_internal_three_prime_distance);
     //boolean
     intProperties.insert("PRIMER_PICK_LEFT_PRIMER", &primerSettings->pick_left_primer);
     intProperties.insert("PRIMER_PICK_RIGHT_PRIMER", &primerSettings->pick_right_primer);
@@ -574,6 +606,22 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_INTERNAL_WT_LIBRARY_MISHYB", &primerSettings->o_args.weights.repeat_sim);
     doubleProperties.insert("PRIMER_INTERNAL_WT_SEQ_QUAL", &primerSettings->o_args.weights.seq_quality);
     doubleProperties.insert("PRIMER_INTERNAL_WT_END_QUAL", &primerSettings->o_args.weights.end_quality);
+    doubleProperties.insert("PRIMER_ANNEALING_TEMP", &primerSettings->annealing_temp);
+    doubleProperties.insert("PRIMER_DMSO_CONC", &primerSettings->p_args.dmso_conc);
+    doubleProperties.insert("PRIMER_DMSO_FACTOR", &primerSettings->p_args.dmso_fact);
+    doubleProperties.insert("PRIMER_FORMAMIDE_CONC", &primerSettings->p_args.formamide_conc);
+    doubleProperties.insert("PRIMER_INTERNAL_DMSO_CONC", &primerSettings->o_args.dmso_conc);
+    doubleProperties.insert("PRIMER_INTERNAL_DMSO_FACTOR", &primerSettings->o_args.dmso_fact);
+    doubleProperties.insert("PRIMER_INTERNAL_MIN_BOUND", &primerSettings->o_args.min_bound);
+    doubleProperties.insert("PRIMER_INTERNAL_OPT_BOUND", &primerSettings->o_args.opt_bound);
+    doubleProperties.insert("PRIMER_INTERNAL_MAX_BOUND", &primerSettings->o_args.max_bound);
+    doubleProperties.insert("PRIMER_MIN_BOUND", &primerSettings->p_args.min_bound);
+    doubleProperties.insert("PRIMER_OPT_BOUND", &primerSettings->p_args.opt_bound);
+    doubleProperties.insert("PRIMER_MAX_BOUND", &primerSettings->p_args.max_bound);
+    doubleProperties.insert("PRIMER_INTERNAL_WT_BOUND_LT", &primerSettings->o_args.weights.bound_lt);
+    doubleProperties.insert("PRIMER_INTERNAL_WT_BOUND_GT", &primerSettings->o_args.weights.bound_gt);
+    doubleProperties.insert("PRIMER_WT_BOUND_LT", &primerSettings->p_args.weights.bound_lt);
+    doubleProperties.insert("PRIMER_WT_BOUND_GT", &primerSettings->p_args.weights.bound_gt);
 
 }
 

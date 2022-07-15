@@ -124,12 +124,12 @@ void Primer3ADVContext::sl_showDialog() {
         defaultSettings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
         defaultSettings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);*/
 
-        defaultSettings.setDoubleProperty("PRIMER_OPT_GC_PERCENT", 50.0);
+        /*defaultSettings.setDoubleProperty("PRIMER_OPT_GC_PERCENT", 50.0);
         defaultSettings.setDoubleProperty("PRIMER_INTERNAL_OPT_GC_PERCENT", 50.0);
         defaultSettings.setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 12.0);
         defaultSettings.setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 24.0);
         defaultSettings.setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING_TH", 40.0);
-        defaultSettings.setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH", 70.0);
+        defaultSettings.setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH", 70.0);*/
 
         QObjectScopedPointer<Primer3Dialog> dialog = new Primer3Dialog(defaultSettings, seqCtx);
         dialog->exec();

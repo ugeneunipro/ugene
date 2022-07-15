@@ -8334,9 +8334,19 @@ p3_set_sa_left_input(seq_args *sargs, const char *s) {
  return _set_string(&sargs->left_input, s);
 }
 
+int
+p3_set_sa_overhang_left(seq_args* sargs, const char* overhang) {
+    return _set_string(&sargs->overhang_left, overhang);
+}
+
 int 
 p3_set_sa_right_input(seq_args *sargs, const char *s) {
  return _set_string(&sargs->right_input, s);
+}
+
+int
+p3_set_sa_overhang_right(seq_args* sargs, const char* overhang) {
+    return _set_string(&sargs->overhang_right, overhang);
 }
 
 int 
