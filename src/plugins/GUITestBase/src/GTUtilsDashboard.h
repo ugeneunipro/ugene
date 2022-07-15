@@ -110,6 +110,15 @@ public:
     static void expandNode(HI::GUITestOpStatus& os, const QString& nodeId);
     static void clickNodeTitle(HI::GUITestOpStatus& os, ExternalToolsTreeNode* node);
 
+    /** Returns DashboardTabPage widget with for 'Input' tab. The widget must be visible. */
+    static QWidget* getInputTabPageWidget(HI::GUITestOpStatus& os);
+
+    /** Click on label with the given text in the currently visible 'ParametersDashboardWidget'. */
+    static void clickLabelInParametersWidget(HI::GUITestOpStatus& os, const QString& labelText);
+
+    /** Click on file button with the given text in the currently visible 'ParametersDashboardWidget'. */
+    static void clickFileButtonInParametersWidget(HI::GUITestOpStatus& os, const QString& buttonText);
+
     static const QString TREE_ROOT_ID;
 
     static QWidget* getCopyButton(HI::GUITestOpStatus& os, const QString& toolRunNodeId);

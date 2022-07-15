@@ -206,8 +206,8 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
             colors << image1.pixel(i, j);
         }
     }
-    
-// Usually 875 colors are drawn for 1CF7.pdb.
+
+    // Usually 875 colors are drawn for 1CF7.pdb.
     CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed, number of colors: " + QString::number(colors.size()));
 
     // There must be no error message on the screen.
@@ -2160,7 +2160,7 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
     // Delete first sequences so the tested sequence will be scrolled into the view.
     GTUtilsMsaEditor::selectRows(os, 0, 15);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    
+
     QString sequenceName = "Pc_Metavir10";
     GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
     GTUtilsMsaEditor::checkSelectionByNames(os, {sequenceName});
@@ -2785,6 +2785,27 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
     CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7631) {
+    // Check that file buttons on Workflow Dashboard "Inputs" tab for actors not visible by default works as expected (open the file with UGENE).
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Cancel the wizard.
+
+    // Go to the "Read alignment" element and set an input file.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
+    GTUtilsDashboard::clickLabelInParametersWidget(os, "Write alignment");
+
+    GTUtilsDashboard::clickFileButtonInParametersWidget(os, "muscle_alignment.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7635) {
