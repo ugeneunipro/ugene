@@ -71,7 +71,9 @@ public:
     static QWidget* openTab(HI::GUITestOpStatus& os, Tabs tab);
     static void closeTab(HI::GUITestOpStatus& os, Tabs tab);
     static bool isTabOpened(HI::GUITestOpStatus& os, Tabs tab);
-    static void checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
+
+    /** Checks that the tab is opened and returns the inner tab widget .*/
+    static QWidget* checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
 
     static void addReference(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method = Button);
     static void addFirstSeqToPA(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method = Button);
@@ -128,8 +130,11 @@ public:
     static bool isSearchInShowHideWidgetOpened(HI::GUITestOpStatus& os);
     static void openSearchInShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
 
-    /** Returns text of the label that shows alignment alphabet. Requies "General" options panel to be opened. */
+    /** Returns text of the label that shows alignment alphabet. Requires "General" options panel to be opened. */
     static QString getAlphabetLabelText(HI::GUITestOpStatus& os);
+
+    /** Sets output file path. */
+    static void setOutputFile(HI::GUITestOpStatus& os, const QString& outputFilePath);
 
 private:
     static QWidget* getWidget(HI::GUITestOpStatus& os, const QString& widgetName, int number);

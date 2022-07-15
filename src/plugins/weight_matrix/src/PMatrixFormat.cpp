@@ -26,8 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/PFMatrixObject.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/PWMatrixObject.h>
@@ -36,7 +35,6 @@
 #include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ViewMatrixDialogController.h"
@@ -45,22 +43,17 @@
 namespace U2 {
 
 PFMatrixFormat::PFMatrixFormat(QObject* p)
-    : DocumentFormat(p, DocumentFormatId("PFMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pfm")) {
+    : TextDocumentFormat(p, DocumentFormatId("PFMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pfm")) {
     formatName = tr("Position frequency matrix");
     supportedObjectTypes += PFMatrixObject::TYPE;
     formatDescription = tr("Position frequency matrix file.");
 }
 
-FormatCheckResult PFMatrixFormat::checkRawData(const QByteArray& rawData, const GUrl& /*url*/) const {
-    const char* data = rawData.constData();
-    int size = rawData.size();
-    if (TextUtils::contains(TextUtils::BINARY, data, size)) {
-        return FormatDetection_NotMatched;
-    }
+FormatCheckResult PFMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
+    QString dataPrefixCopy = dataPrefix;
+    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    qsl.removeAll("");
 
-    QString dataStr(rawData);
-    QStringList qsl = dataStr.split("\n");
-    qsl.removeAll(QString());
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 4 or 5
         return FormatDetection_NotMatched;
     }
@@ -80,27 +73,20 @@ FormatCheckResult PFMatrixFormat::checkRawData(const QByteArray& rawData, const 
     return FormatDetection_Matched;
 }
 
-Document* PFMatrixFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* PFMatrixFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
 
     QList<GObject*> objs;
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io->getAdapterId());
     TaskStateInfo siPFM;
-    PFMatrix m = WeightMatrixIO::readPFMatrix(iof, io->getURL().getURLString(), siPFM);
-    if (siPFM.hasError()) {
-        os.setError(tr("The file format is not PFM"));
-    } else {
-        if (m.getLength() == 0) {
-            os.setError(tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
-        }
-    }
-    CHECK_OP(os, nullptr);
+    PFMatrix m = WeightMatrixIO::readPFMatrix(reader, siPFM);
+    CHECK_OP_EXT(siPFM, os.setError(tr("The file format is not PFM")), nullptr);
+    CHECK_EXT(m.getLength() > 0, tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"), nullptr);
 
-    PFMatrixObject* mObj = PFMatrixObject::createInstance(m, QFileInfo(io->getURL().getURLString()).baseName(), dbiRef, os, fs);
+    PFMatrixObject* mObj = PFMatrixObject::createInstance(m, QFileInfo(reader.getURL().getURLString()).baseName(), dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objs.append(mObj);
-    return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objs, hints);
 }
 
 // Factory
@@ -165,22 +151,17 @@ void OpenPFMatrixViewTask::open() {
 /// PWM
 
 PWMatrixFormat::PWMatrixFormat(QObject* p)
-    : DocumentFormat(p, DocumentFormatId("PWMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pwm")) {
+    : TextDocumentFormat(p, DocumentFormatId("PWMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pwm")) {
     formatName = tr("Position weight matrix");
     supportedObjectTypes += PFMatrixObject::TYPE;
     formatDescription = tr("Position weight matrix file.");
 }
 
-FormatCheckResult PWMatrixFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
-    const char* data = rawData.constData();
-    int size = rawData.size();
-    if (TextUtils::contains(TextUtils::BINARY, data, size)) {
-        return FormatDetection_NotMatched;
-    }
+FormatCheckResult PWMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
+    QString dataPrefixCopy = dataPrefix;
+    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    qsl.removeAll("");
 
-    QString dataStr(rawData);
-    QStringList qsl = dataStr.split("\n");
-    qsl.removeAll(QString());
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 5 or 6
         return FormatDetection_NotMatched;
     }
@@ -207,27 +188,20 @@ FormatCheckResult PWMatrixFormat::checkRawData(const QByteArray& rawData, const 
     return FormatDetection_Matched;
 }
 
-Document* PWMatrixFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* PWMatrixFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
 
     QList<GObject*> objs;
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io->getAdapterId());
     TaskStateInfo siPWM;
-    PWMatrix m = WeightMatrixIO::readPWMatrix(iof, io->getURL().getURLString(), siPWM);
-    if (siPWM.hasError()) {
-        os.setError(tr("The file format is not PWM"));
-    } else {
-        if (m.getLength() == 0) {
-            os.setError(tr("Zero length or corrupted model.\nMaybe model data are not enough for selected algorithm"));
-        }
-    }
-    CHECK_OP(os, nullptr);
+    PWMatrix m = WeightMatrixIO::readPWMatrix(reader, siPWM);
+    CHECK_OP_EXT(siPWM, os.setError(tr("The file format is not PWM")), nullptr);
+    CHECK_EXT(m.getLength() > 0, tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"), nullptr);
 
-    PWMatrixObject* mObj = PWMatrixObject::createInstance(m, QFileInfo(io->getURL().getURLString()).baseName(), dbiRef, os, fs);
+    PWMatrixObject* mObj = PWMatrixObject::createInstance(m, QFileInfo(reader.getURL().getURLString()).baseName(), dbiRef, os, hints);
     CHECK_OP(os, nullptr);
     objs.append(mObj);
-    return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objs, hints);
 }
 
 // Factory

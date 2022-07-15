@@ -126,6 +126,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    CHECK_OP(stateInfo, );
     if (pos > seqlen) {
         pos %= seqlen;
     }
@@ -148,10 +149,8 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
 }
 
 QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QString& enzymeId) const {
+    CHECK_OP(stateInfo, {});
     QList<SharedAnnotationData> res;
-    if (hasError() || isCanceled()) {
-        return res;
-    }
     QString cutStr;
     QString dbxrefStr;
     QList<FindEnzymesAlgResult> searchResultList = searchResultMap.value(enzymeId);
@@ -238,6 +237,9 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef,
       maxResults(maxResults),
       resultListener(l),
       isCircular(isCircular) {
+}
+
+void FindSingleEnzymeTask::prepare() {
     U2SequenceObject dnaSeq("sequence", sequenceObjectRef);
 
     SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
@@ -261,6 +263,7 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef,
 }
 
 void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    CHECK_OP(stateInfo, );
     if (isCircular && pos >= region.length) {
         return;
     }
@@ -276,6 +279,7 @@ void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2
 }
 
 void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) {
+    CHECK_OP(ti, );
     if (enzyme->seq.isEmpty()) {
         return;
     }

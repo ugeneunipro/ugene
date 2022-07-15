@@ -21,6 +21,8 @@
 
 #include "NotificationWidget.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 Header::Header(QWidget* w)
@@ -104,6 +106,7 @@ void Header::mouseMoveEvent(QMouseEvent* me) {
 
 NotificationWidget::NotificationWidget(QWidget* w)
     : QFrame(w) {
+    setObjectName("NotificationWidget");
     setFrameShape(Panel);
     setWindowFlags(Qt::ToolTip);
     setMouseTracking(true);
@@ -151,6 +154,7 @@ bool NotificationWidget::event(QEvent* event) {
 }
 
 void NotificationWidget::addNotification(QWidget* w) {
+    SAFE_POINT(w->parentWidget() == this, "Invalid parent widget", );
     int newWidth = width();
     int newHeight = height() + TT_HEIGHT;
     if (height() + TT_HEIGHT >= TS_HEIGHT) {

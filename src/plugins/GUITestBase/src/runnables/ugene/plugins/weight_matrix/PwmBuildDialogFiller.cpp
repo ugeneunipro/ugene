@@ -75,7 +75,7 @@ void PwmBuildDialogFiller::commonScenario() {
 void PwmBuildDialogFiller::enterInput(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "inputEdit", dialog), actionData.toString());
+    GTLineEdit::setText(os, "inputEdit", actionData.toString(), dialog);
 }
 #undef GT_METHOD_NAME
 

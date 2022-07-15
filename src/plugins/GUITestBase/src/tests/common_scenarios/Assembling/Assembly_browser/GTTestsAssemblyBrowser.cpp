@@ -257,8 +257,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
-    QList<ExportCoverageDialogFiller::Action> actions;
     GTFile::removeDir(sandBoxDir + "common_assembly_browser/test_0012/test_0012");
+    QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0012");
+    GTFile::setReadOnly(os, sandBoxDir + "common_assembly_browser/test_0012");
 
     //    3. Set the empty path and accept the dialog.
     //    Expected state: a messagebox appears, dialog is not closed.
@@ -271,22 +272,18 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     //    6. Set the path to an existent read-only file.
     //    Expected state: a messagebox appears, dialog is not closed.
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, "");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, "");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-
-    QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0012");
-
-    GTFile::setReadOnly(os, sandBoxDir + "common_assembly_browser/test_0012");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012.txt"));
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, "");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012/test_0012.txt"));
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, "");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
+    QList<ExportCoverageDialogFiller::Action> actions = {
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012.txt")),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012/test_0012.txt")),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, ""),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant())
+    };
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
 }
@@ -737,9 +734,11 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     // Expected: file dialog appears.
     // 5. Choose "samples/CLUSTALW/COI.aln".
     // Expected: the document is loaded, error notification is shown.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+
+    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
@@ -748,8 +747,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
+    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -772,8 +771,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
+    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);

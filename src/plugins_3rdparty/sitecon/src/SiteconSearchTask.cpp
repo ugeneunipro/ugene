@@ -30,7 +30,7 @@ SiteconSearchTask::SiteconSearchTask(const SiteconModel& m, const QByteArray& se
     lock = new QMutex();
     GCOUNTER(cvar, "SiteconSearchTask");
     model->checkState(true);
-    model->matrix = SiteconAlgorithm::normalize(model->matrix, model->settings);
+    model->matrix = SiteconAlgorithm::normalize(model->matrix);
     SequenceWalkerConfig c;
     c.seq = wholeSeq.constData();
     c.seqSize = wholeSeq.length();

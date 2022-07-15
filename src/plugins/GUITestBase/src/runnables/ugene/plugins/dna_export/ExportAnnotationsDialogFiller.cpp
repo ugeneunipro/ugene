@@ -88,8 +88,7 @@ void ExportAnnotationsFiller::init(const QString& exportToFileParam) {
 void ExportAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
-    GTLineEdit::setText(os, lineEdit, exportToFile);
+    GTLineEdit::setText(os, "fileNameEdit", exportToFile, dialog);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");

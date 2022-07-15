@@ -48,7 +48,7 @@ QList<CudaGpuModel*> CudaGpuRegistry::getRegisteredGpus() const {
 }
 
 CudaGpuModel* CudaGpuRegistry::getAnyEnabledGpu() const {
-    QHash<CudaGpuId, CudaGpuModel*>::const_iterator it = std::find_if(gpus.begin(), gpus.end(), std::mem_fun(&CudaGpuModel::isEnabled));
+    QHash<CudaGpuId, CudaGpuModel*>::const_iterator it = std::find_if(gpus.begin(), gpus.end(), std::mem_fn(&CudaGpuModel::isEnabled));
     if (gpus.end() != it) {
         return *it;
     }
@@ -56,7 +56,7 @@ CudaGpuModel* CudaGpuRegistry::getAnyEnabledGpu() const {
 }
 
 CudaGpuModel* CudaGpuRegistry::acquireAnyReadyGpu() {
-    QHash<CudaGpuId, CudaGpuModel*>::iterator it = std::find_if(gpus.begin(), gpus.end(), std::mem_fun(&CudaGpuModel::isReady));
+    QHash<CudaGpuId, CudaGpuModel*>::iterator it = std::find_if(gpus.begin(), gpus.end(), std::mem_fn(&CudaGpuModel::isReady));
     if (gpus.end() != it) {
         (*it)->setAcquired(true);
         return *it;

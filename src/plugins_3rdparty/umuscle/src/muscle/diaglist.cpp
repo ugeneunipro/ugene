@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "muscle.h"
 #include "diaglist.h"
 #include "pwpath.h"

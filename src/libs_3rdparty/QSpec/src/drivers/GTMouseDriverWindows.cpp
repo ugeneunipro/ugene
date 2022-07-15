@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <utils/GTThread.h>
+
 #include "GTMouseDriver.h"
 
 #ifdef _WIN32
@@ -178,6 +180,7 @@ bool GTMouseDriver::scroll(int value) {
 
     SendInput(1, &event, sizeof(event));
 
+    GTThread::waitForMainThread();
     return true;
 }
 

@@ -37,9 +37,7 @@ using namespace HI;
 void ExportProjectDialogChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto projectFileLineEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
-
-    QString fullPath = projectFileLineEdit->text();
+    QString fullPath = GTLineEdit::getText(os, "projectFilePathEdit", dialog);
     QString actualName = projectName.contains('/') ? fullPath : QFileInfo(fullPath).fileName();
     GT_CHECK(actualName == projectName, QString("Expected project name: %1, got: %2").arg(projectName, actualName));
 
@@ -53,11 +51,9 @@ void ExportProjectDialogChecker::commonScenario() {
 void ExportProjectDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto projectFileLineEdit = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
     if (!projectName.isEmpty()) {
-        GTLineEdit::setText(os, projectFileLineEdit, projectName);
+        GTLineEdit::setText(os, "projectFilePathEdit", projectName, dialog);
     }
-
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME

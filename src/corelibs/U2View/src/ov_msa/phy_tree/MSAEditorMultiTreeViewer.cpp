@@ -50,7 +50,8 @@ MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString& title, MSAEdit
 
     this->setLayout(treeAreaLayout);
 
-    connect(treeTabArea, SIGNAL(si_tabsCountChanged(int)), SIGNAL(si_tabsCountChanged(int)));
+    connect(treeTabArea, &MsaEditorTreeTabArea::si_tabsCountChanged, this, &MSAEditorMultiTreeViewer::si_tabsCountChanged);
+    connect(treeTabArea, &MsaEditorTreeTabArea::si_activeTabChanged, this, [this] { emit si_activeTreeViewChanged(); });
 
     setContextMenuPolicy(Qt::CustomContextMenu);
 }

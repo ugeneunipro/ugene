@@ -231,8 +231,7 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus& os, qint64 positi
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(toolbar != nullptr, "Can't find the toolbar");
 
-    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
-    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
+    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(position), toolbar);
 
     switch (method) {
         case Button:

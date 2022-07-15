@@ -34,8 +34,6 @@
 
 namespace U2 {
 
-QString ExportDocumentDialogFiller::defaultExportString = "";
-
 #define GT_CLASS_NAME "ExportDocumentDialogFiller"
 ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
     : Filler(_os, "ExportDocumentDialog"),
@@ -63,9 +61,7 @@ void ExportDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
-        auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
-        defaultExportString = GTLineEdit::copyText(os, lineEdit);
-        GTLineEdit::setText(os, lineEdit, path + name);
+        GTLineEdit::setText(os, "fileNameEdit", path + name, dialog);
 
         auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
         int index = comboBox->findText(comboBoxItems[format]);

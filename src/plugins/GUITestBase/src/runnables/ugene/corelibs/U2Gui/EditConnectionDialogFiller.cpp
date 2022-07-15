@@ -57,24 +57,18 @@ EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus& os, 
 
 void EditConnectionDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    auto leName = GTWidget::findLineEdit(os, "leName", dialog);
-    auto leHost = GTWidget::findLineEdit(os, "leHost", dialog);
     auto lePort = GTWidget::findLineEdit(os, "lePort", dialog);
-    auto leDatabase = GTWidget::findLineEdit(os, "leDatabase", dialog);
-    auto leLogin = GTWidget::findLineEdit(os, "leLogin", dialog);
-    auto lePassword = GTWidget::findLineEdit(os, "lePassword", dialog);
-    auto cbRemember = GTWidget::findCheckBox(os, "cbRemember", dialog);
 
     if (parameters.checkDefaults) {
         GT_CHECK(lePort->text() == "3306", "Wrong default port");
     } else {
-        GTLineEdit::setText(os, leName, parameters.connectionName);
-        GTLineEdit::setText(os, leHost, parameters.host);
+        GTLineEdit::setText(os, "leName", parameters.connectionName, dialog);
+        GTLineEdit::setText(os, "leHost", parameters.host, dialog);
         GTLineEdit::setText(os, lePort, parameters.port);
-        GTLineEdit::setText(os, leDatabase, parameters.database);
-        GTLineEdit::setText(os, leLogin, parameters.login);
-        GTLineEdit::setText(os, lePassword, parameters.password);
-        GTCheckBox::setChecked(os, cbRemember, parameters.rememberMe);
+        GTLineEdit::setText(os, "leDatabase", parameters.database, dialog);
+        GTLineEdit::setText(os, "leLogin", parameters.login, dialog);
+        GTLineEdit::setText(os, "lePassword", parameters.password, dialog);
+        GTCheckBox::setChecked(os, "cbRemember", parameters.rememberMe, dialog);
     }
 
     QString buttonName = parameters.accept ? "OK" : "Cancel";
@@ -99,8 +93,7 @@ void AuthenticationDialogFiller::commonScenario() {
         GTLineEdit::setText(os, leLogin, login);
     }
 
-    auto lePassword = GTWidget::findLineEdit(os, "lePassword", dialog);
-    GTLineEdit::setText(os, lePassword, password);
+    GTLineEdit::setText(os, "lePassword", password, dialog);
 
     auto cbRemember = GTWidget::findCheckBox(os, "cbRemember", dialog);
     GTCheckBox::setChecked(os, cbRemember, false);

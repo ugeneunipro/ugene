@@ -216,7 +216,7 @@ int GTUtilsOptionPanelSequenceView::getTitleFontSize(HI::GUITestOpStatus& os) {
 void GTUtilsOptionPanelSequenceView::setForwardPrimer(HI::GUITestOpStatus& os, const QString& primer) {
     openTab(os, InSilicoPcr);
     auto primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "primerEdit", primerContainer), primer);
+    GTLineEdit::setText(os, "primerEdit", primer, primerContainer);
 }
 #undef GT_METHOD_NAME
 
@@ -235,7 +235,7 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(HI::GUITestOpSta
 void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus& os, const QString& primer) {
     openTab(os, InSilicoPcr);
     auto primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "primerEdit", primerContainer), primer);
+    GTLineEdit::setText(os, "primerEdit", primer, primerContainer);
 }
 #undef GT_METHOD_NAME
 
@@ -415,16 +415,15 @@ void GTUtilsOptionPanelSequenceView::setRegionType(HI::GUITestOpStatus& os, cons
 #define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelSequenceView::setRegion(HI::GUITestOpStatus& os, int from, int to) {
     openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), QString::number(from));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), QString::number(to));
+    GTLineEdit::setText(os, "editStart", QString::number(from));
+    GTLineEdit::setText(os, "editEnd", QString::number(to));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "enterFilepathForSavingAnnotations"
 void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(HI::GUITestOpStatus& os, QString filepath) {
-    auto leFilePath = GTWidget::findLineEdit(os, "leNewTablePath");
     QDir().mkpath(QFileInfo(filepath).dir().absolutePath());
-    GTLineEdit::setText(os, leFilePath, filepath);
+    GTLineEdit::setText(os, "leNewTablePath", filepath);
 }
 
 #undef GT_METHOD_NAME
@@ -461,14 +460,14 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus& o
     openSearchInShowHideWidget(os);
 
     QPair<int, int> result;
-    auto leRegionStart = GTWidget::findLineEdit(os, "editStart");
-    auto leRegionEnd = GTWidget::findLineEdit(os, "editEnd");
+    auto leRegionStartText = GTLineEdit::getText(os, "editStart");
+    auto leRegionEndText = GTLineEdit::getText(os, "editEnd");
 
     bool ok = false;
-    const int regionStart = leRegionStart->text().toInt(&ok);
-    GT_CHECK_RESULT(ok, QString("Can't convert the string to int: %1").arg(leRegionStart->text()), result);
-    const int regionEnd = leRegionEnd->text().toInt(&ok);
-    GT_CHECK_RESULT(ok, QString("Can't convert the string to int: %1").arg(leRegionEnd->text()), result);
+    const int regionStart = leRegionStartText.toInt(&ok);
+    GT_CHECK_RESULT(ok, QString("Can't convert the string to int: %1").arg(leRegionStartText), result);
+    const int regionEnd = leRegionEndText.toInt(&ok);
+    GT_CHECK_RESULT(ok, QString("Can't convert the string to int: %1").arg(leRegionEndText), result);
 
     return qMakePair(regionStart, regionEnd);
 }

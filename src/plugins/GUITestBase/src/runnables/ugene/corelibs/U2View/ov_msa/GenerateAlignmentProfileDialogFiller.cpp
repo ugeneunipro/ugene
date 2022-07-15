@@ -54,8 +54,7 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
         GTGroupBox::setChecked(os, "saveBox", dialog);
         GTGlobals::sleep(500);
 
-        auto fileEdit = GTWidget::findLineEdit(os, "fileEdit", dialog);
-        GTLineEdit::setText(os, fileEdit, filePath);
+        GTLineEdit::setText(os, "fileEdit", filePath, dialog);
 
         auto formatRB = GTWidget::findRadioButton(os, checkBoxItems[format], dialog);
         GTRadioButton::click(os, formatRB);

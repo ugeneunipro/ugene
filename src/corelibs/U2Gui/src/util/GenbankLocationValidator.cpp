@@ -66,7 +66,7 @@ QValidator::State GenbankLocationValidator::validate(QString& str, int& /*ii*/) 
             }
         }
         okButton->setEnabled(true);
-        GUIUtils::setWidgetWarning(le, false);
+        GUIUtils::setWidgetWarningStyle(le, false);
         return QValidator::Acceptable;
     } else {
         return failValidate();
@@ -75,7 +75,7 @@ QValidator::State GenbankLocationValidator::validate(QString& str, int& /*ii*/) 
 
 QValidator::State GenbankLocationValidator::failValidate() const {
     okButton->setDisabled(true);
-    GUIUtils::setWidgetWarning(le, true);
+    GUIUtils::setWidgetWarningStyle(le, true);
     return QValidator::Intermediate;
 }
 

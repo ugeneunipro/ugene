@@ -788,7 +788,16 @@ KSEQ_INIT(gzFile, gzread)
 
 FASTQIterator::FASTQIterator(const QString& fileUrl, U2OpStatus& os)
     : seq(nullptr) {
+#ifdef Q_OS_WIN
+    wchar_t* unicodeFileName = new wchar_t[fileUrl.length() + 1];
+    int unicodeFileNameLength = fileUrl.toWCharArray(unicodeFileName);
+    unicodeFileName[unicodeFileNameLength] = 0;
+    fp = gzopen_w(unicodeFileName, "r");
+    delete unicodeFileName;
+#else
     fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
+#endif
+
     if (fp == nullptr) {
         os.setError(QObject::tr("Can't open file with given url: %1.").arg(fileUrl));
         return;

@@ -694,10 +694,8 @@ void GTUtilsMSAEditorSequenceArea::replaceSymbol(GUITestOpStatus& os, const QPoi
 void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus& os, const QString& colorSchemeName, const NewColorSchemeCreator::alphabet al) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, al));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -706,10 +704,8 @@ void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus& os, const 
 #define GT_METHOD_NAME "deleteColorScheme"
 void GTUtilsMSAEditorSequenceArea::deleteColorScheme(GUITestOpStatus& os, const QString& colorSchemeName) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl, NewColorSchemeCreator::Delete));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

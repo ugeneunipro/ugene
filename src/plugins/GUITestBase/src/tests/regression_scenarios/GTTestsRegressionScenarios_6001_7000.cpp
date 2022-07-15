@@ -363,8 +363,8 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
 
     //    2. Select "Edit" -> "Annotations settings on sequence editing..." menu item in the Details View context menu.
     //    3. Choose "Split (separate annotations parts)" and press "OK".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     //    4. Turn on the editing mode.
@@ -501,10 +501,9 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
-    Runnable* r = new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true);
-    GTUtilsDialog::waitForDialog(os, r);
 
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -667,8 +666,8 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
 
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new NoButtonClickScenario()));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, new NoButtonClickScenario()));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
@@ -887,23 +886,23 @@ GUI_TEST_CLASS_DEFINITION(test_6225) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6226) {
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6229) {
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
+    GTUtilsDialog::add(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/fasta/reference.fa", QStringList());
     parameters.samOutput = false;
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
+    GTUtilsDialog::add(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
@@ -1273,7 +1272,6 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     // Accept the offering.
     // Expected state: the file reloading failed, an error message in the log appears.
     GTLogTracer logTracer;
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "was modified. Do you want to reload"));
 
     QFile file(sandboxFastqFile);
@@ -1281,8 +1279,11 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     QString badContent = GTFile::readAll(os, testDir + "_common_data/regression/6238/6238.fastq");
     file.write(badContent.toLocal8Bit());
     file.close();
-
     GTUtilsDialog::checkNoActiveWaiters(os, 20000);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
+
     GTUtilsLog::checkContainsError(os, logTracer, "Failed to detect");
 }
 
@@ -1297,8 +1298,8 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     };
     // 2. Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
     // 3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTUtilsDialog::add(os, new StartupDialogFiller(os));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
 
     // Expected: The dashboard appears
@@ -2393,8 +2394,8 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit configuration..."}));
+    GTUtilsDialog::add(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", {}, Qt::RightButton);
 
     //    11. Edit the element again.
@@ -2423,8 +2424,8 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     GTUtilsWorkflowDesigner::removeItem(os, "UGENE-6488 test element 2");
     GTUtilsWorkflowDesigner::addElement(os, "UGENE-6488 test element 2");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit configuration..."}));
+    GTUtilsDialog::add(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
 }
 
@@ -2472,7 +2473,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     QAbstractButton* realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
     //         Expected result : no sequences are selected.
     //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect());
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, {});
     CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 
     //         Select all sequences in the alignment.
@@ -2492,7 +2493,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Click "align_selected_sequences_to_alignment".
     //         Expected result : the sequences are realigned.
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2501,6 +2502,8 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Open "empty_mult_seq.fa".
     //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsProject::closeProject(os, true, true);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
@@ -2539,7 +2542,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2560,7 +2563,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3314,8 +3317,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3340,8 +3343,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
+    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3368,8 +3371,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
 
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
+    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the alignment is not modified.
@@ -3397,8 +3400,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the alignment is not modified.
@@ -3423,8 +3426,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3450,8 +3453,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_fasta_header_only.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3478,8 +3481,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
-    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the COI alignment is not modified,
@@ -5253,15 +5256,12 @@ GUI_TEST_CLASS_DEFINITION(test_6759) {
                   "No 'Unknown features' object!");
 
     //    Use context menu on annotation in tree view
-    GTUtilsDialog::waitForDialog(os,
-                                 new ProjectTreeItemSelectorDialogFiller(os,
-                                                                         "annotations.gb",
-                                                                         "Unknown features"));
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os,
-                                 new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, "annotations.gb", "Unknown features"));
+    GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
 
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Check {add-> Objects with annotations} action
@@ -6042,8 +6042,8 @@ GUI_TEST_CLASS_DEFINITION(test_6924) {
         }
     };
     // Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTUtilsDialog::add(os, new StartupDialogFiller(os));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
     // Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -6137,9 +6137,8 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw DNA-Seq Data Processing", {"Single-end"}));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw DNA-Seq Data Processing Wizard", new custom()));
-
+    GTUtilsDialog::add(os, new ConfigurationWizardFiller(os, "Configure Raw DNA-Seq Data Processing", {"Single-end"}));
+    GTUtilsDialog::add(os, new WizardFiller(os, "Raw DNA-Seq Data Processing Wizard", new custom()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Raw DNA-Seq data processing..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6443,9 +6442,9 @@ GUI_TEST_CLASS_DEFINITION(test_6968) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ignore));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new SelectAllScenario()));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, QStringList(), new SelectAllScenario()));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ignore));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 

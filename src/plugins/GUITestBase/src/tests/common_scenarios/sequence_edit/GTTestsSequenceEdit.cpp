@@ -60,11 +60,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTKeyboardUtils::selectAll();
 
-    GTUtilsDialog::waitForDialog(os,
+    GTUtilsDialog::add(os,
                                  new RemovePartFromSequenceDialogFiller(os,
                                                                         RemovePartFromSequenceDialogFiller::Remove,
                                                                         true,
@@ -107,8 +107,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     {Document format} Genbank
     //     {Document location} _common_data/scenarios/sandbox/result.gb
     // 6. Click Remove Button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os,
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os,
                                  new RemovePartFromSequenceDialogFiller(os,
                                                                         RemovePartFromSequenceDialogFiller::Remove,
                                                                         true,
@@ -183,9 +183,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTKeyboardUtils::selectAll();
-    GTUtilsDialog::waitForDialog(os,
+    GTUtilsDialog::add(os,
                                  new RemovePartFromSequenceDialogFiller(os,
                                                                         RemovePartFromSequenceDialogFiller::Remove,
                                                                         true,
@@ -241,10 +241,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
     GTKeyboardUtils::selectAll();
 
-    GTUtilsDialog::waitForDialog(os,
+    GTUtilsDialog::add(os,
                                  new RemovePartFromSequenceDialogFiller(os,
                                                                         RemovePartFromSequenceDialogFiller::Remove,
                                                                         false,
@@ -281,9 +281,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 11));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 11));
     GTKeyboardUtils::selectAll();
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, ADV_COPY_TRANSLATION_ACTION}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_COPY, ADV_COPY_TRANSLATION_ACTION}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, mdiWindow);
     QString text = GTClipboard::text(os);
 

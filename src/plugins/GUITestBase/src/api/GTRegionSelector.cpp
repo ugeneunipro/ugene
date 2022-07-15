@@ -36,11 +36,9 @@ void GTRegionSelector::setRegion(HI::GUITestOpStatus& os, RegionSelector* region
 
     CHECK_EXT(!s.isUnset(), uiLog.trace("GT_DEBUG_MESSAGE RegionSelectorSettings isUnset, returning"), );
 
-    auto startEdit = GTWidget::findLineEdit(os, "start_edit_line", regionSelector);
-    GTLineEdit::setText(os, startEdit, QString::number(s.start));
+    GTLineEdit::setText(os, "start_edit_line", QString::number(s.start), regionSelector);
 
-    auto endEdit = GTWidget::findLineEdit(os, "end_edit_line", regionSelector);
-    GTLineEdit::setText(os, endEdit, QString::number(s.end));
+    GTLineEdit::setText(os, "end_edit_line", QString::number(s.end), regionSelector);
 }
 #undef GT_METHOD_NAME
 

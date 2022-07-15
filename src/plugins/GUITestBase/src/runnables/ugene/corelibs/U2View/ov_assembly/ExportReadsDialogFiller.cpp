@@ -45,8 +45,7 @@ ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus& os, const 
 void ExportReadsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto fileLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", dialog);
-    GTLineEdit::setText(os, fileLineEdit, filePath);
+    GTLineEdit::setText(os, "filepathLineEdit", filePath, dialog);
 
     auto formatComboBox = GTWidget::findComboBox(os, "documentFormatComboBox", dialog);
     GTComboBox::selectItemByText(os, formatComboBox, format);

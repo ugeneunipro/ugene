@@ -35,7 +35,7 @@ LineEditHighlighter::LineEditHighlighter(QLineEdit* _lineEdit)
 }
 
 void LineEditHighlighter::sl_textChanged(const QString& text) {
-    GUIUtils::setWidgetWarning(lineEdit, text.isEmpty());
+    GUIUtils::setWidgetWarningStyle(lineEdit, text.isEmpty());
 }
 
 }  // namespace U2

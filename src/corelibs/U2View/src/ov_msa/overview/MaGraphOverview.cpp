@@ -168,7 +168,7 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
     CHECK(!isMaChangeInProgress && isVisible() && state != (graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState), );
     graphCalculationTaskRunner.cancel();
     auto maObject = editor->getMaObject();
-    MaGraphCalculationTask* task;
+    MaGraphCalculationTask* task = nullptr;
     switch (state.method) {
         case MaGraphCalculationMethod::Strict:
             task = new MaConsensusOverviewCalculationTask(maObject, width(), height());

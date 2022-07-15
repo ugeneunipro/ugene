@@ -111,8 +111,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
         if (item->text(0) == toolName) {
             GTTreeWidget::scrollToItem(os, item);
             QWidget* itemWid = treeWidget->itemWidget(item, 1);
-            auto lineEdit = GTWidget::findLineEdit(os, "PathLineEdit", itemWid);
-            GTLineEdit::setText(os, lineEdit, toolPath);
+            GTLineEdit::setText(os, "PathLineEdit", toolPath, itemWid);
             GTTreeWidget::click(os, item, 0);
             return;
         }

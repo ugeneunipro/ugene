@@ -206,10 +206,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
 
     Runnable* filler = new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "1.gb", ExportDocumentDialogFiller::Genbank, true, true, GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::add(os, filler);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -272,9 +272,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/.dir/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb", ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb", ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
 
     GTMouseDriver::click(Qt::RightButton);
 

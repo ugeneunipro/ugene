@@ -77,8 +77,7 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setReference"
 void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus& os, const QString& referenceUrl, QWidget* dialog) {
-    auto reference = GTWidget::findLineEdit(os, "referenceLineEdit", dialog);
-    GTLineEdit::setText(os, reference, referenceUrl);
+    GTLineEdit::setText(os, "referenceLineEdit", referenceUrl, dialog);
 }
 #undef GT_METHOD_NAME
 
@@ -102,8 +101,7 @@ void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus& os, const QStr
 
 #define GT_METHOD_NAME "setDestination"
 void AlignToReferenceBlastDialogFiller::setDestination(GUITestOpStatus& os, const QString& destinationUrl, QWidget* dialog) {
-    auto out = GTWidget::findLineEdit(os, "outputLineEdit", dialog);
-    GTLineEdit::setText(os, out, destinationUrl);
+    GTLineEdit::setText(os, "outputLineEdit", destinationUrl, dialog);
 }
 #undef GT_METHOD_NAME
 

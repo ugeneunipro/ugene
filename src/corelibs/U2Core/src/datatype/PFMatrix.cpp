@@ -130,7 +130,7 @@ PFMatrix::PFMatrix(const QList<DNASequence*>& seq, const PFMatrixType& _type)
     }
 }
 
-PFMatrix::PFMatrix(const QVarLengthArray<int>& _data, const PFMatrixType _type)
+PFMatrix::PFMatrix(const QVarLengthArray<int>& _data, const PFMatrixType& _type)
     : type(_type) {
     assert(_data.size() % 4 == 0);
     if (_type == PFM_DINUCLEOTIDE) {

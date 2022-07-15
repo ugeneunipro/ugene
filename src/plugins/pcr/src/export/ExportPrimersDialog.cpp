@@ -58,12 +58,12 @@ ExportPrimersDialog::ExportPrimersDialog(const QList<Primer>& primers, QWidget* 
 }
 
 void ExportPrimersDialog::accept() {
-    GUIUtils::setWidgetWarning(leFilePath, false);
+    GUIUtils::setWidgetWarningStyle(leFilePath, false);
 
     U2OpStatusImpl os;
     GUrlUtils::validateLocalFileUrl(GUrl(saveController->getSaveFileName()), os);
     if (os.isCoR()) {
-        GUIUtils::setWidgetWarning(leFilePath, true);
+        GUIUtils::setWidgetWarningStyle(leFilePath, true);
         return;
     }
 

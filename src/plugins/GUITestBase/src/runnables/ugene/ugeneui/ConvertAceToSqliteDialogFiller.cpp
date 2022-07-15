@@ -57,8 +57,7 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
     }
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto leDest = GTWidget::findLineEdit(os, "leDest", dialog);
-    GTLineEdit::setText(os, leDest, leDestUrl);
+    GTLineEdit::setText(os, "leDest", leDestUrl, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

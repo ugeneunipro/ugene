@@ -254,8 +254,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 3);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}));
+    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -266,8 +266,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {  // CHANGES: keyboard used instead mous
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 3);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}));
+    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -457,12 +457,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //    3) Choose "Merge sequence mode" and click "OK" button.
     //    Expected state: one sequence view with a merged sequence is opened. Its name is "merged_document.gb"; its length is 2249.
 
-    QList<QUrl> files;
-    files << testDir + "_common_data/fasta/DNA.fa";
-    files << testDir + "_common_data/fasta/DNA_1_seq.fa";
     GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Merge;
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
-    GTUtilsProject::openFiles(os, files);
+    GTFileDialog::openFileList(os, testDir + "_common_data/fasta/", {"DNA.fa", "DNA_1_seq.fa"});
 
     int length = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(2249 == length, QString("Sequence length mismatch. Expected: %1. Actual: %2").arg(2249).arg(length));
@@ -479,8 +476,8 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "linear_circular_results.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os));
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -503,8 +500,8 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "circular_primers.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os));
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -529,8 +526,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
 
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -549,13 +546,11 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "render_area_Primers_DNA"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 5;
     settings.primersName = "linear";
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-
-    GTMouseDriver::click();
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -588,10 +583,10 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -624,14 +619,14 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
     auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleZoomView"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
     GTWidget::click(os, toggleViewButton);
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -653,11 +648,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.start = 560;
     settings.end = 180;
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1092,13 +1087,13 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     auto panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QImage init = GTWidget::getImage(os, panView);
     //    Create custom ruler
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Rulers", "Create new ruler"}));
-    GTUtilsDialog::waitForDialog(os, new CreateRulerDialogFiller(os, "name", 1000));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Rulers", "Create new ruler"}));
+    GTUtilsDialog::add(os, new CreateRulerDialogFiller(os, "name", 1000));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     QImage second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init != second, "ruler not created");
     //    Hide ruler
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Rulers", "Show Custom Rulers"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Rulers", "Show Custom Rulers"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Set focus on tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
@@ -1106,12 +1101,12 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init == second, "ruler not hidden");
     //    Remove ruler
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Rulers...", "Remove 'name'"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Rulers...", "Remove 'name'"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Rulers", "Show Custom Rulers"}, PopupChecker::IsDisabled));
+    GTUtilsDialog::add(os, new PopupChecker(os, {"Rulers", "Show Custom Rulers"}, PopupChecker::IsDisabled));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Rulers", "Remove 'name'"}, PopupChecker::NotExists));
+    GTUtilsDialog::add(os, new PopupChecker(os, {"Rulers", "Remove 'name'"}, PopupChecker::NotExists));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
@@ -1324,7 +1319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     }
 
     U2Region r = GTUtilsSequenceView::getPanViewByNumber(os)->getVisibleRange();
-    CHECK_SET_ERR(r.startPos > 99000, QString("Unexpected visible range: %1").arg(r.startPos));
+    CHECK_SET_ERR(r.startPos > 90000, QString("Unexpected visible range: %1").arg(r.startPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044_1) {
@@ -1458,9 +1453,9 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    Use context menu on annotation in tree view
-    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
+    GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Check {add-> Objects with annotations} action
     GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]");
@@ -2259,20 +2254,20 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Mark as circular"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, {"EcoRI"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "EcoRI is unexpectedly found");
@@ -2292,8 +2287,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     const QStringList defaultEnzymes = {"ClaI", "DraI", "EcoRI"};
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", nullptr, {false}) == nullptr, "ClaI is unexpectedly found");
@@ -2301,8 +2296,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "EcoRI is unexpectedly found");
@@ -2357,8 +2352,8 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    GTUtilsDialog::waitForDialog(os, new RegionSelectorChecker(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    GTUtilsDialog::add(os, new RegionSelectorChecker(os));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 

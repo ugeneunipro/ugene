@@ -69,7 +69,7 @@ public:
     bool hideAnnotationName = false;
 
     /** Hides annotation description input. */
-    bool hideDescription;
+    bool hideDescription = false;
 
     /** Hides pattern names checkbox. */
     bool hideUsePatternNames = true;

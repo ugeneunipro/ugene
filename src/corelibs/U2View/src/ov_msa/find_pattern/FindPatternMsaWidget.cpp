@@ -438,7 +438,7 @@ void FindPatternMsaWidget::updateErrorLabelState() {
                 QString message = tr("Warning: input value contains characters that"
                                      " do not match the active alphabet!");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                GUIUtils::setWidgetWarning(textPattern, true);
+                GUIUtils::setWidgetWarningStyle(textPattern, true);
                 break;
             }
             case PatternsWithBadAlphabetInFile: {
@@ -460,28 +460,6 @@ void FindPatternMsaWidget::updateErrorLabelState() {
                 text = QString("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
                 break;
             }
-            case AnnotationNotValidName: {
-                QString message = tr("Warning: annotation name or annotation group name are invalid. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                if (!customErrorMessage.isEmpty()) {
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
-                }
-                QString msg = tr(" Please input valid annotation names. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                break;
-            }
-            case AnnotationNotValidFastaParsedName: {
-                QString message = tr("Warning: annotation names are invalid. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                if (!customErrorMessage.isEmpty()) {
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
-                }
-                QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                break;
-            }
             case NoPatternToSearch: {
                 QString message = tr("Warning: there is no pattern to search. ");
                 text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
@@ -497,7 +475,7 @@ void FindPatternMsaWidget::updateErrorLabelState() {
             case PatternWrongRegExp: {
                 QString message = tr("Warning: the input regular expression is invalid! ");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                GUIUtils::setWidgetWarning(textPattern, true);
+                GUIUtils::setWidgetWarningStyle(textPattern, true);
                 break;
             }
             case SequenceIsTooBig: {
@@ -513,7 +491,7 @@ void FindPatternMsaWidget::updateErrorLabelState() {
     lblErrorMessage->setText(text);
     bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
     if (hasNoErrors) {
-        GUIUtils::setWidgetWarning(textPattern, false);
+        GUIUtils::setWidgetWarningStyle(textPattern, false);
     }
 }
 
@@ -651,12 +629,12 @@ void FindPatternMsaWidget::checkStateAndUpdateStatus() {
     hideAllMessages();
     updateCurrentResultLabel();
 
-    GUIUtils::setWidgetWarning(textPattern, false);
+    GUIUtils::setWidgetWarningStyle(textPattern, false);
 
     QString searchRegionError = checkSearchRegion();
-    GUIUtils::setWidgetWarning(editStart, !searchRegionError.isEmpty());
-    GUIUtils::setWidgetWarning(editEnd, !searchRegionError.isEmpty());
-    GUIUtils::setWidgetWarning(textPattern, !searchRegionError.isEmpty() && !patternString.isEmpty());
+    GUIUtils::setWidgetWarningStyle(editStart, !searchRegionError.isEmpty());
+    GUIUtils::setWidgetWarningStyle(editEnd, !searchRegionError.isEmpty());
+    GUIUtils::setWidgetWarningStyle(textPattern, !searchRegionError.isEmpty() && !patternString.isEmpty());
     setMessageFlag(SearchRegionIncorrect, !searchRegionError.isEmpty(), searchRegionError);
 
     // Make extra checks for search-in-sequence mode.

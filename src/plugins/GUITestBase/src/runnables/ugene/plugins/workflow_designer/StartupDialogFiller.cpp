@@ -44,17 +44,15 @@ StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus& os, const QString&
 void StartupDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (path != UGUITest::sandBoxDir) {
-        auto pathEdit = GTWidget::findLineEdit(os, "pathEdit", dialog);
-
-        QString originalPath = GTLineEdit::getText(os, pathEdit);
-        GTLineEdit::setText(os, pathEdit, path);
+        QString originalPath = GTLineEdit::getText(os, "pathEdit", dialog);
+        GTLineEdit::setText(os, "pathEdit", path, dialog);
 
         if (!isPathValid) {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             CHECK_OP(os, );
 
-            GTLineEdit::setText(os, pathEdit, originalPath);
+            GTLineEdit::setText(os, "pathEdit", originalPath, dialog);
         }
     }
 

@@ -90,11 +90,13 @@ public:
 
 protected:
     void paintEvent(QPaintEvent*) override;
-    virtual MsaEditorTreeTab* createTabWidget();
-    void initialize();
+    MsaEditorTreeTab* createTabWidget();
 
 signals:
     void si_tabsCountChanged(int curTabsNumber);
+
+    /** Emitted when active tab changed. */
+    void si_activeTabChanged(int tabIndex);
 
 private:
     MSAEditor* editor;

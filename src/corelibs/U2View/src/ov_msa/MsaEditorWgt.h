@@ -59,11 +59,11 @@ public:
     void showSimilarity();
     void hideSimilarity();
 
-    const MsaEditorAlignmentDependentWidget* getSimilarityWidget();
+    MsaEditorAlignmentDependentWidget* getSimilarityWidget() const;
 
     MSAEditorTreeViewer* getCurrentTree() const;
 
-    MSAEditorMultiTreeViewer* getMultiTreeViewer();
+    MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
@@ -79,10 +79,9 @@ protected:
     void initStatusBar();
 
 private:
-    MsaEditorSimilarityColumn* dataList;
-    MSAEditorMultiTreeViewer* multiTreeViewer;
-    MsaEditorAlignmentDependentWidget* similarityStatistics;
-    MSAEditorTreeViewer* treeViewer;
+    MsaEditorSimilarityColumn* dataList = nullptr;
+    MSAEditorMultiTreeViewer* multiTreeViewer = nullptr;
+    MsaEditorAlignmentDependentWidget* similarityStatistics = nullptr;
 };
 
 }  // namespace U2

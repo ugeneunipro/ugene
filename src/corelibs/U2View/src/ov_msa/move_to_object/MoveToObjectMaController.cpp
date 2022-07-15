@@ -138,10 +138,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 
     // Get the file name to move rows to first.
     LastUsedDirHelper lod;
-    DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
-    formatConstraints.flagsToSupport.setFlag(DocumentFormatFlag_SupportWriting, true);
-    QString filter = FileFilters::createFileFilter(formatConstraints);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true);
     QString selectedFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
     lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );

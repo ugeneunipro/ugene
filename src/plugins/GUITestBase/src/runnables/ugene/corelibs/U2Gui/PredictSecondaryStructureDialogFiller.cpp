@@ -56,11 +56,9 @@ PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI:
 void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", dialog);
-    GTLineEdit::setText(os, startLineEdit, QString::number(startPos));
+    GTLineEdit::setText(os, "start_edit_line", QString::number(startPos), dialog);
 
-    auto endLineEdit = GTWidget::findLineEdit(os, "end_edit_line", dialog);
-    GTLineEdit::setText(os, endLineEdit, QString::number(endPos));
+    GTLineEdit::setText(os, "end_edit_line", QString::number(endPos), dialog);
 
     auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 

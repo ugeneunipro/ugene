@@ -37,8 +37,6 @@ public:
     void setPath(const QString& value);
     void setName(const QString& value);
 
-    static QString defaultExportPath;
-
 private:
     QString path, name;
     QString seqName;

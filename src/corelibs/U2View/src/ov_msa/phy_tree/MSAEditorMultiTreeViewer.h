@@ -51,13 +51,16 @@ public:
 signals:
     void si_tabsCountChanged(int tabsCount);
 
+    /** Emitted when active tree tab changes. */
+    void si_activeTreeViewChanged();
+
 public slots:
     void sl_onTabCloseRequested(QWidget*);
 
 private:
-    MsaEditorTreeTabArea* treeTabArea;
-    QWidget* titleWidget;
-    MSAEditor* editor;
+    MsaEditorTreeTabArea* treeTabArea = nullptr;
+    QWidget* titleWidget = nullptr;
+    MSAEditor* editor = nullptr;
     QList<QWidget*> treeViewList;
     QStringList tabsNameList;
 };

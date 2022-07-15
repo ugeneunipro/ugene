@@ -139,10 +139,6 @@ double Vector3D::length(void) const {
     return sqrt(x * x + y * y + z * z);
 }
 
-double Vector3D::lengthSquared(void) const {
-    return (x * x + y * y + z * z);
-}
-
 void Vector3D::normalize(void) {
     *this /= length();
 }

@@ -90,8 +90,7 @@ void DistanceMatrixDialogFiller::commonScenario() {
         if (saveToFile) {
             GTGroupBox::setChecked(os, "saveBox", dialog);
 
-            auto fileEdit = GTWidget::findLineEdit(os, "fileEdit", dialog);
-            GTLineEdit::setText(os, fileEdit, QDir::toNativeSeparators(path));
+            GTLineEdit::setText(os, "fileEdit", QDir::toNativeSeparators(path), dialog);
 
             if (format == HTML) {
                 auto htmlRB = GTWidget::findRadioButton(os, "htmlRB", dialog);

@@ -28,6 +28,8 @@
 
 namespace U2 {
 
+const QString PVRowData::RESTRICTION_SITE_NAME = QObject::tr("Restriction Site");
+
 PVRowsManager::~PVRowsManager() {
     qDeleteAll(rows);
 }
@@ -86,22 +88,13 @@ void PVRowsManager::addAnnotation(Annotation* a) {
     const SharedAnnotationData& data = a->getData();
     const QVector<U2Region> location = data->getRegions();
 
-    QString name;
-    bool isRestrictionSite = data->type == U2FeatureTypes::RestrictionSite;
-    if (isRestrictionSite) {
-        name = QObject::tr("Restriction Site");
-    } else {
-        name = data->name;
-    }
-
-    if (rowByName.contains(name)) {
-        foreach (PVRowData* row, rowByName[name]) {
+    QString name = data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
+    if (hasRowWithName(name)) {
+        const QList<PVRowData*> constRows(rows);
+        for (PVRowData* row : qAsConst(constRows)) {
             if (row->fitToRow(location)) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
-                if (name != data->name) {
-                    rowByName[data->name].append(row);
-                }
                 return;
             }
         }
@@ -115,10 +108,6 @@ void PVRowsManager::addAnnotation(Annotation* a) {
 
     QList<PVRowData*>::iterator i = std::upper_bound(rows.begin(), rows.end(), row, compare_rows);
     rows.insert(i, row);
-    rowByName[name].append(row);
-    if (name != data->name) {
-        rowByName[data->name].append(row);
-    }
 }
 
 namespace {
@@ -139,16 +128,10 @@ void PVRowsManager::removeAnnotation(Annotation* a) {
     PVRowData* row = rowByAnnotation.value(a, nullptr);
     CHECK(nullptr != row, );  // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
-    rowByName.remove(a->getName());
     row->annotations.removeOne(a);
     substractRegions(row->ranges, a->getRegions());
     if (row->annotations.isEmpty()) {
         rows.removeOne(row);
-        QList<PVRowData*>& rowsWithSameName = rowByName[row->key];
-        rowsWithSameName.removeOne(row);
-        if (rowsWithSameName.isEmpty()) {
-            rowByName.remove(row->key);
-        }
         delete row;
     }
 }
@@ -172,8 +155,14 @@ int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 
-bool PVRowsManager::contains(const QString& key) const {
-    return rowByName.contains(key);
+bool PVRowsManager::hasRowWithName(const QString& name) const {
+    const QList<PVRowData*> constRows(rows);
+    for (PVRowData* row : qAsConst(constRows)) {
+        if (row->key == name) {
+            return true;
+        }
+    }
+    return false;
 }
 
 PVRowData* PVRowsManager::getAnnotationRow(Annotation* a) const {

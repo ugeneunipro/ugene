@@ -26,14 +26,27 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #define SETTINGS_ROOT QString("log_settings/")
 
 namespace U2 {
 
-QString LogCategories::localizedLevelNames[LogLevel_NumLevels];
+LoggerSettings::LoggerSettings()
+    : activeLevelFlag(LogLevel_NumLevels, false) {
+}
+
+QVector<QString> LogCategories::localizedLevelNames;
+
+const QString& LogCategories::getLocalizedLevelName(const LogLevel& logLevel) {
+    SAFE_POINT(logLevel >= 0 && logLevel < LogLevel_NumLevels,
+               "Illegal log level: " + QString::number(logLevel),
+               localizedLevelNames[LogLevel_TRACE]);
+    return localizedLevelNames[logLevel];
+}
 
 void LogCategories::init() {
+    localizedLevelNames.resize(LogLevel_NumLevels);
     localizedLevelNames[LogLevel_TRACE] = tr("TRACE");
     localizedLevelNames[LogLevel_DETAILS] = tr("DETAILS");
     localizedLevelNames[LogLevel_INFO] = tr("INFO");
@@ -41,13 +54,7 @@ void LogCategories::init() {
 }
 
 LogSettings::LogSettings()
-    : showDate(false),
-      showLevel(false),
-      showCategory(false),
-      enableColor(false),
-      toFile(false) {
-    // created in not inited state
-    memset(activeLevelGlobalFlag, 0, sizeof(bool) * LogLevel_NumLevels);
+    : levelColors(LogLevel_NumLevels), activeLevelGlobalFlag(LogLevel_NumLevels, false) {
 }
 
 const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {
@@ -64,17 +71,10 @@ const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {
 void LogSettings::reinitAll() {
     Settings* s = AppContext::getSettings();
 
-    for (int i = 0; i < LogLevel_NumLevels; i++) {
-        if (i == LogLevel_TRACE) {
-            levelColors[i] = QColor(Qt::darkGray).name();
-        } else if (i == LogLevel_INFO) {
-            levelColors[i] = QColor(Qt::darkBlue).name();
-        } else if (i == LogLevel_ERROR) {
-            levelColors[i] = QColor(Qt::darkRed).name();
-        } else {
-            levelColors[i] = QColor(Qt::black).name();
-        }
-    }
+    levelColors.fill(QColor(Qt::black).name());
+    levelColors[LogLevel_TRACE] = QColor(Qt::darkGray).name();
+    levelColors[LogLevel_INFO] = QColor(Qt::darkBlue).name();
+    levelColors[LogLevel_ERROR] = QColor(Qt::darkRed).name();
 
     showDate = s->getValue(SETTINGS_ROOT + "showDate", true).toBool();
     showLevel = s->getValue(SETTINGS_ROOT + "showLevel", true).toBool();
@@ -101,7 +101,8 @@ void LogSettings::reinitCategories() {
             LoggerSettings cs;
             cs.categoryName = name;
             for (int i = 0; i < LogLevel_NumLevels; i++) {
-                cs.activeLevelFlag[i] = s->getValue(SETTINGS_ROOT + "categories/" + cs.categoryName + "/activeFlagLevel" + QString::number(i), activeLevelGlobalFlag[i]).toBool();
+                QString key = SETTINGS_ROOT + "categories/" + cs.categoryName + "/activeFlagLevel" + QString::number(i);
+                cs.activeLevelFlag[i] = s->getValue(key, activeLevelGlobalFlag[i]).toBool();
             }
             categories[name] = cs;
         }
@@ -142,9 +143,12 @@ void LogSettings::save() {
 }
 
 bool LogSettings::operator==(const LogSettings& other) const {
-    bool res = levelColors == other.levelColors && activeLevelGlobalFlag == other.activeLevelGlobalFlag && showDate == other.showDate && showLevel == other.showLevel && showCategory == other.showCategory && categories == other.categories;
-
-    return res;
+    return levelColors == other.levelColors &&
+           activeLevelGlobalFlag == other.activeLevelGlobalFlag &&
+           showDate == other.showDate &&
+           showLevel == other.showLevel &&
+           showCategory == other.showCategory &&
+           categories == other.categories;
 }
 
 void LogSettingsHolder::setSettings(const LogSettings& s) {

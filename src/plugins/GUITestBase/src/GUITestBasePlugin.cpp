@@ -216,11 +216,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3690, "hotkeys on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_4148, "It always fails on MacOS. Improve the test");
 
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_Assembly_browser::test_0012, "permission setter issue");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_3778, "UGENE-5735");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Fails to grab OpenGL widget image on Windows");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5360, "UGENE-5371");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5371, "UGENE-5371");
+    REGISTER_TEST(GUITest_Assembly_browser::test_0012);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3778);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5295);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5360);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5371);
 
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on Mac
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
@@ -1241,6 +1241,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4719_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4719_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4719_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4721);
     REGISTER_TEST(GUITest_regression_scenarios::test_4728);
     REGISTER_TEST(GUITest_regression_scenarios::test_4732);
     REGISTER_TEST(GUITest_regression_scenarios::test_4734);
@@ -1717,6 +1718,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
     REGISTER_TEST(GUITest_regression_scenarios::test_7276);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7279);
     REGISTER_TEST(GUITest_regression_scenarios::test_7293);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7367);
@@ -1778,6 +1780,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7531);
     REGISTER_TEST(GUITest_regression_scenarios::test_7535);
     REGISTER_TEST(GUITest_regression_scenarios::test_7539);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7540);
     REGISTER_TEST(GUITest_regression_scenarios::test_7546);
     REGISTER_TEST(GUITest_regression_scenarios::test_7548);
     REGISTER_TEST(GUITest_regression_scenarios::test_7550);
@@ -1793,6 +1796,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7607);
     REGISTER_TEST(GUITest_regression_scenarios::test_7609);
     REGISTER_TEST(GUITest_regression_scenarios::test_7611);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7635);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2935,7 +2939,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0008);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0010);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::pairwise_alignment_test_0011);
 
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0002);

@@ -78,8 +78,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTWidget::click(os, GTWidget::findWidget(os, "exportTreeImageButton"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
@@ -104,8 +104,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "treeView"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
@@ -371,12 +371,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::findGraphicsView(os, "treeView");
 }
 
-//int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
-//    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-//    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
-//    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
-//    return globalCoord.y();
-//}
+// int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
+//     auto treeView = GTWidget::findGraphicsView(os, "treeView");
+//     QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
+//     QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
+//     return globalCoord.y();
+// }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Tree layouts test
@@ -925,14 +925,10 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     // 2. Use context menu items { Tree -> Build tree }
     // Expected: the "Build Phylogenetic Tree" dialog has appeared
     // 3. Press the "Build" button in the dialog
-    GTUtilsDialog::waitForDialog(os,
-                                 new PopupChooser(os, QStringList() << MSAE_MENU_TREES << "Build Tree"));
-
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
     QString outputDirPath(testDir + "_common_data/scenarios/sandbox");
     QDir outputDir(outputDirPath);
-    GTUtilsDialog::waitForDialog(os,
-                                 new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
-
+    GTUtilsDialog::add(os,new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     auto treeView = GTWidget::findGraphicsView(os, "treeView");

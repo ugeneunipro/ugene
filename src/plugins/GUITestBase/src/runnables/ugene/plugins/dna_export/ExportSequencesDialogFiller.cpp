@@ -35,8 +35,6 @@
 
 namespace U2 {
 
-QString ExportSelectedRegionFiller::defaultExportPath = "";
-
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSelectedRegionFiller"
 ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, bool translate, const QString& seqName, bool saveAllAminoFrames)
     : Filler(_os, "U2__ExportSequencesDialog"), name(_name), seqName(seqName), translate(translate),
@@ -61,15 +59,12 @@ ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus& os, 
 void ExportSelectedRegionFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto lineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
-    defaultExportPath = GTLineEdit::copyText(os, lineEdit);
-    GTLineEdit::setText(os, lineEdit, path + name);
+    GTLineEdit::setText(os, "fileNameEdit", path + name, dialog);
 
     if (!seqName.isEmpty()) {
         auto customSeqCheckBox = GTWidget::findCheckBox(os, "customSeqNameBox", dialog);
         GTCheckBox::setChecked(os, customSeqCheckBox, true);
-        auto sequenceNameEdit = GTWidget::findLineEdit(os, "sequenceNameEdit", dialog);
-        GTLineEdit::setText(os, sequenceNameEdit, seqName);
+        GTLineEdit::setText(os, "sequenceNameEdit", seqName, dialog);
     }
 
     auto translateButton = GTWidget::findCheckBox(os, "translateButton");
@@ -122,8 +117,7 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
-    GTLineEdit::setText(os, fileNameEdit, path);
+    GTLineEdit::setText(os, "fileNameEdit", path, dialog);
 
     GTGlobals::sleep(200);
 

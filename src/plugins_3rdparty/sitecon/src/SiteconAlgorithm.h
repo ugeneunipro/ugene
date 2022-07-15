@@ -101,7 +101,7 @@ public:
 
     static QVector<qreal> calculateSecondTypeError(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
-    static QVector<PositionStats> normalize(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s);
+    static QVector<PositionStats> normalize(const QVector<PositionStats>& matrix);
 
     static int calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& matrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& s);
 

@@ -1,3 +1,7 @@
+// It looks like a bug in GCC 12.1.0 that causes warnings in SW_LOOP macro.
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -19,9 +23,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "SmithWatermanAlgorithmSSE2.h"
 #include <emmintrin.h>
 #include <iostream>
+
+#include "SmithWatermanAlgorithmSSE2.h"
 
 #ifdef _MSC_VER
 #    pragma warning(disable : 4799)
