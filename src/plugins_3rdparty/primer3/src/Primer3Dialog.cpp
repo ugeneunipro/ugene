@@ -57,8 +57,11 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
                         { "SEQUENCE_PRIMER",
                           "SEQUENCE_INTERNAL_OLIGO",
                           "SEQUENCE_PRIMER_REVCOMP",
+                          "SEQUENCE_OVERHANG_LEFT",
+                          "SEQUENCE_OVERHANG_RIGHT",
                           "SEQUENCE_TARGET",
                           "SEQUENCE_OVERLAP_JUNCTION_LIST",
+                          "SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST",
                           "SEQUENCE_EXCLUDED_REGION",
                           "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
                           "SEQUENCE_INCLUDED_REGION",
@@ -309,6 +312,7 @@ void Primer3Dialog::reset() {
 
     edit_SEQUENCE_TARGET->setText(intervalListToString(defaultSettings.getTarget(), ","));
     edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getOverlapJunctionList(), ""));
+    edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getInternalOverlapJunctionList(), ""));
     edit_SEQUENCE_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getExcludedRegion(), ","));
     edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(okRegions2String(defaultSettings.getOkRegion()));
     edit_PRIMER_PRODUCT_SIZE_RANGE->setText(intervalListToString(defaultSettings.getProductSizeRange(), "-", IntervalDefinition::Start_End));
@@ -321,7 +325,9 @@ void Primer3Dialog::reset() {
     edit_SEQUENCE_PRIMER->setText(defaultSettings.getLeftInput());
     edit_SEQUENCE_PRIMER_REVCOMP->setText(defaultSettings.getRightInput());
     edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
-
+    edit_SEQUENCE_OVERHANG_LEFT->setText(defaultSettings.getOverhangLeft());
+    edit_SEQUENCE_OVERHANG_RIGHT->setText(defaultSettings.getOverhangRight());
+    
     {
         QString qualityString;
         bool first = true;
@@ -353,8 +359,12 @@ void Primer3Dialog::reset() {
 
     edit_SEQUENCE_PRIMER->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
     label_PRIMER_LEFT_INPUT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
+    edit_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
+    label_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
     edit_SEQUENCE_PRIMER_REVCOMP->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
     label_PRIMER_RIGHT_INPUT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
+    edit_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
+    label_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
     edit_SEQUENCE_INTERNAL_OLIGO->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
     label_PRIMER_INTERNAL_OLIGO_INPUT->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
 
@@ -461,6 +471,15 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
     {
+        QList<int> list;
+        if (parseIntList(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->text(), &list)) {
+            settings.setInternalOverlapJunctionList(list);
+        } else {
+            showInvalidInputMessage(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST, tr("Internal Oligo Overlap Positions"));
+            return false;
+        }
+    }
+    {
         QList<U2Region> list;
         if (parseIntervalList(edit_SEQUENCE_EXCLUDED_REGION->text(), ",", &list)) {
             settings.setExcludedRegion(list);
@@ -551,8 +570,10 @@ bool Primer3Dialog::doDataExchange() {
 
     if (checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked()) {
         settings.setLeftInput(edit_SEQUENCE_PRIMER->text().toLatin1());
+        settings.setLeftOverhang(edit_SEQUENCE_OVERHANG_LEFT->text().toLatin1());
     } else {
         settings.setLeftInput("");
+        settings.setLeftOverhang("");
     }
     if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked()) {
         settings.setInternalInput(edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1());
@@ -561,8 +582,10 @@ bool Primer3Dialog::doDataExchange() {
     }
     if (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
         settings.setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
+        settings.setRightOverhang(edit_SEQUENCE_OVERHANG_RIGHT->text().toLatin1());
     } else {
         settings.setRightInput("");
+        settings.setRightOverhang("");
     }
 
     {
@@ -741,9 +764,6 @@ void Primer3Dialog::sl_saveSettings() {
     U2OpStatusImpl os;
     stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
     stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
-    bool isRegionOk = false;
-    auto region = rs->getRegion(&isRegionOk);
-    //stream << "SEQUENCE_INCLUDED_REGION=" << region.startPos << "," << region.length << endl;
 
     auto qualityText = edit_SEQUENCE_QUALITY->toPlainText();
     if (!qualityText.isEmpty()) {
@@ -773,7 +793,7 @@ void Primer3Dialog::sl_saveSettings() {
 
 void Primer3Dialog::sl_loadSettings() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, "Text files (*.txt)");
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, tr("All files") + " ( * );;" + tr("Text files") + "(*.txt)");
     if (lod.url.isNull()) {  // user clicked 'Cancel' button
         return;
     }
@@ -810,6 +830,15 @@ void Primer3Dialog::sl_loadSettings() {
                 CHECK_CONTINUE(ok);
                 
                 checkbox->setChecked((bool)v);
+                continue;
+            }
+            QComboBox* combobox = findChild<QComboBox*>("combobox_" + par.first());
+            if (combobox != nullptr) {
+                bool ok = false;
+                int v = par.last().toInt(&ok);
+                CHECK_CONTINUE(ok);
+
+                combobox->setCurrentIndex(v);
                 continue;
             }
 

@@ -78,6 +78,7 @@ public:
     int getSequenceSize() const;
     QList<U2Region> getTarget() const;
     QList<int> getOverlapJunctionList() const;
+    QList<int> getInternalOverlapJunctionList() const;
     QList<U2Region> getProductSizeRange() const;
     QList<QList<int>> getOkRegion() const;
     int getMinProductSize() const;
@@ -91,6 +92,8 @@ public:
     QByteArray getLeftInput() const;
     QByteArray getRightInput() const;
     QByteArray getInternalInput() const;
+    QByteArray getOverhangLeft() const;
+    QByteArray getOverhangRight() const;
     QList<U2Region> getExcludedRegion() const;
     U2Region getIncludedRegion() const;
     QVector<int> getSequenceQuality() const;
@@ -106,6 +109,7 @@ public:
     void setCircularity(bool isCircular);
     void setTarget(const QList<U2Region>& value);
     void setOverlapJunctionList(const QList<int>& value);
+    void setInternalOverlapJunctionList(const QList<int>& value);
     void setProductSizeRange(const QList<U2Region>& value);
     void setTaskByName(const QString& taskName);
     void setInternalOligoExcludedRegion(const QList<U2Region>& value);
@@ -115,7 +119,9 @@ public:
     void setInternalPrimerMustMatchFivePrime(const QByteArray& value) const;
     void setInternalPrimerMustMatchThreePrime(const QByteArray& value) const;
     void setLeftInput(const QByteArray& value);
+    void setLeftOverhang(const QByteArray& value);
     void setRightInput(const QByteArray& value);
+    void setRightOverhang(const QByteArray& value);
     void setInternalInput(const QByteArray& value);
     void setExcludedRegion(const QList<U2Region>& value);
     void setOkRegion(QList<QList<int>> value);

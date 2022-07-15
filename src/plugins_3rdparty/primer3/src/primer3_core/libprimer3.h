@@ -1024,7 +1024,9 @@ int p3_set_sa_sequence(seq_args *sargs, const char *sequence);
 void p3_set_sa_primer_sequence_quality(seq_args *sargs, int quality);
 int p3_set_sa_sequence_name(seq_args *sargs, const char* sequence_name);
 int p3_set_sa_left_input(seq_args *sargs, const char *left_input);
+int p3_set_sa_overhang_left(seq_args* sargs, const char* overhang);
 int p3_set_sa_right_input(seq_args *sargs, const char *right_input);
+int p3_set_sa_overhang_right(seq_args* sargs, const char* overhang);
 int p3_set_sa_internal_input(seq_args *sargs, const char *internal_input);
 void p3_set_sa_empty_quality(seq_args *sargs);
 void p3_sa_add_to_quality_array(seq_args *sargs, int quality);
@@ -1034,6 +1036,7 @@ int p3_set_sa_p_args_must_match_five_prime(p3_global_settings* pa, const char* m
 int p3_set_sa_p_args_must_match_three_prime(p3_global_settings* pa, const char* must_match_prime);
 int p3_set_sa_o_args_must_match_five_prime(p3_global_settings* pa, const char* must_match_prime);
 int p3_set_sa_o_args_must_match_three_prime(p3_global_settings* pa, const char* must_match_prime);
+int p3_sa_add_to_intl_overlap_junctions_array(seq_args* sargs, int overlap);
 
 /* The following three functions return 0 on success,
    1 on error (no space for additional intervals). */
