@@ -153,6 +153,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
 
     // Must not crash
 
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
