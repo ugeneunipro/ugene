@@ -371,12 +371,12 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
     cfg.groupName = getGroupName();
     cfg.isAutoAnnotationUpdateTask = true;
     cfg.minHitCount = appSettings->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    cfg.maxHitCount = qMin(
-        appSettings->getValue(EnzymeSettings::MAX_HIT_VALUE, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt(),
-        AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE);
-    cfg.maxResults = qMin(
-        appSettings->getValue(EnzymeSettings::MAX_RESULTS, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt(),
-        AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE);
+    int maxAnnotations = AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE;
+    if (qgetenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK") == "1") {
+        maxAnnotations = INT_MAX;
+    }
+    cfg.maxHitCount = qMin(appSettings->getValue(EnzymeSettings::MAX_HIT_VALUE, maxAnnotations).toInt(), maxAnnotations);
+    cfg.maxResults = qMin(appSettings->getValue(EnzymeSettings::MAX_RESULTS, maxAnnotations).toInt(), maxAnnotations);
 
     U2Region savedSearchRegion = getLastSearchRegionForObject(sequenceObject);
     U2Region wholeSequenceRegion(0, sequenceLength);
