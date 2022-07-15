@@ -489,8 +489,8 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);  // wait for overview rendering to finish.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
@@ -941,12 +941,14 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     // Check initial state of MSA editor & Exclude list with no selection.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Switch to multiline mode
@@ -1004,6 +1006,7 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
     // Check initial state of MSA editor & Exclude list with no selection.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
@@ -1063,6 +1066,7 @@ GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
     //  - 'refresh_sequence_row_order_action' is disabled.
     //  - sequences are ordered by the tree.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
