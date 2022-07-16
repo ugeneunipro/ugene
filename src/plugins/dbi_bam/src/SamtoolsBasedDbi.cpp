@@ -102,26 +102,25 @@ void SamtoolsBasedDbi::init(const QHash<QString, QString>& properties, const QVa
 }
 
 bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
-    QByteArray urlBA = fileName.getURLString().toLocal8Bit();
-    const char* url = urlBA.constData();
-    bamHandler = bam_open(url, "r");
-    if (nullptr == bamHandler) {
-        throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(url));
+    QString filePath = fileName.getURLString();
+    OpenFile file(filePath);
+    bamHandler = bam_dopen(file.handle(), "r");
+    if (bamHandler == nullptr) {
+        throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(filePath));
     }
 
     bool indexed = BAMUtils::hasValidBamIndex(fileName);
-    if (indexed) {
-        index = bam_index_load(url);
-    } else {
+    if (!indexed) {
         throw Exception("Only indexed sorted BAM files could be used by this DBI");
     }
-    if (nullptr == index) {
-        throw IOException(BAMDbiPlugin::tr("Can't load index file for '%1'").arg(url));
+    index = bam_index_load(filePath.toLocal8Bit());
+    if (index == nullptr) {
+        throw IOException(BAMDbiPlugin::tr("Can't load index file for '%1'").arg(filePath));
     }
 
     header = bam_header_read(bamHandler);
-    if (nullptr == header) {
-        throw IOException(BAMDbiPlugin::tr("Can't read header from file '%1'").arg(url));
+    if (header == nullptr) {
+        throw IOException(BAMDbiPlugin::tr("Can't read header from file '%1'").arg(filePath));
     }
     return true;
 }

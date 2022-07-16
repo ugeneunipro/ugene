@@ -28,23 +28,6 @@ int ugene_custom_open(const char *filename, int oflag) {
 #endif
 }
 
-// The func accepts filename in multibyte string form
-// then converts it to wide string form and call _wopen
-// The conversion is with CP_THREAD_ACP by default
-int ugene_custom_open2(const char *filename, int oflag, int pflag) {
-#ifndef _WIN32
-    return open(filename, oflag, pflag);
-#else
-    int wchars_num = MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, NULL, 0);
-    wchar_t* w_filename = malloc(sizeof(wchar_t) * wchars_num);
-    MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, w_filename, wchars_num);
-
-    int fd = _wopen(w_filename, oflag, pflag);
-    free(w_filename);
-    return fd;
-#endif
-}
-
 // The func accepts filename and mode in multibyte string form
 // then converts it to wide string form and call _wfopen
 // The conversion is with CP_THREAD_ACP by default

@@ -300,6 +300,7 @@ extern "C" {
 	  @return     SAM file handler
 	 */
 	tamFile sam_open(const char *fn);
+	tamFile sam_dopen(int fd);
 
 	/*!
 	  @abstract   Close a SAM file handler

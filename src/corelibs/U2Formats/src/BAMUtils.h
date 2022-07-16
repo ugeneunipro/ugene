@@ -22,6 +22,8 @@
 #ifndef _U2_BAM_UTILS_H_
 #define _U2_BAM_UTILS_H_
 
+#include <QFile>
+
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrl.h>
@@ -100,6 +102,16 @@ private:
 
     void* fp;
     void* seq;
+};
+
+class U2FORMATS_EXPORT OpenFile {
+public:
+    OpenFile(const QString& path, const QString& mode = "r");
+    ~OpenFile();
+
+    int handle() const;
+private:
+    FILE* file;
 };
 
 }  // namespace U2

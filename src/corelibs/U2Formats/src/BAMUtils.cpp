@@ -63,12 +63,42 @@ extern "C" {
 
 namespace U2 {
 
+OpenFile::OpenFile(const QString& path, const QString& mode) {
+    file = fopen(path.toLocal8Bit(), mode.toLocal8Bit());
+}
+
+OpenFile::~OpenFile() {
+    fclose(file);
+}
+int OpenFile::handle() const {
+    return fileno(file);
+}
+
 BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUrl)
     : samToBam(samToBam), referenceUrl(referenceUrl) {
 }
 
-namespace {
-void closeFiles(samfile_t* in, samfile_t* out) {
+static samfile_t* samOpen(const QString& url, const char* mode, const void* aux) {
+    OpenFile file(url, mode);
+    return samopen_with_fd(url.toLocal8Bit(), file.handle(), mode, aux);
+}
+
+/** Safely opens gzip file. Supports unicode file names. */
+static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
+    gzFile fp = nullptr;
+#ifdef Q_OS_WIN
+    wchar_t* unicodeFileName = new wchar_t[fileUrl.length() + 1];
+    int unicodeFileNameLength = fileUrl.toWCharArray(unicodeFileName);
+    unicodeFileName[unicodeFileNameLength] = 0;
+    fp = gzopen_w(unicodeFileName, mode);
+    delete unicodeFileName;
+#else
+    fp = gzopen(fileUrl.toLocal8Bit().constData(), mode);
+#endif
+    return fp;
+}
+
+static void closeFiles(samfile_t* in, samfile_t* out) {
     if (in != nullptr) {
         samclose(in);
     }
@@ -78,8 +108,8 @@ void closeFiles(samfile_t* in, samfile_t* out) {
     }
 }
 
-samfile_t* openSamWithFai(const GUrl& samUrl, U2OpStatus& os) {
-    QStringList references = BAMUtils::scanSamForReferenceNames(samUrl.getURLString(), os);
+static samfile_t* openSamWithFai(const QString& samUrl, U2OpStatus& os) {
+    QStringList references = BAMUtils::scanSamForReferenceNames(samUrl, os);
     CHECK_OP(os, nullptr);
 
     QTemporaryFile faiFile;
@@ -90,42 +120,42 @@ samfile_t* openSamWithFai(const GUrl& samUrl, U2OpStatus& os) {
 
     QByteArray faiUrlData = faiUrl.toLocal8Bit();
     void* aux = (void*)faiUrlData.constData();
-    return samopen(samUrl.getURLStringAnsi(), "r", aux);
+    return samOpen(samUrl.toLocal8Bit(), "r", aux);
 }
 
-QString openFileError(const QString& file) {
+static QString openFileError(const QString& file) {
     return QObject::tr("Fail to open \"%1\" for reading").arg(file);
 }
 
-QString openFileError(const QByteArray& file) {
+static QString openFileError(const QByteArray& file) {
     return QObject::tr("Fail to open \"%1\" for reading").arg(file.constData());
 }
 
-QString headerError(const QString& file) {
+static QString headerError(const QString& file) {
     return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file);
 }
 
-QString headerError(const QByteArray& file) {
+static QString headerError(const QByteArray& file) {
     return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file.constData());
 }
 
-QString faiError(const QByteArray& file) {
-    return QObject::tr("Can not build the fasta index for the file: \"%1\"").arg(file.constData());
+static QString faiError(const QString& filePath) {
+    return QObject::tr("Can not build the fasta index for the file: \"%1\"").arg(filePath);
 }
 
-QString readsError(const QString& file) {
+static QString readsError(const QString& file) {
     return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file);
 }
 
-QString readsError(const QByteArray& file) {
+static QString readsError(const QByteArray& file) {
     return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file.constData());
 }
 
-QString truncatedError(const QByteArray& file) {
+static QString truncatedError(const QByteArray& file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file.constData());
 }
 
-QString truncatedError(const QString& file) {
+static QString truncatedError(const QString& file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file);
 }
 
@@ -141,19 +171,20 @@ void samreadCheck(int read, U2OpStatus& os, const T& fileName) {
         os.setError(truncatedError(fileName));
     }
 }
-QList<QByteArray> convertStringList(const QStringList& sList) {
+
+static QList<QByteArray> convertStringList(const QStringList& sList) {
     QList<QByteArray> result;
     for (int i = 0; i < sList.size(); i++) {
         result.append(sList.at(i).toLocal8Bit());
     }
     return result;
 }
-void convertByteArray(const QList<QByteArray>& byteArray, char** charArray) {
+
+static void convertByteArray(const QList<QByteArray>& byteArray, char** charArray) {
     for (int i = 0; i < byteArray.size(); i++) {
         charArray[i] = const_cast<char*>(byteArray[i].constData());
     }
 }
-}  // namespace
 
 #define SAMTOOL_CHECK(cond, msg, ret) \
     if (!(cond)) { \
@@ -167,42 +198,36 @@ void convertByteArray(const QList<QByteArray>& byteArray, char** charArray) {
     }
 
 void BAMUtils::convertToSamOrBam(const GUrl& samUrl, const GUrl& bamUrl, const ConvertOption& options, U2OpStatus& os) {
-    QByteArray samPath = samUrl.getURLStringAnsi();
-    QByteArray bamPath = bamUrl.getURLStringAnsi();
-
-    const GUrl sourceFileUrl = (options.samToBam) ? samUrl : bamUrl;
-    const GUrl targetFileUrl = (options.samToBam) ? bamUrl : samUrl;
-    QByteArray source_path = (options.samToBam) ? samPath : bamPath;
-    QByteArray target_path = (options.samToBam) ? bamPath : samPath;
+    QString sourcePath = GUrl(options.samToBam ? samUrl : bamUrl).getURLString();
+    QString targetPath = GUrl(options.samToBam ? bamUrl : samUrl).getURLString();
 
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
 
     // open files
     {
-        QByteArray readMode = (options.samToBam) ? "r" : "rb";
+        QByteArray readMode = options.samToBam ? "r" : "rb";
         void* aux = nullptr;
         if (options.samToBam && !options.referenceUrl.isEmpty()) {
             aux = samfaipath(options.referenceUrl.toLocal8Bit().constData());
-            SAMTOOL_CHECK(nullptr != aux, faiError(options.referenceUrl.toLocal8Bit()), );
+            SAMTOOL_CHECK(aux != nullptr, faiError(options.referenceUrl.toLocal8Bit()), );
         }
 
-        in = samopen(source_path, readMode, aux);
-        SAMTOOL_CHECK(nullptr != in, openFileError(sourceFileUrl.getURLString()), );
-        SAMTOOL_CHECK(nullptr != in->header, headerError(sourceFileUrl.getURLString()), );
-        if (options.samToBam && (0 == in->header->n_targets)) {
-            os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.")
-                              .arg(sourceFileUrl.getURLString()));
+        in = samOpen(sourcePath, readMode, aux);
+        SAMTOOL_CHECK(in != nullptr, openFileError(sourcePath), );
+        SAMTOOL_CHECK(in->header != nullptr, headerError(sourcePath), );
+        if (options.samToBam && in->header->n_targets == 0) {
+            os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(sourcePath));
             samclose(in);
-            in = openSamWithFai(sourceFileUrl, os);
+            in = openSamWithFai(sourcePath, os);
             CHECK_OP(os, );
-            SAMTOOL_CHECK(nullptr != in, openFileError(sourceFileUrl.getURLString()), );
-            SAMTOOL_CHECK(nullptr != in->header, headerError(sourceFileUrl.getURLString()), );
+            SAMTOOL_CHECK(nullptr != in, openFileError(sourcePath), );
+            SAMTOOL_CHECK(nullptr != in->header, headerError(sourcePath), );
         }
 
         QByteArray writeMode = (options.samToBam) ? "wb" : "wh";
-        out = samopen(target_path, writeMode, in->header);
-        SAMTOOL_CHECK(nullptr != out, openFileError(targetFileUrl.getURLString()), );
+        out = samOpen(targetPath, writeMode, in->header);
+        SAMTOOL_CHECK(out != nullptr, openFileError(targetPath), );
     }
     // convert files
     bam1_t* b = bam_init1();
@@ -212,7 +237,7 @@ void BAMUtils::convertToSamOrBam(const GUrl& samUrl, const GUrl& bamUrl, const C
             samwrite(out, b);  // write the alignment to `out'
         }
 
-        samreadCheck<QString>(r, os, sourceFileUrl.getURLString());
+        samreadCheck<QString>(r, os, sourcePath);
         bam_destroy1(b);
     }
 
@@ -252,17 +277,17 @@ static bool isSorted(const QString& headerText) {
 }
 
 bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
-    QByteArray urlPath = bamUrl.getURLStringAnsi();
+    QString urlPath = bamUrl.getURLString();
 
-    bamFile bamHandler = nullptr;
     bam_header_t* header = nullptr;
     QString error;
     bool result = false;
 
-    bamHandler = bam_open(urlPath, "r");
-    if (nullptr != bamHandler) {
+    OpenFile file(urlPath);
+    bamFile bamHandler = bam_dopen(file.handle(), "r");
+    if (bamHandler != nullptr) {
         header = bam_header_read(bamHandler);
-        if (nullptr != header) {
+        if (header != nullptr) {
             result = isSorted(header->text);
         } else {
             error = QString("Can't read header from file '%1'").arg(bamUrl.getURLString());
@@ -273,10 +298,10 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
 
     // deallocate resources
     {
-        if (nullptr != header) {
+        if (header != nullptr) {
             bam_header_destroy(header);
         }
-        if (nullptr != bamHandler) {
+        if (bamHandler != nullptr) {
             bam_close(bamHandler);
         }
     }
@@ -393,17 +418,15 @@ GUrl BAMUtils::rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl,
         force_se = 1;
     }
 
-    const QByteArray& inFileName = bamUrl.toLocal8Bit();
-    const QByteArray& outFileName = rmdupBamTargetUrl.toLocal8Bit();
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
     {
-        in = samopen(inFileName, "rb", 0);
-        SAMTOOL_CHECK(nullptr != in, openFileError(inFileName), QString(""));
-        SAMTOOL_CHECK(nullptr != in->header, headerError(inFileName), QString(""));
+        in = samOpen(bamUrl, "rb", 0);
+        SAMTOOL_CHECK(in != nullptr, openFileError(bamUrl), QString(""));
+        SAMTOOL_CHECK(in->header != nullptr, headerError(bamUrl), QString(""));
 
-        out = samopen(outFileName, "wb", in->header);
-        SAMTOOL_CHECK(nullptr != out, openFileError(outFileName), QString(""));
+        out = samOpen(rmdupBamTargetUrl, "wb", in->header);
+        SAMTOOL_CHECK(out != nullptr, openFileError(rmdupBamTargetUrl), QString(""));
     }
 
     if (is_se) {
@@ -419,28 +442,24 @@ GUrl BAMUtils::rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl,
 }
 
 bool BAMUtils::hasValidBamIndex(const GUrl& bamUrl) {
-    QByteArray urlPath = bamUrl.getURLStringAnsi();
-    bam_index_t* index = bam_index_load(urlPath);
+    QString urlPath = bamUrl.getURLString();
+    bam_index_t* index = bam_index_load(urlPath.toLocal8Bit());
+    CHECK(index != nullptr, false);
+    bam_index_destroy(index);
 
-    if (nullptr == index) {
-        return false;
-    } else {
-        bam_index_destroy(index);
-
-        QFileInfo idxFileInfo(bamUrl.getURLString() + ".bai");
-        if (!idxFileInfo.exists()) {
-            QString indexUrl = bamUrl.getURLString();
-            indexUrl.chop(4);
-            idxFileInfo.setFile(indexUrl + ".bai");
-        }
-        QFileInfo bamFileInfo(bamUrl.getURLString());
-
-        if (idxFileInfo.lastModified() < bamFileInfo.lastModified()) {
-            return false;
-        }
-
-        return true;
+    QFileInfo idxFileInfo(bamUrl.getURLString() + ".bai");
+    if (!idxFileInfo.exists()) {
+        QString indexUrl = bamUrl.getURLString();
+        indexUrl.chop(4);
+        idxFileInfo.setFile(indexUrl + ".bai");
     }
+    QFileInfo bamFileInfo(bamUrl.getURLString());
+
+    if (idxFileInfo.lastModified() < bamFileInfo.lastModified()) {
+        return false;
+    }
+
+    return true;
 }
 
 bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
@@ -464,13 +483,11 @@ bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
 }
 
 void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {
-    const QByteArray& bamFileName = bamUrl.getURLString().toLocal8Bit();
+    QString urlPath = bamUrl.getURLString();
+    coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(urlPath));
 
-    coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
-
-    QByteArray urlPath = bamUrl.getURLStringAnsi();
-    int error = bam_index_build(urlPath);
-    if (-1 == error) {
+    int error = bam_index_build(urlPath.toLocal8Bit());
+    if (error == -1) {
         os.setError("Can't build the index");
     }
 }
@@ -614,17 +631,16 @@ void BAMUtils::writeDocument(Document* doc, U2OpStatus& os) {
         os);
 }
 
-void BAMUtils::writeObjects(const QList<GObject*>& objects, const GUrl& urlStr, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion) {
+void BAMUtils::writeObjects(const QList<GObject*>& objects, const GUrl& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion) {
     CHECK_EXT(!objects.isEmpty(), os.setError("No assembly objects"), );
 
-    QByteArray url = urlStr.getURLString().toLocal8Bit();
+    QString urlPath = url.getURLString();
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
-    QByteArray urlPath = urlStr.getURLStringAnsi();
 
     QByteArray openMode("w");
-    if (BaseDocumentFormats::BAM == formatId) {
+    if (formatId == BaseDocumentFormats::BAM) {
         openMode += "b";  // BAM output
-    } else if (BaseDocumentFormats::SAM == formatId) {
+    } else if (formatId == BaseDocumentFormats::SAM) {
         openMode += "h";  // SAM only: write header
     } else {
         os.setError("Only BAM or SAM files could be written");
@@ -638,7 +654,7 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const GUrl& urlStr, 
         return;
     }
 
-    samfile_t* out = samopen(urlPath, openMode.constData(), header);
+    samfile_t* out = samOpen(urlPath, openMode.constData(), header);
     bam_header_destroy(header);
     CHECK_EXT(nullptr != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath.constData())), );
 
@@ -660,11 +676,11 @@ bool BAMUtils::isEqualByLength(const GUrl& fileUrl1, const GUrl& fileUrl2, U2OpS
     }
     {
         void* aux = nullptr;
-        in = samopen(fileName1.constData(), readMode.constData(), aux);
+        in = samOpen(fileName1.constData(), readMode.constData(), aux);
         SAMTOOL_CHECK(nullptr != in, openFileError(fileName1), false);
         SAMTOOL_CHECK(nullptr != in->header, headerError(fileName1), false);
 
-        out = samopen(fileName2.constData(), readMode.constData(), aux);
+        out = samOpen(fileName2.constData(), readMode.constData(), aux);
         SAMTOOL_CHECK(nullptr != out, openFileError(fileName2), false);
         SAMTOOL_CHECK(nullptr != out->header, headerError(fileName2), false);
     }
@@ -788,16 +804,7 @@ KSEQ_INIT(gzFile, gzread)
 
 FASTQIterator::FASTQIterator(const QString& fileUrl, U2OpStatus& os)
     : seq(nullptr) {
-#ifdef Q_OS_WIN
-    wchar_t* unicodeFileName = new wchar_t[fileUrl.length() + 1];
-    int unicodeFileNameLength = fileUrl.toWCharArray(unicodeFileName);
-    unicodeFileName[unicodeFileNameLength] = 0;
-    fp = gzopen_w(unicodeFileName, "r");
-    delete unicodeFileName;
-#else
-    fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
-#endif
-
+    fp = openGzipFile(fileUrl, "r");
     if (fp == nullptr) {
         os.setError(QObject::tr("Can't open file with given url: %1.").arg(fileUrl));
         return;
