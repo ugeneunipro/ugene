@@ -71,7 +71,7 @@ static wchar_t* toWideCharsArray(const QString& text) {
     return wideCharsText;
 }
 
-static int openFile(const QString& fileUrl, const QString& mode) {
+int BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
     QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
     QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(mode));
