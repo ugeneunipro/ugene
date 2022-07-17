@@ -95,11 +95,8 @@ static samfile_t* samOpen(const QString& url, const char* mode, const void* aux)
 static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
     gzFile fp = nullptr;
 #ifdef Q_OS_WIN
-    wchar_t* unicodeFileName = new wchar_t[fileUrl.length() + 1];
-    int unicodeFileNameLength = fileUrl.toWCharArray(unicodeFileName);
-    unicodeFileName[unicodeFileNameLength] = 0;
-    fp = gzopen_w(unicodeFileName, mode);
-    delete unicodeFileName;
+    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
+    fp = gzopen_w(unicodeFileName.data(), mode);
 #else
     fp = gzopen(fileUrl.toLocal8Bit().constData(), mode);
 #endif
