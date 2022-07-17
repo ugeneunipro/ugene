@@ -71,15 +71,14 @@ static wchar_t* toWideCharsArray(const QString& text) {
     return wideCharsText;
 }
 
-int BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
+FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
     QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
     QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(mode));
-    FILE* file = _wfopen(unicodeFileName.data(), unicodeMode.data());
+    return _wfopen(unicodeFileName.data(), unicodeMode.data());
 #else
-    FILE* file = fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
+    return fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
 #endif
-    return fileno(file);
 }
 
 BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUrl)
@@ -87,7 +86,7 @@ BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUr
 }
 
 static samfile_t* samOpen(const QString& url, const char* mode, const void* aux) {
-    int fd = BAMUtils::openFile(url, mode);
+    int fd = fileno(BAMUtils::openFile(url, mode));
     return samopen_with_fd(url.toLocal8Bit(), fd, mode, aux);
 }
 
@@ -288,7 +287,7 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    int fd = openFile(urlPath, "r");
+    int fd = fileno(openFile(urlPath, "r"));
     bamFile bamHandler = bam_dopen(fd, "r");
     if (bamHandler != nullptr) {
         header = bam_header_read(bamHandler);
@@ -485,6 +484,34 @@ bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
 
         return true;
     }
+}
+
+/**
+ * Builds and saves index for BAM file. Returns 0 if the index was created correctly.
+ * Exact copy of 'bam_index_build2' with a correct unicode file names support.
+ */
+static int bam_index_build_unicode(const QString& bamFileName) {
+    int fd = fileno(BAMUtils::openFile(bamFileName, "r"));
+    bamFile fp = bam_dopen(fd, "r");
+    if (fp == nullptr) {
+        fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
+        return -1;
+    }
+    bam_index_t* idx = bam_index_core(fp);
+    bam_close(fp);
+    if (idx == nullptr) {
+        fprintf(stderr, "[bam_index_build2] fail to index the BAM file.\n");
+        return -1;
+    }
+    FILE* fpidx = BAMUtils::openFile(bamFileName + ".bai", "wb");
+    if (fpidx == nullptr) {
+        fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
+        return -1;
+    }
+    bam_index_save(idx, fpidx);
+    bam_index_destroy(idx);
+    fclose(fpidx);
+    return 0;
 }
 
 void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {

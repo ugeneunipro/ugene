@@ -103,7 +103,7 @@ void SamtoolsBasedDbi::init(const QHash<QString, QString>& properties, const QVa
 
 bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     QString filePath = fileName.getURLString();
-    int fd = BAMUtils::openFile(filePath, "r");
+    int fd = fileno(BAMUtils::openFile(filePath, "r"));
     bamHandler = bam_dopen(fd, "r");
     if (bamHandler == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(filePath));

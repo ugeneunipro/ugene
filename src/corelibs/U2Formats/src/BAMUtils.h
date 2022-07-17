@@ -92,9 +92,9 @@ public:
      * names and provides a file description (fd) for the opened file.
      * For 'mode' see fopen() function description.
      * It is responsibily of the caller to close the file.
-     * If any error happens the method returns -1.
+     * If any error happens the method returns nullptr.
      */
-    static int openFile(const QString& path, const QString& mode);
+    static FILE* openFile(const QString& path, const QString& mode);
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools
