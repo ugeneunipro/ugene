@@ -63,14 +63,8 @@ extern "C" {
 
 namespace U2 {
 
-OpenFile::OpenFile(const QString& path, const QString& mode) {
-    file = fopen(path.toLocal8Bit(), mode.toLocal8Bit());
-}
-
-OpenFile::~OpenFile() {
-    fclose(file);
-}
-int OpenFile::handle() const {
+int BAMUtils::openFile(const QString& path, const QString& mode) {
+    FILE* file = fopen(path.toLocal8Bit(), mode.toLatin1());
     return fileno(file);
 }
 
@@ -79,8 +73,8 @@ BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUr
 }
 
 static samfile_t* samOpen(const QString& url, const char* mode, const void* aux) {
-    OpenFile file(url, mode);
-    return samopen_with_fd(url.toLocal8Bit(), file.handle(), mode, aux);
+    int fd = BAMUtils::openFile(url, mode);
+    return samopen_with_fd(url.toLocal8Bit(), fd, mode, aux);
 }
 
 /** Safely opens gzip file. Supports unicode file names. */
@@ -283,8 +277,8 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    OpenFile file(urlPath);
-    bamFile bamHandler = bam_dopen(file.handle(), "r");
+    int fd = openFile(urlPath, "r");
+    bamFile bamHandler = bam_dopen(fd, "r");
     if (bamHandler != nullptr) {
         header = bam_header_read(bamHandler);
         if (header != nullptr) {

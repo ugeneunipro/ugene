@@ -86,6 +86,15 @@ public:
      * Saves the list of references to the file in the SAMtools fai format.
      */
     static void createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os);
+
+    /**
+     * Calls fopen() correctly for files with Unicode
+     * names and provides a file description (fd) for the opened file.
+     * For 'mode' see fopen() function description.
+     * It is responsibily of the caller to close the file.
+     * If any error happens the method returns -1.
+     */
+    static int openFile(const QString& path, const QString& mode);
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools
@@ -102,16 +111,6 @@ private:
 
     void* fp;
     void* seq;
-};
-
-class U2FORMATS_EXPORT OpenFile {
-public:
-    OpenFile(const QString& path, const QString& mode = "r");
-    ~OpenFile();
-
-    int handle() const;
-private:
-    FILE* file;
 };
 
 }  // namespace U2
