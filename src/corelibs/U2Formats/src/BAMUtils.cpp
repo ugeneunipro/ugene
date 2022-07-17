@@ -63,8 +63,22 @@ extern "C" {
 
 namespace U2 {
 
-int BAMUtils::openFile(const QString& path, const QString& mode) {
-    FILE* file = fopen(path.toLocal8Bit(), mode.toLatin1());
+/** Converts QString to wchar_t*. Caller is responsible to deallocated the returned result memory. */
+static wchar_t* toWideCharsArray(const QString& text) {
+    wchar_t* wideCharsText = new wchar_t[text.length() + 1];
+    int unicodeFileNameLength = text.toWCharArray(wideCharsText);
+    wideCharsText[unicodeFileNameLength] = 0;
+    return wideCharsText;
+}
+
+static int openFile(const QString& fileUrl, const QString& mode) {
+#ifdef Q_OS_WIN
+    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
+    QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(mode));
+    FILE* file = _wfopen(unicodeFileName.data(), unicodeMode.data());
+#else
+    FILE* file = fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
+#endif
     return fileno(file);
 }
 
