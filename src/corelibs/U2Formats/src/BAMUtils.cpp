@@ -304,8 +304,8 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    int fd = fileno(openFile(urlPath, "r"));
-    bamFile bamHandler = bam_dopen(fd, "r");
+    int fd = fileno(openFile(urlPath, "rb"));
+    bamFile bamHandler = bam_dopen(fd, "rb");
     if (bamHandler != nullptr) {
         bamHandler->owned_file = 1;
         header = bam_header_read(bamHandler);
@@ -401,7 +401,7 @@ GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2O
                             .arg(sortedFileName));
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));  // maxMemMB < 500 Mb, so the conversation is correct!
         QByteArray baseNameArray = baseName.toUtf8();
-        FILE* file = openFile(bamFileName, "r");
+        FILE* file = openFile(bamFileName, "rb");
         bam_sort_core_ext(0, "", baseNameArray.constData(), maxMemBytes, false, fileno(file));  // maxMemBytes
     }
     memory->release(maxMemMB);
@@ -523,9 +523,9 @@ bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
  * Exact copy of 'bam_index_build2' with a correct unicode file names support.
  */
 static int bam_index_build_unicode(const QString& bamFileName) {
-    FILE* bFile = BAMUtils::openFile(bamFileName, "r");
+    FILE* bFile = BAMUtils::openFile(bamFileName, "rb");
     CHECK(bFile != nullptr, -1);
-    bamFile fp = bam_dopen(fileno(bFile), "r");
+    bamFile fp = bam_dopen(fileno(bFile), "rb");
     if (fp == nullptr) {
         closeFileIfOpen(bFile);
         fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
