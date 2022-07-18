@@ -532,7 +532,7 @@ void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {
     QString urlPath = bamUrl.getURLString();
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(urlPath));
 
-    int error = bam_index_build(urlPath.toLocal8Bit());
+    int error = bam_index_build_unicode(urlPath);
     if (error == -1) {
         os.setError("Can't build the index");
     }
