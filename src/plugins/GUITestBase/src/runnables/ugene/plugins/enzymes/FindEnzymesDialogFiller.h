@@ -27,10 +27,29 @@
 namespace U2 {
 using namespace HI;
 
+struct FindEnzymesDialogFillerSettings {
+    FindEnzymesDialogFillerSettings();
+    FindEnzymesDialogFillerSettings(const QStringList& enzymes);
+
+    QStringList enzymes;
+    qint64 searchRegionStart = -1;
+    qint64 searchRegionEnd = -1;
+    qint64 excludeRegionStart = -1;
+    qint64 excludeRegionEnd = -1;
+    int minHits = -1;
+    int maxHits = -1;
+    bool clickFindAll = false;
+};
+
 class FindEnzymesDialogFiller : public Filler {
 public:
-    FindEnzymesDialogFiller(HI::GUITestOpStatus& os, const QStringList& enzymesToFind, CustomScenario* scenario = nullptr);
-    FindEnzymesDialogFiller(HI::GUITestOpStatus& os, const QStringList& enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1, CustomScenario* scenario = nullptr);
+    FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
+                            const FindEnzymesDialogFillerSettings& settings,
+                            CustomScenario* scenario = nullptr);
+
+    FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
+                            const QStringList& enzymes,
+                            CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
@@ -40,12 +59,7 @@ public:
     /** Calls 'openDialogWithToolbarAction' to open the dialog and selects enzymes from 'enzymeNames'. */
     static void selectEnzymes(HI::GUITestOpStatus& os, const QStringList& enzymeNames);
 
-private:
-    QStringList enzymesToFind;
-    qint64 searchStart = -1;
-    qint64 searchEnd = -1;
-    qint64 excludeStart = -1;
-    qint64 excludeEnd = -1;
+    FindEnzymesDialogFillerSettings settings;
 };
 
 }  // namespace U2

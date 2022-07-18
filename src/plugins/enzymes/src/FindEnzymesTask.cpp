@@ -109,10 +109,10 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool circular, QVector<U2Region> excludedRegions)
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool circular, QVector<U2Region> _excludedRegions)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
-      excludedRegions(excludedRegions),
+      excludedRegions(_excludedRegions),
       isCircular(circular),
       seqlen(0),
       countOfResultsInMap(0) {
@@ -371,8 +371,12 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
     cfg.groupName = getGroupName();
     cfg.isAutoAnnotationUpdateTask = true;
     cfg.minHitCount = appSettings->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    cfg.maxHitCount = qMin(appSettings->getValue(EnzymeSettings::MAX_HIT_VALUE, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt(), AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE);
-    cfg.maxResults = qMin(appSettings->getValue(EnzymeSettings::MAX_RESULTS, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt(), AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE);
+    int maxAnnotations = AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE;
+    if (qgetenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK") == "1") {
+        maxAnnotations = INT_MAX;
+    }
+    cfg.maxHitCount = qMin(appSettings->getValue(EnzymeSettings::MAX_HIT_VALUE, maxAnnotations).toInt(), maxAnnotations);
+    cfg.maxResults = qMin(appSettings->getValue(EnzymeSettings::MAX_RESULTS, maxAnnotations).toInt(), maxAnnotations);
 
     U2Region savedSearchRegion = getLastSearchRegionForObject(sequenceObject);
     U2Region wholeSequenceRegion(0, sequenceLength);

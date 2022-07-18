@@ -132,6 +132,7 @@ QList<QTreeWidgetItem*> GTUtilsTaskTreeView::getTaskTreeViewItems(QTreeWidgetIte
 
     return treeItems;
 }
+
 #define GT_METHOD_NAME "cancelTopLevelTask"
 void GTUtilsTaskTreeView::cancelTask(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound, const QStringList& parentTaskNames) {
     openView(os);

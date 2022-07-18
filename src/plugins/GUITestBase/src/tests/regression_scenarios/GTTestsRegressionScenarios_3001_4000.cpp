@@ -2596,38 +2596,44 @@ GUI_TEST_CLASS_DEFINITION(test_3519_1) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/sitecon_models/eukaryotic", "CLOCK.sitecon.gz"));
-            auto modelButton = GTWidget::findWidget(os, "pbSelectModelFile", dialog);
-            GTWidget::click(os, modelButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbSelectModelFile", dialog));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
             GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "sitecon_ann", ""));
-            auto saveButton = GTWidget::findWidget(os, "pbSaveAnnotations", dialog);
-            GTWidget::click(os, saveButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbSaveAnnotations", dialog));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
+    GTUtilsDialog::add(os, new SiteconCustomFiller(os));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find TFBS with SITECON..."}, GTGlobals::UseMouse);
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Some task is still running");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3519_2) {
-    //    1. Open "data/samples/FASTA/human_T1.fa".
-    //    2. Run "Auto-annotations update" task, e.g. find tandems with default parameters.
-    //    3. Open a "SITECON Search" dialog before "auto-annotations update" task finish, fill it and start the search.
-    //    Current state: a deadlock occurs: "auto-annotations update" task wait until the dialog close,
-    //                   dialog can't be closed until the search task finish,
-    //                   the search task waits until the "auto-annotation update" task finish.
+    // Run "Auto-annotations update" task, e.g. find tandems with default parameters.
+    // Open a "SITECON Search" dialog before "auto-annotations update" task is finished, fill it and start the search.
+    // Current state: a deadlock occurs: "auto-annotations update" task wait until the dialog close,
+    //                dialog can't be closed until the search task finish,
+    //                the search task waits until the "auto-annotation update" task finish.
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Mycobacterium.fna");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::openView(os);
 
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");  // disable overflow to create a long-running "Find Enzymes task".
+
+    FindEnzymesDialogFillerSettings settings;
+    settings.clickFindAll = true;
+    GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, settings));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Auto-annotations update task");
+
+    // Run SITECON task.
     class SiteconCustomFiller : public Filler {
     public:
         SiteconCustomFiller(HI::GUITestOpStatus& os)
@@ -2636,38 +2642,19 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/sitecon_models/eukaryotic", "CLOCK.sitecon.gz"));
-            auto modelButton = GTWidget::findWidget(os, "pbSelectModelFile", dialog);
-            GTWidget::click(os, modelButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbSelectModelFile", dialog));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-
-            CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 2, QString("Incorrect top-level task counts: %1").arg(GTUtilsTaskTreeView::getTopLevelTasksCount(os)));
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");  // disable overflow to create a long running "Find Enzymes task".
-    class AllEnzymesSearchScenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto selectAllButton = GTWidget::findWidget(os, "selectAllButton", dialog);
-            GTWidget::click(os, selectAllButton);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new AllEnzymesSearchScenario()));
-    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
-
-    GTGlobals::sleep(1000);  // Wait for the task to run.
-
-    GTUtilsTaskTreeView::openView(os);
-    GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
+    GTUtilsDialog::add(os, new SiteconCustomFiller(os));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find TFBS with SITECON..."});
 
-    GTUtilsTaskTreeView::checkTaskIsPresent(os, "SITECON search", false);
+    // Check that auto-annotation task is still running and cancel it.
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Auto-annotations update task");
     GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
+
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
 }
 
