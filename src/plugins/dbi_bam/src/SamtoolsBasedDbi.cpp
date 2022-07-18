@@ -108,6 +108,7 @@ bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     if (bamHandler == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(filePath));
     }
+    bamHandler->owned_file = 1;
 
     bool indexed = BAMUtils::hasValidBamIndex(fileName);
     if (!indexed) {

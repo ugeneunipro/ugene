@@ -100,6 +100,10 @@ static samfile_t* samOpen(const QString& url, const char* samMode, const void* a
     if (samfile == nullptr) {
         closeFileIfOpen(file);
     }
+    bool isBam = samfile->type == 1;;
+    if (isBam) {
+        samfile->x.bam->owned_file = 1;
+    }
     return samfile;
 }
 
@@ -303,6 +307,7 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     int fd = fileno(openFile(urlPath, "r"));
     bamFile bamHandler = bam_dopen(fd, "r");
     if (bamHandler != nullptr) {
+        bamHandler->owned_file = 1;
         header = bam_header_read(bamHandler);
         if (header != nullptr) {
             result = isSorted(header->text);
@@ -526,6 +531,7 @@ static int bam_index_build_unicode(const QString& bamFileName) {
         fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
         return -1;
     }
+    fp->owned_file = 1;
     bam_index_t* idx = bam_index_core(fp);
     bam_close(fp);
     if (idx == nullptr) {
@@ -544,12 +550,12 @@ static int bam_index_build_unicode(const QString& bamFileName) {
 }
 
 void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {
-    QString urlPath = bamUrl.getURLString();
-    coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(urlPath));
+    QString path = bamUrl.getURLString();
+    coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(path));
 
-    int error = bam_index_build_unicode(urlPath);
+    int error = bam_index_build_unicode(path);
     if (error == -1) {
-        os.setError("Can't build the index");
+        os.setError(tr("Can't build the index: %1").arg(path));
     }
 }
 
