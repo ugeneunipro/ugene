@@ -767,6 +767,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
+    setFocus();
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     sl_updateActions();
