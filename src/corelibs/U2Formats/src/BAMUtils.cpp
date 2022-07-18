@@ -382,7 +382,7 @@ GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2O
                             .arg(maxMemMB)
                             .arg(sortedFileName));
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));  // maxMemMB < 500 Mb, so the conversation is correct!
-        QByteArray baseNameArray = baseName.toLocal8Bit();
+        QByteArray baseNameArray = baseName.toUtf8();
         FILE* file = openFile(bamFileName, "r");
         bam_sort_core_ext(0, "", baseNameArray.constData(), maxMemBytes, false, fileno(file));  // maxMemBytes
     }
@@ -450,7 +450,7 @@ void* BAMUtils::loadIndex(const QString& filePath) {
     // See bam_index_load_local.
     QString mode = "rb";
     FILE* fp = openFile(filePath, mode);
-    if (fp == nullptr && filePath.endsWith(".bai")) {
+    if (fp == nullptr && filePath.endsWith(".bam")) {
         fp = openFile(filePath.left(filePath.length() - 4) + ".bai", mode);
     }
     CHECK(fp != nullptr, nullptr);
