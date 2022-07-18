@@ -474,11 +474,11 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     CHECK_OP(os, );
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
-    resultsTableObject->addObjectRelation(GObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence));
+    resultsTableObject->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
     d->addObject(resultsTableObject);
     AppContext::getProject()->addDocument(d);
     annDnaView->tryAddObject(resultsTableObject);
-    auto createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, annotations, "Primers");
+    auto createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, {{"Primers", annotations}});
     connect(createAnnotationsTask, SIGNAL(si_stateChanged()), SLOT(sl_annotationCreationTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(createAnnotationsTask);
 }
