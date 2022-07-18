@@ -81,6 +81,13 @@ FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #endif
 }
 
+/** Closes file descriptor if the file descriptor is defined and is open. */
+static void closeFileIfOpen(FILE* file) {
+    if (file != nullptr && ftell(file) > 0) {
+        fclose(file);
+    }
+}
+
 BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUrl)
     : samToBam(samToBam), referenceUrl(referenceUrl) {
 }
@@ -449,16 +456,13 @@ GUrl BAMUtils::rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl,
 void* BAMUtils::loadIndex(const QString& filePath) {
     // See bam_index_load_local.
     QString mode = "rb";
-    FILE* fp = openFile(filePath, mode);
-    if (fp == nullptr && filePath.endsWith(".bam")) {
-        fp = openFile(filePath.left(filePath.length() - 4) + ".bai", mode);
+    FILE* fp = openFile(filePath + ".bai", mode);
+    if (fp == nullptr && filePath.endsWith("bam")) {
+        fp = openFile(filePath.chopped(4) + ".bai", mode);
     }
     CHECK(fp != nullptr, nullptr);
     bam_index_t* idx = bam_index_load_core(fp);
-    if(idx != nullptr){
-        fclose(fp);
-    }
-
+    closeFileIfOpen(fp);
     return idx;
 }
 
@@ -508,9 +512,11 @@ bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
  * Exact copy of 'bam_index_build2' with a correct unicode file names support.
  */
 static int bam_index_build_unicode(const QString& bamFileName) {
-    int fd = fileno(BAMUtils::openFile(bamFileName, "r"));
-    bamFile fp = bam_dopen(fd, "r");
+    FILE* bFile = BAMUtils::openFile(bamFileName, "r");
+    CHECK(bFile != nullptr, -1);
+    bamFile fp = bam_dopen(fileno(bFile), "r");
     if (fp == nullptr) {
+        closeFileIfOpen(bFile);
         fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
         return -1;
     }
@@ -544,13 +550,10 @@ void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {
 GUrl BAMUtils::getBamIndexUrl(const GUrl& bamUrl) {
     CHECK(hasValidBamIndex(bamUrl), GUrl());
 
-    const QByteArray bamFileName = bamUrl.getURLString().toUtf8();
+    QString bamFileName = bamUrl.getURLString();
     QFileInfo fileInfo(bamFileName + ".bai");
     if (!fileInfo.exists()) {
-        QString shortIndexUrl = bamFileName;
-        shortIndexUrl.chop(4);
-        shortIndexUrl += ".bai";
-        fileInfo.setFile(shortIndexUrl);
+        fileInfo.setFile(bamFileName.chopped(4) + ".bai");
     }
     SAFE_POINT(fileInfo.exists(), "Can't find the index file", GUrl());
 
