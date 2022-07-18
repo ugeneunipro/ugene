@@ -92,9 +92,15 @@ BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUr
     : samToBam(samToBam), referenceUrl(referenceUrl) {
 }
 
-static samfile_t* samOpen(const QString& url, const char* mode, const void* aux) {
-    int fd = fileno(BAMUtils::openFile(url, mode));
-    return samopen_with_fd("", fd, mode, aux);
+static samfile_t* samOpen(const QString& url, const char* samMode, const void* aux) {
+    QString fileMode = samMode;
+    fileMode.replace("h", "");
+    FILE* file = BAMUtils::openFile(url, fileMode);
+    samfile_t* samfile = samopen_with_fd("", fileno(file), samMode, aux);
+    if (samfile == nullptr) {
+        closeFileIfOpen(file);
+    }
+    return samfile;
 }
 
 /** Safely opens gzip file. Supports unicode file names. */
