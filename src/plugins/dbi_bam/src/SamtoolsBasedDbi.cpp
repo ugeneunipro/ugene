@@ -113,7 +113,7 @@ bool SamtoolsBasedDbi::initBamStructures(const GUrl& fileName) {
     if (!indexed) {
         throw Exception("Only indexed sorted BAM files could be used by this DBI");
     }
-    index = bam_index_load(filePath.toLocal8Bit());
+    index = (bam_index_t*)BAMUtils::loadIndex(filePath);
     if (index == nullptr) {
         throw IOException(BAMDbiPlugin::tr("Can't load index file for '%1'").arg(filePath));
     }

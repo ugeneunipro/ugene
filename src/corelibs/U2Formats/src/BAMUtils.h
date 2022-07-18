@@ -95,6 +95,9 @@ public:
      * If any error happens the method returns nullptr.
      */
     static FILE* openFile(const QString& path, const QString& mode);
+
+    /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
+    static void* loadIndex(const QString& path);
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools

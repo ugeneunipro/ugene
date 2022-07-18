@@ -87,7 +87,7 @@ BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUr
 
 static samfile_t* samOpen(const QString& url, const char* mode, const void* aux) {
     int fd = fileno(BAMUtils::openFile(url, mode));
-    return samopen_with_fd(url.toLocal8Bit(), fd, mode, aux);
+    return samopen_with_fd("", fd, mode, aux);
 }
 
 /** Safely opens gzip file. Supports unicode file names. */
@@ -124,7 +124,7 @@ static samfile_t* openSamWithFai(const QString& samUrl, U2OpStatus& os) {
 
     QByteArray faiUrlData = faiUrl.toLocal8Bit();
     void* aux = (void*)faiUrlData.constData();
-    return samOpen(samUrl.toLocal8Bit(), "r", aux);
+    return samOpen(samUrl, "r", aux);
 }
 
 static QString openFileError(const QString& file) {
@@ -214,7 +214,7 @@ void BAMUtils::convertToSamOrBam(const GUrl& samUrl, const GUrl& bamUrl, const C
         void* aux = nullptr;
         if (options.samToBam && !options.referenceUrl.isEmpty()) {
             aux = samfaipath(options.referenceUrl.toLocal8Bit().constData());
-            SAMTOOL_CHECK(aux != nullptr, faiError(options.referenceUrl.toLocal8Bit()), );
+            SAMTOOL_CHECK(aux != nullptr, faiError(options.referenceUrl), );
         }
 
         in = samOpen(sourcePath, readMode, aux);
@@ -344,21 +344,20 @@ inline static qint64 mB2bytes(int mb) {
 #define SAMTOOLS_MEM_BOOST 5
 
 GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os) {
-    const QByteArray& bamFileName = bamUrl.getURLString().toLocal8Bit();
-
     QString baseName = sortedBamBaseName;
     if (baseName.endsWith(".bam")) {
-        baseName = baseName.left(baseName.size() - QString(".bam").size());
+        baseName = baseName.left(baseName.size() - 4);
     }
-    QByteArray sortedFileName = baseName.toLocal8Bit() + ".bam";
+    QString sortedFileName = baseName + ".bam";
 
     // get memory resource
     AppSettings* appSettings = AppContext::getAppSettings();
     AppResourcePool* resPool = appSettings->getAppResourcePool();
     AppResource* memory = resPool->getResource(RESOURCE_MEMORY);
-    SAFE_POINT_EXT(nullptr != memory, os.setError("No memory resource"), QString());
+    SAFE_POINT_EXT(memory != nullptr, os.setError("No memory resource"), QString());
 
     // calculate needed memory
+    QString bamFileName = bamUrl.getURLString();
     QFileInfo info(bamFileName);
     qint64 fileSizeBytes = info.size();
     CHECK_EXT(fileSizeBytes >= 0, os.setError(QString("Unknown file size: %1").arg(bamFileName.constData())), QString());
@@ -379,15 +378,17 @@ GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2O
     // sort bam
     {
         coreLog.details(BAMUtils::tr("Sort bam file: \"%1\" using %2 Mb of memory. Result sorted file is: \"%3\"")
-                            .arg(QString::fromLocal8Bit(bamFileName))
+                            .arg(bamFileName)
                             .arg(maxMemMB)
-                            .arg(QString::fromLocal8Bit(sortedFileName)));
+                            .arg(sortedFileName));
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));  // maxMemMB < 500 Mb, so the conversation is correct!
-        bam_sort_core(0, bamFileName.constData(), baseName.toLocal8Bit().constData(), maxMemBytes);  // maxMemBytes
+        QByteArray baseNameArray = baseName.toLocal8Bit();
+        FILE* file = openFile(bamFileName, "r");
+        bam_sort_core_ext(0, "", baseNameArray.constData(), maxMemBytes, false, fileno(file));  // maxMemBytes
     }
     memory->release(maxMemMB);
 
-    return QString::fromLocal8Bit(sortedFileName);
+    return sortedFileName;
 }
 
 GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergetBamTargetUrl, U2OpStatus& /*os*/) {
@@ -445,9 +446,22 @@ GUrl BAMUtils::rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl,
     return QString(rmdupBamTargetUrl);
 }
 
+void* BAMUtils::loadIndex(const QString& filePath) {
+    // See bam_index_load_local.
+    QString mode = "rb";
+    FILE* fp = openFile(filePath, mode);
+    if (fp == nullptr && filePath.endsWith(".bai")) {
+        fp = openFile(filePath.left(filePath.length() - 4) + ".bai", mode);
+    }
+    CHECK(fp != nullptr, nullptr);
+    bam_index_t* idx = bam_index_load_core(fp);
+    fclose(fp);
+    return idx;
+}
+
 bool BAMUtils::hasValidBamIndex(const GUrl& bamUrl) {
     QString urlPath = bamUrl.getURLString();
-    bam_index_t* index = bam_index_load(urlPath.toLocal8Bit());
+    bam_index_t* index = (bam_index_t*)loadIndex(urlPath);
     CHECK(index != nullptr, false);
     bam_index_destroy(index);
 
@@ -696,23 +710,23 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const GUrl& url, con
 
 // the function assumes the equal order of alignments in files
 bool BAMUtils::isEqualByLength(const GUrl& fileUrl1, const GUrl& fileUrl2, U2OpStatus& os, bool isBAM) {
-    const QByteArray& fileName1 = fileUrl1.getURLString().toLocal8Bit();
-    const QByteArray& fileName2 = fileUrl2.getURLString().toLocal8Bit();
+    QString fileName1 = fileUrl1.getURLString();
+    QString fileName2 = fileUrl2.getURLString();
 
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
 
-    QByteArray readMode = "r";
+    const char* readMode = "r";
     if (isBAM) {
         readMode = "rb";
     }
     {
         void* aux = nullptr;
-        in = samOpen(fileName1.constData(), readMode.constData(), aux);
+        in = samOpen(fileName1, readMode, aux);
         SAMTOOL_CHECK(nullptr != in, openFileError(fileName1), false);
         SAMTOOL_CHECK(nullptr != in->header, headerError(fileName1), false);
 
-        out = samOpen(fileName2.constData(), readMode.constData(), aux);
+        out = samOpen(fileName2, readMode, aux);
         SAMTOOL_CHECK(nullptr != out, openFileError(fileName2), false);
         SAMTOOL_CHECK(nullptr != out->header, headerError(fileName2), false);
     }

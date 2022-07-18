@@ -388,7 +388,7 @@ static void sort_blocks(int n, int k, bam1_p *buf, const char *prefix, const bam
   and then merge them by calling bam_merge_core(). This function is
   NOT thread safe.
  */
-void bam_sort_core_ext(int is_by_qname, const char *fn, const char *prefix, size_t max_mem, int is_stdout)
+void bam_sort_core_ext(int is_by_qname, const char *fn, const char *prefix, size_t max_mem, int is_stdout, int fd)
 {
 	int n, ret, k, i;
 	size_t mem;
@@ -398,8 +398,8 @@ void bam_sort_core_ext(int is_by_qname, const char *fn, const char *prefix, size
 
 	g_is_by_qname = is_by_qname;
 	n = k = 0; mem = 0;
-	fp = strcmp(fn, "-")? bam_open(fn, "r") : bam_dopen(fileno(stdin), "r");
-	if (fp == 0) {
+    fp = fd > 0 ? bam_dopen(fd, "r") : (strcmp(fn, "-") ? bam_open(fn, "r") : bam_dopen(fileno(stdin), "r"));
+    if (fp == 0) {
 		fprintf(stderr, "[bam_sort_core] fail to open file %s\n", fn);
 		return;
 	}
@@ -455,7 +455,7 @@ void bam_sort_core_ext(int is_by_qname, const char *fn, const char *prefix, size
 
 void bam_sort_core(int is_by_qname, const char *fn, const char *prefix, size_t max_mem)
 {
-	bam_sort_core_ext(is_by_qname, fn, prefix, max_mem, 0);
+	bam_sort_core_ext(is_by_qname, fn, prefix, max_mem, 0, 0);
 }
 
 int bam_sort(int argc, char *argv[])
@@ -474,6 +474,6 @@ int bam_sort(int argc, char *argv[])
 		fprintf(stderr, "Usage: samtools sort [-on] [-m <maxMem>] <in.bam> <out.prefix>\n");
 		return 1;
 	}
-	bam_sort_core_ext(is_by_qname, argv[optind], argv[optind+1], max_mem, is_stdout);
+	bam_sort_core_ext(is_by_qname, argv[optind], argv[optind+1], max_mem, is_stdout, 0);
 	return 0;
 }

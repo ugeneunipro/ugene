@@ -595,6 +595,9 @@ extern "C" {
     /** Saves BAM index to the file. */
     void bam_index_save(const bam_index_t *idx, FILE *fp);
 
+    /** Loads BAM index from file. */
+    bam_index_t *bam_index_load_core(FILE *fp);
+
 	/*!
 	  @abstract   Load index from file "fn.bai".
 	  @param  fn  name of the BAM file (NOT the index file)
