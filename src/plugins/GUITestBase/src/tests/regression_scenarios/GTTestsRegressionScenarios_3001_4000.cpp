@@ -3099,9 +3099,11 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
     GTMouseDriver::click(Qt::RightButton);
+    //GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTThread::waitForMainThread();
 
     class ReplaceSequenceScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
@@ -3112,19 +3114,24 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
             // Select the whole sequence and replace it with '='. Try applying the change.
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+            GTThread::waitForMainThread();
             GTKeyboardDriver::keyClick('=');
+            GTThread::waitForMainThread();
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTThread::waitForMainThread();
 
             // Exit from the warning dialog with Escape. Click "OK" on "Input sequence is empty" notification.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Ok"));
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTThread::waitForMainThread();
 
             // Close the dialog. There is no other way to close it except 'Cancel'.
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTThread::waitForMainThread();
         }
     };
-    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
+    GTUtilsDialog::add(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
@@ -4469,9 +4476,12 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    GTThread::waitForMainThread();
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
+    GTThread::waitForMainThread();
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
+    GTThread::waitForMainThread();
 
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Remove subsequence..."}));
     GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "100..199950"));
@@ -4481,7 +4491,9 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
 
     GTLogTracer lt;
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keySequence("A");
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
