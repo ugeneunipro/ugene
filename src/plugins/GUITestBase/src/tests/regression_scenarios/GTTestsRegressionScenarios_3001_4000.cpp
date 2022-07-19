@@ -3102,7 +3102,6 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
     GTMouseDriver::click(Qt::RightButton);
-    //GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTThread::waitForMainThread();
 
     class ReplaceSequenceScenario : public CustomScenario {
