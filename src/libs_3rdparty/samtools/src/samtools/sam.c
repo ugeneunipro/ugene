@@ -106,7 +106,7 @@ samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void 
 				fwrite(fp->header->text, 1, fp->header->l_text, fp->x.tamw); // FIXME: better to skip the trailing NULL
 				if (alt->n_targets) { // then write the header text without dumping ->target_{name,len}
 					if (alt->n_targets != fp->header->n_targets && bam_verbose >= 1)
-						fprintf(stderr, "[samOpen] inconsistent number of target sequences. Output the text header.\n");
+						fprintf(stderr, "[samopen] inconsistent number of target sequences. Output the text header.\n");
 				} else { // then dump ->target_{name,len}
 					for (i = 0; i < fp->header->n_targets; ++i)
 						fprintf(fp->x.tamw, "@SQ\tSN:%s\tLN:%d\n", fp->header->target_name[i], fp->header->target_len[i]);
