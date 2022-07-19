@@ -718,8 +718,8 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
-    GTUtilsDialog::waitForDialog(os, new CustomFiller_0048(os));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
+    GTUtilsDialog::add(os, new CustomFiller_0048(os));
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
