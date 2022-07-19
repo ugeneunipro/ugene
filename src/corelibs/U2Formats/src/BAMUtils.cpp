@@ -74,7 +74,11 @@ static wchar_t* toWideCharsArray(const QString& text) {
 FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
     QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
-    QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(mode));
+    QString modeWithBinaryFlag = mode;
+    if (!modeWithBinaryFlag.contains("b")) {
+        modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
+    }
+    QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(modeWithBinaryFlag));
     return _wfopen(unicodeFileName.data(), unicodeMode.data());
 #else
     return fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
@@ -734,10 +738,7 @@ bool BAMUtils::isEqualByLength(const GUrl& fileUrl1, const GUrl& fileUrl2, U2OpS
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
 
-    const char* readMode = "r";
-    if (isBAM) {
-        readMode = "rb";
-    }
+    const char* readMode = isBAM ? "rb" : "r";
     {
         void* aux = nullptr;
         in = samOpen(fileName1, readMode, aux);
