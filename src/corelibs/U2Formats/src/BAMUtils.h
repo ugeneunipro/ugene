@@ -89,9 +89,9 @@ public:
 
     /**
      * Calls fopen() correctly for files with Unicode
-     * names and provides a file description (fd) for the opened file.
+     * names and returns a FILE* structure for the the opened file.
      * For 'mode' see fopen() function description.
-     * It is responsibily of the caller to close the file.
+     * Caller is responsible to close the file.
      * If any error happens the method returns nullptr.
      */
     static FILE* openFile(const QString& path, const QString& mode);

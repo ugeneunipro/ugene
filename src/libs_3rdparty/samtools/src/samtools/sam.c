@@ -50,11 +50,11 @@ samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void 
 		fp->type |= TYPE_READ;
 		if (strchr(mode, 'b')) { // binary
 			fp->type |= TYPE_BAM;
-            fp->x.bam = strcmp(fn, "-") ? (fd != -1 ? bam_dopen(fd, "r") : bam_open(fn, "r")) : bam_dopen(fileno(stdin), "r");
+            fp->x.bam = strcmp(fn, "-") ? (fd > 0 ? bam_dopen(fd, "r") : bam_open(fn, "r")) : bam_dopen(fileno(stdin), "r");
             if (fp->x.bam == 0) goto open_err_ret;
 			fp->header = bam_header_read(fp->x.bam);
 		} else { // text
-            fp->x.tamr = fd != -1 ? sam_dopen(fd) : sam_open(fn);
+            fp->x.tamr = fd > 0 ? sam_dopen(fd) : sam_open(fn);
             if (fp->x.tamr == 0) goto open_err_ret;
 			fp->header = sam_header_read(fp->x.tamr);
             if (NULL == fp->header) {
@@ -83,12 +83,12 @@ samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void 
 			if (strchr(mode, 'u')) compress_level = 0;
 			bmode[0] = 'w'; bmode[1] = compress_level < 0? 0 : compress_level + '0'; bmode[2] = 0;
 			fp->type |= TYPE_BAM;
-            fp->x.bam = strcmp(fn, "-") ? (fd != -1 ? bam_dopen(fd, bmode) : bam_open(fn, bmode)) : bam_dopen(fileno(stdout), bmode);
+            fp->x.bam = strcmp(fn, "-") ? (fd > 0 ? bam_dopen(fd, bmode) : bam_open(fn, bmode)) : bam_dopen(fileno(stdout), bmode);
             if (fp->x.bam == 0) goto open_err_ret;
 			bam_header_write(fp->x.bam, fp->header);
 		} else { // text
 			// open file
-            fp->x.tamw = strcmp(fn, "-") ? (fd != -1 ? fdopen(fd, "w") : fopen(fn, "w")) : stdout;
+            fp->x.tamw = strcmp(fn, "-") ? (fd > 0 ? fdopen(fd, "w") : fopen(fn, "w")) : stdout;
             if (fp->x.tamr == 0) goto open_err_ret;
 			if (strchr(mode, 'X')) fp->type |= BAM_OFSTR<<2;
 			else if (strchr(mode, 'x')) fp->type |= BAM_OFHEX<<2;

@@ -481,6 +481,7 @@ int sam_read1(tamFile fp, bam_header_t *header, bam1_t *b)
 	return z;
 }
 
+/** Same as sam_open(const char*) but uses the provided file handle instead of the file name. */
 tamFile sam_dopen(int fd) {
     tamFile fp;
     gzFile gzfp = gzdopen(fd, "rb");
