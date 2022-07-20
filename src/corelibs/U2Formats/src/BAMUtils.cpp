@@ -308,10 +308,9 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    int fd = fileno(openFile(urlPath, "rb"));
-    bamFile bamHandler = bam_dopen(fd, "rb");
+    FILE* file = openFile(urlPath, "rb");
+    bamFile bamHandler = bam_dopen(fileno(file), "rb");
     if (bamHandler != nullptr) {
-        bamHandler->owned_file = 1;
         header = bam_header_read(bamHandler);
         if (header != nullptr) {
             result = isSorted(header->text);
@@ -330,6 +329,7 @@ bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
         if (bamHandler != nullptr) {
             bam_close(bamHandler);
         }
+        closeFileIfOpen(file);
     }
 
     if (!error.isEmpty()) {
