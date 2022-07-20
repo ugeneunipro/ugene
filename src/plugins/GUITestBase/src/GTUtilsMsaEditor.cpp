@@ -586,7 +586,7 @@ void GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus& o
 
 #define GT_METHOD_NAME "setReference"
 void GTUtilsMsaEditor::setReference(GUITestOpStatus& os, const QString& sequenceName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Set this sequence as reference"}, GTGlobals::UseMouse));
     clickSequenceName(os, sequenceName, Qt::RightButton);
     GTGlobals::sleep(100);
 }

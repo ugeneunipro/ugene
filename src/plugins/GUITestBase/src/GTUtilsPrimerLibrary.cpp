@@ -42,9 +42,7 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsPrimerLibrary"
 
 QWidget* GTUtilsPrimerLibrary::openLibrary(HI::GUITestOpStatus& os) {
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Primer"
-                                                << "Primer library");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Primer", "Primer library"});
     return GTUtilsMdi::activeWindow(os);
 }
 

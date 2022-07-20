@@ -43,8 +43,7 @@ using namespace HI;
 
 #define GT_METHOD_NAME "findTreeItem"
 void GTUtilsQueryDesigner::openQueryDesigner(HI::GUITestOpStatus& os) {
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Query Designer...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Query Designer..."});
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME

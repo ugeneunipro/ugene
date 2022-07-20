@@ -137,7 +137,7 @@ void editItemName(HI::GUITestOpStatus& os, const QString& newItemName, GTGlobals
             GTKeyboardDriver::keyClick(Qt::Key_F2);
             break;
         case GTGlobals::UseMouse:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Rename"}, GTGlobals::UseMouse));
             GTMouseDriver::click(Qt::RightButton);
             GTGlobals::sleep(300);
             break;
@@ -698,7 +698,7 @@ void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "markSequenceAsCircular"
 void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus& os, const QString& sequenceObjectName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
     click(os, sequenceObjectName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME

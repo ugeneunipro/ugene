@@ -152,8 +152,7 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus& os, const QPoint& scre
 
 #define GT_METHOD_NAME "copySelectionByContextMenu"
 void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& os) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 #undef GT_METHOD_NAME

@@ -106,7 +106,7 @@ void GTUtilsNotifications::waitForNotification(HI::GUITestOpStatus& os, bool dia
 
 #define GT_METHOD_NAME "checkNotificationReportText"
 void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus& os, const QString& textToken) {
-    checkNotificationReportText(os, QStringList() << textToken);
+    checkNotificationReportText(os, {textToken});
 }
 #undef GT_METHOD_NAME
 

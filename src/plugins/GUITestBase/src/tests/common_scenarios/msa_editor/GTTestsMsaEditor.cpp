@@ -186,14 +186,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "show_offsets"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "show_offsets"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -211,7 +211,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "show_offsets"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -250,7 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "revcompl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "show_offsets"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -264,7 +264,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "show_offsets"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -276,7 +276,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma_unsorted.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_name"}));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "a"
@@ -285,7 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                                  << "D",
                   "Sort by name failed (ascending)");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name_descending"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_name_descending"}));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "d"
@@ -294,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                                  << "a",
                   "Sort by name failed (descending)");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_length"}));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "D"
@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                                  << "C",
                   "Sort by length failed (ascending)");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length_descending"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_length_descending"}));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "C"
@@ -318,7 +318,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QWidget* msaWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(os, msaWindow);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -339,7 +339,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(os, mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -360,7 +360,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(os, mdiWindow);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -499,7 +499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(os, mdiWindow);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
@@ -509,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTMenu::showContextMenu(os, mdiWindow);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
@@ -695,7 +695,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     // 3. Do context menu {Align-> Align with MUSCLE}  use "column range"
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -724,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
     // 3. Do context menu {Align-> Align with MUSCLE}  use "column range"
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -753,7 +753,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
     // 3. Do context menu {Align-> Align with MUSCLE}  use "column range"
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseKey));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -779,7 +779,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -802,7 +802,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_1.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
