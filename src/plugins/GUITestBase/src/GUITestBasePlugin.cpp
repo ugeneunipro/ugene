@@ -205,9 +205,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0002, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0003, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001, "breaks testing on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001_1, "breaks testing on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001_2, "breaks testing on mac");
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001, "breaks testing on mac");
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001_1, "breaks testing on mac");
+    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001_2, "breaks testing on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2128_1, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2293, "It always fails on MacOS. Improve the test");
