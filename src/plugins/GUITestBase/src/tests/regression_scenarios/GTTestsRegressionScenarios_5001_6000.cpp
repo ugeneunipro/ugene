@@ -4683,12 +4683,13 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     //    4. Check RT-PCR and pick primers
     //    Expected state: no error in the log, exon annotations in separate file were successfully found
     GTLogTracer l;
-
+GTGlobals::sleep(1000);
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_no_anns.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+coreLog.info(QString("%1:%2").arg(__FILE__).arg(__LINE__));
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NM_001135099");
@@ -4697,16 +4698,18 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "NM_001135099 features");
     QWidget* sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
+coreLog.info(QString("%1:%2").arg(__FILE__).arg(__LINE__));
 
     GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
+coreLog.info(QString("%1:%2").arg(__FILE__).arg(__LINE__));
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.rtPcrDesign = true;
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
-
+coreLog.info(QString("%1:%2").arg(__FILE__).arg(__LINE__));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());

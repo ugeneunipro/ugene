@@ -526,7 +526,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
 
         // 2) Click "build dotplot" tooltip
         // 3) Click OK in opened dotplot dialog
-        GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 110, 100, true));
+        GTUtilsDialog::add(os, new DotPlotFiller(os, 110, 100, true));
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         if (i == 0) {
@@ -535,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         }
 
         // 4) Click on human_T1.fa project tree view item
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
+        GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
