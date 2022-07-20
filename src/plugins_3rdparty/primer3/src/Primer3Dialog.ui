@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1078</width>
-    <height>1149</height>
+    <height>1029</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -763,6 +763,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum stability for the last five 3' bases of a left or right primer.&lt;/p&gt;&lt;p&gt;Bigger numbers mean more stable 3' ends. The value is the maximum delta G (kcal/mol) for duplex disruption for the five 3' bases as calculated using the Nearest-Neighbor parameter values specified by the option of 'Table of thermodynamic parameters'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -795,6 +798,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed weighted similarity with any sequence in Mispriming Library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -820,6 +826,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed sum of similarities of a primer pair (one similarity for each primer) with any single sequence in Mispriming Library. &lt;/p&gt;&lt;p&gt;Library sequence weights are not used in computing the sum of similarities.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -1554,8 +1563,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Same as &amp;quot;Max 3' Self Complementarity&amp;quot; but is based on thermodynamical approach - the stability of structure is analyzed. The value of tag is expressed as melting temperature. See &amp;quot;TH: Max Self Complementarity&amp;quot; for details.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>47.000000000000000</double>
@@ -1581,7 +1593,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;This is the most stable monomer structure of internal oligo calculated by thermodynamic approach. The hairpin loops, bulge loops, internal loops, internal single mismatches, dangling ends, terminal mismatches have been considered. This parameter is calculated only if PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT=1. The default value is 10 degrees lower than the default value of PRIMER_MIN_TM. For example the structure:&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      -///------\\\-&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ACGCTGTGCTGCGA 3'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;with melting temperature 53.7263 (calculated according to by default values of Primer3) and&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      //////----\\\\\\&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' CCGCAGTAAGCTGCGG 3'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;with melting temperature 71.0918 (calculated according to by default values of Primer3) For details about papers used for calculating hairpins see &amp;quot;TH: Max Self Complementarity&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>47.000000000000000</double>
@@ -1593,8 +1605,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Same as &amp;quot;Max 3' Pair Complementarity&amp;quot; but for calculating the score (melting temperature of structure) thermodynamical approach is used.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>47.000000000000000</double>
@@ -1613,8 +1628,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_MAX_SELF_ANY describes the tendency of a primer to bind to itself (interfering with target sequence binding). It will score ANY binding occurring within the entire primer sequence.&lt;br/&gt;It is the maximum allowable local alignment score when testing a single primer for (local) self-complementarity. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATCGNA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      || | |&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   3' TA-CGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;is allowed (and yields a score of 1.75), but the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATCCGNA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;      ||  | |&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   3' TA--CGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;is not considered. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable local alignment between two oligos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>8.000000000000000</double>
@@ -1639,8 +1657,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The same as &amp;quot;Max Self Complementarity&amp;quot; but all calculations are based on thermodynamical approach. The melting temperature of the most stable structure is calculated. To calculate secondary structures nearest-neighbor parameters for perfect matches, single internal mismatches, terminal mismatches, dangling ends have been used. Also parameters for increments for length dependence of bulge and internal loops have been used. This parameter is calculated only if &amp;quot;Use Thermodynamic Oligo Alignment&amp;quot; is true. The default value is 10 degrees lower than the default value of PRIMER_MIN_TM. For example, the alignment width length 15nt&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  5' ATTAGATAGAGCATC 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  3' TAATCTATCTCGTAG 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;is allowed (and yields a melting temperature of 32.1493 width by default Primer3 parameters), but the alignment&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;     T        C&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  5'  GCGGCCGC GCGC 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;  3'  CGCCGGCG CGCG 5'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;     A        A&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;is not considered (Tm=57.0997 and the length of oligo is 14nt). See Primer 3 manual for details.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>47.000000000000000</double>
@@ -1712,8 +1733,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;&amp;quot;TH: Max Pair Complementarity&amp;quot; describes the tendency of the left primer to bind to the right primer. It is similar to &amp;quot;TH: Max Self Complementarity&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
-              <double>99.989999999999995</double>
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>47.000000000000000</double>
@@ -1745,6 +1769,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_PAIR_MAX_COMPL_END tries to bind the 3'-END of the left primer to the right primer and scores the best binding it can find. It is similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_END&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_END&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
+             <property name="maximum">
+              <double>9999.989999999999782</double>
+             </property>
              <property name="value">
               <double>3.000000000000000</double>
              </property>
@@ -1768,6 +1798,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_MAX_SELF_END tries to bind the 3'-END to a identical primer and scores the best binding it can find. This is critical for primer quality because it allows primers use itself as a target and amplify a short piece (forming a primer-dimer). These primers are then unable to bind and amplify the target sequence.&lt;br/&gt;PRIMER_MAX_SELF_END is the maximum allowable 3'-anchored global alignment score when testing a single primer for self-complementarity. The 3'-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers, for example&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5' ATGCCCTAGCTTCCGGATG 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;                ||| |||||&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;             3' AAGTCCTACATTTAGCCTAGT 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;or&lt;/span&gt;&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;   5` AGGCTATGGGCCTCGCGA 3'&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;                  ||||||&lt;/span&gt;&lt;/pre&gt;&lt;pre style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New'; color:#000000;&quot;&gt;               3' AGCGCTCCGGGTATCGGA 5'&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate primers, Primer3 assumes that the sequence from which to choose primers is presented 5'-&amp;gt;3'. It is nonsensical to provide a larger value for this parameter than for the Maximum (local) Complementarity parameter (&lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_ANY&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_ANY&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;) because the score of a local alignment will always be at least as great as the score of a global alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
+             <property name="maximum">
+              <double>9999.989999999999782</double>
+             </property>
              <property name="value">
               <double>3.000000000000000</double>
              </property>
@@ -1777,6 +1813,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <widget class="QDoubleSpinBox" name="edit_PRIMER_PAIR_MAX_COMPL_ANY">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;PRIMER_PAIR_MAX_COMPL_ANY describes the tendency of the left primer to bind to the right primer. It is the maximum allowable local alignment score when testing for complementarity between left and right primers. It is similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_SELF_ANY&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_SELF_ANY&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
+             <property name="maximum">
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>8.000000000000000</double>
@@ -1870,7 +1912,10 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Similar to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; but assesses alternative binding sites in the template using thermodynamic models (when PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT=1). This parameter specifies the maximum allowed melting temperature of an oligo (primer) at an &amp;quot;ectopic&amp;quot; site within the template sequence; 47.0 would be a reasonable choice if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_TM&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MIN_TM&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; is 57.0.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-1.000000000000000</double>
+              <double>-9999.989999999999782</double>
+             </property>
+             <property name="maximum">
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>40.000000000000000</double>
@@ -1896,7 +1941,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-1.000000000000000</double>
+              <double>-9999.989999999999782</double>
              </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
@@ -1938,7 +1983,10 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum allowed summed melting temperatures of both primers at ectopic sites within the template (with the two primers in an orientation that would allow PCR amplification.) The melting temperatures are calculated as for &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MAX_TEMPLATE_MISPRIMING_TH&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_MAX_TEMPLATE_MISPRIMING_TH&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-1.000000000000000</double>
+              <double>-9999.989999999999782</double>
+             </property>
+             <property name="maximum">
+              <double>9999.989999999999782</double>
              </property>
              <property name="value">
               <double>70.000000000000000</double>
@@ -1964,7 +2012,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed similarity of both primers to ectopic sites in the sequence from which you are designing the primers.&lt;/p&gt;&lt;p&gt;The scoring system is the same as used for Max Mispriming, except that an ambiguity code is never treated as a consensus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-1.000000000000000</double>
+              <double>-9999.989999999999782</double>
              </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
@@ -2005,6 +2053,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 5' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -2025,6 +2076,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -2043,6 +2097,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar (mM) concentration of monovalent salt cations (usually KCl) in the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to calculate oligo and primer melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -2137,6 +2194,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;The maximum number of Gs or Cs allowed in the last five 3' bases of a left or right primer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -2151,7 +2211,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Analogous to &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;, but for right primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="minimum">
-            <number>-1</number>
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>999999999</number>
@@ -2166,6 +2226,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -2178,6 +2241,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
           <widget class="QSpinBox" name="edit_PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;The 3' end of the left OR the right primer must overlap one of the junctions in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt; by this amount. See details in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#SEQUENCE_OVERLAP_JUNCTION_LIST&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;SEQUENCE_OVERLAP_JUNCTION_LIST&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>999999999</number>
@@ -2273,6 +2339,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of divalent salt cations (usually MgCl^(2+)) in the PCR.&lt;/p&gt;&lt;p&gt;Primer3 converts concentration of divalent cations to concentration of monovalent cations using following formula:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Monovalent cations] = [Monovalent cations] + 120*(([divalent cations] - [dNTP])^0.5)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In addition, if the specified concentration of dNTPs is larger than the concentration of divalent cations then the effect of the divalent cations is not considered.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
            <property name="singleStep">
             <double>0.500000000000000</double>
            </property>
@@ -2291,6 +2363,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of the sum of all deoxyribonucleotide triphosphates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
            </property>
            <property name="singleStep">
             <double>0.100000000000000</double>
@@ -2333,7 +2411,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;When returning multiple primer pairs, the minimum number of base pairs between the 3' ends of any two left primers.&lt;br/&gt;&lt;br/&gt;Primers with 3' ends at positions e.g. 30 and 31 in the template sequence have a three-prime distance of 1.&lt;br/&gt;&lt;br/&gt;In addition to positive values, the values -1 and 0 are acceptable and have special interpretations:&lt;br/&gt;&lt;br/&gt;-1 indicates that a given left primer can appear in multiple primer pairs returned by Primer3. This is the default behavior.&lt;br/&gt;&lt;br/&gt;0 indicates that a left primer is acceptable if it was not already used. In other words, two left primers are allowed to have the same 3' position provided their 5' positions differ.&lt;br/&gt;&lt;br/&gt;For &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; &amp;gt; 0: A left primer is acceptable if:&lt;br/&gt;&lt;br/&gt;NOT(3' end of left primer closer than &lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; font-style:italic; color:#000000;&quot;&gt;n&lt;/span&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt; to the 3' end of a previously used left primer)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="minimum">
-            <number>-1</number>
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>999999999</number>
@@ -2354,6 +2432,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
           <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_INTERVAL">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; text-decoration-color:#000000; color:#0000ff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>999999999</number>
@@ -2387,6 +2468,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and does not overlap the target, then multiply this value times the number of nucleotide positions from the 3' end to the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include nearness to the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -2409,6 +2493,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter is the index of the first base in the input sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>9999999</number>
@@ -2455,7 +2542,10 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the 'position penalty'. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</string>
            </property>
            <property name="minimum">
-            <double>-1.000000000000000</double>
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
            </property>
            <property name="value">
             <double>-1.000000000000000</double>
@@ -2472,6 +2562,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>9999999</number>
@@ -2543,6 +2636,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of unknown bases (N) allowable in any primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>9999999</number>
            </property>
@@ -2558,6 +2654,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Require the specified number of consecutive Gs and Cs at the 3' end of both the left and right primer.&lt;/p&gt;&lt;p&gt;This parameter has no effect on the internal oligo if one is requested.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-9999999</number>
            </property>
            <property name="maximum">
             <number>9999999</number>
@@ -2611,6 +2710,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_TASK&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_TASK&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;=pick_sequencing_primers.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-9999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -2637,6 +2739,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A value to use as nanomolar (nM) concentration of each annealing oligo over the course the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to esimate oligo melting temperatures.&lt;/p&gt;&lt;p&gt;The default (50nM) works well with the standard protocol used at the Whitehead/MIT Center for Genome Research --0.5 microliters of 20 micromolar concentration for each primer in a 20 microliter reaction with 10 nanograms template, 0.025 units/microliter Taq polymerase in 0.1 mM each dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) using 35 cycles with an annealing temperature of 56 degrees Celsius.&lt;/p&gt;&lt;p&gt;The value of this parameter is less than the actual concentration of oligos in the initial reaction mix because  it is the concentration of annealing oligos, which in turn depends on the amount of template (including PCR product) in a given cycle. This concentration increases a great deal during a PCR; fortunately PCR seems quite robust for a variety of oligo melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
+           <property name="maximum">
+            <double>9999.989999999999782</double>
+           </property>
            <property name="value">
             <double>50.000000000000000</double>
            </property>
@@ -2658,6 +2766,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="8" column="3">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_DMSO_CONC">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -2665,6 +2776,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="9" column="3">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_DMSO_FACTOR">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -2678,6 +2792,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="9" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_FORMAMIDE_CONC">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3175,6 +3292,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>Equivalent parameter of PRIMER_MAX_SELF_ANY_TH for the internal oligo</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3193,6 +3313,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>Same as PRIMER_INTERNAL_MAX_SELF_END but for calculating the score (melting temperature of structure) thermodynamical approach is used</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -3233,6 +3356,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max self complemntarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3251,6 +3377,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max 3' self complementarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -3297,6 +3426,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>The most stable monomer structure of internal oligo calculated by thermodynamic approach. See PRIMER_MAX_HAIRPIN_TH for details</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -3383,6 +3515,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of the dNTPs for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3413,6 +3548,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer DNA concentration for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3432,8 +3570,11 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer minimum quality for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-999999999</number>
+           </property>
            <property name="maximum">
-            <number>9999</number>
+            <number>999999999</number>
            </property>
           </widget>
          </item>
@@ -3447,6 +3588,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of monovalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -3473,6 +3617,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of divalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
            </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
@@ -3510,6 +3657,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max #Ns for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-999999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -3526,6 +3676,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer max library mispriming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3536,6 +3689,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="7" column="3">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_FORMAMIDE_CONC">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3543,6 +3699,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="2" column="1">
           <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION">
+           <property name="minimum">
+            <number>-999999999</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
            <property name="value">
             <number>7</number>
            </property>
@@ -3578,6 +3740,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="7" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DMSO_CONC">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3594,6 +3759,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max poly-X for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="minimum">
+            <number>-999999999</number>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
@@ -3604,6 +3772,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="8" column="1">
           <widget class="QDoubleSpinBox" name="edit_PRIMER_INTERNAL_DMSO_FACTOR">
+           <property name="minimum">
+            <double>-9999.989999999999782</double>
+           </property>
            <property name="maximum">
             <double>9999.989999999999782</double>
            </property>
@@ -3624,6 +3795,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          </item>
          <item row="2" column="3">
           <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_3_PRIME_OVERLAP_OF_JUNCTION">
+           <property name="minimum">
+            <number>-999999999</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
            <property name="value">
             <number>4</number>
            </property>
@@ -3632,7 +3809,10 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
          <item row="3" column="1">
           <widget class="QSpinBox" name="edit_PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE">
            <property name="minimum">
-            <number>-1</number>
+            <number>-999999999</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
            </property>
            <property name="value">
             <number>-1</number>
@@ -3903,6 +4083,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              </item>
              <item row="0" column="1">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_ANY_TH">
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -3917,6 +4100,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              </item>
              <item row="1" column="1">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_SELF_END_TH">
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -3931,6 +4117,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
              </item>
              <item row="2" column="1">
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_HAIRPIN_TH">
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -3950,6 +4139,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -3974,6 +4166,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -3997,6 +4192,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4019,6 +4217,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4054,6 +4255,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4070,6 +4274,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
               <widget class="QDoubleSpinBox" name="edit_PRIMER_WT_LIBRARY_MISPRIMING">
                <property name="toolTip">
                 <string>Penalty for a single primer binding to any single sequence in PRIMER_MISPRIMING_LIBRARY</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
@@ -4090,6 +4300,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4114,6 +4327,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4136,6 +4352,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4160,6 +4379,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4182,6 +4404,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4363,6 +4588,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>Penalty weight for the binding value of the primer pair as in PRIMER_MAX_SELF_ANY_TH</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
               </widget>
              </item>
              <item row="1" column="0">
@@ -4382,6 +4613,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>Penalty weight for the binding value of the primer pair as in PRIMER_MAX_SELF_END_TH.</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
@@ -4409,6 +4646,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>Penalty for a primer pair binding to the template sequence (thermodynamic approach, when PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT=1).</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
               </widget>
              </item>
              <item row="3" column="0">
@@ -4428,6 +4671,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4452,6 +4698,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4474,6 +4723,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4509,6 +4761,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4531,6 +4786,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Times New Roman'; color:#000000; background-color:#ffffff;&quot;&gt;Penalty for a primer pair binding to any single sequence in &lt;/span&gt;&lt;a href=&quot;https://primer3.ut.ee/primer3web_help.htm#PRIMER_MISPRIMING_LIBRARY&quot;&gt;&lt;span style=&quot; font-family:'Times New Roman'; text-decoration: underline; color:#0000ff; background-color:#ffffff;&quot;&gt;PRIMER_MISPRIMING_LIBRARY&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4555,6 +4813,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4577,6 +4838,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4843,6 +5107,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
               </widget>
              </item>
              <item row="1" column="0">
@@ -4860,6 +5130,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
+               </property>
               </widget>
              </item>
              <item row="2" column="0">
@@ -4876,6 +5152,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
@@ -4897,6 +5179,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4916,6 +5201,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>
@@ -4948,6 +5239,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -4970,6 +5264,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
                </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
@@ -4994,6 +5291,9 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
                <property name="maximum">
                 <double>9999.989999999999782</double>
                </property>
@@ -5013,6 +5313,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimum">
+                <double>-9999.989999999999782</double>
+               </property>
+               <property name="maximum">
+                <double>9999.989999999999782</double>
                </property>
               </widget>
              </item>

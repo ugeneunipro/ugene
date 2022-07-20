@@ -806,19 +806,20 @@ void Primer3Dialog::sl_loadSettings() {
 
     auto intPropList = settings.getIntPropertyList();
     auto doublePropList = settings.getDoublePropertyList();
-    
+
+    bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
     while(!stream.atEnd()) {
         auto line = stream.readLine();
         auto par = line.split('=');
-        CHECK_CONTINUE(par.size() == 2);
+        CHECK_CONTINUE(!(primerMinThreePrimeIsUsed && (par.first() == "PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE" || par.first() == "PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE")));
 
         if (intPropList.contains(par.first())) {
             QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + par.first());
             if (spinBox != nullptr) {
                 bool ok = false;
                 int v = par.last().toInt(&ok);
-                CHECK_CONTINUE(ok);
+                CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
                 spinBox->setValue(v);
                 continue;
@@ -827,8 +828,8 @@ void Primer3Dialog::sl_loadSettings() {
             if (checkbox != nullptr) {
                 bool ok = false;
                 int v = par.last().toInt(&ok);
-                CHECK_CONTINUE(ok);
-                
+                CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
+
                 checkbox->setChecked((bool)v);
                 continue;
             }
@@ -836,7 +837,8 @@ void Primer3Dialog::sl_loadSettings() {
             if (combobox != nullptr) {
                 bool ok = false;
                 int v = par.last().toInt(&ok);
-                CHECK_CONTINUE(ok);
+                CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
+                CHECK_EXT_CONTINUE(0 <= v && v <= combobox->maxCount(), algoLog.error(tr("Incorrect value for \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
                 combobox->setCurrentIndex(v);
                 continue;
@@ -847,7 +849,7 @@ void Primer3Dialog::sl_loadSettings() {
             if (spinBox != nullptr) {
                 bool ok = false;
                 double v = par.last().toDouble(&ok);
-                CHECK_CONTINUE(ok);
+                CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
                 spinBox->setValue(v);
                 continue;
@@ -865,13 +867,13 @@ void Primer3Dialog::sl_loadSettings() {
         } else if (par.first() == "PRIMER_TM_FORMULA") {
             bool ok = false;
             int v = par.last().toInt(&ok);
-            CHECK_CONTINUE(!ok);
+            CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
             combobox_PRIMER_TM_FORMULA->setCurrentIndex((bool)v);
         } else if (par.first() == "PRIMER_SALT_CORRECTIONS") {
             bool ok = false;
             int v = par.last().toInt(&ok);
-            CHECK_CONTINUE(!ok);
+            CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
             combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex((bool)v);
         } else if (par.first() == "PRIMER_MISPRIMING_LIBRARY") {
@@ -885,6 +887,18 @@ void Primer3Dialog::sl_loadSettings() {
                 if (par.last() == lib.second) {
                     combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentText(lib.first);
                 }
+            }
+        } else if (par.first() == "PRIMER_MIN_THREE_PRIME_DISTANCE") {
+            auto res = QMessageBox::question(nullptr, line, tr("PRIMER_MIN_THREE_PRIME_DISTANCE is unused in the UGENE GUI interface. "
+                "We may either skip it or set PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE and PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE to %1. Do you want to set?").arg(par.last()));
+            if (res == QMessageBox::StandardButton::Yes) {
+                bool ok = false;
+                int v = par.last().toInt(&ok);
+                CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
+
+                edit_PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE->setValue(v);
+                edit_PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE->setValue(v);
+                primerMinThreePrimeIsUsed = true;
             }
         }
     }
