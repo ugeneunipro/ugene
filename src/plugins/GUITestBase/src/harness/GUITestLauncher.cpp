@@ -139,7 +139,7 @@ QList<GUITest*> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const 
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 555 << 580 << 485 << 555 << -1;  // Linux.
+        testsPerSuite << 540 << 565 << 500 << 560 << -1;  // Linux.
     }
     CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest*> tests;
