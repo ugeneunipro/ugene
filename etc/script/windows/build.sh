@@ -87,6 +87,9 @@ copy_with_pdb "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
+# Open GL support.
+copy_with_pdb "${QT_DIR}/bin/libGLESv2.dll" "${BUNDLE_DIR}"
+
 mkdir "${BUNDLE_DIR}/styles"
 copy_with_pdb "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
 
