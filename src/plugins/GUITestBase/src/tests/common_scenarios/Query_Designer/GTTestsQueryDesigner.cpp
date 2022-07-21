@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsQuerryDesigner.h"
+#include "GTTestsQueryDesigner.h"
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTWidget.h>

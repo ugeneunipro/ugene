@@ -207,7 +207,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h \
             src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.h \
-            src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h \
             src/tests/common_scenarios/annotations/GTTestsAnnotations.h \
             src/tests/common_scenarios/annotations/GTTestsCreateAnnotationWidget.h \
             src/tests/common_scenarios/annotations/edit/GTTestsAnnotationsEdit.h \
@@ -246,6 +245,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/project/sequence_exporting/GTTestsProjectSequenceExporting.h \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.h \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.h \
+            src/tests/common_scenarios/query_designer/GTTestsQueryDesigner.h \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h \
             src/tests/common_scenarios/sanger/GTTestsSanger.h \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h \
@@ -482,7 +482,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.cpp \
             src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.cpp \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.cpp \
-            src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.cpp \
             src/tests/common_scenarios/annotations/GTTestsAnnotations.cpp \
             src/tests/common_scenarios/annotations/GTTestsCreateAnnotationWidget.cpp \
             src/tests/common_scenarios/annotations/edit/GTTestsAnnotationsEdit.cpp \
@@ -521,6 +520,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/project/sequence_exporting/GTTestsProjectSequenceExporting.cpp \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.cpp \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.cpp \
+            src/tests/common_scenarios/query_designer/GTTestsQueryDesigner.cpp \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.cpp \
             src/tests/common_scenarios/sanger/GTTestsSanger.cpp \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.cpp \
