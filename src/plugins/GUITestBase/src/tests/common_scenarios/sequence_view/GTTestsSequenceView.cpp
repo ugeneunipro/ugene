@@ -618,12 +618,12 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
-    GTThread::waitForMainThread();
 
-    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
-    GTWidget::click(os, toggleViewButton);
-    GTThread::waitForMainThread();
+    QToolButton* toggleViewButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "toggleViewButton"));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
+        GTWidget::click(os, toggleViewButton);
+    }
 
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);

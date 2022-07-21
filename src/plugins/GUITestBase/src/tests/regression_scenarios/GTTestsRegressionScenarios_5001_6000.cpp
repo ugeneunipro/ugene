@@ -4693,7 +4693,9 @@ coreLog.info(QString("%1:%2").arg(__FILE__).arg(__LINE__));
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NM_001135099");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "NM_001135099 features");
     QWidget* sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);

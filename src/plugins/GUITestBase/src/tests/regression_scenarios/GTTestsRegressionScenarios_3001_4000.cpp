@@ -3097,7 +3097,9 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
@@ -4474,8 +4476,9 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTThread::waitForMainThread();
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTThread::waitForMainThread();
