@@ -326,6 +326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
@@ -486,6 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
