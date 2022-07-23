@@ -880,61 +880,6 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
 
-#ifdef SW2_BUILD_WITH_CUDA
-GUI_TEST_CLASS_DEFINITION(test_7360) {
-    // Open _common_data/fasta/fa1.fa.
-    // Call Smith-Waterman dialog:
-    //     Pattern: A,
-    //     Search in: Translation,
-    //     Region: 1-1,
-    //     Algorithm version: CUDA.
-    // Search.
-    //     Expected: no crash.
-
-    // Call Smith-Waterman dialog:
-    //     Pattern: AA,
-    //     Search in: Translation,
-    //     Region: Whole sequence,
-    //     Algorithm version: CUDA.
-    // Search.
-    //     Expected: no crash.
-    class SwCudaScenario : public CustomScenario {
-    public:
-        SwCudaScenario(const QString& pattern, bool isWholeSequence)
-            : pattern(pattern), region() {
-            if (!isWholeSequence) {
-                region = GTRegionSelector::RegionSelectorSettings(1, 1);
-            }
-        }
-
-        void run(GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), pattern);
-            GTRadioButton::click(os, "radioTranslation", dialog);
-            GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog), region);
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "comboRealization", dialog), "CUDA");
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-
-    private:
-        QString pattern;
-        GTRegionSelector::RegionSelectorSettings region;
-    };
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    const GTLogTracer logA;
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("A", false)));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsLog::checkContainsError(os, logA, "Pattern length (1) is longer than search sequence length (0).");
-
-    const GTLogTracer logAa;
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
-}
-#endif  // SW2_BUILD_WITH_CUDA
-
 GUI_TEST_CLASS_DEFINITION(test_7367) {
     // Generate a large sequence.
     // Check that test does not time-outs and the generated sequence contains expected base distribution.
