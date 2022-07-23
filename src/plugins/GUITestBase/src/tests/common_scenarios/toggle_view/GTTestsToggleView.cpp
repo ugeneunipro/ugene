@@ -91,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeAllWindows(os);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
@@ -117,7 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     // Close all MDI windows.
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeAllWindows(os);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
@@ -139,7 +139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     // Close all MDI windows.
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeAllWindows(os);
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");

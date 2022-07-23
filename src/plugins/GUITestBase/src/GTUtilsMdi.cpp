@@ -164,7 +164,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-            const QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
+            QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
             for (QMdiSubWindow* mdiWindow: qAsConst(mdiWindows)) {
                 auto filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
                 GTUtilsDialog::waitForDialog(os, filler);
