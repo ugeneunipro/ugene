@@ -685,8 +685,9 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // remove the longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
+    // remove the longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability.
     GTUtilsMsaEditor::removeRows(os, 14, 14);
+    GTUtilsProjectTreeView::toggleView(os);  // Close project view to add om width for the name list.
 
     parent = GTWidget::findWidget(os, "fungal - all [fungal - all.aln]", GTWidget::findWidget(os, "fungal - all [fungal - all.aln]_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
