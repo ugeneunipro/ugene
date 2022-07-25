@@ -2563,6 +2563,15 @@ GUI_TEST_CLASS_DEFINITION(test_7573) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7578) {
+    //1. Open "samples/Newick/COI.nwk"
+    //Expected state: button "Print tree" should be disable if there is no printers installed
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QToolButton* printtreeTB = GTToolbar::getToolButtonByAction(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "printTreeAction");
+    CHECK_SET_ERR(!printtreeTB->isEnabled(), "'Print tree...' button enabled, but should not (assumed there is no installed printers on test machine).");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7575) {
     // Check that reset-zoom action does not crash UGENE.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

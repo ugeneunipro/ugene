@@ -28,6 +28,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPrintDialog>
+#include <QPrinterinfo>
 #include <QPrinter>
 #include <QQueue>
 #include <QSplitter>
@@ -209,6 +210,8 @@ void TreeViewer::createActions() {
 
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
+    printAction->setDisabled(QPrinterInfo::availablePrinters().isEmpty());
+    printAction->setObjectName("printTreeAction");
 
     // Screen Capture
     captureTreeAction = new QAction(tr("Screen Capture..."), ui);
