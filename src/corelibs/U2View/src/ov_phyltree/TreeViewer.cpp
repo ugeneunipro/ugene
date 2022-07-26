@@ -28,7 +28,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPrintDialog>
-#include <QPrinterinfo>
+#include <QtPrintSupport/QPrinterInfo>
 #include <QPrinter>
 #include <QQueue>
 #include <QSplitter>
