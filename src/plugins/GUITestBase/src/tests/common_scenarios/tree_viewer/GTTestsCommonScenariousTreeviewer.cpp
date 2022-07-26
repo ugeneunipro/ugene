@@ -188,7 +188,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
 
     // DIFFERENCE: Context menu is used for building tree
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_TREES << "Build Tree"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -219,7 +219,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // Expected state: "Create Phylogenetic Tree" dialog appears
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
     // DIFFERENCE: Context menu is used for building tree
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_TREES << "Build Tree"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -617,7 +617,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     // 2. Create new bookmark for the file
     QPoint p = GTUtilsBookmarksTreeView::getItemCenter(os, "Tree [COI.nwk]");
     GTMouseDriver::moveTo(p);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
