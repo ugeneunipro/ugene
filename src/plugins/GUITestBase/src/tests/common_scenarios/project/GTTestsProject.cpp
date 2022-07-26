@@ -287,6 +287,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
     GTUtilsProject::openFiles(os, QList<QUrl>() << dataDir + "samples/Genbank/murine.gb" << dataDir + "samples/Genbank/sars.gb" << dataDir + "samples/Genbank/CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::checkDocument(os, "murine.gb");
     GTUtilsDocument::checkDocument(os, "sars.gb");
     GTUtilsDocument::checkDocument(os, "CVU55762.gb");

@@ -3273,6 +3273,7 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
             QString path = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
             AppSettingsDialogFiller::clearToolPath(os, "MAFFT");
             AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", path);
+            GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

@@ -2730,7 +2730,9 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
-    GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
+    GTUtilsMsaEditor::clickSequenceName(os, "1a0cA");
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor* editor = mw->findChild<MSAEditor*>();
