@@ -442,10 +442,10 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5059) {
-    //1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
-    //2. Select whole alignment.
-    //3. Press Delete.
-    //Expected: notification about impossible operation popped.
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    // 2. Select whole alignment.
+    // 3. Press Delete.
+    // Expected: notification about impossible operation popped.
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1511,7 +1511,8 @@ GUI_TEST_CLASS_DEFINITION(test_5421) {
     // Expected state: Save dialog appeared.
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Build dotplot...");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "sars.gb"));
@@ -1881,6 +1882,9 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     // 2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
@@ -3138,7 +3142,6 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5730) {
-    
     QFile originalFile(dataDir + "samples/Genbank/murine.gb");
     QString dstPath = sandBoxDir + "/5730_murine.gb";
     originalFile.copy(dstPath);
@@ -3150,8 +3153,8 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
 
     GTFileDialog::openFile(os, sandBoxDir, "5730_murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
-    //Sequence + annotations
+
+    // Sequence + annotations
     GTLogTracer logTracer;
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesToAll));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "5730_murine.gb"));
@@ -3161,8 +3164,8 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
     CHECK_SET_ERR(logTracer.checkMessage("Document is already added to the project"), "Expected messge not found in the log");
-    
-    //Other objects
+
+    // Other objects
     QFile originalFile2(dataDir + "samples/CLUSTALW/COI.aln");
     dstPath = sandBoxDir + "/5730_COI.aln";
     originalFile2.copy(dstPath);
