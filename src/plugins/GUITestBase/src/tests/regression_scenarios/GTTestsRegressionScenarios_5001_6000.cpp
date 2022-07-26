@@ -3235,6 +3235,8 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);  // This task may take up to 1 minute. checkMcaEditorWindowIsActive waits only for 30 seconds.
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
     GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
@@ -3698,6 +3700,8 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     GTLogTracer trace;
     // 2. Select the last char of the first row
