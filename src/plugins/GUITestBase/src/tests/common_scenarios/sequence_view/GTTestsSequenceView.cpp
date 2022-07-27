@@ -877,7 +877,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    Select some redion
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
     //    Use context menu {Copy->Copy reverse complement sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy reverse complement sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "Copy reverse complement sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
@@ -892,7 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_1) {
     //    Select some redion
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
     //    Use context menu {Copy->Copy reverse complement sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy reverse complement sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "Copy reverse complement sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
@@ -907,7 +907,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {
     //    Select annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     //    Use context menu {Copy->Copy reverse complement sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "action_copy_annotation_sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {
     //    Check joined annotations
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "action_copy_annotation_sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     clipboardtext = GTClipboard::text(os);
@@ -933,7 +933,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     //    Select annotation
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     //    Use context menu {Copy->Copy reverse complement sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "action_copy_annotation_sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QString clipboardtext = GTClipboard::text(os);
@@ -943,7 +943,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {
     //    Check joined annotations
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "action_copy_annotation_sequence"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     clipboardtext = GTClipboard::text(os);
@@ -1438,7 +1438,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTUtilsCv::cvBtn::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     //    Use context menu on CV
     GTUtilsDialog::waitForDialog(os, new SetSequenceOriginDialogFiller(os, 1000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "Set new sequence origin"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, "Set new sequence origin"}));
     GTWidget::click(os, GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0"), Qt::RightButton);
     //    check "Set new sequence origin" action
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 43);

@@ -210,7 +210,7 @@ public:
         if (groupToSelect.isEmpty()) {
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         } else {
-            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << groupToSelect);
+            GTMenu::clickMenuItemByText(os, activePopupMenu, {groupToSelect});
         }
     }
 

@@ -27,7 +27,6 @@
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "GTGlobals.h"
-class QRectF;
 
 namespace U2 {
 
@@ -35,15 +34,15 @@ class GTUtilsQueryDesigner {
 public:
     static void openQueryDesigner(HI::GUITestOpStatus& os);
 
-    static QTreeWidgetItem* findAlgorithm(HI::GUITestOpStatus& os, QString itemName);
-    static void addAlgorithm(HI::GUITestOpStatus& os, QString algName);
-    static QPoint getItemCenter(HI::GUITestOpStatus& os, QString itemName);
-    static QRect getItemRect(HI::GUITestOpStatus& os, QString itemName);
+    static QTreeWidgetItem* findAlgorithm(HI::GUITestOpStatus& os, const QString& itemName);
+    static void addAlgorithm(HI::GUITestOpStatus& os, const QString& algName);
+    static QPoint getItemCenter(HI::GUITestOpStatus& os, const QString& itemName);
+    static QRect getItemRect(HI::GUITestOpStatus& os, const QString& itemName);
 
-    static int getItemLeft(HI::GUITestOpStatus& os, QString itemName);
-    static int getItemRight(HI::GUITestOpStatus& os, QString itemName);
-    static int getItemTop(HI::GUITestOpStatus& os, QString itemName);
-    static int getItemBottom(HI::GUITestOpStatus& os, QString itemName);
+    static int getItemLeft(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getItemRight(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getItemTop(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getItemBottom(HI::GUITestOpStatus& os, const QString& itemName);
 };
 
 }  // namespace U2

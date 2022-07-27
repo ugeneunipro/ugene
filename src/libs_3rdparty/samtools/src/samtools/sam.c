@@ -29,7 +29,7 @@ static void append_header_text(bam_header_t *header, char* text, int len)
 	int x = header->l_text + 1;
 	int y = header->l_text + len + 1; // 1 byte null
 	if (text == 0) return;
-	kroundup32(x); 
+	kroundup32(x);
 	kroundup32(y);
 	if (x < y) header->text = (char*)realloc(header->text, y);
 	strncpy(header->text + header->l_text, text, len); // we cannot use strcpy() here.
@@ -37,7 +37,11 @@ static void append_header_text(bam_header_t *header, char* text, int len)
 	header->text[header->l_text] = 0;
 }
 
-samfile_t *samopen(const char *fn, const char *mode, const void *aux)
+samfile_t* samopen(const char* fn, const char* mode, const void* aux) {
+    return samopen_with_fd(fn, -1, mode, aux);
+}
+
+samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux)
 {
 	samfile_t *fp;
 	fp = (samfile_t*)calloc(1, sizeof(samfile_t));
@@ -46,12 +50,12 @@ samfile_t *samopen(const char *fn, const char *mode, const void *aux)
 		fp->type |= TYPE_READ;
 		if (strchr(mode, 'b')) { // binary
 			fp->type |= TYPE_BAM;
-			fp->x.bam = strcmp(fn, "-")? bam_open(fn, "r") : bam_dopen(fileno(stdin), "r");
-			if (fp->x.bam == 0) goto open_err_ret;
+            fp->x.bam = strcmp(fn, "-") ? (fd > 0 ? bam_dopen(fd, "r") : bam_open(fn, "r")) : bam_dopen(fileno(stdin), "r");
+            if (fp->x.bam == 0) goto open_err_ret;
 			fp->header = bam_header_read(fp->x.bam);
 		} else { // text
-			fp->x.tamr = sam_open(fn);
-			if (fp->x.tamr == 0) goto open_err_ret;
+            fp->x.tamr = fd > 0 ? sam_dopen(fd) : sam_open(fn);
+            if (fp->x.tamr == 0) goto open_err_ret;
 			fp->header = sam_header_read(fp->x.tamr);
             if (NULL == fp->header) {
                 free(fp);
@@ -79,13 +83,13 @@ samfile_t *samopen(const char *fn, const char *mode, const void *aux)
 			if (strchr(mode, 'u')) compress_level = 0;
 			bmode[0] = 'w'; bmode[1] = compress_level < 0? 0 : compress_level + '0'; bmode[2] = 0;
 			fp->type |= TYPE_BAM;
-			fp->x.bam = strcmp(fn, "-")? bam_open(fn, bmode) : bam_dopen(fileno(stdout), bmode);
-			if (fp->x.bam == 0) goto open_err_ret;
+            fp->x.bam = strcmp(fn, "-") ? (fd > 0 ? bam_dopen(fd, bmode) : bam_open(fn, bmode)) : bam_dopen(fileno(stdout), bmode);
+            if (fp->x.bam == 0) goto open_err_ret;
 			bam_header_write(fp->x.bam, fp->header);
 		} else { // text
 			// open file
-			fp->x.tamw = strcmp(fn, "-") ? ugene_custom_fopen(fn, "w") : stdout;
-			if (fp->x.tamr == 0) goto open_err_ret;
+            fp->x.tamw = strcmp(fn, "-") ? (fd > 0 ? fdopen(fd, "w") : fopen(fn, "w")) : stdout;
+            if (fp->x.tamr == 0) goto open_err_ret;
 			if (strchr(mode, 'X')) fp->type |= BAM_OFSTR<<2;
 			else if (strchr(mode, 'x')) fp->type |= BAM_OFHEX<<2;
 			else fp->type |= BAM_OFDEC<<2;
@@ -93,7 +97,7 @@ samfile_t *samopen(const char *fn, const char *mode, const void *aux)
 			if (strchr(mode, 'h')) {
 				int i;
 				bam_header_t *alt;
-				// parse the header text 
+				// parse the header text
 				alt = bam_header_init();
 				alt->l_text = fp->header->l_text; alt->text = fp->header->text;
 				sam_header_parse(alt);

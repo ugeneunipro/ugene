@@ -64,7 +64,7 @@ public:
             GTWidget::click(os, GTWidget::findWidget(os, "addShortreadsButton", dialog));
         }
 
-        //    Expcted state: warning messagebox appeared
+        //    Expected state: warning messagebox appeared
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b, message));
         GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);

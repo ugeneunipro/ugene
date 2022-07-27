@@ -248,8 +248,7 @@ void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus& os, 
 void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path) {
     const QFileInfo info(path);
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", info.absoluteFilePath()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
 }
 #undef GT_METHOD_NAME
 

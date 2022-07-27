@@ -52,10 +52,10 @@ GUITestRunner::GUITestRunner(UGUITestBase* guiTestBase, QWidget* parent)
         QList<QTreeWidgetItem*> suiteItems = tree->findItems(test->suite, Qt::MatchExactly);
         QTreeWidgetItem* suiteItem = suiteItems.isEmpty() ? nullptr : suiteItems.first();
         if (suiteItem == nullptr) {
-            suiteItem = new QTreeWidgetItem(QStringList() << test->suite);
+            suiteItem = new QTreeWidgetItem({test->suite});
             tree->addTopLevelItem(suiteItem);
         }
-        suiteItem->addChild(new QTreeWidgetItem(QStringList() << test->name << "Not run"));
+        suiteItem->addChild(new QTreeWidgetItem({test->name, "Not run"}));
     }
 
     delTextAction = new QAction(this);

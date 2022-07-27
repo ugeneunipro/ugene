@@ -145,7 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
     QIcon itemIconBefore = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__UNLOCK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_DOCUMENT__UNLOCK}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
 
@@ -157,7 +157,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_DOCUMENT__LOCK}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
 }
@@ -182,7 +182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QImage expectedImage = documentIcon.pixmap(32, 32).toImage();
     CHECK_SET_ERR(expectedImage == foundImage, "Icon is locked");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_DOCUMENT__LOCK}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 

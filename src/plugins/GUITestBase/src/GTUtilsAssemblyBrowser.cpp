@@ -276,14 +276,13 @@ void GTUtilsAssemblyBrowser::callExportCoverageDialog(HI::GUITestOpStatus& os, A
 
     switch (area) {
         case Consensus:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export coverage"}));
             break;
         case Overview:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export coverage"}));
             break;
         case Reads:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export"
-                                                                                << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export", "Export coverage"}));
             break;
         default:
             os.setError("Can't call the dialog on this area");

@@ -573,11 +573,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMouseDriver::doubleClick();
 
     // 3. Check that menu item { Edit -> Annotation } is absent at popup menu of sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     // 4. Check that menu item { Edit -> Annotation } is absent at popup menu of annotations view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 }
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
@@ -609,10 +609,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::click();
 
     // 4. Check that menu item { Edit -> Annotation } is enabled at popup menu of sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     // 5. Check that menu item { Edit -> Annotation } is enabled at popup menu of annotations view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "B");
 }
 
@@ -635,12 +635,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
 
     // 3. Open context menu on sequence area
     // Expected state: { Edit -> Annotation } action is disabled
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     // 3. Open context menu on sequence area
     // Expected state: { Edit -> Annotation } action is enabled
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "CDS");
 }
 

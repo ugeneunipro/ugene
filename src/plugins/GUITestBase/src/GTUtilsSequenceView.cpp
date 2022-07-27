@@ -155,7 +155,7 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus& os,
 
     QString sequence;
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}, GTGlobals::UseKey));
     openPopupMenuOnSequenceViewArea(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -178,7 +178,7 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus& os, i
 
     QString sequence;
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}, GTGlobals::UseKey));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(1000);

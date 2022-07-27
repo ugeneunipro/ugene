@@ -62,8 +62,7 @@ void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) 
     switch (action) {
         case GTGlobals::Close: {
 #    ifdef Q_OS_UNIX
-            GTMenu::clickMainMenuItem(os, QStringList() << "Window"
-                                                        << "Close active view");
+            GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
 #    else
             GTKeyboardDriver::keyPress(Qt::Key_Control);
             GTKeyboardDriver::keyClick(Qt::Key_F4);
@@ -165,7 +164,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-            const QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
+            QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
             for (QMdiSubWindow* mdiWindow: qAsConst(mdiWindows)) {
                 auto filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
                 GTUtilsDialog::waitForDialog(os, filler);
@@ -200,8 +199,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
             GTMouseDriver::moveTo(closeButtonPos);
             GTMouseDriver::click();
         } else {
-            GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                        << "Close active view");
+            GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"});
         }
         GTGlobals::sleep(100);
         GTThread::waitForMainThread();
@@ -307,7 +305,7 @@ void GTUtilsMdi::activateWindow(HI::GUITestOpStatus& os, const QString& windowTi
     options.matchPolicy = Qt::MatchContains;
     QWidget* window = findWindow(os, windowTitlePart, options);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << window->windowTitle(), GTGlobals::UseMouse, Qt::MatchContains);
+    GTMenu::clickMainMenuItem(os, {"Window", window->windowTitle()}, GTGlobals::UseMouse, Qt::MatchContains);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

@@ -135,11 +135,11 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 QList<GUITest*> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {  // Windows.
-        testsPerSuite << 1000 << 840 << -1;
+        testsPerSuite << 920 << 880 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 555 << 580 << 485 << 555 << -1;  // Linux.
+        testsPerSuite << 540 << 565 << 500 << 560 << -1;  // Linux.
     }
     CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest*> tests;
@@ -291,7 +291,7 @@ static bool restoreTestDirWithExternalScript(const QString& pathToShellScript, c
 #ifdef Q_OS_WIN
     process.start("cmd /C " + pathToShellScript);
 #else
-    process.start("/bin/bash", QStringList() << pathToShellScript);
+    process.start("/bin/bash", {pathToShellScript});
 #endif
     qint64 processId = process.processId();
     bool isStarted = process.waitForStarted();

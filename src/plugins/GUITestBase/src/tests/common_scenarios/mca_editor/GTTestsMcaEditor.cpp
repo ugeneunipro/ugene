@@ -1938,10 +1938,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Replace character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Replace character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
@@ -2075,10 +2072,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Replace character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Replace character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
@@ -2292,10 +2286,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Insert character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Insert character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
@@ -2461,10 +2452,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Insert character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Insert character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
@@ -3046,10 +3034,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // Expected state: Aligned Reads Map is in the bottom screen by default. Show / Hide overview button is in pressed state
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Push Show / Hide overview button on the main menu
@@ -3057,10 +3042,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
     // Expected state: There are no map on the screen. Show / Hide overview button is is in released state
     //  simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close editor and open it again(map state should be saved)
@@ -3076,10 +3058,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // Expected state : Aligned Reads Map is in the bottom screen by default
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Select transparent square  and move it by mouse  down
@@ -3258,6 +3237,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

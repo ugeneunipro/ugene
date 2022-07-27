@@ -152,8 +152,7 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus& os, const QPoint& scre
 
 #define GT_METHOD_NAME "copySelectionByContextMenu"
 void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& os) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 #undef GT_METHOD_NAME
@@ -633,7 +632,8 @@ void GTUtilsMSAEditorSequenceArea::checkMsaCellColors(GUITestOpStatus& os, const
 
 #define GT_METHOD_NAME "checkMsaCellColor"
 void GTUtilsMSAEditorSequenceArea::checkMsaCellColor(GUITestOpStatus& os, const QPoint& pos, const QString& color) {
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, color), "Wrong color: " + color);
+    QString actualColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, color), "Wrong color: "+ color+"! Actual: " + actualColor);
 }
 #undef GT_METHOD_NAME
 

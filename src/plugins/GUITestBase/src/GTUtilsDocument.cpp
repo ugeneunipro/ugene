@@ -141,7 +141,7 @@ bool GTUtilsDocument::isDocumentLoaded(HI::GUITestOpStatus& os, const QString& d
 
 #define GT_METHOD_NAME "saveDocument"
 void GTUtilsDocument::saveDocument(HI::GUITestOpStatus& os, const QString& documentName) {
-    Runnable* popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT, GTGlobals::UseMouse);
+    Runnable* popupChooser = new PopupChooser(os, {ACTION_PROJECT__SAVE_DOCUMENT}, GTGlobals::UseMouse);
 
     GTUtilsDialog::waitForDialog(os, popupChooser);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
@@ -155,7 +155,7 @@ void GTUtilsDocument::saveDocument(HI::GUITestOpStatus& os, const QString& docum
 void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus& os, const QString& documentName, bool waitForMessageBox) {
     GT_CHECK_RESULT(isDocumentLoaded(os, documentName), "Document is not loaded", );
 
-    Runnable* popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED, GTGlobals::UseMouse);
+    Runnable* popupChooser = new PopupChooser(os, {ACTION_PROJECT__UNLOAD_SELECTED}, GTGlobals::UseMouse);
 
     if (waitForMessageBox) {
         MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, "Yes");
@@ -183,21 +183,21 @@ void GTUtilsDocument::loadDocument(HI::GUITestOpStatus& os, const QString& docum
 
 #define GT_METHOD_NAME "lockDocument"
 void GTUtilsDocument::lockDocument(HI::GUITestOpStatus& os, const QString& documentName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Lock document for editing"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Lock document for editing"}));
     GTUtilsProjectTreeView::click(os, documentName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "unlockDocument"
 void GTUtilsDocument::unlockDocument(HI::GUITestOpStatus& os, const QString& documentName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Unlock document for editing"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Unlock document for editing"}));
     GTUtilsProjectTreeView::click(os, documentName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkIfDocumentIsLocked"
 void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus& os, const QString& documentName, bool isLocked) {
-    const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(os, GTUtilsProjectTreeView::findIndex(os, QStringList() << documentName));
+    const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(os, GTUtilsProjectTreeView::findIndex(os, {documentName}));
     const QIcon unlockedDocumentIcon(":/core/images/document.png");
     const QIcon lockedDocumentIcon(":/core/images/ro_document.png");
     if (isLocked) {

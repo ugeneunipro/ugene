@@ -1267,6 +1267,8 @@ imageformats/qgif.dll
 imageformats/qjpeg.dll
 imageformats/qsvg.dll
 imageformats/qtiff.dll
+libEGL.dll
+libGLESv2.dll
 libcrypto-1_1-x64.dll
 libssl-1_1-x64.dll
 msvcp140.dll

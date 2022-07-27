@@ -337,7 +337,7 @@ AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile
 }
 
 AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile, const QString& readsFile)
-    : Parameters(referenceFile, QStringList() << readsFile, Bwa),
+    : Parameters(referenceFile, {readsFile}, Bwa),
       indexAlgorithm(Autodetect) {
 }
 

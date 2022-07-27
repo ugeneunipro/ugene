@@ -22,6 +22,8 @@
 #ifndef _U2_BAM_UTILS_H_
 #define _U2_BAM_UTILS_H_
 
+#include <QFile>
+
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrl.h>
@@ -84,6 +86,18 @@ public:
      * Saves the list of references to the file in the SAMtools fai format.
      */
     static void createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os);
+
+    /**
+     * Calls fopen() correctly for files with Unicode
+     * names and returns a FILE* structure for the the opened file.
+     * For 'mode' see fopen() function description.
+     * Caller is responsible to close the file.
+     * If any error happens the method returns nullptr.
+     */
+    static FILE* openFile(const QString& path, const QString& mode);
+
+    /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
+    static void* loadIndex(const QString& path);
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools

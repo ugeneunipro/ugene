@@ -154,7 +154,7 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(5, 4));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7014.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
@@ -286,7 +286,7 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "s1");
 
     // Call Export -> Save subalignment context menu.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
@@ -460,7 +460,7 @@ GUI_TEST_CLASS_DEFINITION(test_7128) {
     GTLogTracer logTracer;
     GTFile::removeDir(mafftDirToRemove);
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
     GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
@@ -607,7 +607,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     for (int i = 0; i < 8; i++) {
-        GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+        GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
         GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
         GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
         GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -631,7 +631,7 @@ GUI_TEST_CLASS_DEFINITION(test_7191) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "NC_004718");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb, os));
@@ -880,61 +880,6 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
-
-#ifdef SW2_BUILD_WITH_CUDA
-GUI_TEST_CLASS_DEFINITION(test_7360) {
-    // Open _common_data/fasta/fa1.fa.
-    // Call Smith-Waterman dialog:
-    //     Pattern: A,
-    //     Search in: Translation,
-    //     Region: 1-1,
-    //     Algorithm version: CUDA.
-    // Search.
-    //     Expected: no crash.
-
-    // Call Smith-Waterman dialog:
-    //     Pattern: AA,
-    //     Search in: Translation,
-    //     Region: Whole sequence,
-    //     Algorithm version: CUDA.
-    // Search.
-    //     Expected: no crash.
-    class SwCudaScenario : public CustomScenario {
-    public:
-        SwCudaScenario(const QString& pattern, bool isWholeSequence)
-            : pattern(pattern), region() {
-            if (!isWholeSequence) {
-                region = GTRegionSelector::RegionSelectorSettings(1, 1);
-            }
-        }
-
-        void run(GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), pattern);
-            GTRadioButton::click(os, "radioTranslation", dialog);
-            GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog), region);
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "comboRealization", dialog), "CUDA");
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-
-    private:
-        QString pattern;
-        GTRegionSelector::RegionSelectorSettings region;
-    };
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    const GTLogTracer logA;
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("A", false)));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsLog::checkContainsError(os, logA, "Pattern length (1) is longer than search sequence length (0).");
-
-    const GTLogTracer logAa;
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
-}
-#endif  // SW2_BUILD_WITH_CUDA
 
 GUI_TEST_CLASS_DEFINITION(test_7367) {
     // Generate a large sequence.

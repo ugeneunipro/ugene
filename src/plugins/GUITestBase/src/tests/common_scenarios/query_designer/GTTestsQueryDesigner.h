@@ -27,16 +27,16 @@ k
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_querry_designer {
+namespace GUITest_common_scenarios_query_designer {
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_querry_designer"
+#define GUI_TEST_SUITE "GUITest_common_scenarios_query_designer"
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0001_1)
 GUI_TEST_CLASS_DECLARATION(test_0001_2)
 
 #undef GUI_TEST_SUITE
-}  // namespace GUITest_common_scenarios_querry_designer
+}  // namespace GUITest_common_scenarios_query_designer
 
 }  // namespace U2
 

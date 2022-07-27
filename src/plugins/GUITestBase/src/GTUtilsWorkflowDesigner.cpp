@@ -103,8 +103,7 @@ void GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(HI::GUITestOpS
 void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os) {
     StartupDialogFiller* filler = new StartupDialogFiller(os);
     GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Workflow Designer...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
     checkWorkflowDesignerWindowIsActive(os);
     GTUtilsDialog::removeRunnable(filler);
 }
@@ -689,8 +688,7 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enab
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DebugModeToggleScenario(enable)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 #undef GT_METHOD_NAME
 
@@ -758,7 +756,7 @@ void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus
         }
     }
     if (foundItem != nullptr) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove"}));
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsWorkflowDesigner::clickOnPalette(os, workerName, Qt::RightButton);
     }

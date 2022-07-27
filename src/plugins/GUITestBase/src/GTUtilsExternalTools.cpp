@@ -91,24 +91,21 @@ private:
 #define GT_METHOD_NAME "removeTool"
 void GTUtilsExternalTools::removeTool(HI::GUITestOpStatus& os, const QString& toolName) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new RemoveToolScenario(toolName)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isValid"
 void GTUtilsExternalTools::checkValidation(HI::GUITestOpStatus& os, const QString& toolName) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckValidationScenario(toolName)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setToolUrl"
 void GTUtilsExternalTools::setToolUrl(HI::GUITestOpStatus& os, const QString& toolName, const QString& url) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario(toolName, url)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 #undef GT_METHOD_NAME
 

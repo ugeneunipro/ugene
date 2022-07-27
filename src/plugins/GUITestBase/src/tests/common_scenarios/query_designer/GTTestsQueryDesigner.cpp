@@ -19,27 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsQuerryDesigner.h"
-#include <base_dialogs/GTFileDialog.h>
+#include "GTTestsQueryDesigner.h"
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QGraphicsItem>
-#include <QGraphicsView>
 
 #include <U2Gui/ToolsMenu.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsQueryDesigner.h"
-#include "primitives/GTMenu.h"
-#include "primitives/PopupChooser.h"
-#include "utils/GTKeyboardUtils.h"
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_querry_designer {
+namespace GUITest_common_scenarios_query_designer {
 using namespace HI;
 
 void test1(HI::GUITestOpStatus& os, QString s = "") {
@@ -94,6 +88,7 @@ void test1(HI::GUITestOpStatus& os, QString s = "") {
     // 5. repeat from step 2 (do 4 iterations)
     // Expected state: UGENE not crashes.
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     test1(os, "Pattern");
 }
@@ -105,5 +100,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     test1(os, "arr");
 }
-}  // namespace GUITest_common_scenarios_querry_designer
+
+}  // namespace GUITest_common_scenarios_query_designer
 }  // namespace U2

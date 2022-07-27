@@ -176,11 +176,11 @@ static inline bool append_text(bam_header_t *header, kstring_t *str)
 {
 	size_t x = header->l_text, y = header->l_text + str->l + 2; // 2 = 1 byte dret + 1 byte null
 	kroundup32(x); kroundup32(y);
-	if (x < y) 
+	if (x < y)
     {
         header->n_text = y;
         header->text = (char*)realloc(header->text, y);
-        if ( !header->text ) 
+        if ( !header->text )
         {
             fprintf(stderr,"realloc failed to alloc %ld bytes\n", y);
             SAMTOOLS_ERROR_MESSAGE = "realloc failed to alloc bytes\n";
@@ -479,6 +479,18 @@ int sam_read1(tamFile fp, bam_header_t *header, bam1_t *b)
 	b->l_aux = doff - doff0;
 	b->data_len = doff;
 	return z;
+}
+
+/** Same as sam_open(const char*) but uses the provided file handle instead of the file name. */
+tamFile sam_dopen(int fd) {
+    tamFile fp;
+    gzFile gzfp = gzdopen(fd, "rb");
+    if (gzfp == 0) return 0;
+    fp = (tamFile)calloc(1, sizeof(struct __tamFile_t));
+    fp->str = (kstring_t*)calloc(1, sizeof(kstring_t));
+    fp->fp = gzfp;
+    fp->ks = ks_init(fp->fp);
+    return fp;
 }
 
 tamFile sam_open(const char *fn)
