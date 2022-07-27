@@ -4,6 +4,7 @@
 #include <U2Gui/GScrollBar.h>
 #include "MaEditor.h"
 #include "MaEditorWgt.h"
+#include "MaEditorSelection.h"
 #include "MsaMultilineScrollArea.h"
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
@@ -55,7 +56,8 @@ bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
 }
 
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions &directions,
-                                        bool byStep)
+                                        bool byStep,
+                                        bool selectionChange)
 {
     QScrollBar *vbar = verticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
