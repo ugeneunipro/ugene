@@ -3237,6 +3237,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

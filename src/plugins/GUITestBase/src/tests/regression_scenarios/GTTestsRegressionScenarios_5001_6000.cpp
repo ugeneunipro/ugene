@@ -619,7 +619,7 @@ GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //     Expected state: notification about low memory has appeared
     Runnable* dis = new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/matrix.html");
     GTUtilsDialog::waitForDialog(os, dis);
-    Runnable* pop = new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseKey);
+    Runnable* pop = new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseKey);
     GTUtilsDialog::waitForDialog(os, pop);
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
@@ -632,7 +632,7 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Do MSA area context menu->Statistics->generate grid profile
     //    Expected state: notification about low memory has appeared
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate grid profile"}, GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, true, GenerateAlignmentProfileDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/stat.html"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
@@ -1511,8 +1511,7 @@ GUI_TEST_CLASS_DEFINITION(test_5421) {
     // Expected state: Save dialog appeared.
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "sars.gb"));
@@ -2658,7 +2657,7 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Try to align it with Kalign
     // Expected state: there is messagebox about incompatible alphabet
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 }
@@ -2690,7 +2689,7 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
         }
     };
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, new Scenario()));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "source"));
     GTMouseDriver::click(Qt::RightButton);
@@ -2726,7 +2725,7 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
     // Expected: the dialog about external modification of documents appears.
     // 5. Click "No".
     // Expected: UGENE does not crash.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
     GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, new Scenario()));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
@@ -3235,6 +3234,8 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);  // This task may take up to 1 minute. checkMcaEditorWindowIsActive waits only for 30 seconds.
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
     GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
@@ -3698,6 +3699,8 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     GTLogTracer trace;
     // 2. Select the last char of the first row
@@ -3978,7 +3981,7 @@ GUI_TEST_CLASS_DEFINITION(test_5783) {
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsLog::check(os, l);
 }
@@ -4423,7 +4426,7 @@ GUI_TEST_CLASS_DEFINITION(test_5837) {
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);

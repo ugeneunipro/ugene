@@ -80,7 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Expected result : the menu contains an item "Edit > Replace character".The item is enabled.A hotkey Shift + R is shown nearby.
     // 4. Select the item.
     // Expected result : the character is selected in the replacement mode.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EDIT, "replace_selected_character"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     // 5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
@@ -127,7 +127,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     // 3. Open the context menu in the sequence area.
     // Expected result : the "Edit > Replace character" item is disabled.Selection is in normal mode.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_character", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EDIT, "replace_selected_character"}, PopupChecker::IsDisabled));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 

@@ -153,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(5, 4));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7014.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
@@ -285,7 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "s1");
 
     // Call Export -> Save subalignment context menu.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::add(os, saveSubalignmentDialogFiller);
@@ -459,7 +459,7 @@ GUI_TEST_CLASS_DEFINITION(test_7128) {
     GTLogTracer logTracer;
     GTFile::removeDir(mafftDirToRemove);
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
     GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
@@ -606,7 +606,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     for (int i = 0; i < 8; i++) {
-        GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+        GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
         GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
         GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
         GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -630,7 +630,7 @@ GUI_TEST_CLASS_DEFINITION(test_7191) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::click(os, "NC_004718");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb, os));

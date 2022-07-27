@@ -78,8 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use context menu {Colors->No Colors} in MSA editor area.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "No colors"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
     GTMenu::showContextMenu(os, seq);
     //    Expected state: background for symbols must be white
     // check A
@@ -104,8 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->Jalview} in MSA editor area.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Jalview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
     GTMenu::showContextMenu(os, seq);
     // Expected state: background for symbols must be:
     // A - green G - red T - blue  C - orange gap - no background
@@ -133,8 +131,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
     //    Intensity of colour depends on the frequency of appearance in the column.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Percentage identity"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
     GTMenu::showContextMenu(os, seq);
     //    Symbols and columns at the descending order
     //    1. A,G,T at 2,3,9

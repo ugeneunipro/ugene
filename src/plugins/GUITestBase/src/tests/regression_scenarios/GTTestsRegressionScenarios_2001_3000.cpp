@@ -775,17 +775,14 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     QString colorSchemeName = name + "_Scheme";
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                              << "Custom schemes"
-                                                              << "Create new color scheme"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTUtilsDialog::add(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::amino));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                              << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", colorSchemeName}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -803,7 +800,7 @@ GUI_TEST_CLASS_DEFINITION(test_2091) {
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 3. Call context menu on the name list area, select the {Edit -> Remove sequence} menu item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EDIT, "Remove sequence"}));
     GTMouseDriver::click(Qt::RightButton);
     // Expected state: the sequence is removed.
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -1326,7 +1323,7 @@ GUI_TEST_CLASS_DEFINITION(test_2267_1) {
     Runnable* filler = new EditQualifierFiller(os, "111111111111111111111111111111111111111111111111111111111111111111111111111111111", "val", true, false);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -1350,7 +1347,7 @@ GUI_TEST_CLASS_DEFINITION(test_2267_2) {
     Runnable* filler = new EditQualifierFiller(os, "))()((_", "val", true, true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
 }
@@ -1398,7 +1395,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     // 4. Click the "Align" button.
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new TCoffeeDailogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with T-Coffee"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with T-Coffee"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     //    Expected: the t-coffee task started and finished well.
@@ -1575,7 +1572,7 @@ GUI_TEST_CLASS_DEFINITION(test_2295) {
 
     // 2. Export alignment to read-write format
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, 0, sandBoxDir + "DNA"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_TO_AMINO_ACTION));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_TO_AMINO_ACTION}));
     GTUtilsProjectTreeView::callContextMenu(os, "DNA.apr");
 
     // Expected: Alignent is locked
@@ -1950,7 +1947,7 @@ GUI_TEST_CLASS_DEFINITION(test_2360) {
     // 4. Set "File format to use" to PHYLIP Sequantial.
     // 5. Click "Export".
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_TO_AMINO_ACTION));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_TO_AMINO_ACTION}));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -2418,7 +2415,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__UNLOAD_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
@@ -2675,7 +2672,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsMsaEditor::removeRows(os, 1, list.size() - 1);
 
     // 3. Align the result one-line-msa by kalign with default values.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
     GTUtilsDialog::add(os, new KalignDialogFiller(os));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -2899,13 +2896,13 @@ GUI_TEST_CLASS_DEFINITION(test_2519) {
     // Expected state: a "Remove subsequence" dialog appears.
     // 4. Set the region (1..190950), other settings should be default, click the "Remove" button.
     // Expected state: UGENE doesn't crash.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}));
     GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "1..190950"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // 5. Call this dialog again, remove region (1..8999).
     // Expected state: UGENE doesn't crash.
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REMOVE_SUBSEQUENCE));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}));
     GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "1..8999"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
@@ -2982,7 +2979,7 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    2. Use context menu { Edit sequence -> Remove subsequence... }
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "action_edit_remove_sub_sequences"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, "action_edit_remove_sub_sequences"}));
     GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "10..20"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
@@ -3023,7 +3020,7 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
             clickButton(button);
         }
     };
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__SAVE_DOCUMENT}));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
     GTUtilsDialog::add(os, new CustomSaver(os));
     GTUtilsProjectTreeView::click(os, "test_2544.fa", Qt::RightButton);
@@ -3296,7 +3293,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
@@ -3318,7 +3315,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with ClustalW"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
@@ -3375,7 +3372,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new TCoffeeDailogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with T-Coffee", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with T-Coffee"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
@@ -3397,7 +3394,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
@@ -3445,7 +3442,7 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Export subalignment from this msa to any MSA format
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/2605.aln", {"SEQUENCE_1"}, 6, 237));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
@@ -3885,7 +3882,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
     };
 
     GTUtilsDialog::waitForDialog(os, new ImageQualityChecker(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "Save circular view as image", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "Save circular view as image"}, GTGlobals::UseMouse));
 
     auto circularView = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
@@ -4122,7 +4119,7 @@ GUI_TEST_CLASS_DEFINITION(test_2761_1) {
         }
     };
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new customFiller(os));
     GTMouseDriver::click(Qt::RightButton);
     //    4. Set the destination path to the dir without write permissions.
@@ -4150,7 +4147,7 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
         }
     };
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new customFiller(os));
     GTMouseDriver::click(Qt::RightButton);
     //    4. Set the destination path to the dir that does not exists
@@ -4310,7 +4307,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 5));
     GTMouseDriver::click(Qt::RightButton);
@@ -4380,7 +4377,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801) {
 
     // 2. Start MAFFT with default values.
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
     // 3. Cancel the align task.
@@ -4398,7 +4395,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801_1) {
 
     // 2. Start MAFFT with default values.
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep(10000);  // Give a task some time to run.
 
@@ -4688,15 +4685,12 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
 
     //    3. Create a new custom nucleotide color scheme.
     QString colorSchemeName = GTUtils::genUniqueString(name);
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                              << "Custom schemes"
-                                                              << "Create new color scheme"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTUtilsDialog::add(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
     MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     GTMenu::showContextMenu(os, msaSeqArea);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                              << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", colorSchemeName}));
     GTMenu::showContextMenu(os, msaSeqArea);
 
     combo = GTWidget::findComboBox(os, "highlightingScheme");
@@ -5321,7 +5315,7 @@ GUI_TEST_CLASS_DEFINITION(test_2987) {
     GTUtilsDialog::add(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1..5)", sandBoxDir + "test_2987/test_2987.gb"));
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "create_annotation_action"));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, "ep_exportAnnotations2CSV"}));
     GTUtilsDialog::add(os, new ExportAnnotationsFiller(sandBoxDir + "test_2987/test_2987", ExportAnnotationsFiller::csv, os));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "test_2987.gb"));
     GTMouseDriver::click(Qt::RightButton);

@@ -502,7 +502,7 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1314,7 +1314,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
                                                   << "ENSG00000146463";
     for (auto id : qAsConst(ensembleIds)) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
-        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
+        actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {id});
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
@@ -3205,7 +3205,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
 
     QStringList frames = {"Frame +1", "Frame +2", "Frame +3", "Frame -1", "Frame -2", "Frame -3"};
     foreach (const QString& frame, frames) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << frame));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {frame}));
     }
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -5110,14 +5110,14 @@ GUI_TEST_CLASS_DEFINITION(test_6750) {
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
 
     // 5. Call the "Search in sequences" context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "search_in_sequences"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "search_in_sequences"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // Expected state: "Results: 1/573"
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/573");
 
     // 6. Call the "Search in sequence names" context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "search_in_sequence_names"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "search_in_sequence_names"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // Expected state: "Results: 1/1
@@ -5136,7 +5136,7 @@ GUI_TEST_CLASS_DEFINITION(test_6751) {
     // 3. Select "Align" -> "Align with MUSCLE…" and click on the "Align" button.
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
     // Expected result: the alignment process has passed successfully.
@@ -5164,7 +5164,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     // 2. Click "Align > Align with MUSCLE…" and click "Align".
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     // 3. Click on any sequence during the aligning process.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
@@ -5374,7 +5374,7 @@ GUI_TEST_CLASS_DEFINITION(test_6807) {
     // 3. Accept dialog
     // Expected state: grid profile task finished
     GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, new CheckWarningScenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate grid profile"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -6519,7 +6519,7 @@ GUI_TEST_CLASS_DEFINITION(test_6990_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_leading_gap"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Expected state: the order of the sequences is not changed
@@ -6532,7 +6532,7 @@ GUI_TEST_CLASS_DEFINITION(test_6990_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     // Sort by leading gap.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_leading_gap"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Expected state: the last sequence is Phaneroptera_falcata
@@ -6541,7 +6541,7 @@ GUI_TEST_CLASS_DEFINITION(test_6990_1) {
     CHECK_SET_ERR(nameList1[17] == "Phaneroptera_falcata", "2. The last sequence is incorrect");
 
     // Sort by leading gap -> Descending.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap_descending"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_leading_gap_descending"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Expected state: the last sequence is Hetrodes_pupus_EF540832.
