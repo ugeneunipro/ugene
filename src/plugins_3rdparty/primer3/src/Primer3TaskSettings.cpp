@@ -394,7 +394,7 @@ void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
     }
 }
 
-void Primer3TaskSettings::setOkRegion(QList<QList<int>> value) {
+void Primer3TaskSettings::setOkRegion(const QList<QList<int>>& value) {
     seqArgs->ok_regions.count = 0;
     for (const QList<int>& v : value) {
         p3_add_to_sa_ok_regions(seqArgs, v.value(0), v.value(1), v.value(2), v.value(3));

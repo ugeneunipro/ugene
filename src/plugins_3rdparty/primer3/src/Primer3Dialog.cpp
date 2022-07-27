@@ -809,6 +809,7 @@ void Primer3Dialog::sl_loadSettings() {
 
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
+    QStringList changedLineEdits;
     while(!stream.atEnd()) {
         auto line = stream.readLine();
         auto par = line.split('=');
@@ -857,7 +858,19 @@ void Primer3Dialog::sl_loadSettings() {
         } else if (LINE_EDIT_PARAMETERS.contains(par.first())) {
             QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par.first());
             if (lineEdit != nullptr) {
-                lineEdit->setText(par.last());
+                bool wasChanged = changedLineEdits.contains(par.first());
+                QString text;
+                if (!wasChanged) {
+                    text = par.last();
+                } else {
+                    text = lineEdit->text();
+                    if (!text.isEmpty()) {
+                        text.append(" ");
+                    }
+                    text.append(par.last());
+                }
+                lineEdit->setText(text);
+                changedLineEdits.append(par.first());
                 continue;
             }
         } else if (par.first() == "SEQUENCE_QUALITY") {

@@ -37,270 +37,233 @@ PRIMER_SEQUENCE_QUALITY
 
 static const QString extensionsToCheck[14] = {".nhr", ".nnd", ".nni", ".nsd", ".nsi", ".nsq", ".nin", ".phr", ".pnd", ".pni", ".psd", ".psi", ".psq", ".pin"};
 
-namespace {
-bool readPrimer(QDomElement element, QString prefix, Primer* outPrimer, bool internalOligo) {
-    {
-        QString buf = element.attribute(prefix);
-        if (!buf.isEmpty()) {
-            outPrimer->setStart(buf.split(',')[0].toInt());
-            outPrimer->setLength(buf.split(',')[1].toInt());
-        } else {
-            return false;
-        }
-    }
-    {
-        QString buf = element.attribute(prefix + "_TM");
-        if (!buf.isEmpty()) {
-            outPrimer->setMeltingTemperature(buf.toDouble());
-        }
-    }
-    {
-        QString buf = element.attribute(prefix + "_GC_PERCENT");
-        if (!buf.isEmpty()) {
-            outPrimer->setGcContent(buf.toDouble());
-        }
-    }
-    {
-        QString buf = element.attribute(prefix + "_SELF_ANY");
-        if (!buf.isEmpty()) {
-            outPrimer->setSelfAny((buf.toDouble() * 100));
-        }
-    }
-    {
-        QString buf = element.attribute(prefix + "_SELF_END");
-        if (!buf.isEmpty()) {
-            outPrimer->setSelfEnd((buf.toDouble() * 100));
-        }
-    }
-    if (!internalOligo) {
-        QString buf = element.attribute(prefix + "_END_STABILITY");
-        if (!buf.isEmpty()) {
-            outPrimer->setEndStability(buf.toDouble());
-        }
-    }
-    return true;
-}
-
-PrimerPair readPrimerPair(QDomElement element, QString suffix) {
-    PrimerPair result;
-    {
-        Primer primer;
-        if (readPrimer(element, "PRIMER_LEFT" + suffix, &primer, false)) {
-            result.setLeftPrimer(&primer);
-        }
-    }
-    {
-        Primer primer;
-        if (readPrimer(element, "PRIMER_RIGHT" + suffix, &primer, false)) {
-            result.setRightPrimer(&primer);
-        }
-    }
-    {
-        Primer primer;
-        if (readPrimer(element, "PRIMER_INTERNAL_OLIGO" + suffix, &primer, true)) {
-            result.setInternalOligo(&primer);
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
-        if (!buf.isEmpty()) {
-            result.setComplAny((buf.toDouble() * 100));
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
-        if (!buf.isEmpty()) {
-            result.setComplEnd((buf.toDouble() * 100));
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PRODUCT_SIZE" + suffix);
-        if (!buf.isEmpty()) {
-            result.setProductSize(buf.toInt());
-        }
-    }
-    return result;
-}
-}  // namespace
-
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     settings.setIncludedRegion(U2Region(0, -1));
 
     QString buf;
     int n_quality = 0;
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
-    for (int i = 0; i < inputParameters.size(); i++) {
-        QDomNode n = inputParameters.item(i);
+    QSet<QString> changedIntervalValues;
+    for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
+        QDomNode n = inputParameters.item(inputParametersIndex);
         assert(n.isElement());
         if (!n.isElement()) {
             continue;
         }
         QDomElement elInput = n.toElement();
 
-        foreach (QString key, settings.getIntPropertyList()) {
+        for (const QString& key : settings.getIntPropertyList()) {
             buf = elInput.attribute(key);
             if (!buf.isEmpty()) {
                 settings.setIntProperty(key, buf.toInt());
             }
         }
-        foreach (QString key, settings.getDoublePropertyList()) {
+        for (const QString& key : settings.getDoublePropertyList()) {
             buf = elInput.attribute(key);
             if (!buf.isEmpty()) {
                 settings.setDoubleProperty(key, buf.toDouble());
             }
         }
         // 1
-        buf = elInput.attribute("PRIMER_SEQUENCE_ID");
+        buf = elInput.attribute("SEQUENCE_ID");
         if (!buf.isEmpty()) {
             settings.setSequenceName(buf.toLatin1());
         }
         // 2
-        buf = elInput.attribute("SEQUENCE");
+        buf = elInput.attribute("SEQUENCE_TEMPLATE");
         if (!buf.isEmpty()) {
             settings.setSequence(buf.toLatin1());
         }
 
         buf = elInput.attribute("CIRCULAR");
         if (!buf.isEmpty()) {
-            settings.setCircularity(buf == "true" ? 1 : 0);
+            settings.setCircularity(buf == "true" ? true : false);
         }
 
         // 3
-        buf = elInput.attribute("TARGET");
+        buf = elInput.attribute("SEQUENCE_TARGET");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
-                if (str.split(',').size() >= 2) {
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                if (str.split(',').size() == 2) {
                     regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal TARGET value: %1").arg(buf));
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_TARGET value: %1").arg(buf));
                     break;
                 }
             }
             settings.setTarget(regionList);
         }
-        // 8
-        buf = elInput.attribute("PRIMER_PRODUCT_SIZE_RANGE");
+        // 4
+        buf = elInput.attribute("SEQUENCE_OVERLAP_JUNCTION_LIST");
         if (!buf.isEmpty()) {
-            QList<U2Region> regionList;
-            foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
-                if (2 == str.split('-').size()) {
-                    regionList.append(U2Region(str.split('-')[0].toInt(),
-                                               str.split('-')[1].toInt() - str.split('-')[0].toInt() + 1));
-                } else {
-                    stateInfo.setError(GTest::tr("Illegal PRIMER_DEFAULT_PRODUCT value: %1").arg(buf));
+            QList<int> intList;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                bool ok = false;
+                int v = str.toInt(&ok);
+                if (!ok) {
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1").arg(buf));
                     break;
                 }
+                intList.append(v);
             }
-            settings.setProductSizeRange(regionList);
+            settings.setOverlapJunctionList(intList);
         }
-        // 11
-        buf = elInput.attribute("PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION");
+        // 5
+        buf = elInput.attribute("SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST");
+        if (!buf.isEmpty()) {
+            QList<int> intList;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                bool ok = false;
+                int v = str.toInt(&ok);
+                if (!ok) {
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1").arg(buf));
+                    break;
+                }
+                intList.append(v);
+            }
+            settings.setInternalOverlapJunctionList(intList);
+        }
+        // 6
+        buf = elInput.attribute("SEQUENCE_EXCLUDED_REGION");
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
-            foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
-                if (2 == str.split(',').size()) {
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                if (str.split(',').size() == 2) {
                     regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION value: %1").arg(buf));
-                    break;
-                }
-            }
-            settings.setInternalOligoExcludedRegion(regionList);
-        }
-        // 22???
-        buf = elInput.attribute("INCLUDED_REGION");
-        if (!buf.isEmpty()) {
-            if (2 == buf.split(',').size()) {
-                settings.setIncludedRegion(U2Region(buf.split(',')[0].toInt(), buf.split(',')[1].toInt()));  //??? may be wrong
-            } else {
-                stateInfo.setError(GTest::tr("Illegal INCLUDED_REGION value: %1").arg(buf));
-            }
-        }
-        // 32
-        buf = elInput.attribute("PRIMER_LEFT_INPUT");
-        if (!buf.isEmpty()) {
-            settings.setLeftInput(buf.toLatin1());
-        }
-        // 33
-        buf = elInput.attribute("PRIMER_RIGHT_INPUT");
-        if (!buf.isEmpty()) {
-            settings.setRightInput(buf.toLatin1());
-        }
-        // 34
-        buf = elInput.attribute("PRIMER_INTERNAL_OLIGO_INPUT");
-        if (!buf.isEmpty()) {
-            settings.setInternalInput(buf.toLatin1());
-        }
-        // 35
-        buf = elInput.attribute("MARKER_NAME");
-        if (!buf.isEmpty()) {
-            settings.setSequenceName(buf.toLatin1());
-        }
-        // 37
-        buf = elInput.attribute("PRIMER_DEFAULT_PRODUCT");
-        if (!buf.isEmpty()) {
-            QList<U2Region> regionList;
-            foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
-                if (2 == str.split('-').size()) {
-                    regionList.append(U2Region(str.split('-')[0].toInt(),
-                                               str.split('-')[1].toInt() - str.split('-')[0].toInt() + 1));
-                } else {
-                    stateInfo.setError(GTest::tr("Illegal PRIMER_DEFAULT_PRODUCT value: %1").arg(buf));
-                    break;
-                }
-            }
-            settings.setProductSizeRange(regionList);
-        }
-        // 38
-        buf = elInput.attribute("EXCLUDED_REGION");
-        if (!buf.isEmpty()) {
-            QList<U2Region> regionList;
-            foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
-                if (2 == str.split(',').size()) {
-                    regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
-                } else {
-                    stateInfo.setError(GTest::tr("Illegal EXCLUDED_REGION value: %1").arg(buf));
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_EXCLUDED_REGION value: %1").arg(buf));
                     break;
                 }
             }
             settings.setExcludedRegion(regionList);
         }
-        // 119
+        // 7
+        buf = elInput.attribute("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST");
+        if (!buf.isEmpty()) {
+            QList<QList<int>> intListList;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                auto strList = str.split(',');
+                if (strList.size() == 4) {
+                    QList<int> list;
+                    for (int i = 0; i < 4; i++) {
+                        bool ok = false;
+                        int v = str.toInt(&ok);
+                        if (!ok) {
+                            stateInfo.setError(GTest::tr("Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1").arg(buf));
+                            break;
+                        }
+
+                        list << v;
+                    }
+                    intListList.append(list);
+                } else {
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1").arg(buf));
+                    break;
+                }
+            }
+            settings.setOkRegion(intListList);
+        }
+        // 8
+        buf = elInput.attribute("SEQUENCE_INCLUDED_REGION");
+        if (!buf.isEmpty()) {
+            U2Region region;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                if (str.split(',').size() == 2) {
+                    region = U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt());
+                } else {
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INCLUDED_REGION value: %1").arg(buf));
+                    break;
+                }
+            }
+            settings.setIncludedRegion(region);
+        }
+        // 9
+        buf = elInput.attribute("SEQUENCE_INTERNAL_EXCLUDED_REGION");
+        if (!buf.isEmpty()) {
+            QList<U2Region> regionList;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                if (str.split(',').size() == 2) {
+                    regionList << U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt());
+                } else {
+                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1").arg(buf));
+                    break;
+                }
+            }
+            settings.setInternalOligoExcludedRegion(regionList);
+        }
+        // 9
+        buf = elInput.attribute("PRIMER_PRODUCT_SIZE_RANGE");
+        if (!buf.isEmpty()) {
+            QList<U2Region> regionList;
+            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+                auto strList = str.split('-');
+                if (strList.size() == 2) {
+                    regionList << U2Region(strList[0].toInt(), strList[1].toInt() - strList[0].toInt() + 1);
+                } else {
+                    stateInfo.setError(GTest::tr("Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1").arg(buf));
+                    break;
+                }
+            }
+            settings.setProductSizeRange(regionList);
+        }
+        // 10
+        buf = elInput.attribute("SEQUENCE_START_CODON_SEQUENCE");
+        if (!buf.isEmpty()) {
+            settings.setStartCodonSequence(buf.toLatin1());
+        }
+        // 11
+        buf = elInput.attribute("SEQUENCE_PRIMER");
+        if (!buf.isEmpty()) {
+            settings.setLeftInput(buf.toLatin1());
+        }
+        // 12
+        buf = elInput.attribute("SEQUENCE_PRIMER_REVCOMP");
+        if (!buf.isEmpty()) {
+            settings.setRightInput(buf.toLatin1());
+        }
+        // 13
+        buf = elInput.attribute("SEQUENCE_INTERNAL_OLIGO");
+        if (!buf.isEmpty()) {
+            settings.setInternalInput(buf.toLatin1());
+        }
+        // 14
+        buf = elInput.attribute("SEQUENCE_OVERHANG_LEFT");
+        if (!buf.isEmpty()) {
+            settings.setLeftOverhang(buf.toLatin1());
+        }
+        // 15
+        buf = elInput.attribute("SEQUENCE_OVERHANG_RIGHT");
+        if (!buf.isEmpty()) {
+            settings.setRightOverhang(buf.toLatin1());
+        }
+        // 16
+        buf = elInput.attribute("PRIMER_MUST_MATCH_FIVE_PRIME");
+        if (!buf.isEmpty()) {
+            settings.setPrimerMustMatchFivePrime(buf.toLatin1());
+        }
+        // 17
+        buf = elInput.attribute("PRIMER_MUST_MATCH_THREE_PRIME");
+        if (!buf.isEmpty()) {
+            settings.setPrimerMustMatchThreePrime(buf.toLatin1());
+        }
+        // 18
+        buf = elInput.attribute("PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME");
+        if (!buf.isEmpty()) {
+            settings.setInternalPrimerMustMatchFivePrime(buf.toLatin1());
+        }
+        // 19
+        buf = elInput.attribute("PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME");
+        if (!buf.isEmpty()) {
+            settings.setInternalPrimerMustMatchThreePrime(buf.toLatin1());
+        }
+        // 20
         buf = elInput.attribute("PRIMER_TASK");
         if (!buf.isEmpty()) {
             settings.setTaskByName(buf);
-            //if (0 == buf.compare("pick_pcr_primers", Qt::CaseInsensitive)) {
-            //    settings.setTask(pick_pcr_primers);
-            //} else if (0 == buf.compare("pick_pcr_primers_and_hyb_probe", Qt::CaseInsensitive)) {
-            //    settings.setTask(pick_pcr_primers_and_hyb_probe);
-            //} else if (0 == buf.compare("pick_left_only", Qt::CaseInsensitive)) {
-            //    settings.setTask(pick_left_only);
-            //} else if (0 == buf.compare("pick_right_only", Qt::CaseInsensitive)) {
-            //    settings.setTask(pick_right_only);
-            //} else if (0 == buf.compare("pick_hyb_probe_only", Qt::CaseInsensitive)) {
-            //    settings.setTask(pick_hyb_probe_only);
-            //} else {
-            //    stateInfo.setError(GTest::tr("Unrecognized PRIMER_TASK"));  //??? may be remove from this place
-            //}
         }
-        // 10
-        buf = elInput.attribute("PRIMER_PICK_INTERNAL_OLIGO");
-        if (!buf.isEmpty()) {
-            int pick_internal_oligo = buf.toInt();
-            //if ((pick_internal_oligo == 1 || pick_internal_oligo == 0) &&
-            //    (settings.getTask() == pick_left_only ||
-            //     settings.getTask() == pick_right_only ||
-            //     settings.getTask() == pick_hyb_probe_only)) {
-            //    stateInfo.setError(GTest::tr("Contradiction in primer_task definition"));  //??? may be remove from this place
-            //} else if (pick_internal_oligo == 1) {
-            //    settings.setTask(pick_pcr_primers_and_hyb_probe);
-            //} else if (pick_internal_oligo == 0) {
-            //    settings.setTask(pick_pcr_primers);
-            //}
-        }
-        // 120
-        buf = elInput.attribute("PRIMER_SEQUENCE_QUALITY");
+        //21
+        buf = elInput.attribute("SEQUENCE_QUALITY");
         if (!buf.isEmpty()) {
             QVector<int> qualityVecor;
             QStringList qualityList = buf.split(' ', QString::SkipEmptyParts);
@@ -310,13 +273,13 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             }
             settings.setSequenceQuality(qualityVecor);
         }
-        // 121
+        // 22
         buf = elInput.attribute("PRIMER_MISPRIMING_LIBRARY");
         if (!buf.isEmpty()) {
             settings.setRepeatLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
-        // 122
-        buf = elInput.attribute("PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY");
+        // 23
+        buf = elInput.attribute("PRIMER_INTERNAL_MISHYB_LIBRARY");
         if (!buf.isEmpty()) {
             settings.setMishybLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
@@ -325,31 +288,143 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     //////////////////////////////////////////////////////////////////////////
     // Check parameters
     QDomNodeList outputParameters = el.elementsByTagName("plugin_primer_3_out");
-    for (int i = 0; i < outputParameters.size(); i++) {
-        QDomNode n = outputParameters.item(i);
+    for (int outputParametersIndex = 0; outputParametersIndex < outputParameters.size(); outputParametersIndex++) {
+        QDomNode n = outputParameters.item(outputParametersIndex);
         assert(n.isElement());
         if (!n.isElement()) {
             continue;
         }
         QDomElement elOutput = n.toElement();
+
+        buf = elOutput.attribute("PRIMER_ERROR");
+        if (!buf.isEmpty()) {
+            expectedErrorMessage = buf;
+        }
+
+        int leftCount = 0;
+        int rightCount = 0;
+        int internalCount = 0;
         int pairsCount = 0;
 
-        buf = elOutput.attribute("PRIMER_PAIRS_NUMBER");
+        buf = elOutput.attribute("PRIMER_LEFT_NUM_RETURNED");
+        if (!buf.isEmpty()) {
+            leftCount = buf.toInt();
+        }
+        buf = elOutput.attribute("PRIMER_RIGHT_NUM_RETURNED");
+        if (!buf.isEmpty()) {
+            rightCount = buf.toInt();
+        }
+        buf = elOutput.attribute("PRIMER_INTERNAL_NUM_RETURNED");
+        if (!buf.isEmpty()) {
+            internalCount = buf.toInt();
+        }
+        buf = elOutput.attribute("PRIMER_PAIR_NUM_RETURNED");
         if (!buf.isEmpty()) {
             pairsCount = buf.toInt();
         }
 
-        for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
-            expectedBestPairs.append(readPrimerPair(elOutput, (pairIndex > 0) ? ("_" + QString::number(pairIndex)) : QString()));
+        if (pairsCount > 0 && (pairsCount != leftCount || pairsCount != rightCount || (internalCount != 0 && pairsCount != rightCount))) {
+            stateInfo.setError(GTest::tr("Incorrect results num. Pairs: %1, left: %2, right: %3, inernal: %4")
+                .arg(pairsCount).arg(leftCount).arg(rightCount).arg(internalCount));
+            return;
         }
+
+        QList<Primer> leftPrimers;
+        for (int i = 0; i < leftCount; i++) {
+            Primer primer;
+            if (readPrimer(elOutput, "PRIMER_LEFT_" + QString::number(i), &primer, false)) {
+                leftPrimers << primer;
+                expectedSinglePrimers << primer;
+            } else {
+                stateInfo.setError(GTest::tr("Incorrect parameter: %1").arg("PRIMER_LEFT_" + QString::number(i)));
+                return;
+            }
+        }
+        QList<Primer> rightPrimers;
+        for (int i = 0; i < rightCount; i++) {
+            Primer primer;
+            if (readPrimer(elOutput, "PRIMER_RIGHT_" + QString::number(i), &primer, false)) {
+                rightPrimers << primer;
+                expectedSinglePrimers << primer;
+            } else {
+                stateInfo.setError(GTest::tr("Incorrect parameter: %1").arg("PRIMER_RIGHT_" + QString::number(i)));
+                return;
+            }
+        }
+        QList<Primer> internalPrimers;
+        for (int i = 0; i < internalCount; i++) {
+            Primer primer;
+            if (readPrimer(elOutput, "PRIMER_INTERNAL_" + QString::number(i), &primer, true)) {
+                internalPrimers << primer;
+                expectedSinglePrimers << primer;
+            } else {
+                stateInfo.setError(GTest::tr("Incorrect parameter: %1").arg("PRIMER_INTERNAL_" + QString::number(i)));
+                return;
+            }
+        }
+
+        for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
+            PrimerPair result;
+            result.setLeftPrimer(&leftPrimers[pairIndex]);
+            result.setRightPrimer(&rightPrimers[pairIndex]);
+            if (internalCount > 0) {
+                result.setInternalOligo(&internalPrimers[pairIndex]);
+            }
+            auto suffix = "_" + QString::number(pairIndex);
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
+                if (!buf.isEmpty()) {
+                    result.setComplAny(buf.toDouble());
+                } else {
+                    buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
+                    if (!buf.isEmpty()) {
+                        result.setComplAny(buf.toDouble());
+                    }
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
+                if (!buf.isEmpty()) {
+                    result.setComplEnd(buf.toDouble());
+                } else {
+                    buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
+                    if (!buf.isEmpty()) {
+                        result.setComplEnd(buf.toDouble());
+                    }
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_SIZE");
+                if (!buf.isEmpty()) {
+                    result.setProductSize(buf.toInt());
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_TM");
+                if (!buf.isEmpty()) {
+                    result.setProductTm(buf.toDouble());
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PENALTY");
+                if (!buf.isEmpty()) {
+                    result.setProductQuality(buf.toDouble());
+                }
+            }
+
+            expectedBestPairs << result;
+        }
+        /*for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
+            expectedBestPairs.append(readPrimerPair(elOutput, (pairIndex > 0) ? ("_" + QString::number(pairIndex)) : QString()));
+        }*/
     }
 
     if (settings.getSequence().isEmpty())
         stateInfo.setError(GTest::tr("Missing SEQUENCE tag"));  //??? may be remove from this place
     else {
         int sequenceLength = settings.getSequence().size();
-        if (settings.getIncludedRegion().length == -1) {
-            settings.setIncludedRegion(U2Region(settings.getFirstBaseIndex(), sequenceLength));
+        if (settings.getSequenceRange().isEmpty()) {
+            settings.setSequenceRange(U2Region(settings.getFirstBaseIndex(), sequenceLength));
         }
         if (n_quality != 0 && n_quality != sequenceLength)
             stateInfo.setError(GTest::tr("Error in sequence quality data"));  //??? may be remove from this place
@@ -368,21 +443,45 @@ void GTest_Primer3::prepare() {
 Task::ReportResult GTest_Primer3::report() {
     QList<PrimerPair> currentBestPairs = task->getBestPairs();
 
-    if (task->hasError() && (expectedBestPairs.size() > 0)) {
+    if (!expectedErrorMessage.isEmpty()) {
+        if (!task->hasError()) {
+            stateInfo.setError(GTest::tr("No error, but expected: %1").arg(expectedErrorMessage));
+        } else {
+            const auto& currentErrorMessage = task->getError();
+            if (!currentErrorMessage.contains(expectedErrorMessage)) {
+                stateInfo.setError(GTest::tr("An unexpected error. Expected: %1, but Actual: %2").arg(expectedErrorMessage).arg(currentErrorMessage));
+            }
+        }
+
+        return ReportResult_Finished;
+    }
+
+    if (task->hasError() && (expectedBestPairs.size() > 0 || expectedSinglePrimers.size() > 0)) {
         stateInfo.setError(task->getError());
         return ReportResult_Finished;
     }
 
     if (currentBestPairs.size() != expectedBestPairs.size()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIRS_NUMBER is incorrect. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
+        stateInfo.setError(GTest::tr("PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
         return ReportResult_Finished;
     }
 
     for (int i = 0; i < expectedBestPairs.size(); i++) {
-        if (!checkPrimerPair(currentBestPairs[i], expectedBestPairs[i], (i > 0) ? ("_" + QString::number(i)) : QString())) {
+        if (!checkPrimerPair(currentBestPairs[i], expectedBestPairs[i], "_" + QString::number(i))) {
             return ReportResult_Finished;
         }
     }
+
+    if (expectedBestPairs.size() != 0) {
+        return ReportResult_Finished;
+    }
+
+    QList<Primer> currentSinglePrimers = task->getSinglePrimers();
+    if (currentSinglePrimers.size() != expectedSinglePrimers.size()) {
+        stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
+        return ReportResult_Finished;
+    }
+
     /*    for (int i=0;i<currentBestPairs.num_pairs;i++)
         {
             //currentBestPairs->pairs[i]->
@@ -434,6 +533,127 @@ Task::ReportResult GTest_Primer3::report() {
 GTest_Primer3::~GTest_Primer3() {
 }
 
+bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, Primer* outPrimer, bool internalOligo) {
+    {
+        QString buf = element.attribute(prefix);
+        if (!buf.isEmpty()) {
+            int start = buf.split(',')[0].toInt();
+            int length = buf.split(',')[1].toInt();
+            outPrimer->setStart(start);
+            outPrimer->setLength(length);
+            if (prefix.contains("RIGHT")) {
+                outPrimer->setStart(start - length + 1);
+            }
+        } else {
+            return false;
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_TM");
+        if (!buf.isEmpty()) {
+            outPrimer->setMeltingTemperature(buf.toDouble());
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_GC_PERCENT");
+        if (!buf.isEmpty()) {
+            outPrimer->setGcContent(buf.toDouble());
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_SELF_ANY");
+        if (!buf.isEmpty()) {
+            outPrimer->setSelfAny(buf.toDouble());
+        } else {
+            buf = element.attribute(prefix + "_SELF_ANY_TH");
+            if (!buf.isEmpty()) {
+                outPrimer->setSelfAny(buf.toDouble());
+            }
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_SELF_END");
+        if (!buf.isEmpty()) {
+            outPrimer->setSelfEnd(buf.toDouble());
+        } else {
+            buf = element.attribute(prefix + "_SELF_END_TH");
+            if (!buf.isEmpty()) {
+                outPrimer->setSelfEnd(buf.toDouble());
+            }
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_HAIRPIN_TH");
+        if (!buf.isEmpty()) {
+            outPrimer->setHairpin(buf.toDouble());
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_PENALTY");
+        if (!buf.isEmpty()) {
+            outPrimer->setQuality(buf.toDouble());
+        }
+    }
+    if (!internalOligo) {
+        QString buf = element.attribute(prefix + "_END_STABILITY");
+        if (!buf.isEmpty()) {
+            outPrimer->setEndStability(buf.toDouble());
+        }
+    }
+    return true;
+}
+
+PrimerPair GTest_Primer3::readPrimerPair(QDomElement element, QString suffix) {
+    PrimerPair result;
+    /*{
+        Primer primer;
+        if (readPrimer(element, "PRIMER_LEFT" + suffix, &primer, false)) {
+            result.setLeftPrimer(&primer);
+        }
+    }
+    {
+        Primer primer;
+        if (readPrimer(element, "PRIMER_RIGHT" + suffix, &primer, false)) {
+            result.setRightPrimer(&primer);
+        }
+    }
+    {
+        Primer primer;
+        if (readPrimer(element, "PRIMER_INTERNAL" + suffix, &primer, true)) {
+            result.setInternalOligo(&primer);
+        }
+    }
+    {
+        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
+        if (!buf.isEmpty()) {
+            result.setComplAny((buf.toDouble() * 100));
+        } else {
+            buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
+            if (!buf.isEmpty()) {
+                result.setComplAny((buf.toDouble() * 100));
+            }
+        }
+    }
+    {
+        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
+        if (!buf.isEmpty()) {
+            result.setComplEnd(buf.toDouble());
+        } else {
+            buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
+            if (!buf.isEmpty()) {
+                result.setComplAny(buf.toDouble());
+            }
+        }
+    }
+    {
+        QString buf = element.attribute("PRIMER_PRODUCT_SIZE" + suffix);
+        if (!buf.isEmpty()) {
+            result.setProductSize(buf.toInt());
+        }
+    }*/
+    return result;
+}
+
 bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPair& expectedPrimerPair, QString suffix) {
     if (!checkPrimer(primerPair.getLeftPrimer(), expectedPrimerPair.getLeftPrimer(), "PRIMER_LEFT" + suffix, false)) {
         return false;
@@ -451,6 +671,12 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
         return false;
     }
     if (!checkIntProperty(primerPair.getProductSize(), expectedPrimerPair.getProductSize(), "PRIMER_PRODUCT_SIZE" + suffix)) {
+        return false;
+    }
+    if (!checkDoubleProperty(primerPair.getProductQuality(), expectedPrimerPair.getProductQuality(), "PRIMER_PAIR" + suffix + "_PENALTY")) {
+        return false;
+    }
+    if (!checkDoubleProperty(primerPair.getProductTm(), expectedPrimerPair.getProductTm(), "PRIMER_PAIR" + suffix + "_PRODUCT_TM")) {
         return false;
     }
     return true;
