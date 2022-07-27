@@ -303,6 +303,10 @@ void Primer3Dialog::reset() {
     for (const auto& key : defaultSettings.getDoublePropertyList()) {
         double value = 0;
         if (defaultSettings.getDoubleProperty(key, &value)) {
+            QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
+            if (checkBox != nullptr) {
+                checkBox->setChecked(false);
+            }
             QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
             if (spinBox != nullptr) {
                 spinBox->setValue(value);
@@ -446,6 +450,10 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
     for (const auto& key : settings.getDoublePropertyList()) {
+        QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
+        if (checkBox != nullptr && !checkBox->isChecked()) {
+            continue;
+        }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             settings.setDoubleProperty(key, spinBox->value());
@@ -626,18 +634,11 @@ bool Primer3Dialog::doDataExchange() {
     case generic:
     case pick_sequencing_primers:
     case pick_primer_list:
+    case check_primers:
         if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
             checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
             checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
             QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be enabled."));
-            return false;
-        }
-        break;
-    case check_primers:
-        if ((checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER->text().isEmpty()) ||
-            (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() && edit_SEQUENCE_INTERNAL_OLIGO->text().isEmpty()) ||
-            (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked() && edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty())) {
-            QMessageBox::critical(this, windowTitle(), tr("If you use \"check_primers\" task you should set all enabled primers on the \"Main\" page."));
             return false;
         }
         break;
@@ -658,6 +659,11 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<U2Region> list;
         if (parseIntervalList(edit_PRIMER_PRODUCT_SIZE_RANGE->text(), "-", &list, IntervalDefinition::Start_End)) {
+            if (list.isEmpty()) {
+                QMessageBox::critical(this, windowTitle(), tr("Primer Size Ranges should have at least one range"));
+                return false;
+            }
+
             settings.setProductSizeRange(list);
             bool isRegionOk = false;
             U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
@@ -676,7 +682,7 @@ bool Primer3Dialog::doDataExchange() {
             
             if (sequenceRangeRegion.endPos() > context->getSequenceLength() + settings.getFirstBaseIndex() && !context->getSequenceObject()->isCircular()) {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
-                                                              "Either make the priming region end \"%1\" less or equel than the sequence size \"%2\" plus the first base index value \"%3\""
+                                                              "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
                                                               "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings.getFirstBaseIndex()));
                 return false;
             }
@@ -745,6 +751,10 @@ void Primer3Dialog::sl_saveSettings() {
         }
     }
     for (const auto& key : settings.getDoublePropertyList()) {
+        QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
+        if (checkBox != nullptr && !checkBox->isChecked()) {
+            continue;
+        }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             stream << key << "=" << spinBox->value() << endl;
@@ -852,6 +862,11 @@ void Primer3Dialog::sl_loadSettings() {
                 double v = par.last().toDouble(&ok);
                 CHECK_EXT_CONTINUE(ok, algoLog.error(tr("Can't parse \"%1\" value: \"%2\"").arg(par.first()).arg(par.last())));
 
+                QCheckBox* checkBox = findChild<QCheckBox*>("label_" + par.first());
+                if (checkBox != nullptr) {
+                    checkBox->setChecked(true);
+                }
+
                 spinBox->setValue(v);
                 continue;
             }
@@ -876,7 +891,25 @@ void Primer3Dialog::sl_loadSettings() {
         } else if (par.first() == "SEQUENCE_QUALITY") {
             edit_SEQUENCE_QUALITY->setPlainText(par.last());
         } else if (par.first() == "PRIMER_TASK") {
-            edit_PRIMER_TASK->setCurrentText(par.last());
+            QString taskName = par.last();
+            auto setPrimers2Pick = [&](bool left, bool internal, bool right) {
+                checkbox_PRIMER_PICK_LEFT_PRIMER->setChecked(left);
+                checkbox_PRIMER_PICK_INTERNAL_OLIGO->setChecked(internal);
+                checkbox_PRIMER_PICK_RIGHT_PRIMER->setChecked(right);
+                taskName = "generic";
+            };
+            if (par.last() == "pick_pcr_primers") {
+                setPrimers2Pick(true, false, true);
+            } else if (par.last() == "pick_pcr_primers_and_hyb_probe") {
+                setPrimers2Pick(true, true, true);
+            } else if (par.last() == "pick_left_only") {
+                setPrimers2Pick(true, false, false);
+            } else if (par.last() == "pick_right_only") {
+                setPrimers2Pick(false, false, true);
+            } else if (par.last() == "pick_hyb_probe_only") {
+                setPrimers2Pick(false, true, false);
+            }
+            edit_PRIMER_TASK->setCurrentText(taskName);
         } else if (par.first() == "PRIMER_TM_FORMULA") {
             bool ok = false;
             int v = par.last().toInt(&ok);
@@ -890,15 +923,29 @@ void Primer3Dialog::sl_loadSettings() {
 
             combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex((bool)v);
         } else if (par.first() == "PRIMER_MISPRIMING_LIBRARY") {
+            bool found = false;
             for (const auto& lib : repeatLibraries) {
                 if (par.last() == lib.second) {
                     combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentText(lib.first);
+                    found = true;
+                    break;
                 }
             }
+            if (!found) {
+                algoLog.error(tr("PRIMER_MISPRIMING_LIBRARY value should points to the file from the \"%1\" directory")
+                    .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
+            }
         } else if (par.first() == "PRIMER_INTERNAL_MISHYB_LIBRARY") {
+            bool found = false;
             for (const auto& lib : repeatLibraries) {
                 if (par.last() == lib.second) {
                     combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentText(lib.first);
+                    found = true;
+                    break;
+                }
+                if (!found) {
+                    algoLog.error(tr("PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the \"%1\" directory")
+                        .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
                 }
             }
         } else if (par.first() == "PRIMER_MIN_THREE_PRIME_DISTANCE") {
