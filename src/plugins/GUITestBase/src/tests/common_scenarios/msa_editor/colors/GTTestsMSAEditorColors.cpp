@@ -147,6 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    Intensity of colour depends on the frequency of appearance in the column.
     auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
+    GTMenu::showContextMenu(os, seq);
     //    Symbols and columns at the descending order
     //    1. A,G,T at 2,3,9
     //    2. A at 10
