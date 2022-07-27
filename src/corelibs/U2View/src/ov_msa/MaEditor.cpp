@@ -41,6 +41,8 @@
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/McaEditor.h>
+
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
@@ -512,6 +514,9 @@ void MaEditor::setFont(const QFont& f) {
     updateFontMetrics();
     font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
+    if (qobject_cast<McaEditorWgt *>(getUI())) {
+        qobject_cast<McaEditorWgt *>(getUI())->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    }
     emit si_fontChanged(font);
 
     Settings* s = AppContext::getSettings();
@@ -598,8 +603,8 @@ void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
     getMaEditorWgt()->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
-QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
-    QFontMetrics fontMetrics(sequenceFont, getUI());
+QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const {
+    QFontMetrics fontMetrics(sequenceFont, ui);
     return fontMetrics.boundingRect('W');
 }
 
@@ -644,7 +649,7 @@ MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
+MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
     return undoRedoFramework;
 }
 

@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
+ScrollController::ScrollController(MaEditor* maEditor, MaEditorWgt* maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -46,7 +46,7 @@ ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
     connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
-void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
+void ScrollController::init(GScrollBar* hScrollBar, GScrollBar* vScrollBar) {
     this->hScrollBar = hScrollBar;
     hScrollBar->setValue(0);
     connect(hScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
@@ -360,6 +360,11 @@ void ScrollController::updateScrollBarsOnFontOrZoomChange() {
     double alignmentLength = maEditor->getAlignmentLen();
     double maxX = hScrollBar->maximum() + sequenceAreaWidth;
     double leftXPointPos = alignmentLength * leftX / (double)maxX;
+
+    int baseWidth = (hScrollBar->maximum() + sequenceAreaWidth) / alignmentLength;
+    sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % (int)baseWidth;
+    maxX = hScrollBar->maximum() + sequenceAreaWidth;
+    leftXPointPos = alignmentLength * leftX / (double)maxX;
     updateHorizontalScrollBarPrivate();
     setFirstVisibleBase(qMax(0, (int)leftXPointPos));
 

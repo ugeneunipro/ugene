@@ -58,8 +58,8 @@ public:
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject *getMaObject() const override;
-    McaEditorWgt *getUI() const override;
+    MultipleChromatogramAlignmentObject* getMaObject() const override;
+    McaEditorWgt* getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;
@@ -78,7 +78,7 @@ public:
 
     SequenceObjectContext* getReferenceContext() const;
 
-    QAction *getGotoSelectedReadAction() const {
+    QAction* getGotoSelectedReadAction() const {
         return gotoSelectedReadAction;
     }
 
@@ -99,7 +99,7 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget *createWidget() override;
+    QWidget* createWidget() override;
     void initActions() override;
 
     QAction* showChromatogramsAction;
@@ -113,10 +113,10 @@ protected:
     /** Selection state controller. */
     McaEditorSelectionController* selectionController;
 
-    void addEditMenu(QMenu *menu) override;
-    void addAlignmentMenu(QMenu *menu);
-    void addAppearanceMenu(QMenu *menu);
-    void addNavigationMenu(QMenu *menu);
+    void addEditMenu(QMenu* menu) override;
+    void addAlignmentMenu(QMenu* menu);
+    void addAppearanceMenu(QMenu* menu);
+    void addNavigationMenu(QMenu* menu);
 };
 
 }  // namespace U2

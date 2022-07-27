@@ -412,6 +412,9 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
 
 #define GT_METHOD_NAME "createSubImage"
 QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const QRect& rect) {
+#ifdef _DEBUG
+    if (!image.rect().contains(rect))
+#endif
     GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
