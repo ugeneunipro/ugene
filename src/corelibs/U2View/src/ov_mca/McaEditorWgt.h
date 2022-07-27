@@ -53,10 +53,10 @@ public:
 protected:
     void initActions() override;
     void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
-    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) override;
     void initNameList(QScrollBar *nhBar) override;
     void initConsensusArea() override;
-    void initStatusBar(MaEditorStatusBar *statusBar = nullptr) override;
+    void initStatusBar(MaEditorStatusBar* statusBar = nullptr) override;
 
 private:
     McaEditorReferenceArea* refArea;

@@ -421,9 +421,7 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-    QObjectScopedPointer<ExportHighligtingDialogController> d =
-        new ExportHighligtingDialogController(getMaEditorWgt(),
-                                              (QWidget *)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getMaEditorWgt(), (QWidget *)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -441,10 +439,8 @@ void MaEditor::initActions() {
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
-    connect(showOverviewAction, &QAction::triggered,
-            getMaEditorWgt(0)->getOverviewArea(), &QWidget::setVisible);
+    connect(showOverviewAction, &QAction::triggered, getMaEditorWgt(0)->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
-
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
@@ -486,7 +482,7 @@ void MaEditor::updateResizeMode() {
 
 void MaEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
     Q_UNUSED(uiIndex);
-    QMenu *cm = m->addMenu(tr("Copy/Paste"));
+    QMenu* cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
 

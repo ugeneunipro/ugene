@@ -123,7 +123,7 @@ public:
         {} \
 \
     protected: \
-        void run(HI::GUITestOpStatus &os) override; \
+        void run(HI::GUITestOpStatus& os) override; \
     };
 
 #define GUI_TEST_CLASS_DECLARATION_MSA_MODE(className, mode) \

@@ -133,8 +133,7 @@ void McaEditorWgt::initConsensusArea() {
     consensusArea = new McaEditorConsensusArea(this);
 }
 
-void McaEditorWgt::initStatusBar(MaEditorStatusBar *statusbar)
-{
+void McaEditorWgt::initStatusBar(MaEditorStatusBar *statusbar) {
     if (statusbar == nullptr) {
         statusBar = new McaEditorStatusBar(getEditor(), refCharController);
     } else {

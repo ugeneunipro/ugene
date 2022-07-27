@@ -135,6 +135,7 @@ void MaConsensusModeWidget::sl_algorithmChanged(const QString& algoId) {
 }
 
 void MaConsensusModeWidget::sl_algorithmSelectionChanged(int index) {
+    // TODO:ichebyki Workaround for index < 0 (SAFE_POINT removed)
     if (index >= 0) {
         QString selectedAlgorithmId = consensusType->itemData(index).toString();
         updateState();

@@ -49,8 +49,8 @@ private slots:
 private:
     void updateOffsets(bool show);
 
-    MaEditorSequenceArea *seqArea;
-    MaEditor *editor;
+    MaEditorSequenceArea* seqArea;
+    MaEditor* editor;
     MaEditorWgt *ui;
 
 public:
@@ -82,8 +82,8 @@ protected:
 private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
-    MaEditorSequenceArea *seqArea;
-    MaEditor *editor;
+    MaEditorSequenceArea* seqArea;
+    MaEditor* editor;
     MaEditorWgt *ui;
     bool showStartPos;
     bool completeRedraw;

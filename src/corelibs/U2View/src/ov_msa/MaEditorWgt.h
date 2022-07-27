@@ -135,20 +135,20 @@ protected:
     virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);
     virtual void initActions();
 
-    virtual void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) = 0;
+    virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
     virtual void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) = 0;
-    virtual void initNameList(QScrollBar *nhBar) = 0;
+    virtual void initNameList(QScrollBar* nhBar) = 0;
     virtual void initConsensusArea() = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusBar = nullptr) = 0;
 
 protected:
-    MaEditor *const editor;
-    MaEditorSequenceArea *sequenceArea;
-    MaEditorNameList *nameList;
-    MaEditorConsensusArea *consensusArea;
-    MaEditorOverviewArea *overviewArea;
-    MSAEditorOffsetsViewController *offsetsViewController;
-    MaEditorStatusBar *statusBar;
+    MaEditor* const editor;
+    MaEditorSequenceArea* sequenceArea;
+    MaEditorNameList* nameList;
+    MaEditorConsensusArea* consensusArea;
+    MaEditorOverviewArea* overviewArea;
+    MSAEditorOffsetsViewController* offsetsViewController;
+    MaEditorStatusBar* statusBar;
 
     /** Horizontal splitter in the main layout.  Separates main widgets (NameList + SequenceArea), Exclude List and Overview. */
     QSplitter* mainSplitter = nullptr;

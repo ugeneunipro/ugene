@@ -212,7 +212,7 @@ void MSAEditorSequenceArea::wheelEvent(QWheelEvent *we) {
     }
 }
 
-void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInfo) {
+void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
     if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
     }
@@ -236,7 +236,7 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& menuType) {
     if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
         return;
     }
@@ -277,7 +277,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m, bool isContextMenu) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
-    QList<QAction *> actions = {
+    QList<QAction*> actions = {
         ui->getEditorNameList()->getEditSequenceNameAction(),
         replaceWithGapsAction,
         replaceCharacterAction,
@@ -937,7 +937,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
             QColor unused;
             bool highlight = false;
             MaEditorSequenceArea *sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
-            MsaHighlightingScheme *scheme = sequenceArea->getCurrentHighlightingScheme();
+            MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);
 

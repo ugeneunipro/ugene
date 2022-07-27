@@ -97,8 +97,8 @@ QWidget* MSAEditorTreeViewer::createWidget() {
 
     MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI());
     MSAEditorSequenceArea *msaSequenceArea = msaEditorUi->getSequenceArea();
-    connect(msaSequenceArea, SIGNAL(si_visibleRangeChanged(QStringList, int)), msaTreeViewerUi, SLOT(sl_onVisibleRangeChanged(const QStringList &, int)));
-    connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList &)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList &)));
+    connect(msaSequenceArea, SIGNAL(si_visibleRangeChanged(QStringList, int)), msaTreeViewerUi, SLOT(sl_onVisibleRangeChanged(const QStringList&, int)));
+    connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList&)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList&)));
 
     MaEditorNameList *msaNameList = editor->getMaEditorWgt()->getEditorNameList();
     connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));

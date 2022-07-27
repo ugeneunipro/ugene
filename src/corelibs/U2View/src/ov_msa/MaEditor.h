@@ -292,16 +292,16 @@ private slots:
     void resetColumnWidthCache();
 
 protected:
-    virtual QWidget *createWidget() = 0;
+    virtual QWidget* createWidget() = 0;
     virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
     void updateResizeMode();
 
     virtual void addCopyPasteMenu(QMenu *m, uint uiIndex);
-    virtual void addEditMenu(QMenu *m) = 0;
-    virtual void addExportMenu(QMenu *m);
-    void addLoadMenu(QMenu *m);
+    virtual void addEditMenu(QMenu* m) = 0;
+    virtual void addExportMenu(QMenu* m);
+    void addLoadMenu(QMenu* m);
 
     void setFont(const QFont& f);
 
@@ -313,7 +313,7 @@ protected:
 
     virtual void updateActions();
 
-    MultipleAlignmentObject *maObject;
+    MultipleAlignmentObject* maObject;
     QWidget *ui = nullptr;
 
     QFont font;

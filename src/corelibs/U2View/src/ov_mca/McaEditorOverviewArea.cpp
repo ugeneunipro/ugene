@@ -29,8 +29,7 @@ namespace U2 {
 const QString McaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "mca_overview_area";
 
 McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
-    : MaEditorOverviewArea((QWidget *)ui, OVERVIEW_AREA_OBJECT_NAME)
-{
+    : MaEditorOverviewArea((QWidget *)ui, OVERVIEW_AREA_OBJECT_NAME) {
     // The McaEditorOverview can be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 

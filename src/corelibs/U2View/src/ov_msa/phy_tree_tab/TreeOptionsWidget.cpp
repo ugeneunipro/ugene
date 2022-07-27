@@ -311,13 +311,12 @@ TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
 
     if (treeViewer != nullptr) {
         return treeViewer;
-    } else {
-        MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(editor->getUI());
-        MSAEditorTreeViewer *currentTree = mui->getCurrentTree();
-        return currentTree != nullptr
-                   ? currentTree->getTreeViewerUI()
-                   : nullptr;
     }
+    MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(editor->getUI());
+    MSAEditorTreeViewer *currentTree = mui->getCurrentTree();
+    return currentTree != nullptr
+               ? currentTree->getTreeViewerUI()
+               : nullptr;
 }
 
 void TreeOptionsWidget::sl_fontTypeChanged() {

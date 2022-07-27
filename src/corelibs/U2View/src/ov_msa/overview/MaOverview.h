@@ -76,7 +76,7 @@ protected:
     virtual int getContentWidgetWidth() const;
     virtual int getContentWidgetHeight() const;
 
-    MaEditor *editor;
+    MaEditor* editor;
     QWidget *ui;
 
     QPixmap cachedView;

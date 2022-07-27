@@ -94,7 +94,7 @@ public:
 
     void buildStaticToolbar(QToolBar* tb) override;
 
-    void buildMenu(QMenu *m, const QString &type) override;
+    void buildMenu(QMenu* m, const QString& type) override;
     void fillMenu(QMenu *m, const QString &type);
 
     // Return alignment row that is displayed on target line in MSAEditor
@@ -207,25 +207,25 @@ protected slots:
     }
 
 protected:
-    QWidget *createWidget() override;
+    QWidget* createWidget() override;
 
     void initActions() override;
-    bool eventFilter(QObject *o, QEvent *e) override;
-    bool onObjectRemoved(GObject *obj) override;
-    void onObjectRenamed(GObject *obj, const QString &oldName) override;
+    bool eventFilter(QObject* o, QEvent* e) override;
+    bool onObjectRemoved(GObject* obj) override;
+    void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
     void addCopyPasteMenu(QMenu *m, uint uiIndex) override;
-    void addEditMenu(QMenu *m) override;
-    void addSortMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);
-    void addExportMenu(QMenu *m) override;
+    void addEditMenu(QMenu* m) override;
+    void addSortMenu(QMenu* m);
+    void addAlignMenu(QMenu* m);
+    void addExportMenu(QMenu* m) override;
     void addAppearanceMenu(QMenu *m, uint uiIndex);
     void addColorsMenu(QMenu *m, uint index);
-    void addHighlightingMenu(QMenu *m);
-    void addNavigationMenu(QMenu *m);
-    void addTreeMenu(QMenu *m);
-    void addAdvancedMenu(QMenu *m);
-    void addStatisticsMenu(QMenu *m);
+    void addHighlightingMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m);
+    void addTreeMenu(QMenu* m);
+    void addAdvancedMenu(QMenu* m);
+    void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;
 
@@ -279,7 +279,7 @@ private:
                                     MaEditorOverviewArea *overview = nullptr,
                                     MaEditorStatusBar *statusbar = nullptr);
 
-    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
+    PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings = nullptr;
     MSAEditorTreeManager treeManager;
 
     /**
@@ -300,7 +300,7 @@ private:
     QSet<QObject*> freeModeMasterMarkersSet;
 
     /** Selection state controller. */
-    MaEditorSelectionController *selectionController;
+    MaEditorSelectionController* selectionController;
 
     // Main windows toolbar and menu
     // we need to save it for recreating actions while switching singleline <-> multiline modes

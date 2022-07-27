@@ -49,7 +49,7 @@ const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
 const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue";
 const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green";
 
-MaSangerOverview::MaSangerOverview(MaEditor *editor, MaEditorWgt *ui)
+MaSangerOverview::MaSangerOverview(MaEditor *editor, MaEditorWgt* ui)
     : MaOverview(editor, ui),
       vScrollBar(new QScrollBar(Qt::Vertical, this)),
       renderArea(new QWidget(this)),

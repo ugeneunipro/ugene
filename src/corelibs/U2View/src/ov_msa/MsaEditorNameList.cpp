@@ -40,11 +40,11 @@ void MsaEditorNameList::sl_buildMenu(GObjectView*, QMenu* menu, const QString& m
     }
 }
 
-void MsaEditorNameList::buildMenu(QMenu *menu) {
+void MsaEditorNameList::buildMenu(QMenu* menu) {
     if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
         return;
     }
-    QMenu *editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);
+    QMenu* editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu not found", );
 
     editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().last(), removeSequenceAction);

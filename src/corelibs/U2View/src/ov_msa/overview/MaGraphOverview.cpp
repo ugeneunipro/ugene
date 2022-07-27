@@ -222,8 +222,8 @@ void MaGraphOverview::updateHighlightingSchemes() {
         MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(ui);
         CHECK(mui != nullptr, );
         MaEditorSequenceArea *sequenceArea = mui->getUI(0)->getSequenceArea();
-        MsaHighlightingScheme *highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
-        MsaColorScheme *colorScheme = sequenceArea->getCurrentColorScheme();
+        MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
+        MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
         state.colorSchemeId = colorScheme->getFactory()->getId();
         SAFE_POINT(!state.highlightingSchemeId.isEmpty() && !state.colorSchemeId.isEmpty(), "There must be valid highlighting and color schemes", );

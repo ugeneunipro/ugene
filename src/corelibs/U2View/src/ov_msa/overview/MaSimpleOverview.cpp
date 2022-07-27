@@ -212,7 +212,7 @@ void MaSimpleOverview::drawSelection(QPainter& p) {
     const MaEditorSelection& selection = editor->getSelection();
 
     QList<QRect> selectedRects = selection.getRectList();
-    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+    for (const QRect& selectedRect : qAsConst(selectedRects)) {
         U2Region columnRange = editor->getMaEditorWgt()->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
         U2Region sequenceViewYRegion = editor->getMaEditorWgt()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);

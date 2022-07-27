@@ -83,9 +83,9 @@ MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
     setLayout(layout);
 
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateStatusBar()));
-    MultipleAlignmentObject *maObject = editor->getMaObject();
+    MultipleAlignmentObject* maObject = editor->getMaObject();
     connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateStatusBar()));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
     // Workaround

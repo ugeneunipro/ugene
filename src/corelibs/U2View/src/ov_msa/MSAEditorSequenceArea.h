@@ -155,8 +155,8 @@ public:
     void disableFreeRowOrderMode(QObject* marker);
 
 protected:
-    void focusOutEvent(QFocusEvent *fe) override;
-    void focusInEvent(QFocusEvent *fe) override;
+    void focusOutEvent(QFocusEvent* fe) override;
+    void focusInEvent(QFocusEvent* fe) override;
     void wheelEvent(QWheelEvent *we) override;
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;

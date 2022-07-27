@@ -199,7 +199,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
         maContainerLayout->addWidget(statusBar);
     }
 
-    QWidget *maContainer = new QWidget(this);
+    QWidget* maContainer = new QWidget(this);
     maContainer->setLayout(maContainerLayout);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
@@ -294,7 +294,7 @@ MaEditorConsensusArea* MaEditorWgt::getConsensusArea() const {
     return consensusArea;
 }
 
-BaseWidthController *MaEditorWgt::getBaseWidthController() const {
+BaseWidthController* MaEditorWgt::getBaseWidthController() const {
     return baseWidthController;
 }
 
