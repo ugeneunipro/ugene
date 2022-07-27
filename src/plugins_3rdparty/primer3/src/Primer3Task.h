@@ -51,6 +51,7 @@ public:
     double getSelfEnd() const;
     double getHairpin() const;
     double getEndStability() const;
+    double getQuality() const;
     oligo_type getType() const;
 
     void setStart(int start);
@@ -59,6 +60,8 @@ public:
     void setGcContent(double gcContent);
     void setSelfAny(double selfAny);
     void setSelfEnd(double selfEnd);
+    void setHairpin(double hairpin);
+    void setQuality(double quality);
     void setEndStability(double endStability);
 
 private:
@@ -70,6 +73,7 @@ private:
     double selfEnd;
     double hairpin;
     double endStability;
+    double quality;
     oligo_type type;
 };
 
@@ -87,6 +91,8 @@ public:
     double getComplAny() const;
     double getComplEnd() const;
     int getProductSize() const;
+    double getProductQuality() const;
+    double getProductTm() const;
 
     void setLeftPrimer(Primer* leftPrimer);
     void setRightPrimer(Primer* rightPrimer);
@@ -94,6 +100,8 @@ public:
     void setComplAny(double complAny);
     void setComplEnd(double complEnd);
     void setProductSize(int productSize);
+    void setProductQuality(double quality);
+    void setProductTm(double tm);
 
     bool operator<(const PrimerPair& pair) const;
 
@@ -106,6 +114,7 @@ private:
     double complEnd;
     int productSize;
     double quality;
+    double tm;
 };
 
 class Primer3Task : public Task {

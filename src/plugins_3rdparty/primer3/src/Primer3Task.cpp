@@ -49,6 +49,7 @@ Primer::Primer()
       selfEnd(0),
       hairpin(0.0),
       endStability(0),
+      quality(0),
       type(oligo_type::OT_LEFT) {
 }
 
@@ -61,6 +62,7 @@ Primer::Primer(const primer_rec& primerRec, oligo_type _type)
       selfEnd(primerRec.self_end),
       hairpin(primerRec.hairpin_th),
       endStability(primerRec.end_stability),
+      quality(primerRec.quality),
       type(_type) {
     if (type == oligo_type::OT_RIGHT) {
         // Primer3 calculates all positions from 5' to 3' sequence ends - 
@@ -80,6 +82,7 @@ bool Primer::operator==(const Primer& p) const {
     result &= selfEnd == p.selfEnd;
     result &= hairpin == p.hairpin;
     result &= endStability == p.endStability;
+    result &= quality == p.quality;
     result &= type == p.type;
 
     return result;
@@ -129,6 +132,14 @@ void Primer::setStart(int newStart) {
     start = newStart;
 }
 
+double Primer::getQuality() const {
+    return quality;
+}
+
+oligo_type Primer::getType() const {
+    return type;
+}
+
 oligo_type Primer::getType() const {
     return type;
 }
@@ -153,8 +164,16 @@ void Primer::setSelfEnd(double newSelfEnd) {
     selfEnd = newSelfEnd;
 }
 
-void Primer::setEndStability(double newEndStability) {
-    endStability = newEndStability;
+void Primer::setHairpin(double hairpin) {
+    this->hairpin = hairpin;
+}
+
+void Primer::setQuality(double quality) {
+    this->quality = quality;
+}
+
+void Primer::setEndStability(double endStability) {
+    this->endStability = endStability;
 }
 
 // PrimerPair
@@ -166,7 +185,8 @@ PrimerPair::PrimerPair()
       complAny(0),
       complEnd(0),
       productSize(0),
-      quality(0) {
+      quality(0),
+      tm(0) {
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
@@ -176,7 +196,8 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
-      quality(primerPair.pair_quality) {
+      quality(primerPair.pair_quality),
+      tm(primerPair.product_tm){
     if (!leftPrimer.isNull()) {
         leftPrimer->setStart(leftPrimer->getStart() + offset);
     }
@@ -195,7 +216,8 @@ PrimerPair::PrimerPair(const PrimerPair& primerPair)
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
-      quality(primerPair.quality) {
+      quality(primerPair.quality),
+      tm(primerPair.tm) {
 }
 
 PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
@@ -206,6 +228,7 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
     quality = primerPair.quality;
+    tm = primerPair.tm;
     return *this;
 }
 
@@ -220,6 +243,7 @@ bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     result &= complEnd == primerPair.complEnd;
     result &= productSize == primerPair.productSize;
     result &= quality == primerPair.quality;
+    result &= tm == primerPair.tm;
 
     return result;
 }
@@ -248,8 +272,16 @@ int PrimerPair::getProductSize() const {
     return productSize;
 }
 
-void PrimerPair::setLeftPrimer(Primer* newLeftPrimer) {
-    leftPrimer.reset(newLeftPrimer == nullptr ? nullptr : new Primer(*newLeftPrimer));
+double PrimerPair::getProductQuality() const {
+    return quality;
+}
+
+double PrimerPair::getProductTm() const {
+    return tm;
+}
+
+void PrimerPair::setLeftPrimer(Primer* leftPrimer) {
+    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new Primer(*leftPrimer));
 }
 
 void PrimerPair::setRightPrimer(Primer* newRightPrimer) {
@@ -272,6 +304,14 @@ void PrimerPair::setProductSize(int newProductSize) {
     productSize = newProductSize;
 }
 
+void PrimerPair::setProductQuality(double quality) {
+    this->quality = quality;
+}
+
+void PrimerPair::setProductTm(double tm) {
+    this->tm = tm;
+}
+
 bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (quality < pair.quality) {
         return true;
@@ -279,7 +319,12 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (quality > pair.quality) {
         return false;
     }
-
+    if (tm < pair.tm) {
+        return true;
+    }
+    if (tm > pair.tm) {
+        return false;
+    }
     if (leftPrimer->getStart() > pair.leftPrimer->getStart()) {
         return true;
     }
@@ -337,7 +382,7 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
         settings.setIncludedRegion(region);
     }*/
     const auto& sequenceRange = settings.getSequenceRange();
-    offset = sequenceRange.startPos;
+    offset = sequenceRange.startPos + settings.getIncludedRegion().startPos + settings.getFirstBaseIndex();
 
     settings.setSequence(settings.getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings.setSequenceQuality(settings.getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));

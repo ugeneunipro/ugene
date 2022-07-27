@@ -124,7 +124,7 @@ public:
     void setRightOverhang(const QByteArray& value);
     void setInternalInput(const QByteArray& value);
     void setExcludedRegion(const QList<U2Region>& value);
-    void setOkRegion(QList<QList<int>> value);
+    void setOkRegion(const QList<QList<int>>& value);
     void setIncludedRegion(const U2Region& value);
     void setIncludedRegion(const qint64& startPos, const qint64& length);
     void setSequenceQuality(const QVector<int>& value);
