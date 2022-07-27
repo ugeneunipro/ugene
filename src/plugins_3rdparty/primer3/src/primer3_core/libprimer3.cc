@@ -636,6 +636,24 @@ p3_copy_global_settings(p3_global_settings* a) {
     b->thermodynamic_parameters = temp_tp;
 
     strcpy(temp_mp.list_prefix, a->mp.list_prefix);
+
+    if (a->p_args.must_match_five_prime != NULL) {
+        b->p_args.must_match_five_prime = (char*)malloc(strlen(a->p_args.must_match_five_prime) + 1);
+        strcpy(b->p_args.must_match_five_prime, a->p_args.must_match_five_prime);
+    }
+    if (a->p_args.must_match_three_prime != NULL) {
+        b->p_args.must_match_three_prime = (char*)malloc(strlen(a->p_args.must_match_three_prime) + 1);
+        strcpy(b->p_args.must_match_three_prime, a->p_args.must_match_three_prime);
+    }
+    if (a->o_args.must_match_five_prime != NULL) {
+        b->o_args.must_match_five_prime = (char*)malloc(strlen(a->o_args.must_match_five_prime) + 1);
+        strcpy(b->o_args.must_match_five_prime, a->o_args.must_match_five_prime);
+    }
+    if (a->o_args.must_match_three_prime != NULL) {
+        b->o_args.must_match_three_prime = (char*)malloc(strlen(a->o_args.must_match_three_prime) + 1);
+        strcpy(b->o_args.must_match_three_prime, a->o_args.must_match_three_prime);
+    }
+
     // TODO: not for windows
     //mp.fp
     b->mp = temp_mp;
@@ -7504,7 +7522,7 @@ _pr_data_control(const p3_global_settings *pa,
 
   if ((pa->pr_pair_weights.product_tm_lt ||
        pa->pr_pair_weights.product_tm_gt)
-      && pa->product_opt_tm == PR_UNDEFINED_DBL_OPT) {
+      && (pa->product_opt_tm == PR_UNDEFINED_DBL_OPT)) {
     pr_append_new_chunk(glob_err,
                         "Product temperature is part of objective function while optimum temperature is not defined");
     return 1;

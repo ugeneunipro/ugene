@@ -487,6 +487,7 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_SEQUENCING_ACCURACY", &primerSettings->sequencing.accuracy);
     intProperties.insert("PRIMER_INTERNAL_MIN_SIZE", &primerSettings->o_args.min_size);
     intProperties.insert("PRIMER_INTERNAL_OPT_SIZE", &primerSettings->o_args.opt_size);
+    intProperties.insert("PRIMER_INTERNAL_MAX_SIZE", &primerSettings->o_args.max_size);
     intProperties.insert("PRIMER_INTERNAL_MIN_QUALITY", &primerSettings->o_args.min_quality);
     intProperties.insert("PRIMER_INTERNAL_MAX_NS_ACCEPTED", &primerSettings->o_args.num_ns_accepted);
     intProperties.insert("PRIMER_INTERNAL_MAX_POLY_X", &primerSettings->o_args.max_poly_x);
