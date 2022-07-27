@@ -210,7 +210,9 @@ void TreeViewer::createActions() {
 
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
+#ifdef Q_OS_WIN
     printAction->setDisabled(QPrinterInfo::availablePrinterNames().isEmpty());
+#endif
     printAction->setObjectName("printTreeAction");
 
     // Screen Capture
