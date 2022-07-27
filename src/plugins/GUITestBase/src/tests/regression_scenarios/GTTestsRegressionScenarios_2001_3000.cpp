@@ -3271,6 +3271,7 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
             AppSettingsDialogFiller::clearToolPath(os, "MAFFT");
             AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", path);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -4654,6 +4655,7 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));  // Save the nwk file? Select 'No'.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2895) {

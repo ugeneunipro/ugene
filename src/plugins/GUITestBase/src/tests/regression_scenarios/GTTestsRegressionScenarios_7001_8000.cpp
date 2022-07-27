@@ -2009,7 +2009,7 @@ GUI_TEST_CLASS_DEFINITION(test_7491) {
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
-    GTUtilsDialog::checkNoActiveWaiters(os, 20000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 40000);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
