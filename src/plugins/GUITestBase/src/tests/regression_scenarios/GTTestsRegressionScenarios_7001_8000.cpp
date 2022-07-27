@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
-#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <cmath>
 #include <drivers/GTKeyboardDriver.h>
@@ -2731,32 +2730,6 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
     CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_7621) {
-    // Click "Create Sequence" on the Start Page.
-    // In the "Create Sequence" dialog that appears, open the sequence save dialog.
-    //     Expected: no "QWindowsNativeFileDialogBase::selectNameFilter: Invalid parameter..." message in the log.
-    class OpenCreateSequenceDialog : public CustomScenario {
-    public:
-        void run(GUITestOpStatus& os) override {
-            GTUtilsDialog::waitForDialog(os, new Filler(os, ""));
-            GTLogTracer logTracer("QWindowsNativeFileDialogBase::selectNameFilter: Invalid parameter");
-
-            GTWidget::click(os, GTWidget::findToolButton(os, "browseButton"));
-
-            GTUtilsLog::checkContainsMessage(os, logTracer, false);
-            GTWidget::close(os, GTWidget::getActiveModalWidget(os));
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
-        }
-    };
-    qputenv(ENV_USE_NATIVE_DIALOGS, "1");
-    GTUtilsDialog::waitForDialog(os,
-                                 new DefaultDialogFiller(os,
-                                                         "CreateDocumentFromTextDialog",
-                                                         QDialogButtonBox::Cancel,
-                                                         new OpenCreateSequenceDialog()));
-    GTWidget::click(os, GTWidget::findWidget(os, "createSequenceButton"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7631) {
