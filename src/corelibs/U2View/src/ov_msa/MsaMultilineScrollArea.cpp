@@ -56,8 +56,7 @@ bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
 }
 
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions &directions,
-                                        bool byStep,
-                                        bool selectionChange)
+                                        bool byStep)
 {
     QScrollBar *vbar = verticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
