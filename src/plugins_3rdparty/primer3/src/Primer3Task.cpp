@@ -382,7 +382,9 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
         settings.setIncludedRegion(region);
     }*/
     const auto& sequenceRange = settings.getSequenceRange();
-    offset = sequenceRange.startPos + settings.getIncludedRegion().startPos + settings.getFirstBaseIndex();
+    const auto& includedRegion = settings.getIncludedRegion();
+    int includedRegionOffset = includedRegion.startPos > 0 ? includedRegion.startPos - settings.getFirstBaseIndex() : 0;
+    offset = sequenceRange.startPos + includedRegionOffset/*includedRegion.startPos + settings.getFirstBaseIndex()*/;
 
     settings.setSequence(settings.getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings.setSequenceQuality(settings.getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
