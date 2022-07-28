@@ -1481,12 +1481,12 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
            </property>
            <item>
             <property name="text">
-             <string>SantaLucia 1998</string>
+             <string>Breslauer et. al 1986</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Breslauer et. al 1986</string>
+             <string>SantaLucia 1998</string>
             </property>
            </item>
           </widget>
@@ -1558,7 +1558,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>Use Thermodynamic Oligo Alignment</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -2355,7 +2355,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <double>0.500000000000000</double>
            </property>
            <property name="value">
-            <double>1.500000000000000</double>
+            <double>0.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2380,7 +2380,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <double>0.100000000000000</double>
            </property>
            <property name="value">
-            <double>0.600000000000000</double>
+            <double>0.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -2823,7 +2823,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>Liberal base</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -2850,7 +2850,7 @@ where &lt;start&gt; is the index of the first base to consider, and &lt;length&g
             <string>Treat ambiguity codes in libraries as consensus</string>
            </property>
            <property name="checked">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
           </widget>
          </item>
