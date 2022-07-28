@@ -50,7 +50,7 @@ const U2Region& Primer3TaskSettings::getSequenceRange() const {
 }
 
 Primer3TaskSettings::Primer3TaskSettings() {
-    primerSettings = p3_create_global_settings();
+    primerSettings = p3_create_global_settings_default_version_1();
     p3Retval = create_p3retval();
     seqArgs = create_seq_arg();
     isCircular = false;
