@@ -210,9 +210,6 @@ void TreeViewer::createActions() {
 
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
-#ifdef Q_OS_WIN
-    printAction->setDisabled(QPrinterInfo::availablePrinterNames().isEmpty());
-#endif
     printAction->setObjectName("printTreeAction");
 
     // Screen Capture
@@ -1412,6 +1409,12 @@ void TreeViewerUI::sl_showDistanceLabelsTriggered(bool on) {
 }
 
 void TreeViewerUI::sl_printTriggered() {
+#ifdef Q_OS_WIN
+    if (QPrinterInfo::availablePrinterNames().isEmpty()) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("Unable to print tree. No printers found."));
+        return;
+    }
+#endif
     QPrinter printer;
     QObjectScopedPointer<QPrintDialog> dialog = new QPrintDialog(&printer, this);
     dialog->exec();
