@@ -424,7 +424,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     else {
         int sequenceLength = settings.getSequence().size();
         if (settings.getSequenceRange().isEmpty()) {
-            settings.setSequenceRange(U2Region(settings.getFirstBaseIndex(), sequenceLength));
+            settings.setSequenceRange(U2Region(0, sequenceLength));
         }
         if (n_quality != 0 && n_quality != sequenceLength)
             stateInfo.setError(GTest::tr("Error in sequence quality data"));  //??? may be remove from this place
@@ -447,7 +447,7 @@ Task::ReportResult GTest_Primer3::report() {
         if (!task->hasError()) {
             stateInfo.setError(GTest::tr("No error, but expected: %1").arg(expectedErrorMessage));
         } else {
-            const auto& currentErrorMessage = task->getError();
+            auto currentErrorMessage = task->getError().replace("&lt;", "<");
             if (!currentErrorMessage.contains(expectedErrorMessage)) {
                 stateInfo.setError(GTest::tr("An unexpected error. Expected: %1, but Actual: %2").arg(expectedErrorMessage).arg(currentErrorMessage));
             }
@@ -480,6 +480,10 @@ Task::ReportResult GTest_Primer3::report() {
     if (currentSinglePrimers.size() != expectedSinglePrimers.size()) {
         stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
         return ReportResult_Finished;
+    }
+
+    if (expectedSinglePrimers.size() > 0 && expectedBestPairs.size() == 0) {
+        int i = 0;
     }
 
     /*    for (int i=0;i<currentBestPairs.num_pairs;i++)
