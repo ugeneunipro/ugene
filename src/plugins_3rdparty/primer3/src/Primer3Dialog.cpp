@@ -680,7 +680,10 @@ bool Primer3Dialog::doDataExchange() {
                 return false;
             }
             
-            if (sequenceRangeRegion.endPos() > context->getSequenceLength() + settings.getFirstBaseIndex() && !context->getSequenceObject()->isCircular()) {
+            const auto& includedRegion = settings.getIncludedRegion();
+            int fbs = settings.getFirstBaseIndex();
+            int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+            if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
                                                               "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
                                                               "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings.getFirstBaseIndex()));

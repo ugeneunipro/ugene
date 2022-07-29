@@ -383,7 +383,7 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
     }*/
     const auto& sequenceRange = settings.getSequenceRange();
     const auto& includedRegion = settings.getIncludedRegion();
-    int includedRegionOffset = includedRegion.startPos > 0 ? includedRegion.startPos - settings.getFirstBaseIndex() : 0;
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings.getFirstBaseIndex() : 0;
     offset = sequenceRange.startPos + includedRegionOffset/*includedRegion.startPos + settings.getFirstBaseIndex()*/;
 
     settings.setSequence(settings.getSequence().mid(sequenceRange.startPos, sequenceRange.length));
@@ -650,8 +650,12 @@ void Primer3SWTask::prepare() {
     // selected region covers circular junction
     const auto& sequenceRange = settings.getSequenceRange();
     int sequenceSize = settings.getSequenceSize();
+
+    const auto& includedRegion = settings.getIncludedRegion();
     int fbs = settings.getFirstBaseIndex();
-    if (sequenceRange.endPos() > sequenceSize + fbs) {
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+
+    if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
         SAFE_POINT_EXT(settings.isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
         QByteArray seq = settings.getSequence();
