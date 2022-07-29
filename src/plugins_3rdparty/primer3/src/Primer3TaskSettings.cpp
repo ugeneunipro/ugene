@@ -613,6 +613,7 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_FORMAMIDE_CONC", &primerSettings->p_args.formamide_conc);
     doubleProperties.insert("PRIMER_INTERNAL_DMSO_CONC", &primerSettings->o_args.dmso_conc);
     doubleProperties.insert("PRIMER_INTERNAL_DMSO_FACTOR", &primerSettings->o_args.dmso_fact);
+    doubleProperties.insert("PRIMER_INTERNAL_FORMAMIDE_CONC", &primerSettings->o_args.formamide_conc);
     doubleProperties.insert("PRIMER_INTERNAL_MIN_BOUND", &primerSettings->o_args.min_bound);
     doubleProperties.insert("PRIMER_INTERNAL_OPT_BOUND", &primerSettings->o_args.opt_bound);
     doubleProperties.insert("PRIMER_INTERNAL_MAX_BOUND", &primerSettings->o_args.max_bound);
