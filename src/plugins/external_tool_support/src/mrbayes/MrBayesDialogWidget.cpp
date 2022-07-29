@@ -74,8 +74,6 @@ MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* paren
     connect(rateVariationCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onRateChanged(const QString&)));
     rateVariationCombo->addItems(MrBayesVariationTypes::getVariationTypes());
 
-    seedSpin->setValue(DEFAULT_RANDOM_SEED);
-
     gammaCategoriesSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA, 4).toInt());
     ngenSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_CHAIN_LENGTH, 10000).toInt());
     sfreqSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SUBSEMPL_FREQ, 1000).toInt());
