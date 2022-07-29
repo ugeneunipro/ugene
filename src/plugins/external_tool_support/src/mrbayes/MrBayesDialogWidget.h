@@ -39,7 +39,6 @@ public:
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
-    int getRandomSeed();
     bool checkSettings(QString& message, const CreatePhyTreeSettings& settings);
 
 private:
