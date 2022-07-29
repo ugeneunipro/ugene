@@ -150,6 +150,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
 
     // 6. Delete item
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Must not crash
 
