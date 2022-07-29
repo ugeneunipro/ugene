@@ -283,6 +283,12 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         if (!buf.isEmpty()) {
             settings.setMishybLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
+        // 24
+        buf = elInput.attribute("PRIMER_MIN_THREE_PRIME_DISTANCE");
+        if (!buf.isEmpty()) {
+            settings.setIntProperty("PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE", buf.toInt());
+            settings.setIntProperty("PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE", buf.toInt());
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
