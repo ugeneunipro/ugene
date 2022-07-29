@@ -147,16 +147,21 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
     p = GTUtilsProjectTreeView::getItemCenter(os, index);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // 6. Delete item
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // Must not crash
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
