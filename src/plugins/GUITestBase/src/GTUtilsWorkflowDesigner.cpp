@@ -100,12 +100,17 @@ void GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(HI::GUITestOpS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openWorkflowDesigner"
-void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os) {
-    StartupDialogFiller* filler = new StartupDialogFiller(os);
-    GTUtilsDialog::waitForDialog(os, filler);
+void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os, bool waitForStartupDialog) {
+    StartupDialogFiller* filler = nullptr;
+    if (waitForStartupDialog) {
+        filler = new StartupDialogFiller(os);
+        GTUtilsDialog::waitForDialog(os, filler);
+    }
     GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
     checkWorkflowDesignerWindowIsActive(os);
-    GTUtilsDialog::removeRunnable(filler);
+    if (waitForStartupDialog) {
+        GTUtilsDialog::removeRunnable(filler);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -670,11 +675,11 @@ QTreeWidget* GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatu
 void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enable) {
     class DebugModeToggleScenario : public CustomScenario {
     public:
-        DebugModeToggleScenario(bool enable)
-            : enable(enable) {
+        DebugModeToggleScenario(bool _enable)
+            : enable(_enable) {
         }
 
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, GTWidget::findTreeWidget(os, "tree"), "  Workflow Designer"));
@@ -684,7 +689,7 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enab
         }
 
     private:
-        bool enable;
+        bool enable = false;
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DebugModeToggleScenario(enable)));

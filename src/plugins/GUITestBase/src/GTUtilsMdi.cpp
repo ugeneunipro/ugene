@@ -160,7 +160,6 @@ void GTUtilsMdi::closeWindow(HI::GUITestOpStatus& os, const QString& windowName,
 
 #define GT_METHOD_NAME "closeAllWindows"
 void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
-#ifndef Q_OS_DARWIN
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
@@ -176,36 +175,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     };
 
     GTThread::runInMainThread(os, new Scenario());
-#else
-    // GUI on Mac hangs because of bug in QCocoaEventDispatcher
-    // It looks like this issue: https://bugreports.qt.io/browse/QTBUG-45389
-    // This part can be removed after Qt bug will be fixed
-    // And now: some magic!
-
-    QWidget* prevWindow = nullptr;
-    QWidget* mdiWindow = nullptr;
-    GTGlobals::FindOptions options(false);
-
-    bool tabbedView = isTabbedLayout(os);
-
-    while ((mdiWindow = GTUtilsMdi::activeWindow(os, options)) != nullptr) {
-        GT_CHECK(mdiWindow != prevWindow, "Can't close MDI window");
-        prevWindow = mdiWindow;
-
-        MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-
-        if (!tabbedView) {
-            QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
-            GTMouseDriver::moveTo(closeButtonPos);
-            GTMouseDriver::click();
-        } else {
-            GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"});
-        }
-        GTGlobals::sleep(100);
-        GTThread::waitForMainThread();
-        GTUtilsDialog::removeRunnable(filler);
-    }
-#endif
 }
 #undef GT_METHOD_NAME
 

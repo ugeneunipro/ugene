@@ -171,6 +171,7 @@ static bool setFilePermissions(const QString& path, bool allowWrite, bool recurs
 
 #define GT_METHOD_NAME "setReadWrite"
 void GTFile::setReadWrite(GUITestOpStatus& os, const QString& path, bool recursive) {
+    waitForFile(os, path);
     bool set = setFilePermissions(path, true, recursive);
     GT_CHECK(set, "read-write permission could not be set")
 }
@@ -178,6 +179,7 @@ void GTFile::setReadWrite(GUITestOpStatus& os, const QString& path, bool recursi
 
 #define GT_METHOD_NAME "setReadOnly"
 void GTFile::setReadOnly(GUITestOpStatus& os, const QString& path, bool recursive) {
+    waitForFile(os, path);
     bool set = setFilePermissions(path, false, recursive);
     GT_CHECK(set, "read-only permission could not be set")
 }
@@ -368,6 +370,13 @@ void GTFile::restoreDir(GUITestOpStatus& os, const QString& path) {
 bool GTFile::check(GUITestOpStatus& /*os*/, const QString& path) {
     QFile file(path);
     return file.exists();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "waitForFile"
+void GTFile::waitForFile(GUITestOpStatus& os, const QString& path, int timeout) {
+    for (int time = 0; time < timeout && !check(os, path); time += 500) {
+    }
 }
 #undef GT_METHOD_NAME
 

@@ -2536,7 +2536,7 @@ GUI_TEST_CLASS_DEFINITION(test_2430) {
     GTKeyboardDriver::keyClick('b', Qt::ControlModifier);
 
     QStringList breakpoints = GTUtilsWorkflowDesigner::getBreakpointList(os);
-    CHECK_SET_ERR(breakpoints.size() == 1, "Wrong amount of breakpoints!");
+    CHECK_SET_ERR(breakpoints.size() == 1, "Wrong count of breakpoints!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2431) {

@@ -62,6 +62,9 @@ public:
     // checks if file exists
     static bool check(GUITestOpStatus& os, const QString&);
 
+    /** Waits for the file to exist. Fails if file is not exist after 'timeout'. */
+    static void waitForFile(GUITestOpStatus& os, const QString& path, int timeout = 10000);
+
     // creates a new empty file, rewrite the file if it already exists
     static void create(GUITestOpStatus& os, const QString& filePath);
 
