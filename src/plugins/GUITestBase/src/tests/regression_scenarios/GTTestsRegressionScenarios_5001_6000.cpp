@@ -3238,7 +3238,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
-    GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
+    GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-5, 0));
 
     // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
