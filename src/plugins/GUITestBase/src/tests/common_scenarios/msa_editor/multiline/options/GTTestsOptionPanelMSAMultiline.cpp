@@ -148,12 +148,10 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     // 6. Delete item
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     // Must not crash
 
@@ -161,7 +159,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003)
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::setMultilineMode(os, false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
