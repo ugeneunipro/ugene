@@ -57,7 +57,7 @@ public:
     // activates the tab t
     static void setCurrentTab(HI::GUITestOpStatus& os, tab t);
 
-    /* Opens WorkflowDesigner. If 'waitForStartupDialog' is true handles the StartupDialog. */
+    /* Opens WorkflowDesigner. If 'waitForStartupDialog' is true handles optional StartupDialog. */
     static void openWorkflowDesigner(HI::GUITestOpStatus& os, bool waitForStartupDialog = true);
 
     /** Returns active WD window or fails if no active WD window is found. */

@@ -4772,57 +4772,47 @@ GUI_TEST_CLASS_DEFINITION(test_1511) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1514) {
-    //    1. Open "COI.aln".
+    // Check that zoom-in and zoom-out changes tree view image in MSA editor.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Build a new tree or append the existing tree to this alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: there are the MSA Editor with the Tree view inside it.
 
-    //    3. Zoom out the tree to its minimum size.
     auto treeView = GTWidget::findWidget(os, "treeView");
     QAbstractButton* zoomOut = GTAction::button(os, "Zoom Out");
     QAbstractButton* zoomIn = GTAction::button(os, "Zoom In");
     QAbstractButton* resetZoom = GTAction::button(os, "Reset Zoom");
-    //    Expected state: The tree and the alignment are zoomed out, the "Zoom out" button on the toolbar still active.
 
-    //    4. Click the "Zoom out" button on the toolbar several times.
-    //    Expected state: the tree doesn't change its size, alignment height doesn't change, alignment width decreases.
-    int i = 0;
     GTWidget::click(os, resetZoom);
-    QImage initialImg = GTWidget::getImage(os, treeView);
-    bool isImageChanged = true;
-    CHECK_SET_ERR(zoomOut->isEnabled(), "Zoom out must be enabled.");
-    while (zoomOut->isEnabled() && isImageChanged) {
+    QImage initialImage = GTWidget::getImage(os, treeView);
+
+    // Make a series of 2-step zoom-outs and check that image was changed (reason why 2: fonts may be incomplete, example: size 9 == size 10).
+    for (int i = 0; i < 2; i++) {
         QImage imageBefore = GTWidget::getImage(os, treeView);
+        CHECK_SET_ERR(zoomOut->isEnabled(), QString::number(i) + ". Zoom out must be enabled.");
+        GTWidget::click(os, zoomOut);
+        CHECK_SET_ERR(zoomOut->isEnabled(), QString::number(i) + ". Zoom out must be enabled.");
         GTWidget::click(os, zoomOut);
         QImage imageAfter = GTWidget::getImage(os, treeView);
-        isImageChanged = imageBefore != imageAfter;
-        if (i == 0) {
-            CHECK_SET_ERR(isImageChanged, "1. Images are unexpectedly equal at first zoom out");
-        }
-        i++;
+        CHECK_SET_ERR(imageBefore != imageAfter, QString::number(i) + ". Images are unexpectedly equal on zoom out");
     }
-    CHECK_SET_ERR(!isImageChanged, "Expecting tree to stop changing within zoomOut button range");
 
-    //    5. Click the "Reset zoom" button on the toolbar.
     GTWidget::click(os, resetZoom);
-    QImage finalImg = GTWidget::getImage(os, treeView);
-
+    QImage resetImage = GTWidget::getImage(os, treeView);
     //    Expected state: sizes of the tree and alignment reset.
-    CHECK_SET_ERR(initialImg.height() == finalImg.height(), "Reset zoom action failed")
+    CHECK_SET_ERR(initialImage.height() == resetImage.height(), "Reset zoom action failed")
 
-    //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
-    i = 0;
-    while (zoomIn->isEnabled() && i < 3) {
+    // Make a series of 2-step zoom-ins and check that image was changed (reason why 2: fonts may be incomplete, example: size 9 == size 10).
+    for (int i = 0; i < 2; i++) {
         QImage imageBefore = GTWidget::getImage(os, treeView);
+        CHECK_SET_ERR(zoomIn->isEnabled(), QString::number(i) + ". Zoom in must be enabled.");
+        GTWidget::click(os, zoomIn);
+        CHECK_SET_ERR(zoomIn->isEnabled(), QString::number(i) + ". Zoom in must be enabled.");
         GTWidget::click(os, zoomIn);
         QImage imageAfter = GTWidget::getImage(os, treeView);
-        CHECK_SET_ERR(imageBefore != imageAfter, QString("2. Images are unexpectedly equal at zoomIn step %1").arg(i));
-        i++;
+        CHECK_SET_ERR(imageBefore != imageAfter, QString::number(i) + ". Images are unexpectedly equal on zoom in");
     }
 }
 
