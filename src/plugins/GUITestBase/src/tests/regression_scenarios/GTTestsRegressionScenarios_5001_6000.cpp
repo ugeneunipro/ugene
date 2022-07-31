@@ -1346,7 +1346,7 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
 
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_5367.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/accepted_hits_with_gaps.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
     QList<ExportCoverageDialogFiller::Action> actions = {
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Per base"),
@@ -1357,6 +1357,7 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsDialog::add(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     CHECK_SET_ERR(GTFile::equals(os,
                                  sandBoxDir + "/test_5367_coverage.txt",

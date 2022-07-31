@@ -40,7 +40,6 @@
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProjectTreeView.h"
 #include "primitives/PopupChooser.h"
 #include "utils/GTUtilsDialog.h"
