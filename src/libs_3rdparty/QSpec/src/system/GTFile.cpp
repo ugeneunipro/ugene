@@ -189,6 +189,9 @@ const QString GTFile::backupPostfix = "_GT_backup";
 
 #define GT_METHOD_NAME "equals"
 bool GTFile::equals(GUITestOpStatus& os, const QString& path1, const QString& path2) {
+    waitForFile(os, path1);
+    waitForFile(os, path2);
+
     QFile f1(path1);
     QFile f2(path2);
 
@@ -198,8 +201,7 @@ bool GTFile::equals(GUITestOpStatus& os, const QString& path1, const QString& pa
     QByteArray byteArray1 = f1.readAll();
     QByteArray byteArray2 = f2.readAll();
 
-    GT_CHECK_RESULT((f1.error() == QFile::NoError) && (f2.error() == QFile::NoError), f1.errorString() + " " + f2.errorString(), false);
-
+    GT_CHECK_RESULT((f1.error() == QFile::NoError && f2.error() == QFile::NoError), f1.errorString() + " " + f2.errorString(), false);
     return byteArray1 == byteArray2;
 }
 #undef GT_METHOD_NAME
