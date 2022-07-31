@@ -70,7 +70,6 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
-#include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_2001_3000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
@@ -1219,10 +1218,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2192) {
-    QString samtoolsPath = "samtools/samtools";
-#ifdef Q_OS_WIN
-    samtoolsPath = "samtools\\samtools";
-#endif
+    QString samtoolsPath = isOsWindows() ? "samtools\\samtools" : "samtools/samtools";
     //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Open Call Variants sample.
@@ -1366,19 +1362,13 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     CHECK_SET_ERR(origToolPath.exists(), "T-coffee tool is not set");
 
     QDir origToolDir = origToolPath.dir();
-#ifdef Q_OS_LINUX
-    origToolDir.cdUp();  // exit from 'bin' folder
-#endif
+    if (isOsLinux()) {
+        origToolDir.cdUp();  // exit from 'bin' folder
+    }
 
     QString newToolDir = sandBoxDir + GTUtils::genUniqueString("test_2268") + "/";
     GTFile::copyDir(os, origToolDir.absolutePath(), newToolDir);
-#ifdef Q_OS_LINUX
-    const QFileInfo newToolPath(newToolDir + "bin/t_coffee");
-#elif defined(Q_OS_WIN)
-    const QFileInfo newToolPath(newToolDir + "t_coffee.bat");
-#else
-    const QFileInfo newToolPath(newToolDir + "t_coffee");
-#endif
+    QFileInfo newToolPath(newToolDir + (isOsLinux() ? "bin/t_coffee" : (isOsWindows() ? "t_coffee.bat" : "t_coffee")));
 
     // Hack, it is better to set the tool path via the preferences dialog
     CHECK_SET_ERR(newToolPath.exists(), "The copied T-coffee tool does not exist");
@@ -2268,11 +2258,11 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     // Expected: the file is imported without errors, the assembly is opened.
     // 4. Close the project.
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-#ifdef Q_OS_DARWIN
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
-#else
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-#endif
+    if (isOsMac()) {
+        GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    } else {
+        GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    }
 
     // 5. Open the file "_common_data/ace/ace_test_11_(error).ace".
     // 6. Set the same ugenedb path for import: "_common_data/scenarios/sandbox/2401.ugenedb".
@@ -3763,11 +3753,11 @@ GUI_TEST_CLASS_DEFINITION(test_2662) {
     auto node = GTUtilsDashboard::getExternalToolNodeByText(os, "vcfutils run");
     GTWidget::click(os, node);
 
-#ifdef Q_OS_WIN
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools\\vcfutils.pl", false);
-#else
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools/vcfutils.pl", false);
-#endif
+    if (isOsWindows()) {
+        GTUtilsDashboard::getExternalToolNodeByText(os, "samtools\\vcfutils.pl", false);
+    } else {
+        GTUtilsDashboard::getExternalToolNodeByText(os, "samtools/vcfutils.pl", false);
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2667) {
@@ -4168,12 +4158,12 @@ GUI_TEST_CLASS_DEFINITION(test_2762) {
         EscClicker(HI::GUITestOpStatus& _os)
             : Filler(_os, "SaveProjectDialog") {
         }
-        virtual void run() {
-#ifdef Q_OS_DARWIN
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
-#else
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+        void run() override {
+            if (isOsMac()) {
+                GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+            } else {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
         }
     };
 
@@ -5241,11 +5231,9 @@ GUI_TEST_CLASS_DEFINITION(test_2972) {
 
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
     QString error = l.getJoinedErrorString();
-#ifdef Q_OS_WIN
-    QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed";
-#else
-    QString expectedError = "is empty or misformatted";
-#endif
+    QString expectedError = isOsWindows()
+                                ? "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed"
+                                : "is empty or misformatted";
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
     //    3. Choose the query sequence file: any non-sequence format file (e.g. *.mp3).
@@ -5276,7 +5264,7 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click a "Build Tree" button on the main toolbar.
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_3276_COI.wnk", 0, 0, true));
+    GTUtilsDialog::add(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_3276_COI.wnk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: a "Build Phyligenetic Tree" dialog appears.
@@ -5287,15 +5275,21 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
     //    4. Click a "Layout" button on the tree view toolbar, select a "Circular" menu item.
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Expected state: the tree becomes circular.
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
     int initW = treeView->rect().width();
+
     //    5. Hide/show a project view.
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Expected state: the tree size is not changed.
     int finalW = treeView->rect().width();
-    CHECK_SET_ERR(finalW == initW, QString("initial: %1, final: %2").arg(initW).arg(finalW));
+    CHECK_SET_ERR(finalW == initW, QString("Tree widget width does not match: initial: %1, final: %2").arg(initW).arg(finalW));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2987) {
