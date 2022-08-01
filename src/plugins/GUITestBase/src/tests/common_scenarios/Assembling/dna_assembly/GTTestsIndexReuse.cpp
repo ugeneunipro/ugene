@@ -85,9 +85,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -102,9 +102,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //    2. Repeat step 1.
     GTLogTracer l1("Launching Bowtie build indexer tool");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -124,9 +124,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QFile::rename(sandBoxDir + refName + ".rev.2.ebwt", sandBoxDir + refName + ".fa.rev.2.ebwt");
 
     GTLogTracer l2("Launching Bowtie build indexer tool");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -139,9 +139,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    4.  An index file is set as a reference sequence
     GTLogTracer l3("Launching Bowtie build indexer tool");
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".fa.1.ebwt", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -171,9 +171,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -201,8 +201,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: index is built
@@ -216,8 +216,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     //    2. Repeat step 1.
     GTLogTracer l1("Launching Bowtie 2 build indexer tool");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: index is reused
@@ -236,8 +236,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QFile::rename(sandBoxDir + refName + ".rev.2.bt2", sandBoxDir + refName + ".fa.rev.2.bt2");
 
     GTLogTracer l2("Launching Bowtie 2 build indexer tool");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: index is reused
@@ -249,8 +249,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    4.  An index file is set as a reference sequence
     GTLogTracer l3("Launching Bowtie build indexer tool");
     AlignShortReadsFiller::Parameters parametersIndex(sandBoxDir, refName + ".fa.1.bt2", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parametersIndex));
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parametersIndex));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: index is reused
@@ -275,9 +275,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
-
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -300,9 +299,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -316,9 +315,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     //    2. Repeat step 1.
     GTLogTracer l1("bwa index -p");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -340,9 +339,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QFile::rename(sandBoxDir + refName + ".fa.sa", sandBoxDir + refName + ".sa");
 
     GTLogTracer l2("bwa index -p");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -359,9 +358,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    4.  An index file is set as a reference sequence
     GTLogTracer l3("bwa index -p");
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".ann", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -391,9 +390,9 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -415,9 +414,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::BwaMem);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -431,9 +430,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //    2. Repeat step 1.
     GTLogTracer l1("bwa index -p");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -451,9 +450,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QFile::rename(sandBoxDir + refName + ".fa.sa", sandBoxDir + refName + ".sa");
 
     GTLogTracer l2("bwa index -p");
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -466,9 +465,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    4.  An index file is set as a reference sequence
     GTLogTracer l3("bwa index -p");
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".ann", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
 
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);

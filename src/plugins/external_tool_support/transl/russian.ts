@@ -2258,8 +2258,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="110"/>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="120"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
+        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</source>
-        <translation>Порог для простого режима выравнивания. Рекомендуются значения от 7 до 15. Идеальное совпадение из 12 базовых последовательностей принесет чуть больше 7 баллов, в то время как для получения 15 нужно 25 оснований.</translation>
+        <translation type="vanished">Порог для простого режима выравнивания. Рекомендуются значения от 7 до 15. Идеальное совпадение из 12 базовых последовательностей принесет чуть больше 7 баллов, в то время как для получения 15 нужно 25 оснований.</translation>
     </message>
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="113"/>
@@ -2267,10 +2277,8 @@ p, li { white-space: pre-wrap; }
         <translation>Порог для клипа палиндрома</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
-        <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
         <source>A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.</source>
-        <translation>Порог для режима палинромиального выравнивания. Для палиндромиальных совпадений возможны более длинные выравнивания. Тем не менее порог может быть в пределах 30.</translation>
+        <translation type="vanished">Порог для режима палинромиального выравнивания. Для палиндромиальных совпадений возможны более длинные выравнивания. Тем не менее порог может быть в пределах 30.</translation>
     </message>
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="142"/>
@@ -2967,12 +2975,12 @@ p, li { white-space: pre-wrap; }
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="159"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="158"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Click the &quot;Add new step&quot; button and select a step. The following options are available:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.&lt;/li&gt;&lt;li&gt;SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.&lt;/li&gt;&lt;li&gt;LEADING: Cut bases off the start of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;TRAILING: Cut bases off the end of a read, if below a threshold quality.&lt;/li&gt;&lt;li&gt;CROP: Cut the read to a specified length.&lt;/li&gt;&lt;li&gt;HEADCROP: Cut the specified number of bases from the start of the read.&lt;/li&gt;&lt;li&gt;MINLEN: Drop the read if it is below a specified length.&lt;/li&gt;&lt;li&gt;AVGQUAL: Drop the read if the average quality is below the specified level.&lt;/li&gt;&lt;li&gt;TOPHRED33: Convert quality scores to Phred-33.&lt;/li&gt;&lt;li&gt;TOPHRED64: Convert quality scores to Phred-64.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt; &lt;head&gt; &lt;/ head&gt; &lt;body&gt; &lt;p&gt; Нажмите кнопку «Добавить новый шаг» и выберите шаг. Доступны следующие параметры: &lt;/ p&gt; &lt;ul&gt; &lt;li&gt; ILLUMINACLIP: вырезать адаптер и другие специфичные последовательности для рида. &lt;/ Li&gt; &lt;li&gt; SLIDINGWINDOW: выполнить обрезку скользящего окна, обрезав один раз среднее качество в пределах окна ниже порога. &lt;/ li&gt; &lt;li&gt; LEADING: обрезать базы от начала рида, если ниже порогового качества. &lt;/ li&gt; &lt;li&gt; TRAILING: обрезать базы от конца рида, если качество ниже порогового. &lt;/ li&gt; &lt;li&gt; CROP: обрезать рид до указанной длины. &lt;/ li&gt; &lt;li&gt; HEADCROP: вырезать указанное количество баз с начала рида. &lt;/ li&gt; &lt; li&gt; MINLEN: отбросить рид, если он меньше указанной длины. &lt;/ li&gt; &lt;li&gt; AVGQUAL: отбросить рид, если среднее качество ниже указанного уровня. &lt;/ li&gt; &lt;li&gt; TOPHRED33: преобразовать показатели качества в Phred-33. &lt;/ Li&gt; &lt;li&gt; TOPHRED64: преобразование показателей качества в Phred-64. &lt;/ Li&gt; &lt;/ ul&gt; &lt;/ body&gt; &lt;/ html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="174"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="173"/>
         <source>Add a step.</source>
         <translation>Добавить шаг.</translation>
     </message>
@@ -4008,42 +4016,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastRunCommonDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="49"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="55"/>
         <source>Restore to default</source>
         <translation>Значения по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="50"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="56"/>
         <source>Search</source>
         <translation>Искать</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="51"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="265"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="271"/>
         <source>Direct nucleotide alignment</source>
         <translation>Прямое нуклеотидное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="268"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="274"/>
         <source>Direct protein alignment</source>
         <translation>Прямое белковое выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="271"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="277"/>
         <source>Protein alignment, input nucleotide is translated input protein before the search</source>
         <translation>Белковое выравнивание, входные нуклеотиды транслируются в белки до поиска</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="274"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="280"/>
         <source>Protein alignment, nucleotide database is translated input protein before the search</source>
         <translation>Белковое выравнивание, нуклеотидная база данных транслируется в белковую до поиска</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="277"/>
+        <location filename="../src/blast/BlastRunCommonDialog.cpp" line="283"/>
         <source>Protein alignment, both input query and database are translated before the search</source>
         <translation>Белковое выравнивание, оба запроса и база данных транслируются до поиска</translation>
     </message>
@@ -4051,12 +4059,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="102"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="91"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="115"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="104"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -4140,28 +4148,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastWithExtFileRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="155"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="145"/>
         <source>Select input file</source>
         <translation>Выберите входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="203"/>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="249"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="193"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="239"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="203"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="193"/>
         <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="249"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="239"/>
         <source>This file does not contain sequences.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="301"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="295"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
@@ -5625,47 +5633,47 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>HMMER поиск</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="104"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="105"/>
         <source>HMM profile used: </source>
         <translation>Использовать HMM профиль:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="107"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="108"/>
         <source>Task was not finished</source>
         <translation>Task was not finished</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="113"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="114"/>
         <source>Result annotation table: </source>
         <translation>Таблица аннотаций:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="115"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="116"/>
         <source>Result annotation group: </source>
         <translation>Группа аннотаций:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="116"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="117"/>
         <source>Result annotation name: </source>
         <translation>Имя аннотации:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="118"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="119"/>
         <source>Results count: </source>
         <translation>Количество:</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="145"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="146"/>
         <source>Cannot create a folder for temporary files.</source>
         <translation>Cannot create a folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="193"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="194"/>
         <source>Unknown option controlling model-specific thresholding</source>
         <translation>Unknown option controlling model-specific thresholding</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="243"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="244"/>
         <source>Warning: it is not recommended to use HMMER2 models with HMMER3</source>
         <translation>Warning: it is not recommended to use HMMER2 models with HMMER3</translation>
     </message>
@@ -10768,7 +10776,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticPropertyDialog</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="182"/>
+        <location filename="../src/trimmomatic/TrimmomaticDelegate.cpp" line="181"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -11471,8 +11479,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PrepareInputForSpideyTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="191"/>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="204"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="195"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="208"/>
         <source>Failed to write DNA sequence  %1</source>
         <translation>Failed to write DNA sequence  %1</translation>
     </message>
@@ -11706,17 +11714,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideyAlignmentTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="81"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="85"/>
         <source>Output file not found</source>
         <translation>Выходной файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="86"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="90"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="98"/>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="102"/>
         <source>Failed to open result file %1</source>
         <translation>Failed to open result file %1</translation>
     </message>
@@ -11765,7 +11773,15 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportTask</name>
     <message>
-        <location filename="../src/spidey/SpideySupportTask.cpp" line="244"/>
+        <source>Create another annotation table?</source>
+        <translation type="vanished">Создать новую таблицу аннотаций?</translation>
+    </message>
+    <message>
+        <source>The result of the &quot;SpideySupportTask&quot; should be saved to the annotation table, which has been removed. Create another annotation table? The result will be lost otherwise.</source>
+        <translation type="vanished">Результат задачи &quot;SpideySupportTask&quot; должен был быть сохранен в таблицу аннотаций, которая была удалена. Создать новую таблицу аннотаций? В противном случае, результаты будут утеряны.</translation>
+    </message>
+    <message>
+        <location filename="../src/spidey/SpideySupportTask.cpp" line="271"/>
         <source>Failed to align mRNA to genomic sequence: no alignment is found.</source>
         <translation>Failed to align mRNA to genomic sequence: no alignment is found.</translation>
     </message>

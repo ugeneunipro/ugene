@@ -26,7 +26,6 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Lang/Aliasing.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -230,22 +229,6 @@ ActorPrototype* IncludedProtoFactoryImpl::_getSchemaActorProto(Schema* schema, c
                 }
             }
         }
-    }
-
-    foreach (const PortAlias& portAlias, schema->getPortAliases()) {
-        Descriptor portDescr(portAlias.getAlias(), portAlias.getAlias(), portAlias.getDescription());
-        QMap<Descriptor, DataTypePtr> typeMap;
-
-        foreach (const SlotAlias& slotAlias, portAlias.getSlotAliases()) {
-            const Port* sourcePort = slotAlias.getSourcePort();
-            QMap<Descriptor, DataTypePtr> sourceTypeMap = sourcePort->getOutputType()->getDatatypesMap();
-            Descriptor slotDescr(slotAlias.getAlias(), slotAlias.getAlias(), "");
-
-            typeMap[slotDescr] = sourceTypeMap[slotAlias.getSourceSlotId()];
-        }
-        DataTypePtr type(new MapDataType(dynamic_cast<Descriptor&>(*(portAlias.getSourcePort()->getType())), typeMap));
-        PortDescriptor* port = new PortDescriptor(portDescr, type, portAlias.isInput());
-        portDescs << port;
     }
 
     Descriptor desc(name, name, name);

@@ -89,7 +89,7 @@ QList<Task*> PhmmerSearchTask::onSubTaskFinished(Task* subTask) {
     } else if (subTask == parseTask) {
         removeTempDir();
         if (settings.annotationTable != nullptr) {
-            Task* createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            auto createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, {{settings.pattern.groupName, parseTask->getAnnotations()}});
             createAnnotationsTask->setSubtaskProgressWeight(5);
             result << createAnnotationsTask;
         }

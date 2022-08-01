@@ -43,7 +43,7 @@ typedef QByteArray U2DataId;
 
 /**
     ID of the DBI Factory. Defines type of the DBI driver.
-    Examples: 'sqlite', 'mysql', 'fasta'....
+    Examples: 'sqlite', 'fasta'....
 */
 typedef QString U2DbiFactoryId;
 

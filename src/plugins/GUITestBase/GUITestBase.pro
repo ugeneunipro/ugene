@@ -68,7 +68,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/SetSequenceOriginDialogFiller.h \
-            src/runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h \
 #   Runnables / UGENE / corelibs / U2View
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h \
@@ -183,7 +182,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsProjectTreeView.h \
             src/GTUtilsQueryDesigner.h \
             src/GTUtilsSequenceView.h \
-            src/GTUtilsSharedDatabaseDocument.h \
             src/GTUtilsTask.h \
             src/GTUtilsTaskTreeView.h \
             src/GTUtilsWizard.h \
@@ -256,7 +254,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.h \
             src/tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.h \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.h \
-            src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.h \
             src/tests/common_scenarios/smith_waterman_dialog/GTTestsSWDialog.h \
             src/tests/common_scenarios/start_page/GTTestsStartPage.h \
             src/tests/common_scenarios/toggle_view/GTTestsToggleView.h \
@@ -270,7 +267,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
             src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h \
-            src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h \
 #   UGENE primitives
             src/api/GTBaseCompleter.h \
             src/api/GTGraphicsItem.h \
@@ -349,7 +345,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/SetSequenceOriginDialogFiller.cpp \
-            src/runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.cpp \
 #   Runnables / UGENE / corelibs / U2View
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.cpp \
@@ -464,7 +459,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsProjectTreeView.cpp \
             src/GTUtilsQueryDesigner.cpp \
             src/GTUtilsSequenceView.cpp \
-            src/GTUtilsSharedDatabaseDocument.cpp \
             src/GTUtilsTask.cpp \
             src/GTUtilsTaskTreeView.cpp \
             src/GTUtilsWizard.cpp \
@@ -537,7 +531,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.cpp \
             src/tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.cpp \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.cpp \
-            src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.cpp \
             src/tests/common_scenarios/smith_waterman_dialog/GTTestsSWDialog.cpp \
             src/tests/common_scenarios/start_page/GTTestsStartPage.cpp \
             src/tests/common_scenarios/toggle_view/GTTestsToggleView.cpp \
@@ -551,7 +544,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
             src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.cpp \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.cpp \
-            src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.cpp \
 #   UGENE primitives
             src/api/GTBaseCompleter.cpp \
             src/api/GTGraphicsItem.cpp \

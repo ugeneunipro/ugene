@@ -978,61 +978,6 @@ void parseSlotAlias(const QString& slotString, const QMap<QString, Actor*>& acto
     }
 }
 
-void HRSchemaSerializer::parsePortAliases(Tokenizer& tokenizer, const QMap<QString, Actor*>& actorMap, QList<PortAlias>& portAliases) {
-    QList<QString> newPortNames;  // keeps all unique ports aliases
-    QList<QString> portStrings;  // keeps all unique aliased ports
-
-    while (tokenizer.look() != Constants::BLOCK_END) {
-        QString portString = tokenizer.take();
-        if (portStrings.contains(portString)) {
-            throw ReadFailed(tr("Duplicate port alias \"%1\"").arg(portString));
-        }
-        portStrings.append(portString);
-
-        QString sourceActorName;
-        QString sourcePortId;
-        parseAndCheckPortAlias(portString, actorMap, sourceActorName, sourcePortId);
-        tokenizer.assertToken(Constants::BLOCK_START);
-
-        ParsedPairs pairs(tokenizer);
-        if (!pairs.blockPairs.isEmpty()) {
-            throw ReadFailed(tr("Empty port aliases are not allowed: %1").arg(portString));
-        }
-
-        QString alias = pairs.equalPairs.take(Constants::ALIAS);
-        if (alias.isEmpty()) {
-            alias = portString;
-            alias.replace(Constants::DOT, "_at_");
-        }
-        if (newPortNames.contains(alias)) {
-            throw ReadFailed(tr("Duplicate port alias name \"%1\" at \"%2\"").arg(alias).arg(portString));
-        }
-        newPortNames.append(alias);
-
-        QString descr = pairs.equalPairs.take(Constants::DESCRIPTION);
-        if (descr.isEmpty()) {
-            descr = alias;
-        }
-
-        PortAlias newPortAlias(actorMap[sourceActorName]->getPort(sourcePortId), alias, descr);
-
-        foreach (const QString& slotString, pairs.equalPairs.keys()) {
-            QString actorName;
-            QString portId;
-            QString slotId;
-            parseSlotAlias(slotString, actorMap, actorName, portId, slotId);
-            Port* port = actorMap[actorName]->getPort(portId);
-
-            QString newSlotId = pairs.equalPairs.value(slotString);
-            if (!newPortAlias.addSlot(port, slotId, newSlotId)) {
-                throw ReadFailed(tr("Duplicate slot alias \"%1\" at port alias\"%2\"").arg(slotString).arg(portString));
-            }
-        }
-        portAliases.append(newPortAlias);
-        tokenizer.assertToken(Constants::BLOCK_END);
-    }
-}
-
 QPair<Port*, Port*> HRSchemaSerializer::parseDataflow(Tokenizer& tokenizer, const QString& srcTok, const QMap<QString, Actor*>& actorMap) {
     QString srcActorName = parseAt(srcTok, 0);
     QString srcSlotId = parseAfter(srcTok, 0);
@@ -1120,10 +1065,6 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
             data.tokenizer.assertToken(Constants::BLOCK_START);
             HRSchemaSerializer::parseParameterAliases(data.tokenizer, data.actorMap);
             data.tokenizer.assertToken(Constants::BLOCK_END);
-        } else if (Constants::PORT_ALIASES_START == tok) {
-            data.tokenizer.assertToken(Constants::BLOCK_START);
-            HRSchemaSerializer::parsePortAliases(data.tokenizer, data.actorMap, data.portAliases);
-            data.tokenizer.assertToken(Constants::BLOCK_END);
         } else if (Constants::VISUAL_START == tok) {
             data.tokenizer.assertToken(Constants::BLOCK_START);
             if (nullptr == data.meta) {
@@ -1160,6 +1101,16 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
                 data.meta->estimationsCode = code;
             }
             data.tokenizer.assertToken(Constants::BLOCK_END);
+        } else if (Constants::LEGACY_TOKENS_TO_SKIP.contains(tok)) {
+            int innerBlocks = 0;
+            do {
+                QString takenToken = data.tokenizer.take();
+                if (takenToken == Constants::BLOCK_START) {
+                    innerBlocks++;
+                } else if (takenToken == Constants::BLOCK_END) {
+                    innerBlocks--;
+                }
+            } while (innerBlocks != 0);
         } else {
             throw ReadFailed(Constants::UNDEFINED_META_BLOCK.arg(tok));
         }
@@ -1269,7 +1220,6 @@ QString HRSchemaSerializer::string2Schema(const QString& bytes, Schema* schema, 
             data.tokenizer.assertToken(Constants::BLOCK_END);
             setFlows(data);
             addEmptyValsToBindings(data.actorMap.values());
-            data.schema->setPortAliases(data.portAliases);
             data.schema->setWizards(data.wizards);
         }
     } catch (const ReadFailed& ex) {
@@ -1887,10 +1837,6 @@ static QString metaData(const Schema& schema, const Metadata* meta, const HRSche
         res += HRSchemaSerializer::makeBlock(Constants::ESTIMATIONS, Constants::NO_NAME, meta->estimationsCode + Constants::NEW_LINE, 2);
     }
 
-    if (schema.hasPortAliases()) {
-        res += HRSchemaSerializer::makeBlock(Constants::PORT_ALIASES_START, Constants::NO_NAME, HRSchemaSerializer::schemaPortAliases(nmap, schema.getPortAliases()), 2);
-    }
-
     if (nullptr == meta) {
         res += HRSchemaSerializer::makeBlock(Constants::VISUAL_START, Constants::NO_NAME, visualData(schema, nmap), 2);
     }
@@ -1918,34 +1864,6 @@ QString HRSchemaSerializer::schemaParameterAliases(const QList<Actor*>& procs, c
             res += makeBlock(paramString, Constants::NO_NAME, pairs, 3);
         }
     }
-    return res;
-}
-
-QString HRSchemaSerializer::schemaPortAliases(const NamesMap& nmap, const QList<PortAlias>& portAliases) {
-    QString res;
-
-    foreach (const PortAlias& portAlias, portAliases) {
-        QString pairs;
-        pairs += makeEqualsPair(Constants::ALIAS, portAlias.getAlias(), 4);
-        if (!portAlias.getDescription().isEmpty()) {
-            pairs += makeEqualsPair(Constants::DESCRIPTION, portAlias.getDescription(), 4);
-        }
-        foreach (const SlotAlias& slotAlias, portAlias.getSlotAliases()) {
-            QString actorName = nmap[slotAlias.getSourcePort()->owner()->getId()];
-            QString portId = slotAlias.getSourcePort()->getId();
-            QString slotString = actorName + Constants::DOT + portId + Constants::DOT + slotAlias.getSourceSlotId();
-            pairs += makeEqualsPair(slotString, slotAlias.getAlias(), 4);
-        }
-
-        const Port* sourcePort = portAlias.getSourcePort();
-        SAFE_POINT(sourcePort != nullptr, "sourcePort is nullptr", QString());
-
-        QString sourceActorName = nmap[sourcePort->owner()->getId()];
-        QString sourcePortId = sourcePort->getId();
-        QString portString = sourceActorName + Constants::DOT + sourcePortId;
-        res += makeBlock(portString, Constants::NO_NAME, pairs, 3);
-    }
-
     return res;
 }
 

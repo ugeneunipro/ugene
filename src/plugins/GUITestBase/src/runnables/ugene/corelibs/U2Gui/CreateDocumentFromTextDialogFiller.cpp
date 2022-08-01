@@ -90,8 +90,7 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& os, CustomScenar
 void CreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
-    GT_CHECK(plainText != nullptr, "plain text not found");
+    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
     GTGlobals::sleep();
 
@@ -101,7 +100,7 @@ void CreateDocumentFiller::commonScenario() {
             GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
             GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
+            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );  // replace skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
@@ -113,21 +112,16 @@ void CreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
-    GT_CHECK(lineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEdit, documentLocation);
+    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>();
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    QLineEdit* lineEditName = dialog->findChild<QLineEdit*>("nameEdit");
-    GT_CHECK(lineEditName != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEditName, sequenceName);
+    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
 
     if (saveFile) {
         auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
@@ -162,8 +156,7 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus& _os,
 void CancelCreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
-    GT_CHECK(plainText != nullptr, "plain text not found");
+    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     if (customSettings) {
@@ -173,7 +166,7 @@ void CancelCreateDocumentFiller::commonScenario() {
             GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
             GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
+            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );
         }
@@ -185,21 +178,16 @@ void CancelCreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
-    GT_CHECK(lineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEdit, documentLocation);
+    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>();
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    QLineEdit* lineEditName = dialog->findChild<QLineEdit*>("nameEdit");
-    GT_CHECK(lineEditName != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEditName, sequenceName);
+    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
 
     if (saveFile) {
         auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);

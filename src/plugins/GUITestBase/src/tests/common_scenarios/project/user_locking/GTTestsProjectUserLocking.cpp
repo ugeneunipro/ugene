@@ -60,8 +60,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
         void commonScenario() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* btn = dialog->findChild<QRadioButton*>("rbExistingTable");
-            GT_CHECK(btn != nullptr, "Radio button not found");
+            auto btn = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
 
             if (!btn->isEnabled()) {
                 GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
@@ -108,8 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
         void commonScenario() {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QRadioButton* btn = dialog->findChild<QRadioButton*>("rbExistingTable");
-            GT_CHECK(btn != nullptr, "Radio button not found");
+            auto btn = GTWidget::findRadioButton(os, "rbExistingTable", dialog);
 
             if (!btn->isEnabled()) {
                 GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));

@@ -50,62 +50,49 @@ void Primer3DialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (settings.resultsCount != -1) {
-        QSpinBox* resultsCountSpinBox = dialog->findChild<QSpinBox*>("edit_PRIMER_NUM_RETURN");
+        auto resultsCountSpinBox = GTWidget::findSpinBox(os, "edit_PRIMER_NUM_RETURN", dialog);
         GTSpinBox::setValue(os, resultsCountSpinBox, settings.resultsCount);
     }
 
-    QTabWidget* tabWidget = dialog->findChild<QTabWidget*>("tabWidget");
+    auto tabWidget = GTWidget::findTabWidget(os, "tabWidget", dialog);
     if (!settings.primersGroupName.isEmpty() || !settings.primersName.isEmpty()) {
         GTTabWidget::setCurrentIndex(os, tabWidget, 6);
 
         if (!settings.primersGroupName.isEmpty()) {
-            QLineEdit* groupEdit = dialog->findChild<QLineEdit*>("leGroupName");
-            GT_CHECK(groupEdit != nullptr, "groupNameEdit is NULL");
-            GTLineEdit::setText(os, groupEdit, settings.primersGroupName);
+            GTLineEdit::setText(os, "leGroupName", settings.primersGroupName, dialog);
         }
 
         if (!settings.primersName.isEmpty()) {
-            QLineEdit* primerEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
-            GT_CHECK(primerEdit != nullptr, "annotationNameEdit is NULL");
-            GTLineEdit::setText(os, primerEdit, settings.primersName);
+            GTLineEdit::setText(os, "leAnnotationName", settings.primersName, dialog);
         }
     }
 
     if (settings.start != -1) {
-        QLineEdit* start = dialog->findChild<QLineEdit*>("start_edit_line");
-        GT_CHECK(start != nullptr, "start_edit_line is NULL");
-        GTLineEdit::setText(os, start, QString::number(settings.start));
+        GTLineEdit::setText(os, "start_edit_line", QString::number(settings.start), dialog);
     }
 
     if (settings.end != -1) {
-        QLineEdit* end = dialog->findChild<QLineEdit*>("end_edit_line");
-        GT_CHECK(end != nullptr, "start_edit_line is NULL");
-        GTLineEdit::setText(os, end, QString::number(settings.end));
+        GTLineEdit::setText(os, "end_edit_line", QString::number(settings.end), dialog);
     }
-    QCheckBox* leftCheckbox = dialog->findChild<QCheckBox*>("checkbox_PICK_LEFT");
-    GT_CHECK(leftCheckbox != nullptr, "checkbox_PICK_LEFT is NULL");
+    auto leftCheckbox = GTWidget::findCheckBox(os, "checkbox_PICK_LEFT", dialog);
     GTCheckBox::setChecked(os, leftCheckbox, settings.pickLeft);
 
-    QCheckBox* rightCheckbox = dialog->findChild<QCheckBox*>("checkbox_PICK_RIGHT");
-    GT_CHECK(rightCheckbox != nullptr, "checkbox_PICK_RIGHT is NULL");
+    auto rightCheckbox = GTWidget::findCheckBox(os, "checkbox_PICK_RIGHT", dialog);
     GTCheckBox::setChecked(os, rightCheckbox, settings.pickRight);
 
     if (settings.rtPcrDesign) {
         GTTabWidget::setCurrentIndex(os, tabWidget, 4);
 
-        QGroupBox* groupBox = dialog->findChild<QGroupBox*>("spanIntronExonBox");
-        GT_CHECK(groupBox != nullptr, "spanIntronExonBox is NULL");
+        auto groupBox = GTWidget::findGroupBox(os, "spanIntronExonBox", dialog);
         GTGroupBox::setChecked(os, groupBox);
     }
 
     if (!settings.shortRegion) {
-        QPushButton* button = dialog->findChild<QPushButton*>("pickPrimersButton");
-        GT_CHECK(button != nullptr, "PickPrimers button is NULL");
+        auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
     } else {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-        QPushButton* button = dialog->findChild<QPushButton*>("pickPrimersButton");
-        GT_CHECK(button != nullptr, "PickPrimers button is NULL");
+        auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
 #ifdef Q_OS_DARWIN
         dialog->close();

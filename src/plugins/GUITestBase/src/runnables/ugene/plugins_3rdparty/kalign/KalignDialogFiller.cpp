@@ -42,10 +42,10 @@ void KalignDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (gapOpenVal) {
-        QCheckBox* gapOpenCheckBox = dialog->findChild<QCheckBox*>("gapOpenCheckBox");
+        auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
         GTCheckBox::setChecked(os, gapOpenCheckBox, true);
 
-        QDoubleSpinBox* gapOpenSpinBox = dialog->findChild<QDoubleSpinBox*>("gapOpenSpinBox");
+        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox(os, "gapOpenSpinBox", dialog);
         GTDoubleSpinbox::setValue(os, gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
     }
 

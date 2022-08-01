@@ -65,8 +65,8 @@ void ResultTable::setCurrentProducts(const QList<U2Region>& _currentProducts, co
         setItem(row, 2, new QTableWidgetItem(QString("%1").arg(reversePrimerRegion.endPos() - forwardPrimerRegion.startPos)));
         setItem(row, 3, new QTableWidgetItem(QString("%1-%2").arg(forwardPrimerRegion.startPos + 1).arg(forwardPrimerRegion.endPos())));
         setItem(row, 4, new QTableWidgetItem(QString("%1-%2").arg(reversePrimerRegion.startPos + 1).arg(reversePrimerRegion.endPos())));
-        row++;
-    }
+            row++;
+        }
     setRowCount(row);
     associatedView = _associatedView;
 }
@@ -109,11 +109,11 @@ QList<QPair<QString, U2Region> > ResultTable::getSelectedFragment(FragmentLocati
         selectedFragmentName += location == Forward ? " Forward" : " Reverse";
         QPair<QString, U2Region>  fragment;
         fragment.first = selectedFragmentName;
-        for (auto a : qAsConst(annotations)) {
-            if (a->getName() == selectedFragmentName) {
+    for (auto a : qAsConst(annotations)) {
+        if (a->getName() == selectedFragmentName) {
                 fragment.second = a->getRegions().first();
-                break;
-            }
+            break;
+        }
         }
         fragmentList << fragment;
     }

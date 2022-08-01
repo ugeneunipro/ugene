@@ -45,12 +45,9 @@ using namespace HI;
 void EditQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>("nameEdit");
-    GT_CHECK(nameEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, nameEdit, qualifierName, noCheck);
+    GTLineEdit::setText(os, "nameEdit", qualifierName, dialog, noCheck);
 
-    QTextEdit* valueEdit = dialog->findChild<QTextEdit*>("valueEdit");
-    GT_CHECK(valueEdit != nullptr, "value line edit not found");
+    auto valueEdit = GTWidget::findTextEdit(os, "valueEdit", dialog);
     if (!valueName.isEmpty()) {
         GTTextEdit::setText(os, valueEdit, valueName);
     }
@@ -61,7 +58,7 @@ void EditQualifierFiller::commonScenario() {
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
         GTGlobals::sleep();
 
-        GTLineEdit::setText(os, nameEdit, "nice_name", noCheck);
+        GTLineEdit::setText(os, "nameEdit", "nice_name", dialog, noCheck);
         GTTextEdit::setText(os, valueEdit, "nice_val");
     }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -565,8 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 2. Open view for "1.gb"
@@ -593,8 +592,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 2. Open view for "1.gb"
@@ -627,8 +625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 2. Select a group on annotations editor

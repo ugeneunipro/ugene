@@ -45,16 +45,12 @@ ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus& os, const 
 void ExportReadsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* fileLineEdit = dialog->findChild<QLineEdit*>("filepathLineEdit");
-    GT_CHECK(fileLineEdit != nullptr, "File path lineEdit not found");
-    GTLineEdit::setText(os, fileLineEdit, filePath);
+    GTLineEdit::setText(os, "filepathLineEdit", filePath, dialog);
 
-    QComboBox* formatComboBox = dialog->findChild<QComboBox*>("documentFormatComboBox");
-    GT_CHECK(formatComboBox != nullptr, "Format comboBox not found");
+    auto formatComboBox = GTWidget::findComboBox(os, "documentFormatComboBox", dialog);
     GTComboBox::selectItemByText(os, formatComboBox, format);
 
-    QCheckBox* addToPrj = dialog->findChild<QCheckBox*>("addToProjectCheckBox");
-    GT_CHECK(addToPrj != nullptr, "Add to project check box not found");
+    auto addToPrj = GTWidget::findCheckBox(os, "addToProjectCheckBox", dialog);
     GTCheckBox::setChecked(os, addToPrj, addToProject);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

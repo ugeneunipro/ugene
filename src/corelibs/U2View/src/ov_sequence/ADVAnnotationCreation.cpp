@@ -104,7 +104,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
     if (annotationItem != nullptr && !annotationItem->isReadonly() && annotationItem->isSelected()) {
         AnnotationTableObject* annotationObject = annotationItem->getAnnotationTableObject();
         if (seqCtx->getAnnotationGObjects().contains(annotationObject)) {
-            m.annotationObjectRef = annotationObject;
+            m.annotationObjectRef = annotationObject->getReference();
             AnnotationGroup* annotationGroup = annotationItem->getAnnotationGroup();
             if (annotationGroup != annotationObject->getRootGroup()) {
                 m.groupName = annotationGroup->getGroupPath();

@@ -86,10 +86,6 @@ public:
     static QString errorIsNotADir(const GUrl& url) {
         return tr("'%1' is not a folder").arg(url.getURLString());
     }
-    static QString warningCharactersCodePage(const QString& url) {
-        return tr("Avoid characters in the '%1' parameter that do not correspond to the operating system locale settings.").arg(url);
-    }
-
     // messages to work with a shared database
     static QString errorWrongDbObjUrlFormat(const QString& url) {
         return tr("'%1' does not match database object URL format").arg(url);

@@ -33,7 +33,6 @@
 
 #include <QColor>
 #include <QGraphicsItem>
-#include <QGraphicsView>
 #include <QMainWindow>
 #include <QRgb>
 
@@ -79,9 +78,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
-    GTWidget::click(os, GTWidget::findWidget(os, "cameraMenu"));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTWidget::click(os, GTWidget::findWidget(os, "exportTreeImageButton"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
     // Expected state: images on screenshots same as on your screen
@@ -105,8 +104,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
+    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "treeView"));
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
@@ -175,8 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 7. Click  OK button
     // Expected state: Phylogenetic tree appears
-    QWidget* w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -206,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* w = GTWidget::findWidget(os, "treeView", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "treeView", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "treeView not deleted")
 
     GTUtilsProjectTreeView::findIndex(os, "COI.nwk", {false});
@@ -228,8 +226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 7. Click  OK button
     // Expected state: phylogenetic tree appears
-    QWidget* w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -248,7 +245,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click OK button.
     // Expected state: phylogenetic tree appears
     auto treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
     // 4. Remove document "COI.nwk" from project view.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "test_0002_2.nwk"));
@@ -375,12 +371,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::findGraphicsView(os, "treeView");
 }
 
-int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
-    QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
-    return globalCoord.y();
-}
+// int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
+//     auto treeView = GTWidget::findGraphicsView(os, "treeView");
+//     QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomLeft());
+//     QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
+//     return globalCoord.y();
+// }
+
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Tree layouts test
     //    1. Open file _common_data/scenario/tree_view/COI.nwk
@@ -634,8 +631,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
 
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != nullptr, "treeView not found");
+    GTWidget::findWidget(os, "treeView");
     // 3. Close the opened view
 
     // 4. Activate bookmark
@@ -876,13 +872,12 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open the "Tree settings" tab in the options panel
-    QWidget* optionsPanelWidget = GTWidget::findWidget(os, "OP_MSA_ADD_TREE_WIDGET");
+    auto optionsPanelWidget = GTWidget::findWidget(os, "OP_MSA_ADD_TREE_WIDGET");
     GTWidget::click(os, optionsPanelWidget);
 
-    QWidget* optionsPanelContainer = GTWidget::findWidget(os, "AddTreeWidget");
+    auto optionsPanelContainer = GTWidget::findWidget(os, "AddTreeWidget");
 
-    QWidget* openButton = GTWidget::findButtonByText(os, QObject::tr("Open tree"), optionsPanelContainer);
-    CHECK_SET_ERR(nullptr != openButton, "The \"Open Tree\" button is not found");
+    auto openButton = GTWidget::findButtonByText(os, QObject::tr("Open tree"), optionsPanelContainer);
 
     // 3. Press the first one
     // Expected state: the "Select files to open..." dialog has appeared
@@ -930,14 +925,10 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     // 2. Use context menu items { Tree -> Build tree }
     // Expected: the "Build Phylogenetic Tree" dialog has appeared
     // 3. Press the "Build" button in the dialog
-    GTUtilsDialog::waitForDialog(os,
-                                 new PopupChooser(os, QStringList() << MSAE_MENU_TREES << "Build Tree"));
-
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
     QString outputDirPath(testDir + "_common_data/scenarios/sandbox");
     QDir outputDir(outputDirPath);
-    GTUtilsDialog::waitForDialog(os,
-                                 new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
-
+    GTUtilsDialog::add(os,new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
@@ -964,8 +955,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     // GTGlobals::sleep(2000);
     // 6. Check the "Show names" checkbox twice
-    QCheckBox* showNamesButton = dynamic_cast<QCheckBox*>(
-        GTWidget::findWidget(os, "showNamesCheck"));
+    QCheckBox* showNamesButton = dynamic_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(nullptr != showNamesButton, "The \"Show names\" button is not found");
     GTCheckBox::setChecked(os, showNamesButton, false);
 

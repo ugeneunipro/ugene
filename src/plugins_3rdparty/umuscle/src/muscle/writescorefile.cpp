@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "muscle.h"
 #include "msa.h"
 #include <errno.h>

@@ -80,7 +80,7 @@ AssemblyBrowserUi* GTUtilsAssemblyBrowser::getView(HI::GUITestOpStatus& os, cons
 
 void GTUtilsAssemblyBrowser::addRefFromProject(HI::GUITestOpStatus& os, QString docName, QModelIndex parent) {
     checkAssemblyBrowserWindowIsActive(os);
-    QWidget* renderArea = GTWidget::findWidget(os, "assembly_reads_area");
+    auto renderArea = GTWidget::findWidget(os, "assembly_reads_area");
     QModelIndex ref = GTUtilsProjectTreeView::findIndex(os, docName, parent);
     GTUtilsProjectTreeView::dragAndDrop(os, ref, renderArea);
 }
@@ -119,13 +119,11 @@ bool GTUtilsAssemblyBrowser::hasReference(HI::GUITestOpStatus& os, AssemblyBrows
 qint64 GTUtilsAssemblyBrowser::getLength(HI::GUITestOpStatus& os) {
     QWidget* mdi = getActiveAssemblyBrowserWindow(os);
 
-    QWidget* infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
+    auto infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
     if (!infoOptionsPanel->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_INFO", mdi));
         infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
     }
-    GT_CHECK_RESULT(infoOptionsPanel != nullptr, "Information options panel wasn't found", 0);
-
     auto leLength = GTWidget::findLineEdit(os, "leLength", infoOptionsPanel);
 
     bool isConverted = false;
@@ -142,13 +140,11 @@ qint64 GTUtilsAssemblyBrowser::getLength(HI::GUITestOpStatus& os) {
 qint64 GTUtilsAssemblyBrowser::getReadsCount(HI::GUITestOpStatus& os) {
     QWidget* mdi = getActiveAssemblyBrowserWindow(os);
 
-    QWidget* infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
+    auto infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
     if (!infoOptionsPanel->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_INFO", mdi));
         infoOptionsPanel = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET", mdi);
     }
-    GT_CHECK_RESULT(infoOptionsPanel != nullptr, "Information options panel wasn't found", 0);
-
     auto leReads = GTWidget::findLineEdit(os, "leReads", infoOptionsPanel);
 
     bool isConverted = false;
@@ -164,7 +160,7 @@ qint64 GTUtilsAssemblyBrowser::getReadsCount(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "isWelcomeScreenVisible"
 bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible(HI::GUITestOpStatus& os) {
     QWidget* window = getActiveAssemblyBrowserWindow(os);
-    QWidget* coveredRegionsLabel = GTWidget::findWidget(os, "CoveredRegionsLabel", window);
+    auto coveredRegionsLabel = GTWidget::findWidget(os, "CoveredRegionsLabel", window);
     return coveredRegionsLabel->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -235,8 +231,7 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus& os, qint64 positi
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(toolbar != nullptr, "Can't find the toolbar");
 
-    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
-    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
+    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(position), toolbar);
 
     switch (method) {
         case Button:

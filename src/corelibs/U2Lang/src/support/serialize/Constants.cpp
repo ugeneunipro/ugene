@@ -54,7 +54,6 @@ const QString Constants::DOT = ".";
 const QString Constants::DASH = "-";
 const QString Constants::ITERATION_ID = "id";
 const QString Constants::PARAM_ALIASES_START = "parameter-aliases";
-const QString Constants::PORT_ALIASES_START = "port-aliases";
 const QString Constants::PATH_THROUGH = "path-through";
 const QString Constants::TRUE = "true";
 const QString Constants::FALSE = "false";
@@ -112,6 +111,8 @@ const QString Constants::CUSTOM_TOOL_PATH = "custom-tool-path";
 const QString Constants::INTEGRATED_TOOL_ID = "integrated-tool-id";
 const QString Constants::ADD_TO_DASHBOARD = "add-to-dashboard";
 const QString Constants::OPEN_WITH_UGENE = "open-with-ugene";
+
+const QStringList Constants::LEGACY_TOKENS_TO_SKIP = {"port-aliases"};
 
 }  // namespace WorkflowSerialize
 }  // namespace U2

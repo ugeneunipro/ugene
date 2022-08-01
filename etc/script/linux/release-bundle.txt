@@ -1232,7 +1232,6 @@ libcrypto.so.1.1
 libicudata.so.56
 libicui18n.so.56
 libicuuc.so.56
-libmysqlclient.so.21
 libQt5Core.so.5
 libQt5DBus.so.5
 libQt5Gui.so.5
@@ -1371,8 +1370,6 @@ plugins/weight_matrix.license
 plugins/weight_matrix.plugin
 plugins/workflow_designer.license
 plugins/workflow_designer.plugin
-sqldrivers
-sqldrivers/libqsqlmysql.so
 tools
 tools/bedtools
 tools/bigwig

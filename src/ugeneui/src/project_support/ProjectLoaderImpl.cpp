@@ -59,7 +59,6 @@
 #include <U2Gui/PasteController.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/SearchGenbankSequenceDialogController.h>
-#include <U2Gui/SharedConnectionsDialog.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/DnaAssemblyGUIExtension.h>
@@ -133,11 +132,6 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     downloadRemoteFileAction->setIcon(QIcon(":ugene/images/world_go.png"));
     connect(downloadRemoteFileAction, SIGNAL(triggered()), SLOT(sl_downloadRemoteFile()));
 
-    accessSharedDatabaseAction = new QAction(tr("Connect to UGENE shared database..."), this);
-    accessSharedDatabaseAction->setObjectName(ACTION_PROJECTSUPPORT__ACCESS_SHARED_DB);
-    accessSharedDatabaseAction->setIcon(QIcon(":core/images/db/database_go.png"));
-    connect(accessSharedDatabaseAction, SIGNAL(triggered()), SLOT(sl_accessSharedDatabase()));
-
     searchGenbankEntryAction = new QAction(tr("Search NCBI GenBank..."), this);
     searchGenbankEntryAction->setObjectName(ACTION_PROJECTSUPPORT__SEARCH_GENBANK);
     searchGenbankEntryAction->setIcon(QIcon(":ugene/images/world_go.png"));
@@ -178,7 +172,6 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
             << openSectionSeparator
             << downloadRemoteFileAction
             << searchGenbankEntryAction
-            << accessSharedDatabaseAction
             << remoteSectionSeparator
             << recentItemsMenu->menuAction()
             << recentProjectsMenu->menuAction()
@@ -787,12 +780,6 @@ void ProjectLoaderImpl::sl_newDocumentFromText() {
 void ProjectLoaderImpl::sl_downloadRemoteFile() {
     QWidget* p = (QWidget*)(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<DownloadRemoteFileDialog> dlg = new DownloadRemoteFileDialog(p);
-    dlg->exec();
-}
-
-void ProjectLoaderImpl::sl_accessSharedDatabase() {
-    QWidget* p = (QWidget*)(AppContext::getMainWindow()->getQMainWindow());
-    QObjectScopedPointer<SharedConnectionsDialog> dlg = new SharedConnectionsDialog(p);
     dlg->exec();
 }
 

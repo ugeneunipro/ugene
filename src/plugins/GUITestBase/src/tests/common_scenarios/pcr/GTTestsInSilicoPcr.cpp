@@ -66,8 +66,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
     // Expected: The panel is unavailable, the info message about alphabets is shown.
-    QWidget* params = GTWidget::findWidget(os, "runPcrWidget");
-    QWidget* warning = GTWidget::findWidget(os, "algoWarningLabel");
+    auto params = GTWidget::findWidget(os, "runPcrWidget");
+    auto warning = GTWidget::findWidget(os, "algoWarningLabel");
     CHECK_SET_ERR(!params->isEnabled(), "The panel is enabled for a wrong alphabet");
     CHECK_SET_ERR(warning->isVisible(), "No alphabet warning");
 
@@ -92,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
     //  TODO: wrap into api
-    QWidget* forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
+    auto forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
     QLineEdit* forwardPrimerLine = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
     GTLineEdit::setText(os, forwardPrimerLine, "Q%1", true);
 
@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
     // Expected: the find buttom is disabled.
-    QWidget* findButton = GTWidget::findWidget(os, "findProductButton");
+    auto findButton = GTWidget::findWidget(os, "findProductButton");
     CHECK_SET_ERR(!findButton->isEnabled(), "Find button is enabled 1");
 
     // 3. Enter the forward primer "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT".
@@ -179,7 +179,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click();
 
     // Expected: the extract button is enabled.
-    QWidget* extractButton = GTWidget::findWidget(os, "extractProductButton");
+    auto extractButton = GTWidget::findWidget(os, "extractProductButton");
     CHECK_SET_ERR(extractButton->isEnabled(), "Extract button is disabled");
 
     // 6. Click the empty place of the table.
@@ -274,7 +274,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGACTCTTTCGTCTCACGCACTTCGCTGATA");
 
     // Expected: primer warning is hidden.
-    QWidget* warning = GTWidget::findWidget(os, "warningLabel");
+    auto warning = GTWidget::findWidget(os, "warningLabel");
     CHECK_SET_ERR(!warning->isVisible(), "Primer warning is visible");
 
     // 4. Enter the reverse primer  and "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT".
@@ -440,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
     // 7. Click "Export product(s)".
-    QWidget* extractPB = GTWidget::findWidget(os, "extractProductButton");
+    auto extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);

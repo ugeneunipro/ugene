@@ -589,14 +589,23 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::PhyTreeGeneratorLauncherTask</name>
     <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="45"/>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="46"/>
         <source>Calculating Phylogenetic Tree</source>
         <translation>Создание филогенетического дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="53"/>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="56"/>
+        <source>Tree algorithm %1 is not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="81"/>
+        <source>Failed to map row name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Tree construction algorithm %1 not found</source>
-        <translation>Алгоритм %1 построения дерева не найден</translation>
+        <translation type="vanished">Алгоритм %1 построения дерева не найден</translation>
     </message>
 </context>
 <context>

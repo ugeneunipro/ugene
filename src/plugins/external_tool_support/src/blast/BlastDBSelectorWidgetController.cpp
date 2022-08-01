@@ -42,12 +42,12 @@ BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget* parent
 void BlastDBSelectorWidgetController::sl_lineEditChanged() {
     bool pathWarning = databasePathLineEdit->text().contains(' ');
     QString pathTooltip = pathWarning ? tr("Database path contains space characters.") : "";
-    GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
+    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, pathWarning);
     databasePathLineEdit->setToolTip(pathTooltip);
 
     bool nameWarning = baseNameLineEdit->text().contains(' ');
     QString nameTooltip = nameWarning ? tr("Database name contains space characters.") : "";
-    GUIUtils::setWidgetWarning(baseNameLineEdit, nameWarning);
+    GUIUtils::setWidgetWarningStyle(baseNameLineEdit, nameWarning);
     baseNameLineEdit->setToolTip(nameTooltip);
 
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();

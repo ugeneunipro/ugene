@@ -107,7 +107,7 @@ void test_3(HI::GUITestOpStatus& os, int i = 0, QString expectedSec = "") {
     // 2. Select 6th symbol for Phaneroptera_falcata sequence. Use context menu {Edit->Insert gap}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, i));
 
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "insert_gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -149,7 +149,7 @@ void test_4(HI::GUITestOpStatus& os, int startPos, int endPos, const QString& ex
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(startPos, i), QPoint(endPos, i));
 
     if (0 != context) {
-        QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+        auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove selection"}));
         GTMenu::showContextMenu(os, seq);
     } else {
@@ -244,7 +244,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -283,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -323,9 +323,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 2. Place cursor on 4th column of alignment. Use msa editor context menu (at the column with gaps) {Edit->Remove column of gaps}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 3));
 
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
@@ -375,9 +375,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     //     GTUtilsDialog::waitForDialog(os,new DeleteGapsDialogFiller(os,1));
     //     GTWidget::click(os,seq);
     //    GTKeyboardDriver::keyClick(Qt::Key_Delete,Qt::Key_Shift);
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
@@ -414,7 +414,7 @@ Hetrodes_pupus_EF540832            AAGCTTTTAA---
 }
 
 void test_9(HI::GUITestOpStatus& os, int i = 0) {
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     QString gaps;
 
     if (0 != i) {
@@ -442,8 +442,8 @@ void test_9(HI::GUITestOpStatus& os, int i = 0) {
     CHECK_SET_ERR(clipboardText == gaps, "Expected:\n" + gaps + "\nFound:\n" + clipboardText);
 
     // 3. Move cursor at 15th symbol in first sequence. Use msa editor context menu {Edit->Delete column of gaps}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     //    Expected state:
@@ -609,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -711,7 +711,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
 static void test_13(HI::GUITestOpStatus& os, int comboVal, int spinVal, const QString& expectedCons) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -762,8 +762,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Right click on aligniment view. Open context menu {Export->save subalignment}
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 5), QPoint(10, 5));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     // Expected state: Create subaligniment dialog has appeared
 
@@ -857,8 +857,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
+    GTUtilsDialog::add(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 

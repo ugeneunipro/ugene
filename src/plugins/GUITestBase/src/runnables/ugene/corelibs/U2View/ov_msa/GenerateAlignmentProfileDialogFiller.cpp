@@ -43,10 +43,10 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
 
     GTGlobals::sleep(500);
     if (counts) {
-        QRadioButton* countsRB = dialog->findChild<QRadioButton*>("countsRB");
+        auto countsRB = GTWidget::findRadioButton(os, "countsRB", dialog);
         GTRadioButton::click(os, countsRB);
     } else {
-        QRadioButton* percentsRB = dialog->findChild<QRadioButton*>("percentsRB");
+        auto percentsRB = GTWidget::findRadioButton(os, "percentsRB", dialog);
         GTRadioButton::click(os, percentsRB);
     }
 
@@ -54,20 +54,19 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
         GTGroupBox::setChecked(os, "saveBox", dialog);
         GTGlobals::sleep(500);
 
-        QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
-        GTLineEdit::setText(os, fileEdit, filePath);
+        GTLineEdit::setText(os, "fileEdit", filePath, dialog);
 
-        QRadioButton* formatRB = dialog->findChild<QRadioButton*>(checkBoxItems[format]);
+        auto formatRB = GTWidget::findRadioButton(os, checkBoxItems[format], dialog);
         GTRadioButton::click(os, formatRB);
     }
 
-    QCheckBox* gapCB = dialog->findChild<QCheckBox*>("gapCB");
+    auto gapCB = GTWidget::findCheckBox(os, "gapCB", dialog);
     GTCheckBox::setChecked(os, gapCB, gapScore);
 
-    QCheckBox* unusedCB = dialog->findChild<QCheckBox*>("unusedCB");
+    auto unusedCB = GTWidget::findCheckBox(os, "unusedCB", dialog);
     GTCheckBox::setChecked(os, unusedCB, symdolScore);
 
-    QCheckBox* skipGapPositionsCB = dialog->findChild<QCheckBox*>("skipGapPositionsCB");
+    auto skipGapPositionsCB = GTWidget::findCheckBox(os, "skipGapPositionsCB", dialog);
     GTCheckBox::setChecked(os, skipGapPositionsCB, skipGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

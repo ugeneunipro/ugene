@@ -255,11 +255,11 @@ void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path)
 
 #define GT_METHOD_NAME "closeProject"
 void GTUtilsProject::closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog, bool isExpectAppMessageBox) {
-    if (isExpectSaveProjectDialog) {
-        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    }
     if (isExpectAppMessageBox) {
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
+    }
+    if (isExpectSaveProjectDialog) {
+        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     }
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }

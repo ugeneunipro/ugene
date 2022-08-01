@@ -30,7 +30,6 @@
 #include <QLineEdit>
 
 #include "GTUtilsTaskTreeView.h"
-#include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
 
 namespace U2 {
 
@@ -53,20 +52,6 @@ QWidget* ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExportTarget"
-void ExportPrimersDialogFiller::setExportTarget(HI::GUITestOpStatus& os, ExportPrimersDialogFiller::ExportTarget exportTarget) {
-    switch (exportTarget) {
-        case LocalFile:
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExport", getDialog(os)), "Local file");
-            break;
-        case SharedDb:
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExport", getDialog(os)), "Shared database");
-            break;
-        default:
-            os.setError("Unexpected export target");
-    }
-}
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFormat"
 void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus& os, const QString& format) {
@@ -76,28 +61,7 @@ void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus& os, const QString
 
 #define GT_METHOD_NAME "setFilePath"
 void ExportPrimersDialogFiller::setFilePath(HI::GUITestOpStatus& os, const QString& filePath) {
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFilePath", getDialog(os)), filePath);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setDatabase"
-void ExportPrimersDialogFiller::setDatabase(HI::GUITestOpStatus& os, const QString& database) {
-    auto cbDatabase = GTWidget::findComboBox(os, "cbDatabase", getDialog(os));
-    if (-1 == cbDatabase->findText(database)) {
-        QList<SharedConnectionsDialogFiller::Action> actions;
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, database);
-        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT);
-        GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
-        GTWidget::click(os, GTWidget::findWidget(os, "tbConnect", getDialog(os)));
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-    }
-    GTComboBox::selectItemByText(os, cbDatabase, database);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setFolder"
-void ExportPrimersDialogFiller::setFolder(HI::GUITestOpStatus& os, const QString& folder) {
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFolder", getDialog(os)), folder);
+    GTLineEdit::setText(os, "leFilePath", filePath, getDialog(os));
 }
 #undef GT_METHOD_NAME
 

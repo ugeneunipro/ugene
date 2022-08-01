@@ -42,14 +42,11 @@ void ExtractAssemblyRegionDialogFiller::commonScenario() {
     auto docFormatCB = GTWidget::findComboBox(os, "documentFormatComboBox", widget);
     GTComboBox::selectItemByText(os, docFormatCB, format);
 
-    auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", widget);
-    GTLineEdit::setText(os, startLineEdit, QString::number(regionToExtract.startPos));
+    GTLineEdit::setText(os, "start_edit_line", QString::number(regionToExtract.startPos), widget);
 
-    auto endLineEdit = GTWidget::findLineEdit(os, "end_edit_line", widget);
-    GTLineEdit::setText(os, endLineEdit, QString::number(regionToExtract.endPos()));
+    GTLineEdit::setText(os, "end_edit_line", QString::number(regionToExtract.endPos()), widget);
 
-    auto filepathLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", widget);
-    GTLineEdit::setText(os, filepathLineEdit, filepath);
+    GTLineEdit::setText(os, "filepathLineEdit", filepath, widget);
 
     GTUtilsDialog::clickButtonBox(os, widget, QDialogButtonBox::Ok);
 }

@@ -81,7 +81,7 @@ int readLongLine(QString& buffer, IOAdapter* io, QScopedArrayPointer<char>& char
 
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
 
-        charbuff.data()[len] = '\0';
+        charbuff[len] = '\0';
 
         buffer.append(QString(charbuff.data()));
     } while (readBufferSize - 1 == len);
@@ -231,14 +231,11 @@ static QStringList splitGffAttributes(const QString& line, char sep) {
 void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-
-    QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);
-    int len = io->readLine(buff.data(), LOCAL_READ_BUFFER_SIZE);
-
+    QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);    
+    // -1 - because line terminator excluded and we should add it manually
+    int len = io->readLine(buff.data(), LOCAL_READ_BUFFER_SIZE - 1);
     CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-    buff.data()[len] = '\0';
-
+    buff[len] = '\0';
     QString qstrbuf(buff.data());
     QStringList words = qstrbuf.split(QRegExp("\\s+"));
     bool isOk;
@@ -274,11 +271,12 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
 
         len = readLongLine(qstrbuf, io, buff, GFFFormat::LOCAL_READ_BUFFER_SIZE, os);
-
         CHECK_OP(os, );
 
         // skip empty lines
-        if (TextUtils::remove(buff.data(), len, TextUtils::WHITES) == 0) {
+        QString checkEmptyLine = qstrbuf.simplified();
+        checkEmptyLine.replace(" ", "");
+        if (checkEmptyLine.isEmpty()) {
             ioLog.info(GFFFormat::tr("Parsing error: file contains empty line %1, line skipped").arg(lineNumber));
             lineNumber++;
             continue;

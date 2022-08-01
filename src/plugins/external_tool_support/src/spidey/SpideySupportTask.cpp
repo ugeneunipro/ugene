@@ -27,7 +27,11 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/U1AnnotationUtils.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -221,24 +225,47 @@ void PrepareInputForSpideyTask::run() {
 ////SpideySupportTask
 
 SpideySupportTask::SpideySupportTask(const SplicedAlignmentTaskConfig& cfg,
-                                     AnnotationTableObject* ao,
-                                     const QString& annDescription)
+    AnnotationTableObject* ao,
+    const QString& annDescription)
     : Task("SpideySupportTask", TaskFlags_NR_FOSCOE),
-      spideyAlignmentTask(new SpideyAlignmentTask(cfg, annDescription)), aObj(ao) {
-}
+    settings(cfg),
+    spideyAlignmentTask(new SpideyAlignmentTask(cfg, annDescription)),
+    aObj(ao) {}
 
 void SpideySupportTask::prepare() {
     addSubTask(spideyAlignmentTask);
 }
 
 QList<Task*> SpideySupportTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> res;
-
     if (hasError() || isCanceled()) {
-        return res;
+        return {};
     }
 
     if (subTask == spideyAlignmentTask) {
+        if (aObj == nullptr) {
+            taskLog.details("The result of the \"SpideySupportTask\" should be saved to the annotation table, which has been removed. The new annotation table is about to be created.");
+
+            auto dnaSeq = settings.getCDnaSequence();
+            auto documentFilePath = GUrlUtils::getDefaultDataPath() + "/MyDocument.gb";
+            documentFilePath = GUrlUtils::rollFileName(documentFilePath, "_");
+            auto project = AppContext::getProject();
+            auto document = project->findDocumentByURL(documentFilePath);
+            if (document == nullptr) {
+                IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+                DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+                document = df->createNewLoadedDocument(iof, documentFilePath, stateInfo);
+                CHECK_OP(stateInfo, {});
+                project->addDocument(document);
+            }
+
+            const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+            SAFE_POINT_OP(stateInfo, {});
+
+            aObj = new AnnotationTableObject("Annotations", localDbiRef);
+            document->addObject(aObj);
+            aObj->addObjectRelation(dnaSeq, ObjectRole_Sequence);
+        }
+
         const QList<SharedAnnotationData> results = spideyAlignmentTask->getAlignmentResult();
         if (results.isEmpty()) {
             setError(tr("Failed to align mRNA to genomic sequence: no alignment is found."));
@@ -249,7 +276,7 @@ QList<Task*> SpideySupportTask::onSubTaskFinished(Task* subTask) {
         }
     }
 
-    return res;
+    return {};
 }
 
 }  // namespace U2

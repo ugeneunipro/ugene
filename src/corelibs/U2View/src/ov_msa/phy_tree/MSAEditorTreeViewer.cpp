@@ -28,8 +28,6 @@
 #include <QStack>
 #include <QVBoxLayout>
 
-#include <U2Core/PhyTree.h>
-#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/GraphicsButtonItem.h>
@@ -431,6 +429,7 @@ void MSAEditorTreeViewerUI::onSettingsChanged(TreeViewOption option, const QVari
             break;
         case BRANCHES_TRANSFORMATION_TYPE:
             updateScene(false);
+            TreeViewerUI::onSettingsChanged(option, newValue);
             break;
         default:
             TreeViewerUI::onSettingsChanged(option, newValue);

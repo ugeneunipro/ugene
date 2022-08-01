@@ -118,8 +118,8 @@ void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus& os, QString& 
     GTKeyboardUtils::selectAll();
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, sequenceWidget);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -133,7 +133,7 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus& os, int nu
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(500);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_COPY, "Copy sequence"}));
     // Use PanView or DetView but not the sequence widget itself: there are internal scrollbars in the SequenceWidget that may affect popup menu content.
     QWidget* panOrDetView = getDetViewByNumber(os, number, {false});
     if (panOrDetView == nullptr) {
@@ -154,8 +154,8 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus& os,
     GTThread::waitForMainThread();
 
     QString sequence;
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
     openPopupMenuOnSequenceViewArea(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -177,10 +177,8 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus& os, i
     GTGlobals::sleep(1000);  // don't touch
 
     QString sequence;
-    Runnable* chooser = new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey);
-    GTUtilsDialog::waitForDialog(os, chooser);
-    Runnable* reader = new GTSequenceReader(os, &sequence);
-    GTUtilsDialog::waitForDialog(os, reader);
+    GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(1000);
@@ -250,24 +248,18 @@ void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus& os, 
 
 #define GT_METHOD_NAME "openSequenceView"
 void GTUtilsSequenceView::openSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "action_open_view",
-                                                      GTGlobals::UseMouse));
-
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, sequenceName);
     GTMouseDriver::moveTo(itemPos);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSequenceView"
 void GTUtilsSequenceView::addSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "submenu_add_view"
-                                                                        << "action_add_view",
-                                                      GTGlobals::UseMouse));
-
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, sequenceName);
     GTMouseDriver::moveTo(itemPos);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"submenu_add_view", "action_add_view"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
@@ -277,9 +269,7 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus& os, qint64 position)
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
 
-    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
-
-    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
+    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(position), toolbar);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
@@ -313,10 +303,10 @@ QWidget* GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus& os, int numbe
 
 #define GT_METHOD_NAME "getSeqWidgetByNumber"
 ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOpStatus& os, int number, const GTGlobals::FindOptions& options) {
-    QWidget* widget = GTWidget::findWidget(os,
-                                           QString("ADV_single_sequence_widget_%1").arg(number),
-                                           getActiveSequenceViewWindow(os),
-                                           options);
+    auto widget = GTWidget::findWidget(os,
+                                       QString("ADV_single_sequence_widget_%1").arg(number),
+                                       getActiveSequenceViewWindow(os),
+                                       options);
 
     ADVSingleSequenceWidget* seqWidget = qobject_cast<ADVSingleSequenceWidget*>(widget);
 
@@ -586,7 +576,7 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus& /*os*/, GSequence
 #define GT_METHOD_NAME "toggleGraphByName"
 void GTUtilsSequenceView::toggleGraphByName(HI::GUITestOpStatus& os, const QString& graphName, int sequenceViewIndex) {
     QWidget* sequenceWidget = getSeqWidgetByNumber(os, sequenceViewIndex);
-    QWidget* graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    auto graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {graphName}));
     GTWidget::click(os, graphAction);
 }

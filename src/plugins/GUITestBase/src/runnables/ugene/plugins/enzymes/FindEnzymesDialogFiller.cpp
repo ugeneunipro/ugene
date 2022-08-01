@@ -54,7 +54,7 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(GUITestOpStatus& os, const QStr
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget(os);
 
-    QWidget* enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
+    auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
     GTWidget::click(os, GTWidget::findWidget(os, "selectNoneButton", enzymesSelectorWidget));
 
     auto enzymesTree = GTWidget::findTreeWidget(os, "tree", enzymesSelectorWidget);
@@ -64,29 +64,18 @@ void FindEnzymesDialogFiller::commonScenario() {
     }
 
     if (searchStart != -1 && searchEnd != -1) {
-        QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
-        GT_CHECK(regionSelector != nullptr, "range_selector not found");
+        auto regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
 
-        auto start = GTWidget::findLineEdit(os, "startLineEdit", regionSelector);
-        GTLineEdit::setText(os, start, QString::number(searchStart));
-
-        auto end = GTWidget::findLineEdit(os, "endLineEdit", regionSelector);
-        GTWidget::click(os, end);
-        GT_CHECK(end != nullptr, "endLineEdit of 'Search In' region not found");
-        GTLineEdit::setText(os, end, QString::number(searchEnd));
+        GTLineEdit::setText(os, "startLineEdit", QString::number(searchStart), regionSelector);
+        GTLineEdit::setText(os, "endLineEdit", QString::number(searchEnd), regionSelector);
     }
 
     if (excludeStart != -1 && excludeEnd != -1) {
         auto exclude = GTWidget::findCheckBox(os, "excludeCheckBox");
         GTCheckBox::setChecked(os, exclude);
 
-        auto start = GTWidget::findLineEdit(os, "excludeStartLineEdit");
-        GTLineEdit::setText(os, start, QString::number(excludeStart));
-
-        auto end = GTWidget::findLineEdit(os, "excludeEndLinEdit");
-        GTWidget::click(os, end);
-        GT_CHECK(end != nullptr, "excludeEndLinEdit of 'Exclude' region not found");
-        GTLineEdit::setText(os, end, QString::number(excludeEnd));
+        GTLineEdit::setText(os, "excludeStartLineEdit", QString::number(excludeStart));
+        GTLineEdit::setText(os, "excludeEndLinEdit", QString::number(excludeEnd));
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

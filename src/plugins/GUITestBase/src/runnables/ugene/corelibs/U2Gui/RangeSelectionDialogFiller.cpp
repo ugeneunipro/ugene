@@ -107,10 +107,8 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (selectAll) {
-        QToolButton* min = dialog->findChild<QToolButton*>("minButton");
-        QToolButton* max = dialog->findChild<QToolButton*>("maxButton");
-        GT_CHECK(min != nullptr, "Min button not found");
-        GT_CHECK(max != nullptr, "Max button not found");
+        auto min = GTWidget::findToolButton(os, "minButton", dialog);
+        auto max = GTWidget::findToolButton(os, "maxButton", dialog);
 
         GTWidget::click(os, min);
         GTGlobals::sleep(500);
@@ -118,17 +116,14 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
         GTGlobals::sleep(500);
 
         if (len != nullptr) {
-            QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
-            GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
+            auto endEdit = GTWidget::findLineEdit(os, "endEdit", dialog);
             *len = endEdit->text().toInt();
         }
     } else if (rangeType == Single) {
         GT_CHECK(circular || minVal <= maxVal, "Value \"min\" greater then \"max\"");
 
-        QLineEdit* startEdit = dialog->findChild<QLineEdit*>("startEdit");
-        QLineEdit* endEdit = dialog->findChild<QLineEdit*>("endEdit");
-        GT_CHECK(startEdit != nullptr, "QLineEdit \"startEdit\" not found");
-        GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
+        auto startEdit = GTWidget::findLineEdit(os, "startEdit", dialog);
+        auto endEdit = GTWidget::findLineEdit(os, "endEdit", dialog);
 
         if (length == 0) {
             GTLineEdit::setText(os, startEdit, QString::number(minVal));
@@ -149,13 +144,10 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
     } else {
         GT_CHECK(!multipleRange.isEmpty(), "Range is empty");
 
-        QRadioButton* multipleButton = dialog->findChild<QRadioButton*>("miltipleButton");
-        GT_CHECK(multipleButton != nullptr, "RadioButton \"miltipleButton\" not found");
+        auto multipleButton = GTWidget::findRadioButton(os, "miltipleButton", dialog);
         GTRadioButton::click(os, multipleButton);
 
-        QLineEdit* regionEdit = dialog->findChild<QLineEdit*>("multipleRegionEdit");
-        GT_CHECK(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
-        GTLineEdit::setText(os, regionEdit, multipleRange);
+        GTLineEdit::setText(os, "multipleRegionEdit", multipleRange, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

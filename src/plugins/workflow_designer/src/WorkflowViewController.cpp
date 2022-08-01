@@ -75,9 +75,7 @@
 #include "CreateScriptWorker.h"
 #include "DashboardsManagerDialog.h"
 #include "GalaxyConfigConfigurationDialogImpl.h"
-#include "ImportSchemaDialog.h"
 #include "ItemViewStyle.h"
-#include "PortAliasesConfigurationDialog.h"
 #include "SceneSerializer.h"
 #include "SchemaAliasesConfigurationDialogImpl.h"
 #include "StartupDialog.h"
@@ -674,14 +672,6 @@ void WorkflowView::createActions() {
     configureParameterAliasesAction->setIcon(QIcon(":workflow_designer/images/table_relationship.png"));
     connect(configureParameterAliasesAction, SIGNAL(triggered()), SLOT(sl_configureParameterAliases()));
 
-    configurePortAliasesAction = new QAction(tr("Set port and slot aliases..."), this);
-    configurePortAliasesAction->setIcon(QIcon(":workflow_designer/images/port_relationship.png"));
-    connect(configurePortAliasesAction, SIGNAL(triggered()), SLOT(sl_configurePortAliases()));
-
-    importSchemaToElement = new QAction(tr("Import workflow to element..."), this);
-    importSchemaToElement->setIcon(QIcon(":workflow_designer/images/import.png"));
-    connect(importSchemaToElement, SIGNAL(triggered()), SLOT(sl_importSchemaToElement()));
-
     createGalaxyConfigAction = new QAction(tr("Create Galaxy tool config..."), this);
     createGalaxyConfigAction->setObjectName("Create Galaxy tool config");
     createGalaxyConfigAction->setIcon(QIcon(":workflow_designer/images/galaxy.png"));
@@ -1039,8 +1029,6 @@ void WorkflowView::sl_toggleLock(bool b) {
     validateAction->setEnabled(!running);
     estimateAction->setEnabled(!running);
     configureParameterAliasesAction->setEnabled(!running);
-    configurePortAliasesAction->setEnabled(!running);
-    importSchemaToElement->setEnabled(!running);
 
     propertyEditor->setEnabled(!running);
     propertyEditor->setSpecialPanelEnabled(!running);
@@ -1204,8 +1192,6 @@ void WorkflowView::setupViewMenu(QMenu* m) {
     m->addSeparator();
     m->addAction(configureParameterAliasesAction);
     m->addAction(createGalaxyConfigAction);
-    m->addAction(configurePortAliasesAction);
-    m->addAction(importSchemaToElement);
     m->addSeparator();
     m->addAction(createScriptAction);
     m->addAction(editScriptAction);
@@ -1648,89 +1634,6 @@ void WorkflowView::sl_createGalaxyConfig() {
             QMessageBox::critical(this, tr("Internal error!"), tr("Can not create Galaxy config"));
             return;
         }
-    }
-}
-
-void WorkflowView::sl_configurePortAliases() {
-    QObjectScopedPointer<PortAliasesConfigurationDialog> dlg = new PortAliasesConfigurationDialog(*schema, this);
-    dlg->exec();
-    CHECK(!dlg.isNull(), );
-
-    if (QDialog::Accepted == dlg->result()) {
-        PortAliasesCfgDlgModel model = dlg->getModel();
-
-        QList<PortAlias> portAliases;
-        foreach (Port* port, model.ports.keys()) {
-            PortAlias portAlias(port, model.ports.value(port).first, model.ports.value(port).second);
-
-            foreach (Descriptor slotDescr, model.aliases.value(port).keys()) {
-                QString actorId;
-                QString slotId;
-                {
-                    if (port->isInput()) {
-                        actorId = port->owner()->getId();
-                        slotId = slotDescr.getId();
-                    } else {
-                        QStringList tokens = slotDescr.getId().split(':');
-                        assert(2 == tokens.size());
-                        actorId = tokens[0];
-                        slotId = tokens[1];
-                    }
-                }
-
-                Port* sourcePort = nullptr;
-                foreach (Port* p, schema->actorById(actorId)->getPorts()) {
-                    DataTypePtr dt = p->Port::getType();
-                    QList<Descriptor> descs = dt->getAllDescriptors();
-                    if (descs.contains(slotId)) {
-                        sourcePort = p;
-                        break;
-                    }
-                }
-                assert(nullptr != sourcePort);
-
-                portAlias.addSlot(sourcePort, slotId, model.aliases.value(port).value(slotDescr));
-            }
-            portAliases.append(portAlias);
-        }
-
-        schema->setPortAliases(portAliases);
-    }
-}
-
-void WorkflowView::sl_importSchemaToElement() {
-    QString error;
-    if (!schema->getWizards().isEmpty()) {
-        error = WorkflowView::tr("The workflow contains a wizard. Sorry, but current version of "
-                                 "UGENE doesn't support of wizards in the includes.");
-        QMessageBox::critical(this, tr("Error"), error);
-    } else if (WorkflowUtils::validateSchemaForIncluding(*schema, error)) {
-        QObjectScopedPointer<ImportSchemaDialog> d = new ImportSchemaDialog(this);
-        d->exec();
-        CHECK(!d.isNull(), );
-
-        if (QDialog::Accepted == d->result()) {
-            Schema* s = new Schema();
-            U2OpStatusImpl os;
-            HRSchemaSerializer::deepCopy(*schema, s, os);
-            SAFE_POINT_OP(os, );
-            QString typeName = d->getTypeName();
-
-            s->setTypeName(typeName);
-            QString text = HRSchemaSerializer::schema2String(*s, nullptr);
-
-            QString path = WorkflowSettings::getIncludedElementsDirectory() + typeName + "." + WorkflowUtils::WD_FILE_EXTENSIONS.first();
-            QFile file(path);
-            file.open(QIODevice::WriteOnly);
-            file.write(text.toLatin1());
-            file.close();
-
-            ActorPrototype* proto = IncludedProtoFactory::getSchemaActorProto(s, typeName, path);
-            WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_INCLUDES(), proto);
-            WorkflowEnv::getSchemaActorsRegistry()->registerSchema(typeName, s);
-        }
-    } else {
-        QMessageBox::critical(this, tr("Error"), error);
     }
 }
 

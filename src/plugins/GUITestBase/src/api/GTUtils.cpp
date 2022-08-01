@@ -67,13 +67,6 @@ bool GTUtils::matchText(HI::GUITestOpStatus& os, const QString& textInTest, cons
 }
 #undef GT_METHOD_NAME
 
-QString GTUtils::rectToString(const QRect& rect) {
-    return "QRect(" + QString::number(rect.x()) + ", " +
-           QString::number(rect.y()) + ", " +
-           QString::number(rect.width()) + ", " +
-           QString::number(rect.height()) + ")";
-}
-
 #undef GT_CLASS_NAME
 
 }  // namespace U2

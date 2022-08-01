@@ -207,6 +207,7 @@ private:
     void clearRepeatSelection();
 
     void selectNearestRepeat(const QPointF&);
+    float calculateDistance(float x, float y, DotPlotResults r, bool isReverse) const;
     const DotPlotResults* findNearestRepeat(const QPoint&);  // sets nearestInverted
 
     void calcZooming(const QPointF& oldzoom, const QPointF& newzoom, const QPoint& p, bool emitSignal = true);

@@ -180,7 +180,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::DocumentFormatRegistryImpl</name>
     <message>
-        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="235"/>
+        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="169"/>
         <source>UGENE Database</source>
         <translation>База данных UGENE</translation>
     </message>

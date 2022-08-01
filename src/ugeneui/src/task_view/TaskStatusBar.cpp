@@ -34,6 +34,13 @@
 
 namespace U2 {
 
+// Returns a string with the number of notifications, taking into account stack limits.
+static QString notificationCountToString(int notificationCount) {
+    return notificationCount < NotificationStack::MAX_STACK_SIZE
+               ? QString::number(notificationCount)
+               : QString::number(NotificationStack::MAX_STACK_SIZE - 1) + '+';
+}
+
 TaskStatusBar::TaskStatusBar() {
     nReports = 0;
     tvConnected = false;
@@ -68,6 +75,7 @@ TaskStatusBar::TaskStatusBar() {
     lampLabel = new QLabel();
     notificationLabel = new QLabel();
     notificationLabel->setPixmap(notificationEmpty);
+    notificationLabel->setObjectName("notificationLabel");
     l->addWidget(lampLabel);
     l->addWidget(notificationLabel);
 
@@ -256,17 +264,20 @@ void TaskStatusBar::sl_taskStateChanged() {
 }
 
 bool TaskStatusBar::eventFilter(QObject* o, QEvent* e) {
-    Q_UNUSED(o);
-    QEvent::Type t = e->type();
-    if (t == QEvent::MouseButtonDblClick) {
-        if (o == notificationLabel) {
+    QEvent::Type type = e->type();
+    if (o == notificationLabel) {
+        if (type == QEvent::MouseButtonDblClick || type == QEvent::MouseButtonRelease) {  // Show notifications on click() or doubleClick().
             nStack->showStack();
-        } else {
-            AppContext::getMainWindow()->getDockManager()->toggleDock(DOCK_TASK_VIEW);
+            return true;
+        } else if (type == QEvent::ToolTip) {
+            QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
+            QToolTip::showText(hEvent->globalPos(), tr("%1 notification(s)").arg(notificationCountToString(nStack->count())));
+            return true;
         }
-    } else if (t == QEvent::ToolTip && o == notificationLabel) {
-        QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
-        QToolTip::showText(hEvent->globalPos(), tr("%1 notification(s)").arg(nStack->count()));
+    }
+    if (type == QEvent::MouseButtonDblClick) {
+        AppContext::getMainWindow()->getDockManager()->toggleDock(DOCK_TASK_VIEW);
+        return true;
     }
     return false;
 }
@@ -301,10 +312,11 @@ void TaskStatusBar::sl_notificationChanged() {
         font.setBold(true);
         painter.setFont(font);
         QRect rect(0, 0, 16, 16);
-        painter.drawText(rect, Qt::AlignRight, QString::number(nStack->count()));
+        painter.drawText(rect, Qt::AlignRight, notificationCountToString(nStack->count()));
         painter.end();
         notificationLabel->setPixmap(iconWithNumber);
     }
+    notificationLabel->setProperty("notifications-count", QString::number(nStack->count()));
 }
 
 void TaskStatusBar::sl_taskProgressChanged() {

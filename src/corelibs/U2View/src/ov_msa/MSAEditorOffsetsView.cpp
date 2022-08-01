@@ -121,15 +121,20 @@ void MSAEditorOffsetsViewWidget::sl_completeRedraw() {
 
 #define OFFS_WIDGET_BORDER 3
 void MSAEditorOffsetsViewWidget::updateView() {
-    const int aliLen = editor->getMaObject()->getLength();
     QFont f = getOffsetsFont();
     QFontMetrics fm(f, this);
-    int aliLenStrLen = int(log10((double)aliLen)) + 1;
+    int aliLenStrLen = getWidthInBases();
     int w = OFFS_WIDGET_BORDER + fm.width('X') * aliLenStrLen + OFFS_WIDGET_BORDER;
     w += (showStartPos ? fm.width('[') : fm.width(']'));
     setFixedWidth(w);
     completeRedraw = true;
     update();
+}
+
+int MSAEditorOffsetsViewWidget::getWidthInBases() const {
+    qint64 alignmentLength = editor->getMaObject()->getLength();
+    int alignmentLengthStringLength = int(log10((double)alignmentLength)) + 1;
+    return alignmentLengthStringLength;
 }
 
 void MSAEditorOffsetsViewWidget::paintEvent(QPaintEvent*) {

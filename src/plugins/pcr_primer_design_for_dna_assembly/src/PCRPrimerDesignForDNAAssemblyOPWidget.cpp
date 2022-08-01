@@ -42,6 +42,7 @@
 #include <U2Core/Theme.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -161,7 +162,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(pbAddToForward3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ForwardSequence);
     connect(pbAddToReverse5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ReverseSequence);
     connect(pbAddToReverse3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ReverseSequence);
-    
+
     connect(productsTable, &QTableWidget::itemSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_tableItemSelectionChanged);
 
     leFilter->setValidator(new PrimerValidator(this, false));
@@ -256,6 +257,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(pcrTask);
+    pbStart->setEnabled(false);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
@@ -411,7 +413,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
         settings.originalSequenceFileName = sequenceContext->getSequenceObject()->getSequenceName();
     }
     settings.direction = lastRunSettings.insertTo;
-    settings.backboneSequence = backboneSequence;    
+    settings.backboneSequence = backboneSequence;
     QList<QPair<QString, U2Region> > selectedFragments = productsTable->getSelectedFragment(location);
     if (!selectedFragments.isEmpty()) {
         settings.fragmentName = selectedFragments.first().first;
@@ -515,11 +517,11 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     CHECK_OP(os, );
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
-    resultsTableObject->addObjectRelation(GObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence));
+    resultsTableObject->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), GObjectRelationRole::ObjectRole_Sequence);
     d->addObject(resultsTableObject);
     AppContext::getProject()->addDocument(d);
     annDnaView->tryAddObject(resultsTableObject);
-    auto createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, annotations, "Primers");
+    auto createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, {{"Primers", annotations}});
     connect(createAnnotationsTask, SIGNAL(si_stateChanged()), SLOT(sl_annotationCreationTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(createAnnotationsTask);
 }

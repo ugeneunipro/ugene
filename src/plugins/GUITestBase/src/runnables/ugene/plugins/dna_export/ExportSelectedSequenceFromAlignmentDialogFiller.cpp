@@ -65,17 +65,16 @@ void ExportSelectedSequenceFromAlignment::commonScenario() {
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, path);
 
-    QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
-    GT_CHECK(comboBox != nullptr, "ComboBox not found");
+    auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index);
 
-    QCheckBox* addToProjectBox = dialog->findChild<QCheckBox*>("addToProjectBox");
+    auto addToProjectBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
     GTCheckBox::setChecked(os, addToProjectBox, addToProj);
 
-    QCheckBox* keepGapsBox = dialog->findChild<QCheckBox*>("keepGapsBox");
+    auto keepGapsBox = GTWidget::findCheckBox(os, "keepGapsBox", dialog);
     GTCheckBox::setChecked(os, keepGapsBox, keepGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

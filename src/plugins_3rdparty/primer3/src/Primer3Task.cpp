@@ -700,7 +700,7 @@ void Primer3SWTask::relocatePrimerOverMedian(Primer* primer) {
 
 Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(const Primer3TaskSettings& settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
     : Task(tr("Search primers to annotations"), /*TaskFlags_NR_FOSCOE*/ TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
-      settings(settings), aobj(aobj_), seqObj(so_),
+      settings(settings), annotationTableObject(aobj_), seqObj(so_),
       groupName(groupName_), annName(annName_), annDescription(annDescription), searchTask(nullptr), findExonsTask(nullptr) {
 }
 
@@ -851,6 +851,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
+    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), {});
 
     assert(searchTask);
 
@@ -860,13 +861,13 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     int index = 0;
     foreach (const PrimerPair& pair, bestPairs) {
         QList<SharedAnnotationData> annotations;
-        if (nullptr != pair.getLeftPrimer()) {
+        if (pair.getLeftPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, *pair.getLeftPrimer(), pair.getProductSize(), U2Strand::Direct));
         }
-        if (nullptr != pair.getInternalOligo()) {
+        if (pair.getInternalOligo() != nullptr) {
             annotations.append(oligoToAnnotation("internalOligo", *pair.getInternalOligo(), pair.getProductSize(), U2Strand::Direct));
         }
-        if (nullptr != pair.getRightPrimer()) {
+        if (pair.getRightPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, *pair.getRightPrimer(), pair.getProductSize(), U2Strand::Complementary));
         }
         resultAnnotations[groupName + "/pair " + QString::number(index + 1)].append(annotations);
@@ -887,7 +888,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         }
     }
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(aobj, resultAnnotations));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, resultAnnotations));
 
     return ReportResult_Finished;
 }

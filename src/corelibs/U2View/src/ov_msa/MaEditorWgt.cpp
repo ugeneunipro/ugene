@@ -205,7 +205,6 @@ void MaEditorWgt::initWidgets() {
 
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
-    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
 }

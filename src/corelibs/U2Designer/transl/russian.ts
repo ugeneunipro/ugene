@@ -699,9 +699,8 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWithDbUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="389"/>
         <source>Add New Connection</source>
-        <translation>Добавить новое соединение</translation>
+        <translation type="vanished">Добавить новое соединение</translation>
     </message>
 </context>
 <context>
@@ -1341,12 +1340,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="642"/>
+        <location filename="../src/DelegateEditors.cpp" line="587"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="643"/>
+        <location filename="../src/DelegateEditors.cpp" line="588"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1440,17 +1439,17 @@ Set up the folder:</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="768"/>
+        <location filename="../src/DelegateEditors.cpp" line="713"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="770"/>
+        <location filename="../src/DelegateEditors.cpp" line="715"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="772"/>
+        <location filename="../src/DelegateEditors.cpp" line="717"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1517,18 +1516,18 @@ Set up the folder:</source>
 <context>
     <name>U2::URLListWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="117"/>
-        <location filename="../src/DatasetWidget.cpp" line="119"/>
+        <location filename="../src/DatasetWidget.cpp" line="114"/>
+        <location filename="../src/DatasetWidget.cpp" line="116"/>
         <source>Select file</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="129"/>
+        <location filename="../src/DatasetWidget.cpp" line="126"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="197"/>
+        <location filename="../src/DatasetWidget.cpp" line="174"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1536,7 +1535,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="558"/>
+        <location filename="../src/PropertyWidget.cpp" line="506"/>
         <source>add</source>
         <translation>добавить</translation>
     </message>
@@ -1580,17 +1579,17 @@ Set up the folder:</source>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="630"/>
+        <location filename="../src/DelegateEditors.cpp" line="575"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="631"/>
+        <location filename="../src/DelegateEditors.cpp" line="576"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="633"/>
+        <location filename="../src/DelegateEditors.cpp" line="578"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>

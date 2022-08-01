@@ -111,7 +111,6 @@ Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources/Info.plist
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/libcrypto.1.1.dylib
-Unipro UGENE.app/Contents/Frameworks/libmysqlclient.21.dylib
 Unipro UGENE.app/Contents/Frameworks/libssl.1.1.dylib
 Unipro UGENE.app/Contents/Frameworks/libzstd.1.dylib
 Unipro UGENE.app/Contents/Info.plist
@@ -1512,8 +1511,6 @@ Unipro UGENE.app/Contents/PlugIns/platforms
 Unipro UGENE.app/Contents/PlugIns/platforms/libqcocoa.dylib
 Unipro UGENE.app/Contents/PlugIns/printsupport
 Unipro UGENE.app/Contents/PlugIns/printsupport/libcocoaprintersupport.dylib
-Unipro UGENE.app/Contents/PlugIns/sqldrivers
-Unipro UGENE.app/Contents/PlugIns/sqldrivers/libqsqlmysql.dylib
 Unipro UGENE.app/Contents/PlugIns/styles
 Unipro UGENE.app/Contents/PlugIns/styles/libqmacstyle.dylib
 Unipro UGENE.app/Contents/Resources

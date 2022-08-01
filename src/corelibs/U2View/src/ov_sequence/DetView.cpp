@@ -36,7 +36,6 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/Settings.h>
-#include <U2Core/SignalBlocker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -728,7 +727,7 @@ void DetView::updateVerticalScrollBar() {
 void DetView::updateVerticalScrollBarPosition() {
     if (isWrapMode()) {
         DetViewRenderArea* detArea = getDetViewRenderArea();
-        SignalBlocker blocker(verticalScrollBar);
+        QSignalBlocker blocker(verticalScrollBar);
         Q_UNUSED(blocker);
         int newMax = currentShiftsCounter + numShiftsInOneLine * visibleRange.startPos / detArea->getSymbolsPerLine();
         verticalScrollBar->setSliderPosition(qMin(verticalScrollBar->maximum(), newMax));

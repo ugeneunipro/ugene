@@ -47,8 +47,7 @@ void EditFragmentDialogFiller::commonScenario() {
         auto rCustomOverhangBox = GTWidget::findGroupBox(os, "rCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, rCustomOverhangBox, true);
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "rComplRadioButton", dialog));
-        auto rComplOverhangEdit = GTWidget::findLineEdit(os, "rComplOverhangEdit", dialog);
-        GT_CHECK(rComplOverhangEdit->text() == parameters.rComplText, "Wrong rComplTextEdit text");
+        GT_CHECK(GTLineEdit::getText(os, "rComplOverhangEdit", dialog) == parameters.rComplText, "Wrong rComplTextEdit text");
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         return;
     }
@@ -65,14 +64,12 @@ void EditFragmentDialogFiller::commonScenario() {
                 auto lDirectRadioButton = GTWidget::findRadioButton(os, "lDirectRadioButton", dialog);
                 GTRadioButton::click(os, lDirectRadioButton);
 
-                auto lDirectOverhangEdit = GTWidget::findLineEdit(os, "lDirectOverhangEdit", dialog);
-                GTLineEdit::setText(os, lDirectOverhangEdit, parameters.lDirectText);
+                GTLineEdit::setText(os, "lDirectOverhangEdit", parameters.lDirectText, dialog);
             } else {
                 auto lComplRadioButton = GTWidget::findRadioButton(os, "lComplRadioButton", dialog);
                 GTRadioButton::click(os, lComplRadioButton);
 
-                auto lComplOverhangEdit = GTWidget::findLineEdit(os, "lComplOverhangEdit", dialog);
-                GTLineEdit::setText(os, lComplOverhangEdit, parameters.lComplText);
+                GTLineEdit::setText(os, "lComplOverhangEdit", parameters.lComplText, dialog);
             }
         }
     } else {
@@ -92,14 +89,12 @@ void EditFragmentDialogFiller::commonScenario() {
                 auto rDirectRadioButton = GTWidget::findRadioButton(os, "rDirectRadioButton", dialog);
                 GTRadioButton::click(os, rDirectRadioButton);
 
-                auto rDirectOverhangEdit = GTWidget::findLineEdit(os, "rDirectOverhangEdit", dialog);
-                GTLineEdit::setText(os, rDirectOverhangEdit, parameters.rDirectText);
+                GTLineEdit::setText(os, "rDirectOverhangEdit", parameters.rDirectText, dialog);
             } else {
                 auto rComplRadioButton = GTWidget::findRadioButton(os, "rComplRadioButton", dialog);
                 GTRadioButton::click(os, rComplRadioButton);
 
-                auto rComplOverhangEdit = GTWidget::findLineEdit(os, "rComplOverhangEdit", dialog);
-                GTLineEdit::setText(os, rComplOverhangEdit, parameters.rComplText);
+                GTLineEdit::setText(os, "rComplOverhangEdit", parameters.rComplText, dialog);
             }
         }
     } else {

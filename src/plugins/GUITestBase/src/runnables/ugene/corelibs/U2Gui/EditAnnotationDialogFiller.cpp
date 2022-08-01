@@ -39,21 +39,15 @@ namespace U2 {
 void EditAnnotationFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
-    GT_CHECK(lineEdit != nullptr, "line edit leAnnotationName not found");
-    GTLineEdit::setText(os, lineEdit, annotationName);
+    GTLineEdit::setText(os, "leAnnotationName", annotationName, dialog);
 
-    QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
-    GT_CHECK(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
+    auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
     GTRadioButton::click(os, gbFormatLocation);
 
-    QLineEdit* lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
-    GT_CHECK(lineEdit != nullptr, "line edit leLocation not found");
-    GTLineEdit::setText(os, lineEdit1, location);
+    GTLineEdit::setText(os, "leLocation", location, dialog);
 
     if (complementStrand != false) {
-        QToolButton* complementStrand = dialog->findChild<QToolButton*>("tbDoComplement");
-        GT_CHECK(complementStrand != nullptr, "tool button DoComplement not found");
+        auto complementStrand = GTWidget::findToolButton(os, "tbDoComplement", dialog);
         GTWidget::click(os, complementStrand);
     }
 
@@ -69,20 +63,17 @@ void EditAnnotationChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!annotationName.isEmpty()) {
-        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
-        GT_CHECK(lineEdit != nullptr, "line edit leAnnotationName not found");
+        auto lineEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
         QString text = lineEdit->text();
 
         GT_CHECK(text == annotationName, QString("The name is incorrect: got [%1], expected [%2]").arg(text).arg(annotationName));
     }
 
     if (!location.isEmpty()) {
-        QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
-        GT_CHECK(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
+        auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
         GTRadioButton::click(os, gbFormatLocation);
 
-        QLineEdit* lineEdit1 = dialog->findChild<QLineEdit*>("leLocation");
-        GT_CHECK(lineEdit1 != nullptr, "line edit leLocation not found");
+        auto lineEdit1 = GTWidget::findLineEdit(os, "leLocation", dialog);
 
         QString text = lineEdit1->text();
 

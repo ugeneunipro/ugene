@@ -261,7 +261,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
         annotModel.hideLocation = true;
         annotModel.hideUsePatternNames = false;
         annotModel.useAminoAnnotationTypes = annotatedDnaView->getActiveSequenceContext()->getAlphabet()->isAmino();
-        annotModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject();
+        annotModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject()->getReference();
         annotModel.sequenceLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
 
         createAnnotationController = new CreateAnnotationWidgetController(annotModel, this, CreateAnnotationWidgetController::OptionsPanel);
@@ -543,28 +543,28 @@ void FindPatternWidget::sl_onSearchRegionIsChangedByUser() {
 
     // The values are not empty
     if (editStart->text().isEmpty()) {
-        GUIUtils::setWidgetWarning(editStart, true);
+        GUIUtils::setWidgetWarningStyle(editStart, true);
         regionIsCorrect = false;
     } else if (editEnd->text().isEmpty()) {
-        GUIUtils::setWidgetWarning(editEnd, true);
+        GUIUtils::setWidgetWarningStyle(editEnd, true);
         regionIsCorrect = false;
     } else {
         bool ok = false;
         qint64 value1 = editStart->text().toLongLong(&ok);
         if (!ok || (value1 < 1)) {
-            GUIUtils::setWidgetWarning(editStart, true);
+            GUIUtils::setWidgetWarningStyle(editStart, true);
             regionIsCorrect = false;
         }
         int value2 = editEnd->text().toLongLong(&ok);
         if (!ok || value2 < 1) {
-            GUIUtils::setWidgetWarning(editEnd, true);
+            GUIUtils::setWidgetWarningStyle(editEnd, true);
             regionIsCorrect = false;
         }
     }
 
     if (regionIsCorrect) {
-        GUIUtils::setWidgetWarning(editStart, false);
-        GUIUtils::setWidgetWarning(editEnd, false);
+        GUIUtils::setWidgetWarningStyle(editStart, false);
+        GUIUtils::setWidgetWarningStyle(editEnd, false);
     }
 
     boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
@@ -588,8 +588,8 @@ void FindPatternWidget::sl_onActiveSequenceChanged() {
 
     // Update region
     setRegionToWholeSequence();
-    GUIUtils::setWidgetWarning(editStart, false);
-    GUIUtils::setWidgetWarning(editEnd, false);
+    GUIUtils::setWidgetWarningStyle(editStart, false);
+    GUIUtils::setWidgetWarningStyle(editEnd, false);
 
     // Update available annotations table objects, etc.
     updateAnnotationsWidget();
@@ -678,15 +678,19 @@ void FindPatternWidget::updateErrorLabelState() {
                               messageFlagMap.contains(SequenceIsTooBig) ||
                               (messageFlagMap.size() == 1 && messageFlagMap.contains(PleaseInputAtLeastOneSearchPatternTip));
     if (hasNoPatternErrors) {
-        GUIUtils::setWidgetWarning(textPattern, false);
+        GUIUtils::setWidgetWarningStyle(textPattern, false);
     }
 }
 
 QString FindPatternWidget::buildErrorLabelHtml() const {
+    QString errorColor = Theme::errorColorLabelHtmlStr();
+    QString warningColor = Theme::warningColorLabelHtmlStr();
+    QString infoColor = Theme::infoColorLabelHtmlStr();
+
     if (messageFlagMap.contains(SequenceIsTooBig)) {
         // The search is not possible - any other messages are meaningless.
         QString message = tr("Warning: current sequence is too long to search in.");
-        return tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+        return tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(message);
     }
     QString text = "";
     QList<MessageFlag> errorFlags = messageFlagMap.keys();
@@ -696,67 +700,67 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
         switch (flag) {
             case SearchRegionIncorrect: {
                 SAFE_POINT(!customErrorMessage.isEmpty(), "InvalidSearchRegion must provide a valid error message.", "");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
                 break;
             }
             case PatternAlphabetDoNotMatch: {
-                QString message = tr("Warning: input value contains characters that"
-                                     " do not match the active alphabet!");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                GUIUtils::setWidgetWarning(textPattern, true);
+                QString message = tr("Warning: input value contains characters that do not match the active alphabet!");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(warningColor).arg(message);
+                GUIUtils::setWidgetWarningStyle(textPattern, true);
                 break;
             }
             case PatternsWithBadAlphabetInFile: {
-                QString message = tr("Warning: file contains patterns that"
-                                     " do not match the active alphabet! Those patterns were ignored ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
+                QString message = tr("Warning: file contains patterns that do not match the active alphabet!"
+                                     " Those patterns were ignored ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(warningColor).arg(message);
                 break;
             }
             case PatternsWithBadRegionInFile: {
                 QString message = tr("Warning: file contains patterns that"
-                                     " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
+                                     " longer than the search region! Those patterns were ignored."
+                                     " Please input a shorter value or select another region! ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(warningColor).arg(message);
                 break;
             }
             case PleaseInputAtLeastOneSearchPatternTip: {
                 QString lineBreakShortcut = isOsMac() ? "Cmd+Enter" : "Ctrl+Enter";
-                QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
-                text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
+                QString message = tr("Info: please input at least one sequence pattern to search for."
+                                     " Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.")
+                                      .arg(lineBreakShortcut);
+                text = tr("<b><font color=%1>%2</font><br></br></b>").arg(infoColor).arg(message);
                 break;
             }
-            case AnnotationNotValidName: {
-                QString message = tr("Warning: annotation name or annotation group name are invalid. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+            case InvalidAnnotationName: {
+                QString message = tr("Error: annotation name or annotation group name is invalid. ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(message);
                 if (!customErrorMessage.isEmpty()) {
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
+                    text += tr("<b><font color=%1>%2</font></b>").arg(errorColor).arg(tr("Reason: "));
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(customErrorMessage);
                 }
                 const QString msg = tr(" Please input valid annotation names. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(msg);
                 break;
             }
-            case AnnotationNotValidFastaParsedName: {
-                QString message = tr("Warning: annotation names are invalid. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                if (!customErrorMessage.isEmpty()) {
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                }
-                const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+            case UnsetAnnotationName_UseCustomPatternAndNoInputFasta: {
+                text += tr("<b><font color=%1>%2</font><br></br></b>")
+                            .arg(infoColor)
+                            .arg(tr("Info: annotation name is not set."));
+                text += tr("<br><b><font color=%1>%2</font><br></br></b>")
+                            .arg(infoColor)
+                            .arg(tr("Annotation names will be automatically composed using search pattern properties."));
                 break;
             }
             case NoPatternToSearch: {
-                QString message = tr("Warning: there is no pattern to search. ");
-                text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                QString message = tr("Error: there is no pattern to search. ");
+                text += tr("<b><font color=%1>%2</font></b>").arg(errorColor).arg(message);
                 const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(msg);
                 break;
             }
             case PatternWrongRegExp: {
                 QString message = tr("Warning: the input regular expression is invalid! ");
-                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                GUIUtils::setWidgetWarning(textPattern, true);
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(errorColor).arg(message);
+                GUIUtils::setWidgetWarningStyle(textPattern, true);
                 break;
             }
             default:
@@ -891,7 +895,7 @@ void FindPatternWidget::checkState() {
     // validate annotation name
     QString v = createAnnotationController->validate();
     if (!v.isEmpty()) {
-        setMessageFlag(AnnotationNotValidName, true, v);
+        setMessageFlag(InvalidAnnotationName, true, v);
         createAnnotationController->setFocusToNameEdit();
         getAnnotationsPushButton->setDisabled(true);
         return;
@@ -899,11 +903,11 @@ void FindPatternWidget::checkState() {
     if (usePatternNames && !usePatternFromFileRadioButton->isChecked()) {
         for (const QString& name : qAsConst(nameList)) {
             if (!Annotation::isValidAnnotationName(name)) {
-                setMessageFlag(AnnotationNotValidFastaParsedName, true);
+                setMessageFlag(UnsetAnnotationName_UseCustomPatternAndNoInputFasta, true);
                 return;
             }
         }
-        setMessageFlag(AnnotationNotValidFastaParsedName, false);
+        setMessageFlag(UnsetAnnotationName_UseCustomPatternAndNoInputFasta, false);
     }
 
     getAnnotationsPushButton->setEnabled(!findPatternResults.isEmpty());
@@ -913,28 +917,28 @@ void FindPatternWidget::checkState() {
     // Disable the "Search" button if the pattern is empty and pattern is not loaded from a file.
     if (pattern.isEmpty() && !usePatternFromFileRadioButton->isChecked()) {
         setMessageFlag(NoPatternToSearch, false);
-        GUIUtils::setWidgetWarning(textPattern, false);
+        GUIUtils::setWidgetWarningStyle(textPattern, false);
         return;
     }
 
     // Check region.
     QString regionErrorMessage = checkSearchRegion();
     if (!regionErrorMessage.isEmpty()) {
-        GUIUtils::setWidgetWarning(textPattern, true);
+        GUIUtils::setWidgetWarningStyle(textPattern, true);
         setMessageFlag(SearchRegionIncorrect, true, regionErrorMessage);
         return;
     }
     if (usePatternFromFileRadioButton->isChecked()) {
         setMessageFlag(PatternAlphabetDoNotMatch, false);
     }
-    setMessageFlag(AnnotationNotValidFastaParsedName, false);
-    setMessageFlag(AnnotationNotValidName, false);
+    setMessageFlag(UnsetAnnotationName_UseCustomPatternAndNoInputFasta, false);
+    setMessageFlag(InvalidAnnotationName, false);
     setMessageFlag(PatternsWithBadRegionInFile, false);
     setMessageFlag(PatternsWithBadAlphabetInFile, false);
     setMessageFlag(NoPatternToSearch, false);
     setMessageFlag(SearchRegionIncorrect, false);
     setMessageFlag(SequenceIsTooBig, false);
-    GUIUtils::setWidgetWarning(textPattern, false);
+    GUIUtils::setWidgetWarningStyle(textPattern, false);
 }
 
 void FindPatternWidget::enableDisableMatchSpin() {
@@ -986,7 +990,7 @@ void FindPatternWidget::updateAnnotationsWidget() {
 
     annotationModel.newDocUrl.clear();
     annotationModel.hideLocation = true;
-    annotationModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject();
+    annotationModel.sequenceObjectRef = annotatedDnaView->getActiveSequenceContext()->getSequenceObject()->getReference();
     annotationModel.sequenceLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
     createAnnotationController->updateWidgetForAnnotationModel(annotationModel);
 }
@@ -1356,7 +1360,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
         group.clear();
     }
     createAnnotationController->countDescriptionUsage();
-    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, annotationsToCreate, group));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, {{group, annotationsToCreate}}));
 
     annotationModelIsPrepared = false;
     updateAnnotationsWidget();

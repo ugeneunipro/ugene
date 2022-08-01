@@ -20,7 +20,6 @@
  */
 
 #include "ExtractPrimerTask.h"
-#include "PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <QApplication>
 #include <QDir>
@@ -43,12 +42,14 @@
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
+#include "PCRPrimerDesignForDNAAssemblyTask.h"
+
 namespace U2 {
 
 const QString ExtractPrimerTask::BACKBONE_ANNOTATION_NAME = "Backbone";
 const QString ExtractPrimerTask::RESULT_ANNOTATION_GROUP_NAME = "misc_feature";
 
- ExtractPrimerTask::ExtractPrimerTask(const ExtractPrimerTaskSettings &_settings)
+ExtractPrimerTask::ExtractPrimerTask(const ExtractPrimerTaskSettings& _settings)
     : Task(tr("Extract Primer Task"), TaskFlags_FOSE_COSC), settings(_settings) {
 }
 
@@ -57,10 +58,10 @@ ExtractPrimerTask::~ExtractPrimerTask() {
 }
 
 void ExtractPrimerTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("IOAdapterFactory")), );
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("Genbank Format")), );
     QVariantMap hints;
     QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, settings.outputFileUrl, stateInfo, hints));
@@ -74,7 +75,7 @@ void ExtractPrimerTask::run() {
 
     QList<SharedAnnotationData> annotations;
     if (settings.forwardAndReverseLocation == QPair<U2Region, U2Region>()) {
-        //primer
+        // primer
         U2Region fragmentRegion(0, productSequence.length());
         markBackbone(productSequence, annotations, fragmentRegion);
         if (!settings.backboneSequence.isEmpty()) {
@@ -84,8 +85,8 @@ void ExtractPrimerTask::run() {
         QString originalFragmentName = settings.fragmentName;
         U2Region originalFragmentLocation = settings.fragmentLocation;
         U2Region fragmentRegion;
-        //forward primer        
-        //settings.fragmentLocation = U2Region(0, settings.forwardAndReverseLocation.first.length);
+        // forward primer
+        // settings.fragmentLocation = U2Region(0, settings.forwardAndReverseLocation.first.length);
         settings.fragmentName = originalFragmentName + " Forward";
         fragmentRegion = U2Region(0, settings.forwardAndReverseLocation.first.length);
         markBackbone(productSequence, annotations, fragmentRegion);
@@ -93,14 +94,14 @@ void ExtractPrimerTask::run() {
         // product
         settings.fragmentName = originalFragmentName;
         fragmentRegion = U2Region(settings.forwardAndReverseLocation.first.endPos() - originalFragmentLocation.startPos,
-                          originalFragmentLocation.length - settings.forwardAndReverseLocation.first.length - settings.forwardAndReverseLocation.second.length);
+                                  originalFragmentLocation.length - settings.forwardAndReverseLocation.first.length - settings.forwardAndReverseLocation.second.length);
         if (!settings.backboneSequence.isEmpty()) {
             fragmentRegion.startPos += settings.backboneSequence.length();
         }
         markFragment(productSequence, annotations, fragmentRegion);
-        //reverse primer
-        fragmentRegion = U2Region(settings.forwardAndReverseLocation.second.startPos - originalFragmentLocation.startPos, 
-                                             settings.forwardAndReverseLocation.second.length);
+        // reverse primer
+        fragmentRegion = U2Region(settings.forwardAndReverseLocation.second.startPos - originalFragmentLocation.startPos,
+                                  settings.forwardAndReverseLocation.second.length);
         if (!settings.backboneSequence.isEmpty()) {
             fragmentRegion.startPos += settings.backboneSequence.length();
         }
@@ -158,12 +159,12 @@ void ExtractPrimerTask::markFragment(DNASequence& productSequence, QList<SharedA
     annotations.append(fragmentAnnotationData);
 }
 
-Document *ExtractPrimerTask::takeResult() {
+Document* ExtractPrimerTask::takeResult() {
     CHECK(result != nullptr, nullptr);
     if (result->thread() != QCoreApplication::instance()->thread()) {
         result->moveToThread(QCoreApplication::instance()->thread());
     }
-    Document *returnValue = result;
+    Document* returnValue = result;
     result = nullptr;
     return returnValue;
 }
@@ -173,7 +174,7 @@ DNASequence ExtractPrimerTask::getProductSequence() {
     DbiConnection connection(settings.sequenceRef.dbiRef, stateInfo);
     CHECK_OP(stateInfo, primerSequence);
     SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("DBI")), primerSequence);
-    U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
     SAFE_POINT_EXT(sequenceDbi != nullptr, setError(L10N::nullPointerError("Sequence DBI")), primerSequence);
 
     U2Sequence sequence = sequenceDbi->getSequenceObject(settings.sequenceRef.entityId, stateInfo);
@@ -185,19 +186,19 @@ DNASequence ExtractPrimerTask::getProductSequence() {
     return primerSequence;
 }
 
-ExtractPrimerAndOpenDocumentTask::ExtractPrimerAndOpenDocumentTask(const ExtractPrimerTaskSettings &_settings)
+ExtractPrimerAndOpenDocumentTask::ExtractPrimerAndOpenDocumentTask(const ExtractPrimerTaskSettings& _settings)
     : Task(tr("Extract Primer And Open View Task"), TaskFlags_NR_FOSE_COSC), settings(_settings) {
     prepareUrl();
     CHECK_OP(stateInfo, );
     extractTask = new ExtractPrimerTask(settings);
- }
+}
 
 void ExtractPrimerAndOpenDocumentTask::prepare() {
     addSubTask(extractTask);
 }
 
-QList<Task *> ExtractPrimerAndOpenDocumentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> ExtractPrimerAndOpenDocumentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(extractTask == subTask, result);
     SaveDocFlags flags;
     flags |= SaveDoc_OpenAfter;
@@ -235,4 +236,4 @@ void ExtractPrimerAndOpenDocumentTask::prepareUrl() {
     file.close();
 }
 
-}
+}  // namespace U2

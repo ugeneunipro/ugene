@@ -146,9 +146,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 
 void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     if (!settings.elementName.isEmpty()) {
-        auto nameEdit = GTWidget::findLineEdit(os, "leName", dialog);
-
-        GTLineEdit::setText(os, nameEdit, settings.elementName);
+        GTLineEdit::setText(os, "leName", settings.elementName, dialog);
     }
 
     switch (settings.tooltype) {
@@ -156,9 +154,7 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
             auto rbCustomTool = GTWidget::findRadioButton(os, "rbCustomTool", dialog);
 
             GTRadioButton::click(os, rbCustomTool);
-            auto leToolPath = GTWidget::findLineEdit(os, "leToolPath", dialog);
-
-            GTLineEdit::setText(os, leToolPath, settings.tool);
+            GTLineEdit::setText(os, "leToolPath", settings.tool, dialog);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {
@@ -186,7 +182,7 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
 }
 
 void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
-    QWidget* pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
+    auto pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
 
     auto tvInput = GTWidget::findTableView(os, "tvInput");
 
@@ -198,7 +194,7 @@ void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) 
 }
 
 void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
-    QWidget* pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
+    auto pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
 
     auto tvAttributes = GTWidget::findTableView(os, "tvAttributes");
 
@@ -208,7 +204,7 @@ void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
 }
 
 void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) {
-    QWidget* pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
+    auto pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
 
     auto tvOutput = GTWidget::findTableView(os, "tvOutput");
 

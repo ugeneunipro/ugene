@@ -131,6 +131,8 @@ class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public 
 public:
     FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
 
+    void prepare() override;
+
     QList<FindEnzymesAlgResult> getResults() const {
         return resultList;
     }

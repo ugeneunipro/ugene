@@ -35,6 +35,12 @@ public:
 
     static QList<QWidget*> getMainWindowsAsWidget(GUITestOpStatus& os);
 
+    /**
+     * Returns the first matching QMainWindow named "name" as the widget. Names are compared case-sensitive and
+     * locale-insensitive.
+     */
+    static QWidget* getMainWindowWidgetByName(GUITestOpStatus& os, const QString& name);
+
     /** Checks that there is a main window with the given title. */
     static void checkTitle(GUITestOpStatus& os, const QString& title);
 

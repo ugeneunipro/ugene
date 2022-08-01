@@ -106,16 +106,17 @@ void GTUtilsOptionPanelMsa::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus& os, Tabs tab) {
-    QWidget* innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, {false});
+    auto innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, {false});
     return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTabIsOpened"
-void GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab) {
+QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab) {
     QString name = innerWidgetNames[tab];
-    QWidget* innerTabWidget = GTWidget::findWidget(os, name);
-    GT_CHECK(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name);
+    auto innerTabWidget = GTWidget::findWidget(os, name);
+    GT_CHECK_RESULT(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name, nullptr);
+    return innerTabWidget;
 }
 #undef GT_METHOD_NAME
 
@@ -133,7 +134,7 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus& os, QString seqNam
             GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
             break;
         case Completer:
-            QWidget* sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
+            auto sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
             GTWidget::click(os, sequenceLineEdit);
             GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
             GTGlobals::sleep(200);
@@ -153,8 +154,7 @@ void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getReference"
 QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus& os) {
     openTab(os, General);
-    auto leReference = GTWidget::findLineEdit(os, "sequenceLineEdit");
-    return leReference->text();
+    return GTLineEdit::getText(os, "sequenceLineEdit");
 }
 #undef GT_METHOD_NAME
 
@@ -373,7 +373,6 @@ void GTUtilsOptionPanelMsa::setUseDotsOption(GUITestOpStatus& os, bool useDots) 
 bool GTUtilsOptionPanelMsa::isUseDotsOptionSet(GUITestOpStatus& os) {
     openTab(os, Highlighting);
     auto useDots = GTWidget::findCheckBox(os, "useDots");
-    GT_CHECK_RESULT(nullptr != useDots, "useDots checkbox is NULL", false);
     return useDots->isChecked();
 }
 #undef GT_METHOD_NAME
@@ -399,7 +398,7 @@ QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus& o
 
 #define GT_METHOD_NAME "enterPattern"
 void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus& os, QString pattern, bool useCopyPaste /*= false*/) {
-    QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     if (!patternEdit->toPlainText().isEmpty()) {
@@ -416,7 +415,7 @@ void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus& os, QString patter
 
 #define GT_METHOD_NAME "getPattern"
 QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus& os) {
-    QTextEdit* patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
     return patternEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
@@ -488,8 +487,7 @@ QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus& os, int nu
 
 #define GT_METHOD_NAME "isSearchInShowHideWidgetOpened"
 bool GTUtilsOptionPanelMsa::isSearchInShowHideWidgetOpened(HI::GUITestOpStatus& os) {
-    QWidget* searchInInnerWidget = GTWidget::findWidget(os, "widgetSearchIn");
-    GT_CHECK_RESULT(searchInInnerWidget != nullptr, "searchInInnerWidget is NULL", false);
+    auto searchInInnerWidget = GTWidget::findWidget(os, "widgetSearchIn");
     return searchInInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -511,8 +509,8 @@ void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus& os, const QString
 #define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus& os, int from, int to) {
     openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), QString::number(from));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), QString::number(to));
+    GTLineEdit::setText(os, "editStart", QString::number(from));
+    GTLineEdit::setText(os, "editEnd", QString::number(to));
 }
 #undef GT_METHOD_NAME
 
@@ -525,8 +523,7 @@ void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus& os, const QStr
 
 #define GT_METHOD_NAME "getWidget"
 QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus& os, const QString& widgetName, int number) {
-    QWidget* sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
-    GT_CHECK_RESULT(sequenceContainerWidget != nullptr, "sequenceContainerWidget not found", nullptr);
+    auto sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
     QList<QWidget*> widgetList = sequenceContainerWidget->findChildren<QWidget*>(widgetName);
     GT_CHECK_RESULT(widgetList.count() == 2, QString("unexpected number of widgets: %1").arg(widgetList.count()), nullptr);
     QWidget* w1 = widgetList[0];
@@ -558,6 +555,18 @@ QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus& os) {
     checkTabIsOpened(os, General);
     auto label = GTWidget::findLabel(os, "alignmentAlphabet");
     return label->text();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setOutputFile"
+void GTUtilsOptionPanelMsa::setOutputFile(HI::GUITestOpStatus& os, const QString& outputFilePath) {
+    auto tabWidget = checkTabIsOpened(os, PairwiseAlignment);
+    auto outputLineEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
+    if (!outputLineEdit->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
+    }
+
+    GTLineEdit::setText(os, outputLineEdit, outputFilePath, tabWidget);
 }
 #undef GT_METHOD_NAME
 

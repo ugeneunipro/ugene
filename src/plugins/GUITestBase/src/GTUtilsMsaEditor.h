@@ -129,10 +129,19 @@ public:
     /** Clicks zoom-out button if the button is enabled. Does nothing if the button is disabled. */
     static void zoomOut(HI::GUITestOpStatus& os);
 
+    /** Clicks zoom-to-selection button if the button is enabled. Fails if the button is disabled. */
+    static void zoomToSelection(HI::GUITestOpStatus& os);
+
+    /** Clicks reset zoom button if the button is enabled. Fails if the button is disabled. */
+    static void resetZoom(HI::GUITestOpStatus& os);
+
     static bool isUndoEnabled(HI::GUITestOpStatus& os);
     static bool isRedoEnabled(HI::GUITestOpStatus& os);
 
     static void buildPhylogeneticTree(HI::GUITestOpStatus& os, const QString& pathToSave);
+
+    /** Clicks 'Build Tree' button. A dialog filler must be already be set by the caller. */
+    static void clickBuildTreeButton(HI::GUITestOpStatus& os);
 
     /** Closes the active tree tab. Fails if there is no phy-tab found. */
     static void closeActiveTreeTab(HI::GUITestOpStatus& os);

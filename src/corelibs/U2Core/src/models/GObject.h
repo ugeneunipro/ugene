@@ -140,6 +140,8 @@ public:
     /** Returns object version in the ObjectDbi. Returns '-1' if the dbiRef is invalid. */
     int getObjectVersion() const;
 
+    /** Returns reference to the current object. */
+    GObjectReference getReference() const;
 signals:
     void si_nameChanged(const QString& oldName);
     void si_relationChanged(const QList<GObjectRelation>& previousRelations);
@@ -162,14 +164,11 @@ protected:
 
 private:
     virtual void setParentStateLockItem(StateLockableTreeItem* p);
-    void checkIfBelongToSharedDatabase(StateLockableTreeItem* parent);
     void setRelationsInDb(QList<GObjectRelation>& list) const;
     void setupHints(QVariantMap hintsMap);
-    void fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const;
 
     void removeAllLocks();
 
-    bool arePermanentRelationsFetched;
     QMap<GObjectModLock, StateLock*> modLocks;
 };
 

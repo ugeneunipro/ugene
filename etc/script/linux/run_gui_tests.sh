@@ -57,35 +57,6 @@ if [ "${UGENE_SKIP_COPY_TOOLS}" -ne "1" ]; then
   echo "##teamcity[blockClosed name='Copy tools']"
 fi
 
-# Prepare database
-if [ "${UGENE_PREPARE_DATABASE}" -eq "1" ]; then
-  if [ -z "${IP}" ]; then IP="192.168.16.214"; fi
-  if [ -z "${PORT}" ]; then PORT="3306"; fi
-
-  echo "Cleaning existing Linux DB"
-  SQL_CLEANUP_SCRIPT_FILE="${TEAMCITY_WORK_DIR}/instruction_linux.sql"
-  rm -f "${SQL_CLEANUP_SCRIPT_FILE}"
-  touch "${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "drop database if exists ugene_gui_test_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "create database ugene_gui_test_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "drop database if exists ugene_gui_test_2_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "create database ugene_gui_test_2_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "drop database if exists ugene_gui_test_uninited_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo -ne "create database ugene_gui_test_uninited_linux;\n" >>"${SQL_CLEANUP_SCRIPT_FILE}"
-  mysql "-h${IP}" "-P${PORT}" -uugene <"${SQL_CLEANUP_SCRIPT_FILE}"
-  echo "Cleanup finished"
-
-  echo "Dumping initial db state for Linux DB"
-  DB1_FILE="${TEAMCITY_WORK_DIR}/db1.sql"
-  DB2_FILE="${TEAMCITY_WORK_DIR}/db2.sql"
-  mysqldump --routines "-h${IP}" "-P${PORT}" -uugene ugene_gui_test >"${DB1_FILE}"
-  mysqldump --routines "-h${IP}" "-P${PORT}" -uugene ugene_gui_test_2 >"${DB2_FILE}"
-  echo "Dump is finished, restoring Linux DB from the dump file"
-  mysql "-h${IP}" "-P${PORT}" -uugene ugene_gui_test_linux <"${DB1_FILE}"
-  mysql "-h${IP}" "-P${PORT}" -uugene ugene_gui_test_2_linux <"${DB2_FILE}"
-  echo "Restore is finished"
-fi
-
 # Kill any existing ugene instances that may left in a hanging state since the previous run.
 killall -q -9 ugeneui
 killall -q -9 ugenecl

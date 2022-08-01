@@ -173,8 +173,8 @@ static void findInAmino(FindAlgorithmResultsListener* rl,
     QByteArray complMap = complTT == nullptr ? QByteArray() : complTT->getOne2OneMapper();
     int patternLenInNucl = 3 * patternLen;
 
-    int end = getSearchEndPos(seq, range, patternLenInNucl - 1, searchIsCircular);
-    for (int i = range.startPos, translStrand = 0;
+    qint64 end = getSearchEndPos(seq, range, patternLenInNucl - 1, searchIsCircular);
+    for (qint64 i = range.startPos, translStrand = 0;
          i < end - 2 && !stopFlag;
          i++, leftTillPercent--, translStrand = translStrand == 2 ? 0 : translStrand + 1) {
         for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {

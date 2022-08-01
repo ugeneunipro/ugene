@@ -38,8 +38,7 @@ namespace U2 {
 void CreateElementWithScriptDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, nameEdit, name);
+    GTLineEdit::setText(os, "nameEdit", name, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
@@ -51,11 +50,10 @@ void CreateElementWithScriptDialogFiller::commonScenario() {
 void ScriptEditorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto scriptPathEdit = GTWidget::findLineEdit(os, "scriptPathEdit", dialog);
-    GTLineEdit::setText(os, scriptPathEdit, url);
+    GTLineEdit::setText(os, "scriptPathEdit", url, dialog);
 
     QTextEdit* edit = nullptr;
-    foreach (QTextEdit* textEdit, dialog->findChildren<QTextEdit*>()) {
+    foreach (QTextEdit* textEdit,   dialog->findChildren<QTextEdit*>()) {
         if (!textEdit->isReadOnly()) {
             edit = textEdit;
         }

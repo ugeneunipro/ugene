@@ -355,7 +355,7 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus& os, QWidget* paren
 #define GT_METHOD_NAME "findByNameFilter"
 void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QString& elementName) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QWidget* paletteWidget = GTWidget::findWidget(os, "palette", wdWindow);
+    auto paletteWidget = GTWidget::findWidget(os, "palette", wdWindow);
     auto nameFilterLineEdit = GTWidget::findLineEdit(os, "nameFilterLineEdit", paletteWidget);
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
@@ -381,7 +381,7 @@ void GTUtilsWorkflowDesigner::findByNameFilter(HI::GUITestOpStatus& os, const QS
 #define GT_METHOD_NAME "cleanNameFilter"
 void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus& os) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QWidget* paletteWidget = GTWidget::findWidget(os, "palette", wdWindow);
+    auto paletteWidget = GTWidget::findWidget(os, "palette", wdWindow);
     auto nameFilterLineEdit = GTWidget::findLineEdit(os, "nameFilterLineEdit", paletteWidget);
 
     const QPoint mappedLineEditPos = nameFilterLineEdit->mapToGlobal(nameFilterLineEdit->pos());
@@ -899,8 +899,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus& os, const QSt
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(currentDatasetWidget != nullptr, "Current dataset widget not found");
 
-    QWidget* addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
-    GT_CHECK(addFileButton, "addFileButton not found");
+    auto addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
 
     GTFileDialogUtils::TextInput t = pastePath ? GTFileDialogUtils::CopyPaste : GTFileDialogUtils::Typing;
 
@@ -915,7 +914,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus& os, const QSt
 #define GT_METHOD_NAME "setDatasetInputFiles"
 void GTUtilsWorkflowDesigner::setDatasetInputFiles(GUITestOpStatus& os, const QStringList& filePaths, QWidget* datasetWidget) {
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
-    QWidget* addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
+    auto addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, filePaths));
     GTWidget::click(os, addFileButton);
@@ -933,8 +932,7 @@ void GTUtilsWorkflowDesigner::addInputFile(HI::GUITestOpStatus& os, const QStrin
 
 #define GT_METHOD_NAME "createDataset"
 void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus& os, QString datasetName) {
-    QWidget* plusButton = GTWidget::findButtonByText(os, "+", getDatasetsListWidget(os));
-    GT_CHECK(plusButton, "plusButton not found");
+    auto plusButton = GTWidget::findButtonByText(os, "+", getDatasetsListWidget(os));
 
     GTUtilsDialog::waitForDialog(os, new DatasetNameEditDialogFiller(os, datasetName));
 
@@ -948,8 +946,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus& os, con
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget* addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
-    GT_CHECK(addDirButton, "addFileButton not found");
+    auto addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
 
     GTFileDialogUtils* ob = new GTFileDialogUtils(os, filePath, "", GTFileDialogUtils::Choose, GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, ob);
@@ -963,8 +960,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus& os, const 
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
-    QWidget* addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
-    GT_CHECK(nullptr != addDirButton, "addFileButton not found");
+    auto addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, dirPaths));
     GTWidget::click(os, addDirButton);
@@ -1066,7 +1062,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             break;
         }
         case (lineEditWithFileSelector): {
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "mainWidget", parent), value.toString());
+            GTLineEdit::setText(os, "mainWidget", value.toString(), parent);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
         }
@@ -1141,7 +1137,7 @@ QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus& os, QString p
 #define GT_METHOD_NAME "getInputPortsTable"
 QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus& os, int index) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QWidget* inputPortBox = GTWidget::findWidget(os, "inputPortBox", wdWindow);
+    auto inputPortBox = GTWidget::findWidget(os, "inputPortBox", wdWindow);
     GTGroupBox::setChecked(os, "inputPortBox", true);
     QList<QTableWidget*> tables = inputPortBox->findChildren<QTableWidget*>();
     foreach (QTableWidget* w, tables) {
@@ -1158,7 +1154,7 @@ QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus& o
 #define GT_METHOD_NAME "getOutputPortsTable"
 QTableWidget* GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus& os, int index) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QWidget* outputPortBox = GTWidget::findWidget(os, "outputPortBox", wdWindow);
+    auto outputPortBox = GTWidget::findWidget(os, "outputPortBox", wdWindow);
     GTGroupBox::setChecked(os, "outputPortBox", true);
     QList<QTableWidget*> tables = outputPortBox->findChildren<QTableWidget*>();
     foreach (QTableWidget* w, tables) {
@@ -1175,7 +1171,7 @@ QTableWidget* GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus& os, 
 #define GT_METHOD_NAME "scrollInputPortsWidgetToTableRow"
 void GTUtilsWorkflowDesigner::scrollInputPortsWidgetToTableRow(GUITestOpStatus& os, int tableIndex, const QString& slotName) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QWidget* inputPortBox = GTWidget::findWidget(os, "inputPortBox", wdWindow);
+    auto inputPortBox = GTWidget::findWidget(os, "inputPortBox", wdWindow);
     QTableWidget* table = getInputPortsTable(os, tableIndex);
 
     QList<QTableWidgetItem*> itemList = table->findItems(slotName, Qt::MatchFixedString);

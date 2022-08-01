@@ -1268,7 +1268,6 @@ imageformats/qjpeg.dll
 imageformats/qsvg.dll
 imageformats/qtiff.dll
 libcrypto-1_1-x64.dll
-libmysql.dll
 libssl-1_1-x64.dll
 msvcp140.dll
 platforms
@@ -1421,8 +1420,6 @@ plugins/workflow_designer.map
 plugins/workflow_designer.plugin
 plugins_checker.exe
 plugins_checker.map
-sqldrivers
-sqldrivers/qsqlmysql.dll
 styles
 styles/qwindowsvistastyle.dll
 tools

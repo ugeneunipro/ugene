@@ -37,9 +37,7 @@
 namespace U2 {
 
 MsaEditorWgt::MsaEditorWgt(MSAEditor* editor)
-    : MaEditorWgt(editor),
-      multiTreeViewer(nullptr),
-      similarityStatistics(nullptr) {
+    : MaEditorWgt(editor) {
     rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
@@ -114,7 +112,7 @@ void MsaEditorWgt::hideSimilarity() {
     }
 }
 
-const MsaEditorAlignmentDependentWidget* MsaEditorWgt::getSimilarityWidget() {
+MsaEditorAlignmentDependentWidget* MsaEditorWgt::getSimilarityWidget() const {
     return similarityStatistics;
 }
 
@@ -139,17 +137,15 @@ void MsaEditorWgt::initStatusBar() {
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
-    if (nullptr == multiTreeViewer) {
-        return nullptr;
-    }
-    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
-    if (nullptr == page) {
-        return nullptr;
-    }
+    CHECK(multiTreeViewer != nullptr, nullptr);
+
+    auto page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
+    CHECK(page != nullptr, nullptr);
+
     return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
 }
 
-MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() {
+MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
     return multiTreeViewer;
 }
 

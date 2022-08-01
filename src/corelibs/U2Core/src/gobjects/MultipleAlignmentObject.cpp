@@ -737,6 +737,15 @@ void MultipleAlignmentObject::releaseState() {
     }
 }
 
+bool MultipleAlignmentObject::hasNonTrailingGap() const {
+    const QList<QVector<U2MsaGap>> &listGapModel = getGapModel();
+    if (std::any_of(listGapModel.constBegin(), listGapModel.constEnd(), 
+                    [](const QVector<U2MsaGap>& data) { return !data.isEmpty(); })) {
+        return true;
+    }
+    return false;
+}
+
 void MultipleAlignmentObject::loadDataCore(U2OpStatus& os) {
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );

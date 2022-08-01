@@ -91,7 +91,7 @@ void AppSettingsDialogFiller::commonScenario() {
 
     if (r != -1) {
         GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
-        QWidget* colorWidget = GTWidget::findWidget(os, "colorWidget", dialog);
+        auto colorWidget = GTWidget::findWidget(os, "colorWidget", dialog);
         GTWidget::click(os, colorWidget);
     }
 
@@ -111,8 +111,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
         if (item->text(0) == toolName) {
             GTTreeWidget::scrollToItem(os, item);
             QWidget* itemWid = treeWidget->itemWidget(item, 1);
-            auto lineEdit = GTWidget::findLineEdit(os, "PathLineEdit", itemWid);
-            GTLineEdit::setText(os, lineEdit, toolPath);
+            GTLineEdit::setText(os, "PathLineEdit", toolPath, itemWid);
             GTTreeWidget::click(os, item, 0);
             return;
         }
@@ -223,7 +222,6 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
     clickOnTool(os, toolName);
 
     auto textBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
-    GT_CHECK_RESULT(textBrowser, "textBrowser is NULL", false);
 
     QString plainText = textBrowser->toPlainText();
     return plainText.contains(checkIfContains);
@@ -299,8 +297,7 @@ void AppSettingsDialogFiller::setExternalToolsDir(HI::GUITestOpStatus& os, const
 
     openTab(os, ExternalTools);
 
-    QWidget* selectExToolsDirButton = GTWidget::findWidget(os, "selectToolPackButton", dialog);
-    GT_CHECK(selectExToolsDirButton, "selectToolPackButton not found");
+    auto selectExToolsDirButton = GTWidget::findWidget(os, "selectToolPackButton", dialog);
     while (!selectExToolsDirButton->isEnabled()) {
         uiLog.trace("selectToolPackButton is disabled");
         GTGlobals::sleep(100);
@@ -345,8 +342,7 @@ void NewColorSchemeCreator::commonScenario() {
             GTListWidget::click(os, colorSchemas, schemeName);
             GTGlobals::sleep(500);
 
-            QWidget* deleteSchemaButton = GTWidget::findWidget(os, "deleteSchemaButton", dialog);
-            GT_CHECK(deleteSchemaButton, "deleteSchemaButton not found");
+            auto deleteSchemaButton = GTWidget::findWidget(os, "deleteSchemaButton", dialog);
             while (!deleteSchemaButton->isEnabled()) {
                 uiLog.trace("deleteSchemaButton is disabled");
                 GTGlobals::sleep(100);
@@ -355,8 +351,7 @@ void NewColorSchemeCreator::commonScenario() {
             break;
         }
         case Create: {
-            QWidget* addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
-            GT_CHECK(addSchemaButton, "addSchemaButton not found");
+            auto addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
 
             GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, schemeName, al));
             GTWidget::click(os, addSchemaButton);
@@ -391,7 +386,7 @@ void NewColorSchemeCreator::commonScenario() {
 void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QWidget* w = GTWidget::findWidget(os, "schemeName", dialog);
+    auto w = GTWidget::findWidget(os, "schemeName", dialog);
     QLineEdit* schemeNameLine = qobject_cast<QLineEdit*>(w);
     GT_CHECK(schemeNameLine, "schemeName lineEdit not found ");
 

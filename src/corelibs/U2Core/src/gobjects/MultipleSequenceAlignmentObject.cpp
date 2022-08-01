@@ -209,7 +209,7 @@ void MultipleSequenceAlignmentObject::morphAlphabet(const DNAAlphabet* newAlphab
 }
 
 void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os, int requiredGapsCount) {
-    const QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(getGapModel(), getLength(), requiredGapsCount);
+    const QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(getGapModel(), getRows(), getLength(), requiredGapsCount);
     CHECK(!regionsToDelete.isEmpty(), );
     CHECK(regionsToDelete.first().length != getLength(), );
 

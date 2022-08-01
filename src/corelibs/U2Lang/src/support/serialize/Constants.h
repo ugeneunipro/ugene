@@ -117,6 +117,8 @@ public:
     static const QString INTEGRATED_TOOL_ID;
     static const QString ADD_TO_DASHBOARD;
     static const QString OPEN_WITH_UGENE;
+
+    static const QStringList LEGACY_TOKENS_TO_SKIP;
 };
 
 }  // namespace WorkflowSerialize

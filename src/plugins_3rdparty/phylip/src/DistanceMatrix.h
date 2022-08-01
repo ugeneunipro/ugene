@@ -32,6 +32,8 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PhyTree.h>
 
+#include "PhylipPlugin.h"
+
 namespace U2 {
 
 typedef QVector<float> matrixrow;
@@ -56,7 +58,8 @@ public:
     ~DistanceMatrix();
 
     matrix rawMatrix;
-    bool isValid();
+    /** Validates matrix and returns validation error. If the matrix is valid returns an empty string. */
+    QString validate() const;
     void calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
     const QString& getErrorMessage() {
         return errorMessage;

@@ -523,22 +523,26 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, int length, int requiredGapsCount) {
-    const int rowsCount = maGapModel.size();
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QList<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount) {
+    const int rowsCount = rows.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
     }
 
     QList<U2Region> regionsToDelete;
-    for (int columnNumber = 0; columnNumber < length; columnNumber++) {
+    for (int columnNumber = 0; columnNumber < alignmentLength; columnNumber++) {
         int gapCount = 0;
-        for (int j = 0; j < rowsCount; j++) {
-            if (MsaRowUtils::isGap(length, maGapModel[j], columnNumber)) {
+        for (int j = 0; j < maGapModel.size(); j++) {
+            int ungappedLength = (j == rows.size()) ? alignmentLength : rows[j]->getUngappedLength();
+            if (MsaRowUtils::isGap(ungappedLength, maGapModel[j], columnNumber)) {
                 gapCount++;
+            }
+            if (gapCount == requiredGapsCount) {
+                break;
             }
         }
 
-        if (gapCount >= requiredGapsCount) {
+        if (gapCount == requiredGapsCount) {
             if (!regionsToDelete.isEmpty() && regionsToDelete.last().endPos() == static_cast<qint64>(columnNumber)) {
                 regionsToDelete.last().length++;
             } else {
@@ -552,7 +556,7 @@ QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maG
 
 void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount) {
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
-    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getLength(), requiredGapsCount);
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getRows(), msa->getLength(), requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
         msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getRowCount(), true);
     }

@@ -26,6 +26,7 @@
 #include <QMessageBox>
 
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -125,16 +126,7 @@ void ExportCoverageDialog::init(QString assemblyName) {
 }
 
 bool ExportCoverageDialog::checkPermissions() const {
-    QFileInfo fileInfo(saveController->getSaveFileName());
-    QFileInfo dirInfo(fileInfo.absoluteDir().absolutePath());
-    bool isFileExist = fileInfo.exists();
-    bool isFileWritable = fileInfo.isWritable();
-    bool isDirWritable = dirInfo.isWritable();
-    while (!dirInfo.exists()) {
-        dirInfo = QFileInfo(dirInfo.dir().absolutePath());
-        isDirWritable = dirInfo.isWritable();
-    }
-    return (isFileExist && isFileWritable) || isDirWritable;
+    return FileAndDirectoryUtils::canWriteToPath(saveController->getSaveFileName());
 }
 
 }  // namespace U2

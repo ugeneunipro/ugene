@@ -79,12 +79,12 @@
         <translation>Внутренняя ошибка UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="500"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="488"/>
         <source>Invalid database type: %1</source>
         <translation>Неверный тип базы: %1</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectUtils.cpp" line="428"/>
+        <location filename="../src/gobjects/GObjectUtils.cpp" line="414"/>
         <source>Unsupported object type: %1</source>
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
@@ -832,14 +832,6 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
-    <name>U2::ConnectSharedDatabaseTask</name>
-    <message>
-        <location filename="../src/tasks/ConnectSharedDatabaseTask.cpp" line="35"/>
-        <source>Connecting to database: </source>
-        <translation>Подключение к базе данных: </translation>
-    </message>
-</context>
-<context>
     <name>U2::ConsoleShutdownTask</name>
     <message>
         <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="33"/>
@@ -906,20 +898,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CreateAnnotationsTask</name>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="36"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="45"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="56"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="44"/>
         <source>Create annotations</source>
         <translation>Сохранение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="64"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="70"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="62"/>
+        <source>Failed to resolve object reference: %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="76"/>
         <source>Annotation table has been removed unexpectedly</source>
         <translation>Annotation table has been removed unexpectedly</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="109"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="113"/>
         <source>Annotation object &apos;%1&apos; not found in active project: %2</source>
         <translation>Таблица аннотаций &quot;%1&quot; не найдена в проекте: %2</translation>
     </message>
@@ -1226,14 +1220,6 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
-    <name>U2::DatabaseConnectionAdapterFactory</name>
-    <message>
-        <location filename="../src/io/DatabaseConnectionAdapter.cpp" line="33"/>
-        <source>Database connection</source>
-        <translation>Подключение к базе данных</translation>
-    </message>
-</context>
-<context>
     <name>U2::DatatypeSerializers</name>
     <message>
         <location filename="../src/util/DatatypeSerializeUtils.cpp" line="215"/>
@@ -1331,27 +1317,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="549"/>
+        <location filename="../src/models/DocumentModel.cpp" line="576"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="562"/>
+        <location filename="../src/models/DocumentModel.cpp" line="589"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="568"/>
+        <location filename="../src/models/DocumentModel.cpp" line="595"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="636"/>
+        <location filename="../src/models/DocumentModel.cpp" line="663"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="660"/>
+        <location filename="../src/models/DocumentModel.cpp" line="687"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1422,22 +1408,27 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="123"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="127"/>
+        <source>Unable to cancel tool %1 for 10 seconds. Stop it manually by your OS task manager.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="129"/>
         <source>Tool %1 is cancelled</source>
         <translation>Tool %1 is cancelled</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="134"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="141"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
         <translation>%1 tool exited with the following error: %2 (Code: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="145"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="152"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="147"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="154"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1445,47 +1436,50 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="333"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="340"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="339"/>
         <source>Can not remove files from temporary folder.</source>
-        <translation>Невозможно удалить файлы из временной папку.</translation>
+        <translation type="vanished">Невозможно удалить файлы из временной папку.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="344"/>
         <source>Can not remove folder for temporary files.</source>
-        <translation>Невозможно удалить папку для временных файлов.</translation>
+        <translation type="vanished">Невозможно удалить папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="357"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="345"/>
+        <source>Can not remove folder for temporary files, folder &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="358"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="388"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="389"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="404"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
         <source>A tool with the ID %1 is absent</source>
         <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="408"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="409"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="452"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="453"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="458"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="459"/>
         <source>Launching %1 tool: %2</source>
         <translation>Запуск инструмента %1: %2 {1 ?}</translation>
     </message>
@@ -2867,23 +2861,23 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiPool</name>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="282"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="280"/>
         <source>Invalid database type: %1</source>
         <translation>Неверный тип базы: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="308"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="306"/>
         <source>Invalid database id</source>
         <translation>Неверный идентификатор базы данных</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="343"/>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="359"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="341"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="357"/>
         <source>DbiPool: DBI not found! Dbi ID: %1</source>
         <translation>DbiPool: DBI не найден! Dbi ID: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="508"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="496"/>
         <source>Invalid dbi reference</source>
         <translation>Неверный референс dbi</translation>
     </message>
@@ -2891,7 +2885,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiRegistry</name>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="136"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="134"/>
         <source>The tmp dbi is not found: %1</source>
         <translation>Временный dbi не найден: %1</translation>
     </message>

@@ -22,6 +22,7 @@
 #include "Utils.h"
 
 #include <U2Lang/Actor.h>
+#include <U2Lang/Port.h>
 
 namespace U2 {
 namespace WorkflowSerialize {

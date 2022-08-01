@@ -144,11 +144,9 @@ void PhyTreeObject::rerootPhyTree(PhyNode* node) {
 }
 
 bool PhyTreeObject::treesAreAlike(const PhyTree& tree1, const PhyTree& tree2) {
-    QList<const PhyNode*> track1 = tree1->collectNodes();
-    QList<const PhyNode*> track2 = tree2->collectNodes();
-    if (track1.count() != track2.count()) {
-        return false;
-    }
+    QList<PhyNode*> track1 = tree1->getNodesPreOrder();
+    QList<PhyNode*> track2 = tree2->getNodesPreOrder();
+    CHECK(track1.size() == track2.size(), false);
 
     for (const PhyNode* n1 : qAsConst(track1)) {
         if (n1->getName().isEmpty()) {
@@ -173,8 +171,8 @@ bool PhyTreeObject::haveNodeLabels() const {
 
 const PhyNode* PhyTreeObject::findPhyNodeByName(const QString& name) {
     ensureDataLoaded();
-    QList<const PhyNode*> nodes = tree.constData()->collectNodes();
-    foreach (const PhyNode* node, nodes) {
+    QList<PhyNode*> nodes = tree.constData()->getNodesPreOrder();
+    for (const PhyNode* node : qAsConst(nodes)) {
         if (node->getName() == name) {
             return node;
         }

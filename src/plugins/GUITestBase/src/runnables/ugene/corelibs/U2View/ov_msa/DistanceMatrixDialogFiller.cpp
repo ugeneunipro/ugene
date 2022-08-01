@@ -71,7 +71,7 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, 
 void DistanceMatrixDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QComboBox* algoCombo = dialog->findChild<QComboBox*>("algoCombo");
+    auto algoCombo = GTWidget::findComboBox(os, "algoCombo", dialog);
     if (hamming) {
         GTComboBox::selectItemByIndex(os, algoCombo, 0);
     } else {
@@ -79,10 +79,10 @@ void DistanceMatrixDialogFiller::commonScenario() {
     }
 
     if (counts) {
-        QRadioButton* countsRB = dialog->findChild<QRadioButton*>("countsRB");
+        auto countsRB = GTWidget::findRadioButton(os, "countsRB", dialog);
         GTRadioButton::click(os, countsRB);
     } else {
-        QRadioButton* percentsRB = dialog->findChild<QRadioButton*>("percentsRB");
+        auto percentsRB = GTWidget::findRadioButton(os, "percentsRB", dialog);
         GTRadioButton::click(os, percentsRB);
     }
 
@@ -90,19 +90,18 @@ void DistanceMatrixDialogFiller::commonScenario() {
         if (saveToFile) {
             GTGroupBox::setChecked(os, "saveBox", dialog);
 
-            QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
-            GTLineEdit::setText(os, fileEdit, QDir::toNativeSeparators(path));
+            GTLineEdit::setText(os, "fileEdit", QDir::toNativeSeparators(path), dialog);
 
             if (format == HTML) {
-                QRadioButton* htmlRB = dialog->findChild<QRadioButton*>("htmlRB");
+                auto htmlRB = GTWidget::findRadioButton(os, "htmlRB", dialog);
                 GTRadioButton::click(os, htmlRB);
             } else {
-                QRadioButton* csvRB = dialog->findChild<QRadioButton*>("csvRB");
+                auto csvRB = GTWidget::findRadioButton(os, "csvRB", dialog);
                 GTRadioButton::click(os, csvRB);
             }
         }
     }
-    QCheckBox* checkBox = dialog->findChild<QCheckBox*>("checkBox");
+    auto checkBox = GTWidget::findCheckBox(os, "checkBox", dialog);
     GTCheckBox::setChecked(os, checkBox, excludeGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

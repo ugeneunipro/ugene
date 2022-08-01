@@ -29,45 +29,61 @@
 
 namespace U2 {
 
-PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
-    : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings) {
+PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings, const TaskFlags& taskFlags)
+    : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), taskFlags), inputMA(ma), settings(_settings) {
     tpm = Task::Progress_Manual;
 }
 
-void PhyTreeGeneratorTask::run() {
+const PhyTree& PhyTreeGeneratorTask::getResult() const {
+    return result;
 }
 
-Task::ReportResult PhyTreeGeneratorTask::report() {
-    return ReportResult_Finished;
+const CreatePhyTreeSettings& PhyTreeGeneratorTask::getSettings() const {
+    return settings;
 }
 
 PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
-    : Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma->getCopy()), settings(_settings), task(nullptr) {
+    : Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_NoRun | TaskFlag_FailOnSubtaskError),
+      inputMA(ma->getCopy()), settings(_settings), task(nullptr) {
     tpm = Task::Progress_SubTasksBased;
 }
+
+static const QString RENAMED_ROW_PREFIX = "r";
+
 void PhyTreeGeneratorLauncherTask::prepare() {
-    QString algId = settings.algorithm;
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
-    PhyTreeGenerator* generator = registry->getGenerator(algId);
-    if (generator == nullptr) {
-        stateInfo.setError(PhyTreeGeneratorLauncherTask::tr("Tree construction algorithm %1 not found").arg(algId));
-    } else {
-        const QStringList& rowsOrder = settings.rowsOrder;
-        if (rowsOrder.size() >= inputMA->getRowNames().size()) {
-            inputMA->sortRowsByList(rowsOrder);
-        }
+    PhyTreeGenerator* generator = registry->getGenerator(settings.algorithm);
+    CHECK_EXT(generator != nullptr, stateInfo.setError(PhyTreeGeneratorLauncherTask::tr("Tree algorithm %1 is not found").arg(settings.algorithm)), );
 
-        namesConvertor.replaceNamesWithAlphabeticIds(inputMA);
-
-        task = dynamic_cast<PhyTreeGeneratorTask*>(generator->createCalculatePhyTreeTask(inputMA, settings));
-        addSubTask(task);
+    // Assign unique names to rows. The row name is a string representation of the index + 'row_' prefix.
+    originalRowNameByIndex = inputMA->getRowNames();
+    int rowsCount = inputMA->getRowCount();
+    for (int i = 0; i < rowsCount; i++) {
+        QString uniqueRowName = RENAMED_ROW_PREFIX + QString::number(i);
+        inputMA->renameRow(i, uniqueRowName);
     }
+    task = qobject_cast<PhyTreeGeneratorTask*>(generator->createCalculatePhyTreeTask(inputMA, settings));
+    SAFE_POINT(task != nullptr, "Not a PhyTreeGeneratorTask!", );
+    addSubTask(task);
 }
+
 Task::ReportResult PhyTreeGeneratorLauncherTask::report() {
-    if (task) {
-        result = task->getResult();
-        namesConvertor.restoreNames(result);
+    CHECK(!stateInfo.isCoR() && task != nullptr && !task->getStateInfo().isCoR(), ReportResult_Finished);
+    PhyTree tree = task->getResult();
+    SAFE_POINT(tree != nullptr, "Tree is not present!", ReportResult_Finished);
+    QList<PhyNode*> nodes = tree->getNodesPreOrder();
+    for (PhyNode* node : qAsConst(nodes)) {
+        bool ok = false;
+        QString rowName = node->getName();
+        CHECK_CONTINUE(rowName.startsWith(RENAMED_ROW_PREFIX));  // Filter inner nodes. Name may be empty or equal to the distance (PhyML).
+        int index = rowName.mid(RENAMED_ROW_PREFIX.length()).toInt(&ok);
+        CHECK_EXT(ok && index >= 0 && index < originalRowNameByIndex.length(),
+                  setError(tr("Failed to map row name: %1").arg(rowName)),
+                  ReportResult_Finished);
+        QString originalRowName = originalRowNameByIndex[index];
+        node->setName(originalRowName);
     }
+    result = tree;
     return ReportResult_Finished;
 }
 
@@ -75,45 +91,8 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
     cancel();
 }
 
-void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma) {
-    QStringList rows = ma->getRowNames();
-
-    int rowsNum = ma->getRowCount();
-    for (int i = 0; i < rowsNum; i++) {
-        namesMap[generateNewAlphabeticId()] = rows.at(i);
-        ma->renameRow(i, lastIdStr);
-    }
-}
-void SeqNamesConvertor::restoreNames(const PhyTree& tree) {
-    if (!tree) {
-        return;
-    }
-    QList<const PhyNode*> nodes = tree->collectNodes();
-    foreach (const PhyNode* node, nodes) {
-        QString restoredName = namesMap[node->getName()];
-        if (!restoredName.isEmpty()) {
-            PhyNode* renamedNode = const_cast<PhyNode*>(node);
-            renamedNode->setName(restoredName);
-        }
-    }
-}
-
-const QString& SeqNamesConvertor::generateNewAlphabeticId() {
-    int idSize = lastIdStr.size();
-    for (int i = idSize - 1; i >= 0; i--) {
-        char curChar = lastIdStr.at(i).toLatin1();
-        if (curChar < 'z') {
-            lastIdStr[i] = curChar + 1;
-            return lastIdStr;
-        } else {
-            lastIdStr[i] = 'a';
-        }
-    }
-
-    lastIdStr.append('a');
-    lastIdStr.fill('a');
-
-    return lastIdStr;
+const PhyTree& PhyTreeGeneratorLauncherTask::getResult() const {
+    return result;
 }
 
 }  // namespace U2

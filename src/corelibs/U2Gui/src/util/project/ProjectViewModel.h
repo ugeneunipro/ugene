@@ -64,7 +64,6 @@ public:
 
     void addDocument(Document* doc);
     void removeDocument(Document* doc);
-    void merge(Document* doc, const DocumentFoldersUpdate& update);
     bool hasDocument(Document* doc) const;
     bool hasObject(Document* doc, GObject* obj) const;
 

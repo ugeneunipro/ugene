@@ -216,11 +216,16 @@
         <source>Custom pattern annotation</source>
         <translation>Пользовательская аннотация</translation>
     </message>
+    <message>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="112"/>
+        <source>Object with annotations was removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::CustomPatternAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="219"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="222"/>
         <source>Plasmid features</source>
         <translation>Аннотирование плазмид</translation>
     </message>

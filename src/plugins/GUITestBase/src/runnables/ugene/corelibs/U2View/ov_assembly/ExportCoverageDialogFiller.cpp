@@ -50,8 +50,9 @@ ExportCoverageDialogFiller::ExportCoverageDialogFiller(HI::GUITestOpStatus& os, 
 #define GT_METHOD_NAME "commonScenario"
 void ExportCoverageDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget(os);
-
-    foreach (const Action& action, actions) {
+    QPointer<QWidget> dialogPtr(dialog);
+    for (const Action& action: qAsConst(actions)) {
+        GT_CHECK(dialogPtr != nullptr, "Dialog was closed before action: " + QString::number(action.first));
         switch (action.first) {
             case EnterFilePath:
                 enterFilePath(action.second);
@@ -121,7 +122,7 @@ void ExportCoverageDialogFiller::commonScenario() {
 void ExportCoverageDialogFiller::enterFilePath(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't a get file path from the action data");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFilePath", dialog), actionData.toString());
+    GTLineEdit::setText(os, "leFilePath", actionData.toString(), dialog);
 }
 #undef GT_METHOD_NAME
 
@@ -208,8 +209,7 @@ void ExportCoverageDialogFiller::checkCompress(const QVariant& actionData) {
 void ExportCoverageDialogFiller::checkOptionsVisibility(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected groupbox visibility state from the action data");
-    QWidget* gbAdditionalOptions = GTWidget::findWidget(os, "gbAdditionalOptions", dialog);
-    GT_CHECK(nullptr != gbAdditionalOptions, "An additional options widget wasn't found");
+    auto gbAdditionalOptions = GTWidget::findWidget(os, "gbAdditionalOptions", dialog);
     GT_CHECK(gbAdditionalOptions->isVisible() == actionData.toBool(), "An unexpected additional options groupbox visibility state");
 }
 #undef GT_METHOD_NAME

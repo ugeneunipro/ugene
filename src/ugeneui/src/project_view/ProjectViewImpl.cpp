@@ -685,8 +685,8 @@ QList<Task*> ProjectViewImpl::createLoadDocumentTasks(const QList<Document*>& do
     bool openViews = docs.size() <= MAX_DOCS_TO_OPEN_VIEWS;
     QList<Task*> res;
     foreach (Document* doc, docs) {
-        Task* t = nullptr;
-        if (openViews && !ProjectUtils::isDatabaseDoc(doc)) {
+        Task* t;
+        if (openViews) {
             t = new LoadUnloadedDocumentAndOpenViewTask(doc);
         } else {
             t = new LoadUnloadedDocumentTask(doc);
@@ -766,8 +766,6 @@ void ProjectViewImpl::sl_onActivated(GObject* o) {
 
 void ProjectViewImpl::sl_onActivated(Document* d) {
     SAFE_POINT(d != nullptr, "No double-clicked document found", );
-    CHECK(!ProjectUtils::isDatabaseDoc(d), );
-
     MultiGSelection ms;
     GObjectSelection gs;
     DocumentSelection ds;
@@ -812,15 +810,7 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
     // check if object is already displayed in some view.
     QList<MWMDIWindow*> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     const GObjectSelection* objectsSelection = static_cast<const GObjectSelection*>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
-    const DocumentSelection* docSelection = static_cast<const DocumentSelection*>(ms.findSelectionByType(GSelectionTypes::DOCUMENTS));
-    if (nullptr != docSelection) {
-        foreach (Document* selectedDoc, docSelection->getSelectedDocuments()) {
-            if (ProjectUtils::isDatabaseDoc(selectedDoc)) {
-                return res;
-            }
-        }
-    }
-    if (nullptr != objectsSelection) {
+    if (objectsSelection != nullptr) {
         QSet<GObject*> objectsInSelection = objectsSelection->getSelectedObjects().toSet();
         foreach (GObject* obj, objectsInSelection) {
             if (projectTreeController->isObjectInRecycleBin(obj)) {
@@ -957,12 +947,12 @@ void ProjectViewImpl::buildRelocateMenu(QMenu* m) {
                     allObjectsWitable = false;
                 }
             }
-            if (allObjectsWitable && !ProjectUtils::isDatabaseDoc(doc)) {
+            if (allObjectsWitable) {
                 m->addAction(exportDocumentAction);
                 return;
             }
         }
-    } else if (!ProjectUtils::isDatabaseDoc(doc)) {
+    } else {
         m->addAction(relocateDocumentAction);
     }
 }
@@ -1047,7 +1037,7 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
     }
 
     Document* docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
-    if (docToOpen != nullptr && !docToOpen->isDatabaseConnection()) {
+    if (docToOpen != nullptr) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
             m.addAction(openContainingFolder);
@@ -1169,7 +1159,7 @@ void ProjectViewImpl::sl_onToggleCircular() {
 
 void ProjectViewImpl::sl_onOpenContainingFolder() {
     Document* docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
-    if (docToOpen != nullptr && !docToOpen->isDatabaseConnection()) {
+    if (docToOpen != nullptr) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
             QUrl url = docToOpen->getURL().isLocalFile() ? QUrl::fromLocalFile(docToOpen->getURL().dirPath()) : QUrl(docToOpen->getURL().dirPath());

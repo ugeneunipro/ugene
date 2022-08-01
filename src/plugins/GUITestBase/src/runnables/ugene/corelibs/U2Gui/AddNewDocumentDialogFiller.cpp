@@ -46,7 +46,7 @@ void AddNewDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "documentTypeCombo", dialog), format);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "documentURLEdit", dialog), path);
+    GTLineEdit::setText(os, "documentURLEdit", path, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

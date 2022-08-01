@@ -183,6 +183,10 @@ Ignore boundary ORFs which last beyond the search region
         <source>Annotation table object is NULL!</source>
         <translation>Annotation table object is NULL!</translation>
     </message>
+    <message>
+        <source>Object with annotations was removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::ORFPrompter</name>

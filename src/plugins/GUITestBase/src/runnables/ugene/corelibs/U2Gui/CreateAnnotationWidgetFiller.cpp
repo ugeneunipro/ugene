@@ -68,7 +68,7 @@ void CreateAnnotationWidgetFiller::commonScenario() {
 
         if (!saveTo.isEmpty()) {
             QDir().mkpath(QFileInfo(saveTo).dir().absolutePath());
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leNewTablePath", dialog), saveTo);
+            GTLineEdit::setText(os, "leNewTablePath", saveTo, dialog);
         }
     } else {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbExistingTable", dialog));
@@ -78,12 +78,12 @@ void CreateAnnotationWidgetFiller::commonScenario() {
         }
     }
 
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), groupName);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName", dialog), annotationName);
+    GTLineEdit::setText(os, "leGroupName", groupName, dialog);
+    GTLineEdit::setText(os, "leAnnotationName", annotationName, dialog);
     GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leLocation", dialog), location);
+    GTLineEdit::setText(os, "leLocation", location, dialog);
     if (!description.isEmpty()) {
-        GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), description);
+        GTLineEdit::setText(os, "leDescription", description, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

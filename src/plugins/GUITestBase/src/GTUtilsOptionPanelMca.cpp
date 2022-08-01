@@ -74,7 +74,7 @@ void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
 bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget* innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
+    auto innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
     return nullptr != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -147,8 +147,7 @@ void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus& os, QString e
 #define GT_METHOD_NAME "getExportFileName"
 QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    auto exportToFileLineEdit = GTWidget::findLineEdit(os, "pathLe");
-    return GTLineEdit::getText(os, exportToFileLineEdit);
+    return GTLineEdit::getText(os, "pathLe");
 }
 #undef GT_METHOD_NAME
 

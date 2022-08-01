@@ -321,31 +321,6 @@ protected:
     bool isPath;
 };
 
-class U2DESIGNER_EXPORT ComboBoxWithDbUrlsDelegate : public PropertyDelegate {
-    Q_OBJECT
-public:
-    ComboBoxWithDbUrlsDelegate(QObject* parent = nullptr);
-
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
-
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
-
-    virtual PropertyDelegate* clone();
-    virtual Type type() const;
-
-signals:
-    void si_valueChanged(const QString& newVal) const;
-
-private slots:
-    void sl_valueChanged(const QString& newVal);
-
-private:
-    QVariantMap items;
-};
-
 class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public ComboBoxBaseDelegate {
     Q_OBJECT
 public:

@@ -19,12 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
@@ -32,8 +30,6 @@
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QPushButton>
-#include <QRadioButton>
 #include <QTableWidget>
 
 #include "ImportAnnotationsToCsvFiller.h"
@@ -95,17 +91,17 @@ ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(GUITestOpStatus& _os,
 #define GT_METHOD_NAME "run"
 void RoleFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QCheckBox* addOffsetCheckBox = dialog->findChild<QCheckBox*>("startOffsetCheck");
-    QSpinBox* addOffsetSpinBox = dialog->findChild<QSpinBox*>("startOffsetValue");
-    QCheckBox* endPosCheckBox = dialog->findChild<QCheckBox*>("endInclusiveCheck");
-    QCheckBox* strandMarkCheckBox = dialog->findChild<QCheckBox*>("complValueCheck");
-    QLineEdit* markValueLineEdit = dialog->findChild<QLineEdit*>("complValueEdit");
-    QLineEdit* qualifierLineEdit = dialog->findChild<QLineEdit*>("qualifierNameEdit");
+    auto addOffsetCheckBox = GTWidget::findCheckBox(os, "startOffsetCheck", dialog);
+    auto addOffsetSpinBox = GTWidget::findSpinBox(os, "startOffsetValue", dialog);
+    auto endPosCheckBox = GTWidget::findCheckBox(os, "endInclusiveCheck", dialog);
+    auto strandMarkCheckBox = GTWidget::findCheckBox(os, "complValueCheck", dialog);
+    auto markValueLineEdit = GTWidget::findLineEdit(os, "complValueEdit", dialog);
+    auto qualifierLineEdit = GTWidget::findLineEdit(os, "qualifierNameEdit", dialog);
 
     GTGlobals::sleep(300);
     ImportAnnotationsToCsvFiller::StartParameter* startP = dynamic_cast<ImportAnnotationsToCsvFiller::StartParameter*>(parameter);
     if (startP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("startRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "startRB", dialog));
         GTCheckBox::setChecked(os, addOffsetCheckBox, startP->addOffset);
         if (startP->addOffset) {
             GTSpinBox::setValue(os, addOffsetSpinBox, startP->numberOfBp);
@@ -114,36 +110,36 @@ void RoleFiller::commonScenario() {
 
     ImportAnnotationsToCsvFiller::EndParameter* endP = dynamic_cast<ImportAnnotationsToCsvFiller::EndParameter*>(parameter);
     if (endP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("endRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "endRB", dialog));
         GTCheckBox::setChecked(os, endPosCheckBox, endP->endPos);
     }
 
     ImportAnnotationsToCsvFiller::LengthParameter* lenghtP = dynamic_cast<ImportAnnotationsToCsvFiller::LengthParameter*>(parameter);
     if (lenghtP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("lengthRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "lengthRB", dialog));
     }
 
     ImportAnnotationsToCsvFiller::StrandMarkParameter* strandMarkP = dynamic_cast<ImportAnnotationsToCsvFiller::StrandMarkParameter*>(parameter);
     if (strandMarkP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("complMarkRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "complMarkRB", dialog));
         GTCheckBox::setChecked(os, strandMarkCheckBox, strandMarkP->markValue);
         GTLineEdit::setText(os, markValueLineEdit, strandMarkP->markValueName);
     }
 
     ImportAnnotationsToCsvFiller::NameParameter* nameP = dynamic_cast<ImportAnnotationsToCsvFiller::NameParameter*>(parameter);
     if (nameP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("nameRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "nameRB", dialog));
     }
 
     ImportAnnotationsToCsvFiller::QualifierParameter* qualP = dynamic_cast<ImportAnnotationsToCsvFiller::QualifierParameter*>(parameter);
     if (qualP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("qualifierRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "qualifierRB", dialog));
         GTLineEdit::setText(os, qualifierLineEdit, qualP->name);
     }
 
     ImportAnnotationsToCsvFiller::IgnoreParameter* ignoreP = dynamic_cast<ImportAnnotationsToCsvFiller::IgnoreParameter*>(parameter);
     if (ignoreP) {
-        GTRadioButton::click(os, dialog->findChild<QRadioButton*>("ignoreRB"));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "ignoreRB", dialog));
     }
 
     delete parameter;
@@ -170,13 +166,9 @@ public:
 void ImportAnnotationsToCsvFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* readFileLineEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("readFileName"));
-    GT_CHECK(readFileLineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, readFileLineEdit, fileToRead);
+    GTLineEdit::setText(os, "readFileName", fileToRead, dialog);
 
-    QLineEdit* resultFileLineEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("saveFileName"));
-    GT_CHECK(resultFileLineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, dialog->findChild<QLineEdit*>(QString::fromUtf8("saveFileName")), resultFile);
+    GTLineEdit::setText(os, "saveFileName", resultFile, dialog);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
@@ -188,15 +180,14 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GT_CHECK(spinBox != nullptr, "SpinBox not found");
     GTSpinBox::setValue(os, spinBox, numberOfLines, useMethod);
 
-    QCheckBox* checkBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
+    auto checkBox = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
     GTCheckBox::setChecked(os, checkBox, addResultFileToProject);
 
     if (columnSeparator) {
         auto columnSeparator = GTWidget::findRadioButton(os, "columnSeparatorRadioButton", dialog);
         GTRadioButton::click(os, columnSeparator);
 
-        QLineEdit* separatorEdit = GTWidget::findLineEdit(os, "separatorEdit", dialog);
-        GTLineEdit::setText(os, separatorEdit, separator, false, true);
+        GTLineEdit::setText(os, "separatorEdit", separator, dialog, false, true);
 
         //        GTClipboard::setText(os, separator);
         //        GTWidget::click(os, separatorEdit);
@@ -205,26 +196,21 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
         GTRadioButton::click(os, "scriptRadioButton", dialog);
     }
 
-    QLineEdit* firstLinesLineEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("prefixToSkipEdit"));
-    GT_CHECK(firstLinesLineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, firstLinesLineEdit, skipAllLinesStartsWith);
+    GTLineEdit::setText(os, "prefixToSkipEdit", skipAllLinesStartsWith, dialog);
 
-    QCheckBox* separatorsModeCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("separatorsModeCheck"));
+    auto separatorsModeCheckBox = GTWidget::findCheckBox(os, "separatorsModeCheck", dialog);
     GTCheckBox::setChecked(os, separatorsModeCheckBox, interpretMultipleAsSingle);
 
-    QCheckBox* removeQuotesCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("removeQuotesCheck"));
+    auto removeQuotesCheckBox = GTWidget::findCheckBox(os, "removeQuotesCheck", dialog);
     GTCheckBox::setChecked(os, removeQuotesCheckBox, removeQuotesButton);
 
-    QLineEdit* defaultAnnotationNameLineEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("defaultNameEdit"));
-    GT_CHECK(defaultAnnotationNameLineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, defaultAnnotationNameLineEdit, defaultAnnotationName);
+    GTLineEdit::setText(os, "defaultNameEdit", defaultAnnotationName, dialog);
 
-    QPushButton* previewButton = dialog->findChild<QPushButton*>("previewButton");
-    GT_CHECK(previewButton != nullptr, "DA button not found");
+    auto previewButton = GTWidget::findPushButton(os, "previewButton", dialog);
     GTWidget::click(os, previewButton);
     GTGlobals::sleep();
 
-    QTableWidget* previewTable = dialog->findChild<QTableWidget*>("previewTable");
+    auto previewTable = GTWidget::findTableWidget(os, "previewTable", dialog);
     foreach (RoleColumnParameter r, roleParameters) {
         GTUtilsDialog::waitForDialog(os, new RoleFiller(os, r.parameter));
         GT_CHECK(previewTable->item(0, r.column) != nullptr, "Table item not found");

@@ -37,7 +37,7 @@ public:
     };
 
     BuildTreeDialogFiller(HI::GUITestOpStatus& os, const QString& saveTree = "default", int model = 0, double alpha = 0, bool displayWithMsa = false);
-    BuildTreeDialogFiller(HI::GUITestOpStatus& os, int replicates = 0, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
+    BuildTreeDialogFiller(HI::GUITestOpStatus& os, int replicates, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
     BuildTreeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();

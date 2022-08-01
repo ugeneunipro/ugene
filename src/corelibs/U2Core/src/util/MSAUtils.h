@@ -120,8 +120,10 @@ public:
      * The method returns 'true' if all rows with a non-empty prefix were found and updated.
      */
     static bool restoreOriginalRowProperties(MultipleSequenceAlignment& resultMa, const MultipleSequenceAlignment& originalMa, const QString& prefix = "");
-
-    static QList<U2Region> getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, int length, int requiredGapsCount = -1);
+    /**
+     * Returns list of columns with desired quantity of gaps.
+     */
+    static QList<U2Region> getColumnsWithGaps(const QList<QVector<U2MsaGap>>& maGapModel, const QList<MultipleAlignmentRow>& rows, int alignmentLength, int requiredGapsCount = -1);
     static void removeColumnsWithGaps(MultipleSequenceAlignment& msa, int requiredGapsCount = -1);
 
     /**

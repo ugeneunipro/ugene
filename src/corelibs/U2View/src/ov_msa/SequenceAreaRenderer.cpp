@@ -133,7 +133,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
     MaEditor* editor = seqAreaWgt->getEditor();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
-    bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+    bool isTextVisible = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
 
     U2OpStatusImpl os;
     int referenceMaRowIndex = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -178,7 +178,7 @@ int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma
         if (backgroundColor.isValid() && highlight) {
             painter.fillRect(charRect, backgroundColor);
         }
-        if (isResizeMode) {
+        if (isTextVisible) {
             QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRowIndex, column, c);  //! SANGER_TODO: add NULL checks or do smt with the infrastructure
             painter.setPen(fontColor);
             painter.drawText(charRect, Qt::AlignCenter, QString(c));

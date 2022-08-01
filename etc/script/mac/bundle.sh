@@ -165,7 +165,7 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
 
-echo Copying extra libraries with mysql driver
+echo Copying extra libraries
 cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
 
 echo Copying readme.txt file

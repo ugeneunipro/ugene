@@ -58,17 +58,17 @@ void ExportChromatogramFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     if (addDocumentToProject) {
-        QCheckBox* checkBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectBox"));
+        auto checkBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
         GTCheckBox::setChecked(os, checkBox, addDocumentToProject);
     }
 
     if (reversed) {
-        QCheckBox* checkBoxReversed = dialog->findChild<QCheckBox*>(QString::fromUtf8("reverseBox"));
+        auto checkBoxReversed = GTWidget::findCheckBox(os, "reverseBox", dialog);
         GTCheckBox::setChecked(os, checkBoxReversed, reversed);
     }
 
     if (complement) {
-        QCheckBox* checkBoxComplement = dialog->findChild<QCheckBox*>(QString::fromUtf8("complementBox"));
+        auto checkBoxComplement = GTWidget::findCheckBox(os, "complementBox", dialog);
         GTCheckBox::setChecked(os, checkBoxComplement, complement);
     }
 

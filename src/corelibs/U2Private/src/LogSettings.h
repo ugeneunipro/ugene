@@ -23,6 +23,7 @@
 #define _U2_LOG_SETTINGS_H_
 
 #include <QHash>
+#include <QVector>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
@@ -31,28 +32,25 @@
 namespace U2 {
 
 struct U2PRIVATE_EXPORT LoggerSettings {
-    LoggerSettings() {
-        std::fill(activeLevelFlag, activeLevelFlag + LogLevel_NumLevels, 0);
-    }
+    LoggerSettings();
 
     bool operator==(const LoggerSettings& other) const {
         return categoryName == other.categoryName && activeLevelFlag == other.activeLevelFlag;
     }
 
     QString categoryName;
-    bool activeLevelFlag[LogLevel_NumLevels];
+    QVector<bool> activeLevelFlag;
 };
 
 class U2PRIVATE_EXPORT LogCategories : QObject {
     Q_OBJECT
 public:
     static void init();
-    static const QString getLocalizedLevelName(LogLevel l) {
-        return localizedLevelNames[l];
-    }
+
+    static const QString& getLocalizedLevelName(const LogLevel& logLevel);
 
 protected:
-    static QString localizedLevelNames[LogLevel_NumLevels];
+    static QVector<QString> localizedLevelNames;
 };
 
 class U2PRIVATE_EXPORT LogSettings {
@@ -76,15 +74,15 @@ public:
     void reinitAll();
     void reinitCategories();
 
-    QString levelColors[LogLevel_NumLevels];
-    bool activeLevelGlobalFlag[LogLevel_NumLevels];
+    QVector<QString> levelColors;
+    QVector<bool> activeLevelGlobalFlag;
     QString logPattern;
 
-    bool showDate;
-    bool showLevel;
-    bool showCategory;
-    bool enableColor;
-    bool toFile;
+    bool showDate = false;
+    bool showLevel = false;
+    bool showCategory = false;
+    bool enableColor = false;
+    bool toFile = false;
     QString outputFile;
 
     // private:

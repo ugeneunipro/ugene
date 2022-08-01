@@ -45,7 +45,6 @@
     <excluded test="sitecon/search/negative/test_0006.xml" reason="bug?"/>
     <excluded test="sitecon/search/negative/test_0007.xml" reason="bug?"/>
     <excluded test="sitecon/search/negative/test_0008.xml" reason="bug?"/>
-    <excluded test="wd-shared-db/test_0004.xml " reason="sometimes takes 30mins more and triggers test suite timeout"/>
     <excluded test="workflow_samples/raw_ngs/test_0001.xml" reason="UGENE-4898: TopHat is not available on Windows"/>
     <excluded test="workflow_samples/raw_ngs/test_0002.xml" reason="UGENE-4898: TopHat is not available on Windows"/>
     <excluded test="workflow_samples/raw_ngs/test_0003.xml" reason="hangs"/>

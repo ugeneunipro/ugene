@@ -268,8 +268,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -323,8 +323,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -375,8 +375,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Remove affected annotation" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -406,8 +406,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Remove affected annotation" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -445,8 +445,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Split (join annotation parts)" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -486,8 +486,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Split (join annotation parts)" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Push "Edit sequence" button, sequence in the edit mode
@@ -532,8 +532,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Recalculate values of qualifiers" option is unchecked.
     //    Be sure that "Expand or crop affected annotations" option is unselected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Select a CDS annotation item and do double-click on it
@@ -575,8 +575,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Recalculate values of qualifiers" option is unchecked.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
-    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, true));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
+    GTUtilsDialog::add(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, true));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Select a CDS annotation item and do double-click on it

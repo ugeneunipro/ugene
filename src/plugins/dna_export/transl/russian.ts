@@ -1102,70 +1102,70 @@
         <translation>Экспорт объекта...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="152"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="163"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="176"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="184"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="193"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="203"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="215"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="146"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="157"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="170"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="178"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="187"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="197"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="209"/>
         <source>Export/Import</source>
         <translation>Экспорт/Импорт</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="305"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="299"/>
         <source>There are no sequence objects selected.</source>
         <translation>There are no sequence objects selected.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="321"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="315"/>
         <source>There is no annotation table selected.</source>
         <translation>There is no annotation table selected.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="334"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="328"/>
         <source>There is no associated sequence found.</source>
         <translation>There is no associated sequence found.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="388"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="614"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="382"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="608"/>
         <source>No sequence objects selected!</source>
         <translation>Выделите один или более объектов!</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="401"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="395"/>
         <source>Sequence is too large to be exported as a multiple alignment</source>
         <translation>Последовательность слишком большая для экспорта в множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="428"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="422"/>
         <source>Not enough memory</source>
         <translation>Недостаточно памяти</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="452"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="498"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="446"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="492"/>
         <source>Select one alignment object to export</source>
         <translation>Выберите один объект выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="480"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="474"/>
         <source>Select one chromatogram alignment object to export</source>
         <translation>Выберите одну хроматограмму для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="554"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="548"/>
         <source>Select one chromatogram object to export</source>
         <translation>Выберите один объект для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="590"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="584"/>
         <source>Select one annotation object to export</source>
         <translation>Выберите один объект аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="619"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="613"/>
         <source>Set output quality file</source>
         <translation>Укажите качество выходного файла</translation>
     </message>

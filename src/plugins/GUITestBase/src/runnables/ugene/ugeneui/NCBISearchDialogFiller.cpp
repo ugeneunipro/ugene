@@ -121,8 +121,7 @@ void NcbiSearchDialogFiller::setField(const QVariant& actionData) {
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the field name from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
-    QWidget* blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
+    auto blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
     GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME
@@ -132,9 +131,8 @@ void NcbiSearchDialogFiller::setTerm(const QVariant& actionData) {
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the query term from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
-    QWidget* blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", blockWidget), value.second);
+    auto blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
+    GTLineEdit::setText(os, "queryEditLineEdit", value.second, blockWidget);
 }
 #undef GT_METHOD_NAME
 
@@ -303,7 +301,7 @@ NCBISearchDialogSimpleFiller::NCBISearchDialogSimpleFiller(HI::GUITestOpStatus& 
 void NCBISearchDialogSimpleFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", dialog), query);
+    GTLineEdit::setText(os, "queryEditLineEdit", query, dialog);
 
     if (term != "") {
         GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", dialog), term);
@@ -351,8 +349,7 @@ bool NCBISearchDialogSimpleFiller::shownCorrect() {
 int NCBISearchDialogSimpleFiller::getResultNumber() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QTreeWidget* w = dialog->findChild<QTreeWidget*>("treeWidget");
-    GT_CHECK_RESULT(w, "treeWidget not found", -1);
+    auto w = GTWidget::findTreeWidget(os, "treeWidget", dialog);
     return w->topLevelItemCount();
 }
 #undef GT_METHOD_NAME

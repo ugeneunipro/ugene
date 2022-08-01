@@ -131,17 +131,21 @@ void MsaEditorTreeTab::sl_onCloseTab() {
 
 MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor* msaEditor, QWidget* parent)
     : QWidget(parent), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
-    initialize();
     setObjectName("msa_editor_tree_tab_area");
-}
 
-void MsaEditorTreeTabArea::initialize() {
     treeTabWidget = createTabWidget();
     currentLayout = new QVBoxLayout();
     currentLayout->setMargin(0);
     currentLayout->setSpacing(0);
     currentLayout->addWidget(treeTabWidget);
     setLayout(currentLayout);
+
+    connect(treeTabWidget, &QTabWidget::currentChanged, this, [this] {
+        int currentIndex = treeTabWidget->currentIndex();
+        if (currentIndex >= 0) {  // Do not report empty state (on destruction).
+            emit si_activeTabChanged(currentIndex);
+        }
+    });
 }
 
 MsaEditorTreeTab* MsaEditorTreeTabArea::createTabWidget() {

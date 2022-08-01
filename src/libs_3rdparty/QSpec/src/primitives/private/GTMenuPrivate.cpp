@@ -43,7 +43,7 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus& os, const QStringList& it
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
 
     QStringList cuttedItemPath = itemPath;
-    const QString menuName = cuttedItemPath.takeFirst();
+    QString menuName = cuttedItemPath.takeFirst();
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, cuttedItemPath, method, matchFlag));
     showMainMenu(os, menuName, method);
 }
@@ -84,7 +84,7 @@ void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus& os, const QStringLi
 
 #define GT_METHOD_NAME "showMainMenu"
 void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlobals::UseMethod m) {
-    QMainWindow* mainWindow = NULL;
+    QMainWindow* mainWindow = nullptr;
     QList<QAction*> resultList;
     foreach (QWidget* parent, GTMainWindow::getMainWindowsAsWidget(os)) {
         QList<QAction*> list = parent->findChildren<QAction*>();
@@ -111,13 +111,9 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, G
     int key = 0;
     int key_pos = 0;
 
-#ifdef Q_OS_DARWIN
-    // TODO: workaround for MacOS
-    //      menubar's submenu can't be opened by keyboard in non-native mode
-    m = GTGlobals::UseMouse;
-#endif
     switch (m) {
         case GTGlobals::UseMouse:
+            GT_CHECK_RESULT(mainWindow != nullptr, "mainWindow is null!", );
             pos = mainWindow->menuBar()->actionGeometry(menu).center();
             gPos = mainWindow->menuBar()->mapToGlobal(pos);
 

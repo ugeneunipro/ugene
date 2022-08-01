@@ -84,7 +84,7 @@ TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangula
       nodeLabelsAction(nullptr),
       distanceLabelsAction(nullptr),
       textSettingsAction(nullptr),
-      contAction(nullptr),
+      alignTreeLabelsAction(nullptr),
       zoomToSelAction(nullptr),
       zoomToAllAction(nullptr),
       zoomOutAction(nullptr),
@@ -198,9 +198,9 @@ void TreeViewer::createActions() {
 
     // Align Labels
     // Note: the icon is truncated to 15 px height to look properly in the main menu when it is checked
-    contAction = new QAction(QIcon(":core/images/align_tree_labels.png"), tr("Align Labels"), ui);
-    contAction->setCheckable(true);
-    contAction->setObjectName("Align Labels");
+    alignTreeLabelsAction = new QAction(QIcon(":core/images/align_tree_labels.png"), tr("Align Labels"), ui);
+    alignTreeLabelsAction->setCheckable(true);
+    alignTreeLabelsAction->setObjectName("Align Labels");
 
     // Zooming
     zoomToSelAction = new QAction(QIcon(":core/images/zoom_in.png"), tr("Zoom In"), ui);
@@ -226,7 +226,7 @@ void TreeViewer::setupShowLabelsMenu(QMenu* m) {
     m->addAction(distanceLabelsAction);
 }
 
-void TreeViewer::setupCameraMenu(QMenu* m) {
+void TreeViewer::setupExportTreeImageMenu(QMenu* m) {
     m->addAction(captureTreeAction);
     m->addAction(exportAction);
 }
@@ -254,27 +254,28 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     tb->addWidget(showLabelsButton);
 
     tb->addAction(textSettingsAction);
-    tb->addAction(contAction);
 
     // Print and Capture
     tb->addSeparator();
 
-    QToolButton* cameraButton = new QToolButton();
-    QMenu* cameraMenu = new QMenu(tr("Export Tree Image"), ui);
-    setupCameraMenu(cameraMenu);
-    cameraButton->setDefaultAction(cameraMenu->menuAction());
-    cameraButton->setPopupMode(QToolButton::InstantPopup);
-    cameraButton->setIcon(QIcon(":/core/images/cam2.png"));
-    cameraMenu->menuAction()->setObjectName("Export Tree Image");
-    cameraButton->setObjectName("cameraMenu");
-    tb->addWidget(cameraButton);
+    auto exportTreeImageButton = new QToolButton();
+    auto exportTreeImageButtonMenu = new QMenu(tr("Export Tree Image"), ui);
+    setupExportTreeImageMenu(exportTreeImageButtonMenu);
+    exportTreeImageButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
+    exportTreeImageButton->setPopupMode(QToolButton::InstantPopup);
+    exportTreeImageButton->setIcon(QIcon(":/core/images/cam2.png"));
+    exportTreeImageButtonMenu->menuAction()->setObjectName("Export Tree Image");
+    exportTreeImageButton->setObjectName("exportTreeImageButton");
+    tb->addWidget(exportTreeImageButton);
     tb->addAction(printAction);
     tb->addSeparator();
+
 
     // Tree Settings
     tb->addAction(treeSettingsAction);
 
     // Branch Settings
+    tb->addAction(alignTreeLabelsAction);
     tb->addAction(branchesSettingsAction);
 
     tb->addSeparator();
@@ -327,7 +328,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
 
     m->addAction(textSettingsAction);
 
-    m->addAction(contAction);
+    m->addAction(alignTreeLabelsAction);
     // Zooming
     m->addSeparator();
     m->addAction(zoomToSelAction);
@@ -339,7 +340,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addAction(printAction);
 
     QMenu* cameraMenu = new QMenu(tr("Export Tree Image"), ui);
-    setupCameraMenu(cameraMenu);
+    setupExportTreeImageMenu(cameraMenu);
     cameraMenu->setIcon(QIcon(":/core/images/cam2.png"));
     cameraMenu->menuAction()->setObjectName("Export Tree Image");
     m->addMenu(cameraMenu);
@@ -713,7 +714,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
 
 void TreeViewerUI::updateScene(bool fitSceneToView) {
     qreal avgW = 0;
-    TREE_TYPE type = static_cast<TREE_TYPE>(getOptionValue(BRANCHES_TRANSFORMATION_TYPE).toUInt());
+    TreeType type = static_cast<TreeType>(getOptionValue(BRANCHES_TRANSFORMATION_TYPE).toUInt());
     if (type != PHYLOGRAM) {
         avgW = avgWidth();
         legend->setVisible(false);

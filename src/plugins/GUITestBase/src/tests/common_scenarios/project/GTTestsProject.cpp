@@ -206,10 +206,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
 
     Runnable* filler = new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "1.gb", ExportDocumentDialogFiller::Genbank, true, true, GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::add(os, filler);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -272,9 +272,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/.dir/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb", ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb", ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
 
     GTMouseDriver::click(Qt::RightButton);
 
@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     CHECK_SET_ERR(fse1.bold(), "se1 are not marked with bold text");
     CHECK_SET_ERR(fse2.bold(), "se2 are not marked with bold text");
 
-    QWidget* w = GTWidget::findWidget(os, "render_area_se1");
+    auto w = GTWidget::findWidget(os, "render_area_se1");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_REMOVE", ACTION_EDIT_SELECT_SEQUENCE_FROM_VIEW}));
     GTMenu::showContextMenu(os, w);

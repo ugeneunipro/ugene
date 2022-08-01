@@ -39,7 +39,10 @@ public:
     PhyTreeData();
     PhyTreeData(const PhyTreeData& other);
     ~PhyTreeData();
-    QList<const PhyNode*> collectNodes() const;
+
+    /** Returns all nodes in the tree using pre-order tree traversal algorithm. */
+    QList<PhyNode*> getNodesPreOrder() const;
+
     void print() const;
 
     void setRootNode(PhyNode* _rootNode) {
@@ -98,7 +101,11 @@ public:
     const PhyNode* getSecondNodeOfBranch(int branchNumber) const;
     double getBranchesDistance(int branchNumber) const;
     double getBranchesNodeValue(int branchNumber) const;
-    void validate(QList<const PhyNode*>& track) const;
+
+    /** Adds current node and all node children into the collection using pre-order algorithm. */
+    void addIfNotPreset(QList<PhyNode*>& nodes);
+    void addIfNotPreset(QList<const PhyNode*>& nodes) const;
+
     bool isConnected(const PhyNode* node) const;
     PhyNode* clone() const;
 
@@ -132,7 +139,6 @@ private:
 private:
     PhyBranch* getBranchAt(int i) const;
     PhyNode* parent() const;
-    void addToTrack(QSet<const PhyNode*>& track) const;
 };
 
 class U2CORE_EXPORT PhyTreeUtils {

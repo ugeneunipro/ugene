@@ -372,61 +372,6 @@ QVariant ComboBoxEditableDelegate::getDisplayValue(const QVariant& val) const {
 }
 
 /********************************
- * ComboBoxWithDbUrlsDelegate
- ********************************/
-ComboBoxWithDbUrlsDelegate::ComboBoxWithDbUrlsDelegate(QObject* parent)
-    : PropertyDelegate(parent) {
-}
-
-QWidget* ComboBoxWithDbUrlsDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
-    ComboBoxWithDbUrlWidget* editor = new ComboBoxWithDbUrlWidget(parent);
-    connect(editor, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
-    const_cast<ComboBoxWithDbUrlsDelegate*>(this)->items = editor->getItems();
-    return editor;
-}
-
-void ComboBoxWithDbUrlsDelegate::sl_valueChanged(const QString& newVal) {
-    emit si_valueChanged(newVal);
-    QWidget* editor = qobject_cast<QWidget*>(sender());
-    SAFE_POINT(nullptr != editor, "Invalid editor", );
-    emit commitData(editor);
-}
-
-PropertyWidget* ComboBoxWithDbUrlsDelegate::createWizardWidget(U2OpStatus&, QWidget* parent) const {
-    return new ComboBoxWithDbUrlWidget(parent);
-}
-
-void ComboBoxWithDbUrlsDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
-    QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    ComboBoxWithDbUrlWidget* box = qobject_cast<ComboBoxWithDbUrlWidget*>(editor);
-    const QVariantMap items = box->getItems();
-    if (val.isValid() && items.values().contains(val)) {
-        box->setValue(val);
-    } else if (!items.isEmpty()) {
-        box->setValue(items.values().first());
-    }
-}
-
-void ComboBoxWithDbUrlsDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ComboBoxWithDbUrlWidget* box = qobject_cast<ComboBoxWithDbUrlWidget*>(editor);
-    model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
-}
-
-QVariant ComboBoxWithDbUrlsDelegate::getDisplayValue(const QVariant& val) const {
-    QString display = items.key(val);
-    emit si_valueChanged(display);
-    return QVariant(display);
-}
-
-PropertyDelegate* ComboBoxWithDbUrlsDelegate::clone() {
-    return new ComboBoxWithDbUrlsDelegate(parent());
-}
-
-PropertyDelegate::Type ComboBoxWithDbUrlsDelegate::type() const {
-    return SHARED_DB_URL;
-}
-
-/********************************
  * ComboBoxWithChecksDelegate
  ********************************/
 ComboBoxWithChecksDelegate::ComboBoxWithChecksDelegate(const QVariantMap& _items, QObject* parent)

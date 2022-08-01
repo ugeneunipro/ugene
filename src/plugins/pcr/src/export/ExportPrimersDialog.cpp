@@ -41,15 +41,11 @@
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/SaveDocumentController.h>
-#include <U2Gui/SharedConnectionsDialog.h>
 
 #include "ExportPrimersToDatabaseTask.h"
 #include "ExportPrimersToLocalFileTask.h"
 
 namespace U2 {
-
-const QString ExportPrimersDialog::LOCAL_FILE = QObject::tr("Local file");
-const QString ExportPrimersDialog::SHARED_DB = QObject::tr("Shared database");
 
 ExportPrimersDialog::ExportPrimersDialog(const QList<Primer>& primers, QWidget* parent)
     : QDialog(parent),
@@ -59,117 +55,26 @@ ExportPrimersDialog::ExportPrimersDialog(const QList<Primer>& primers, QWidget* 
 
     init();
     connectSignals();
-    sl_updateState();
-}
-
-void ExportPrimersDialog::sl_updateState() {
-    fileContainer->setVisible(isFileMode());
-    databaseContainer->setVisible(!isFileMode());
-    folderContainer->setEnabled(0 < cbDatabase->count());
-}
-
-void ExportPrimersDialog::sl_connect() {
-    const bool projectExists = (nullptr != AppContext::getProject());
-    QPointer<SharedConnectionsDialog> connectionDialog = new SharedConnectionsDialog(this);
-    if (projectExists) {
-        connectProjectSignals();
-    } else {
-        connect(connectionDialog.data(), SIGNAL(si_connectionCompleted()), SLOT(sl_connectionCompleted()));
-    }
-
-    connectionDialog->exec();
-    CHECK(!connectionDialog.isNull(), );
-
-    if (projectExists) {
-        delete connectionDialog;
-    }
-}
-
-void ExportPrimersDialog::sl_connectionCompleted() {
-    QObject* connectionDialog = sender();
-    if (Q_LIKELY(nullptr != connectionDialog)) {
-        connectionDialog->deleteLater();
-    }
-    initDatabases();
-    sl_updateState();
-}
-
-void ExportPrimersDialog::sl_documentAdded(Document* document) {
-    CHECK(document->isDatabaseConnection(), );
-    cbDatabase->addItem(document->getName(), QVariant::fromValue<U2DbiRef>(document->getDbiRef()));
-    if (cbDatabase->currentIndex() == -1) {
-        cbDatabase->setCurrentIndex(0);
-    }
-    sl_updateState();
-}
-
-void ExportPrimersDialog::sl_documentRemoved(Document* document) {
-    CHECK(document->isDatabaseConnection(), );
-    for (int i = 0; i < cbDatabase->count(); i++) {
-        if (cbDatabase->itemData(i).value<U2DbiRef>() == document->getDbiRef()) {
-            cbDatabase->removeItem(i);
-        }
-    }
-    sl_updateState();
-}
-
-void ExportPrimersDialog::sl_folderBrowse() {
-    const Folder folder = ProjectTreeItemSelectorDialog::selectFolder(this);
-    if (!folder.getFolderPath().isEmpty()) {
-        leFolder->setText(folder.getFolderPath());
-    }
 }
 
 void ExportPrimersDialog::accept() {
-    GUIUtils::setWidgetWarning(leFilePath, false);
-    GUIUtils::setWidgetWarning(cbDatabase, false);
-    GUIUtils::setWidgetWarning(leFolder, false);
+    GUIUtils::setWidgetWarningStyle(leFilePath, false);
 
     U2OpStatusImpl os;
     GUrlUtils::validateLocalFileUrl(GUrl(saveController->getSaveFileName()), os);
-    if (LOCAL_FILE == cbExport->currentText() && os.isCoR()) {
-        GUIUtils::setWidgetWarning(leFilePath, true);
+    if (os.isCoR()) {
+        GUIUtils::setWidgetWarningStyle(leFilePath, true);
         return;
     }
 
-    if (SHARED_DB == cbExport->currentText() && cbDatabase->currentText().isEmpty()) {
-        GUIUtils::setWidgetWarning(cbDatabase, true);
-        return;
-    }
-
-    if (SHARED_DB == cbExport->currentText() && !leFolder->text().startsWith(U2ObjectDbi::ROOT_FOLDER)) {
-        GUIUtils::setWidgetWarning(leFolder, true);
-        return;
-    }
-
-    Task* exportTask = nullptr;
-    if (LOCAL_FILE == cbExport->currentText()) {
-        exportTask = new ExportPrimersToLocalFileTask(primers, saveController->getFormatIdToSave(), saveController->getSaveFileName());
-    } else {
-        exportTask = new ExportPrimersToDatabaseTask(primers, cbDatabase->itemData(cbDatabase->currentIndex()).value<U2DbiRef>(), leFolder->text());
-    }
+    Task* exportTask = new ExportPrimersToLocalFileTask(primers, saveController->getFormatIdToSave(), saveController->getSaveFileName());
     AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 
     QDialog::accept();
 }
 
 void ExportPrimersDialog::init() {
-    cbExport->addItem(LOCAL_FILE);
-    cbExport->addItem(SHARED_DB);
-
     initSaveController();
-    initDatabases();
-}
-
-void ExportPrimersDialog::initDatabases() {
-    while (0 < cbDatabase->count()) {
-        cbDatabase->removeItem(0);
-    }
-
-    const QList<Document*> connectedDatabases = ProjectUtils::getConnectedSharedDatabases();
-    foreach (Document* database, connectedDatabases) {
-        cbDatabase->addItem(database->getName(), QVariant::fromValue<U2DbiRef>(database->getDbiRef()));
-    }
 }
 
 void ExportPrimersDialog::initSaveController() {
@@ -196,10 +101,7 @@ void ExportPrimersDialog::initSaveController() {
 }
 
 void ExportPrimersDialog::connectSignals() {
-    connect(cbExport, SIGNAL(currentIndexChanged(int)), SLOT(sl_updateState()));
-    connect(tbConnect, SIGNAL(clicked()), SLOT(sl_connect()));
-    connect(tbFolderBrowse, SIGNAL(clicked()), SLOT(sl_folderBrowse()));
-    if (nullptr != AppContext::getProject()) {
+    if (AppContext::getProject() != nullptr) {
         connectProjectSignals();
     }
 }
@@ -207,10 +109,6 @@ void ExportPrimersDialog::connectSignals() {
 void ExportPrimersDialog::connectProjectSignals() {
     connect(AppContext::getProject(), SIGNAL(si_documentAdded(Document*)), SLOT(sl_documentAdded(Document*)), Qt::UniqueConnection);
     connect(AppContext::getProject(), SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentRemoved(Document*)), Qt::UniqueConnection);
-}
-
-bool ExportPrimersDialog::isFileMode() const {
-    return LOCAL_FILE == cbExport->currentText();
 }
 
 }  // namespace U2

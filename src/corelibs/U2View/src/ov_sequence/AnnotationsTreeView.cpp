@@ -51,7 +51,6 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
-#include <U2Core/SignalBlocker.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -1726,7 +1725,7 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation, int
     foreach (AVAnnotationItem* item, annotationItems) {
         expandItemRecursevly(item->parent());
         {
-            SignalBlocker blocker(tree);
+            QSignalBlocker blocker(tree);
             item->setSelected(true);
         }
         annotationDoubleClicked(item, regionsToSelect);

@@ -48,7 +48,8 @@ NotificationChecker::NotificationChecker(HI::GUITestOpStatus& _os)
 #define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
     CHECK(QApplication::activeModalWidget() == nullptr, );  // Active modal widget will prevent click on the notification.
-    QWidgetList widgetList = QApplication::allWidgets();
+    // Activate floating notification.
+    QWidgetList widgetList = QApplication::topLevelWidgets();
     for (QWidget* widget : qAsConst(widgetList)) {
         auto notification = qobject_cast<Notification*>(widget);
         if (notification != nullptr && notification->isVisible()) {
@@ -114,7 +115,7 @@ void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus& os, 
     clickOnNotificationWidget(os);
 
     QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Task report ");
-    QTextEdit* reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
+    auto reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
     QString html = reportEdit->toHtml();
     for (const QString& textToken : qAsConst(textTokens)) {
         CHECK_SET_ERR(html.contains(textToken), "Report contains expected text: " + textToken);
@@ -171,7 +172,6 @@ void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus& os) {
     }
     GT_CHECK(notification == nullptr, "Notification is still active after timeout!");
 }
-
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoVisibleNotifications"
@@ -179,7 +179,22 @@ void GTUtilsNotifications::checkNoVisibleNotifications(HI::GUITestOpStatus& os) 
     QWidget* notification = findAnyVisibleNotificationWidget();
     GT_CHECK(notification == nullptr, "Found active notification!");
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getNotificationCounterValue"
+QString GTUtilsNotifications::getNotificationCounterValue(HI::GUITestOpStatus& os) {
+    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
+    return GTWidget::findLabel(os, "notificationLabel", statusBar)->property("notifications-count").toString();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "openNotificationContainerWidget"
+QWidget* GTUtilsNotifications::openNotificationContainerWidget(HI::GUITestOpStatus& os) {
+    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
+    auto label = GTWidget::findLabel(os, "notificationLabel", statusBar);
+    GTWidget::click(os, label);
+    return GTWidget::findWidget(os, "NotificationWidget");
+}
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME

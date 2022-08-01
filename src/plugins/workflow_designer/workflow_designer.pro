@@ -8,10 +8,8 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/CreateScriptWorker.h \
            src/DashboardsManagerDialog.h \
            src/GalaxyConfigConfigurationDialogImpl.h \
-           src/ImportSchemaDialog.h \
            src/InvestigationDataModel.h \
            src/ItemViewStyle.h \
-           src/PortAliasesConfigurationDialog.h \
            src/SampleActionsManager.h \
            src/SceneSerializer.h \
            src/SchemaAliasesConfigurationDialogImpl.h \
@@ -109,9 +107,7 @@ FORMS += src/ChooseItemDialog.ui \
            src/CreateScriptBlockDialog.ui \
            src/DashboardsManagerDialog.ui \
            src/GalaxyConfigConfigurationDialog.ui \
-           src/ImportSchemaDialog.ui \
            src/PaletteWidget.ui \
-           src/PortAliasesConfigurationDialog.ui \
            src/SchemaAliasesConfigurationDialog.ui \
            src/StartupDialog.ui \
            src/WorkflowEditorWidget.ui \
@@ -132,10 +128,8 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/CreateScriptWorker.cpp \
            src/DashboardsManagerDialog.cpp \
            src/GalaxyConfigConfigurationDialogImpl.cpp \
-           src/ImportSchemaDialog.cpp \
            src/InvestigationDataModel.cpp \
            src/ItemViewStyle.cpp \
-           src/PortAliasesConfigurationDialog.cpp \
            src/SampleActionsManager.cpp \
            src/SceneSerializer.cpp \
            src/SchemaAliasesConfigurationDialogImpl.cpp \

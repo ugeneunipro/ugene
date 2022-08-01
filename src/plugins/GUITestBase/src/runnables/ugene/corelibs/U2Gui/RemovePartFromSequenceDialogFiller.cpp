@@ -60,17 +60,13 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!range.isEmpty()) {
-        QLineEdit* removeLocationEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("removeLocationEdit"));
-        GT_CHECK(removeLocationEdit != nullptr, "QLineEdit \"removeLocationEdit\" not found");
-        GTLineEdit::setText(os, removeLocationEdit, range);
+        GTLineEdit::setText(os, "removeLocationEdit", range, dialog);
     }
     if (removeType == Resize) {
-        QRadioButton* resizeRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("resizeRB"));
-        GT_CHECK(resizeRB != nullptr, "radio button not found");
+        auto resizeRB = GTWidget::findRadioButton(os, "resizeRB", dialog);
         GTRadioButton::click(os, resizeRB);
     } else {
-        QRadioButton* removeRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("removeRB"));
-        GT_CHECK(removeRB != nullptr, "radio button not found");
+        auto removeRB = GTWidget::findRadioButton(os, "removeRB", dialog);
         GTRadioButton::click(os, removeRB);
     }
 
@@ -78,16 +74,12 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
 
     GTGlobals::sleep(1000);
     if (saveNew) {
-        QGroupBox* saveToAnotherBox = dialog->findChild<QGroupBox*>(QString::fromUtf8("saveToAnotherBox"));
+        auto saveToAnotherBox = GTWidget::findGroupBox(os, "saveToAnotherBox", dialog);
         GTGroupBox::setChecked(os, saveToAnotherBox, true);
-        QLineEdit* filepathEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("filepathEdit"));
-        GT_CHECK(filepathEdit != nullptr, "QLineEdit \"filepathEdit\" not found");
-
-        GTLineEdit::setText(os, filepathEdit, saveToFile);
+        GTLineEdit::setText(os, "filepathEdit", saveToFile, dialog);
     }
     if (format != FASTA) {
-        QComboBox* formatBox = dialog->findChild<QComboBox*>(QString::fromUtf8("formatBox"));
-        GT_CHECK(formatBox != nullptr, "format box not found");
+        auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);
         int index = formatBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 

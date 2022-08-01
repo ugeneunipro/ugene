@@ -55,12 +55,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     // Expected state: msa is empty, overview is pure white.
-    QWidget* simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
 
     QColor c = GTWidget::getColor(os, simpleOverview, simpleOverview->rect().center());
     CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
 
-    QWidget* graphOverview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto graphOverview = GTWidget::findWidget(os, "msa_overview_area_graph");
     c = GTWidget::getColor(os, graphOverview, graphOverview->rect().center());
     CHECK_SET_ERR(c.name() == "#ededed", "graph overview has wrong color. Expected: #ededed, Found: " + c.name());
 }
@@ -85,8 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QAbstractButton* button = GTAction::button(os, "Show overview");
     GTWidget::click(os, button);
     //    Expected state: overview is hidden.
-    QWidget* overview = GTWidget::findWidget(os, "msa_overview_area");
-    CHECK_SET_ERR(overview != nullptr, "overview is NULL");
+    auto overview = GTWidget::findWidget(os, "msa_overview_area");
     CHECK_SET_ERR(!overview->isVisible(), "overview is visiable");
     //    3. Click on "Overview" button again.
     GTWidget::click(os, button);
@@ -105,7 +104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     //    3. Click "Show simple overview..."
     //    Expected state: simple overview is hidden.
-    QWidget* overview = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overview = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(overview->isVisible(), "overview is not visiable");
     //    4. Repeat steps 2-3.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
@@ -128,7 +127,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     //    3. Expected state: simple overview is enabled.
-    QWidget* simple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto simple = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
     //    4. Resize Ugene window to make overview area smaller.
@@ -156,10 +155,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     //    2. Resize main window.
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     QImage imgGraph1 = GTWidget::getImage(os, overviewGraph);
 
     QMainWindow* window = AppContext::getMainWindow()->getQMainWindow();
@@ -182,8 +181,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     //    2. Delete symbols until msa becomes very small.
     //    Expected state: overview updates on each msa change, overview is displayed correctly .
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     // Close Project view for small screens
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
@@ -212,8 +211,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     // saving overviews' images
     QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
@@ -251,7 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
 
     // saving overviews' images
     QImage imageBefore = GTWidget::getImage(os, overviewSimple);
@@ -276,8 +275,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     // saving overviews' images
     QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
@@ -309,7 +308,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // saving overview image
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     const QImage img = GTWidget::getImage(os, overviewGraph);
 
     //    2. Go to MSA Overview context menu (right click on msa overview).
@@ -337,7 +336,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //    Expected state: color dialog appears.
     //    4. Chenge current color.
     //    Expected state: graph color had changed.
-    QWidget* graph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto graph = GTWidget::findWidget(os, "msa_overview_area_graph");
     const QColor c = GTWidget::getColor(os, graph, QPoint(5, graph->rect().height() - 5));
     CHECK_SET_ERR(c.name() == "#eda2a2", "simple overview has wrong color. Expected: #eda2a2, Found: " + c.name());
 }
@@ -354,7 +353,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     //    3. Go to {Display settings -> Graph type};
     //    4. Change selected type.
     //    Expected state: graph type had changed.
-    QWidget* graph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto graph = GTWidget::findWidget(os, "msa_overview_area_graph");
     const QColor c = GTWidget::getColor(os, graph, QPoint(5, graph->rect().height() - 5));
     CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
 }
@@ -366,7 +365,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     //    2. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     auto combo = GTWidget::findComboBox(os, "colorScheme");
@@ -383,7 +382,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Go to MSA overview context menu (right click on MSA Overview).
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Gaps"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overviewGraph);
 
@@ -406,13 +405,13 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     // Go to MSA overview context menu (right click on MSA Overview).
     // Select {Calculation method -> Gaps}.
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Gaps"}));
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Calculation method", "Gaps"}));
     GTMenu::showContextMenu(os, overviewGraph);
 
     // Expected state: graph overview displays percent of gaps in each column.
     // Save graphView.
-    const QImage img = GTWidget::getImage(os, overviewGraph);
+    QImage img = GTWidget::getImage(os, overviewGraph);
 
     //    4. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -423,12 +422,12 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     //    6. Go to MSA overview context menu (right click on MSA Overview).
     //    7. Select {Calculation method -> Highlighting}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
     GTMenu::showContextMenu(os, overviewGraph);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
 
     //    Expected state: graph didn't change.
-    const QImage img1 = GTWidget::getImage(os, overviewGraph);
+    QImage img1 = GTWidget::getImage(os, overviewGraph);
     CHECK_SET_ERR(img == img1, "overview changed");
 }
 
@@ -439,7 +438,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Go to MSA overview context menu (right click on MSA Overview).
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    auto overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
     GTMenu::showContextMenu(os, overviewGraph);
 
@@ -489,7 +488,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
     CHECK_SET_ERR(color.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, found: " + color.name());
 }
@@ -510,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
     CHECK_SET_ERR(color.name() == "#7eaecc", "simple overview has wrong color. Expected: #7eaecc, Found: " + color.name());
 }
@@ -540,7 +539,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    auto overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
     CHECK_SET_ERR(color.name() == "#7eaecc", "simple overview has wrong color. Expected: #7eaecc, Found: " + color.name());
 }

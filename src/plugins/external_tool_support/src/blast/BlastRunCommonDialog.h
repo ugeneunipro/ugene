@@ -38,7 +38,7 @@ namespace U2 {
 class BlastRunCommonDialog : public QDialog, public Ui_BlastLocalSearchDialog {
     Q_OBJECT
 public:
-    BlastRunCommonDialog(QWidget* parent, bool useCompValues, const QStringList& compValues);
+    BlastRunCommonDialog(QWidget* parent, const DNAAlphabet* alphabet);
 
     const BlastTaskSettings& getSettings() const;
     QPushButton* okButton;
@@ -57,21 +57,26 @@ protected slots:
     void sl_onCompStatsChanged();
 
 protected:
+    /**
+     * Keeps only programs compatible with the give sequence alphabet.
+     * If the alphabet 'nullptr' keeps all options.
+     */
+    void updateAvailableProgramsList(const DNAAlphabet* alphabet);
+
     bool checkSelectedToolPath() const;
 
     void getSettings(BlastTaskSettings& settingsSnapshot);
     void enableStrandBox(bool enable);
 
     BlastTaskSettings settings;
-    bool needRestoreDefault;
+    bool needRestoreDefault = false;
     CreateAnnotationWidgetController* ca_c = nullptr;
     BlastDBSelectorWidgetController* dbSelector = nullptr;
 
 private:
     void setupCompositionBasedStatistics();
 
-    bool useCompValues = false;
-    QStringList compValues;
+    QStringList activeToolList;
 };
 }  // namespace U2
 #endif  // _U2_BLAST_RUN_COMMON_DIALOG_H

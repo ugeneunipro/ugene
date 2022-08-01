@@ -57,9 +57,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //     {Minimum repeat length} 8bp
     //     {repeats identity} 80%
     // 5. Click OK button
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", testDir + "_common_data/scenarios/dp_view/dp2.fa"));
-
+    GTUtilsDialog::add(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", testDir + "_common_data/scenarios/dp_view/dp2.fa"));
+    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -67,29 +66,29 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     // 6. Use context menu on dot plot view {Dotplot->Remove}
     // Expected state: save "Dotplot" has appeared.
     // 7. Click No button
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Dotplot", "Remove"}));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Dotplot", "Remove"}));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has closed.
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     // DIFFERENCE: ONE SEQUENCE USED
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
+    GTUtilsDialog::add(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
+    GTUtilsDialog::add(os, new DotPlotFiller(os, 8, 80, false, false));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Dotplot", "Remove"}));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Dotplot", "Remove"}));
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -105,7 +104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -121,7 +120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    auto w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -165,7 +164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -184,7 +183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -203,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu", true));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        auto dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -262,11 +261,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
         virtual void run() {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QCheckBox* includeAreaCheckbox = dialog->findChild<QCheckBox*>("include_area_selection");
-            CHECK_SET_ERR(includeAreaCheckbox != nullptr, "includeAreaCheckbox is NULL");
+            auto includeAreaCheckbox = GTWidget::findCheckBox(os, "include_area_selection", dialog);
 
-            QCheckBox* includeRepeatCheckbox = dialog->findChild<QCheckBox*>("include_repeat_selection");
-            CHECK_SET_ERR(includeRepeatCheckbox != nullptr, "include_repeat_selection is NULL");
+            auto includeRepeatCheckbox = GTWidget::findCheckBox(os, "include_repeat_selection", dialog);
 
             switch (scenario) {
                 case 1:

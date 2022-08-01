@@ -27,40 +27,35 @@
         <translation>Экспорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="31"/>
         <source>Export to:</source>
-        <translation>Экспортировать в:</translation>
+        <translation type="vanished">Экспортировать в:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="59"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="38"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="76"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="55"/>
         <source>File path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="88"/>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="153"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="67"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="109"/>
         <source>Database:</source>
-        <translation>База данных:</translation>
+        <translation type="vanished">База данных:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="116"/>
         <source>Destination folder:</source>
-        <translation>Папка для сохранения:</translation>
+        <translation type="vanished">Папка для сохранения:</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.ui" line="135"/>
         <source>Connect</source>
-        <translation>Подключиться</translation>
+        <translation type="vanished">Подключиться</translation>
     </message>
 </context>
 <context>
@@ -79,38 +74,36 @@
         <translation>Импорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="31"/>
         <source>Import from:</source>
-        <translation>Импортировать из:</translation>
+        <translation type="vanished">Импортировать из:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="57"/>
         <source>Connect to database</source>
-        <translation>Подключиться к базе данных</translation>
+        <translation type="vanished">Подключиться к базе данных</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="75"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="28"/>
         <source>Files:</source>
         <translation>Файлы:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="100"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="53"/>
         <source>Add file(s)</source>
         <translation>Добавить файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="173"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="60"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="114"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="141"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="82"/>
         <source>Objects:</source>
         <translation>Объекты:</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.ui" line="166"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
         <source>Add object(s)</source>
         <translation>Добавить объект(ы)</translation>
     </message>
@@ -239,20 +232,16 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="51"/>
         <source>Local file</source>
-        <translation>Локальный файл</translation>
+        <translation type="vanished">Локальный файл</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="52"/>
-        <location filename="../src/import/ImportPrimersDialog.cpp" line="46"/>
         <source>Shared database</source>
-        <translation>Общая база данных</translation>
+        <translation type="vanished">Общая база данных</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.cpp" line="45"/>
         <source>Local file(s)</source>
-        <translation>Локальный файл(ы)</translation>
+        <translation type="vanished">Локальный файл(ы)</translation>
     </message>
 </context>
 <context>
@@ -266,7 +255,7 @@
 <context>
     <name>U2::ExportPrimersDialog</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="184"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="89"/>
         <source>Export to</source>
         <translation>Экспортировать в</translation>
     </message>
@@ -377,17 +366,17 @@
 <context>
     <name>U2::ImportPrimersDialog</name>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.cpp" line="53"/>
+        <location filename="../src/import/ImportPrimersDialog.cpp" line="48"/>
         <source>Import</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.cpp" line="54"/>
+        <location filename="../src/import/ImportPrimersDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimersDialog.cpp" line="88"/>
+        <location filename="../src/import/ImportPrimersDialog.cpp" line="64"/>
         <source>Select primers to import</source>
         <translation>Праймеры для экспорта</translation>
     </message>

@@ -27,6 +27,7 @@
 
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Task.h>
 
 #include "DistanceMatrix.h"
@@ -107,7 +108,7 @@ CreatePhyTreeWidget* NeighborJoinAdapter::createPhyTreeSettingsWidget(const Mult
 }
 
 NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
-    : PhyTreeGeneratorTask(ma, s), memLocker(stateInfo) {
+    : PhyTreeGeneratorTask(ma, s, TaskFlag_FailOnSubtaskError), memLocker(stateInfo) {
     setTaskName("NeighborJoin algorithm");
 }
 
@@ -151,7 +152,7 @@ void NeighborJoinCalculateTreeTask::run() {
                 stateInfo.progress = (int)(replicateIndex / (float)settings.replicates * 100);
 
                 const MultipleSequenceAlignment& curMSA = seqBoot->getMSA(replicateIndex);
-                QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
+                QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix());
                 distanceMatrix->calculateOutOfAlignment(curMSA, settings);
 
                 if (!distanceMatrix->getErrorMessage().isEmpty()) {
@@ -159,8 +160,9 @@ void NeighborJoinCalculateTreeTask::run() {
                     result = phyTree;
                     return;
                 }
-                if (!distanceMatrix->isValid()) {
-                    setError("Calculated distance matrix is invalid");
+                QString distanceMatrixValidationError = distanceMatrix->validate();
+                if (!distanceMatrixValidationError.isEmpty()) {
+                    setError(tr("Failed to compute distance matrix: %1. Try to update run parameters.").arg(distanceMatrixValidationError));
                     result = phyTree;
                     return;
                 }
@@ -202,19 +204,22 @@ void NeighborJoinCalculateTreeTask::run() {
             progress = 99;
             stateInfo.setDescription("Calculating consensus tree");
 
+            QByteArray tmpFileName = tmpFile.fileName().toLocal8Bit();
             if (settings.consensusID == ConsensusModelTypes::Strict) {
-                consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, true, false, false, false);
+                consens_starter(tmpFileName, settings.fraction, true, false, false, false);
             } else if (settings.consensusID == ConsensusModelTypes::MajorityRuleExt) {
-                consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, true, false, false);
+                consens_starter(tmpFileName, settings.fraction, false, true, false, false);
             } else if (settings.consensusID == ConsensusModelTypes::MajorityRule) {
-                consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, false, true, false);
+                consens_starter(tmpFileName, settings.fraction, false, false, true, false);
             } else if (settings.consensusID == ConsensusModelTypes::M1) {
-                consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, false, false, true);
+                consens_starter(tmpFileName, settings.fraction, false, false, false, true);
             } else {
-                assert(0);
+                QString message = "Unsupported consensus type: " + settings.consensusID;
+                setError(L10N::internalError(message));
+                FAIL(message, );
             }
 
-            PhyNode* rootPhy = new PhyNode();
+            auto rootPhy = new PhyNode();
             bool njoin = true;
 
             createPhyTreeFromPhylipTree(inputMA, root, 0.43429448222, njoin, root, rootPhy, settings.replicates);
@@ -238,8 +243,10 @@ void NeighborJoinCalculateTreeTask::run() {
                 result = phyTree;
                 return;
             }
-            if (!distanceMatrix->isValid()) {
-                stateInfo.setError("Calculated distance matrix is invalid");
+
+            QString distanceMatrixValidationError = distanceMatrix->validate();
+            if (!distanceMatrixValidationError.isEmpty()) {
+                setError(tr("Failed to compute distance matrix: %1. Try to update run parameters.").arg(distanceMatrixValidationError));
                 result = phyTree;
                 return;
             }

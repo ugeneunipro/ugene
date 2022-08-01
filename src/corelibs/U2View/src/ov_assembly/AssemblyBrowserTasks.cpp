@@ -155,18 +155,15 @@ void OpenSavedAssemblyBrowserTask::open() {
         return;
     }
     GObject* obj = nullptr;
-    if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
-        obj = doc->getObjectById(ref.entityRef.entityId);
-    } else {
-        // To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
-        QList<GObject*> objs = doc->findGObjectByType(ref.objType);
-        foreach (GObject* curObj, objs) {
-            if (curObj->getGObjectName() == ref.objName) {
-                obj = curObj;
-                break;
-            }
+    // To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
+    QList<GObject*> objs = doc->findGObjectByType(ref.objType);
+    foreach (GObject* curObj, objs) {
+        if (curObj->getGObjectName() == ref.objName) {
+            obj = curObj;
+            break;
         }
     }
+
     if (obj == nullptr || obj->getGObjectType() != GObjectTypes::ASSEMBLY) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Assembly object not found: %1").arg(ref.objName));

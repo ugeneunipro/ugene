@@ -96,12 +96,14 @@ public:
     GScrollBar* getHorizontalScrollBar() const;
     GScrollBar* getVerticalScrollBar() const;
 
+    /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
+    void updateScrollBarsOnFontOrZoomChange();
+
 signals:
     void si_visibleAreaChanged();
 
 public slots:
     void sl_updateScrollBars();
-    void sl_zoomScrollBars();
 
 private slots:
     void sl_collapsibleModelIsAboutToBeChanged();
@@ -120,8 +122,6 @@ private:
     U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;  // in pixels
     U2Region getVerticalRangeToDrawIn(int widgetHeight) const;  // in pixels
 
-    void zoomHorizontalScrollBarPrivate();
-    void zoomVerticalScrollBarPrivate();
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 

@@ -1,0 +1,8 @@
+<!DOCTYPE UGENE_TEST_FRAMEWORK_TEST>
+<multi-test>
+
+<load-document index="doc" url="gff/long_line.gff" io="local_file" format="gff"/>
+
+<find-object-by-name index="annotations" doc="doc" name="GL636100 features" type="OT_ANNOTATIONS"/>
+
+</multi-test>

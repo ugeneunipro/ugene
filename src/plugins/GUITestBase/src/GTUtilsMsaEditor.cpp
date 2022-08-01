@@ -152,8 +152,7 @@ MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
     QWidget* activeWindow = getActiveMsaEditorWindow(os);
-    MaEditorNameList* result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
-    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
+    auto result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -444,7 +443,7 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(GUITestOpStatus& os, const QString&
 
 #define GT_METHOD_NAME "getSequencesCount"
 int GTUtilsMsaEditor::getSequencesCount(GUITestOpStatus& os) {
-    QWidget* statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
+    auto statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::getSequencesCount(os, statusWidget);
 }
 #undef GT_METHOD_NAME
@@ -496,6 +495,28 @@ void GTUtilsMsaEditor::zoomOut(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomToSelection"
+void GTUtilsMsaEditor::zoomToSelection(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* zoomToSelectionButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom To Selection");
+    GT_CHECK_RESULT(zoomToSelectionButton->isEnabled(), "zoomToSelectionButton is not enabled", );
+    GTWidget::click(os, zoomToSelectionButton);
+
+    // 'zoomToSelection' is a 2 steps action: the second step (the centering) is run with a 200ms delay.
+    // See MaEditor::sl_zoomToSelection().
+    GTGlobals::sleep(500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "resetZoom"
+void GTUtilsMsaEditor::resetZoom(GUITestOpStatus& os) {
+    QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* resetZoomButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Reset Zoom");
+    GT_CHECK_RESULT(resetZoomButton->isEnabled(), "resetZoomButton is not enabled", );
+    GTWidget::click(os, resetZoomButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus& os) {
     getActiveMsaEditorWindow(os);
@@ -513,13 +534,19 @@ bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "buildPhylogeneticTree"
 void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus& os, const QString& pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));
+    clickBuildTreeButton(os);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickBuildTreeButton"
+void GTUtilsMsaEditor::clickBuildTreeButton(GUITestOpStatus& os) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "closeActiveTreeTab"
 void GTUtilsMsaEditor::closeActiveTreeTab(GUITestOpStatus& os) {
-    QWidget* treeTabWidget = GTWidget::findWidget(os, "msa_editor_tree_tab_area", getActiveMsaEditorWindow(os));
+    auto treeTabWidget = GTWidget::findWidget(os, "msa_editor_tree_tab_area", getActiveMsaEditorWindow(os));
 
     QTabBar* tabBar = treeTabWidget->findChild<QTabBar*>();
     GT_CHECK(tabBar != nullptr, "Tree tab widget must have a tab bar!");

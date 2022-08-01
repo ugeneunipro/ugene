@@ -59,8 +59,7 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus& _os, const QStri
 void InsertSequenceFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
-    GT_CHECK(plainText != nullptr, "plain text not found");
+    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     QString radioButtonName;
@@ -81,16 +80,13 @@ void InsertSequenceFiller::commonScenario() {
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
 
-    QRadioButton* regionResolvingMode = dialog->findChild<QRadioButton*>(radioButtonName);  //"regionResolvingMode");
-    GT_CHECK(regionResolvingMode != nullptr, "regionResolvingMode not found");
+    auto regionResolvingMode = GTWidget::findRadioButton(os, radioButtonName, dialog);  //"regionResolvingMode");
     GTRadioButton::click(os, regionResolvingMode);
 
-    QSpinBox* insertPositionSpin = dialog->findChild<QSpinBox*>("insertPositionSpin");
-    GT_CHECK(insertPositionSpin != nullptr, "insertPositionSpin not found");
+    auto insertPositionSpin = GTWidget::findSpinBox(os, "insertPositionSpin", dialog);
     GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
 
-    QGroupBox* checkButton = dialog->findChild<QGroupBox*>(QString::fromUtf8("saveToAnotherBox"));
-    GT_CHECK(checkButton != nullptr, "Check box not found");
+    auto checkButton = GTWidget::findGroupBox(os, "saveToAnotherBox", dialog);
 
     if ((saveToNewFile && !checkButton->isChecked()) || (!saveToNewFile && checkButton->isChecked())) {
         QPoint checkPos;
@@ -112,16 +108,12 @@ void InsertSequenceFiller::commonScenario() {
     GTGlobals::sleep(1000);
 
     if (saveToNewFile) {
-        QCheckBox* checkButton1 = dialog->findChild<QCheckBox*>(QString::fromUtf8("mergeAnnotationsBox"));
-        GT_CHECK(checkButton1 != nullptr, "Check box not found");
+        auto checkButton1 = GTWidget::findCheckBox(os, "mergeAnnotationsBox", dialog);
         GTCheckBox::setChecked(os, checkButton1, mergeAnnotations);
 
-        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
-        GT_CHECK(lineEdit != nullptr, "line edit not found");
-        GTLineEdit::setText(os, lineEdit, documentLocation);
+        GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
-        QComboBox* comboBox = dialog->findChild<QComboBox*>();
-        GT_CHECK(comboBox != nullptr, "ComboBox not found");
+        auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
         int index = comboBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

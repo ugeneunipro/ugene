@@ -24,16 +24,17 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDialogButtonBox>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
 #include <QMdiArea>
+#include <QProgressBar>
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
-#include <QDialogButtonBox>
-#include <QProgressBar>
 
 #include "drivers/GTMouseDriver.h"
+#include "utils/GTUtilsText.h"
 #include "utils/GTThread.h"
 
 #ifdef Q_OS_DARWIN
@@ -100,9 +101,13 @@ void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
 
 #define GT_METHOD_NAME "findWidget"
 QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    QPointer<QWidget> parentWidgetPtr(parentWidget);
     QWidget* widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        if (parentWidget != nullptr && parentWidgetPtr == nullptr) {
+            break; // Parent widget was removed while waiting.
+        }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
         GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
@@ -288,7 +293,6 @@ void GTWidget::close(GUITestOpStatus& os, QWidget* widget) {
         }
 
         void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->close();
             GTGlobals::sleep(100);
@@ -388,7 +392,7 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
 
 #define GT_METHOD_NAME "createSubImage"
 QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const QRect& rect) {
-    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect!", QImage());
+    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
 }

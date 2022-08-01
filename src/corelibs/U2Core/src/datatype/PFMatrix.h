@@ -67,7 +67,7 @@ public:
         : data(QVarLengthArray<int>()), length(0), type(PFM_MONONUCLEOTIDE) {};
 
     // create matrix from pre-counted data
-    PFMatrix(const QVarLengthArray<int>& data, const PFMatrixType type);
+    PFMatrix(const QVarLengthArray<int>& data, const PFMatrixType& type);
 
     // create matrix from alignment (without gaps)
     PFMatrix(const MultipleSequenceAlignment& data, const PFMatrixType& type);
@@ -76,6 +76,8 @@ public:
     PFMatrix(const QList<DNASequence*>& data, const PFMatrixType& type);
 
     PFMatrix(const PFMatrix& m) = default;
+
+    PFMatrix& operator=(const PFMatrix&) = default;
 
     // get internal index of position in 1-dimensional array
     int index(int row, int column) const;
