@@ -124,7 +124,7 @@ void ExternalToolRunTask::run() {
                 externalToolProcess->kill();
             }
             if (!externalToolProcess->waitForFinished(10000)) {
-                algoLog.info(tr("Unable to cancel tool %1 for 10 seconds. Stop it manually by your OS task manager.").arg(toolName));
+                algoLog.info(tr("Unable to cancel tool %1 for 10 seconds. Stop \"%2\" process manually by your OS task manager.").arg(toolName).arg(AppContext::getExternalToolRegistry()->getById(toolId)->getExecutableFileName()));
             } else {
                 algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
             }
