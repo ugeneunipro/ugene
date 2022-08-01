@@ -40,24 +40,17 @@ public:
     MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root, qreal scale);
     ~MSAEditorTreeViewer();
 
-    const CreatePhyTreeSettings& getCreatePhyTreeSettings() {
-        return buildSettings;
-    }
-    const QString& getParentAlignmentName() {
-        return alignmentName;
-    }
-    virtual OptionsPanel* getOptionsPanel() {
-        return 0;
-    }
+    const CreatePhyTreeSettings& getCreatePhyTreeSettings() const;
+
+    const QString& getParentAlignmentName() const;
+
+    OptionsPanel* getOptionsPanel() override;
 
     void setCreatePhyTreeSettings(const CreatePhyTreeSettings& newBuildSettings);
-    void setParentAignmentName(const QString& _alignmentName) {
-        alignmentName = _alignmentName;
-    }
 
-    QAction* getSortSeqsAction() const {
-        return syncModeAction;
-    }
+    void setParentAignmentName(const QString& alignmentName);
+
+    QAction* getSortSeqsAction() const;
 
     /**
      * Enables Tree & MSA synchronization. See 'syncModeAction' for the details about the sync mode.
@@ -112,7 +105,7 @@ private:
     void disableSyncModeIfTreeAndMsaContentIsNotInSync();
 
     /** Re-calculates the tree using originally used parameters & the current MSA state. */
-    QAction* refreshTreeAction;
+    QAction* refreshTreeAction = nullptr;
 
     /**
      * Sync mode action is used to enable or disable 'sync' mode between Tree & MSA view.
@@ -132,11 +125,11 @@ private:
      *  - Enabled: the sync mode is possible. Use 'isChecked' if the sync mode is ON or OFF.
      *  - Checked: the sync mode is ON. Note: the action can't be checked in the disabled state.
      */
-    QAction* syncModeAction;
+    QAction* syncModeAction = nullptr;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
     QPointer<MSAEditor> editor;
-    MSAEditorTreeViewerUI* msaTreeViewerUi;
+    MSAEditorTreeViewerUI* msaTreeViewerUi = nullptr;
 };
 
 class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
@@ -168,8 +161,6 @@ protected:
     /** Overrides the original method to trigger MSA related updates as the result of tree update. */
     void updateScene(bool fitSceneToView) override;
 
-    void setTreeLayout(const TreeLayout& newLayout) override;
-
 signals:
     void si_zoomIn();
     void si_zoomOut();
@@ -192,9 +183,7 @@ private:
     QList<GraphicsBranchItem*> getBranchItemsWithNames() const;
 
     bool isRectangularLayout;
-
     MSAEditorTreeViewer* const msaEditorTreeViewer;
-
     QTransform rectangularTransform;
 };
 

@@ -72,31 +72,10 @@
 
 namespace U2 {
 
-TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root, qreal s)
+TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root, qreal _scale)
     : GObjectView(TreeViewerFactory::ID, viewName),
-      treeSettingsAction(nullptr),
-      layoutGroup(nullptr),
-      rectangularLayoutAction(nullptr),
-      circularLayoutAction(nullptr),
-      unrootedLayoutAction(nullptr),
-      branchesSettingsAction(nullptr),
-      nameLabelsAction(nullptr),
-      nodeLabelsAction(nullptr),
-      distanceLabelsAction(nullptr),
-      textSettingsAction(nullptr),
-      alignTreeLabelsAction(nullptr),
-      zoomToSelAction(nullptr),
-      zoomToAllAction(nullptr),
-      zoomOutAction(nullptr),
-      printAction(nullptr),
-      captureTreeAction(nullptr),
-      exportAction(nullptr),
-      collapseAction(nullptr),
-      rerootAction(nullptr),
-      swapAction(nullptr),
       root(_root),
-      scale(s),
-      ui(nullptr) {
+      scale(_scale) {
     GCOUNTER(cvar, "PhylTreeViewer");
     phyObject = qobject_cast<PhyTreeObject*>(obj);
     objects.append(phyObject);
@@ -269,7 +248,6 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     tb->addWidget(exportTreeImageButton);
     tb->addAction(printAction);
     tb->addSeparator();
-
 
     // Tree Settings
     tb->addAction(treeSettingsAction);
@@ -531,9 +509,10 @@ void TreeViewerUI::onPhyTreeChanged() {
     scheduler->registerTopLevelTask(layoutTask);
 }
 
-void TreeViewerUI::updateSettings(const OptionsMap& settings) {
-    foreach (TreeViewOption curOption, settings.keys()) {
-        onSettingsChanged(curOption, settings[curOption]);
+void TreeViewerUI::updateSettings(const OptionsMap& newSettings) {
+    QList<TreeViewOption> keys = newSettings.keys();
+    for (const TreeViewOption& curOption : qAsConst(keys)) {
+        onSettingsChanged(curOption, newSettings[curOption]);
     }
 }
 
@@ -996,7 +975,7 @@ void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
 
     QGraphicsView::mousePressEvent(e);
     if (leftButton && !shiftPressed) {
-        updateBrachSettings();
+        updateBranchSettings();
     }
     updateActionsState();
 }
@@ -1087,10 +1066,10 @@ void TreeViewerUI::collapseSelected() {
     }
 }
 
-void TreeViewerUI::updateBrachSettings() {
+void TreeViewerUI::updateBranchSettings() {
     QList<QGraphicsItem*> childItems = items();
     GraphicsBranchItem* branch = root;
-    foreach (QGraphicsItem* graphItem, childItems) {
+    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
             branch = dynamic_cast<GraphicsBranchItem*>(buttonItem->parentItem());

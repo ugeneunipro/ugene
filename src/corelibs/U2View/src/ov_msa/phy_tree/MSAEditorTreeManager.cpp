@@ -54,10 +54,8 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
-#include "MsaEditorTreeTabArea.h"
 #include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h"
-#include "ov_phyltree/GraphicsRectangularBranchItem.h"
+#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
 #include "phyltree/CreatePhyTreeDialogController.h"

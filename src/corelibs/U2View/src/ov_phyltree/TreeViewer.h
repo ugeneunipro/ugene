@@ -170,44 +170,44 @@ private slots:
     void sl_onPhyTreeChanged();
 
 private:
-    QAction* treeSettingsAction;
+    QAction* treeSettingsAction = nullptr;
 
-    QActionGroup* layoutGroup;
-    QAction* rectangularLayoutAction;
-    QAction* circularLayoutAction;
-    QAction* unrootedLayoutAction;
+    QActionGroup* layoutGroup = nullptr;
+    QAction* rectangularLayoutAction = nullptr;
+    QAction* circularLayoutAction = nullptr;
+    QAction* unrootedLayoutAction = nullptr;
 
-    QAction* branchesSettingsAction;
+    QAction* branchesSettingsAction = nullptr;
 
-    QAction* nameLabelsAction;
-    QAction* nodeLabelsAction;
-    QAction* distanceLabelsAction;
-    QAction* textSettingsAction;
-    QAction* alignTreeLabelsAction;
+    QAction* nameLabelsAction = nullptr;
+    QAction* nodeLabelsAction = nullptr;
+    QAction* distanceLabelsAction = nullptr;
+    QAction* textSettingsAction = nullptr;
+    QAction* alignTreeLabelsAction = nullptr;
 
-    QAction* zoomToSelAction;
-    QAction* zoomToAllAction;
-    QAction* zoomOutAction;
+    QAction* zoomToSelAction = nullptr;
+    QAction* zoomToAllAction = nullptr;
+    QAction* zoomOutAction = nullptr;
 
-    QAction* printAction;
-    QAction* captureTreeAction;
-    QAction* exportAction;
+    QAction* printAction = nullptr;
+    QAction* captureTreeAction = nullptr;
+    QAction* exportAction = nullptr;
 
-    QAction* collapseAction;
-    QAction* rerootAction;
-    QAction* swapAction;
+    QAction* collapseAction = nullptr;
+    QAction* rerootAction = nullptr;
+    QAction* swapAction = nullptr;
 
     QByteArray state;
-    PhyTreeObject* phyObject;
-    GraphicsRectangularBranchItem* root;
-    qreal scale;
+    PhyTreeObject* phyObject = nullptr;
+    GraphicsRectangularBranchItem* root = nullptr;
+    qreal scale = 1;
 
     void setupLayoutSettingsMenu(QMenu* m);
     void setupShowLabelsMenu(QMenu* m);
     void setupExportTreeImageMenu(QMenu* m);
 
 protected:
-    TreeViewerUI* ui;
+    TreeViewerUI* ui = nullptr;
 };
 
 class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
@@ -347,7 +347,7 @@ private:
 
     void updateTextSettings(TreeViewOption option);
 
-    void updateBrachSettings();
+    void updateBranchSettings();
 
     void redrawRectangularLayout();
     bool isSelectedCollapsed();

@@ -42,6 +42,7 @@
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
+#include <U2View/MSAEditorTreeViewer.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"

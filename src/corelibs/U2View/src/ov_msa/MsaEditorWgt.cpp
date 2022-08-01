@@ -33,6 +33,7 @@
 #include "MsaEditorStatusBar.h"
 #include "MsaRowHeightController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
+#include "phy_tree/MSAEditorTreeViewer.h"
 
 namespace U2 {
 

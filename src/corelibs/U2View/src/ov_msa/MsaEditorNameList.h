@@ -26,6 +26,8 @@
 
 namespace U2 {
 
+class MSAEditor;
+
 class MsaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:

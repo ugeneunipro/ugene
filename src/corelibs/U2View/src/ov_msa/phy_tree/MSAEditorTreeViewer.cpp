@@ -36,16 +36,10 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
-#include "MsaEditorTreeTabArea.h"
-
 namespace U2 {
 
 MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root, qreal s)
-    : TreeViewer(viewName, obj, _root, s),
-      refreshTreeAction(nullptr),
-      syncModeAction(nullptr),
-      editor(nullptr),
-      msaTreeViewerUi(nullptr) {
+    : TreeViewer(viewName, obj, _root, s) {
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
@@ -106,6 +100,25 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));
 
     return view;
+}
+const CreatePhyTreeSettings& MSAEditorTreeViewer::getCreatePhyTreeSettings() const {
+    return buildSettings;
+}
+
+const QString& MSAEditorTreeViewer::getParentAlignmentName() const {
+    return alignmentName;
+}
+
+OptionsPanel* MSAEditorTreeViewer::getOptionsPanel() {
+    return nullptr;
+}
+
+void MSAEditorTreeViewer::setParentAignmentName(const QString& _alignmentName) {
+    alignmentName = _alignmentName;
+}
+
+QAction* MSAEditorTreeViewer::getSortSeqsAction() const {
+    return syncModeAction;
 }
 
 void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
@@ -318,15 +331,11 @@ void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString new
     scene()->update();
 }
 
-void MSAEditorTreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
-    TreeViewerUI::setTreeLayout(newLayout);
-}
-
 void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout& layout) {
     if (layout == RECTANGULAR_LAYOUT && !isRectangularLayout) {
         setTransform(rectangularTransform);
     }
-    isRectangularLayout = (RECTANGULAR_LAYOUT == layout);
+    isRectangularLayout = layout == RECTANGULAR_LAYOUT;
     msaEditorTreeViewer->getSortSeqsAction()->setEnabled(false);
     if (isRectangularLayout) {
         if (msaEditorTreeViewer->isSyncModeEnabled()) {
