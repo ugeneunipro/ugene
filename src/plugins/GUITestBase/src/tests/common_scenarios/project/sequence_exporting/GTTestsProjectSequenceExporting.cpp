@@ -425,6 +425,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     // Check that export service was already loaded & is enabled.
     GTUtils::checkExportServiceIsEnabled(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -439,6 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0010.fa"));

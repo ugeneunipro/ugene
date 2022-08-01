@@ -436,16 +436,17 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
 
         // 2) Click "build dotplot" tooltip
         // 3) Click OK in opened dotplot dialog
-        GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100));
+        GTUtilsDialog::add(os, new DotPlotFiller(os, 100));
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         // 4) Click on human_T1.fa project tree view item
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
+        GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
 
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
