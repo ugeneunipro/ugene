@@ -57,8 +57,10 @@ public:
 signals:
     void si_updateStatusBar2();
 
-private slots:
+public slots:
     void sl_updateStatusBar();
+
+private slots:
     void sl_updateStatusBar2();
     void sl_lockStateChanged();
 
