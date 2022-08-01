@@ -81,7 +81,6 @@ void FindAlgorithmTask::onResult(const FindAlgorithmResult& r) {
         return;
     }
     if (config.maxResult2Find != FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED && newResults.size() >= config.maxResult2Find) {
-        stateInfo.cancelFlag = true;
         return;
     }
     if (stateInfo.isCoR()) {
