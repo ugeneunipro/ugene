@@ -51,6 +51,7 @@ private:
     FindPatternMsaTask* findPatternTask;
     int expectedResultsSize;
     QList<U2Region> regionsToCheck;
+    bool checkTaskNotCancelled = false;
 };
 
 class FindPatternMsaTests {

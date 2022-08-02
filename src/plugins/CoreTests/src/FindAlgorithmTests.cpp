@@ -45,6 +45,9 @@ namespace U2 {
 
 #define CIRCULAR_LABEL "circular"
 
+#define TASK_NOT_CANCELLED "checkTaskNotCancelled"
+#define SKIP_RESULTS_CHECK "skipResultsCheck"
+
 U2Region stringToRegion(const QString& regionStr) {
     int region[2];
     QStringList regStrList = regionStr.split("..", QString::SkipEmptyParts);
@@ -189,6 +192,20 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat*, const QDomElement& el) {
         }
         expectedResults.append(r);
     }
+
+    buf = el.attribute(TASK_NOT_CANCELLED);
+    if (!buf.isEmpty()) {
+        if (buf.toLower() == "true") {
+            checkTaskNotCancelled = true;
+        }
+    }
+
+    buf = el.attribute(SKIP_RESULTS_CHECK);
+    if (!buf.isEmpty()) {
+        if (buf.toLower() == "true") {
+            skipResultsCheck = true;
+        }
+    }
 }
 
 void GTest_FindAlgorithmTest::prepare() {
@@ -224,6 +241,13 @@ void GTest_FindAlgorithmTest::prepare() {
 
 Task::ReportResult GTest_FindAlgorithmTest::report() {
     QList<FindAlgorithmResult> actualResults = t->popResults();
+    if (checkTaskNotCancelled && t->isCanceled()) {
+        stateInfo.setError("'FindAlgorithmTask' was cancelled, but shouldn't.");
+        return ReportResult_Finished;
+    }
+    if (skipResultsCheck) {
+        return ReportResult_Finished;
+    }
     if (actualResults.size() != expectedResults.size()) {
         stateInfo.setError(GTest::tr("Expected and actual result sizes are different: %1 , %2")
                                .arg(expectedResults.size())
