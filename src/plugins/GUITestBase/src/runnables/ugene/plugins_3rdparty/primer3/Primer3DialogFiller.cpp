@@ -34,6 +34,8 @@
 #include <QPushButton>
 #include <QTabWidget>
 
+#include <U2Core/global.h>
+
 #include "Primer3DialogFiller.h"
 
 namespace U2 {
@@ -94,11 +96,11 @@ void Primer3DialogFiller::commonScenario() {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
         auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
-#ifdef Q_OS_DARWIN
-        dialog->close();
-#else
-        GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+        if (isOsMac()) {
+            dialog->close();
+        } else {
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
     }
 }
 

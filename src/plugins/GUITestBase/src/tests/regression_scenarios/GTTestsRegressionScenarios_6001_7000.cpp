@@ -1630,9 +1630,9 @@ GUI_TEST_CLASS_DEFINITION(test_6283) {
 
             // Expected:: Bio module is valid
             bool isToolValid = true;
-#ifndef Q_OS_WIN
-            isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, "Bio");
-#endif
+            if (!isOsWindows()) {
+                isToolValid = AppSettingsDialogFiller::isExternalToolValid(os, "Bio");
+            }
             if (!isToolValid) {
                 os.setError("Bio is not valid");
             }
@@ -1641,9 +1641,9 @@ GUI_TEST_CLASS_DEFINITION(test_6283) {
             if (!isPathOnlyValidation) {
                 // Expected: Bio module version is 1.73
                 bool hasVersion = true;
-#ifndef Q_OS_WIN
-                hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
-#endif
+                if (!isOsWindows()) {
+                    hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "Bio", "Version: 1.73");
+                }
                 if (!hasVersion) {
                     os.setError("Incorrect Bio version");
                 }
@@ -1682,15 +1682,15 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
     // 3. Press "OK" button
     // 4. Expected state: the alignment alphabet is "Standard amino acid"
 
-#ifdef Q_OS_DARWIN
-    // hack for mac
-    MainWindow* mw = AppContext::getMainWindow();
-    CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
-    QMainWindow* mainWindow = mw->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
-    QWidget* w = qobject_cast<QWidget*>(mainWindow);
-    GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
-#endif
+    if (isOsMac()) {
+        // hack for mac
+        MainWindow* mw = AppContext::getMainWindow();
+        CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
+        QMainWindow* mainWindow = mw->getQMainWindow();
+        CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
+        QWidget* w = qobject_cast<QWidget*>(mainWindow);
+        GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
+    }
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/6298/small_with_one_char.fa");
@@ -4506,39 +4506,39 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6703) {
-    //1. Open "_common_data/regression/6703/1.aln
-    //Expected state: 'Remove all gaps' button is disabled
-    //Close view
+    // 1. Open "_common_data/regression/6703/1.aln
+    // Expected state: 'Remove all gaps' button is disabled
+    // Close view
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     auto button = GTWidget::findButtonByText(os, "Remove all gaps");
     CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
     GTUtilsMdi::closeWindow(os, "1 [1.aln]");
 
-    //2. Open "_common_data/regression/6703/2.aln
-    //Expected state: 'Remove all gaps' button is enabled
+    // 2. Open "_common_data/regression/6703/2.aln
+    // Expected state: 'Remove all gaps' button is enabled
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/2.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     button = GTWidget::findButtonByText(os, "Remove all gaps");
     CHECK_SET_ERR(button->isEnabled(), "'Remove all gaps' unexpectedly disabled");
-    
-    //3. Do menu with corresponding action
-    //Expected state: 'Remove all gaps' button is disabled
+
+    // 3. Do menu with corresponding action
+    // Expected state: 'Remove all gaps' button is disabled
     QWidget* seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seqArea);
     CHECK_SET_ERR(!button->isEnabled(), "'Remove all gaps' unexpectedly enabled");
     GTUtilsMdi::closeWindow(os, "2 [2.aln]");
 
-    //4. Open "_common_data/regression/6703/3.aln
-    //Expected state: 'Remove all gaps' button is enabled
+    // 4. Open "_common_data/regression/6703/3.aln
+    // Expected state: 'Remove all gaps' button is enabled
     GTFileDialog::openFile(os, testDir + "_common_data/regression/6703/3.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     button = GTWidget::findButtonByText(os, "Remove all gaps");
     CHECK_SET_ERR(button->isEnabled(), "'Remove all gaps' unexpectedly disabled");
 
-    //5. Do menu with corresponding action
-    //Expected state: 'Remove all gaps' button is disabled
+    // 5. Do menu with corresponding action
+    // Expected state: 'Remove all gaps' button is disabled
     seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seqArea);
@@ -5260,7 +5260,6 @@ GUI_TEST_CLASS_DEFINITION(test_6759) {
     GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-
 
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     //    Check {add-> Objects with annotations} action

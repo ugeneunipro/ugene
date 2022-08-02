@@ -745,14 +745,14 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     //    3. Copy it to the clipboard.
     GTKeyboardUtils::copy();
 
-//    4. Press the next key sequence:
-//        Windows and Linux: Shift+Ins
-//        macOS: Meta+Y
-#ifndef Q_OS_DARWIN
-    GTKeyboardUtils::paste();
-#else
-    GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
-#endif
+    //    4. Press the next key sequence:
+    //        Windows and Linux: Shift+Ins
+    //        macOS: Meta+Y
+    if (!isOsMac()) {
+        GTKeyboardUtils::paste();
+    } else {
+        GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
+    }
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a new sequence is added to the alignment. There are no new objects and documents in the Project View.

@@ -501,12 +501,12 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
     public:
         void run(HI::GUITestOpStatus& os) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
-#ifdef Q_OS_DARWIN
-            // dirty hack for mac
-            if (GTWidget::getActiveModalWidget(os) != nullptr) {
-                GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+            if (isOsMac()) {
+                // dirty hack for mac
+                if (GTWidget::getActiveModalWidget(os) != nullptr) {
+                    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+                }
             }
-#endif
         }
     };
 

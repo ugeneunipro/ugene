@@ -284,15 +284,15 @@ static bool restoreTestDirWithExternalScript(const QString& pathToShellScript, c
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);  // Parent dir of the test dir.
-//    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-//                 ", tests dir: " + testsDir.dirName() +
-//                 ", data dir: " + dataDir.dirName() +
-//                 ", script: " + pathToShellScript);
-#ifdef Q_OS_WIN
-    process.start("cmd /C " + pathToShellScript);
-#else
-    process.start("/bin/bash", {pathToShellScript});
-#endif
+    //    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
+    //                 ", tests dir: " + testsDir.dirName() +
+    //                 ", data dir: " + dataDir.dirName() +
+    //                 ", script: " + pathToShellScript);
+    if (isOsWindows()) {
+        process.start("cmd /C " + pathToShellScript);
+    } else {
+        process.start("/bin/bash", {pathToShellScript});
+    }
     qint64 processId = process.processId();
     bool isStarted = process.waitForStarted();
     if (!isStarted) {

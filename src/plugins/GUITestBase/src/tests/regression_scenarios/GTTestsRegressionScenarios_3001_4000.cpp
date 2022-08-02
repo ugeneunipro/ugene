@@ -2327,11 +2327,11 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     auto outputFilePathEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
 
     GTWidget::setFocus(os, outputFilePathEdit);
-#ifndef Q_OS_DARWIN
-    GTKeyboardDriver::keyClick(Qt::Key_Home);
-#else
-    GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
-#endif
+    if (!isOsMac()) {
+        GTKeyboardDriver::keyClick(Qt::Key_Home);
+    } else {
+        GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
+    }
 
     GTKeyboardDriver::keySequence("///123/123/123");
 
@@ -2346,11 +2346,11 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::setFocus(os, outputFilePathEdit);
-#ifndef Q_OS_DARWIN
-    GTKeyboardDriver::keyClick(Qt::Key_Home);
-#else
-    GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
-#endif
+    if (!isOsMac()) {
+        GTKeyboardDriver::keyClick(Qt::Key_Home);
+    } else {
+        GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
+    }
 
     GTKeyboardDriver::keySequence(sandBoxDir + "123/123/123/1.aln");
 

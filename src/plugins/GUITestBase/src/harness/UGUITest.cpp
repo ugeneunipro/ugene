@@ -48,19 +48,19 @@ static QString getTestDirImpl() {
 
     bool ok;
     int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_DARWIN
-    if (ok && i > 1) {
-        return QString("../../../../../../test%1/").arg(i - 1);
+    if (isOsMac()) {
+        if (ok && i > 1) {
+            return QString("../../../../../../test%1/").arg(i - 1);
+        } else {
+            return QString("../../../../../../test/");
+        }
     } else {
-        return QString("../../../../../../test/");
+        if (ok && i > 1) {
+            return QString("../../test%1/").arg(i - 1);
+        } else {
+            return QString("../../test/");
+        }
     }
-#else
-    if (ok && i > 1) {
-        return QString("../../test%1/").arg(i - 1);
-    } else {
-        return QString("../../test/");
-    }
-#endif
 }
 
 static QString getTestDir() {
@@ -124,18 +124,18 @@ static QString getDataDir() {
 
 static QString getScreenshotDir() {
     QString result;
-#ifdef Q_OS_DARWIN
-    result = "../../../../../../screenshotFol/";
-#else
-    QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");
-    if (guiTestOutputDirectory.isEmpty()) {
-        result = QDir::homePath() + "/gui_testing_output/" +
-                 QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+    if (isOsMac()) {
+        result = "../../../../../../screenshotFol/";
     } else {
-        result = guiTestOutputDirectory + "/gui_testing_output/" +
-                 QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");
+        if (guiTestOutputDirectory.isEmpty()) {
+            result = QDir::homePath() + "/gui_testing_output/" +
+                     QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        } else {
+            result = guiTestOutputDirectory + "/gui_testing_output/" +
+                     QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        }
     }
-#endif
     return result;
 }
 

@@ -1567,7 +1567,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::toggleView(os); // Close project view to make all actions on toolbar available.
+    GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
@@ -1915,20 +1915,20 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
-//    3. change branch color
-#ifndef Q_OS_DARWIN
-    setBranchColor(os, 255, 0, 0);
-#else
-    expandPenSettings(os);
-#endif
+    //    3. change branch color
+    if (!isOsMac()) {
+        setBranchColor(os, 255, 0, 0);
+    } else {
+        expandPenSettings(os);
+    }
     //    Expected state: color changed
     CHECK_SET_ERR(treeView != nullptr, "tree view not found");
     QString colorName;
-#ifndef Q_OS_DARWIN
-    colorName = "#ff0000";
-#else
-    colorName = "#000000";
-#endif
+    if (!isOsMac()) {
+        colorName = "#ff0000";
+    } else {
+        colorName = "#000000";
+    }
     double initPercent = colorPercent(os, treeView, colorName);
     CHECK_SET_ERR(initPercent != 0, "color not changed");
 

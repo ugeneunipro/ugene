@@ -36,13 +36,13 @@
 #include <U2View/BaseWidthController.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
-#include <U2View/MSAEditorTreeViewer.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -432,11 +432,11 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(GUITestOpStatus& os, const QString&
 
     const QRect sequenceNameRect = getSequenceNameRect(os, groupName);
     QPoint magicExpandButtonOffset;
-#ifdef Q_OS_WIN
-    magicExpandButtonOffset = QPoint(15, 10);
-#else
-    magicExpandButtonOffset = QPoint(15, 5);
-#endif
+    if (isOsWindows()) {
+        magicExpandButtonOffset = QPoint(15, 10);
+    } else {
+        magicExpandButtonOffset = QPoint(15, 5);
+    }
     GTMouseDriver::moveTo(sequenceNameRect.topLeft() + magicExpandButtonOffset);
     GTMouseDriver::click();
 }

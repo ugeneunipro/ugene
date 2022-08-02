@@ -58,13 +58,13 @@ QString getStringSetting(const QString& key) {
 }
 
 QString getOsSuffix() {
-#if defined(Q_OS_WIN)
-    return "_win";
-#elif defined(Q_OS_DARWIN)
-    return "_mac";
-#else
-    return "_linux";
-#endif
+    if (isOsWindows()) {
+        return "_win";
+    } else if (isOsMac()) {
+        return "_mac";
+    } else {
+        return "_linux";
+    }
 }
 
 }  // namespace

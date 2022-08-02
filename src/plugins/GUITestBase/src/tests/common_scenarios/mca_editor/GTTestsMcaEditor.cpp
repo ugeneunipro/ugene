@@ -1401,22 +1401,22 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-//    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-//    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-//    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
-//    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-//    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
+    //    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-//    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-//    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
-//    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1569,16 +1569,16 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-#ifndef Q_OS_LINUX
-    // In linux, OS intercept this hotkey
+    if (!isOsLinux()) {
+        // In linux, OS intercept this hotkey
 
-    // 2. Push Ctrl + Alt + a
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-#else
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-#endif
+        // 2. Push Ctrl + Alt + a
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
+        GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    } else {
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    }
     // Expected state : reference "C", consensus "N", read "N"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
     QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
@@ -3069,7 +3069,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint rightP(p.x(), p.y() + 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, rightP);
 
-    //Еxpected state : Alighed reads area moved down
+    // Еxpected state : Alighed reads area moved down
     QStringList listOne = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(list != listOne, "Visible area not change");
 
@@ -3077,7 +3077,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint leftP(p.x(), p.y() - 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, leftP);
 
-    //Еxpected state : Alighed reads area moved up
+    // Еxpected state : Alighed reads area moved up
     QStringList listTwo = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(list != listTwo, "Visible area not change");
 }

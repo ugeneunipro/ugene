@@ -1329,9 +1329,9 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
             : Filler(_os, "AboutDialog") {
         }
         virtual void run() {
-#ifdef Q_OS_DARWIN
-            GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
-#endif
+            if (isOsMac()) {
+                GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
+            }
 
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // getting an info string
@@ -1345,23 +1345,23 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit") || text.contains("32-bit"), text);
-#ifdef Q_OS_DARWIN
-            GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
-#else
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+            if (isOsMac()) {
+                GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
+            } else {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
         }
     };
     GTUtilsDialog::waitForDialog(os, new EscClicker(os));
-#ifdef Q_OS_DARWIN
-    // hack for mac
-    MainWindow* mw = AppContext::getMainWindow();
-    CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
-    QMainWindow* mainWindow = mw->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
-    QWidget* w = qobject_cast<QWidget*>(mainWindow);
-    GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
-#endif
+    if (isOsMac()) {
+        // hack for mac
+        MainWindow* mw = AppContext::getMainWindow();
+        CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
+        QMainWindow* mainWindow = mw->getQMainWindow();
+        CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
+        QWidget* w = qobject_cast<QWidget*>(mainWindow);
+        GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
+    }
     GTKeyboardDriver::keyClick(Qt::Key_F1);
     // Expected state: About dialog appeared, shown info includes platform info (32/64)
 }
@@ -1375,9 +1375,9 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {  // commit AboutDialogController.cpp
             : Filler(_os, "AboutDialog") {
         }
         virtual void run() {
-#ifdef Q_OS_DARWIN
-            GTMouseDriver::release();
-#endif
+            if (isOsMac()) {
+                GTMouseDriver::release();
+            }
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // getting an info string
             auto w = GTWidget::findWidget(os, "about_widget", dialog);
@@ -1390,11 +1390,11 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {  // commit AboutDialogController.cpp
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit") || text.contains("32-bit"), text);
-#ifdef Q_OS_DARWIN
-            GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
-#else
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+            if (isOsMac()) {
+                GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
+            } else {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
         }
     };
 
@@ -1612,9 +1612,9 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
 
-#ifdef Q_OS_WIN
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-#endif
+    if (isOsWindows()) {
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    }
     GTUtilsWorkflowDesigner::runWorkflow(os);
 }
 
@@ -3960,9 +3960,9 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     QLineEdit* line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
     GTLineEdit::setText(os, line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
-#ifdef Q_OS_DARWIN
-    GTMouseDriver::doubleClick();
-#endif
+    if (isOsMac()) {
+        GTMouseDriver::doubleClick();
+    }
     CHECK_SET_ERR(GTWidget::findWidget(os, "addButton") != nullptr, "addButton is hiden");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));

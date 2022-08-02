@@ -82,13 +82,13 @@ void NotificationDialogFiller::commonScenario() {
     }
     QWidget* ok = GTWidget::findButtonByText(os, "Ok", dialog);
     GTWidget::click(os, ok);
-#if defined Q_OS_WIN || defined Q_OS_DARWIN
-    dialog = QApplication::activeModalWidget();
-    if (dialog != nullptr) {
-        ok = GTWidget::findButtonByText(os, "Ok", dialog);
-        GTWidget::click(os, ok);
+    if (isOsWindows() || isOsMac()) {
+        dialog = QApplication::activeModalWidget();
+        if (dialog != nullptr) {
+            ok = GTWidget::findButtonByText(os, "Ok", dialog);
+            GTWidget::click(os, ok);
+        }
     }
-#endif
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

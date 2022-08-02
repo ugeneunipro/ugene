@@ -588,14 +588,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
-// 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
-#ifdef Q_OS_WIN
-    GTKeyboardDriver::keyClick('y', Qt::ControlModifier);
-#else
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-#endif
+    // 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
+    if (isOsWindows()) {
+        GTKeyboardDriver::keyClick('y', Qt::ControlModifier);
+    } else {
+        GTKeyboardDriver::keyPress(Qt::Key_Shift);
+        GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    }
     // Expected state: Zychia_baranovi TTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -870,11 +870,11 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     static constexpr QPoint TOP_LEFT = QPoint(0, 0);
     static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);
 
-    //2. Select area from (0, 0) to (10, 10)
+    // 2. Select area from (0, 0) to (10, 10)
     GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
 
     // 3. Click "Replace with gaps" with popup menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "MSAE_MENU_EDIT", "replace_with_gaps" }));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "replace_with_gaps"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     // Expected: selection hasn't been changed
@@ -897,8 +897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
             "-----------TTAGATTGC",
             "-----------TTAGATTAT",
             "-----------TAAGTCTAT",
-            "-----------TTAGCTTAT"
-        };
+            "-----------TTAGCTTAT"};
 
         static constexpr QPoint BOTTOM_RIGHT_CHECK = QPoint(20, 10);
 

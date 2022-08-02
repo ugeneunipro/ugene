@@ -133,9 +133,9 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
         GTComboBox::selectItemByText(os, box, fullValue);
-#ifdef Q_OS_WIN
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+        if (isOsWindows()) {
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
     }
 }
 
@@ -173,12 +173,11 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
             break;
         }
         default:
-            FAIL("Unexpected tool type",);
+            FAIL("Unexpected tool type", );
     }
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
@@ -190,7 +189,6 @@ void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) 
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
@@ -212,7 +210,6 @@ void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) 
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog) {

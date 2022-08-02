@@ -1058,10 +1058,10 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
         case (comboWithFileSelector): {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
             GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
-#ifdef Q_OS_WIN
-            // added to fix UGENE-3597
-            GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+            if (isOsWindows()) {
+                // added to fix UGENE-3597
+                GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            }
             break;
         }
         case (lineEditWithFileSelector): {
@@ -1105,9 +1105,9 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             QStringList values = value.value<QStringList>();
             QComboBox* comboBox = GTWidget::findWidgetByType<QComboBox*>(os, parent, "Cell has no QComboBox/ComboChecks widget");
             GTComboBox::checkValues(os, comboBox, values);
-#ifndef Q_OS_WIN
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+            if (isOsWindows()) {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
             break;
         }
         case customDialogSelector: {

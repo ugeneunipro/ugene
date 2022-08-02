@@ -121,9 +121,9 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != nullptr, "main window is NULL");
-#ifdef Q_OS_DARWIN
-    GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
-#endif
+    if (isOsMac()) {
+        GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
+    }
 }
 
 }  // namespace GUITest_preliminary_actions

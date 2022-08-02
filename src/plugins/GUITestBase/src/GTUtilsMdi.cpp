@@ -58,44 +58,44 @@ void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) 
     //        return;
     //    }
 
-#ifndef Q_OS_DARWIN
-    switch (action) {
-        case GTGlobals::Close: {
-#    ifdef Q_OS_UNIX
-            GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
-#    else
-            GTKeyboardDriver::keyPress(Qt::Key_Control);
-            GTKeyboardDriver::keyClick(Qt::Key_F4);
-            GTKeyboardDriver::keyRelease(Qt::Key_Control);
-#    endif
-            break;
+    if (!isOsMac()) {
+        switch (action) {
+            case GTGlobals::Close: {
+                if (isOsUnix()) {
+                    GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
+                } else {
+                    GTKeyboardDriver::keyPress(Qt::Key_Control);
+                    GTKeyboardDriver::keyClick(Qt::Key_F4);
+                    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+                }
+                break;
+            }
+            default:
+                GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+                break;
         }
-        default:
-            GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
-            break;
-    }
-#else
-    MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
-    GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
+    } else {
+        MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
+        GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
 
-    // TODO: make click on button
-    switch (action) {
-        case GTGlobals::Maximize:
-            GTWidget::showMaximized(os, mdiWindow);
-            break;
-        case GTGlobals::Close: {
-            int left = mdiWindow->rect().left();
-            int top = mdiWindow->rect().top();
-            QPoint p(left + 15, top - 10);
-            GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
-            GTMouseDriver::click();
-            break;
+        // TODO: make click on button
+        switch (action) {
+            case GTGlobals::Maximize:
+                GTWidget::showMaximized(os, mdiWindow);
+                break;
+            case GTGlobals::Close: {
+                int left = mdiWindow->rect().left();
+                int top = mdiWindow->rect().top();
+                QPoint p(left + 15, top - 10);
+                GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
+                GTMouseDriver::click();
+                break;
+            }
+            default:
+                assert(false);
+                break;
         }
-        default:
-            assert(false);
-            break;
     }
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -164,7 +164,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
-            for (QMdiSubWindow* mdiWindow: qAsConst(mdiWindows)) {
+            for (QMdiSubWindow* mdiWindow : qAsConst(mdiWindows)) {
                 auto filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
                 GTUtilsDialog::waitForDialog(os, filler);
                 mdiWindow->close();
