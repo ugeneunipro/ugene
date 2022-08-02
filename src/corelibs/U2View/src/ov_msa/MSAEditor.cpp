@@ -492,7 +492,6 @@ QWidget* MSAEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
 
     Settings* s = AppContext::getSettings();
-    SAFE_POINT(s != nullptr, "AppContext settings is NULL", nullptr);
     bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
 
     // Use false for multilineMode while creating widget
@@ -1012,9 +1011,7 @@ void MSAEditor::sl_multilineViewAction() {
         fillMenu(staticMenu, staticMenuType);
 
         Settings *s = AppContext::getSettings();
-        if (s != nullptr) {
-            s->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
-        }
+        s->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
     }
 }
 
