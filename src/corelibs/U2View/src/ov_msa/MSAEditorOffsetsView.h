@@ -51,7 +51,7 @@ private:
 
     MaEditorSequenceArea* seqArea;
     MaEditor* editor;
-    MaEditorWgt *ui;
+    MaEditorWgt* ui = nullptr;
 
 public:
     MSAEditorOffsetsViewWidget* leftWidget;
@@ -84,7 +84,7 @@ private:
 
     MaEditorSequenceArea* seqArea;
     MaEditor* editor;
-    MaEditorWgt *ui;
+    MaEditorWgt* ui = nullptr;
     bool showStartPos;
     bool completeRedraw;
     QPixmap cachedView;

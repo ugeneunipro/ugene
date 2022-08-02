@@ -41,19 +41,18 @@
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/McaEditor.h>
-
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/McaEditor.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaCollapseModel.h"
 #include "MaEditorSelection.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
-#include "ScrollController.h"
 #include "MultilineScrollController.h"
+#include "ScrollController.h"
 
 namespace U2 {
 
@@ -141,7 +140,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, Mult
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
     multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Multiline View"), this);
-    multilineViewAction->setObjectName("Multiline View");
+    multilineViewAction->setObjectName("multilineView");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);
     connect(multilineViewAction, SIGNAL(triggered()), SLOT(sl_multilineViewAction()));
@@ -421,7 +420,7 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getMaEditorWgt(), (QWidget *)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getMaEditorWgt(), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -480,7 +479,7 @@ void MaEditor::updateResizeMode() {
     resizeMode = zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
-void MaEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
+void MaEditor::addCopyPasteMenu(QMenu* m, uint uiIndex) {
     Q_UNUSED(uiIndex);
     QMenu* cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
@@ -510,8 +509,8 @@ void MaEditor::setFont(const QFont& f) {
     updateFontMetrics();
     font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
-    if (qobject_cast<McaEditorWgt *>(getUI())) {
-        qobject_cast<McaEditorWgt *>(getUI())->getScrollController()->updateScrollBarsOnFontOrZoomChange();
+    if (qobject_cast<McaEditorWgt*>(getUI())) {
+        qobject_cast<McaEditorWgt*>(getUI())->getScrollController()->updateScrollBarsOnFontOrZoomChange();
     }
     emit si_fontChanged(font);
 
@@ -613,7 +612,7 @@ void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
 }
 
 void MaEditor::sl_onClearActionTriggered() {
-    MaEditorSequenceArea *sequenceArea = getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = getMaEditorWgt()->getSequenceArea();
     if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
         sequenceArea->exitFromEditCharacterMode();
         return;
@@ -634,7 +633,7 @@ void MaEditor::sl_gotoSelectedRead() {
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
-    MaEditorSequenceArea *sequenceArea = getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = getMaEditorWgt()->getSequenceArea();
     if (sequenceArea->isPositionCentered(posToCenter)) {
         posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
     }
@@ -647,6 +646,15 @@ MaCollapseModel* MaEditor::getCollapseModel() const {
 
 MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
     return undoRedoFramework;
+}
+
+bool MaEditor::getMultilineMode() const {
+    return multilineMode;
+}
+
+bool MaEditor::setMultilineMode(bool newmode) {
+    Q_UNUSED(newmode);
+    return false;
 }
 
 }  // namespace U2

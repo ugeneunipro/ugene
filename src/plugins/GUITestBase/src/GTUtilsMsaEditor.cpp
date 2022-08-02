@@ -204,7 +204,7 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus& os, int column) {
     MSAEditor* editor = getEditor(os);
     GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
-    BaseWidthController *baseWidthController = editor->getUI()->getUI()->getBaseWidthController();
+    BaseWidthController* baseWidthController = editor->getUI()->getUI()->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
                                                    consensusArea->geometry().top())),
                  QSize(baseWidthController->getBaseWidth(),
@@ -679,24 +679,22 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMultilineMode"
-bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus &os)
-{
+bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
     auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
 
     // Get state of the "Multiline View" button on toolbar
-    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "Multiline View");
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
     CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", false);
     return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setMultilineMode"
-void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus &os, bool newMode)
-{
+void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool newMode) {
     auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
 
     // Press "Multiline View" button on toolbar
-    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "Multiline View");
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
     CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", );
     bool oldMode = getMultilineMode(os);
     if (oldMode == newMode) {

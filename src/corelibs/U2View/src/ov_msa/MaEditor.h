@@ -23,6 +23,7 @@
 #define _U2_MA_EDITOR_H_
 
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -134,17 +135,17 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual QWidget *getUI() const {
+    virtual QWidget* getUI() const {
         return ui;
     }
 
-    virtual MaEditorWgt *getMaEditorWgt(uint index = 0) const {
+    virtual MaEditorWgt* getMaEditorWgt(uint index = 0) const {
         SAFE_POINT(false, "The function getMaEditorWgt(index) must be overrided", nullptr);
         Q_UNUSED(index);
         return nullptr;
     };
 
-    virtual MaEditorMultilineWgt *getMaEditorMultilineWgt() const {
+    virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const {
         SAFE_POINT(false, "The function getMaEditorMultilineWgt(index) must be overrided", nullptr);
         return nullptr;
     };
@@ -226,7 +227,7 @@ public:
     MaCollapseModel* getCollapseModel() const;
 
     /** Returns undo-redo framework. The returned value is never null. */
-    MaUndoRedoFramework *getUndoRedoFramework() const;
+    MaUndoRedoFramework* getUndoRedoFramework() const;
 
     /**
      * Centers selection on the screen if possible. Otherwise scrolls one of the selection corners into the view.
@@ -237,15 +238,8 @@ public:
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
-
-    virtual bool getMultilineMode() const {
-        return multilineMode;
-    }
-
-    virtual bool setMultilineMode(bool newmode) {
-        Q_UNUSED(newmode);
-        return false;
-    }
+    virtual bool getMultilineMode() const;
+    virtual bool setMultilineMode(bool newmode);
 
 signals:
     void si_fontChanged(const QFont& f);
@@ -298,7 +292,7 @@ protected:
     virtual void initFont();
     void updateResizeMode();
 
-    virtual void addCopyPasteMenu(QMenu *m, uint uiIndex);
+    virtual void addCopyPasteMenu(QMenu* m, uint uiIndex);
     virtual void addEditMenu(QMenu* m) = 0;
     virtual void addExportMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
@@ -314,7 +308,7 @@ protected:
     virtual void updateActions();
 
     MultipleAlignmentObject* maObject;
-    QWidget *ui = nullptr;
+    QWidget* ui = nullptr;
 
     QFont font;
     ResizeMode resizeMode;
