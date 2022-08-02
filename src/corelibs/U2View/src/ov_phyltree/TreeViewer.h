@@ -258,11 +258,11 @@ public:
         return getTreeLayout() == CIRCULAR_LAYOUT;
     }
 
-    GraphicsBranchItem* getLastUpdatedBranch() const;
-
     void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
+
+    void updateRect();
 
 signals:
     /* emits when branch settings is updated */
@@ -279,10 +279,9 @@ protected:
     /** Returns root item for the tree. */
     GraphicsBranchItem* getRoot() const;
 
-    void setZoom(qreal newzoom);
-    void setZoom(qreal horizontalZoom, qreal verticalZoom);
+    void setZoom(qreal newZoom);
+
     void defaultZoom();
-    void updateRect();
 
     virtual void onLayoutChanged(const TreeLayout&) {
     }
@@ -367,8 +366,6 @@ private:
 
     void determineBranchLengths();
 
-    int getBranchLength();
-
     void changeLayout(TreeLayout newLayout);
     void changeNamesDisplay();
     void changeNodeValuesDisplay();
@@ -376,35 +373,34 @@ private:
 
     void initializeSettings();
 
-    PhyTreeObject* phyObject;
-    GraphicsBranchItem* root;
-    GraphicsBranchItem* lastUpdatedBranch;
-    qreal maxNameWidth;
-    qreal verticalScale;
-    qreal horizontalScale;
+    PhyTreeObject* phyObject = nullptr;
+    GraphicsBranchItem* root = nullptr;
+    qreal maxNameWidth = 0;
+    qreal verticalScale = 1;
+    qreal horizontalScale = 1;
     qreal view_scale;
-    CreateBranchesTask* layoutTask;
-    QGraphicsLineItem* legend;
-    QGraphicsSimpleTextItem* scalebarText;
-    QMenu* buttonPopup;
+    CreateBranchesTask* layoutTask = nullptr;
+    QGraphicsLineItem* legend = nullptr;
+    QGraphicsSimpleTextItem* scalebarText = nullptr;
+    QMenu* buttonPopup = nullptr;
 
-    const TreeViewer* curTreeViewer;
+    const TreeViewer* curTreeViewer = nullptr;
 
-    QAction* swapAction;
-    QAction* rerootAction;
-    QAction* collapseAction;
-    QAction* setColorAction;
-    QAction* captureAction;
-    QAction* exportAction;
+    QAction* swapAction = nullptr;
+    QAction* rerootAction = nullptr;
+    QAction* collapseAction = nullptr;
+    QAction* setColorAction = nullptr;
+    QAction* captureAction = nullptr;
+    QAction* exportAction = nullptr;
 
     OptionsMap settings;
-    bool dontSendOptionChangedSignal;
+    bool dontSendOptionChangedSignal = false;
 
 protected:
-    GraphicsRectangularBranchItem* rectRoot;
-    QAction* zoomToAction;
-    QAction* zoomOutAction;
-    QAction* zoomToAllAction;
+    GraphicsRectangularBranchItem* rectRoot = nullptr;
+    QAction* zoomToAction = nullptr;
+    QAction* zoomOutAction = nullptr;
+    QAction* zoomToAllAction = nullptr;
 };
 
 }  // namespace U2

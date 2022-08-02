@@ -54,8 +54,6 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OrderedToolbar.h>
 
-#include <U2View/MSAEditorTreeViewer.h>
-
 #include "CreateCircularBranchesTask.h"
 #include "CreateRectangularBranchesTask.h"
 #include "CreateUnrootedBranchesTask.h"
@@ -370,12 +368,7 @@ const qreal TreeViewerUI::SIZE_COEF = 0.1;
 TreeViewerUI::TreeViewerUI(TreeViewer* treeViewer)
     : phyObject(treeViewer->getPhyObject()),
       root(treeViewer->getRoot()),
-      lastUpdatedBranch(root),
-      maxNameWidth(0.0),
-      verticalScale(1.0),
-      horizontalScale(1.0),
       curTreeViewer(treeViewer),
-      dontSendOptionChangedSignal(false),
       rectRoot(treeViewer->getRoot()) {
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
 
@@ -493,10 +486,6 @@ void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
 }
 TreeLayout TreeViewerUI::getTreeLayout() const {
     return static_cast<TreeLayout>(getOptionValue(TREE_LAYOUT).toUInt());
-}
-
-GraphicsBranchItem* TreeViewerUI::getLastUpdatedBranch() const {
-    return lastUpdatedBranch;
 }
 
 void TreeViewerUI::onPhyTreeChanged() {
@@ -920,21 +909,17 @@ void TreeViewerUI::wheelEvent(QWheelEvent* we) {
     we->accept();
 }
 
-void TreeViewerUI::setZoom(qreal newzoom) {
-    setZoom(newzoom, newzoom);
-}
-
-void TreeViewerUI::setZoom(qreal horizontalZoom, qreal verticalZoom) {
-    if (verticalZoom < 0 || horizontalZoom < 0) {
+void TreeViewerUI::setZoom(qreal newZoom) {
+    if (newZoom < 0) {
         return;
     }
-    verticalZoom = verticalScale * verticalZoom;
-    horizontalZoom = horizontalScale * horizontalZoom;
+    double verticalZoom = verticalScale * newZoom;
+    double horizontalZoom = horizontalScale * newZoom;
 
     verticalZoom = qMax(MINIMUM_ZOOM, verticalZoom);
-    verticalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(HEIGHT_COEF).toUInt() * TreeViewerUI::SIZE_COEF, static_cast<qreal>(1.0)), verticalZoom);
+    verticalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(HEIGHT_COEF).toUInt() * TreeViewerUI::SIZE_COEF, 1.0), verticalZoom);
     horizontalZoom = qMax(MINIMUM_ZOOM, horizontalZoom);
-    horizontalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(WIDTH_COEF).toUInt() * TreeViewerUI::SIZE_COEF, static_cast<qreal>(1.0)), horizontalZoom);
+    horizontalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(WIDTH_COEF).toUInt() * TreeViewerUI::SIZE_COEF, 1.0), horizontalZoom);
 
     qreal dScaleX = horizontalZoom / horizontalScale;
     qreal dScaleY = verticalZoom / verticalScale;
@@ -1004,12 +989,8 @@ void TreeViewerUI::paint(QPainter& painter) {
 }
 
 void TreeViewerUI::updateRect() {
-    SAFE_POINT(nullptr != root, "Pointer to tree root is NULL", );
+    SAFE_POINT(root != nullptr, "Pointer to tree root is NULL", );
     QTransform viewTransform = transform();
-    // the workaround for UGENE-3504
-    if (qobject_cast<MSAEditorTreeViewerUI*>(this) != nullptr && (qobject_cast<MSAEditorTreeViewerUI*>(this))->isCurTreeViewerSynchronized()) {
-        viewTransform = QTransform();
-    }
     QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | root->sceneBoundingRect();
     rect.setLeft(rect.left() - MARGIN);
     rect.setRight(rect.right() + MARGIN);
@@ -1097,7 +1078,6 @@ void TreeViewerUI::updateBranchSettings() {
         setOptionValue(LABEL_COLOR, color);
         dontSendOptionChangedSignal = false;
     }
-    lastUpdatedBranch = branch;
     emit si_updateBranch();
 }
 
@@ -1476,7 +1456,7 @@ void TreeViewerUI::sl_zoomToAll() {
 }
 
 void TreeViewerUI::defaultZoom() {
-    setZoom(1.0 / horizontalScale, 1.0 / verticalScale);
+    setZoom(1.0 / horizontalScale);
 }
 
 void TreeViewerUI::redrawRectangularLayout() {
