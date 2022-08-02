@@ -1409,12 +1409,10 @@ void TreeViewerUI::sl_showDistanceLabelsTriggered(bool on) {
 }
 
 void TreeViewerUI::sl_printTriggered() {
-#ifdef Q_OS_WIN
-    if (QPrinterInfo::availablePrinterNames().isEmpty()) {
+    if (isOsWindows() && QPrinterInfo::availablePrinterNames().isEmpty()) {
         QMessageBox::warning(this, L10N::warningTitle(), tr("Unable to print tree. No printers found."));
         return;
     }
-#endif
     QPrinter printer;
     QObjectScopedPointer<QPrintDialog> dialog = new QPrintDialog(&printer, this);
     dialog->exec();
