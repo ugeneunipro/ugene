@@ -225,6 +225,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
             src/tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h \
+            src/tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.h \
+            src/tests/common_scenarios/msa_editor/multiline/colors/GTTestsColorsMSAMultiline.h \
+            src/tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
@@ -501,6 +504,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
             src/tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.cpp \
+            src/tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.cpp \
+            src/tests/common_scenarios/msa_editor/multiline/colors/GTTestsColorsMSAMultiline.cpp \
+            src/tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \

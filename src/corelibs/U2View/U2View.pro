@@ -81,6 +81,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorConsensusAreaSettings.h \
            src/ov_msa/MaEditorContext.h \
            src/ov_msa/MaEditorFactory.h \
+           src/ov_msa/MaEditorMultilineWgt.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/MaEditorSelection.h \
            src/ov_msa/MaEditorSequenceArea.h \
@@ -95,9 +96,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/MsaEditorWgt.h \
+           src/ov_msa/MsaEditorMultilineWgt.h \
+           src/ov_msa/MsaMultilineScrollArea.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MsaRowHeightController.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
+           src/ov_msa/MultilineScrollController.h \
            src/ov_msa/RowHeightController.h \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
            src/ov_msa/ScrollController.h \
@@ -364,6 +368,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorConsensusAreaSettings.cpp \
            src/ov_msa/MaEditorContext.cpp \
            src/ov_msa/MaEditorFactory.cpp \
+           src/ov_msa/MaEditorMultilineWgt.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/MaEditorSelection.cpp \
            src/ov_msa/MaEditorSequenceArea.cpp \
@@ -378,8 +383,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaEditorStatusBar.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \
            src/ov_msa/MsaEditorWgt.cpp \
+           src/ov_msa/MsaEditorMultilineWgt.cpp \
+           src/ov_msa/MsaMultilineScrollArea.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MsaRowHeightController.cpp \
+           src/ov_msa/MultilineScrollController.cpp \
            src/ov_msa/RowHeightController.cpp \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
            src/ov_msa/ScrollController.cpp \

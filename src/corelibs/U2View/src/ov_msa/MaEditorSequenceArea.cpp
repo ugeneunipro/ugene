@@ -104,12 +104,14 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     insertGapsAction = new QAction(tr("Insert gaps"), this);
     insertGapsAction->setObjectName("insert_gaps");
     insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
+    insertGapsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
     addAction(insertGapsAction);
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
     replaceWithGapsAction->setObjectName("replace_with_gaps");
     replaceWithGapsAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Space));
+    replaceWithGapsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(replaceWithGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_replaceSelectionWithGaps);
     addAction(replaceWithGapsAction);
 
@@ -153,8 +155,12 @@ int MaEditorSequenceArea::getFirstVisibleBase() const {
     return ui->getScrollController()->getFirstVisibleBase();
 }
 
+void MaEditorSequenceArea::setFirstVisibleBase(int firstVisibleBase) {
+    ui->getScrollController()->setFirstVisibleBase(firstVisibleBase);
+}
+
 int MaEditorSequenceArea::getLastVisibleBase(bool countClipped) const {
-    return getEditor()->getUI()->getScrollController()->getLastVisibleBase(width(), countClipped);
+    return ui->getScrollController()->getLastVisibleBase(width(), countClipped);
 }
 
 int MaEditorSequenceArea::getNumVisibleBases() const {
@@ -670,8 +676,12 @@ void MaEditorSequenceArea::sl_completeRedraw() {
     update();
 }
 
-void MaEditorSequenceArea::sl_triggerUseDots() {
-    useDotsAction->trigger();
+void MaEditorSequenceArea::sl_triggerUseDots(int checkState) {
+    bool currState = useDotsAction->isChecked();
+    if ((currState && checkState == Qt::Unchecked) ||
+            (!currState && checkState == Qt::Checked)) {
+        useDotsAction->trigger();
+    }
 }
 
 void MaEditorSequenceArea::sl_useDots() {
@@ -757,6 +767,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
+    setFocus();
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     sl_updateActions();

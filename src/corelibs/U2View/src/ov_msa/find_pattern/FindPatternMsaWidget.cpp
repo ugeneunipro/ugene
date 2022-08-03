@@ -51,6 +51,7 @@
 
 #include "FindPatternMsaTask.h"
 #include "ov_msa/MaCollapseModel.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_sequence/find_pattern/FindPatternWidget.h"
 
 namespace U2 {
@@ -909,10 +910,16 @@ void FindPatternMsaWidget::sl_nextButtonClicked() {
 void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
     const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
-    MaEditorSequenceArea* seqArea = msaEditor->getUI()->getSequenceArea();
+
+    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(msaEditor->getUI());
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
+    MaEditorSequenceArea* seqArea = mui->getUI()->getSequenceArea();
     seqArea->setSelectionRect(selection);
-    seqArea->centerPos(selection.topLeft());
+    if (msaEditor->getUI()->getMultilineMode()) {
+        mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());
+    } else {
+        seqArea->centerPos(selection.topLeft());
+    }
     updateCurrentResultLabel();
 }
 
@@ -1050,7 +1057,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.
-    msaEditor->getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
+    msaEditor->getUI()->sl_toggleSequenceRowOrder(false);
 
     QSet<qint64> resultUidSet;
     for (const FindPatternWidgetResult& result : qAsConst(allSearchResults)) {

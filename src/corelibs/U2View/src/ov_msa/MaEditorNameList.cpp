@@ -845,7 +845,7 @@ void MaEditorNameList::sl_editSequenceName() {
     bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     bool ok = false;
-    QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+    QString newName = QInputDialog::getText(editor->getUI(), title, tr("New name:"), QLineEdit::Normal, curName, &ok);
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);

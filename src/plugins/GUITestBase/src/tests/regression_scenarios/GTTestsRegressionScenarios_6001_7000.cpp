@@ -667,7 +667,7 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, new NoButtonClickScenario()));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
     GTMouseDriver::click();

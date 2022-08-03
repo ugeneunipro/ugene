@@ -26,23 +26,23 @@
 
 namespace U2 {
 
-class MaEditor;
+class MaEditorWgt;
 
 class U2VIEW_EXPORT DrawHelper {
 public:
-    DrawHelper(MaEditor* editor);
+    DrawHelper(MaEditorWgt* ui);
 
-    U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QList<int> getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = false) const;
+    U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = false) const;
+    QList<int> getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = false) const;
 
-    int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
+    int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = false) const;
 
     /** Returns screen coordinates for the given rect of columns and rows. */
     QRect getScreenRect(const QRect& columnsAndRowsRect) const;
 
 private:
-    MaEditor* const editor;
+    MaEditorWgt* ui;
 };
 
 }  // namespace U2

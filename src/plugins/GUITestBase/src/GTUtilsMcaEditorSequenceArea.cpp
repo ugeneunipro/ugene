@@ -96,8 +96,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QP
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
 
-    BaseWidthController* widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
-    RowHeightController* heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
+    BaseWidthController *widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
+    RowHeightController *heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
     QPoint positionCenter(widthController->getBaseScreenCenter(globalMaPosition.x()),
                           heightController->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -153,7 +153,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
     auto nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    RowHeightController* rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
+    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getMaEditorWgt()->getRowHeightController();
     int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
@@ -171,7 +171,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus& os, QStr
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
+    int rowHeight = mcaEditArea->getEditor()->getMaEditorWgt()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
     bool isChromatogramShown = rowHeight > 100;
     return isChromatogramShown;
 }
@@ -309,8 +309,8 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPositionRect"
-QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus& os, int rowIndex, int referenceBaseIndex) {
-    McaEditorWgt* mcaWidget = getSequenceArea(os)->getEditor()->getUI();
+QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int rowIndex, int referenceBaseIndex) {
+    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getUI();
 
     U2Region xRegion = mcaWidget->getBaseWidthController()->getBaseScreenRange(referenceBaseIndex);
     U2Region yRegion = mcaWidget->getRowHeightController()->getScreenYRegionByMaRowIndex(rowIndex);
@@ -342,7 +342,7 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
 
     scrollToPosition(os, selectedPoint);
 
-    McaEditorWgt* mcaWidget = mcaSeqArea->getEditor()->getUI();
+    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getUI();
     int centerX = mcaWidget->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
     int centerY = mcaWidget->getRowHeightController()->getSingleRowHeight() / 2;
     QPoint cursorPosition(centerX + movePointAdjustment.x(), centerY + movePointAdjustment.y());

@@ -99,7 +99,8 @@ MSAEditor* GTUtilsMsaEditor::getEditor(GUITestOpStatus& os) {
 MsaEditorWgt* GTUtilsMsaEditor::getEditorUi(GUITestOpStatus& os) {
     checkMsaEditorWindowIsActive(os);
     MsaEditorWgt* msaEditorWgt = nullptr;
-    // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
+    // For some reason MsaEditorWgt is not within normal widgets hierarchy (wrong parent?),
+    // so can't use GTWidget::findWidget here.
     for (int time = 0; time < GT_OP_WAIT_MILLIS && msaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         MainWindow* mainWindow = AppContext::getMainWindow();
@@ -110,7 +111,8 @@ MsaEditorWgt* GTUtilsMsaEditor::getEditorUi(GUITestOpStatus& os) {
         msaEditorWgt = activeWindow->findChild<MsaEditorWgt*>();
     }
     GT_CHECK_RESULT(msaEditorWgt != nullptr, "MSA Editor widget is not found", nullptr);
-    return msaEditorWgt;
+    // Get #0 editor widget
+    return qobject_cast<MsaEditorWgt*>(msaEditorWgt->getEditor()->getMaEditorWgt(0));
 }
 #undef GT_METHOD_NAME
 
@@ -160,22 +162,23 @@ void GTUtilsMsaEditor::checkNoTreeView(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMsaEditorWindow(os);
+    // There are more than one msa_editor_name_list in multiline mode, so at first we get line #0 widget
+    MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
     auto result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
+    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMsaEditorWindow(os);
-    return GTWidget::findExactWidget<MSAEditorConsensusArea*>(os, "consArea", activeWindow);
+MSAEditorConsensusArea* GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus& os, int index) {
+    return GTUtilsMSAEditorSequenceArea::getConsensusArea(os, index);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
-MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus& os) {
-    return GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+#define GT_METHOD_NAME "getSequenceArea"
+MSAEditorSequenceArea* GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus& os, int index) {
+    return GTUtilsMSAEditorSequenceArea::getSequenceArea(os, index);
 }
 #undef GT_METHOD_NAME
 
@@ -209,7 +212,7 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus& os, int column) {
     MSAEditor* editor = getEditor(os);
     GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
-    BaseWidthController* baseWidthController = editor->getUI()->getBaseWidthController();
+    BaseWidthController* baseWidthController = editor->getUI()->getUI()->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
                                                    consensusArea->geometry().top())),
                  QSize(baseWidthController->getBaseWidth(),
@@ -680,6 +683,34 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
     return GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getMultilineMode"
+bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
+    auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+
+    // Get state of the "Multiline View" button on toolbar
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
+    return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setMultilineMode"
+void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool newMode) {
+    auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+
+    // Press "Multiline View" button on toolbar
+    auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
+    bool oldMode = getMultilineMode(os);
+    if (oldMode == newMode) {
+        return;
+    }
+    CHECK_SET_ERR_RESULT(mmode->isVisible(), "\"Multiline View\" button is not visible", );
+    CHECK_SET_ERR_RESULT(mmode->isEnabled(), "\"Multiline View\" button is disabled", );
+    GTWidget::click(os, mmode);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR_RESULT(oldMode != getMultilineMode(os), "Multiline mode is not changed", );
 }
 #undef GT_METHOD_NAME
 

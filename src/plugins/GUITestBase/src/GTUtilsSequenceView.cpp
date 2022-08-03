@@ -291,6 +291,7 @@ void GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatu
 void GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus& os, int number) {
     QWidget* panOrDetView = getPanOrDetView(os, number);
     GT_CHECK(panOrDetView != nullptr, "No pan or det-view found!");
+    GT_CHECK(panOrDetView->isVisible(), "Pan or det-view is not visible!");
     GTWidget::click(os, panOrDetView, Qt::RightButton);
 }
 #undef GT_METHOD_NAME

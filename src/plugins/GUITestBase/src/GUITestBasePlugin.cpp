@@ -56,6 +56,9 @@
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h"
+#include "tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.h"
+#include "tests/common_scenarios/msa_editor/multiline/colors/GTTestsColorsMSAMultiline.h"
+#include "tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
@@ -117,6 +120,13 @@ static QStringList labels(const QStringList& labelList) {
 static QStringList nightly(const QStringList& labelList = QStringList()) {
     QStringList resultLabelList = labelList;
     resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
+    return resultLabelList;
+}
+
+/** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
+static QStringList nightly_msa_mm(QString mode, const QStringList& labelList = QStringList()) {
+    QStringList resultLabelList = labelList;
+    resultLabelList << "MSA_" + mode << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
     return resultLabelList;
 }
 
@@ -2554,6 +2564,47 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/multiline
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::general_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::zoom_to_selection_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::menu_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::goto_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::keys_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::keys_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::consensus_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::similarity_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::image_export_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::drag_n_drop_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::bookmark_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::bookmark_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::bookmark_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::exclude_list_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::exclude_list_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::replace_character_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::replace_character_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::replace_character_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::replace_character_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::replace_character_test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::edit_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::general_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::statistic_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::highlighting_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_options::search_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_colors::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_colors::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline_colors::test_0003);
+
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/mca_editor
     /////////////////////////////////////////////////////////////////////////

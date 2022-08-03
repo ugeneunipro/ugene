@@ -1062,7 +1062,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0013) {
 
     // 2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    auto w = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     const QImage initImg = GTWidget::getImage(os, w);
 
     // 3. Check "use dots" checkbox

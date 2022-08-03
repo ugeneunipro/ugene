@@ -275,7 +275,7 @@ void TreeOptionsWidget::connectSlots() {
 
     connect(treeViewerUi, SIGNAL(si_updateBranch()), SLOT(sl_selectionChanged()));
     if (editor != nullptr) {
-        auto multiTreeViewer = editor->getUI()->getMultiTreeViewer();
+        auto multiTreeViewer = qobject_cast<MsaEditorWgt*>(editor->getMaEditorWgt())->getMultiTreeViewer();
         SAFE_POINT(multiTreeViewer != nullptr, "Tree options widget is instantiated with no active tree view", );
         connect(multiTreeViewer, &MSAEditorMultiTreeViewer::si_activeTreeViewChanged, this, [this] { updateAllWidgets(); });
     }
@@ -318,12 +318,15 @@ void TreeOptionsWidget::updateFormatSettings() {
 
 TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     SAFE_POINT(editor != nullptr || treeViewer != nullptr, QString("Invalid parameter in constructor TreeOptionsWidget"), nullptr);
+
     if (treeViewer != nullptr) {
         return treeViewer;
     }
-    MSAEditorTreeViewer* msaTreeViewer = editor->getUI()->getCurrentTree();
-    SAFE_POINT(msaTreeViewer != nullptr, "MSAEditorTreeViewer not found", nullptr);
-    return msaTreeViewer->getTreeViewerUI();
+    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
+    MSAEditorTreeViewer* currentTree = mui->getCurrentTree();
+    return currentTree != nullptr
+               ? currentTree->getTreeViewerUI()
+               : nullptr;
 }
 
 void TreeOptionsWidget::sl_fontTypeChanged() {

@@ -955,8 +955,8 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, endPos - 1));
@@ -1242,7 +1242,7 @@ GUI_TEST_CLASS_DEFINITION(test_4141) {
     // 3. Check "Show distances column"
     // Expected state : distances column has appeared between the name list and the sequence area
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "showDistancesColumnCheck"));
-    GTWidget::findWidget(os, "msa_editor_similarity_column");
+    GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, 0);
     CHECK_SET_ERR(QApplication::activeWindow() == appWindow, "Active window changed");
 }
 
@@ -2088,8 +2088,8 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
     GTUtilsMsaEditor::clickSequence(os, endPos - 1);
@@ -2120,7 +2120,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     //    Expected state: four sequences are selected, the msa is scrolled down for two lines.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 4));
 
-    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleViewRowIndex(
+    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getFirstVisibleViewRowIndex(
         false);
     CHECK_SET_ERR(firstVisibleSequence == 2, QString("MSA scrolled incorrectly: expected first fully visible sequence %1, got %2").arg(2).arg(firstVisibleSequence));
 }
@@ -4036,7 +4036,7 @@ GUI_TEST_CLASS_DEFINITION(test_4701) {
                   "1 Mecopoda_elongata__Sumatra_ is not collapsed");
 
     // Press the Remove All Gaps button.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -4568,9 +4568,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
-    QWidget* nameListWidget = editor->getUI()->getEditorNameList();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor *editor = mw->findChild<MSAEditor *>();
+    QWidget *nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Paste"}));
@@ -4590,7 +4590,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     // Expected state subalignment pasted correctly
     GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
 
@@ -4601,9 +4601,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
-    QWidget* sequenceAreaWidget = editor->getUI()->getSequenceArea();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor *editor = mw->findChild<MSAEditor *>();
+    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -4621,9 +4621,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
-    QWidget* sequenceAreaWidget = editor->getUI()->getSequenceArea();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor *editor = mw->findChild<MSAEditor *>();
+    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -4813,7 +4813,7 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QModelIndex aminoExtIdx = GTUtilsProjectTreeView::findIndex(os, "amino_ext");
-    GTUtilsProjectTreeView::dragAndDrop(os, aminoExtIdx, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, aminoExtIdx, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -4980,13 +4980,13 @@ GUI_TEST_CLASS_DEFINITION(test_4804_3) {
 
     //    2. Add  extended amino sequence by drag and drop
     QModelIndex toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_amino_seq");
-    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Add  extended DNA sequence by drag and drop
     toDragNDrop = GTUtilsProjectTreeView::findIndex(os, "ext_dna_seq");
-    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTUtilsProjectTreeView::dragAndDrop(os, toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended amino acid\" to \"Raw\"");
     GTUtilsDialog::checkNoActiveWaiters(os);
 }

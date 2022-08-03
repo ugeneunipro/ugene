@@ -25,6 +25,7 @@
 #include <harness/UGUITestBase.h>
 
 #include <QMessageBox>
+#include <QTextStream>
 #include <QTreeView>
 #include <QTreeWidgetItem>
 
@@ -98,6 +99,7 @@ void GUITestRunner::sl_runSelected() {
         }
     }
 }
+
 void GUITestRunner::sl_runAllGUITests() {
     GUITestService::setEnvVariablesForGuiTesting();
     if (GUITestService::getGuiTestService()->isEnabled()) {
