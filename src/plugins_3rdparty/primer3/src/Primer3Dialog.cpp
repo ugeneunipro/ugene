@@ -263,7 +263,7 @@ bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputL
 
 bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>* outputList) {
     QList<QList<int>> result;
-    QStringList intStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList intStringList = inputString.split(";", QString::SkipEmptyParts);
     for (const auto& numList : intStringList) {
         QStringList numStringList = numList.split(",");
         if (numStringList.size() != 4) {
@@ -273,10 +273,11 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
         QList<int> res;
         for (int i = 0; i < 4; i++) {
             bool ok = false;
-            res << numStringList[i].toInt(&ok);
+            int v = numStringList[i].toInt(&ok);
             if (!ok) {
-                return false;
+                v = -1;
             }
+            res << v;
         }
         
         result << res;
@@ -683,6 +684,11 @@ bool Primer3Dialog::doDataExchange() {
             const auto& includedRegion = settings.getIncludedRegion();
             int fbs = settings.getFirstBaseIndex();
             int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+            if (includedRegionOffset < 0) {
+                QMessageBox::critical(this, windowTitle(), tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0"));
+                return false;
+            }
+
             if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
                                                               "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""

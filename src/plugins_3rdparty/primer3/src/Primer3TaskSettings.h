@@ -131,13 +131,15 @@ public:
 
     void setRepeatLibraryPath(const QByteArray& value);
     void setMishybLibraryPath(const QByteArray& value);
+    void setThermodynamicParametersPath(const QByteArray& value);
 
     void setShowDebugging(bool value);
     void setFormatOutput(bool value);
     void setExplain(bool value);
 
-    QByteArray getRepeatLibraryPath() const;
-    QByteArray getMishybLibraryPath() const;
+    const QByteArray& getRepeatLibraryPath() const;
+    const QByteArray& getMishybLibraryPath() const;
+    const QByteArray& getThermodynamicParametersPath() const;
     p3_global_settings* getPrimerSettings() const;
     seq_args* getSeqArgs() const;
     p3retval* getP3RetVal() const;
@@ -187,6 +189,7 @@ private:
     bool isCircular;
     QByteArray repeatLibraryPath;
     QByteArray mishybLibraryPath;
+    QByteArray thermodynamicParametersPath;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
     U2Region sequenceRange;
 
