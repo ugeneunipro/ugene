@@ -43,23 +43,23 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
     Q_OBJECT
 
 public:
-    MsaEditorMultilineWgt(MSAEditor *editor, bool multiline);
+    MsaEditorMultilineWgt(MSAEditor* editor, bool multiline);
 
-    MSAEditor *getEditor() const;
-    MaEditorOverviewArea *getOverview();
-    MaEditorStatusBar *getStatusBar();
+    MSAEditor* getEditor() const;
+    MaEditorOverviewArea* getOverview();
+    MaEditorStatusBar* getStatusBar();
 
-    MaEditorWgt *getUI(uint index = 0) const override;
+    MaEditorWgt* getUI(uint index = 0) const override;
     void updateSize(bool recurse = true) override;
 
-    void addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer);
+    void addPhylTreeWidget(MSAEditorMultiTreeViewer* multiTreeViewer);
     void delPhylTreeWidget();
-    MSAEditorMultiTreeViewer *getPhylTreeWidget() const {
+    MSAEditorMultiTreeViewer* getPhylTreeWidget() const {
         return multiTreeViewer;
     };
-    MSAEditorTreeViewer *getCurrentTree() const;
+    MSAEditorTreeViewer* getCurrentTree() const;
 
-    void setSimilaritySettings(const SimilarityStatisticsSettings *settings) override;
+    void setSimilaritySettings(const SimilarityStatisticsSettings* settings) override;
     void refreshSimilarityColumn() override;
     void showSimilarity() override;
     void hideSimilarity() override;
@@ -67,30 +67,29 @@ public:
 signals:
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString & id);
-    void sl_changeColorScheme(const QString & id);
+    void sl_changeColorSchemeOutside(const QString& id);
+    void sl_changeColorScheme(const QString& id);
     void sl_onPosChangeRequest(int position);
     void sl_triggerUseDots(int checkState);
     void sl_cursorPositionChanged(const QPoint&);
 
 protected:
-    void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
-    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
-    void initStatusBar(MaEditorStatusBar *_statusBar = nullptr) override;
-    void initChildrenArea(QGroupBox *_uiChildrenArea) override;
+    void initScrollArea(QScrollArea* _scrollArea = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) override;
+    void initStatusBar(MaEditorStatusBar* _statusBar = nullptr) override;
+    void initChildrenArea(QGroupBox* _uiChildrenArea) override;
     void createChildren() override;
     void updateChildren() override;
-    MaEditorWgt *createChild(MaEditor *editor,
-                             MaEditorOverviewArea *overviewArea,
-                             MaEditorStatusBar *statusBar) override;
+    MaEditorWgt* createChild(MaEditor* editor,
+                             MaEditorOverviewArea* overviewArea,
+                             MaEditorStatusBar* statusBar) override;
     void deleteChild(int index) override;
-    void addChild(MaEditorWgt *child, int index = -1) override;
+    void addChild(MaEditorWgt* child, int index = -1) override;
     bool updateChildrenCount() override;
 
 private:
-    MSAEditorMultiTreeViewer *multiTreeViewer;
+    MSAEditorMultiTreeViewer* multiTreeViewer;
     MSAEditorTreeViewer* treeViewer;
-
 };
 
 }  // namespace U2

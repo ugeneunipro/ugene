@@ -909,11 +909,11 @@ void FindPatternMsaWidget::sl_nextButtonClicked() {
 
 void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
-    const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
+    const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
 
-    MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(msaEditor->getUI());
+    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(msaEditor->getUI());
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
-    MaEditorSequenceArea *seqArea = mui->getUI(0)->getSequenceArea();
+    MaEditorSequenceArea* seqArea = mui->getUI()->getSequenceArea();
     seqArea->setSelectionRect(selection);
     if (msaEditor->getUI()->getMultilineMode()) {
         mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());

@@ -191,10 +191,8 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     sl_sync();
 
-    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)),
-            msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
-    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)),
-            msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)), msa->getUI(), SLOT(sl_changeColorSchemeOutside(const QString&)));
 
     MsaColorSchemeRegistry* msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
@@ -359,9 +357,9 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
 
-    MaEditorMultilineWgt *mui = msa->getMaEditorMultilineWgt();
+    MaEditorMultilineWgt* mui = msa->getMaEditorMultilineWgt();
     for (uint i = 0; i < mui->getChildrenCount(); i++) {
-        MaEditorSequenceArea *sequence = msa->getMaEditorWgt(i)->getSequenceArea();
+        MaEditorSequenceArea* sequence = msa->getMaEditorWgt(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
     }
 }

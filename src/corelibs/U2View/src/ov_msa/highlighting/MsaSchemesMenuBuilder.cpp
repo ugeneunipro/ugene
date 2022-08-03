@@ -32,12 +32,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MSAEditor.h"
+#include "ov_msa/MaEditorSequenceArea.h"
 
 namespace U2 {
 
-QSignalMapper *MsaSchemesMenuBuilder::signalMapper = new QSignalMapper();
+QSignalMapper* MsaSchemesMenuBuilder::signalMapper = new QSignalMapper();
 
 void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*>& actions, ColorSchemeType type, DNAAlphabetType alphabet, MaEditorSequenceArea* actionsParent) {
     MsaColorSchemeRegistry* msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
@@ -119,7 +119,7 @@ void MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(QAction* a, QMenu* co
 }
 
 void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions, QList<MsaColorSchemeFactory*> colorFactories, MaEditorSequenceArea* actionsParent) {
-    MSAEditor *msa = qobject_cast<MSAEditor *>(actionsParent->getEditor());
+    MSAEditor* msa = qobject_cast<MSAEditor*>(actionsParent->getEditor());
 
     foreach (MsaColorSchemeFactory* factory, colorFactories) {
         QString name = factory->getName();
@@ -137,8 +137,7 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions,
         }
     }
     if (msa != nullptr && msa->getMultilineMode()) {
-        connect(signalMapper, SIGNAL(mapped(const QString &)),
-                msa->getUI(), SLOT(sl_changeColorScheme(const QString &)));
+        connect(signalMapper, SIGNAL(mapped(const QString&)), msa->getUI(), SLOT(sl_changeColorScheme(const QString&)));
     }
 }
 

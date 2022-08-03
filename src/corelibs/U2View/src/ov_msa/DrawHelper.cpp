@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-DrawHelper::DrawHelper(MaEditorWgt *_ui)
+DrawHelper::DrawHelper(MaEditorWgt* _ui)
     : ui(_ui) {
 }
 

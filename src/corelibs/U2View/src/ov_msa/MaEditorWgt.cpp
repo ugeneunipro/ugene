@@ -43,11 +43,9 @@
 #include "ov_msa/DrawHelper.h"
 #include "ov_msa/ScrollController.h"
 
-
 namespace U2 {
 
-bool MaEditorWgtEventFilter::eventFilter(QObject *obj, QEvent *event)
-{
+bool MaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
     // TODO:ichebyki
     // Maybe need to check QEvent::FocusIn || QEvent::Enter
     // Also,there is a question about children (QEvent::ChildAdded)
@@ -212,7 +210,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     mainSplitter->setStretchFactor(0, 2);
 
     if (addOverviewArea) {
-        MsaEditorWgt *wgt = qobject_cast<MsaEditorWgt *>(this);
+        MsaEditorWgt* wgt = qobject_cast<MsaEditorWgt*>(this);
         if (wgt == nullptr) {
             mainSplitter->addWidget(overviewArea);
             mainSplitter->setCollapsible(1, false);

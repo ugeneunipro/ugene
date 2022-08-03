@@ -157,7 +157,7 @@ public:
 protected:
     void focusOutEvent(QFocusEvent* fe) override;
     void focusInEvent(QFocusEvent* fe) override;
-    void wheelEvent(QWheelEvent *we) override;
+    void wheelEvent(QWheelEvent* we) override;
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 

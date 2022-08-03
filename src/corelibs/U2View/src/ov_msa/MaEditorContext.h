@@ -41,7 +41,7 @@ class MaCollapseModel;
  */
 class U2VIEW_EXPORT MaEditorContext {
 public:
-    MaEditorContext(MaEditor *editor, QWidget *wgt);
+    MaEditorContext(MaEditor* editor, QWidget* wgt);
 
     MaEditor* const editor;
     MultipleAlignmentObject* const maObject;

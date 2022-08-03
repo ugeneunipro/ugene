@@ -1,64 +1,59 @@
+#include "MsaMultilineScrollArea.h"
+
 #include <QScrollBar>
 #include <QWheelEvent>
 
 #include <U2Gui/GScrollBar.h>
+
 #include "MaEditor.h"
-#include "MaEditorWgt.h"
 #include "MaEditorSelection.h"
-#include "MsaMultilineScrollArea.h"
+#include "MaEditorWgt.h"
 #include "MultilineScrollController.h"
-#include "ScrollController.h"
 #include "RowHeightController.h"
+#include "ScrollController.h"
 
 namespace U2 {
 
-MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMultilineWgt *maEditorUi)
+MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* maEditorUi)
     : QScrollArea(maEditorUi),
       maEditor(maEditor),
-      maEditorUi(maEditorUi)
-{
+      maEditorUi(maEditorUi) {
     verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
     this->installEventFilter(this);
-
 }
 
-bool MsaMultilineScrollArea::eventFilter(QObject *obj, QEvent *event)
-{
-    if (obj == this
-        && maEditor->getMultilineMode()
-        && event->type() == QEvent::KeyPress)
-    {
-        auto key = static_cast<QKeyEvent *>(event)->key();
+bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
+    if (obj == this && maEditor->getMultilineMode() && event->type() == QEvent::KeyPress) {
+        auto key = static_cast<QKeyEvent*>(event)->key();
         switch (key) {
-        case Qt::Key_Escape:
-        case Qt::Key_Delete:
-        case Qt::Key_Backspace:
-        case Qt::Key_Insert:
-        case Qt::Key_Space:
-        case Qt::Key_Left:
-        case Qt::Key_Right:
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-        case Qt::Key_Home:
-        case Qt::Key_End:
-            // ignore MSA sequence view widget keys
-            return true;
-        case Qt::Key_PageUp:
-            scrollVert(MultilineScrollController::Up, false);
-            return true;
-        case Qt::Key_PageDown:
-            scrollVert(MultilineScrollController::Down, false);
-            return true;
+            case Qt::Key_Escape:
+            case Qt::Key_Delete:
+            case Qt::Key_Backspace:
+            case Qt::Key_Insert:
+            case Qt::Key_Space:
+            case Qt::Key_Left:
+            case Qt::Key_Right:
+            case Qt::Key_Up:
+            case Qt::Key_Down:
+            case Qt::Key_Home:
+            case Qt::Key_End:
+                // ignore MSA sequence view widget keys
+                return true;
+            case Qt::Key_PageUp:
+                scrollVert(MultilineScrollController::Up, false);
+                return true;
+            case Qt::Key_PageDown:
+                scrollVert(MultilineScrollController::Down, false);
+                return true;
         }
     }
     // default behavior
     return QObject::eventFilter(obj, event);
 }
 
-void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions &directions,
-                                        bool byStep)
-{
-    QScrollBar *vbar = verticalScrollBar();
+void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions& directions,
+                                        bool byStep) {
+    QScrollBar* vbar = verticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
     maEditorUi->updateChildrenCount();
 
@@ -70,7 +65,7 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
         maEditorUi->getScrollController()->setFirstVisibleBase(
             maEditor->getAlignmentLen() - maEditorUi->getSequenceAreaAllBaseLen());
     } else if (directions.testFlag(MultilineScrollController::SliderMoved)) {
-        QScrollBar *vScrollBar = maEditorUi->getScrollController()->getVerticalScrollBar();
+        QScrollBar* vScrollBar = maEditorUi->getScrollController()->getVerticalScrollBar();
         int vSliderPos = vScrollBar->sliderPosition();
 
         if (vSliderPos == vScrollBar->maximum()) {
@@ -154,8 +149,7 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
     maEditorUi->setUpdatesEnabled(true);
 }
 
-void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
-{
+void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
     if (maEditor->getMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()

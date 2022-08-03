@@ -117,7 +117,7 @@ void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
-void McaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
+void McaEditorWgt::initOverviewArea(MaEditorOverviewArea* _overviewArea) {
     if (_overviewArea == nullptr) {
         overviewArea = new McaEditorOverviewArea(this);
     } else {
@@ -133,7 +133,7 @@ void McaEditorWgt::initConsensusArea() {
     consensusArea = new McaEditorConsensusArea(this);
 }
 
-void McaEditorWgt::initStatusBar(MaEditorStatusBar *statusbar) {
+void McaEditorWgt::initStatusBar(MaEditorStatusBar* statusbar) {
     if (statusbar == nullptr) {
         statusBar = new McaEditorStatusBar(getEditor(), refCharController);
     } else {

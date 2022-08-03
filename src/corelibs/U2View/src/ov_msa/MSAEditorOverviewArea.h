@@ -37,7 +37,7 @@ class MaOverviewContextMenu;
 class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MsaEditorMultilineWgt *ui);
+    MSAEditorOverviewArea(MsaEditorMultilineWgt* ui);
 
     void contextMenuEvent(QContextMenuEvent* event) override;
 
@@ -45,8 +45,12 @@ public:
 
     void setVisible(bool isVisible) override;
 
-    MaGraphOverview *getGraphOverview() { return graphOverview; }
-    MaSimpleOverview *getSimpleOverview() { return simpleOverview; }
+    MaGraphOverview* getGraphOverview() {
+        return graphOverview;
+    }
+    MaSimpleOverview* getSimpleOverview() {
+        return simpleOverview;
+    }
 
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;

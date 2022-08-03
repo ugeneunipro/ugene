@@ -60,7 +60,7 @@ private:
     static void fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory*>& colorSchemesFactories, QList<QAction*>& actions, const QString& alphName, MaEditorSequenceArea* actionsParent);
     static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory*>& highlightSchemesFactories, QList<QAction*>& actions, const QString&, MaEditorSequenceArea* actionsParent);
 
-    static QSignalMapper *signalMapper;
+    static QSignalMapper* signalMapper;
 };
 
 }  // namespace U2

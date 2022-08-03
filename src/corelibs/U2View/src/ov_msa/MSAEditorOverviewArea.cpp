@@ -34,13 +34,12 @@ namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MsaEditorMultilineWgt *wgt)
-    : MaEditorOverviewArea(wgt, OVERVIEW_AREA_OBJECT_NAME)
-{
+MSAEditorOverviewArea::MSAEditorOverviewArea(MsaEditorMultilineWgt* wgt)
+    : MaEditorOverviewArea(wgt, OVERVIEW_AREA_OBJECT_NAME) {
     // The MSAEditorOverviewArea can't be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    MSAEditor *editor = wgt->getEditor();
+    MSAEditor* editor = wgt->getEditor();
     graphOverview = new MaGraphOverview(editor, wgt);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 

@@ -38,8 +38,8 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "MaGraphCalculationTask.h"
-#include "ov_msa/ScrollController.h"
 #include "ov_msa/MultilineScrollController.h"
+#include "ov_msa/ScrollController.h"
 
 #define MSA_GRAPH_OVERVIEW_COLOR_KEY "msa_graph_overview_color"
 #define MSA_GRAPH_OVERVIEW_TYPE_KEY "msa_graph_overview_type"
@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditor *_editor, QWidget *_ui)
+MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
     : MaOverview(_editor, _ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
@@ -64,7 +64,7 @@ MaGraphOverview::MaGraphOverview(MaEditor *_editor, QWidget *_ui)
         sl_redraw();
     });
 
-    MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(_ui);
+    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
@@ -152,8 +152,8 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         // X position is defined by the first visible child
         qint64 screenWidth = 0;
         int screenPositionX = -1;
-        MaEditorWgt *wgt = editor->getMaEditorWgt(0);
-        for (uint i = 0; wgt != nullptr; ) {
+        MaEditorWgt* wgt = editor->getMaEditorWgt(0);
+        for (uint i = 0; wgt != nullptr;) {
             if (wgt->isVisible()) {
                 QRegion r = wgt->visibleRegion();
                 if (r.rectCount() > 0) {
@@ -219,9 +219,9 @@ void MaGraphOverview::sl_highlightingChanged() {
 
 void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
-        MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(ui);
+        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
         CHECK(mui != nullptr, );
-        MaEditorSequenceArea *sequenceArea = mui->getUI(0)->getSequenceArea();
+        MaEditorSequenceArea* sequenceArea = mui->getUI(0)->getSequenceArea();
         MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
         MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
@@ -318,11 +318,10 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     int newScrollBarValue = newVisibleRange.x() * stepX;
-    MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(ui);
+    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
         if (mui->getMultilineMode()) {
-            newScrollBarValue = newVisibleRange.x() * (double) editor->getAlignmentLen()
-                                / (double) width();
+            newScrollBarValue = newVisibleRange.x() * (double)editor->getAlignmentLen() / (double)width();
             mui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
             mui->getScrollController()->setFirstVisibleBase(newScrollBarValue);
         } else {

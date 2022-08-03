@@ -20,7 +20,8 @@
  */
 
 #include "MultilineScrollController.h"
-#include "ScrollController.h"
+
+#include <QWheelEvent>
 
 #include "U2Core/U2SafePoints.h"
 #include <U2Core/MultipleAlignmentObject.h>
@@ -28,21 +29,20 @@
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
+#include "ScrollController.h"
+#include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorSelection.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorWgt.h"
-#include "ov_msa/MSAEditorOverviewArea.h"
 #include "ov_msa/MsaMultilineScrollArea.h"
-
-#include <QWheelEvent>
 
 namespace U2 {
 
-MultilineScrollController::MultilineScrollController(MaEditor *maEditor, MaEditorMultilineWgt *maEditorUi)
+MultilineScrollController::MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -53,10 +53,9 @@ MultilineScrollController::MultilineScrollController(MaEditor *maEditor, MaEdito
     connect(this, SIGNAL(si_vScrollValueChanged()), SLOT(sl_vScrollValueChanged()));
 }
 
-void MultilineScrollController::init(GScrollBar *hScrollBar,
-                                     GScrollBar *vScrollBar,
-                                     QScrollArea *childrenArea)
-{
+void MultilineScrollController::init(GScrollBar* hScrollBar,
+                                     GScrollBar* vScrollBar,
+                                     QScrollArea* childrenArea) {
     this->childrenScrollArea = childrenArea;
 
     this->hScrollBar = hScrollBar;
@@ -66,7 +65,7 @@ void MultilineScrollController::init(GScrollBar *hScrollBar,
 
     this->vScrollBar = vScrollBar;
     connect(vScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_vScrollValueChanged()));
-    connect(vScrollBar, SIGNAL(actionTriggered (int)), this, SLOT(sl_handleVScrollAction(int)));
+    connect(vScrollBar, SIGNAL(actionTriggered(int)), this, SLOT(sl_handleVScrollAction(int)));
     vScrollBar->setValue(0);
     vScrollBar->setSingleStep(maEditor->getRowHeight());
     vScrollBar->setPageStep(childrenScrollArea->height());
@@ -76,8 +75,7 @@ void MultilineScrollController::init(GScrollBar *hScrollBar,
 }
 
 // TODO: new vertical scrollbar mode
-bool MultilineScrollController::eventFilter(QObject *object, QEvent *event)
-{
+bool MultilineScrollController::eventFilter(QObject* object, QEvent* event) {
     if (event->type() == QEvent::Wheel && maEditor->getMultilineMode()) {
         if (object == vScrollBar) {
             //return vertEventFilter((QWheelEvent *) event);
@@ -88,8 +86,7 @@ bool MultilineScrollController::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-bool MultilineScrollController::vertEventFilter(QWheelEvent *event)
-{
+bool MultilineScrollController::vertEventFilter(QWheelEvent* event) {
     if (maEditor->getMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
@@ -105,13 +102,12 @@ bool MultilineScrollController::vertEventFilter(QWheelEvent *event)
         } else if (direction > 0) {
             sl_handleVScrollAction(QAbstractSlider::SliderSingleStepSub);
         }
-        return true; // filter the original event out
+        return true;  // filter the original event out
     }
-    return false; // pass other events
+    return false;  // pass other events
 }
 
-void MultilineScrollController::sl_handleVScrollAction(int action)
-{
+void MultilineScrollController::sl_handleVScrollAction(int action) {
     if (action == QAbstractSlider::SliderSingleStepSub) {
         vertScroll(Up, true);
     } else if (action == QAbstractSlider::SliderPageStepSub) {
@@ -129,13 +125,12 @@ void MultilineScrollController::sl_handleVScrollAction(int action)
     }
 }
 
-void MultilineScrollController::vertScroll(const Directions &directions, bool byStep)
-{
+void MultilineScrollController::vertScroll(const Directions& directions, bool byStep) {
     ui->setUpdatesEnabled(false);
     ui->updateChildrenCount();
 
     if (maEditor->getMultilineMode()) {
-        MsaMultilineScrollArea *scroller = qobject_cast<MsaMultilineScrollArea *>(
+        MsaMultilineScrollArea* scroller = qobject_cast<MsaMultilineScrollArea*>(
             childrenScrollArea);
         CHECK(scroller != nullptr, );
         scroller->scrollVert(directions, byStep);
@@ -148,8 +143,7 @@ int MultilineScrollController::getViewHeight() {
     return childrenScrollArea->height();
 }
 
-void MultilineScrollController::sl_hScrollValueChanged()
-{
+void MultilineScrollController::sl_hScrollValueChanged() {
     QSignalBlocker signalBlocker(this);
     ui->setUpdatesEnabled(false);
 
@@ -186,8 +180,7 @@ void MultilineScrollController::sl_hScrollValueChanged()
     ui->getOverviewArea()->update();
 }
 
-void MultilineScrollController::sl_vScrollValueChanged()
-{
+void MultilineScrollController::sl_vScrollValueChanged() {
     if (maEditor->getMultilineMode()) {
         //int v = vScrollBar->value();
         //setMultilineHScrollbarValue(v);
@@ -221,7 +214,7 @@ void MultilineScrollController::scrollToBase(int baseNumber, int widgetWidth) {
     }
 }
 
-void MultilineScrollController::scrollToPoint(const QPoint &maPoint, const QSize &screenSize) {
+void MultilineScrollController::scrollToPoint(const QPoint& maPoint, const QSize& screenSize) {
     scrollToBase(maPoint.x(), screenSize.width());
     scrollToViewRow(maPoint.y(), screenSize.height());
 }
@@ -240,7 +233,7 @@ void MultilineScrollController::centerViewRow(int viewRowIndex, int widgetHeight
     vScrollBar->setValue(newScreenYOffset);
 }
 
-void MultilineScrollController::centerPoint(const QPoint &maPoint, const QSize &widgetSize) {
+void MultilineScrollController::centerPoint(const QPoint& maPoint, const QSize& widgetSize) {
     centerBase(maPoint.x(), widgetSize.width());
     centerViewRow(maPoint.y(), widgetSize.height());
 }
@@ -290,7 +283,7 @@ void MultilineScrollController::setFirstVisibleMaRow(int maRowIndex) {
     }
 }
 
-void MultilineScrollController::scrollSmoothly(const Directions &directions) {
+void MultilineScrollController::scrollSmoothly(const Directions& directions) {
     QAbstractSlider::SliderAction horizontalAction = QAbstractSlider::SliderNoAction;
     QAbstractSlider::SliderAction verticalAction = QAbstractSlider::SliderNoAction;
 
@@ -426,11 +419,11 @@ int MultilineScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool
     return lastVisibleViewRow - (removeClippedRow ? 1 : 0);
 }
 
-GScrollBar *MultilineScrollController::getHorizontalScrollBar() const {
+GScrollBar* MultilineScrollController::getHorizontalScrollBar() const {
     return hScrollBar;
 }
 
-GScrollBar *MultilineScrollController::getVerticalScrollBar() const {
+GScrollBar* MultilineScrollController::getVerticalScrollBar() const {
     return vScrollBar;
 }
 
@@ -482,7 +475,7 @@ void MultilineScrollController::updateHorizontalScrollBarPrivate() {
     const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
     const int allWidth = ui->getSequenceAreaAllBaseWidth();
 
-    QSplitter *splitter = qobject_cast<QSplitter *>(hScrollBar->parent());
+    QSplitter* splitter = qobject_cast<QSplitter*>(hScrollBar->parent());
     if (splitter != nullptr) {
         if (maEditor->getMultilineMode() && ui->getChildrenCount() > 0) {
             const int vScrollBarWidth = vScrollBar->width();
@@ -517,17 +510,17 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
     const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
     const int allWidth = ui->getSequenceAreaAllBaseWidth();
 
-//    const int lineHeight = ui->getUI(0)->height();
-//    int fullHeight = alignmentLength * columnWidth / (sequenceAreaWidth - columnWidth);
-//    fullHeight = (fullHeight
-//                  + (alignmentLength * columnWidth % (sequenceAreaWidth - columnWidth) > 0 ? 1 : 0))
-//                 * lineHeight;
-//    const int evenHeight = childrenScrollArea->height() / lineHeight;
+    //    const int lineHeight = ui->getUI(0)->height();
+    //    int fullHeight = alignmentLength * columnWidth / (sequenceAreaWidth - columnWidth);
+    //    fullHeight = (fullHeight
+    //                  + (alignmentLength * columnWidth % (sequenceAreaWidth - columnWidth) > 0 ? 1 : 0))
+    //                 * lineHeight;
+    //    const int evenHeight = childrenScrollArea->height() / lineHeight;
 
-//    vScrollBar->setMinimum(0);
-//    vScrollBar->setMaximum(qMax(0, fullHeight - childrenScrollArea->height()));
-//    vScrollBar->setSingleStep(columnWidth);
-//    vScrollBar->setPageStep(childrenScrollArea->height());
+    //    vScrollBar->setMinimum(0);
+    //    vScrollBar->setMaximum(qMax(0, fullHeight - childrenScrollArea->height()));
+    //    vScrollBar->setSingleStep(columnWidth);
+    //    vScrollBar->setPageStep(childrenScrollArea->height());
     vScrollBar->setMinimum(0);
     vScrollBar->setMaximum(qMax(0, alignmentLength * columnWidth - allWidth));
     vScrollBar->setSingleStep(columnWidth);

@@ -35,13 +35,12 @@
 
 namespace U2 {
 
-MaOverview::MaOverview(MaEditor *_editor, QWidget *_ui)
+MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
     : QWidget(_ui),
       editor(_editor),
       ui(_ui),
       stepX(0),
-      stepY(0)
-{
+      stepY(0) {
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_selectionChanged()));
@@ -52,11 +51,11 @@ MaOverview::MaOverview(MaEditor *_editor, QWidget *_ui)
     // The hack
     // for MSA we have MaEditorMultilineWgt
     // for MCA we have MaEditorWgt
-    MaEditorMultilineWgt *mwgt = qobject_cast<MaEditorMultilineWgt *>(_ui);
+    MaEditorMultilineWgt* mwgt = qobject_cast<MaEditorMultilineWgt*>(_ui);
     if (mwgt != nullptr) {
         connect(mwgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     } else {
-        MaEditorWgt *swgt = qobject_cast<MaEditorWgt *>(_ui);
+        MaEditorWgt* swgt = qobject_cast<MaEditorWgt*>(_ui);
         if (swgt != nullptr) {
             connect(swgt->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
             connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));

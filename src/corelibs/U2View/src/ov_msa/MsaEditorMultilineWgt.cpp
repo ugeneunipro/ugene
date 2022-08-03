@@ -23,11 +23,13 @@
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
+#include <U2Gui/GScrollBar.h>
+
+#include "MSAEditor.h"
+#include "MSAEditorOverviewArea.h"
 #include "MaEditorNameList.h"
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
-#include "MSAEditor.h"
-#include "MSAEditorOverviewArea.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
@@ -35,18 +37,15 @@
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
-#include "phy_tree/MsaEditorTreeTabArea.h"
 #include "phy_tree/MSAEditorTreeViewer.h"
-
-#include <U2Gui/GScrollBar.h>
+#include "phy_tree/MsaEditorTreeTabArea.h"
 
 namespace U2 {
 
-MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
+MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
     : MaEditorMultilineWgt(editor),
       multiTreeViewer(nullptr),
-      treeViewer(nullptr)
-{
+      treeViewer(nullptr) {
     initActions();
     initWidgets();
 
@@ -65,25 +64,23 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
             SLOT(sl_cursorPositionChanged(const QPoint&)));
 }
 
-MaEditorWgt *MsaEditorMultilineWgt::createChild(MaEditor *editor,
-                                                MaEditorOverviewArea *overviewArea,
-                                                MaEditorStatusBar *statusBar)
-{
-    MsaEditorWgt *child = new MsaEditorWgt(qobject_cast<MSAEditor *>(editor),
+MaEditorWgt* MsaEditorMultilineWgt::createChild(MaEditor* editor,
+                                                MaEditorOverviewArea* overviewArea,
+                                                MaEditorStatusBar* statusBar) {
+    MsaEditorWgt* child = new MsaEditorWgt(qobject_cast<MSAEditor*>(editor),
                                            overviewArea,
                                            statusBar);
     SAFE_POINT(child != nullptr, "Can't create sequence widget", nullptr);
     return child;
 }
 
-void MsaEditorMultilineWgt::deleteChild(int index)
-{
-    if (index < 0 || index >= (int) uiChildCount) {
+void MsaEditorMultilineWgt::deleteChild(int index) {
+    if (index < 0 || index >= (int)uiChildCount) {
         return;
     }
 
-    MaEditorWgt *toDelete = getUI(index);
-    QVBoxLayout *layout = (QVBoxLayout *) uiChildrenArea->layout();
+    MaEditorWgt* toDelete = getUI(index);
+    QVBoxLayout* layout = (QVBoxLayout*)uiChildrenArea->layout();
 
     uiLog.details(tr("Deleting widget from grid, count %1, index %2").arg(layout->count()).arg(index));
     toDelete->hide();
@@ -99,7 +96,7 @@ void MsaEditorMultilineWgt::deleteChild(int index)
     delete toDelete;
 }
 
-void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
+void MsaEditorMultilineWgt::addChild(MaEditorWgt* child, int index) {
     if (uiChildLength == 0) {
         uiChildLength = 8;
         uiChild.resize(uiChildLength);
@@ -118,31 +115,28 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
     uiChild[index] = child;
     uiChildCount++;
 
-    QVBoxLayout *vbox = (QVBoxLayout *)uiChildrenArea->layout();
+    QVBoxLayout* vbox = (QVBoxLayout*)uiChildrenArea->layout();
     vbox->addWidget(child);
 
     child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "_%1").arg(index));
     child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
 
-    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
-            getScrollController(), SLOT(sl_updateScrollBars()));
+    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), getScrollController(), SLOT(sl_updateScrollBars()));
 
     if (getMultilineMode()) {
-        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
-                scrollController, SIGNAL(si_hScrollValueChanged()));
+        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), scrollController, SIGNAL(si_hScrollValueChanged()));
     }
     scrollController->sl_updateScrollBars();
 
     setActiveChild(child);
 }
 
-void MsaEditorMultilineWgt::createChildren()
-{
+void MsaEditorMultilineWgt::createChildren() {
     uint childrenCount = getMultilineMode() ? 3 : 1;
 
-    MaEditorOverviewArea *overviewArea = this->getOverviewArea();
-    MaEditorStatusBar *statusBar = this->getStatusBar();
-    MaEditorWgt *child = nullptr;
+    MaEditorOverviewArea* overviewArea = this->getOverviewArea();
+    MaEditorStatusBar* statusBar = this->getStatusBar();
+    MaEditorWgt* child = nullptr;
     for (uint i = 0; i < childrenCount; i++) {
         child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
@@ -165,12 +159,11 @@ void MsaEditorMultilineWgt::createChildren()
     }
 }
 
-bool MsaEditorMultilineWgt::updateChildrenCount()
-{
+bool MsaEditorMultilineWgt::updateChildrenCount() {
     bool updated = false;
 
     if (getMultilineMode()) {
-        MaEditorWgt *child = nullptr;
+        MaEditorWgt* child = nullptr;
         int rowCount = editor->getNumSequences();
         int rowHeight = editor->getRowHeight();
         int headHeight = getUI(0)->getHeaderWidget()->height();
@@ -201,16 +194,15 @@ bool MsaEditorMultilineWgt::updateChildrenCount()
     return updated;
 }
 
-void MsaEditorMultilineWgt::updateChildren()
-{
+void MsaEditorMultilineWgt::updateChildren() {
     if (treeView) {
         // TODO:ichebyki
         // Need complex save/update for phyl-tree
         // Then, we will able to reuse tree view
-        MSAEditorMultiTreeViewer *treeViewer = qobject_cast<MsaEditorWgt *>(uiChild[0])
+        MSAEditorMultiTreeViewer* treeViewer = qobject_cast<MsaEditorWgt*>(uiChild[0])
                                                    ->getMultiTreeViewer();
         if (treeViewer != nullptr) {
-            MsaEditorTreeTab *treeTabWidget = treeViewer->getCurrentTabWidget();
+            MsaEditorTreeTab* treeTabWidget = treeViewer->getCurrentTabWidget();
             if (treeTabWidget != nullptr) {
                 for (int i = treeTabWidget->count(); i > 0; i--) {
                     treeTabWidget->deleteTree(i - 1);
@@ -222,10 +214,10 @@ void MsaEditorMultilineWgt::updateChildren()
 
     bool showStatistics = false;
     for (; uiChildCount > 0; uiChildCount--) {
-        MsaEditorWgt *child = qobject_cast<MsaEditorWgt *>(uiChild[uiChildCount - 1]);
+        MsaEditorWgt* child = qobject_cast<MsaEditorWgt*>(uiChild[uiChildCount - 1]);
         SAFE_POINT(child != nullptr, "Can't delete sequence widget in multiline mode", );
 
-        const MsaEditorAlignmentDependentWidget *statWidget = child->getSimilarityWidget();
+        const MsaEditorAlignmentDependentWidget* statWidget = child->getSimilarityWidget();
         showStatistics = statWidget != nullptr && statWidget->isVisible();
 
         delete child;
@@ -238,19 +230,18 @@ void MsaEditorMultilineWgt::updateChildren()
     }
 }
 
-MSAEditor *MsaEditorMultilineWgt::getEditor() const {
-    return qobject_cast<MSAEditor *>(editor);
+MSAEditor* MsaEditorMultilineWgt::getEditor() const {
+    return qobject_cast<MSAEditor*>(editor);
 }
 
-MaEditorOverviewArea *MsaEditorMultilineWgt::getOverview() {
+MaEditorOverviewArea* MsaEditorMultilineWgt::getOverview() {
     return overviewArea;
 }
-MaEditorStatusBar *MsaEditorMultilineWgt::getStatusBar() {
+MaEditorStatusBar* MsaEditorMultilineWgt::getStatusBar() {
     return statusBar;
 }
 
-void MsaEditorMultilineWgt::initScrollArea(QScrollArea *_scrollArea)
-{
+void MsaEditorMultilineWgt::initScrollArea(QScrollArea* _scrollArea) {
     if (_scrollArea == nullptr) {
         scrollArea = new MsaMultilineScrollArea(editor, this);
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -261,7 +252,7 @@ void MsaEditorMultilineWgt::initScrollArea(QScrollArea *_scrollArea)
     scrollArea->setWidgetResizable(true);
 }
 
-void MsaEditorMultilineWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
+void MsaEditorMultilineWgt::initOverviewArea(MaEditorOverviewArea* _overviewArea) {
     if (_overviewArea == nullptr) {
         overviewArea = new MSAEditorOverviewArea(this);
     } else {
@@ -269,7 +260,7 @@ void MsaEditorMultilineWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea
     }
 }
 
-void MsaEditorMultilineWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
+void MsaEditorMultilineWgt::initStatusBar(MaEditorStatusBar* _statusBar) {
     if (_statusBar == nullptr) {
         statusBar = new MsaEditorStatusBar(getEditor());
     } else {
@@ -277,7 +268,7 @@ void MsaEditorMultilineWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
     }
 }
 
-void MsaEditorMultilineWgt::initChildrenArea(QGroupBox *_uiChildrenArea) {
+void MsaEditorMultilineWgt::initChildrenArea(QGroupBox* _uiChildrenArea) {
     if (_uiChildrenArea == nullptr) {
         uiChildrenArea = new QGroupBox();
         uiChildrenArea->setFlat(true);
@@ -288,17 +279,16 @@ void MsaEditorMultilineWgt::initChildrenArea(QGroupBox *_uiChildrenArea) {
     }
 }
 
-MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
+MaEditorWgt* MsaEditorMultilineWgt::getUI(uint index) const {
     return !(index < uiChildCount)
                ? nullptr
-               : qobject_cast<MsaEditorWgt *>(uiChild[index]);
+               : qobject_cast<MsaEditorWgt*>(uiChild[index]);
 }
 
-void MsaEditorMultilineWgt::updateSize(bool recurse)
-{
+void MsaEditorMultilineWgt::updateSize(bool recurse) {
     if (recurse) {
         for (uint i = 0; i < getChildrenCount(); i++) {
-            MaEditorWgt *w = getUI(i);
+            MaEditorWgt* w = getUI(i);
             QSize s = w->getSequenceArea()->minimumSizeHint();
 
             w->getEditorNameList()->setMinimumSize(s);
@@ -309,7 +299,7 @@ void MsaEditorMultilineWgt::updateSize(bool recurse)
     updateGeometry();
 }
 
-void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer *multiTreeViewer) {
+void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer* multiTreeViewer) {
     this->multiTreeViewer = multiTreeViewer;
     treeSplitter->insertWidget(0, multiTreeViewer);
     treeSplitter->setSizes(QList<int>({500, 600}));
@@ -330,54 +320,52 @@ MSAEditorTreeViewer* MsaEditorMultilineWgt::getCurrentTree() const {
     if (nullptr == multiTreeViewer) {
         return nullptr;
     }
-    GObjectViewWindow* page = qobject_cast<GObjectViewWindow *>(multiTreeViewer->getCurrentWidget());
+    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
     if (nullptr == page) {
         return nullptr;
     }
-    return qobject_cast<MSAEditorTreeViewer *>(page->getObjectView());
+    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
 }
 
 void MsaEditorMultilineWgt::sl_changeColorSchemeOutside(const QString& id) {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        MaEditorSequenceArea* sequence = getUI(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(id);
     }
 }
 
-void MsaEditorMultilineWgt::sl_changeColorScheme(const QString &id) {
+void MsaEditorMultilineWgt::sl_changeColorScheme(const QString& id) {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        MaEditorSequenceArea* sequence = getUI(i)->getSequenceArea();
         sequence->applyColorScheme(id);
     }
 }
 
 void MsaEditorMultilineWgt::sl_triggerUseDots(int checkState) {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MaEditorSequenceArea *sequence = getUI(i)->getSequenceArea();
+        MaEditorSequenceArea* sequence = getUI(i)->getSequenceArea();
         sequence->sl_triggerUseDots(checkState);
     }
 }
 
-void MsaEditorMultilineWgt::sl_cursorPositionChanged(const QPoint &point) {
+void MsaEditorMultilineWgt::sl_cursorPositionChanged(const QPoint& point) {
     if (multilineMode) {
         scrollController->scrollToPoint(point, size());
     }
 }
 
-void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSettings *settings)
-{
+void MsaEditorMultilineWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(uiChild[i]);
         if (ui != nullptr) {
             ui->setSimilaritySettings(settings);
         }
     }
 }
 
-void MsaEditorMultilineWgt::refreshSimilarityColumn()
-{
+void MsaEditorMultilineWgt::refreshSimilarityColumn() {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(uiChild[i]);
         if (ui != nullptr) {
             ui->refreshSimilarityColumn();
         }
@@ -386,7 +374,7 @@ void MsaEditorMultilineWgt::refreshSimilarityColumn()
 
 void MsaEditorMultilineWgt::showSimilarity() {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(uiChild[i]);
         if (ui != nullptr) {
             ui->showSimilarity();
         }
@@ -395,7 +383,7 @@ void MsaEditorMultilineWgt::showSimilarity() {
 
 void MsaEditorMultilineWgt::hideSimilarity() {
     for (uint i = 0; i < getChildrenCount(); i++) {
-        MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(uiChild[i]);
+        MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(uiChild[i]);
         if (ui != nullptr) {
             ui->hideSimilarity();
         }

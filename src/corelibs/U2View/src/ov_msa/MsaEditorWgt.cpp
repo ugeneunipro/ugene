@@ -38,12 +38,11 @@
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
-                           MaEditorOverviewArea *overview,
-                           MaEditorStatusBar *statusbar)
+MsaEditorWgt::MsaEditorWgt(MSAEditor* editor,
+                           MaEditorOverviewArea* overview,
+                           MaEditorStatusBar* statusbar)
     : MaEditorWgt(editor),
-      similarityStatistics(nullptr)
-{
+      similarityStatistics(nullptr) {
     overviewArea = overview;
     statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
@@ -69,7 +68,7 @@ MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI())->delPhylTreeWidget();
+        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->delPhylTreeWidget();
         emit si_hideTreeOP();
     }
 }
@@ -83,10 +82,10 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    MsaEditorMultilineWgt *mui = qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI());
+    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
 
     if (mui->getPhylTreeWidget() == nullptr) {
-        MSAEditorMultiTreeViewer *multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+        MSAEditorMultiTreeViewer* multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
 
         mui->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);
@@ -102,10 +101,9 @@ void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* set
     similarityStatistics->setSettings(settings);
 }
 
-const SimilarityStatisticsSettings *MsaEditorWgt::getSimilaritySettings()
-{
+const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
     if (similarityStatistics != nullptr) {
-        return static_cast<const SimilarityStatisticsSettings *>(
+        return static_cast<const SimilarityStatisticsSettings*>(
             similarityStatistics->getSettings());
     }
     return nullptr;
@@ -147,7 +145,7 @@ void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
-void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
+void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea* _overviewArea) {
     Q_ASSERT(_overviewArea);
     overviewArea = _overviewArea;
 }
@@ -160,7 +158,7 @@ void MsaEditorWgt::initConsensusArea() {
     consensusArea = new MSAEditorConsensusArea(this);
 }
 
-void MsaEditorWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
+void MsaEditorWgt::initStatusBar(MaEditorStatusBar* _statusBar) {
     Q_ASSERT(_statusBar);
     statusBar = _statusBar;
 }
@@ -175,11 +173,10 @@ MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
 }
 
 MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
-    return qobject_cast<MsaEditorMultilineWgt *>(getEditor()->getUI())->getPhylTreeWidget();
+    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->getPhylTreeWidget();
 }
 
-QSize MsaEditorWgt::sizeHint() const
-{
+QSize MsaEditorWgt::sizeHint() const {
     QSize s = QWidget::sizeHint();
     if (editor->getMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height());
@@ -187,15 +184,10 @@ QSize MsaEditorWgt::sizeHint() const
     return s;
 }
 
-QSize MsaEditorWgt::minimumSizeHint() const
-{
+QSize MsaEditorWgt::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
     if (editor->getMultilineMode()) {
-        int newHeight = consensusArea->size().height()
-                        + qMax(qMax(sequenceArea->minimumSizeHint().height(),
-                                    nameList->minimumSizeHint().height()),
-                               (editor->getRowHeight() + 1))
-                        + 5;
+        int newHeight = consensusArea->size().height() + qMax(qMax(sequenceArea->minimumSizeHint().height(), nameList->minimumSizeHint().height()), (editor->getRowHeight() + 1)) + 5;
         return QSize(s.width(), newHeight);
     }
     return s;

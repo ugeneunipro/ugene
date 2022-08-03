@@ -176,8 +176,7 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
     return DNAAlphabet_AMINO == alphabet->getType();
 }
 
-QSize MSAEditorSequenceArea::sizeHint() const
-{
+QSize MSAEditorSequenceArea::sizeHint() const {
     QSize s = QWidget::sizeHint();
     if (editor->getMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height() + 2);
@@ -185,8 +184,7 @@ QSize MSAEditorSequenceArea::sizeHint() const
     return s;
 }
 
-QSize MSAEditorSequenceArea::minimumSizeHint() const
-{
+QSize MSAEditorSequenceArea::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
     if (editor->getMultilineMode()) {
         int newHeight = (editor->getRowHeight() + 1) * qMax(1, editor->getNumSequences());
@@ -206,7 +204,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
     update();
 }
 
-void MSAEditorSequenceArea::wheelEvent(QWheelEvent *we) {
+void MSAEditorSequenceArea::wheelEvent(QWheelEvent* we) {
     if (!editor->getMultilineMode()) {
         MaEditorSequenceArea::wheelEvent(we);
     }
@@ -222,7 +220,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     Q_UNUSED(v);
 
-    MaEditorWgt *child0 = editor->getMaEditorMultilineWgt()->getUI(0);
+    MaEditorWgt* child0 = editor->getMaEditorMultilineWgt()->getUI(0);
     if (child0 != ui) {
         return;
     }
@@ -254,7 +252,7 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& 
     editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(),
                            ui->delSelectionAction);
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
-        QList<QAction *> actions;
+        QList<QAction*> actions;
         actions << insertGapsAction << replaceCharacterAction << reverseComplementAction
                 << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
@@ -936,7 +934,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
 
             QColor unused;
             bool highlight = false;
-            MaEditorSequenceArea *sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+            MaEditorSequenceArea* sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
             MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);

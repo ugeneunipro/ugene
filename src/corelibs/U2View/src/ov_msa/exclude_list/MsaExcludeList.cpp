@@ -109,18 +109,18 @@ void MsaExcludeListContext::initViewContext(GObjectView* view) {
         CHECK(!msaObjectPtr.isNull(), );
         msaObjectPtr->disconnect(this);
     });
-    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
-        QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
-            GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->getUI(0)->cutSelectionAction, moveFromMsaAction);
+    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView*, QMenu* menu) {
+        QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
+        GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->getUI(0)->cutSelectionAction, moveFromMsaAction);
     });
     addViewAction(moveFromMsaAction);
 
     updateState(msaEditor);
 }
 
-MsaExcludeListWidget *MsaExcludeListContext::findActiveExcludeList(MSAEditor *msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* msaEditor) {
     auto multilineLayout = msaEditor->getUI()->layout();
-    auto excludeWidget = msaEditor->getUI()->findChild<MsaExcludeListWidget *>();
+    auto excludeWidget = msaEditor->getUI()->findChild<MsaExcludeListWidget*>();
     if (excludeWidget != nullptr) {
         int idx = multilineLayout->indexOf(excludeWidget);
         if (idx >= 0) {
@@ -135,7 +135,7 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
 
-    QVBoxLayout *multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getUI()->layout());
+    QVBoxLayout* multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getUI()->layout());
     SAFE_POINT(multilineMainLayout != nullptr, "Can't insert exclude list widget in Msa editor", nullptr)
     excludeList = new MsaExcludeListWidget(msaEditor->getUI(), msaEditor, this);
     multilineMainLayout->insertWidget(1, excludeList);
@@ -143,8 +143,8 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     return excludeList;
 }
 
-void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor *msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
+void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
+    auto mainSplitter = msaEditor->getUI()->getUI()->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 

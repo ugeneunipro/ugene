@@ -45,8 +45,8 @@
 
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorConsensusArea.h"
-#include "ov_msa/MaEditorWgt.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -61,7 +61,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
 
     initSaveController();
 
-    MaEditorConsensusArea *consensusArea = ma->getMaEditorWgt()->getConsensusArea();
+    MaEditorConsensusArea* consensusArea = ma->getMaEditorWgt()->getConsensusArea();
     showHint(true);
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));

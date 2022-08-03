@@ -219,7 +219,7 @@ signals:
 protected:
     void resizeEvent(QResizeEvent* event);
     void paintEvent(QPaintEvent* event);
-    virtual void wheelEvent(QWheelEvent *event);
+    virtual void wheelEvent(QWheelEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);

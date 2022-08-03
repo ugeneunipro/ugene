@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-MaSimpleOverview::MaSimpleOverview(MaEditor *editor, QWidget *ui)
+MaSimpleOverview::MaSimpleOverview(MaEditor* editor, QWidget* ui)
     : MaOverview(editor, ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
@@ -173,7 +173,7 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
         setVisibleRangeForEmptyAlignment();
     } else {
         qint64 screenWidth = 0;
-        MaEditorWgt *wgt = editor->getMaEditorWgt(0);
+        MaEditorWgt* wgt = editor->getMaEditorWgt(0);
         int screenPositionX = -1;
         for (uint i = 0; wgt != nullptr;) {
             if (wgt->isVisible()) {
@@ -231,7 +231,7 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     int newPosX = qBound(cachedVisibleRange.width() / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
     int newPosY = qBound(cachedVisibleRange.height() / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     QPoint newPos(newPosX, newPosY);
-    MaEditorMultilineWgt *multiUi = qobject_cast<MaEditorMultilineWgt *>(ui);
+    MaEditorMultilineWgt* multiUi = qobject_cast<MaEditorMultilineWgt*>(ui);
     CHECK(multiUi != nullptr, );
 
     newVisibleRange.moveCenter(newPos);

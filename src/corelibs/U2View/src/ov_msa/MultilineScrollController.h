@@ -23,6 +23,7 @@
 #define _U2_MULTILINE_SCROLL_CONTROLLER_H_
 
 #include <QScrollArea>
+
 #include <U2Core/U2Region.h>
 
 namespace U2 {
@@ -47,17 +48,17 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    MultilineScrollController(MaEditor *maEditor, MaEditorMultilineWgt *ui);
+    MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* ui);
 
-    void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar, QScrollArea *childrenArea);
+    void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar, QScrollArea* childrenArea);
 
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
-    void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
+    void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
 
     void centerBase(int baseNumber, int widgetWidth);
     void centerViewRow(int viewRowIndex, int widgetHeight);
-    void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
+    void centerPoint(const QPoint& maPoint, const QSize& widgetSize);
 
     void setMultilineHScrollbarValue(int value);
     void setMultilineVScrollbarValue(int value);
@@ -67,7 +68,7 @@ public:
     void setFirstVisibleMaRow(int maRowIndex);
     void setCenterVisibleBase(int firstVisibleBase);
 
-    void scrollSmoothly(const Directions &directions);
+    void scrollSmoothly(const Directions& directions);
     void stopSmoothScrolling();
 
     void scrollStep(Direction direction);
@@ -80,14 +81,16 @@ public:
     int getFirstVisibleViewRowIndex(bool countClipped = false) const;
     int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
-    GScrollBar *getHorizontalScrollBar() const;
-    GScrollBar *getVerticalScrollBar() const;
+    GScrollBar* getHorizontalScrollBar() const;
+    GScrollBar* getVerticalScrollBar() const;
 
-    void vertScroll(const Directions &directions, bool byStep = true);
+    void vertScroll(const Directions& directions, bool byStep = true);
     int getViewHeight();
 
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
-    void updateScrollBarsOnFontOrZoomChange() { Q_ASSERT(false); }
+    void updateScrollBarsOnFontOrZoomChange() {
+        Q_ASSERT(false);
+    }
 
 signals:
     void si_visibleAreaChanged();
@@ -113,15 +116,14 @@ private:
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 
-    bool eventFilter(QObject *object, QEvent *event);
-    bool vertEventFilter(QWheelEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
+    bool vertEventFilter(QWheelEvent* event);
 
-
-    MaEditor *maEditor;
-    MaEditorMultilineWgt *ui;
-    QScrollArea *childrenScrollArea;
-    GScrollBar *hScrollBar;
-    GScrollBar *vScrollBar;
+    MaEditor* maEditor;
+    MaEditorMultilineWgt* ui;
+    QScrollArea* childrenScrollArea;
+    GScrollBar* hScrollBar;
+    GScrollBar* vScrollBar;
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;

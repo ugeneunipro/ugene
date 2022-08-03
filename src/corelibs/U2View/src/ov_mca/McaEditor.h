@@ -82,9 +82,9 @@ public:
         return gotoSelectedReadAction;
     }
 
-    MaEditorWgt *getMaEditorWgt(uint index = 0) const override {
+    MaEditorWgt* getMaEditorWgt(uint index = 0) const override {
         SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
-        return qobject_cast<McaEditorWgt *>(ui);
+        return qobject_cast<McaEditorWgt*>(ui);
     }
 
 protected slots:

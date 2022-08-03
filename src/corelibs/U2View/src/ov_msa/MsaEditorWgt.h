@@ -43,9 +43,9 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MsaEditorWgt(MSAEditor *editor,
-                 MaEditorOverviewArea *overview = nullptr,
-                 MaEditorStatusBar *statusbar = nullptr);
+    MsaEditorWgt(MSAEditor* editor,
+                 MaEditorOverviewArea* overview = nullptr,
+                 MaEditorStatusBar* statusbar = nullptr);
 
     MSAEditor* getEditor() const;
 
@@ -69,8 +69,8 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 
-    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
-    void initStatusBar(MaEditorStatusBar *statusBar = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) override;
+    void initStatusBar(MaEditorStatusBar* statusBar = nullptr) override;
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
@@ -82,8 +82,8 @@ signals:
     void si_hideTreeOP();
 
 protected:
-    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
-    void initNameList(QScrollBar *nhBar) override;
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) override;
+    void initNameList(QScrollBar* nhBar) override;
     void initConsensusArea() override;
 
 private:

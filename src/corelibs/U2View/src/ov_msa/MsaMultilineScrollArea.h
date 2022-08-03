@@ -1,9 +1,9 @@
 #ifndef MSAMULTILINESCROLLAREA_H
 #define MSAMULTILINESCROLLAREA_H
 
-#include <U2Core/global.h>
-
 #include <QScrollArea>
+
+#include <U2Core/global.h>
 
 #include "MsaEditorMultilineWgt.h"
 #include "MultilineScrollController.h"
@@ -16,18 +16,18 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
     Q_OBJECT
 
 public:
-    MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMultilineWgt *ui);
-    void scrollVert(const MultilineScrollController::Directions &directions, bool byStep);
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* ui);
+    void scrollVert(const MultilineScrollController::Directions& directions, bool byStep);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected:
-    void wheelEvent(QWheelEvent *we) override;
+    void wheelEvent(QWheelEvent* we) override;
 
 private:
-    MaEditor *maEditor;
-    MaEditorMultilineWgt *maEditorUi;
+    MaEditor* maEditor;
+    MaEditorMultilineWgt* maEditorUi;
 };
 
 }  // namespace U2
 
-#endif // MSAMULTILINESCROLLAREA_H
+#endif  // MSAMULTILINESCROLLAREA_H

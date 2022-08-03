@@ -41,15 +41,15 @@
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/DrawHelper.h"
-#include "ov_msa/ScrollController.h"
 #include "ov_msa/MultilineScrollController.h"
+#include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
 /************************************************************************/
 /* MaEditorMultilineWgt */
 /************************************************************************/
-MaEditorMultilineWgt::MaEditorMultilineWgt(MaEditor *_editor)
+MaEditorMultilineWgt::MaEditorMultilineWgt(MaEditor* _editor)
     : editor(_editor),
       overviewArea(nullptr),
       statusBar(nullptr),
@@ -59,7 +59,7 @@ MaEditorMultilineWgt::MaEditorMultilineWgt(MaEditor *_editor)
     setFocusPolicy(Qt::ClickFocus);
 }
 
-MaEditorStatusBar *MaEditorMultilineWgt::getStatusBar() const {
+MaEditorStatusBar* MaEditorMultilineWgt::getStatusBar() const {
     return statusBar;
 }
 
@@ -69,13 +69,13 @@ void MaEditorMultilineWgt::initWidgets() {
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
-    GScrollBar *shBar = new GScrollBar(Qt::Horizontal);
+    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
     shBar->setObjectName("multiline_horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar *nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
+    QScrollBar* nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
     nameListHorizontalScrollBar->setObjectName("multiline_horizontal_names_scroll");
 
-    GScrollBar *cvBar = new GScrollBar(Qt::Vertical);
+    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("multiline_vertical_sequence_scroll");
 
     initScrollArea();
@@ -83,7 +83,7 @@ void MaEditorMultilineWgt::initWidgets() {
     initStatusBar();
     initChildrenArea();
 
-    QVBoxLayout *layoutChildren = new QVBoxLayout;
+    QVBoxLayout* layoutChildren = new QVBoxLayout;
     uiChildrenArea->setLayout(layoutChildren);
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
@@ -94,11 +94,11 @@ void MaEditorMultilineWgt::initWidgets() {
         uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     }
 
-    QGridLayout *layoutMultilineArea = new QGridLayout;
+    QGridLayout* layoutMultilineArea = new QGridLayout;
     layoutMultilineArea->setContentsMargins(0, 0, 0, 0);
     layoutMultilineArea->setSpacing(0);
     layoutMultilineArea->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    QWidget *multilineArea = new QWidget;
+    QWidget* multilineArea = new QWidget;
     multilineArea->setLayout(layoutMultilineArea);
     layoutMultilineArea->addWidget(scrollArea, 0, 0);
     layoutMultilineArea->addWidget(cvBar, 0, 1);
@@ -110,13 +110,13 @@ void MaEditorMultilineWgt::initWidgets() {
     treeSplitter->setObjectName("maeditor_multilinewgt_phyltree_splitter");
     treeSplitter->setContentsMargins(0, 0, 0, 0);
 
-    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    QSplitter* mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->setObjectName("maeditor_multilinewgt_main_splitter");
     mainSplitter->setContentsMargins(0, 0, 0, 0);
     mainSplitter->setHandleWidth(0);
     mainSplitter->addWidget(multilineArea);
 
-    QSplitter *shBarSplitter = new QSplitter(Qt::Horizontal, this);
+    QSplitter* shBarSplitter = new QSplitter(Qt::Horizontal, this);
     shBarSplitter->setObjectName("maeditor_multilinewgt_shbar_splitter");
     shBarSplitter->setFixedHeight(20);
     shBarSplitter->setContentsMargins(0, 0, 0, 0);
@@ -144,7 +144,7 @@ void MaEditorMultilineWgt::initWidgets() {
     mainSplitter->handle(1)->setStyleSheet("border: none");
     mainSplitter->handle(1)->setEnabled(false);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -162,8 +162,7 @@ void MaEditorMultilineWgt::initWidgets() {
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 }
 
-bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
-{
+bool MaEditorMultilineWgt::setMultilineMode(bool newmode) {
     bool oldmode = multilineMode;
     multilineMode = newmode;
     if (oldmode != newmode && getUI(0) != nullptr) {
@@ -183,23 +182,22 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
     return false;
 }
 
-MaEditorWgt *MaEditorMultilineWgt::getActiveChild() {
+MaEditorWgt* MaEditorMultilineWgt::getActiveChild() {
     return activeChild;
 }
 
-void MaEditorMultilineWgt::setActiveChild(MaEditorWgt *child) {
+void MaEditorMultilineWgt::setActiveChild(MaEditorWgt* child) {
     activeChild = child;
 }
 
 void MaEditorMultilineWgt::initActions() {
 }
 
-MaEditor *MaEditorMultilineWgt::getEditor() const {
+MaEditor* MaEditorMultilineWgt::getEditor() const {
     return editor;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const
-{
+int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const {
     if (index >= getChildrenCount()) {
         return 0;
     }
@@ -221,16 +219,14 @@ int MaEditorMultilineWgt::getLastVisibleBase(uint index) const {
     return getUI(index)->getSequenceArea()->getLastVisibleBase(false);
 }
 
-int MaEditorMultilineWgt::getSequenceAreaBaseLen(uint index) const
-{
+int MaEditorMultilineWgt::getSequenceAreaBaseLen(uint index) const {
     if (index >= getChildrenCount()) {
         return 0;
     }
     return getLastVisibleBase(index) - getFirstVisibleBase(index) + 1;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const
-{
+int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const {
     if (index >= getChildrenCount()) {
         return 0;
     }
@@ -242,8 +238,7 @@ int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const
     return region2.length - region2.startPos;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const
-{
+int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const {
     int length = 0;
 
     for (uint i = 0; i < getChildrenCount(); i++) {
@@ -253,8 +248,7 @@ int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const
     return length;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const
-{
+int MaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const {
     int width = 0;
 
     for (uint i = 0; i < getChildrenCount(); i++) {
@@ -264,8 +258,7 @@ int MaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const
     return width;
 }
 
-void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)
-{
+void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     for (uint i = 0; i < uiChildCount; i++) {
         getUI(i)->getSequenceArea()->sl_toggleSequenceRowOrder(isOrderBySequence);
     }
@@ -280,28 +273,26 @@ void MaEditorMultilineWgt::sl_goto() {
     gotoDialog.exec();
 }
 
-MaEditorOverviewArea *MaEditorMultilineWgt::getOverviewArea() const {
+MaEditorOverviewArea* MaEditorMultilineWgt::getOverviewArea() const {
     return overviewArea;
 }
 
-MultilineScrollController *MaEditorMultilineWgt::getScrollController() const {
+MultilineScrollController* MaEditorMultilineWgt::getScrollController() const {
     return scrollController;
 }
 
-QScrollArea *MaEditorMultilineWgt::getChildrenScrollArea() const {
+QScrollArea* MaEditorMultilineWgt::getChildrenScrollArea() const {
     return scrollArea;
 }
 
-MaEditorWgt *MaEditorMultilineWgt::getUI(uint index) const
-{
+MaEditorWgt* MaEditorMultilineWgt::getUI(uint index) const {
     if (index < uiChildCount && index < uiChildLength) {
         return uiChild[index];
     }
     return nullptr;
 }
 
-uint MaEditorMultilineWgt::getUIIndex(MaEditorWgt *_ui) const
-{
+uint MaEditorMultilineWgt::getUIIndex(MaEditorWgt* _ui) const {
     if (_ui == nullptr) {
         return 0;
     }

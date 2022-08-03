@@ -83,7 +83,7 @@ void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
 }
 
 void MSAGeneralTab::connectSignals() {
-    MaEditorSequenceArea *sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
 
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
