@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_TASK="check_primers" 
+			PRIMER_PICK_ANYWAY="1" 
+			SEQUENCE_ID="Check internal only" 
+			SEQUENCE_INTERNAL_OLIGO="ccacggatgaggaagaagaa"/>
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="0" 
+			PRIMER_INTERNAL_NUM_RETURNED="1" 
+			PRIMER_PAIR_NUM_RETURNED="0" 
+			PRIMER_INTERNAL_0_PENALTY="0.187324" 
+			PRIMER_INTERNAL_0_SEQUENCE="ccacggatgaggaagaagaa" 
+			PRIMER_INTERNAL_0="90,20" 
+			PRIMER_INTERNAL_0_TM="60.187" 
+			PRIMER_INTERNAL_0_GC_PERCENT="50.000" 
+			PRIMER_INTERNAL_0_SELF_ANY="2.00" 
+			PRIMER_INTERNAL_0_SELF_END="0.00"/>
+	</plugin_primer_3>
+</multi-test>
