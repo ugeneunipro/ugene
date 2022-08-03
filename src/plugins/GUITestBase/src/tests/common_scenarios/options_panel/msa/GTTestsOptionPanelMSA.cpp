@@ -131,7 +131,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
 
-    QString name = names.at(0);
+    QString name = names[0];
     CHECK_SET_ERR(name == seqName, QString("wrong sequence name. Expected %1, found %2").arg(seqName).arg(name));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 }
@@ -165,8 +165,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004) {
     QStringList completerList = GTBaseCompleter::getNames(os, sequenceLineEdit);
     //    Expected state: two sequence names "Phaneroptera_falcata" appeared in popup helper
     CHECK_SET_ERR(completerList.count() == 2, "wrong number of sequences in completer");
-    QString first = completerList.at(0);
-    QString second = completerList.at(1);
+    QString first = completerList[0];
+    QString second = completerList[1];
     CHECK_SET_ERR(first == "Phaneroptera_falcata", QString("first sequence in completer is wrong: %1").arg(first))
     CHECK_SET_ERR(second == "Phaneroptera_falcata", QString("second sequence in completer is wrong: %1").arg(second))
     GTWidget::click(os, sequenceLineEdit);  // needed to close completer
@@ -1529,14 +1529,14 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     auto heightSlider = GTWidget::findWidget(os, "heightSlider");
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
 
-    const QImage initImage = GTWidget::getImage(os, treeView);
+    QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
-    const QImage circularImage = GTWidget::getImage(os, treeView);
+    QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for circular layout");
 
@@ -1545,7 +1545,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
-    const QImage unrootedImage = GTWidget::getImage(os, treeView);
+    QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for unrooted layout");
 
@@ -1554,7 +1554,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: tree is similar to the beginning, height slider is enabled
-    const QImage rectangularImage = GTWidget::getImage(os, treeView);
+    QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
     CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");
 }

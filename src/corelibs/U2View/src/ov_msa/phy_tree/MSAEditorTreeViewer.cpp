@@ -302,9 +302,6 @@ void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString new
 }
 
 void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout& layout) {
-    if (layout == RECTANGULAR_LAYOUT && !isRectangularLayout) {
-        setTransform(rectangularTransform);
-    }
     isRectangularLayout = layout == RECTANGULAR_LAYOUT;
     msaEditorTreeViewer->getSortSeqsAction()->setEnabled(false);
     if (isRectangularLayout) {

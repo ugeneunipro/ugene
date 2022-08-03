@@ -1090,6 +1090,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     //    Expected state: a MSAEditor appears.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os); // Let more space for the tree view.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
@@ -1113,7 +1114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: tree distances are not changed except two swapped branches.
-    const QList<qreal> distancesNew = GTUtilsPhyTree::getOrderedRectangularBranchesDistances(os);
+    QList<qreal> distancesNew = GTUtilsPhyTree::getOrderedRectangularBranchesDistances(os);
     CHECK_SET_ERR(!distancesNew.isEmpty(), "New distances array is empty");
     CHECK_SET_ERR(distances == distancesNew, "Tree has incorrect distances");
 }
@@ -1125,6 +1126,8 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    Expected state: a MSAEditor appears.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os); // Let more space for the tree view.
+
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
     QAbstractButton* tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
@@ -1133,7 +1136,8 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTWidget::click(os, GTUtilsPhyTree::getTreeViewerUi(os));
     QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    const qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
+
+    qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
     GTUtilsPhyTree::clickNode(os, nodes.first());
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
@@ -1146,8 +1150,8 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    Expected state: the tree is rerooted. The selected node parent node becomes a new tree root.
     nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    const qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
 
+    qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
     CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
 }
 

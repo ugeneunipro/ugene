@@ -769,7 +769,7 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
 
     defaultZoom();
     if (fitSceneToView) {
-        fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+        fitIntoView();
     }
 }
 
@@ -974,12 +974,16 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
 }
 
 void TreeViewerUI::resizeEvent(QResizeEvent* e) {
+    fitIntoView();
+    QGraphicsView::resizeEvent(e);
+}
+
+void TreeViewerUI::fitIntoView() {
     QRectF rect = scene()->sceneRect();
     rect.setWidth(rect.width() / horizontalScale);
     rect.setHeight(rect.height() / verticalScale);
     rect.moveCenter(scene()->sceneRect().center());
     fitInView(rect, Qt::KeepAspectRatio);
-    QGraphicsView::resizeEvent(e);
 }
 
 void TreeViewerUI::paint(QPainter& painter) {
@@ -1202,6 +1206,7 @@ void TreeViewerUI::changeLayout(TreeLayout newLayout) {
             defaultZoom();
             updateRect();
             updateScene(true);
+            fitIntoView();
             onLayoutChanged(newLayout);
             break;
         case CIRCULAR_LAYOUT:

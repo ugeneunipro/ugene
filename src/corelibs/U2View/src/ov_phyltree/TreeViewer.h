@@ -283,6 +283,9 @@ protected:
 
     void defaultZoom();
 
+    /** Fits current scene into the view, so the whole tree is visible. Does not change aspect ratio. **/
+    void fitIntoView();
+
     virtual void onLayoutChanged(const TreeLayout&) {
     }
 

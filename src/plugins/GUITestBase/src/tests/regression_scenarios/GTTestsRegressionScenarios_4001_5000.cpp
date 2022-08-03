@@ -1476,30 +1476,28 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
     CHECK_SET_ERR(item2 == nullptr, "item2 found!");
 }
 
+static void changeFontAndSize(HI::GUITestOpStatus& os, const QString& fontFamilyStr, int fontSize) {
+    auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
+    GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
+}
+
+static void fontChecker(HI::GUITestOpStatus& os, const QString& expectedFamilyStr, int expectedSize) {
+    QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
+    CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
+    int actualSize = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
+    CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
+}
+
+static void getFontSettings(HI::GUITestOpStatus& os, QString& familyStr, int& size) {
+    familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
+    size = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4177) {
-    class FontSettingsHelper {
-    public:
-        static void changeFontAndSize(HI::GUITestOpStatus& os, const QString& fontFamilyStr, int fontSize) {
-            auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
-            GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
-            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
-        }
-
-        static void fontChecker(HI::GUITestOpStatus& os, const QString& expectedFamilyStr, int expectedSize) {
-            QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
-            CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
-            int actualSize = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
-            CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
-        }
-
-        static void getFontSettings(HI::GUITestOpStatus& os, QString& familyStr, int& size) {
-            familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
-            size = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
-        }
-    };
-
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);  // Let more space for the tree view.
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
@@ -1521,24 +1519,24 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     GTUtilsPhyTree::clickNode(os, nodes[0]);  // drop sticked ruler
     // 2. Select node, change font size to 16, also remember default parameters
     GTUtilsPhyTree::clickNode(os, nodes[1]);
-    FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
-    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 16);
+    getFontSettings(os, defaultFontFamily, defaultSize);
+    changeFontAndSize(os, defaultFontFamily, 16);
     // 3. Click on parent node for node selected at step 1.
     // Change its font to Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[2]);
-    FontSettingsHelper::changeFontAndSize(os, "Arial", 22);
+    changeFontAndSize(os, "Arial", 22);
     // 4. Go back to first one node
     // Expected state: its font became Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[1]);
-    FontSettingsHelper::fontChecker(os, "Arial", 22);
+    fontChecker(os, "Arial", 22);
     // 5. Change font to default
-    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 22);
+    changeFontAndSize(os, defaultFontFamily, 22);
     // 6. Select parent node again
     // Expected state: font still Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[2]);
-    FontSettingsHelper::fontChecker(os, "Arial", 22);
+    fontChecker(os, "Arial", 22);
     // 7. Change font and size to defaults
-    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, defaultSize);
+    changeFontAndSize(os, defaultFontFamily, defaultSize);
     // 8. Select first node
     // Expected state: font and size now became default
     GTUtilsPhyTree::clickNode(os, nodes[1]);
@@ -1546,29 +1544,9 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4177_1) {
-    class FontSettingsHelper {
-    public:
-        static void changeFontAndSize(HI::GUITestOpStatus& os, const QString& fontFamilyStr, int fontSize) {
-            auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
-            GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
-            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
-        }
-
-        static void fontChecker(HI::GUITestOpStatus& os, const QString& expectedFamilyStr, int expectedSize) {
-            QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
-            CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
-            int actualSize = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
-            CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
-        }
-
-        static void getFontSettings(HI::GUITestOpStatus& os, QString& familyStr, int& size) {
-            familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
-            size = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
-        }
-    };
-
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);  // Let more space for the tree view.
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
@@ -1590,8 +1568,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     GTUtilsPhyTree::clickNode(os, nodes[0]);  // drop sticked ruler
     // 2. Select node, change font size to 16
     GTUtilsPhyTree::clickNode(os, nodes[1]);
-    FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
-    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 16);
+    getFontSettings(os, defaultFontFamily, defaultSize);
+    changeFontAndSize(os, defaultFontFamily, 16);
     // 3. Close OP tab
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     // 4. Click to empty space near the node to reset selection
@@ -1606,7 +1584,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     // 5. Open OP tab
     // Expected state: font and size are default
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
+    fontChecker(os, defaultFontFamily, defaultSize);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4179) {
