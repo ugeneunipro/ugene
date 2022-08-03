@@ -1540,7 +1540,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     // 8. Select first node
     // Expected state: font and size now became default
     GTUtilsPhyTree::clickNode(os, nodes[1]);
-    FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
+    fontChecker(os, defaultFontFamily, defaultSize);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4177_1) {
