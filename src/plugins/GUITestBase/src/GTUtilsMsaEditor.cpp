@@ -684,7 +684,6 @@ bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
 
     // Get state of the "Multiline View" button on toolbar
     auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
-    CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", false);
     return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
 }
 #undef GT_METHOD_NAME
@@ -695,7 +694,6 @@ void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool newMode) {
 
     // Press "Multiline View" button on toolbar
     auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
-    CHECK_SET_ERR_RESULT(mmode != nullptr, "No \"Multiline View\" button", );
     bool oldMode = getMultilineMode(os);
     if (oldMode == newMode) {
         return;

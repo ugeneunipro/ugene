@@ -316,4 +316,28 @@ QSplitter* MaEditorWgt::getMainSplitter() const {
     return mainSplitter;
 }
 
+MaEditorOverviewArea* MaEditorWgt::getOverviewArea() const {
+    return overviewArea;
+}
+
+void MaEditorWgt::setOverviewArea(MaEditorOverviewArea* overview) {
+    overviewArea = overview;
+}
+
+MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
+    return statusBar;
+}
+
+void MaEditorWgt::setStatusBar(MaEditorStatusBar* statusbar) {
+    statusBar = statusbar;
+}
+
+MSAEditorOffsetsViewController* MaEditorWgt::getOffsetsViewController() const {
+    return offsetsViewController;
+}
+
+ScrollController* MaEditorWgt::getScrollController() const {
+    return scrollController;
+}
+
 }  // namespace U2

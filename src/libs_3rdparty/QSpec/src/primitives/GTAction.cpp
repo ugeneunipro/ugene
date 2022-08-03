@@ -58,9 +58,6 @@ QAbstractButton* GTAction::button(GUITestOpStatus& os, const QAction* action) {
 #define GT_METHOD_NAME "findAction"
 QAction* GTAction::findAction(GUITestOpStatus& os, const QString& objectName, QWidget* parent, const GTGlobals::FindOptions& options) {
     QList<QAction*> actions = GTWidget::findChildren<QAction>(os, parent, [&objectName](auto action) { return action->objectName() == objectName; });
-#ifdef _DEBUG
-    if (actions.size() >= 2)
-#endif
     GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
     if (actions.size() == 1) {
         return actions[0];

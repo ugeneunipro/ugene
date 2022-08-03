@@ -51,9 +51,6 @@ namespace U2 {
 /************************************************************************/
 MaEditorMultilineWgt::MaEditorMultilineWgt(MaEditor* _editor)
     : editor(_editor),
-      overviewArea(nullptr),
-      statusBar(nullptr),
-      enableCollapsingOfSingleRowGroups(false),
       scrollController(new MultilineScrollController(editor, this)) {
     SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     setFocusPolicy(Qt::ClickFocus);
@@ -69,13 +66,13 @@ void MaEditorMultilineWgt::initWidgets() {
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
-    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
+    auto shBar = new GScrollBar(Qt::Horizontal);
     shBar->setObjectName("multiline_horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar* nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
+    auto nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
     nameListHorizontalScrollBar->setObjectName("multiline_horizontal_names_scroll");
 
-    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
+    auto cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("multiline_vertical_sequence_scroll");
 
     initScrollArea();
@@ -83,7 +80,7 @@ void MaEditorMultilineWgt::initWidgets() {
     initStatusBar();
     initChildrenArea();
 
-    QVBoxLayout* layoutChildren = new QVBoxLayout;
+    auto layoutChildren = new QVBoxLayout;
     uiChildrenArea->setLayout(layoutChildren);
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
@@ -94,11 +91,11 @@ void MaEditorMultilineWgt::initWidgets() {
         uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     }
 
-    QGridLayout* layoutMultilineArea = new QGridLayout;
+    auto layoutMultilineArea = new QGridLayout;
     layoutMultilineArea->setContentsMargins(0, 0, 0, 0);
     layoutMultilineArea->setSpacing(0);
     layoutMultilineArea->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    QWidget* multilineArea = new QWidget;
+    auto multilineArea = new QWidget;
     multilineArea->setLayout(layoutMultilineArea);
     layoutMultilineArea->addWidget(scrollArea, 0, 0);
     layoutMultilineArea->addWidget(cvBar, 0, 1);
@@ -110,13 +107,13 @@ void MaEditorMultilineWgt::initWidgets() {
     treeSplitter->setObjectName("maeditor_multilinewgt_phyltree_splitter");
     treeSplitter->setContentsMargins(0, 0, 0, 0);
 
-    QSplitter* mainSplitter = new QSplitter(Qt::Vertical, this);
+    auto mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->setObjectName("maeditor_multilinewgt_main_splitter");
     mainSplitter->setContentsMargins(0, 0, 0, 0);
     mainSplitter->setHandleWidth(0);
     mainSplitter->addWidget(multilineArea);
 
-    QSplitter* shBarSplitter = new QSplitter(Qt::Horizontal, this);
+    auto shBarSplitter = new QSplitter(Qt::Horizontal, this);
     shBarSplitter->setObjectName("maeditor_multilinewgt_shbar_splitter");
     shBarSplitter->setFixedHeight(20);
     shBarSplitter->setContentsMargins(0, 0, 0, 0);
@@ -144,7 +141,7 @@ void MaEditorMultilineWgt::initWidgets() {
     mainSplitter->handle(1)->setStyleSheet("border: none");
     mainSplitter->handle(1)->setEnabled(false);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);

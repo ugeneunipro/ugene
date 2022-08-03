@@ -75,8 +75,6 @@ GUITestRunner::GUITestRunner(UGUITestBase* guiTestBase, QWidget* parent)
 
     connect(startAllButton, SIGNAL(clicked(bool)), this, SLOT(sl_runAllGUITests()));
 
-    connect(listToStdout, SIGNAL(clicked(bool)), this, SLOT(sl_listToStdout()));
-
     show();
     filter->setFocus();
 
@@ -108,31 +106,6 @@ void GUITestRunner::sl_runAllGUITests() {
         hide();
         GUITestService::getGuiTestService()->runAllGUITests();
         show();
-    }
-}
-
-void GUITestRunner::sl_listToStdout()
-{
-    QList<QTreeWidgetItem *> selectedItems = tree->selectedItems();
-    QTreeWidgetItemIterator it(tree);
-    QTextStream out(stdout);
-    QString lastUsedFilter
-        = AppContext::getSettings()->getValue(LAST_FILTER_SETTING_NAME, "").toString();
-    static QRegExp spaces("\\s");
-    QStringList filterWords = lastUsedFilter.split(spaces);
-    while (*it) {
-        auto parent = (*it)->parent();
-        if (parent != nullptr) {
-            QString suite = parent->text(0);
-            QString name = (*it)->text(0);
-            foreach (const QString &word, filterWords) {
-                if (suite.contains(word, Qt::CaseInsensitive) || name.contains(word, Qt::CaseInsensitive)) {
-                    out << suite << ":" << name << endl;
-                    break;
-                }
-            }
-        }
-        ++it;
     }
 }
 

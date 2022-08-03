@@ -58,9 +58,6 @@ public:
         : QObject(own), maEditorWgt(maeditorwgt) {
     }
 
-    ~MaEditorWgtEventFilter() {
-    }
-
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
@@ -86,29 +83,17 @@ public:
 
     MaEditorConsensusArea* getConsensusArea() const;
 
-    MaEditorOverviewArea* getOverviewArea() const {
-        return overviewArea;
-    }
+    MaEditorOverviewArea* getOverviewArea() const;
 
-    void setOverviewArea(MaEditorOverviewArea* overview) {
-        overviewArea = overview;
-    }
+    void setOverviewArea(MaEditorOverviewArea* overview);
 
-    MaEditorStatusBar* getStatusBar() const {
-        return statusBar;
-    }
+    MaEditorStatusBar* getStatusBar() const;
 
-    void setStatusBar(MaEditorStatusBar* statusbar) {
-        statusBar = statusbar;
-    }
+    void setStatusBar(MaEditorStatusBar* statusbar);
 
-    MSAEditorOffsetsViewController* getOffsetsViewController() const {
-        return offsetsViewController;
-    }
+    MSAEditorOffsetsViewController* getOffsetsViewController() const;
 
-    ScrollController* getScrollController() const {
-        return scrollController;
-    }
+    ScrollController* getScrollController() const;
 
     BaseWidthController* getBaseWidthController() const;
 

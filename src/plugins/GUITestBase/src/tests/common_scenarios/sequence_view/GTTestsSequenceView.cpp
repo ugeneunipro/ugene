@@ -619,8 +619,8 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
-    QToolButton* toggleViewButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "toggleViewButton"));
     if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
         GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
         GTWidget::click(os, toggleViewButton);
     }

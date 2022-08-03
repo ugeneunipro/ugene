@@ -47,8 +47,10 @@
 
 #include <U2Core/AppContext.h>
 
-#include "GTTestsMSAMultiline.h"
+#include <U2View/BaseWidthController.h>
+#include <U2View/RowHeightController.h>
 
+#include "GTTestsMSAMultiline.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -59,11 +61,9 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "system/GTClipboard.h"
-#include <U2View/BaseWidthController.h>
-#include <U2View/RowHeightController.h>
 
 namespace U2 {
 
@@ -71,9 +71,8 @@ namespace GUITest_common_scenarios_MSA_editor_multiline {
 using namespace HI;
 
 namespace {
-void enumerateMenu(QMenu *menu, QList<QString> *textItems)
-{
-    foreach (QAction *action, menu->actions()) {
+void enumerateMenu(QMenu* menu, QList<QString>* textItems) {
+    foreach (QAction* action, menu->actions()) {
         if (action->isSeparator()) {
             qDebug("this action is a separator");
         } else if (action->menu()) {
@@ -88,10 +87,9 @@ void enumerateMenu(QMenu *menu, QList<QString> *textItems)
         }
     }
 }
-}
+}  // namespace
 
-GUI_TEST_CLASS_DEFINITION(general_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     // UGENE-7042
 
     // 1. Open file data/samples/CLUSTALW/COI.aln
@@ -119,8 +117,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001)
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001) {
     // UGENE-7605
 
     const QString seqName = "Phaneroptera_falcata";
@@ -129,8 +126,8 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QAbstractButton* reset_zoom = GTAction::button(os, "Reset Zoom");
-    GTWidget::click(os, reset_zoom);
+    QAbstractButton* resetZoom = GTAction::button(os, "Reset Zoom");
+    GTWidget::click(os, resetZoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
@@ -140,15 +137,15 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     // Select seq.
     GTUtilsMsaEditor::selectRowsByName(os, {seqName});
 
-    reset_zoom = GTAction::button(os, "Reset Zoom");
+    resetZoom = GTAction::button(os, "Reset Zoom");
     QAbstractButton* zoom_to_sel = GTAction::button(os, "Zoom To Selection");
     GTWidget::click(os, zoom_to_sel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, reset_zoom);
+    GTWidget::click(os, resetZoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, zoom_to_sel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, reset_zoom);
+    GTWidget::click(os, resetZoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
@@ -156,8 +153,7 @@ GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001)
     // Must not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(vscroll_test_0001) {
     // UGENE-7522
 
     // Open file data/samples/CLUSTALW/COI.aln
@@ -170,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
 
     // Find seq last area
     int lastWgtIndex = 0;
-    MaEditorWgt *lastWgt = nullptr;
+    MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
         MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         if (w == nullptr)
@@ -181,8 +177,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
     CHECK_SET_ERR(lastWgt != nullptr, QString("Can't find any sequence area"));
     CHECK_SET_ERR(lastWgtIndex > 1, QString("Not in multiline mode"));
 
-    GScrollBar *vscroll = qobject_cast<GScrollBar *>(
-        GTWidget::findWidget(os, "multiline_vertical_sequence_scroll"));
+    GScrollBar* vscroll = GTWidget::findExactWidget<GScrollBar*>(os, "multiline_vertical_sequence_scroll");
     CHECK_SET_ERR(vscroll != nullptr, QString("Can't find vertical scroll bar"));
     CHECK_SET_ERR(vscroll->isVisible(), QString("Vertical scroll is not visible"));
     CHECK_SET_ERR(vscroll->isEnabled(), QString("Vertical scroll is disabled"));
@@ -192,13 +187,14 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001)
     int curVal = vscroll->value();
     CHECK_SET_ERR(minVal == 0 && maxVal > 600 && curVal == 0,
                   QString("Unexpected vertical scroll values min=%1, max=%2, value=%3")
-                      .arg(minVal).arg(maxVal).arg(curVal));
+                      .arg(minVal)
+                      .arg(maxVal)
+                      .arg(curVal));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
-{
+GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
     // Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -207,8 +203,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
 
-    GScrollBar *vscroll = qobject_cast<GScrollBar *>(
-        GTWidget::findWidget(os, "multiline_vertical_sequence_scroll"));
+    GScrollBar* vscroll = GTWidget::findExactWidget<GScrollBar*>(os, "multiline_vertical_sequence_scroll");
     CHECK_SET_ERR(vscroll != nullptr, QString("Can't find vertical scroll bar"));
     CHECK_SET_ERR(vscroll->isVisible(), QString("Vertical scroll is not visible"));
     CHECK_SET_ERR(vscroll->isEnabled(), QString("Vertical scroll is disabled"));
@@ -228,9 +223,9 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
 
     // Find seq last area
     int lastWgtIndex = 0;
-    MaEditorWgt *lastWgt = nullptr;
+    MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt *w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         if (w == nullptr)
             break;
         lastWgt = w;
@@ -245,8 +240,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002)
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
-{
+GUI_TEST_CLASS_DEFINITION(vscroll_test_0003) {
     // Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -255,8 +249,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);
 
-    GScrollBar *hscroll = qobject_cast<GScrollBar *>(
-        GTWidget::findWidget(os, "multiline_horizontal_sequence_scroll"));
+    GScrollBar* hscroll = GTWidget::findExactWidget<GScrollBar*>(os, "multiline_horizontal_sequence_scroll");
     CHECK_SET_ERR(hscroll != nullptr, QString("Can't find horizontal scroll bar"));
     CHECK_SET_ERR(hscroll->isVisible(), QString("Horizontal scroll is not visible"));
     CHECK_SET_ERR(hscroll->isEnabled(), QString("Horizontal scroll is disabled"));
@@ -275,9 +268,9 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
 
     // Find seq last area
     int lastWgtIndex = 0;
-    MaEditorWgt *lastWgt = nullptr;
+    MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt *w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         if (w == nullptr)
             break;
         lastWgt = w;
@@ -292,8 +285,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0003)
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(menu_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
     // UGENE-7524
 
     // Open file data/samples/CLUSTALW/COI.aln
@@ -306,9 +298,9 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
 
     // Find seq last area
     int lastWgtIndex = 0;
-    MaEditorWgt *lastWgt = nullptr;
+    MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
-        MaEditorWgt *w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         if (w == nullptr)
             break;
         lastWgt = w;
@@ -321,7 +313,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(1, 2));
 
     // Show context menu
-    QMenu *menu = GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    QMenu* menu = GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     CHECK_SET_ERR(menu != nullptr, QString("No conrext menu"));
 
     // Check menu length
@@ -334,8 +326,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001)
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(goto_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(goto_test_0001) {
     // UGENE-7571
 
     // Open file data/samples/CLUSTALW/COI.aln
@@ -704,9 +695,6 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
-#ifdef _DEBUG
-            if (!hintLabel->isVisible())
-#endif
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
             auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
@@ -1287,7 +1275,7 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
 
     // 3. Click "Replace with gaps" with popup menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "MSAE_MENU_EDIT", "replace_with_gaps" }));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "replace_with_gaps"}));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // Expected: selection hasn't been changed
@@ -1310,8 +1298,7 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
             "-----------TTAGATTGC",
             "-----------TTAGATTAT",
             "-----------TAAGTCTAT",
-            "-----------TTAGCTTAT"
-        };
+            "-----------TTAGCTTAT"};
 
         static constexpr QPoint BOTTOM_RIGHT_CHECK = QPoint(20, 10);
 

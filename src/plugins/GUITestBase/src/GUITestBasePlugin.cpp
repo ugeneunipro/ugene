@@ -56,12 +56,12 @@
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h"
-#include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
-#include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
-#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/multiline/GTTestsMSAMultiline.h"
 #include "tests/common_scenarios/msa_editor/multiline/colors/GTTestsColorsMSAMultiline.h"
 #include "tests/common_scenarios/msa_editor/multiline/options/GTTestsOptionPanelMSAMultiline.h"
+#include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
+#include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
+#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
@@ -132,14 +132,6 @@ static QStringList nightly_msa_mm(QString mode, const QStringList& labelList = Q
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
-
-/** Registers a GUI test included into nightly build with a default timeout. */
-#define REGISTER_TEST_MSA_MODE(TestClass, mode) \
-    guiTestBase->registerTest( \
-        new TestClass##_MSA_##mode(DEFAULT_GUI_TEST_TIMEOUT, nightly_msa_mm(#mode)));
-#define REGISTER_TEST_MSA(TestClass) \
-    REGISTER_TEST_MSA_MODE(TestClass, SM); \
-    REGISTER_TEST_MSA_MODE(TestClass, MM)
 
 /** Registers a GUI test included into nightly build with a custom timeout. */
 #define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \

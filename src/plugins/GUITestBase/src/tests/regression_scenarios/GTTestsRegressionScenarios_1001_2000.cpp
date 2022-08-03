@@ -508,7 +508,6 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTThread::waitForMainThread();
         QTreeWidget* bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
         CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
@@ -5249,7 +5248,7 @@ GUI_TEST_CLASS_DEFINITION(test_1584) {
     QFile f1(testDir + "_common_data/genbank/pBR322.gb");
     f1.open(QIODevice::ReadOnly);
     QByteArray firstLine = f1.read(64);  // after 64 position the date of file modification is located,
-                                         // so meaningfull part is before it
+        // so meaningfull part is before it
     f1.close();
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");

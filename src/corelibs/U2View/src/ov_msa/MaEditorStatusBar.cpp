@@ -86,13 +86,13 @@ MaEditorStatusBar::MaEditorStatusBar(MaEditor* _editor)
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateStatusBar()));
     MultipleAlignmentObject* maObject = editor->getMaObject();
-    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateStatusBar()));
+    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateStatusBar()));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
     // Workaround
     // updateLabels() must be called after all queued signals,
     // so we use Qt::QueuedConnection and signal si_updateStatusBar2()
     // which is emitted in intermediate signal si_updateStatusBar()
-    connect(this, SIGNAL(si_updateStatusBar2()), SLOT(sl_updateStatusBar2()), Qt::QueuedConnection);
+    connect(this, &MaEditorStatusBar::si_updateStatusBar2, this, &MaEditorStatusBar::sl_updateStatusBar2, Qt::QueuedConnection);
 
     updateLock();
 }

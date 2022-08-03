@@ -1666,8 +1666,8 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     // Expected state: MSA is zoomed
 
     // 4. press toolbar button "Reset zoom"
-    QAbstractButton* reset_zoom = GTAction::button(os, "Reset Zoom");
-    GTWidget::click(os, reset_zoom);
+    QAbstractButton* resetZoom = GTAction::button(os, "Reset Zoom");
+    GTWidget::click(os, resetZoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os) == initOffset, "MSA is not zoomed back");
@@ -1681,7 +1681,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt *>(os, "msa_editor_COI_0")->getEditor();
+    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt*>(os, "msa_editor_COI_0")->getEditor();
     QString initialFont = msaEditor->getFont().toString();
 
     // Click "change font button" on the toolbar.
@@ -3972,7 +3972,6 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-
 
     QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 

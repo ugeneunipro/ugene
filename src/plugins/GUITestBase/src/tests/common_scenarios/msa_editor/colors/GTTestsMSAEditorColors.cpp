@@ -45,21 +45,6 @@ namespace U2 {
 namespace GUITest_common_scenarios_msa_editor_colors {
 using namespace HI;
 
-void checkColor(HI::GUITestOpStatus& os, const QPoint& p, const QString& expectedColor, int Xmove = 0, int Ymove = 0) {
-    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-
-    GTUtilsMSAEditorSequenceArea::click(os, p);
-    QPoint p1 = GTMouseDriver::getMousePosition();
-    p1.setY(p1.y() + Ymove);
-    p1.setX(p1.x() + Xmove);
-
-    const QImage content = GTWidget::getImage(os, seq);
-    const QRgb rgb = content.pixel(seq->mapFromGlobal(p1));
-    const QColor color(rgb);
-
-    CHECK_SET_ERR(color.name() == expectedColor, "Expected: " + expectedColor + " ,found: " + color.name());
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");

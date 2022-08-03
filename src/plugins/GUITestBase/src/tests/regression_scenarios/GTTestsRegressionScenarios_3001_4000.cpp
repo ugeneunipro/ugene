@@ -561,8 +561,7 @@ GUI_TEST_CLASS_DEFINITION(test_3139) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    CHECK_SET_ERR(nullptr != seqArea, "MSA Editor isn't opened.!");
+    GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3140) {
@@ -2735,7 +2734,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
-    MaEditorNameList *nameList = editor->getUI()->getUI(0)->getEditorNameList();
+    MaEditorNameList* nameList = editor->getUI()->getUI(0)->getEditorNameList();
     CHECK_SET_ERR(nameList != nullptr, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 

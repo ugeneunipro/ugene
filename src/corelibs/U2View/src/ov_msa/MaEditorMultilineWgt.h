@@ -166,8 +166,8 @@ protected:
     MaEditor* const editor;
     QScrollArea* scrollArea;  // scroll area for multiline widget, it's widget is uiChildrenArea
     QGroupBox* uiChildrenArea;
-    MaEditorOverviewArea* overviewArea;
-    MaEditorStatusBar* statusBar;
+    MaEditorOverviewArea* overviewArea = nullptr;
+    MaEditorStatusBar* statusBar = nullptr;
 
     bool treeView = false;
     QSplitter* treeSplitter;
@@ -178,7 +178,7 @@ protected:
     uint uiChildCount = 0;
     bool multilineMode = false;
 
-    bool enableCollapsingOfSingleRowGroups;
+    bool enableCollapsingOfSingleRowGroups = false;
     MultilineScrollController* scrollController;
 
 public:
