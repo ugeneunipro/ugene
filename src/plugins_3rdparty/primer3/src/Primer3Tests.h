@@ -55,6 +55,10 @@ private:
     QList<PrimerPair> expectedBestPairs;
     QList<Primer> expectedSinglePrimers;
     QString expectedErrorMessage;
+    QString expectedWarningMessage;
+    QString localErrorMessage;
+
+    int qualityNumber = 0;
 };
 
 }  // namespace U2

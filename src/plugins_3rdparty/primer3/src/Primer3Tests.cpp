@@ -41,7 +41,6 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     settings.setIncludedRegion(U2Region(0, -1));
 
     QString buf;
-    int n_quality = 0;
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
     QSet<QString> changedIntervalValues;
     for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
@@ -142,16 +141,16 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elInput.attribute("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST");
         if (!buf.isEmpty()) {
             QList<QList<int>> intListList;
-            for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
+            auto qwe = buf.split(';', QString::SkipEmptyParts);
+            for (const QString& str : buf.split(';', QString::SkipEmptyParts)) {
                 auto strList = str.split(',');
                 if (strList.size() == 4) {
                     QList<int> list;
                     for (int i = 0; i < 4; i++) {
                         bool ok = false;
-                        int v = str.toInt(&ok);
+                        int v = strList[i].toInt(&ok);
                         if (!ok) {
-                            stateInfo.setError(GTest::tr("Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1").arg(buf));
-                            break;
+                            v = -1;
                         }
 
                         list << v;
@@ -267,9 +266,15 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         if (!buf.isEmpty()) {
             QVector<int> qualityVecor;
             QStringList qualityList = buf.split(' ', QString::SkipEmptyParts);
-            n_quality = qualityList.size();
-            for (int qualityIndex = 0; qualityIndex < n_quality; qualityIndex++) {
-                qualityVecor.append(qualityList.at(qualityIndex).toInt());
+            qualityNumber = qualityList.size();
+            for (int qualityIndex = 0; qualityIndex < qualityNumber; qualityIndex++) {
+                bool ok = false;
+                int v = qualityList.at(qualityIndex).toInt(&ok);
+                if (!ok) {
+                    qualityNumber = -1;
+                    break;
+                }
+                qualityVecor.append(v);
             }
             settings.setSequenceQuality(qualityVecor);
         }
@@ -284,6 +289,11 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             settings.setMishybLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
         // 24
+        buf = elInput.attribute("PRIMER_THERMODYNAMIC_PARAMETERS_PATH");
+        if (!buf.isEmpty()) {
+            settings.setThermodynamicParametersPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
+        }
+        // 25
         buf = elInput.attribute("PRIMER_MIN_THREE_PRIME_DISTANCE");
         if (!buf.isEmpty()) {
             settings.setIntProperty("PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE", buf.toInt());
@@ -305,6 +315,11 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elOutput.attribute("PRIMER_ERROR");
         if (!buf.isEmpty()) {
             expectedErrorMessage = buf;
+        }
+
+        buf = elOutput.attribute("PRIMER_WARNING");
+        if (!buf.isEmpty()) {
+            expectedWarningMessage = buf;
         }
 
         int leftCount = 0;
@@ -348,7 +363,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }
         QList<Primer> rightPrimers;
         for (int i = 0; i < rightCount; i++) {
-            Primer primer;
+            Primer primer(OT_RIGHT);
             if (readPrimer(elOutput, "PRIMER_RIGHT_" + QString::number(i), &primer, false)) {
                 rightPrimers << primer;
                 expectedSinglePrimers << primer;
@@ -359,7 +374,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }
         QList<Primer> internalPrimers;
         for (int i = 0; i < internalCount; i++) {
-            Primer primer;
+            Primer primer(OT_INTL);
             if (readPrimer(elOutput, "PRIMER_INTERNAL_" + QString::number(i), &primer, true)) {
                 internalPrimers << primer;
                 expectedSinglePrimers << primer;
@@ -417,7 +432,26 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     result.setProductQuality(buf.toDouble());
                 }
             }
-
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
+                if (!buf.isEmpty()) {
+                    auto mispriming = buf.split(", ");
+                    result.setRepeatSim(mispriming.first().toDouble());
+                    result.setRepeatSimName(mispriming.last());
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_STUCT");
+                if (!buf.isEmpty()) {
+                    result.setComplAnyStruct(buf);
+                }
+            }
+            {
+                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_STUCT");
+                if (!buf.isEmpty()) {
+                    result.setComplEndStruct(buf);
+                }
+            }
             expectedBestPairs << result;
         }
         /*for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
@@ -425,35 +459,48 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }*/
     }
 
-    if (settings.getSequence().isEmpty())
-        stateInfo.setError(GTest::tr("Missing SEQUENCE tag"));  //??? may be remove from this place
-    else {
-        int sequenceLength = settings.getSequence().size();
-        if (settings.getSequenceRange().isEmpty()) {
-            settings.setSequenceRange(U2Region(0, sequenceLength));
-        }
-        if (n_quality != 0 && n_quality != sequenceLength)
-            stateInfo.setError(GTest::tr("Error in sequence quality data"));  //??? may be remove from this place
-        if ((settings.getPrimerSettings()->p_args.min_quality != 0 || settings.getPrimerSettings()->o_args.min_quality != 0) && n_quality == 0)
-            stateInfo.setError(GTest::tr("Sequence quality data missing"));  //??? may be remove from this place
-        if (settings.getPrimerSettings()->p_args.min_quality != 0 && settings.getPrimerSettings()->p_args.min_end_quality < settings.getPrimerSettings()->p_args.min_quality)
-            settings.getPrimerSettings()->p_args.min_end_quality = settings.getPrimerSettings()->p_args.min_quality;
+    int sequenceLength = settings.getSequence().size();
+    if (settings.getSequenceRange().isEmpty()) {
+        settings.setSequenceRange(U2Region(0, sequenceLength));
+    }
+    if (settings.getTask() == check_primers) {
+        settings.setIntProperty("PRIMER_PICK_LEFT_PRIMER", 0);
+        settings.setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 0);
+        settings.setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 0);
+    }
+    if (!settings.getLeftInput().isEmpty()) {
+        settings.setIntProperty("PRIMER_PICK_LEFT_PRIMER", 1);
+    }
+    if (!settings.getRightInput().isEmpty()) {
+        settings.setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 1);
+    }
+    if (!settings.getInternalInput().isEmpty()) {
+        settings.setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 1);
+    }
+    if (settings.getPrimerSettings()->p_args.min_quality != 0 && settings.getPrimerSettings()->p_args.min_end_quality < settings.getPrimerSettings()->p_args.min_quality) {
+        settings.getPrimerSettings()->p_args.min_end_quality = settings.getPrimerSettings()->p_args.min_quality;
     }
 }
 
 void GTest_Primer3::prepare() {
+    if (qualityNumber != 0 && qualityNumber != settings.getSequence().size()) {
+        localErrorMessage = GTest::tr("Error in sequence quality data");
+        return;
+    }
+    if ((settings.getPrimerSettings()->p_args.min_quality != 0 || settings.getPrimerSettings()->o_args.min_quality != 0) && qualityNumber == 0) {
+        localErrorMessage = GTest::tr("Sequence quality data missing");
+        return;
+    }
     task = new Primer3SWTask(settings);
     addSubTask(task);
 }
 
 Task::ReportResult GTest_Primer3::report() {
-    QList<PrimerPair> currentBestPairs = task->getBestPairs();
-
+    QString currentErrorMessage = (task != nullptr ? task->getError() : localErrorMessage).replace("&lt;", "<");
     if (!expectedErrorMessage.isEmpty()) {
-        if (!task->hasError()) {
+        if (currentErrorMessage.isEmpty()) {
             stateInfo.setError(GTest::tr("No error, but expected: %1").arg(expectedErrorMessage));
         } else {
-            auto currentErrorMessage = task->getError().replace("&lt;", "<");
             if (!currentErrorMessage.contains(expectedErrorMessage)) {
                 stateInfo.setError(GTest::tr("An unexpected error. Expected: %1, but Actual: %2").arg(expectedErrorMessage).arg(currentErrorMessage));
             }
@@ -462,13 +509,25 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
+    if (!expectedWarningMessage.isEmpty()) {
+        if (!task->hasWarning()) {
+            stateInfo.setError(GTest::tr("No warning, but expected: %1").arg(expectedWarningMessage));
+        } else {
+            auto currentWarningMessage = task->getWarnings().first().replace("&lt;", "<").replace("&gt;", ">");
+            if (!currentWarningMessage.contains(expectedWarningMessage)) {
+                stateInfo.setError(GTest::tr("An unexpected warning. Expected: %1, but Actual: %2").arg(expectedWarningMessage).arg(currentWarningMessage));
+            }
+        }
+    }
+
     if (task->hasError() && (expectedBestPairs.size() > 0 || expectedSinglePrimers.size() > 0)) {
         stateInfo.setError(task->getError());
         return ReportResult_Finished;
     }
 
+    QList<PrimerPair> currentBestPairs = task->getBestPairs();
     if (currentBestPairs.size() != expectedBestPairs.size()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
+        stateInfo.setError(GTest::tr("PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%1, but Actual:%2").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
         return ReportResult_Finished;
     }
 
@@ -484,12 +543,41 @@ Task::ReportResult GTest_Primer3::report() {
 
     QList<Primer> currentSinglePrimers = task->getSinglePrimers();
     if (currentSinglePrimers.size() != expectedSinglePrimers.size()) {
-        stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%2, but Actual:%3").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
+        stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%1, but Actual:%2").arg(expectedSinglePrimers.size()).arg(currentSinglePrimers.size()));
         return ReportResult_Finished;
     }
 
     if (expectedSinglePrimers.size() > 0 && expectedBestPairs.size() == 0) {
-        int i = 0;
+        int leftCount = 0;
+        int rightCount = 0;
+        for (int i = 0; i < expectedSinglePrimers.size(); i++) {
+            const auto& expectedrimer = expectedSinglePrimers.value(i);
+            const auto& currentPrimer = currentSinglePrimers.value(i);
+            if (expectedrimer.getType() != currentPrimer.getType()) {
+                stateInfo.setError(GTest::tr("Incorrect single primer type, num: %1. Expected:%2, but Actual:%3").arg(i).arg(expectedrimer.getType()).arg(currentPrimer.getType()));
+                return ReportResult_Finished;
+            }
+
+            QString suffix = "PRIMER_";
+            bool internalOligo = false;
+            switch (expectedrimer.getType()) {
+            case OT_LEFT:
+                suffix += "LEFT_" + QString::number(i);
+                leftCount++;
+                break;
+            case OT_RIGHT:
+                suffix += "RIGHT_" + QString::number(i - leftCount);
+                rightCount++;
+                break;
+            case OT_INTL:
+                suffix += "INTERNAL_" + QString::number(i - leftCount - rightCount);
+                internalOligo = true;
+                break;
+            }
+            if (!checkPrimer(&currentPrimer , &expectedrimer, suffix, internalOligo)) {
+                return ReportResult_Finished;
+            }
+        }
     }
 
     /*    for (int i=0;i<currentBestPairs.num_pairs;i++)
@@ -604,10 +692,34 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, Primer* outP
             outPrimer->setQuality(buf.toDouble());
         }
     }
-    if (!internalOligo) {
-        QString buf = element.attribute(prefix + "_END_STABILITY");
+    {
+        QString buf = element.attribute(prefix + "_LIBRARY_" + (internalOligo ? "MISHYB" : "MISPRIMING"));
         if (!buf.isEmpty()) {
-            outPrimer->setEndStability(buf.toDouble());
+            auto mispriming = buf.split(", ");
+            outPrimer->setRepeatSim(mispriming.first().toDouble());
+            mispriming.removeFirst();
+            outPrimer->setRepeatSimName(mispriming.join(", "));
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_SELF_ANY_STUCT");
+        if (!buf.isEmpty()) {
+            outPrimer->setSelfAnyStruct(buf);
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_SELF_END_STUCT");
+        if (!buf.isEmpty()) {
+            outPrimer->setSelfEndStruct(buf);
+        }
+    }
+
+    if (!internalOligo) {
+        {
+            QString buf = element.attribute(prefix + "_END_STABILITY");
+            if (!buf.isEmpty()) {
+                outPrimer->setEndStability(buf.toDouble());
+            }
         }
     }
     return true;
@@ -671,7 +783,7 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     if (!checkPrimer(primerPair.getRightPrimer(), expectedPrimerPair.getRightPrimer(), "PRIMER_RIGHT" + suffix, false)) {
         return false;
     }
-    if (!checkPrimer(primerPair.getInternalOligo(), expectedPrimerPair.getInternalOligo(), "PRIMER_INTERNAL_OLIGO" + suffix, true)) {
+    if (!checkPrimer(primerPair.getInternalOligo(), expectedPrimerPair.getInternalOligo(), "PRIMER_INTERNAL" + suffix, true)) {
         return false;
     }
     if (!checkDoubleProperty(primerPair.getComplAny(), expectedPrimerPair.getComplAny(), "PRIMER_PAIR" + suffix + "_COMPL_ANY")) {
@@ -680,7 +792,7 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     if (!checkDoubleProperty(primerPair.getComplEnd(), expectedPrimerPair.getComplEnd(), "PRIMER_PAIR" + suffix + "_COMPL_END")) {
         return false;
     }
-    if (!checkIntProperty(primerPair.getProductSize(), expectedPrimerPair.getProductSize(), "PRIMER_PRODUCT_SIZE" + suffix)) {
+    if (!checkIntProperty(primerPair.getProductSize() + settings.getOverhangLeft().size() + settings.getOverhangRight().size(), expectedPrimerPair.getProductSize(), "PRIMER_PAIR" + suffix + "_PRODUCT_SIZE")) {
         return false;
     }
     if (!checkDoubleProperty(primerPair.getProductQuality(), expectedPrimerPair.getProductQuality(), "PRIMER_PAIR" + suffix + "_PENALTY")) {
@@ -689,6 +801,23 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     if (!checkDoubleProperty(primerPair.getProductTm(), expectedPrimerPair.getProductTm(), "PRIMER_PAIR" + suffix + "_PRODUCT_TM")) {
         return false;
     }
+    if (!checkDoubleProperty(primerPair.getRepeatSim(), expectedPrimerPair.getRepeatSim(), "PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING")) {
+        return false;
+    }
+    if (primerPair.getRepeatSimName() != expectedPrimerPair.getRepeatSimName()) {
+        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair.getRepeatSimName()).arg(primerPair.getRepeatSimName()));
+        return false;
+    }
+    if (primerPair.getComplAnyStruct() != expectedPrimerPair.getComplAnyStruct()) {
+        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_COMPL_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair.getComplAnyStruct()).arg(primerPair.getComplAnyStruct()));
+        return false;
+    }
+    if (primerPair.getComplEndStruct() != expectedPrimerPair.getComplEndStruct()) {
+        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_COMPL_END_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair.getComplEndStruct()).arg(primerPair.getComplEndStruct()));
+        return false;
+    }
+
+
     return true;
 }
 
@@ -735,6 +864,22 @@ bool GTest_Primer3::checkPrimer(const Primer* primer, const Primer* expectedPrim
     if (!checkDoubleProperty(primer->getSelfEnd(), expectedPrimer->getSelfEnd(), prefix + "_SELF_END")) {
         return false;
     }
+    if (!checkDoubleProperty(primer->getRepeatSim(), expectedPrimer->getRepeatSim(), prefix + "_LIBRARY_MISPRIMING")) {
+        return false;
+    }
+    if (primer->getRepeatSimName() != expectedPrimer->getRepeatSimName()) {
+        stateInfo.setError(GTest::tr("%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getRepeatSimName()).arg(primer->getRepeatSimName()));
+        return false;
+    }
+    if (primer->getSelfAnyStruct() != expectedPrimer->getSelfAnyStruct()) {
+        stateInfo.setError(GTest::tr("%1_SELF_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getSelfAnyStruct()).arg(primer->getSelfAnyStruct()));
+        return false;
+    }
+    if (primer->getSelfEndStruct() != expectedPrimer->getSelfEndStruct()) {
+        stateInfo.setError(GTest::tr("%1_SELF_END_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getSelfEndStruct()).arg(primer->getSelfEndStruct()));
+        return false;
+    }
+
     if (!internalOligo) {
         if (!checkDoubleProperty(primer->getEndStability(), expectedPrimer->getEndStability(), prefix + "_END_STABILITY")) {
             return false;
@@ -752,7 +897,7 @@ bool GTest_Primer3::checkIntProperty(int value, int expectedValue, QString name)
 }
 
 bool GTest_Primer3::checkDoubleProperty(double value, double expectedValue, QString name) {
-    if (qAbs(value - expectedValue) > qAbs(value / 1000)) {
+    if (qAbs(value - expectedValue) > qMax(qAbs(value / 1000), 0.005)) {
         stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2, but Actual:%3").arg(name).arg(expectedValue).arg(value));
         return false;
     }

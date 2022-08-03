@@ -62,6 +62,7 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
     : isCircular(settings.isCircular),
       repeatLibraryPath(settings.repeatLibraryPath),
       mishybLibraryPath(settings.mishybLibraryPath),
+      thermodynamicParametersPath(settings.thermodynamicParametersPath),
       spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
       sequenceRange(settings.sequenceRange),
       showDebugging(settings.showDebugging),
@@ -79,6 +80,7 @@ Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& s
     isCircular = settings.isCircular;
     repeatLibraryPath = settings.repeatLibraryPath;
     mishybLibraryPath = settings.mishybLibraryPath;
+    thermodynamicParametersPath = settings.thermodynamicParametersPath;
     spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
     sequenceRange = settings.sequenceRange;
     showDebugging = settings.showDebugging;
@@ -148,6 +150,8 @@ QByteArray Primer3TaskSettings::getSequence() const {
 }
 
 int Primer3TaskSettings::getSequenceSize() const {
+    CHECK(seqArgs->sequence != nullptr, 0);
+    
     return strlen(seqArgs->sequence);
 }
 
@@ -302,6 +306,8 @@ void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
 }
 
 void Primer3TaskSettings::setSequence(const QByteArray& value, bool isCirc) {
+    CHECK(!value.isEmpty(), );
+
     isCircular = isCirc;
     p3_set_sa_sequence(seqArgs, value);
 }
@@ -428,6 +434,10 @@ void Primer3TaskSettings::setMishybLibraryPath(const QByteArray& value) {
     mishybLibraryPath = value;
 }
 
+void Primer3TaskSettings::setThermodynamicParametersPath(const QByteArray& value) {
+    thermodynamicParametersPath = value;
+}
+
 void Primer3TaskSettings::setShowDebugging(bool value) {
     showDebugging = value;
 }
@@ -440,12 +450,16 @@ void Primer3TaskSettings::setExplain(bool value) {
     explain = value;
 }
 
-QByteArray Primer3TaskSettings::getRepeatLibraryPath() const {
+const QByteArray& Primer3TaskSettings::getRepeatLibraryPath() const {
     return repeatLibraryPath;
 }
 
-QByteArray Primer3TaskSettings::getMishybLibraryPath() const {
+const QByteArray& Primer3TaskSettings::getMishybLibraryPath() const {
     return mishybLibraryPath;
+}
+
+const QByteArray& Primer3TaskSettings::getThermodynamicParametersPath() const {
+    return thermodynamicParametersPath;
 }
 
 p3_global_settings* Primer3TaskSettings::getPrimerSettings() const {
@@ -498,6 +512,7 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_INTERNAL_MIN_3_PRIME_OVERLAP_OF_JUNCTION", &primerSettings->o_args.min_3_prime_overlap_of_junction);
     intProperties.insert("PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION", &primerSettings->o_args.min_5_prime_overlap_of_junction);
     intProperties.insert("PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE", &primerSettings->min_internal_three_prime_distance);
+    intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerSettings->product_opt_size);
     //boolean
     intProperties.insert("PRIMER_PICK_LEFT_PRIMER", &primerSettings->pick_left_primer);
     intProperties.insert("PRIMER_PICK_RIGHT_PRIMER", &primerSettings->pick_right_primer);
