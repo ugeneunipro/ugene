@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_TASK="check_primers" 
+			PRIMER_PICK_ANYWAY="0" 
+			PRIMER_LOWERCASE_MASKING="0" 
+			PRIMER_PICK_RIGHT_PRIMER="1" 
+			PRIMER_PICK_INTERNAL_OLIGO="0" 
+			PRIMER_PICK_LEFT_PRIMER="1" 
+			PRIMER_NUM_RETURN="15" 
+			PRIMER_MIN_THREE_PRIME_DISTANCE="0" 
+			PRIMER_EXPLAIN_FLAG="1" 
+			PRIMER_PRODUCT_SIZE_RANGE="40-100" 
+			PRIMER_MIN_GC="0" 
+			PRIMER_MIN_TM="0" 
+			PRIMER_MAX_POLY_X="100" 
+			PRIMER_MAX_SELF_ANY="100" 
+			PRIMER_MAX_SELF_END="100" 
+			PRIMER_FIRST_BASE_INDEX="1" 
+			PRIMER_MIN_SIZE="16" 
+			SEQUENCE_ID="identical_primers" 
+			SEQUENCE_PRIMER="CACCCCCATCAAACTCTTACTCA" 
+			SEQUENCE_PRIMER_REVCOMP="CACCCCCATCAAACTCTTACTCA"/>
+		<plugin_primer_3_out 
+			PRIMER_ERROR="Specified left and right primer are identical"/>
+	</plugin_primer_3>
+</multi-test>

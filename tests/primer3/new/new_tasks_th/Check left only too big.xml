@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
+			PRIMER_THERMODYNAMIC_PARAMETERS_PATH="primer3_config/" 
+			PRIMER_TM_FORMULA="1" 
+			PRIMER_SALT_CORRECTIONS="1" 
+			PRIMER_SALT_DIVALENT="1.5" 
+			PRIMER_TASK="check_primers" 
+			PRIMER_PICK_ANYWAY="1" 
+			PRIMER_DNTP_CONC="0.0" 
+			PRIMER_LOWERCASE_MASKING="0" 
+			PRIMER_PICK_RIGHT_PRIMER="0" 
+			PRIMER_PICK_INTERNAL_OLIGO="0" 
+			PRIMER_PICK_LEFT_PRIMER="1" 
+			PRIMER_NUM_RETURN="2" 
+			SEQUENCE_ID="Check left only too big" 
+			SEQUENCE_PRIMER="tgacctccacttctctggacacagctccctcaccaa"/>
+		<plugin_primer_3_out 
+			PRIMER_WARNING="Specified left primer &gt; PRIMER_MAX_SIZE; PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 
+			PRIMER_LEFT_NUM_RETURNED="1" 
+			PRIMER_RIGHT_NUM_RETURNED="0" 
+			PRIMER_INTERNAL_NUM_RETURNED="0" 
+			PRIMER_PAIR_NUM_RETURNED="0" 
+			PRIMER_LEFT_0_PENALTY="31.449855" 
+			PRIMER_LEFT_0_PROBLEMS=" Temperature too high; Too long;" 
+			PRIMER_LEFT_0_SEQUENCE="tgacctccacttctctggacacagctccctcaccaa" 
+			PRIMER_LEFT_0="0,36" 
+			PRIMER_LEFT_0_TM="75.450" 
+			PRIMER_LEFT_0_GC_PERCENT="55.556" 
+			PRIMER_LEFT_0_SELF_ANY_TH="0.00" 
+			PRIMER_LEFT_0_SELF_END_TH="0.00" 
+			PRIMER_LEFT_0_HAIRPIN_TH="45.07" 
+			PRIMER_LEFT_0_END_STABILITY="3.6700"/>
+	</plugin_primer_3>
+</multi-test>

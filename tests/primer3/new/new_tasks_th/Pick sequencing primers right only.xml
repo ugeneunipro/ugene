@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
+			PRIMER_THERMODYNAMIC_PARAMETERS_PATH="primer3_config/" 
+			PRIMER_TM_FORMULA="1" 
+			PRIMER_SALT_CORRECTIONS="1" 
+			PRIMER_SALT_DIVALENT="1.5" 
+			PRIMER_TASK="pick_sequencing_primers" 
+			PRIMER_PICK_ANYWAY="1" 
+			PRIMER_DNTP_CONC="0.0" 
+			PRIMER_LOWERCASE_MASKING="0" 
+			PRIMER_PICK_RIGHT_PRIMER="1" 
+			PRIMER_PICK_INTERNAL_OLIGO="0" 
+			PRIMER_PICK_LEFT_PRIMER="0" 
+			PRIMER_NUM_RETURN="50" 
+			SEQUENCE_ID="Pick sequencing primers right only" 
+			SEQUENCE_TEMPLATE="atggatttgatggacatggatgccatcaatgacctccacttctctggacacagctccctcaccaacacccctacttccgacgaggattatggttgcacctggaaccactggtctcccatcgtcaactgggacacctttacaggtgccccagatgactttcaccacctcatggacaccatcatcgaggacagaacaactgtcctcgaacagctcagtccatctatcaccacaaccaccaccaccaccacaaccacggatgaggaagaagaagaaatggaaacaacaaccacaacaacaacaacggcaataaaaacgcatgaagttggtgatgattcaaaagggctaaaactagtgcacctattgatggctggcgcggaagccttaaccggttcaaccaaaaaccgtgacttagctcgagtgatattgatccggctcaaggaattagtctcacaacatgctaacggctccaacatggagagacttgccgctcatttcaccgaagcccttcatggactactagaaggtgctgggggtgcgcataataaccaccatcaccacaacaacaacaaacattacctcaccacaaatggtccccacgacaaccaaaacgacacacttgctgctttccaactacttcaagacatgtcaccttacgtcaaattcggccacttcacagccaatcaagccatcatcgaagccgtggcccacgaacgccgcgtccatgtcatcgactacgatatcatggaaggggtccaatgggcctcattaatccaatcacttgcttccaacaacaacggtccacatcttcggataaccgcattatcgcggacaggaaccggccggaggtcaatcgccaccgtacaagaaaccggcaggcgattaacctcctttgccgcttccctcggacaaccattttcttttcatcactgcagattagactccgatgaaactttccgtccttctgcattaaagcttgtacgtggagaggctttggttttcaactgcatgctgaatttacctcaccttagttaccgtgcaccggaatcagttgcttcgtttttaaacggagcaaaaacgttgaatccaaagcttgtgacgttggttgaagaagaagttggttctgttattggtgggtttgtggaaaggttcatggactcacttcatcattattcagcggtttttgattcattggaggctggttttccgatgcagaaccgggcccggactttggtggagagggtattttttgggcctagaattgcaggctcgttgggccggatatatagaacgggtggtgaagaggagagaaggtcatggggggagtggttaggtgaggtagggtttaggggagttccggtgagctttgcaaatcattgtcaagcaaagctgttgttagggctttttaatgatgggtatagggttgaagaggtgggtgtgggtagtaataagttggtgttggattggaaatcaagacgtttgctttctgcttccctttggacttgttcttcttcagattctgatttatag" 
+			SEQUENCE_TARGET="150,800"/>
+		<plugin_primer_3_out 
+			PRIMER_WARNING="PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="2" 
+			PRIMER_INTERNAL_NUM_RETURNED="0" 
+			PRIMER_PAIR_NUM_RETURNED="0" 
+			PRIMER_RIGHT_0_PENALTY="0.113686" 
+			PRIMER_RIGHT_0_SEQUENCE="tggaaagcagcaagtgtgtc" 
+			PRIMER_RIGHT_0="628,20" 
+			PRIMER_RIGHT_0_TM="59.886" 
+			PRIMER_RIGHT_0_GC_PERCENT="50.000" 
+			PRIMER_RIGHT_0_SELF_ANY_TH="0.00" 
+			PRIMER_RIGHT_0_SELF_END_TH="0.00" 
+			PRIMER_RIGHT_0_HAIRPIN_TH="0.00" 
+			PRIMER_RIGHT_0_END_STABILITY="3.6700" 
+			PRIMER_RIGHT_1_PENALTY="0.112929" 
+			PRIMER_RIGHT_1_SEQUENCE="ccaacgtcacaagctttgga" 
+			PRIMER_RIGHT_1="1101,20" 
+			PRIMER_RIGHT_1_TM="59.887" 
+			PRIMER_RIGHT_1_GC_PERCENT="50.000" 
+			PRIMER_RIGHT_1_SELF_ANY_TH="6.15" 
+			PRIMER_RIGHT_1_SELF_END_TH="0.00" 
+			PRIMER_RIGHT_1_HAIRPIN_TH="40.05" 
+			PRIMER_RIGHT_1_END_STABILITY="3.5300"/>
+	</plugin_primer_3>
+</multi-test>
