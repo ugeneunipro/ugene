@@ -614,16 +614,20 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    Expected state: primers(left and right) are located on either side of junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
-    auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
-    GTWidget::click(os, toggleViewButton);
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        auto toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
+        GTUtilsDialog::add(os, new PopupChooser(os, {"toggleZoomView"}));
+        GTWidget::click(os, toggleViewButton);
+    }
 
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTThread::waitForMainThread();
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::add(os, new Primer3DialogFiller(os));

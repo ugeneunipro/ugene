@@ -48,7 +48,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    Expected state: consensus representation dialog appeared
 
     //    3. Select ClustalW consensus type. Click OK.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -72,7 +72,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -146,7 +146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     // GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
@@ -221,7 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -248,7 +248,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -271,7 +271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);

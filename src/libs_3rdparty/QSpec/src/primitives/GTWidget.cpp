@@ -54,8 +54,7 @@ void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouse
 #endif
 
     if (p.isNull()) {
-        QRect rect = widget->rect();
-        p = rect.center();
+        p = getWidgetVisibleCenter(widget);
 #ifdef Q_OS_DARWIN
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
@@ -109,6 +108,9 @@ QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QW
             break; // Parent widget was removed while waiting.
         }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
+#ifdef _DEBUG
+        if (matchedWidgets.size() >= 2)
+#endif
         GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
@@ -240,6 +242,24 @@ QProgressBar* GTWidget::findProgressBar(GUITestOpStatus& os, const QString& widg
 
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
+}
+
+QPoint GTWidget::getWidgetVisibleCenter(QWidget *widget) {
+    return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
+}
+
+QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
+    QRect rect = widget->rect();
+    QRect gRect(widget->mapToGlobal(rect.topLeft()), rect.size());
+    QWidget *parent = widget->parentWidget();
+    while (parent) {
+        QRect pRect = parent->rect();
+        QRect gParentRect(widget->mapToGlobal(pRect.topLeft()), pRect.size());
+
+        gRect = gRect.intersected(gParentRect);
+        parent = parent->parentWidget();
+    }
+    return gRect.center();
 }
 
 #define GT_METHOD_NAME "findButtonByText"
@@ -392,6 +412,9 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
 
 #define GT_METHOD_NAME "createSubImage"
 QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const QRect& rect) {
+#ifdef _DEBUG
+    if (!image.rect().contains(rect))
+#endif
     GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());

@@ -678,7 +678,8 @@ void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& /*os*/, const 
 }
 
 void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& os, const QPoint& enterPos, QWidget* dropWidget) {
-    sendDragAndDrop(os, enterPos, GTWidget::getWidgetCenter(dropWidget));
+    sendDragAndDrop(os, enterPos, GTWidget::getWidgetVisibleCenterGlobal(dropWidget));
+    return;
 }
 
 void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {

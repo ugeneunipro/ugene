@@ -309,7 +309,9 @@ int ScrollController::getFirstVisibleBase(bool countClipped) const {
     int hScrollBarValue = hScrollBar->value();
     int column = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBarValue);
     int firstVisibleBase = column + (removeClippedBase && additionalXOffset != 0 ? 1 : 0);
-    SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
+
+    // The following comment is a fix for UGENE-7605
+    // SAFE_POINT(firstVisibleBase < alignmentLength, "Invalid first visible base: " + QString::number(firstVisibleBase), 0);
     return qMin(firstVisibleBase, alignmentLength - 1);
 }
 
@@ -358,6 +360,11 @@ void ScrollController::updateScrollBarsOnFontOrZoomChange() {
     double alignmentLength = maEditor->getAlignmentLen();
     double maxX = hScrollBar->maximum() + sequenceAreaWidth;
     double leftXPointPos = alignmentLength * leftX / (double)maxX;
+
+    int baseWidth = (hScrollBar->maximum() + sequenceAreaWidth) / alignmentLength;
+    sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % (int)baseWidth;
+    maxX = hScrollBar->maximum() + sequenceAreaWidth;
+    leftXPointPos = alignmentLength * leftX / (double)maxX;
     updateHorizontalScrollBarPrivate();
     setFirstVisibleBase(qMax(0, (int)leftXPointPos));
 
@@ -412,11 +419,14 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
     QSignalBlocker signalBlocker(hScrollBar);
 
+    maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty() || maEditor->getMultilineMode());
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
 
-    int alignmentLength = maEditor->getAlignmentLen();
-    int columnWidth = maEditor->getColumnWidth();
-    int sequenceAreaWidth = ui->getSequenceArea()->width();
+    const int alignmentLength = maEditor->getAlignmentLen();
+    const int columnWidth = maEditor->getColumnWidth();
+    const int sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth;
+
+    maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth || maEditor->getMultilineMode());
 
     hScrollBar->setMinimum(0);
     int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
@@ -426,7 +436,9 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
     int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
     SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
-    hScrollBar->setVisible(numVisibleBases < alignmentLength);
+
+    // hide scrollbar
+    hScrollBar->setVisible(hScrollBarVisible && numVisibleBases < alignmentLength);
 }
 
 void ScrollController::updateVerticalScrollBarPrivate() {
@@ -448,7 +460,9 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     int lastVisibleViewRowIndex = getLastVisibleViewRowIndex(sequenceAreaHeight);
     int numVisibleSequences = lastVisibleViewRowIndex - firstVisibleViewRowIndex + 1;
     SAFE_POINT(numVisibleSequences <= viewRowCount, "Vertical scrollbar appears unexpectedly: numVisibleSequences is too small", );
-    vScrollBar->setVisible(numVisibleSequences < viewRowCount);
+
+    // hide scrollbar
+    vScrollBar->setVisible(vScrollBarVisible && numVisibleSequences < viewRowCount);
 }
 
 QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool reportOverflow) const {
@@ -464,6 +478,23 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool repor
         return QPoint(column, row);
     }
     return QPoint(-1, -1);
+}
+
+
+void ScrollController::setHScrollBarVisible(bool visible) {
+    hScrollBarVisible = visible;
+}
+
+bool ScrollController::getHScrollBarVisible() {
+    return hScrollBarVisible;
+}
+
+void ScrollController::setVScrollBarVisible(bool visible) {
+    vScrollBarVisible = visible;
+}
+
+bool ScrollController::getVScrollBarVisible() {
+    return vScrollBarVisible;
 }
 
 }  // namespace U2

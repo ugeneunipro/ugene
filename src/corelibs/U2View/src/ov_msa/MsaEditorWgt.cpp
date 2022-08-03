@@ -32,16 +32,30 @@
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaRowHeightController.h"
+#include "ScrollController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 #include "phy_tree/MSAEditorTreeViewer.h"
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor* editor)
-    : MaEditorWgt(editor) {
+MsaEditorWgt::MsaEditorWgt(MSAEditor* editor,
+                           MaEditorOverviewArea* overview,
+                           MaEditorStatusBar* statusbar)
+    : MaEditorWgt(editor),
+      similarityStatistics(nullptr) {
+    overviewArea = overview;
+    statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
     initActions();
-    initWidgets();
+    initWidgets(false, false);
+
+    // For active MaEditorWgt tracking
+    this->setAttribute(Qt::WA_Hover, true);
+    eventFilter = new MaEditorWgtEventFilter(this, this);
+    this->installEventFilter(eventFilter);
+
+    setMinimumSize(minimumSizeHint());
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 }
 
 MSAEditor* MsaEditorWgt::getEditor() const {
@@ -54,8 +68,7 @@ MSAEditorSequenceArea* MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        delete multiTreeViewer;
-        multiTreeViewer = nullptr;
+        qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->delPhylTreeWidget();
         emit si_hideTreeOP();
     }
 }
@@ -69,20 +82,31 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    if (multiTreeViewer == nullptr) {
-        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
-        MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, multiTreeViewer, 0.41, nameAreaContainer);  // Tree will occupy 41% of the current view.
+    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
+
+    if (mui->getPhylTreeWidget() == nullptr) {
+        MSAEditorMultiTreeViewer* multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+
+        mui->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);
         multiTreeViewer->setMinimumWidth(250);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
     } else {
-        multiTreeViewer->addTreeView(treeView);
+        mui->getPhylTreeWidget()->addTreeView(treeView);
     }
 }
 
 void MsaEditorWgt::setSimilaritySettings(const SimilarityStatisticsSettings* settings) {
     similarityStatistics->setSettings(settings);
+}
+
+const SimilarityStatisticsSettings* MsaEditorWgt::getSimilaritySettings() {
+    if (similarityStatistics != nullptr) {
+        return static_cast<const SimilarityStatisticsSettings*>(
+            similarityStatistics->getSettings());
+    }
+    return nullptr;
 }
 
 void MsaEditorWgt::refreshSimilarityColumn() {
@@ -121,8 +145,9 @@ void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
-void MsaEditorWgt::initOverviewArea() {
-    overviewArea = new MSAEditorOverviewArea(this);
+void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea* _overviewArea) {
+    Q_ASSERT(_overviewArea);
+    overviewArea = _overviewArea;
 }
 
 void MsaEditorWgt::initNameList(QScrollBar* nhBar) {
@@ -133,8 +158,9 @@ void MsaEditorWgt::initConsensusArea() {
     consensusArea = new MSAEditorConsensusArea(this);
 }
 
-void MsaEditorWgt::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(getEditor());
+void MsaEditorWgt::initStatusBar(MaEditorStatusBar* _statusBar) {
+    Q_ASSERT(_statusBar);
+    statusBar = _statusBar;
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
@@ -147,7 +173,24 @@ MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
 }
 
 MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
-    return multiTreeViewer;
+    return qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI())->getPhylTreeWidget();
+}
+
+QSize MsaEditorWgt::sizeHint() const {
+    QSize s = QWidget::sizeHint();
+    if (editor->getMultilineMode()) {
+        return QSize(s.width(), minimumSizeHint().height());
+    }
+    return s;
+}
+
+QSize MsaEditorWgt::minimumSizeHint() const {
+    QSize s = QWidget::minimumSizeHint();
+    if (editor->getMultilineMode()) {
+        int newHeight = consensusArea->size().height() + qMax(qMax(sequenceArea->minimumSizeHint().height(), nameList->minimumSizeHint().height()), (editor->getRowHeight() + 1)) + 5;
+        return QSize(s.width(), newHeight);
+    }
+    return s;
 }
 
 }  // namespace U2

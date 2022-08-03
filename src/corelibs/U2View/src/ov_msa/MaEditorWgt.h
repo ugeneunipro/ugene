@@ -51,6 +51,19 @@ class SequenceAreaRenderer;
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
+class U2VIEW_EXPORT MaEditorWgtEventFilter : public QObject {
+    Q_OBJECT
+public:
+    MaEditorWgtEventFilter(QObject* own, MaEditorWgt* maeditorwgt)
+        : QObject(own), maEditorWgt(maeditorwgt) {
+    }
+
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
+private:
+    MaEditorWgt* maEditorWgt;
+};
+
 class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
@@ -72,9 +85,13 @@ public:
 
     MaEditorOverviewArea* getOverviewArea() const;
 
-    MSAEditorOffsetsViewController* getOffsetsViewController() const;
+    void setOverviewArea(MaEditorOverviewArea* overview);
 
     MaEditorStatusBar* getStatusBar() const;
+
+    void setStatusBar(MaEditorStatusBar* statusbar);
+
+    MSAEditorOffsetsViewController* getOffsetsViewController() const;
 
     ScrollController* getScrollController() const;
 
@@ -91,20 +108,24 @@ public:
 
     QSplitter* getMainSplitter() const;
 
+    MaEditorWgtEventFilter* getEventFilter() const {
+        return eventFilter;
+    };
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
 
 protected:
-    virtual void initWidgets();
+    virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);
     virtual void initActions();
 
     virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
-    virtual void initOverviewArea() = 0;
+    virtual void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) = 0;
     virtual void initNameList(QScrollBar* nhBar) = 0;
     virtual void initConsensusArea() = 0;
-    virtual void initStatusBar() = 0;
+    virtual void initStatusBar(MaEditorStatusBar* statusBar = nullptr) = 0;
 
 protected:
     MaEditor* const editor;
@@ -133,6 +154,8 @@ protected:
     BaseWidthController* baseWidthController;
     RowHeightController* rowHeightController;
     DrawHelper* drawHelper;
+
+    MaEditorWgtEventFilter* eventFilter;
 
 public:
     QAction* delSelectionAction;

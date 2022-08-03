@@ -21,6 +21,7 @@
 
 #include <primitives/GTWidget.h>
 
+#include <U2View/MSAEditor.h>
 #include <U2View/MsaEditorWgt.h>
 
 #include "GTMSAEditorStatusWidget.h"
@@ -32,8 +33,9 @@ namespace U2 {
 
 #define GT_METHOD_NAME "getStatusWidget"
 QWidget* GTMSAEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
-    QWidget* editor = GTUtilsMsaEditor::getEditorUi(os);
-    return GTWidget::findWidget(os, "msa_editor_status_bar", editor);
+    MsaEditorWgt *editor = GTUtilsMsaEditor::getEditorUi(os);
+    QWidget *mainUI = editor->getEditor()->getUI();
+    return GTWidget::findExactWidget<QWidget *>(os, "msa_editor_status_bar", mainUI);
 }
 #undef GT_METHOD_NAME
 

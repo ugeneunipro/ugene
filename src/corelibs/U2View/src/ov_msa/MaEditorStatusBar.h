@@ -54,8 +54,16 @@ protected:
 public:
     MaEditorStatusBar(MaEditor* editor);
 
+signals:
+    // See comments in constructor
+    void si_updateStatusBar2();
+
+public slots:
+    void sl_updateStatusBar();
+
 private slots:
-    void sl_update();
+    // See comments in constructor
+    void sl_updateStatusBar2();
     void sl_lockStateChanged();
 
 protected:

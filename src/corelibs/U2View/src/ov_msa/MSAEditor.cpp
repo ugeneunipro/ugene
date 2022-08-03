@@ -45,10 +45,12 @@
 #include <U2Gui/OptionsPanelWidget.h>
 #include <U2Gui/ProjectView.h>
 
+#include <U2View/BaseWidthController.h>
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "MSAEditorOffsetsView.h"
+#include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorConsensusArea.h"
 #include "MaEditorFactory.h"
@@ -56,11 +58,17 @@
 #include "MaEditorSelection.h"
 #include "MaEditorSequenceArea.h"
 #include "MaEditorTasks.h"
+#include "MsaEditorStatusBar.h"
 #include "align_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "export_image/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
+#include "ov_msa/MaEditorConsensusArea.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MaEditorSequenceArea.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "overview/MaGraphOverview.h"
+#include "overview/MaSimpleOverview.h"
 
 namespace U2 {
 
@@ -203,9 +211,11 @@ void MSAEditor::sl_buildTree() {
 bool MSAEditor::onObjectRemoved(GObject* obj) {
     bool result = GObjectView::onObjectRemoved(obj);
 
-    obj->disconnect(ui->getSequenceArea());
-    obj->disconnect(ui->getConsensusArea());
-    obj->disconnect(ui->getEditorNameList());
+    for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
+        obj->disconnect(getMaEditorWgt(i)->getSequenceArea());
+        obj->disconnect(getMaEditorWgt(i)->getConsensusArea());
+        obj->disconnect(getMaEditorWgt(i)->getEditorNameList());
+    }
     return result;
 }
 
@@ -224,15 +234,28 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar* tb) {
-    tb->addAction(ui->copyFormattedSelectionAction);
+    // For multiline mode switching
+    // Workaround, need to remove all separators, which
+    // were created before and not auto-deleted
+    foreach (QAction* action, tb->actions()) {
+        if (action->isSeparator()) {
+            tb->removeAction(action);
+        }
+    }
+
+    // Save toolbar for future switching singleline <-> multiline modes
+    this->staticToolBar = tb;
+    tb->addAction(getMaEditorWgt(0)->copyFormattedSelectionAction);
 
     tb->addAction(saveAlignmentAction);
     tb->addAction(saveAlignmentAsAction);
+    tb->addSeparator();
 
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
     tb->addAction(zoomToSelectionAction);
     tb->addAction(resetZoomAction);
+    tb->addSeparator();
 
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
@@ -240,24 +263,36 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);
     tb->addAction(alignAction);
+
     tb->addAction(alignNewSequencesToAlignmentAction);
     tb->addAction(alignSelectedSequencesToAlignmentAction);
+    tb->addSeparator();
+
+    tb->addAction(multilineViewAction);
+    tb->addSeparator();
 
     GObjectView::buildStaticToolbar(tb);
 }
 
 void MSAEditor::buildMenu(QMenu* m, const QString& type) {
     if (type != MsaEditorMenuType::STATIC) {
-        GObjectView::buildMenu(m, type);
+        fillMenu(m, type);
         return;
     }
-    addAppearanceMenu(m);
+
+    // Save menu for future switching singleline <-> multiline modes
+    this->staticMenu = m;
+    this->staticMenuType = type;
+
+    // create menu for 0th child, as all children use the same sequeance
+    // so menu action's result will applyed to all lines
+    addAppearanceMenu(m, 0);
 
     addNavigationMenu(m);
 
     addLoadMenu(m);
 
-    addCopyPasteMenu(m);
+    addCopyPasteMenu(m, 0);
     addEditMenu(m);
     addSortMenu(m);
 
@@ -269,38 +304,42 @@ void MSAEditor::buildMenu(QMenu* m, const QString& type) {
 
     addAdvancedMenu(m);
 
-    GObjectView::buildMenu(m, type);
+    fillMenu(m, type);
 
     GUIUtils::disableEmptySubmenus(m);
 }
 
-void MSAEditor::addCopyPasteMenu(QMenu* m) {
-    MaEditor::addCopyPasteMenu(m);
+void MSAEditor::fillMenu(QMenu* m, const QString& type) {
+    GObjectView::buildMenu(m, type);
+}
+
+void MSAEditor::addCopyPasteMenu(QMenu* m, uint uiIndex) {
+    MaEditor::addCopyPasteMenu(m, uiIndex);
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != nullptr, "copyMenu is null", );
 
     const MaEditorSelection& selection = getSelection();
-    ui->copySelectionAction->setDisabled(selection.isEmpty());
+    getMaEditorWgt(uiIndex)->copySelectionAction->setDisabled(selection.isEmpty());
 
     // TODO:? move the signal emit point to a correct location.
-    auto sequenceArea = qobject_cast<MSAEditorSequenceArea*>(ui->getSequenceArea());
+    auto sequenceArea = qobject_cast<MSAEditorSequenceArea*>(getMaEditorWgt(uiIndex)->getSequenceArea());
     SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
     emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
 
-    copyMenu->addAction(ui->copySelectionAction);
-    ui->copyFormattedSelectionAction->setDisabled(selection.isEmpty());
-    copyMenu->addAction(ui->copyFormattedSelectionAction);
+    copyMenu->addAction(getMaEditorWgt(uiIndex)->copySelectionAction);
+    getMaEditorWgt(uiIndex)->copyFormattedSelectionAction->setDisabled(selection.isEmpty());
+    copyMenu->addAction(getMaEditorWgt(uiIndex)->copyFormattedSelectionAction);
     copyMenu->addAction(copyConsensusAction);
     copyMenu->addAction(copyConsensusWithGapsAction);
     copyMenu->addSeparator();
-    copyMenu->addAction(ui->pasteAction);
-    copyMenu->addAction(ui->pasteBeforeAction);
+    copyMenu->addAction(getMaEditorWgt(uiIndex)->pasteAction);
+    copyMenu->addAction(getMaEditorWgt(uiIndex)->pasteBeforeAction);
     copyMenu->addSeparator();
-    copyMenu->addAction(ui->cutSelectionAction);
+    copyMenu->addAction(getMaEditorWgt(uiIndex)->cutSelectionAction);
 
     copyMenu->addSeparator();
-    MaEditorNameList* nameList = ui->getEditorNameList();
+    MaEditorNameList* nameList = getMaEditorWgt(uiIndex)->getEditorNameList();
     copyMenu->addAction(nameList->copyWholeRowAction);
 }
 
@@ -347,12 +386,12 @@ void MSAEditor::addExportMenu(QMenu* m) {
     em->addAction(saveScreenshotAction);
 }
 
-void MSAEditor::addAppearanceMenu(QMenu* m) {
+void MSAEditor::addAppearanceMenu(QMenu* m, uint uiIndex) {
     QMenu* appearanceMenu = m->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MSAE_MENU_APPEARANCE);
 
     appearanceMenu->addAction(showOverviewAction);
-    auto offsetsController = ui->getOffsetsViewController();
+    auto offsetsController = getMaEditorWgt(uiIndex)->getOffsetsViewController();
     if (offsetsController != nullptr) {
         appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
@@ -363,7 +402,7 @@ void MSAEditor::addAppearanceMenu(QMenu* m) {
     appearanceMenu->addAction(resetZoomAction);
     appearanceMenu->addSeparator();
 
-    addColorsMenu(appearanceMenu);
+    addColorsMenu(appearanceMenu, uiIndex);
     addHighlightingMenu(appearanceMenu);
     appearanceMenu->addSeparator();
 
@@ -371,13 +410,15 @@ void MSAEditor::addAppearanceMenu(QMenu* m) {
     appearanceMenu->addSeparator();
 
     appearanceMenu->addAction(clearSelectionAction);
+
+    appearanceMenu->addAction(multilineViewAction);
 }
 
-void MSAEditor::addColorsMenu(QMenu* m) {
+void MSAEditor::addColorsMenu(QMenu* m, uint index) {
     QMenu* colorsSchemeMenu = m->addMenu(tr("Colors"));
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
-    auto sequenceArea = ui->getSequenceArea();
+    auto sequenceArea = getMaEditorWgt(index)->getSequenceArea();
     foreach (QAction* a, sequenceArea->colorSchemeMenuActions) {
         MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
     }
@@ -405,7 +446,7 @@ void MSAEditor::addHighlightingMenu(QMenu* m) {
 
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
-    auto sequenceArea = ui->getSequenceArea();
+    auto sequenceArea = getMaEditorWgt()->getSequenceArea();
     foreach (QAction* a, sequenceArea->highlightingSchemeMenuActions) {
         MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
     }
@@ -447,20 +488,50 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-MsaEditorWgt* MSAEditor::getUI() const {
-    return qobject_cast<MsaEditorWgt*>(ui);
-}
-
 QWidget* MSAEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
-    ui = new MsaEditorWgt(this);
 
-    QString objName = "msa_editor_" + maObject->getGObjectName();
-    ui->setObjectName(objName);
+    Settings* s = AppContext::getSettings();
+    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
 
-    initActions();
+    // Use false for multilineMode while creating widget
+    multilineMode = false;
+    ui = new MsaEditorMultilineWgt(this, multilineMode);
+    new MoveToObjectMaController(this, ui);
 
-    connect(ui, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
+    // Now restore multiline mode from settings
+    setMultilineMode(sMultilineMode);
+    multilineViewAction->setChecked(sMultilineMode);
+
+    initActions();  // one time exec
+    initChildrenActionsAndSignals();
+    updateActions();
+
+    return ui;
+}
+
+void MSAEditor::initChildrenActionsAndSignals() {
+    MaEditorWgt* child;
+
+    for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
+        child = getUI()->getUI(i);
+        connect(child, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
+        connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
+        connect(child, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
+
+        initDragAndDropSupport(child);
+
+        MSAEditorOverviewArea* overview = qobject_cast<MSAEditorOverviewArea*>(
+            getUI()->getOverviewArea());
+        if (overview != nullptr) {
+            connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()), overview->getSimpleOverview(), SLOT(sl_highlightingChanged()));
+            connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()), overview->getGraphOverview(), SLOT(sl_highlightingChanged()));
+        }
+    }
+}
+
+void MSAEditor::initActions() {
+    MaEditor::initActions();
 
     searchInSequencesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequences…"), this);
     searchInSequencesAction->setObjectName("search_in_sequences");
@@ -510,28 +581,24 @@ QWidget* MSAEditor::createWidget() {
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_updateRealignAction()));
 
+    connect(gotoAction, &QAction::triggered, getMaEditorMultilineWgt(), &MaEditorMultilineWgt::sl_goto);
+
     qDeleteAll(filters);
 
-    connect(ui, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
-    connect(ui, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
     sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
-
-    new MoveToObjectMaController(this);
-
-    initDragAndDropSupport();
-    updateActions();
-    return ui;
 }
 
 void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
     QMenu m;
+    MaEditorWgt* sender = qobject_cast<MaEditorWgt*>(QObject::sender());
+    uint uiIndex = getUI()->getUIIndex(sender);
 
-    addAppearanceMenu(&m);
+    addAppearanceMenu(&m, uiIndex);
     addNavigationMenu(&m);
     addLoadMenu(&m);
-    addCopyPasteMenu(&m);
+    addCopyPasteMenu(&m, uiIndex);
     addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();
@@ -544,8 +611,8 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
 
     m.addSeparator();
     snp.clickPoint = QCursor::pos();
-    const QPoint nameMapped = ui->getEditorNameList()->mapFromGlobal(snp.clickPoint);
-    const qint64 hoverRowId = (0 <= nameMapped.y()) ? ui->getEditorNameList()->sequenceIdAtPos(nameMapped) : U2MsaRow::INVALID_ROW_ID;
+    const QPoint nameMapped = getMaEditorWgt()->getEditorNameList()->mapFromGlobal(snp.clickPoint);
+    const qint64 hoverRowId = (0 <= nameMapped.y()) ? getMaEditorWgt()->getEditorNameList()->sequenceIdAtPos(nameMapped) : U2MsaRow::INVALID_ROW_ID;
     if ((hoverRowId != getReferenceRowId() || U2MsaRow::INVALID_ROW_ID == getReferenceRowId()) && hoverRowId != U2MsaRow::INVALID_ROW_ID) {
         m.addAction(setAsReferenceSequenceAction);
     }
@@ -632,10 +699,10 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
     return false;
 }
 
-void MSAEditor::initDragAndDropSupport() {
-    SAFE_POINT(ui != nullptr, QString("MSAEditor::ui is not initialized in MSAEditor::initDragAndDropSupport"), );
-    ui->setAcceptDrops(true);
-    ui->installEventFilter(this);
+void MSAEditor::initDragAndDropSupport(MaEditorWgt* wgt) {
+    SAFE_POINT(wgt != nullptr, QString("MSAEditor::wgt is not initialized in MSAEditor::initDragAndDropSupport"), );
+    wgt->setAcceptDrops(true);
+    wgt->installEventFilter(this);
 }
 
 void MSAEditor::sl_align() {
@@ -674,9 +741,9 @@ void MSAEditor::sl_alignSelectedSequencesToAlignment() {
 
 void MSAEditor::sl_setSeqAsReference() {
     QPoint menuCallPos = snp.clickPoint;
-    QPoint nameMapped = ui->getEditorNameList()->mapFromGlobal(menuCallPos);
+    QPoint nameMapped = getMaEditorWgt()->getEditorNameList()->mapFromGlobal(menuCallPos);
     if (nameMapped.y() >= 0) {
-        qint64 newRowId = ui->getEditorNameList()->sequenceIdAtPos(nameMapped);
+        qint64 newRowId = getMaEditorWgt()->getEditorNameList()->sequenceIdAtPos(nameMapped);
         if (U2MsaRow::INVALID_ROW_ID != newRowId && newRowId != snp.seqId) {
             setReference(newRowId);
         }
@@ -747,7 +814,7 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType& sortType, const
     msa->sortRows(sortType, sortOrder, sortRange);
 
     // Switch into 'Original' ordering mode.
-    getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
+    getMaEditorMultilineWgt()->sl_toggleSequenceRowOrder(false);
 
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
@@ -921,7 +988,7 @@ MaEditorSelectionController* MSAEditor::getSelectionController() const {
 }
 
 void MSAEditor::sl_exportImage() {
-    MSAImageExportController controller(ui);
+    MSAImageExportController controller(getMaEditorWgt());
     QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(maObject->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller,
@@ -930,6 +997,20 @@ void MSAEditor::sl_exportImage() {
                                                                         ExportImageDialog::NoScaling,
                                                                         parentWidget);
     dlg->exec();
+}
+
+void MSAEditor::sl_multilineViewAction() {
+    bool childrenChanged = setMultilineMode(multilineViewAction->isChecked());
+
+    if (childrenChanged) {
+        initChildrenActionsAndSignals();
+        updateActions();
+        buildStaticToolbar(staticToolBar);
+        fillMenu(staticMenu, staticMenuType);
+
+        Settings* s = AppContext::getSettings();
+        s->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
+    }
 }
 
 }  // namespace U2

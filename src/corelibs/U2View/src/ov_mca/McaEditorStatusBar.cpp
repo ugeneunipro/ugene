@@ -60,10 +60,11 @@ McaEditorStatusBar::McaEditorStatusBar(McaEditor* editor,
     selectionLabel->hide();
 
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
-            SLOT(sl_update()));
+            &MaEditorSelectionController::si_selectionChanged,
+            this,
+            &McaEditorStatusBar::sl_updateStatusBar);
 
-    connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
+    connect(refCharController, &McaReferenceCharController::si_cacheUpdated, this, &McaEditorStatusBar::sl_updateStatusBar);
 
     updateLabels();
     setupLayout();
