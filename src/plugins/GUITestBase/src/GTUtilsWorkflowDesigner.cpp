@@ -1105,7 +1105,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             QStringList values = value.value<QStringList>();
             QComboBox* comboBox = GTWidget::findWidgetByType<QComboBox*>(os, parent, "Cell has no QComboBox/ComboChecks widget");
             GTComboBox::checkValues(os, comboBox, values);
-            if (isOsWindows()) {
+            if (!isOsWindows()) {
                 GTKeyboardDriver::keyClick(Qt::Key_Escape);
             }
             break;
