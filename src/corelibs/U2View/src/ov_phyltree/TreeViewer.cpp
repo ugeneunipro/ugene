@@ -28,7 +28,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPrintDialog>
-#include <QtPrintSupport/QPrinterInfo>
 #include <QPrinter>
 #include <QQueue>
 #include <QSplitter>
@@ -210,7 +209,6 @@ void TreeViewer::createActions() {
 
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
-    printAction->setObjectName("printTreeAction");
 
     // Screen Capture
     captureTreeAction = new QAction(tr("Screen Capture..."), ui);
@@ -1409,10 +1407,6 @@ void TreeViewerUI::sl_showDistanceLabelsTriggered(bool on) {
 }
 
 void TreeViewerUI::sl_printTriggered() {
-    if (isOsWindows() && QPrinterInfo::availablePrinterNames().isEmpty()) {
-        QMessageBox::warning(this, L10N::warningTitle(), tr("Unable to print tree. No printers found."));
-        return;
-    }
     QPrinter printer;
     QObjectScopedPointer<QPrintDialog> dialog = new QPrintDialog(&printer, this);
     dialog->exec();
