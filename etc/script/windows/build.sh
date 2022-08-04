@@ -94,7 +94,7 @@ copy_with_pdb "${QT_DIR}/bin/libGLESv2.dll" "${BUNDLE_DIR}"
 mkdir "${BUNDLE_DIR}/styles"
 copy_with_pdb "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
 
-mkdir "${BUNDLE_DIR}\imageformats"
+mkdir "${BUNDLE_DIR}/imageformats"
 copy_with_pdb "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUNDLE_DIR}/imageformats"
 copy_with_pdb "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUNDLE_DIR}/imageformats"
 copy_with_pdb "${QT_DIR}/plugins/imageformats/qsvg.dll" "${BUNDLE_DIR}/imageformats"
@@ -102,4 +102,8 @@ copy_with_pdb "${QT_DIR}/plugins/imageformats/qtiff.dll" "${BUNDLE_DIR}/imagefor
 
 mkdir "${BUNDLE_DIR}/platforms"
 copy_with_pdb "${QT_DIR}/plugins/platforms/qwindows.dll" "${BUNDLE_DIR}/platforms"
+
+mkdir "${BUNDLE_DIR}/printsupport"
+copy_with_pdb "${QT_DIR}/plugins/printsupport/windowsprintersupport.dll" "${BUNDLE_DIR}/printsupport"
+
 echo "##teamcity[blockClosed name='bundle']"
