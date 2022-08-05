@@ -1417,6 +1417,8 @@ plugins/workflow_designer.map
 plugins/workflow_designer.plugin
 plugins_checker.exe
 plugins_checker.map
+printsupport
+printsupport/windowsprintersupport.dll
 styles
 styles/qwindowsvistastyle.dll
 tools
