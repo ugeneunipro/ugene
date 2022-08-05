@@ -57,7 +57,7 @@ private:
     QString expectedErrorMessage;
     QString expectedWarningMessage;
     QString localErrorMessage;
-
+    int stopCodonPos = 0;
     int qualityNumber = 0;
 };
 

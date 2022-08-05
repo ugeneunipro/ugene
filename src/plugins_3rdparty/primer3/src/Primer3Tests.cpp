@@ -84,10 +84,20 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
             for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
-                if (str.split(',').size() == 2) {
+                auto sting = str.split(',');
+                if (sting.size() == 2) {
+                    QList<int> v;
+                    for (int i = 0; i < 2; i++) {
+                        bool ok = false;
+                        v << sting[i].toInt(&ok);
+                        if (!ok) {
+                            localErrorMessage = GTest::tr("Illegal SEQUENCE_TARGET value: %1").arg(str);
+                            break;
+                        }
+                    }
                     regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_TARGET value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_TARGET value: %1").arg(str);
                     break;
                 }
             }
@@ -101,7 +111,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 bool ok = false;
                 int v = str.toInt(&ok);
                 if (!ok) {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1").arg(str);
                     break;
                 }
                 intList.append(v);
@@ -116,7 +126,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 bool ok = false;
                 int v = str.toInt(&ok);
                 if (!ok) {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1").arg(str);
                     break;
                 }
                 intList.append(v);
@@ -131,7 +141,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 if (str.split(',').size() == 2) {
                     regionList.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt()));
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_EXCLUDED_REGION value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_EXCLUDED_REGION value: %1").arg(str);
                     break;
                 }
             }
@@ -157,7 +167,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     }
                     intListList.append(list);
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1").arg(str);
                     break;
                 }
             }
@@ -171,7 +181,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 if (str.split(',').size() == 2) {
                     region = U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt());
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INCLUDED_REGION value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_INCLUDED_REGION value: %1").arg(str);
                     break;
                 }
             }
@@ -182,10 +192,21 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         if (!buf.isEmpty()) {
             QList<U2Region> regionList;
             for (const QString& str : buf.split(' ', QString::SkipEmptyParts)) {
-                if (str.split(',').size() == 2) {
+                auto string = str.split(',');
+                if (string.size() == 2) {
+                    QList<int> v;
+                    for (int i = 0; i < 2; i++) {
+                        bool ok = false;
+                        v << string[i].toInt(&ok);
+                        if (!ok) {
+                            localErrorMessage = GTest::tr("Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1").arg(str);
+                            break;
+                        }
+                    }
+
                     regionList << U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt());
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1").arg(str);
                     break;
                 }
             }
@@ -200,7 +221,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 if (strList.size() == 2) {
                     regionList << U2Region(strList[0].toInt(), strList[1].toInt() - strList[0].toInt() + 1);
                 } else {
-                    stateInfo.setError(GTest::tr("Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1").arg(buf));
+                    localErrorMessage = GTest::tr("Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1").arg(str);
                     break;
                 }
             }
@@ -320,6 +341,11 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         buf = elOutput.attribute("PRIMER_WARNING");
         if (!buf.isEmpty()) {
             expectedWarningMessage = buf;
+        }
+
+        buf = elOutput.attribute("PRIMER_STOP_CODON_POSITION");
+        if (!buf.isEmpty()) {
+            stopCodonPos = buf.toInt();
         }
 
         int leftCount = 0;
@@ -483,6 +509,9 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 }
 
 void GTest_Primer3::prepare() {
+    if (!localErrorMessage.isEmpty()) {
+        return;
+    }
     if (qualityNumber != 0 && qualityNumber != settings.getSequence().size()) {
         localErrorMessage = GTest::tr("Error in sequence quality data");
         return;
