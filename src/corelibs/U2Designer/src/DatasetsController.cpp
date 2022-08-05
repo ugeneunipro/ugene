@@ -536,11 +536,8 @@ void UrlAndDatasetController::initSets(const QList<Dataset>& _urls, const QList<
 
     // Set datasets names
     for (int i = 0; i < urls.count(); ++i) {
-        QFileInfo info(urls[i]);
-        if (!info.fileName().isEmpty()) {
-            sets[i]->setName(info.fileName());
-        } else {
-            sets[i]->setName("Dataset " + QString::number(i + 1));
+        if (sets[i]->getName().isEmpty()) {
+            sets[i]->setName(QFileInfo(urls[i]).fileName());
         }
     }
 }
