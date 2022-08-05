@@ -5133,7 +5133,7 @@ GUI_TEST_CLASS_DEFINITION(test_4839_2) {
 GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* optionsPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+    GTUtilsOptionPanelPhyTree::openTab(os);
 
     QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os, 16);
     int nodeIndex = 5;
@@ -5174,7 +5174,6 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTUtilsPhyTree::clickNode(os, nodes[childNodeIndex]);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == newFontSize2, QString("6. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4852) {
