@@ -8418,9 +8418,13 @@ p3_sa_add_to_overlap_junctions_array(seq_args *sargs, int overlap)
   return 0;
 }
 
-void p3_sa_set_start_codon_sequence(seq_args* sargs, const char start_codon_seq[4]) {
+void p3_sa_set_start_codon_sequence(seq_args* sargs, const char start_codon_seq[]) {
+    if (strlen(start_codon_seq) != 3) {
+        sargs->start_codon_seq[0] = 'X';
+        return;
+    }
     for (int i = 0; i < 4; i++) {
-        sargs->start_codon_seq[i] = start_codon_seq[i];
+        sargs->start_codon_seq[i] = toupper(start_codon_seq[i]);
     }
 }
 
