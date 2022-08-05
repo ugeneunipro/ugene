@@ -63,6 +63,7 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetVie
     : editor(msaEditor), viewSettings(viewSettings),
       savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(editor != nullptr, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
+    setObjectName("TreeOptionsWidget");
 
     contentWidget = new QWidget();
     setupUi(contentWidget);
@@ -78,6 +79,7 @@ TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSet
     : treeViewer(tree->getTreeViewerUI()), viewSettings(_viewSettings),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())) {
     SAFE_POINT(treeViewer != nullptr, "Invalid parameter were passed into constructor TreeOptionsWidget", );
+    setObjectName("TreeOptionsWidget");
 
     contentWidget = new QWidget();
     setupUi(contentWidget);

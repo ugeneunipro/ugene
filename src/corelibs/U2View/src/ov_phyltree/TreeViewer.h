@@ -296,7 +296,7 @@ protected:
      */
     virtual void updateScene(bool fitSceneToView);
 
-    virtual void onSettingsChanged(TreeViewOption option, const QVariant& newValue);
+    virtual void onSettingsChanged(const TreeViewOption& option, const QVariant& newValue);
 
 signals:
     void si_optionChanged(TreeViewOption option, const QVariant& value);
@@ -347,7 +347,7 @@ private:
 
     void updateLayout();
 
-    void updateTextSettings(TreeViewOption option);
+    void updateTextSettings(const TreeViewOption& option);
 
     void updateBranchSettings();
 

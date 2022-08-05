@@ -230,15 +230,19 @@ TreeViewerUI* GTUtilsPhyTree::getTreeViewerUi(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOrderedRectangularNodes"
-QList<GraphicsButtonItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITestOpStatus& os) {
+QList<GraphicsButtonItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount) {
     QList<GraphicsButtonItem*> orderedRectangularNodes;
     QList<GraphicsRectangularBranchItem*> graphicsRectangularBranchItems = getOrderedRectangularBranches(os);
-    foreach (GraphicsRectangularBranchItem* rectangularBranch, graphicsRectangularBranchItems) {
-        GT_CHECK_RESULT(nullptr != rectangularBranch, "Rectangular branch is NULL", QList<GraphicsButtonItem*>());
+    for (GraphicsRectangularBranchItem* rectangularBranch : qAsConst(graphicsRectangularBranchItems)) {
+        GT_CHECK_RESULT(rectangularBranch != nullptr, "Rectangular branch is NULL", QList<GraphicsButtonItem*>());
         GraphicsButtonItem* rectangularNode = rectangularBranch->getButton();
-        if (nullptr != rectangularNode) {
+        if (rectangularNode != nullptr) {
             orderedRectangularNodes << rectangularNode;
         }
+    }
+    if (expectedNodeCount >= 0) {
+        int nodeCount = orderedRectangularNodes.size();
+        GT_CHECK_RESULT(nodeCount == expectedNodeCount, "Invalid node count: " + QString::number(nodeCount), {});
     }
     return orderedRectangularNodes;
 }

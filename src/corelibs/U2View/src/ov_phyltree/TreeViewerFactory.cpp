@@ -28,7 +28,6 @@
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/UnloadedObject.h>
 
-#include "TreeViewer.h"
 #include "TreeViewerState.h"
 #include "TreeViewerTasks.h"
 

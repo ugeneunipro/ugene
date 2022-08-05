@@ -148,7 +148,6 @@ public:
 
 protected:
     void onLayoutChanged(const TreeLayout& layout) override;
-    void onSettingsChanged(TreeViewOption option, const QVariant& newValue) override;
 
     /** Overrides the original method to trigger MSA related updates as the result of tree update. */
     void updateScene(bool fitSceneToView) override;

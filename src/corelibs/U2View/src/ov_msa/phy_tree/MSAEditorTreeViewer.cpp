@@ -358,28 +358,6 @@ QList<GraphicsBranchItem*> MSAEditorTreeViewerUI::getBranchItemsWithNames() cons
     return result;
 }
 
-void MSAEditorTreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant& newValue) {
-    bool isSizeSynchronized = msaEditorTreeViewer->isSyncModeEnabled() && isRectangularLayout;
-    if (!isSizeSynchronized) {
-        TreeViewerUI::onSettingsChanged(option, newValue);
-        return;
-    }
-    switch (option) {
-        case WIDTH_COEF:
-            updateScene(false);
-            break;
-        case HEIGHT_COEF:
-            break;
-        case BRANCHES_TRANSFORMATION_TYPE:
-            updateScene(false);
-            TreeViewerUI::onSettingsChanged(option, newValue);
-            break;
-        default:
-            TreeViewerUI::onSettingsChanged(option, newValue);
-            break;
-    }
-}
-
 void MSAEditorTreeViewerUI::updateScene(bool) {
     // A tree viewer embedded into MSA editor never uses 'fitSceneToView' option today:
     // 1. The option is not compatible with sync mode.

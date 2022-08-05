@@ -77,7 +77,7 @@ public:
      *    |-10-
      *
      */
-    static QList<GraphicsButtonItem*> getOrderedRectangularNodes(HI::GUITestOpStatus& os);
+    static QList<GraphicsButtonItem*> getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount = -1);
     static QList<GraphicsRectangularBranchItem*> getOrderedRectangularBranches(HI::GUITestOpStatus& os);
     static QList<qreal> getOrderedRectangularBranchesDistances(HI::GUITestOpStatus& os);
 

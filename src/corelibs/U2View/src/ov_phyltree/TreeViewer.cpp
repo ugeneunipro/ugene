@@ -511,10 +511,9 @@ void TreeViewerUI::changeOption(TreeViewOption option, const QVariant& newValue)
     dontSendOptionChangedSignal = false;
 }
 
-void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant& newValue) {
+void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVariant& newValue) {
     SAFE_POINT(settings.keys().contains(option), "Unrecognized option in TreeViewerUI::onSettingsChanged", );
     setOptionValue(option, newValue);
-    QAction* action = nullptr;
     switch (option) {
         case TREE_LAYOUT:
             setTreeLayout(static_cast<TreeLayout>(newValue.toUInt()));
@@ -539,22 +538,19 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant& newV
             updateSettings();
             break;
         case SHOW_LABELS:
-            action = curTreeViewer->getNameLabelsAction();
             changeNamesDisplay();
-            action->setChecked(newValue.toBool());
+            curTreeViewer->getNameLabelsAction()->setChecked(newValue.toBool());
             break;
         case SHOW_DISTANCES:
-            action = curTreeViewer->getDistanceLabelsAction();
             showLabels(LabelType_Distance);
-            action->setChecked(newValue.toBool());
+            curTreeViewer->getDistanceLabelsAction()->setChecked(newValue.toBool());
             break;
         case SHOW_NODE_LABELS:
             changeNodeValuesDisplay();
             break;
         case ALIGN_LABELS:
-            action = curTreeViewer->getContAction();
             changeLabelsAlignment();
-            action->setChecked(newValue.toBool());
+            curTreeViewer->getContAction()->setChecked(newValue.toBool());
             break;
         case SCALEBAR_RANGE:
         case SCALEBAR_FONT_SIZE:
@@ -642,37 +638,43 @@ void TreeViewerUI::updateSettings() {
     }
 }
 
-void TreeViewerUI::updateTextSettings(TreeViewOption option) {
-    QList<QGraphicsItem*> updatingItems = scene()->items();
-    if (!scene()->selectedItems().isEmpty()) {
-        updatingItems = scene()->selectedItems();
+static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {
+    QSet<QGraphicsItem*> result;
+    QList<QGraphicsItem*> directChildren = item->childItems();
+    for (auto directChild : qAsConst(directChildren)) {
+        result += directChild;
+        result += getAllLevelChildItems(directChild);
     }
-    for (QGraphicsItem* graphItem : qAsConst(updatingItems)) {
-        GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem);
-        if (branchItem != nullptr) {
-            if (option == LABEL_COLOR) {
-                if (updatingItems.isEmpty()) {
-                    updatingItems = items();
-                    QList<QGraphicsItem*> legendChildItems = legend->childItems();
-                    if (!legendChildItems.isEmpty()) {
-                        auto* legendText = dynamic_cast<QGraphicsSimpleTextItem*>(legendChildItems.first());
-                        if (legendText) {
-                            legendText->setBrush(qvariant_cast<QColor>(getOptionValue(LABEL_COLOR)));
-                        }
-                    }
-                }
-            }
+    return result;
+}
+
+void TreeViewerUI::updateTextSettings(const TreeViewOption& option) {
+    QSet<QGraphicsItem*> itemsToUpdate = scene()->selectedItems().toSet();
+    if (itemsToUpdate.isEmpty()) {
+        itemsToUpdate = scene()->items().toSet();
+    } else {
+        QSet<QGraphicsItem*> rootItems = itemsToUpdate;
+        for (auto item : qAsConst(rootItems)) {
+            itemsToUpdate += getAllLevelChildItems(item);
+        }
+    }
+
+    QVariant optionValue = getOptionValue(option);
+    for (auto item : qAsConst(itemsToUpdate)) {
+        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(item)) {
             if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
                 option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
-                branchItem->updateTextProperty(option, getOptionValue(option));
+                branchItem->updateTextProperty(option, optionValue);
                 if (branchItem->getCorrespondingItem()) {
-                    branchItem->getCorrespondingItem()->updateTextProperty(option, getOptionValue(option));
+                    branchItem->getCorrespondingItem()->updateTextProperty(option, optionValue);
                 }
             }
-        }
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
-        if (buttonItem != nullptr) {
+        } else if (auto buttonItem = dynamic_cast<GraphicsButtonItem*>(item)) {
             buttonItem->updateSettings(getSettings());
+        } else if (auto legendText = dynamic_cast<QGraphicsSimpleTextItem*>(item)) {
+            if (option == LABEL_COLOR) {
+                legendText->setBrush(qvariant_cast<QColor>(optionValue));
+            }
         }
     }
 

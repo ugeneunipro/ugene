@@ -89,6 +89,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsPrimerLibrary.h"
@@ -113,7 +114,6 @@
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
@@ -5128,6 +5128,53 @@ GUI_TEST_CLASS_DEFINITION(test_4839_2) {
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     CHECK_SET_ERR(originalNames.length() - modifiedNames.length() == 3, "The number of sequences remained unchanged.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4841) {
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QWidget* optionsPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+
+    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os, 16);
+    int nodeIndex = 5;
+    int childNodeIndex = 4;
+    int parentNodeIndex = 6;
+    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+
+    int originalFontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    int newFontSize1 = originalFontSize + 2;
+    int newFontSize2 = originalFontSize + 4;
+    GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize1);
+
+    GTUtilsPhyTree::clickNode(os, nodes[parentNodeIndex]);
+    int fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("1. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+
+    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+    fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("2. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+
+    GTUtilsPhyTree::clickNode(os, nodes[childNodeIndex]);
+    fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("3. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+
+    // Collapse subtree and change font again.
+    GTUtilsPhyTree::doubleClickNode(os, nodes[nodeIndex]);
+    GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize2);
+
+    GTUtilsPhyTree::clickNode(os, nodes[parentNodeIndex]);
+    fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("4. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+
+    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+    fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("5. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+
+    GTUtilsPhyTree::doubleClickNode(os, nodes[nodeIndex]);
+    GTUtilsPhyTree::clickNode(os, nodes[childNodeIndex]);
+    fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("6. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4852) {
