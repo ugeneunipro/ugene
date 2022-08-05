@@ -301,17 +301,17 @@ void GTUtilsMsaEditor::clickColumn(GUITestOpStatus& os, int column, Qt::MouseBut
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectRows"
-void GTUtilsMsaEditor::selectRows(GUITestOpStatus& os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method) {
+void GTUtilsMsaEditor::selectRows(GUITestOpStatus& os, int firstRowIndex, int lastRowIndex, GTGlobals::UseMethod method) {
     switch (method) {
         case GTGlobals::UseKey:
-            clickSequence(os, firstRowNumber);
+            clickSequence(os, firstRowIndex);
             GTKeyboardDriver::keyPress(Qt::Key_Shift);
-            clickSequence(os, lastRowNumber);
+            clickSequence(os, lastRowIndex);
             GTKeyboardDriver::keyRelease(Qt::Key_Shift);
             break;
         case GTGlobals::UseMouse:
-            GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowNumber).center(),
-                                       getSequenceNameRect(os, lastRowNumber).center());
+            GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowIndex).center(),
+                                       getSequenceNameRect(os, lastRowIndex).center());
             break;
         case GTGlobals::UseKeyBoard:
             GT_FAIL("Not implemented", );

@@ -92,7 +92,7 @@ public:
     static void moveToColumn(HI::GUITestOpStatus& os, int column);
     static void clickColumn(HI::GUITestOpStatus& os, int column, Qt::MouseButton mouseButton = Qt::LeftButton);
 
-    static void selectRows(HI::GUITestOpStatus& os, int firstRowNumber, int lastRowNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
+    static void selectRows(HI::GUITestOpStatus& os, int firstRowIndex, int lastRowIndex, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
 
     /** Select rows in the name list by name using Ctrl + Mouse click. Fails if any of the rows is not found. */
     static void selectRowsByName(HI::GUITestOpStatus& os, const QStringList& rowNames);

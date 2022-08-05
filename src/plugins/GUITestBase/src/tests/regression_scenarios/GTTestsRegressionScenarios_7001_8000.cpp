@@ -81,7 +81,6 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTMSAEditorStatusWidget.h"
-#include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
@@ -386,15 +385,15 @@ GUI_TEST_CLASS_DEFINITION(test_7126) {
     GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7127");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMsaEditor::selectRows(os, 0, 3);
+    GTUtilsMsaEditor::selectRows(os, 0, 17);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString clipboardText = GTClipboard::text(os);
-    QStringList lines = clipboardText.split("\n");
-
+    QStringList lines = GTClipboard::text(os).split("\n");
+    CHECK_SET_ERR(lines[0].startsWith("CLUSTAL W"), "Unexpected line 0: " + lines[0]);
+    CHECK_SET_ERR(lines[1].trimmed().isEmpty(), "Unexpected line 1: " + lines[1]);
     CHECK_SET_ERR(lines[2].startsWith("Isophya_altaica_EF540820"), "Unexpected line 2: " + lines[2]);
     CHECK_SET_ERR(lines[3].startsWith("Bicolorana_bicolor_EF540830"), "Unexpected line 3: " + lines[3]);
     CHECK_SET_ERR(lines[4].startsWith("Roeseliana_roeseli"), "Unexpected lines 4: " + lines[4]);

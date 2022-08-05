@@ -109,6 +109,7 @@ void CreateSubalignmentTask::prepare() {
 
     // TODO: add "remove empty rows and columns" flag to crop function
     resultMAObj->crop(resultRowIds, cfg.columnRange);
+    resultMAObj->updateRowsOrder(stateInfo, resultRowIds);
 
     if (cfg.saveImmediately) {
         addSubTask(new SaveDocumentTask(resultDocument, iof));
