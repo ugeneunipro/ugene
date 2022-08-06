@@ -41,7 +41,6 @@
 
 #include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
 #include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
-#include "ov_msa/phy_tree/MsaEditorTreeTabArea.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "phyltree/TreeSettingsDialog.h"
 
@@ -424,7 +423,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
     openTreeButton->setFixedWidth(102);
     openTreeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonLayout->addWidget(openTreeButton);
-    openTreeButton->setObjectName("OpenTreeButton");
+    openTreeButton->setObjectName("openTreeButton");
 
     auto horizontalSpacer = new QSpacerItem(50, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
     buttonLayout->addSpacerItem(horizontalSpacer);
@@ -432,7 +431,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
     buildTreeButton = new QPushButton(QIcon(":core/images/phylip.png"), tr("Build tree"), this);
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
-    buildTreeButton->setObjectName("BuildTreeButton");
+    buildTreeButton->setObjectName("buildTreeButton");
     buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled());
 
     connect(msaEditor->buildTreeAction, &QAction::changed, this, [this, msaEditor]() {
@@ -442,11 +441,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
 
     mainLayout->addLayout(buttonLayout);
 
-    connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));
-}
-
-void AddTreeWidget::sl_onOpenTreeTriggered() {
-    editor->getTreeManager()->openTreeFromFile();
+    connect(openTreeButton, &QPushButton::clicked, this, [&] { editor->getTreeManager()->openTreeFromFile(); });
 }
 
 TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow /*= nullptr*/)

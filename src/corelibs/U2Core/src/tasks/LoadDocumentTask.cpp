@@ -296,6 +296,10 @@ DocumentProviderTask* LoadDocumentTask::getCommonLoadDocTask(const GUrl& url) {
     return task;
 }
 
+const GUrl& LoadDocumentTask::getURL() const {
+    return url;
+}
+
 static bool isLoadToMem(const DocumentFormatId& id) {
     // files that use dbi not loaded to memory
     if (id == BaseDocumentFormats::FASTA || id == BaseDocumentFormats::PLAIN_GENBANK ||
@@ -415,6 +419,16 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
 }
 
 void LoadDocumentTask::run() {
+    loadDocument();
+    if (resultDocument != nullptr && moveDocumentToMainThread) {
+        QThread* mainThread = QCoreApplication::instance()->thread();
+        if (resultDocument->thread() != mainThread) {
+            resultDocument->moveToThread(mainThread);
+        }
+    }
+}
+
+void LoadDocumentTask::loadDocument() {
     CHECK_OP(stateInfo, );
     if (config.createDoc && iof->isResourceAvailable(url) == TriState_No) {
         CHECK_EXT(iof->isIOModeSupported(IOAdapterMode_Write), setError(tr("Document not found %1").arg(url.getURLString())), );

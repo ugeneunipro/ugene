@@ -609,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_3142) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_ADD_TREE_WIDGET"));
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick/COI.nwk"));
-    GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
 
     GTWidget::findWidget(os, "msa_editor_sequence_area");
 

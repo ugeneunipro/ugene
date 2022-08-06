@@ -1501,7 +1501,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
@@ -1550,7 +1550,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");

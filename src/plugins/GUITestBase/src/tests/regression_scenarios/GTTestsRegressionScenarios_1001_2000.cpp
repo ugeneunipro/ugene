@@ -5829,7 +5829,7 @@ GUI_TEST_CLASS_DEFINITION(test_1631) {
     //    4. Select "data/samples/Newick/COI.nwk".
     //    Expected state: the tree is added to the MSA Editor.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
-    GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::getTreeView(os);
 

@@ -98,16 +98,20 @@ public:
 
     LoadDocumentTask(DocumentFormat* format, const GUrl& url, IOAdapterFactory* iof, const QVariantMap& hints = QVariantMap(), const LoadDocumentTaskConfig& config = LoadDocumentTaskConfig());
 
-    virtual void run();
-    virtual void prepare();
-    virtual ReportResult report();
+    void run() override;
+    void prepare() override;
+    ReportResult report() override;
 
-    const GUrl& getURL() const {
-        return url;
-    }
+    const GUrl& getURL() const;
+
     QString getURLString() const;
 
+    /** When set to 'true' the result document will be moved to the main thread right after loading (run). */
+    bool moveDocumentToMainThread = false;
+
 private:
+    void loadDocument();
+
     void init();
 
     /**

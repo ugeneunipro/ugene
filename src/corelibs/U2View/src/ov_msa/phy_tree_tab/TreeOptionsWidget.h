@@ -132,9 +132,6 @@ class U2VIEW_EXPORT AddTreeWidget : public QWidget {
 public:
     AddTreeWidget(MSAEditor* msaEditor);
 
-private slots:
-    void sl_onOpenTreeTriggered();
-
 private:
     MSAEditor* editor;
     QPushButton* openTreeButton;

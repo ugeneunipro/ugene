@@ -1492,7 +1492,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "Open tree" button. Select data/samples/CLUSTALW/COI.nwk in file dialog
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
-    GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     //    Expected state: tree opened.
     GTWidget::findWidget(os, "treeView");
 }
