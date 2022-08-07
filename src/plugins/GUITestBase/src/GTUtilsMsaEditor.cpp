@@ -150,6 +150,14 @@ MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNoTreeView"
+void GTUtilsMsaEditor::checkNoTreeView(GUITestOpStatus& os) {
+    QWidget* activeWindow = getActiveMsaEditorWindow(os);
+    auto treeView = GTWidget::findExactWidget<MSAEditorTreeViewerUI*>(os, "treeView", activeWindow, {false});
+    CHECK_SET_ERR(treeView == nullptr, "checkNoTreeView: found a tree view");
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getNameListArea"
 MaEditorNameList* GTUtilsMsaEditor::getNameListArea(GUITestOpStatus& os) {
     QWidget* activeWindow = getActiveMsaEditorWindow(os);

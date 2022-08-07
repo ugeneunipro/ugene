@@ -97,18 +97,6 @@ public:
         } \
     }
 
-/**
-    Checks condition is false and returns the result if it is.
-    Before the result is returned the 'extraOp' operation is performed (for example logging)
-
-    Code style hint: use CHECK macro only to make error processing more compact but not all if {return;} patterns !
-*/
-#define CHECK_EXT(condition, extraOp, result) \
-    if (!(condition)) { \
-        extraOp; \
-        return result; \
-    }
-
 /** Used in tests */
 #define CHECK_SET_ERR(condition, errorMessage) \
     CHECK_SET_ERR_RESULT(condition, errorMessage, )
@@ -121,11 +109,13 @@ public:
         GT_DEBUG_MESSAGE(condition, errorMessage, result); \
         if (os.hasError()) { \
             HI::GTGlobals::GUITestFail(); \
-            os.setError(os.getError()); \
             return result; \
         } \
-        CHECK_EXT( \
-            condition, if (!os.hasError()) { HI::GTGlobals::GUITestFail(); os.setError(errorMessage); }, result) \
+        if (!(condition)) { \
+            os.setError(errorMessage); \
+            HI::GTGlobals::GUITestFail(); \
+            return result; \
+        } \
     }
 
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */

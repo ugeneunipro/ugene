@@ -20,6 +20,7 @@
  */
 
 #include "GTUtilsLog.h"
+#include <utils/GTThread.h>
 
 #include "U2Core/LogCache.h"
 #include <U2Core/U2SafePoints.h>
@@ -63,8 +64,7 @@ bool GTLogTracer::checkMessage(const QString& s) {
 #define GT_CLASS_NAME "GTUtilsLog"
 #define GT_METHOD_NAME "check"
 void GTUtilsLog::check(HI::GUITestOpStatus& os, const GTLogTracer& logTracer) {
-    Q_UNUSED(os);
-    GTGlobals::sleep(500);
+    GTThread::waitForMainThread();
     GT_CHECK(!logTracer.hasErrors(), "There are errors in log: " + logTracer.errorsList.join("\n"));
 }
 #undef GT_METHOD_NAME

@@ -65,7 +65,12 @@ public:
 
     static QWidget* getGraphOverview(HI::GUITestOpStatus& os);
     static QWidget* getSimpleOverview(HI::GUITestOpStatus& os);
+
     static MSAEditorTreeViewerUI* getTreeView(HI::GUITestOpStatus& os);
+
+    /** Checks that there is no Tree view opened in the active MSA editor. */
+    static void checkNoTreeView(HI::GUITestOpStatus& os);
+
     static MaEditorNameList* getNameListArea(HI::GUITestOpStatus& os);
     static MSAEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus& os);
     static MSAEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus& os);

@@ -30,7 +30,6 @@
 
 #include <U2Core/U2ObjectDbi.h>
 
-#include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 
 namespace U2 {
@@ -48,7 +47,10 @@ ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os, Cu
 
 #define GT_METHOD_NAME "commonScenario"
 void ImportPrimersDialogFiller::commonScenario() {
-    CHECK_EXT(!fileList.isEmpty(), GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel), );
+    if (fileList.isEmpty()) {
+        GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        return;
+    }
 
     foreach (const QString& file, fileList) {
         addFile(os, file);
@@ -64,7 +66,6 @@ void ImportPrimersDialogFiller::addFile(HI::GUITestOpStatus& os, const QString& 
     GTWidget::click(os, GTWidget::findWidget(os, "pbAddFile", getDialog(os)));
 }
 #undef GT_METHOD_NAME
-
 
 #define GT_METHOD_NAME "addObject"
 void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus& os, const QString& databaseName, const QStringList& objectNames) {

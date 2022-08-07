@@ -53,6 +53,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/ProjectModel.h>
 
 #include <U2Gui/Notification.h>
 
@@ -2729,6 +2730,43 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
     CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
     qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7616) {
+    // Check that "Open Tree" button in MSA Editor's options panel works correctly.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    QList<Document*> documents = AppContext::getProject()->getDocuments();
+    CHECK_SET_ERR(documents.size() == 1, "Expected 1 document in project");
+    Document* initialCoiNwkDocument = documents.first();
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+
+    // Try non-tree file. Expected state: nothing is loaded.
+    GTLogTracer logTracer1("Document contains no tree objects");
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/CLUSTALW/ty3.aln.gz"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsMessage(os, logTracer1);
+    GTUtilsMsaEditor::checkNoTreeView(os);
+
+    // Try load a tree file that is already in the project. Expected state: the document in the project is reused.
+    GTLogTracer logTracer2;
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/Newick/COI.nwk"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check there is an active tree view.
+    GTUtilsMsaEditor::getTreeView(os);
+    GTUtilsLog::check(os, logTracer2); // Check there is no error in the log.
+
+    documents = AppContext::getProject()->getDocuments();
+    CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");
+    CHECK_SET_ERR(documents.contains(initialCoiNwkDocument), "Expected initial tree document to be present in the project and re-used in MSA editor");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7631) {
