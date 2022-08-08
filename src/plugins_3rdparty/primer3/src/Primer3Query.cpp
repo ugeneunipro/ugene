@@ -129,8 +129,8 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
     QList<PrimerPair> bestPairs = primerTask->getBestPairs();
     foreach (PrimerPair pair, bestPairs) {
         QList<SharedAnnotationData> annotations;
-        Primer* leftPrimer = pair.getLeftPrimer();
-        Primer* rightPrimer = pair.getRightPrimer();
+        PrimerSingle* leftPrimer = pair.getLeftPrimer();
+        PrimerSingle* rightPrimer = pair.getRightPrimer();
         if (leftPrimer != nullptr && rightPrimer != nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;

@@ -376,9 +376,9 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             return;
         }
 
-        QList<Primer> leftPrimers;
+        QList<PrimerSingle> leftPrimers;
         for (int i = 0; i < leftCount; i++) {
-            Primer primer;
+            PrimerSingle primer;
             if (readPrimer(elOutput, "PRIMER_LEFT_" + QString::number(i), &primer, false)) {
                 leftPrimers << primer;
                 expectedSinglePrimers << primer;
@@ -387,9 +387,9 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 return;
             }
         }
-        QList<Primer> rightPrimers;
+        QList<PrimerSingle> rightPrimers;
         for (int i = 0; i < rightCount; i++) {
-            Primer primer(OT_RIGHT);
+            PrimerSingle primer(OT_RIGHT);
             if (readPrimer(elOutput, "PRIMER_RIGHT_" + QString::number(i), &primer, false)) {
                 rightPrimers << primer;
                 expectedSinglePrimers << primer;
@@ -398,9 +398,9 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 return;
             }
         }
-        QList<Primer> internalPrimers;
+        QList<PrimerSingle> internalPrimers;
         for (int i = 0; i < internalCount; i++) {
-            Primer primer(OT_INTL);
+            PrimerSingle primer(OT_INTL);
             if (readPrimer(elOutput, "PRIMER_INTERNAL_" + QString::number(i), &primer, true)) {
                 internalPrimers << primer;
                 expectedSinglePrimers << primer;
@@ -570,7 +570,7 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
-    QList<Primer> currentSinglePrimers = task->getSinglePrimers();
+    QList<PrimerSingle> currentSinglePrimers = task->getSinglePrimers();
     if (currentSinglePrimers.size() != expectedSinglePrimers.size()) {
         stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%1, but Actual:%2").arg(expectedSinglePrimers.size()).arg(currentSinglePrimers.size()));
         return ReportResult_Finished;
@@ -660,7 +660,7 @@ Task::ReportResult GTest_Primer3::report() {
 GTest_Primer3::~GTest_Primer3() {
 }
 
-bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, Primer* outPrimer, bool internalOligo) {
+bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, PrimerSingle* outPrimer, bool internalOligo) {
     {
         QString buf = element.attribute(prefix);
         if (!buf.isEmpty()) {
@@ -850,7 +850,7 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     return true;
 }
 
-bool GTest_Primer3::checkPrimer(const Primer* primer, const Primer* expectedPrimer, QString prefix, bool internalOligo) {
+bool GTest_Primer3::checkPrimer(const PrimerSingle* primer, const PrimerSingle* expectedPrimer, QString prefix, bool internalOligo) {
     if (nullptr == primer) {
         if (nullptr == expectedPrimer) {
             return true;

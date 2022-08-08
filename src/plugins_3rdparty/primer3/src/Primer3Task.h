@@ -36,12 +36,12 @@ namespace U2 {
 
 class AnnotationTableObject;
 
-class Primer {
+class PrimerSingle {
 public:
-    Primer(oligo_type type = oligo_type::OT_LEFT);
-    Primer(const primer_rec& primerRec, oligo_type type, int offset);
-    bool operator==(const Primer& primer) const;
-    static bool areEqual(const Primer* p1, const Primer* p2);
+    PrimerSingle(oligo_type type = oligo_type::OT_LEFT);
+    PrimerSingle(const primer_rec& primerRec, oligo_type type, int offset);
+    bool operator==(const PrimerSingle& primer) const;
+    static bool areEqual(const PrimerSingle* p1, const PrimerSingle* p2);
 
     int getStart() const;
     int getLength() const;
@@ -97,9 +97,9 @@ public:
     PrimerPair& operator=(const PrimerPair& primerPair);
     bool operator==(const PrimerPair& primerPair) const;
 
-    Primer* getLeftPrimer() const;
-    Primer* getRightPrimer() const;
-    Primer* getInternalOligo() const;
+    PrimerSingle* getLeftPrimer() const;
+    PrimerSingle* getRightPrimer() const;
+    PrimerSingle* getInternalOligo() const;
     double getComplAny() const;
     double getComplEnd() const;
     int getProductSize() const;
@@ -110,9 +110,9 @@ public:
     const QString& getComplAnyStruct() const;
     const QString& getComplEndStruct() const;
 
-    void setLeftPrimer(Primer* leftPrimer);
-    void setRightPrimer(Primer* rightPrimer);
-    void setInternalOligo(Primer* internalOligo);
+    void setLeftPrimer(PrimerSingle* leftPrimer);
+    void setRightPrimer(PrimerSingle* rightPrimer);
+    void setInternalOligo(PrimerSingle* internalOligo);
     void setComplAny(double complAny);
     void setComplEnd(double complEnd);
     void setProductSize(int productSize);
@@ -127,9 +127,9 @@ public:
 
 private:
     // don't forget to change copy constructor and assignment operator when changing this!
-    QScopedPointer<Primer> leftPrimer;
-    QScopedPointer<Primer> rightPrimer;
-    QScopedPointer<Primer> internalOligo;
+    QScopedPointer<PrimerSingle> leftPrimer;
+    QScopedPointer<PrimerSingle> rightPrimer;
+    QScopedPointer<PrimerSingle> internalOligo;
     double complAny;
     double complEnd;
     int productSize;
@@ -155,14 +155,14 @@ public:
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
     }
-    const QList<Primer>& getSinglePrimers() const {
+    const QList<PrimerSingle>& getSinglePrimers() const {
         return singlePrimers;
     }
 
 private:
     Primer3TaskSettings settings;
     QList<PrimerPair> bestPairs;
-    QList<Primer> singlePrimers;
+    QList<PrimerSingle> singlePrimers;
 
     p3retval* resultPrimers = nullptr;
 
@@ -182,14 +182,14 @@ public:
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
     }
-    QList<Primer> getSinglePrimers() const {
+    QList<PrimerSingle> getSinglePrimers() const {
         return singlePrimers;
     }
 
 private:
-    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
-    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& listToRemember);
-    void relocatePrimerOverMedian(Primer* primer);
+    void addPrimer3Subtasks(const Primer3TaskSettings& settings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
+    void addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& listToRemember);
+    void relocatePrimerOverMedian(PrimerSingle* primer);
 
     static const int CHUNK_SIZE = 1024 * 256;
 
@@ -198,7 +198,7 @@ private:
     int median;
     Primer3TaskSettings settings;
     QList<PrimerPair> bestPairs;
-    QList<Primer> singlePrimers;
+    QList<PrimerSingle> singlePrimers;
 
     friend class Primer3ToAnnotationsTask;
 };
@@ -220,7 +220,7 @@ public:
     Task::ReportResult report();
 
 private:
-    SharedAnnotationData oligoToAnnotation(const QString& title, const Primer& primer, int productSize, U2Strand strand);
+    SharedAnnotationData oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand);
 
     Primer3TaskSettings settings;
 

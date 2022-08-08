@@ -38,9 +38,9 @@
 
 namespace U2 {
 
-// Primer
+// PrimerSingle
 
-Primer::Primer(oligo_type type)
+PrimerSingle::PrimerSingle(oligo_type type)
     : start(0),
       length(0),
       meltingTemperature(0),
@@ -54,7 +54,7 @@ Primer::Primer(oligo_type type)
       type(type) {
 }
 
-Primer::Primer(const primer_rec& primerRec, oligo_type _type, int offset)
+PrimerSingle::PrimerSingle(const primer_rec& primerRec, oligo_type _type, int offset)
     : start(primerRec.start + offset),
       length(primerRec.length),
       meltingTemperature(primerRec.temp),
@@ -76,7 +76,7 @@ Primer::Primer(const primer_rec& primerRec, oligo_type _type, int offset)
     }
 }
 
-bool Primer::operator==(const Primer& p) const {
+bool PrimerSingle::operator==(const PrimerSingle& p) const {
     bool result = true;
 
     result &= start == p.start;
@@ -97,7 +97,7 @@ bool Primer::operator==(const Primer& p) const {
     return result;
 }
 
-bool Primer::areEqual(const Primer* p1, const Primer* p2) {
+bool PrimerSingle::areEqual(const PrimerSingle* p1, const PrimerSingle* p2) {
     if (p1 != nullptr && p2 != nullptr) {
         return (*p1 == *p2);
     } else {
@@ -105,115 +105,111 @@ bool Primer::areEqual(const Primer* p1, const Primer* p2) {
     }
 }
 
-int Primer::getStart() const {
+int PrimerSingle::getStart() const {
     return start;
 }
 
-int Primer::getLength() const {
+int PrimerSingle::getLength() const {
     return length;
 }
 
-double Primer::getMeltingTemperature() const {
+double PrimerSingle::getMeltingTemperature() const {
     return meltingTemperature;
 }
 
-double Primer::getGcContent() const {
+double PrimerSingle::getGcContent() const {
     return gcContent;
 }
 
-double Primer::getSelfAny() const {
+double PrimerSingle::getSelfAny() const {
     return selfAny;
 }
 
-double Primer::getSelfEnd() const {
+double PrimerSingle::getSelfEnd() const {
     return selfEnd;
 }
 
-double Primer::getHairpin() const {
+double PrimerSingle::getHairpin() const {
     return hairpin;
 }
 
-double Primer::getEndStability() const {
+double PrimerSingle::getEndStability() const {
     return endStability;
 }
 
-void Primer::setStart(int newStart) {
-    start = newStart;
-}
-
-double Primer::getQuality() const {
+double PrimerSingle::getQuality() const {
     return quality;
 }
 
-double Primer::getRepeatSim() const {
+double PrimerSingle::getRepeatSim() const {
     return repeatSim;
 }
 
-const QString& Primer::getRepeatSimName() const {
+const QString& PrimerSingle::getRepeatSimName() const {
     return repeatSimName;
 }
 
-const QString& Primer::getSelfAnyStruct() const {
+const QString& PrimerSingle::getSelfAnyStruct() const {
     return selfAnyStruct;
 }
 
-const QString& Primer::getSelfEndStruct() const {
+const QString& PrimerSingle::getSelfEndStruct() const {
     return selfEndStruct;
 }
 
-oligo_type Primer::getType() const {
+oligo_type PrimerSingle::getType() const {
     return type;
 }
 
-oligo_type Primer::getType() const {
-    return type;
+void PrimerSingle::setStart(int start) {
+    this->start = start;
 }
 
-void Primer::setLength(int newLength) {
-    length = newLength;
+void PrimerSingle::setLength(int length) {
+    this->length = length;
 }
 
-void Primer::setMeltingTemperature(double newMeltingTemperature) {
-    meltingTemperature = newMeltingTemperature;
+void PrimerSingle::setMeltingTemperature(double meltingTemperature) {
+    this->meltingTemperature = meltingTemperature;
 }
 
-void Primer::setGcContent(double newGcContent) {
-    gcContent = newGcContent;
+void PrimerSingle::setGcContent(double gcContent) {
+    this->gcContent = gcContent;
 }
 
-void Primer::setSelfAny(double newSelfAny) {
-    selfAny = newSelfAny;
+void PrimerSingle::setSelfAny(double selfAny) {
+    this->selfAny = selfAny;
 }
 
-void Primer::setSelfEnd(double newSelfEnd) {
-    selfEnd = newSelfEnd;
+void PrimerSingle::setSelfEnd(double selfEnd) {
+    this->selfEnd = selfEnd;
 }
 
-void Primer::setHairpin(double hairpin) {
+void PrimerSingle::setHairpin(double hairpin) {
     this->hairpin = hairpin;
 }
 
-void Primer::setEndStability(double endStability) {
+void PrimerSingle::setEndStability(double endStability) {
     this->endStability = endStability;
 }
 
-void Primer::setQuality(double quality) {
+void PrimerSingle::setQuality(double quality) {
     this->quality = quality;
 }
 
-void Primer::setRepeatSim(double repeatSim) {
+void PrimerSingle::setRepeatSim(double repeatSim) {
     this->repeatSim = repeatSim;
 }
 
-void Primer::setRepeatSimName(const QString& repeatSimName) {
+void PrimerSingle::setRepeatSimName(const QString& repeatSimName) {
     this->repeatSimName = repeatSimName;
 }
 
-void Primer::setSelfAnyStruct(const QString& selfAnyStruct) {
+void PrimerSingle::setSelfAnyStruct(const QString& selfAnyStruct) {
     this->selfAnyStruct = selfAnyStruct;
 }
 
-void Primer::setSelfEndStruct(const QString& selfEndStruct) { 
+void PrimerSingle::setSelfEndStruct(const QString& selfEndStruct) {
     this->selfEndStruct = selfEndStruct;
 }
 
@@ -232,9 +228,9 @@ PrimerPair::PrimerPair()
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
-    : leftPrimer((nullptr == primerPair.left) ? nullptr : new Primer(*primerPair.left, oligo_type::OT_LEFT, offset)),
-      rightPrimer((nullptr == primerPair.right) ? nullptr : new Primer(*primerPair.right, oligo_type::OT_RIGHT, offset)),
-      internalOligo((nullptr == primerPair.intl) ? nullptr : new Primer(*primerPair.intl, oligo_type::OT_INTL, offset)),
+    : leftPrimer((nullptr == primerPair.left) ? nullptr : new PrimerSingle(*primerPair.left, oligo_type::OT_LEFT, offset)),
+      rightPrimer((nullptr == primerPair.right) ? nullptr : new PrimerSingle(*primerPair.right, oligo_type::OT_RIGHT, offset)),
+      internalOligo((nullptr == primerPair.intl) ? nullptr : new PrimerSingle(*primerPair.intl, oligo_type::OT_INTL, offset)),
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
@@ -244,21 +240,12 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
       repeatSimName(primerPair.rep_name),
       complAnyStruct(primerPair.compl_any_struct),
       complEndStruct(primerPair.compl_end_struct) {
-    //if (!leftPrimer.isNull()) {
-    //    leftPrimer->setStart(leftPrimer->getStart() + offset);
-    //}
-    //if (!rightPrimer.isNull()) {
-    //    rightPrimer->setStart(rightPrimer->getStart() + offset);
-    //}
-    //if (!internalOligo.isNull()) {
-    //    internalOligo->setStart(internalOligo->getStart() + offset);
-    //}
 }
 
 PrimerPair::PrimerPair(const PrimerPair& primerPair)
-    : leftPrimer((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer)),
-      rightPrimer((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer)),
-      internalOligo((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo)),
+    : leftPrimer((primerPair.leftPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.leftPrimer)),
+      rightPrimer((primerPair.rightPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.rightPrimer)),
+      internalOligo((primerPair.internalOligo.isNull()) ? nullptr : new PrimerSingle(*primerPair.internalOligo)),
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
@@ -271,9 +258,9 @@ PrimerPair::PrimerPair(const PrimerPair& primerPair)
 }
 
 PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
-    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer));
-    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer));
-    internalOligo.reset((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo));
+    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.leftPrimer));
+    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.rightPrimer));
+    internalOligo.reset((primerPair.internalOligo.isNull()) ? nullptr : new PrimerSingle(*primerPair.internalOligo));
     complAny = primerPair.complAny;
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
@@ -290,9 +277,9 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
 bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     bool result = true;
 
-    result &= Primer::areEqual(leftPrimer.data(), primerPair.leftPrimer.data());
-    result &= Primer::areEqual(rightPrimer.data(), primerPair.rightPrimer.data());
-    result &= Primer::areEqual(internalOligo.data(), primerPair.internalOligo.data());
+    result &= PrimerSingle::areEqual(leftPrimer.data(), primerPair.leftPrimer.data());
+    result &= PrimerSingle::areEqual(rightPrimer.data(), primerPair.rightPrimer.data());
+    result &= PrimerSingle::areEqual(internalOligo.data(), primerPair.internalOligo.data());
 
     result &= complAny == primerPair.complAny;
     result &= complEnd == primerPair.complEnd;
@@ -307,15 +294,15 @@ bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     return result;
 }
 
-Primer* PrimerPair::getLeftPrimer() const {
+PrimerSingle* PrimerPair::getLeftPrimer() const {
     return leftPrimer.data();
 }
 
-Primer* PrimerPair::getRightPrimer() const {
+PrimerSingle* PrimerPair::getRightPrimer() const {
     return rightPrimer.data();
 }
 
-Primer* PrimerPair::getInternalOligo() const {
+PrimerSingle* PrimerPair::getInternalOligo() const {
     return internalOligo.data();
 }
 
@@ -339,16 +326,16 @@ double PrimerPair::getProductTm() const {
     return tm;
 }
 
-void PrimerPair::setLeftPrimer(Primer* leftPrimer) {
-    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new Primer(*leftPrimer));
+void PrimerPair::setLeftPrimer(PrimerSingle* leftPrimer) {
+    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new PrimerSingle(*leftPrimer));
 }
 
-void PrimerPair::setRightPrimer(Primer* newRightPrimer) {
-    rightPrimer.reset(newRightPrimer == nullptr ? nullptr : new Primer(*newRightPrimer));
+void PrimerPair::setRightPrimer(PrimerSingle* rightPrimer) {
+    this->rightPrimer.reset((nullptr == rightPrimer) ? nullptr : new PrimerSingle(*rightPrimer));
 }
 
-void PrimerPair::setInternalOligo(Primer* newInternalOligo) {
-    internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*newInternalOligo));
+void PrimerPair::setInternalOligo(PrimerSingle* internalOligo) {
+    this->internalOligo.reset((nullptr == internalOligo) ? nullptr : new PrimerSingle(*internalOligo));
 }
 
 void PrimerPair::setComplAny(double newComplAny) {
@@ -630,17 +617,17 @@ void Primer3Task::run() {
         settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
         if (resultPrimers->fwd.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset));
+                singlePrimers.append(PrimerSingle(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset));
             }
         }
         if (resultPrimers->rev.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->rev.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT, offset));
+                singlePrimers.append(PrimerSingle(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT, offset));
             }
         }
         if (resultPrimers->intl.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->intl.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL, offset));
+                singlePrimers.append(PrimerSingle(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL, offset));
             }
         }
     }
@@ -848,7 +835,7 @@ Task::ReportResult Primer3SWTask::report() {
         }
 
         for (const auto& p : task->getSinglePrimers()) {
-            Primer primer = p;
+            PrimerSingle primer = p;
             relocatePrimerOverMedian(&primer);
             if (!singlePrimers.contains(primer)) {
                 singlePrimers.append(primer);
@@ -892,7 +879,7 @@ void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, QLis
     addPrimer3Subtasks(settings, settings.getSequenceRange(), list);
 }
 
-void Primer3SWTask::relocatePrimerOverMedian(Primer* primer) {
+void Primer3SWTask::relocatePrimerOverMedian(PrimerSingle* primer) {
     primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings.getSequenceSize() - median));
 }
 
@@ -1096,7 +1083,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
-SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const Primer& primer, int productSize, U2Strand strand) {
+SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand) {
     SharedAnnotationData annotationData(new AnnotationData);
     annotationData->name = title;
     annotationData->type = U2FeatureTypes::Primer;
