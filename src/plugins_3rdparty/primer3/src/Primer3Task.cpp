@@ -533,6 +533,8 @@ void Primer3Task::run() {
             stateInfo.addWarning(primerSettings->p_args.repeat_lib->warning.data);
         }
     }
+    CHECK_OP(stateInfo, );
+
     QByteArray mishybLibPath = settings.getMishybLibraryPath();
     if (!mishybLibPath.isEmpty()) {
         auto primerSettings = settings.getPrimerSettings();
@@ -544,6 +546,8 @@ void Primer3Task::run() {
             stateInfo.addWarning(primerSettings->o_args.repeat_lib->warning.data);
         }
     }
+    CHECK_OP(stateInfo, );
+
     QByteArray thermodynamicParametersPath = settings.getThermodynamicParametersPath();
     if (!thermodynamicParametersPath.isEmpty()) {
         auto primerSettings = settings.getPrimerSettings();
@@ -554,32 +558,13 @@ void Primer3Task::run() {
         thal_results o;
         if (thal_load_parameters(path, &primerSettings->thermodynamic_parameters, &o) == -1) {
             stateInfo.setError(o.msg);
-            //pr_append_new_chunk(glob_err, o.msg);
         } else {
             if (get_thermodynamic_values(&primerSettings->thermodynamic_parameters, &o)) {
                 stateInfo.setError(o.msg);
-                //pr_append_new_chunk(glob_err, o.msg);
             }
         }
-
-
-        /*thermodynamic_params_path = (char*)_rb_safe_malloc(datum_len + 1);
-        strcpy(thermodynamic_params_path, datum);
-        if (thermodynamic_params_path[strlen(thermodynamic_params_path) - 1] == '\n') {
-            thermodynamic_params_path[strlen(thermodynamic_params_path) - 1] = '\0';
-        }
-
-        thal_results o;
-        if (thal_load_parameters(thermodynamic_params_path, &pa->thermodynamic_parameters, &o) == -1) {
-            pr_append_new_chunk(glob_err, o.msg);
-        } else {
-            if (get_thermodynamic_values(&pa->thermodynamic_parameters, &o)) {
-                pr_append_new_chunk(glob_err, o.msg);
-            }
-        }
-        free(thermodynamic_params_path);*/
-
     }
+    CHECK_OP(stateInfo, );
 
     bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
     int toReturn = settings.getPrimerSettings()->num_return;
@@ -634,6 +619,8 @@ void Primer3Task::run() {
 }
 
 Task::ReportResult Primer3Task::report() {
+    CHECK_OP(stateInfo, Task::ReportResult_Finished);
+
     if (resultPrimers->glob_err.storage_size != 0) {
         stateInfo.setError(resultPrimers->glob_err.data);
     }
