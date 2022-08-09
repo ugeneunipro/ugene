@@ -264,6 +264,10 @@ public:
 
     void updateRect();
 
+    /** Returns root item for the tree. */
+    GraphicsBranchItem* getRoot() const;
+
+    bool isSelectionStateManagedByChildOnClick = false;
 signals:
     /* emits when branch settings is updated */
     void si_updateBranch();
@@ -275,9 +279,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent* e) override;
 
     virtual void setTreeLayout(const TreeLayout& newLayout);
-
-    /** Returns root item for the tree. */
-    GraphicsBranchItem* getRoot() const;
 
     void setZoom(qreal newZoom);
 
@@ -404,6 +405,9 @@ protected:
     QAction* zoomToAction = nullptr;
     QAction* zoomOutAction = nullptr;
     QAction* zoomToAllAction = nullptr;
+
+    /** View global pos of the last mouse-press event. */
+    QPoint lastMousePressPos;
 };
 
 }  // namespace U2

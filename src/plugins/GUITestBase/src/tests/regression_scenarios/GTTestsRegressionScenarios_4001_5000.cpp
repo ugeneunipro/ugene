@@ -2142,6 +2142,46 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     CHECK_SET_ERR(firstVisibleSequence == 2, QString("MSA scrolled incorrectly: expected first fully visible sequence %1, got %2").arg(2).arg(firstVisibleSequence));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4293) {
+    // Check that context menu in Tree Viewer has expected action & states.
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/sample5.newick");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getNodes(os);
+    CHECK_SET_ERR(nodes.size() == 5, QString("Unexpected number of nodes %1").arg(nodes.size()));
+
+    GraphicsButtonItem* rootNode = nodes[0];
+    GraphicsButtonItem* childNode = nodes[2];
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot Tree"}, PopupChecker::IsDisabled));
+    GTUtilsPhyTree::clickNode(os, rootNode, Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Collapse"}, PopupChecker::IsDisabled));
+    GTUtilsPhyTree::clickNode(os, rootNode, Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    QList<GraphicsButtonItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
+    CHECK_SET_ERR(selectedNodes.size() == 5, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot tree"}));
+    GTUtilsPhyTree::clickNode(os, childNode, Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Collapse"}));
+    GTUtilsPhyTree::clickNode(os, childNode, Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Expand"}));
+    GTUtilsPhyTree::clickNode(os, childNode, Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
+    CHECK_SET_ERR(selectedNodes.size() == 3, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+    CHECK_SET_ERR(!rootNode->isNodeSelected(), "Root not must not be selected");
+    CHECK_SET_ERR(childNode->isNodeSelected(), "Child node must be selected");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4295) {
     /* 1. Open Workflow Designer
      * 2. Add elements Read File URL(s) and Write Plain Text

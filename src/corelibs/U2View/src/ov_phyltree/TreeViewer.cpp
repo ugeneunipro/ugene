@@ -34,6 +34,7 @@
 #include <QStack>
 #include <QSvgGenerator>
 #include <QTextStream>
+#include <QTimer>
 #include <QtMath>
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -942,36 +943,35 @@ void TreeViewerUI::setZoom(qreal newZoom) {
 }
 
 void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
-    bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
-    bool leftButton = e->button() == Qt::LeftButton;
-
-    if (leftButton) {
+    lastMousePressPos = e->globalPos();
+    isSelectionStateManagedByChildOnClick = false;
+    QList<QGraphicsItem*> selectedItemBeforeRightClick;
+    if (e->button() == Qt::LeftButton) {
         setDragMode(QGraphicsView::ScrollHandDrag);
+    } else if (e->button() == Qt::RightButton) {
+        selectedItemBeforeRightClick = scene()->selectedItems();
+        QTimer::singleShot(0, this, [this] { buttonPopup->popup(lastMousePressPos); });
     }
-
-    if (leftButton && !shiftPressed) {
-        root->setSelectedRecurs(false, true);  // clear selection
-    }
-
-    if (e->button() == Qt::RightButton) {
-        buttonPopup->popup(e->globalPos());
-
-        e->accept();
-        return;
-    }
-
     QGraphicsView::mousePressEvent(e);
-    if (leftButton && !shiftPressed) {
-        updateBranchSettings();
+
+    // Calling QGraphicsView::mousePressEvent() for both right/left clicks to deliver right/left clicks to children.
+    // QGraphicsView::mousePressEvent() resets the selection when clicked on empty space. Restore it back if not processed by child.
+    if (e->button() == Qt::RightButton && !isSelectionStateManagedByChildOnClick) {
+        for (auto item : qAsConst(selectedItemBeforeRightClick)) {
+            item->setSelected(true);
+        }
     }
     updateActionsState();
 }
 
 void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
-    bool leftButton = e->button() == Qt::LeftButton;
-    if (leftButton) {
-        setDragMode(QGraphicsView::NoDrag);
+    setDragMode(QGraphicsView::NoDrag);
+    bool isLeftButton = e->button() == Qt::LeftButton;
+    bool isDragEvent = isLeftButton && (e->globalPos() - lastMousePressPos).manhattanLength() >= QApplication::startDragDistance();
+    if (!isSelectionStateManagedByChildOnClick && isLeftButton && !isDragEvent) {
+        root->setSelectedRecurs(false, true);  // Clear selection on any right button click with no shift.
     }
+    updateActionsState();
     e->accept();
 }
 

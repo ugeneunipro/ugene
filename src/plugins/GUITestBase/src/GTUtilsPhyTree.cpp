@@ -194,12 +194,12 @@ QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsIt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickNode"
-void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node) {
+void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node, const Qt::MouseButton& mouseButton) {
     GT_CHECK(node != nullptr, "Node to click is NULL");
-    node->ensureVisible();
+    node->ensureVisible();  // TODO: do not run from the non-UI thread.
     GTThread::waitForMainThread();
     GTMouseDriver::moveTo(getGlobalCenterCoord(os, node));
-    GTMouseDriver::click();
+    GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
 

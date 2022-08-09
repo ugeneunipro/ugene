@@ -32,6 +32,7 @@
 
 #include "GraphicsBranchItem.h"
 #include "GraphicsRectangularBranchItem.h"
+#include "TreeViewer.h"
 #include "TreeViewerUtils.h"
 
 namespace U2 {
@@ -42,11 +43,10 @@ const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
-      isSelected(false), nodeLabel(nullptr), nodeValue(nodeValue) {
+      nodeValue(nodeValue) {
     setPen(QColor(0, 0, 0));
     setBrush(ordinaryBrush);
     setAcceptHoverEvents(true);
-    setAcceptedMouseButtons(Qt::LeftButton);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
@@ -68,21 +68,20 @@ const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
 }
 
 void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    uiLog.trace("Tree button pressed");
-
-    bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
-    bool leftButton = e->button() == Qt::LeftButton;
-    GraphicsBranchItem* p = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    if (leftButton && p != nullptr) {
-        bool newSelection = true;
-        if (shiftPressed) {
-            newSelection = !isSelected;
-        }
-        p->setSelectedRecurs(newSelection, true);
-
-        e->accept();
-        update();
+    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    SAFE_POINT(parentBranchItem != nullptr, "No parentBranchItem", );
+    TreeViewerUI* ui = getTreeViewerUI();
+    if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ShiftModifier)) {
+        // Invert selection state on Shift.
+        parentBranchItem->setSelectedRecurs(!isSelected, true);
+    } else {
+        // Set a new selection .
+        ui->getRoot()->setSelectedRecurs(false, true);
+        parentBranchItem->setSelectedRecurs(true, true);
     }
+    ui->isSelectionStateManagedByChildOnClick = true;
+    e->accept();
+    update();
 }
 
 void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
@@ -205,4 +204,11 @@ void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
     nodeLabel->setVisible(showNodeLabels);
 }
 
+TreeViewerUI* GraphicsButtonItem::getTreeViewerUI() const {
+    QList<QGraphicsView*> views = scene()->views();
+    SAFE_POINT(views.size() == 1, "getTreeViewerUI: invalid number of views: " + QString::number(views.size()), nullptr);
+    auto ui = qobject_cast<TreeViewerUI*>(views[0]);
+    SAFE_POINT(ui != nullptr, "getTreeViewerUI: ui is null", nullptr);
+    return ui;
+}
 }  // namespace U2

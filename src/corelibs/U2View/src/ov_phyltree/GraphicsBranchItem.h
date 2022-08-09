@@ -42,25 +42,27 @@ public:
     static const int SelectedPenWidth;
 
 private:
-    GraphicsBranchItem* correspondingItem;
-    GraphicsButtonItem* buttonItem;
     void initText(qreal d);
-    int branchLength;
-    QGraphicsEllipseItem* nameItemSelection;
+
+    GraphicsBranchItem* correspondingItem = nullptr;
+    GraphicsButtonItem* buttonItem = nullptr;
+    int branchLength = 0;
+    QGraphicsEllipseItem* nameItemSelection = nullptr;
 
 protected:
-    QGraphicsSimpleTextItem* distanceText;
-    QGraphicsSimpleTextItem* nameText;
-    qreal width;
-    qreal dist;
-    bool collapsed;
-    int lengthCoef;
+    QGraphicsSimpleTextItem* distanceText = nullptr;
+    QGraphicsSimpleTextItem* nameText = nullptr;
+    qreal width = 0;
+    qreal dist = 0;
+    bool collapsed = false;
+    int lengthCoef = 1;
 
     OptionsMap settings;
 
     GraphicsBranchItem(const QString& name);
     GraphicsBranchItem(qreal d, bool withButton = true, double nodeValue = -1.0);
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
     virtual void setLabelPositions();
 

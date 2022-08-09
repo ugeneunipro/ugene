@@ -49,7 +49,7 @@ public:
     static QList<double> getDistancesValues(HI::GUITestOpStatus& os);
     static QPoint getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item);
 
-    static void clickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node);
+    static void clickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node, const Qt::MouseButton& mouseButton = Qt::LeftButton);
     static void doubleClickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node);
     static qreal getNodeDistance(HI::GUITestOpStatus& os, GraphicsButtonItem* node);
 

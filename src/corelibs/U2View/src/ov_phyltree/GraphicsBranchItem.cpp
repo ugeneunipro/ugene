@@ -204,17 +204,7 @@ void GraphicsBranchItem::initText(qreal d) {
     initDistanceText(str);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue)
-    : correspondingItem(nullptr),
-      buttonItem(nullptr),
-      branchLength(0),
-      nameItemSelection(nullptr),
-      distanceText(nullptr),
-      nameText(nullptr),
-      width(0),
-      dist(0),
-      collapsed(false),
-      lengthCoef(1) {
+GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -232,14 +222,7 @@ GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue)
     setPen(pen1);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(const QString& name)
-    : correspondingItem(nullptr),
-      buttonItem(nullptr),
-      branchLength(0),
-      nameItemSelection(nullptr),
-      distanceText(nullptr),
-      collapsed(false),
-      lengthCoef(1) {
+GraphicsBranchItem::GraphicsBranchItem(const QString& name) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -251,9 +234,6 @@ GraphicsBranchItem::GraphicsBranchItem(const QString& name)
     pen1.setCosmetic(true);
     setPen(pen1);
 
-    width = 0;
-    dist = 0;
-
     nameText = new QGraphicsSimpleTextItem(name);
     nameText->setFont(TreeViewerUtils::getFont());
     nameText->setBrush(Qt::darkGray);
@@ -262,17 +242,7 @@ GraphicsBranchItem::GraphicsBranchItem(const QString& name)
     nameText->setZValue(1);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValue)
-    : correspondingItem(nullptr),
-      buttonItem(nullptr),
-      branchLength(0),
-      nameItemSelection(nullptr),
-      distanceText(nullptr),
-      nameText(nullptr),
-      width(0),
-      dist(0),
-      collapsed(false),
-      lengthCoef(1) {
+GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValue) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);

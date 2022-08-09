@@ -31,9 +31,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsButtonItem.h"
-#include "TreeViewerUtils.h"
-
 namespace U2 {
 
 const qreal GraphicsRectangularBranchItem::DEFAULT_WIDTH = 25.0;

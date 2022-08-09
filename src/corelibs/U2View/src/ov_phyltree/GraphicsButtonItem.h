@@ -32,16 +32,10 @@
 
 namespace U2 {
 
+class TreeViewerUI;
 class PhyTreeObject;
 
 class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
-
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-
 public:
     GraphicsButtonItem(double nodeValue = 0);
 
@@ -65,16 +59,25 @@ public:
         return nodeValue;
     }
 
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) override;
+
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+
 private:
     void setHighlighting(bool isOn);
+
+    TreeViewerUI* getTreeViewerUI() const;
 
     static const QBrush highlightingBrush;
     static const QBrush ordinaryBrush;
     static const qreal radius;
 
-    bool isSelected;
-    QGraphicsSimpleTextItem* nodeLabel;
-    qreal nodeValue;
+    bool isSelected = false;
+    QGraphicsSimpleTextItem* nodeLabel = nullptr;
+    qreal nodeValue = 0;
 };
 
 }  // namespace U2
