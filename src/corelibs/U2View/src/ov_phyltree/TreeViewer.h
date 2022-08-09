@@ -264,7 +264,7 @@ public:
 
     void updateRect();
 
-    /** Returns root item for the tree. */
+    /** Returns current root item of the tree. */
     GraphicsBranchItem* getRoot() const;
 
     bool isSelectionStateManagedByChildOnClick = false;

@@ -955,7 +955,8 @@ void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
     QGraphicsView::mousePressEvent(e);
 
     // Calling QGraphicsView::mousePressEvent() for both right/left clicks to deliver right/left clicks to children.
-    // QGraphicsView::mousePressEvent() resets the selection when clicked on empty space. Restore it back if not processed by child.
+    // QGraphicsView::mousePressEvent() resets the selection when clicked on empty space.
+    // Restore it back if not processed by child for right clicks (context menu).
     if (e->button() == Qt::RightButton && !isSelectionStateManagedByChildOnClick) {
         for (auto item : qAsConst(selectedItemBeforeRightClick)) {
             item->setSelected(true);
