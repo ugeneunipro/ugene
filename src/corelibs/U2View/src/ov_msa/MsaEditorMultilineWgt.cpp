@@ -157,6 +157,16 @@ void MsaEditorMultilineWgt::createChildren() {
             }
         }
     }
+
+    // TODO:ichebyki
+    // Need to move to special method
+    // wich ass/updates connections
+    for (uint i = 0; i < this->getChildrenCount(); i++) {
+        connect(getUI(i)->getNameAndSequenceAreasSplitter(),
+                &QSplitter::splitterMoved,
+                this,
+                &MsaEditorMultilineWgt::sl_setAllNameAndSequenceAreasSplittersSizes);
+    }
 }
 
 bool MsaEditorMultilineWgt::updateChildrenCount() {
@@ -407,6 +417,22 @@ void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
         }
     }
     editor->getSelectionController()->setSelection(selectedRects);
+}
+
+void MsaEditorMultilineWgt::sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index) {
+    // If you want to use the pos & index
+    // you need to subclass QSplitter and call
+    // protected method moveSplitter(int pos, int index)
+    Q_UNUSED(pos);
+    Q_UNUSED(index);
+    auto signalSender = qobject_cast<QSplitter*>(sender());
+    if (signalSender != nullptr) {
+        auto sizes = signalSender->sizes();
+        for (uint i = 0; i < getChildrenCount(); i++) {
+            MaEditorWgt* child = getUI(i);
+            child->getNameAndSequenceAreasSplitter()->setSizes(sizes);
+        }
+    }
 }
 
 }  // namespace U2
