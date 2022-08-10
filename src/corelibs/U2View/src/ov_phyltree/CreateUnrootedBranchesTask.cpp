@@ -27,29 +27,26 @@
 
 #include "GraphicsRectangularBranchItem.h"
 #include "GraphicsUnrootedBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
-CreateUnrootedBranchesTask::CreateUnrootedBranchesTask(GraphicsRectangularBranchItem* r)
-    : root1(r) {
-}
-
-GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::getBranch(GraphicsRectangularBranchItem* from, GraphicsUnrootedBranchItem* parent) {
-    GraphicsUnrootedBranchItem* res = new GraphicsUnrootedBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
-    foreach (QGraphicsItem* item, from->childItems()) {
-        GraphicsRectangularBranchItem* ri = dynamic_cast<GraphicsRectangularBranchItem*>(item);
-        if (ri != nullptr) {
-            getBranch(ri, res);
+GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
+                                                                      GraphicsUnrootedBranchItem* convertedParentBranchItem,
+                                                                      double coef) {
+    double angle = coef * originalBranchItem->getHeight();
+    auto convertedBranch = new GraphicsUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabel());
+    const QList<QGraphicsItem*>& originalChildBrancheItems = originalBranchItem->childItems();
+    for (QGraphicsItem* originalChildItem : qAsConst(originalChildBrancheItems)) {
+        if (auto originalChildBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {
+            convertBranch(originalChildBranchItem, convertedBranch, coef);
         }
     }
-    res->setCorrespondingItem(from);
-    return res;
+    return convertedBranch;
 }
 
-void CreateUnrootedBranchesTask::run() {
-    coef = 360.0 / root1->childrenBoundingRect().height();
-    root = getBranch(root1, nullptr);
+GraphicsBranchItem* CreateUnrootedBranchesTask::convert(GraphicsRectangularBranchItem* rectRoot) {
+    double coef = 360.0 / rectRoot->childrenBoundingRect().height();
+    return convertBranch(rectRoot, nullptr, coef);
 }
 
 }  // namespace U2

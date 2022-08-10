@@ -128,23 +128,15 @@ void GraphicsButtonItem::collapse() {
 void GraphicsButtonItem::swapSiblings() {
     uiLog.trace("Swapping siblings");
 
-    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
     if (!branchItem) {
         return;
     }
-
-    GraphicsRectangularBranchItem* rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
-    if (!rectBranchItem) {
-        if (!branchItem->getCorrespondingItem()) {
-            return;
-        }
-
-        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem->getCorrespondingItem());
-        if (!rectBranchItem) {
-            return;
-        }
+    auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
+    if (rectBranchItem == nullptr) {
+        SAFE_POINT(branchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
+        rectBranchItem = branchItem->correspondingRectangularBranchItem;
     }
-
     rectBranchItem->swapSiblings();
 }
 
@@ -171,18 +163,16 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
     uiLog.trace("Re-rooting of the PhyTree");
     SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
 
-    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    CHECK(branchItem != nullptr, );
+    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    CHECK(parentBranchItem != nullptr, );
 
-    GraphicsRectangularBranchItem* rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
-    if (rectBranchItem == nullptr) {
-        CHECK(branchItem->getCorrespondingItem(), );
-
-        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem->getCorrespondingItem());
-        CHECK(rectBranchItem != nullptr, );
+    auto parentRectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(parentBranchItem);
+    if (parentRectBranchItem == nullptr) {
+        SAFE_POINT(parentBranchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
+        parentRectBranchItem = parentBranchItem->correspondingRectangularBranchItem;
     }
 
-    const PhyBranch* nodeBranch = rectBranchItem->getPhyBranch();
+    const PhyBranch* nodeBranch = parentRectBranchItem->getPhyBranch();
     CHECK(nodeBranch != nullptr, );
     PhyNode* newRoot = nodeBranch->node2;
     CHECK(newRoot != nullptr, );

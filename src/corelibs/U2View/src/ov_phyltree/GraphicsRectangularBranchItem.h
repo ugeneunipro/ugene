@@ -22,8 +22,6 @@
 #ifndef _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
 #define _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
 
-#include <U2Core/Task.h>
-
 #include "GraphicsBranchItem.h"
 
 namespace U2 {
@@ -71,7 +69,7 @@ public:
         collapsed = isCollapsed;
     }
     void swapSiblings();
-    void redrawBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
+    void recalculateBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
 
     const PhyBranch* getPhyBranch() const {
         return phyBranch;

@@ -366,3 +366,4 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
 }
 
 }  // namespace U2
+

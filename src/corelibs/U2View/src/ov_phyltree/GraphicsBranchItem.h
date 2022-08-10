@@ -32,6 +32,7 @@ namespace U2 {
 
 class PhyNode;
 class GraphicsButtonItem;
+class GraphicsRectangularBranchItem;
 
 class U2VIEW_EXPORT GraphicsBranchItem : public QAbstractGraphicsShapeItem {
 public:
@@ -41,12 +42,20 @@ public:
     static const int TextSpace;
     static const int SelectedPenWidth;
 
+    /** Maximum distance (count) from this branch to the end (leaf) of the tree. */
+    int maxStepsToLeaf = 0;
+
+    /** Delta between parent's branch 'maxStepsToLeaf' and this branch 'maxStepsToLeaf'. */
+    int maxStepsToLeafParentDelta = 1;
+
+    /** Corresponding rectangular branch item for the branch. Set only for circular & unrooted branch items. */
+    GraphicsRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
+
 private:
     void initText(qreal d);
 
-    GraphicsBranchItem* correspondingItem = nullptr;
     GraphicsButtonItem* buttonItem = nullptr;
-    int branchLength = 0;
+
     QGraphicsEllipseItem* nameItemSelection = nullptr;
 
 protected:
@@ -55,7 +64,6 @@ protected:
     qreal width = 0;
     qreal dist = 0;
     bool collapsed = false;
-    int lengthCoef = 1;
 
     OptionsMap settings;
 
@@ -105,33 +113,12 @@ public:
 
     const OptionsMap& getSettings() const;
 
-    GraphicsBranchItem* getCorrespondingItem() const {
-        return correspondingItem;
-    }
-    void setCorrespondingItem(GraphicsBranchItem* cItem) {
-        correspondingItem = cItem;
-    }
-
     const QList<QGraphicsItem*> getChildItems() const {
         return childItems();
     }
 
-    void setBranchLength(int newLength) {
-        branchLength = newLength;
-    }
-    int getBranchLength() const {
-        return branchLength;
-    }
-
     QGraphicsItem* getParentItem() const {
         return parentItem();
-    }
-
-    void setLenghtCoef(int newCoef) {
-        lengthCoef = newCoef;
-    }
-    int getLengthCoef() const {
-        return lengthCoef;
     }
 
     void initDistanceText(const QString& text = QString());

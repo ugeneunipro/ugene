@@ -27,42 +27,35 @@
 
 #include "GraphicsCircularBranchItem.h"
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
-const qreal CreateCircularBranchesTask::DEGENERATED_WIDTH = 300;
-const qreal CreateCircularBranchesTask::WIDTH_RADIUS = 30;
-const qreal CreateCircularBranchesTask::SCALE = 6.0;
+static constexpr double DEGENERATED_WIDTH = 300;
+static constexpr double WIDTH_RADIUS = 30;
+static constexpr double SCALE = 6.0;
 
-CreateCircularBranchesTask::CreateCircularBranchesTask(GraphicsRectangularBranchItem* r, bool _degeneratedCase)
-    : root1(r), degeneratedCase(_degeneratedCase) {
-}
-
-GraphicsCircularBranchItem* CreateCircularBranchesTask::getBranch(GraphicsRectangularBranchItem* from, GraphicsCircularBranchItem* parent) {
-    GraphicsCircularBranchItem* res = new GraphicsCircularBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
-    foreach (QGraphicsItem* item, from->childItems()) {
-        GraphicsRectangularBranchItem* ri = dynamic_cast<GraphicsRectangularBranchItem*>(item);
-        if (ri != nullptr) {
-            getBranch(ri, res);
+GraphicsCircularBranchItem* CreateCircularBranchesTask::convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
+                                                                      GraphicsCircularBranchItem* convertedParentBranchItem,
+                                                                      double coef) {
+    double height = coef * originalBranchItem->getHeight();
+    auto convertedBranch = new GraphicsCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabel());
+    const QList<QGraphicsItem*>& originalChildItems = originalBranchItem->childItems();
+    for (QGraphicsItem* originalChildItem : qAsConst(originalChildItems)) {
+        if (auto ri = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {
+            convertBranch(ri, convertedBranch, coef);
         }
     }
-    res->setCorrespondingItem(from);
-    return res;
+    return convertedBranch;
 }
 
-void CreateCircularBranchesTask::run() {
-    coef = SCALE / root1->childrenBoundingRect().height();
-    if (degeneratedCase) {
-        root1->setWidthW(DEGENERATED_WIDTH);
-    } else {
-        root1->setWidthW(WIDTH_RADIUS);
-    }
-
-    GraphicsCircularBranchItem* r = getBranch(root1, nullptr);
-    r->setVisibleW(false);
-    root = r;
-    root1->setWidthW(0);
+GraphicsBranchItem* CreateCircularBranchesTask::convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase) {
+    double coef = SCALE / rectRoot->childrenBoundingRect().height();
+    double originalWidth = rectRoot->getWidth();
+    rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);
+    GraphicsCircularBranchItem* circualLayoutRoot = convertBranch(rectRoot, nullptr, coef);
+    circualLayoutRoot->setVisibleW(false);
+    rectRoot->setWidthW(originalWidth);
+    return circualLayoutRoot;
 }
 
 }  // namespace U2

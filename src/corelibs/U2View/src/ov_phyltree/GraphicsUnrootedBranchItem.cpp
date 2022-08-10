@@ -31,15 +31,14 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsButtonItem.h"
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
 GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue)
     : GraphicsBranchItem(true, nodeValue) {
     setParentItem(parent);
+    correspondingRectangularBranchItem = from;
     qreal w = from->getWidth();
     settings = from->getSettings();
     setWidthW(w);

@@ -305,7 +305,7 @@ signals:
 protected slots:
     virtual void sl_swapTriggered();
     virtual void sl_collapseTriggered();
-    virtual void sl_rectLayoutRecomputed();
+    virtual void sl_rectBranchesRecreated(Task* task);
     virtual void sl_onBranchCollapsed(GraphicsRectangularBranchItem*);
     virtual void sl_zoomToAll();
     virtual void sl_zoomToSel();
@@ -321,7 +321,6 @@ private slots:
     void sl_rectangularLayoutTriggered();
     void sl_circularLayoutTriggered();
     void sl_unrootedLayoutTriggered();
-    void sl_layoutRecomputed();
     void sl_textSettingsTriggered();
     void sl_treeSettingsTriggered();
     void sl_rerootTriggered();
@@ -330,6 +329,8 @@ private slots:
     void sl_branchSettings();
 
 private:
+    void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
+
     enum LabelType {
         LabelType_SequenceName = 1,
         LabelType_Distance = 2
@@ -352,7 +353,7 @@ private:
 
     void updateBranchSettings();
 
-    void redrawRectangularLayout();
+    void recalculateRectangularLayout();
     bool isSelectedCollapsed();
 
     void setScale(qreal s) {
@@ -364,13 +365,15 @@ private:
 
     void updateActionsState();
 
-    qreal avgWidth();
+    /** Returns average branch distance in the tree. */
+    double getAverageBranchDistance() const;
 
     void updateLabelsAlignment();
 
-    void determineBranchLengths();
+    /** Recalculates and assign 'steps to leaf' properties to every branch item in the rect-layout tree. */
+    void updateStepsToLeafOnBranches();
 
-    void changeLayout(TreeLayout newLayout);
+    void changeTreeLayout(const TreeLayout& newTreeLayout);
     void changeNamesDisplay();
     void changeNodeValuesDisplay();
     void changeLabelsAlignment();
@@ -378,12 +381,14 @@ private:
     void initializeSettings();
 
     PhyTreeObject* phyObject = nullptr;
+
+    /** Currently shown tree. Can be rect, circular or unrooted one. */
     GraphicsBranchItem* root = nullptr;
+
     qreal maxNameWidth = 0;
     qreal verticalScale = 1;
     qreal horizontalScale = 1;
     qreal view_scale;
-    CreateBranchesTask* layoutTask = nullptr;
     QGraphicsLineItem* legend = nullptr;
     QGraphicsSimpleTextItem* scalebarText = nullptr;
     QMenu* buttonPopup = nullptr;

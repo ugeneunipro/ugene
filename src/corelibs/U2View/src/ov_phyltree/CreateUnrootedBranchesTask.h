@@ -22,30 +22,22 @@
 #ifndef _U2_CREATE_UNROOTED_BRANCHES_TASK_H_
 #define _U2_CREATE_UNROOTED_BRANCHES_TASK_H_
 
-#include "CreateBranchesTask.h"
-
 namespace U2 {
 
-class PhyNode;
 class GraphicsRectangularBranchItem;
 class GraphicsUnrootedBranchItem;
+class GraphicsBranchItem;
 
-class CreateUnrootedBranchesTask : public CreateBranchesTask {
-    Q_OBJECT
+class CreateUnrootedBranchesTask {
 public:
-    CreateUnrootedBranchesTask(GraphicsRectangularBranchItem* r);
+    CreateUnrootedBranchesTask() = delete;
 
-    TreeLayout getLayoutType() const override {
-        return UNROOTED_LAYOUT;
-    }
-
-    void run() override;
+    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot);
 
 private:
-    GraphicsUnrootedBranchItem* getBranch(GraphicsRectangularBranchItem* r, GraphicsUnrootedBranchItem* parent);
-
-    qreal coef;
-    GraphicsRectangularBranchItem* root1;
+    static GraphicsUnrootedBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
+                                                     GraphicsUnrootedBranchItem* convertedParentBranchItem,
+                                                     double coef);
 };
 
 }  // namespace U2

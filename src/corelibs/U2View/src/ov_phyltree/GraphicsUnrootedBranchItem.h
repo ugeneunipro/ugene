@@ -22,11 +22,7 @@
 #ifndef _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
 #define _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
 
-#include <U2Core/Task.h>
-
 #include "GraphicsBranchItem.h"
-
-class QGraphicsItem;
 
 namespace U2 {
 

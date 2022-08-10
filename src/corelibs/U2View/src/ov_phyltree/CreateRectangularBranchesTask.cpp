@@ -27,33 +27,32 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
-CreateRectangularBranchesTask::CreateRectangularBranchesTask(const PhyNode* n)
-    : size(0), current(0), node(n) {
+CreateRectangularBranchesTask::CreateRectangularBranchesTask(const PhyNode* _rootNode)
+    : rootNode(_rootNode) {
 }
 
-GraphicsRectangularBranchItem* CreateRectangularBranchesTask::getBranch(const PhyNode* node) {
+GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const PhyNode* node) {
     if (isCanceled() || stateInfo.hasError())
         return nullptr;
 
     int branches = node->branchCount();
     if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
         assert(node != node->getSecondNodeOfBranch(0));
-        return getBranch(node->getSecondNodeOfBranch(0));
+        return createBranch(node->getSecondNodeOfBranch(0));
     }
     if (branches > 1) {
         stateInfo.progress = 100 * ++size / 100;  // <- number of sequences
         QList<GraphicsRectangularBranchItem*> items;
         int ind = -1;
-        for (int i = 0; i < branches; ++i) {
+        for (int i = 0; i < branches; i++) {
             if (isCanceled() || stateInfo.hasError()) {
                 return nullptr;
             }
             if (node->getSecondNodeOfBranch(i) != node) {
-                GraphicsRectangularBranchItem* item = getBranch(node->getSecondNodeOfBranch(i));
+                GraphicsRectangularBranchItem* item = createBranch(node->getSecondNodeOfBranch(i));
                 items.append(item);
             } else {
                 items.append(nullptr);
@@ -75,32 +74,31 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::getBranch(const Ph
         assert(itemSize > 0);
 
         {
-            int xmin = 0, ymin = items[0] ? items[0]->pos().y() : items[1]->pos().y(), ymax = 0;
-            for (int i = 0; i < itemSize; ++i) {
+            double xmin = 0;
+            double ymin = items[0] ? items[0]->pos().y() : items[1]->pos().y();
+            double ymax = 0;
+            for (int i = 0; i < itemSize; i++) {
                 if (items[i] == nullptr) {
                     continue;
                 }
                 QPointF pos1 = items[i]->pos();
-                if (pos1.x() < xmin)
-                    xmin = pos1.x();
-                if (pos1.y() < ymin)
-                    ymin = pos1.y();
-                if (pos1.y() > ymax)
-                    ymax = pos1.y();
+                xmin = qMin(xmin, pos1.x());
+                ymin = qMin(ymin, pos1.y());
+                ymax = qMax(ymax, pos1.y());
             }
             xmin -= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
 
             int y = (ymax + ymin) / 2;
             item->setPos(xmin, y);
 
-            for (int i = 0; i < itemSize; ++i) {
+            for (int i = 0; i < itemSize; i++) {
                 if (items[i] == nullptr) {
                     continue;
                 }
                 if (isCanceled() || stateInfo.hasError()) {
                     return nullptr;
                 }
-                qreal dist = qAbs(node->getBranchesDistance(i));
+                double dist = qAbs(node->getBranchesDistance(i));
                 if (minDistance > -1) {
                     minDistance = qMin(minDistance, dist);
                 } else {
@@ -135,7 +133,7 @@ void CreateRectangularBranchesTask::run() {
     }
     minDistance = -2;
     maxDistance = 0;
-    GraphicsRectangularBranchItem* branchItem = getBranch(node);  // modifies minDistance and maxDistance
+    GraphicsRectangularBranchItem* branchItem = createBranch(rootNode);  // modifies minDistance and maxDistance
     CHECK(branchItem != nullptr, );
     branchItem->setWidthW(0);
     branchItem->setDist(0);

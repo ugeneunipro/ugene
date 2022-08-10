@@ -44,12 +44,14 @@ public:
     }
 
 private:
-    int size;
-    int current;
-    qreal scale;
-    const PhyNode* node;
-    qreal minDistance, maxDistance;
-    GraphicsRectangularBranchItem* getBranch(const PhyNode* node);
+    GraphicsRectangularBranchItem* createBranch(const PhyNode* node);
+
+    int size = 0;
+    int current = 0;
+    double scale = 0;
+    const PhyNode* rootNode = nullptr;
+    double minDistance = 0;
+    double maxDistance = 0;
 };
 
 }  // namespace U2

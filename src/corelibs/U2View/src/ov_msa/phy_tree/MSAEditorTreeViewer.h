@@ -156,7 +156,6 @@ private slots:
     void sl_selectionChanged(const QStringList& selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onReferenceSeqChanged(qint64);
-    void sl_rectLayoutRecomputed() override;
     void sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) override;
 
 private:

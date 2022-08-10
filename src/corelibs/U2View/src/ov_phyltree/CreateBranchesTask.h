@@ -44,7 +44,7 @@ public:
     }
 
 protected:
-    GraphicsBranchItem* root;
+    GraphicsBranchItem* root = nullptr;
 };
 
 }  // namespace U2

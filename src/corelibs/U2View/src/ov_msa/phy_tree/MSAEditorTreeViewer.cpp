@@ -374,12 +374,6 @@ void MSAEditorTreeViewerUI::updateScene(bool) {
     updateRect();
 }
 
-void MSAEditorTreeViewerUI::sl_rectLayoutRecomputed() {
-    QMatrix curMatrix = matrix();
-    TreeViewerUI::sl_rectLayoutRecomputed();
-    setMatrix(curMatrix);
-}
-
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
     if (msaEditorTreeViewer->isSyncModeEnabled()) {

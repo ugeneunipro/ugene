@@ -31,26 +31,21 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsButtonItem.h"
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
-
-#ifndef M_PI
-#    define M_PI 3.14159265358979323846
-#endif
 
 GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, qreal h, GraphicsRectangularBranchItem* from, double nodeValue)
     : GraphicsBranchItem(true, nodeValue), height(h), direction(from->getDirection()), visible(true) {
     setParentItem(parent);
+    correspondingRectangularBranchItem = from;
     settings = from->getSettings();
     qreal w = from->getWidth();
     setWidthW(w);
     setDist(from->getDist());
     setPos(w, 0);
     QPointF p = mapFromScene(0, 0);
-    setTransform(QTransform().translate(p.x(), p.y()).rotate((direction == GraphicsBranchItem::up ? -1 : 1) * h / M_PI * 180).translate(-p.x(), -p.y()));
+    setTransform(QTransform().translate(p.x(), p.y()).rotate((direction == GraphicsBranchItem::up ? -1 : 1) * height / M_PI * 180).translate(-p.x(), -p.y()));
 
     if (from->getNameText() != nullptr) {
         nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
