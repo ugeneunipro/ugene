@@ -51,7 +51,6 @@
 #include "getMemorySize.c"
 
 #define HOST_URL "http://ugene.net"
-// #define HOST_URL "http://127.0.0.1:80"
 #ifdef Q_OS_LINUX
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
 #elif defined(Q_OS_DARWIN)
