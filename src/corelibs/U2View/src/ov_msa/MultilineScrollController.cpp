@@ -193,7 +193,7 @@ void MultilineScrollController::sl_vScrollValueChanged() {
 void MultilineScrollController::scrollToViewRow(int viewRowIndex, int widgetHeight) {
     const U2Region rowRegion = ui->getUI(0)->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex);
     const U2Region visibleRegion = getVerticalRangeToDrawIn(widgetHeight);
-    auto xxx = ui->getUI(0)->mapToParent(ui->getUI(0)->rect().topLeft());
+    // TODO:ichebyki auto xxx = ui->getUI(0)->mapToParent(ui->getUI(0)->rect().topLeft());
     if (rowRegion.startPos < visibleRegion.startPos) {
         vScrollBar->setValue(static_cast<int>(rowRegion.startPos));
     } else if (rowRegion.endPos() >= visibleRegion.endPos()) {
@@ -218,7 +218,7 @@ void MultilineScrollController::scrollToBase(int baseNumber, int widgetWidth) {
 void MultilineScrollController::scrollToPoint(const QPoint& maPoint, const QSize& screenSize) {
     scrollToBase(maPoint.x(), screenSize.width());
     scrollToViewRow(maPoint.y(), screenSize.height());
-    centerViewRow(maPoint.y(), screenSize.height());
+    // TODO:ichebyki centerViewRow(maPoint.y(), screenSize.height());
 }
 
 void MultilineScrollController::centerBase(int baseNumber, int widgetWidth) {
