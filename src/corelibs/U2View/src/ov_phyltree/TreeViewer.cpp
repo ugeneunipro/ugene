@@ -973,6 +973,7 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
         root->setSelectedRecurs(false, true);  // Clear selection on any right button click with no shift.
     }
     updateActionsState();
+    updateBranchSettings();
     e->accept();
 }
 
