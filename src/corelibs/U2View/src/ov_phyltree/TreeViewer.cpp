@@ -997,7 +997,7 @@ void TreeViewerUI::paint(QPainter& painter) {
 void TreeViewerUI::updateRect() {
     SAFE_POINT(root != nullptr, "Pointer to tree root is NULL", );
     QTransform viewTransform = transform();
-    QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | sceneRoot->sceneBoundingRect();
+    QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | root->sceneBoundingRect();
     rect.setLeft(rect.left() - MARGIN);
     rect.setRight(rect.right() + MARGIN);
     rect.setTop(rect.top() - MARGIN);
