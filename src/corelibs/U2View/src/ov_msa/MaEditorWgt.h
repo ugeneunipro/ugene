@@ -112,6 +112,10 @@ public:
         return eventFilter;
     };
 
+    QSplitter* getNameAndSequenceAreasSplitter() {
+        return nameAndSequenceAreasSplitter;
+    }
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);

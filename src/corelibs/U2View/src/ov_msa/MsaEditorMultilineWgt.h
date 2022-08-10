@@ -72,6 +72,7 @@ public slots:
     void sl_onPosChangeRequest(int position);
     void sl_triggerUseDots(int checkState);
     void sl_cursorPositionChanged(const QPoint&);
+    void sl_setAllNameAndSequenceAreasSplittersSizes(int pos, int index);
 
 protected:
     void initScrollArea(QScrollArea* _scrollArea = nullptr) override;
