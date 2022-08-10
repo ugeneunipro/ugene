@@ -86,6 +86,7 @@
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -2814,6 +2815,18 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
     // Check that counter value was not reset after the widget is opened.
     counterValue = GTUtilsNotifications::getNotificationCounterValue(os);
     CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7650) {
+    //1. Open samples/CLUSTALW/COI.aln
+    //2. Press 'Save as', and save file to its own path.
+    //Expected state: message box with warinig appears.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Ok"));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, dataDir + "samples/CLUSTALW/", "COI.aln", ExportDocumentDialogFiller::CLUSTALW), false, true);
+    GTWidget::click(os, GTAction::button(os, "Save alignment as"));
+    GTUtilsProjectTreeView::click(os, "COI.aln");
 }
 
 }  // namespace GUITest_regression_scenarios
