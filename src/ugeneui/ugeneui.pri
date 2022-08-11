@@ -61,6 +61,17 @@ win32 {
 
 macx {
     RC_FILE = images/ugeneui.icns
+
+    # Configure Info.plist
+    PLIST_DIR = _tmp/plist
+    infoPlistTarget.target = $${PLIST_DIR}/Info.plist
+    infoPlistTarget.depends = FORCE
+    infoPlistTarget.commands = mkdir -p $${PLIST_DIR}; sed \"s/\\\$${UGENE_VERSION}/$${UGENE_VER_MAJOR}.$${UGENE_VER_MINOR}/g\" $$absolute_path(../../etc/script/mac/dmg/Info.plist) > $${infoPlistTarget.target}
+    PRE_TARGETDEPS += $${infoPlistTarget.target}
+    QMAKE_EXTRA_TARGETS += infoPlistTarget
+    QMAKE_INFO_PLIST = $$OUT_PWD/$${infoPlistTarget.target}
+    QMAKE_CLEAN += $${PLIST_DIR}
+
     QMAKE_RPATHDIR += @executable_path/
 }
 
