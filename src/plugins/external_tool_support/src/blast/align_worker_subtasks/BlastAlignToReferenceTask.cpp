@@ -142,6 +142,7 @@ void BlastAlignToReferenceTask::prepare() {
     settings.gapOpenCost = 2;
     settings.gapExtendCost = 2;
     blastQuerySequenceIndexByReadIndex.resize(reads.size());
+    bool allReadsAreEmpty = true;
     for (int readIndex = 0; readIndex < reads.size(); readIndex++) {
         const SharedDbiDataHandler& read = reads[readIndex];
         blastQuerySequenceIndexByReadIndex[readIndex] = -1;
@@ -152,6 +153,8 @@ void BlastAlignToReferenceTask::prepare() {
         CHECK_OP(stateInfo, );
         bool isEmptyReadSequence = std::all_of(readSequence.begin(), readSequence.end(), [](char c) { return c == U2Msa::GAP_CHAR || c == 'N'; });
         CHECK_CONTINUE(!isEmptyReadSequence);  // An empty read will be added as 'failed' later since it has no results.
+
+        allReadsAreEmpty = false;
         settings.querySequences << readSequence;
         blastQuerySequenceIndexByReadIndex[readIndex] = settings.querySequences.size() - 1;
 
@@ -166,6 +169,7 @@ void BlastAlignToReferenceTask::prepare() {
             }
         }
     }
+    CHECK_EXT(!allReadsAreEmpty, coreLog.error(tr("All input reads contain gaps or Ns only, abort")), );
     CHECK_EXT(settings.alphabet->isNucleic(), setError(tr("Can't run alignment on non-nucleic reads")), );
     settings.isNucleotideSeq = true;
     settings.needCreateAnnotations = false;
