@@ -55,6 +55,9 @@ public:
 
     static TreeViewerUI* getTreeViewerUi(HI::GUITestOpStatus& os);
 
+    /** Returns image of the current tree view. */
+    static QImage captureTreeImage(HI::GUITestOpStatus& os);
+
     /**
      * Branches are enumerated:
      * - right subtree is enumerated

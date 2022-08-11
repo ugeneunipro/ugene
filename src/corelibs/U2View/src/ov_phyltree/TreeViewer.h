@@ -69,61 +69,6 @@ public:
 
     OptionsPanel* getOptionsPanel() override;
 
-    QAction* getPrintAction() const {
-        return printAction;
-    }
-    QAction* getContAction() const {
-        return alignTreeLabelsAction;
-    }
-    QAction* getNameLabelsAction() const {
-        return nameLabelsAction;
-    }
-    QAction* getDistanceLabelsAction() const {
-        return distanceLabelsAction;
-    }
-    QAction* getCaptureTreeAction() const {
-        return captureTreeAction;
-    }
-    QAction* getExportAction() const {
-        return exportAction;
-    }
-    QAction* getRectangularLayoutAction() const {
-        return rectangularLayoutAction;
-    }
-    QAction* getCircularLayoutAction() const {
-        return circularLayoutAction;
-    }
-    QAction* getUnrootedLayoutAction() const {
-        return unrootedLayoutAction;
-    }
-    QAction* getTextSettingsAction() const {
-        return textSettingsAction;
-    }
-    QAction* getTreeSettingsAction() const {
-        return treeSettingsAction;
-    }
-    QAction* getBranchesSettingsAction() const {
-        return branchesSettingsAction;
-    }
-    QAction* getZoomToSelAction() const {
-        return zoomToSelAction;
-    }
-    QAction* getZoomOutAction() const {
-        return zoomOutAction;
-    }
-    QAction* getZoomToAllAction() const {
-        return zoomToAllAction;
-    }
-    QAction* getCollapseAction() const {
-        return collapseAction;
-    }
-    QAction* getRerootAction() const {
-        return rerootAction;
-    }
-    QAction* getSwapAction() const {
-        return swapAction;
-    }
-
     PhyTreeObject* getPhyObject() const {
         return phyObject;
     }
@@ -169,10 +114,8 @@ protected:
 private slots:
     void sl_onPhyTreeChanged();
 
-private:
+public:
     QAction* treeSettingsAction = nullptr;
-
-    QActionGroup* layoutGroup = nullptr;
     QAction* rectangularLayoutAction = nullptr;
     QAction* circularLayoutAction = nullptr;
     QAction* unrootedLayoutAction = nullptr;
@@ -185,7 +128,7 @@ private:
     QAction* textSettingsAction = nullptr;
     QAction* alignTreeLabelsAction = nullptr;
 
-    QAction* zoomToSelAction = nullptr;
+    QAction* zoomToSelectionAction = nullptr;
     QAction* zoomToAllAction = nullptr;
     QAction* zoomOutAction = nullptr;
 
@@ -196,6 +139,9 @@ private:
     QAction* collapseAction = nullptr;
     QAction* rerootAction = nullptr;
     QAction* swapAction = nullptr;
+
+private:
+    QActionGroup* layoutActionGroup = nullptr;
 
     QByteArray state;
     PhyTreeObject* phyObject = nullptr;
@@ -297,6 +243,9 @@ protected:
      */
     virtual void updateScene(bool fitSceneToView);
 
+    /** Updates parameter of rect-layout branches using current settings. */
+    void updateRectLayoutBranches();
+
     virtual void onSettingsChanged(const TreeViewOption& option, const QVariant& newValue);
 
 signals:
@@ -393,23 +342,12 @@ private:
     QGraphicsSimpleTextItem* scalebarText = nullptr;
     QMenu* buttonPopup = nullptr;
 
-    const TreeViewer* curTreeViewer = nullptr;
-
-    QAction* swapAction = nullptr;
-    QAction* rerootAction = nullptr;
-    QAction* collapseAction = nullptr;
-    QAction* setColorAction = nullptr;
-    QAction* captureAction = nullptr;
-    QAction* exportAction = nullptr;
-
+    TreeViewer* treeViewer = nullptr;
     OptionsMap settings;
     bool dontSendOptionChangedSignal = false;
 
 protected:
     GraphicsRectangularBranchItem* rectRoot = nullptr;
-    QAction* zoomToAction = nullptr;
-    QAction* zoomOutAction = nullptr;
-    QAction* zoomToAllAction = nullptr;
 
     /** View global pos of the last mouse-press event. */
     QPoint lastMousePressPos;

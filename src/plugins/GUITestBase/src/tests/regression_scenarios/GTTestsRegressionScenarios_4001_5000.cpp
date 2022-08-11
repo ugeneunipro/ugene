@@ -3139,6 +3139,33 @@ GUI_TEST_CLASS_DEFINITION(test_4515) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string not match");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4522) {
+    // Check that circular & unrooted tree layout image changes when switching from Default to non Default (Cladogram) image.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    QImage rectDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Circular");
+    GTUtilsOptionPanelPhyTree::checkTreeType(os, "Default");
+    QImage circularDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(circularDefaultImage != rectDefaultImage, "circularDefaultImage != rectDefaultImage check failed");
+
+    GTUtilsOptionPanelPhyTree::changeTreeType(os, "Cladogram");
+    QImage circularCladogramImage = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(circularCladogramImage != circularDefaultImage, "circularCladogramImage != circularDefaultImage check failed");
+
+    GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Unrooted");
+    GTUtilsOptionPanelPhyTree::checkTreeType(os, "Cladogram");
+    QImage unrootedCladogramImage = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(unrootedCladogramImage != circularCladogramImage, "unrootedCladogramImage != circularCladogramImage check failed");
+
+    GTUtilsOptionPanelPhyTree::changeTreeType(os, "Default");
+    QImage unrootedDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(unrootedDefaultImage != unrootedCladogramImage, "unrootedDefaultImage != unrootedCladogramImage check failed");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4523) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");

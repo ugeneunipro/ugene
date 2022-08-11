@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <primitives/GTWidget.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTSpinBox.h>
+#include <primitives/GTWidget.h>
 
 #include "GTUtilsOptionsPanelPhyTree.h"
 
@@ -64,6 +65,25 @@ int GTUtilsOptionPanelPhyTree::getFontSize(HI::GUITestOpStatus& os) {
 void GTUtilsOptionPanelPhyTree::setFontSize(HI::GUITestOpStatus& os, int fontSize) {
     expandFontSettingsPanel(os);
     GTSpinBox::setValue(os, "fontSizeSpinBox", fontSize, getOptionsPanelWidget(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "changeTreeLayout"
+void GTUtilsOptionPanelPhyTree::changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName) {
+    GTComboBox::selectItemByText(os, "layoutCombo", getOptionsPanelWidget(os), layoutName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkTreeType"
+void GTUtilsOptionPanelPhyTree::checkTreeType(HI::GUITestOpStatus& os, const QString& layoutName) {
+    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo", getOptionsPanelWidget(os));
+    CHECK_SET_ERR(layoutName == treeViewCombo->currentText(), QString("Unexpected layout name. Expected: %1, got: %2").arg(layoutName).arg(treeViewCombo->currentText()));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "changeTreeType"
+void GTUtilsOptionPanelPhyTree::changeTreeType(HI::GUITestOpStatus& os, const QString& typeName) {
+    GTComboBox::selectItemByText(os, "treeViewCombo", getOptionsPanelWidget(os), typeName);
 }
 #undef GT_METHOD_NAME
 

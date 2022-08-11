@@ -42,6 +42,15 @@ public:
 
     /** Sets new font size. */
     static void setFontSize(HI::GUITestOpStatus& os, int fontSize);
+
+    /** Changes tree layout to the given value. */
+    static void changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName);
+
+    /** Checks current tree layout. */
+    static void checkTreeType(HI::GUITestOpStatus& os, const QString& layoutName);
+
+    /** Changes tree type to the given value. */
+    static void changeTreeType(HI::GUITestOpStatus& os, const QString& typeName);
 };
 
 }  // namespace U2

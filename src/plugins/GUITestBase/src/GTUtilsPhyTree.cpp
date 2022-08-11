@@ -341,6 +341,12 @@ QWidget* GTUtilsPhyTree::getActiveTreeViewerWindow(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "captureTreeImage"
+QImage GTUtilsPhyTree::captureTreeImage(GUITestOpStatus& os) {
+    return GTWidget::getImage(os, getTreeViewerUi(os));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkTreeViewerWindowIsActive"
 void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus& os, const QString& titlePart) {
     getActiveTreeViewerWindow(os);
