@@ -2769,6 +2769,47 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     CHECK_SET_ERR(documents.contains(initialCoiNwkDocument), "Expected initial tree document to be present in the project and re-used in MSA editor");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7623) {
+    GTLogTracer logTracer;
+
+    // Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // Open "Trim and аlign Sanger reads" sample
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            // Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Map Sanger Reads to Reference";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+            // Select Reference .../test/general/_common_data/sanger/reference.gb
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
+
+            // Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            // On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.fa and click "Next" button
+            GTUtilsWizard::setInputFiles(os, { { testDir + QString("_common_data/sanger/sanger_01.fa") } });
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //  Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7631) {
     // Check that file buttons on Workflow Dashboard "Inputs" tab for actors not visible by default works as expected (open the file with UGENE).
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
