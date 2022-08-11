@@ -606,6 +606,16 @@ p3_destroy_global_settings(p3_global_settings *a)
   }
 }
 
+static char* thpr_safe_char_cp_malloc(const char* ct) {
+    char* r = (char*)malloc((strlen(ct) + 1) * sizeof(char));
+    if (NULL == r) {
+        fprintf(stderr, "out of memory in thal_parameters\n");
+        exit(-2);
+    }
+    strcpy(r, ct);
+    return r;
+}
+
 p3_global_settings* 
 p3_copy_global_settings(p3_global_settings* a) {
     if (a == NULL) {
@@ -617,7 +627,24 @@ p3_copy_global_settings(p3_global_settings* a) {
     masker_parameters temp_mp = b->mp;
     *b = *a;
 
-    strcpy(temp_tp.dangle_dh, a->thermodynamic_parameters.dangle_dh);
+    temp_tp.dangle_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.dangle_dh);
+    temp_tp.dangle_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.dangle_ds);
+    temp_tp.loops_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.loops_dh);
+    temp_tp.loops_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.loops_ds);
+    temp_tp.stack_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stack_dh);
+    temp_tp.stack_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stack_ds);
+    temp_tp.stackmm_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stackmm_dh);
+    temp_tp.stackmm_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stackmm_ds);
+    temp_tp.tetraloop_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tetraloop_dh);
+    temp_tp.tetraloop_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tetraloop_ds);
+    temp_tp.triloop_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.triloop_dh);
+    temp_tp.triloop_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.triloop_ds);
+    temp_tp.tstack_tm_inf_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack_tm_inf_ds);
+    temp_tp.tstack_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack_dh);
+    temp_tp.tstack2_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack2_dh);
+    temp_tp.tstack2_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack2_ds);
+
+    /*strcpy(temp_tp.dangle_dh, a->thermodynamic_parameters.dangle_dh);
     strcpy(temp_tp.dangle_ds, a->thermodynamic_parameters.dangle_ds);
     strcpy(temp_tp.loops_dh, a->thermodynamic_parameters.loops_dh);
     strcpy(temp_tp.loops_ds, a->thermodynamic_parameters.loops_ds);
@@ -632,7 +659,7 @@ p3_copy_global_settings(p3_global_settings* a) {
     strcpy(temp_tp.tstack_tm_inf_ds, a->thermodynamic_parameters.tstack_tm_inf_ds);
     strcpy(temp_tp.tstack_dh, a->thermodynamic_parameters.tstack_dh);
     strcpy(temp_tp.tstack2_dh, a->thermodynamic_parameters.tstack2_dh);
-    strcpy(temp_tp.tstack2_ds, a->thermodynamic_parameters.tstack2_ds);
+    strcpy(temp_tp.tstack2_ds, a->thermodynamic_parameters.tstack2_ds);*/
     b->thermodynamic_parameters = temp_tp;
 
     strcpy(temp_mp.list_prefix, a->mp.list_prefix);
