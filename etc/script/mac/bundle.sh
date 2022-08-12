@@ -41,9 +41,7 @@ if [ ! "${UGENE_VERSION_MAJOR}" -o ! "${UGENE_VERSION_MINOR}" ]; then
     echo "Unable to parse UGENE version from ugene_version.pri"
     exit 1
 fi
-UGENE_VERSION="${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}"
-sed -e "s/\${UGENE_VERSION_FULL}/${UGENE_VERSION}.0/g" -e "s/\${UGENE_VERSION_SHORT}/${UGENE_VERSION}/g" \
-    "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" > "${TARGET_APP_DIR}/Contents/Info.plist"
+sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" > "${TARGET_APP_DIR}/Contents/Info.plist"
 
 echo Copying translations
 cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
