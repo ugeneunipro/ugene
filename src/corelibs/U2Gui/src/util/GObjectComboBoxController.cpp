@@ -79,7 +79,10 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
     // checks whether you need to add a new annotations table
     QString docUrl = settings.relationFilter.ref.docUrl;
     if (d->getURLString() == docUrl) {
-        connect(d->getObjectById(settings.relationFilter.ref.entityRef.entityId), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+        GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
+        CHECK(seqObj != nullptr, );
+
+        connect(seqObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
         bool hasAnnotationTable = false;
         QList<GObject*> listAnnotations = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         if (listAnnotations.size() != 0) {
@@ -92,7 +95,6 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
         }
         if ((!hasAnnotationTable) && (!d->isStateLocked()) && (d->getDocumentFormat()->checkFlags(DocumentFormatFlag_SupportWriting)) && (d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE))) {
             QString virtualItemText = d->getName() + " [";
-            GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
             virtualItemText.append(seqObj->getGObjectName() + FEATURES_TAG + "] *");
             combo->addItem(objectIcon, virtualItemText, QVariant::fromValue<GObjectReference>(GObjectReference(seqObj)));
 
