@@ -2778,23 +2778,15 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     // Open "Trim and аlign Sanger reads" sample
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
-            // Expected state: "Trim and Align Sanger Reads" dialog has appered
-            QWidget* wizard = GTWidget::getActiveModalWidget(os);
-            const QString expectedTitle = "Map Sanger Reads to Reference";
-            const QString actualTitle = wizard->windowTitle();
-            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
-
-            GTWidget::click(os, wizard);
-
+        void run(HI::GUITestOpStatus& os) override {
             // Select Reference .../test/general/_common_data/sanger/reference.gb
             GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
 
             // Push Next
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            // On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.fa and click "Next" button
-            GTUtilsWizard::setInputFiles(os, { { testDir + QString("_common_data/sanger/sanger_01.fa") } });
+            // On page "Input Sanger reads" add: .../test/general/_common_data/sanger/n_and_gaps.fa and click "Next" button
+            GTUtilsWizard::setInputFiles(os, { { testDir + QString("_common_data/sanger/n_and_gaps.fa") } });
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
