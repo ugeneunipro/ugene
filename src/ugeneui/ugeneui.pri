@@ -64,9 +64,13 @@ macx {
 
     # Configure Info.plist
     PLIST_DIR = _tmp/plist
+    UGENE_VERSION_FOR_PLIST=$${UGENE_VER_MAJOR}.$${UGENE_VER_MINOR}
     infoPlistTarget.target = $${PLIST_DIR}/Info.plist
     infoPlistTarget.depends = FORCE
-    infoPlistTarget.commands = mkdir -p $${PLIST_DIR}; sed \"s/\\\$${UGENE_VERSION}/$${UGENE_VER_MAJOR}.$${UGENE_VER_MINOR}/g\" $$absolute_path(../../etc/script/mac/dmg/Info.plist) > $${infoPlistTarget.target}
+    infoPlistTarget.commands = mkdir -p $${PLIST_DIR}; \
+                               sed -e \"s/\\\$${UGENE_VERSION_FULL}/$${UGENE_VERSION_FOR_PLIST}.0/g\" \
+                                   -e \"s/\\\$${UGENE_VERSION_SHORT}/$${UGENE_VERSION_FOR_PLIST}/g\" \
+                                   $$absolute_path(../../etc/script/mac/dmg/Info.plist) > $${infoPlistTarget.target}
     PRE_TARGETDEPS += $${infoPlistTarget.target}
     QMAKE_EXTRA_TARGETS += infoPlistTarget
     QMAKE_INFO_PLIST = $$OUT_PWD/$${infoPlistTarget.target}

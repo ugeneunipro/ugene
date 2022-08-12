@@ -7,10 +7,10 @@
     <string>net.ugene.ugene</string>
 
     <key>CFBundleVersion</key>
-    <string>${UGENE_VERSION}</string>
+    <string>${UGENE_VERSION_FULL}</string>
 
     <key>CFBundleShortVersionString</key>
-    <string>${UGENE_VERSION}</string>
+    <string>${UGENE_VERSION_SHORT}</string>
 
     <key>CFBundleDisplayName</key>
     <string>Unipro UGENE</string>
