@@ -323,7 +323,7 @@ DetView* GTUtilsSequenceView::getDetViewByNumber(HI::GUITestOpStatus& os, int nu
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 
@@ -340,7 +340,7 @@ PanView* GTUtilsSequenceView::getPanViewByNumber(HI::GUITestOpStatus& os, int nu
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 
@@ -358,7 +358,7 @@ Overview* GTUtilsSequenceView::getOverviewByNumber(HI::GUITestOpStatus& os, int 
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 

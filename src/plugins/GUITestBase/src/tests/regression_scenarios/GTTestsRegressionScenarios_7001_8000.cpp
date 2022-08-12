@@ -2853,6 +2853,27 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
     CHECK_SET_ERR(counterValue == "10", "Invalid notification counter value: " + counterValue);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7644) {
+    // Open _common_data/genbank/1seq.gen
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/1seq.gen");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Open the OP's "Search in Sequence" tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Tabs::Search);
+
+    // Click Actions->Edit->Switch on the editing mode.
+    GTUtilsSequenceView::makeDetViewVisible(os);
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    // Select the entire sequence.
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 70);
+
+    // Press Backspace.
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "Would you like"));
+    GTKeyboardDriver::keyClick(Qt::Key::Key_Backspace);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7650) {
     // 1. Open samples/CLUSTALW/COI.aln
     // 2. Press 'Save as', and save file to its own path.
