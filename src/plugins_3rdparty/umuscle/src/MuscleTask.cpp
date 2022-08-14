@@ -474,7 +474,6 @@ Task::ReportResult MuscleGObjectTask::report() {
     }
 
     DbiOperationsBlock op(obj->getEntityRef().dbiRef, stateInfo);
-    Q_UNUSED(op);
 
     SAFE_POINT_EXT(!obj.isNull(), stateInfo.setError("Failed to apply the result of Muscle: alignment object is not available!"), ReportResult_Finished);
     if (obj->isStateLocked()) {
@@ -520,7 +519,7 @@ Task::ReportResult MuscleGObjectTask::report() {
 ////////////////////////////////////////
 // MuscleWithExtFileSpecifySupportTask
 MuscleWithExtFileSpecifySupportTask::MuscleWithExtFileSpecifySupportTask(const MuscleTaskSettings& _config)
-    : Task("Run Muscle alignment task", TaskFlags_NR_FOSCOE),
+    : Task(tr("Run Muscle alignment task"), TaskFlags_NR_FOSCOE),
       config(_config) {
     mAObject = nullptr;
     currentDocument = nullptr;
@@ -626,8 +625,8 @@ void MuscleGObjectRunFromSchemaTask::prepare() {
 
 void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
     SAFE_POINT_EXT(maobj != nullptr, setError("Invalid MSA object detected"), );
-    const Document* maDoc = maobj->getDocument();
-    SAFE_POINT_EXT(nullptr != maDoc, setError("Invalid MSA document detected"), );
+    Document* maDoc = maobj->getDocument();
+    SAFE_POINT_EXT(maDoc != nullptr, setError("Invalid MSA document detected"), );
     const QString objName = maDoc->getName();
     SAFE_POINT_EXT(!objName.isEmpty(), setError("Invalid MSA object name detected"), );
     AlignGObjectTask::setMAObject(maobj);
