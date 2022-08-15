@@ -102,7 +102,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
     if (muscleRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    assert(!settings.inputFilePath.isEmpty());
+    SAFE_POINT(!settings.inputFilePath.isEmpty(), "sl_runWithExtFileSpecify: no inputFilePath", );
 
     MuscleWithExtFileSpecifySupportTask* muscleTask = new MuscleWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(muscleTask);
@@ -160,11 +160,11 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
 
 void MuscleMSAEditorContext::sl_align() {
     auto action = qobject_cast<MuscleAction*>(sender());
-    assert(action != nullptr);
-    MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
+    SAFE_POINT(action != nullptr, "sl_align: not a MuscleAction", );
+    MSAEditor* msaEditor = action->getMSAEditor();
+    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getSelection().toRect();
+    QRect selection = msaEditor->getSelection().toRect();
     MuscleTaskSettings s;
     if (!selection.isNull()) {
         int width = selection.width();
@@ -175,8 +175,8 @@ void MuscleMSAEditorContext::sl_align() {
         }
     }
 
-    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
-    const int rc = dlg->exec();
+    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(msaEditor->getWidget(), obj->getMultipleAlignment(), s);
+    int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (rc != QDialog::Accepted) {
@@ -197,7 +197,7 @@ void MuscleMSAEditorContext::sl_align() {
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
     // Turn off rows collapsing mode.
-    ed->resetCollapseModel();
+    msaEditor->resetCollapseModel();
 }
 
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
@@ -223,11 +223,9 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
 
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
-    assert(action != nullptr);
+    SAFE_POINT(action != nullptr, "sl_alignProfileToProfile: not a MuscleAction", );
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
-    assert(!obj->isStateLocked());
-
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, filter);
@@ -236,7 +234,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
         return;
     }
 
-    Task* alignTask = new MuscleAddSequencesToProfileTask(obj, lod.url, MuscleAddSequencesToProfileTask::Profile2Profile);
+    auto alignTask = new MuscleAddSequencesToProfileTask(obj, lod.url, MuscleAddSequencesToProfileTask::Profile2Profile);
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
