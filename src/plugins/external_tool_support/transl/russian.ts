@@ -11219,22 +11219,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MrBayesWidget</name>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="63"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="66"/>
         <source>Substitution model</source>
         <translation>Модель замен</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="67"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="70"/>
         <source>Rate Matrix (fixed)</source>
         <translation>Матрица оценок</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="178"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="161"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="179"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="162"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -12181,31 +12181,36 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="169"/>
+        <source>All input reads contain gaps or Ns only, abort</source>
+        <translation type="unfinished">Все поданные на входи риды содержат только гэпы и символы N, отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="170"/>
         <source>Can&apos;t run alignment on non-nucleic reads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="184"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="185"/>
         <source>Reference sequence is not accessible anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="188"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="189"/>
         <source>Error while running BLAST to align reads to reference: &apos;%1&apos;, %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="190"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="191"/>
         <source>Error while aligning a read to reference with Smith-Waterman: &apos;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="385"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="386"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>The %1 algorithm is not found. Add the %1 plugin.</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="388"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="389"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>The %1 algorithm is not found. Check that the %1 plugin is up to date.</translation>
     </message>
@@ -12239,17 +12244,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::ComposeResultSubtask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="61"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="50"/>
         <source>Compose alignment</source>
         <translation type="unfinished">Compose alignment</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="155"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="131"/>
         <source>The related chromatogram not found</source>
         <translation type="unfinished">The related chromatogram not found</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="187"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="163"/>
         <source>None of the reads satisfy minimum similarity criteria.</source>
         <translation type="unfinished"></translation>
     </message>

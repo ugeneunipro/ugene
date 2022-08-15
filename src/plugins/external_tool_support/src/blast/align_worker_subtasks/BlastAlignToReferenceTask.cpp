@@ -166,6 +166,7 @@ void BlastAlignToReferenceTask::prepare() {
             }
         }
     }
+    CHECK_EXT(!settings.querySequences.isEmpty(), coreLog.error(tr("All input reads contain gaps or Ns only, abort")), );
     CHECK_EXT(settings.alphabet->isNucleic(), setError(tr("Can't run alignment on non-nucleic reads")), );
     settings.isNucleotideSeq = true;
     settings.needCreateAnnotations = false;
