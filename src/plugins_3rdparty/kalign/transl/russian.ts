@@ -191,7 +191,8 @@
         <location filename="../src/KalignPlugin.cpp" line="166"/>
         <source>Unable to align this Multiple alignment with Kalign.<byte value="xd"/>
 Please, convert alignment from %1 alphabet to supported one and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно выровнять это выравнивание при помощи Kalign.
+Сконвертируйте выравнивание из алфавита %1 в подходящий и попробуйте снова.</translation>
     </message>
     <message>
         <source>Unable to align this Multiple alignment with Kalign.

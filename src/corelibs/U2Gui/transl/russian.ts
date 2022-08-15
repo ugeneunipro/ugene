@@ -1122,26 +1122,34 @@
         <translation>Выбранный объект не имеет аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="129"/>
-        <source>Error</source>
-        <translation>Ошибка</translation>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="128"/>
+        <source>You&apos;re trying to export document to its own destination, use option &quot;Save document...&quot; instead.</source>
+        <translation>Вы пытаетесь экспортировать документ сам в себя, вместо этого используйте опцию «Сохранить документ...».</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="129"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="136"/>
+        <source>Document %1 is already added to the project, it will be overwritten.</source>
+        <translation>Документ %1 уже добавлен в проект, он будет перезаписан.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="vanished">Ошибка</translation>
+    </message>
+    <message>
         <source>Document with the same URL is added to the project.
 Remove it from the project first.</source>
-        <translation>Такой документ уже добавлен в проект.
+        <translation type="vanished">Такой документ уже добавлен в проект.
 Сначала удалите его из проекта.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="139"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="174"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="146"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="181"/>
         <source>Unable to create I/O factory for </source>
         <translation>Unable to create I/O factory for </translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="144"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="178"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="151"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="185"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Unknown document format I/O factory: </translation>
     </message>
@@ -2202,18 +2210,18 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::Header</name>
     <message>
-        <location filename="../src/NotificationWidget.cpp" line="47"/>
+        <location filename="../src/NotificationWidget.cpp" line="49"/>
         <source>close</source>
         <translation>закрыть</translation>
     </message>
     <message>
-        <location filename="../src/NotificationWidget.cpp" line="48"/>
+        <location filename="../src/NotificationWidget.cpp" line="50"/>
         <source>Always on top</source>
         <translation>Всегда сверху</translation>
     </message>
     <message>
-        <location filename="../src/NotificationWidget.cpp" line="54"/>
-        <location filename="../src/NotificationWidget.cpp" line="55"/>
+        <location filename="../src/NotificationWidget.cpp" line="56"/>
+        <location filename="../src/NotificationWidget.cpp" line="57"/>
         <source>Notifications</source>
         <translation>Уведомления</translation>
     </message>
@@ -2514,17 +2522,32 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::Notification</name>
     <message>
-        <location filename="../src/Notification.cpp" line="183"/>
+        <source>OK</source>
+        <translation type="vanished">OK</translation>
+    </message>
+    <message>
+        <source>Remove notification after closing</source>
+        <translation type="vanished">Удалить уведомление после закрытия</translation>
+    </message>
+    <message>
+        <source>Detailed message</source>
+        <translation type="vanished">Детальное сообщение</translation>
+    </message>
+</context>
+<context>
+    <name>U2::NotificationStack</name>
+    <message>
+        <location filename="../src/Notification.cpp" line="378"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="184"/>
+        <location filename="../src/Notification.cpp" line="379"/>
         <source>Remove notification after closing</source>
         <translation>Удалить уведомление после закрытия</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="200"/>
+        <location filename="../src/Notification.cpp" line="395"/>
         <source>Detailed message</source>
         <translation>Детальное сообщение</translation>
     </message>

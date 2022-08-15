@@ -379,7 +379,9 @@ p, li { white-space: pre-wrap; }
         <source>  --%1    Omit reads with qualities lower than the specified value. Reads which have no qualities are not omitted. Default value is 0.
 
 </source>
-        <translation>  --%1    Пропустить риды с качеством ниже указанного значения. Риды, которые не имеют оценки качества не пропускаются. Значение по умолчанию 0.</translation>
+        <translation>  --%1    Пропустить риды с качеством ниже указанного значения. Риды, которые не имеют оценки качества не пропускаются. Значение по умолчанию 0.
+
+</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="187"/>
@@ -458,7 +460,8 @@ ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --r
 ugene --genome-aligner --build-index --reference=/path/to/ref
 
 Выравнивание ридов используя построенный индекс:
-ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --result=/path/to/result</translation>
+ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --result=/path/to/result
+</translation>
     </message>
 </context>
 <context>
@@ -681,12 +684,12 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="221"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation>на референсную последовательность с индексом &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation> на референсную последовательность с индексом &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="224"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation>на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation> на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
 </context>
 <context>
@@ -859,8 +862,7 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="354"/>
         <source>&lt;html&gt;&lt;body&gt;Report only the best alignment for each read (in terms of mismatches).&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;Включить в отчет только наилучшее выравнивание (в терминах несовпадений)&lt;/body&gt;&lt;/html&gt;
-</translation>
+        <translation>&lt;html&gt;&lt;body&gt;Включить в отчет только наилучшее выравнивание (в терминах несовпадений)&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="356"/>

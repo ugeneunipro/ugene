@@ -54,7 +54,7 @@
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/FileFilters.cpp" line="36"/>
+        <location filename="../src/util/FileFilters.cpp" line="35"/>
         <source>All files</source>
         <translation>Все файлы</translation>
     </message>
@@ -589,12 +589,12 @@
     <message>
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="113"/>
         <source>Object is locked for modifications.</source>
-        <translation type="unfinished">Объект заблокирован для редактирования.</translation>
+        <translation>Объект заблокирован для редактирования.</translation>
     </message>
     <message>
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="118"/>
         <source>Failed to derive common alphabet</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось получить общий алфавит</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CreateAnnotationTask.cpp" line="62"/>
         <source>Failed to resolve object reference: %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось разрешить ссылку на объект: %1 %2</translation>
     </message>
     <message>
         <location filename="../src/tasks/CreateAnnotationTask.cpp" line="76"/>
@@ -1395,7 +1395,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="65"/>
         <source>External tool &apos;%1&apos; doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний инструмент &quot;%1&quot; не существует</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="112"/>
@@ -1409,8 +1409,8 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="127"/>
-        <source>Unable to cancel tool %1 for 10 seconds. Stop it manually by your OS task manager.</source>
-        <translation type="unfinished"></translation>
+        <source>Unable to cancel tool %1 for 10 seconds. Stop &quot;%2&quot; process manually by your OS task manager.</source>
+        <translation>Невозможно отменить инструмент %1 в течение 10 секунд. Остановите процесс &quot;%2&quot; вручную с помощью диспетчера задач ОС.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="129"/>
@@ -1451,7 +1451,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="345"/>
         <source>Can not remove folder for temporary files, folder &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается удалить папку для временных файлов, папка &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="358"/>
@@ -1976,93 +1976,92 @@ The session database file is removed after closing of UGENE.</source>
         <translation>&apos;%1&apos; это не папка</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="90"/>
         <source>Avoid characters in the &apos;%1&apos; parameter that do not correspond to the operating system locale settings.</source>
-        <translation>Избегайте символов в параметре &apos;%1&apos; которые не соответствуют настройкам локадизации операционной системы.</translation>
+        <translation type="vanished">Избегайте символов в параметре &apos;%1&apos; которые не соответствуют настройкам локадизации операционной системы.</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="95"/>
+        <location filename="../src/globals/L10n.h" line="91"/>
         <source>&apos;%1&apos; does not match database object URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути объекта базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="98"/>
+        <location filename="../src/globals/L10n.h" line="94"/>
         <source>&apos;%1&apos; does not match database folder URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути папки базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="101"/>
+        <location filename="../src/globals/L10n.h" line="97"/>
         <source>Unable to connect to the database &apos;%1&apos;. Check your connection settings in File -&gt; Connect to shared database</source>
         <translation>Невозможно подключиться к базе данных &apos;%1&apos;. Проверьте настройки соединения в настройках Файл -&gt; Подключение к удаленной базе данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="104"/>
+        <location filename="../src/globals/L10n.h" line="100"/>
         <source>Unable to find the object &apos;%1&apos; in the database &apos;%2&apos;</source>
         <translation>Невозможно найти объект &apos;%1&apos; в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="107"/>
+        <location filename="../src/globals/L10n.h" line="103"/>
         <source>Unable to find the folder &apos;%1&apos; with the specified path in the database &apos;%2&apos;</source>
         <translation>Невозможно найти папку &apos;%1&apos; по указанному пути в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="110"/>
+        <location filename="../src/globals/L10n.h" line="106"/>
         <source>You do not have write permissions to the database &apos;%1&apos;</source>
         <translation>У вас нет прав на запись в базу данных &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="114"/>
+        <location filename="../src/globals/L10n.h" line="110"/>
         <source>Invalid file format. Expected file format: %1,  File: %2</source>
         <translation>Неверный формат файла. Ожидаемый формат: %1, Файл: %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="117"/>
+        <location filename="../src/globals/L10n.h" line="113"/>
         <source>Invalid file format! File: %1</source>
         <translation>Неверный формат файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="122"/>
+        <location filename="../src/globals/L10n.h" line="118"/>
         <source>Can&apos;t save image to file %1, format %2</source>
         <translation>Не могу сохранить изображение в файл %1 формата %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="125"/>
+        <location filename="../src/globals/L10n.h" line="121"/>
         <source>Document not found: %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="129"/>
+        <location filename="../src/globals/L10n.h" line="125"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="133"/>
+        <location filename="../src/globals/L10n.h" line="129"/>
         <source>Object is read only: %1</source>
         <translation>Объект только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="137"/>
+        <location filename="../src/globals/L10n.h" line="133"/>
         <source> bp</source>
         <translatorcomment>пара остатков</translatorcomment>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="145"/>
+        <location filename="../src/globals/L10n.h" line="141"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="148"/>
+        <location filename="../src/globals/L10n.h" line="144"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="152"/>
+        <location filename="../src/globals/L10n.h" line="148"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="161"/>
+        <location filename="../src/globals/L10n.h" line="157"/>
         <source>ugene-active-translation-language-code</source>
         <translation>ru</translation>
     </message>
@@ -2133,40 +2132,40 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="256"/>
         <source>The file path is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к файлу пуст</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="259"/>
         <source>Cannot get an IO file adapter factory for the file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается получить фабрику файловых адаптеров ввода-вывода для файла: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
         <source>Cannot detect file format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается определить формат файла: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="265"/>
         <source>Document format is unknown (format: &apos;%1&apos;, file path: &apos;%2&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат документа неизвестен (формат: «%1», путь к файлу: «%2»)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="420"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="434"/>
         <source>Document not found %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="452"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="466"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="497"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="491"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="505"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>

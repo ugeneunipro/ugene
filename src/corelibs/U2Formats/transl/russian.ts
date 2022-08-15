@@ -40,36 +40,36 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="97"/>
-        <location filename="../src/BAMUtils.cpp" line="101"/>
+        <location filename="../src/BAMUtils.cpp" line="152"/>
+        <location filename="../src/BAMUtils.cpp" line="156"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="105"/>
-        <location filename="../src/BAMUtils.cpp" line="109"/>
+        <location filename="../src/BAMUtils.cpp" line="160"/>
+        <location filename="../src/BAMUtils.cpp" line="164"/>
         <source>Fail to read the header from the file: &quot;%1&quot;</source>
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="113"/>
+        <location filename="../src/BAMUtils.cpp" line="168"/>
         <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
         <translation>Невозможно построить индекс для файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="117"/>
-        <location filename="../src/BAMUtils.cpp" line="121"/>
+        <location filename="../src/BAMUtils.cpp" line="172"/>
+        <location filename="../src/BAMUtils.cpp" line="176"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="125"/>
-        <location filename="../src/BAMUtils.cpp" line="129"/>
+        <location filename="../src/BAMUtils.cpp" line="180"/>
+        <location filename="../src/BAMUtils.cpp" line="184"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="793"/>
+        <location filename="../src/BAMUtils.cpp" line="874"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
@@ -250,48 +250,48 @@
 <context>
     <name>U2::ASNFormat</name>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="118"/>
+        <location filename="../src/ASNFormat.cpp" line="113"/>
         <source>MMDB</source>
         <translation>MMDB</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="148"/>
+        <location filename="../src/ASNFormat.h" line="149"/>
         <source>read error occurred</source>
         <translation>Ошибка чтения</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="160"/>
+        <location filename="../src/ASNFormat.h" line="161"/>
         <source>biostruct3d obj loading error: %1</source>
         <translation>Ошибка загрузки трехмерной структуры: %1</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="119"/>
+        <location filename="../src/ASNFormat.cpp" line="114"/>
         <source>ASN is a format used my the Molecular Modeling Database (MMDB)</source>
         <translation>ASN это формат используемый Molecular Modeling Database (MMDB)</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="264"/>
-        <location filename="../src/ASNFormat.cpp" line="662"/>
+        <location filename="../src/ASNFormat.cpp" line="259"/>
+        <location filename="../src/ASNFormat.cpp" line="657"/>
         <source>Unknown error occurred</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="648"/>
+        <location filename="../src/ASNFormat.cpp" line="643"/>
         <source>no root element</source>
         <translation>Отсутствует корневой элемент</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="654"/>
+        <location filename="../src/ASNFormat.cpp" line="649"/>
         <source>states stack is not empty</source>
         <translation>Стек состояний не пуст</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="677"/>
+        <location filename="../src/ASNFormat.cpp" line="672"/>
         <source>First line is too long</source>
         <translation>Первая строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="140"/>
+        <location filename="../src/ASNFormat.cpp" line="135"/>
         <source>Standard residue dictionary not found</source>
         <translation>Стандартный словарь остатков не найден</translation>
     </message>
@@ -438,32 +438,37 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="194"/>
+        <location filename="../src/BAMUtils.cpp" line="245"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="352"/>
+        <location filename="../src/BAMUtils.cpp" line="402"/>
         <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
         <translation>Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="365"/>
+        <location filename="../src/BAMUtils.cpp" line="417"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="382"/>
+        <location filename="../src/BAMUtils.cpp" line="434"/>
         <source>Remove PCR duplicate in BAM file: &quot;%1&quot;. Resulting  file is: &quot;%2&quot;</source>
         <translation>Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="469"/>
+        <location filename="../src/BAMUtils.cpp" line="558"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="734"/>
+        <location filename="../src/BAMUtils.cpp" line="562"/>
+        <source>Can&apos;t build the index: %1</source>
+        <translation>Невозможно посмтроить индекс: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="815"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -1498,67 +1503,67 @@
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="282"/>
+        <location filename="../src/GFFFormat.cpp" line="280"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="322"/>
+        <location filename="../src/GFFFormat.cpp" line="320"/>
         <source>Parsing error: sequence in FASTA sequence has whitespaces at line %1</source>
         <translation>Parsing error: sequence in FASTA sequence has whitespaces at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="329"/>
+        <location filename="../src/GFFFormat.cpp" line="327"/>
         <source>Parsing error: too few fields at line %1</source>
         <translation>Parsing error: too few fields at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="335"/>
+        <location filename="../src/GFFFormat.cpp" line="333"/>
         <source>Parsing error: start position at line %1 is not integer</source>
         <translation>Parsing error: start position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="341"/>
+        <location filename="../src/GFFFormat.cpp" line="339"/>
         <source>Parsing error: end position at line %1 is not integer</source>
         <translation>Parsing error: end position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="346"/>
+        <location filename="../src/GFFFormat.cpp" line="344"/>
         <source>Parsing error: incorrect annotation region at line %1</source>
         <translation>Parsing error: incorrect annotation region at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="397"/>
+        <location filename="../src/GFFFormat.cpp" line="395"/>
         <source>Parsing error: incorrect attributes field %1 at line %2</source>
         <translation>Parsing error: incorrect attributes field %1 at line %2</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="436"/>
+        <location filename="../src/GFFFormat.cpp" line="434"/>
         <source>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="446"/>
+        <location filename="../src/GFFFormat.cpp" line="444"/>
         <source>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="456"/>
+        <location filename="../src/GFFFormat.cpp" line="454"/>
         <source>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</source>
         <translation>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="514"/>
+        <location filename="../src/GFFFormat.cpp" line="512"/>
         <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
         <translation>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="634"/>
+        <location filename="../src/GFFFormat.cpp" line="632"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="387"/>
+        <location filename="../src/GFFFormat.cpp" line="385"/>
         <source>Wrong location for joined annotation at line %1. Line was skipped.</source>
         <translation>Wrong location for joined annotation at line %1. Line was skipped.</translation>
     </message>
@@ -2460,7 +2465,7 @@
     <message>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="125"/>
         <source>Failed to detect assembly storage format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось определить формат хранения сборки: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp" line="149"/>
@@ -2472,7 +2477,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="81"/>
         <source>There is no assembly object with the specified id.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет объекта сборки с указанным идентификатором.</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="96"/>
@@ -2492,32 +2497,32 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="453"/>
         <source>Packing method prefix is not supported: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Префикс метода упаковки не поддерживается: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="461"/>
         <source>Data are corrupted, no name end marker found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные повреждены, маркер окончания имени не найден: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="470"/>
         <source>Data are corrupted, no sequence end marker found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные повреждены, маркер конца последовательности не найден: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="479"/>
         <source>Data are corrupted, no CIGAR end marker found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные повреждены, маркер конца CIGAR не найден: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="498"/>
         <source>Data are corrupted, no rnext end marker found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные повреждены, маркер rnext не найден: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="513"/>
         <source>Can not convert pnext to a number: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно конвертировать pnext в число: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="225"/>
@@ -2537,7 +2542,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение! База данных создана с более новой версией %1: %2. Не все функции базы данных могут поддерживаться! Текущая версия %1: %3.</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
@@ -2547,7 +2552,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="332"/>
         <source>Illegal database state: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое состояние базы данных: %1</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="338"/>
@@ -2572,7 +2577,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="414"/>
         <source>Can&apos;t synchronize database state</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается синхронизировать состояние базы данных</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="433"/>
@@ -2592,7 +2597,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="390"/>
         <source>Msa object not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Объект MSA не найден</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="542"/>
@@ -2612,7 +2617,7 @@
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1319"/>
         <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1329"/>
         <source>An error occurred during updating an msa length</source>
-        <translation type="unfinished"></translation>
+        <translation>Произошла ошибка при обновлении длины msa</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
@@ -2622,7 +2627,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
         <source>Unknown object type! Id: %1, type: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный тип объекта! Идентификатор: %1, тип: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
@@ -2680,7 +2685,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
         <source>Unsupported attribute type: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неподдерживаемый тип атрибута: %1</translation>
     </message>
 </context>
 <context>

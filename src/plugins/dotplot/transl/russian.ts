@@ -615,7 +615,7 @@
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="1028"/>
         <source> (min length %1, identity %2%)</source>
-        <translation>(мин. длина %1, идентичность %2%)</translation>
+        <translation> (мин. длина %1, идентичность %2%)</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="206"/>

@@ -871,27 +871,27 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1677"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1687"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2040"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2050"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2064"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2074"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2067"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2077"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2074"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2084"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>

@@ -85,12 +85,12 @@
     <message>
         <location filename="../src/SiteconBuildDialog.ui" line="259"/>
         <source>       None</source>
-        <translation>Без весов</translation>
+        <translation>       Без весов</translation>
     </message>
     <message>
         <location filename="../src/SiteconBuildDialog.ui" line="264"/>
         <source>  Algorithm N2</source>
-        <translation>Алгоритм №2</translation>
+        <translation>  Алгоритм №2</translation>
     </message>
     <message>
         <location filename="../src/SiteconBuildDialog.ui" line="170"/>
@@ -1034,7 +1034,7 @@
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="162"/>
         <source>Progress: %1% </source>
-        <translation>Прогресс  %1%</translation>
+        <translation>Прогресс: %1% </translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="164"/>
