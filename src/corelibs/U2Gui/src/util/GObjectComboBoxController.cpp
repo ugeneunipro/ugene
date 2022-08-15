@@ -82,7 +82,7 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
         GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
         CHECK(seqObj != nullptr, );
 
-        connect(seqObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+        connect(seqObj, &GObject::si_lockedStateChanged, this, &GObjectComboBoxController::sl_lockedStateChanged);
         bool hasAnnotationTable = false;
         QList<GObject*> listAnnotations = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         if (listAnnotations.size() != 0) {

@@ -328,6 +328,8 @@ DetView* GTUtilsSequenceView::getDetViewByNumber(HI::GUITestOpStatus& os, int nu
     }
 
     DetView* result = seq->findChild<DetView*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(result != nullptr, QString("det view with number %1 not found").arg(number), nullptr);
     }
@@ -345,6 +347,8 @@ PanView* GTUtilsSequenceView::getPanViewByNumber(HI::GUITestOpStatus& os, int nu
     }
 
     PanView* result = seq->findChild<PanView*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("pan view with number %1 not found").arg(number), nullptr)
     }
@@ -363,6 +367,8 @@ Overview* GTUtilsSequenceView::getOverviewByNumber(HI::GUITestOpStatus& os, int 
     }
 
     Overview* result = seq->findChild<Overview*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("pan view with number %1 not found").arg(number), nullptr)
     }
