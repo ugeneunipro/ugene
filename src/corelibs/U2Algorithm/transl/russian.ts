@@ -262,12 +262,12 @@
 <context>
     <name>U2::LoadPatternsFileTask</name>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="106"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="105"/>
         <source>Load pattern from file</source>
         <translation>Загрузить паттерн из файла</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="115"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="114"/>
         <source>Detecting format error for file %1</source>
         <translation>Ошибка распознавания формата для файла %1</translation>
     </message>
@@ -596,12 +596,12 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="56"/>
         <source>Tree algorithm %1 is not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Алгоритм дерева %1 не найден</translation>
     </message>
     <message>
         <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="81"/>
         <source>Failed to map row name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сопоставить имя строки: %1</translation>
     </message>
     <message>
         <source>Tree construction algorithm %1 not found</source>

@@ -230,7 +230,7 @@
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="392"/>
         <source> min</source>
-        <translation>мин</translation>
+        <translation> мин</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="414"/>
@@ -539,7 +539,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="195"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation>из &lt;u&gt;%1&lt;/u&gt;</translation>
+        <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="197"/>
@@ -845,7 +845,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/RemoteBLASTTask.cpp" line="67"/>
         <source>The object was removed
 </source>
-        <translation>Объект был удален</translation>
+        <translation>Объект был удален
+</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTTask.cpp" line="94"/>

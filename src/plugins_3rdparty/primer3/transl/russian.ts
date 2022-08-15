@@ -135,7 +135,8 @@
         <location filename="../src/Primer3Dialog.ui" line="821"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="838"/>
@@ -335,7 +336,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1433"/>
         <source> Liberal base</source>
-        <translation>Разрешить неоднозначные символы</translation>
+        <translation> Разрешить неоднозначные символы</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1446"/>
@@ -370,7 +371,7 @@
         <location filename="../src/Primer3Dialog.ui" line="1626"/>
         <location filename="../src/Primer3Dialog.ui" line="1686"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр размера праймера для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр размера праймера для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1573"/>
@@ -750,7 +751,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2029"/>
         <source>Size  </source>
-        <translation>Размер </translation>
+        <translation>Размер  </translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2036"/>
@@ -1371,7 +1372,7 @@
     <message>
         <location filename="../src/Primer3Task.cpp" line="854"/>
         <source>Object with annotations was removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Объект с аннотациями удален</translation>
     </message>
 </context>
 <context>

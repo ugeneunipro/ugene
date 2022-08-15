@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/CudaSupportPlugin.cpp" line="146"/>
         <source>Cannot load driver library. Error while loading %1: </source>
-        <translation>Cannot load driver library. Error while loading %1:</translation>
+        <translation>Невозможно загрузить драйвер. Ошибка загрузки %1: </translation>
     </message>
     <message>
         <location filename="../src/CudaSupportPlugin.cpp" line="154"/>

@@ -65,6 +65,15 @@
     </message>
 </context>
 <context>
+    <name>U2::NeighborJoinCalculateTreeTask</name>
+    <message>
+        <location filename="../src/NeighborJoinAdapter.cpp" line="165"/>
+        <location filename="../src/NeighborJoinAdapter.cpp" line="249"/>
+        <source>Failed to compute distance matrix: %1. Try to update run parameters.</source>
+        <translation>Не удалось вычислить матрицу расстояний: %1. Попробуйте обновить параметры запуска.</translation>
+    </message>
+</context>
+<context>
     <name>U2::NeighborJoinWidget</name>
     <message>
         <location filename="../src/NeighborJoinWidget.cpp" line="154"/>
@@ -103,6 +112,21 @@ It could cause an error. Do you want to continue?</source>
         <location filename="../src/PhylipPlugin.cpp" line="51"/>
         <source>PHYLIP (the PHYLogeny Inference Package) is a package of programs for inferring phylogenies (evolutionary trees). Original version at: http://evolution.genetics.washington.edu/phylip.html</source>
         <translation>PHYLIP (the PHYLogeny Inference Package) - пакет программ для построения филогенетических деревьев. Оригинальная версия находится по адресу: http://evolution.genetics.washington.edu/phylip.html</translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrix.cpp" line="704"/>
+        <source>invalid distance matrix size: %1x%2</source>
+        <translation>недопустимый размер матрицы расстояний: %1x%2</translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrix.cpp" line="709"/>
+        <source>distance matrix contains infinite values</source>
+        <translation>матрица расстояний содержит бесконечные значения</translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrix.cpp" line="719"/>
+        <source>distance matrix contains only zeros</source>
+        <translation>матрица расстояний содержит только нули</translation>
     </message>
 </context>
 <context>

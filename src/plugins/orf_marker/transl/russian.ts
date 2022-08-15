@@ -97,13 +97,11 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Include stop codon into resulting annotation. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>
-          &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-          &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-          p, li { white-space: pre-wrap; }
-          &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Включить стоп-кодон в аннотацию. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-        </translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Включить стоп-кодон в аннотацию. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>
@@ -111,15 +109,15 @@ p, li { white-space: pre-wrap; }
                Then all possible ORF will be found, not only the longest ones.
              </source>
         <translation>
-              Учитывать вложенные ORF, когда стартовые кодоны находятся внутри более длинного ORF.
-              Таким образом, будут найдены все возможные ORF, а не только самые длинные.
-        </translation>
+               Учитывать вложенные ORF, когда стартовые кодоны находятся внутри более длинного ORF.
+               Таким образом, будут найдены все возможные ORF, а не только самые длинные.
+             </translation>
     </message>
     <message>
         <source>Ignore boundary ORFs which last beyond the search region(i.e. have no stop codon within the range).
              </source>
         <translation>Игнорировать границы ORF, находящиеся за пределами области поиска(т.е. не имеющие стоп-кодона в пределах диапазона).
-        </translation>
+             </translation>
     </message>
     <message>
         <source>
@@ -127,9 +125,9 @@ p, li { white-space: pre-wrap; }
                accordingly to the current translation table.
              </source>
         <translation>
-              Учитывать ORF, начинающиеся с альтернативных старт-кодонов,
+               Учитывать ORF, начинающиеся с альтернативных старт-кодонов,
               соответственно текущей трансляционной таблице.
-        </translation>
+             </translation>
     </message>
     <message>
         <source>Require stop codon</source>
@@ -145,16 +143,19 @@ p, li { white-space: pre-wrap; }
                accordingly to the current translation table.
 </source>
         <translation>
-          Учитывать ORF, начинающиеся с альтернативных старт-кодонов,
+               Учитывать ORF, начинающиеся с альтернативных старт-кодонов,
           соответственно текущей трансляционной таблице.
-        </translation>
+</translation>
     </message>
     <message>
         <source>
 Ignore boundary ORFs which last beyond the search region
 (i.e. have no stop codon within the range).
 </source>
-        <translation>Игнорировать границы ORF, находящиеся за пределами области поиска(т.е. не имеющие стоп-кодона в пределах диапазона).</translation>
+        <translation>
+Игнорировать границы ORF, находящиеся за пределами области поиска
+(т.е. не имеющие стоп-кодона в пределах диапазона).
+</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -185,7 +186,7 @@ Ignore boundary ORFs which last beyond the search region
     </message>
     <message>
         <source>Object with annotations was removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Объект с аннотациями был удален</translation>
     </message>
 </context>
 <context>
@@ -291,10 +292,8 @@ Ignore boundary ORFs which last beyond the search region
     </message>
     <message>
         <source>Finds Open Reading Frames (ORFs) in each supplied nucleotide sequence, stores found regions as annotations.&lt;p&gt;Protein sequences are skipped if any supplied to input.&lt;p&gt;&lt;dfn&gt;ORFs are DNA sequence regions that could potentially encode a protein, and usually give a good indication of the presence of a gene in the surrounding sequence.&lt;/dfn&gt;&lt;/p&gt;&lt;p&gt;In the sequence, ORFs are located between a start-code sequence (initiation codon) and a stop-code sequence (termination codon), defined by the selected genetic code.&lt;/p&gt;</source>
-        <translation>
-        Поиск открытых рамок считывания (ОRF). ORF ищутся в каждой нуклеотидной последовательности, поданной на вход задачи; найденные регионы выдаются как набор аннотаций.
-        &lt;p&gt;Протеиновые последовательности на входе допустимы но не обрабатываются.&lt;/p&gt;
-      </translation>
+        <translation>Поиск открытых рамок считывания (ОRF). ORF ищутся в каждой нуклеотидной последовательности, поданной на вход задачи; найденные регионы выдаются как набор аннотаций.
+        &lt;p&gt;Протеиновые последовательности на входе допустимы но не обрабатываются.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>both strands</source>
@@ -493,7 +492,7 @@ Ignore boundary ORFs which last beyond the search region
     </message>
     <message>
         <source>Finds Open Reading Frames (ORFs) in supplied nucleotide sequence, stores found regions as annotations.&lt;p&gt;Protein sequences are skipped if any.&lt;p&gt;&lt;dfn&gt;ORFs are DNA sequence regions that could potentially encode a protein, and usually give a good indication of the presence of a gene in the surrounding sequence.&lt;/dfn&gt;&lt;/p&gt;&lt;p&gt;In the sequence, ORFs are located between a start-code sequence (initiation codon) and a stop-code sequence (termination codon), defined by the selected genetic code.&lt;/p&gt;</source>
-        <translation> Поиск открытых рамок считывания (ОRF) в заданной нуклеотидной последовательности, найденные регионы сохраняются как набор аннотаций.&lt;p&gt;Протеиновые последовательности не обрабатываются.&lt;p&gt;</translation>
+        <translation>Поиск открытых рамок считывания (ОRF) в заданной нуклеотидной последовательности, найденные регионы сохраняются как набор аннотаций.&lt;p&gt;Протеиновые последовательности не обрабатываются.&lt;p&gt;</translation>
     </message>
     <message>
         <source>Which genetic code should be used for translating the input nucleotide sequence.</source>

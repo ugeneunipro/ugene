@@ -1239,14 +1239,14 @@ Set up the folder:</source>
 <context>
     <name>U2::ParametersDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="221"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="287"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="221"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="287"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -1508,7 +1508,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLListController</name>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="767"/>
+        <location filename="../src/DatasetsController.cpp" line="764"/>
         <source>This file or folder does not exist: %1</source>
         <translation>Этот файл или папка не существует: %1</translation>
     </message>

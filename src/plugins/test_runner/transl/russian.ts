@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
         <source>Support for running runs XML tests from GUI &amp; console interfaces.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поддерживает запуск XML тестов из GUi и консольного интерфейсов.</translation>
     </message>
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="103"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="175"/>
         <source>XML Test runner</source>
-        <translation type="unfinished"></translation>
+        <translation>Запуск XML тестов</translation>
     </message>
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="287"/>
@@ -126,12 +126,12 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="1175"/>
         <source>state: </source>
-        <translation>State:</translation>
+        <translation>Состояние: </translation>
     </message>
     <message>
         <location filename="../src/TestViewController.cpp" line="1177"/>
         <source>fail_desc: </source>
-        <translation>Fail reason:</translation>
+        <translation>Причина падения: </translation>
     </message>
     <message>
         <location filename="../src/TestViewController.cpp" line="1180"/>

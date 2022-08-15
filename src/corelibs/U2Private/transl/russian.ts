@@ -234,22 +234,22 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::LogCategories</name>
     <message>
-        <location filename="../src/LogSettings.cpp" line="37"/>
+        <location filename="../src/LogSettings.cpp" line="50"/>
         <source>TRACE</source>
         <translation>Трассировка</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="38"/>
+        <location filename="../src/LogSettings.cpp" line="51"/>
         <source>DETAILS</source>
         <translation>Детали</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="39"/>
+        <location filename="../src/LogSettings.cpp" line="52"/>
         <source>INFO</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../src/LogSettings.cpp" line="40"/>
+        <location filename="../src/LogSettings.cpp" line="53"/>
         <source>ERROR</source>
         <translation>Ошибка</translation>
     </message>
