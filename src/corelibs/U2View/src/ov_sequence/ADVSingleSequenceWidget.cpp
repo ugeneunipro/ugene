@@ -628,6 +628,8 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
             getSequenceContext()->getSequenceSelection()->setSelectedRegions(curRegions);
         }
     }
+    CHECK(fw != nullptr, );
+
     fw->setFocus();
 }
 
