@@ -616,78 +616,6 @@ static char* thpr_safe_char_cp_malloc(const char* ct) {
     return r;
 }
 
-p3_global_settings* 
-p3_copy_global_settings(p3_global_settings* a) {
-    if (a == NULL) {
-        return NULL;
-    }
-
-    p3_global_settings* b = p3_create_global_settings();
-    thal_parameters temp_tp = b->thermodynamic_parameters;
-    masker_parameters temp_mp = b->mp;
-    *b = *a;
-
-    temp_tp.dangle_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.dangle_dh);
-    temp_tp.dangle_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.dangle_ds);
-    temp_tp.loops_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.loops_dh);
-    temp_tp.loops_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.loops_ds);
-    temp_tp.stack_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stack_dh);
-    temp_tp.stack_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stack_ds);
-    temp_tp.stackmm_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stackmm_dh);
-    temp_tp.stackmm_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.stackmm_ds);
-    temp_tp.tetraloop_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tetraloop_dh);
-    temp_tp.tetraloop_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tetraloop_ds);
-    temp_tp.triloop_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.triloop_dh);
-    temp_tp.triloop_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.triloop_ds);
-    temp_tp.tstack_tm_inf_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack_tm_inf_ds);
-    temp_tp.tstack_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack_dh);
-    temp_tp.tstack2_dh = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack2_dh);
-    temp_tp.tstack2_ds = thpr_safe_char_cp_malloc(a->thermodynamic_parameters.tstack2_ds);
-
-    /*strcpy(temp_tp.dangle_dh, a->thermodynamic_parameters.dangle_dh);
-    strcpy(temp_tp.dangle_ds, a->thermodynamic_parameters.dangle_ds);
-    strcpy(temp_tp.loops_dh, a->thermodynamic_parameters.loops_dh);
-    strcpy(temp_tp.loops_ds, a->thermodynamic_parameters.loops_ds);
-    strcpy(temp_tp.stack_dh, a->thermodynamic_parameters.stack_dh);
-    strcpy(temp_tp.stack_ds, a->thermodynamic_parameters.stack_ds);
-    strcpy(temp_tp.stackmm_dh, a->thermodynamic_parameters.stackmm_dh);
-    strcpy(temp_tp.stackmm_ds, a->thermodynamic_parameters.stackmm_ds);
-    strcpy(temp_tp.tetraloop_dh, a->thermodynamic_parameters.tetraloop_dh);
-    strcpy(temp_tp.tetraloop_ds, a->thermodynamic_parameters.tetraloop_ds);
-    strcpy(temp_tp.triloop_dh, a->thermodynamic_parameters.triloop_dh);
-    strcpy(temp_tp.triloop_ds, a->thermodynamic_parameters.triloop_ds);
-    strcpy(temp_tp.tstack_tm_inf_ds, a->thermodynamic_parameters.tstack_tm_inf_ds);
-    strcpy(temp_tp.tstack_dh, a->thermodynamic_parameters.tstack_dh);
-    strcpy(temp_tp.tstack2_dh, a->thermodynamic_parameters.tstack2_dh);
-    strcpy(temp_tp.tstack2_ds, a->thermodynamic_parameters.tstack2_ds);*/
-    b->thermodynamic_parameters = temp_tp;
-
-    strcpy(temp_mp.list_prefix, a->mp.list_prefix);
-
-    if (a->p_args.must_match_five_prime != NULL) {
-        b->p_args.must_match_five_prime = (char*)malloc(strlen(a->p_args.must_match_five_prime) + 1);
-        strcpy(b->p_args.must_match_five_prime, a->p_args.must_match_five_prime);
-    }
-    if (a->p_args.must_match_three_prime != NULL) {
-        b->p_args.must_match_three_prime = (char*)malloc(strlen(a->p_args.must_match_three_prime) + 1);
-        strcpy(b->p_args.must_match_three_prime, a->p_args.must_match_three_prime);
-    }
-    if (a->o_args.must_match_five_prime != NULL) {
-        b->o_args.must_match_five_prime = (char*)malloc(strlen(a->o_args.must_match_five_prime) + 1);
-        strcpy(b->o_args.must_match_five_prime, a->o_args.must_match_five_prime);
-    }
-    if (a->o_args.must_match_three_prime != NULL) {
-        b->o_args.must_match_three_prime = (char*)malloc(strlen(a->o_args.must_match_three_prime) + 1);
-        strcpy(b->o_args.must_match_three_prime, a->o_args.must_match_three_prime);
-    }
-
-    // TODO: not for windows
-    //mp.fp
-    b->mp = temp_mp;
-
-    return b;
-}
-
 static void
 pr_set_default_global_args_2(p3_global_settings *a) 
 /* Write the default values for default_values=2 into
@@ -1031,29 +959,7 @@ create_p3retval(void)
 
   return state;
 }
-p3retval* copy_p3retval(p3retval* a)
-{
-    if (a == NULL) {
-        return NULL;
-    }
 
-    p3retval* b = create_p3retval();
-    std::vector<primer_rec*> tmp_oligos = { b->fwd.oligo, b->intl.oligo, b->rev.oligo };
-    std::vector<primer_rec*> oligos_2_copy_from = { a->fwd.oligo, a->intl.oligo, a->rev.oligo };
-    for (int i = 0; i < tmp_oligos.size(); i++) {
-        primer_rec* to = tmp_oligos[i];
-        primer_rec* from = oligos_2_copy_from[i];
-        std::copy(from, from + sizeof(primer_rec), to);
-    }
-
-    *b = *a;
-
-    b->fwd.oligo = tmp_oligos[0];
-    b->intl.oligo = tmp_oligos[1];
-    b->rev.oligo = tmp_oligos[2];
-
-    return b;
-}
 /* ============================================================ */
 /* BEGIN functions for dpal_arg_holder                          */
 /* ============================================================ */
@@ -1267,88 +1173,6 @@ create_seq_arg()
   r->overhang_right_rv = NULL;
 
   return r;
-}
-
-seq_args*
-copy_seq_arg(seq_args* a)
-{
-    if (NULL == a) return NULL; /* Out of memory */
-
-    seq_args* b = create_seq_arg();
-
-    *b = *a;
-
-    if (a->quality != NULL) {
-        p3_set_sa_empty_quality(b);
-        b->quality_storage_size = 0;
-        for (int i = 0; i < a->n_quality; i++) {
-            int v = a->quality[i];
-            p3_sa_add_to_quality_array(b, v);
-        }
-    }
-
-    if (a->sequence != NULL) {
-        b->sequence = (char*)malloc(strlen(a->sequence) + 1);
-        strcpy(b->sequence, a->sequence);
-    }
-    if (a->sequence_name != NULL) {
-        b->sequence_name = (char*)malloc(strlen(a->sequence_name) + 1);
-        strcpy(b->sequence_name, a->sequence_name);
-    }
-    if (a->sequence_file != NULL) {
-        b->sequence_file = (char*)malloc(strlen(a->sequence_file) + 1);
-        strcpy(b->sequence_file, a->sequence_file);
-    }
-    if (a->trimmed_seq != NULL) {
-        b->trimmed_seq = (char*)malloc(strlen(a->trimmed_seq) + 1);
-        strcpy(b->trimmed_seq, a->trimmed_seq);
-    }
-    if (a->trimmed_orig_seq != NULL) {
-        b->trimmed_orig_seq = (char*)malloc(strlen(a->trimmed_orig_seq) + 1);
-        strcpy(b->trimmed_orig_seq, a->trimmed_orig_seq);
-    }
-    if (a->trimmed_masked_seq != NULL) {
-        b->trimmed_masked_seq = (char*)malloc(strlen(a->trimmed_masked_seq) + 1);
-        strcpy(b->trimmed_masked_seq, a->trimmed_masked_seq);
-    }
-    if (a->trimmed_masked_seq_r != NULL) {
-        b->trimmed_masked_seq_r = (char*)malloc(strlen(a->trimmed_masked_seq_r) + 1);
-        strcpy(b->trimmed_masked_seq_r, a->trimmed_masked_seq_r);
-    }
-    if (a->upcased_seq != NULL) {
-        b->upcased_seq = (char*)malloc(strlen(a->upcased_seq) + 1);
-        strcpy(b->upcased_seq, a->upcased_seq);
-    }
-    if (a->upcased_seq_r != NULL) {
-        b->upcased_seq_r = (char*)malloc(strlen(a->upcased_seq_r) + 1);
-        strcpy(b->upcased_seq_r, a->upcased_seq_r);
-    }
-    if (a->left_input != NULL) {
-        b->left_input = (char*)malloc(strlen(a->left_input) + 1);
-        strcpy(b->left_input, a->left_input);
-    }
-    if (a->right_input != NULL) {
-        b->right_input = (char*)malloc(strlen(a->right_input) + 1);
-        strcpy(b->right_input, a->right_input);
-    }
-    if (a->internal_input != NULL) {
-        b->internal_input = (char*)malloc(strlen(a->internal_input) + 1);
-        strcpy(b->internal_input, a->internal_input);
-    }
-    if (a->overhang_left != NULL) {
-        b->overhang_left = (char*)malloc(strlen(a->overhang_left) + 1);
-        strcpy(b->overhang_left, a->overhang_left);
-    }
-    if (a->overhang_right != NULL) {
-        b->overhang_right = (char*)malloc(strlen(a->overhang_right) + 1);
-        strcpy(b->overhang_right, a->overhang_right);
-    }
-    if (a->overhang_right_rv != NULL) {
-        b->overhang_right_rv = (char*)malloc(strlen(a->overhang_right_rv) + 1);
-        strcpy(b->overhang_right_rv, a->overhang_right_rv);
-    }
-
-    return b;
 }
 
 /* Free a seq_arg data structure */

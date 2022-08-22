@@ -51,7 +51,7 @@ private:
     bool checkIntProperty(int value, int expectedValue, QString name);
     bool checkDoubleProperty(double value, double expectedValue, QString name);
     Primer3SWTask* task = nullptr;
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings = nullptr;
     QList<PrimerPair> expectedBestPairs;
     QList<PrimerSingle> expectedSinglePrimers;
     QString expectedErrorMessage;

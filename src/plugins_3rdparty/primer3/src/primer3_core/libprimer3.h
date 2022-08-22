@@ -301,15 +301,6 @@ typedef struct p3_global_settings {
 
   /**/int    file_flag;   /* TO DO, See if this can be factored out. */
 
-  /* 
-   * For have-no-idea-who-reason we have used 1 as default previously.
-   * It had no sence, because, read the description carefully, "This parameter is ignored within pr_choice()".
-   * pr_choice() is the name of the obsolete function, which previously has been used for the primers picking process.
-   * Now it's replaced with "choose_primers()".
-   * Now this parameter is in use and it should be used if we need to shift regions we inputed (we count symbols from 1 in the GUI interface, but from 0 in code).
-   * But we do it by our oun when we read parameters!
-   * So, actually, this parameter is useless at all!!!!!
-  */
   /**/int    first_base_index;  /*
                              * The index of the first base in the input
                              * sequence.  This parameter is ignored within
@@ -958,23 +949,10 @@ typedef struct p3retval {/*primers_t*/
 
 } p3retval;
 
-typedef struct Primer3Context_ {
-    primer_rec* f;
-    primer_rec* r;
-    primer_rec* mid;
-    int f_len;
-    int r_len;
-    int mid_len;
-
-    dpal_args* lib_local_dpal_args;
-    dpal_args* lib_local_end_dpal_args;
-}Primer3Context;
-
 /* Deallocate a primer3 state */
 void destroy_secundary_structures(const p3_global_settings *pa, p3retval *retval);
 void destroy_p3retval(p3retval *);
 p3retval* create_p3retval(void);
-p3retval* copy_p3retval(p3retval *);
 
 void destroy_dpal_thal_arg_holder();
        
@@ -1018,7 +996,6 @@ const  primer_rec *p3_get_oa_i(const oligo_array *x, int i);
 
 /* Functions for seq_args -- create, destroy, set, set slots */
 seq_args *create_seq_arg();
-seq_args* copy_seq_arg(seq_args* a);
 void destroy_seq_args(seq_args *);
 int p3_set_sa_sequence(seq_args *sargs, const char *sequence);
 void p3_set_sa_primer_sequence_quality(seq_args *sargs, int quality);
@@ -1091,8 +1068,6 @@ p3_global_settings *p3_create_global_settings();
 p3_global_settings *p3_create_global_settings_default_version_1();
 
 void p3_destroy_global_settings(p3_global_settings *);
-
-p3_global_settings* p3_copy_global_settings(p3_global_settings*);
 
 void p3_set_gs_prmin (p3_global_settings * p , int val, int i);
 void p3_set_gs_prmax (p3_global_settings * p , int val, int i);

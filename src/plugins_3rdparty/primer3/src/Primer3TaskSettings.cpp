@@ -58,47 +58,57 @@ Primer3TaskSettings::Primer3TaskSettings() {
     initMaps();
 }
 
-Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
-    : isCircular(settings.isCircular),
-      repeatLibraryPath(settings.repeatLibraryPath),
-      mishybLibraryPath(settings.mishybLibraryPath),
-      thermodynamicParametersPath(settings.thermodynamicParametersPath),
-      spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
-      sequenceRange(settings.sequenceRange),
-      showDebugging(settings.showDebugging),
-      formatOutput(settings.formatOutput),
-      explain(settings.explain) {
-
-    primerSettings = p3_copy_global_settings(settings.primerSettings);
-    seqArgs = copy_seq_arg(settings.seqArgs);
-    p3Retval = copy_p3retval(settings.p3Retval);
-    
-    initMaps();
-}
-
-Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& settings) {
-    isCircular = settings.isCircular;
-    repeatLibraryPath = settings.repeatLibraryPath;
-    mishybLibraryPath = settings.mishybLibraryPath;
-    thermodynamicParametersPath = settings.thermodynamicParametersPath;
-    spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
-    sequenceRange = settings.sequenceRange;
-    showDebugging = settings.showDebugging;
-    formatOutput = settings.formatOutput;
-    explain = settings.explain;
-
-    primerSettings = p3_copy_global_settings(settings.primerSettings);
-    seqArgs = copy_seq_arg(settings.seqArgs);
-    p3Retval = copy_p3retval(settings.p3Retval);
-    
-    initMaps();
-    return *this;
-}
+//Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
+//    : isCircular(settings.isCircular),
+//      repeatLibraryPath(settings.repeatLibraryPath),
+//      mishybLibraryPath(settings.mishybLibraryPath),
+//      thermodynamicParametersPath(settings.thermodynamicParametersPath),
+//      spanIntronExonBoundarySettings(settings.spanIntronExonBoundarySettings),
+//      sequenceRange(settings.sequenceRange),
+//      showDebugging(settings.showDebugging),
+//      formatOutput(settings.formatOutput),
+//      explain(settings.explain) {
+//
+//    primerSettings = p3_copy_global_settings(settings.primerSettings);
+//    seqArgs = copy_seq_arg(settings.seqArgs);
+//    p3Retval = copy_p3retval(settings.p3Retval);
+//    
+//    initMaps();
+//}
+//
+//Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& settings) {
+//    isCircular = settings.isCircular;
+//    repeatLibraryPath = settings.repeatLibraryPath;
+//    mishybLibraryPath = settings.mishybLibraryPath;
+//    thermodynamicParametersPath = settings.thermodynamicParametersPath;
+//    spanIntronExonBoundarySettings = settings.spanIntronExonBoundarySettings;
+//    sequenceRange = settings.sequenceRange;
+//    showDebugging = settings.showDebugging;
+//    formatOutput = settings.formatOutput;
+//    explain = settings.explain;
+//
+//    primerSettings = p3_copy_global_settings(settings.primerSettings);
+//    seqArgs = copy_seq_arg(settings.seqArgs);
+//    p3Retval = copy_p3retval(settings.p3Retval);
+//    
+//    initMaps();
+//    return *this;
+//}
 
 Primer3TaskSettings::~Primer3TaskSettings() {
-    p3_destroy_global_settings(primerSettings);
-    destroy_seq_args(seqArgs);
+    destroy_secundary_structures(primerSettings, p3Retval);
     destroy_p3retval(p3Retval);
+    destroy_seq_args(seqArgs);
+#if !defined(OS_WIN)  
+    if (global_pa->mask_template == 1) {
+        delete_formula_parameters(global_pa->mp.fp, global_pa->mp.nlists);
+        /* free(global_pa->mp.list_prefix); */
+    }
+#endif
+    p3_destroy_global_settings(primerSettings);
+#if !defined(OS_WIN)  
+    free(kmer_lists_path);
+#endif
 }
 
 bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {

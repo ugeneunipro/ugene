@@ -77,9 +77,8 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([NAGCTRYWSMKBHDV]){5}$");
 const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^([A-Z]){3}$");
 
-Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context)
+Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
-      defaultSettings(defaultSettings),
       context(context) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
@@ -146,8 +145,14 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequ
     reset();
 }
 
-Primer3TaskSettings Primer3Dialog::getSettings() const {
-    return settings;
+Primer3Dialog::~Primer3Dialog() {
+    SAFE_POINT(settings == nullptr, "Settings should be extracted from this object before removing", );
+}
+
+Primer3TaskSettings* Primer3Dialog::takeSettings() {
+    auto returnValue = settings;
+    settings = nullptr;
+    return returnValue;
 }
 
 const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
@@ -287,6 +292,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
+    const Primer3TaskSettings defaultSettings;
     for (const auto& key : defaultSettings.getIntPropertyList()) {
         int value = 0;
         if (defaultSettings.getIntProperty(key, &value)) {
@@ -377,10 +383,10 @@ void Primer3Dialog::reset() {
     combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(0);
     {
         for (int i = 0; i < repeatLibraries.size(); i++) {
-            if (repeatLibraries[i].second == settings.getRepeatLibraryPath()) {
+            if (repeatLibraries[i].second == defaultSettings.getRepeatLibraryPath()) {
                 combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(i);
             }
-            if (repeatLibraries[i].second == settings.getMishybLibraryPath()) {
+            if (repeatLibraries[i].second == defaultSettings.getMishybLibraryPath()) {
                 combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(i);
             }
         }
@@ -417,7 +423,7 @@ static U2Range<int> parseExonRange(const QString& text, bool& ok) {
 }
 
 bool Primer3Dialog::doDataExchange() {
-    settings = defaultSettings;
+    settings = new Primer3TaskSettings;
     if (spanIntronExonBox->isChecked()) {
         SpanIntronExonBoundarySettings s;
         s.enabled = true;
@@ -435,36 +441,36 @@ bool Primer3Dialog::doDataExchange() {
             return false;
         }
 
-        settings.setSpanIntronExonBoundarySettings(s);
+        settings->setSpanIntronExonBoundarySettings(s);
     }
-    auto qwe = settings.getIntPropertyList();
-    for (const auto& key : settings.getIntPropertyList()) {
+    auto qwe = settings->getIntPropertyList();
+    for (const auto& key : settings->getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            settings.setIntProperty(key, spinBox->value());
+            settings->setIntProperty(key, spinBox->value());
             continue;
         }
         QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key);
         if (checkBox != nullptr) {
-            settings.setIntProperty(key, checkBox->isChecked());
+            settings->setIntProperty(key, checkBox->isChecked());
             continue;
         }
     }
-    for (const auto& key : settings.getDoublePropertyList()) {
+    for (const auto& key : settings->getDoublePropertyList()) {
         QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
         if (checkBox != nullptr && !checkBox->isChecked()) {
             continue;
         }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            settings.setDoubleProperty(key, spinBox->value());
+            settings->setDoubleProperty(key, spinBox->value());
         }
     }
 
     {
         QList<U2Region> list;
         if (parseIntervalList(edit_SEQUENCE_TARGET->text(), ",", &list)) {
-            settings.setTarget(list);
+            settings->setTarget(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_TARGET, tr("Targets"));
             return false;
@@ -473,7 +479,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<int> list;
         if (parseIntList(edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text(), &list)) {
-            settings.setOverlapJunctionList(list);
+            settings->setOverlapJunctionList(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_OVERLAP_JUNCTION_LIST, tr("Overlap Junction List"));
             return false;
@@ -482,7 +488,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<int> list;
         if (parseIntList(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->text(), &list)) {
-            settings.setInternalOverlapJunctionList(list);
+            settings->setInternalOverlapJunctionList(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST, tr("Internal Oligo Overlap Positions"));
             return false;
@@ -491,7 +497,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<U2Region> list;
         if (parseIntervalList(edit_SEQUENCE_EXCLUDED_REGION->text(), ",", &list)) {
-            settings.setExcludedRegion(list);
+            settings->setExcludedRegion(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_EXCLUDED_REGION, tr("Excluded Regions"));
             return false;
@@ -505,7 +511,7 @@ bool Primer3Dialog::doDataExchange() {
                 return false;
             } else if (list.size() == 1) {
                 const auto & region = list.first();
-                settings.setIncludedRegion(region.startPos, region.length);
+                settings->setIncludedRegion(region.startPos, region.length);
             }
         } else {
             showInvalidInputMessage(edit_SEQUENCE_INCLUDED_REGION, tr("Include Regions"));
@@ -515,7 +521,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QList<QList<int>> list;
         if (parseOkRegions(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), &list)) {
-            settings.setOkRegion(list);
+            settings->setOkRegion(list);
         } else {
             showInvalidInputMessage(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST, tr("Pair OK Region List"));
             return false;
@@ -525,7 +531,7 @@ bool Primer3Dialog::doDataExchange() {
         QString text = edit_SEQUENCE_START_CODON_SEQUENCE->text();
         if (!text.isEmpty()) {
             if (MUST_MATCH_START_CODON_SEQUENCE_REGEX.match(text).hasMatch()) {
-                settings.setStartCodonSequence(text.toLocal8Bit());
+                settings->setStartCodonSequence(text.toLocal8Bit());
             } else {
                 showInvalidInputMessage(edit_SEQUENCE_START_CODON_SEQUENCE, tr("Start Codon Sequence"));
                 return false;
@@ -536,7 +542,7 @@ bool Primer3Dialog::doDataExchange() {
         QString text = edit_PRIMER_MUST_MATCH_FIVE_PRIME->text();
         if (!text.isEmpty()) {
             if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
-                settings.setPrimerMustMatchFivePrime(text.toLocal8Bit());
+                settings->setPrimerMustMatchFivePrime(text.toLocal8Bit());
             } else {
                 showInvalidInputMessage(edit_PRIMER_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Primer's 5'"));
                 return false;
@@ -547,7 +553,7 @@ bool Primer3Dialog::doDataExchange() {
         QString text = edit_PRIMER_MUST_MATCH_THREE_PRIME->text();
         if (!text.isEmpty()) {
             if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
-                settings.setPrimerMustMatchThreePrime(text.toLocal8Bit());
+                settings->setPrimerMustMatchThreePrime(text.toLocal8Bit());
             } else {
                 showInvalidInputMessage(edit_PRIMER_MUST_MATCH_THREE_PRIME, tr("Five Matches on Primer's 3'"));
                 return false;
@@ -558,7 +564,7 @@ bool Primer3Dialog::doDataExchange() {
         QString text = edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->text();
         if (!text.isEmpty()) {
             if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
-                settings.setInternalPrimerMustMatchFivePrime(text.toLocal8Bit());
+                settings->setInternalPrimerMustMatchFivePrime(text.toLocal8Bit());
             } else {
                 showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Internal Oligo's  5'"));
                 return false;
@@ -569,7 +575,7 @@ bool Primer3Dialog::doDataExchange() {
         QString text = edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->text();
         if (!text.isEmpty()) {
             if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
-                settings.setInternalPrimerMustMatchThreePrime(text.toLocal8Bit());
+                settings->setInternalPrimerMustMatchThreePrime(text.toLocal8Bit());
             } else {
                 showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME, tr("Five Matches on Internal Oligo's 3'"));
                 return false;
@@ -578,29 +584,29 @@ bool Primer3Dialog::doDataExchange() {
     }
 
     if (checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked()) {
-        settings.setLeftInput(edit_SEQUENCE_PRIMER->text().toLatin1());
-        settings.setLeftOverhang(edit_SEQUENCE_OVERHANG_LEFT->text().toLatin1());
+        settings->setLeftInput(edit_SEQUENCE_PRIMER->text().toLatin1());
+        settings->setLeftOverhang(edit_SEQUENCE_OVERHANG_LEFT->text().toLatin1());
     } else {
-        settings.setLeftInput("");
-        settings.setLeftOverhang("");
+        settings->setLeftInput("");
+        settings->setLeftOverhang("");
     }
     if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked()) {
-        settings.setInternalInput(edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1());
+        settings->setInternalInput(edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1());
     } else {
-        settings.setInternalInput("");
+        settings->setInternalInput("");
     }
     if (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
-        settings.setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
-        settings.setRightOverhang(edit_SEQUENCE_OVERHANG_RIGHT->text().toLatin1());
+        settings->setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
+        settings->setRightOverhang(edit_SEQUENCE_OVERHANG_RIGHT->text().toLatin1());
     } else {
-        settings.setRightInput("");
-        settings.setRightOverhang("");
+        settings->setRightInput("");
+        settings->setRightOverhang("");
     }
 
     {
         QVector<int> qualityList;
         QStringList stringList = edit_SEQUENCE_QUALITY->toPlainText().split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        foreach (QString string, stringList) {
+        for (const QString& string : stringList) {
             bool ok = false;
             int value = string.toInt(&ok);
             if (!ok) {
@@ -614,20 +620,20 @@ bool Primer3Dialog::doDataExchange() {
             QMessageBox::critical(this, windowTitle(), tr("Sequence quality list length must be equal to the sequence length"));
             return false;
         }
-        settings.setSequenceQuality(qualityList);
+        settings->setSequenceQuality(qualityList);
     }
 
-    settings.setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
-    settings.setIntProperty("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
+    settings->setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
+    settings->setIntProperty("PRIMER_SALT_CORRECTIONS", combobox_PRIMER_SALT_CORRECTIONS->currentIndex());
 
-    settings.setShowDebugging(checkbox_SHOW_DEBUGGING->isChecked());
-    settings.setFormatOutput(checkbox_FORMAT_OUTPUT->isChecked());
-    settings.setExplain(checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
+    settings->setShowDebugging(checkbox_SHOW_DEBUGGING->isChecked());
+    settings->setFormatOutput(checkbox_FORMAT_OUTPUT->isChecked());
+    settings->setExplain(checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
 
-    settings.setTaskByName(edit_PRIMER_TASK->currentText());
-    switch (settings.getTask()) {
+    settings->setTaskByName(edit_PRIMER_TASK->currentText());
+    switch (settings->getTask()) {
     case pick_discriminative_primers:
-        if (settings.getSeqArgs()->tar2.count != 1) {
+        if (settings->getSeqArgs()->tar2.count != 1) {
             QMessageBox::critical(this, windowTitle(), tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
             return false;
         }
@@ -650,11 +656,11 @@ bool Primer3Dialog::doDataExchange() {
 
     {
         int index = combobox_PRIMER_MISPRIMING_LIBRARY->currentIndex();
-        settings.setRepeatLibraryPath(repeatLibraries[index].second);
+        settings->setRepeatLibraryPath(repeatLibraries[index].second);
     }
     {
         int index = combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentIndex();
-        settings.setMishybLibraryPath(repeatLibraries[index].second);
+        settings->setMishybLibraryPath(repeatLibraries[index].second);
     }
 
     {
@@ -665,14 +671,14 @@ bool Primer3Dialog::doDataExchange() {
                 return false;
             }
 
-            settings.setProductSizeRange(list);
+            settings->setProductSizeRange(list);
             bool isRegionOk = false;
             U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
             if (!isRegionOk) {
                 rs->showErrorMessage();
                 return false;
             }
-            if (!settings.isIncludedRegionValid(sequenceRangeRegion)) {
+            if (!settings->isIncludedRegionValid(sequenceRangeRegion)) {
                 QMessageBox::critical(this, windowTitle(), tr("Sequence range region is too small for current product size ranges"));
                 return false;
             }
@@ -681,8 +687,8 @@ bool Primer3Dialog::doDataExchange() {
                 return false;
             }
             
-            const auto& includedRegion = settings.getIncludedRegion();
-            int fbs = settings.getFirstBaseIndex();
+            const auto& includedRegion = settings->getIncludedRegion();
+            int fbs = settings->getFirstBaseIndex();
             int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
             if (includedRegionOffset < 0) {
                 QMessageBox::critical(this, windowTitle(), tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0"));
@@ -692,11 +698,11 @@ bool Primer3Dialog::doDataExchange() {
             if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
                                                               "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
-                                                              "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings.getFirstBaseIndex()));
+                                                              "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
                 return false;
             }
 
-            settings.setSequenceRange(sequenceRangeRegion);
+            settings->setSequenceRange(sequenceRangeRegion);
         } else {
             showInvalidInputMessage(edit_PRIMER_PRODUCT_SIZE_RANGE, tr("Product Size Ranges"));
             return false;
@@ -748,7 +754,7 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     QTextStream stream(&file);
-    for (const auto& key : settings.getIntPropertyList()) {
+    for (const auto& key : settings->getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             stream << key << "=" << spinBox->value() << endl;
@@ -759,7 +765,7 @@ void Primer3Dialog::sl_saveSettings() {
             stream << key << "=" << (int)checkbox->isChecked() << endl;
         }
     }
-    for (const auto& key : settings.getDoublePropertyList()) {
+    for (const auto& key : settings->getDoublePropertyList()) {
         QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
         if (checkBox != nullptr && !checkBox->isChecked()) {
             continue;
@@ -823,8 +829,8 @@ void Primer3Dialog::sl_loadSettings() {
         return;
     }
 
-    auto intPropList = settings.getIntPropertyList();
-    auto doublePropList = settings.getDoublePropertyList();
+    auto intPropList = settings->getIntPropertyList();
+    auto doublePropList = settings->getDoublePropertyList();
 
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
