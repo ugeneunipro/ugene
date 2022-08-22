@@ -558,11 +558,11 @@ void Primer3Task::run() {
         thal_results o;
         if (thal_load_parameters(path, &primerSettings->thermodynamic_parameters, &o) == -1) {
             stateInfo.setError(o.msg);
-        } else {
+        } /*else {
             if (get_thermodynamic_values(&primerSettings->thermodynamic_parameters, &o)) {
                 stateInfo.setError(o.msg);
             }
-        }
+        }*/
     }
     CHECK_OP(stateInfo, );
 
