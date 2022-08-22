@@ -27,6 +27,8 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -60,6 +62,9 @@ Primer3Plugin::Primer3Plugin()
         viewCtx = new Primer3ADVContext(this);
         viewCtx->init();
     }
+
+    auto p3Lock = new AppResourceSemaphore(PRIMER3_STATIC_LOCK, 1, tr("Primer3 lock"));
+    AppContext::getAppSettings()->getAppResourcePool()->registerResource(p3Lock);
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDPrimerActorPrototype());

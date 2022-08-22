@@ -29,6 +29,7 @@
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+#include "Primer3Plugin.h"
 #include "Primer3Task.h"
 
 #include "primer3_core/primer3_boulder_main.h"
@@ -466,6 +467,9 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
 
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
+
+    addTaskResource(TaskResourceUsage(PRIMER3_STATIC_LOCK, 1));
+
     //settings.setIncludedRegion(0, sequenceRange.length);
 
     /*if (!PR_START_CODON_POS_IS_NULL(settings.getSeqArgs())) {
@@ -522,6 +526,7 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
 }
 
 void Primer3Task::run() {
+    coreLog.details(QString("Test %1, start").arg(settings->getSeqArgs()->sequence_name));
     QByteArray repeatLibPath = settings->getRepeatLibraryPath();
     if (!repeatLibPath.isEmpty()) {
         auto primerSettings = settings->getPrimerSettings();
@@ -616,6 +621,7 @@ void Primer3Task::run() {
             }
         }
     }
+    coreLog.details(QString("Test %1, end").arg(settings->getSeqArgs()->sequence_name));
 }
 
 Task::ReportResult Primer3Task::report() {
@@ -758,7 +764,7 @@ Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings)
     : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
       settings(_settings) {
     median = settings->getSequenceSize() / 2;
-    setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
+    //setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
 }
 
 void Primer3SWTask::prepare() {
