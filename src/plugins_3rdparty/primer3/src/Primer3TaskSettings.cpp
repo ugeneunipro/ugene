@@ -99,16 +99,16 @@ Primer3TaskSettings::~Primer3TaskSettings() {
     destroy_secundary_structures(primerSettings, p3Retval);
     destroy_p3retval(p3Retval);
     destroy_seq_args(seqArgs);
-#if !defined(OS_WIN)  
-    if (global_pa->mask_template == 1) {
-        delete_formula_parameters(global_pa->mp.fp, global_pa->mp.nlists);
-        /* free(global_pa->mp.list_prefix); */
+/*#if !defined(OS_WIN)
+    if (primerSettings->mask_template == 1) {
+        delete_formula_parameters(primerSettings->mp.fp, primerSettings->mp.nlists);
+        //free(global_pa->mp.list_prefix);
     }
-#endif
+#endif*/
     p3_destroy_global_settings(primerSettings);
-#if !defined(OS_WIN)  
+/*#if !defined(OS_WIN)
     free(kmer_lists_path);
-#endif
+#endif*/
 }
 
 bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {
