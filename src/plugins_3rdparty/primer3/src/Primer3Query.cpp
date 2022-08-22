@@ -55,6 +55,10 @@ QDPrimerActor::QDPrimerActor(QDActorPrototype const* proto)
     setDefaultSettings();
 }
 
+QDPrimerActor::~QDPrimerActor() {
+    delete settings;
+}
+
 QString QDPrimerActor::getText() const {
     return "Searches primers";
 }
@@ -62,16 +66,16 @@ QString QDPrimerActor::getText() const {
 Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     Task* t = nullptr;
     const DNASequence& dnaSeq = scheme->getSequence();
-    settings.setSequence(dnaSeq.seq);
+    settings->setSequence(dnaSeq.seq);
 
     U2Region seqRange(0, dnaSeq.length());
-    settings.setIncludedRegion(seqRange.startPos + settings.getFirstBaseIndex(), seqRange.length);
+    settings->setIncludedRegion(seqRange.startPos + settings->getFirstBaseIndex(), seqRange.length);
 
     QList<U2Region> list;
     const QString& excludedRegsStr = cfg->getParameter(EXCLUDED_REGIONS_ATTR)->getAttributeValueWithoutScript<QString>();
     bool ok = Primer3Dialog::parseIntervalList(excludedRegsStr, ",", &list);
     if (ok) {
-        settings.setExcludedRegion(list);
+        settings->setExcludedRegion(list);
     } else {
         algoLog.error(tr("%1 invalid input. Excluded regions.").arg(cfg->getLabel()));
         return nullptr;
@@ -80,7 +84,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     const QString& targetsStr = cfg->getParameter(TARGETS_ATTR)->getAttributeValueWithoutScript<QString>();
     ok = Primer3Dialog::parseIntervalList(targetsStr, ",", &list);
     if (ok) {
-        settings.setTarget(list);
+        settings->setTarget(list);
     } else {
         algoLog.error(tr("%1 invalid input. Targets.").arg(cfg->getLabel()));
         return nullptr;
@@ -89,33 +93,33 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     const QString& sizeRangesAttr = cfg->getParameter(SIZE_RANGES_ATTR)->getAttributeValueWithoutScript<QString>();
     ok = Primer3Dialog::parseIntervalList(sizeRangesAttr, "-", &list, Primer3Dialog::IntervalDefinition::Start_End);
     if (ok) {
-        settings.setProductSizeRange(list);
+        settings->setProductSizeRange(list);
     } else {
         algoLog.error(tr("%1 invalid input. Product size ranges.").arg(cfg->getLabel()));
     }
 
     int numRet = cfg->getParameter(NUM_RETURN_ATTR)->getAttributeValueWithoutScript<int>();
-    settings.setIntProperty("PRIMER_NUM_RETURN", numRet);
+    settings->setIntProperty("PRIMER_NUM_RETURN", numRet);
 
     /*qreal maxMispriming = cfg->getParameter(MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings.setAlignProperty("PRIMER_MAX_MISPRIMING", maxMispriming);
-    assert(settings.getAlignPropertyList().contains("PRIMER_MAX_MISPRIMING"));*/
+    settings->setAlignProperty("PRIMER_MAX_MISPRIMING", maxMispriming);
+    assert(settings->getAlignPropertyList().contains("PRIMER_MAX_MISPRIMING"));*/
 
     /*qreal maxTemplateMispriming = cfg->getParameter(MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings.setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", maxTemplateMispriming);
-    assert(settings.getAlignPropertyList().contains("PRIMER_MAX_TEMPLATE_MISPRIMING"));*/
+    settings->setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", maxTemplateMispriming);
+    assert(settings->getAlignPropertyList().contains("PRIMER_MAX_TEMPLATE_MISPRIMING"));*/
 
     qreal stability = cfg->getParameter(STABILITY_ATTR)->getAttributeValueWithoutScript<double>();
-    settings.setDoubleProperty("PRIMER_MAX_END_STABILITY", stability);
-    assert(settings.getDoublePropertyList().contains("PRIMER_MAX_END_STABILITY"));
+    settings->setDoubleProperty("PRIMER_MAX_END_STABILITY", stability);
+    assert(settings->getDoublePropertyList().contains("PRIMER_MAX_END_STABILITY"));
 
     /*qreal pairMispriming = cfg->getParameter(PAIR_MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings.setAlignProperty("PRIMER_PAIR_MAX_MISPRIMING", pairMispriming);
-    assert(settings.getAlignPropertyList().contains("PRIMER_PAIR_MAX_MISPRIMING"));*/
+    settings->setAlignProperty("PRIMER_PAIR_MAX_MISPRIMING", pairMispriming);
+    assert(settings->getAlignPropertyList().contains("PRIMER_PAIR_MAX_MISPRIMING"));*/
 
     /*qreal pairtemplateMispriming = cfg->getParameter(PAIR_MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", pairtemplateMispriming);
-    assert(settings.getAlignPropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"));*/
+    settings->setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", pairtemplateMispriming);
+    assert(settings->getAlignPropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"));*/
 
     t = new Primer3SWTask(settings);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
@@ -160,14 +164,14 @@ void QDPrimerActor::setDefaultSettings() {
         sizeRange.append(U2Region(601, 100));  // 601-700
         sizeRange.append(U2Region(701, 150));  // 701-850
         sizeRange.append(U2Region(851, 150));  // 851-1000
-        settings.setProductSizeRange(sizeRange);
+        settings->setProductSizeRange(sizeRange);
     }
-    settings.setDoubleProperty("PRIMER_MAX_END_STABILITY", 9.0);
-    //settings.setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200.0);
-    //settings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
-    settings.setIntProperty("PRIMER_LIBERAL_BASE", 1);
-    settings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
-    settings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
+    settings->setDoubleProperty("PRIMER_MAX_END_STABILITY", 9.0);
+    //settings->setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200.0);
+    //settings->setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
+    settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
+    settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
+    settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
 }
 
 QDPrimerActorPrototype::QDPrimerActorPrototype() {

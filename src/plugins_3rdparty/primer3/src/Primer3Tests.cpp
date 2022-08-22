@@ -38,7 +38,8 @@ PRIMER_SEQUENCE_QUALITY
 static const QString extensionsToCheck[14] = {".nhr", ".nnd", ".nni", ".nsd", ".nsi", ".nsq", ".nin", ".phr", ".pnd", ".pni", ".psd", ".psi", ".psq", ".pin"};
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
-    settings.setIncludedRegion(U2Region(0, -1));
+    settings = new Primer3TaskSettings;
+    settings->setIncludedRegion(U2Region(0, -1));
 
     QString buf;
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
@@ -51,32 +52,32 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }
         QDomElement elInput = n.toElement();
 
-        for (const QString& key : settings.getIntPropertyList()) {
+        for (const QString& key : settings->getIntPropertyList()) {
             buf = elInput.attribute(key);
             if (!buf.isEmpty()) {
-                settings.setIntProperty(key, buf.toInt());
+                settings->setIntProperty(key, buf.toInt());
             }
         }
-        for (const QString& key : settings.getDoublePropertyList()) {
+        for (const QString& key : settings->getDoublePropertyList()) {
             buf = elInput.attribute(key);
             if (!buf.isEmpty()) {
-                settings.setDoubleProperty(key, buf.toDouble());
+                settings->setDoubleProperty(key, buf.toDouble());
             }
         }
         // 1
         buf = elInput.attribute("SEQUENCE_ID");
         if (!buf.isEmpty()) {
-            settings.setSequenceName(buf.toLatin1());
+            settings->setSequenceName(buf.toLatin1());
         }
         // 2
         buf = elInput.attribute("SEQUENCE_TEMPLATE");
         if (!buf.isEmpty()) {
-            settings.setSequence(buf.toLatin1());
+            settings->setSequence(buf.toLatin1());
         }
 
         buf = elInput.attribute("CIRCULAR");
         if (!buf.isEmpty()) {
-            settings.setCircularity(buf == "true" ? true : false);
+            settings->setCircularity(buf == "true" ? true : false);
         }
 
         // 3
@@ -101,7 +102,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setTarget(regionList);
+            settings->setTarget(regionList);
         }
         // 4
         buf = elInput.attribute("SEQUENCE_OVERLAP_JUNCTION_LIST");
@@ -116,7 +117,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 }
                 intList.append(v);
             }
-            settings.setOverlapJunctionList(intList);
+            settings->setOverlapJunctionList(intList);
         }
         // 5
         buf = elInput.attribute("SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST");
@@ -131,7 +132,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 }
                 intList.append(v);
             }
-            settings.setInternalOverlapJunctionList(intList);
+            settings->setInternalOverlapJunctionList(intList);
         }
         // 6
         buf = elInput.attribute("SEQUENCE_EXCLUDED_REGION");
@@ -145,7 +146,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setExcludedRegion(regionList);
+            settings->setExcludedRegion(regionList);
         }
         // 7
         buf = elInput.attribute("SEQUENCE_PRIMER_PAIR_OK_REGION_LIST");
@@ -171,7 +172,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setOkRegion(intListList);
+            settings->setOkRegion(intListList);
         }
         // 8
         buf = elInput.attribute("SEQUENCE_INCLUDED_REGION");
@@ -185,7 +186,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setIncludedRegion(region);
+            settings->setIncludedRegion(region);
         }
         // 9
         buf = elInput.attribute("SEQUENCE_INTERNAL_EXCLUDED_REGION");
@@ -210,7 +211,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setInternalOligoExcludedRegion(regionList);
+            settings->setInternalOligoExcludedRegion(regionList);
         }
         // 9
         buf = elInput.attribute("PRIMER_PRODUCT_SIZE_RANGE");
@@ -225,62 +226,62 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                     break;
                 }
             }
-            settings.setProductSizeRange(regionList);
+            settings->setProductSizeRange(regionList);
         }
         // 10
         buf = elInput.attribute("SEQUENCE_START_CODON_SEQUENCE");
         if (!buf.isEmpty()) {
-            settings.setStartCodonSequence(buf.toLatin1());
+            settings->setStartCodonSequence(buf.toLatin1());
         }
         // 11
         buf = elInput.attribute("SEQUENCE_PRIMER");
         if (!buf.isEmpty()) {
-            settings.setLeftInput(buf.toLatin1());
+            settings->setLeftInput(buf.toLatin1());
         }
         // 12
         buf = elInput.attribute("SEQUENCE_PRIMER_REVCOMP");
         if (!buf.isEmpty()) {
-            settings.setRightInput(buf.toLatin1());
+            settings->setRightInput(buf.toLatin1());
         }
         // 13
         buf = elInput.attribute("SEQUENCE_INTERNAL_OLIGO");
         if (!buf.isEmpty()) {
-            settings.setInternalInput(buf.toLatin1());
+            settings->setInternalInput(buf.toLatin1());
         }
         // 14
         buf = elInput.attribute("SEQUENCE_OVERHANG_LEFT");
         if (!buf.isEmpty()) {
-            settings.setLeftOverhang(buf.toLatin1());
+            settings->setLeftOverhang(buf.toLatin1());
         }
         // 15
         buf = elInput.attribute("SEQUENCE_OVERHANG_RIGHT");
         if (!buf.isEmpty()) {
-            settings.setRightOverhang(buf.toLatin1());
+            settings->setRightOverhang(buf.toLatin1());
         }
         // 16
         buf = elInput.attribute("PRIMER_MUST_MATCH_FIVE_PRIME");
         if (!buf.isEmpty()) {
-            settings.setPrimerMustMatchFivePrime(buf.toLatin1());
+            settings->setPrimerMustMatchFivePrime(buf.toLatin1());
         }
         // 17
         buf = elInput.attribute("PRIMER_MUST_MATCH_THREE_PRIME");
         if (!buf.isEmpty()) {
-            settings.setPrimerMustMatchThreePrime(buf.toLatin1());
+            settings->setPrimerMustMatchThreePrime(buf.toLatin1());
         }
         // 18
         buf = elInput.attribute("PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME");
         if (!buf.isEmpty()) {
-            settings.setInternalPrimerMustMatchFivePrime(buf.toLatin1());
+            settings->setInternalPrimerMustMatchFivePrime(buf.toLatin1());
         }
         // 19
         buf = elInput.attribute("PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME");
         if (!buf.isEmpty()) {
-            settings.setInternalPrimerMustMatchThreePrime(buf.toLatin1());
+            settings->setInternalPrimerMustMatchThreePrime(buf.toLatin1());
         }
         // 20
         buf = elInput.attribute("PRIMER_TASK");
         if (!buf.isEmpty()) {
-            settings.setTaskByName(buf);
+            settings->setTaskByName(buf);
         }
         //21
         buf = elInput.attribute("SEQUENCE_QUALITY");
@@ -297,28 +298,28 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
                 }
                 qualityVecor.append(v);
             }
-            settings.setSequenceQuality(qualityVecor);
+            settings->setSequenceQuality(qualityVecor);
         }
         // 22
         buf = elInput.attribute("PRIMER_MISPRIMING_LIBRARY");
         if (!buf.isEmpty()) {
-            settings.setRepeatLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
+            settings->setRepeatLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
         // 23
         buf = elInput.attribute("PRIMER_INTERNAL_MISHYB_LIBRARY");
         if (!buf.isEmpty()) {
-            settings.setMishybLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
+            settings->setMishybLibraryPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
         // 24
         buf = elInput.attribute("PRIMER_THERMODYNAMIC_PARAMETERS_PATH");
         if (!buf.isEmpty()) {
-            settings.setThermodynamicParametersPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
+            settings->setThermodynamicParametersPath((getEnv()->getVar("COMMON_DATA_DIR") + "/primer3/" + buf).toLatin1());
         }
         // 25
         buf = elInput.attribute("PRIMER_MIN_THREE_PRIME_DISTANCE");
         if (!buf.isEmpty()) {
-            settings.setIntProperty("PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE", buf.toInt());
-            settings.setIntProperty("PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE", buf.toInt());
+            settings->setIntProperty("PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE", buf.toInt());
+            settings->setIntProperty("PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE", buf.toInt());
         }
     }
 
@@ -485,26 +486,26 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         }*/
     }
 
-    int sequenceLength = settings.getSequence().size();
-    if (settings.getSequenceRange().isEmpty()) {
-        settings.setSequenceRange(U2Region(0, sequenceLength));
+    int sequenceLength = settings->getSequence().size();
+    if (settings->getSequenceRange().isEmpty()) {
+        settings->setSequenceRange(U2Region(0, sequenceLength));
     }
-    if (settings.getTask() == check_primers) {
-        settings.setIntProperty("PRIMER_PICK_LEFT_PRIMER", 0);
-        settings.setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 0);
-        settings.setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 0);
+    if (settings->getTask() == check_primers) {
+        settings->setIntProperty("PRIMER_PICK_LEFT_PRIMER", 0);
+        settings->setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 0);
+        settings->setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 0);
     }
-    if (!settings.getLeftInput().isEmpty()) {
-        settings.setIntProperty("PRIMER_PICK_LEFT_PRIMER", 1);
+    if (!settings->getLeftInput().isEmpty()) {
+        settings->setIntProperty("PRIMER_PICK_LEFT_PRIMER", 1);
     }
-    if (!settings.getRightInput().isEmpty()) {
-        settings.setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 1);
+    if (!settings->getRightInput().isEmpty()) {
+        settings->setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 1);
     }
-    if (!settings.getInternalInput().isEmpty()) {
-        settings.setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 1);
+    if (!settings->getInternalInput().isEmpty()) {
+        settings->setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 1);
     }
-    if (settings.getPrimerSettings()->p_args.min_quality != 0 && settings.getPrimerSettings()->p_args.min_end_quality < settings.getPrimerSettings()->p_args.min_quality) {
-        settings.getPrimerSettings()->p_args.min_end_quality = settings.getPrimerSettings()->p_args.min_quality;
+    if (settings->getPrimerSettings()->p_args.min_quality != 0 && settings->getPrimerSettings()->p_args.min_end_quality < settings->getPrimerSettings()->p_args.min_quality) {
+        settings->getPrimerSettings()->p_args.min_end_quality = settings->getPrimerSettings()->p_args.min_quality;
     }
 }
 
@@ -512,11 +513,11 @@ void GTest_Primer3::prepare() {
     if (!localErrorMessage.isEmpty()) {
         return;
     }
-    if (qualityNumber != 0 && qualityNumber != settings.getSequence().size()) {
+    if (qualityNumber != 0 && qualityNumber != settings->getSequence().size()) {
         localErrorMessage = GTest::tr("Error in sequence quality data");
         return;
     }
-    if ((settings.getPrimerSettings()->p_args.min_quality != 0 || settings.getPrimerSettings()->o_args.min_quality != 0) && qualityNumber == 0) {
+    if ((settings->getPrimerSettings()->p_args.min_quality != 0 || settings->getPrimerSettings()->o_args.min_quality != 0) && qualityNumber == 0) {
         localErrorMessage = GTest::tr("Sequence quality data missing");
         return;
     }
@@ -658,6 +659,7 @@ Task::ReportResult GTest_Primer3::report() {
 }
 
 GTest_Primer3::~GTest_Primer3() {
+    delete settings;
 }
 
 bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, PrimerSingle* outPrimer, bool internalOligo) {
@@ -821,7 +823,7 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
     if (!checkDoubleProperty(primerPair.getComplEnd(), expectedPrimerPair.getComplEnd(), "PRIMER_PAIR" + suffix + "_COMPL_END")) {
         return false;
     }
-    if (!checkIntProperty(primerPair.getProductSize() + settings.getOverhangLeft().size() + settings.getOverhangRight().size(), expectedPrimerPair.getProductSize(), "PRIMER_PAIR" + suffix + "_PRODUCT_SIZE")) {
+    if (!checkIntProperty(primerPair.getProductSize() + settings->getOverhangLeft().size() + settings->getOverhangRight().size(), expectedPrimerPair.getProductSize(), "PRIMER_PAIR" + suffix + "_PRODUCT_SIZE")) {
         return false;
     }
     if (!checkDoubleProperty(primerPair.getProductQuality(), expectedPrimerPair.getProductQuality(), "PRIMER_PAIR" + suffix + "_PENALTY")) {
@@ -870,11 +872,11 @@ bool GTest_Primer3::checkPrimer(const PrimerSingle* primer, const PrimerSingle* 
         return false;
     }
     {
-        if ((primer->getStart() + settings.getFirstBaseIndex() != expectedPrimer->getStart()) ||
+        if ((primer->getStart() + settings->getFirstBaseIndex() != expectedPrimer->getStart()) ||
             (primer->getLength() != expectedPrimer->getLength())) {
             stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2,%3, but Actual:%4,%5")
                                    .arg(prefix)
-                                   .arg(expectedPrimer->getStart() + settings.getFirstBaseIndex())
+                                   .arg(expectedPrimer->getStart() + settings->getFirstBaseIndex())
                                    .arg(expectedPrimer->getLength())
                                    .arg(primer->getStart())
                                    .arg(primer->getLength()));

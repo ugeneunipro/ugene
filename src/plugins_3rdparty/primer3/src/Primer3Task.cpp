@@ -449,9 +449,9 @@ bool clipRegion(U2Region& region, const U2Region& clippingRegion) {
 }
 }  // namespace
 
-Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
+Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
-      settings(settingsArg) {
+      settings(_settings) {
     GCOUNTER(cvar, "Primer3Task");
 
     /*{
@@ -459,13 +459,13 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
         region.startPos -= settings.getFirstBaseIndex();
         settings.setIncludedRegion(region);
     }*/
-    const auto& sequenceRange = settings.getSequenceRange();
-    const auto& includedRegion = settings.getIncludedRegion();
-    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings.getFirstBaseIndex() : 0;
+    const auto& sequenceRange = settings->getSequenceRange();
+    const auto& includedRegion = settings->getIncludedRegion();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings->getFirstBaseIndex() : 0;
     offset = sequenceRange.startPos + includedRegionOffset/*includedRegion.startPos + settings.getFirstBaseIndex()*/;
 
-    settings.setSequence(settings.getSequence().mid(sequenceRange.startPos, sequenceRange.length));
-    settings.setSequenceQuality(settings.getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
+    settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
+    settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
     //settings.setIncludedRegion(0, sequenceRange.length);
 
     /*if (!PR_START_CODON_POS_IS_NULL(settings.getSeqArgs())) {
@@ -522,9 +522,9 @@ Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
 }
 
 void Primer3Task::run() {
-    QByteArray repeatLibPath = settings.getRepeatLibraryPath();
+    QByteArray repeatLibPath = settings->getRepeatLibraryPath();
     if (!repeatLibPath.isEmpty()) {
-        auto primerSettings = settings.getPrimerSettings();
+        auto primerSettings = settings->getPrimerSettings();
         p3_set_gs_primer_mispriming_library(primerSettings, repeatLibPath.data());
         if (primerSettings->p_args.repeat_lib->error.storage_size != 0) {
             stateInfo.setError(primerSettings->p_args.repeat_lib->error.data);
@@ -535,9 +535,9 @@ void Primer3Task::run() {
     }
     CHECK_OP(stateInfo, );
 
-    QByteArray mishybLibPath = settings.getMishybLibraryPath();
+    QByteArray mishybLibPath = settings->getMishybLibraryPath();
     if (!mishybLibPath.isEmpty()) {
-        auto primerSettings = settings.getPrimerSettings();
+        auto primerSettings = settings->getPrimerSettings();
         p3_set_gs_primer_internal_oligo_mishyb_library(primerSettings, mishybLibPath.data());
         if (primerSettings->o_args.repeat_lib->error.storage_size != 0) {
             stateInfo.setError(primerSettings->o_args.repeat_lib->error.data);
@@ -548,9 +548,9 @@ void Primer3Task::run() {
     }
     CHECK_OP(stateInfo, );
 
-    QByteArray thermodynamicParametersPath = settings.getThermodynamicParametersPath();
+    QByteArray thermodynamicParametersPath = settings->getThermodynamicParametersPath();
     if (!thermodynamicParametersPath.isEmpty()) {
-        auto primerSettings = settings.getPrimerSettings();
+        auto primerSettings = settings->getPrimerSettings();
         char* path = thermodynamicParametersPath.data();
         if (path[strlen(path) - 1] == '\n') {
             path[strlen(path) - 1] = '\0';
@@ -566,17 +566,17 @@ void Primer3Task::run() {
     }
     CHECK_OP(stateInfo, );
 
-    bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
-    int toReturn = settings.getPrimerSettings()->num_return;
+    bool spanExonsEnabled = settings->getSpanIntronExonBoundarySettings().enabled;
+    int toReturn = settings->getPrimerSettings()->num_return;
     if (spanExonsEnabled) {
-        settings.getPrimerSettings()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
+        settings->getPrimerSettings()->num_return = settings->getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
     
-    resultPrimers = runPrimer3(settings.getPrimerSettings(), settings.getSeqArgs(), settings.isShowDebugging(), settings.isFormatOutput(), settings.isExplain());
+    resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
 
     bestPairs.clear();
-    if (settings.getSpanIntronExonBoundarySettings().enabled) {
-        if (settings.getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
+    if (settings->getSpanIntronExonBoundarySettings().enabled) {
+        if (settings->getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
             selectPairsSpanningExonJunction(resultPrimers, toReturn);
         } else {
             selectPairsSpanningIntron(resultPrimers, toReturn);
@@ -599,7 +599,7 @@ void Primer3Task::run() {
     //if (getSinglePairs) {
         singlePrimers.clear();
         int maxCount = 0;
-        settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
+        settings->getIntProperty("PRIMER_NUM_RETURN", &maxCount);
         if (resultPrimers->fwd.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
                 singlePrimers.append(PrimerSingle(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset));
@@ -687,7 +687,7 @@ static QList<int> findIntersectingRegions(const QList<U2Region>& regions, int st
 static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qint64>& junctions, int minLeftOverlap, int minRightOverlap) {
     U2Region primerRegion(primerRec->start, primerRec->length);
 
-    foreach (qint64 junctionPos, junctions) {
+    for (qint64 junctionPos : junctions) {
         U2Region testRegion(junctionPos - minLeftOverlap, minLeftOverlap + minRightOverlap);
         if (primerRegion.contains(testRegion)) {
             return true;
@@ -698,11 +698,11 @@ static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qi
 }
 
 void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toReturn) {
-    int minLeftOverlap = settings.getSpanIntronExonBoundarySettings().minLeftOverlap;
-    int minRightOverlap = settings.getSpanIntronExonBoundarySettings().minRightOverlap;
+    int minLeftOverlap = settings->getSpanIntronExonBoundarySettings().minLeftOverlap;
+    int minRightOverlap = settings->getSpanIntronExonBoundarySettings().minRightOverlap;
 
     QVector<qint64> junctionPositions;
-    const QList<U2Region>& regions = settings.getExonRegions();
+    const QList<U2Region>& regions = settings->getExonRegions();
     for (int i = 0; i < regions.size() - 1; ++i) {
         qint64 end = regions.at(i).endPos();
         junctionPositions.push_back(end);
@@ -724,7 +724,7 @@ void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toRetur
 }
 
 void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
-    const QList<U2Region>& regions = settings.getExonRegions();
+    const QList<U2Region>& regions = settings->getExonRegions();
 
     for (int index = 0; index < primers->best_pairs.num_pairs; index++) {
         const primer_pair& pair = primers->best_pairs.pairs[index];
@@ -735,7 +735,7 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 
         int numIntersecting = 0;
         U2Region rightRegion(right->start, right->length);
-        foreach (int idx, regionIndexes) {
+        for (int idx : regionIndexes) {
             const U2Region& exonRegion = regions.at(idx);
             if (exonRegion.intersects(rightRegion)) {
                 ++numIntersecting;
@@ -754,29 +754,29 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 
 // Primer3SWTask
 
-Primer3SWTask::Primer3SWTask(const Primer3TaskSettings& settingsArg)
+Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings)
     : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
-      settings(settingsArg) {
-    median = settings.getSequenceSize() / 2;
+      settings(_settings) {
+    median = settings->getSequenceSize() / 2;
     setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
 }
 
 void Primer3SWTask::prepare() {
     // selected region covers circular junction
-    const auto& sequenceRange = settings.getSequenceRange();
-    int sequenceSize = settings.getSequenceSize();
+    const auto& sequenceRange = settings->getSequenceRange();
+    int sequenceSize = settings->getSequenceSize();
 
-    const auto& includedRegion = settings.getIncludedRegion();
-    int fbs = settings.getFirstBaseIndex();
+    const auto& includedRegion = settings->getIncludedRegion();
+    int fbs = settings->getFirstBaseIndex();
     int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
     CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
 
     if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
-        SAFE_POINT_EXT(settings.isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
+        SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
-        QByteArray seq = settings.getSequence();
+        QByteArray seq = settings->getSequence();
         seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
-        settings.setSequence(seq);
+        settings->setSequence(seq);
     }
 
     /*Primer3TaskSettings regionSettings = settings;
@@ -833,7 +833,7 @@ Task::ReportResult Primer3SWTask::report() {
     if (regionTasks.size() + circRegionTasks.size() > 1) {
         std::stable_sort(bestPairs.begin(), bestPairs.end());
         int pairsCount = 0;
-        if (!settings.getIntProperty("PRIMER_NUM_RETURN", &pairsCount)) {
+        if (!settings->getIntProperty("PRIMER_NUM_RETURN", &pairsCount)) {
             setError("can't get PRIMER_NUM_RETURN property");
             return Task::ReportResult_Finished;
         }
@@ -843,45 +843,26 @@ Task::ReportResult Primer3SWTask::report() {
     return Task::ReportResult_Finished;
 }
 
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& list) {
-    QVector<U2Region> regions = SequenceWalkerTask::splitRange(rangeToSplit,
-                                                               CHUNK_SIZE,
-                                                               0,
-                                                               CHUNK_SIZE / 2,
-                                                               false);
-    for (const U2Region& region : qAsConst(regions)) {
-        Primer3TaskSettings regionSettings = settings;
-        U2Region newRegion(0, -1);
-        if (regionSettings.getTask() != task::pick_sequencing_primers) {
-            newRegion = region;
-        }
-        regionSettings.setIncludedRegion(newRegion);
-        Primer3Task* task = new Primer3Task(regionSettings);
-        list.append(task);
-        addSubTask(task);
-    }
-}
-
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& list) {
-    addPrimer3Subtasks(settings, settings.getSequenceRange(), list);
-}
-
 void Primer3SWTask::relocatePrimerOverMedian(PrimerSingle* primer) {
-    primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings.getSequenceSize() - median));
+    primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings->getSequenceSize() - median));
 }
 
 //////////////////////////////////////////////////////////////////////////
 ////Primer3ToAnnotationsTask
 
-Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(const Primer3TaskSettings& settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
+Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(Primer3TaskSettings* _settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
     : Task(tr("Search primers to annotations"), /*TaskFlags_NR_FOSCOE*/ TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
-      settings(settings), annotationTableObject(aobj_), seqObj(so_),
+      settings(_settings), annotationTableObject(aobj_), seqObj(so_),
       groupName(groupName_), annName(annName_), annDescription(annDescription), searchTask(nullptr), findExonsTask(nullptr) {
 }
 
+Primer3ToAnnotationsTask::~Primer3ToAnnotationsTask() {
+    delete settings;
+}
+
 void Primer3ToAnnotationsTask::prepare() {
-    if (settings.getSpanIntronExonBoundarySettings().enabled) {
-        findExonsTask = new FindExonRegionsTask(seqObj, settings.getSpanIntronExonBoundarySettings().exonAnnotationName);
+    if (settings->getSpanIntronExonBoundarySettings().enabled) {
+        findExonsTask = new FindExonRegionsTask(seqObj, settings->getSpanIntronExonBoundarySettings().exonAnnotationName);
         addSubTask(findExonsTask);
     } else {
         searchTask = new Primer3SWTask(settings);
@@ -908,7 +889,7 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
                          .arg(seqObj->getSequenceName()));
             return res;
         } else {
-            const U2Range<int>& exonRange = settings.getSpanIntronExonBoundarySettings().exonRange;
+            const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
 
             if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
                 int firstExonIdx = exonRange.minValue;
@@ -934,13 +915,13 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
                 foreach (const U2Region& r, regions) {
                     totalLen += r.length;
                 }
-                settings.setIncludedRegion(regions.first().startPos + settings.getFirstBaseIndex(), totalLen);
+                settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
             }
-            settings.setExonRegions(regions);
+            settings->setExonRegions(regions);
             // reset target and excluded regions regions
             QList<U2Region> emptyList;
-            settings.setExcludedRegion(emptyList);
-            settings.setTarget(emptyList);
+            settings->setExcludedRegion(emptyList);
+            settings->setTarget(emptyList);
         }
 
         searchTask = new Primer3SWTask(settings);
@@ -958,15 +939,15 @@ QString Primer3ToAnnotationsTask::generateReport() const {
     }
 
     foreach (Primer3Task* t, searchTask->regionTasks) {
-        t->sumStat(&searchTask->settings);
+        t->sumStat(searchTask->settings);
     }
     foreach (Primer3Task* t, searchTask->circRegionTasks) {
-        t->sumStat(&searchTask->settings);
+        t->sumStat(searchTask->settings);
     }
 
-    oligo_stats leftStats = searchTask->settings.getP3RetVal()->fwd.expl;
-    oligo_stats rightStats = searchTask->settings.getP3RetVal()->rev.expl;
-    pair_stats pairStats = searchTask->settings.getP3RetVal()->best_pairs.expl;
+    oligo_stats leftStats = searchTask->settings->getP3RetVal()->fwd.expl;
+    oligo_stats rightStats = searchTask->settings->getP3RetVal()->rev.expl;
+    pair_stats pairStats = searchTask->settings->getP3RetVal()->best_pairs.expl;
 
     if (!leftStats.considered) {
         leftStats.considered = leftStats.ns + leftStats.target + leftStats.excluded + leftStats.gc + leftStats.gc_clamp + leftStats.temp_min + leftStats.temp_max + leftStats.compl_any + leftStats.compl_end + leftStats.poly_x + leftStats.stability + leftStats.ok;

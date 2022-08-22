@@ -37,9 +37,14 @@ namespace U2 {
 class Primer3Dialog : public QDialog, private Ui_Primer3Dialog {
     Q_OBJECT
 public:
-    Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context);
+    Primer3Dialog(ADVSequenceObjectContext* context);
+    Primer3Dialog(const Primer3Dialog& settings) = delete;
+    Primer3Dialog(Primer3Dialog&& settings) = delete;
+    Primer3Dialog& operator=(const Primer3Dialog& settings) = delete;
+    Primer3Dialog& operator=(Primer3Dialog&& settings) = delete;
+    ~Primer3Dialog();
 
-    Primer3TaskSettings getSettings() const;
+    Primer3TaskSettings* takeSettings();
     const CreateAnnotationModel& getCreateAnnotationModel() const;
     U2Region getRegion(bool* ok = nullptr) const;
     QString checkModel();
@@ -78,8 +83,7 @@ private:
 
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
-    const Primer3TaskSettings defaultSettings;
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings = nullptr;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
 

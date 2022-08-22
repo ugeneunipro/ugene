@@ -104,43 +104,16 @@ void Primer3ADVContext::sl_showDialog() {
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     {
-        Primer3TaskSettings defaultSettings;
-        //{
-        //    QList<U2Region> sizeRange;
-        //    sizeRange.append(U2Region(150, 101));  // 150-250
-        //    sizeRange.append(U2Region(100, 201));  // 100-300
-        //    sizeRange.append(U2Region(301, 100));  // 301-400
-        //    sizeRange.append(U2Region(401, 100));  // 401-500
-        //    sizeRange.append(U2Region(501, 100));  // 501-600
-        //    sizeRange.append(U2Region(601, 100));  // 601-700
-        //    sizeRange.append(U2Region(701, 150));  // 701-850
-        //    sizeRange.append(U2Region(851, 150));  // 851-1000
-        //    defaultSettings.setProductSizeRange(sizeRange);
-        //}
-        //defaultSettings.setDoubleProperty("PRIMER_MAX_END_STABILITY", 9.0);
-        //defaultSettings.setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200.0);
-        //defaultSettings.setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
-        /*defaultSettings.setIntProperty("PRIMER_LIBERAL_BASE", 1);
-        defaultSettings.setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
-        defaultSettings.setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);*/
-
-        /*defaultSettings.setDoubleProperty("PRIMER_OPT_GC_PERCENT", 50.0);
-        defaultSettings.setDoubleProperty("PRIMER_INTERNAL_OPT_GC_PERCENT", 50.0);
-        defaultSettings.setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 12.0);
-        defaultSettings.setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 24.0);
-        defaultSettings.setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING_TH", 40.0);
-        defaultSettings.setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH", 70.0);*/
-
-        QObjectScopedPointer<Primer3Dialog> dialog = new Primer3Dialog(defaultSettings, seqCtx);
+        QObjectScopedPointer<Primer3Dialog> dialog = new Primer3Dialog(seqCtx);
         dialog->exec();
         CHECK(!dialog.isNull(), );
 
         if (QDialog::Accepted == dialog->result()) {
-            Primer3TaskSettings settings = dialog->getSettings();
+            Primer3TaskSettings* settings = dialog->takeSettings();
             U2OpStatusImpl os;
             QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);
             CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-            settings.setSequence(seqData,
+            settings->setSequence(seqData,
                                  seqCtx->getSequenceObject()->isCircular());
             QString err = dialog->checkModel();
             if (!err.isEmpty()) {

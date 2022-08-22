@@ -144,7 +144,7 @@ private:
 class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Task(const Primer3TaskSettings& settings);
+    Primer3Task(Primer3TaskSettings* settings);
 
     void run();
     Task::ReportResult report();
@@ -160,7 +160,7 @@ public:
     }
 
 private:
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings;
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
 
@@ -174,7 +174,7 @@ class Primer3ToAnnotationsTask;
 class Primer3SWTask : public Task {
     Q_OBJECT
 public:
-    Primer3SWTask(const Primer3TaskSettings& settings);
+    Primer3SWTask(Primer3TaskSettings* settings);
 
     void prepare();
     Task::ReportResult report();
@@ -187,8 +187,6 @@ public:
     }
 
 private:
-    void addPrimer3Subtasks(const Primer3TaskSettings& settings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
-    void addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& listToRemember);
     void relocatePrimerOverMedian(PrimerSingle* primer);
 
     static const int CHUNK_SIZE = 1024 * 256;
@@ -196,7 +194,7 @@ private:
     QList<Primer3Task*> regionTasks;
     QList<Primer3Task*> circRegionTasks;
     int median;
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings;
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
 
@@ -206,12 +204,13 @@ private:
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    Primer3ToAnnotationsTask(const Primer3TaskSettings& settings,
+    Primer3ToAnnotationsTask(Primer3TaskSettings* settings,
                              U2SequenceObject* seqObj_,
                              AnnotationTableObject* aobj_,
                              const QString& groupName_,
                              const QString& annName_,
                              const QString& annDescription);
+    ~Primer3ToAnnotationsTask();
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
@@ -222,8 +221,7 @@ public:
 private:
     SharedAnnotationData oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand);
 
-    Primer3TaskSettings settings;
-
+    Primer3TaskSettings* settings;
     QPointer<AnnotationTableObject> annotationTableObject;
     U2SequenceObject* seqObj;
     QString groupName;

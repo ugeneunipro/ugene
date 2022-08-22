@@ -60,8 +60,11 @@ struct SpanIntronExonBoundarySettings {
 class Primer3TaskSettings {
 public:
     Primer3TaskSettings();
-    Primer3TaskSettings(const Primer3TaskSettings& settings);
-    Primer3TaskSettings& operator=(const Primer3TaskSettings& settings);
+
+    Primer3TaskSettings(const Primer3TaskSettings& settings) = delete;
+    Primer3TaskSettings(Primer3TaskSettings&& settings) = delete;
+    Primer3TaskSettings& operator=(const Primer3TaskSettings& settings) = delete;
+    Primer3TaskSettings& operator=(Primer3TaskSettings&& settings) = delete;
     ~Primer3TaskSettings();
 
     bool getIntProperty(const QString& key, int* outValue) const;
