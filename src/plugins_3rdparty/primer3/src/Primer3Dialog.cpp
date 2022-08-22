@@ -146,7 +146,9 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    SAFE_POINT(settings == nullptr, "Settings should be extracted from this object before removing", );
+    if (settings != nullptr) {
+        delete settings;
+    }
 }
 
 Primer3TaskSettings* Primer3Dialog::takeSettings() {
@@ -292,7 +294,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
-    const Primer3TaskSettings defaultSettings;
+    static const Primer3TaskSettings defaultSettings;
     for (const auto& key : defaultSettings.getIntPropertyList()) {
         int value = 0;
         if (defaultSettings.getIntProperty(key, &value)) {
@@ -423,7 +425,11 @@ static U2Range<int> parseExonRange(const QString& text, bool& ok) {
 }
 
 bool Primer3Dialog::doDataExchange() {
+    if (settings != nullptr) {
+        delete settings;
+    }
     settings = new Primer3TaskSettings;
+
     if (spanIntronExonBox->isChecked()) {
         SpanIntronExonBoundarySettings s;
         s.enabled = true;
