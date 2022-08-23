@@ -23,6 +23,7 @@
 #define _PRIMER3_PLUGIN_H_ 1
 #include <QMenu>
 
+#include <U2Core/AppResources.h>
 #include <U2Core/PluginModel.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -47,19 +48,19 @@ public:
     ~Primer3Plugin();
 
 private:
-    Primer3ADVContext* viewCtx;
+    Primer3ADVContext* viewCtx = nullptr;
 };
 
 class Primer3ADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
     Primer3ADVContext(QObject* p);
+
 protected slots:
     void sl_showDialog();
 
 protected:
     void initViewContext(GObjectView* v) override;
-    // virtual void makeBaseMenu(GObjectView* v, QMenu* m);
 };
 
 class Primer3Tests {

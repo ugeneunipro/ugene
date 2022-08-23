@@ -37,22 +37,13 @@
 namespace U2 {
 
 struct SpanIntronExonBoundarySettings {
-    SpanIntronExonBoundarySettings() {
-        enabled = false;
-        minLeftOverlap = 7;
-        minRightOverlap = 7;
-        maxPairsToQuery = 1000;
-        spanIntron = false;
-        overlapExonExonBoundary = false;
-        exonAnnotationName = "exon";
-    }
-
-    bool enabled;
-    QString exonAnnotationName;
-    bool overlapExonExonBoundary;
-    int maxPairsToQuery;
-    int minLeftOverlap, minRightOverlap;
-    bool spanIntron;
+    bool enabled = false;
+    QString exonAnnotationName = "exon";
+    bool overlapExonExonBoundary = false;
+    int maxPairsToQuery = 1000;
+    int minLeftOverlap = 7;
+    int minRightOverlap = 7;
+    bool spanIntron = false;
     QList<U2Region> regionList;
     U2Range<int> exonRange;
 };
@@ -145,41 +136,20 @@ public:
     const QByteArray& getThermodynamicParametersPath() const;
     p3_global_settings* getPrimerSettings() const;
     seq_args* getSeqArgs() const;
+    void setP3RetVal(p3retval* ret);
     p3retval* getP3RetVal() const;
 
     // span intron/exon boundary settings
+    const SpanIntronExonBoundarySettings& getSpanIntronExonBoundarySettings() const;
+    void setSpanIntronExonBoundarySettings(const SpanIntronExonBoundarySettings& settings);
+    const QList<U2Region>& getExonRegions() const;
+    void setExonRegions(const QList<U2Region>& regions);
+    bool spanIntronExonBoundaryIsEnabled() const;
 
-    const SpanIntronExonBoundarySettings& getSpanIntronExonBoundarySettings() const {
-        return spanIntronExonBoundarySettings;
-    }
-
-    void setSpanIntronExonBoundarySettings(const SpanIntronExonBoundarySettings& settings) {
-        spanIntronExonBoundarySettings = settings;
-    }
-
-    const QList<U2Region>& getExonRegions() const {
-        return spanIntronExonBoundarySettings.regionList;
-    }
-
-    void setExonRegions(const QList<U2Region>& regions) {
-        spanIntronExonBoundarySettings.regionList = regions;
-    }
-
-    bool spanIntronExonBoundaryIsEnabled() const {
-        return spanIntronExonBoundarySettings.enabled;
-    }
-
-    bool isSequenceCircular() const {
-        return isCircular;
-    }
-
+    bool isSequenceCircular() const;
     bool isIncludedRegionValid(const U2Region& r) const;
-
-    int getExplainFlag() const;
-
     void setSequenceRange(const U2Region& region);
     const U2Region& getSequenceRange() const;
-
 
 private:
     void initMaps();
@@ -187,9 +157,7 @@ private:
 private:
     QMap<QString, int*> intProperties;
     QMap<QString, double*> doubleProperties;
-
-    // don't forget to change copy constructor and assignment operator when changing this!
-    bool isCircular;
+    bool isCircular = false;
     QByteArray repeatLibraryPath;
     QByteArray mishybLibraryPath;
     QByteArray thermodynamicParametersPath;

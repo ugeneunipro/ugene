@@ -21,21 +21,9 @@
 
 #include "Primer3Tests.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
-
-#define DBFILEPATH_ATTR "dbfile"
-#define PROTEIN_ATTR "is_protein"
-#define EXPECTED_LOAD_ATTR "is_load_expected"
-#define CREATION_DATE_ATTR "creation_date"
-#define CONTEXT_NAME_ATTR "index"
-#define CHECK_DATE_ATTR "check_date"
-/*
-PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY
-PRIMER_MISPRIMING_LIBRARY
-PRIMER_SEQUENCE_QUALITY
-*/
-
-static const QString extensionsToCheck[14] = {".nhr", ".nnd", ".nni", ".nsd", ".nsi", ".nsq", ".nin", ".phr", ".pnd", ".pni", ".psd", ".psi", ".psq", ".pin"};
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     settings = new Primer3TaskSettings;
@@ -46,7 +34,8 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     QSet<QString> changedIntervalValues;
     for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
         QDomNode n = inputParameters.item(inputParametersIndex);
-        assert(n.isElement());
+        SAFE_POINT_EXT(n.isElement(), localErrorMessage = GTest::tr("QDomNode isn't element"), );
+
         if (!n.isElement()) {
             continue;
         }
@@ -328,7 +317,8 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     QDomNodeList outputParameters = el.elementsByTagName("plugin_primer_3_out");
     for (int outputParametersIndex = 0; outputParametersIndex < outputParameters.size(); outputParametersIndex++) {
         QDomNode n = outputParameters.item(outputParametersIndex);
-        assert(n.isElement());
+        SAFE_POINT_EXT(n.isElement(), localErrorMessage = GTest::tr("QDomNode isn't element"), );
+
         if (!n.isElement()) {
             continue;
         }
@@ -481,9 +471,6 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             }
             expectedBestPairs << result;
         }
-        /*for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
-            expectedBestPairs.append(readPrimerPair(elOutput, (pairIndex > 0) ? ("_" + QString::number(pairIndex)) : QString()));
-        }*/
     }
 
     int sequenceLength = settings->getSequence().size();
@@ -610,51 +597,6 @@ Task::ReportResult GTest_Primer3::report() {
         }
     }
 
-    /*    for (int i=0;i<currentBestPairs.num_pairs;i++)
-        {
-            //currentBestPairs->pairs[i]->
-            if(!(currentBestPairs.pairs[i].left->position_penalty==expectedBestPairs.pairs[i].left->position_penalty)){
-                stateInfo.setError(GTest::tr("PRIMER_LEFT_PENALTY_%1 is incorrect. Expected:%2, but Actual:%3").arg(i).arg(expectedBestPairs.pairs[i].left->position_penalty).arg(currentBestPairs.pairs[i].left->position_penalty));
-                return ReportResult_Finished;
-            }
-        }
-    */
-
-    /*    need check error messages
-    -        PRIMER_PAIR_PENALTY="3.4770"
-
-            PRIMER_LEFT_PENALTY="3.380952"
-            PRIMER_LEFT_SEQUENCE="TGACNACTGACGATGCAGA"
-            PRIMER_LEFT="15,19"
-            PRIMER_LEFT_TM="57.619"
-            PRIMER_LEFT_GC_PERCENT="50.000"
-            PRIMER_LEFT_SELF_ANY="4.00"
-            PRIMER_LEFT_SELF_END="0.00"
-            PRIMER_LEFT_END_STABILITY="8.2000"
-
-            PRIMER_RIGHT_PENALTY="0.096021"
-            PRIMER_RIGHT_SEQUENCE="ATCGATTTGGGTCGGGAT"
-            PRIMER_RIGHT="94,18"
-            PRIMER_RIGHT_TM="60.096"
-            PRIMER_RIGHT_GC_PERCENT="50.000"
-            PRIMER_RIGHT_SELF_ANY="6.00"
-            PRIMER_RIGHT_SELF_END="2.00"
-            PRIMER_RIGHT_END_STABILITY="9.3000"
-
-            PRIMER_INTERNAL_OLIGO_PENALTY="3.098711"
-            PRIMER_INTERNAL_OLIGO_SEQUENCE="GGTATTAGTGGGCCATTCG"
-            PRIMER_INTERNAL_OLIGO="58,19"
-            PRIMER_INTERNAL_OLIGO_TM="57.901"
-            PRIMER_INTERNAL_OLIGO_GC_PERCENT="52.632"
-            PRIMER_INTERNAL_OLIGO_SELF_ANY="5.00"
-            PRIMER_INTERNAL_OLIGO_SELF_END="2.00"
-
-
-            PRIMER_PAIR_COMPL_ANY="4.00"
-            PRIMER_PAIR_COMPL_END="3.00"
-            PRIMER_PRODUCT_SIZE="80"
-    */
-
     return ReportResult_Finished;
 }
 
@@ -754,57 +696,6 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, PrimerSingle
         }
     }
     return true;
-}
-
-PrimerPair GTest_Primer3::readPrimerPair(QDomElement element, QString suffix) {
-    PrimerPair result;
-    /*{
-        Primer primer;
-        if (readPrimer(element, "PRIMER_LEFT" + suffix, &primer, false)) {
-            result.setLeftPrimer(&primer);
-        }
-    }
-    {
-        Primer primer;
-        if (readPrimer(element, "PRIMER_RIGHT" + suffix, &primer, false)) {
-            result.setRightPrimer(&primer);
-        }
-    }
-    {
-        Primer primer;
-        if (readPrimer(element, "PRIMER_INTERNAL" + suffix, &primer, true)) {
-            result.setInternalOligo(&primer);
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
-        if (!buf.isEmpty()) {
-            result.setComplAny((buf.toDouble() * 100));
-        } else {
-            buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
-            if (!buf.isEmpty()) {
-                result.setComplAny((buf.toDouble() * 100));
-            }
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
-        if (!buf.isEmpty()) {
-            result.setComplEnd(buf.toDouble());
-        } else {
-            buf = element.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
-            if (!buf.isEmpty()) {
-                result.setComplAny(buf.toDouble());
-            }
-        }
-    }
-    {
-        QString buf = element.attribute("PRIMER_PRODUCT_SIZE" + suffix);
-        if (!buf.isEmpty()) {
-            result.setProductSize(buf.toInt());
-        }
-    }*/
-    return result;
 }
 
 bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPair& expectedPrimerPair, QString suffix) {

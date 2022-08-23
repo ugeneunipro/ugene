@@ -265,7 +265,7 @@ void          compute_position_penalty(const p3_global_settings *,
                                        const seq_args *,
                                        primer_rec *, oligo_type);
 
-// static p3retval *create_p3retval(void); moved to .h because it should be used in Primer3TaskSettings
+static p3retval *create_p3retval(void);
 
 static char   dna_to_upper(char *, int);
 

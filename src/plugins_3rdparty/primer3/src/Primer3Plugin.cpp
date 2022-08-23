@@ -73,19 +73,19 @@ Primer3Plugin::Primer3Plugin()
     // tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != nullptr);
+    SAFE_POINT(xmlTestFormat != nullptr, L10N::nullPointerError("XMLTestFormat"), );
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Primer3Tests::createTestFactories();
 
-    foreach (XMLTestFactory* f, l->qlist) {
+    for (XMLTestFactory* f : l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
-        Q_UNUSED(res);
-        assert(res);
+        SAFE_POINT(res, "Can't register XMLTestFactory", );
     }
 }
 
 Primer3Plugin::~Primer3Plugin() {
+    viewCtx->deleteLater();
 }
 
 Primer3ADVContext::Primer3ADVContext(QObject* p)
@@ -97,42 +97,36 @@ void Primer3ADVContext::initViewContext(GObjectView* v) {
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
     a->setObjectName("primer3_action");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
-    connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
+    connect(a, &ADVGlobalAction::triggered, this, &Primer3ADVContext::sl_showDialog);
 }
 
 void Primer3ADVContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
     GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
     AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    assert(av);
+    SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
-    assert(seqCtx->getAlphabet()->isNucleic());
-    {
-        QObjectScopedPointer<Primer3Dialog> dialog = new Primer3Dialog(seqCtx);
-        dialog->exec();
-        CHECK(!dialog.isNull(), );
+    SAFE_POINT(seqCtx != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    
+    Primer3Dialog dialog(seqCtx);
+    dialog.exec();
 
-        if (QDialog::Accepted == dialog->result()) {
-            Primer3TaskSettings* settings = dialog->takeSettings();
-            U2OpStatusImpl os;
-            QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);
-            CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-            settings->setSequence(seqData,
-                                 seqCtx->getSequenceObject()->isCircular());
-            QString err = dialog->checkModel();
-            if (!err.isEmpty()) {
-                QMessageBox::warning(QApplication::activeWindow(), dialog->windowTitle(), err);
-                return;
-            }
-            bool objectPrepared = dialog->prepareAnnotationObject();
-            if (!objectPrepared) {
-                QMessageBox::warning(QApplication::activeWindow(), tr("Error"), tr("Cannot create an annotation object. Please check settings"));
-                return;
-            }
-            const CreateAnnotationModel& model = dialog->getCreateAnnotationModel();
-            AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), model.getAnnotationObject(), model.groupName, model.data->name, model.description));
-        }
+    if (QDialog::Accepted == dialog.result()) {
+        Primer3TaskSettings* settings = dialog.takeSettings();
+        U2OpStatusImpl os;
+        QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);
+        CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
+
+        settings->setSequence(seqData, seqCtx->getSequenceObject()->isCircular());
+        QString err = dialog.checkModel();
+        CHECK_EXT(err.isEmpty(), QMessageBox::warning(QApplication::activeWindow(), dialog.windowTitle(), err), );
+        CHECK_EXT(dialog.prepareAnnotationObject(), QMessageBox::warning(QApplication::activeWindow(), 
+                                                                            tr("Error"), 
+                                                                            tr("Cannot create an annotation object. Please check settings")), );
+            
+        const CreateAnnotationModel& model = dialog.getCreateAnnotationModel();
+        AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), model.getAnnotationObject(), model.groupName, model.data->name, model.description));
     }
 }
 
