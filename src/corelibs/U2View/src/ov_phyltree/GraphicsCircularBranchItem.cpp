@@ -30,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "GraphicsRectangularBranchItem.h"
 
@@ -45,7 +46,8 @@ GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, qr
     setDist(from->getDist());
     setPos(w, 0);
     QPointF p = mapFromScene(0, 0);
-    setTransform(QTransform().translate(p.x(), p.y()).rotate((direction == GraphicsBranchItem::up ? -1 : 1) * height / M_PI * 180).translate(-p.x(), -p.y()));
+    double angle = (direction == GraphicsBranchItem::up ? 1 : -1) * height / M_PI * 180;
+    setTransform(QTransform().translate(p.x(), p.y()).rotate(angle).translate(-p.x(), -p.y()));
 
     if (from->getNameText() != nullptr) {
         nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
@@ -67,17 +69,16 @@ QRectF GraphicsCircularBranchItem::boundingRect() const {
     qreal rad = qSqrt(p.x() * p.x() + p.y() * p.y());
     qreal w = width + rad * (1 - qCos(height));
     qreal h = rad * qSin(height);
-    return QRectF(-w, direction == GraphicsBranchItem::up ? 0 : -h, w, h);
+    return QRectF(-w, direction == GraphicsBranchItem::up ? -h : 0, w, h);
 }
 
 void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
-    if (!visible)
-        return;
+    CHECK(visible, );
     painter->setPen(pen());
     QPointF p = scenePos();
     qreal rad = qSqrt(p.x() * p.x() + p.y() * p.y()) - width;
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
-    painter->drawArc(rect, 0, (direction == GraphicsBranchItem::up ? -1 : 1) * height * 16 * 180 / M_PI);
+    painter->drawArc(rect, 0, (direction == GraphicsBranchItem::up ? 1 : -1) * height * 16 * 180 / M_PI);
     painter->drawLine(0, 0, -width, 0);
 }
 
@@ -88,7 +89,7 @@ QPainterPath GraphicsCircularBranchItem::shape() const {
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
 
     path.lineTo(width, 0);
-    path.arcTo(rect, 0, (direction == GraphicsBranchItem::up ? -1 : 1) * height * 16 * 180 / M_PI);
+    path.arcTo(rect, 0, (direction == GraphicsBranchItem::up ? 1 : -1) * height * 16 * 180 / M_PI);
 
     return path;
 }

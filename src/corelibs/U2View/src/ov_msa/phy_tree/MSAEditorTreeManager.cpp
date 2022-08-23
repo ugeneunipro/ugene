@@ -286,7 +286,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
 
     if (!addExistingTree) {
         treeViewer->setCreatePhyTreeSettings(settings);
-        treeViewer->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
+        treeViewer->setParentAlignmentName(msaObject->getMultipleAlignment()->getName());
     }
 
     if (settings.syncAlignmentWithTree) {

@@ -57,12 +57,12 @@ void GraphicsRectangularBranchItem::collapse() {
             }
 
             GraphicsRectangularBranchItem* childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
-            if (nullptr == childItem) {
+            if (childItem == nullptr) {
                 continue;
             }
 
-            childItem->setCollapsed(!childItem->isCollapsed());
-            if (nullptr == childItem->getNameText()) {
+            childItem->collapsed = !childItem->collapsed;
+            if (childItem->getNameText() == nullptr) {
                 childItem->setVisible(branchItem->isVisible() && !branchItem->isCollapsed());
             }
             if (childItem->isCollapsed() && !branchItem->isCollapsed()) {
@@ -78,11 +78,7 @@ void GraphicsRectangularBranchItem::collapse() {
         setSelectedRecurs(true, true);
     }
 
-    GraphicsRectangularBranchItem* root = this;
-    while (nullptr != dynamic_cast<GraphicsRectangularBranchItem*>(root->parentItem())) {
-        root = dynamic_cast<GraphicsRectangularBranchItem*>(root->parentItem());
-    }
-    root->branchCollapsed(this);
+    getRoot()->emitBranchCollapsed(this);
 }
 
 void GraphicsRectangularBranchItem::drawCollapsedRegion() {

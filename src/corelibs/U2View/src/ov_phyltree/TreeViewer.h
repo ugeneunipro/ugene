@@ -255,7 +255,7 @@ protected slots:
     virtual void sl_swapTriggered();
     virtual void sl_collapseTriggered();
     virtual void sl_rectBranchesRecreated(Task* task);
-    virtual void sl_onBranchCollapsed(GraphicsRectangularBranchItem*);
+    virtual void sl_onBranchCollapsed(GraphicsBranchItem*);
     virtual void sl_zoomToAll();
     virtual void sl_zoomToSel();
     virtual void sl_zoomOut();

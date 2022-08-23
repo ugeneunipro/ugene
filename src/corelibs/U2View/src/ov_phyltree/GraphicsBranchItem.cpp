@@ -130,13 +130,13 @@ void GraphicsBranchItem::collapse() {
         QPen pen1(branchColor);
         pen1.setWidth(penWidth);
         pen1.setCosmetic(true);
-        QGraphicsRectItem* r = new QGraphicsRectItem(0, -4, 16, 8, this);
-        r->setPen(pen1);
+        auto rectItem = new QGraphicsRectItem(0, -4, 16, 8, this);
+        rectItem->setPen(pen1);
     } else {
         for (int i = 0, s = items.size(); i < s; ++i) {
-            if (dynamic_cast<QGraphicsRectItem*>(items[i])) {
-                items[i]->setParentItem(nullptr);
-                scene()->removeItem(items[i]);
+            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(items[i])) {
+                rectItem->setParentItem(nullptr);
+                scene()->removeItem(rectItem);
             } else {
                 if (items[i] != getDistanceText() && items[i] != getNameText()) {
                     items[i]->show();
@@ -145,6 +145,7 @@ void GraphicsBranchItem::collapse() {
         }
         setSelectedRecurs(true, true);
     }
+    getRoot()->emitBranchCollapsed(this);
 }
 
 void GraphicsBranchItem::setSelectedRecurs(bool sel, bool selectChilds) {
@@ -365,5 +366,17 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
     return childsBoundingRect;
 }
 
-}  // namespace U2
+GraphicsBranchItem* GraphicsBranchItem::getRoot() {
+    GraphicsBranchItem* root = this;
+    while (dynamic_cast<GraphicsBranchItem*>(root->parentItem()) != nullptr) {
+        root = dynamic_cast<GraphicsBranchItem*>(root->parentItem());
+    }
+    return root;
+}
 
+void GraphicsBranchItem::emitBranchCollapsed(GraphicsBranchItem* branch) {
+    SAFE_POINT(this == getRoot(), "Not a root branch!", );
+    emit si_branchCollapsed(branch);
+}
+
+}  // namespace U2

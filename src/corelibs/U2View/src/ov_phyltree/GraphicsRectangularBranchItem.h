@@ -30,7 +30,7 @@ class PhyNode;
 class PhyBranch;
 class GraphicsButtonItem;
 
-class U2VIEW_EXPORT GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsRectangularBranchItem : public GraphicsBranchItem {
     Q_OBJECT
 public:
     static const qreal DEFAULT_WIDTH;
@@ -65,9 +65,6 @@ public:
     void setDirection(Direction d);
 
     void collapse();
-    void setCollapsed(bool isCollapsed) {
-        collapsed = isCollapsed;
-    }
     void swapSiblings();
     void recalculateBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
 
@@ -77,10 +74,6 @@ public:
     GraphicsRectangularBranchItem* getChildItemByPhyBranch(const PhyBranch* branch);
 
     void drawCollapsedRegion();
-    void branchCollapsed(GraphicsRectangularBranchItem* branch) {
-        emit si_branchCollapsed(branch);
-    }
-
 signals:
     void si_branchCollapsed(GraphicsRectangularBranchItem* collapsedBranch);
 
