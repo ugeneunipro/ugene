@@ -952,7 +952,6 @@ typedef struct p3retval {/*primers_t*/
 /* Deallocate a primer3 state */
 void destroy_secundary_structures(const p3_global_settings *pa, p3retval *retval);
 void destroy_p3retval(p3retval *);
-p3retval* create_p3retval(void);
 
 void destroy_dpal_thal_arg_holder();
        

@@ -58,7 +58,7 @@ static QBitArray getEmptyBitMap() {
 
 static QBitArray getQualNameAllowedSymbols() {
     QBitArray res = getEmptyBitMap();
-    res['-'] = res['\''] = res['_'] = res['*'] = true;
+    res['-'] = res['\''] = res['_'] = res['*'] = res['%'] = true;
     return res;
 }
 

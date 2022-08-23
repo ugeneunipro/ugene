@@ -85,10 +85,10 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 
     pickPrimersButton->setDefault(true);
 
-    connect(pickPrimersButton, SIGNAL(clicked()), SLOT(sl_pickClicked()));
-    connect(resetButton, SIGNAL(clicked()), SLOT(sl_resetClicked()));
-    connect(saveSettingsButton, SIGNAL(clicked()), SLOT(sl_saveSettings()));
-    connect(loadSettingsButton, SIGNAL(clicked()), SLOT(sl_loadSettings()));
+    connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
+    connect(resetButton, &QPushButton::clicked, this, &Primer3Dialog::sl_resetClicked);
+    connect(saveSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_saveSettings);
+    connect(loadSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_loadSettings);
     connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_taskChanged);
 
     tabWidget->setCurrentIndex(0);
@@ -121,15 +121,12 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
             repeatLibraries[i].second = QFileInfo(QString(PATH_PREFIX_DATA) + ":" + repeatLibraries[i].second).absoluteFilePath().toLatin1();
     }
 
-    {
-        for (const auto& library : repeatLibraries) {
-            combobox_PRIMER_MISPRIMING_LIBRARY->addItem(library.first);
-            combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->addItem(library.first);
-        }
+    for (const auto& library : repeatLibraries) {
+        combobox_PRIMER_MISPRIMING_LIBRARY->addItem(library.first);
+        combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->addItem(library.first);
     }
 
     int spanIntronExonIdx = -1;
-
     for (int i = 0; i < tabWidget->count(); ++i) {
         if (tabWidget->tabText(i).contains("Intron")) {
             spanIntronExonIdx = i;
@@ -149,6 +146,8 @@ Primer3Dialog::~Primer3Dialog() {
     if (settings != nullptr) {
         delete settings;
     }
+    rs->deleteLater();
+    createAnnotationWidgetController->deleteLater();
 }
 
 Primer3TaskSettings* Primer3Dialog::takeSettings() {
@@ -294,7 +293,6 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
-    static const Primer3TaskSettings defaultSettings;
     for (const auto& key : defaultSettings.getIntPropertyList()) {
         int value = 0;
         if (defaultSettings.getIntProperty(key, &value)) {
@@ -449,7 +447,6 @@ bool Primer3Dialog::doDataExchange() {
 
         settings->setSpanIntronExonBoundarySettings(s);
     }
-    auto qwe = settings->getIntPropertyList();
     for (const auto& key : settings->getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
@@ -760,7 +757,7 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     QTextStream stream(&file);
-    for (const auto& key : settings->getIntPropertyList()) {
+    for (const auto& key : defaultSettings.getIntPropertyList()) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             stream << key << "=" << spinBox->value() << endl;
@@ -771,7 +768,7 @@ void Primer3Dialog::sl_saveSettings() {
             stream << key << "=" << (int)checkbox->isChecked() << endl;
         }
     }
-    for (const auto& key : settings->getDoublePropertyList()) {
+    for (const auto& key : defaultSettings.getDoublePropertyList()) {
         QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
         if (checkBox != nullptr && !checkBox->isChecked()) {
             continue;
@@ -835,8 +832,8 @@ void Primer3Dialog::sl_loadSettings() {
         return;
     }
 
-    auto intPropList = settings->getIntPropertyList();
-    auto doublePropList = settings->getDoublePropertyList();
+    auto intPropList = defaultSettings.getIntPropertyList();
+    auto doublePropList = defaultSettings.getDoublePropertyList();
 
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);

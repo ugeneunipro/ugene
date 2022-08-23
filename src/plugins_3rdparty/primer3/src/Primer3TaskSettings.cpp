@@ -37,10 +37,6 @@ bool Primer3TaskSettings::isIncludedRegionValid(const U2Region& r) const {
     return true;
 }
 
-int Primer3TaskSettings::getExplainFlag() const {
-    return explain;
-}
-
 void Primer3TaskSettings::setSequenceRange(const U2Region& region) {
     sequenceRange = region;
 }
@@ -51,7 +47,6 @@ const U2Region& Primer3TaskSettings::getSequenceRange() const {
 
 Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings_default_version_1();
-    p3Retval = create_p3retval();
     seqArgs = create_seq_arg();
     isCircular = false;
 
@@ -60,18 +55,11 @@ Primer3TaskSettings::Primer3TaskSettings() {
 
 Primer3TaskSettings::~Primer3TaskSettings() {
     destroy_secundary_structures(primerSettings, p3Retval);
-    destroy_p3retval(p3Retval);
-    destroy_seq_args(seqArgs);
-/*#if !defined(OS_WIN)
-    if (primerSettings->mask_template == 1) {
-        delete_formula_parameters(primerSettings->mp.fp, primerSettings->mp.nlists);
-        //free(global_pa->mp.list_prefix);
+    if (p3Retval != nullptr) {
+        destroy_p3retval(p3Retval);
     }
-#endif*/
+    destroy_seq_args(seqArgs);
     p3_destroy_global_settings(primerSettings);
-/*#if !defined(OS_WIN)
-    free(kmer_lists_path);
-#endif*/
 }
 
 bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {
@@ -443,8 +431,40 @@ seq_args* Primer3TaskSettings::getSeqArgs() const {
     return seqArgs;
 }
 
+void Primer3TaskSettings::setP3RetVal(p3retval* ret) {
+    SAFE_POINT(p3Retval == nullptr, "retvalue already exists", );
+
+    p3Retval = ret;
+}
+
 p3retval* Primer3TaskSettings::getP3RetVal() const {
     return p3Retval;
+}
+
+// span intron/exon boundary settings
+
+const SpanIntronExonBoundarySettings& Primer3TaskSettings::getSpanIntronExonBoundarySettings() const {
+    return spanIntronExonBoundarySettings;
+}
+
+void Primer3TaskSettings::setSpanIntronExonBoundarySettings(const SpanIntronExonBoundarySettings& settings) {
+    spanIntronExonBoundarySettings = settings;
+}
+
+const QList<U2Region>& Primer3TaskSettings::getExonRegions() const {
+    return spanIntronExonBoundarySettings.regionList;
+}
+
+void Primer3TaskSettings::setExonRegions(const QList<U2Region>& regions) {
+    spanIntronExonBoundarySettings.regionList = regions;
+}
+
+bool Primer3TaskSettings::spanIntronExonBoundaryIsEnabled() const {
+    return spanIntronExonBoundarySettings.enabled;
+}
+
+bool Primer3TaskSettings::isSequenceCircular() const {
+    return isCircular;
 }
 
 void Primer3TaskSettings::initMaps() {

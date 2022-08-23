@@ -46,9 +46,11 @@ public:
     int getStart() const;
     int getLength() const;
     double getMeltingTemperature() const;
+    double getBound() const;
     double getGcContent() const;
     double getSelfAny() const;
     double getSelfEnd() const;
+    double getTemplateMispriming() const;
     double getHairpin() const;
     double getEndStability() const;
     double getQuality() const;
@@ -61,9 +63,11 @@ public:
     void setStart(int start);
     void setLength(int length);
     void setMeltingTemperature(double meltingTemperature);
+    void setBound(double bound);
     void setGcContent(double gcContent);
     void setSelfAny(double selfAny);
     void setSelfEnd(double selfEnd);
+    void setTemplateMispriming(double templateMispriming);
     void setHairpin(double hairpin);
     void setEndStability(double endStability);
     void setQuality(double quality);
@@ -73,12 +77,15 @@ public:
     void setSelfEndStruct(const QString& selfEndStruct);
 
 private:
+    // don't forget to change copy constructor and assignment operator when changing this!
     int start;
     int length;
     double meltingTemperature;
+    double bound;
     double gcContent;
     double selfAny;
     double selfEnd;
+    double templateMispriming;
     double hairpin;
     double endStability;
     double quality;
@@ -148,7 +155,6 @@ public:
 
     void run();
     Task::ReportResult report();
-    void sumStat(Primer3TaskSettings* st);
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
@@ -164,12 +170,8 @@ private:
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
 
-    p3retval* resultPrimers = nullptr;
-
     int offset = 0;
 };
-
-class Primer3ToAnnotationsTask;
 
 class Primer3SWTask : public Task {
     Q_OBJECT
@@ -191,14 +193,11 @@ private:
 
     static const int CHUNK_SIZE = 1024 * 256;
 
-    QList<Primer3Task*> regionTasks;
-    QList<Primer3Task*> circRegionTasks;
+    Primer3Task* primer3Task = nullptr;
     int median;
     Primer3TaskSettings* settings;
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
-
-    friend class Primer3ToAnnotationsTask;
 };
 
 class Primer3ToAnnotationsTask : public Task {

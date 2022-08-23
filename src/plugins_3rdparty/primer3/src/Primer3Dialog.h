@@ -30,6 +30,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include "Primer3Task.h"
+#include "Primer3TaskSettings.h"
 #include "ui_Primer3Dialog.h"
 
 namespace U2 {
@@ -66,7 +67,6 @@ public:
 private:
     void reset();
     bool doDataExchange();
-
     void showInvalidInputMessage(QWidget* field, QString fieldLabel);
 
 private slots:
@@ -76,24 +76,22 @@ private slots:
     void sl_loadSettings();
     void sl_taskChanged(const QString& text);
 
-
 private:
-    CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
     U2Region selection;
-
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
+    CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
     Primer3TaskSettings* settings = nullptr;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
+
+    const Primer3TaskSettings defaultSettings;
 
     static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;
     static const QRegularExpression MUST_MATCH_END_REGEX;
     static const QRegularExpression MUST_MATCH_START_CODON_SEQUENCE_REGEX;
-    // Picking primers becomes too inaccurate even if sequence is more than 1000 bases length and no one uses Primer3 in this cases
-    // Let the upper bound be 10 times more
-    static constexpr int MAXIMUM_ALLOWED_SEQUENCE_LENGTH = 10000;
+    static constexpr int MAXIMUM_ALLOWED_SEQUENCE_LENGTH = 1024 * 256;
 };
 
 }  // namespace U2
