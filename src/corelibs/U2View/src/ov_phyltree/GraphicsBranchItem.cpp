@@ -29,6 +29,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "GraphicsButtonItem.h"
+#include "GraphicsRectangularBranchItem.h"
 #include "TreeViewerUtils.h"
 
 namespace U2 {
@@ -111,7 +112,7 @@ const OptionsMap& GraphicsBranchItem::getSettings() const {
     return settings;
 }
 
-void GraphicsBranchItem::collapse() {
+void GraphicsBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
     QList<QGraphicsItem*> items = childItems();
     if (collapsed) {

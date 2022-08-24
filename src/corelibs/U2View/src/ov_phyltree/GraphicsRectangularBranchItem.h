@@ -64,7 +64,7 @@ public:
     }
     void setDirection(Direction d);
 
-    void collapse();
+    void toggleCollapsedState();
     void swapSiblings();
     void recalculateBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
 

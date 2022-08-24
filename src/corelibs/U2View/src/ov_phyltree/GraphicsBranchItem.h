@@ -111,7 +111,7 @@ public:
     void setDist(qreal d) {
         dist = d;
     }
-    virtual void collapse();
+    virtual void toggleCollapsedState();
     void setSelectedRecurs(bool sel, bool selectChilds);
     void setSelected(bool sel);
     bool isCollapsed() const;

@@ -504,7 +504,9 @@ void TreeViewerUI::changeOption(TreeViewOption option, const QVariant& newValue)
 
 void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVariant& newValue) {
     SAFE_POINT(settings.keys().contains(option), "Unrecognized option in TreeViewerUI::onSettingsChanged", );
-    setOptionValue(option, newValue);
+    if (option != TREE_LAYOUT) {  // TREE_LAYOUT setting is updated as a part of 'setTreeLayout' call below.
+        setOptionValue(option, newValue);
+    }
     switch (option) {
         case TREE_LAYOUT:
             setTreeLayout(static_cast<TreeLayout>(newValue.toInt()));
@@ -1183,15 +1185,15 @@ void TreeViewerUI::sl_unrootedLayoutTriggered() {
     changeTreeLayout(UNROOTED_LAYOUT);
 }
 
-/** Expands every collapsed branch in rectangular tree. */
-static void makeRectLayoutNotCollapsed(GraphicsRectangularBranchItem* branch) {
+/** Expands every collapsed branch in tree. */
+static void makeLayoutNotCollapsed(GraphicsBranchItem* branch) {
     if (branch->isCollapsed()) {
-        branch->collapse();
+        branch->toggleCollapsedState();
     }
     QList<QGraphicsItem*> childItems = branch->childItems();
     for (auto child : qAsConst(childItems)) {
-        if (auto childBranch = dynamic_cast<GraphicsRectangularBranchItem*>(child)) {
-            makeRectLayoutNotCollapsed(childBranch);
+        if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(child)) {
+            makeLayoutNotCollapsed(childBranch);
         }
     }
 }
@@ -1203,13 +1205,16 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
             break;
         }
         case CIRCULAR_LAYOUT: {
-            makeRectLayoutNotCollapsed(rectRoot);  // TODO: support collapsed state transfer.
+            // TODO: support collapsed state transfer.
+            makeLayoutNotCollapsed(root);  // Clients are subscribed to 'root'. Expand of the layout emits notifications.
+            makeLayoutNotCollapsed(rectRoot);  // Root state & child layout states must be synchronized.
             bool degeneratedCase = getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
             setNewTreeLayout(CreateCircularBranchesTask::convert(rectRoot, degeneratedCase), newTreeLayout);
             break;
         }
         case UNROOTED_LAYOUT: {
-            makeRectLayoutNotCollapsed(rectRoot);  // TODO: support collapsed state transfer.
+            makeLayoutNotCollapsed(root);  // See comments for CIRCULAR_LAYOUT.
+            makeLayoutNotCollapsed(rectRoot);
             setNewTreeLayout(CreateUnrootedBranchesTask::convert(rectRoot), newTreeLayout);
             break;
         }

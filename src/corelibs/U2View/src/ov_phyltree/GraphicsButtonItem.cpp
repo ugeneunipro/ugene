@@ -119,7 +119,7 @@ void GraphicsButtonItem::collapse() {
     auto branch = dynamic_cast<GraphicsBranchItem*>(parentItem());
     SAFE_POINT(branch != nullptr, "Collapsing is impossible because button has not parent branch", );
     if (dynamic_cast<GraphicsBranchItem*>(branch->parentItem()) != nullptr) {
-        branch->collapse();
+        branch->toggleCollapsedState();
     }
 }
 

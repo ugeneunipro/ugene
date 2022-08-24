@@ -38,7 +38,7 @@ const qreal GraphicsRectangularBranchItem::MAXIMUM_WIDTH = 500.0;
 const int GraphicsRectangularBranchItem::DEFAULT_HEIGHT = 25;
 const qreal GraphicsRectangularBranchItem::EPSILON = 0.0000000001;
 
-void GraphicsRectangularBranchItem::collapse() {
+void GraphicsRectangularBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
     QList<QGraphicsItem*> items = childItems();
 

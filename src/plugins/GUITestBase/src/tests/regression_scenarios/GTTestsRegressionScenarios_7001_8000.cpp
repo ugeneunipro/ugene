@@ -57,6 +57,9 @@
 
 #include <U2Gui/Notification.h>
 
+#include <U2View/GraphicsBranchItem.h>
+#include <U2View/GraphicsButtonItem.h>
+
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
@@ -2763,7 +2766,7 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
 
     // Check there is an active tree view.
     GTUtilsMsaEditor::getTreeView(os);
-    GTUtilsLog::check(os, logTracer2); // Check there is no error in the log.
+    GTUtilsLog::check(os, logTracer2);  // Check there is no error in the log.
 
     documents = AppContext::getProject()->getDocuments();
     CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");
@@ -2787,7 +2790,7 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             // On page "Input Sanger reads" add: .../test/general/_common_data/sanger/n_and_gaps.fa and click "Next" button
-            GTUtilsWizard::setInputFiles(os, { { testDir + QString("_common_data/sanger/n_and_gaps.fa") } });
+            GTUtilsWizard::setInputFiles(os, {{testDir + QString("_common_data/sanger/n_and_gaps.fa")}});
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
@@ -2851,15 +2854,84 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7650) {
-    //1. Open samples/CLUSTALW/COI.aln
-    //2. Press 'Save as', and save file to its own path.
-    //Expected state: message box with warinig appears.
+    // 1. Open samples/CLUSTALW/COI.aln
+    // 2. Press 'Save as', and save file to its own path.
+    // Expected state: message box with warinig appears.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, dataDir + "samples/CLUSTALW/", "COI.aln", ExportDocumentDialogFiller::CLUSTALW), false, true);
     GTWidget::click(os, GTAction::button(os, "Save alignment as"));
     GTUtilsProjectTreeView::click(os, "COI.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7668) {
+    // Open tree in MSA editor and check that sync mode works in all tree layouts.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsProjectTreeView::toggleView(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "/samples/Newick/COI.nwk"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto syncModeButton = GTAction::button(os, "sync_msa_action");
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
+
+    auto collapsedNodeSelector = [&](GraphicsButtonItem* buttonNode) {
+        auto branchNode = dynamic_cast<GraphicsBranchItem*>(buttonNode->parentItem());
+        auto distanceTextNode = branchNode->getDistanceText();
+        return distanceTextNode != nullptr && distanceTextNode->text() == "0.068";
+    };
+    auto selectNodeToCollapse = [&](QList<GraphicsButtonItem*> nodes) -> GraphicsButtonItem* {
+        auto it = std::find_if(nodes.begin(), nodes.end(), collapsedNodeSelector);
+        CHECK_SET_ERR_RESULT(it != nodes.end(), "Node to collapse is not found!", nullptr);
+        return *it;
+    };
+
+    // Rectangular.
+    QStringList allRows = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after opening");
+
+    QList<GraphicsButtonItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
+    GraphicsButtonItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
+    GTUtilsPhyTree::doubleClickNode(os, rectNodeToCollapse);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Rectangular");
+    QStringList rowsInRectCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    rowsInRectCollapse.sort();
+    CHECK_SET_ERR(rowsInRectCollapse.length() == allRows.length() - 2,
+                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(rowsInRectCollapse.size()));
+
+    // Circular.
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Circular");
+    QStringList rowsInSyncModeCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(rowsInSyncModeCircular == allRows, "Nodes in Circular layout do not match");
+    treeNodes = GTUtilsPhyTree::getNodes(os);
+    GraphicsButtonItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
+    GTUtilsPhyTree::doubleClickNode(os, circularNodeToCollapse);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Circular");
+    QStringList rowsInCircularCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    rowsInCircularCollapse.sort();
+    CHECK_SET_ERR(rowsInCircularCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Circular");
+
+    // Unrooted.
+    GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Unrooted");
+    QStringList rowsInSyncModeUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(rowsInSyncModeUnrooted == allRows, "Nodes in Unrooted layout do not match");
+    treeNodes = GTUtilsPhyTree::getNodes(os);
+    GraphicsButtonItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
+    GTUtilsPhyTree::doubleClickNode(os, unrootedNodeToCollapse);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Unrooted");
+    QStringList rowsInUnrootedCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    rowsInUnrootedCollapse.sort();
+    CHECK_SET_ERR(rowsInUnrootedCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Unrooted");
+
+    // Rectangular (back).
+    GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Rectangular");
 }
 
 }  // namespace GUITest_regression_scenarios
