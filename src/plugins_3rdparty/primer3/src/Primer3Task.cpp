@@ -692,6 +692,8 @@ void Primer3SWTask::prepare() {
 }
 
 Task::ReportResult Primer3SWTask::report() {
+    CHECK(primer3Task != nullptr, Task::ReportResult_Finished);
+
     bestPairs.append(primer3Task->getBestPairs());
     singlePrimers.append(primer3Task->getSinglePrimers());
 
