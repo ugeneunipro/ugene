@@ -743,6 +743,15 @@ void GTUtilsSequenceView::makeDetViewVisible(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "makePanViewVisible"
+void GTUtilsSequenceView::makePanViewVisible(HI::GUITestOpStatus& os, bool enable) {
+    auto toggleZoomViewButton = GTWidget::findToolButton(os, "show_hide_zoom_view");
+    if (toggleZoomViewButton->isChecked() != enable) {
+        GTWidget::click(os, toggleZoomViewButton);
+    }
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -2862,6 +2862,7 @@ GUI_TEST_CLASS_DEFINITION(test_7644) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Tabs::Search);
 
     // Click Actions->Edit->Switch on the editing mode.
+    GTUtilsSequenceView::makePanViewVisible(os, false);
     GTUtilsSequenceView::makeDetViewVisible(os);
     GTUtilsSequenceView::enableEditingMode(os);
 
