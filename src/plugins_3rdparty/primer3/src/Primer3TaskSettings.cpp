@@ -159,7 +159,7 @@ QList<QList<int>> Primer3TaskSettings::getOkRegion() const {
           << seqArgs->ok_regions.right_pairs[i][1];
         result.append(v);
     }
-    return result;
+    return result;//
 }
 
 int Primer3TaskSettings::getMinProductSize() const {
