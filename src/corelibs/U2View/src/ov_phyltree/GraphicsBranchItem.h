@@ -123,14 +123,6 @@ public:
 
     const OptionsMap& getSettings() const;
 
-    const QList<QGraphicsItem*> getChildItems() const {
-        return childItems();
-    }
-
-    QGraphicsItem* getParentItem() const {
-        return parentItem();
-    }
-
     void initDistanceText(const QString& text = QString());
 
     QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;

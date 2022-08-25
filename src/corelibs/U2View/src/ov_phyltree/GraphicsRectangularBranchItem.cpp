@@ -30,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -56,10 +57,8 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
                 continue;
             }
 
-            GraphicsRectangularBranchItem* childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
-            if (childItem == nullptr) {
-                continue;
-            }
+            auto childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
+            CHECK_CONTINUE(childItem != nullptr);
 
             childItem->collapsed = !childItem->collapsed;
             if (childItem->getNameText() == nullptr) {

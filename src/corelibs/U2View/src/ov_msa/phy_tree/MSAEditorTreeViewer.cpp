@@ -348,12 +348,14 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
         }
 
         QList<QGraphicsItem*> childItemList = branchItem->childItems();
+        // Reverse items, so processing order will be the same with the tree.
+        std::reverse(childItemList.begin(), childItemList.end());
+
         for (QGraphicsItem* childItem : qAsConst(childItemList)) {
             auto childBranchItem = dynamic_cast<GraphicsBranchItem*>(childItem);
-            if (childBranchItem == nullptr) {
-                continue;
+            if (childBranchItem != nullptr) {
+                treeBranchStack.push(childBranchItem);
             }
-            treeBranchStack.push(childBranchItem);
         }
     }
     return groupList;

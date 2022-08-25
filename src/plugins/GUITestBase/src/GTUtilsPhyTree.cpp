@@ -278,7 +278,7 @@ GraphicsRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUIT
     QList<QGraphicsItem*> items = treeViewerUi->scene()->items();
     foreach (QGraphicsItem* item, items) {
         GraphicsRectangularBranchItem* rectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(item);
-        if (nullptr != rectangularBranch && nullptr == rectangularBranch->getParentItem()) {
+        if (nullptr != rectangularBranch && nullptr == rectangularBranch->parentItem()) {
             return rectangularBranch;
         }
     }
@@ -291,7 +291,7 @@ GraphicsRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUIT
 QList<GraphicsRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, GraphicsRectangularBranchItem* rootBranch) {
     GT_CHECK_RESULT(nullptr != rootBranch, "Subtree root branch is NULL", QList<GraphicsRectangularBranchItem*>());
 
-    const QList<QGraphicsItem*> childItems = rootBranch->getChildItems();
+    const QList<QGraphicsItem*> childItems = rootBranch->childItems();
     QList<GraphicsRectangularBranchItem*> childRectangularBranches;
     foreach (QGraphicsItem* childItem, childItems) {
         GraphicsRectangularBranchItem* childRectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(childItem);

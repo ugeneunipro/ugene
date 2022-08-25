@@ -785,7 +785,7 @@ void TreeViewerUI::updateStepsToLeafOnBranches() {
     }
     while (!childQueue.isEmpty()) {
         GraphicsBranchItem* childBranchItem = childQueue.dequeue();
-        if (auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(childBranchItem->getParentItem())) {
+        if (auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(childBranchItem->parentItem())) {
             parentBranchItem->maxStepsToLeaf = qMax(parentBranchItem->maxStepsToLeaf, childBranchItem->maxStepsToLeaf + 1);
             childQueue.enqueue(parentBranchItem);
         }
