@@ -38,7 +38,7 @@ GraphicsCircularBranchItem* CreateCircularBranchesTask::convertBranch(GraphicsRe
                                                                       GraphicsCircularBranchItem* convertedParentBranchItem,
                                                                       double coef) {
     double height = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new GraphicsCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabel());
+    auto convertedBranch = new GraphicsCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildItems)) {
         if (auto ri = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {

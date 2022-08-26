@@ -260,7 +260,7 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
         if (branchItem == nullptr) {
             continue;
         }
-        QGraphicsSimpleTextItem* nameItem = branchItem->getNameText();
+        QGraphicsSimpleTextItem* nameItem = branchItem->getNameTextItem();
         if (nameItem == nullptr) {
             continue;
         }
@@ -283,7 +283,7 @@ void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString new
         if (branchItem == nullptr) {
             continue;
         }
-        QGraphicsSimpleTextItem* nameItem = branchItem->getNameText();
+        QGraphicsSimpleTextItem* nameItem = branchItem->getNameTextItem();
         if (nameItem == nullptr) {
             continue;
         }
@@ -340,7 +340,7 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
             continue;
         }
 
-        QGraphicsSimpleTextItem* branchNameItem = branchItem->getNameText();
+        QGraphicsSimpleTextItem* branchNameItem = branchItem->getNameTextItem();
         if (branchNameItem != nullptr && !branchNameItem->text().isEmpty()) {
             // Add this leaf of as a separate non-grouped sequence to the list.
             groupList.append({branchNameItem->text()});
@@ -375,7 +375,7 @@ QStringList MSAEditorTreeViewerUtils::getSeqsNamesInBranch(const GraphicsBranchI
             if (childrenBranch == nullptr) {
                 continue;
             }
-            QGraphicsSimpleTextItem* nameItem = childrenBranch->getNameText();
+            QGraphicsSimpleTextItem* nameItem = childrenBranch->getNameTextItem();
             if (nameItem == nullptr) {
                 treeBranches.push(childrenBranch);
                 continue;

@@ -28,16 +28,35 @@
 #include <QPen>
 #include <QStack>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-const qreal GraphicsRectangularBranchItem::DEFAULT_WIDTH = 25.0;
-const qreal GraphicsRectangularBranchItem::MAXIMUM_WIDTH = 500.0;
-const int GraphicsRectangularBranchItem::DEFAULT_HEIGHT = 25;
-const qreal GraphicsRectangularBranchItem::EPSILON = 0.0000000001;
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem)
+    : GraphicsBranchItem(name) {
+    setParentItem(pitem);
+    setPos(0, 0);
+}
+
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double x, double y, const QString& name)
+    : GraphicsBranchItem(false) {
+    new GraphicsRectangularBranchItem(name, this);
+    setPos(x, y);
+}
+
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double x, double y, const QString& name, double d, PhyBranch* branch)
+    : GraphicsBranchItem(d, false), phyBranch(branch) {
+    new GraphicsRectangularBranchItem(name, this);
+    setPos(x, y);
+}
+
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double d, PhyBranch* branch, double nodeValue)
+    : GraphicsBranchItem(d, true, nodeValue), phyBranch(branch) {
+}
+
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem() {
+}
 
 void GraphicsRectangularBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
@@ -50,7 +69,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
 
         QList<QGraphicsItem*> childItems = branchItem->childItems();
 
-        foreach (QGraphicsItem* graphItem, childItems) {
+        for (QGraphicsItem* graphItem : qAsConst(childItems)) {
             if (dynamic_cast<QGraphicsRectItem*>(graphItem) && !branchItem->isCollapsed()) {
                 graphItem->setParentItem(nullptr);
                 scene()->removeItem(graphItem);
@@ -61,7 +80,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
             CHECK_CONTINUE(childItem != nullptr);
 
             childItem->collapsed = !childItem->collapsed;
-            if (childItem->getNameText() == nullptr) {
+            if (childItem->getNameTextItem() == nullptr) {
                 childItem->setVisible(branchItem->isVisible() && !branchItem->isCollapsed());
             }
             if (childItem->isCollapsed() && !branchItem->isCollapsed()) {
@@ -82,12 +101,12 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
 
 void GraphicsRectangularBranchItem::drawCollapsedRegion() {
     QList<QGraphicsItem*> items = childItems();
-    qreal xMin = 0;
-    qreal yMin = 0;
-    qreal yMax = 0;
+    double xMin = 0;
+    double yMin = 0;
+    double yMax = 0;
     bool isFirstIteration = true;
 
-    foreach (QGraphicsItem* graphItem, items) {
+    for (QGraphicsItem* graphItem : qAsConst(items)) {
         GraphicsRectangularBranchItem* branchItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
         if (!branchItem)
             continue;
@@ -110,43 +129,17 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
 
     QPen blackPen(Qt::black);
     prepareGeometryChange();
-    blackPen.setWidth(SelectedPenWidth);
+    blackPen.setWidth(SELECTED_PEN_WIDTH);
     blackPen.setCosmetic(true);
     const int defHeight = qMin((int)(yMax - yMin) / 2, 30);
     QGraphicsRectItem* r = new QGraphicsRectItem(0, -defHeight / 2, xMin, defHeight, this);
     r->setPen(blackPen);
 }
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem)
-    : GraphicsBranchItem(name), height(0.0), cur_height_coef(1), direction(GraphicsRectangularBranchItem::up), phyBranch(nullptr) {
-    setParentItem(pitem);
-    setPos(0, 0);
-}
-
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name)
-    : GraphicsBranchItem(false), height(0.0), cur_height_coef(1), direction(GraphicsRectangularBranchItem::up), phyBranch(nullptr) {
-    new GraphicsRectangularBranchItem(name, this);
-    setPos(x, y);
-}
-
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name, qreal d, PhyBranch* branch)
-    : GraphicsBranchItem(d, false), height(0.0), cur_height_coef(1), direction(GraphicsRectangularBranchItem::up), phyBranch(branch) {
-    new GraphicsRectangularBranchItem(name, this);
-    setPos(x, y);
-}
-
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(qreal d, PhyBranch* branch, double nodeValue)
-    : GraphicsBranchItem(d, true, nodeValue), height(0.0), cur_height_coef(1), direction(GraphicsRectangularBranchItem::up), phyBranch(branch) {
-}
-
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem()
-    : cur_height_coef(1), direction(GraphicsRectangularBranchItem::up), phyBranch(nullptr) {
-}
-
 void GraphicsRectangularBranchItem::setParentItem(QGraphicsItem* item) {
     prepareGeometryChange();
-    height = direction == up ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
-    setPos(width, direction == up ? height : -height);
+    height = direction == Up ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
+    setPos(width, direction == Up ? height : -height);
 
     QAbstractGraphicsShapeItem::setParentItem(item);
 }
@@ -157,24 +150,24 @@ void GraphicsRectangularBranchItem::setDirection(Direction d) {
 }
 
 QRectF GraphicsRectangularBranchItem::boundingRect() const {
-    return QRectF(-width - 0.5, direction == up ? -height : -0.5, width + 0.5, height + 0.5);
+    return QRectF(-width - 0.5, direction == Up ? -height : -0.5, width + 0.5, height + 0.5);
 }
 
 void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* optionItem, QWidget*) {
     painter->setPen(pen());
     if (false == qFuzzyCompare(width, 0)) {
         painter->drawLine(QPointF(0, 0), QPointF(-width, 0));
-        painter->drawLine(QPointF(-width, 0), QPointF(-width, direction == up ? -height : height));
+        painter->drawLine(QPointF(-width, 0), QPointF(-width, direction == Up ? -height : height));
     }
     GraphicsBranchItem::paint(painter, optionItem);
 }
 
-void GraphicsRectangularBranchItem::setHeight(qreal h) {
+void GraphicsRectangularBranchItem::setHeight(double h) {
     if (height == h) {
         return;
     }
 
-    if (direction == up) {
+    if (direction == Up) {
         setPos(pos().x(), pos().y() - height + h);
     } else {
         setPos(pos().x(), pos().y() + height - h);
@@ -185,12 +178,12 @@ void GraphicsRectangularBranchItem::setHeight(qreal h) {
 }
 
 void GraphicsRectangularBranchItem::setHeightCoef(int coef) {
-    if (coef == cur_height_coef) {
+    if (coef == currentHeightCoef) {
         return;
     }
 
-    qreal h = (height / (qreal)cur_height_coef) * coef;
-    cur_height_coef = coef;
+    double h = (height / currentHeightCoef) * coef;
+    currentHeightCoef = coef;
     setHeight(h);
 }
 
@@ -206,7 +199,7 @@ void GraphicsRectangularBranchItem::swapSiblings() {
     }
 }
 
-void GraphicsRectangularBranchItem::recalculateBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root) {
+void GraphicsRectangularBranchItem::recalculateBranches(int& current, double& minDistance, double& maxDistance, const PhyNode* root) {
     int branches = 0;
     const PhyNode* node = nullptr;
 
@@ -268,20 +261,20 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, qreal& min
                 if (items[i] == nullptr) {
                     continue;
                 }
-                qreal dist = qAbs(node->getBranchesDistance(i));
+                double dist = qAbs(node->getBranchesDistance(i));
                 if (minDistance > -1) {
                     minDistance = qMin(minDistance, dist);
                 } else {
                     minDistance = dist;
                 }
                 maxDistance = qMax(maxDistance, dist);
-                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::up : GraphicsRectangularBranchItem::down);
+                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Up : GraphicsRectangularBranchItem::Down);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
                 items[i]->setHeightCoefW(1);
                 items[i]->setParentItem(item);
-                QRectF rect = items[i]->getDistanceText()->boundingRect();
-                items[i]->getDistanceText()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
+                QRectF rect = items[i]->getDistanceTextItem()->boundingRect();
+                items[i]->getDistanceTextItem()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
             }
         }
     } else {
@@ -291,15 +284,35 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, qreal& min
 }
 
 GraphicsRectangularBranchItem* GraphicsRectangularBranchItem::getChildItemByPhyBranch(const PhyBranch* branch) {
-    foreach (QGraphicsItem* ci, this->childItems()) {
-        GraphicsRectangularBranchItem* gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci);
-        if (gbi != nullptr) {
+    QList<QGraphicsItem*> childItems = this->childItems();
+    for (QGraphicsItem* ci : qAsConst(childItems)) {
+        if (auto gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci)) {
             if (gbi->getPhyBranch() == branch) {
                 return gbi;
             }
         }
     }
     return nullptr;
+}
+
+GraphicsRectangularBranchItem::Direction GraphicsRectangularBranchItem::getDirection() const {
+    return direction;
+}
+
+double GraphicsRectangularBranchItem::getHeight() const {
+    return height;
+}
+
+void GraphicsRectangularBranchItem::setHeightW(double h) {
+    height = h;
+}
+
+void GraphicsRectangularBranchItem::setHeightCoefW(int coef) {
+    currentHeightCoef = coef;
+}
+
+const PhyBranch* GraphicsRectangularBranchItem::getPhyBranch() const {
+    return phyBranch;
 }
 
 }  // namespace U2

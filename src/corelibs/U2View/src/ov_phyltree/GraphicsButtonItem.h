@@ -40,11 +40,13 @@ public:
     GraphicsButtonItem(double nodeValue = 0);
 
     bool isPathToRootSelected() const;
-    bool isNodeSelected() const {
-        return isSelected;
-    }
+
+    bool isNodeSelected() const;
+
     void collapse();
+
     void swapSiblings();
+
     bool isCollapsed();
 
     void setSelected(bool selected);
@@ -55,9 +57,7 @@ public:
 
     const QGraphicsSimpleTextItem* getLabel() const;
 
-    qreal getNodeValue() const {
-        return nodeValue;
-    }
+    double getNodeValue() const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
@@ -73,11 +73,11 @@ private:
 
     static const QBrush highlightingBrush;
     static const QBrush ordinaryBrush;
-    static const qreal radius;
+    static constexpr double radius = 5.0;
 
     bool isSelected = false;
     QGraphicsSimpleTextItem* nodeLabel = nullptr;
-    qreal nodeValue = 0;
+    double nodeValue = 0;
 };
 
 }  // namespace U2

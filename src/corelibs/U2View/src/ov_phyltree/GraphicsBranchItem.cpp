@@ -21,7 +21,6 @@
 
 #include "GraphicsBranchItem.h"
 
-#include <QEvent>
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QStack>
@@ -34,16 +33,13 @@
 
 namespace U2 {
 
-const int GraphicsBranchItem::TextSpace = 8;
-const int GraphicsBranchItem::SelectedPenWidth = 1;
-
 void GraphicsBranchItem::updateSettings(const OptionsMap& newSettings) {
     settings[BRANCH_COLOR] = newSettings[BRANCH_COLOR];
     settings[BRANCH_THICKNESS] = newSettings[BRANCH_THICKNESS];
 
     int penWidth = settings[BRANCH_THICKNESS].toUInt();
     if (isSelected()) {
-        penWidth += SelectedPenWidth;
+        penWidth += SELECTED_PEN_WIDTH;
     }
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
@@ -124,7 +120,7 @@ void GraphicsBranchItem::toggleCollapsedState() {
 
         int penWidth = settings[BRANCH_THICKNESS].toUInt();
         if (isSelected()) {
-            penWidth += SelectedPenWidth;
+            penWidth += SELECTED_PEN_WIDTH;
         }
 
         QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
@@ -139,7 +135,7 @@ void GraphicsBranchItem::toggleCollapsedState() {
                 rectItem->setParentItem(nullptr);
                 scene()->removeItem(rectItem);
             } else {
-                if (items[i] != getDistanceText() && items[i] != getNameText()) {
+                if (items[i] != getDistanceTextItem() && items[i] != getNameTextItem()) {
                     items[i]->show();
                 }
             }
@@ -181,7 +177,7 @@ void GraphicsBranchItem::setSelected(bool sel) {
 
     int penWidth = settings[BRANCH_THICKNESS].toUInt();
     if (sel) {
-        penWidth += SelectedPenWidth;
+        penWidth += SELECTED_PEN_WIDTH;
     }
     QPen currentPen = this->pen();
     currentPen.setWidth(penWidth);
@@ -266,14 +262,14 @@ GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValu
     setBrush(branchColor);
 }
 
-qreal GraphicsBranchItem::getNodeLabel() const {
+qreal GraphicsBranchItem::getNodeLabelValue() const {
     return buttonItem != nullptr ? buttonItem->getNodeValue() : -1;
 }
 
 void GraphicsBranchItem::setLabelPositions() {
     if (nameText != nullptr) {
         QRectF rect = nameText->boundingRect();
-        nameText->setPos(GraphicsBranchItem::TextSpace, -rect.height() / 2);
+        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -rect.height() / 2);
     }
     if (distanceText != nullptr) {
         QRectF rect = distanceText->boundingRect();
@@ -287,16 +283,16 @@ void GraphicsBranchItem::setDistanceText(const QString& text) {
     }
 }
 
-void GraphicsBranchItem::setWidth(qreal w) {
+void GraphicsBranchItem::setWidth(double w) {
     if (width == w) {
         return;
     }
 
     setPos(pos().x() - width + w, pos().y());
     setLabelPositions();
-    if (getDistanceText() != nullptr) {
-        QPointF pos = getDistanceText()->pos();
-        getDistanceText()->setPos(pos.x() + (width - w) * 0.5, pos.y());
+    if (getDistanceTextItem() != nullptr) {
+        QPointF pos = getDistanceTextItem()->pos();
+        getDistanceTextItem()->setPos(pos.x() + (width - w) * 0.5, pos.y());
     }
 
     prepareGeometryChange();
@@ -378,6 +374,34 @@ GraphicsBranchItem* GraphicsBranchItem::getRoot() {
 void GraphicsBranchItem::emitBranchCollapsed(GraphicsBranchItem* branch) {
     SAFE_POINT(this == getRoot(), "Not a root branch!", );
     emit si_branchCollapsed(branch);
+}
+
+GraphicsButtonItem* GraphicsBranchItem::getButtonItem() const {
+    return buttonItem;
+}
+
+QGraphicsSimpleTextItem* GraphicsBranchItem::getDistanceTextItem() const {
+    return distanceText;
+}
+
+QGraphicsSimpleTextItem* GraphicsBranchItem::getNameTextItem() const {
+    return nameText;
+}
+
+double GraphicsBranchItem::getWidth() const {
+    return width;
+}
+
+double GraphicsBranchItem::getDist() const {
+    return dist;
+}
+
+void GraphicsBranchItem::setWidthW(double w) {
+    width = w;
+}
+
+void GraphicsBranchItem::setDist(double d) {
+    dist = d;
 }
 
 }  // namespace U2

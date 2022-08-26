@@ -30,18 +30,64 @@
 
 namespace U2 {
 
-class PhyNode;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
 
 class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
     Q_OBJECT
 public:
-    enum Direction { up,
-                     down };
+    enum Direction {
+        Up,
+        Down
+    };
+    GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
 
-    static const int TextSpace;
-    static const int SelectedPenWidth;
+    GraphicsButtonItem* getButtonItem() const;
+
+    double getNodeLabelValue() const;
+
+    QGraphicsSimpleTextItem* getDistanceTextItem() const;
+
+    QGraphicsSimpleTextItem* getNameTextItem() const;
+
+    double getWidth() const;
+
+    double getDist() const;
+
+    void setDistanceText(const QString& text);
+
+    void setWidthW(double w);
+
+    void setWidth(double w);
+
+    void setDist(double d);
+
+    virtual void toggleCollapsedState();
+
+    void setSelectedRecurs(bool sel, bool selectChilds);
+
+    void setSelected(bool sel);
+
+    bool isCollapsed() const;
+
+    void updateSettings(const OptionsMap& settings);
+
+    void updateChildSettings(const OptionsMap& settings);
+
+    /** Update current property with given one */
+    void updateTextProperty(TreeViewOption property, const QVariant& propertyVal);
+
+    const OptionsMap& getSettings() const;
+
+    void initDistanceText(const QString& text = "");
+
+    QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
+
+    /** Spacing between branch line and branch label. */
+    static constexpr int TEXT_SPACING = 8;
+
+    /** Width of the selected branch line. */
+    static constexpr int SELECTED_PEN_WIDTH = 1;
 
     /** Maximum distance (count) from this branch to the end (leaf) of the tree. */
     int maxStepsToLeaf = 0;
@@ -61,71 +107,26 @@ public:
 signals:
     void si_branchCollapsed(GraphicsBranchItem* branch);
 
-private:
-    void initText(qreal d);
-
-    GraphicsButtonItem* buttonItem = nullptr;
-
-    QGraphicsEllipseItem* nameItemSelection = nullptr;
-
 protected:
-    QGraphicsSimpleTextItem* distanceText = nullptr;
-    QGraphicsSimpleTextItem* nameText = nullptr;
-    qreal width = 0;
-    qreal dist = 0;
-    bool collapsed = false;
-
-    OptionsMap settings;
-
     GraphicsBranchItem(const QString& name);
-    GraphicsBranchItem(qreal d, bool withButton = true, double nodeValue = -1.0);
+
+    GraphicsBranchItem(double d, bool withButton = true, double nodeValue = -1.0);
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
     virtual void setLabelPositions();
 
-public:
-    GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
+    void initText(double d);
 
-    GraphicsButtonItem* getButton() const {
-        return buttonItem;
-    }
-    qreal getNodeLabel() const;
-    QGraphicsSimpleTextItem* getDistanceText() const {
-        return distanceText;
-    }
-    QGraphicsSimpleTextItem* getNameText() const {
-        return nameText;
-    }
-    qreal getWidth() const {
-        return width;
-    }
-    qreal getDist() const {
-        return dist;
-    }
-    void setDistanceText(const QString& text);
-    void setWidthW(qreal w) {
-        width = w;
-    }
-    void setWidth(qreal w);
-    void setDist(qreal d) {
-        dist = d;
-    }
-    virtual void toggleCollapsedState();
-    void setSelectedRecurs(bool sel, bool selectChilds);
-    void setSelected(bool sel);
-    bool isCollapsed() const;
+    QGraphicsSimpleTextItem* distanceText = nullptr;
+    QGraphicsSimpleTextItem* nameText = nullptr;
+    GraphicsButtonItem* buttonItem = nullptr;
+    QGraphicsEllipseItem* nameItemSelection = nullptr;
 
-    void updateSettings(const OptionsMap& settings);
-    void updateChildSettings(const OptionsMap& settings);
-    /** Update current property with given one */
-    void updateTextProperty(TreeViewOption property, const QVariant& propertyVal);
-
-    const OptionsMap& getSettings() const;
-
-    void initDistanceText(const QString& text = QString());
-
-    QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
+    double width = 0;
+    double dist = 0;
+    bool collapsed = false;
+    OptionsMap settings;
 };
 
 }  // namespace U2

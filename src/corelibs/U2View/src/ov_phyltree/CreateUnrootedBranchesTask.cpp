@@ -34,7 +34,7 @@ GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::convertBranch(GraphicsRe
                                                                       GraphicsUnrootedBranchItem* convertedParentBranchItem,
                                                                       double coef) {
     double angle = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new GraphicsUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabel());
+    auto convertedBranch = new GraphicsUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildBranchItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildBranchItems)) {
         if (auto originalChildBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {

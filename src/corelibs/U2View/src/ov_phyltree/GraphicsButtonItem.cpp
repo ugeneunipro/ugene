@@ -37,7 +37,6 @@
 
 namespace U2 {
 
-const qreal GraphicsButtonItem::radius = 5.0;
 const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor("#ea9700"));
 const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
 
@@ -56,15 +55,11 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
         nodeLabel->setFont(TreeViewerUtils::getFont());
         nodeLabel->setBrush(Qt::darkGray);
         QRectF rect = nodeLabel->boundingRect();
-        nodeLabel->setPos(GraphicsBranchItem::TextSpace, -rect.height() / 2);
+        nodeLabel->setPos(GraphicsBranchItem::TEXT_SPACING, -rect.height() / 2);
         nodeLabel->setParentItem(this);
         nodeLabel->setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
         nodeLabel->setZValue(1);
     }
-}
-
-const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
-    return nodeLabel;
 }
 
 void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -85,22 +80,17 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
-    uiLog.trace("Tree button double-clicked");
     collapse();
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
 void GraphicsButtonItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-    if (isSelected) {
-        return;
-    }
+    CHECK(!isSelected, );
     QGraphicsItem::hoverEnterEvent(event);
     setHighlighting(true);
 }
 void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-    if (isSelected) {
-        return;
-    }
+    CHECK(!isSelected, );
     QGraphicsItem::hoverLeaveEvent(event);
     setHighlighting(false);
 }
@@ -124,12 +114,8 @@ void GraphicsButtonItem::collapse() {
 }
 
 void GraphicsButtonItem::swapSiblings() {
-    uiLog.trace("Swapping siblings");
-
     auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    if (!branchItem) {
-        return;
-    }
+    CHECK(branchItem != nullptr, );
     auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
     if (rectBranchItem == nullptr) {
         SAFE_POINT(branchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
@@ -139,26 +125,21 @@ void GraphicsButtonItem::swapSiblings() {
 }
 
 bool GraphicsButtonItem::isPathToRootSelected() const {
-    if (!isSelected) {
-        return false;
-    }
-    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    if (branchItem == nullptr) {
-        return true;
-    }
-    GraphicsBranchItem* parentBranchItem = dynamic_cast<GraphicsBranchItem*>(branchItem->parentItem());
+    CHECK(isSelected, false);
+
+    auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    CHECK(branchItem != nullptr, true);
+
+    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(branchItem->parentItem());
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
 bool GraphicsButtonItem::isCollapsed() {
-    GraphicsBranchItem* parent = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    Q_ASSERT(parent);
-    CHECK(parent, false)
-    return parent->isCollapsed();
+    auto parent = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    return parent != nullptr && parent->isCollapsed();
 }
 
 void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
-    uiLog.trace("Re-rooting of the PhyTree");
     SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
 
     auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
@@ -172,6 +153,7 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
 
     const PhyBranch* nodeBranch = parentRectBranchItem->getPhyBranch();
     CHECK(nodeBranch != nullptr, );
+
     PhyNode* newRoot = nodeBranch->node2;
     CHECK(newRoot != nullptr, );
 
@@ -195,8 +177,22 @@ void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
 TreeViewerUI* GraphicsButtonItem::getTreeViewerUI() const {
     QList<QGraphicsView*> views = scene()->views();
     SAFE_POINT(views.size() == 1, "getTreeViewerUI: invalid number of views: " + QString::number(views.size()), nullptr);
+
     auto ui = qobject_cast<TreeViewerUI*>(views[0]);
     SAFE_POINT(ui != nullptr, "getTreeViewerUI: ui is null", nullptr);
     return ui;
 }
+
+bool GraphicsButtonItem::isNodeSelected() const {
+    return isSelected;
+}
+
+double GraphicsButtonItem::getNodeValue() const {
+    return nodeValue;
+}
+
+const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
+    return nodeLabel;
+}
+
 }  // namespace U2

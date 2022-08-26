@@ -707,26 +707,26 @@ void TreeViewerUI::updateRectLayoutBranches() {
 
         switch (type) {
             case DEFAULT:
-                if (item->getDistanceText() != nullptr && item->getDistanceText()->text() == "") {
+                if (item->getDistanceTextItem() != nullptr && item->getDistanceTextItem()->text() == "") {
                     item->setDistanceText("0");
                 }
-                if (item->getNameText() == nullptr) {
+                if (item->getNameTextItem() == nullptr) {
                     item->setWidth(averageBranchDistance * getScale() * coef * item->maxStepsToLeafParentDelta);
                 } else {
                     item->setWidth(0);
                 }
                 break;
             case PHYLOGRAM:
-                if (item->getDistanceText() != nullptr && item->getDistanceText()->text() == "0") {
+                if (item->getDistanceTextItem() != nullptr && item->getDistanceTextItem()->text() == "0") {
                     item->setDistanceText("");
                 }
                 item->setWidth(qAbs(item->getDist()) * getScale() * coef);
                 break;
             case CLADOGRAM:
-                if (item->getDistanceText() != nullptr && item->getDistanceText()->text() == "") {
+                if (item->getDistanceTextItem() != nullptr && item->getDistanceTextItem()->text() == "") {
                     item->setDistanceText("0");
                 }
-                if (item->getNameText() == nullptr) {
+                if (item->getNameTextItem() == nullptr) {
                     item->setWidth(averageBranchDistance * getScale() * coef);
                 } else {
                     item->setWidth(0);
@@ -1060,9 +1060,9 @@ void TreeViewerUI::updateBranchSettings() {
     setOptionValue(BRANCH_COLOR, branch->getSettings()[BRANCH_COLOR]);
     QFont font;
     QColor color;
-    if (branch->getDistanceText() != nullptr) {
-        font = branch->getDistanceText()->font();
-        color = branch->getDistanceText()->brush().color();
+    if (branch->getDistanceTextItem() != nullptr) {
+        font = branch->getDistanceTextItem()->font();
+        color = branch->getDistanceTextItem()->brush().color();
     }
     bool isCustomFont = font != QFont();
     bool isCustomColor = color != QColor();
@@ -1320,14 +1320,14 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
     while (!stack.isEmpty()) {
         GraphicsBranchItem* node = stack.pop();
         if (labelTypes.testFlag(LabelType_SequenceName)) {
-            if (node->getNameText() != nullptr) {
+            if (node->getNameTextItem() != nullptr) {
                 node->setVisible(getOptionValue(SHOW_LABELS).toBool());
-                maxNameWidth = qMax(maxNameWidth, node->getNameText()->sceneBoundingRect().width());
+                maxNameWidth = qMax(maxNameWidth, node->getNameTextItem()->sceneBoundingRect().width());
             }
         }
         if (labelTypes.testFlag(LabelType_Distance)) {
-            if (node->getDistanceText() != nullptr) {
-                node->getDistanceText()->setVisible(getOptionValue(SHOW_DISTANCES).toBool());
+            if (node->getDistanceTextItem() != nullptr) {
+                node->getDistanceTextItem()->setVisible(getOptionValue(SHOW_DISTANCES).toBool());
             }
         }
         foreach (QGraphicsItem* item, node->childItems()) {
@@ -1395,7 +1395,7 @@ void TreeViewerUI::sl_textSettingsTriggered() {
             }
             while (!stack.empty()) {
                 GraphicsBranchItem* item = stack.pop();
-                if (item->getNameText() == nullptr) {
+                if (item->getNameTextItem() == nullptr) {
                     foreach (QGraphicsItem* citem, item->childItems()) {
                         GraphicsBranchItem* gbi = dynamic_cast<GraphicsBranchItem*>(citem);
                         if (gbi != nullptr) {
@@ -1549,7 +1549,7 @@ void TreeViewerUI::updateLabelsAlignment() {
     qreal labelsShift = 0;
     while (!stack.empty()) {
         GraphicsBranchItem* item = stack.pop();
-        QGraphicsSimpleTextItem* nameText = item->getNameText();
+        QGraphicsSimpleTextItem* nameText = item->getNameTextItem();
         if (nameText == nullptr) {
             foreach (QGraphicsItem* citem, item->childItems()) {
                 GraphicsBranchItem* gbi = dynamic_cast<GraphicsBranchItem*>(citem);
@@ -1568,7 +1568,7 @@ void TreeViewerUI::updateLabelsAlignment() {
                     textRect.setWidth(transformedRect.width());
                     textRightPos = textRect.right();
                 }
-                newWidth = sceneRightPos - (textRightPos + GraphicsBranchItem::TextSpace);
+                newWidth = sceneRightPos - (textRightPos + GraphicsBranchItem::TEXT_SPACING);
                 labelsShift = qMin(newWidth, labelsShift);
             }
             item->setWidth(newWidth);

@@ -2881,7 +2881,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 
     auto collapsedNodeSelector = [&](GraphicsButtonItem* buttonNode) {
         auto branchNode = dynamic_cast<GraphicsBranchItem*>(buttonNode->parentItem());
-        auto distanceTextNode = branchNode->getDistanceText();
+        auto distanceTextNode = branchNode->getDistanceTextItem();
         return distanceTextNode != nullptr && distanceTextNode->text() == "0.068";
     };
     auto selectNodeToCollapse = [&](QList<GraphicsButtonItem*> nodes) -> GraphicsButtonItem* {

@@ -48,22 +48,14 @@ void TreeViewerState::setPhyObject(const GObjectReference& ref) {
     stateData[PHY_OBJ] = QVariant::fromValue<GObjectReference>(ref);
 }
 
-qreal TreeViewerState::getVerticalZoom() const {
+double TreeViewerState::getVerticalZoom() const {
     QVariant v = stateData.value(V_ZOOM);
-    if (v.isValid()) {
-        return v.value<qreal>();
-    } else {
-        return 1.0f;
-    }
+    return v.isValid() ? v.value<double>() : 1.0f;
 }
 
-qreal TreeViewerState::getHorizontalZoom() const {
+double TreeViewerState::getHorizontalZoom() const {
     QVariant v = stateData.value(H_ZOOM);
-    if (v.isValid()) {
-        return v.value<qreal>();
-    } else {
-        return 1.0f;
-    }
+    return v.isValid() ? v.value<double>() : 1.0f;
 }
 
 void TreeViewerState::setVerticalZoom(qreal s) {
@@ -76,11 +68,7 @@ void TreeViewerState::setHorizontalZoom(qreal s) {
 
 QTransform TreeViewerState::getTransform() const {
     QVariant v = stateData.value(TRANSFORM);
-    if (v.type() == QVariant::Transform) {
-        return v.value<QTransform>();
-    }
-    QTransform t;
-    return t;
+    return v.type() == QVariant::Transform ? v.value<QTransform>() : QTransform();
 }
 
 void TreeViewerState::setTransform(const QTransform& m) {

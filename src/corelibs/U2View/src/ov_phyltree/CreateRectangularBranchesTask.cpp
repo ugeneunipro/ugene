@@ -105,12 +105,12 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
                     minDistance = dist;
                 }
                 maxDistance = qMax(maxDistance, dist);
-                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::up : GraphicsRectangularBranchItem::down);
+                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Up : GraphicsRectangularBranchItem::Down);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
                 items[i]->setParentItem(item);
-                QRectF rect = items[i]->getDistanceText()->boundingRect();
-                items[i]->getDistanceText()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
+                QRectF rect = items[i]->getDistanceTextItem()->boundingRect();
+                items[i]->getDistanceTextItem()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
             }
         }
         return item;

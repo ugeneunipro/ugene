@@ -231,7 +231,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITes
     QList<GraphicsRectangularBranchItem*> graphicsRectangularBranchItems = getOrderedRectangularBranches(os);
     for (GraphicsRectangularBranchItem* rectangularBranch : qAsConst(graphicsRectangularBranchItems)) {
         GT_CHECK_RESULT(rectangularBranch != nullptr, "Rectangular branch is NULL", QList<GraphicsButtonItem*>());
-        GraphicsButtonItem* rectangularNode = rectangularBranch->getButton();
+        GraphicsButtonItem* rectangularNode = rectangularBranch->getButtonItem();
         if (rectangularNode != nullptr) {
             orderedRectangularNodes << rectangularNode;
         }
@@ -266,7 +266,7 @@ QList<qreal> GTUtilsPhyTree::getOrderedRectangularBranchesDistances(HI::GUITestO
 GraphicsButtonItem* GTUtilsPhyTree::getRootRectangularNode(HI::GUITestOpStatus& os) {
     GraphicsRectangularBranchItem* rootBranch = getRootRectangularBranch(os);
     GT_CHECK_RESULT(nullptr != rootBranch, "Root branch is NULL", nullptr);
-    return rootBranch->getButton();
+    return rootBranch->getButtonItem();
 }
 #undef GT_METHOD_NAME
 
@@ -295,7 +295,7 @@ QList<GraphicsRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangul
     QList<GraphicsRectangularBranchItem*> childRectangularBranches;
     foreach (QGraphicsItem* childItem, childItems) {
         GraphicsRectangularBranchItem* childRectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(childItem);
-        if (nullptr != childRectangularBranch && nullptr != childRectangularBranch->getDistanceText()) {
+        if (nullptr != childRectangularBranch && nullptr != childRectangularBranch->getDistanceTextItem()) {
             childRectangularBranches << childRectangularBranch;
         }
     }
@@ -318,7 +318,7 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(GraphicsRectangularBranchItem* fi
     SAFE_POINT(nullptr != second, "Second rectangular branch item is NULL", false);
 
     if (first->getDirection() == second->getDirection()) {
-        if (first->getDirection() == GraphicsBranchItem::up) {
+        if (first->getDirection() == GraphicsBranchItem::Up) {
             return first->getDist() < second->getDist();
         } else {
             return first->getDist() > second->getDist();

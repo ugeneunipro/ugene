@@ -34,11 +34,12 @@ class U2VIEW_EXPORT GraphicsUnrootedBranchItem : public GraphicsBranchItem {
 public:
     GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
 
-    QRectF boundingRect() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    QRectF boundingRect() const override;
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions();
+    void setLabelPositions() override;
 };
 
 }  // namespace U2
