@@ -41,7 +41,7 @@ public:
         Left,
         Right
     };
-    GraphicsBranchItem(bool withButton = true, const Side& side = Side::Left, double nodeValue = -1.0);
+    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue = -1.0);
 
     GraphicsButtonItem* getButtonItem() const;
 
@@ -59,7 +59,7 @@ public:
 
     void setWidthW(double w);
 
-    void setWidth(double w);
+    void setWidth(double newWidth);
 
     void setDist(double d);
 
@@ -67,7 +67,7 @@ public:
 
     void setSelectedRecurs(bool sel, bool selectChilds);
 
-    void setSelected(bool sel);
+    void setSelected(bool isSelected);
 
     bool isCollapsed() const;
 
@@ -114,7 +114,7 @@ signals:
 protected:
     GraphicsBranchItem(const QString& name);
 
-    GraphicsBranchItem(double d, bool withButton = true, double nodeValue = -1.0);
+    GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 

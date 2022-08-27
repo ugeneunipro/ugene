@@ -40,8 +40,8 @@ public:
 
     GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
     GraphicsRectangularBranchItem();
-    GraphicsRectangularBranchItem(double d, PhyBranch* branch, double nodeValue);
-    GraphicsRectangularBranchItem(double x, double y, const QString& name, double d, PhyBranch* branch);
+    GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
+    GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
     GraphicsRectangularBranchItem(double x, double y, const QString& name);
 
     QRectF boundingRect() const override;
@@ -56,9 +56,9 @@ public:
 
     void setHeightW(double h);
 
-    void setHeight(double h);
+    void setHeight(double newHeight);
 
-    void setHeightCoef(int coef);
+    void setHeightCoef(int newCoef);
 
     void setHeightCoefW(int coef);
 
