@@ -50,7 +50,7 @@ public:
 
     void setParentItem(QGraphicsItem* item);
 
-    Direction getDirection() const;
+    Side getSide() const;
 
     double getHeight() const;
 
@@ -62,9 +62,9 @@ public:
 
     void setHeightCoefW(int coef);
 
-    void setDirection(Direction d);
+    void setSide(const Side& side);
 
-    void toggleCollapsedState();
+    void toggleCollapsedState() override;
 
     void swapSiblings();
 
@@ -79,7 +79,6 @@ public:
 private:
     double height = 0;
     int currentHeightCoef = 1;
-    Direction direction = Direction::Up;
     PhyBranch* phyBranch = nullptr;
 };
 }  // namespace U2

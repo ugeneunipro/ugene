@@ -33,6 +33,67 @@
 
 namespace U2 {
 
+GraphicsBranchItem::GraphicsBranchItem(bool withButton, const GraphicsBranchItem::Side& _side, double nodeValue)
+    : side(_side) {
+    settings[BRANCH_THICKNESS] = 1;
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    setAcceptHoverEvents(false);
+    setAcceptedMouseButtons(Qt::NoButton);
+
+    if (withButton) {
+        buttonItem = new GraphicsButtonItem(nodeValue);
+        buttonItem->setParentItem(this);
+    }
+
+    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
+    setBrush(branchColor);
+    QPen pen1(branchColor);
+    pen1.setCosmetic(true);
+    setPen(pen1);
+}
+
+GraphicsBranchItem::GraphicsBranchItem(const QString& name) {
+    settings[BRANCH_THICKNESS] = 1;
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    setAcceptHoverEvents(false);
+    setAcceptedMouseButtons(Qt::NoButton);
+
+    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
+    QPen pen1(branchColor);
+    pen1.setStyle(Qt::DotLine);
+    pen1.setCosmetic(true);
+    setPen(pen1);
+
+    nameText = new QGraphicsSimpleTextItem(name);
+    nameText->setFont(TreeViewerUtils::getFont());
+    nameText->setBrush(Qt::darkGray);
+    setLabelPositions();
+    nameText->setParentItem(this);
+    nameText->setZValue(1);
+}
+
+GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValue) {
+    settings[BRANCH_THICKNESS] = 1;
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    setAcceptHoverEvents(false);
+    setAcceptedMouseButtons(Qt::NoButton);
+
+    if (withButton) {
+        buttonItem = new GraphicsButtonItem(nodeValue);
+        buttonItem->setParentItem(this);
+    }
+
+    initText(d);
+    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
+    QPen pen1(branchColor);
+    pen1.setCosmetic(true);
+    if (d < 0) {
+        pen1.setStyle(Qt::DashLine);
+    }
+    setPen(pen1);
+    setBrush(branchColor);
+}
+
 void GraphicsBranchItem::updateSettings(const OptionsMap& newSettings) {
     settings[BRANCH_COLOR] = newSettings[BRANCH_COLOR];
     settings[BRANCH_THICKNESS] = newSettings[BRANCH_THICKNESS];
@@ -202,66 +263,6 @@ void GraphicsBranchItem::initText(qreal d) {
     initDistanceText(str);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue) {
-    settings[BRANCH_THICKNESS] = 1;
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setAcceptHoverEvents(false);
-    setAcceptedMouseButtons(Qt::NoButton);
-
-    if (withButton) {
-        buttonItem = new GraphicsButtonItem(nodeValue);
-        buttonItem->setParentItem(this);
-    }
-
-    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    setBrush(branchColor);
-    QPen pen1(branchColor);
-    pen1.setCosmetic(true);
-    setPen(pen1);
-}
-
-GraphicsBranchItem::GraphicsBranchItem(const QString& name) {
-    settings[BRANCH_THICKNESS] = 1;
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setAcceptHoverEvents(false);
-    setAcceptedMouseButtons(Qt::NoButton);
-
-    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    QPen pen1(branchColor);
-    pen1.setStyle(Qt::DotLine);
-    pen1.setCosmetic(true);
-    setPen(pen1);
-
-    nameText = new QGraphicsSimpleTextItem(name);
-    nameText->setFont(TreeViewerUtils::getFont());
-    nameText->setBrush(Qt::darkGray);
-    setLabelPositions();
-    nameText->setParentItem(this);
-    nameText->setZValue(1);
-}
-
-GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValue) {
-    settings[BRANCH_THICKNESS] = 1;
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setAcceptHoverEvents(false);
-    setAcceptedMouseButtons(Qt::NoButton);
-
-    if (withButton) {
-        buttonItem = new GraphicsButtonItem(nodeValue);
-        buttonItem->setParentItem(this);
-    }
-
-    initText(d);
-    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    QPen pen1(branchColor);
-    pen1.setCosmetic(true);
-    if (d < 0) {
-        pen1.setStyle(Qt::DashLine);
-    }
-    setPen(pen1);
-    setBrush(branchColor);
-}
-
 qreal GraphicsBranchItem::getNodeLabelValue() const {
     return buttonItem != nullptr ? buttonItem->getNodeValue() : -1;
 }
@@ -363,16 +364,18 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
     return childsBoundingRect;
 }
 
+bool GraphicsBranchItem::isRoot() const {
+    return parentItem() == nullptr;
+}
+
 GraphicsBranchItem* GraphicsBranchItem::getRoot() {
-    GraphicsBranchItem* root = this;
-    while (dynamic_cast<GraphicsBranchItem*>(root->parentItem()) != nullptr) {
-        root = dynamic_cast<GraphicsBranchItem*>(root->parentItem());
-    }
+    GraphicsBranchItem* root = dynamic_cast<GraphicsBranchItem*>(topLevelItem());
+    SAFE_POINT(root != nullptr, "Top level item is not a branch item", root);
     return root;
 }
 
 void GraphicsBranchItem::emitBranchCollapsed(GraphicsBranchItem* branch) {
-    SAFE_POINT(this == getRoot(), "Not a root branch!", );
+    SAFE_POINT(isRoot(), "Not a root branch!", );
     emit si_branchCollapsed(branch);
 }
 
@@ -393,7 +396,7 @@ double GraphicsBranchItem::getWidth() const {
 }
 
 double GraphicsBranchItem::getDist() const {
-    return dist;
+    return distance;
 }
 
 void GraphicsBranchItem::setWidthW(double w) {
@@ -401,7 +404,7 @@ void GraphicsBranchItem::setWidthW(double w) {
 }
 
 void GraphicsBranchItem::setDist(double d) {
-    dist = d;
+    distance = d;
 }
 
 }  // namespace U2

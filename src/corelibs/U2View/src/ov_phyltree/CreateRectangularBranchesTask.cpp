@@ -105,7 +105,7 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
                     minDistance = dist;
                 }
                 maxDistance = qMax(maxDistance, dist);
-                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Up : GraphicsRectangularBranchItem::Down);
+                items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
                 items[i]->setParentItem(item);

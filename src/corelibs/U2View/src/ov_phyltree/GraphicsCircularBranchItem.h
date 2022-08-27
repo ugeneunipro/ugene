@@ -39,15 +39,11 @@ public:
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-    void setVisibleW(bool v);
-
 protected:
     void setLabelPositions() override;
 
 private:
     double height = 0;
-    Direction direction = Direction::Up;
-    bool visible = true;
 };
 
 }  // namespace U2

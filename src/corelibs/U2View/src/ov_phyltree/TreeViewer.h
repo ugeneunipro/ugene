@@ -305,10 +305,10 @@ private:
     void recalculateRectangularLayout();
     bool isSelectedCollapsed();
 
-    void setScale(qreal s) {
+    void setScale(double s) {
         view_scale = s;
     }
-    qreal getScale() {
+    double getScale() {
         return view_scale;
     }
 
@@ -334,10 +334,10 @@ private:
     /** Currently shown tree. Can be rect, circular or unrooted one. */
     GraphicsBranchItem* root = nullptr;
 
-    qreal maxNameWidth = 0;
-    qreal verticalScale = 1;
-    qreal horizontalScale = 1;
-    qreal view_scale;
+    double maxNameWidth = 0;
+    double verticalScale = 1;
+    double horizontalScale = 1;
+    double view_scale;
     QGraphicsLineItem* legend = nullptr;
     QGraphicsSimpleTextItem* scalebarText = nullptr;
     QMenu* buttonPopup = nullptr;

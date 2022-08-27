@@ -53,7 +53,6 @@ GraphicsBranchItem* CreateCircularBranchesTask::convert(GraphicsRectangularBranc
     double originalWidth = rectRoot->getWidth();
     rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);
     GraphicsCircularBranchItem* circualLayoutRoot = convertBranch(rectRoot, nullptr, coef);
-    circualLayoutRoot->setVisibleW(false);
     rectRoot->setWidthW(originalWidth);
     return circualLayoutRoot;
 }

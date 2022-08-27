@@ -36,11 +36,12 @@ class GraphicsRectangularBranchItem;
 class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
     Q_OBJECT
 public:
-    enum Direction {
-        Up,
-        Down
+    /** Side of the branch in the binary tree relative to the root node: left of right. */
+    enum Side {
+        Left,
+        Right
     };
-    GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
+    GraphicsBranchItem(bool withButton = true, const Side& side = Side::Left, double nodeValue = -1.0);
 
     GraphicsButtonItem* getButtonItem() const;
 
@@ -101,6 +102,9 @@ public:
     /** Returns top level (root) branch item in the tree. */
     GraphicsBranchItem* getRoot();
 
+    /**Returns true if the branch is a root branch of the tree. */
+    bool isRoot() const;
+
     /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
     void emitBranchCollapsed(GraphicsBranchItem* branch);
 
@@ -124,9 +128,11 @@ protected:
     QGraphicsEllipseItem* nameItemSelection = nullptr;
 
     double width = 0;
-    double dist = 0;
+    /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */
+    double distance = 0;
     bool collapsed = false;
     OptionsMap settings;
+    Side side = Side::Left;
 };
 
 }  // namespace U2

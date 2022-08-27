@@ -43,7 +43,7 @@ GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, do
     width = from->getWidth();
     setDist(from->getDist());
     setPos(width, 0);
-    angle = from->getDirection() == GraphicsBranchItem::Up ? angle : -angle;
+    angle = from->getSide() == GraphicsBranchItem::Right ? angle : -angle;
     setTransform(QTransform().translate(-width, 0).rotate(angle).translate(width, 0));
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);

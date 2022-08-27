@@ -138,26 +138,27 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
 
 void GraphicsRectangularBranchItem::setParentItem(QGraphicsItem* item) {
     prepareGeometryChange();
-    height = direction == Up ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
-    setPos(width, direction == Up ? height : -height);
+    height = side == Right ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
+    setPos(width, side == Right ? height : -height);
 
     QAbstractGraphicsShapeItem::setParentItem(item);
 }
 
-void GraphicsRectangularBranchItem::setDirection(Direction d) {
+void GraphicsRectangularBranchItem::setSide(const Side& newSide) {
+    CHECK(side != newSide, );
     prepareGeometryChange();
-    direction = d;
+    side = newSide;
 }
 
 QRectF GraphicsRectangularBranchItem::boundingRect() const {
-    return QRectF(-width - 0.5, direction == Up ? -height : -0.5, width + 0.5, height + 0.5);
+    return QRectF(-width - 0.5, side == Right ? -height : -0.5, width + 0.5, height + 0.5);
 }
 
 void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* optionItem, QWidget*) {
     painter->setPen(pen());
     if (false == qFuzzyCompare(width, 0)) {
         painter->drawLine(QPointF(0, 0), QPointF(-width, 0));
-        painter->drawLine(QPointF(-width, 0), QPointF(-width, direction == Up ? -height : height));
+        painter->drawLine(QPointF(-width, 0), QPointF(-width, side == Right ? -height : height));
     }
     GraphicsBranchItem::paint(painter, optionItem);
 }
@@ -167,7 +168,7 @@ void GraphicsRectangularBranchItem::setHeight(double h) {
         return;
     }
 
-    if (direction == Up) {
+    if (side == Right) {
         setPos(pos().x(), pos().y() - height + h);
     } else {
         setPos(pos().x(), pos().y() + height - h);
@@ -268,7 +269,7 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, double& mi
                     minDistance = dist;
                 }
                 maxDistance = qMax(maxDistance, dist);
-                items[i]->setDirection(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Up : GraphicsRectangularBranchItem::Down);
+                items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
                 items[i]->setHeightCoefW(1);
@@ -295,8 +296,8 @@ GraphicsRectangularBranchItem* GraphicsRectangularBranchItem::getChildItemByPhyB
     return nullptr;
 }
 
-GraphicsRectangularBranchItem::Direction GraphicsRectangularBranchItem::getDirection() const {
-    return direction;
+GraphicsRectangularBranchItem::Side GraphicsRectangularBranchItem::getSide() const {
+    return side;
 }
 
 double GraphicsRectangularBranchItem::getHeight() const {
