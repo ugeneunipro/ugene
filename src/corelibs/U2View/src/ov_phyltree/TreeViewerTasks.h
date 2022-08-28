@@ -83,7 +83,7 @@ public:
     OpenSavedTreeViewerTask(const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
-    static void updateRanges(const QVariantMap& stateData, TreeViewer* ctx);
+    static void updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer);
 };
 
 class UpdateTreeViewerTask : public ObjectViewTask {

@@ -152,26 +152,20 @@ void OpenSavedTreeViewerTask::open() {
     PhyTreeObject* phyObject = qobject_cast<PhyTreeObject*>(obj);
     SAFE_POINT(phyObject != nullptr, "Invalid tree object detected", );
 
-    Task* createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
+    auto createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     scheduler->registerTopLevelTask(createTask);
 }
 
-void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeViewer* ctx) {
+void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer) {
     TreeViewerState state(stateData);
 
     QTransform m = state.getTransform();
     if (m != QTransform()) {
-        ctx->setTransform(m);
+        treeViewer->setTransform(m);
     }
-
-    qreal hZoom = state.getHorizontalZoom();
-    ctx->setHorizontalZoom(hZoom);
-
-    qreal vZoom = state.getVerticalZoom();
-    ctx->setVerticalZoom(vZoom);
-
-    ctx->setSettingsState(stateData);
+    treeViewer->setZoomLevel(state.getZoomLevel());
+    treeViewer->setSettingsState(stateData);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -96,17 +96,12 @@ QVariantMap TreeViewer::saveState() {
     return TreeViewerState::saveState(this);
 }
 
-qreal TreeViewer::getHorizontalZoom() const {
-    return ui->getHorizontalZoom();
+double TreeViewer::getZoomLevel() const {
+    return ui->zoomLevel;
 }
-void TreeViewer::setHorizontalZoom(qreal z) {
-    ui->setHorizontalZoom(z);
-}
-qreal TreeViewer::getVerticalZoom() const {
-    return ui->getVerticalZoom();
-}
-void TreeViewer::setVerticalZoom(qreal z) {
-    ui->setVerticalZoom(z);
+
+void TreeViewer::setZoomLevel(double zoomLevel) {
+    ui->setZoomLevel(zoomLevel);
 }
 
 QVariantMap TreeViewer::getSettingsState() const {
@@ -360,11 +355,22 @@ void TreeViewer::sl_onPhyTreeChanged() {
 ////////////////////////////
 // TreeViewerUI
 
-const qreal TreeViewerUI::ZOOM_COEF = 1.2;
-const qreal TreeViewerUI::MINIMUM_ZOOM = 0.1;
-const qreal TreeViewerUI::MAXIMUM_ZOOM = 100.0;
-const int TreeViewerUI::MARGIN = 10;
-const qreal TreeViewerUI::SIZE_COEF = 0.1;
+/** Zoom level change per single zoomIn/zoomOut operation. */
+static constexpr double ZOOM_LEVEL_STEP = 1.2;
+
+/** Minimum zoom level: 1/4 of the fit-to-view size. */
+static constexpr double MINIMUM_ZOOM = 0.25;
+
+/**
+ * Maximum zoom level: 100x of the fit-to-view size.
+ * TODO: a static value may be not enough for very big trees: make this value dynamic.
+ */
+static const double MAXIMUM_ZOOM = 100.0;
+
+/** Margins around the whole tree on the scene. On-screen pixels. */
+static constexpr int TREE_MARGINS = 10;
+
+static constexpr double SIZE_COEF = 0.1;
 
 TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     : phyObject(_treeViewer->getPhyObject()),
@@ -703,7 +709,7 @@ void TreeViewerUI::updateRectLayoutBranches() {
         SAFE_POINT(rectItem != nullptr, "Not a rect root!", );
         rectItem->setHeightCoef(heightCoef);
 
-        double coef = qMax(1.0, TreeViewerUI::SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
+        double coef = qMax(1.0, SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
 
         switch (type) {
             case DEFAULT:
@@ -868,7 +874,7 @@ void TreeViewerUI::addLegend() {
 }
 
 void TreeViewerUI::updateLegend() {
-    qreal coef = qMax(1.0, TreeViewerUI::SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
+    qreal coef = qMax(1.0, SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
     qreal WIDTH = getOptionValue(SCALEBAR_RANGE).toDouble() * coef * treeViewer->getScale();
 
     qreal d = getOptionValue(SCALEBAR_RANGE).toDouble();
@@ -897,38 +903,26 @@ void TreeViewerUI::updateLegend() {
 }
 
 void TreeViewerUI::wheelEvent(QWheelEvent* we) {
-    qreal zoom1 = pow(ZOOM_COEF, we->delta() / 120.0);
-    setZoom(zoom1);
+    double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->delta() / 120.0);
+    setZoomLevel(newZoomLevel);
     we->accept();
 }
 
-void TreeViewerUI::setZoom(qreal newZoom) {
-    if (newZoom < 0) {
-        return;
-    }
-    double verticalZoom = verticalScale * newZoom;
-    double horizontalZoom = horizontalScale * newZoom;
+void TreeViewerUI::setZoomLevel(double newZoomLevel) {
+    CHECK(newZoomLevel >= MINIMUM_ZOOM && newZoomLevel <= MAXIMUM_ZOOM, );
 
-    verticalZoom = qMax(MINIMUM_ZOOM, verticalZoom);
-    verticalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(HEIGHT_COEF).toInt() * TreeViewerUI::SIZE_COEF, 1.0), verticalZoom);
-    horizontalZoom = qMax(MINIMUM_ZOOM, horizontalZoom);
-    horizontalZoom = qMin(MAXIMUM_ZOOM * qMax(getOptionValue(WIDTH_COEF).toInt() * TreeViewerUI::SIZE_COEF, 1.0), horizontalZoom);
+    uiLog.trace("New zoom level: " + QString::number(newZoomLevel));
+    double scaleChange = newZoomLevel / zoomLevel;
+    zoomLevel = newZoomLevel;
 
-    qreal dScaleX = horizontalZoom / horizontalScale;
-    qreal dScaleY = verticalZoom / verticalScale;
-    verticalScale = verticalZoom;
-    horizontalScale = horizontalZoom;
-
-    qreal nodeScale = horizontalScale * (isRectangularLayoutMode() ? 1.2 : 0.4);
-    const QList<QGraphicsItem*> itemList = scene()->items();
+    double nodeScale = zoomLevel * (isRectangularLayoutMode() ? 1.2 : 0.4);
+    QList<QGraphicsItem*> itemList = scene()->items();
     for (QGraphicsItem* item : qAsConst(itemList)) {
-        GraphicsButtonItem* nodeItem = dynamic_cast<GraphicsButtonItem*>(item);
-        if (nodeItem != nullptr) {
+        if (auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item)) {
             nodeItem->setScale(1 / nodeScale);
         }
     }
-    scale(dScaleX, dScaleY);
-
+    scale(scaleChange, scaleChange);
     updateActionsState();
 }
 
@@ -974,8 +968,8 @@ void TreeViewerUI::resizeEvent(QResizeEvent* e) {
 
 void TreeViewerUI::fitIntoView() {
     QRectF rect = scene()->sceneRect();
-    rect.setWidth(rect.width() / horizontalScale);
-    rect.setHeight(rect.height() / verticalScale);
+    rect.setWidth(rect.width() / zoomLevel);
+    rect.setHeight(rect.height() / zoomLevel);
     rect.moveCenter(scene()->sceneRect().center());
     fitInView(rect, Qt::KeepAspectRatio);
 }
@@ -990,11 +984,11 @@ void TreeViewerUI::updateRect() {
     SAFE_POINT(root != nullptr, "Pointer to tree root is NULL", );
     QTransform viewTransform = transform();
     QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | root->sceneBoundingRect();
-    rect.setLeft(rect.left() - MARGIN);
-    rect.setRight(rect.right() + MARGIN);
-    rect.setTop(rect.top() - MARGIN);
-    rect.setBottom(rect.bottom() + legend->childrenBoundingRect().height() + MARGIN);
-    legend->setPos(0, rect.bottom() - MARGIN);
+    rect.setLeft(rect.left() - TREE_MARGINS);
+    rect.setRight(rect.right() + TREE_MARGINS);
+    rect.setTop(rect.top() - TREE_MARGINS);
+    rect.setBottom(rect.bottom() + legend->childrenBoundingRect().height() + TREE_MARGINS);
+    legend->setPos(0, rect.bottom() - TREE_MARGINS);
     scene()->setSceneRect(rect);
 }
 
@@ -1007,8 +1001,8 @@ void TreeViewerUI::sl_swapTriggered() {
             break;
         }
     }
-    qreal curHScale = horizontalScale;
-    qreal curVScale = verticalScale;
+    qreal curHScale = zoomLevel;
+    qreal curVScale = zoomLevel;
 
     QTransform curTransform = viewportTransform();
     setTransformationAnchor(NoAnchor);
@@ -1018,8 +1012,8 @@ void TreeViewerUI::sl_swapTriggered() {
     updateScene(true);
 
     setTransform(curTransform);
-    horizontalScale = curHScale;
-    verticalScale = curVScale;
+    zoomLevel = curHScale;
+    zoomLevel = curVScale;
     updateActionsState();
     setTransformationAnchor(AnchorUnderMouse);
 }
@@ -1425,7 +1419,7 @@ void TreeViewerUI::sl_treeSettingsTriggered() {
 void TreeViewerUI::sl_zoomToSel() {
     QList<QGraphicsItem*> selectedItems = scene()->selectedItems();
     if (selectedItems.isEmpty()) {
-        setZoom(ZOOM_COEF);
+        setZoomLevel(ZOOM_LEVEL_STEP);
     } else {
         GraphicsButtonItem* topButton = nullptr;
         foreach (QGraphicsItem* graphItem, selectedItems) {
@@ -1436,21 +1430,21 @@ void TreeViewerUI::sl_zoomToSel() {
             }
         }
         if (!topButton) {
-            setZoom(ZOOM_COEF);
+            setZoomLevel(ZOOM_LEVEL_STEP);
         } else {
             defaultZoom();
             QGraphicsItem* topItem = topButton->parentItem();
             QRectF rect = topItem->mapRectToScene(topItem->childrenBoundingRect());
             QRectF rect1 = scene()->sceneRect();
             qreal zoom1 = qMin(rect1.width() / rect.width(), rect1.height() / rect.height());
-            setZoom(zoom1);
+            setZoomLevel(zoom1);
             centerOn(rect.center());
         }
     }
 }
 
 void TreeViewerUI::sl_zoomOut() {
-    setZoom(1.0 / (qreal)ZOOM_COEF);
+    setZoomLevel(1.0 / ZOOM_LEVEL_STEP);
 }
 
 void TreeViewerUI::sl_zoomToAll() {
@@ -1458,7 +1452,7 @@ void TreeViewerUI::sl_zoomToAll() {
 }
 
 void TreeViewerUI::defaultZoom() {
-    setZoom(1.0 / horizontalScale);
+    setZoomLevel(1);
 }
 
 void TreeViewerUI::recalculateRectangularLayout() {
@@ -1493,8 +1487,8 @@ double TreeViewerUI::getAverageBranchDistance() const {
 
 void TreeViewerUI::updateActionsState() {
     int widthCoeff = getOptionValue(WIDTH_COEF).toInt();
-    treeViewer->zoomToSelectionAction->setEnabled(horizontalScale < MAXIMUM_ZOOM * qMax(widthCoeff * TreeViewerUI::SIZE_COEF, 1.0));
-    treeViewer->zoomOutAction->setEnabled(horizontalScale > MINIMUM_ZOOM);
+    treeViewer->zoomToSelectionAction->setEnabled(zoomLevel < MAXIMUM_ZOOM * qMax(widthCoeff * SIZE_COEF, 1.0));
+    treeViewer->zoomOutAction->setEnabled(zoomLevel > MINIMUM_ZOOM);
 
     if (isSelectedCollapsed()) {
         treeViewer->collapseAction->setText(QObject::tr("Expand"));

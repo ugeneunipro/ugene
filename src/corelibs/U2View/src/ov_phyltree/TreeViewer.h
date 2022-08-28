@@ -87,13 +87,9 @@ public:
         scale = newScale;
     }
 
-    qreal getHorizontalZoom() const;
+    void setZoomLevel(double zoomLevel);
 
-    void setHorizontalZoom(qreal z);
-
-    qreal getVerticalZoom() const;
-
-    void setVerticalZoom(qreal z);
+    double getZoomLevel() const;
 
     QTransform getTransform() const;
 
@@ -159,16 +155,11 @@ protected:
 class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     Q_OBJECT
     Q_DISABLE_COPY(TreeViewerUI)
+    friend class TreeViewer;
 
 public:
     TreeViewerUI(TreeViewer* treeViewer);
     virtual ~TreeViewerUI();
-
-    static const qreal ZOOM_COEF;
-    static const qreal MINIMUM_ZOOM;
-    static const qreal MAXIMUM_ZOOM;
-    static const int MARGIN;
-    static const qreal SIZE_COEF;
 
     const QMap<TreeViewOption, QVariant>& getSettings() const;
     QVariant getOptionValue(TreeViewOption option) const;
@@ -176,20 +167,6 @@ public:
 
     void updateSettings(const OptionsMap& settings);
     void changeOption(TreeViewOption option, const QVariant& newValue);
-
-    qreal getHorizontalZoom() const {
-        return horizontalScale;
-    }
-    void setHorizontalZoom(qreal z) {
-        horizontalScale = z;
-    }
-
-    qreal getVerticalZoom() const {
-        return verticalScale;
-    }
-    void setVerticalZoom(qreal z) {
-        verticalScale = z;
-    }
 
     QVariantMap getSettingsState() const;
     void setSettingsState(const QVariantMap& m);
@@ -226,7 +203,7 @@ protected:
 
     virtual void setTreeLayout(const TreeLayout& newLayout);
 
-    void setZoom(qreal newZoom);
+    void setZoomLevel(double newZoomLevel);
 
     void defaultZoom();
 
@@ -335,8 +312,12 @@ private:
     GraphicsBranchItem* root = nullptr;
 
     double maxNameWidth = 0;
-    double verticalScale = 1;
-    double horizontalScale = 1;
+
+    /**
+     * Scale of the view. Changed on zoom-in/zoom-out.
+     * ZoomLevel = 1 is equal to the Fit-Into-View mode (when window is resized zoom level does not change, but on-screen size of elements changes.
+     */
+    double zoomLevel = 1;
     double view_scale;
     QGraphicsLineItem* legend = nullptr;
     QGraphicsSimpleTextItem* scalebarText = nullptr;
