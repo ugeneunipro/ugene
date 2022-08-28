@@ -41,6 +41,9 @@ public:
     static QList<GraphicsButtonItem*> getUnselectedNodes(HI::GUITestOpStatus& os);
     static QList<GraphicsButtonItem*> getNodes(HI::GUITestOpStatus& os);
 
+    /** Finds 'button' node in the tree by 2 branch texts: left & right. */
+    static GraphicsButtonItem* getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText);
+
     static QList<QGraphicsSimpleTextItem*> getLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView = nullptr);
     static QList<QGraphicsSimpleTextItem*> getVisibleLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView = nullptr);
     static QList<QGraphicsSimpleTextItem*> getDistances(HI::GUITestOpStatus& os, QGraphicsView* treeView = nullptr);
@@ -82,9 +85,9 @@ public:
      */
     static QList<GraphicsButtonItem*> getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount = -1);
     static QList<GraphicsRectangularBranchItem*> getOrderedRectangularBranches(HI::GUITestOpStatus& os);
-    static QList<qreal> getOrderedRectangularBranchesDistances(HI::GUITestOpStatus& os);
 
-    static GraphicsButtonItem* getRootRectangularNode(HI::GUITestOpStatus& os);
+    static GraphicsButtonItem* getRootNode(HI::GUITestOpStatus& os);
+    static GraphicsBranchItem* getRootBranch(HI::GUITestOpStatus& os);
     static GraphicsRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
 
 private:

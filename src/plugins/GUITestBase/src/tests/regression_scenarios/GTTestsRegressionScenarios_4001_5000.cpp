@@ -1511,35 +1511,35 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     QString defaultFontFamily;
     int defaultSize;
 
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16,
-                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-                      .arg(QString::number(nodes.size())));
-    // 1. Open samples/CLUSTALW/COI.aln and build tree for it
-    GTUtilsPhyTree::clickNode(os, nodes[0]);  // drop sticked ruler
+    // Open samples/CLUSTALW/COI.aln and build tree for it
+    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
     // 2. Select node, change font size to 16, also remember default parameters
-    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    GTUtilsPhyTree::clickNode(os, node);
     getFontSettings(os, defaultFontFamily, defaultSize);
     changeFontAndSize(os, defaultFontFamily, 16);
-    // 3. Click on parent node for node selected at step 1.
-    // Change its font to Arial with size 22
-    GTUtilsPhyTree::clickNode(os, nodes[2]);
-    changeFontAndSize(os, "Arial", 22);
+
+    QString customFontName = isOsLinux() ? "Times New Roman" : "Arial";
+
+    // Click on the parent node for node.
+    // Change its font to Arial with size 22.
+    GraphicsButtonItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
+    GTUtilsPhyTree::clickNode(os, parentNode);
+    changeFontAndSize(os, customFontName, 22);
     // 4. Go back to first one node
-    // Expected state: its font became Arial with size 22
-    GTUtilsPhyTree::clickNode(os, nodes[1]);
-    fontChecker(os, "Arial", 22);
+    // Expected state: its font became 'customFontName' with size 22
+    GTUtilsPhyTree::clickNode(os, node);
+    fontChecker(os, customFontName, 22);
     // 5. Change font to default
     changeFontAndSize(os, defaultFontFamily, 22);
     // 6. Select parent node again
-    // Expected state: font still Arial with size 22
-    GTUtilsPhyTree::clickNode(os, nodes[2]);
-    fontChecker(os, "Arial", 22);
+    // Expected state: font still 'customFontName' with size 22
+    GTUtilsPhyTree::clickNode(os, parentNode);
+    fontChecker(os, customFontName, 22);
     // 7. Change font and size to defaults
     changeFontAndSize(os, defaultFontFamily, defaultSize);
     // 8. Select first node
     // Expected state: font and size now became default
-    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    GTUtilsPhyTree::clickNode(os, node);
     fontChecker(os, defaultFontFamily, defaultSize);
 }
 
@@ -1560,14 +1560,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     QString defaultFontFamily;
     int defaultSize;
 
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16,
-                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-                      .arg(QString::number(nodes.size())));
-    // 1. Open samples/CLUSTALW/COI.aln and build tree for it
-    GTUtilsPhyTree::clickNode(os, nodes[0]);  // drop sticked ruler
-    // 2. Select node, change font size to 16
-    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+    GTUtilsPhyTree::clickNode(os, node);
     getFontSettings(os, defaultFontFamily, defaultSize);
     changeFontAndSize(os, defaultFontFamily, 16);
     // 3. Close OP tab
@@ -1575,10 +1569,10 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     // 4. Click to empty space near the node to reset selection
     GTThread::waitForMainThread();
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
+    QPointF sceneCoord = node->mapToScene(node->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
-    globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
+    globalCoord += QPoint(node->boundingRect().width() / 2 + 8, node->boundingRect().height() / 2 + 8);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
     // 5. Open OP tab
@@ -2147,11 +2141,8 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTFileDialog::openFile(os, testDir + "_common_data/newick/sample5.newick");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getNodes(os);
-    CHECK_SET_ERR(nodes.size() == 5, QString("Unexpected number of nodes %1").arg(nodes.size()));
-
-    GraphicsButtonItem* rootNode = nodes[0];
-    GraphicsButtonItem* childNode = nodes[2];
+    GraphicsButtonItem* rootNode = GTUtilsPhyTree::getRootNode(os);
+    GraphicsButtonItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.336", "0.061");
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot Tree"}, PopupChecker::IsDisabled));
     GTUtilsPhyTree::clickNode(os, rootNode, Qt::RightButton);
@@ -5202,43 +5193,42 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelPhyTree::openTab(os);
 
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os, 16);
-    int nodeIndex = 5;
-    int childNodeIndex = 4;
-    int parentNodeIndex = 6;
-    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
+    GraphicsButtonItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
+    GraphicsButtonItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.068", "0.007");
+    GTUtilsPhyTree::clickNode(os, node);
 
     int originalFontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     int newFontSize1 = originalFontSize + 2;
     int newFontSize2 = originalFontSize + 4;
     GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize1);
 
-    GTUtilsPhyTree::clickNode(os, nodes[parentNodeIndex]);
+    GTUtilsPhyTree::clickNode(os, parentNode);
     int fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == originalFontSize, QString("1. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+    GTUtilsPhyTree::clickNode(os, node);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == newFontSize1, QString("2. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
 
-    GTUtilsPhyTree::clickNode(os, nodes[childNodeIndex]);
+    GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == newFontSize1, QString("3. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
 
     // Collapse subtree and change font again.
-    GTUtilsPhyTree::doubleClickNode(os, nodes[nodeIndex]);
+    GTUtilsPhyTree::doubleClickNode(os, node);
     GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize2);
 
-    GTUtilsPhyTree::clickNode(os, nodes[parentNodeIndex]);
+    GTUtilsPhyTree::clickNode(os, parentNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == originalFontSize, QString("4. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, nodes[nodeIndex]);
+    GTUtilsPhyTree::clickNode(os, node);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == newFontSize2, QString("5. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
 
-    GTUtilsPhyTree::doubleClickNode(os, nodes[nodeIndex]);
-    GTUtilsPhyTree::clickNode(os, nodes[childNodeIndex]);
+    GTUtilsPhyTree::doubleClickNode(os, node);
+    GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     CHECK_SET_ERR(fontSize == newFontSize2, QString("6. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
 }

@@ -1902,26 +1902,24 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
-    // Click to empty space near the node to reset selection
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16,
-                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-                      .arg(QString::number(nodes.size())));
     GTThread::waitForMainThread();
+
+    // Click to empty space near the node to reset selection
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
+    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
+    QPointF sceneCoord = node->mapToScene(node->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
-    globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
+    globalCoord += QPoint(node->boundingRect().width() / 2 + 8, node->boundingRect().height() / 2 + 8);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
-    //    3. change branch color
+    // Change branch color
     if (!isOsMac()) {
         setBranchColor(os, 255, 0, 0);
     } else {
         expandPenSettings(os);
     }
-    //    Expected state: color changed
+    // Expected state: color changed
     CHECK_SET_ERR(treeView != nullptr, "tree view not found");
     QString colorName;
     if (!isOsMac()) {
@@ -1932,7 +1930,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     double initPercent = colorPercent(os, treeView, colorName);
     CHECK_SET_ERR(initPercent != 0, "color not changed");
 
-    //    4. change  line Weight
+    // Change  line Weight
     auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
     GTSpinBox::setValue(os, lineWeightSpinBox, 30, GTGlobals::UseKeyBoard);
     double finalPercent = colorPercent(os, treeView, colorName);

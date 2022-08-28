@@ -45,9 +45,13 @@ public:
 
     GraphicsButtonItem* getButtonItem() const;
 
+    GraphicsBranchItem* getChildBranch(const Side& side) const;
+
     double getNodeLabelValue() const;
 
     QGraphicsSimpleTextItem* getDistanceTextItem() const;
+
+    QString getDistanceText() const;
 
     QGraphicsSimpleTextItem* getNameTextItem() const;
 

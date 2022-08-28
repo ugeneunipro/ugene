@@ -374,8 +374,24 @@ GraphicsButtonItem* GraphicsBranchItem::getButtonItem() const {
     return buttonItem;
 }
 
+GraphicsBranchItem* GraphicsBranchItem::getChildBranch(const GraphicsBranchItem::Side& childBranchSide) const {
+    QList<QGraphicsItem*> children = childItems();
+    for (QGraphicsItem* childItem : qAsConst(children)) {
+        if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(childItem)) {
+            if (childBranch->side == childBranchSide) {
+                return childBranch;
+            }
+        }
+    }
+    return nullptr;
+}
+
 QGraphicsSimpleTextItem* GraphicsBranchItem::getDistanceTextItem() const {
     return distanceText;
+}
+
+QString GraphicsBranchItem::getDistanceText() const {
+    return distanceText == nullptr ? "" : distanceText->text();
 }
 
 QGraphicsSimpleTextItem* GraphicsBranchItem::getNameTextItem() const {

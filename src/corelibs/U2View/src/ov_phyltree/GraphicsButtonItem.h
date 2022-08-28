@@ -34,6 +34,7 @@ namespace U2 {
 
 class TreeViewerUI;
 class PhyTreeObject;
+class GraphicsBranchItem;
 
 class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
 public:
@@ -58,6 +59,12 @@ public:
     const QGraphicsSimpleTextItem* getLabel() const;
 
     double getNodeValue() const;
+
+    GraphicsBranchItem* getParentBranchItem() const;
+
+    GraphicsBranchItem* getLeftBranchItem() const;
+
+    GraphicsBranchItem* getRightBranchItem() const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e) override;

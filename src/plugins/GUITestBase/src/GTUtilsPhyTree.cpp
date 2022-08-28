@@ -39,14 +39,30 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsPhyTree"
 
+#define GT_METHOD_NAME "getNodeByBranchText"
+GraphicsButtonItem* GTUtilsPhyTree::getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText) {
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    QList<QGraphicsItem*> itemList = treeView->scene()->items();
+    for (QGraphicsItem* item : qAsConst(itemList)) {
+        if (auto node = dynamic_cast<GraphicsButtonItem*>(item)) {
+            GraphicsBranchItem* left = node->getLeftBranchItem();
+            GraphicsBranchItem* right = node->getRightBranchItem();
+            if (left != nullptr && right != nullptr && left->getDistanceText() == leftBranchText && right->getDistanceText() == rightBranchText) {
+                return node;
+            }
+        }
+    }
+    GT_FAIL("Failed to find name by child branches: " + leftBranchText + ", " + rightBranchText, nullptr);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getNodes"
 QList<GraphicsButtonItem*> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus& os) {
-    QList<GraphicsButtonItem*> result;
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    const QList<QGraphicsItem*> itemList = treeView->scene()->items();
+    QList<QGraphicsItem*> itemList = treeView->scene()->items();
+    QList<GraphicsButtonItem*> result;
     for (QGraphicsItem* item : qAsConst(itemList)) {
-        auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item);
-        if (nodeItem != nullptr) {
+        if (auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item)) {
             result.append(nodeItem);
         }
     }
@@ -90,8 +106,7 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus& o
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (textItem) {
+        if (auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
             bool ok;
             QString s = textItem->text();
             s.toDouble(&ok);
@@ -249,23 +264,27 @@ QList<GraphicsRectangularBranchItem*> GTUtilsPhyTree::getOrderedRectangularBranc
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRootRectangularNode"
-QList<qreal> GTUtilsPhyTree::getOrderedRectangularBranchesDistances(HI::GUITestOpStatus& os) {
-    QList<GraphicsRectangularBranchItem*> orderedBranches = getOrderedRectangularBranches(os);
-    QList<qreal> orderedDistances;
-    foreach (GraphicsRectangularBranchItem* branch, orderedBranches) {
-        GT_CHECK_RESULT(branch != nullptr, "Branch is NULL", QList<qreal>());
-        orderedDistances << branch->getDist();
-    }
-    return orderedDistances;
+#define GT_METHOD_NAME "getRootNode"
+GraphicsButtonItem* GTUtilsPhyTree::getRootNode(HI::GUITestOpStatus& os) {
+    GraphicsBranchItem* rootItem = getRootBranch(os);
+    GraphicsButtonItem* buttonItem = rootItem->getButtonItem();
+    GT_CHECK_RESULT(buttonItem != nullptr, "Root branch has no button", nullptr);
+    return buttonItem;
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRootRectangularNode"
-GraphicsButtonItem* GTUtilsPhyTree::getRootRectangularNode(HI::GUITestOpStatus& os) {
-    GraphicsRectangularBranchItem* rootBranch = getRootRectangularBranch(os);
-    GT_CHECK_RESULT(rootBranch != nullptr, "Root branch is NULL", nullptr);
-    return rootBranch->getButtonItem();
+#define GT_METHOD_NAME "getRootBranch"
+GraphicsBranchItem* GTUtilsPhyTree::getRootBranch(HI::GUITestOpStatus& os) {
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    QList<QGraphicsItem*> itemList = treeView->scene()->items();
+    for (QGraphicsItem* item : qAsConst(itemList)) {
+        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(item)) {
+            if (branchItem->isRoot()) {
+                return branchItem;
+            }
+        }
+    }
+    GT_FAIL("Failed to find root branch", nullptr);
 }
 #undef GT_METHOD_NAME
 
@@ -275,9 +294,9 @@ GraphicsRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUIT
     GT_CHECK_RESULT(treeViewerUi != nullptr, "TreeViewerUI is NULL", nullptr);
 
     QList<QGraphicsItem*> items = treeViewerUi->scene()->items();
-    foreach (QGraphicsItem* item, items) {
+    for (QGraphicsItem* item : qAsConst(items)) {
         auto rectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(item);
-        if (rectangularBranch != nullptr && rectangularBranch->parentItem() == nullptr) {
+        if (rectangularBranch != nullptr && rectangularBranch->isRoot()) {
             return rectangularBranch;
         }
     }

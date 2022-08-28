@@ -56,7 +56,7 @@ GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double distance, Ph
 }
 
 GraphicsRectangularBranchItem::GraphicsRectangularBranchItem()
-    : GraphicsBranchItem(false, Left) {
+    : GraphicsBranchItem(true, Left) {
 }
 
 void GraphicsRectangularBranchItem::toggleCollapsedState() {

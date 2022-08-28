@@ -195,4 +195,18 @@ const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
     return nodeLabel;
 }
 
+GraphicsBranchItem* GraphicsButtonItem::getParentBranchItem() const {
+    auto result = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    SAFE_POINT(result != nullptr, "Node item has no parent branch", nullptr);
+    return result;
+}
+
+GraphicsBranchItem* GraphicsButtonItem::getLeftBranchItem() const {
+    return getParentBranchItem()->getChildBranch(GraphicsBranchItem::Side::Left);
+}
+
+GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
+    return getParentBranchItem()->getChildBranch(GraphicsBranchItem::Side::Right);
+}
+
 }  // namespace U2
