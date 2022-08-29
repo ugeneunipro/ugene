@@ -993,17 +993,16 @@ void TreeViewerUI::updateRect() {
 }
 
 void TreeViewerUI::sl_swapTriggered() {
-    foreach (QGraphicsItem* graphItem, items()) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+    QList<QGraphicsItem*> graphItems = items();
+    for (auto graphItem : qAsConst(graphItems)) {
+        auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
             buttonItem->swapSiblings();
             phyObject->onTreeChanged();
             break;
         }
     }
-    qreal curHScale = zoomLevel;
-    qreal curVScale = zoomLevel;
-
+    double zoomLevelBefore = zoomLevel;
     QTransform curTransform = viewportTransform();
     setTransformationAnchor(NoAnchor);
 
@@ -1012,8 +1011,7 @@ void TreeViewerUI::sl_swapTriggered() {
     updateScene(true);
 
     setTransform(curTransform);
-    zoomLevel = curHScale;
-    zoomLevel = curVScale;
+    zoomLevel = zoomLevelBefore;
     updateActionsState();
     setTransformationAnchor(AnchorUnderMouse);
 }
