@@ -71,10 +71,9 @@
 
 namespace U2 {
 
-TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root, qreal _scale)
+TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root)
     : GObjectView(TreeViewerFactory::ID, viewName),
-      root(_root),
-      scale(_scale) {
+      root(_root) {
     GCOUNTER(cvar, "PhylTreeViewer");
     phyObject = qobject_cast<PhyTreeObject*>(obj);
     objects.append(phyObject);
@@ -377,15 +376,14 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
       root(_treeViewer->getRoot()),
       treeViewer(_treeViewer),
       rectRoot(_treeViewer->getRoot()) {
+    updateDistanceToViewScale();
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
-
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setFrameShape(QFrame::NoFrame);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setScene(new QGraphicsScene());
     scene()->addItem(root);
-    setScale(treeViewer->getScale());
     initializeSettings();
     addLegend();
     updateRect();
@@ -583,7 +581,7 @@ void TreeViewerUI::sl_branchSettings() {
 void TreeViewerUI::initializeSettings() {
     setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
     setOptionValue(BRANCHES_TRANSFORMATION_TYPE, DEFAULT);
-    setOptionValue(SCALEBAR_RANGE, 30.0 / treeViewer->getScale());
+    setOptionValue(SCALEBAR_RANGE, 30.0 / distanceToViewScale);
     setOptionValue(SCALEBAR_FONT_SIZE, TreeViewerUtils::getFont().pointSize());
     setOptionValue(SCALEBAR_LINE_WIDTH, 1);
 
@@ -717,7 +715,7 @@ void TreeViewerUI::updateRectLayoutBranches() {
                     item->setDistanceText("0");
                 }
                 if (item->getNameTextItem() == nullptr) {
-                    item->setWidth(averageBranchDistance * getScale() * coef * item->maxStepsToLeafParentDelta);
+                    item->setWidth(averageBranchDistance * distanceToViewScale * coef * item->maxStepsToLeafParentDelta);
                 } else {
                     item->setWidth(0);
                 }
@@ -726,14 +724,14 @@ void TreeViewerUI::updateRectLayoutBranches() {
                 if (item->getDistanceTextItem() != nullptr && item->getDistanceTextItem()->text() == "0") {
                     item->setDistanceText("");
                 }
-                item->setWidth(qAbs(item->getDist()) * getScale() * coef);
+                item->setWidth(qAbs(item->getDist()) * distanceToViewScale * coef);
                 break;
             case CLADOGRAM:
                 if (item->getDistanceTextItem() != nullptr && item->getDistanceTextItem()->text() == "") {
                     item->setDistanceText("0");
                 }
                 if (item->getNameTextItem() == nullptr) {
-                    item->setWidth(averageBranchDistance * getScale() * coef);
+                    item->setWidth(averageBranchDistance * distanceToViewScale * coef);
                 } else {
                     item->setWidth(0);
                 }
@@ -875,7 +873,7 @@ void TreeViewerUI::addLegend() {
 
 void TreeViewerUI::updateLegend() {
     qreal coef = qMax(1.0, SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
-    qreal WIDTH = getOptionValue(SCALEBAR_RANGE).toDouble() * coef * treeViewer->getScale();
+    qreal WIDTH = getOptionValue(SCALEBAR_RANGE).toDouble() * coef * distanceToViewScale;
 
     qreal d = getOptionValue(SCALEBAR_RANGE).toDouble();
     QString str = QString::number(d, 'f', 3);
@@ -1200,7 +1198,7 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
             // TODO: support collapsed state transfer.
             makeLayoutNotCollapsed(root);  // Clients are subscribed to 'root'. Expand of the layout emits notifications.
             makeLayoutNotCollapsed(rectRoot);  // Root state & child layout states must be synchronized.
-            bool degeneratedCase = getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
+            bool degeneratedCase = distanceToViewScale <= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
             setNewTreeLayout(CreateCircularBranchesTask::convert(rectRoot, degeneratedCase), newTreeLayout);
             break;
         }
@@ -1255,9 +1253,7 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
     QTransform curTransform = viewportTransform();
     setTransformationAnchor(NoAnchor);
 
-    qreal curScale = getScale();
     recalculateRectangularLayout();
-    setScale(curScale);
     updateScene(false);
 
     setTransform(curTransform);
@@ -1455,18 +1451,47 @@ void TreeViewerUI::defaultZoom() {
 
 void TreeViewerUI::recalculateRectangularLayout() {
     int current = 0;
+    rectRoot->recalculateBranches(current, phyObject->getTree()->getRootNode());
+    updateDistanceToViewScale();
+}
+
+void TreeViewerUI::updateDistanceToViewScale() {
     double minDistance = -2;
     double maxDistance = 0;
-    rectRoot->recalculateBranches(current, minDistance, maxDistance, phyObject->getTree()->getRootNode());
-    rectRoot->setWidthW(0);
-    rectRoot->setDist(0);
-    rectRoot->setHeightW(0);
 
+    QStack<GraphicsRectangularBranchItem*> stack;
+    stack.push(rectRoot);
+    while (!stack.empty()) {
+        GraphicsRectangularBranchItem* item = stack.pop();
+        minDistance = minDistance == -2 ? item->getDist() : qMin(item->getDist(), minDistance);
+        maxDistance = qMax(item->getDist(), maxDistance);
+        QList<QGraphicsItem*> childItems = item->childItems();
+        for (QGraphicsItem* ci : qAsConst(childItems)) {
+            if (auto gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci)) {
+                stack.push(gbi);
+            }
+        }
+    }
     if (minDistance == 0) {
         minDistance = GraphicsRectangularBranchItem::EPSILON;
     }
     if (maxDistance == 0) {
         maxDistance = GraphicsRectangularBranchItem::EPSILON;
+    }
+    double minDistScale = GraphicsRectangularBranchItem::DEFAULT_WIDTH / minDistance;
+    double maxDistScale = GraphicsRectangularBranchItem::MAXIMUM_WIDTH / maxDistance;
+    distanceToViewScale = qMin(minDistScale, maxDistScale);
+
+    stack.push(rectRoot);
+    while (!stack.empty()) {
+        GraphicsRectangularBranchItem* item = stack.pop();
+        item->setWidth(item->getWidth() * distanceToViewScale);
+        QList<QGraphicsItem*> childItems = item->childItems();
+        for (QGraphicsItem* ci : qAsConst(childItems)) {
+            if (auto gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci)) {
+                stack.push(gbi);
+            }
+        }
     }
 }
 

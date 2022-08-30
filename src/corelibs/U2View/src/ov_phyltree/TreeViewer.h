@@ -53,7 +53,7 @@ class CreateBranchesTask;
 class TreeViewer : public GObjectView {
     Q_OBJECT
 public:
-    TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root, qreal scale);
+    TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root);
 
     // from GObjectView
     void buildStaticToolbar(QToolBar* tb) override;
@@ -77,14 +77,6 @@ public:
     }
     void setRoot(GraphicsRectangularBranchItem* rectRoot) {
         root = rectRoot;
-    }
-
-    qreal getScale() const {
-        return scale;
-    }
-
-    void setScale(qreal newScale) {
-        scale = newScale;
     }
 
     void setZoomLevel(double zoomLevel);
@@ -142,7 +134,6 @@ private:
     QByteArray state;
     PhyTreeObject* phyObject = nullptr;
     GraphicsRectangularBranchItem* root = nullptr;
-    qreal scale = 1;
 
     void setupLayoutSettingsMenu(QMenu* m);
     void setupShowLabelsMenu(QMenu* m);
@@ -255,6 +246,8 @@ private slots:
     void sl_branchSettings();
 
 private:
+    void updateDistanceToViewScale();
+
     void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
 
     enum LabelType {
@@ -281,13 +274,6 @@ private:
 
     void recalculateRectangularLayout();
     bool isSelectedCollapsed();
-
-    void setScale(double s) {
-        view_scale = s;
-    }
-    double getScale() {
-        return view_scale;
-    }
 
     void updateActionsState();
 
@@ -318,7 +304,10 @@ private:
      * ZoomLevel = 1 is equal to the Fit-Into-View mode (when window is resized zoom level does not change, but on-screen size of elements changes.
      */
     double zoomLevel = 1;
-    double view_scale;
+
+    /** Used to compute on-screen length of every branch: length = distance * distanceToScreenScale. */
+    double distanceToViewScale = 1;
+
     QGraphicsLineItem* legend = nullptr;
     QGraphicsSimpleTextItem* scalebarText = nullptr;
     QMenu* buttonPopup = nullptr;

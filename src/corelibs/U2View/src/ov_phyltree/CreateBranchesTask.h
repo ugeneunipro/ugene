@@ -34,7 +34,7 @@ class CreateBranchesTask : public Task {
     Q_OBJECT
 public:
     CreateBranchesTask()
-        : Task(QObject::tr("Rendering tree view"), TaskFlag_None), root(nullptr) {
+        : Task(QObject::tr("Rendering tree view"), TaskFlag_RunInMainThread) {
     }
 
     virtual TreeLayout getLayoutType() const = 0;

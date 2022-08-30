@@ -37,7 +37,7 @@ class MSAEditor;
 class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
-    MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root, qreal scale);
+    MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root);
     ~MSAEditorTreeViewer();
 
     const CreatePhyTreeSettings& getCreatePhyTreeSettings() const;

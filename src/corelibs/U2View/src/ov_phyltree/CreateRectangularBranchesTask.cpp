@@ -99,12 +99,6 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
                     return nullptr;
                 }
                 double dist = qAbs(node->getBranchesDistance(i));
-                if (minDistance > -1) {
-                    minDistance = qMin(minDistance, dist);
-                } else {
-                    minDistance = dist;
-                }
-                maxDistance = qMax(maxDistance, dist);
                 items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
@@ -128,41 +122,7 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
 }
 
 void CreateRectangularBranchesTask::run() {
-    if (isCanceled() || stateInfo.hasError()) {
-        return;
-    }
-    minDistance = -2;
-    maxDistance = 0;
-    GraphicsRectangularBranchItem* branchItem = createBranch(rootNode);  // modifies minDistance and maxDistance
-    CHECK(branchItem != nullptr, );
-    branchItem->setWidthW(0);
-    branchItem->setDist(0);
-    branchItem->setHeightW(0);
-    root = branchItem;
-
-    if (minDistance == 0) {
-        minDistance = GraphicsRectangularBranchItem::EPSILON;
-    }
-    if (maxDistance == 0) {
-        maxDistance = GraphicsRectangularBranchItem::EPSILON;
-    }
-    qreal minDistScale = GraphicsRectangularBranchItem::DEFAULT_WIDTH / (qreal)minDistance;
-    qreal maxDistScale = GraphicsRectangularBranchItem::MAXIMUM_WIDTH / (qreal)maxDistance;
-
-    scale = qMin(minDistScale, maxDistScale);
-
-    QStack<GraphicsRectangularBranchItem*> stack;
-    stack.push(branchItem);
-    while (!stack.empty()) {
-        GraphicsRectangularBranchItem* item = stack.pop();
-        item->setWidth(item->getWidth() * scale);
-        foreach (QGraphicsItem* ci, item->childItems()) {
-            GraphicsRectangularBranchItem* gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci);
-            if (gbi != nullptr) {
-                stack.push(gbi);
-            }
-        }
-    }
+    root = createBranch(rootNode);
 }
 
 }  // namespace U2

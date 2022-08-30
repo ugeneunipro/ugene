@@ -68,7 +68,7 @@ public:
 
     void swapSiblings();
 
-    void recalculateBranches(int& current, double& minDistance, double& maxDistance, const PhyNode* root);
+    void recalculateBranches(int& current, const PhyNode* root);
 
     const PhyBranch* getPhyBranch() const;
 

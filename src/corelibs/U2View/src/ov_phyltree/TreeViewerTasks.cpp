@@ -209,7 +209,7 @@ void CreateMSAEditorTreeViewerTask::prepare() {
 Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
     GraphicsRectangularBranchItem* root = dynamic_cast<GraphicsRectangularBranchItem*>(subTask->getResult());
-    view = new MSAEditorTreeViewer(viewName, phyObj, root, subTask->getScale());
+    view = new MSAEditorTreeViewer(viewName, phyObj, root);
 
     if (!stateData.isEmpty()) {
         OpenSavedTreeViewerTask::updateRanges(stateData, view);
@@ -243,14 +243,14 @@ void CreateTreeViewerTask::prepare() {
 Task::ReportResult CreateTreeViewerTask::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
-    GraphicsRectangularBranchItem* root = dynamic_cast<GraphicsRectangularBranchItem*>(subTask->getResult());
-    TreeViewer* v = new TreeViewer(viewName, phyObj, root, subTask->getScale());
+    auto root = dynamic_cast<GraphicsRectangularBranchItem*>(subTask->getResult());
+    auto treeViewer = new TreeViewer(viewName, phyObj, root);
 
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
+    GObjectViewWindow* w = new GObjectViewWindow(treeViewer, viewName, !stateData.isEmpty());
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
     if (!stateData.isEmpty()) {
-        OpenSavedTreeViewerTask::updateRanges(stateData, v);
+        OpenSavedTreeViewerTask::updateRanges(stateData, treeViewer);
     }
     return Task::ReportResult_Finished;
 }

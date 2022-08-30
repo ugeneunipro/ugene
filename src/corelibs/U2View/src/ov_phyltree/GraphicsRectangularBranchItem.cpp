@@ -187,7 +187,7 @@ void GraphicsRectangularBranchItem::swapSiblings() {
     }
 }
 
-void GraphicsRectangularBranchItem::recalculateBranches(int& current, double& minDistance, double& maxDistance, const PhyNode* root) {
+void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyNode* root) {
     int branches = 0;
     const PhyNode* node = nullptr;
 
@@ -205,7 +205,7 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, double& mi
             if (node->getSecondNodeOfBranch(i) != node) {
                 GraphicsRectangularBranchItem* item = getChildItemByPhyBranch(node->getBranch(i));
                 if (item->isVisible()) {
-                    item->recalculateBranches(current, minDistance, maxDistance, nullptr);
+                    item->recalculateBranches(current, nullptr);
                 }
                 items.append(item);
             } else {
@@ -247,12 +247,6 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, double& mi
                     continue;
                 }
                 double dist = qAbs(node->getBranchesDistance(i));
-                if (minDistance > -1) {
-                    minDistance = qMin(minDistance, dist);
-                } else {
-                    minDistance = dist;
-                }
-                maxDistance = qMax(maxDistance, dist);
                 items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
