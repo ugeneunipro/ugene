@@ -239,7 +239,7 @@ void IlluminaClipSettingsWidget::sl_browseButtonClicked() {
 
     QString filter = FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::FASTA});
     QString defaultFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::FASTA);
-    const QString adaptersFilePath = U2FileDialog::getOpenFileName(this, tr("Open FASTA with adapters"), dirHelper.dir, filter, &defaultFilter);
+    const QString adaptersFilePath = U2FileDialog::getOpenFileName(this, tr("Open FASTA with adapters"), dirHelper.dir, filter, defaultFilter);
     if (!adaptersFilePath.isEmpty()) {
         dirHelper.url = adaptersFilePath;
         fileName->setText(adaptersFilePath);

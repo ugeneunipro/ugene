@@ -138,7 +138,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     LastUsedDirHelper lod;
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true);
     QString selectedFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
-    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, &selectedFilter);
+    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
     QString url = lod.url;
