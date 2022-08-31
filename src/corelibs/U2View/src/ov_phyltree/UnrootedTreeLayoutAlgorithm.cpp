@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "CreateUnrootedBranchesTask.h"
+#include "UnrootedTreeLayoutAlgorithm.h"
 
 #include <QStack>
 
@@ -30,9 +30,9 @@
 
 namespace U2 {
 
-GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
-                                                                      GraphicsUnrootedBranchItem* convertedParentBranchItem,
-                                                                      double coef) {
+static GraphicsUnrootedBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
+                                                 GraphicsUnrootedBranchItem* convertedParentBranchItem,
+                                                 double coef) {
     double angle = coef * originalBranchItem->getHeight();
     auto convertedBranch = new GraphicsUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildBranchItems = originalBranchItem->childItems();
@@ -44,7 +44,7 @@ GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::convertBranch(GraphicsRe
     return convertedBranch;
 }
 
-GraphicsBranchItem* CreateUnrootedBranchesTask::convert(GraphicsRectangularBranchItem* rectRoot) {
+GraphicsBranchItem* UnrootedTreeLayoutAlgorithm::convert(GraphicsRectangularBranchItem* rectRoot) {
     double coef = 360.0 / rectRoot->childrenBoundingRect().height();
     return convertBranch(rectRoot, nullptr, coef);
 }

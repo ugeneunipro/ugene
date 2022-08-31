@@ -46,7 +46,6 @@
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ExportImageDialog.h>
@@ -55,32 +54,37 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OrderedToolbar.h>
 
-#include "CreateCircularBranchesTask.h"
-#include "CreateRectangularBranchesTask.h"
-#include "CreateUnrootedBranchesTask.h"
+#include "CircularTreeLayoutAlgorithm.h"
 #include "GraphicsBranchItem.h"
 #include "GraphicsButtonItem.h"
 #include "GraphicsRectangularBranchItem.h"
+#include "RectangularTreeLayoutAlgorithm.h"
 #include "TreeViewerFactory.h"
 #include "TreeViewerState.h"
 #include "TreeViewerTasks.h"
 #include "TreeViewerUtils.h"
+#include "UnrootedTreeLayoutAlgorithm.h"
 #include "phyltree/BranchSettingsDialog.h"
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
 
 namespace U2 {
 
-TreeViewer::TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root)
-    : GObjectView(TreeViewerFactory::ID, viewName),
-      root(_root) {
+TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject)
+    : GObjectView(TreeViewerFactory::ID, viewName), phyObject(_phyObject) {
     GCOUNTER(cvar, "PhylTreeViewer");
-    phyObject = qobject_cast<PhyTreeObject*>(obj);
+
+    root = RectangularTreeLayoutAlgorithm::buildTreeLayout(phyObject->getTree()->getRootNode());
+    root->initDistanceText();
+
     objects.append(phyObject);
     requiredObjects.append(phyObject);
     onObjectAdded(phyObject);
-    connect(phyObject, SIGNAL(si_phyTreeChanged()), SLOT(sl_onPhyTreeChanged()));
-    root->initDistanceText();
+
+    connect(phyObject, &PhyTreeObject::si_phyTreeChanged, this, [this] {
+        CHECK(ui != nullptr, );
+        ui->rebuildTreeLayout();
+    });
 }
 
 QTransform TreeViewer::getTransform() const {
@@ -347,10 +351,6 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     OpenTreeViewerTask::updateTitle(this);
 }
 
-void TreeViewer::sl_onPhyTreeChanged() {
-    ui->onPhyTreeChanged();
-}
-
 ////////////////////////////
 // TreeViewerUI
 
@@ -481,16 +481,6 @@ void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
 
 TreeLayout TreeViewerUI::getTreeLayout() const {
     return static_cast<TreeLayout>(getOptionValue(TREE_LAYOUT).toInt());
-}
-
-void TreeViewerUI::onPhyTreeChanged() {
-    Task* layoutTask = new CreateRectangularBranchesTask(phyObject->getTree()->getRootNode());
-
-    auto taskMapper = new TaskSignalMapper(layoutTask);
-    connect(taskMapper, &TaskSignalMapper::si_taskFinished, this, &TreeViewerUI::sl_rectBranchesRecreated);
-
-    TaskScheduler* scheduler = AppContext::getTaskScheduler();
-    scheduler->registerTopLevelTask(layoutTask);
 }
 
 void TreeViewerUI::updateSettings(const OptionsMap& newSettings) {
@@ -1199,28 +1189,24 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
             makeLayoutNotCollapsed(root);  // Clients are subscribed to 'root'. Expand of the layout emits notifications.
             makeLayoutNotCollapsed(rectRoot);  // Root state & child layout states must be synchronized.
             bool degeneratedCase = distanceToViewScale <= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
-            setNewTreeLayout(CreateCircularBranchesTask::convert(rectRoot, degeneratedCase), newTreeLayout);
+            setNewTreeLayout(CircularTreeLayoutAlgorithm::convert(rectRoot, degeneratedCase), newTreeLayout);
             break;
         }
         case UNROOTED_LAYOUT: {
             makeLayoutNotCollapsed(root);  // See comments for CIRCULAR_LAYOUT.
             makeLayoutNotCollapsed(rectRoot);
-            setNewTreeLayout(CreateUnrootedBranchesTask::convert(rectRoot), newTreeLayout);
+            setNewTreeLayout(UnrootedTreeLayoutAlgorithm::convert(rectRoot), newTreeLayout);
             break;
         }
     }
 }
 
-void TreeViewerUI::sl_rectBranchesRecreated(Task* task) {
-    auto layoutTask = qobject_cast<CreateBranchesTask*>(task);
-    SAFE_POINT(task != nullptr, "Not a CreateBranchesTask", );
-    bool taskIsFailed = layoutTask->getState() != Task::State_Finished || layoutTask->hasError();
-    CHECK(!taskIsFailed, );
-
-    auto rootNode = dynamic_cast<GraphicsRectangularBranchItem*>(layoutTask->getResult());
-    CHECK(rootNode != nullptr, );
-    rectRoot = rootNode;
-
+void TreeViewerUI::rebuildTreeLayout() {
+    auto newRectRoot = RectangularTreeLayoutAlgorithm::buildTreeLayout(phyObject->getTree()->getRootNode());
+    CHECK_EXT(newRectRoot != nullptr, uiLog.error(tr("Failed to build tree layout.")), );
+    CHECK(newRectRoot != nullptr, );
+    delete rectRoot;
+    rectRoot = newRectRoot;
     switch (getTreeLayout()) {
         case CIRCULAR_LAYOUT:
             setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
@@ -1231,7 +1217,7 @@ void TreeViewerUI::sl_rectBranchesRecreated(Task* task) {
             changeTreeLayout(UNROOTED_LAYOUT);
             break;
         case RECTANGULAR_LAYOUT:
-            setNewTreeLayout(rootNode, RECTANGULAR_LAYOUT);
+            setNewTreeLayout(rectRoot, RECTANGULAR_LAYOUT);
             break;
     }
     fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);

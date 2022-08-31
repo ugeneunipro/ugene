@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "CreateRectangularBranchesTask.h"
+#include "RectangularTreeLayoutAlgorithm.h"
 
 #include <QStack>
 
@@ -30,29 +30,18 @@
 
 namespace U2 {
 
-CreateRectangularBranchesTask::CreateRectangularBranchesTask(const PhyNode* _rootNode)
-    : rootNode(_rootNode) {
-}
-
-GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const PhyNode* node) {
-    if (isCanceled() || stateInfo.hasError())
-        return nullptr;
-
+static GraphicsRectangularBranchItem* createBranch(const PhyNode* node, int& current) {
     int branches = node->branchCount();
     if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
         assert(node != node->getSecondNodeOfBranch(0));
-        return createBranch(node->getSecondNodeOfBranch(0));
+        return createBranch(node->getSecondNodeOfBranch(0), current);
     }
     if (branches > 1) {
-        stateInfo.progress = 100 * ++size / 100;  // <- number of sequences
         QList<GraphicsRectangularBranchItem*> items;
         int ind = -1;
         for (int i = 0; i < branches; i++) {
-            if (isCanceled() || stateInfo.hasError()) {
-                return nullptr;
-            }
             if (node->getSecondNodeOfBranch(i) != node) {
-                GraphicsRectangularBranchItem* item = createBranch(node->getSecondNodeOfBranch(i));
+                GraphicsRectangularBranchItem* item = createBranch(node->getSecondNodeOfBranch(i), current);
                 items.append(item);
             } else {
                 items.append(nullptr);
@@ -69,7 +58,7 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
                 item = new GraphicsRectangularBranchItem(node->getBranchesDistance(ind), node->getBranch(ind), parentBranch->nodeValue);
             }
         }
-        SAFE_POINT_EXT(item != nullptr, setError(tr("An internal error: a tree is in an incorrect state, can't create a branch")), nullptr);
+        SAFE_POINT(item != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
         int itemSize = items.size();
         assert(itemSize > 0);
 
@@ -95,9 +84,6 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
                 if (items[i] == nullptr) {
                     continue;
                 }
-                if (isCanceled() || stateInfo.hasError()) {
-                    return nullptr;
-                }
                 double dist = qAbs(node->getBranchesDistance(i));
                 items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
@@ -110,19 +96,17 @@ GraphicsRectangularBranchItem* CreateRectangularBranchesTask::createBranch(const
         return item;
     } else {
         int y = (current++ + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
-        GraphicsRectangularBranchItem* item = nullptr;
-        if (branches != 1) {
-            item = new GraphicsRectangularBranchItem(0, y, node->getName());
-        } else {
-            item = new GraphicsRectangularBranchItem(0, y, node->getName(), node->getBranchesDistance(0), node->getBranch(0));
-        }
+        auto item = branches != 1
+                        ? new GraphicsRectangularBranchItem(0, y, node->getName())
+                        : new GraphicsRectangularBranchItem(0, y, node->getName(), node->getBranchesDistance(0), node->getBranch(0));
 
         return item;
     }
 }
 
-void CreateRectangularBranchesTask::run() {
-    root = createBranch(rootNode);
+GraphicsRectangularBranchItem* RectangularTreeLayoutAlgorithm::buildTreeLayout(const PhyNode* node) {
+    int current = 0;
+    return createBranch(node, current);
 }
 
 }  // namespace U2

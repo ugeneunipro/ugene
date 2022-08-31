@@ -19,25 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_CIRCULAR_BRANCHES_TASK_H_
-#define _U2_CREATE_CIRCULAR_BRANCHES_TASK_H_
+#ifndef _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
+#define _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
 
 namespace U2 {
 
 class GraphicsRectangularBranchItem;
-class GraphicsCircularBranchItem;
+class GraphicsUnrootedBranchItem;
 class GraphicsBranchItem;
 
-class CreateCircularBranchesTask {
+class UnrootedTreeLayoutAlgorithm {
 public:
-    CreateCircularBranchesTask() = delete;
+    UnrootedTreeLayoutAlgorithm() = delete;
 
-    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase);
-
-private:
-    static GraphicsCircularBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
-                                                     GraphicsCircularBranchItem* convertedParentBranchItem,
-                                                     double coef);
+    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot);
 };
 
 }  // namespace U2
