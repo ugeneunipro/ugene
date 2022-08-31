@@ -56,25 +56,6 @@ public:
                                    const QString& selectedFilter = QString(),
                                    const QFileDialog::Options& options = 0);
 
-private:
-    static QStringList getFileNames(QWidget* parent,
-                                    const QString& caption,
-                                    const QString& dir,
-                                    const QString& filter,
-                                    const QString& selectedFilter,
-                                    QFileDialog::Options options,
-                                    QFileDialog::AcceptMode acceptMode,
-                                    QFileDialog::FileMode fileMode);
-
-    static QString getFileName(QWidget* parent,
-                               const QString& caption,
-                               const QString& dir,
-                               const QString& filter,
-                               const QString& selectedFilter,
-                               QFileDialog::Options options,
-                               QFileDialog::AcceptMode acceptMode,
-                               QFileDialog::FileMode fileMode);
-
 };
 
 }  // namespace U2

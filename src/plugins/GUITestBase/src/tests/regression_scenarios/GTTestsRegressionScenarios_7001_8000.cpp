@@ -108,7 +108,6 @@
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
-#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -2435,25 +2434,6 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
         QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
         CHECK_SET_ERR(color == colorOfC, "Invalid color: " + color + ", position: " + QString::number(position.x()) + ", expected: " + colorOfC);
     }
-}
-
-GUI_TEST_CLASS_DEFINITION(test_7549) {
-    // Open _common_data\fasta\PF07724_full_family.fa
-    //GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/PF07724_full_family.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Press shutdown button "File -> Exit" in the right corner.
-    // Press Yes in the dialog.
-    // Press Save in "Save project as" dialog.
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", sandBoxDir + "test_7549.proj"));
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::Yes));
-    GTMenu::clickMainMenuItem(os, { "File", "Exit" });
-
-    // After the dialogs disappear and UGENE starts to close, press "File -> Open..."
-    GTMenu::clickMainMenuItem(os, { "File", "Open..." });
-
-    //Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7550) {
