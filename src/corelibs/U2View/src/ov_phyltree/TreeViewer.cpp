@@ -1205,7 +1205,6 @@ void TreeViewerUI::rebuildTreeLayout() {
     auto newRectRoot = RectangularTreeLayoutAlgorithm::buildTreeLayout(phyObject->getTree()->getRootNode());
     CHECK_EXT(newRectRoot != nullptr, uiLog.error(tr("Failed to build tree layout.")), );
     CHECK(newRectRoot != nullptr, );
-    delete rectRoot;
     rectRoot = newRectRoot;
     switch (getTreeLayout()) {
         case CIRCULAR_LAYOUT:
