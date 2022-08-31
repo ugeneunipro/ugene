@@ -58,7 +58,7 @@ public:
     void commitDatasets(const QString& attrId, const QList<Dataset>& sets);
 
 public slots:
-    void editActor(Actor*, QList<Actor*> allActors);
+    void editActor(Actor*, const QList<Actor*>& allActors);
     void editPort(Port*);
     void setDescriptor(Descriptor* d, const QString& hint = QString());
     void edit(Configuration* subject);
@@ -108,7 +108,7 @@ public:
     SpecialParametersPanel(WorkflowEditor* parent);
     virtual ~SpecialParametersPanel();
 
-    void editActor(Actor* a, QList<Actor*> allActors);
+    void editActor(Actor* a, const QList<Actor*>& allActors);
     void reset();
     void setDatasetsEnabled(bool isEnabled);
     int contentHeight() const;

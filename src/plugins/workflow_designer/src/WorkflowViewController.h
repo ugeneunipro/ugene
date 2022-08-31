@@ -93,7 +93,7 @@ public:
         All
     };
 
-    QList<Actor*> getActors(ActorsSelector) const;
+    const QList<Actor*> getActors(ActorsSelector selector) const;
 
     void clearScene();
     void onModified();

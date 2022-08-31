@@ -371,7 +371,7 @@ void WorkflowEditor::commit() {
     finishPropertyEditing();
 }
 
-void WorkflowEditor::editActor(Actor* a, QList<Actor*> allActors) {
+void WorkflowEditor::editActor(Actor* a, const QList<Actor*>& allActors) {
     reset();
     actor = a;
     if (a) {
@@ -584,7 +584,7 @@ SpecialParametersPanel::~SpecialParametersPanel() {
     controllers.clear();
 }
 
-void SpecialParametersPanel::editActor(Actor* a, QList<Actor*> allActors) {
+void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors) {
     reset();
     this->allActors = allActors;
     bool visible = false;
@@ -618,8 +618,8 @@ void SpecialParametersPanel::sl_datasetsChanged() {
 }
 
 void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNamePair) {
-    AttributeDatasetsController* ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
-    CHECK(nullptr != ctrl, );
+    auto ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
+    CHECK(ctrl != nullptr, );
     CHECK(controllers.values().contains(ctrl), );
     QString attrId = controllers.key(ctrl);
     sets[attrId] = ctrl->getDatasets();
@@ -627,17 +627,15 @@ void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNa
     for (Actor* actor : qAsConst(allActors)) {
         const QStringList keys = actor->getParameters().keys();
         for (const QString& attrId : qAsConst(keys)) {
-            Attribute* attr = actor->getParameter(attrId);
-            CHECK(nullptr != attr, );
-            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(attr);
-            if (nullptr == urlAttr) {
+            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(actor->getParameter(attrId));
+            if (urlAttr == nullptr) {
                 continue;
             }
             QList<Dataset> datasetList = urlAttr->getAttributePureValue().value<QList<Dataset>>();
             for (QList<Dataset>::iterator it(datasetList.begin()); it != datasetList.end(); it++) {
                 if (it->getName() == oldNewNamePair.first) {
                     it->setName(oldNewNamePair.second);
-                    attr->setAttributeValue(qVariantFromValue<QList<Dataset>>(datasetList));
+                    urlAttr->setAttributeValue(qVariantFromValue<QList<Dataset>>(datasetList));
                     break;
                 }
             }

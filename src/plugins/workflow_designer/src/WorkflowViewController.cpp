@@ -2413,7 +2413,7 @@ void WorkflowScene::sl_deleteItem() {
     update();
 }
 
-QList<Actor*> WorkflowScene::getActors(ActorsSelector sel) const {
+const QList<Actor*> WorkflowScene::getActors(ActorsSelector sel) const {
     QList<Actor*> list;
     const QList<QGraphicsItem*>  itms = sel == Selected ? selectedItems() : items();
     for (QGraphicsItem* item : qAsConst(itms)) {
