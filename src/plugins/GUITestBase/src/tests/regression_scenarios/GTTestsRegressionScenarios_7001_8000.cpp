@@ -57,12 +57,14 @@
 
 #include <U2Gui/Notification.h>
 
+#include <U2View/ADVConstants.h>
 #include <U2View/GraphicsBranchItem.h>
 #include <U2View/GraphicsButtonItem.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
@@ -93,6 +95,8 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
@@ -2841,6 +2845,72 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7630) {
+    // Open CVU55762.gb and murine.gb in separate sequence mode.
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // In CVU55762 select region 1001-1000.
+    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 1001, 1000);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+
+    // Copy it (Cmd-C).
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Switch to murine and toggle circular views.
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsCv::commonCvBtn::click(os);
+
+    // Select region 1000-5833.
+    filler = new SelectSequenceRegionDialogFiller(os, 1000, 5830);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+
+    // Right click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
+    // Paste clipboard into text field (Cmd-V).
+    // Press Enter.
+    // Dialog closed, sequence changed. Now only 1 annotation remains (5' terminal repeat).
+    class ReplaceSequenceScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
+            GTWidget::click(os, plainText);
+
+            // Select the whole sequence and replace it with '='. Try applying the change.
+            GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace subsequence..."});
+
+    // Remove the annotation:
+    //     click on it in Sequence View to select it
+    //         -> right click it
+    //         -> Remove
+    //         -> Selected annotations and qualifiers.
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
+    GTMouseDriver::click(Qt::RightButton);
+
+    // Open "Search in Sequence" Options Panel tab (Cmd-F).
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+
+    // Paste clipboard into pattern text field (Cmd-V).
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Was state: crash when "Find in sequence task" progress is 94% (same as in crash report).
+    //            no crash handler appeared, but there is error in zsh (Terminal):
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7631) {
