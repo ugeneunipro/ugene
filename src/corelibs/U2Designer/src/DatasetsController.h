@@ -53,6 +53,7 @@ public:
 
 signals:
     void si_attributeChanged();
+    void si_datasetRenamed(QPair<QString, QString>&); //QPair "oldName", "newName"
 
 protected:
     virtual QStringList names() const = 0;
@@ -74,8 +75,6 @@ public:
 
     QWidget* getWigdet();
     QList<Dataset> getDatasets();
-
-protected:
     virtual QStringList names() const;
 
 private:

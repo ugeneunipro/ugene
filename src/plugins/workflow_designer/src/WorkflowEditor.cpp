@@ -371,7 +371,7 @@ void WorkflowEditor::commit() {
     finishPropertyEditing();
 }
 
-void WorkflowEditor::editActor(Actor* a) {
+void WorkflowEditor::editActor(Actor* a, QList<Actor*> allActors) {
     reset();
     actor = a;
     if (a) {
@@ -383,7 +383,7 @@ void WorkflowEditor::editActor(Actor* a) {
         setDescriptor(a->getProto(), tr("To configure the parameters of the element go to \"Parameters\" area below."));
         edit(a);
         if (nullptr != specialParameters) {
-            specialParameters->editActor(a);
+            specialParameters->editActor(a, allActors);
         }
 
         createInputPortTable(a);
@@ -584,9 +584,9 @@ SpecialParametersPanel::~SpecialParametersPanel() {
     controllers.clear();
 }
 
-void SpecialParametersPanel::editActor(Actor* a) {
+void SpecialParametersPanel::editActor(Actor* a, QList<Actor*> allActors) {
     reset();
-
+    this->allActors = allActors;
     bool visible = false;
     foreach (const QString& attrId, a->getParameters().keys()) {
         Attribute* attr = a->getParameter(attrId);
@@ -598,6 +598,7 @@ void SpecialParametersPanel::editActor(Actor* a) {
         sets[attrId] = urlAttr->getAttributePureValue().value<QList<Dataset>>();
         controllers[attrId] = new AttributeDatasetsController(sets[attrId], urlAttr->getCompatibleObjectTypes());
         connect(controllers[attrId], SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
+        connect(controllers[attrId], &DatasetsController::si_datasetRenamed, this, &SpecialParametersPanel::sl_datasetRenamed);
         addWidget(controllers[attrId]);
         visible = true;
     }
@@ -614,6 +615,34 @@ void SpecialParametersPanel::sl_datasetsChanged() {
     QString attrId = controllers.key(ctrl);
     sets[attrId] = ctrl->getDatasets();
     editor->commitDatasets(attrId, sets[attrId]);
+}
+
+void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNamePair) {
+    AttributeDatasetsController* ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
+    CHECK(nullptr != ctrl, );
+    CHECK(controllers.values().contains(ctrl), );
+    QString attrId = controllers.key(ctrl);
+    sets[attrId] = ctrl->getDatasets();
+    editor->commitDatasets(attrId, sets[attrId]);
+    for (Actor* actor : qAsConst(allActors)) {
+        const QStringList keys = actor->getParameters().keys();
+        for (const QString& attrId : qAsConst(keys)) {
+            Attribute* attr = actor->getParameter(attrId);
+            CHECK(nullptr != attr, );
+            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(attr);
+            if (nullptr == urlAttr) {
+                continue;
+            }
+            QList<Dataset> datasetList = urlAttr->getAttributePureValue().value<QList<Dataset>>();
+            for (QList<Dataset>::iterator it(datasetList.begin()); it != datasetList.end(); it++) {
+                if (it->getName() == oldNewNamePair.first) {
+                    it->setName(oldNewNamePair.second);
+                    attr->setAttributeValue(qVariantFromValue<QList<Dataset>>(datasetList));
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void SpecialParametersPanel::reset() {
@@ -639,6 +668,7 @@ void SpecialParametersPanel::addWidget(AttributeDatasetsController* controller) 
 void SpecialParametersPanel::removeWidget(AttributeDatasetsController* controller) {
     CHECK(nullptr != controller, );
     disconnect(controller, SIGNAL(si_attributeChanged()), this, SLOT(sl_datasetsChanged()));
+    disconnect(controller, SIGNAL(si_datasetRenamed(QPair<QString, QString>&)), this, SLOT(sl_datasetRenamed(QPair<QString, QString>&)));
     this->layout()->removeWidget(controller->getWigdet());
 }
 

@@ -882,7 +882,7 @@ void WorkflowView::sl_appendExternalToolWorker() {
 }
 
 void WorkflowView::sl_editScript() {
-    QList<Actor*> selectedActors = scene->getSelectedActors();
+    QList<Actor*> selectedActors = scene->getActors(WorkflowScene::Selected);
     if (selectedActors.size() == 1) {
         Actor* scriptActor = selectedActors.first();
         AttributeScript* script = scriptActor->getScript();
@@ -900,7 +900,7 @@ void WorkflowView::sl_editScript() {
 }
 
 void WorkflowView::sl_editExternalTool() {
-    QList<Actor*> selectedActors = scene->getSelectedActors();
+    QList<Actor*> selectedActors = scene->getActors(WorkflowScene::Selected);
     if (selectedActors.size() == 1) {
         ActorPrototype* proto = selectedActors.first()->getProto();
         const bool edited = palette->editPrototype(proto);
@@ -1669,7 +1669,7 @@ void WorkflowView::sl_copyItems() {
         return;
     }
 
-    QList<Actor*> actors = scene->getSelectedActors();
+    QList<Actor*> actors = scene->getActors(WorkflowScene::Selected);
     Metadata actorMeta = getMeta(procs);
     lastPaste = HRSchemaSerializer::items2String(actors, &actorMeta);
     pasteAction->setEnabled(true);
@@ -1813,7 +1813,7 @@ void WorkflowView::sl_editItem() {
         QGraphicsItem* it = list.at(0);
         if (it->type() == WorkflowProcessItemType) {
             Actor* a = qgraphicsitem_cast<WorkflowProcessItem*>(it)->getProcess();
-            propertyEditor->editActor(a);
+            propertyEditor->editActor(a, scene->getActors(WorkflowScene::All));
             return;
         }
         Port* p = nullptr;
@@ -1842,7 +1842,7 @@ void WorkflowView::sl_editItem() {
 }
 
 void WorkflowView::sl_onSelectionChanged() {
-    QList<Actor*> actorsSelected = scene->getSelectedActors();
+    QList<Actor*> actorsSelected = scene->getActors(WorkflowScene::Selected);
     const int actorsCount = actorsSelected.size();
     editScriptAction->setEnabled(actorsCount == 1 && actorsSelected.first()->getScript() != nullptr);
     editExternalToolAction->setEnabled(actorsCount == 1 && actorsSelected.first()->getProto()->isExternalTool());
@@ -2413,9 +2413,10 @@ void WorkflowScene::sl_deleteItem() {
     update();
 }
 
-QList<Actor*> WorkflowScene::getSelectedActors() const {
+QList<Actor*> WorkflowScene::getActors(ActorsSelector sel) const {
     QList<Actor*> list;
-    foreach (QGraphicsItem* item, selectedItems()) {
+    const QList<QGraphicsItem*>  itms = sel == Selected ? selectedItems() : items();
+    for (QGraphicsItem* item : qAsConst(itms)) {
         if (item->type() == WorkflowProcessItemType) {
             list << static_cast<WorkflowProcessItem*>(item)->getProcess();
         }
