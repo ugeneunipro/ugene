@@ -1,13 +1,12 @@
 <multi-test>
-    <!--wrong index-->
-    <run-cmdline
-            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
-            in="!common_data_dir!bowtie2/reads_1.fq"
-            out_file="out1.sam"
-            out_dir="!tmp_data_dir!index_reuse_bwa_1"
-            ref="!common_data_dir!clustal/100_sequences.aln"
-            message="UGENE-4214"
-    />
+<!--wrong index-->
+<run-cmdline
+task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+in="!common_data_dir!bowtie2/reads_1.fq"
+out_file="out1.sam"
+out_dir="!tmp_data_dir!index_reuse_bwa_1"
+ref="!common_data_dir!clustal/100_sequences.aln"
+/>
 
-    <remove-temp-dir url="index_reuse_bwa_1"/>
+<remove-temp-dir url="index_reuse_bwa_1"/>
 </multi-test>
