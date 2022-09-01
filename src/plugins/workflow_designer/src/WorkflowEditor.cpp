@@ -626,8 +626,8 @@ void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNa
     editor->commitDatasets(attrId, sets[attrId]);
     for (Actor* actor : qAsConst(allActors)) {
         const QStringList keys = actor->getParameters().keys();
-        for (const QString& attrId : qAsConst(keys)) {
-            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(actor->getParameter(attrId));
+        for (const QString& key : qAsConst(keys)) {
+            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(actor->getParameter(key));
             if (urlAttr == nullptr) {
                 continue;
             }
