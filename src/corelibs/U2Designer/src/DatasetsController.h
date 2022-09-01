@@ -64,6 +64,7 @@ private:
 };
 
 class U2DESIGNER_EXPORT AttributeDatasetsController : public DatasetsController {
+    Q_OBJECT
 public:
     AttributeDatasetsController(QList<Dataset>& sets, const QSet<GObjectType>& compatibleObjTypes);
     virtual ~AttributeDatasetsController();

@@ -618,7 +618,7 @@ void SpecialParametersPanel::sl_datasetsChanged() {
 }
 
 void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNamePair) {
-    auto ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
+    auto ctrl = qobject_cast<AttributeDatasetsController*>(sender());
     CHECK(ctrl != nullptr, );
     CHECK(controllers.values().contains(ctrl), );
     QString attrId = controllers.key(ctrl);
