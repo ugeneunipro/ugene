@@ -284,8 +284,8 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule>& molec
 
 WormsGLRenderer::~WormsGLRenderer() {
     for (const Worm& worm : qAsConst(wormMap)) {
-        QList<WormModel> workModels = worm.wormModelByBioStruct3DModelId.values();
-        for (const WormModel& model : qAsConst(workModels)) {
+        QList<WormModel> wormModels = worm.wormModelByBioStruct3DModelId.values();
+        for (const WormModel& model : qAsConst(wormModels)) {
             qDeleteAll(model.objects);
         }
     }
