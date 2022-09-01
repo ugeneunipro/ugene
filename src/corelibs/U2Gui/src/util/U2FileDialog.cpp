@@ -34,16 +34,15 @@
 namespace U2 {
 
 
-namespace {
 
-QStringList getFileNames(QWidget* parent,
-                         const QString& caption,
-                         const QString& dir,
-                         const QString& filter,
-                         const QString& selectedFilter,
-                         QFileDialog::Options options,
-                         QFileDialog::AcceptMode acceptMode,
-                         QFileDialog::FileMode fileMode) {
+static QStringList getFileNames(QWidget* parent,
+                                const QString& caption,
+                                const QString& dir,
+                                const QString& filter,
+                                const QString& selectedFilter,
+                                QFileDialog::Options options,
+                                QFileDialog::AcceptMode acceptMode,
+                                QFileDialog::FileMode fileMode) {
     QFileDialog fileDialog(parent, caption, dir, filter);
     if (!selectedFilter.isEmpty()) {
         fileDialog.selectNameFilter(selectedFilter);
@@ -65,14 +64,14 @@ QStringList getFileNames(QWidget* parent,
     return result;
 }
 
-QString getFileName(QWidget* parent,
-                    const QString& caption,
-                    const QString& dir,
-                    const QString& filter,
-                    const QString& selectedFilter,
-                    QFileDialog::Options options,
-                    QFileDialog::AcceptMode acceptMode,
-                    QFileDialog::FileMode fileMode) {
+static QString getFileName(QWidget* parent,
+                           const QString& caption,
+                           const QString& dir,
+                           const QString& filter,
+                           const QString& selectedFilter,
+                           QFileDialog::Options options,
+                           QFileDialog::AcceptMode acceptMode,
+                           QFileDialog::FileMode fileMode) {
     auto names = getFileNames(parent,
                               caption,
                               dir,
@@ -82,8 +81,6 @@ QString getFileName(QWidget* parent,
                               acceptMode,
                               fileMode);
     return !names.isEmpty() ? names.first() : QString();
-}
-
 }
 
 static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
