@@ -2567,6 +2567,41 @@ GUI_TEST_CLASS_DEFINITION(test_7573) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7574) {
+    // Open _common_data/pdb/1JFA_3.pdb
+    // Click context menu 'Models..'
+    // Enable Model N3 -> UGENE crashes.
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/1JFA_3.pdb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Models.."}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1JFA"));
+
+    auto dialog = GTWidget::findWidget(os, "SelectModelsDialog");
+    auto listWidget = GTWidget::findListWidget(os, "modelsList", dialog);
+    QStringList itemsBefore = GTListWidget::getItems(os, listWidget);
+    CHECK_SET_ERR(itemsBefore.size() == 3, "1. Expected 3 items, got: " + QString::number(itemsBefore.size()));
+    CHECK_SET_ERR(GTListWidget::isItemChecked(os, listWidget, "1"), "1. Item 1 must be checked");
+    CHECK_SET_ERR(!GTListWidget::isItemChecked(os, listWidget, "2"), "1. Item 2 must not be checked");
+    CHECK_SET_ERR(!GTListWidget::isItemChecked(os, listWidget, "3"), "1. Item 3 must not be checked");
+    GTListWidget::checkAllItems(os, listWidget, true);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    // UGENE must not crash.
+
+    // Open the dialog again and check that all 3 items are checked.
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Models.."}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1JFA"));
+
+    dialog = GTWidget::findWidget(os, "SelectModelsDialog");
+    listWidget = GTWidget::findListWidget(os, "modelsList", dialog);
+    QStringList itemsAfter = GTListWidget::getItems(os, listWidget);
+    CHECK_SET_ERR(itemsBefore.size() == 3, "2. Expected 3 items, got: " + QString::number(itemsBefore.size()));
+    CHECK_SET_ERR(GTListWidget::isItemChecked(os, listWidget, "1"), "2. Item 1 must be checked");
+    CHECK_SET_ERR(GTListWidget::isItemChecked(os, listWidget, "2"), "2. Item 2 must be checked");
+    CHECK_SET_ERR(GTListWidget::isItemChecked(os, listWidget, "3"), "2. Item 3 must be checked");
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7575) {
     // Check that reset-zoom action does not crash UGENE.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
