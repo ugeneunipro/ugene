@@ -2568,6 +2568,7 @@ GUI_TEST_CLASS_DEFINITION(test_7573) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7574) {
+    // Original problem:
     // Open _common_data/pdb/1JFA_3.pdb
     // Click context menu 'Models..'
     // Enable Model N3 -> UGENE crashes.
@@ -2586,6 +2587,7 @@ GUI_TEST_CLASS_DEFINITION(test_7574) {
     CHECK_SET_ERR(!GTListWidget::isItemChecked(os, listWidget, "3"), "1. Item 3 must not be checked");
     GTListWidget::checkAllItems(os, listWidget, true);
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTThread::waitForMainThread();
     // UGENE must not crash.
 
     // Open the dialog again and check that all 3 items are checked.
