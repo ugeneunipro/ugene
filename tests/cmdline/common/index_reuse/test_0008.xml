@@ -5,7 +5,8 @@ task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
 in="!common_data_dir!bowtie2/reads_1.fq"
 out_file="out1.sam"
 out_dir="!tmp_data_dir!index_reuse_bwa_1"
-ref="!common_data_dir!clustal/100_sequences.aln"
+ref="!common_data_dir!clustal/100_sequences.nwk"
+message="The formats are not compatible: newick and fasta"
 />
 
 <remove-temp-dir url="index_reuse_bwa_1"/>
