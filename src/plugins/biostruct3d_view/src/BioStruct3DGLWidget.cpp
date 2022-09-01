@@ -472,7 +472,7 @@ void BioStruct3DGLWidget::setupRenderer(const QString& name) {
 
         // TODO: this situation may be potentialy dangerous
         // if renderer starts draw right now, maybe SharedPointer will be good solution
-        const QList<int>& shownModelsIndexes = ctx.renderer->getShownModelsIndexes();
+        const QList<int>& shownModelsIndexes = ctx.renderer->getShownModelsIds();
         BioStruct3DGLRenderer* rend = BioStruct3DGLRendererRegistry::createRenderer(name, *ctx.biostruct, ctx.colorScheme.data(), shownModelsIndexes, &rendererSettings);
         assert(rend);
         ctx.renderer = QSharedPointer<BioStruct3DGLRenderer>(rend);
@@ -538,12 +538,12 @@ void BioStruct3DGLWidget::restoreDefaultSettings() {
 
 void BioStruct3DGLWidget::sl_selectModels() {
     BioStruct3DRendererContext& ctx = contexts.first();
-    QObjectScopedPointer<SelectModelsDialog> dlg = new SelectModelsDialog(ctx.biostruct->getModelsNames(), ctx.renderer->getShownModelsIndexes(), this);
+    QObjectScopedPointer<SelectModelsDialog> dlg = new SelectModelsDialog(ctx.biostruct->getModelsIds(), ctx.renderer->getShownModelsIds(), this);
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
     if (dlg->result() == QDialog::Accepted) {
-        ctx.renderer->setShownModelsIndexes(dlg->getSelectedModelsIndexes());
+        ctx.renderer->setShownModelsIndexes(dlg->getSelectedModelsIds());
 
         contexts.first().renderer->updateShownModels();
         update();
@@ -761,7 +761,7 @@ void BioStruct3DGLWidget::createActions() {
     action->setChecked(true);
 
     selectModelsAction = 0;
-    if (!contexts.isEmpty() && contexts.first().biostruct->getModelsNames().size() > 1) {
+    if (!contexts.isEmpty() && contexts.first().biostruct->getModelsIds().size() > 1) {
         selectModelsAction = new QAction(tr("Models.."), this);
         connect(selectModelsAction, SIGNAL(triggered()), this, SLOT(sl_selectModels()));
     }
@@ -1008,27 +1008,14 @@ void BioStruct3DGLWidget::sl_selectSurfaceRenderer(QAction* action) {
     update();
 }
 
-/** Convert modelId's list to modelIndexes list */
-static QList<int> modelIdsToModelIdx(const BioStruct3D& bs, const QList<int>& modelsIds) {
-    QList<int> modelsIdx;
-    foreach (int modelId, modelsIds) {
-        int idx = bs.getModelsNames().indexOf(modelId);
-        assert(idx != -1 && "No such modelId in biostruct");
-        modelsIdx << idx;
-    }
-
-    return modelsIdx;
-}
-
 void BioStruct3DGLWidget::addBiostruct(const BioStruct3DObject* obj, const QList<int>& shownModels /* = QList<int>()*/) {
     assert(contexts.size() < 2 && "Multiple models in one view is unsupported now");
     BioStruct3DRendererContext ctx(obj);
 
-    QList<int> shownModelsIdx = modelIdsToModelIdx(*ctx.biostruct, shownModels);
-
-    // show only first model if model list is empty
-    if (shownModelsIdx.isEmpty()) {
-        shownModelsIdx << 0;
+    QList<int> shownModelsIds = shownModels;
+    // Show only first model if model list is empty.
+    if (shownModelsIds.isEmpty()) {
+        shownModelsIds << obj->getBioStruct3D().modelMap.keys().first();
     }
 
     BioStruct3DColorScheme* colorScheme = BioStruct3DColorSchemeRegistry::createColorScheme(currentColorSchemeName, ctx.obj);
@@ -1037,7 +1024,7 @@ void BioStruct3DGLWidget::addBiostruct(const BioStruct3DObject* obj, const QList
     ctx.colorScheme->setSelectionColor(selectionColor);
     ctx.colorScheme->setUnselectedShadingLevel((double)unselectedShadingLevel / 100.0);
 
-    BioStruct3DGLRenderer* renderer = BioStruct3DGLRendererRegistry::createRenderer(currentGLRendererName, *ctx.biostruct, ctx.colorScheme.data(), shownModelsIdx, &rendererSettings);
+    BioStruct3DGLRenderer* renderer = BioStruct3DGLRendererRegistry::createRenderer(currentGLRendererName, *ctx.biostruct, ctx.colorScheme.data(), shownModelsIds, &rendererSettings);
     assert(renderer);
     ctx.renderer = QSharedPointer<BioStruct3DGLRenderer>(renderer);
 
@@ -1049,13 +1036,13 @@ void BioStruct3DGLWidget::addBiostruct(const BioStruct3DObject* obj, const QList
 
 void BioStruct3DGLWidget::sl_alignWith() {
     const BioStruct3DRendererContext& ctx = contexts.first();
-    int currentModelId = ctx.biostruct->getModelsNames().at(ctx.renderer->getShownModelsIndexes().first());
+    int currentModelId = ctx.renderer->getShownModelsIds().first();
 
     QObjectScopedPointer<StructuralAlignmentDialog> dlg = new StructuralAlignmentDialog(contexts.first().obj, currentModelId);
-    const int dialogResult = dlg->execIfAlgorithmAvailable();
+    int dialogResult = dlg->execIfAlgorithmAvailable();
     CHECK(!dlg.isNull(), );
 
-    if (QDialog::Accepted == dialogResult) {
+    if (dialogResult == QDialog::Accepted) {
         sl_resetAlignment();
 
         Task* task = dlg->getTask();

@@ -166,7 +166,7 @@ void BallAndStickGLRenderer::createDisplayList() {
     glNewList(dl, GL_COMPILE);
 
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
-        foreach (int index, shownModels) {
+        foreach (int index, shownModelsIds) {
             const Molecule3DModel& model = mol->models.value(index);
 
             colors.clear();

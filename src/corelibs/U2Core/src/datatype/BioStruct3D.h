@@ -233,18 +233,11 @@ public:
     const SharedAtom getAtomById(int index, int modelIndex) const;
     const SharedResidue getResidueById(int chainIndex, ResidueIndex residueIndex) const;
 
-    // Theese three methods need to solve confusion between model ids (same as in PDB)
-    // and internal model indexes, both  are used in UGENE
-    // model ids should be used for user interface, and one fine day may become a strings
-    // model index numbers used by internal UGENE parts, and should be consequent int values from 0
-    /** @returns list of model ids (same as in PDB), that can be not consequent */
-    const QList<int> getModelsNames() const;
+    /** Return list of model ids (same as in PDB). */
+    QList<int> getModelsIds() const;
 
-    /** @returns molecule model by it's model id (same as in PDB) */
-    const Molecule3DModel getModelByName(int moleculeId, int name) const;
-
-    /** @returns model by it's index number in our data structure */
-    const Molecule3DModel getModelByIndex(int moleculeId, int index) const;
+    /** Returns molecule model by it's model id (same as in PDB) */
+    Molecule3DModel getModelById(int moleculeId, int modelId) const;
 
     // Modifier
     void calcCenterAndMaxDistance();
