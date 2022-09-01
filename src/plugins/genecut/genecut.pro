@@ -1,8 +1,14 @@
 include (genecut.pri)
 
 # Input
-HEADERS += src/GenecutPlugin.h
+HEADERS += src/GenecutOPWidget.h \
+           src/GenecutOPWidgetFactory.h \
+           src/GenecutPlugin.h
 
-SOURCES += src/GenecutPlugin.cpp
+SOURCES += src/GenecutOPWidget.cpp \
+           src/GenecutOPWidgetFactory.cpp \
+           src/GenecutPlugin.cpp
+
+FORMS   += src/GenecutOPWidget.ui
 
 TRANSLATIONS += transl/russian.ts

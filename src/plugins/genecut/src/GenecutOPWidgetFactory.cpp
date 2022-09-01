@@ -19,32 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#include "GenecutPlugin.h"
 #include "GenecutOPWidgetFactory.h"
+#include "GenecutOPWidget.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/MainWindow.h>
-#include <U2Gui/OPWidgetFactoryRegistry.h>
+#include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
-    return new GenecutPlugin();
+const QString GenecutOPWidgetFactory::GROUP_ID = "OP_GENECUT";
+const QString GenecutOPWidgetFactory::GROUP_ICON_STR = "";
+const QString GenecutOPWidgetFactory::GROUP_DOC_PAGE = "";
+
+GenecutOPWidgetFactory::GenecutOPWidgetFactory()
+    : OPWidgetFactory() {
+    objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-GenecutPlugin::GenecutPlugin()
-    : Plugin(tr("GeneCut implementation for in silico disassembly and cloning"),
-             tr("GeneCut implementation for in silico experiments for gene assembly and molecular cloning")) {
-    if (AppContext::getMainWindow() != nullptr) {
-        OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
-        opRegistry->registerFactory(new GenecutOPWidgetFactory());
-    }
+QWidget* GenecutOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
+    auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
+
+    auto opWidget = new GenecutOPWidget(annotatedDnaView);
+    opWidget->setObjectName("GenecurOpInnerWidget");
+    return opWidget;
 }
 
+OPGroupParameters GenecutOPWidgetFactory::getOPGroupParameters() {
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), tr("Genecut desktop"), GROUP_DOC_PAGE);
+}
 
 }
