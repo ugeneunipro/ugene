@@ -51,6 +51,7 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
 
     struct BioPolymerModel {
         QMap<int, Monomer> monomerMap;
+        int biostruct3DModelId = -1;
     };
 
     struct BioPolymer {
@@ -74,7 +75,7 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
     };
 
     struct Worm {
-        QVector<WormModel> models;
+        QHash<int, WormModel> wormModelByBioStruct3DModelId;
     };
 
     QMap<int, Worm> wormMap;

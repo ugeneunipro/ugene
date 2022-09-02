@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "CreateCircularBranchesTask.h"
-
-#include <QStack>
+#include "CircularTreeLayoutAlgorithm.h"
 
 #include <U2Core/PhyTreeObject.h>
 
@@ -34,9 +32,9 @@ static constexpr double DEGENERATED_WIDTH = 300;
 static constexpr double WIDTH_RADIUS = 30;
 static constexpr double SCALE = 6.0;
 
-GraphicsCircularBranchItem* CreateCircularBranchesTask::convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
-                                                                      GraphicsCircularBranchItem* convertedParentBranchItem,
-                                                                      double coef) {
+static GraphicsCircularBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
+                                                 GraphicsCircularBranchItem* convertedParentBranchItem,
+                                                 double coef) {
     double height = coef * originalBranchItem->getHeight();
     auto convertedBranch = new GraphicsCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildItems = originalBranchItem->childItems();
@@ -48,7 +46,7 @@ GraphicsCircularBranchItem* CreateCircularBranchesTask::convertBranch(GraphicsRe
     return convertedBranch;
 }
 
-GraphicsBranchItem* CreateCircularBranchesTask::convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase) {
+GraphicsBranchItem* CircularTreeLayoutAlgorithm::convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase) {
     double coef = SCALE / rectRoot->childrenBoundingRect().height();
     double originalWidth = rectRoot->getWidth();
     rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);

@@ -31,8 +31,8 @@
 
 namespace U2 {
 
-SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& _selectedItems, QWidget* parent /* = 0*/)
-    : QDialog(parent), Ui_SelectModelsDialog() {
+SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& selectedModelIds, QWidget* parent /* = 0*/)
+    : QDialog(parent), Ui_SelectModelsDialog(), modelIds(_modelIds) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929544");
     buttonBox_1->button(QDialogButtonBox::Cancel)->setText(::U2::SelectModelsDialog::tr("All"));
@@ -40,15 +40,9 @@ SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<
     buttonBox->button(QDialogButtonBox::Ok)->setText(::U2::SelectModelsDialog::tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(::U2::SelectModelsDialog::tr("Cancel"));
 
-    QVector<int> modelIds = _modelIds.toVector();
-    QSet<int> selectedItems = _selectedItems.toSet();
-
-    for (int i = 0; i < modelIds.size(); ++i) {
-        int modelId = modelIds[i];
-        QListWidgetItem* it = new QListWidgetItem(QString::number(modelId));
-
-        it->setCheckState((selectedItems.contains(i)) ? Qt::Checked : Qt::Unchecked);
-
+    for (int modelId : qAsConst(modelIds)) {
+        auto it = new QListWidgetItem(QString::number(modelId));
+        it->setCheckState(selectedModelIds.contains(modelId) ? Qt::Checked : Qt::Unchecked);
         modelsList->addItem(it);
     }
 
@@ -83,11 +77,11 @@ void SelectModelsDialog::accept() {
     for (int i = 0; i < modelsList->count(); ++i) {
         QListWidgetItem* item = modelsList->item(i);
         if (item->checkState() == Qt::Checked) {
-            selectedModelsIndexes << i;
+            selectedModelIds << modelIds[i];
         }
     }
 
-    if (selectedModelsIndexes.isEmpty()) {
+    if (selectedModelIds.isEmpty()) {
         QMessageBox::warning(this, tr("Error"), tr("At least one model should be selected."));
         return;
     }
@@ -95,8 +89,8 @@ void SelectModelsDialog::accept() {
     QDialog::accept();
 }
 
-const QList<int>& SelectModelsDialog::getSelectedModelsIndexes() const {
-    return selectedModelsIndexes;
+const QList<int>& SelectModelsDialog::getSelectedModelsIds() const {
+    return selectedModelIds;
 }
 
 SelectModelsDialog::~SelectModelsDialog() {

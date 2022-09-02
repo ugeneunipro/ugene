@@ -53,7 +53,7 @@ class CreateBranchesTask;
 class TreeViewer : public GObjectView {
     Q_OBJECT
 public:
-    TreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root);
+    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
 
     // from GObjectView
     void buildStaticToolbar(QToolBar* tb) override;
@@ -98,9 +98,6 @@ public:
 protected:
     QWidget* createWidget() override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
-
-private slots:
-    void sl_onPhyTreeChanged();
 
 public:
     QAction* treeSettingsAction = nullptr;
@@ -222,7 +219,6 @@ signals:
 protected slots:
     virtual void sl_swapTriggered();
     virtual void sl_collapseTriggered();
-    virtual void sl_rectBranchesRecreated(Task* task);
     virtual void sl_onBranchCollapsed(GraphicsBranchItem*);
     virtual void sl_zoomToAll();
     virtual void sl_zoomToSel();
@@ -247,6 +243,7 @@ private slots:
 
 private:
     void updateDistanceToViewScale();
+    void rebuildTreeLayout();
 
     void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
 

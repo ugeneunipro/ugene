@@ -187,6 +187,7 @@ void GraphicsRectangularBranchItem::swapSiblings() {
     }
 }
 
+// TODO: move to the algorithm.
 void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyNode* root) {
     int branches = 0;
     const PhyNode* node = nullptr;

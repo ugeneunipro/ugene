@@ -83,12 +83,14 @@ void WormsGLRenderer::drawWorms() {
 
     foreach (int chainId, wormMap.keys()) {
         const Worm worm = wormMap.value(chainId);
-        foreach (int index, shownModels) {
-            const WormModel& model = worm.models.at(index);
+        for (int modelId : qAsConst(shownModelsIds)) {
+            if (!worm.wormModelByBioStruct3DModelId.contains(modelId)) {
+                continue;
+            }
+            const WormModel& model = worm.wormModelByBioStruct3DModelId.value(modelId);
             // Draw worm bodies (let the bodies set the scene!!!)
             const AtomsVector wormCoords = model.atoms;
             int size = wormCoords.size();
-            Color4f atomColor;
             for (int i = 0; i + 3 < size; ++i) {
                 const SharedAtom a0 = wormCoords.at(i);
                 const SharedAtom a1 = wormCoords.at(i + 1);
@@ -125,7 +127,7 @@ void WormsGLRenderer::drawWorms() {
             }
 
             // Draw 3d objects
-            if (shownModels.count() == 1) {
+            if (shownModelsIds.count() == 1) {
                 foreach (Object3D* obj, model.objects) {
                     obj->draw(settings->detailLevel);
                 }
@@ -141,11 +143,12 @@ void WormsGLRenderer::drawBioStruct3D() {
 }
 
 void WormsGLRenderer::updateColorScheme() {
-    foreach (int id, wormMap.keys()) {
+    QList<int> wormIds = wormMap.keys();
+    for (int id : qAsConst(wormIds)) {
         Worm& worm = wormMap[id];
-        int numModels = worm.models.count();
-        for (int i = 0; i < numModels; ++i) {
-            WormModel& model = worm.models[i];
+        QList<int> modelIds = worm.wormModelByBioStruct3DModelId.keys();
+        for (int modelId : qAsConst(modelIds)) {
+            WormModel& model = worm.wormModelByBioStruct3DModelId[modelId];
             qDeleteAll(model.objects);
             model.objects.clear();
         }
@@ -164,14 +167,13 @@ void WormsGLRenderer::updateSettings() {
 }
 
 void WormsGLRenderer::createObjects3D() {
-    foreach (const SharedSecondaryStructure ss, bioStruct.secondaryStructures) {
+    for (const SharedSecondaryStructure& ss : qAsConst(bioStruct.secondaryStructures)) {
         int startId = ss->startSequenceNumber;
         int endId = ss->endSequenceNumber;
         int chainId = ss->chainIndex;
         Q_ASSERT(chainId != 0);
         if (bioPolymerMap.contains(chainId)) {
             const BioPolymer& bpolymer = bioPolymerMap.value(chainId);
-            int modelId = 0;
             foreach (const BioPolymerModel& bpModel, bpolymer.bpModels.values()) {
                 if (bpModel.monomerMap.contains(startId) && bpModel.monomerMap.contains(endId)) {
                     Object3D* obj = nullptr;
@@ -181,10 +183,12 @@ void WormsGLRenderer::createObjects3D() {
                         obj = createStrand3D(startId, endId, bpModel);
                     }
                     if (obj != nullptr) {
-                        wormMap[chainId].models[modelId].objects.append(obj);
+                        int modelId = bpModel.biostruct3DModelId;
+                        Worm& worm = wormMap[chainId];
+                        SAFE_POINT(worm.wormModelByBioStruct3DModelId.contains(modelId), "Worm has wrong modelId: " + QString::number(modelId), );
+                        worm.wormModelByBioStruct3DModelId[modelId].objects.append(obj);
                     }
                 }
-                ++modelId;
             }
         }
     }
@@ -224,7 +228,7 @@ void WormsGLRenderer::createWorms() {
                 const SharedAtom& atom = monomer.alphaCarbon;
                 wormModel.atoms.append(atom);
             }
-            worm.models.append(wormModel);
+            worm.wormModelByBioStruct3DModelId.insert(bpModel.biostruct3DModelId, wormModel);
         }
         const int chainID = i.key();
         wormMap.insert(chainID, worm);
@@ -245,6 +249,7 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule>& molec
         for (int modelId : qAsConst(modelIds)) {
             const Molecule3DModel& model = mol->models.value(modelId);
             BioPolymerModel& bpModel = bioPolymer.bpModels[modelId];
+            bpModel.biostruct3DModelId = modelId;
             QHash<int, Monomer> monomerByResideMap;
             for (const SharedAtom& atom : qAsConst(model.atoms)) {
                 if (atom->name == alphaCarbonTag || atom->name == carbonylOxygenTag) {
@@ -278,8 +283,9 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule>& molec
 }
 
 WormsGLRenderer::~WormsGLRenderer() {
-    foreach (Worm worm, wormMap) {
-        foreach (WormModel model, worm.models) {
+    for (const Worm& worm : qAsConst(wormMap)) {
+        QList<WormModel> wormModels = worm.wormModelByBioStruct3DModelId.values();
+        for (const WormModel& model : qAsConst(wormModels)) {
             qDeleteAll(model.objects);
         }
     }

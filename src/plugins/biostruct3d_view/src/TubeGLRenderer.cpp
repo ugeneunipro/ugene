@@ -39,7 +39,7 @@ void TubeGLRenderer::drawTubes(const BioStruct3DColorScheme* colorScheme) {
     SharedAtom bufAtom;
 
     foreach (Tube tube, tubeMap) {
-        foreach (int index, shownModels) {
+        foreach (int index, shownModelsIds) {
             const AtomsVector& tubeAtoms = tube.modelsMap.value(index);
             foreach (const SharedAtom atom, tubeAtoms) {
                 Color4f atomColor = colorScheme->getAtomColor(atom);

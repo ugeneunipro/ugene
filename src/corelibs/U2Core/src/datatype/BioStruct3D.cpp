@@ -236,18 +236,12 @@ int BioStruct3D::getIndexByChainId(char chainId) const {
     return -1;
 }
 
-const QList<int> BioStruct3D::getModelsNames() const {
+QList<int> BioStruct3D::getModelsIds() const {
     return modelMap.keys();
 }
 
-const Molecule3DModel BioStruct3D::getModelByName(int moleculeId, int name) const {
-    int index = modelMap.keys().indexOf(name);
-    assert(index != -1 && "invalid model id");
-    return getModelByIndex(moleculeId, index);
-}
-
-const Molecule3DModel BioStruct3D::getModelByIndex(int moleculeId, int index) const {
-    return moleculeMap[moleculeId]->models[index];
+Molecule3DModel BioStruct3D::getModelById(int moleculeId, int modelId) const {
+    return moleculeMap[moleculeId]->models[modelId];
 }
 
 void BioStruct3D::setRadius(double value) {

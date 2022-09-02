@@ -38,8 +38,8 @@
 
 namespace U2 {
 
-MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* _root)
-    : TreeViewer(viewName, obj, _root) {
+MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject)
+    : TreeViewer(viewName, phyTreeObject) {
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {

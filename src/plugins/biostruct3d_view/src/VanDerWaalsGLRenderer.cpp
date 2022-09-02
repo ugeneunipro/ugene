@@ -50,7 +50,7 @@ void VanDerWaalsGLRenderer::drawAtoms(const BioStruct3DColorScheme* colorScheme)
     // Draw atoms as spheres
 
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
-        foreach (int index, shownModels) {
+        foreach (int index, shownModelsIds) {
             const Molecule3DModel& model = mol->models.value(index);
             foreach (const SharedAtom atom, model.atoms) {
                 float radius = AtomConstants::getAtomCovalentRadius(atom->atomicNumber);
