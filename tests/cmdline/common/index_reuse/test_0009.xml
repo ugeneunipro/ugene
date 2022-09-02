@@ -23,7 +23,7 @@
             out_file="out1.sam"
             out_dir="!tmp_data_dir!broken_index_reuse_bwa"
             ref="!tmp_data_dir!broken_index_reuse_bwa/lambda_virus.amb"
-            message="broken_index_reuse_bwa/lambda_virus.3.ebwt&quot; does not exist"
+            message="broken_index_reuse_bwa/lambda_virus.ann&quot; does not exist"
     />
 
     <remove-temp-dir url="broken_index_reuse_bwa"/>
