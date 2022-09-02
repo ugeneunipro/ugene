@@ -69,7 +69,7 @@ public:
 
     virtual void toggleCollapsedState();
 
-    void setSelectedRecurs(bool sel, bool selectChilds);
+    void setSelectedRecurs(bool sel, bool selectChildren);
 
     void setSelected(bool isSelected);
 
@@ -116,7 +116,7 @@ signals:
     void si_branchCollapsed(GraphicsBranchItem* branch);
 
 protected:
-    GraphicsBranchItem(const QString& name);
+    explicit GraphicsBranchItem(const QString& name);
 
     GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
 

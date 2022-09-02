@@ -31,16 +31,6 @@
 namespace U2 {
 
 QFont* TreeViewerUtils::font = nullptr;
-const char* TreeViewerUtils::IMAGE_FILTERS =
-    "BMP - Windows Bitmap (*.bmp);;"
-    "GIF - Graphic Interchange Format (*.gif);;"
-    "JPG/JPEG format (*.jpg);;"
-    "PBM - Portable Bitmap (*.pbm);;"
-    "PNG - Portable Network Graphics (*.png);;"
-    "PPM - Portable Pixmap (*.ppm);;"
-    "TIFF - Tagged Image File format (*.tif);;"
-    "XBM - X11 Bitmap (*.xbm);;"
-    "XPM - X11 Pixmap (*.xpm)";
 
 void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName, QString& format) {
     LastUsedDirHelper lod(IMAGE_DIR);
@@ -58,8 +48,8 @@ void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName,
     if (!fileName.endsWith("." + format)) {
         fileName.append("." + format);
         if (QFile::exists(fileName)) {
-            QMessageBox::StandardButtons b = QMessageBox::warning(0, QObject::tr("Replace file"), QObject::tr("%1 already exists.\nDo you want to replace it?").arg(fileName), QMessageBox::Yes | QMessageBox::No);
-            if (QMessageBox::Yes != b) {
+            QMessageBox::StandardButtons b = QMessageBox::warning(nullptr, QObject::tr("Replace file"), QObject::tr("%1 already exists.\nDo you want to replace it?").arg(fileName), QMessageBox::Yes | QMessageBox::No);
+            if (b != QMessageBox::Yes) {
                 return;
             }
         }

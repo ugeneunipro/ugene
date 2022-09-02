@@ -33,9 +33,8 @@ class TreeViewer;
 
 class U2VIEW_EXPORT TreeViewerState {
 public:
-    TreeViewerState() {
-    }
-    TreeViewerState(const QVariantMap& _stateData)
+    TreeViewerState() = default;
+    explicit TreeViewerState(const QVariantMap& _stateData)
         : stateData(_stateData) {
     }
 

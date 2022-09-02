@@ -25,7 +25,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -63,9 +62,6 @@ OpenTreeViewerTask::OpenTreeViewerTask(Document* doc, QObject* _parent)
     : ObjectViewTask(TreeViewerFactory::ID), phyObject(nullptr), parent(_parent), createMDIWindow(false) {
     assert(!doc->isLoaded());
     documentsToLoad.append(doc);
-}
-
-OpenTreeViewerTask::~OpenTreeViewerTask() {
 }
 
 void OpenTreeViewerTask::open() {
@@ -147,7 +143,7 @@ void OpenSavedTreeViewerTask::open() {
         stateInfo.setError(tr("Phylogeny tree object not found: %1").arg(ref.objName));
         return;
     }
-    PhyTreeObject* phyObject = qobject_cast<PhyTreeObject*>(obj);
+    auto phyObject = qobject_cast<PhyTreeObject*>(obj);
     SAFE_POINT(phyObject != nullptr, "Invalid tree object detected", );
 
     auto createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
@@ -209,11 +205,11 @@ Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     return Task::ReportResult_Finished;
 }
 
-TreeViewer* CreateMSAEditorTreeViewerTask::getTreeViewer() {
+TreeViewer* CreateMSAEditorTreeViewerTask::getTreeViewer() const {
     return view;
 }
 
-const QVariantMap& CreateMSAEditorTreeViewerTask::getStateData() {
+const QVariantMap& CreateMSAEditorTreeViewerTask::getStateData() const {
     return stateData;
 }
 
@@ -235,7 +231,7 @@ Task::ReportResult CreateTreeViewerTask::report() {
 
     auto treeViewer = new TreeViewer(viewName, phyObj);
 
-    GObjectViewWindow* w = new GObjectViewWindow(treeViewer, viewName, !stateData.isEmpty());
+    auto w = new GObjectViewWindow(treeViewer, viewName, !stateData.isEmpty());
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
     if (!stateData.isEmpty()) {
@@ -246,14 +242,6 @@ Task::ReportResult CreateTreeViewerTask::report() {
 
 MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSAEditorTreeManager* _parent)
     : OpenTreeViewerTask(obj), treeManager(_parent) {
-}
-
-MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(UnloadedObject* obj, MSAEditorTreeManager* _parent)
-    : OpenTreeViewerTask(obj), treeManager(_parent) {
-}
-
-MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(Document* doc, MSAEditorTreeManager* _parent)
-    : OpenTreeViewerTask(doc), treeManager(_parent) {
 }
 
 void MSAEditorOpenTreeViewerTask::createTreeViewer() {

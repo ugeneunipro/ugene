@@ -21,7 +21,6 @@
 
 #include "GraphicsRectangularBranchItem.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QPainter>
@@ -33,9 +32,9 @@
 
 namespace U2 {
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem)
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem)
     : GraphicsBranchItem(name) {
-    setParentItem(pitem);
+    setParentItem(parentBranchItem);
     setPos(0, 0);
 }
 
@@ -130,7 +129,7 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
     prepareGeometryChange();
     blackPen.setWidth(SELECTED_PEN_WIDTH);
     blackPen.setCosmetic(true);
-    int defHeight = qMin((int)(yMax - yMin) / 2, 30);
+    double defHeight = qMin((int)(yMax - yMin) / 2, 30);
     auto rectItem = new QGraphicsRectItem(0, -defHeight / 2, xMin, defHeight, this);
     rectItem->setPen(blackPen);
 }
@@ -150,7 +149,7 @@ void GraphicsRectangularBranchItem::setSide(const Side& newSide) {
 }
 
 QRectF GraphicsRectangularBranchItem::boundingRect() const {
-    return QRectF(-width - 0.5, side == Right ? -height : -0.5, width + 0.5, height + 0.5);
+    return {-width - 0.5, side == Right ? -height : -0.5, width + 0.5, height + 0.5};
 }
 
 void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* optionItem, QWidget*) {
@@ -189,9 +188,7 @@ void GraphicsRectangularBranchItem::swapSiblings() {
 
 // TODO: move to the algorithm.
 void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyNode* root) {
-    int branches = 0;
     const PhyNode* node = nullptr;
-
     if (phyBranch) {
         node = phyBranch->node2;
     } else if (root) {
@@ -199,7 +196,7 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyN
     }
     CHECK(node != nullptr, );
 
-    branches = node->branchCount();
+    int branches = node->branchCount();
     if (branches > 1) {
         QList<GraphicsRectangularBranchItem*> items;
         for (int i = 0; i < branches; ++i) {
@@ -234,7 +231,7 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyN
             }
             xmin -= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
 
-            int y = 0;
+            int y;
             if (!item->isCollapsed()) {
                 y = (ymax + ymin) / 2;
                 item->setPos(xmin, y);
@@ -281,10 +278,6 @@ GraphicsRectangularBranchItem::Side GraphicsRectangularBranchItem::getSide() con
 
 double GraphicsRectangularBranchItem::getHeight() const {
     return height;
-}
-
-void GraphicsRectangularBranchItem::setHeightW(double h) {
-    height = h;
 }
 
 void GraphicsRectangularBranchItem::setHeightCoefW(int coef) {

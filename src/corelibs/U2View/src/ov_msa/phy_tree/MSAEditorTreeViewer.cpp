@@ -91,7 +91,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList&)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList&)));
 
     MaEditorNameList* msaNameList = editor->getUI()->getEditorNameList();
-    connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));
+    connect(msaNameList, &MaEditorNameList::si_sequenceNameChanged, msaTreeViewerUi, &MSAEditorTreeViewerUI::sl_sequenceNameChanged);
 
     return view;
 }
@@ -276,10 +276,10 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
     }
 }
 
-void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString newName) {
+void MSAEditorTreeViewerUI::sl_sequenceNameChanged(const QString& prevName, const QString& newName) {
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
-        GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(item);
+        auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
         if (branchItem == nullptr) {
             continue;
         }

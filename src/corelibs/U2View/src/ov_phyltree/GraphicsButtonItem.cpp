@@ -23,8 +23,6 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
-#include <QMenu>
-#include <QPainter>
 #include <QPen>
 
 #include <U2Core/PhyTreeObject.h>
@@ -161,7 +159,7 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
 }
 
 void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
-    CHECK(nullptr != nodeLabel, );
+    CHECK(nodeLabel != nullptr, );
     QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
     newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
     newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));

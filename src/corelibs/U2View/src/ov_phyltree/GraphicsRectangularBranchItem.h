@@ -38,7 +38,7 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
+    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem);
     GraphicsRectangularBranchItem();
     GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
     GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
@@ -53,8 +53,6 @@ public:
     Side getSide() const;
 
     double getHeight() const;
-
-    void setHeightW(double h);
 
     void setHeight(double newHeight);
 

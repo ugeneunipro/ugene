@@ -38,7 +38,7 @@ class GraphicsBranchItem;
 
 class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
 public:
-    GraphicsButtonItem(double nodeValue = 0);
+    explicit GraphicsButtonItem(double nodeValue = 0);
 
     bool isPathToRootSelected() const;
 

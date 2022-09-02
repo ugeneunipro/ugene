@@ -50,9 +50,9 @@ GraphicsBranchItem* CircularTreeLayoutAlgorithm::convert(GraphicsRectangularBran
     double coef = SCALE / rectRoot->childrenBoundingRect().height();
     double originalWidth = rectRoot->getWidth();
     rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);
-    GraphicsCircularBranchItem* circualLayoutRoot = convertBranch(rectRoot, nullptr, coef);
+    GraphicsCircularBranchItem* circularLayoutRoot = convertBranch(rectRoot, nullptr, coef);
     rectRoot->setWidthW(originalWidth);
-    return circualLayoutRoot;
+    return circularLayoutRoot;
 }
 
 }  // namespace U2

@@ -26,7 +26,6 @@
 
 #include <U2Gui/ObjectViewModel.h>
 
-#include <U2View/GraphicsRectangularBranchItem.h>
 #include <U2View/MSAEditor.h>
 
 #include "MsaEditorTreeTabArea.h"
