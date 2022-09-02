@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& initiallySelectedModelIds, QWidget* parent /* = 0*/)
+SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& initiallySelectedModelIds, QWidget* parent)
     : QDialog(parent), Ui_SelectModelsDialog(), modelIds(_modelIds) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929544");
