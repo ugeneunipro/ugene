@@ -22,11 +22,8 @@
 #include "SelectModelsDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Gui/HelpButton.h>
-
-#include "SettingsDialog.h"
 
 namespace U2 {
 
