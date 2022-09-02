@@ -27,6 +27,8 @@
 
 #include <QWidget>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
+
 
 
 namespace U2 {
@@ -42,9 +44,17 @@ public:
 private slots:
     void sl_loginClicked();
     void sl_testClicked();
+    void sl_fetchResultsClicked();
     void sl_registerNewClicked();
 
 private:
+    static void errorMessage(QNetworkReply* reply, QLabel* errorLabel);
+    static void errorMessage(const QString& message, QLabel* errorLabel);
+    static void successMessage(QNetworkReply* reply, QLabel* label);
+    static void successMessage(const QString& message, QLabel* label);
+    static void setButtonsEnabled(QList<QPushButton*> buttons, bool enabled);
+
+    bool areRegistrationDataValid() const;
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
 
@@ -60,6 +70,7 @@ private:
     static const QString API_REQUEST_LOGIN;
     static const QString API_REQUEST_REGISTER;
     static const QString API_REQUEST_TEST;
+    static const QString API_REQUEST_FETCH_RESULTS;
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;
@@ -70,6 +81,11 @@ private:
     static const QString JSON_FIRST_NAME;
     static const QString JSON_LAST_NAME;
     static const QString JSON_MESSAGE;
+    static const QString JSON_DATE;
+    static const QString JSON_STATUS;
+
+    static constexpr int RESULT_DATE_INDEX = 0;
+    static constexpr int RESULT_STATUS_INDEX = 1;
 };
 
 

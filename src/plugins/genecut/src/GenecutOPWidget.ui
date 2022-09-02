@@ -29,7 +29,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -94,6 +94,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="pbForgot">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Forgot password</string>
          </property>
@@ -160,6 +163,30 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pbFetchResults">
+         <property name="text">
+          <string>Fetch results</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="twResults">
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <column>
+          <property name="text">
+           <string>Date</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Status</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="lbTestInfo">
          <property name="styleSheet">
           <string notr="true">font-weight: 600;</string>
@@ -207,6 +234,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="leEmailNew">
+         <property name="text">
+          <string>user@mail.com</string>
+         </property>
          <property name="placeholderText">
           <string>username@server.com</string>
          </property>
@@ -214,6 +244,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lePasswordNew">
+         <property name="text">
+          <string>123</string>
+         </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
@@ -224,6 +257,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lePasswordConformationNew">
+         <property name="text">
+          <string>123</string>
+         </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
@@ -234,6 +270,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="leFirstName">
+         <property name="text">
+          <string>Name</string>
+         </property>
          <property name="placeholderText">
           <string>First name</string>
          </property>
@@ -241,6 +280,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="leLastName">
+         <property name="text">
+          <string>Lastname</string>
+         </property>
          <property name="placeholderText">
           <string>Last name</string>
          </property>
@@ -260,6 +302,13 @@
         <widget class="QPushButton" name="pbRegisterNew">
          <property name="text">
           <string>Register</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbGoBack">
+         <property name="text">
+          <string>Back to login</string>
          </property>
         </widget>
        </item>

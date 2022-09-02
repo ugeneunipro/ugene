@@ -24,15 +24,17 @@
 #include <U2Core/Log.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/L10n.h>
 
 #include <U2Gui/GUIUtils.h>
 
 #include <QCheckBox>
 #include <QPushButton>
 
-#include <QNetworkReply>
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QTableWidgetItem>
 
 namespace U2 {
 
@@ -42,6 +44,7 @@ const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
 const QString GenecutOPWidget::API_REQUEST_REGISTER = "registration";
 const QString GenecutOPWidget::API_REQUEST_TEST = "test";
+const QString GenecutOPWidget::API_REQUEST_FETCH_RESULTS = "results?langId='%1'";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
 const QString GenecutOPWidget::JSON_PASSWORD = "password";
 const QString GenecutOPWidget::JSON_ROLE = "role";
@@ -51,6 +54,9 @@ const QString GenecutOPWidget::JSON_USER_OBJECT = API_REQUEST_TYPE;
 const QString GenecutOPWidget::JSON_FIRST_NAME = "firstName";
 const QString GenecutOPWidget::JSON_LAST_NAME = "lastName";
 const QString GenecutOPWidget::JSON_MESSAGE = "message";
+const QString GenecutOPWidget::JSON_DATE = "name";
+const QString GenecutOPWidget::JSON_STATUS = "title";
+
 
 GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
@@ -78,6 +84,10 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         lePasword->setEchoMode(toggled ? QLineEdit::Normal : QLineEdit::Password);
     });
     connect(pbRegisterNew, &QPushButton::clicked, this, &GenecutOPWidget::sl_registerNewClicked);
+    connect(pbGoBack, &QPushButton::clicked, [this]() {
+        stackedWidget->setCurrentIndex(0);
+    });
+    connect(pbFetchResults, &QPushButton::clicked, this, &GenecutOPWidget::sl_fetchResultsClicked);
 
 
 
@@ -94,8 +104,10 @@ void GenecutOPWidget::sl_loginClicked() {
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson();
     QNetworkReply* reply = mgr->post(request, data);
+    setButtonsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setButtonsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, true);
         if (reply->error() == QNetworkReply::NoError) {
             lbLoginWarning->hide();
             QString contents = QString::fromUtf8(reply->readAll());
@@ -110,10 +122,7 @@ void GenecutOPWidget::sl_loginClicked() {
             lbWelcome->setText(tr("Welcome, %1").arg(firstName));
             stackedWidget->setCurrentIndex(1);
         } else {
-            QString err = reply->errorString();
-            lbLoginWarning->show();
-            lbLoginWarning->setText("Warning: " + err);
-            coreLog.error(err);
+            errorMessage(reply, lbLoginWarning);
         }
         reply->deleteLater();
     });
@@ -127,16 +136,14 @@ void GenecutOPWidget::sl_testClicked() {
     request.setRawHeader("Authorization", aut.toLocal8Bit());
 
     QNetworkReply* reply = mgr->get(request);
+    setButtonsEnabled({ pbTest, pbFetchResults }, false);
+
     connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setButtonsEnabled({ pbTest, pbFetchResults }, true);
         if (reply->error() == QNetworkReply::NoError) {
-            lbTestInfo->setStyleSheet("font-weight: 600;color: " + Theme::successColorLabelStr());
-            QString contents = QString::fromUtf8(reply->readAll());
-            QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
-            auto value = doc.object().value(JSON_MESSAGE).toString();
-            lbTestInfo->setText(tr("Success: %1").arg(value));
+            successMessage(reply, lbTestInfo);
         } else {
-            lbTestInfo->setStyleSheet("font-weight: 600;color: " + Theme::errorColorLabelStr());
-            lbLoginWarning->setText("Warning: " + reply->errorString());
+            errorMessage(reply, lbTestInfo);
         }
         reply->deleteLater();
     });
@@ -144,10 +151,113 @@ void GenecutOPWidget::sl_testClicked() {
 
 }
 
+void GenecutOPWidget::sl_fetchResultsClicked() {
+    const QUrl url(QString(API_REQUEST_URL + API_REQUEST_FETCH_RESULTS).arg(L10N::getActiveLanguageCode()));
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+    auto aut = QString("Bearer %1").arg(accessToken);
+    request.setRawHeader("Authorization", aut.toLocal8Bit());
+
+    QNetworkReply* reply = mgr->get(request);
+    setButtonsEnabled({ pbTest, pbFetchResults }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setButtonsEnabled({ pbTest, pbFetchResults }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            QString contents = QString::fromUtf8(reply->readAll());
+            QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+            auto jsonArray = doc.array();
+            twResults->clear();
+            int rowCount = jsonArray.size();
+            twResults->setRowCount(rowCount);
+            for (int i = 0; i < rowCount; i++) {
+                const auto& arrayObj = jsonArray.at(i).toObject();
+                twResults->setItem(i, RESULT_DATE_INDEX, new QTableWidgetItem(arrayObj.value(JSON_DATE).toString()));
+                twResults->setItem(i, RESULT_STATUS_INDEX, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString()));
+            }
+            successMessage(tr("results have been fetched"), lbTestInfo);
+        } else {
+            errorMessage(reply, lbTestInfo);
+        }
+        reply->deleteLater();
+    });
+}
+
 void GenecutOPWidget::sl_registerNewClicked() {
+    CHECK(areRegistrationDataValid(), );
+
+    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_REGISTER);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+
+    QJsonObject obj;
+    obj[JSON_EMAIL] = leEmailNew->text();
+    obj[JSON_PASSWORD] = lePasswordNew->text();
+    obj[JSON_ROLE] = "USER";
+    obj[JSON_FIRST_NAME] = leFirstName->text();
+    obj[JSON_LAST_NAME] = leLastName->text();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->post(request, data);
+    setButtonsEnabled({ pbRegisterNew }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setButtonsEnabled({ pbRegisterNew }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            //QString contents = reply->readAll();
+            //coreLog.info(contents);
+            successMessage(tr("user created!"), lbRegisterWarning);
+        } else {
+            errorMessage(reply, lbRegisterWarning);
+        }
+        reply->deleteLater();
+    });
+}
+
+void GenecutOPWidget::errorMessage(QNetworkReply* reply, QLabel* errorLabel) {
+    QString contents = QString::fromUtf8(reply->readAll());
+    QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+    auto value = doc.object().value(JSON_MESSAGE).toString();
+    QString err;
+    if (!value.isEmpty()) {
+        err = value;
+    } else {
+        err = reply->errorString();
+    }
+    errorMessage(err, errorLabel);
+}
+
+void GenecutOPWidget::errorMessage(const QString& message, QLabel* errorLabel) {
+    errorLabel->setStyleSheet("font-weight: 600;color: " + Theme::errorColorLabelStr());
+    errorLabel->show();
+    errorLabel->setText(tr("Error: ") + message);
+    coreLog.error(message);
+}
+
+void GenecutOPWidget::successMessage(QNetworkReply* reply, QLabel* label) {
+    QString contents = QString::fromUtf8(reply->readAll());
+    QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+    auto value = doc.object().value(JSON_MESSAGE).toString();
+    successMessage(value, label);
+}
+
+void GenecutOPWidget::successMessage(const QString& message, QLabel* label) {
+    label->setStyleSheet("font-weight: 600;color: " + Theme::successColorLabelStr());
+    label->show();
+    label->setText(tr("Success: ") + message);
+}
+
+void GenecutOPWidget::setButtonsEnabled(QList<QPushButton*> buttons, bool enabled) {
+    for (auto button : buttons) {
+        button->setEnabled(enabled);
+    }
+}
+
+bool GenecutOPWidget::areRegistrationDataValid() const {
     bool valid = true;
     QString emailNew = leEmailNew->text();
     {
+        //TODO: regex
         bool valieEmail = !emailNew.isEmpty();
         GUIUtils::setWidgetWarningStyle(leEmailNew, !valieEmail);
         valid &= valieEmail;
@@ -162,8 +272,7 @@ void GenecutOPWidget::sl_registerNewClicked() {
         GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, !validPasswordConfirmation);
         bool match = passwordNew == passwordConformationNew;
         if (!match) {
-            lbRegisterWarning->show();
-            lbRegisterWarning->setText("Warning: passwords do not match");
+            errorMessage(tr("passwords do not match"), lbRegisterWarning);
             GUIUtils::setWidgetWarningStyle(lePasswordNew, true);
             GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, true);
         } else {
@@ -187,33 +296,8 @@ void GenecutOPWidget::sl_registerNewClicked() {
         GUIUtils::setWidgetWarningStyle(leLastName, !validLastName);
         valid &= validLastName;
     }
-    CHECK(valid, );
 
-    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_REGISTER);
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
-
-    QJsonObject obj;
-    obj[JSON_EMAIL] = emailNew;
-    obj[JSON_PASSWORD] = passwordNew;
-    obj[JSON_ROLE] = "USER";
-    obj[JSON_FIRST_NAME] = firstName;
-    obj[JSON_LAST_NAME] = lastName;
-    QJsonDocument doc(obj);
-    QByteArray data = doc.toJson();
-    QNetworkReply* reply = mgr->post(request, data);
-
-    connect(reply, &QNetworkReply::finished, [this, reply]() {
-        if (reply->error() == QNetworkReply::NoError) {
-
-        } else {
-            QString err = reply->errorString();
-            lbLoginWarning->show();
-            lbLoginWarning->setText("Warning: " + err);
-            coreLog.error(err);
-        }
-        reply->deleteLater();
-    });
+    return valid;
 }
 
 }
