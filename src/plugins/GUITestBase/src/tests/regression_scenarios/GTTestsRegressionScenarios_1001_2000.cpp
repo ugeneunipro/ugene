@@ -2753,7 +2753,7 @@ GUI_TEST_CLASS_DEFINITION(test_1263) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     // Excepted state: PCR product has been created
-    GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)");
+    GTUtilsAnnotationsTreeView::findItem(os, "Fragment (22172-22388)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1266) {

@@ -58,7 +58,7 @@ void Primer3DialogFiller::commonScenario() {
 
     auto tabWidget = GTWidget::findTabWidget(os, "tabWidget", dialog);
     if (!settings.primersGroupName.isEmpty() || !settings.primersName.isEmpty()) {
-        GTTabWidget::setCurrentIndex(os, tabWidget, 6);
+        GTTabWidget::setCurrentIndex(os, tabWidget, 7);
 
         if (!settings.primersGroupName.isEmpty()) {
             GTLineEdit::setText(os, "leGroupName", settings.primersGroupName, dialog);
@@ -76,14 +76,17 @@ void Primer3DialogFiller::commonScenario() {
     if (settings.end != -1) {
         GTLineEdit::setText(os, "end_edit_line", QString::number(settings.end), dialog);
     }
-    auto leftCheckbox = GTWidget::findCheckBox(os, "checkbox_PICK_LEFT", dialog);
+    auto leftCheckbox = GTWidget::findCheckBox(os, "checkbox_PRIMER_PICK_LEFT_PRIMER", dialog);
     GTCheckBox::setChecked(os, leftCheckbox, settings.pickLeft);
 
-    auto rightCheckbox = GTWidget::findCheckBox(os, "checkbox_PICK_RIGHT", dialog);
+    auto rightCheckbox = GTWidget::findCheckBox(os, "checkbox_PRIMER_PICK_RIGHT_PRIMER", dialog);
     GTCheckBox::setChecked(os, rightCheckbox, settings.pickRight);
 
+    auto intCheckbox = GTWidget::findCheckBox(os, "checkbox_PRIMER_PICK_INTERNAL_OLIGO", dialog);
+    GTCheckBox::setChecked(os, intCheckbox, settings.pickInternal);
+
     if (settings.rtPcrDesign) {
-        GTTabWidget::setCurrentIndex(os, tabWidget, 4);
+        GTTabWidget::setCurrentIndex(os, tabWidget, 5);
 
         auto groupBox = GTWidget::findGroupBox(os, "spanIntronExonBox", dialog);
         GTGroupBox::setChecked(os, groupBox);
