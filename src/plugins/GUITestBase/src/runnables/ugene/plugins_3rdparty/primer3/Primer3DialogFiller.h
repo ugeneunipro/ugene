@@ -31,25 +31,16 @@ class Primer3DialogFiller : public Filler {
 public:
     class Primer3Settings {
     public:
-        Primer3Settings()
-            : resultsCount(-1),
-              start(-1),
-              end(-1),
-              pickRight(true),
-              pickLeft(true),
-              shortRegion(false),
-              rtPcrDesign(false) {
-        }
-
-        int resultsCount;
+        int resultsCount = -1;
         QString primersGroupName;
         QString primersName;
-        int start;
-        int end;
-        bool pickRight;
-        bool pickLeft;
-        bool shortRegion;
-        bool rtPcrDesign;
+        int start = -1;
+        int end = -1;
+        bool pickRight = true;
+        bool pickLeft = true;
+        bool pickInternal = false;
+        bool shortRegion = false;
+        bool rtPcrDesign = false;
     };
 
     Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings = Primer3Settings());

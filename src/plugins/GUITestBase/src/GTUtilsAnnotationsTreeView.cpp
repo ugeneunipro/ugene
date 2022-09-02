@@ -525,6 +525,18 @@ void GTUtilsAnnotationsTreeView::checkNoAnnotations(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkAnnotationRegions"
+void GTUtilsAnnotationsTreeView::checkAnnotationRegions(HI::GUITestOpStatus& os, const QString& groupName, const QList<QPair<int, int>>& annotationRegionsStartAndEnd) {
+    QList<U2Region> group = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, groupName);
+    CHECK_SET_ERR(!group.isEmpty(), QString("Group %1 is empty, but shouldn't be").arg(groupName));
+
+    for (const auto& pair : qAsConst(annotationRegionsStartAndEnd)) {
+        U2Region region(pair.first - 1, pair.second - pair.first + 1);
+        CHECK_SET_ERR(group.contains(region), QString("No \"%1..%2\" region in \"%3\" group").arg(pair.first).arg(pair.second).arg(groupName));
+    }
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

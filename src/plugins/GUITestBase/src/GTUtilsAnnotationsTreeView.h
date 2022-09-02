@@ -99,6 +99,12 @@ public:
 
     /** Checks that there are no annotations in the annotations view. */
     static void checkNoAnnotations(HI::GUITestOpStatus& os);
+
+    /** 
+      * Checks annotations in the annotation view with @annotationRegions in the @groupName annotation group.
+      */
+    static void checkAnnotationRegions(HI::GUITestOpStatus& os, const QString& groupName, const QList<QPair<int, int>>& annotationRegionsStartAndEnd);
+
 };
 
 }  // namespace U2
