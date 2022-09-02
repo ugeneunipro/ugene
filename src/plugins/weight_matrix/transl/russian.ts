@@ -746,22 +746,22 @@
 <context>
     <name>U2::PFMatrixFormat</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="49"/>
+        <location filename="../src/PMatrixFormat.cpp" line="47"/>
         <source>Position frequency matrix</source>
         <translation>Частотная матрица</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="51"/>
+        <location filename="../src/PMatrixFormat.cpp" line="49"/>
         <source>Position frequency matrix file.</source>
         <translation>Файл частотной матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="92"/>
+        <location filename="../src/PMatrixFormat.cpp" line="83"/>
         <source>The file format is not PFM</source>
         <translation>The file format is not PFM</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="95"/>
+        <location filename="../src/PMatrixFormat.cpp" line="84"/>
         <source>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</source>
         <translation>Zero length or corrupted model
@@ -771,7 +771,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="60"/>
+        <location filename="../src/WeightMatrixIO.h" line="70"/>
         <source>Read Frequency Matrix</source>
         <translation>Чтение частотной матрицы</translation>
     </message>
@@ -779,12 +779,12 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="125"/>
+        <location filename="../src/PMatrixFormat.cpp" line="111"/>
         <source>Open multiple views</source>
         <translation>Открыть несколько окон</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.h" line="51"/>
+        <location filename="../src/PMatrixFormat.h" line="52"/>
         <source>PFM Viewer</source>
         <translation>Просмотр матрицы</translation>
     </message>
@@ -792,7 +792,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="98"/>
+        <location filename="../src/WeightMatrixIO.h" line="108"/>
         <source>Save position frequency matrix</source>
         <translation>Сохранение частотной матрицы</translation>
     </message>
@@ -1071,32 +1071,38 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixFormat</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="169"/>
+        <location filename="../src/PMatrixFormat.cpp" line="155"/>
         <source>Position weight matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="171"/>
+        <location filename="../src/PMatrixFormat.cpp" line="157"/>
         <source>Position weight matrix file.</source>
         <translation>Файл весовой матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="219"/>
+        <location filename="../src/PMatrixFormat.cpp" line="198"/>
         <source>The file format is not PWM</source>
         <translation>The file format is not PWM</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="222"/>
+        <location filename="../src/PMatrixFormat.cpp" line="199"/>
+        <source>Zero length or corrupted model
+Maybe model data are not enough for selected algorithm</source>
+        <translation>Нулевая длина или поврежденная модель
+Возможно, данных модели недостаточно для выбранного алгоритма</translation>
+    </message>
+    <message>
         <source>Zero length or corrupted model.
 Maybe model data are not enough for selected algorithm</source>
-        <translation>Zero length or corrupted model
+        <translation type="vanished">Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</translation>
     </message>
 </context>
 <context>
     <name>U2::PWMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="79"/>
+        <location filename="../src/WeightMatrixIO.h" line="89"/>
         <source>Read Weight Matrix</source>
         <translation>Чтение весовой матрицы</translation>
     </message>
@@ -1104,12 +1110,12 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="252"/>
+        <location filename="../src/PMatrixFormat.cpp" line="226"/>
         <source>Open multiple views</source>
         <translation>Открыть несколько окон</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.h" line="84"/>
+        <location filename="../src/PMatrixFormat.h" line="85"/>
         <source>PWM Viewer</source>
         <translation>Просмотр матрицы</translation>
     </message>
@@ -1117,7 +1123,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="112"/>
+        <location filename="../src/WeightMatrixIO.h" line="122"/>
         <source>Save weight matrix</source>
         <translation>Сохранение весовой матрицы</translation>
     </message>
@@ -1178,40 +1184,40 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::WeightMatrixIO</name>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="49"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="48"/>
         <source>Frequency and weight matrices</source>
         <translation>Частотные и весовые матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="56"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="55"/>
         <source>Frequency matrices</source>
         <translation>Частотные матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="63"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="62"/>
         <source>Weight matrices</source>
         <translation>Весовые матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="115"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="223"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="99"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="189"/>
         <source>Error parsing settings line %1</source>
         <translation>Ошибка при чтении строки %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="123"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="232"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="107"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="198"/>
         <source>Error parsing value %1</source>
         <translation>Ошибка при чтении значения %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="127"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="111"/>
         <source>Unexpected negative frequency value %1</source>
         <translation>Отрицательное значение частоты: %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="141"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="245"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="122"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="208"/>
         <source>Incorrect size of weight matrix: %1</source>
         <translation>Неправильный размер весовой матрицы: %1</translation>
     </message>

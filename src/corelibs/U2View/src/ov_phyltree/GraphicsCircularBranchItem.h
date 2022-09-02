@@ -22,35 +22,28 @@
 #ifndef _U2_GRAPHICS_CIRCULAR_BRANCH_ITEM_H_
 #define _U2_GRAPHICS_CIRCULAR_BRANCH_ITEM_H_
 
-#include <U2Core/Task.h>
-
 #include "GraphicsBranchItem.h"
-
-class QGraphicsItem;
 
 namespace U2 {
 
-class PhyNode;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
 
 class U2VIEW_EXPORT GraphicsCircularBranchItem : public GraphicsBranchItem {
-    qreal height;
-    Direction direction;
-    bool visible;
-
 public:
-    GraphicsCircularBranchItem(QGraphicsItem* parent, qreal height, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
+    GraphicsCircularBranchItem(QGraphicsItem* parent, double height, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
 
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
-    void setVisibleW(bool v) {
-        visible = v;
-    }
+    QRectF boundingRect() const override;
+
+    QPainterPath shape() const override;
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions();
+    void setLabelPositions() override;
+
+private:
+    double height = 0;
 };
 
 }  // namespace U2

@@ -100,7 +100,7 @@ void CreateDocumentFiller::commonScenario() {
             GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
             GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
+            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );  // replace skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
@@ -112,8 +112,7 @@ void CreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
-    GTLineEdit::setText(os, lineEdit, documentLocation);
+    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
     auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
@@ -122,8 +121,7 @@ void CreateDocumentFiller::commonScenario() {
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    auto lineEditName = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, lineEditName, sequenceName);
+    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
 
     if (saveFile) {
         auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
@@ -168,7 +166,7 @@ void CancelCreateDocumentFiller::commonScenario() {
             GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
             GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
+            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );
         }
@@ -180,8 +178,7 @@ void CancelCreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
-    GTLineEdit::setText(os, lineEdit, documentLocation);
+    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
     auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 
@@ -190,8 +187,7 @@ void CancelCreateDocumentFiller::commonScenario() {
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    auto lineEditName = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, lineEditName, sequenceName);
+    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
 
     if (saveFile) {
         auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);

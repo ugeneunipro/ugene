@@ -124,6 +124,11 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
         return;
     }
 
+    if (dialog->getSourceDoc() != nullptr && dialog->getSourceDoc()->getURLString() == dstUrl) {
+        QMessageBox::warning(QApplication::activeWindow(), L10N::warningTitle(), QObject::tr("You're trying to export document to its own destination, use option \"Save document...\" instead."));
+        return;
+    }
+
     Project* project = AppContext::getProject();
     if (project != nullptr) {
         Document* desiredDoc = project->findDocumentByURL(dstUrl);

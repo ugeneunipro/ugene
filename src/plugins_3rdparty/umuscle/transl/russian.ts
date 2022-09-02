@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/MuscleWorker.cpp" line="73"/>
         <source>Do not rearrange aligned sequences (-stable switch of MUSCLE). &lt;p&gt;Otherwise, MUSCLE re-arranges sequences so that similar sequences are adjacent in the output file. This makes the alignment easier to evaluate by eye. </source>
-        <translation>Сохранять начальный порядок последовательностей в выравнивании. &lt;p&gt;Иначе, MUSCLE группирует похожие последовательности в выходном выравнивании, для удобства визуального сравнения.</translation>
+        <translation>Сохранять начальный порядок последовательностей в выравнивании. &lt;p&gt;Иначе, MUSCLE группирует похожие последовательности в выходном выравнивании, для удобства визуального сравнения. </translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/MuscleUtils.cpp" line="91"/>
         <source>Unsupported alphabet: %1</source>
-        <translation>Неподходящий алфавит: %1 </translation>
+        <translation>Неподходящий алфавит: %1</translation>
     </message>
 </context>
 <context>

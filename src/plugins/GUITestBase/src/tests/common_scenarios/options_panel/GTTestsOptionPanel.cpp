@@ -316,7 +316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
         }
     }
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -326,6 +326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
@@ -486,6 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
@@ -646,11 +648,11 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR(fontComboBox != nullptr, "Font comboBox is NULL");
-#ifdef Q_OS_LINUX
-    GTComboBox::selectItemByText(os, fontComboBox, "Serif");
-#else
-    GTComboBox::selectItemByText(os, fontComboBox, "Verdana");
-#endif
+    if (isOsLinux()) {
+        GTComboBox::selectItemByText(os, fontComboBox, "Serif");
+    } else {
+        GTComboBox::selectItemByText(os, fontComboBox, "Verdana");
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {

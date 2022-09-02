@@ -54,10 +54,8 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
-#include "MsaEditorTreeTabArea.h"
 #include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h"
-#include "ov_phyltree/GraphicsRectangularBranchItem.h"
+#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
 #include "phyltree/CreatePhyTreeDialogController.h"
@@ -288,7 +286,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
 
     if (!addExistingTree) {
         treeViewer->setCreatePhyTreeSettings(settings);
-        treeViewer->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
+        treeViewer->setParentAlignmentName(msaObject->getMultipleAlignment()->getName());
     }
 
     if (settings.syncAlignmentWithTree) {
@@ -300,16 +298,10 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
 
 void MSAEditorTreeManager::openTreeFromFile() {
     LastUsedDirHelper h;
-    QString filter = FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::NEWICK});
-    QString file;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        file = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select files to open..."), h.dir, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        file = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select files to open..."), h.dir, filter);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::PHYLOGENETIC_TREE});
+    QString file = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select files to open..."), h.dir, filter);
     CHECK(!file.isEmpty(), );
-    if (QFileInfo(file).exists()) {
+    if (QFileInfo::exists(file)) {
         h.url = file;
         loadTreeFromFile(file);
     }
@@ -317,39 +309,49 @@ void MSAEditorTreeManager::openTreeFromFile() {
 
 void MSAEditorTreeManager::loadTreeFromFile(const QString& treeFileName) {
     addExistingTree = true;
-    bool isNewDocument = true;
-    Document* doc = nullptr;
-    const QList<Document*> documents = AppContext::getProject()->getDocuments();
-    foreach (doc, documents) {
-        if (doc->getURLString() == treeFileName) {
-            isNewDocument = false;
-            break;
-        }
+    Document* doc = AppContext::getProject()->findDocumentByURL(treeFileName);
+    if (doc != nullptr && doc->isLoaded()) {
+        addTreesFromDocument(doc);
+        return;
     }
-
-    if (isNewDocument || !doc->isLoaded()) {
-        if (!isNewDocument && !doc->isLoaded()) {
-            if (AppContext::getProject()->getDocuments().contains(doc)) {
-                AppContext::getProject()->removeDocument(doc);
+    U2OpStatusImpl os;
+    auto loadDocumentTask = LoadDocumentTask::getDefaultLoadDocTask(os, treeFileName);
+    CHECK_EXT(loadDocumentTask != nullptr, uiLog.error(tr("Failed to load document: %1").arg(os.getError())), );
+    loadDocumentTask->moveDocumentToMainThread = true;
+    AppContext::getTaskScheduler()->registerTopLevelTask(loadDocumentTask);
+    connect(loadDocumentTask, &Task::si_stateChanged, [this, loadDocumentTask] {
+        CHECK(loadDocumentTask->isFinished() && !loadDocumentTask->isCanceled(), );
+        CHECK_EXT(!loadDocumentTask->hasError(), uiLog.error(tr("Tree loading task is finished with error: %1").arg(loadDocumentTask->getError())), );
+        Project* project = AppContext::getProject();
+        Document* loadedDocument = loadDocumentTask->getDocument();
+        Document* documentWithTree = nullptr;
+        Document* existingDocument = project->findDocumentByURL(loadedDocument->getURL());
+        if (existingDocument != nullptr && existingDocument->isLoaded()) {
+            documentWithTree = existingDocument;  // Re-use document that was loaded in parallel.
+        } else {
+            CHECK_EXT(!loadedDocument->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE).isEmpty(), uiLog.error(tr("Document contains no tree objects!")), );
+            if (existingDocument != nullptr) {  // Remove unloaded document.
+                project->removeDocument(existingDocument);
             }
+            documentWithTree = loadDocumentTask->takeDocument();
+            project->addDocument(documentWithTree);
         }
-        U2OpStatus2Log os;
-        IOAdapterFactory* ioFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
-        DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::NEWICK);
-        doc = documentFormat->loadDocument(ioFactory, treeFileName, QVariantMap(), os);
-        CHECK(doc != nullptr, );
-        AppContext::getProject()->addDocument(doc);
-    }
+        addTreesFromDocument(documentWithTree);
+    });
+}
 
-    const QList<GObject*> treeObjectList = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+void MSAEditorTreeManager::addTreesFromDocument(Document* document) {
+    SAFE_POINT(document != nullptr, "addTreesFromDocument: Document is null", );
+    QList<GObject*> treeObjectList = document->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    CHECK_EXT(!treeObjectList.isEmpty(), uiLog.error(tr("Document contains no tree objects!")), );
+    MSAEditorMultiTreeViewer* multiTreeViewer = getMultiTreeViewer();
     for (GObject* obj : qAsConst(treeObjectList)) {
         auto treeObject = qobject_cast<PhyTreeObject*>(obj);
-        msaObject->addObjectRelation(GObjectRelation(GObjectReference(treeObject), ObjectRole_PhylogeneticTree));
         if (treeObject == nullptr) {
             continue;
         }
-        const MSAEditorMultiTreeViewer* multiTreeViewer = getMultiTreeViewer();
-        if (multiTreeViewer == nullptr || !multiTreeViewer->getTreeNames().contains(doc->getName())) {
+        msaObject->addObjectRelation(GObjectRelation(GObjectReference(treeObject), ObjectRole_PhylogeneticTree));
+        if (multiTreeViewer == nullptr || !multiTreeViewer->getTreeNames().contains(document->getName())) {
             AppContext::getTaskScheduler()->registerTopLevelTask(new MSAEditorOpenTreeViewerTask(treeObject, this));
         }
     }

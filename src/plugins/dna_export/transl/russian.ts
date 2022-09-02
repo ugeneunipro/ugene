@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="210"/>
         <source> line(s)</source>
-        <translation>строка(и)</translation>
+        <translation> строка(и)</translation>
     </message>
     <message>
         <location filename="../src/ImportAnnotationsFromCSVDialog.ui" line="220"/>
@@ -2105,7 +2105,9 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
-        <translation>Последовательности из выбранных результатов BLAST будут скачаны из базы NCBI Genbank по их идентификатору</translation>
+        <translation>Последовательности из выбранных результатов BLAST будут скачаны из базы
+NCBI Genbank по их идентификатору
+</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>

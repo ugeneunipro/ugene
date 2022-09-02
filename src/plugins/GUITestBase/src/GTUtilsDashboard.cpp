@@ -421,6 +421,29 @@ void GTUtilsDashboard::clickNodeTitle(GUITestOpStatus& os, ExternalToolsTreeNode
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getInputTabPageWidget"
+QWidget* GTUtilsDashboard::getInputTabPageWidget(GUITestOpStatus& os) {
+    return GTWidget::findWidget(os, "input_tab_page", getDashboard(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickLabelInParametersWidget"
+void GTUtilsDashboard::clickLabelInParametersWidget(GUITestOpStatus& os, const QString& labelText) {
+    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", getInputTabPageWidget(os));
+    auto workerLabelWidgets = GTWidget::findLabelByText(os, labelText, parametersWidget);
+    GT_CHECK(workerLabelWidgets.size() == 1, QString("clickLabelInParametersWidget: labels count: %1, label text: %2").arg(workerLabelWidgets.size()).arg(labelText));
+    GTWidget::click(os, workerLabelWidgets[0]);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickFileButtonInParametersWidget"
+void GTUtilsDashboard::clickFileButtonInParametersWidget(GUITestOpStatus& os, const QString& buttonText) {
+    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", getInputTabPageWidget(os));
+    auto fileButton = GTWidget::findButtonByText(os, buttonText, parametersWidget);
+    GTWidget::click(os, fileButton);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

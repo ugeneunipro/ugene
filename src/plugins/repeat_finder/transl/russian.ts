@@ -703,7 +703,7 @@
     <message>
         <location filename="../src/RepeatQuery.cpp" line="265"/>
         <source>Finds repeats in supplied sequence, stores found regions as annotations.</source>
-        <translation> Ищет повторы в нуклеотидных последовательностях, выдаёт найденные регионы как аннотации.</translation>
+        <translation>Ищет повторы в нуклеотидных последовательностях, выдаёт найденные регионы как аннотации.</translation>
     </message>
     <message>
         <location filename="../src/RepeatQuery.cpp" line="267"/>
@@ -872,7 +872,7 @@
         <location filename="../src/TandemQuery.cpp" line="199"/>
         <location filename="../src/TandemQuery.cpp" line="206"/>
         <source> bp</source>
-        <translation>нк</translation>
+        <translation> нк</translation>
     </message>
     <message>
         <location filename="../src/TandemQuery.cpp" line="179"/>

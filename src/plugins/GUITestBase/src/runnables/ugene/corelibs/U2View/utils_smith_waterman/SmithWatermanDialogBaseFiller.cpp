@@ -102,14 +102,11 @@ void SmithWatermanDialogFiller::commonScenario() {
     if (autoSetupAlgorithmParams) {
         if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
             GTGroupBox::setChecked(os, "advOptions", true, dialog);
-            auto objectNameEdit = GTWidget::findLineEdit(os, "mObjectNameTmpl", dialog);
-            GTLineEdit::setText(os, objectNameEdit, objectNameEdit->text() + TEST_NAME_FOR_MA_RESULTS);
+            GTLineEdit::setText(os, "mObjectNameTmpl", GTLineEdit::getText(os, "mObjectNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
 
-            auto referenceSequenceNameEdit = GTWidget::findLineEdit(os, "refSubseqNameTmpl", dialog);
-            GTLineEdit::setText(os, referenceSequenceNameEdit, referenceSequenceNameEdit->text() + TEST_NAME_FOR_MA_RESULTS);
+            GTLineEdit::setText(os, "refSubseqNameTmpl", GTLineEdit::getText(os, "refSubseqNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
         } else {
-            auto annotationNameEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
-            GTLineEdit::setText(os, annotationNameEdit, TEST_NAME_FOR_ANNOT_RESULTS);
+            GTLineEdit::setText(os, "leAnnotationName", TEST_NAME_FOR_ANNOT_RESULTS, dialog);
         }
     }
 

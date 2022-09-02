@@ -1267,6 +1267,8 @@ imageformats/qgif.dll
 imageformats/qjpeg.dll
 imageformats/qsvg.dll
 imageformats/qtiff.dll
+libEGL.dll
+libGLESv2.dll
 libcrypto-1_1-x64.dll
 libssl-1_1-x64.dll
 msvcp140.dll
@@ -1415,6 +1417,8 @@ plugins/workflow_designer.map
 plugins/workflow_designer.plugin
 plugins_checker.exe
 plugins_checker.map
+printsupport
+printsupport/windowsprintersupport.dll
 styles
 styles/qwindowsvistastyle.dll
 tools

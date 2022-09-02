@@ -58,45 +58,44 @@ void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) 
     //        return;
     //    }
 
-#ifndef Q_OS_DARWIN
-    switch (action) {
-        case GTGlobals::Close: {
-#    ifdef Q_OS_UNIX
-            GTMenu::clickMainMenuItem(os, QStringList() << "Window"
-                                                        << "Close active view");
-#    else
-            GTKeyboardDriver::keyPress(Qt::Key_Control);
-            GTKeyboardDriver::keyClick(Qt::Key_F4);
-            GTKeyboardDriver::keyRelease(Qt::Key_Control);
-#    endif
-            break;
+    if (!isOsMac()) {
+        switch (action) {
+            case GTGlobals::Close: {
+                if (isOsUnix()) {
+                    GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
+                } else {
+                    GTKeyboardDriver::keyPress(Qt::Key_Control);
+                    GTKeyboardDriver::keyClick(Qt::Key_F4);
+                    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+                }
+                break;
+            }
+            default:
+                GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+                break;
         }
-        default:
-            GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
-            break;
-    }
-#else
-    MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
-    GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
+    } else {
+        MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
+        GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
 
-    // TODO: make click on button
-    switch (action) {
-        case GTGlobals::Maximize:
-            GTWidget::showMaximized(os, mdiWindow);
-            break;
-        case GTGlobals::Close: {
-            int left = mdiWindow->rect().left();
-            int top = mdiWindow->rect().top();
-            QPoint p(left + 15, top - 10);
-            GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
-            GTMouseDriver::click();
-            break;
+        // TODO: make click on button
+        switch (action) {
+            case GTGlobals::Maximize:
+                GTWidget::showMaximized(os, mdiWindow);
+                break;
+            case GTGlobals::Close: {
+                int left = mdiWindow->rect().left();
+                int top = mdiWindow->rect().top();
+                QPoint p(left + 15, top - 10);
+                GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
+                GTMouseDriver::click();
+                break;
+            }
+            default:
+                assert(false);
+                break;
         }
-        default:
-            assert(false);
-            break;
     }
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -161,12 +160,11 @@ void GTUtilsMdi::closeWindow(HI::GUITestOpStatus& os, const QString& windowName,
 
 #define GT_METHOD_NAME "closeAllWindows"
 void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
-#ifndef Q_OS_DARWIN
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-            const QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
-            for (QMdiSubWindow* mdiWindow: qAsConst(mdiWindows)) {
+            QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
+            for (QMdiSubWindow* mdiWindow : qAsConst(mdiWindows)) {
                 auto filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
                 GTUtilsDialog::waitForDialog(os, filler);
                 mdiWindow->close();
@@ -177,37 +175,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     };
 
     GTThread::runInMainThread(os, new Scenario());
-#else
-    // GUI on Mac hangs because of bug in QCocoaEventDispatcher
-    // It looks like this issue: https://bugreports.qt.io/browse/QTBUG-45389
-    // This part can be removed after Qt bug will be fixed
-    // And now: some magic!
-
-    QWidget* prevWindow = nullptr;
-    QWidget* mdiWindow = nullptr;
-    GTGlobals::FindOptions options(false);
-
-    bool tabbedView = isTabbedLayout(os);
-
-    while ((mdiWindow = GTUtilsMdi::activeWindow(os, options)) != nullptr) {
-        GT_CHECK(mdiWindow != prevWindow, "Can't close MDI window");
-        prevWindow = mdiWindow;
-
-        MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
-
-        if (!tabbedView) {
-            QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
-            GTMouseDriver::moveTo(closeButtonPos);
-            GTMouseDriver::click();
-        } else {
-            GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                        << "Close active view");
-        }
-        GTGlobals::sleep(100);
-        GTThread::waitForMainThread();
-        GTUtilsDialog::removeRunnable(filler);
-    }
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -307,7 +274,7 @@ void GTUtilsMdi::activateWindow(HI::GUITestOpStatus& os, const QString& windowTi
     options.matchPolicy = Qt::MatchContains;
     QWidget* window = findWindow(os, windowTitlePart, options);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << window->windowTitle(), GTGlobals::UseMouse, Qt::MatchContains);
+    GTMenu::clickMainMenuItem(os, {"Window", window->windowTitle()}, GTGlobals::UseMouse, Qt::MatchContains);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

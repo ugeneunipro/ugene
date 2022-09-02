@@ -2096,68 +2096,68 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::TaskStatusBar</name>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="127"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="128"/>
         <source>The task &apos;%1&apos; has been finished</source>
         <translation>Задача &apos;%1&apos; была завершена</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="132"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="133"/>
         <source>Report for task: &apos;%1&apos;</source>
         <translation>Отчет для задачи: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="135"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="136"/>
         <source>&apos;%1&apos; task failed: %2</source>
         <translation>&apos;%1&apos; задача завершилась неудачно: %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="138"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="139"/>
         <source>There %1:
 </source>
         <translation>Есть %1:</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="170"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="171"/>
         <source>Reports: %1</source>
         <translation>Отчеты: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="175"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="176"/>
         <source>No active tasks</source>
         <translation>Нет активных задач</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="184"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="185"/>
         <source>Running task: %1</source>
         <translation>Запуск задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="193"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="194"/>
         <source>: %1</source>
         <translation>: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="198"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="199"/>
         <source>Tasks: %1, Reports %2</source>
         <translation>Задачи: %1, Отчеты %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="200"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="201"/>
         <source>Tasks: %1</source>
         <translation>Задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="277"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="274"/>
         <source>%1 notification(s)</source>
         <translation>%1 уведомлений</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="320"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="324"/>
         <source>Wrong signal sender!</source>
         <translation>Wrong signal sender!</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="186"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="187"/>
         <source>canceling...</source>
         <translation>отменяется...</translation>
     </message>

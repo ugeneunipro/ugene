@@ -1393,7 +1393,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     // 2. Push "Ctrl+Alt+v"
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
@@ -1402,22 +1401,22 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
-    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
+    //    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    //    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    //    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
+    //    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1527,48 +1526,38 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-#ifndef Q_OS_LINUX
-    // In linux, OS intercept this hotkey
+    if (!isOsLinux()) {
+        // In linux, OS intercept this hotkey
 
-    // 2. Push "Ctrl+Alt+a"
-    // Expected state : Notification "There are no ambiguous characters in the alignment.
-    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-#endif
+        // 2. Push "Ctrl+Alt+a"
+        // Expected state : Notification "There are no ambiguous characters in the alignment.
+        GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
+        GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        GTUtilsDialog::checkNoActiveWaiters(os);
+    }
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-
     GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next ambiguous character"});
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017_2) {
@@ -1580,16 +1569,16 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-#ifndef Q_OS_LINUX
-    // In linux, OS intercept this hotkey
+    if (!isOsLinux()) {
+        // In linux, OS intercept this hotkey
 
-    // 2. Push Ctrl + Alt + a
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-#else
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-#endif
+        // 2. Push Ctrl + Alt + a
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
+        GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    } else {
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    }
     // Expected state : reference "C", consensus "N", read "N"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
     QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
@@ -1949,10 +1938,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Replace character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Replace character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
@@ -2086,10 +2072,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Replace character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Replace character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
@@ -2303,10 +2286,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Insert character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Insert character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
@@ -2472,10 +2452,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     // 3. Open the main menu in the sequence area.
     // Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Edit",
-                                    QStringList() << "Insert character/gap",
-                                    PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Edit"}, {"Insert character/gap"}, PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
@@ -3057,10 +3034,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // Expected state: Aligned Reads Map is in the bottom screen by default. Show / Hide overview button is in pressed state
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Push Show / Hide overview button on the main menu
@@ -3068,10 +3042,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
     // Expected state: There are no map on the screen. Show / Hide overview button is is in released state
     //  simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close editor and open it again(map state should be saved)
@@ -3087,10 +3058,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // Expected state : Aligned Reads Map is in the bottom screen by default
-    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
-                                                      << "Appearance",
-                                    QStringList() << "Show overview",
-                                    PopupChecker::CheckOption(PopupChecker::IsChecked));
+    GTMenu::checkMainMenuItemsState(os, {"Actions", "Appearance"}, {"Show overview"}, PopupChecker::CheckOption(PopupChecker::IsChecked));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Select transparent square  and move it by mouse  down
@@ -3101,7 +3069,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint rightP(p.x(), p.y() + 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, rightP);
 
-    //Еxpected state : Alighed reads area moved down
+    // Еxpected state : Alighed reads area moved down
     QStringList listOne = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(list != listOne, "Visible area not change");
 
@@ -3109,7 +3077,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint leftP(p.x(), p.y() - 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, leftP);
 
-    //Еxpected state : Alighed reads area moved up
+    // Еxpected state : Alighed reads area moved up
     QStringList listTwo = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(list != listTwo, "Visible area not change");
 }
@@ -3269,6 +3237,8 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

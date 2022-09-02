@@ -49,23 +49,19 @@ void SequenceReadingModeSelectorDialogFiller::commonScenario() {
         return;
     }
     if (readingMode == Separate) {
-        auto separateRB = GTWidget::findRadioButton(os, "separateRB", dialog);
-        GTRadioButton::click(os, separateRB);
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "separateRB", dialog));
     }
     if (readingMode == Merge) {
-        auto mergeRB = GTWidget::findRadioButton(os, "mergeRB", dialog);
-        GTRadioButton::click(os, mergeRB);
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "mergeRB", dialog));
 
         auto mergeSpinBox = GTWidget::findSpinBox(os, "mergeSpinBox", dialog);
         GTSpinBox::setValue(os, mergeSpinBox, bases, GTGlobals::UseKeyBoard);
     }
     if (readingMode == Join) {
-        auto malignmentRB = GTWidget::findRadioButton(os, "malignmentRB", dialog);
-        GTRadioButton::click(os, malignmentRB);
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "malignmentRB", dialog));
     }
     if (readingMode == Align) {
-        auto refalignmentRB = GTWidget::findRadioButton(os, "refalignmentRB", dialog);
-        GTRadioButton::click(os, refalignmentRB);
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "refalignmentRB", dialog));
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

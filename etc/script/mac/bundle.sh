@@ -30,7 +30,18 @@ mkdir "${TARGET_PLUGINS_DIR}"
 echo Copying icons
 cp "${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns" "${TARGET_APP_DIR}/Contents/Resources"
 cp "${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns" "${TARGET_APP_DIR}/Contents/Resources"
-cp "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" "${TARGET_APP_DIR}/Contents"
+
+echo Creating Info.plist
+# "\$UGENE_VER_type" is a variable that will be replaced below with the corresponding variables from ugene_version.pri:
+# UGENE_VER_MAJOR or UGENE_VER_MINOR.
+VERSION_PARSING_COMMAND="sed -n 's/^ *\$UGENE_VER_type *= *\([0-9][0-9]*\) *\(#.*\)*$/\1/p' '${SOURCE_DIR}/src/ugene_version.pri'"
+UGENE_VERSION_MAJOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MAJOR}")
+UGENE_VERSION_MINOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MINOR}")
+if [ ! "${UGENE_VERSION_MAJOR}" -o ! "${UGENE_VERSION_MINOR}" ]; then
+    echo "Unable to parse UGENE version from ugene_version.pri"
+    exit 1
+fi
+sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" > "${TARGET_APP_DIR}/Contents/Info.plist"
 
 echo Copying translations
 cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"

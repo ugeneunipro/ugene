@@ -76,7 +76,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     //  2. Set "samples/Assembly/chrM.sorted.bam" as an input
     //  3. Click "Run"
     const auto bamScenario =
-        new ExtractConsensusWizardScenario(QStringList() << dataDir + "samples/Assembly/chrM.sorted.bam");
+        new ExtractConsensusWizardScenario({dataDir + "samples/Assembly/chrM.sorted.bam"});
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", bamScenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
@@ -92,8 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     //  6. Set "_common_data/ugenedb/scerevisiae.bam.ugenedb" as an input and "" as an output
     //  7. Click "Run"
     const auto ugenedbScenario =
-        new ExtractConsensusWizardScenario(QStringList() << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb",
-                                           "");
+        new ExtractConsensusWizardScenario({testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"}, "");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", ugenedbScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 

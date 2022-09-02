@@ -30,111 +30,113 @@
 
 namespace U2 {
 
-class PhyNode;
 class GraphicsButtonItem;
+class GraphicsRectangularBranchItem;
 
-class U2VIEW_EXPORT GraphicsBranchItem : public QAbstractGraphicsShapeItem {
+class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
+    Q_OBJECT
 public:
-    enum Direction { up,
-                     down };
+    /** Side of the branch in the binary tree relative to the root node: left of right. */
+    enum Side {
+        Left,
+        Right
+    };
+    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue = -1.0);
 
-    static const int TextSpace;
-    static const int SelectedPenWidth;
+    GraphicsButtonItem* getButtonItem() const;
 
-private:
-    GraphicsBranchItem* correspondingItem;
-    GraphicsButtonItem* buttonItem;
-    void initText(qreal d);
-    int branchLength;
-    QGraphicsEllipseItem* nameItemSelection;
+    GraphicsBranchItem* getChildBranch(const Side& side) const;
 
-protected:
-    QGraphicsSimpleTextItem* distanceText;
-    QGraphicsSimpleTextItem* nameText;
-    qreal width;
-    qreal dist;
-    bool collapsed;
-    int lengthCoef;
+    double getNodeLabelValue() const;
 
-    OptionsMap settings;
+    QGraphicsSimpleTextItem* getDistanceTextItem() const;
 
-    GraphicsBranchItem(const QString& name);
-    GraphicsBranchItem(qreal d, bool withButton = true, double nodeValue = -1.0);
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
+    QString getDistanceText() const;
 
-    virtual void setLabelPositions();
+    QGraphicsSimpleTextItem* getNameTextItem() const;
 
-public:
-    GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
+    double getWidth() const;
 
-    GraphicsButtonItem* getButton() const {
-        return buttonItem;
-    }
-    qreal getNodeLabel() const;
-    QGraphicsSimpleTextItem* getDistanceText() const {
-        return distanceText;
-    }
-    QGraphicsSimpleTextItem* getNameText() const {
-        return nameText;
-    }
-    qreal getWidth() const {
-        return width;
-    }
-    qreal getDist() const {
-        return dist;
-    }
+    double getDist() const;
+
     void setDistanceText(const QString& text);
-    void setWidthW(qreal w) {
-        width = w;
-    }
-    void setWidth(qreal w);
-    void setDist(qreal d) {
-        dist = d;
-    }
-    virtual void collapse();
+
+    void setWidthW(double w);
+
+    void setWidth(double newWidth);
+
+    void setDist(double d);
+
+    virtual void toggleCollapsedState();
+
     void setSelectedRecurs(bool sel, bool selectChilds);
-    void setSelected(bool sel);
+
+    void setSelected(bool isSelected);
+
     bool isCollapsed() const;
 
     void updateSettings(const OptionsMap& settings);
+
     void updateChildSettings(const OptionsMap& settings);
+
     /** Update current property with given one */
     void updateTextProperty(TreeViewOption property, const QVariant& propertyVal);
 
     const OptionsMap& getSettings() const;
 
-    GraphicsBranchItem* getCorrespondingItem() const {
-        return correspondingItem;
-    }
-    void setCorrespondingItem(GraphicsBranchItem* cItem) {
-        correspondingItem = cItem;
-    }
-
-    const QList<QGraphicsItem*> getChildItems() const {
-        return childItems();
-    }
-
-    void setBranchLength(int newLength) {
-        branchLength = newLength;
-    }
-    int getBranchLength() const {
-        return branchLength;
-    }
-
-    QGraphicsItem* getParentItem() const {
-        return parentItem();
-    }
-
-    void setLenghtCoef(int newCoef) {
-        lengthCoef = newCoef;
-    }
-    int getLengthCoef() const {
-        return lengthCoef;
-    }
-
-    void initDistanceText(const QString& text = QString());
+    void initDistanceText(const QString& text = "");
 
     QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
+
+    /** Spacing between branch line and branch label. */
+    static constexpr int TEXT_SPACING = 8;
+
+    /** Width of the selected branch line. */
+    static constexpr int SELECTED_PEN_WIDTH = 1;
+
+    /** Maximum distance (count) from this branch to the end (leaf) of the tree. */
+    int maxStepsToLeaf = 0;
+
+    /** Delta between parent's branch 'maxStepsToLeaf' and this branch 'maxStepsToLeaf'. */
+    int maxStepsToLeafParentDelta = 1;
+
+    /** Corresponding rectangular branch item for the branch. Set only for circular & unrooted branch items. */
+    GraphicsRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
+
+    /** Returns top level (root) branch item in the tree. */
+    GraphicsBranchItem* getRoot();
+
+    /**Returns true if the branch is a root branch of the tree. */
+    bool isRoot() const;
+
+    /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
+    void emitBranchCollapsed(GraphicsBranchItem* branch);
+
+signals:
+    void si_branchCollapsed(GraphicsBranchItem* branch);
+
+protected:
+    GraphicsBranchItem(const QString& name);
+
+    GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
+
+    virtual void setLabelPositions();
+
+    void initText(double d);
+
+    QGraphicsSimpleTextItem* distanceText = nullptr;
+    QGraphicsSimpleTextItem* nameText = nullptr;
+    GraphicsButtonItem* buttonItem = nullptr;
+    QGraphicsEllipseItem* nameItemSelection = nullptr;
+
+    double width = 0;
+    /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */
+    double distance = 0;
+    bool collapsed = false;
+    OptionsMap settings;
+    Side side = Side::Left;
 };
 
 }  // namespace U2

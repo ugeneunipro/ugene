@@ -41,41 +41,17 @@
 namespace U2 {
 namespace Workflow {
 
-static qint64 calcMemUsageBytes(DbiDataStorage* storage, const SharedDbiDataHandler& seqId, U2OpStatus& os) {
-    QScopedPointer<U2SequenceObject> object(StorageUtils::getSequenceObject(storage, seqId));
-    CHECK_EXT(!object.isNull(), os.setError(L10N::nullPointerError("Sequence object")), 0);
-
-    return object->getSequenceLength();
-}
-
-static int toMb(qint64 bytes) {
-    return (int)qRound((double(bytes) / (1024 * 1024)));
-}
-
 /************************************************************************/
 /* ComposeResultSubTask */
 /************************************************************************/
 ComposeResultSubtask::ComposeResultSubtask(const SharedDbiDataHandler& _reference,
                                            const QList<AlignToReferenceResult>& _pairwiseAlignments,
                                            DbiDataStorage* storage)
-    : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC),
+    : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC | TaskFlag_RunInMainThread),
       reference(_reference),
       pairwiseAlignments(_pairwiseAlignments),
       storage(storage) {
     tpm = Task::Progress_Manual;
-}
-
-void ComposeResultSubtask::prepare() {
-    qint64 memUsage = calcMemUsageBytes(storage, reference, stateInfo);
-    CHECK_OP(stateInfo, );
-
-    for (const AlignToReferenceResult& result : qAsConst(pairwiseAlignments)) {
-        memUsage += calcMemUsageBytes(storage, result.readHandle, stateInfo);
-        CHECK_OP(stateInfo, );
-    }
-    if (toMb(memUsage) > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, toMb(memUsage), false));
-    }
 }
 
 void ComposeResultSubtask::run() {

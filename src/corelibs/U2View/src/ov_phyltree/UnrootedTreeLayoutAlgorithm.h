@@ -6,7 +6,6 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
-k
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,24 +19,22 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_QUERY_DESIGNER_H_
-#define GTTESTS_QUERY_DESIGNER_H_
-
-#include <harness/UGUITestBase.h>
+#ifndef _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
+#define _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_querry_designer {
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_querry_designer"
+class GraphicsRectangularBranchItem;
+class GraphicsUnrootedBranchItem;
+class GraphicsBranchItem;
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0001_1)
-GUI_TEST_CLASS_DECLARATION(test_0001_2)
+class UnrootedTreeLayoutAlgorithm {
+public:
+    UnrootedTreeLayoutAlgorithm() = delete;
 
-#undef GUI_TEST_SUITE
-}  // namespace GUITest_common_scenarios_querry_designer
+    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot);
+};
 
 }  // namespace U2
 
-#endif  // GTTESTS_QUERY_DESIGNER_H_
+#endif

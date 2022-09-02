@@ -10,7 +10,6 @@
 // The conversion is with CP_THREAD_ACP by default
 
 int   ugene_custom_open(const char *filename, int oflag);
-int   ugene_custom_open2(const char *filename, int oflag, int pflag);
 FILE* ugene_custom_fopen(const char *filename, const char* mode);
 
 #endif // UGENE_CUSTOM_IO_H

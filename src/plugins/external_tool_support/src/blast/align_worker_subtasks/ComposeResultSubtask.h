@@ -47,7 +47,6 @@ public:
                          const QList<AlignToReferenceResult>& pairwiseAlignments,
                          DbiDataStorage* storage);
 
-    void prepare() override;
     void run() override;
 
     const SharedDbiDataHandler& getAnnotations() const;

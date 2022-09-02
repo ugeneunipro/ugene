@@ -30,38 +30,34 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
+#include <U2Core/U2SafePoints.h>
 
-#include "GraphicsButtonItem.h"
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
-#ifndef M_PI
-#    define M_PI 3.14159265358979323846
-#endif
-
-GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, qreal h, GraphicsRectangularBranchItem* from, double nodeValue)
-    : GraphicsBranchItem(true, nodeValue), height(h), direction(from->getDirection()), visible(true) {
+GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, double h, GraphicsRectangularBranchItem* from, double nodeValue)
+    : GraphicsBranchItem(true, from->getSide(), nodeValue), height(h) {
     setParentItem(parent);
+    correspondingRectangularBranchItem = from;
     settings = from->getSettings();
-    qreal w = from->getWidth();
-    setWidthW(w);
+    width = from->getWidth();
     setDist(from->getDist());
-    setPos(w, 0);
+    setPos(width, 0);
     QPointF p = mapFromScene(0, 0);
-    setTransform(QTransform().translate(p.x(), p.y()).rotate((direction == GraphicsBranchItem::up ? -1 : 1) * h / M_PI * 180).translate(-p.x(), -p.y()));
+    double angle = (side == GraphicsBranchItem::Right ? 1 : -1) * height / M_PI * 180;
+    setTransform(QTransform().translate(p.x(), p.y()).rotate(angle).translate(-p.x(), -p.y()));
 
-    if (from->getNameText() != nullptr) {
-        nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
-        nameText->setFont(from->getNameText()->font());
+    if (from->getNameTextItem() != nullptr) {
+        nameText = new QGraphicsSimpleTextItem(from->getNameTextItem()->text(), this);
+        nameText->setFont(from->getNameTextItem()->font());
 
-        nameText->setBrush(from->getNameText()->brush());
+        nameText->setBrush(from->getNameTextItem()->brush());
     }
-    if (from->getDistanceText() != nullptr) {
-        distanceText = new QGraphicsSimpleTextItem(from->getDistanceText()->text(), this);
-        distanceText->setFont(from->getDistanceText()->font());
-        distanceText->setBrush(from->getDistanceText()->brush());
+    if (from->getDistanceTextItem() != nullptr) {
+        distanceText = new QGraphicsSimpleTextItem(from->getDistanceTextItem()->text(), this);
+        distanceText->setFont(from->getDistanceTextItem()->font());
+        distanceText->setBrush(from->getDistanceTextItem()->brush());
     }
     setLabelPositions();
     setPen(from->pen());
@@ -69,31 +65,30 @@ GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, qr
 
 QRectF GraphicsCircularBranchItem::boundingRect() const {
     QPointF p = scenePos();
-    qreal rad = qSqrt(p.x() * p.x() + p.y() * p.y());
-    qreal w = width + rad * (1 - qCos(height));
-    qreal h = rad * qSin(height);
-    return QRectF(-w, direction == GraphicsBranchItem::up ? 0 : -h, w, h);
+    double rad = qSqrt(p.x() * p.x() + p.y() * p.y());
+    double w = width + rad * (1 - qCos(height));
+    double h = rad * qSin(height);
+    return QRectF(-w, side == GraphicsBranchItem::Right ? -h : 0, w, h);
 }
 
 void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
-    if (!visible)
-        return;
+    CHECK(!isRoot(), );  // Do not render root branch.
     painter->setPen(pen());
     QPointF p = scenePos();
-    qreal rad = qSqrt(p.x() * p.x() + p.y() * p.y()) - width;
+    double rad = qSqrt(p.x() * p.x() + p.y() * p.y()) - width;
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
-    painter->drawArc(rect, 0, (direction == GraphicsBranchItem::up ? -1 : 1) * height * 16 * 180 / M_PI);
+    painter->drawArc(rect, 0, (side == GraphicsBranchItem::Right ? 1 : -1) * height * 16 * 180 / M_PI);
     painter->drawLine(0, 0, -width, 0);
 }
 
 QPainterPath GraphicsCircularBranchItem::shape() const {
     QPainterPath path;
 
-    qreal rad = 30.0;  // all hardcode will be deleted later during complete refactoring
+    double rad = 30.0;  // all hardcode will be deleted later during complete refactoring
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
 
     path.lineTo(width, 0);
-    path.arcTo(rect, 0, (direction == GraphicsBranchItem::up ? -1 : 1) * height * 16 * 180 / M_PI);
+    path.arcTo(rect, 0, (side == GraphicsBranchItem::Right ? 1 : -1) * height * 16 * 180 / M_PI);
 
     return path;
 }
@@ -101,8 +96,8 @@ QPainterPath GraphicsCircularBranchItem::shape() const {
 void GraphicsCircularBranchItem::setLabelPositions() {
     if (nameText != nullptr) {
         QRectF rect = nameText->boundingRect();
-        qreal h = rect.height();
-        nameText->setPos(GraphicsBranchItem::TextSpace, -h * 0.5);
+        double h = rect.height();
+        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -h * 0.5);
         if (nameText->scenePos().x() < 0.0) {
             QPointF p = rect.center();
             nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));

@@ -212,6 +212,27 @@ QPoint GTScrollBar::getUpArrowPosition(GUITestOpStatus& os, QScrollBar* scrollba
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getValue"
+int GTScrollBar::getValue(GUITestOpStatus& os, QScrollBar* scrollbar) {
+    GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", 0);
+    class GetValueScenario : public CustomScenario {
+    public:
+        GetValueScenario(QScrollBar* _scrollBar, int& _resultValue)
+        : scrollBar(_scrollBar), resultValue(_resultValue) {
+        }
+        void run(HI::GUITestOpStatus&) override {
+            resultValue = scrollBar->value();
+        }
+        QScrollBar* scrollBar;
+        int& resultValue;
+    };
+
+    int value = -1;
+    GTThread::runInMainThread(os, new GetValueScenario(scrollbar, value));
+    return value;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getDownArrowPosition"
 QPoint GTScrollBar::getDownArrowPosition(GUITestOpStatus& os, QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());

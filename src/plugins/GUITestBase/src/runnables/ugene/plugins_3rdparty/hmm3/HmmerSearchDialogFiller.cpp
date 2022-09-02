@@ -34,14 +34,12 @@ namespace U2 {
 void HmmerSearchDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto queryHmmFileEdit = GTWidget::findLineEdit(os, "queryHmmFileEdit", dialog);
-    GTLineEdit::setText(os, queryHmmFileEdit, profile);
+    GTLineEdit::setText(os, "queryHmmFileEdit", profile, dialog);
 
     auto radio = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
     GTRadioButton::click(os, radio);
 
-    auto newFilePathle = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
-    GTLineEdit::setText(os, newFilePathle, newFilePath);
+    GTLineEdit::setText(os, "leNewTablePath", newFilePath, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

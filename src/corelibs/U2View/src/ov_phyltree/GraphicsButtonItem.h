@@ -32,25 +32,22 @@
 
 namespace U2 {
 
+class TreeViewerUI;
 class PhyTreeObject;
+class GraphicsBranchItem;
 
 class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
-
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-
 public:
     GraphicsButtonItem(double nodeValue = 0);
 
     bool isPathToRootSelected() const;
-    bool isNodeSelected() const {
-        return isSelected;
-    }
+
+    bool isNodeSelected() const;
+
     void collapse();
+
     void swapSiblings();
+
     bool isCollapsed();
 
     void setSelected(bool selected);
@@ -61,20 +58,33 @@ public:
 
     const QGraphicsSimpleTextItem* getLabel() const;
 
-    qreal getNodeValue() const {
-        return nodeValue;
-    }
+    double getNodeValue() const;
+
+    GraphicsBranchItem* getParentBranchItem() const;
+
+    GraphicsBranchItem* getLeftBranchItem() const;
+
+    GraphicsBranchItem* getRightBranchItem() const;
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) override;
+
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 private:
     void setHighlighting(bool isOn);
 
+    TreeViewerUI* getTreeViewerUI() const;
+
     static const QBrush highlightingBrush;
     static const QBrush ordinaryBrush;
-    static const qreal radius;
+    static constexpr double radius = 5.0;
 
-    bool isSelected;
-    QGraphicsSimpleTextItem* nodeLabel;
-    qreal nodeValue;
+    bool isSelected = false;
+    QGraphicsSimpleTextItem* nodeLabel = nullptr;
+    double nodeValue = 0;
 };
 
 }  // namespace U2

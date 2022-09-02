@@ -41,32 +41,28 @@ bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
 }
 #endif
 
-namespace {
-
-#ifdef Q_OS_WIN
-bool isFarEnoughToStartDnd(const QPoint& start, const QPoint& end) {
-    return (end - start).manhattanLength() > 2 * QApplication::startDragDistance();
-}
-#endif
-
-}  // namespace
-
 bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     GTGlobals::sleep(QApplication::doubleClickInterval() + 1);  // Protect from double-clicks.
     DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
     DRIVER_CHECK(press(), "Mouse button was not be pressed");
-
-// After Linux version was improved the Windows has a lot of regressions. Keeping Windows version with no changes below during investigation.
-#ifdef Q_OS_WIN
-    QPoint farPoint = (isFarEnoughToStartDnd(start, (end + start) / 2) ? (end + start) / 2 : QPoint(0, 0));
-    DRIVER_CHECK(moveTo(farPoint), QString("Mouse could not be moved to point (%1, %2)").arg(farPoint.x()).arg(farPoint.y()));
-    DRIVER_CHECK(moveTo(end), QString("Mouse could not be moved to point (%1, %2)").arg(end.x()).arg(end.y()));
-#else
     GTThread::waitForMainThread();
+
+#ifdef Q_OS_WIN
+    // TODO: check if the 'middle point' logic is still needed on Windows.
+    QPoint middlePoint = (end + start) / 2;
+    bool useMiddlePoint = (end - middlePoint).manhattanLength() > 2 * QApplication::startDragDistance();
+    if (useMiddlePoint) {
+        DRIVER_CHECK(moveTo(middlePoint), QString("Mouse could not be moved to point (%1, %2)").arg(middlePoint.x()).arg(middlePoint.y()));
+    }
+#endif
+
     DRIVER_CHECK(moveTo(end), QString("Mouse was not moved to the end point (%1, %2)").arg(end.x()).arg(end.y()));
     GTThread::waitForMainThread();
-    GTGlobals::sleep(500);  // Do extra wait before the release. Otherwise the method is not stable on Linux.
+
+#ifndef Q_OS_WIN
+    GTGlobals::sleep(500);  // Do extra wait before the release. Otherwise, the method is not stable on Linux.
 #endif
+
     DRIVER_CHECK(release(), "Mouse button was not released");
     GTThread::waitForMainThread();
     return true;

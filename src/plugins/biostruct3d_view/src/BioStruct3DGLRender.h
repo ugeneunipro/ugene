@@ -155,7 +155,7 @@ public:
     /** @returns shown models indexes list reference.
      * indexes are just index numbers of models, NOT modelIds
      */
-    const QList<int>& getShownModelsIndexes() const;
+    const QList<int>& getShownModelsIds() const;
 
     /** Sets shown models models list. */
     void setShownModelsIndexes(const QList<int>& _shownModels);
@@ -169,7 +169,7 @@ protected:
     const BioStruct3DColorScheme* colorScheme;
 
 protected:
-    QList<int> shownModels;
+    QList<int> shownModelsIds;
 
 protected:
     const BioStruct3DRendererSettings* settings;

@@ -67,9 +67,10 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
     assert(!props.isEmpty());
     QVector<PositionStats> matrix;
     int N = ma->getRowCount();
-    for (int i = 0, n = ma->getLength() - 1; i < n && !ts.cancelFlag; i++) {  // for every di-nucl
+    for (int i = 0, n = ma->getLength() - 1; i < n; i++) {  // for every di-nucl
+        CHECK(!ts.isCoR(), {});
         PositionStats posResult;
-        foreach (DiPropertySitecon* p, props) {  // for every property
+        for (DiPropertySitecon* p : qAsConst(props)) {  // for every property
             qreal average = 0;  // average in a column
             foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {  // collect di-position stat for all sequence in alignment
                 average += p->getOriginal(row->charAt(i), row->charAt(i + 1));
@@ -77,8 +78,10 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
             average /= N;
 
             qreal dispersion = 0;  // dispersion in a column
-            for (int j = 0; j < ma->getRowCount(); j++) {  // collect di-position stat for all sequence in alignment
-                const MultipleSequenceAlignmentRow row = ma->getMsaRow(j);
+            const QList<MultipleAlignmentRow>& msaRows = ma->getRows();
+            for (int j = 0; j < msaRows.size(); j++) {  // collect di-position stat for all sequence in alignment
+                CHECK(!ts.isCoR(), {});
+                const MultipleSequenceAlignmentRow& row = msaRows[j];
                 char c1 = row->charAt(i);
                 char c2 = row->charAt(i + 1);
                 qreal v = p->getOriginal(c1, c2);
@@ -86,22 +89,22 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
             }
             dispersion /= (N - 1);
             qreal sdeviation = sqrt(dispersion);
-
             posResult.append(DiStat(p, sdeviation, average));
         }
         matrix.append(posResult);
     }
-    if (ts.cancelFlag || ts.hasError()) {
-        matrix.clear();
-        return matrix;
-    }
+    CHECK(!ts.isCoR(), {});
     assert(matrix.size() == ma->getLength() - 1);
     return matrix;
 }
 
-qreal SiteconAlgorithm::calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix, const SiteconBuildSettings& config, qreal devThreshold, DNATranslation* complMap) {
-    Q_UNUSED(config);
-    assert(len == config.windowSize);
+qreal SiteconAlgorithm::calculatePSum(const char* seq,
+                                      int len,
+                                      const QVector<PositionStats>& normalizedMatrix,
+                                      const SiteconBuildSettings& config,
+                                      qreal devThreshold,
+                                      DNATranslation* complMap) {
+    SAFE_POINT(len == config.windowSize, "config.windowsSize != len", 0);
     bool complement = complMap != nullptr;
     QByteArray complMapper = complement ? complMap->getOne2OneMapper() : QByteArray();
     qreal pSum = 0.0f;
@@ -149,29 +152,29 @@ QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
     // 2. Calculate score for excluded sequence
     // 3. Distribute percentage for all scores
 
+    QVector<qreal> res(100, 0);
     U2OpStatus2Log os;
     int maLen = ma->getLength();
     for (int i = 0; i < ma->getRowCount() && !ts.cancelFlag; i++) {
+        CHECK(!ts.isCoR(), res);
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         MultipleSequenceAlignment subMA = ma->getCopy();
         subMA->removeRow(i, os);
         QVector<PositionStats> matrix = calculateDispersionAndAverage(subMA, s, ts);
-        QVector<PositionStats> normalizedMatrix = normalize(matrix, s);
+        QVector<PositionStats> normalizedMatrix = normalize(matrix);
         calculateWeights(subMA, normalizedMatrix, s, true, ts);
         qreal p = calculatePSum(row->toByteArray(os, maLen), maLen, normalizedMatrix, s, devThresh);
         scores.append(p);
     }
-    QVector<qreal> res(100, 0);
-    if (ts.cancelFlag) {
-        return res;
-    }
+    CHECK(!ts.isCoR(), res);
     for (int i = 0; i < 100; i++) {
         int numScoresLowerThanI = 0;
-        foreach (qreal score, scores) {
+        for (qreal score : qAsConst(scores)) {
             if (score * 100 < i) {
                 numScoresLowerThanI++;
             }
         }
+        CHECK(!ts.isCoR(), res);
         res[i] = numScoresLowerThanI / qreal(scores.size());
     }
     return res;
@@ -189,10 +192,12 @@ QVector<qreal> SiteconAlgorithm::calculateSecondTypeError(const QVector<Position
     int nuclsPerProgress = randomSequence.size() / dProgress;
     int progressI = nuclsPerProgress;
 
-    QVector<PositionStats> normalizedMatrix = normalize(matrix, settings);
+    QVector<PositionStats> normalizedMatrix = normalize(matrix);
     QVector<int> hitsPerScore(100, 0);
+    QVector<qreal> errorPerScore(100, 0);
     const char* seq = randomSequence.constData();
-    for (int i = 0; i < randomSequence.size() - (settings.windowSize - 1) && !si.cancelFlag; i++) {
+    for (int i = 0; i < randomSequence.size() - (settings.windowSize - 1); i++) {
+        CHECK(!si.isCoR(), errorPerScore);
         const char* subseq = seq + i;
         qreal psum = calculatePSum(subseq, settings.windowSize, normalizedMatrix, settings, devThresh);
         hitsPerScore[qRound(psum * 100)]++;
@@ -202,7 +207,6 @@ QVector<qreal> SiteconAlgorithm::calculateSecondTypeError(const QVector<Position
         }
     }
 
-    QVector<qreal> errorPerScore(100, 0);
     int totalHits = 0;
     for (int i = 100; --i >= 0;) {
         totalHits += hitsPerScore[i];
@@ -213,9 +217,7 @@ QVector<qreal> SiteconAlgorithm::calculateSecondTypeError(const QVector<Position
     return errorPerScore;
 }
 
-QVector<PositionStats> SiteconAlgorithm::normalize(const QVector<PositionStats>& matrix, const SiteconBuildSettings& settings) {
-    Q_UNUSED(settings);  // TODO: remove this arg
-
+QVector<PositionStats> SiteconAlgorithm::normalize(const QVector<PositionStats>& matrix) {
     // calculate scale average and deviation
     // normalize initial model by scale:
     //     model_ave = (model_ave - scale_ave) / scale_dev
@@ -365,7 +367,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
     // normalize matrix if needed
     QVector<PositionStats> normMatrix = origMatrix;
     if (!matrixIsNormalized) {
-        normMatrix = normalize(origMatrix, settings);
+        normMatrix = normalize(origMatrix);
     }
 
     qreal devThreshold = critchi(settings.chisquare, settings.numSequencesInAlignment - 1) / settings.numSequencesInAlignment;

@@ -143,21 +143,20 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.h \
-           src/ov_phyltree/CreateBranchesTask.h \
-           src/ov_phyltree/CreateCircularBranchesTask.h \
-           src/ov_phyltree/CreateRectangularBranchesTask.h \
-           src/ov_phyltree/CreateUnrootedBranchesTask.h \
+           src/ov_phyltree/CircularTreeLayoutAlgorithm.h \
            src/ov_phyltree/GraphicsBranchItem.h \
            src/ov_phyltree/GraphicsButtonItem.h \
            src/ov_phyltree/GraphicsCircularBranchItem.h \
            src/ov_phyltree/GraphicsRectangularBranchItem.h \
            src/ov_phyltree/GraphicsUnrootedBranchItem.h \
+           src/ov_phyltree/RectangularTreeLayoutAlgorithm.h \
            src/ov_phyltree/TreeSettings.h \
            src/ov_phyltree/TreeViewer.h \
            src/ov_phyltree/TreeViewerFactory.h \
            src/ov_phyltree/TreeViewerState.h \
            src/ov_phyltree/TreeViewerTasks.h \
            src/ov_phyltree/TreeViewerUtils.h \
+           src/ov_phyltree/UnrootedTreeLayoutAlgorithm.h \
            src/ov_sequence/ADVAnnotationCreation.h \
            src/ov_sequence/ADVClipboard.h \
            src/ov_sequence/ADVConstants.h \
@@ -424,19 +423,19 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.cpp \
-           src/ov_phyltree/CreateCircularBranchesTask.cpp \
-           src/ov_phyltree/CreateRectangularBranchesTask.cpp \
-           src/ov_phyltree/CreateUnrootedBranchesTask.cpp \
+           src/ov_phyltree/CircularTreeLayoutAlgorithm.cpp \
            src/ov_phyltree/GraphicsBranchItem.cpp \
            src/ov_phyltree/GraphicsButtonItem.cpp \
            src/ov_phyltree/GraphicsCircularBranchItem.cpp \
            src/ov_phyltree/GraphicsRectangularBranchItem.cpp \
            src/ov_phyltree/GraphicsUnrootedBranchItem.cpp \
+           src/ov_phyltree/RectangularTreeLayoutAlgorithm.cpp \
            src/ov_phyltree/TreeViewer.cpp \
            src/ov_phyltree/TreeViewerFactory.cpp \
            src/ov_phyltree/TreeViewerState.cpp \
            src/ov_phyltree/TreeViewerTasks.cpp \
            src/ov_phyltree/TreeViewerUtils.cpp \
+           src/ov_phyltree/UnrootedTreeLayoutAlgorithm.cpp \
            src/ov_sequence/ADVAnnotationCreation.cpp \
            src/ov_sequence/ADVClipboard.cpp \
            src/ov_sequence/ADVGraphModel.cpp \

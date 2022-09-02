@@ -182,32 +182,32 @@
 <context>
     <name>U2::BioStruct3DGLWidget</name>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="754"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="769"/>
         <source>Spin</source>
         <translation>Вращение</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="743"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="758"/>
         <source>Off</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="750"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="765"/>
         <source>Models..</source>
         <translation>Модели..</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="771"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="787"/>
         <source>Align With...</source>
         <translation>Выровнять с...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="791"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="807"/>
         <source>Molecular Surface Render Style</source>
         <translation>Стиль отрисовки поверхности</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="795"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="811"/>
         <source>Molecular Surface</source>
         <translation>Молекулярная поверхность</translation>
     </message>
@@ -222,49 +222,49 @@
         <translation>Невозможно открыть файл %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="644"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="659"/>
         <source>The &quot;3D Structure Viewer&quot; was disabled, because OpenGL has error </source>
-        <translation>3D визуализация отключена: не удалось инициализировать OpenGL</translation>
+        <translation>3D визуализация отключена: не удалось инициализировать OpenGL </translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="758"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="773"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="761"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="776"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="764"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="779"/>
         <source>Export Image...</source>
         <translation>Экспортировать изображение...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="775"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="791"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="781"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="797"/>
         <source>Render Style</source>
         <translation>Стиль отрисовки</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="786"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="802"/>
         <source>Coloring Scheme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="822"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="838"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="972"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="988"/>
         <source>Molecular surface calculation task for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Задача расчета модекулярной поверхности для %1</translation>
     </message>
 </context>
 <context>

@@ -145,8 +145,7 @@ void GTFileDialogUtils_list::setNameList(GUITestOpStatus& os, const QStringList&
         }
         str.append('\"' + name + "\" ");
     }
-    auto fileEdit = GTWidget::findLineEdit(os, FILE_NAME_LINE_EDIT, parent);
-    GTLineEdit::setText(os, fileEdit, str, false, true);
+    GTLineEdit::setText(os, FILE_NAME_LINE_EDIT, str, parent, false, true);
 }
 #undef GT_METHOD_NAME
 

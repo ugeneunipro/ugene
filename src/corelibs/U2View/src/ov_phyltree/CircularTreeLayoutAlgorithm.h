@@ -19,37 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_CIRCULAR_BRANCHES_TASK_H_
-#define _U2_CREATE_CIRCULAR_BRANCHES_TASK_H_
-
-#include "CreateBranchesTask.h"
+#ifndef _U2_CIRCULAR_TREE_LAYOUT_ALGORITHM_H_
+#define _U2_CIRCULAR_TREE_LAYOUT_ALGORITHM_H_
 
 namespace U2 {
 
-class PhyNode;
 class GraphicsRectangularBranchItem;
 class GraphicsCircularBranchItem;
+class GraphicsBranchItem;
 
-class CreateCircularBranchesTask : public CreateBranchesTask {
-    Q_OBJECT
-
-    TreeLayout getLayoutType() const override {
-        return CIRCULAR_LAYOUT;
-    }
-
-private:
-    qreal coef;
-    GraphicsRectangularBranchItem* root1;
-    GraphicsCircularBranchItem* getBranch(GraphicsRectangularBranchItem* r, GraphicsCircularBranchItem* parent);
-    bool degeneratedCase;
-
-    static const qreal DEGENERATED_WIDTH;
-    static const qreal WIDTH_RADIUS;
-    static const qreal SCALE;
-
+class CircularTreeLayoutAlgorithm {
 public:
-    CreateCircularBranchesTask(GraphicsRectangularBranchItem* r, bool degeneratedCase = false);
-    void run() override;
+    CircularTreeLayoutAlgorithm() = delete;
+
+    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase);
 };
 
 }  // namespace U2

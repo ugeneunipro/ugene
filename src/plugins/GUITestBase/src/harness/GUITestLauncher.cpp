@@ -135,11 +135,11 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 QList<GUITest*> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {  // Windows.
-        testsPerSuite << 1040 << 840 << -1;
+        testsPerSuite << 920 << 880 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 555 << 580 << 485 << 555 << -1;  // Linux.
+        testsPerSuite << 540 << 565 << 490 << 560 << -1;  // Linux.
     }
     CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest*> tests;
@@ -284,15 +284,15 @@ static bool restoreTestDirWithExternalScript(const QString& pathToShellScript, c
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);  // Parent dir of the test dir.
-//    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-//                 ", tests dir: " + testsDir.dirName() +
-//                 ", data dir: " + dataDir.dirName() +
-//                 ", script: " + pathToShellScript);
-#ifdef Q_OS_WIN
-    process.start("cmd /C " + pathToShellScript);
-#else
-    process.start("/bin/bash", QStringList() << pathToShellScript);
-#endif
+    //    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
+    //                 ", tests dir: " + testsDir.dirName() +
+    //                 ", data dir: " + dataDir.dirName() +
+    //                 ", script: " + pathToShellScript);
+    if (isOsWindows()) {
+        process.start("cmd /C " + pathToShellScript);
+    } else {
+        process.start("/bin/bash", {pathToShellScript});
+    }
     qint64 processId = process.processId();
     bool isStarted = process.waitForStarted();
     if (!isStarted) {

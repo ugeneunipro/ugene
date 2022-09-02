@@ -45,47 +45,31 @@ namespace U2 {
 namespace GUITest_common_scenarios_msa_editor_colors {
 using namespace HI;
 
-void checkColor(HI::GUITestOpStatus& os, const QPoint& p, const QString& expectedColor, int Xmove = 0, int Ymove = 0) {
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-
-    GTUtilsMSAEditorSequenceArea::click(os, p);
-    QPoint p1 = GTMouseDriver::getMousePosition();
-    p1.setY(p1.y() + Ymove);
-    p1.setX(p1.x() + Xmove);
-
-    const QImage content = GTWidget::getImage(os, seq);
-    const QRgb rgb = content.pixel(seq->mapFromGlobal(p1));
-    const QColor color(rgb);
-
-    CHECK_SET_ERR(color.name() == expectedColor, "Expected: " + expectedColor + " ,found: " + color.name());
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->UGENE} in MSA editor area.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "UGENE"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "UGENE"}));
     GTMenu::showContextMenu(os, seq);
 
     //    Expected state: background for symbols must be:
     //    A - yellow    G - blue    T - red    C - green    gap - no background
     // check A
-    checkColor(os, QPoint(0, 1), "#fdff6a", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#fcff92");
 
     // check G
-    checkColor(os, QPoint(2, 2), "#2aa1e1", 5, 3);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#4eade1");
 
     // check T
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#FF99B1");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#ff99b1");
 
     // check C
-    checkColor(os, QPoint(4, 0), "#49f949");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#70f970");
 
     // check gap
-    checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -94,24 +78,23 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use context menu {Colors->No Colors} in MSA editor area.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "No colors"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
     GTMenu::showContextMenu(os, seq);
     //    Expected state: background for symbols must be white
     // check A
-    checkColor(os, QPoint(0, 1), "#ffffff", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#ffffff");
 
     // check G
-    checkColor(os, QPoint(2, 2), "#ffffff", 5, 3);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#ffffff");
 
     // check T
-    checkColor(os, QPoint(0, 2), "#ffffff", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#ffffff");
 
     // check C
-    checkColor(os, QPoint(4, 0), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#ffffff");
 
     // check gap
-    checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -120,25 +103,24 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->Jalview} in MSA editor area.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Jalview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
     GTMenu::showContextMenu(os, seq);
     // Expected state: background for symbols must be:
     // A - green G - red T - blue  C - orange gap - no background
     // check A
-    checkColor(os, QPoint(0, 1), "#48f718", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#64f73f");
 
     // check G
     GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#EB413C");
 
     // check T
-    checkColor(os, QPoint(0, 2), "#1674ee", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#3C88EE");
 
     // check C
-    checkColor(os, QPoint(4, 0), "#ffa318");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#FFB340");
 
     // check gap
-    checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -149,8 +131,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
     //    Intensity of colour depends on the frequency of appearance in the column.
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Percentage identity"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
     GTMenu::showContextMenu(os, seq);
     //    Symbols and columns at the descending order
     //    1. A,G,T at 2,3,9
@@ -159,20 +140,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    4. A,C,A,T,A,T,A at 1,4,7,8,11,12,14
 
     //    columns without colored symbols 5,13
-    checkColor(os, QPoint(0, 1), "#a4a4ff", 5);
-    checkColor(os, QPoint(1, 1), "#3c3cff", 5);
-    checkColor(os, QPoint(2, 1), "#3c3cff", 5, 3);
-    checkColor(os, QPoint(3, 1), "#a4a4ff");
-    checkColor(os, QPoint(4, 1), "#ffffff", 5);
-    checkColor(os, QPoint(5, 1), "#7171ff", 5);
-    checkColor(os, QPoint(6, 1), "#a4a4ff", 5);
-    checkColor(os, QPoint(7, 2), "#a4a4ff", 5);
-    checkColor(os, QPoint(8, 2), "#3c3cff", 5);
-    checkColor(os, QPoint(9, 2), "#7171ff", 5);
-    checkColor(os, QPoint(10, 1), "#a4a4ff", 5);
-    checkColor(os, QPoint(11, 2), "#a4a4ff", 5);
-    checkColor(os, QPoint(12, 2), "#ffffff", 5);
-    checkColor(os, QPoint(13, 2), "#a4a4ff", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(1, 1), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 1), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(3, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 1), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(5, 1), "#9999FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(6, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(7, 2), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(8, 2), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(9, 2), "#9999FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(10, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(11, 2), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(12, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(13, 2), "#CCCCFF");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

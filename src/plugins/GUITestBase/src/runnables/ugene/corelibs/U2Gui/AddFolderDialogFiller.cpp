@@ -40,8 +40,7 @@ AddFolderDialogFiller::AddFolderDialogFiller(HI::GUITestOpStatus& os, const QStr
 void AddFolderDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, nameEdit, folderName);
+    GTLineEdit::setText(os, "nameEdit", folderName, dialog);
 
     switch (acceptMethod) {
         case GTGlobals::UseMouse:

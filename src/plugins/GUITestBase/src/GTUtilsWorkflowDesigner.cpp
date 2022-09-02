@@ -100,13 +100,17 @@ void GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(HI::GUITestOpS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openWorkflowDesigner"
-void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os) {
-    StartupDialogFiller* filler = new StartupDialogFiller(os);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Workflow Designer...");
+void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus& os, bool waitForStartupDialog) {
+    StartupDialogFiller* filler = nullptr;
+    if (waitForStartupDialog) {
+        filler = new StartupDialogFiller(os);
+        GTUtilsDialog::waitForDialog(os, filler);
+    }
+    GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
     checkWorkflowDesignerWindowIsActive(os);
-    GTUtilsDialog::removeRunnable(filler);
+    if (waitForStartupDialog) {
+        GTUtilsDialog::removeRunnable(filler);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -671,11 +675,11 @@ QTreeWidget* GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatu
 void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enable) {
     class DebugModeToggleScenario : public CustomScenario {
     public:
-        DebugModeToggleScenario(bool enable)
-            : enable(enable) {
+        DebugModeToggleScenario(bool _enable)
+            : enable(_enable) {
         }
 
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, GTWidget::findTreeWidget(os, "tree"), "  Workflow Designer"));
@@ -685,12 +689,11 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enab
         }
 
     private:
-        bool enable;
+        bool enable = false;
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DebugModeToggleScenario(enable)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 #undef GT_METHOD_NAME
 
@@ -758,7 +761,7 @@ void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus
         }
     }
     if (foundItem != nullptr) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove"}));
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
         GTUtilsWorkflowDesigner::clickOnPalette(os, workerName, Qt::RightButton);
     }
@@ -1055,14 +1058,14 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
         case (comboWithFileSelector): {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
             GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
-#ifdef Q_OS_WIN
-            // added to fix UGENE-3597
-            GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+            if (isOsWindows()) {
+                // added to fix UGENE-3597
+                GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            }
             break;
         }
         case (lineEditWithFileSelector): {
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "mainWidget", parent), value.toString());
+            GTLineEdit::setText(os, "mainWidget", value.toString(), parent);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
         }
@@ -1102,9 +1105,9 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             QStringList values = value.value<QStringList>();
             QComboBox* comboBox = GTWidget::findWidgetByType<QComboBox*>(os, parent, "Cell has no QComboBox/ComboChecks widget");
             GTComboBox::checkValues(os, comboBox, values);
-#ifndef Q_OS_WIN
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+            if (!isOsWindows()) {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
             break;
         }
         case customDialogSelector: {

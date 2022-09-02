@@ -61,8 +61,7 @@ void ImportBAMFileFiller::commonScenario() {
     }
 
     if (!destinationUrl.isEmpty()) {
-        auto destinationUrlEdit = GTWidget::findLineEdit(os, "destinationUrlEdit", dialog);
-        GTLineEdit::setText(os, destinationUrlEdit, destinationUrl);
+        GTLineEdit::setText(os, "destinationUrlEdit", destinationUrl, dialog);
     }
 
     auto importUnmapped = GTWidget::findCheckBox(os, "importUnmappedBox", dialog);

@@ -47,7 +47,6 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "ov_msa/MSAEditorSequenceArea.h"
-#include "ov_msa/MaCollapseModel.h"
 
 namespace U2 {
 

@@ -324,8 +324,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 3));
 
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
@@ -376,8 +376,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     //     GTWidget::click(os,seq);
     //    GTKeyboardDriver::keyClick(Qt::Key_Delete,Qt::Key_Shift);
     auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
@@ -442,8 +442,8 @@ void test_9(HI::GUITestOpStatus& os, int i = 0) {
     CHECK_SET_ERR(clipboardText == gaps, "Expected:\n" + gaps + "\nFound:\n" + clipboardText);
 
     // 3. Move cursor at 15th symbol in first sequence. Use msa editor context menu {Edit->Delete column of gaps}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
+    GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
     //    Expected state:
@@ -588,14 +588,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
-// 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
-#ifdef Q_OS_WIN
-    GTKeyboardDriver::keyClick('y', Qt::ControlModifier);
-#else
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-#endif
+    // 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
+    if (isOsWindows()) {
+        GTKeyboardDriver::keyClick('y', Qt::ControlModifier);
+    } else {
+        GTKeyboardDriver::keyPress(Qt::Key_Shift);
+        GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    }
     // Expected state: Zychia_baranovi TTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -762,8 +762,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Right click on aligniment view. Open context menu {Export->save subalignment}
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 5), QPoint(10, 5));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     // Expected state: Create subaligniment dialog has appeared
 
@@ -857,8 +857,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
+    GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 
@@ -870,11 +870,11 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     static constexpr QPoint TOP_LEFT = QPoint(0, 0);
     static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);
 
-    //2. Select area from (0, 0) to (10, 10)
+    // 2. Select area from (0, 0) to (10, 10)
     GTUtilsMSAEditorSequenceArea::selectArea(os, TOP_LEFT, BOTTOM_RIGHT);
 
     // 3. Click "Replace with gaps" with popup menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "MSAE_MENU_EDIT", "replace_with_gaps" }));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "replace_with_gaps"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     // Expected: selection hasn't been changed
@@ -897,8 +897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
             "-----------TTAGATTGC",
             "-----------TTAGATTAT",
             "-----------TAAGTCTAT",
-            "-----------TTAGCTTAT"
-        };
+            "-----------TTAGCTTAT"};
 
         static constexpr QPoint BOTTOM_RIGHT_CHECK = QPoint(20, 10);
 

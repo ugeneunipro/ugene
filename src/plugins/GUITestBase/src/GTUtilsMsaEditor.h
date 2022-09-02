@@ -65,7 +65,12 @@ public:
 
     static QWidget* getGraphOverview(HI::GUITestOpStatus& os);
     static QWidget* getSimpleOverview(HI::GUITestOpStatus& os);
+
     static MSAEditorTreeViewerUI* getTreeView(HI::GUITestOpStatus& os);
+
+    /** Checks that there is no Tree view opened in the active MSA editor. */
+    static void checkNoTreeView(HI::GUITestOpStatus& os);
+
     static MaEditorNameList* getNameListArea(HI::GUITestOpStatus& os);
     static MSAEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus& os);
     static MSAEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus& os);
@@ -92,7 +97,7 @@ public:
     static void moveToColumn(HI::GUITestOpStatus& os, int column);
     static void clickColumn(HI::GUITestOpStatus& os, int column, Qt::MouseButton mouseButton = Qt::LeftButton);
 
-    static void selectRows(HI::GUITestOpStatus& os, int firstRowNumber, int lastRowNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
+    static void selectRows(HI::GUITestOpStatus& os, int firstRowIndex, int lastRowIndex, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
 
     /** Select rows in the name list by name using Ctrl + Mouse click. Fails if any of the rows is not found. */
     static void selectRowsByName(HI::GUITestOpStatus& os, const QStringList& rowNames);

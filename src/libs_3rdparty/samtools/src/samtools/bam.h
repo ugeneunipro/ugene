@@ -300,6 +300,7 @@ extern "C" {
 	  @return     SAM file handler
 	 */
 	tamFile sam_open(const char *fn);
+	tamFile sam_dopen(int fd);
 
 	/*!
 	  @abstract   Close a SAM file handler
@@ -587,6 +588,15 @@ extern "C" {
 	  @return     always 0 currently
 	 */
 	int bam_index_build(const char *fn);
+
+    /** Builds BAM index structure. */
+    bam_index_t *bam_index_core(bamFile fp);
+
+    /** Saves BAM index to the file. */
+    void bam_index_save(const bam_index_t *idx, FILE *fp);
+
+    /** Loads BAM index from file. */
+    bam_index_t *bam_index_load_core(FILE *fp);
 
 	/*!
 	  @abstract   Load index from file "fn.bai".

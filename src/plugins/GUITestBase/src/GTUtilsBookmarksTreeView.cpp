@@ -107,7 +107,7 @@ QString GTUtilsBookmarksTreeView::getSelectedItem(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "addBookmark"
 void GTUtilsBookmarksTreeView::addBookmark(GUITestOpStatus& os, const QString& viewName, const QString& bookmarkName) {
     Q_UNUSED(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}));
     GTMouseDriver::moveTo(getItemCenter(os, viewName));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(500);

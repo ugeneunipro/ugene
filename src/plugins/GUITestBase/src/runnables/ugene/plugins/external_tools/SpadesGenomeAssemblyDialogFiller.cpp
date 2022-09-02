@@ -64,9 +64,8 @@ void SpadesGenomeAssemblyDialogFiller::commonScenario() {
         GTComboBox::selectItemByText(os, combo, runningMode);
     }
 
-    auto lineEdit = GTWidget::findLineEdit(os, "kmerEdit", dialog);
     if (!kmerSizes.isEmpty()) {
-        GTLineEdit::setText(os, lineEdit, kmerSizes);
+        GTLineEdit::setText(os, "kmerEdit", kmerSizes, dialog);
     }
 
     if (numThreads != 0) {

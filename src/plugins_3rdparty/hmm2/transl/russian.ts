@@ -45,8 +45,10 @@
              By default, the model is configured to find one or more nonoverlapping alignments to the complete model:
              multiple global alignments with respect to the model, and local with respect to the sequence
          </source>
-        <translation>По умолчанию, профайл настраивается на поиск одного или более неперекрывающихся выравниваний к полной модели:
-множественные выравнивания глобальные относительно профайла, локальные относительно последовательности</translation>
+        <translation>
+             По умолчанию, профайл настраивается на поиск одного или более неперекрывающихся выравниваний к полной модели:
+             множественные выравнивания глобальные относительно профайла, локальные относительно последовательности
+         </translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialog.ui" line="90"/>
@@ -59,8 +61,10 @@
              Configure the model for finding multiple domains per sequence, where each domain can be a local (fragmentary) alignment.
              This is analogous to the old hmmfs program of HMMER 1.
          </source>
-        <translation>Профайл настраивается на поиск множественных доменов, каждый из которых может быть локальным (фрагментарным) выравниванием.
-Это аналог программы hmmfs пакета HMMER 1.</translation>
+        <translation>
+             Профайл настраивается на поиск множественных доменов, каждый из которых может быть локальным (фрагментарным) выравниванием.
+             Это аналог программы hmmfs пакета HMMER 1.
+         </translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialog.ui" line="126"/>
@@ -73,8 +77,10 @@
              Configure the model for finding a single global alignment to a target sequence,
              analogous to the old hmms program of HMMER 1.
          </source>
-        <translation>Профайл настраивается на поиск единственного глобального выравнивания в целевой последовательности.
-Это аналог программы hmms пакета HMMER 1.</translation>
+        <translation>
+             Профайл настраивается на поиск единственного глобального выравнивания в целевой последовательности.
+             Это аналог программы hmms пакета HMMER 1.
+         </translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialog.ui" line="159"/>
@@ -87,8 +93,10 @@
              Configure the model for finding a single local alignment per target sequence.
              This is analogous to the standard Smith/Waterman algorithm or the hmmsw program of HMMER 1.
          </source>
-        <translation>Профайл настраивается на поиск единственного локального выравнивания в целевой последовательности.
-Это аналог стандартного алгоритма Смита-Ватермана или программы hmmsw пакета HMMER 1.</translation>
+        <translation>
+             Профайл настраивается на поиск единственного локального выравнивания в целевой последовательности.
+             Это аналог стандартного алгоритма Смита-Ватермана или программы hmmsw пакета HMMER 1.
+         </translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialog.ui" line="192"/>
@@ -135,7 +143,7 @@
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="22"/>
         <source>HMM file: </source>
-        <translation>Файл c HMM профайлом:</translation>
+        <translation>Файл c HMM профайлом: </translation>
     </message>
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="32"/>
@@ -154,7 +162,8 @@
              Fix the length of the random sequences to n
                  , where n is a positive (and reasonably sized) integer. 
 The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</source>
-        <translation>Фиксированная длина случайных последовательностей, положительное число разумной величины.
+        <translation>
+             Фиксированная длина случайных последовательностей, положительное число разумной величины.
 По умолчанию, генерируются последовательности с нормальным (Гауссовым) распределением по длине.</translation>
     </message>
     <message>
@@ -174,7 +183,8 @@ The default is instead to generate sequences with a variety of different lengths
              If n is less than about 1000, the fit to the EVD may fail
              Higher numbers of n will give better determined EVD parameters. 
              The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</source>
-        <translation>Количество синтетических последовательностей.
+        <translation>
+             Количество синтетических последовательностей.
 Значение по умолчанию (5000) было эмпирически определено как компромисс между точностью и временем вычисления.</translation>
     </message>
     <message>
@@ -189,8 +199,10 @@ The default is instead to generate sequences with a variety of different lengths
              A positive number. The default is 200.
              Note that the Gaussian is left-truncated so that no sequences have lengths less or equal 0.
          </source>
-        <translation>Стандартное отклонение длины синтетической последовательности.
-Должно быть больше нуля, по умолчанию 200.</translation>
+        <translation>
+             Стандартное отклонение длины синтетической последовательности.
+Должно быть больше нуля, по умолчанию 200.
+         </translation>
     </message>
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialog.ui" line="202"/>
@@ -204,7 +216,8 @@ The default is instead to generate sequences with a variety of different lengths
              The default is to use time() to generate a different seed for each run, 
              which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. 
              You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</source>
-        <translation>Случайная затравка положительным целым числом. 
+        <translation>
+             Случайная затравка положительным целым числом. 
 По умолчанию используется текущее время в миллисекундах для каждого запуска,что приводит к небольшим и незначительным различиям при каждой калибровке одного и того же профайла.
 Вы можете использовать эту опцию для получения воспроизводимых результатов калибровки.</translation>
     </message>

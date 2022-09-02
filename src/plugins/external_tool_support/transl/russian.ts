@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/blast/BlastLocalSearchDialog.ui" line="105"/>
         <source>Expectation value </source>
-        <translation>Математическое ожидание</translation>
+        <translation>Математическое ожидание </translation>
     </message>
     <message>
         <location filename="../src/blast/BlastLocalSearchDialog.ui" line="112"/>
@@ -862,7 +862,8 @@ bowtie is somewhat slower when --best is specified.
         <translation>Создать Bowtie гарантию того, что одиночные выравнивания являются &quot;лучшими&quot; в плане слоя
 (т.е. число несовпадений, или несоответствия в затравке в -n режиме)
 и с точки зрения значений качества на несогласованной позиции (ях).
-bowtie медленнее, когда указан режим --best.</translation>
+bowtie медленнее, когда указан режим --best.
+           </translation>
     </message>
     <message>
         <location filename="../src/bowtie/BowtieSettings.ui" line="390"/>
@@ -962,7 +963,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="529"/>
         <source>Penalty for clipping </source>
-        <translation>Штраф за отсечение</translation>
+        <translation>Штраф за отсечение </translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="500"/>
@@ -1037,7 +1038,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="84"/>
         <source>Skip seeds with more than INT occurrences </source>
-        <translation>Пропускает затравки с более чем с указанным количеством вхождений</translation>
+        <translation>Пропускает затравки с более чем с указанным количеством вхождений </translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="338"/>
@@ -1158,7 +1159,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/bwa/BwaSettings.ui" line="135"/>
         <source>  Best hits (-R)</source>
-        <translation>Лучшие попытки (-R)</translation>
+        <translation>  Лучшие попытки (-R)</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaSettings.ui" line="336"/>
@@ -2259,13 +2260,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="110"/>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="120"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Порог для режима выравнивания палиндрома. Для палиндромных совпадений возможно более длинное выравнивание. Таким образом, пороговое значение может находиться в диапазоне 30. Несмотря на то, что этот порог очень высок (требуется совпадение почти 50 оснований), Trimmomatic все же способен идентифицировать очень, очень короткие фрагменты адаптера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="139"/>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="149"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Порог для простого режима выравнивания. Рекомендуются значения от 7 до 15. Идеальное совпадение последовательности из 12 оснований даст чуть более 7 очков, а чтобы набрать 15 очков, необходимо 25 оснований.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</source>
@@ -4770,7 +4771,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/iqtree/CmdlineParamsParser.cpp" line="40"/>
         <source>Failed to parse parameters: found anon-terminated quote</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось разобрать параметры: найдена незавершенная котировка</translation>
     </message>
 </context>
 <context>
@@ -5031,7 +5032,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="306"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
-        <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
+        <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="313"/>
@@ -5635,7 +5636,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="105"/>
         <source>HMM profile used: </source>
-        <translation>Использовать HMM профиль:</translation>
+        <translation>Использовать HMM профиль: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="108"/>
@@ -5645,22 +5646,22 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="114"/>
         <source>Result annotation table: </source>
-        <translation>Таблица аннотаций:</translation>
+        <translation>Таблица аннотаций: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="116"/>
         <source>Result annotation group: </source>
-        <translation>Группа аннотаций:</translation>
+        <translation>Группа аннотаций: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="117"/>
         <source>Result annotation name: </source>
-        <translation>Имя аннотации:</translation>
+        <translation>Имя аннотации: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="119"/>
         <source>Results count: </source>
-        <translation>Количество:</translation>
+        <translation>Количество результатов: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="146"/>
@@ -5764,7 +5765,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="63"/>
         <source>Example: -lmap 2000 -n 0 -m
  Use double-quotes (&quot;) for values with spaces.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пример: -lmap 2000 -n 0 -m
+ Используйте двойные кавычки (&quot;) для значений с пробелами.</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="68"/>
@@ -6326,7 +6328,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="897"/>
         <source>Minimum overlap required as a fraction of an annotation from set A.&lt;br/&gt;By default, even 1 bp overlap between annotations from set A and set B is taken into account. Yet sometimes you may want to restrict reported overlaps to cases where the annotations in B overlaps at least X% (e.g. 50%) of the A annotation. </source>
-        <translation>Минимальное пересечение, требуемое как фракция из набора A.&lt;br/&gt;По умолчанию, это свыше 1 нуклеотида пересечений между аннотациями из набора А и аннотациями набора В.</translation>
+        <translation>Минимальное пересечение, требуемое как фракция из набора A.&lt;br/&gt;По умолчанию, это свыше 1 нуклеотида пересечений между аннотациями из набора А и аннотациями набора В. </translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="904"/>
@@ -6562,7 +6564,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast/BlastWorker.cpp" line="333"/>
         <source>No selected BLAST output file</source>
-        <translation type="unfinished"></translation>
+        <translation>Не указан выходной путь для BLAST</translation>
     </message>
     <message>
         <source>Not selected BLAST output file</source>
@@ -8684,7 +8686,8 @@ bowtie медленнее, когда указан режим --best.</translati
 &lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
 &lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
 &lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
-&lt;b&gt;%13 (%14)&lt;/b&gt; - %15</translation>
+&lt;b&gt;%13 (%14)&lt;/b&gt; - %15 
+</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
@@ -9428,7 +9431,8 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="124"/>
         <source>The list of genomes is not available.<byte value="xd"/>
 Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Список геномов недоступен.
+Убедитесь, что инструменты %1 и %2 установлены в настройках приложения UGENE и могут быть проверены.</translation>
     </message>
     <message>
         <source>The list of genomes is not available.
@@ -10366,7 +10370,7 @@ Error is :</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="134"/>
         <source> Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads. Reads MUST appear in the same order as the *_1 reads.</source>
-        <translation>Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
+        <translation> Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="141"/>
@@ -10868,7 +10872,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/mafft/MAFFTSupport.cpp" line="62"/>
         <source>&lt;i&gt;MAFFT&lt;/i&gt; is a multiple sequence alignment program for unix-like operating systems. </source>
-        <translation>&lt;i&gt;MAFFT&lt;/i&gt;это программа для выравнивания множественных наборов последовательностей.</translation>
+        <translation>&lt;i&gt;MAFFT&lt;/i&gt;это программа для выравнивания множественных наборов последовательностей. </translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupport.cpp" line="76"/>
@@ -11219,22 +11223,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MrBayesWidget</name>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="63"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="66"/>
         <source>Substitution model</source>
         <translation>Модель замен</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="67"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="70"/>
         <source>Rate Matrix (fixed)</source>
         <translation>Матрица оценок</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="178"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="161"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="179"/>
+        <location filename="../src/mrbayes/MrBayesDialogWidget.cpp" line="162"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -11304,7 +11308,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="104"/>
         <source>Query sequence: </source>
-        <translation>Последовательность:</translation>
+        <translation>Последовательность: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="107"/>
@@ -11314,22 +11318,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="113"/>
         <source>Result annotation table: </source>
-        <translation>Таблица аннотаций:</translation>
+        <translation>Таблица аннотаций: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="115"/>
         <source>Result annotation group: </source>
-        <translation>Группа аннотаций:</translation>
+        <translation>Группа аннотаций: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="116"/>
         <source>Result annotation name: </source>
-        <translation>Имя аннотации:</translation>
+        <translation>Имя аннотации: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="118"/>
         <source>Results count: </source>
-        <translation>Количество:</translation>
+        <translation>Количество: </translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="150"/>
@@ -12120,17 +12124,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="54"/>
         <source>Align reads with BLAST &amp; Smith-Waterman multiplexer task </source>
-        <translation type="unfinished"></translation>
+        <translation>Задача выравнивания ридов с BLAST и Smith-Waterman </translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="73"/>
         <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Задача использует временную папку для обработки данных. Путь к папке должен быть без пробелов. Укажите соответствующий путь для параметра «Временные файлы» на вкладке «Каталоги» в настройках приложения UGENE.</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="89"/>
         <source>, reads range %1-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>, диапазон ридов %1-%2</translation>
     </message>
 </context>
 <context>
@@ -12162,50 +12166,55 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="116"/>
         <source>Align reads with BLAST &amp; Smith-Waterman task</source>
-        <translation type="unfinished"></translation>
+        <translation>Задача выравнивания ридов с BLAST &amp; Smith-Waterman</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="123"/>
         <source>Maximum supported reference sequence length is 2Gb</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная поддерживаемая длина референсной последовательности составляет 2 Гб</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="131"/>
         <source>Reference sequence is not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Референсная посоедовательность не найдена</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="164"/>
         <source>Failed to derive common alphabet for all reads</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось получить общий алфавит для всех ридов</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="169"/>
+        <source>All input reads contain gaps or Ns only, abort</source>
+        <translation>Все поданные на вход риды содержат только гэпы и символы N, отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="170"/>
         <source>Can&apos;t run alignment on non-nucleic reads</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается выполнить выравнивание не нуклеотидных ридов</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="184"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="185"/>
         <source>Reference sequence is not accessible anymore</source>
-        <translation type="unfinished"></translation>
+        <translation>Референсная последовательность больше недоступна</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="188"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="189"/>
         <source>Error while running BLAST to align reads to reference: &apos;%1&apos;, %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при выполнении BLAST для выравнивания ридов на референс: «%1», %2</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="190"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="191"/>
         <source>Error while aligning a read to reference with Smith-Waterman: &apos;%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при выравнивании ридов на референс при помощи Smith-Waterman: &apos;%1</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="385"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="386"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>The %1 algorithm is not found. Add the %1 plugin.</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="388"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="389"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>The %1 algorithm is not found. Check that the %1 plugin is up to date.</translation>
     </message>
@@ -12239,19 +12248,19 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::ComposeResultSubtask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="61"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="50"/>
         <source>Compose alignment</source>
-        <translation type="unfinished">Compose alignment</translation>
+        <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="155"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="131"/>
         <source>The related chromatogram not found</source>
-        <translation type="unfinished">The related chromatogram not found</translation>
+        <translation>Соответствующая хроматограмма не найдена</translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="187"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="163"/>
         <source>None of the reads satisfy minimum similarity criteria.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один из ридов не удовлетворяет критериям минимального сходства.</translation>
     </message>
 </context>
 <context>
@@ -12303,12 +12312,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp" line="47"/>
         <source>&apos;makeblastdb&apos; task wrapper</source>
-        <translation type="unfinished">&apos;makeblastdb&apos; task wrapper</translation>
+        <translatorcomment>оболочка задачи &apos;makeblastdb&apos;</translatorcomment>
+        <translation>&apos;makeblastdb&apos; task wrapper</translation>
     </message>
     <message>
         <location filename="../src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp" line="65"/>
         <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="unfinished">The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</translation>
+        <translation>Задача использует временную папку для обработки данных. Необходимо, чтобы путь к папке не содержал пробелов. Укажите соответствующий путь для параметра «Временные файлы» на вкладке «Каталоги» в настройках приложения UGENE.</translation>
     </message>
 </context>
 </TS>

@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_phyltree/CreateRectangularBranchesTask.h"
+#include "../../corelibs/U2View/src/ov_phyltree/RectangularTreeLayoutAlgorithm.h"

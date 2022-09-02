@@ -34,6 +34,9 @@ class HI_EXPORT GTScrollBar {
 public:
     static QScrollBar* getScrollBar(GUITestOpStatus& os, const QString& scrollBarName);
 
+    /** Returns current value of the scrollbar. */
+    static int getValue(GUITestOpStatus& os, QScrollBar* scrollbar);
+
     static void pageUp(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
     static void pageDown(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
 

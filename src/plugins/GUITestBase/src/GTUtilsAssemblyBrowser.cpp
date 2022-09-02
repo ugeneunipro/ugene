@@ -40,7 +40,6 @@
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProjectTreeView.h"
 #include "primitives/PopupChooser.h"
 #include "utils/GTUtilsDialog.h"
@@ -231,8 +230,7 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus& os, qint64 positi
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(toolbar != nullptr, "Can't find the toolbar");
 
-    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
-    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
+    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(position), toolbar);
 
     switch (method) {
         case Button:
@@ -277,14 +275,13 @@ void GTUtilsAssemblyBrowser::callExportCoverageDialog(HI::GUITestOpStatus& os, A
 
     switch (area) {
         case Consensus:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export coverage"}));
             break;
         case Overview:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export coverage"}));
             break;
         case Reads:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export"
-                                                                                << "Export coverage"));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export", "Export coverage"}));
             break;
         default:
             os.setError("Can't call the dialog on this area");

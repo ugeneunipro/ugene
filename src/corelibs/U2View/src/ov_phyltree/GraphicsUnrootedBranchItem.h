@@ -22,11 +22,7 @@
 #ifndef _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
 #define _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
 
-#include <U2Core/Task.h>
-
 #include "GraphicsBranchItem.h"
-
-class QGraphicsItem;
 
 namespace U2 {
 
@@ -38,11 +34,12 @@ class U2VIEW_EXPORT GraphicsUnrootedBranchItem : public GraphicsBranchItem {
 public:
     GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
 
-    QRectF boundingRect() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    QRectF boundingRect() const override;
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions();
+    void setLabelPositions() override;
 };
 
 }  // namespace U2

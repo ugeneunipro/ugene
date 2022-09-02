@@ -33,11 +33,8 @@ namespace U2 {
 void WorkflowMetaDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    auto urlEdit = GTWidget::findLineEdit(os, "urlEdit", dialog);
-    GTLineEdit::setText(os, urlEdit, url, false, true);
-
-    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
-    GTLineEdit::setText(os, nameEdit, name);
+    GTLineEdit::setText(os, "urlEdit", url, dialog, false, true);
+    GTLineEdit::setText(os, "nameEdit", name, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

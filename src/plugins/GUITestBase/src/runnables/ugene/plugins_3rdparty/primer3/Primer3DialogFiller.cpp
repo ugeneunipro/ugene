@@ -34,6 +34,8 @@
 #include <QPushButton>
 #include <QTabWidget>
 
+#include <U2Core/global.h>
+
 #include "Primer3DialogFiller.h"
 
 namespace U2 {
@@ -59,24 +61,20 @@ void Primer3DialogFiller::commonScenario() {
         GTTabWidget::setCurrentIndex(os, tabWidget, 6);
 
         if (!settings.primersGroupName.isEmpty()) {
-            auto groupEdit = GTWidget::findLineEdit(os, "leGroupName", dialog);
-            GTLineEdit::setText(os, groupEdit, settings.primersGroupName);
+            GTLineEdit::setText(os, "leGroupName", settings.primersGroupName, dialog);
         }
 
         if (!settings.primersName.isEmpty()) {
-            auto primerEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
-            GTLineEdit::setText(os, primerEdit, settings.primersName);
+            GTLineEdit::setText(os, "leAnnotationName", settings.primersName, dialog);
         }
     }
 
     if (settings.start != -1) {
-        auto start = GTWidget::findLineEdit(os, "start_edit_line", dialog);
-        GTLineEdit::setText(os, start, QString::number(settings.start));
+        GTLineEdit::setText(os, "start_edit_line", QString::number(settings.start), dialog);
     }
 
     if (settings.end != -1) {
-        auto end = GTWidget::findLineEdit(os, "end_edit_line", dialog);
-        GTLineEdit::setText(os, end, QString::number(settings.end));
+        GTLineEdit::setText(os, "end_edit_line", QString::number(settings.end), dialog);
     }
     auto leftCheckbox = GTWidget::findCheckBox(os, "checkbox_PICK_LEFT", dialog);
     GTCheckBox::setChecked(os, leftCheckbox, settings.pickLeft);
@@ -98,11 +96,11 @@ void Primer3DialogFiller::commonScenario() {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
         auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
-#ifdef Q_OS_DARWIN
-        dialog->close();
-#else
-        GTKeyboardDriver::keyClick(Qt::Key_Escape);
-#endif
+        if (isOsMac()) {
+            dialog->close();
+        } else {
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
     }
 }
 

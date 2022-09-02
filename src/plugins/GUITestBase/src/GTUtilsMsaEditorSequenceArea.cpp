@@ -152,8 +152,7 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus& os, const QPoint& scre
 
 #define GT_METHOD_NAME "copySelectionByContextMenu"
 void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus& os) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 #undef GT_METHOD_NAME
@@ -204,28 +203,6 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
     }
 
     SAFE_POINT(msaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "scrollToBottom"
-void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus& os) {
-    // scroll down
-    auto vBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-#ifdef Q_OS_DARWIN
-    vBar->setValue(vBar->maximum());
-    return;
-#endif
-
-    QStyleOptionSlider vScrollBarOptions;
-    vScrollBarOptions.initFrom(vBar);
-
-    while (vBar->value() != vBar->maximum()) {
-        const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
-        const QPoint bottomEdge(sliderSpaceRect.width() / 2 + 10, sliderSpaceRect.y() + sliderSpaceRect.height());
-
-        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click();
-    }
 }
 #undef GT_METHOD_NAME
 
@@ -633,7 +610,8 @@ void GTUtilsMSAEditorSequenceArea::checkMsaCellColors(GUITestOpStatus& os, const
 
 #define GT_METHOD_NAME "checkMsaCellColor"
 void GTUtilsMSAEditorSequenceArea::checkMsaCellColor(GUITestOpStatus& os, const QPoint& pos, const QString& color) {
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, color), "Wrong color: " + color);
+    QString actualColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, color), "Wrong color: "+ color+"! Actual: " + actualColor);
 }
 #undef GT_METHOD_NAME
 
@@ -694,10 +672,8 @@ void GTUtilsMSAEditorSequenceArea::replaceSymbol(GUITestOpStatus& os, const QPoi
 void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus& os, const QString& colorSchemeName, const NewColorSchemeCreator::alphabet al) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, al));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -706,10 +682,8 @@ void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus& os, const 
 #define GT_METHOD_NAME "deleteColorScheme"
 void GTUtilsMSAEditorSequenceArea::deleteColorScheme(GUITestOpStatus& os, const QString& colorSchemeName) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
-                                                                        << "Custom schemes"
-                                                                        << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl, NewColorSchemeCreator::Delete));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Custom schemes", "Create new color scheme"}));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

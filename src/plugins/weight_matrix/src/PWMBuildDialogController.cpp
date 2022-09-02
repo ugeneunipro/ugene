@@ -281,8 +281,8 @@ void PWMBuildDialogController::initFrequencySaveController() {
     config.saveTitle = tr("Select file to save frequency matrix to...");
 
     SaveDocumentController::SimpleFormatsInfo formats;
-    formats.addFormat(WeightMatrixIO::FREQUENCY_MATRIX_ID, tr("Frequency matrices"), QStringList() << WeightMatrixIO::FREQUENCY_MATRIX_EXT);
-    formats.addFormat(WeightMatrixIO::WEIGHT_MATRIX_ID, tr("Weight matrices"), QStringList() << WeightMatrixIO::WEIGHT_MATRIX_EXT);
+    formats.addFormat(WeightMatrixIO::FREQUENCY_MATRIX_ID, tr("Frequency matrices"), {WeightMatrixIO::FREQUENCY_MATRIX_EXT});
+    formats.addFormat(WeightMatrixIO::WEIGHT_MATRIX_ID, tr("Weight matrices"), {WeightMatrixIO::WEIGHT_MATRIX_EXT});
 
     saveController = new SaveDocumentController(config, formats, this);
     connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
@@ -299,8 +299,8 @@ void PWMBuildDialogController::initWeightSaveController() {
     config.saveTitle = tr("Select file to save weight matrix to...");
 
     SaveDocumentController::SimpleFormatsInfo formats;
-    formats.addFormat(WeightMatrixIO::FREQUENCY_MATRIX_ID, tr("Frequency matrices"), QStringList() << WeightMatrixIO::FREQUENCY_MATRIX_EXT);
-    formats.addFormat(WeightMatrixIO::WEIGHT_MATRIX_ID, tr("Weight matrices"), QStringList() << WeightMatrixIO::WEIGHT_MATRIX_EXT);
+    formats.addFormat(WeightMatrixIO::FREQUENCY_MATRIX_ID, tr("Frequency matrices"), {WeightMatrixIO::FREQUENCY_MATRIX_EXT});
+    formats.addFormat(WeightMatrixIO::WEIGHT_MATRIX_ID, tr("Weight matrices"), {WeightMatrixIO::WEIGHT_MATRIX_EXT});
 
     saveController = new SaveDocumentController(config, formats, this);
     connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));

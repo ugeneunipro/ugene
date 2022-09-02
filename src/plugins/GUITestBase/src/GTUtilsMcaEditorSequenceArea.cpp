@@ -130,7 +130,10 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
     GTThread::waitForMainThread();
 
     CHECK_SET_ERR(mcaSeqArea->isVisible(position, false),
-                  QString("The position is still invisible after scrolling: (%1, %2)").arg(position.x()).arg(position.y()));
+                  QString("The position is still invisible after scrolling: (%1, %2), last visible base: %3")
+                      .arg(position.x())
+                      .arg(position.y())
+                      .arg(mcaSeqArea->getLastVisibleBase(false)));
 }
 #undef GT_METHOD_NAME
 

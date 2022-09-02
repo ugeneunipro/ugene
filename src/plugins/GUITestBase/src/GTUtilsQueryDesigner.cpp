@@ -26,12 +26,9 @@
 #include <primitives/GTWidget.h>
 
 #include <QGraphicsItem>
-#include <QGraphicsView>
 #include <QTreeWidget>
 
 #include <U2Core/U2IdTypes.h>
-
-#include <U2View/MSAEditor.h>
 
 #include "GTUtilsMdi.h"
 #include "api/GTGraphicsItem.h"
@@ -41,16 +38,15 @@ namespace U2 {
 using namespace HI;
 #define GT_CLASS_NAME "GTUtilsQueryDesigner"
 
-#define GT_METHOD_NAME "findTreeItem"
+#define GT_METHOD_NAME "openQueryDesigner"
 void GTUtilsQueryDesigner::openQueryDesigner(HI::GUITestOpStatus& os) {
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Query Designer...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Query Designer..."});
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findTreeItem"
-QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "findAlgorithm"
+QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, const QString& itemName) {
     QTreeWidgetItem* foundItem = nullptr;
     auto w = GTWidget::findTreeWidget(os, "palette");
 
@@ -74,63 +70,66 @@ QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, QS
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsQueryDesigner::addAlgorithm(HI::GUITestOpStatus& os, QString algName) {
+#define GT_METHOD_NAME "addAlgorithm"
+void GTUtilsQueryDesigner::addAlgorithm(HI::GUITestOpStatus& os, const QString& algName) {
     QTreeWidgetItem* w = findAlgorithm(os, algName);
-    GTGlobals::sleep(500);
-    CHECK_SET_ERR(w != nullptr, "algorithm is NULL");
-
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, w));
-
+    GTMouseDriver::click(GTTreeWidget::getItemCenter(os, w));
     GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
 }
+#undef GT_METHOD_NAME
 
-QPoint GTUtilsQueryDesigner::getItemCenter(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemCenter"
+QPoint GTUtilsQueryDesigner::getItemCenter(HI::GUITestOpStatus& os, const QString& itemName) {
     QRect r = getItemRect(os, itemName);
-    QPoint p = r.center();
-    return p;
+    return r.center();
 }
+#undef GT_METHOD_NAME
 
-int GTUtilsQueryDesigner::getItemLeft(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemLeft"
+int GTUtilsQueryDesigner::getItemLeft(HI::GUITestOpStatus& os, const QString& itemName) {
     QRect r = getItemRect(os, itemName);
-    int i = r.left();
-    return i;
+    return r.left();
 }
+#undef GT_METHOD_NAME
 
-int GTUtilsQueryDesigner::getItemRight(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemRight"
+int GTUtilsQueryDesigner::getItemRight(HI::GUITestOpStatus& os, const QString& itemName) {
     QRect r = getItemRect(os, itemName);
-    int i = r.right() - 1;
-    return i;
+    return r.right() - 1;
 }
+#undef GT_METHOD_NAME
 
-int GTUtilsQueryDesigner::getItemTop(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemTop"
+int GTUtilsQueryDesigner::getItemTop(HI::GUITestOpStatus& os, const QString& itemName) {
     QRect r = getItemRect(os, itemName);
-    int i = r.top();
-    return i;
+    return r.top();
 }
+#undef GT_METHOD_NAME
 
-int GTUtilsQueryDesigner::getItemBottom(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemBottom"
+int GTUtilsQueryDesigner::getItemBottom(HI::GUITestOpStatus& os, const QString& itemName) {
     QRect r = getItemRect(os, itemName);
-    int i = r.bottom();
-    return i;
+    return r.bottom();
 }
+#undef GT_METHOD_NAME
 
-QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus& os, QString itemName) {
+#define GT_METHOD_NAME "getItemRect"
+QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus& os, const QString& itemName) {
     auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
 
-    foreach (QGraphicsItem* it, items) {
+    for (QGraphicsItem* it : qAsConst(items)) {
         QGraphicsObject* itObj = it->toGraphicsObject();
-
-        QGraphicsTextItem* textItemO = qobject_cast<QGraphicsTextItem*>(itObj);
-        if (textItemO) {
+        if (auto textItemO = qobject_cast<QGraphicsTextItem*>(itObj)) {
             QString text = textItemO->toPlainText();
             if (text.contains(itemName)) {
                 return GTGraphicsItem::getGraphicsItemRect(os, it->parentItem());
             }
         }
     }
-    return QRect();
+    FAIL("Item not found: " + itemName, {});
 }
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

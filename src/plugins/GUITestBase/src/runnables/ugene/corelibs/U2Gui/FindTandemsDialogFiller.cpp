@@ -55,8 +55,7 @@ void FindTandemsDialogFiller::commonScenario() {
     GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "tabWidget"), 1);
     GTGlobals::sleep(100);
 
-    auto resultLocationEdit = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
-    GTLineEdit::setText(os, resultLocationEdit, resultAnnotationFilesPath);
+    GTLineEdit::setText(os, "leNewTablePath", resultAnnotationFilesPath, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

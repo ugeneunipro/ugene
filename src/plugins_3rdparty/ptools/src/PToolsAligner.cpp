@@ -37,7 +37,7 @@ static PTools::Rigidbody* createRigidBody(const BioStruct3DReference& subset) {
     const BioStruct3D& biostruct = subset.obj->getBioStruct3D();
 
     foreach (int chainId, subset.chains) {
-        const Molecule3DModel& model = biostruct.getModelByName(chainId, subset.modelId);
+        const Molecule3DModel& model = biostruct.getModelById(chainId, subset.modelId);
 
         U2Region region;
         if (subset.chains.size() == 1) {

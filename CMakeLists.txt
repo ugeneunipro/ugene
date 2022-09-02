@@ -10,7 +10,7 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 41.0-dev)
+set(UGENE_VERSION 44.0-dev)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}

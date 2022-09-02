@@ -23,24 +23,25 @@
 #define _U2_PFM_MATRIX_FORMAT_H_
 
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/U2RawData.h>
+
+#include <U2Formats/TextDocumentFormat.h>
 
 #include <U2Gui/ObjectViewTasks.h>
 
 namespace U2 {
 
-class PFMatrixFormat : public DocumentFormat {
+class PFMatrixFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PFMatrixFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 };
 
 class PFMatrixViewFactory : public GObjectViewFactory {
@@ -51,29 +52,29 @@ public:
         : GObjectViewFactory(ID, tr("PFM Viewer"), p) {
     }
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    bool canCreateView(const MultiGSelection& multiSelection) override;
+    Task* createViewTask(const MultiGSelection& multiSelection, bool single = false) override;
 };
 
 class OpenPFMatrixViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenPFMatrixViewTask(Document* doc);
-    virtual void open();
+    void open() override;
 
 private:
-    Document* document;
+    Document* document = nullptr;
 };
 
-class PWMatrixFormat : public DocumentFormat {
+class PWMatrixFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PWMatrixFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 };
 
 class PWMatrixViewFactory : public GObjectViewFactory {
@@ -84,18 +85,18 @@ public:
         : GObjectViewFactory(ID, tr("PWM Viewer"), p) {
     }
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    bool canCreateView(const MultiGSelection& multiSelection) override;
+    Task* createViewTask(const MultiGSelection& multiSelection, bool single = false) override;
 };
 
 class OpenPWMatrixViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenPWMatrixViewTask(Document* doc);
-    virtual void open();
+    void open() override;
 
 private:
-    Document* document;
+    Document* document = nullptr;
 };
 
 }  // namespace U2

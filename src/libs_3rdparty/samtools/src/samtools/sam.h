@@ -44,6 +44,8 @@ extern "C" {
 	  @param fn SAM/BAM file name; "-" is recognized as stdin (for
 	  reading) or stdout (for writing).
 
+	  @param fd File descriptor for the file referenced by 'fn'. Used when is valid (!= -1).
+
 	  @param mode open mode /[rw](b?)(u?)(h?)([xX]?)/: 'r' for reading,
 	  'w' for writing, 'b' for BAM I/O, 'u' for uncompressed BAM output,
 	  'h' for outputing header in SAM, 'x' for HEX flag and 'X' for
@@ -59,6 +61,7 @@ extern "C" {
 
 	  @return       SAM/BAM file handler
 	 */
+	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
 	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
 
 	/*!

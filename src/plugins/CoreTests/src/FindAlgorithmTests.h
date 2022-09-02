@@ -45,6 +45,8 @@ private:
     U2SequenceObject* se;
     QList<U2Region> expectedResults;
     FindAlgorithmTask* t;
+    bool checkTaskNotCancelled = false;
+    bool skipResultsCheck = false;
 };
 
 class FindAlgorithmTests {

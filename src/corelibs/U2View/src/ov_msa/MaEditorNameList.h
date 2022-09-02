@@ -31,7 +31,6 @@
 
 #include "MaCollapseModel.h"
 #include "MsaEditorUserModStepController.h"
-#include "phy_tree/MSAEditorTreeViewer.h"
 
 namespace U2 {
 

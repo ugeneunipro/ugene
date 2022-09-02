@@ -93,7 +93,7 @@ void BioStruct3DGLRendererRegistry::registerFactories() {
 
 /* class BioStruct3DGLRenderer */
 BioStruct3DGLRenderer::BioStruct3DGLRenderer(const BioStruct3D& _bioStruct, const BioStruct3DColorScheme* _s, const QList<int>& _shownModels, const BioStruct3DRendererSettings* _settings)
-    : bioStruct(_bioStruct), colorScheme(_s), shownModels(_shownModels), settings(_settings) {
+    : bioStruct(_bioStruct), colorScheme(_s), shownModelsIds(_shownModels), settings(_settings) {
 }
 
 void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme* s) {
@@ -105,12 +105,12 @@ const BioStruct3DColorScheme* BioStruct3DGLRenderer::getColorScheme() const {
     return colorScheme;
 }
 
-const QList<int>& BioStruct3DGLRenderer::getShownModelsIndexes() const {
-    return shownModels;
+const QList<int>& BioStruct3DGLRenderer::getShownModelsIds() const {
+    return shownModelsIds;
 }
 
 void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int>& _shownModels) {
-    shownModels = _shownModels;
+    shownModelsIds = _shownModels;
 }
 
 bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D&) {

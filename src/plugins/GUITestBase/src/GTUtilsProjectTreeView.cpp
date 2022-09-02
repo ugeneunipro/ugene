@@ -137,7 +137,7 @@ void editItemName(HI::GUITestOpStatus& os, const QString& newItemName, GTGlobals
             GTKeyboardDriver::keyClick(Qt::Key_F2);
             break;
         case GTGlobals::UseMouse:
-            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Rename"}, GTGlobals::UseMouse));
             GTMouseDriver::click(Qt::RightButton);
             GTGlobals::sleep(300);
             break;
@@ -395,11 +395,10 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
 #define GT_METHOD_NAME "filterProject"
 void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QString& searchField) {
     openView(os);
-#ifdef Q_OS_DARWIN
-    GTGlobals::sleep(3000);
-#endif
-    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
-    GTLineEdit::setText(os, nameFilterEdit, searchField);
+    if (isOsMac()) {
+        GTGlobals::sleep(3000);
+    }
+    GTLineEdit::setText(os, "nameFilterEdit", searchField);
     GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -408,9 +407,8 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QStrin
 #define GT_METHOD_NAME "filterProjectSequental"
 void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus& os, const QStringList& searchField, bool waitUntilSearchEnd) {
     openView(os);
-    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     foreach (const QString& str, searchField) {
-        GTLineEdit::setText(os, nameFilterEdit, str);
+        GTLineEdit::setText(os, "nameFilterEdit", str);
         GTGlobals::sleep(3000);
     }
     if (waitUntilSearchEnd) {
@@ -700,7 +698,7 @@ void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "markSequenceAsCircular"
 void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus& os, const QString& sequenceObjectName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
     click(os, sequenceObjectName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME

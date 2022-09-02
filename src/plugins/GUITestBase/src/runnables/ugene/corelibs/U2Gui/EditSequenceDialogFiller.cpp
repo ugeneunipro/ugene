@@ -111,8 +111,7 @@ void InsertSequenceFiller::commonScenario() {
         auto checkButton1 = GTWidget::findCheckBox(os, "mergeAnnotationsBox", dialog);
         GTCheckBox::setChecked(os, checkButton1, mergeAnnotations);
 
-        auto lineEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
-        GTLineEdit::setText(os, lineEdit, documentLocation);
+        GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
 
         auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
 

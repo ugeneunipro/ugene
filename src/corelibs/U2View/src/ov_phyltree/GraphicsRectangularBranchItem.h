@@ -22,8 +22,6 @@
 #ifndef _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
 #define _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
 
-#include <U2Core/Task.h>
-
 #include "GraphicsBranchItem.h"
 
 namespace U2 {
@@ -32,65 +30,56 @@ class PhyNode;
 class PhyBranch;
 class GraphicsButtonItem;
 
-class U2VIEW_EXPORT GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsRectangularBranchItem : public GraphicsBranchItem {
     Q_OBJECT
 public:
-    static const qreal DEFAULT_WIDTH;
-    static const qreal MAXIMUM_WIDTH;
-    static const qreal EPSILON;
-    static const int DEFAULT_HEIGHT;
+    static constexpr double DEFAULT_WIDTH = 25.0;
+    static constexpr double MAXIMUM_WIDTH = 500.0;
+    static constexpr double EPSILON = 0.0000000001;
+    static constexpr int DEFAULT_HEIGHT = 25;
 
     GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
     GraphicsRectangularBranchItem();
-    GraphicsRectangularBranchItem(qreal d, PhyBranch* branch, double nodeValue);
-    GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name, qreal d, PhyBranch* branch);
-    GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name);
+    GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
+    GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
+    GraphicsRectangularBranchItem(double x, double y, const QString& name);
 
-    QRectF boundingRect() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    QRectF boundingRect() const override;
+
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+
     void setParentItem(QGraphicsItem* item);
 
-    Direction getDirection() const {
-        return direction;
-    }
-    qreal getHeight() const {
-        return height;
-    }
-    void setHeightW(qreal h) {
-        height = h;
-    }
-    void setHeight(qreal h);
-    void setHeightCoef(int coef);
-    void setHeightCoefW(int coef) {
-        cur_height_coef = coef;
-    }
-    void setDirection(Direction d);
+    Side getSide() const;
 
-    void collapse();
-    void setCollapsed(bool isCollapsed) {
-        collapsed = isCollapsed;
-    }
+    double getHeight() const;
+
+    void setHeightW(double h);
+
+    void setHeight(double newHeight);
+
+    void setHeightCoef(int newCoef);
+
+    void setHeightCoefW(int coef);
+
+    void setSide(const Side& side);
+
+    void toggleCollapsedState() override;
+
     void swapSiblings();
-    void redrawBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
 
-    const PhyBranch* getPhyBranch() const {
-        return phyBranch;
-    }
+    void recalculateBranches(int& current, const PhyNode* root);
+
+    const PhyBranch* getPhyBranch() const;
+
     GraphicsRectangularBranchItem* getChildItemByPhyBranch(const PhyBranch* branch);
 
     void drawCollapsedRegion();
-    void branchCollapsed(GraphicsRectangularBranchItem* branch) {
-        emit si_branchCollapsed(branch);
-    }
-
-signals:
-    void si_branchCollapsed(GraphicsRectangularBranchItem* collapsedBranch);
 
 private:
-    qreal height;
-    int cur_height_coef;
-    Direction direction;
-    PhyBranch* phyBranch;
+    double height = 0;
+    int currentHeightCoef = 1;
+    PhyBranch* phyBranch = nullptr;
 };
 }  // namespace U2
 

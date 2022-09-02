@@ -139,30 +139,6 @@ bool GUrl::operator!=(const GUrl& url) const {
     return !(*this == url);
 }
 
-QByteArray GUrl::getURLStringAnsi(int codePage) const {
-#ifdef Q_OS_WIN
-    std::wstring wPath = getURLString().toStdWString();
-    codePage = codePage < 0 ? CP_THREAD_ACP : codePage;
-
-    DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, nullptr, 0, nullptr, nullptr);
-    if (!buffSize) {
-        return QByteArray();
-    }
-
-    char* buffer = new char[buffSize + 1];
-    if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, nullptr, nullptr)) {
-        delete[] buffer;
-        return QByteArray();
-    }
-    QByteArray bytes = QByteArray(buffer, buffSize + 1);
-    delete[] buffer;
-    return bytes;
-#else
-    Q_UNUSED(codePage);
-    return getURLString().toLocal8Bit();
-#endif  // Q_OS_WIN
-}
-
 static QString path(const GUrl* url) {
     // TODO: parse HTTP and other formats for path part
     QString result;

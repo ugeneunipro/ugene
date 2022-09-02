@@ -1,0 +1,19 @@
+<multi-test>
+    <!-- check no canceling task after reaching max results -->
+    <load-document index="doc" url="fasta/chr6.fa" io="local_file" format="fasta"/>
+
+    <find-algorithm document="doc"
+                    sequence="chr6"
+                    strand="direct"
+                    pattern="A"
+                    source=""
+                    range="1..10000000"
+                    max_error="0"
+                    algorithm="subst"
+                    ambig=""
+                    expected=""
+                    checkTaskNotCancelled="true"
+                    skipResultsCheck="true"
+    />
+
+</multi-test>

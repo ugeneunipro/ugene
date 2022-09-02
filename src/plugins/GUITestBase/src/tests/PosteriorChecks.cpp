@@ -32,7 +32,7 @@ POSTERIOR_CHECK_DEFINITION(post_check_0000) {
     // Check dialog waiters state
     // Stop dialogs hang checking
 
-    GTUtilsDialog::cleanup(os);
+    GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::FailOnUnfinished);
 }
 
 POSTERIOR_CHECK_DEFINITION(post_check_0001) {

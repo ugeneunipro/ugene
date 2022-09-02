@@ -102,10 +102,10 @@ void Actor::setupVariablesForPort(AttributeScript* _script, bool inputOnly) {
                 _script->setScriptVar(var, QVariant());
             }
         } else {
-            QString id = prefix + dataTypePtr->getId();
+            QString newId = prefix + dataTypePtr->getId();
             QString displayName = dataTypePtr->getDisplayName();
-            QString doc = prefix + dataTypePtr->getDocumentation();
-            _script->setScriptVar(Descriptor(id, displayName, doc), QVariant());
+            QString docText = prefix + dataTypePtr->getDocumentation();
+            _script->setScriptVar(Descriptor(newId, displayName, docText), QVariant());
         }
     }
 }
@@ -134,8 +134,8 @@ ActorId Actor::getOwner() const {
     return owner;
 }
 
-void Actor::setOwner(const ActorId& owner) {
-    this->owner = owner;
+void Actor::setOwner(const ActorId& newOwner) {
+    owner = newOwner;
 }
 
 void Actor::updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap) {
@@ -156,8 +156,8 @@ ActorId Actor::getId() const {
     return id;
 }
 
-void Actor::setId(const ActorId& id) {
-    this->id = id;
+void Actor::setId(const ActorId& newId) {
+    id = newId;
 }
 
 QString Actor::getLabel() const {
@@ -173,8 +173,8 @@ void Actor::setLabel(const QString& l) {
     emit si_labelChanged();
 }
 
-Port* Actor::getPort(const QString& id) const {
-    return ports.value(id);
+Port* Actor::getPort(const QString& portId) const {
+    return ports.value(portId);
 }
 
 QList<Port*> Actor::getPorts() const {
@@ -476,40 +476,6 @@ static bool validateUrlAttribute(Attribute* attr, UrlAttributeType urlType, Noti
     return res;
 }
 
-static bool validateCodePage(const QString& url) {
-    QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
-    if (url.compare(url2, Qt::CaseSensitive) != 0) {
-        return false;
-    }
-    return true;
-}
-
-/**
- * UGENE-5595
- * The following validation is very simple:
- *   - convert attr's value from QString to 8Bite byte array
- *   - then, convert back 8Bit to QString
- *   - both QString must be equal
- */
-static bool validateCodePage(Attribute* attr, NotificationsList& infoList) {
-    SAFE_POINT(nullptr != attr, "NULL attribute!", false);
-
-    QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
-    if (urlsList.isEmpty()) {
-        return true;
-    }
-
-    // Verify each URL
-    bool res = true;
-    foreach (const QString& url, urlsList) {
-        if (!validateCodePage(url)) {
-            res = false;
-            infoList << WorkflowNotification(L10N::warningCharactersCodePage(attr->getDisplayName()), "", WorkflowNotification::U2_WARNING);
-        }
-    }
-    return res;
-}
-
 bool Actor::validate(NotificationsList& notificationList) const {
     bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc& desc, customValidators) {
@@ -531,14 +497,6 @@ bool Actor::validate(NotificationsList& notificationList) const {
         if (urlType != NotAnUrl) {
             bool urlAttrValid = validateUrlAttribute(attr, urlType, notificationList);
             urlsRes = urlsRes && urlAttrValid;
-        }
-
-        if (urlType != NotAnUrl || attr->getFlags().testFlag(Attribute::NeedValidateEncoding)) {
-            // UGENE-5595
-            bool urlAttrValid = validateCodePage(attr, notificationList);
-            Q_UNUSED(urlAttrValid)
-            // we think that this is a warning, so I commented the following line
-            // urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {

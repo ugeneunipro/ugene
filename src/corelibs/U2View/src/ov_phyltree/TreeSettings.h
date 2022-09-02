@@ -28,9 +28,12 @@
 #include <QVariant>
 
 namespace U2 {
-enum TREE_TYPE { DEFAULT,
-                 PHYLOGRAM,
-                 CLADOGRAM };
+
+enum TreeType {
+    DEFAULT,
+    PHYLOGRAM,
+    CLADOGRAM
+};
 
 enum TreeLayout {
     RECTANGULAR_LAYOUT,

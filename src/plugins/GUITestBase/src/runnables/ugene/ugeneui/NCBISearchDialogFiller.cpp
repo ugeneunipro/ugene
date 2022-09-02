@@ -132,7 +132,7 @@ void NcbiSearchDialogFiller::setTerm(const QVariant& actionData) {
     GT_CHECK(canConvert, "Can't get the block number and the query term from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
     auto blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", blockWidget), value.second);
+    GTLineEdit::setText(os, "queryEditLineEdit", value.second, blockWidget);
 }
 #undef GT_METHOD_NAME
 
@@ -301,7 +301,7 @@ NCBISearchDialogSimpleFiller::NCBISearchDialogSimpleFiller(HI::GUITestOpStatus& 
 void NCBISearchDialogSimpleFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", dialog), query);
+    GTLineEdit::setText(os, "queryEditLineEdit", query, dialog);
 
     if (term != "") {
         GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", dialog), term);

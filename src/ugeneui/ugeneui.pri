@@ -61,7 +61,6 @@ win32 {
 
 macx {
     RC_FILE = images/ugeneui.icns
-    QMAKE_INFO_PLIST = ../../etc/script/mac/dmg/Info.plist
     QMAKE_RPATHDIR += @executable_path/
 }
 

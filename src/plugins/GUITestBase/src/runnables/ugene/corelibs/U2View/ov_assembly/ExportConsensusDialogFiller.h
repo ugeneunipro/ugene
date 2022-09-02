@@ -37,4 +37,4 @@ public:
 
 }  // namespace U2
 
-#endif  // EXPORTCONSENSUSDIALOG_H
+#endif  // _U2_EXPORT_CONSENSUS_DIALOG_FILLER_H_

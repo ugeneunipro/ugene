@@ -36,6 +36,7 @@
 #include <U2View/BaseWidthController.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
@@ -146,6 +147,14 @@ QWidget* GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus& os) {
 MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
     QWidget* activeWindow = getActiveMsaEditorWindow(os);
     return GTWidget::findExactWidget<MSAEditorTreeViewerUI*>(os, "treeView", activeWindow);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkNoTreeView"
+void GTUtilsMsaEditor::checkNoTreeView(GUITestOpStatus& os) {
+    QWidget* activeWindow = getActiveMsaEditorWindow(os);
+    auto treeView = GTWidget::findExactWidget<MSAEditorTreeViewerUI*>(os, "treeView", activeWindow, {false});
+    CHECK_SET_ERR(treeView == nullptr, "checkNoTreeView: found a tree view");
 }
 #undef GT_METHOD_NAME
 
@@ -300,17 +309,17 @@ void GTUtilsMsaEditor::clickColumn(GUITestOpStatus& os, int column, Qt::MouseBut
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectRows"
-void GTUtilsMsaEditor::selectRows(GUITestOpStatus& os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method) {
+void GTUtilsMsaEditor::selectRows(GUITestOpStatus& os, int firstRowIndex, int lastRowIndex, GTGlobals::UseMethod method) {
     switch (method) {
         case GTGlobals::UseKey:
-            clickSequence(os, firstRowNumber);
+            clickSequence(os, firstRowIndex);
             GTKeyboardDriver::keyPress(Qt::Key_Shift);
-            clickSequence(os, lastRowNumber);
+            clickSequence(os, lastRowIndex);
             GTKeyboardDriver::keyRelease(Qt::Key_Shift);
             break;
         case GTGlobals::UseMouse:
-            GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowNumber).center(),
-                                       getSequenceNameRect(os, lastRowNumber).center());
+            GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowIndex).center(),
+                                       getSequenceNameRect(os, lastRowIndex).center());
             break;
         case GTGlobals::UseKeyBoard:
             GT_FAIL("Not implemented", );
@@ -431,11 +440,11 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(GUITestOpStatus& os, const QString&
 
     const QRect sequenceNameRect = getSequenceNameRect(os, groupName);
     QPoint magicExpandButtonOffset;
-#ifdef Q_OS_WIN
-    magicExpandButtonOffset = QPoint(15, 10);
-#else
-    magicExpandButtonOffset = QPoint(15, 5);
-#endif
+    if (isOsWindows()) {
+        magicExpandButtonOffset = QPoint(15, 10);
+    } else {
+        magicExpandButtonOffset = QPoint(15, 5);
+    }
     GTMouseDriver::moveTo(sequenceNameRect.topLeft() + magicExpandButtonOffset);
     GTMouseDriver::click();
 }
@@ -586,7 +595,7 @@ void GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus& o
 
 #define GT_METHOD_NAME "setReference"
 void GTUtilsMsaEditor::setReference(GUITestOpStatus& os, const QString& sequenceName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Set this sequence as reference"}, GTGlobals::UseMouse));
     clickSequenceName(os, sequenceName, Qt::RightButton);
     GTGlobals::sleep(100);
 }

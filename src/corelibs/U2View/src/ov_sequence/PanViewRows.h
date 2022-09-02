@@ -32,6 +32,8 @@ class PVRowData {
 public:
     PVRowData(const QString& key);
 
+    static const QString RESTRICTION_SITE_NAME;
+
     bool fitToRow(const QVector<U2Region>& locations);
 
     QString key;
@@ -48,7 +50,7 @@ public:
     void addAnnotation(Annotation* a);
     void removeAnnotation(Annotation* f);
 
-    bool contains(const QString& key) const;
+    bool hasRowWithName(const QString& name) const;
     int getRowCount() const;
     PVRowData* getRow(int row) const;
 
@@ -62,7 +64,6 @@ public:
 
 private:
     QList<PVRowData*> rows;
-    QHash<QString, QList<PVRowData*>> rowByName;  // rows may have same names
     QHash<Annotation*, PVRowData*> rowByAnnotation;
 };
 

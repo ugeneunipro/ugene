@@ -19,33 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_UNROOTED_BRANCHES_TASK_H_
-#define _U2_CREATE_UNROOTED_BRANCHES_TASK_H_
-
-#include "CreateBranchesTask.h"
+#ifndef _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
+#define _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
 
 namespace U2 {
 
 class PhyNode;
 class GraphicsRectangularBranchItem;
-class GraphicsUnrootedBranchItem;
 
-class CreateUnrootedBranchesTask : public CreateBranchesTask {
-    Q_OBJECT
+class RectangularTreeLayoutAlgorithm {
 public:
-    CreateUnrootedBranchesTask(GraphicsRectangularBranchItem* r);
+    RectangularTreeLayoutAlgorithm() = delete;
 
-    TreeLayout getLayoutType() const override {
-        return UNROOTED_LAYOUT;
-    }
-
-    void run() override;
-
-private:
-    GraphicsUnrootedBranchItem* getBranch(GraphicsRectangularBranchItem* r, GraphicsUnrootedBranchItem* parent);
-
-    qreal coef;
-    GraphicsRectangularBranchItem* root1;
+    static GraphicsRectangularBranchItem* buildTreeLayout(const PhyNode* node);
 };
 
 }  // namespace U2

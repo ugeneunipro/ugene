@@ -131,7 +131,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
 
-    QString name = names.at(0);
+    QString name = names[0];
     CHECK_SET_ERR(name == seqName, QString("wrong sequence name. Expected %1, found %2").arg(seqName).arg(name));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 }
@@ -165,8 +165,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004) {
     QStringList completerList = GTBaseCompleter::getNames(os, sequenceLineEdit);
     //    Expected state: two sequence names "Phaneroptera_falcata" appeared in popup helper
     CHECK_SET_ERR(completerList.count() == 2, "wrong number of sequences in completer");
-    QString first = completerList.at(0);
-    QString second = completerList.at(1);
+    QString first = completerList[0];
+    QString second = completerList[1];
     CHECK_SET_ERR(first == "Phaneroptera_falcata", QString("first sequence in completer is wrong: %1").arg(first))
     CHECK_SET_ERR(second == "Phaneroptera_falcata", QString("second sequence in completer is wrong: %1").arg(second))
     GTWidget::click(os, sequenceLineEdit);  // needed to close completer
@@ -862,7 +862,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
 
     //    UGENE doesn't crash
-    const QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
     CHECK_SET_ERR(currentScheme == "UGENE", QString("An unexpected color scheme is set: expect '%1', got '%2'").arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Colors", "UGENE"}, PopupChecker::IsChecked));
@@ -1484,29 +1484,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     GTFile::setReadWrite(os, dirPath);
 }
 
-GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
-    // 1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Open Pairwise alignment option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
-    // 3. Add Phaneroptera_falcata sequence
-    // 4. Add Isophya_altaica_EF540820 sequence
-    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
-    // 5. Use empty path in output settings
-    expandOutputSettings(os);
-    auto outputFileLineEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
-    QString initialText = outputFileLineEdit->text();
-    CHECK_SET_ERR(!initialText.isEmpty(), "line edit is empty");
-    GTWidget::click(os, outputFileLineEdit);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    QString finalText = outputFileLineEdit->text();
-    // Expected state: empty path can not be set
-    CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
-}
-
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -1515,7 +1492,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "Open tree" button. Select data/samples/CLUSTALW/COI.nwk in file dialog
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
-    GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     //    Expected state: tree opened.
     GTWidget::findWidget(os, "treeView");
 }
@@ -1528,7 +1505,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    4. Fill build tree dialog with defaulb values
@@ -1544,7 +1521,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check/prepare tree widgets.
@@ -1552,14 +1529,14 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     auto heightSlider = GTWidget::findWidget(os, "heightSlider");
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
 
-    const QImage initImage = GTWidget::getImage(os, treeView);
+    QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
-    const QImage circularImage = GTWidget::getImage(os, treeView);
+    QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for circular layout");
 
@@ -1568,7 +1545,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
-    const QImage unrootedImage = GTWidget::getImage(os, treeView);
+    QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for unrooted layout");
 
@@ -1577,7 +1554,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: tree is similar to the beginning, height slider is enabled
-    const QImage rectangularImage = GTWidget::getImage(os, treeView);
+    QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
     CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");
 }
@@ -1590,10 +1567,12 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
+
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto treeView = GTWidget::findWidget(os, "treeView");
@@ -1645,7 +1624,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto showNamesCheck = GTWidget::findCheckBox(os, "showNamesCheck");
@@ -1764,7 +1743,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1839,7 +1818,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Disable sync mode to allow resize of the view.
@@ -1922,38 +1901,36 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    // Click to empty space near the node to reset selection
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16,
-                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-                      .arg(QString::number(nodes.size())));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTThread::waitForMainThread();
+
+    // Click to empty space near the node to reset selection
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
+    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
+    QPointF sceneCoord = node->mapToScene(node->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
-    globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
+    globalCoord += QPoint(node->boundingRect().width() / 2 + 8, node->boundingRect().height() / 2 + 8);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
-//    3. change branch color
-#ifndef Q_OS_DARWIN
-    setBranchColor(os, 255, 0, 0);
-#else
-    expandPenSettings(os);
-#endif
-    //    Expected state: color changed
+    // Change branch color
+    if (!isOsMac()) {
+        setBranchColor(os, 255, 0, 0);
+    } else {
+        expandPenSettings(os);
+    }
+    // Expected state: color changed
     CHECK_SET_ERR(treeView != nullptr, "tree view not found");
     QString colorName;
-#ifndef Q_OS_DARWIN
-    colorName = "#ff0000";
-#else
-    colorName = "#000000";
-#endif
+    if (!isOsMac()) {
+        colorName = "#ff0000";
+    } else {
+        colorName = "#000000";
+    }
     double initPercent = colorPercent(os, treeView, colorName);
     CHECK_SET_ERR(initPercent != 0, "color not changed");
 
-    //    4. change  line Weight
+    // Change  line Weight
     auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
     GTSpinBox::setValue(os, lineWeightSpinBox, 30, GTGlobals::UseKeyBoard);
     double finalPercent = colorPercent(os, treeView, colorName);
@@ -2382,7 +2359,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // set some values
@@ -2439,7 +2416,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
-    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // find widgets

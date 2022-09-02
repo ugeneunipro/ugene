@@ -33,8 +33,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UnloadedObject.h>
 
-#include "CreateRectangularBranchesTask.h"
-#include "GraphicsRectangularBranchItem.h"
 #include "TreeViewer.h"
 #include "TreeViewerFactory.h"
 #include "TreeViewerState.h"
@@ -152,26 +150,20 @@ void OpenSavedTreeViewerTask::open() {
     PhyTreeObject* phyObject = qobject_cast<PhyTreeObject*>(obj);
     SAFE_POINT(phyObject != nullptr, "Invalid tree object detected", );
 
-    Task* createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
+    auto createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     scheduler->registerTopLevelTask(createTask);
 }
 
-void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeViewer* ctx) {
+void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer) {
     TreeViewerState state(stateData);
 
     QTransform m = state.getTransform();
     if (m != QTransform()) {
-        ctx->setTransform(m);
+        treeViewer->setTransform(m);
     }
-
-    qreal hZoom = state.getHorizontalZoom();
-    ctx->setHorizontalZoom(hZoom);
-
-    qreal vZoom = state.getVerticalZoom();
-    ctx->setVerticalZoom(vZoom);
-
-    ctx->setSettingsState(stateData);
+    treeViewer->setZoomLevel(state.getZoomLevel());
+    treeViewer->setSettingsState(stateData);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -185,7 +177,7 @@ void UpdateTreeViewerTask::update() {
         return;  // view was closed;
     }
 
-    TreeViewer* phyView = qobject_cast<TreeViewer*>(view.data());
+    auto phyView = qobject_cast<TreeViewer*>(view.data());
     assert(phyView != nullptr);
 
     OpenSavedTreeViewerTask::updateRanges(stateData, phyView);
@@ -198,33 +190,29 @@ CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(const QString& name
     : Task("Open tree viewer", TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      subTask(nullptr),
-      stateData(sData),
-      view(nullptr),
-      tempTree(nullptr == phyObj ? PhyTree() : phyObj->getTree()) {
+      stateData(sData) {
     SAFE_POINT(phyObj != nullptr, "Invalid tree object detected", );
     connect(obj.data(), SIGNAL(destroyed(QObject*)), SLOT(cancel()));
 }
 
 void CreateMSAEditorTreeViewerTask::prepare() {
     CHECK(!stateInfo.isCoR(), );
-    subTask = new CreateRectangularBranchesTask(tempTree->getRootNode());
-    addSubTask(subTask);
 }
 
 Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
-    GraphicsRectangularBranchItem* root = dynamic_cast<GraphicsRectangularBranchItem*>(subTask->getResult());
-    view = new MSAEditorTreeViewer(viewName, phyObj, root, subTask->getScale());
+    view = new MSAEditorTreeViewer(viewName, phyObj);
 
     if (!stateData.isEmpty()) {
         OpenSavedTreeViewerTask::updateRanges(stateData, view);
     }
     return Task::ReportResult_Finished;
 }
+
 TreeViewer* CreateMSAEditorTreeViewerTask::getTreeViewer() {
     return view;
 }
+
 const QVariantMap& CreateMSAEditorTreeViewerTask::getStateData() {
     return stateData;
 }
@@ -233,30 +221,25 @@ CreateTreeViewerTask::CreateTreeViewerTask(const QString& name, const QPointer<P
     : Task(tr("Open tree viewer"), TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      subTask(nullptr),
-      stateData(sData),
-      tempTree(nullptr == phyObj ? PhyTree() : phyObj->getTree()) {
+      stateData(sData) {
     SAFE_POINT_EXT(phyObj != nullptr, setError(tr("Invalid tree object detected")), );
     connect(obj.data(), SIGNAL(destroyed(QObject*)), SLOT(cancel()));
 }
 
 void CreateTreeViewerTask::prepare() {
     CHECK_OP(stateInfo, );
-    subTask = new CreateRectangularBranchesTask(tempTree->getRootNode());
-    addSubTask(subTask);
 }
 
 Task::ReportResult CreateTreeViewerTask::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
-    GraphicsRectangularBranchItem* root = dynamic_cast<GraphicsRectangularBranchItem*>(subTask->getResult());
-    TreeViewer* v = new TreeViewer(viewName, phyObj, root, subTask->getScale());
+    auto treeViewer = new TreeViewer(viewName, phyObj);
 
-    GObjectViewWindow* w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
+    GObjectViewWindow* w = new GObjectViewWindow(treeViewer, viewName, !stateData.isEmpty());
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
     if (!stateData.isEmpty()) {
-        OpenSavedTreeViewerTask::updateRanges(stateData, v);
+        OpenSavedTreeViewerTask::updateRanges(stateData, treeViewer);
     }
     return Task::ReportResult_Finished;
 }
@@ -274,7 +257,7 @@ MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(Document* doc, MSAEdito
 }
 
 void MSAEditorOpenTreeViewerTask::createTreeViewer() {
-    Task* createTask = new CreateMSAEditorTreeViewerTask(phyObject->getDocument()->getName(), phyObject, stateData);
+    auto createTask = new CreateMSAEditorTreeViewerTask(phyObject->getDocument()->getName(), phyObject, stateData);
     connect(new TaskSignalMapper(createTask), SIGNAL(si_taskFinished(Task*)), treeManager, SLOT(sl_openTreeTaskFinished(Task*)));
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     scheduler->registerTopLevelTask(createTask);

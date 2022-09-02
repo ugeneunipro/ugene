@@ -35,6 +35,8 @@
 #include <QMessageBox>
 #include <QTableView>
 
+#include <U2Core/global.h>
+
 namespace U2 {
 using namespace HI;
 
@@ -156,9 +158,9 @@ private:
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString dataType = dataTypeToString(type);
         GTComboBox::selectItemByText(os, box, dataType);
-#ifdef Q_OS_WIN
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+        if (isOsWindows()) {
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
     }
 
     template<typename DataType>

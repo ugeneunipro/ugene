@@ -54,9 +54,7 @@ public:
 
         // look for results in direct strand
         run(sequence, region, enzyme, enzyme->seq.constData(), U2Strand::Direct, resultListener, stateInfo, resultPosShift);
-        if (stateInfo.isCanceled()) {
-            return;
-        }
+        CHECK_OP(stateInfo, );
 
         // if enzyme is not symmetric - look in complementary strand too
         DNATranslation* tt = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(enzyme->alphabet);
@@ -77,14 +75,12 @@ public:
         const char* seq = sequence.constData();
         char unknownChar = sequence.alphabet->getDefaultSymbol();
         int plen = enzyme->seq.length();
-        for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos && !ti.cancelFlag; pos++) {
+        for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos; pos++) {
             bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
                 resultListener->onResult(resultPosShift + pos, enzyme, stand);
             }
-        }
-        if (ti.isCanceled()) {
-            return;
+            CHECK_OP(ti, );
         }
         if (sequence.circular) {
             if (region.startPos + region.length == sequence.length()) {
@@ -99,12 +95,13 @@ public:
                     if (match) {
                         resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
                     }
+                    CHECK_OP(ti, );
                 }
             }
         }
     }
 
-    bool matchSite(const char* seq, const char* pattern, int plen, char unknownChar, const CompareFN& fn) {
+    bool matchSite(const char* seq, const char* pattern, int plen, char unknownChar, const CompareFN& fn) const {
         bool match = true;
         for (int p = 0; p < plen && match; p++) {
             char c1 = seq[p];

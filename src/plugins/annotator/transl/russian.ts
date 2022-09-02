@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/CustomPatternAnnotationTask.cpp" line="112"/>
         <source>Object with annotations was removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Объект с аннотациями был удалён</translation>
     </message>
 </context>
 <context>
@@ -243,12 +243,12 @@
     <message>
         <location filename="../src/CollocationWorker.cpp" line="148"/>
         <source> sequence from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation>последовательности из &lt;u&gt;%1&lt;/u&gt;</translation>
+        <translation> последовательности из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
         <location filename="../src/CollocationWorker.cpp" line="151"/>
         <source> set of annotations from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation>набора аннотаций из &lt;u&gt;%1&lt;/u&gt;</translation>
+        <translation> набора аннотаций из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
         <location filename="../src/CollocationWorker.cpp" line="158"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/CollocationWorker.cpp" line="176"/>
         <source> Annotations themselves may not span beyond the region.</source>
-        <translation>целиком.</translation>
+        <translation> целиком.</translation>
     </message>
     <message>
         <location filename="../src/CollocationWorker.cpp" line="180"/>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../src/GeneByGeneReportWorker.cpp" line="232"/>
         <source> With sequence identity of &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation>С идентичностью последовательности &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation> С идентичностью последовательности &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
     <message>
         <location filename="../src/GeneByGeneReportWorker.cpp" line="233"/>

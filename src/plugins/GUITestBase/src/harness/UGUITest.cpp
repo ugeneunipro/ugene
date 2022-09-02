@@ -48,19 +48,19 @@ static QString getTestDirImpl() {
 
     bool ok;
     int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_DARWIN
-    if (ok && i > 1) {
-        return QString("../../../../../../test%1/").arg(i - 1);
+    if (isOsMac()) {
+        if (ok && i > 1) {
+            return QString("../../../../../../test%1/").arg(i - 1);
+        } else {
+            return QString("../../../../../../test/");
+        }
     } else {
-        return QString("../../../../../../test/");
+        if (ok && i > 1) {
+            return QString("../../test%1/").arg(i - 1);
+        } else {
+            return QString("../../test/");
+        }
     }
-#else
-    if (ok && i > 1) {
-        return QString("../../test%1/").arg(i - 1);
-    } else {
-        return QString("../../test/");
-    }
-#endif
 }
 
 static QString getTestDir() {
@@ -74,39 +74,40 @@ static QString getTestDir() {
 static QString getDataDirImpl() {
     QString dataDir = qgetenv("UGENE_DATA_PATH");
     if (!dataDir.isEmpty()) {
-        if (!QFileInfo(dataDir).exists()) {
+        if (!QFileInfo::exists(dataDir)) {
             coreLog.error(QString("UGENE_DATA_PATH is defined, but doesn't exist: '%1'").arg(dataDir));
         } else {
-            return dataDir + (dataDir.endsWith("/") ? "" : "/");
+            QString resultDataDir = dataDir + (dataDir.endsWith("/") ? "" : "/");
+            return resultDataDir.replace('\\', '/');
         }
     }
 
     bool ok = false;
-    const int suiteNumber = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_DARWIN
-    if (ok && suiteNumber > 1) {
-        dataDir = QString("data%1/").arg(suiteNumber - 1);
+    int suiteNumber = qEnvironmentVariableIntValue("UGENE_GUI_TEST_SUITE_NUMBER", &ok);
+    if (isOsMac()) {
+        if (ok && suiteNumber > 1) {
+            dataDir = QString("data%1/").arg(suiteNumber - 1);
+        } else {
+            dataDir = QString("data/");
+        }
+
+        if (!QFileInfo::exists(dataDir) &&
+            !BundleInfo::getDataSearchPath().isEmpty()) {
+            dataDir = BundleInfo::getDataSearchPath() + "/";
+        }
     } else {
-        dataDir = QString("data/");
+        if (ok && suiteNumber > 1) {
+            dataDir = QString("../../data%1/").arg(suiteNumber - 1);
+        } else {
+            dataDir = "../../data/";
+        }
+
+        if (!QFileInfo::exists(dataDir)) {
+            dataDir = "data/";
+        }
     }
 
-    if (!QFileInfo(dataDir).exists() &&
-        !BundleInfo::getDataSearchPath().isEmpty()) {
-        dataDir = BundleInfo::getDataSearchPath() + "/";
-    }
-#else
-    if (ok && suiteNumber > 1) {
-        dataDir = QString("../../data%1/").arg(suiteNumber - 1);
-    } else {
-        dataDir = "../../data/";
-    }
-
-    if (!QFileInfo(dataDir).exists()) {
-        dataDir = "data/";
-    }
-#endif
-
-    if (!QFileInfo(dataDir).exists()) {
+    if (!QFileInfo::exists(dataDir)) {
         coreLog.error(QString("dataDir not found in the default places"));
     }
 
@@ -123,18 +124,18 @@ static QString getDataDir() {
 
 static QString getScreenshotDir() {
     QString result;
-#ifdef Q_OS_DARWIN
-    result = "../../../../../../screenshotFol/";
-#else
-    QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");
-    if (guiTestOutputDirectory.isEmpty()) {
-        result = QDir::homePath() + "/gui_testing_output/" +
-                 QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+    if (isOsMac()) {
+        result = "../../../../../../screenshotFol/";
     } else {
-        result = guiTestOutputDirectory + "/gui_testing_output/" +
-                 QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");
+        if (guiTestOutputDirectory.isEmpty()) {
+            result = QDir::homePath() + "/gui_testing_output/" +
+                     QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        } else {
+            result = guiTestOutputDirectory + "/gui_testing_output/" +
+                     QDate::currentDate().toString("dd.MM.yyyy") + "/screenshots/";
+        }
     }
-#endif
     return result;
 }
 

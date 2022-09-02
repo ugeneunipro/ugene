@@ -133,6 +133,9 @@ public:
 
     /** Enables det-view widget if it is not visible. */
     static void makeDetViewVisible(HI::GUITestOpStatus& os);
+
+    /** Enables zoom-view widget if @enable is true, disable otherwise. */
+    static void makePanViewVisible(HI::GUITestOpStatus& os, bool enable = true);
 };
 
 }  // namespace U2

@@ -77,6 +77,7 @@ rm "${APP_BUNDLE_DIR_NAME}/"*.pdb
 rm "${APP_BUNDLE_DIR_NAME}/imageformats/"*.pdb
 rm "${APP_BUNDLE_DIR_NAME}/platforms/"*.pdb
 rm "${APP_BUNDLE_DIR_NAME}/styles/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/printsupport/"*.pdb
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 

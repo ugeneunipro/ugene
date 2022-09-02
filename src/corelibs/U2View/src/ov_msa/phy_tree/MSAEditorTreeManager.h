@@ -66,6 +66,13 @@ private:
     bool canRefreshTree(MSAEditorTreeViewer* treeViewer);
     void openTreeViewer(PhyTreeObject* treeObj);
     void loadTreeFromFile(const QString& treeFileName);
+
+    /**
+     * Adds all tree objects found in the document into the view.
+     * Ignores trees already added to the view.
+     */
+    void addTreesFromDocument(Document* document);
+
     void createPhyTreeGeneratorTask(const CreatePhyTreeSettings& buildSettings, bool refreshExistingTree = false, MSAEditorTreeViewer* treeViewer = nullptr);
     MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 

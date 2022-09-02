@@ -70,6 +70,12 @@ public:
 
     /** Checks that there are no notification balloons on the screen. */
     static void checkNoVisibleNotifications(HI::GUITestOpStatus& os);
+
+    /** Returns text shown on the notification container button in the status bar. */
+    static QString getNotificationCounterValue(HI::GUITestOpStatus& os);
+
+    /** Opens notification container widget and returns it. */
+    static QWidget* openNotificationContainerWidget(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

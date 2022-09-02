@@ -222,7 +222,7 @@ void ImportToDatabaseDialogFiller::editPrivateOptions(const Action& action) {
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEM), "Not enough parameters to perform the action");
 
     GTUtilsDialog::waitForDialog(os, new ItemToImportEditDialogFiller(os, action.data));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Override options"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Override options"}));
 
     const QPoint itemCenter = getItemCenter(action.data.value(Action::ACTION_DATA__ITEM).toString());
     GTMouseDriver::moveTo(itemCenter);
@@ -235,7 +235,7 @@ void ImportToDatabaseDialogFiller::resetPrivateOptions(const Action& action) {
     GT_CHECK(Action::RESET_PRIVATE_OPTIONS == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEM), "Not enough parameters to perform the action");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Reset to general options"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Reset to general options"}));
     const QPoint itemCenter = getItemCenter(action.data.value(Action::ACTION_DATA__ITEM).toString());
     GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click(Qt::RightButton);

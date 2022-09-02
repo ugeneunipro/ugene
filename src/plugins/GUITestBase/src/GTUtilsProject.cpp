@@ -248,18 +248,17 @@ void GTUtilsProject::openMultiSequenceFileAsMalignment(HI::GUITestOpStatus& os, 
 void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus& os, const QString& path) {
     const QFileInfo info(path);
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", info.absoluteFilePath()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "closeProject"
 void GTUtilsProject::closeProject(HI::GUITestOpStatus& os, bool isExpectSaveProjectDialog, bool isExpectAppMessageBox) {
-    if (isExpectSaveProjectDialog) {
-        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    }
     if (isExpectAppMessageBox) {
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
+    }
+    if (isExpectSaveProjectDialog) {
+        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     }
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }

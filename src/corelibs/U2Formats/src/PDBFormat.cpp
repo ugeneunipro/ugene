@@ -427,11 +427,12 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
     a->occupancy = occupancy;
     a->temperature = temperature;
 
-    biostruct.modelMap[currentModelIndex + 1].insert(id, a);
+    int modelId = currentModelIndex + 1;
+    biostruct.modelMap[modelId].insert(id, a);
 
     if (atomIsInChain) {
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
-        Molecule3DModel& model3D = mol->models[currentModelIndex];
+        Molecule3DModel& model3D = mol->models[modelId];
         model3D.atoms.insert(id, a);
     }
 }

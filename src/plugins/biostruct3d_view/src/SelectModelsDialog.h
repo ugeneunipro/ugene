@@ -32,13 +32,13 @@ class SelectModelsDialog : public QDialog, public Ui_SelectModelsDialog {
     Q_OBJECT
 
 public:
-    SelectModelsDialog(const QList<int>& modelIds, const QList<int>& selectedItems, QWidget* parent = 0);
+    SelectModelsDialog(const QList<int>& modelIds, const QList<int>& selectedModelIds, QWidget* parent = 0);
     ~SelectModelsDialog();
 
-    const QList<int>& getSelectedModelsIndexes() const;
+    const QList<int>& getSelectedModelsIds() const;
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
     void sl_onItemDoubleClicked(QListWidgetItem* item);
 
@@ -46,7 +46,8 @@ public slots:
     void sl_onInvertSelection();
 
 private:
-    QList<int> selectedModelsIndexes;
+    QList<int> modelIds;
+    QList<int> selectedModelIds;
 };
 
 }  // namespace U2

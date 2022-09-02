@@ -309,7 +309,9 @@ void SaveDocumentController::addFormatExtension(QString& path) const {
 
 QString SaveDocumentController::prepareDefaultFileFilter() const {
     bool useGzipVariant = conf.compressCheckbox && conf.compressCheckbox->isEnabled();
-    return FileFilters::createFileFilter(currentFormatName, formatsInfo.getExtensionsByName(currentFormatName), useGzipVariant);
+    return FileFilters::createSingleFileFilter(currentFormatName,
+                                               formatsInfo.getExtensionsByName(currentFormatName),
+                                               useGzipVariant);
 }
 
 QString SaveDocumentController::prepareFileFilter() const {

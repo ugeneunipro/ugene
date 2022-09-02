@@ -194,14 +194,14 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
     }
     CHECK_OP(os, );
 
-#ifndef Q_OS_WIN
-    auto threadsSpinBox = GTWidget::findSpinBox(os, "threadsSpinBox", dialog);
-    CHECK_OP(os, );
-    if (threadsSpinBox->minimum() <= bowtie2Parameters->threads && threadsSpinBox->maximum() >= bowtie2Parameters->threads) {
-        GTSpinBox::setValue(os, threadsSpinBox, bowtie2Parameters->threads);
+    if (!isOsWindows()) {
+        auto threadsSpinBox = GTWidget::findSpinBox(os, "threadsSpinBox", dialog);
         CHECK_OP(os, );
+        if (threadsSpinBox->minimum() <= bowtie2Parameters->threads && threadsSpinBox->maximum() >= bowtie2Parameters->threads) {
+            GTSpinBox::setValue(os, threadsSpinBox, bowtie2Parameters->threads);
+            CHECK_OP(os, );
+        }
     }
-#endif
 
     // Flags
     auto nomixedCheckBox = GTWidget::findCheckBox(os, "nomixedCheckBox", dialog);
@@ -337,7 +337,7 @@ AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile
 }
 
 AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile, const QString& readsFile)
-    : Parameters(referenceFile, QStringList() << readsFile, Bwa),
+    : Parameters(referenceFile, {readsFile}, Bwa),
       indexAlgorithm(Autodetect) {
 }
 

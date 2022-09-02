@@ -36,7 +36,6 @@ namespace U2 {
 class PhyTreeObject;
 class UnloadedObject;
 class TreeViewer;
-class CreateRectangularBranchesTask;
 class OpenTreeViewerTask;
 class MSAEditor;
 class MSAEditorTreeManager;
@@ -49,7 +48,7 @@ public:
     OpenTreeViewerTask(Document* doc, QObject* _parent = nullptr);
     virtual ~OpenTreeViewerTask();
 
-    virtual void open();
+    void open() override;
 
     virtual void createTreeViewer();
 
@@ -58,8 +57,8 @@ public:
 protected:
     QPointer<PhyTreeObject> phyObject;
     GObjectReference unloadedReference;
-    QObject* parent;
-    bool createMDIWindow;
+    QObject* parent = nullptr;
+    bool createMDIWindow = false;
 };
 
 class MSAEditorOpenTreeViewerTask : public OpenTreeViewerTask {
@@ -68,61 +67,55 @@ public:
     MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSAEditorTreeManager* _parent);
     MSAEditorOpenTreeViewerTask(UnloadedObject* obj, MSAEditorTreeManager* _parent);
     MSAEditorOpenTreeViewerTask(Document* doc, MSAEditorTreeManager* _parent);
-    virtual ~MSAEditorOpenTreeViewerTask() {
-    }
 
-    virtual void createTreeViewer();
+    void createTreeViewer() override;
 
 private:
-    MSAEditorTreeManager* treeManager;
+    MSAEditorTreeManager* treeManager = nullptr;
 };
 
 class OpenSavedTreeViewerTask : public ObjectViewTask {
     Q_OBJECT
 public:
     OpenSavedTreeViewerTask(const QString& viewName, const QVariantMap& stateData);
-    virtual void open();
+    void open() override;
 
-    static void updateRanges(const QVariantMap& stateData, TreeViewer* ctx);
+    static void updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer);
 };
 
 class UpdateTreeViewerTask : public ObjectViewTask {
 public:
     UpdateTreeViewerTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
-    virtual void update();
+    void update() override;
 };
 
 class CreateMSAEditorTreeViewerTask : public Task {
     Q_OBJECT
 public:
     CreateMSAEditorTreeViewerTask(const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
-    virtual void prepare();
-    virtual ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
     TreeViewer* getTreeViewer();
     const QVariantMap& getStateData();
 
 private:
     QString viewName;
     QPointer<PhyTreeObject> phyObj;
-    CreateRectangularBranchesTask* subTask;
     QVariantMap stateData;
-    TreeViewer* view;
-    const PhyTree tempTree;
+    TreeViewer* view = nullptr;
 };
 
 class CreateTreeViewerTask : public Task {
     Q_OBJECT
 public:
     CreateTreeViewerTask(const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
-    virtual void prepare();
-    virtual ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
 private:
     QString viewName;
     QPointer<PhyTreeObject> phyObj;
-    CreateRectangularBranchesTask* subTask;
     QVariantMap stateData;
-    const PhyTree tempTree;
 };
 
 }  // namespace U2

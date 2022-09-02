@@ -54,6 +54,9 @@ namespace U2 {
 #define MR_BAYES_TEMPR "/mb_tempr"
 #define MR_BAYES_SEED "/mb_seed"
 
+/** Use the same random seed for all MrBayes runs to have reproducible results by default. */
+static constexpr int DEFAULT_RANDOM_SEED = 5;
+
 MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     setupUi(this);
@@ -71,15 +74,13 @@ MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* paren
     connect(rateVariationCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onRateChanged(const QString&)));
     rateVariationCombo->addItems(MrBayesVariationTypes::getVariationTypes());
 
-    seedSpin->setValue(getRandomSeed());
-
     gammaCategoriesSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA, 4).toInt());
     ngenSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_CHAIN_LENGTH, 10000).toInt());
     sfreqSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SUBSEMPL_FREQ, 1000).toInt());
     burninSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_BURNIN, 10).toInt());
     nheatedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_HEATED, 4).toInt());
     tempSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_TEMPR, 0.4).toDouble());
-    seedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SEED, getRandomSeed()).toInt());
+    seedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SEED, DEFAULT_RANDOM_SEED).toInt());
 
     QString comboText = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_MODEL_TYPE, isAminoAcidAlphabet ? modelTypeCombo->itemText(0) : MrBayesModelTypes::HKY85).toString();
     setComboText(modelTypeCombo, comboText);
@@ -133,7 +134,7 @@ void MrBayesWidget::restoreDefault() {
     burninSpin->setValue(10);
     nheatedSpin->setValue(4);
     tempSpin->setValue(0.4);
-    seedSpin->setValue(getRandomSeed());
+    seedSpin->setValue(DEFAULT_RANDOM_SEED);
 
     displayOptions->restoreDefault();
 }
@@ -145,24 +146,6 @@ void MrBayesWidget::setComboText(QComboBox* combo, const QString& text) {
             break;
         }
     }
-}
-
-#define SEED_MIN 5
-#define SEED_MAX 32765
-
-int MrBayesWidget::getRandomSeed() {
-    int seed = 0;
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
-    seed = qAbs(qrand());
-
-    while (!((seed >= SEED_MIN) && (seed <= SEED_MAX))) {
-        seed++;
-        if (seed >= SEED_MAX) {
-            seed = SEED_MIN;
-        }
-    }
-
-    return seed;
 }
 
 bool MrBayesWidget::checkSettings(QString& message, const CreatePhyTreeSettings& settings) {

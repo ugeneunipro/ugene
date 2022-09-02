@@ -133,9 +133,9 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
         GTComboBox::selectItemByText(os, box, fullValue);
-#ifdef Q_OS_WIN
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-#endif
+        if (isOsWindows()) {
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
     }
 }
 
@@ -146,9 +146,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 
 void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     if (!settings.elementName.isEmpty()) {
-        auto nameEdit = GTWidget::findLineEdit(os, "leName", dialog);
-
-        GTLineEdit::setText(os, nameEdit, settings.elementName);
+        GTLineEdit::setText(os, "leName", settings.elementName, dialog);
     }
 
     switch (settings.tooltype) {
@@ -156,9 +154,7 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
             auto rbCustomTool = GTWidget::findRadioButton(os, "rbCustomTool", dialog);
 
             GTRadioButton::click(os, rbCustomTool);
-            auto leToolPath = GTWidget::findLineEdit(os, "leToolPath", dialog);
-
-            GTLineEdit::setText(os, leToolPath, settings.tool);
+            GTLineEdit::setText(os, "leToolPath", settings.tool, dialog);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {
@@ -177,12 +173,11 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
             break;
         }
         default:
-            FAIL("Unexpected tool type",);
+            FAIL("Unexpected tool type", );
     }
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
@@ -194,7 +189,6 @@ void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) 
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
@@ -216,7 +210,6 @@ void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) 
 
     // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-
 }
 
 void CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog) {

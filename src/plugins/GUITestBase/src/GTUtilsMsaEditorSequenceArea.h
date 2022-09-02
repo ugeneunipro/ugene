@@ -97,7 +97,6 @@ public:
 
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(GUITestOpStatus& os, const QPoint& position);
-    static void scrollToBottom(GUITestOpStatus& os);
     static void moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
     static void clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
 

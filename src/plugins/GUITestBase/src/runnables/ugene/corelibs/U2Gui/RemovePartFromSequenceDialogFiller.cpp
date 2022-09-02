@@ -60,8 +60,7 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!range.isEmpty()) {
-        auto removeLocationEdit = GTWidget::findLineEdit(os, "removeLocationEdit", dialog);
-        GTLineEdit::setText(os, removeLocationEdit, range);
+        GTLineEdit::setText(os, "removeLocationEdit", range, dialog);
     }
     if (removeType == Resize) {
         auto resizeRB = GTWidget::findRadioButton(os, "resizeRB", dialog);
@@ -77,9 +76,7 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
     if (saveNew) {
         auto saveToAnotherBox = GTWidget::findGroupBox(os, "saveToAnotherBox", dialog);
         GTGroupBox::setChecked(os, saveToAnotherBox, true);
-        auto filepathEdit = GTWidget::findLineEdit(os, "filepathEdit", dialog);
-
-        GTLineEdit::setText(os, filepathEdit, saveToFile);
+        GTLineEdit::setText(os, "filepathEdit", saveToFile, dialog);
     }
     if (format != FASTA) {
         auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);

@@ -51,7 +51,6 @@
 #include "getMemorySize.c"
 
 #define HOST_URL "http://ugene.net"
-//#define HOST_URL "http://127.0.0.1:80"
 #ifdef Q_OS_LINUX
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
 #elif defined(Q_OS_DARWIN)
@@ -425,8 +424,12 @@ int ReportSender::getTotalPhysicalMemory() {
     return (int)(getMemorySize() / (1024 * 1024));
 }
 
-#ifndef Q_OS_DARWIN
-void cpuID(unsigned i, unsigned regs[4]) {
+#if !defined(Q_OS_DARWIN) && defined Q_PROCESSOR_X86
+#    define UGENE_HAS_CPU_ID
+#endif
+
+#ifdef UGENE_HAS_CPU_ID
+static void cpuID(unsigned i, unsigned regs[4]) {
 #    ifdef _WIN32
     __cpuid((int*)regs, (int)i);
 
@@ -441,7 +444,7 @@ void cpuID(unsigned i, unsigned regs[4]) {
 
 QString ReportSender::getCPUInfo() {
     QString result;
-#ifndef Q_OS_DARWIN
+#ifdef UGENE_HAS_CPU_ID
     unsigned regs[4];
 
     // Get vendor
@@ -492,5 +495,15 @@ void ReportSender::setFailedTest(const QString& failedTestStr) {
 }
 
 QString ReportSender::getArchSuffix() const {
+#ifdef Q_PROCESSOR_X86_64
     return " x64";
+#elif Q_PROCESSOR_X86_32
+    return " x86";
+#elif Q_PROCESSOR_ARM_64
+    return " arm-64";
+#elif Q_PROCESSOR_ARM_32
+    return " arm-32";
+#else
+    return " unknown-arch";
+#endif
 }

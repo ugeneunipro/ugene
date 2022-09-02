@@ -31,34 +31,32 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsButtonItem.h"
 #include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
 
 namespace U2 {
 
-GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue)
+GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, double angle, GraphicsRectangularBranchItem* from, double nodeValue)
     : GraphicsBranchItem(true, nodeValue) {
     setParentItem(parent);
-    qreal w = from->getWidth();
+    correspondingRectangularBranchItem = from;
     settings = from->getSettings();
-    setWidthW(w);
+    width = from->getWidth();
     setDist(from->getDist());
-    setPos(w, 0);
-    angle = from->getDirection() == GraphicsBranchItem::up ? angle : -angle;
-    setTransform(QTransform().translate(-w, 0).rotate(angle).translate(w, 0));
+    setPos(width, 0);
+    angle = from->getSide() == GraphicsBranchItem::Right ? angle : -angle;
+    setTransform(QTransform().translate(-width, 0).rotate(angle).translate(width, 0));
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);
 
-    if (from->getNameText() != nullptr) {
-        nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
-        nameText->setFont(from->getNameText()->font());
-        nameText->setBrush(from->getNameText()->brush());
+    if (from->getNameTextItem() != nullptr) {
+        nameText = new QGraphicsSimpleTextItem(from->getNameTextItem()->text(), this);
+        nameText->setFont(from->getNameTextItem()->font());
+        nameText->setBrush(from->getNameTextItem()->brush());
     }
-    if (from->getDistanceText() != nullptr) {
-        distanceText = new QGraphicsSimpleTextItem(from->getDistanceText()->text(), this);
-        distanceText->setFont(from->getDistanceText()->font());
-        distanceText->setBrush(from->getDistanceText()->brush());
+    if (from->getDistanceTextItem() != nullptr) {
+        distanceText = new QGraphicsSimpleTextItem(from->getDistanceTextItem()->text(), this);
+        distanceText->setFont(from->getDistanceTextItem()->font());
+        distanceText->setBrush(from->getDistanceTextItem()->brush());
     }
     setLabelPositions();
     setPen(from->pen());
@@ -67,8 +65,8 @@ GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, qr
 void GraphicsUnrootedBranchItem::setLabelPositions() {
     if (nameText != nullptr) {
         QRectF rect = nameText->boundingRect();
-        qreal h = rect.height();
-        nameText->setPos(GraphicsBranchItem::TextSpace, -h * 0.5);
+        double h = rect.height();
+        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -h * 0.5);
         if (nameText->scenePos().x() < 0.0) {
             QPointF p = rect.center();
             nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
@@ -85,7 +83,7 @@ void GraphicsUnrootedBranchItem::setLabelPositions() {
 }
 
 QRectF GraphicsUnrootedBranchItem::boundingRect() const {
-    qreal penWidth = 1;
+    double penWidth = 1;
     return QRectF(-width, -penWidth * 0.5, width, penWidth);
 }
 

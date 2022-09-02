@@ -608,7 +608,6 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
     DNASequenceSelection* selection = ctx->getSequenceSelection();
 
     const QVector<U2Region>& seqRegions = selection->getSelectedRegions();
-
     QObjectScopedPointer<MultipleRangeSelector> mrs = new MultipleRangeSelector(this, seqRegions, ctx->getSequenceLength(), ctx->getSequenceObject()->isCircular());
     mrs->exec();
     CHECK(!mrs.isNull(), );
