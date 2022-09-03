@@ -133,8 +133,8 @@ private:
     GraphicsRectangularBranchItem* root = nullptr;
 
     void setupLayoutSettingsMenu(QMenu* m);
-    void setupShowLabelsMenu(QMenu* m);
-    void setupExportTreeImageMenu(QMenu* m);
+    void setupShowLabelsMenu(QMenu* m) const;
+    void setupExportTreeImageMenu(QMenu* m) const;
 
 protected:
     TreeViewerUI* ui = nullptr;
@@ -151,7 +151,7 @@ public:
 
     const QMap<TreeViewOption, QVariant>& getSettings() const;
     QVariant getOptionValue(TreeViewOption option) const;
-    void setOptionValue(TreeViewOption option, QVariant value);
+    void setOptionValue(TreeViewOption option, const QVariant& value);
 
     void updateSettings(const OptionsMap& settings);
     void changeOption(TreeViewOption option, const QVariant& newValue);

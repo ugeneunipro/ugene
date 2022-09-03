@@ -54,13 +54,9 @@ public:
 
     double getHeight() const;
 
-    void setHeightW(double h);
-
     void setHeight(double newHeight);
 
-    void setHeightCoef(int newCoef);
-
-    void setHeightCoefW(int coef);
+    void setBreathScaleAdjustment(double newBreadthScaleAdjustment);
 
     void setSide(const Side& side);
 
@@ -77,8 +73,12 @@ public:
     void drawCollapsedRegion();
 
 private:
+    /** Height (breadth) of the branch in pixels. */
     double height = 0;
-    int currentHeightCoef = 1;
+
+    /** See BREADTH_SCALE_ADJUSTMENT doc. */
+    double breadthScaleAdjustment = 1;
+
     PhyBranch* phyBranch = nullptr;
 };
 }  // namespace U2

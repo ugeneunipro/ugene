@@ -43,9 +43,18 @@ enum TreeLayout {
 
 enum TreeViewOption {
     BRANCHES_TRANSFORMATION_TYPE,
+
     TREE_LAYOUT,
-    WIDTH_COEF,
-    HEIGHT_COEF,
+
+    /*
+     * Affects breadth of the tree:
+     * 1 is default,
+     * values < 1 make breadth smaller (a narrower tree),
+     * values > 1 make breadth larger (a wider tree)
+     *
+     * Available only for in the rectangular layout.
+     */
+    BREADTH_SCALE_ADJUSTMENT,
 
     LABEL_COLOR,
     LABEL_FONT_TYPE,

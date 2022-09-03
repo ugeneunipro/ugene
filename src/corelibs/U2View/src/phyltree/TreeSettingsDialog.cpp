@@ -30,17 +30,12 @@
 
 namespace U2 {
 
-TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settings, bool isRectLayout)
+TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settings)
     : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929724");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    heightSlider->setValue(settings[HEIGHT_COEF].toUInt());
-    widthlSlider->setValue(settings[WIDTH_COEF].toUInt());
-
-    heightSlider->setEnabled(isRectLayout);
 
     scaleSpinBox->setValue(settings[SCALEBAR_RANGE].toDouble());
 
@@ -71,9 +66,6 @@ void TreeSettingsDialog::sl_treeTypeChanged(int value) {
 }
 
 void TreeSettingsDialog::accept() {
-    updatedSettings[HEIGHT_COEF] = heightSlider->value();
-    updatedSettings[WIDTH_COEF] = widthlSlider->value();
-
     if (treeViewCombo->currentText() == getDefaultTreeModeText()) {
         updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
     } else if (treeViewCombo->currentText() == getPhylogramTreeModeText()) {

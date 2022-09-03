@@ -7,94 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>298</width>
-    <height>174</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tree Settings</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>13</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QSlider" name="widthlSlider">
-       <property name="minimum">
-        <number>10</number>
-       </property>
-       <property name="maximum">
-        <number>50</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="invertedAppearance">
-        <bool>false</bool>
-       </property>
-       <property name="invertedControls">
-        <bool>false</bool>
-       </property>
-       <property name="tickPosition">
-        <enum>QSlider::TicksAbove</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSlider" name="heightSlider">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>20</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="tickPosition">
-        <enum>QSlider::TicksAbove</enum>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="treeViewLabel">
        <property name="text">
-        <string>Width</string>
+        <string>Tree view</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Height (Rectangular)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
+     <item row="0" column="1">
       <widget class="QComboBox" name="treeViewCombo"/>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Tree View</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="scaleLabel">
        <property name="enabled">
         <bool>false</bool>
@@ -104,7 +36,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="1" column="1">
       <widget class="QDoubleSpinBox" name="scaleSpinBox">
        <property name="enabled">
         <bool>false</bool>
@@ -125,7 +57,23 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>13</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -135,8 +83,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>widthlSlider</tabstop>
-  <tabstop>heightSlider</tabstop>
   <tabstop>treeViewCombo</tabstop>
  </tabstops>
  <resources/>

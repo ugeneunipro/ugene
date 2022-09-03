@@ -103,10 +103,10 @@ private:
     void connectSlots();
 
     void updateButtonColor(QPushButton* button, const QColor& newColor);
-    void updateShowFontOpLabel(QString newText);
-    void updateShowPenOpLabel(QString newText);
+    void updateShowFontOpLabel(const QString& labelText);
+    void updateShowPenOpLabel(const QString& labelText);
 
-    void updateRelations(TreeViewOption option, QVariant newValue);
+    void updateRelatedOptionsState(const TreeViewOption& option, const QVariant& newValue);
 
     TreeViewerUI* getTreeViewer() const;
 
