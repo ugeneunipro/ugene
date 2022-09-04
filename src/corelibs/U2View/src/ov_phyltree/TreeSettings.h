@@ -48,13 +48,13 @@ enum TreeViewOption {
 
     /*
      * Affects breadth of the tree:
-     * 1 is default,
-     * values < 1 make breadth smaller (a narrower tree),
-     * values > 1 make breadth larger (a wider tree)
+     * 100% is default,
+     * values < 100% make breadth smaller (a narrower tree),
+     * values > 100% make breadth larger (a wider tree)
      *
      * Available only for in the rectangular layout.
      */
-    BREADTH_SCALE_ADJUSTMENT,
+    BREADTH_SCALE_ADJUSTMENT_PERCENT,
 
     LABEL_COLOR,
     LABEL_FONT_TYPE,

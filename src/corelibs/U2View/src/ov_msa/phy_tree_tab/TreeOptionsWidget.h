@@ -49,7 +49,7 @@ struct TreeOpWidgetViewSettings {
 class TreeOptionsSavableWidget : public U2SavableWidget {
 public:
     TreeOptionsSavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
-    ~TreeOptionsSavableWidget();
+    ~TreeOptionsSavableWidget() override;
 
     void disableSavingForWidgets(const QStringList& s);
 
@@ -65,7 +65,7 @@ class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWid
 public:
     TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& viewSettings);
     TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetViewSettings& viewSettings);
-    ~TreeOptionsWidget();
+    ~TreeOptionsWidget() override;
 
     const TreeOpWidgetViewSettings& getViewSettings();
 

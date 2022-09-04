@@ -208,7 +208,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[showNodeLabelsCheck->objectName()] = SHOW_NODE_LABELS;
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
-    optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT;
+    optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
 
     optionsMap[treeViewCombo->objectName()] = BRANCHES_TRANSFORMATION_TYPE;
     optionsMap[layoutCombo->objectName()] = TREE_LAYOUT;
@@ -267,11 +267,6 @@ void TreeOptionsWidget::sl_valueChanged() {
     TreeViewOption option = optionsMap[inputWidget->objectName()];
     if (option == SHOW_LABELS) {
         alignLabelsCheck->setEnabled(newValue.toBool());
-    } else if (option == BREADTH_SCALE_ADJUSTMENT) {
-        double sliderValue = newValue.toInt();
-        newValue = sliderValue == 0  ? 1  // No adjustment.
-                   : sliderValue > 0 ? 1 + sliderValue / 100  // expand (value > 1)
-                                     : 1 / (qAbs(sliderValue / 100) + 1);  // shrink (value > 0 && value < 1)
     }
     updateRelatedOptionsState(option, newValue);
 

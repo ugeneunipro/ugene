@@ -3204,7 +3204,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             bool isAddToProject = GTCheckBox::getState(os, "addToProjectCheckbox", dialog);
             CHECK_SET_ERR(isAddToProject, QString("Incorrect addToProject state: expected true, got false"));
 
-            // Expected state: "Result aligment" field is filled by default
+            // Expected state: "Result alignment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit", dialog);
             CHECK_SET_ERR(!output.isEmpty(), "Incorrect output line: is empty");
 

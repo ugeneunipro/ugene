@@ -508,7 +508,7 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
             updateRectLayoutBranches();
             changeTreeLayout(getTreeLayout());
             break;
-        case BREADTH_SCALE_ADJUSTMENT:
+        case BREADTH_SCALE_ADJUSTMENT_PERCENT:
             updateScene(true);
             break;
         case LABEL_COLOR:
@@ -587,7 +587,7 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(BRANCH_COLOR, QColor(0, 0, 0));
     setOptionValue(BRANCH_THICKNESS, 1);
 
-    setOptionValue(BREADTH_SCALE_ADJUSTMENT, 1);
+    setOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT, 100);
 
     setOptionValue(NODE_RADIUS, 2);
     setOptionValue(NODE_COLOR, QColor(0, 0, 0));
@@ -672,7 +672,7 @@ void TreeViewerUI::updateRectLayoutBranches() {
 
     updateStepsToLeafOnBranches();
     double averageBranchDistance = getAverageBranchDistance();
-    double breadthScaleAdjustment = getOptionValue(BREADTH_SCALE_ADJUSTMENT).toDouble();
+    double breadthScaleAdjustment = getOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble() / 100;
 
     QStack<GraphicsBranchItem*> stack;
     stack.push(rectRoot);

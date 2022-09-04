@@ -1526,7 +1526,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     // Check/prepare tree widgets.
     auto treeView = GTWidget::findWidget(os, "treeView");
-    auto heightSlider = GTWidget::findWidget(os, "heightSlider");
+    auto breadthScaleAdjustmentSlider = GTWidget::findWidget(os, "breadthScaleAdjustmentSlider");
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
 
     QImage initImage = GTWidget::getImage(os, treeView);
@@ -1538,7 +1538,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     //    Expected state: layout changed, height slider is disabled
     QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to circular");
-    CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for circular layout");
+    CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for circular layout");
 
     //    4. Select unrooted layout
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
@@ -1547,7 +1547,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     //    Expected state: layout changed, height slider is disabled
     QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
-    CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for unrooted layout");
+    CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for unrooted layout");
 
     //    5. Select rectangular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
@@ -1556,7 +1556,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     // Expected state: tree is similar to the beginning, height slider is enabled
     QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
-    CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");
+    CHECK_SET_ERR(breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in disabled for rectangular layout");
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
@@ -1811,7 +1811,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     // Open data/samples/CLUSTALW/COI.aln.
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Open tree settings option panel tab. Build a tree.
@@ -1834,23 +1834,21 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QGraphicsScene* scene = treeView->scene();
 
-    // Change widthSlider value.
-    int initialWidth = scene->width();
-    auto widthSlider = GTWidget::findSlider(os, "widthSlider");
-    GTSlider::setValue(os, widthSlider, 50);
-
-    // Expected state: the tree became wider.
-    int finalWidth = scene->width();
-    CHECK_SET_ERR(initialWidth < finalWidth, QString("Width is not changed! Initial: %1, final: %2").arg(initialWidth).arg(finalWidth));
-
-    // Change heightSlider value.
+    // Decrease breadthScaleAdjustmentSlider value.
     int initialHeight = scene->height();
-    auto heightSlider = GTWidget::findSlider(os, "heightSlider");
-    GTSlider::setValue(os, heightSlider, 20);
+    auto breadthScaleAdjustmentSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider");
+    GTSlider::setValue(os, breadthScaleAdjustmentSlider, 50);
 
-    // Expected state: the tree became wider.
-    int finalHeight = scene->height();
-    CHECK_SET_ERR(initialHeight < finalHeight, QString("Height is not changed! Initial: %1, final: %2").arg(initialHeight).arg(finalHeight));
+    // Expected state: the tree breadth (height) was reduced.
+    int reducedHeight = scene->height();
+    CHECK_SET_ERR(reducedHeight < initialHeight, QString("Scene height is not reduced! Initial: %1, final: %2").arg(initialHeight).arg(reducedHeight));
+
+    // Increase breadthScaleAdjustmentSlider value.
+    GTSlider::setValue(os, breadthScaleAdjustmentSlider, 200);
+
+    // Expected state: the tree breadth (height) was increased.
+    int increasedHeight = scene->height();
+    CHECK_SET_ERR(increasedHeight > initialHeight, QString("Height is not increased! Initial: %1, final: %2").arg(initialHeight).arg(increasedHeight));
 }
 
 namespace {
@@ -2034,7 +2032,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
     // 0. Change Documents folder to sandbox
     class Custom : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::setDocumentsDirPath(os, sandBoxDir);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2055,9 +2053,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
 
     class exportConsensusTest0004Filler : public CustomScenario {
     public:
-        exportConsensusTest0004Filler() {
-        }
-        virtual void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -2372,7 +2368,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     setLabelsColor(os, 255, 255, 255);
     QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
     auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
-    QLineEdit* l = fontComboBox->findChild<QLineEdit*>();
+    auto l = fontComboBox->findChild<QLineEdit*>();
     QString fontName = isOsLinux() ? "Serif" : "Tahoma";
     GTLineEdit::setText(os, l, fontName);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -2422,8 +2418,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     // find widgets
     auto showNamesCheck = GTWidget::findCheckBox(os, "showNamesCheck");
     auto showDistancesCheck = GTWidget::findCheckBox(os, "showDistancesCheck");
-    auto widthSlider = GTWidget::findSlider(os, "widthSlider");
-    auto heightSlider = GTWidget::findSlider(os, "heightSlider");
+    auto breadthScaleAdjustmentSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider");
 
     expandPenSettings(os);
     auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
@@ -2431,8 +2426,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     // set some values
     GTCheckBox::setChecked(os, showNamesCheck, false);
     GTCheckBox::setChecked(os, showDistancesCheck, false);
-    GTSlider::setValue(os, widthSlider, 50);
-    GTSlider::setValue(os, heightSlider, 20);
+    GTSlider::setValue(os, breadthScaleAdjustmentSlider, 50);
     setBranchColor(os, 255, 255, 255);
     QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
     GTSpinBox::setValue(os, lineWeightSpinBox, 2);
@@ -2444,15 +2438,13 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     // checks
     showNamesCheck = GTWidget::findCheckBox(os, "showNamesCheck");
     showDistancesCheck = GTWidget::findCheckBox(os, "showDistancesCheck");
-    widthSlider = GTWidget::findSlider(os, "widthSlider");
-    heightSlider = GTWidget::findSlider(os, "heightSlider");
+    breadthScaleAdjustmentSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider");
     lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
     auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
 
     CHECK_SET_ERR(!showNamesCheck->isChecked(), "show names checkbox is unexpectedly checked");
     CHECK_SET_ERR(!showDistancesCheck->isChecked(), "show distances checkbox is unexpectedly checked");
-    CHECK_SET_ERR(widthSlider->value() == 50, QString("unexpected width slider value: %1").arg(widthSlider->value()));
-    CHECK_SET_ERR(heightSlider->value() == 20, QString("unexpected height slider value: %1").arg(heightSlider->value()));
+    CHECK_SET_ERR(breadthScaleAdjustmentSlider->value() == 50, QString("unexpected breadthScaleAdjustmentSlider value: %1").arg(breadthScaleAdjustmentSlider->value()));
     CHECK_SET_ERR(lineWeightSpinBox->value() == 2, QString("unexpected line width: %1").arg(lineWeightSpinBox->value()));
     CHECK_SET_ERR(GTWidget::hasPixelWithColor(os, branchesColorButton, initialColor), QString("Initial color is not found: %1").arg(initialColor));
 }
