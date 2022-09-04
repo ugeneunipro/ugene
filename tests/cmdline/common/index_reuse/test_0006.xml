@@ -23,7 +23,7 @@
             out_file="out1.sam"
             out_dir="!tmp_data_dir!broken_index_reuse_bowtie2"
             ref="!tmp_data_dir!broken_index_reuse_bowtie2/lambda_virus.1.bt2"
-            message="UGENE-4217"
+            message="broken_index_reuse_bowtie2/lambda_virus.3.bt2&quot; does not exist"
     />
 
     <remove-temp-dir url="broken_index_reuse_bowtie2"/>

@@ -55,7 +55,14 @@ public:
     static int getVisibleStart(HI::GUITestOpStatus& os, int widgetNumber = 0);
     static U2Region getVisibleRange(HI::GUITestOpStatus& os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus& os, const QString& expectedSequence);
-    static void selectSequenceRegion(HI::GUITestOpStatus& os, int from, int to);
+
+    /**
+     * Calls and fills sequence selection dialog.
+     * If 'useHotkey' is false uses context menu.
+     * Otherwise clicks to the sequence view (may affect the current annotation selection) and presses Ctrl+A to invoke the dialog.
+     **/
+    static void selectSequenceRegion(HI::GUITestOpStatus& os, int from, int to, bool useHotkey = true);
+
     static void selectSeveralRegionsByDialog(HI::GUITestOpStatus& os, const QString& multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName);
@@ -101,7 +108,7 @@ public:
                                    bool isDoubleClick = false,
                                    Qt::MouseButton button = Qt::LeftButton);
 
-    static void clickAnnotationPan(HI::GUITestOpStatus& os, QString name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(HI::GUITestOpStatus& os, const QString& name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
     static GSequenceGraphView* getGraphView(HI::GUITestOpStatus& os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus& os, GSequenceGraphView* graph);
