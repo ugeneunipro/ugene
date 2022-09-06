@@ -1294,10 +1294,6 @@ plugins/circular_view.dll
 plugins/circular_view.license
 plugins/circular_view.map
 plugins/circular_view.plugin
-plugins/cuda_support.dll
-plugins/cuda_support.license
-plugins/cuda_support.map
-plugins/cuda_support.plugin
 plugins/dbi_bam.dll
 plugins/dbi_bam.license
 plugins/dbi_bam.map
