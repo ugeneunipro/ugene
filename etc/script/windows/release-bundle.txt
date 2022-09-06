@@ -39,7 +39,6 @@ U2View.dll
 U2View.map
 breakpad.dll
 breakpad.map
-cudart64_110.dll
 data
 data/DBXRefRegistry.txt
 data/adapters

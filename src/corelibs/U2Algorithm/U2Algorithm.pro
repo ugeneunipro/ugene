@@ -33,7 +33,6 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/phyltree/PhyTreeGeneratorTask.h \
            src/registry/AlignmentAlgorithmsRegistry.h \
            src/registry/CDSearchTaskFactoryRegistry.h \
-           src/registry/CudaGpuRegistry.h \
            src/registry/DnaAssemblyAlgRegistry.h \
            src/registry/DnaAssemblyTask.h \
            src/registry/GenomeAssemblyRegistry.h \
@@ -140,7 +139,6 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/phyltree/PhyTreeGeneratorRegistry.cpp \
            src/phyltree/PhyTreeGeneratorTask.cpp \
            src/registry/AlignmentAlgorithmsRegistry.cpp \
-           src/registry/CudaGpuRegistry.cpp \
            src/registry/DnaAssemblyAlgRegistry.cpp \
            src/registry/DnaAssemblyTask.cpp \
            src/registry/GenomeAssemblyRegistry.cpp \
