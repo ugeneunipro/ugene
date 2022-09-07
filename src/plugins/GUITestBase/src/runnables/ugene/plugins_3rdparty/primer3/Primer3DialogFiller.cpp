@@ -182,11 +182,11 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
         }
 
         if (DOUBLE_WITH_CHECK_NAMES.contains(par.first())) {
-            auto check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "label_" + par.first(), p));
+            auto check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "label_" + par.first(), widgetTab));
             ws.check.append({ check, "1" });
         }
 
-        tabsAndWidgets.insert(p, ws);
+        tabsAndWidgets.insert(widgetTab, ws);
     }
     file.close();
 
