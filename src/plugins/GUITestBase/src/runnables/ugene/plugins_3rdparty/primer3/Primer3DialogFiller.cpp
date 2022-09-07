@@ -159,17 +159,23 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
         auto p = getWidgetTab(widget);
         auto ws = tabsAndWidgets.value(p);
 
-        if (auto s = qobject_cast<QSpinBox*>(widget)) {
+        if (qobject_cast<QSpinBox*>(widget) != nullptr) {
+            auto s = qobject_cast<QSpinBox*>(widget);
             ws.spin.append({ s, par.last() });
-        } else if (auto c = qobject_cast<QCheckBox*>(widget)) {
+        } else if (qobject_cast<QCheckBox*>(widget) != nullptr) {
+            auto c = qobject_cast<QCheckBox*>(widget);
             ws.check.append({ c, par.last() });
-        } else if (auto c = qobject_cast<QComboBox*>(widget)) {
+        } else if (qobject_cast<QComboBox*>(widget) != nullptr) {
+            auto c = qobject_cast<QComboBox*>(widget);
             ws.combo.append({ c, par.last() });
-        } else if (auto d = qobject_cast<QDoubleSpinBox*>(widget)) {
+        } else if (qobject_cast<QDoubleSpinBox*>(widget) != nullptr) {
+            auto d = qobject_cast<QDoubleSpinBox*>(widget);
             ws.doubleSpin.append({ d, par.last() });
-        } else if (auto l = qobject_cast<QLineEdit*>(widget)) {
+        } else if (qobject_cast<QLineEdit*>(widget) != nullptr) {
+            auto l = qobject_cast<QLineEdit*>(widget);
             ws.line.append({ l, par.last() });
-        } else if (auto p = qobject_cast<QPlainTextEdit*>(widget)) {
+        } else if (qobject_cast<QPlainTextEdit*>(widget) != nullptr) {
+            auto p = qobject_cast<QPlainTextEdit*>(widget);
             ws.plainText = { p, par.last() };
         }
 
