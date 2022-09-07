@@ -303,22 +303,6 @@ void MSAEditorTreeViewerUI::highlightBranches() {
     }
 }
 
-void MSAEditorTreeViewerUI::updateScene(bool) {
-    // A tree viewer embedded into MSA editor never uses 'fitSceneToView' option today:
-    // 1. The option is not compatible with sync mode.
-    // 2. If sync mode if OFF:
-    //   2.1. 'fit-to-view' will fit the tree into a limited screen space and will cause tree text labels overlap (tree labels do not scale).
-    //   2.2. There are no tree-related zoom actions in Sync-OFF mode, so a user can't fix the bad looking tree layout from 2.1.
-    // Until the issues above are not resolved we enforce 'fit-to-screen' to be false.
-    // With 'fit-to-screen' equal to false a tree is rendered using the default zoom level and enables scroll bars to handle overflow.
-    TreeViewerUI::updateScene(false);
-
-    MSAEditor* msaEditor = msaEditorTreeViewer->getMsaEditor();
-    CHECK(msaEditor != nullptr, );
-    msaEditor->getUI()->getSequenceArea()->onVisibleRangeChanged();
-    updateRect();
-}
-
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem* branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
     if (msaEditorTreeViewer->isSyncModeEnabled()) {
