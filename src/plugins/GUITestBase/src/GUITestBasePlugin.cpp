@@ -65,6 +65,7 @@
 #include "tests/common_scenarios/pcr/GTTestsInSilicoPcr.h"
 #include "tests/common_scenarios/pcr/GTTestsPrimerLibrary.h"
 #include "tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h"
+#include "tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h"
 #include "tests/common_scenarios/project/GTTestsProject.h"
 #include "tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h"
 #include "tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h"
@@ -3333,6 +3334,16 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/primer3
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_main_all);
+    /*REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_general_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_advancev_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_internal_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_penalty_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_quality_all);*/
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

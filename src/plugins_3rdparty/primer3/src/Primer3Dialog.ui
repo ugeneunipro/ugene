@@ -29,7 +29,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -1596,7 +1596,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
               <string>Use Thermodynamic Oligo Alignment</string>
              </property>
              <property name="checked">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -5522,6 +5522,126 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_SequenceQuality">
+      <attribute name="title">
+       <string>Sequence Quality</string>
+      </attribute>
+      <attribute name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Sequence quality</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="edit_SEQUENCE_QUALITY">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Min sequence quality:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_QUALITY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Min 3' sequence quality:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="edit_PRIMER_MIN_END_QUALITY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3' pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Sequence quality range min:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="edit_PRIMER_QUALITY_RANGE_MIN">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Sequence quality range max:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="edit_PRIMER_QUALITY_RANGE_MAX">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tab_spanIntronExon">
       <attribute name="title">
        <string>RT-PCR</string>
@@ -5762,126 +5882,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_SequenceQuality">
-      <attribute name="title">
-       <string>Sequence Quality</string>
-      </attribute>
-      <attribute name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Sequence quality</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPlainTextEdit" name="edit_SEQUENCE_QUALITY">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Min sequence quality:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_QUALITY">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Min 3' sequence quality:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="edit_PRIMER_MIN_END_QUALITY">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3' pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Sequence quality range min:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="edit_PRIMER_QUALITY_RANGE_MIN">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Sequence quality range max:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="edit_PRIMER_QUALITY_RANGE_MAX">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="maximum">
-            <number>9999</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab_Result">
       <attribute name="title">
        <string>Result Settings</string>
@@ -6072,7 +6072,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
  <connections>
   <connection>
    <sender>checkbox_PRIMER_PICK_INTERNAL_OLIGO</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_SEQUENCE_INTERNAL_OLIGO</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6088,7 +6088,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_SEQUENCE_PRIMER</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6104,7 +6104,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_SEQUENCE_PRIMER_REVCOMP</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6120,7 +6120,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_MAX_SELF_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6136,7 +6136,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_MAX_SELF_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6152,7 +6152,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_MAX_SELF_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6168,7 +6168,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_MAX_SELF_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6184,7 +6184,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_MAX_COMPL_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6200,7 +6200,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_PAIR_MAX_COMPL_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6216,7 +6216,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_MAX_COMPL_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6232,7 +6232,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_PAIR_MAX_COMPL_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6248,7 +6248,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_MAX_HAIRPIN_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6264,7 +6264,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_MAX_HAIRPIN_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6280,7 +6280,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_MAX_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6296,7 +6296,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6312,7 +6312,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6328,7 +6328,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_MAX_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6344,7 +6344,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_PICK_INTERNAL_OLIGO</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_INTERNAL_OLIGO_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6360,7 +6360,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_LEFT_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6376,7 +6376,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_PRIMER_RIGHT_INPUT</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6392,7 +6392,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_MAX_SELF_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6408,7 +6408,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_90</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6424,7 +6424,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_MAX_SELF_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6440,7 +6440,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_95</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6456,7 +6456,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_MAX_HAIRPIN_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6472,7 +6472,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_96</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6488,7 +6488,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_WT_SELF_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6504,7 +6504,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_97</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6520,7 +6520,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_WT_SELF_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6536,7 +6536,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_98</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6552,7 +6552,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_WT_HAIRPIN_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6568,7 +6568,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_99</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6584,7 +6584,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_108</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6600,7 +6600,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_WT_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6616,7 +6616,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_104</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6632,7 +6632,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_WT_COMPL_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6648,7 +6648,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_WT_COMPL_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6664,7 +6664,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6680,7 +6680,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_107</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6696,7 +6696,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_WT_SELF_ANY_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6712,7 +6712,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_109</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6728,7 +6728,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_106</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6744,7 +6744,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_WT_SELF_END_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6760,7 +6760,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_110</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6776,7 +6776,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>edit_PRIMER_INTERNAL_WT_HAIRPIN_TH</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -6792,7 +6792,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
   </connection>
   <connection>
    <sender>checkbox_PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>label_111</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>

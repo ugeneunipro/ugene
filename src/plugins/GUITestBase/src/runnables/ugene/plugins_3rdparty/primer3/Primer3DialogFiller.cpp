@@ -19,11 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
@@ -33,13 +37,25 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTabWidget>
+#include <QTextStream>
 
 #include <U2Core/global.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "Primer3DialogFiller.h"
 
 namespace U2 {
 using namespace HI;
+
+const QStringList Primer3DialogFiller::PREFIXES = { "edit_", "checkbox_", "combobox_" };
+const QStringList Primer3DialogFiller::DOUBLE_WITH_CHECK_NAMES = { "PRIMER_PRODUCT_OPT_TM", 
+                                                                   "PRIMER_OPT_GC_PERCENT", 
+                                                                   "PRIMER_INTERNAL_OPT_GC_PERCENT" };
+const QMap<QString, QString> Primer3DialogFiller::LIBRARIES_PATH_AND_NAME = { 
+                                                {"drosophila.w.transposons.txt", "DROSOPHILA"}, 
+                                                {"humrep_and_simple.txt", "HUMAN"}, 
+                                                {"rodent_ref.txt", "RODENT"}, 
+                                                {"rodrep_and_simple.txt", "RODENT_AND_SIMPLE"}};
 
 #define GT_CLASS_NAME "GTUtilsDialog::KalignDialogFiller"
 Primer3DialogFiller::Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings)
@@ -86,10 +102,20 @@ void Primer3DialogFiller::commonScenario() {
     GTCheckBox::setChecked(os, intCheckbox, settings.pickInternal);
 
     if (settings.rtPcrDesign) {
-        GTTabWidget::setCurrentIndex(os, tabWidget, 5);
+        GTTabWidget::setCurrentIndex(os, tabWidget, 6);
 
         auto groupBox = GTWidget::findGroupBox(os, "spanIntronExonBox", dialog);
         GTGroupBox::setChecked(os, groupBox);
+    }
+
+    if (!settings.filePath.isEmpty()) {
+        if (!settings.loadManually) {
+            auto utils = new GTFileDialogUtils(os, settings.filePath);
+            GTUtilsDialog::waitForDialog(os, utils);
+            GTWidget::click(os, GTWidget::findWidget(os, "loadSettingsButton", dialog));
+        } else {
+            loadFromFileManually(dialog);
+        }
     }
 
     if (!settings.shortRegion) {
@@ -106,8 +132,139 @@ void Primer3DialogFiller::commonScenario() {
         }
     }
 }
-
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "loadFromFileManually"
+void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
+    QFile file(settings.filePath);
+    file.open(QIODevice::ReadOnly);
+
+    QTextStream stream(&file);
+    QMap<QWidget*, Widgets> tabsAndWidgets;
+    while (!stream.atEnd()) {
+        auto line = stream.readLine();
+        auto par = line.split('=');
+        CHECK_CONTINUE(par.size() == 2);
+
+        QWidget* widget = nullptr;
+        for (const auto& prefix : qAsConst(PREFIXES)) {
+            GTGlobals::FindOptions o;
+            o.failIfNotFound = false;
+            widget = GTWidget::findWidget(os, prefix + par.first(), parent, o);
+            CHECK_BREAK(widget == nullptr);
+        }
+
+        CHECK_CONTINUE(widget != nullptr);
+
+        auto p = getWidgetTab(widget);
+        auto ws = tabsAndWidgets.value(p);
+
+        if (auto s = qobject_cast<QSpinBox*>(widget)) {
+            ws.spin.append({ s, par.last() });
+        } else if (auto c = qobject_cast<QCheckBox*>(widget)) {
+            ws.check.append({ c, par.last() });
+        } else if (auto c = qobject_cast<QComboBox*>(widget)) {
+            ws.combo.append({ c, par.last() });
+        } else if (auto d = qobject_cast<QDoubleSpinBox*>(widget)) {
+            ws.doubleSpin.append({ d, par.last() });
+        } else if (auto l = qobject_cast<QLineEdit*>(widget)) {
+            ws.line.append({ l, par.last() });
+        } else if (auto p = qobject_cast<QPlainTextEdit*>(widget)) {
+            ws.plainText = { p, par.last() };
+        }
+
+        if (DOUBLE_WITH_CHECK_NAMES.contains(par.first())) {
+            auto check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "label_" + par.first(), p));
+            ws.check.append({ check, "1" });
+        }
+
+        tabsAndWidgets.insert(p, ws);
+    }
+    file.close();
+
+
+    auto w = GTWidget::findWidget(os, "tabWidget", parent);
+    auto tw = qobject_cast<QTabWidget*>(w);
+    const auto& keys = tabsAndWidgets.keys();
+    QList<QPair<QWidget*, Widgets>> tabsAndWidgetsPair;
+    for (auto w : qAsConst(keys)) {
+        tabsAndWidgetsPair.append({ w, tabsAndWidgets.value(w) });
+    }
+    std::sort(tabsAndWidgetsPair.begin(), tabsAndWidgetsPair.end(), 
+        [=](const QPair<QWidget*, Widgets>& first, const QPair<QWidget*, Widgets>& second) {
+        return tw->indexOf(first.first) < tw->indexOf(second.first);
+    });
+
+
+    for (auto tab : qAsConst(tabsAndWidgetsPair)) {
+        auto name = GTTabWidget::getTabNameByWidget(os, tw, tab.first);
+        GTTabWidget::clickTab(os, tw, name);
+
+        const auto& widgets2click = tab.second;
+        for (const auto& s : widgets2click.spin) {
+            bool ok = false;
+            auto v = s.second.toInt(&ok);
+            GT_CHECK(ok, QString("Can't cast QSpinBox value to int: %1").arg(s.second));
+
+            GTSpinBox::setValue(os, s.first, v, GTGlobals::UseMethod::UseKeyBoard);
+        }
+        for (const auto& c : widgets2click.check) {
+            bool ok = false;
+            auto v = c.second.toInt(&ok);
+            GT_CHECK(ok, QString("Can't cast QCheckBox value to int: %1").arg(c.second));
+
+            GTCheckBox::setChecked(os, c.first, bool(v));
+        }
+        for (const auto& c : widgets2click.combo) {
+            bool ok = false;
+            auto v = c.second.toInt(&ok);
+            if (ok) {
+                GTComboBox::selectItemByIndex(os, c.first, v);
+            } else {
+                auto v = LIBRARIES_PATH_AND_NAME.value(c.second, c.second);
+                GTComboBox::selectItemByText(os, c.first, v);
+            }
+        }
+        for (const auto& d : widgets2click.doubleSpin) {
+            bool ok = false;
+            auto v = d.second.toDouble(&ok);
+            GT_CHECK(ok, QString("Can't cast QDoubleSpinBox value to double: %1").arg(d.second));
+
+            auto method = d.second.contains(".") || d.second.contains(",") ? GTGlobals::UseMethod::UseMouse : GTGlobals::UseMethod::UseKeyBoard;
+            GTDoubleSpinbox::setValue(os, d.first, v, method);
+        }
+        for (const auto& l : widgets2click.line) {
+            GTLineEdit::setText(os, l.first, l.second);
+        }
+        if (widgets2click.plainText.first != nullptr) {
+            GTPlainTextEdit::setPlainText(os, widgets2click.plainText.first, widgets2click.plainText.second);
+        }
+    }
+}
+#undef GT_METHOD_NAME
+
+QWidget* Primer3DialogFiller::getWidgetTab(QWidget* wt) const {
+    auto parent = wt->parent();
+    while (!parent->objectName().startsWith("tab_")) {
+        parent = parent->parent();
+    }
+    return qobject_cast<QWidget*>(parent);
+}
+
+void Primer3DialogFiller::findAllChildrenWithNames(QObject* obj, QMap<QString, QObject*>& children) {
+        for(QObject * o : obj->children()) {
+            auto name = o->objectName();
+            for (const auto& prefix : qAsConst(PREFIXES)) {
+                name = name.remove(prefix);
+            }
+            if (!name.isEmpty()) {
+                children.insert(name, o);
+            }
+            
+            findAllChildrenWithNames(o, children);
+        }
+}
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2
