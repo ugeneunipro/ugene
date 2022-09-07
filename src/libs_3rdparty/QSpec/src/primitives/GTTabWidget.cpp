@@ -91,6 +91,10 @@ QString GTTabWidget::getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int 
     return getTabBar(os, tabWidget)->tabText(idx);
 }
 
+QString GTTabWidget::getTabNameByWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QWidget* widget) {
+    return getTabBar(os, tabWidget)->tabText(tabWidget->indexOf(widget));
+}
+
 #define GT_METHOD_NAME "getTabNumByName"
 int GTTabWidget::getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName) {
     GT_CHECK_RESULT(tabWidget != NULL, "tabWidget is NULL", -1);

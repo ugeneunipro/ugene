@@ -234,6 +234,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.h \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.h \
             src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h \
+			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h \
             src/tests/common_scenarios/project/GTTestsProject.h \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h \
@@ -508,7 +509,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.cpp \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.cpp \
-            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \			
+			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.cpp \
             src/tests/common_scenarios/project/GTTestsProject.cpp \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.cpp \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.cpp \

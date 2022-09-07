@@ -807,10 +807,12 @@ void Primer3Dialog::sl_saveSettings() {
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : repeatLibraries) {
         if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
-            stream << "PRIMER_MISPRIMING_LIBRARY=" << lib.second << endl;
+            QFileInfo fi(lib.second);
+            stream << "PRIMER_MISPRIMING_LIBRARY=" << fi.fileName() << endl;
         }
-        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
-            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << lib.second << endl;
+        if (lib.first == combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentText() && !lib.second.isEmpty()) {
+            QFileInfo fi(lib.second);
+            stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << fi.fileName() << endl;
         }
     }
 
@@ -943,7 +945,7 @@ void Primer3Dialog::sl_loadSettings() {
         } else if (par.first() == "PRIMER_MISPRIMING_LIBRARY") {
             bool found = false;
             for (const auto& lib : repeatLibraries) {
-                if (par.last() == lib.second) {
+                if (QString(lib.second).endsWith(par.last())) {
                     combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentText(lib.first);
                     found = true;
                     break;
@@ -956,15 +958,15 @@ void Primer3Dialog::sl_loadSettings() {
         } else if (par.first() == "PRIMER_INTERNAL_MISHYB_LIBRARY") {
             bool found = false;
             for (const auto& lib : repeatLibraries) {
-                if (par.last() == lib.second) {
+                if (QString(lib.second).endsWith(par.last())) {
                     combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentText(lib.first);
                     found = true;
                     break;
                 }
-                if (!found) {
-                    algoLog.error(tr("PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the \"%1\" directory")
-                        .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
-                }
+            }
+            if (!found) {
+                algoLog.error(tr("PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the \"%1\" directory")
+                    .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
             }
         } else if (par.first() == "PRIMER_MIN_THREE_PRIME_DISTANCE") {
             auto res = QMessageBox::question(nullptr, line, tr("PRIMER_MIN_THREE_PRIME_DISTANCE is unused in the UGENE GUI interface. "

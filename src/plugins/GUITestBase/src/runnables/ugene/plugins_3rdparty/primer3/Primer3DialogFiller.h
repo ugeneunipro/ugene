@@ -41,13 +41,35 @@ public:
         bool pickInternal = false;
         bool shortRegion = false;
         bool rtPcrDesign = false;
+        // The file to the primer3 settings. All settings from this file will be set with the dialog
+        QString filePath;
+        // Load settings manually if true, with the "Load settings" button if false
+        bool loadManually = true;
     };
 
     Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings = Primer3Settings());
     void commonScenario();
 
 private:
+    struct Widgets {
+        QList<QPair<QSpinBox*, QString>> spin;
+        QList<QPair<QCheckBox*, QString>> check;
+        QList<QPair<QComboBox*, QString>> combo;
+        QList<QPair<QDoubleSpinBox*, QString>> doubleSpin;
+        QList<QPair<QLineEdit*, QString>> line;
+        QPair<QPlainTextEdit*, QString> plainText;
+    };
+
+    void loadFromFileManually(QWidget* parent);
+    QWidget* getWidgetTab(QWidget* wt) const;
+    void findAllChildrenWithNames(QObject* obj, QMap<QString, QObject*>& children);
+
+
     Primer3Settings settings;
+
+    static const QStringList PREFIXES;
+    static const QStringList DOUBLE_WITH_CHECK_NAMES;
+    static const QMap<QString, QString> LIBRARIES_PATH_AND_NAME;
 };
 
 }  // namespace U2
