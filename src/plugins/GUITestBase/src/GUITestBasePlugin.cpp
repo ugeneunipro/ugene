@@ -3335,12 +3335,15 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/primer3
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_main_all);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_common_scenarios_primer3::test_tab_main_all, DEFAULT_GUI_TEST_TIMEOUT * 2);
     /*REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_general_all);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_advancev_all);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_internal_all);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_penalty_all);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_quality_all);*/
+
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_boundary_0001);
+
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

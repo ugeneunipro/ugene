@@ -37,6 +37,8 @@ GUI_TEST_CLASS_DECLARATION(test_tab_main_all)
 //GUI_TEST_CLASS_DECLARATION(test_tab_penalty_all)
 //GUI_TEST_CLASS_DECLARATION(test_tab_quality_all)
 
+GUI_TEST_CLASS_DECLARATION(test_boundary_0001)
+
 
 
 #undef GUI_TEST_SUITE

@@ -24,7 +24,7 @@
 //#include <primitives/GTComboBox.h>
 //#include <primitives/GTLineEdit.h>
 //#include <primitives/GTTabWidget.h>
-//#include <primitives/GTToolbar.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
@@ -52,6 +52,21 @@ GUI_TEST_CLASS_DEFINITION(test_tab_main_all) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_boundary_0001) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "boundary.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/boundary/test_00.txt";
+
+    //GTUtilsDialog::add(os, new PopupChooser(os, { "ADV_MENU_ANALYSE", "primer3_action" }));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    //GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }  // namespace GUITest_common_scenarios_phyml

@@ -71,6 +71,7 @@ private:
 
     static const QStringList PREFIXES;
     static const QStringList DOUBLE_WITH_CHECK_NAMES;
+    static const QStringList DEBUG_PARAMETERS;
     static const QMap<QString, QString> LIBRARIES_PATH_AND_NAME;
 };
 
