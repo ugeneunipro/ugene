@@ -158,8 +158,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
 
         GT_CHECK(widget != nullptr, QString("Parameter %1 not found").arg(par.first()));
 
-        auto p = getWidgetTab(widget);
-        auto ws = tabsAndWidgets.value(p);
+        auto widgetTab = getWidgetTab(widget);
+        auto ws = tabsAndWidgets.value(widgetTab);
 
         if (qobject_cast<QSpinBox*>(widget) != nullptr) {
             auto s = qobject_cast<QSpinBox*>(widget);
@@ -177,8 +177,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
             auto l = qobject_cast<QLineEdit*>(widget);
             ws.line.append({ l, par.last() });
         } else if (qobject_cast<QPlainTextEdit*>(widget) != nullptr) {
-            auto p = qobject_cast<QPlainTextEdit*>(widget);
-            ws.plainText = { p, par.last() };
+            auto plain = qobject_cast<QPlainTextEdit*>(widget);
+            ws.plainText = { plain, par.last() };
         }
 
         if (DOUBLE_WITH_CHECK_NAMES.contains(par.first())) {
@@ -191,8 +191,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
     file.close();
 
 
-    auto w = GTWidget::findWidget(os, "tabWidget", parent);
-    auto tw = qobject_cast<QTabWidget*>(w);
+    auto tabWidget = GTWidget::findWidget(os, "tabWidget", parent);
+    auto tw = qobject_cast<QTabWidget*>(tabWidget);
     const auto& keys = tabsAndWidgets.keys();
     QList<QPair<QWidget*, Widgets>> tabsAndWidgetsPair;
     for (auto w : qAsConst(keys)) {
@@ -229,8 +229,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
             if (ok) {
                 GTComboBox::selectItemByIndex(os, c.first, v);
             } else {
-                auto v = LIBRARIES_PATH_AND_NAME.value(c.second, c.second);
-                GTComboBox::selectItemByText(os, c.first, v);
+                auto index = LIBRARIES_PATH_AND_NAME.value(c.second, c.second);
+                GTComboBox::selectItemByText(os, c.first, index);
             }
         }
         for (const auto& d : widgets2click.doubleSpin) {
