@@ -2993,5 +2993,25 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Rectangular");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7680) {
+    // Check that tree buttons size remains not changed on window resize.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getNodes(os);
+    auto node = nodes[5];
+
+    QRect viewRectBefore = GTUtilsPhyTree::getItemViewRect(os, node);
+    GTUtilsProjectTreeView::toggleView(os);
+    QRect viewRectAfter = GTUtilsPhyTree::getItemViewRect(os, node);
+
+    CHECK_SET_ERR(viewRectBefore.width() > 0 && viewRectBefore.height() > 0, "Initial node size is 0");
+
+    CHECK_SET_ERR(viewRectBefore.width() == viewRectAfter.width(),
+                  QString("Width of the node changed: %1 vs %2").arg(viewRectBefore.width()).arg(viewRectAfter.width()));
+
+    CHECK_SET_ERR(viewRectBefore.height() == viewRectAfter.height(),
+                  QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

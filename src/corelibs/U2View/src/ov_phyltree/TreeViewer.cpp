@@ -93,6 +93,7 @@ QTransform TreeViewer::getTransform() const {
 
 void TreeViewer::setTransform(const QTransform& m) {
     ui->setTransform(m);
+    ui->updateFixedSizeElementScales();
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -897,16 +898,19 @@ void TreeViewerUI::setZoomLevel(double newZoomLevel) {
     uiLog.trace("New zoom level: " + QString::number(newZoomLevel));
     double scaleChange = newZoomLevel / zoomLevel;
     zoomLevel = newZoomLevel;
+    scale(scaleChange, scaleChange);
+    updateFixedSizeElementScales();
+    updateActionsState();
+}
 
-    double nodeScale = zoomLevel * (isRectangularLayoutMode() ? 1.2 : 0.4);
+void TreeViewerUI::updateFixedSizeElementScales() {
+    double sceneToScreenScale = qMin(transform().m11(), transform().m22());
     QList<QGraphicsItem*> itemList = scene()->items();
     for (QGraphicsItem* item : qAsConst(itemList)) {
         if (auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item)) {
-            nodeItem->setScale(1 / nodeScale);
+            nodeItem->setScale(1 / sceneToScreenScale);  // Apply the opposite scale.
         }
     }
-    scale(scaleChange, scaleChange);
-    updateActionsState();
 }
 
 void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
@@ -955,6 +959,7 @@ void TreeViewerUI::fitIntoView() {
     rect.setHeight(rect.height() / zoomLevel);
     rect.moveCenter(scene()->sceneRect().center());
     fitInView(rect, Qt::KeepAspectRatio);
+    updateFixedSizeElementScales();
 }
 
 void TreeViewerUI::paint(QPainter& painter) {
@@ -1000,7 +1005,8 @@ void TreeViewerUI::sl_swapTriggered() {
 }
 
 void TreeViewerUI::sl_rerootTriggered() {
-    foreach (QGraphicsItem* graphItem, items()) {
+    QList<QGraphicsItem*> childItems = items();
+    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
             buttonItem->rerootTree(phyObject);
@@ -1011,10 +1017,10 @@ void TreeViewerUI::sl_rerootTriggered() {
 
 void TreeViewerUI::collapseSelected() {
     QList<QGraphicsItem*> childItems = items();
-    foreach (QGraphicsItem* graphItem, childItems) {
+    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            buttonItem->collapse();
+            buttonItem->toggleCollapsedState();
             break;
         }
     }
@@ -1237,6 +1243,7 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
     updateScene(false);
 
     setTransform(curTransform);
+    updateFixedSizeElementScales();
     updateActionsState();
     setTransformationAnchor(AnchorUnderMouse);
 }

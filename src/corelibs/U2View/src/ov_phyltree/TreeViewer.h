@@ -245,6 +245,9 @@ private:
     void updateDistanceToViewScale();
     void rebuildTreeLayout();
 
+    /** Update scales of fixed size elements so the elements keeps their on-screen sizes not changed on view zoom/resize ops. */
+    void updateFixedSizeElementScales();
+
     void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
 
     enum LabelType {

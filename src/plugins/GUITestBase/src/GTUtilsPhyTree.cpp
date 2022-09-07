@@ -197,9 +197,16 @@ QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getGlobalCenterCoord"
 QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item) {
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QRectF sceneRect = item->mapToScene(item->boundingRect()).boundingRect();
-    QRectF viewRect = treeView->mapFromScene(sceneRect).boundingRect();
+    QRectF viewRect = getItemViewRect(os, item);
     return treeView->mapToGlobal(viewRect.center().toPoint());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getItemViewRect"
+QRect GTUtilsPhyTree::getItemViewRect(HI::GUITestOpStatus& os, QGraphicsItem* item) {
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+    QRectF sceneRect = item->mapToScene(item->boundingRect()).boundingRect();
+    return treeView->mapFromScene(sceneRect).boundingRect();
 }
 #undef GT_METHOD_NAME
 
