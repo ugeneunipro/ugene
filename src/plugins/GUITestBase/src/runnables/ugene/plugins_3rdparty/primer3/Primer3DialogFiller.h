@@ -31,7 +31,7 @@ class Primer3DialogFiller : public Filler {
 public:
     class Primer3Settings {
     public:
-        Primer3Settings() = default;
+        Primer3Settings() {}
 
         int resultsCount = -1;
         QString primersGroupName;
