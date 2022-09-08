@@ -177,7 +177,7 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat*, const QDomElement& el) {
 
             QStringList regList = regStr.split(",", QString::SkipEmptyParts);
             r = U2Region();
-            foreach (QString reg, regList) {
+            for (const QString& reg : qAsConst(regList)) {
                 U2Region regionPart = stringToRegion(reg);
                 if (regionPart.startPos > r.startPos) {
                     r.startPos = regionPart.startPos;

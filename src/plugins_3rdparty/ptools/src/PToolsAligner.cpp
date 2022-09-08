@@ -48,11 +48,11 @@ static PTools::Rigidbody* createRigidBody(const BioStruct3DReference& subset) {
             region = U2Region(0, biostruct.moleculeMap.value(chainId)->residueMap.size());
         }
 
-        // built in assumtion that order of atoms in BioStruct3D matches order of residues
+        // built in assumption that order of atoms in BioStruct3D matches order of residues
         int i = 0;
-        foreach (const SharedAtom& atom, model.atoms) {
+        for (const SharedAtom& atom : qAsConst(model.atoms)) {
             // take into account only CA atoms (backbone) because subsets may have different residues,
-            // i.e. different number of atoms on the same nuber of residues
+            // i.e. different number of atoms on the same number of residues
             if (atom->name == "CA") {
                 if (i >= region.startPos && i < region.endPos()) {
                     PTools::Atomproperty pproperty;

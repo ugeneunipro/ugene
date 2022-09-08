@@ -51,7 +51,7 @@ PFMatrixFormat::PFMatrixFormat(QObject* p)
 
 FormatCheckResult PFMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     QString dataPrefixCopy = dataPrefix;
-    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    QStringList qsl = dataPrefixCopy.replace("\r\n", "\n").split("\n");
     qsl.removeAll("");
 
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 4 or 5
@@ -59,7 +59,7 @@ FormatCheckResult PFMatrixFormat::checkRawTextData(const QString& dataPrefix, co
     }
     foreach (QString str, qsl) {
         QStringList line = str.split(QRegExp("\\s+"));
-        foreach (QString word, line) {
+        for (const QString& word : qAsConst(line)) {
             if (!word.isEmpty()) {
                 bool isInt;
                 word.toInt(&isInt);
@@ -159,7 +159,7 @@ PWMatrixFormat::PWMatrixFormat(QObject* p)
 
 FormatCheckResult PWMatrixFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     QString dataPrefixCopy = dataPrefix;
-    QStringList qsl = dataPrefixCopy.replace("\r\n","\n").split("\n");
+    QStringList qsl = dataPrefixCopy.replace("\r\n", "\n").split("\n");
     qsl.removeAll("");
 
     if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 5 or 6
@@ -171,10 +171,10 @@ FormatCheckResult PWMatrixFormat::checkRawTextData(const QString& dataPrefix, co
         CHECK(!words.isEmpty(), FormatDetection_NotMatched);
 
         QString firstWord = words.takeFirst();
-        CHECK(2 == firstWord.size(), FormatDetection_NotMatched);
-        CHECK(':' == firstWord[1], FormatDetection_NotMatched);
+        CHECK(firstWord.size() == 2, FormatDetection_NotMatched);
+        CHECK(firstWord[1] == ':', FormatDetection_NotMatched);
 
-        foreach (QString word, words) {
+        for (const QString& word : qAsConst(words)) {
             if (!word.isEmpty()) {
                 bool isFloat;
                 word.toFloat(&isFloat);

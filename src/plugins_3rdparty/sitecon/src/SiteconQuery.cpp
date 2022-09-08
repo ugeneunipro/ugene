@@ -224,7 +224,7 @@ QList<Task*> QDSiteconTask::onSubTaskFinished(Task* subTask) {
         QList<SiteconModel> models = loadModelsTask->getResult();
         foreach (const U2Region& r, searchRegion) {
             QByteArray seq = dnaSeq.seq.mid(r.startPos, r.length);
-            foreach (const SiteconModel& m, models) {
+            for (const SiteconModel& m : qAsConst(models)) {
                 st.append(new SiteconSearchTask(m, seq, cfg, r.startPos));
             }
         }

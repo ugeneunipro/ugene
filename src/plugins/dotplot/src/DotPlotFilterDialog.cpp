@@ -104,7 +104,7 @@ QSet<QString> DotPlotFilterDialog::getUniqueAnnotationNames(ADVSequenceObjectCon
     QSet<AnnotationTableObject*> annotationObjects = seq->getAnnotationObjects(true);
     foreach (AnnotationTableObject* atObj, annotationObjects) {
         QList<Annotation*> annotations = atObj->getAnnotations();
-        foreach (Annotation* a, annotations) {
+        for (Annotation* a : qAsConst(annotations)) {
             uniqueAnnotationNames.insert(a->getName());
         }
     }

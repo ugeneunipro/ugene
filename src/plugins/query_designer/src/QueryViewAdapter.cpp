@@ -32,7 +32,8 @@ QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorne
     QMap<QDSchemeUnit*, QDElement*> unitMap;
     QList<QDConstraint*> constraints = scheme->getConstraints();
     foreach (QDActor const* a, scheme->getActors()) {
-        foreach (QDSchemeUnit* su, a->getSchemeUnits()) {
+        QList<QDSchemeUnit*> units = a->getSchemeUnits();
+        for (QDSchemeUnit* su : qAsConst(units)) {
             QDElement* uv = new QDElement(su);
             uv->moveBy(topLeftCorner.x(), topLeftCorner.y());
             createdElements.append(uv);

@@ -231,10 +231,10 @@ void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap& incomin
     QList<AnnotationTableObject*> annTables = StorageUtils::getAnnotationTableObjects(context->getDataStorage(), annVar);
     annotationsByUrl[resultPath] << annTables;
 
-    const QString seqObjName = fetchIncomingSequenceName(incomingData);
+    QString seqObjName = fetchIncomingSequenceName(incomingData);
     bool isWriteNames = getValue<bool>(WRITE_NAMES);
     if (isWriteNames && !seqObjName.isEmpty()) {
-        foreach (AnnotationTableObject* annTable, annTables) {
+        for (AnnotationTableObject* annTable : qAsConst(annTables)) {
             foreach (Annotation* annotation, annTable->getAnnotations()) {
                 U2Qualifier seqNameQual;
                 seqNameQual.name = ExportAnnotations2CSVTask::SEQUENCE_NAME;
@@ -248,8 +248,8 @@ void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap& incomin
 void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObject*>& annTables) const {
     CHECK(getMergeAttribute() == true, );
 
-    AnnotationTableObject* mergedTable = new AnnotationTableObject(getAnnotationTableName(), context->getDataStorage()->getDbiRef());
-    foreach (AnnotationTableObject* annTable, annTables) {
+    auto mergedTable = new AnnotationTableObject(getAnnotationTableName(), context->getDataStorage()->getDbiRef());
+    for (AnnotationTableObject* annTable : qAsConst(annTables)) {
         QList<SharedAnnotationData> anns;
         foreach (Annotation* annotation, annTable->getAnnotations()) {
             anns.append(annotation->getData());
@@ -277,7 +277,7 @@ Task* WriteAnnotationsWorker::getSaveObjTask(const U2DbiRef& dstDbiRef) const {
     foreach (const QString& path, annotationsByUrl.keys()) {
         QList<AnnotationTableObject*> annTables = annotationsByUrl.value(path);
         mergeAnnTablesIfNecessary(annTables);
-        foreach (AnnotationTableObject* annTable, annTables) {
+        for (AnnotationTableObject* annTable : qAsConst(annTables)) {
             taskList << new ImportObjectToDatabaseTask(annTable, dstDbiRef, path);
         }
     }
@@ -322,7 +322,7 @@ Task* WriteAnnotationsWorker::getSaveDocTask(const QString& formatId, SaveDocFla
             }
 
             QList<Annotation*> annotations;
-            foreach (AnnotationTableObject* annTable, annTables) {
+            for (AnnotationTableObject* annTable : qAsConst(annTables)) {
                 annotations << annTable->getAnnotations();
             }
 
@@ -341,7 +341,7 @@ Task* WriteAnnotationsWorker::getSaveDocTask(const QString& formatId, SaveDocFla
             doc->setDocumentOwnsDbiResources(false);
 
             QSet<QString> usedNames;
-            foreach (AnnotationTableObject* annTable, annTables) {
+            for (AnnotationTableObject* annTable : qAsConst(annTables)) {
                 updateAnnotationsName(annTable, usedNames);
                 annTable->setModified(false);
                 doc->addObject(annTable);  // savedoc task will delete doc -> doc will delete att

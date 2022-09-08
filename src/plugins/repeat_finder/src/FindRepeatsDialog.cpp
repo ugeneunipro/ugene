@@ -166,9 +166,9 @@ void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStri
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
     QStringList res;
-    const QSet<AnnotationTableObject*>& objs = sc->getAnnotationObjects();
+    QSet<AnnotationTableObject*> objs = sc->getAnnotationObjects();
     QSet<QString> names;
-    foreach (AnnotationTableObject* o, objs) {
+    for (AnnotationTableObject* o : qAsConst(objs)) {
         foreach (Annotation* a, o->getAnnotations()) {
             names.insert(a->getName());
         }
@@ -209,8 +209,8 @@ bool FindRepeatsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Regio
         return true;
     }
     QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
-    const QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
-    foreach (AnnotationTableObject* obj, aObjs) {
+    QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
+    for (AnnotationTableObject* obj : qAsConst(aObjs)) {
         foreach (Annotation* a, obj->getAnnotations()) {
             if (aNames.contains(a->getName())) {
                 res << a->getRegions();

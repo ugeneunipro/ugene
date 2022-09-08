@@ -49,7 +49,7 @@ QString AnnotationsMessageTranslator::getTranslation() const {
         QVector<U2Region> annotatedRegions = data->getRegions();
         if (!annotatedRegions.isEmpty()) {
             result += QObject::tr(REGION_LIST_LABEL);
-            foreach (const U2Region& region, annotatedRegions) {
+            for (const U2Region& region : qAsConst(annotatedRegions)) {
                 result += region.toString() + INFO_FEATURES_SEPARATOR;
             }
             result = result.left(result.size() - INFO_FEATURES_SEPARATOR.size());

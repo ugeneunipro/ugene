@@ -110,12 +110,12 @@ void DumpHelpTask::dumpHelp() {
 
     printStringToConsole("%s", "\nAvailable tasks:\n");
     QStringList dataDirs = QDir::searchPaths(PATH_PREFIX_DATA);
-    foreach (const QString& url, dataDirs) {
+    for (const QString& url : qAsConst(dataDirs)) {
         QString dirUrl = url + "/cmdline/";
         QDir dir(dirUrl);
         if (dir.exists()) {
             QStringList entries = dir.entryList(QDir::Files | QDir::Readable);
-            foreach (const QString& file, entries) {
+            for (const QString& file : qAsConst(entries)) {
                 foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
                     if (file.endsWith(ext)) {
                         dumpTaskName(file.mid(0, file.size() - ext.size() - 1));  // 1 comes from "."

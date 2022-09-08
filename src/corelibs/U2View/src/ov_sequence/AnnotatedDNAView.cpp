@@ -1068,7 +1068,8 @@ void AnnotatedDNAView::cancelAutoAnnotationUpdates(AutoAnnotationObject* aa, boo
                 aaUpdateTask->cancel();
                 if (removeTaskExist) {
                     *removeTaskExist = false;
-                    foreach (const QPointer<Task>& subTask, aaUpdateTask->getSubtasks()) {
+                    QList<QPointer<Task>> subtasks = aaUpdateTask->getSubtasks();
+                    for (const QPointer<Task>& subTask : qAsConst(subtasks)) {
                         RemoveAnnotationsTask* rTask = qobject_cast<RemoveAnnotationsTask*>(subTask.data());
                         if (rTask && !rTask->isFinished()) {
                             *removeTaskExist = true;
@@ -1109,7 +1110,7 @@ void AnnotatedDNAView::importDocAnnotations(Document* doc) {
             continue;
         }
         QList<GObject*> relatedAnns = GObjectUtils::findObjectsRelatedToObjectByRole(obj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, docObjects, UOF_LoadedOnly);
-        foreach (GObject* annObj, relatedAnns) {
+        for (GObject* annObj : qAsConst(relatedAnns)) {
             addObject(annObj);
         }
     }
@@ -1391,7 +1392,8 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
                 U2Region oldMaxRange(0, newMaxRange.length - seqSizeDelta);
                 foreach (ADVSequenceObjectContext* ctx, seqContexts) {
                     if (ctx->getSequenceGObject() == modifyContentTask->getSequenceObject()) {
-                        foreach (ADVSequenceWidget* w, seqCtx->getSequenceWidgets()) {
+                        QList<ADVSequenceWidget*> widgets = seqCtx->getSequenceWidgets();
+                        for (ADVSequenceWidget* w : qAsConst(widgets)) {
                             if (w->getVisibleRange() == oldMaxRange) {
                                 w->setVisibleRange(newMaxRange);
                             }
@@ -1512,9 +1514,10 @@ QAction* AnnotatedDNAView::getEditActionFromSequenceWidget(ADVSequenceWidget* se
 bool AnnotatedDNAView::areAnnotationsInRange(const QList<Annotation*>& toCheck) {
     foreach (Annotation* a, toCheck) {
         QList<ADVSequenceObjectContext*> relatedSeqObjects = findRelatedSequenceContexts(a->getGObject());
-        foreach (ADVSequenceObjectContext* seq, relatedSeqObjects) {
+        for (ADVSequenceObjectContext* seq : qAsConst(relatedSeqObjects)) {
             SAFE_POINT(seq != nullptr, "Sequence is NULL", true);
-            foreach (const U2Region& r, a->getRegions()) {
+            QVector<U2Region> regions = a->getRegions();
+            for (const U2Region& r : qAsConst(regions)) {
                 if (r.endPos() > seq->getSequenceLength()) {
                     return false;
                 }

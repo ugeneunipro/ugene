@@ -314,7 +314,7 @@ void GTest_CheckYAMLFile::prepare() {
     }
     f.close();
 
-    foreach (const QString& el, desiredStrings) {
+    for (const QString& el : qAsConst(desiredStrings)) {
         foreach (const QString& fileLane, fileLines) {
             if (fileLane.contains(el.trimmed())) {
                 desiredStrings.removeAll(el);

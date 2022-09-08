@@ -246,8 +246,8 @@ public:
         QString slot1Val = busMap.value<StrStrMap>().value(READS_URL_SLOT_ID);
         QString slot2Val = busMap.value<StrStrMap>().value(READS_PAIRED_URL_SLOT_ID);
         U2OpStatusImpl os;
-        const QList<IntegralBusSlot>& slots1 = IntegralBusSlot::listFromString(slot1Val, os);
-        const QList<IntegralBusSlot>& slots2 = IntegralBusSlot::listFromString(slot2Val, os);
+        QList<IntegralBusSlot> slots1 = IntegralBusSlot::listFromString(slot1Val, os);
+        QList<IntegralBusSlot> slots2 = IntegralBusSlot::listFromString(slot2Val, os);
 
         bool hasCommonElements = false;
 
@@ -255,7 +255,7 @@ public:
             if (hasCommonElements) {
                 break;
             }
-            foreach (const IntegralBusSlot& ibsl2, slots2) {
+            for (const IntegralBusSlot& ibsl2 : qAsConst(slots2)) {
                 if (ibsl1 == ibsl2) {
                     hasCommonElements = true;
                     break;

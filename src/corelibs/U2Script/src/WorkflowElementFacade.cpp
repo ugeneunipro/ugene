@@ -170,7 +170,7 @@ U2ErrorType WorkflowElementFacade::getElementSlotIds(const QString& elementType,
     slotIds.clear();
     QList<Workflow::PortDescriptor*> ports;
     CHECK(U2_OK == (result = getElementPorts(elementType, ports)), result);
-    foreach (Workflow::PortDescriptor* port, ports) {
+    for (const Workflow::PortDescriptor* port: qAsConst(ports)) {
         if ((!(inputSlot ^ port->isInput()) && portId.isEmpty()) || portId == port->getId()) {
             QList<Descriptor> slotList = port->getOwnTypeMap().keys();
             foreach (Descriptor slotDescriptor, slotList) {
@@ -232,7 +232,7 @@ U2ErrorType getConvenientPortIdForSlot(const QString& elementId, const QString& 
         while (currElement != currGroup.end()) {
             if ((*currElement)->getId() == elementId) {
                 QList<PortDescriptor*> currPorts = (*currElement)->getPortDesciptors();
-                foreach (Workflow::PortDescriptor* port, currPorts) {
+                for (Workflow::PortDescriptor* port: qAsConst(currPorts)) {
                     if ((isInput && port->isInput()) || (!isInput && port->isOutput())) {
                         QList<Descriptor> slotList = port->getOwnTypeMap().keys();
                         foreach (Descriptor slotDescriptor, slotList) {

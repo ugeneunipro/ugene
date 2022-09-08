@@ -180,7 +180,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
 
     auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
-    foreach (QTreeWidgetItem* item, listOfItems) {
+    for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
             GTTreeWidget::click(os, item);
             GTMouseDriver::doubleClick();
@@ -188,7 +188,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
     }
-    GT_CHECK_RESULT(false, "external tool " + toolName + " not found in tree view", false);
+    GT_FAIL("external tool " + toolName + " not found in tree view", false);
 }
 #undef GT_METHOD_NAME
 

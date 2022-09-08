@@ -233,7 +233,8 @@ void ExternalProcessWorker::applySpecialInternalEnvvars(QString& execString,
 }
 
 void ExternalProcessWorker::applyAttributes(QString& execString) {
-    foreach (Attribute* a, actor->getAttributes()) {
+    QList<Attribute*> actorAttributes = actor->getAttributes();
+    for (Attribute* a : qAsConst(actorAttributes)) {
         QString attrValue = a->getAttributePureValue().toString();
         DataTypePtr attrType = a->getAttributeType();
         if (attrType == BaseTypes::STRING_TYPE()) {
@@ -574,9 +575,9 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         U2OpStatus2Log os;
 
         foreach (const QString& slotId, seqsForMergingBySlotId.keys()) {
-            const QList<U2EntityRef>& refs = seqsForMergingBySlotId.value(slotId);
+            QList<U2EntityRef> refs = seqsForMergingBySlotId.value(slotId);
             bool first = true;
-            foreach (const U2EntityRef& eRef, refs) {
+            for (const U2EntityRef& eRef : qAsConst(refs)) {
                 QScopedPointer<U2SequenceObject> obj(new U2SequenceObject("tmp_name", eRef));
                 if (first) {
                     seqImporter.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false);
@@ -777,7 +778,8 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             QString destinations;
             QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
             if (!output->getLinks().isEmpty()) {
-                foreach (Port* p, output->getLinks().keys()) {
+                QList<Port*> ports = output->getLinks().keys();
+                for (Port* p : qAsConst(ports)) {
                     IntegralBusPort* ibp = qobject_cast<IntegralBusPort*>(p);
                     Actor* dest = ibp->owner();
                     destinations += tr("<u>%1</u>").arg(dest ? dest->getLabel() : unsetStr) + ",";

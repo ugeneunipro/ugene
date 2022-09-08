@@ -213,7 +213,7 @@ QAction* AutoAnnotationUtils::findAutoAnnotationsToggleAction(ADVSequenceObjectC
         AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(advAction);
         assert(aaAction != nullptr);
         QList<QAction*> toggleActions = aaAction->getToggleActions();
-        foreach (QAction* tAction, toggleActions) {
+        for (QAction* tAction : qAsConst(toggleActions)) {
             if (tAction->property(AUTO_ANNOTATION_GROUP_NAME) == groupName) {
                 return tAction;
             }
@@ -276,7 +276,7 @@ QList<QAction*> AutoAnnotationUtils::getAutoAnnotationToggleActions(ADVSequenceO
         res = aaAction->getToggleActions();
 
         int selectedCount = 0;
-        foreach (QAction* a, res) {
+        for (QAction* a : qAsConst(res)) {
             if (a->isChecked()) {
                 selectedCount += 1;
             }

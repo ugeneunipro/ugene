@@ -125,7 +125,7 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
         SAFE_POINT(nullptr != os, "Invalid object selection", );
         foreach (GObject* obj, os->getSelectedObjects()) {
             bool objectIsAlreadySelected = false;
-            foreach (const Folder& selectedFolder, folderList) {
+            for (const Folder& selectedFolder : qAsConst(folderList)) {
                 if (d->controller->isObjectInFolder(obj, selectedFolder)) {
                     objectIsAlreadySelected = true;
                     break;

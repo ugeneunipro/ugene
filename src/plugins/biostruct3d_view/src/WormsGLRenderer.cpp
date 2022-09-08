@@ -43,7 +43,7 @@ bool WormsGLRenderer::isAvailableFor(const BioStruct3D& bioStruct) {
     createBioPolymerMap(bioStruct.moleculeMap, bioPolymerMap);
 
     // Find objects to draw
-    foreach (const SharedSecondaryStructure ss, bioStruct.secondaryStructures) {
+    for (const SharedSecondaryStructure& ss : qAsConst(bioStruct.secondaryStructures)) {
         int startId = ss->startSequenceNumber;
         int endId = ss->endSequenceNumber;
         int chainId = ss->chainIndex;
@@ -128,7 +128,7 @@ void WormsGLRenderer::drawWorms() {
 
             // Draw 3d objects
             if (shownModelsIds.count() == 1) {
-                foreach (Object3D* obj, model.objects) {
+                for (Object3D* obj : qAsConst(model.objects)) {
                     obj->draw(settings->detailLevel);
                 }
             }
@@ -224,7 +224,7 @@ void WormsGLRenderer::createWorms() {
             b = (r2 - r1) / 100.f;
             wormModel.closingAtom = a + b * (-10.f);
             // Add worm-building atom coords
-            foreach (const Monomer& monomer, monomers) {
+            for (const Monomer& monomer : qAsConst(monomers)) {
                 const SharedAtom& atom = monomer.alphaCarbon;
                 wormModel.atoms.append(atom);
             }

@@ -319,7 +319,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject*>
     foreach (const QString& name, names) {
         getItem(name);
     }
-    foreach (AnnotationTableObject* ao, table) {
+    for (AnnotationTableObject* ao : qAsConst(table)) {
         foreach (Annotation* a, ao->getAnnotations()) {
             const QString& name = a->getName();
             if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
@@ -329,7 +329,8 @@ CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject*>
             }
             if (names.contains(name)) {
                 CollocationsAlgorithmItem& item = getItem(name);
-                foreach (const U2Region& r, a->getRegions()) {
+                QVector<U2Region> regions = a->getRegions();
+                for (const U2Region& r : qAsConst(regions)) {
                     if (cfg.searchRegion.intersects(r)) {
                         item.regions.append(r);
                     }
@@ -346,7 +347,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData>& 
     foreach (const QString& name, names) {
         getItem(name);
     }
-    foreach (const SharedAnnotationData& a, table) {
+    for (const SharedAnnotationData& a : qAsConst(table)) {
         const QString& name = a->name;
         if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
             (a->getStrand().isComplementary() && cfg.strand == StrandOption_DirectOnly)) {
@@ -433,7 +434,7 @@ U2Region CollocationSearchTask::cutResult(const U2Region& res) const {
     qint64 right = res.startPos;
 
     foreach (const CollocationsAlgorithmItem& item, items) {
-        foreach (const U2Region& r, item.regions) {
+        for (const U2Region& r : qAsConst(item.regions)) {
             if (r.startPos == res.startPos) {
                 if (r.endPos() < left) {
                     left = r.endPos();

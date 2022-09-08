@@ -938,7 +938,7 @@ void ProjectTreeController::connectToResourceTracker() {
     foreach (Document* doc, AppContext::getProject()->getDocuments()) {
         QString resName = LoadUnloadedDocumentTask::getResourceName(doc);
         QList<Task*> users = AppContext::getResourceTracker()->getResourceUsers(resName);
-        foreach (Task* t, users) {
+        for (Task* t : qAsConst(users)) {
             sl_onResourceUserRegistered(resName, t);
         }
     }

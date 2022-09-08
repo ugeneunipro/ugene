@@ -643,18 +643,20 @@ Task::ReportResult Primer3SWTask::report() {
 
     foreach (Primer3Task* task, circRegionTasks) {
         // relocate primers that were found for sequence splitted in the center
-        foreach (PrimerPair p, task->getBestPairs()) {
+        QList<PrimerPair> pairs = task->getBestPairs();
+        for (const PrimerPair& p : qAsConst(pairs)) {
             relocatePrimerOverMedian(p.getLeftPrimer());
             relocatePrimerOverMedian(p.getRightPrimer());
-            if (!bestPairs.contains(p)) {
-                bestPairs.append(p);
+            if (!pairs.contains(p)) {
+                pairs.append(p);
             }
         }
 
-        foreach (Primer p, task->getSinglePrimers()) {
+        QList<Primer> singles = task->getSinglePrimers();
+        for (Primer p : qAsConst(singles)) {
             relocatePrimerOverMedian(&p);
-            if (!singlePrimers.contains(p)) {
-                singlePrimers.append(p);
+            if (!singles.contains(p)) {
+                singles.append(p);
             }
         }
     }

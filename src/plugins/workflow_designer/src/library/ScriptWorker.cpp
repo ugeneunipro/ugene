@@ -140,7 +140,8 @@ void ScriptWorker::bindPortVariables() {
         }
 
         QVariantMap busData = bus->lookMessage().getData().toMap();
-        foreach (const QString& slotId, busData.keys()) {
+        QList<QString> slotIds = busData.keys();
+        for (const QString& slotId : slotIds) {
             QString attrId = "in_" + slotId;
             if (script->hasVarWithId(attrId)) {
                 script->setVarValueWithId(attrId, busData.value(slotId));

@@ -263,7 +263,7 @@ void PrimerGrouperTask::fillReportTable(const QList<QList<int>>& correctPrimersG
     int index = 1;
     foreach (const QList<int>& curGroup, correctPrimersGroups) {
         QString column1, column2, column3, column4;
-        foreach (int curIndex, curGroup) {
+        for (int curIndex : qAsConst(curGroup)) {
             const PrimersPair& currentPair = primerPairs.at(curIndex);
             column1 += currentPair.first.getName();
             column1 += "<br>";

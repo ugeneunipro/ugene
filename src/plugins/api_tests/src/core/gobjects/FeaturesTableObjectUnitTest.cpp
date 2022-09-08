@@ -499,7 +499,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, clone) {
         const QList<Annotation*> clonedAnns = clonedSubgroup->getAnnotations();
 
         bool groupMatched = false;
-        foreach (AnnotationGroup* sourceSubgroup, sourceSubgroups) {
+        for (AnnotationGroup* sourceSubgroup : qAsConst(sourceSubgroups)) {
             if (sourceSubgroup->getName() == clonedSubgroup->getName()) {
                 groupMatched = true;
                 const QList<Annotation*> sourceAnns = sourceSubgroup->getAnnotations();

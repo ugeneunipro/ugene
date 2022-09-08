@@ -254,8 +254,8 @@ bool hasNucleicForAll(const QList<GObject*>& set) {
 QList<SharedAnnotationData> getAllRelatedAnnotations(const U2SequenceObject* so, const QList<GObject*>& annotationTables) {
     QList<GObject*> relatedAnnotationTables = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, annotationTables, UOF_LoadedOnly);
     QList<SharedAnnotationData> anns;
-    foreach (GObject* aObj, relatedAnnotationTables) {
-        AnnotationTableObject* annObj = qobject_cast<AnnotationTableObject*>(aObj);
+    for (GObject* aObj : qAsConst(relatedAnnotationTables)) {
+        auto annObj = qobject_cast<AnnotationTableObject*>(aObj);
         foreach (Annotation* ann, annObj->getAnnotations()) {
             anns.append(ann->getData());
         }

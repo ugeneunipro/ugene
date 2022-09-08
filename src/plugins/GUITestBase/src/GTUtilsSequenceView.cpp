@@ -507,7 +507,8 @@ void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus& os, const QStr
 
     QList<Annotation*> anns;
     foreach (const AnnotationTableObject* ao, context->getAnnotationObjects(true)) {
-        foreach (Annotation* a, ao->getAnnotations()) {
+        const QList<Annotation*>& annotations = ao->getAnnotations();
+        for (Annotation* a : qAsConst(annotations)) {
             const int sp = a->getLocation().data()->regions.first().startPos;
             const QString annName = a->getName();
             if (sp == startPos - 1 && annName == name) {

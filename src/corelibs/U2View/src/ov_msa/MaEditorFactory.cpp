@@ -73,10 +73,10 @@ Task* MaEditorFactory::createViewTask(const MultiGSelection& multiSelection, boo
                                                                            false);
     QList<OpenMaEditorTask*> resTasks;
 
-    foreach (Document* doc, docsWithMSA) {
+    for (Document* doc : qAsConst(docsWithMSA)) {
         QList<GObject*> docObjs = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
-            foreach (GObject* obj, docObjs) {
+            for (GObject* obj : qAsConst(docObjs)) {
                 if (!msaObjects.contains(obj)) {
                     msaObjects.append(obj);
                 }

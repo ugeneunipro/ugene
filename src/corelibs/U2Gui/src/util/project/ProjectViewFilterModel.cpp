@@ -306,7 +306,7 @@ void ProjectViewFilterModel::sl_rowsAboutToBeRemoved(const QModelIndex& parent, 
             FAIL("Unexpected project item type", );
     }
 
-    foreach (GObject* obj, objectsBeingRemoved) {
+    for (GObject* obj : qAsConst(objectsBeingRemoved)) {
         foreach (FilteredProjectGroup* group, filterGroups) {
             WrappedObject* wrappedObj = group->getWrappedObject(obj);
             if (wrappedObj != nullptr) {

@@ -77,7 +77,8 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
         }
         SafeObjList filteredResult;
         filteredResult.append(annTable);
-        foreach (const QString& filterName, annNames[annTableId]) {
+        QStringList filterNames = annNames[annTableId];
+        for (const QString& filterName : qAsConst(filterNames)) {
             emit si_objectsFiltered(filterName, filteredResult);
         }
         stateInfo.setProgress(stateInfo.getProgress() + (totalDocObjectsNumber / foundObjectsNumber / totalObjectCount) * 100);

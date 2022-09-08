@@ -295,7 +295,7 @@ QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnno
 
     if (cfg.filterResult & FilterResultByAccession) {
         QStringList accessions;
-        foreach (const SharedAnnotationData& ann, annotations) {
+        for (const SharedAnnotationData& ann : qAsConst(annotations)) {
             QString acc = ann->findFirstQualifierValue("accession");
             if (accessions.contains(acc)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);
@@ -319,7 +319,7 @@ QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnno
     if (cfg.filterResult & FilterResultByDef) {
         resultList.clear();
         QStringList defs;
-        foreach (const SharedAnnotationData& ann, annotations) {
+        for (const SharedAnnotationData& ann : qAsConst(annotations)) {
             QString def = ann->findFirstQualifierValue("def");
             if (defs.contains(def)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);
@@ -343,7 +343,7 @@ QList<SharedAnnotationData> CreateAnnotationsFromHttpBlastResultTask::filterAnno
     if (cfg.filterResult & FilterResultById) {
         resultList.clear();
         QStringList ids;
-        foreach (const SharedAnnotationData& ann, annotations) {
+        for (const SharedAnnotationData& ann : qAsConst(annotations)) {
             QString id = ann->findFirstQualifierValue("id");
             if (ids.contains(id)) {
                 QString eval = ann->findFirstQualifierValue(selectiveQual);

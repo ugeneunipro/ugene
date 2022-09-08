@@ -96,10 +96,11 @@ Task::ReportResult FindExonRegionsTask::report() {
 
     foreach (GObject* a, relAnns) {
         AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(a);
-        const QList<Annotation*> anns = att->getAnnotations();
-        foreach (Annotation* ann, anns) {
+        QList<Annotation*> anns = att->getAnnotations();
+        for (Annotation* ann : qAsConst(anns)) {
             if (ann->getName() == exonAnnName) {
-                foreach (const U2Region& r, ann->getRegions()) {
+                QVector<U2Region> regions = ann->getRegions();
+                for (const U2Region& r : qAsConst(regions)) {
                     exonRegions.append(r);
                 }
             }

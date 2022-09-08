@@ -456,7 +456,7 @@ Task* FindWorker::tick() {
 
 void FindWorker::sl_taskFinished(Task* t) {
     MultiTask* multiFind = qobject_cast<MultiTask*>(t);
-    SAFE_POINT(nullptr != multiFind, "Invalid task encountered!", );
+    SAFE_POINT(multiFind != nullptr, "Invalid task encountered!", );
     QList<Task*> subs = multiFind->getTasks();
     SAFE_POINT(!subs.isEmpty(), "No subtasks found!", );
     QStringList ptrns;
@@ -464,7 +464,7 @@ void FindWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> result;
     bool isCircular = false;
     int seqLen = -1;
-    foreach (Task* sub, subs) {
+    for (Task* sub : qAsConst(subs)) {
         FindAlgorithmTask* findTask = qobject_cast<FindAlgorithmTask*>(sub);
         if (nullptr != findTask) {
             if (findTask->isCanceled() || findTask->hasError()) {
@@ -486,20 +486,20 @@ void FindWorker::sl_taskFinished(Task* t) {
                         patternName = resultName;
                     }
                 }
-                const QList<SharedAnnotationData> tmpResult = FindAlgorithmResult::toTable(findTask->popResults(), useNames ? patternName : resultName);
-                foreach (SharedAnnotationData annotation, tmpResult) {
+                QList<SharedAnnotationData> tmpResult = FindAlgorithmResult::toTable(findTask->popResults(), useNames ? patternName : resultName);
+                for (SharedAnnotationData annotation : qAsConst(tmpResult)) {
                     if (!patternName.isEmpty()) {
                         const U2Qualifier patternNameQual(patternNameQualName, patternName);
                         annotation->qualifiers.push_back(patternNameQual);
                     }
                     result << annotation;
                 }
-                foreach (const SharedAnnotationData& annotation, result) {
+                for (const SharedAnnotationData& annotation : qAsConst(result)) {
                     foreach (const U2Qualifier& qual, annotation->qualifiers) {
                         qDebug() << annotation->name << "---" << qual.name << " : " << qual.value;
                     }
                 }
-                if (nullptr != output) {
+                if (output != nullptr) {
                     algoLog.info(tr("Found %1 matches of pattern '%2'").arg(result.size()).arg(QString(filePatterns.value(findTask).second)));
                 }
             }
@@ -538,7 +538,8 @@ FindAllRegionsTask::FindAllRegionsTask(const FindAlgorithmTaskSettings& s, const
 
 void FindAllRegionsTask::prepare() {
     foreach (AnnotationData d, regions) {
-        foreach (U2Region lr, d.getRegions()) {
+        QVector<U2Region> regions = d.getRegions();
+        for (const U2Region& lr : qAsConst(regions)) {
             cfg.searchRegion = lr;
             addSubTask(new FindAlgorithmTask(cfg));
         }
