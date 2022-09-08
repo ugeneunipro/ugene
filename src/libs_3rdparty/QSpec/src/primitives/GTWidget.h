@@ -112,12 +112,10 @@ public:
 
     static void clickLabelLink(GUITestOpStatus& os, QWidget* label, int step = 10, int indent = 0);
     static void clickWindowTitle(GUITestOpStatus& os, QWidget* window);
-    static void moveWidgetTo(GUITestOpStatus& os, QWidget* window, const QPoint& point);
     static void resizeWidget(GUITestOpStatus& os, QWidget* widget, const QSize& size);
     static QPoint getWidgetGlobalTopLeftPoint(GUITestOpStatus& os, QWidget* widget);
 
     static QWidget* getActiveModalWidget(GUITestOpStatus& os);
-    static QWidget* getActivePopupWidget(GUITestOpStatus& os);
     static QMenu* getActivePopupMenu(GUITestOpStatus& os);
 
     static void checkEnabled(GUITestOpStatus& os, QWidget* widget, bool expectedEnabledState = true);

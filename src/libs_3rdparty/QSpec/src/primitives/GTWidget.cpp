@@ -32,10 +32,11 @@
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
+#include <QWindow>
 
 #include "drivers/GTMouseDriver.h"
-#include "utils/GTUtilsText.h"
 #include "utils/GTThread.h"
+#include "utils/GTUtilsText.h"
 
 #ifdef Q_OS_DARWIN
 #    include "utils/GTUtilsMac.h"
@@ -106,7 +107,7 @@ QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QW
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (parentWidget != nullptr && parentWidgetPtr == nullptr) {
-            break; // Parent widget was removed while waiting.
+            break;  // Parent widget was removed while waiting.
         }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
         GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
@@ -312,14 +313,16 @@ void GTWidget::showMaximized(GUITestOpStatus& os, QWidget* widget) {
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget* widget)
-            : widget(widget) {
+        Scenario(QWidget* _widget)
+            : widget(_widget) {
         }
 
-        void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
+        void run(GUITestOpStatus& os) override {
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showMaximized();
+            if (auto window = qobject_cast<QWindow*>(widget)) {
+                window->requestActivate();
+            }
             GTGlobals::sleep(100);
         }
 
@@ -369,11 +372,11 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
 
     class GrabImageScenario : public CustomScenario {
     public:
-        GrabImageScenario(QWidget* widget, QImage& image, bool useGrabWindow)
-            : widget(widget), image(image), useGrabWindow(useGrabWindow) {
+        GrabImageScenario(QWidget* _widget, QImage& _image, bool _useGrabWindow)
+            : widget(_widget), image(_image), useGrabWindow(_useGrabWindow) {
         }
 
-        void run(GUITestOpStatus& os) {
+        void run(GUITestOpStatus& os) override {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
             QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
             image = pixmap.toImage();
@@ -479,17 +482,6 @@ void GTWidget::clickWindowTitle(GUITestOpStatus& os, QWidget* window) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveWidgetTo"
-void GTWidget::moveWidgetTo(GUITestOpStatus& os, QWidget* window, const QPoint& point) {
-    // QPoint(window->width()/2,3) - is hack
-    GTMouseDriver::moveTo(getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3));
-    const QPoint p0 = getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3);
-    const QPoint p1 = point + QPoint(window->width() / 2, 3);
-    GTMouseDriver::dragAndDrop(p0, p1);
-    GTGlobals::sleep(1000);
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "resizeWidget"
 void GTWidget::resizeWidget(GUITestOpStatus& os, QWidget* widget, const QSize& size) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
@@ -533,18 +525,6 @@ QWidget* GTWidget::getActiveModalWidget(GUITestOpStatus& os) {
     }
     GT_CHECK_RESULT(modalWidget != nullptr, "Active modal widget is NULL", nullptr);
     return modalWidget;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getActivePopupWidget"
-QWidget* GTWidget::getActivePopupWidget(GUITestOpStatus& os) {
-    QWidget* popupWidget = nullptr;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        popupWidget = QApplication::activePopupWidget();
-    }
-    GT_CHECK_RESULT(popupWidget != nullptr, "Active popup widget is NULL", nullptr);
-    return popupWidget;
 }
 #undef GT_METHOD_NAME
 
