@@ -107,32 +107,32 @@ double Primer::getEndStabilyty() const {
     return endStability;
 }
 
-void Primer::setStart(int start) {
-    this->start = start;
+void Primer::setStart(int newStart) {
+    start = newStart;
 }
 
-void Primer::setLength(int length) {
-    this->length = length;
+void Primer::setLength(int newLength) {
+    length = newLength;
 }
 
-void Primer::setMeltingTemperature(double meltingTemperature) {
-    this->meltingTemperature = meltingTemperature;
+void Primer::setMeltingTemperature(double newMeltingTemperature) {
+    meltingTemperature = newMeltingTemperature;
 }
 
-void Primer::setGcContent(double gcContent) {
-    this->gcContent = gcContent;
+void Primer::setGcContent(double newGcContent) {
+    gcContent = newGcContent;
 }
 
-void Primer::setSelfAny(short selfAny) {
-    this->selfAny = selfAny;
+void Primer::setSelfAny(short newSelfAny) {
+    selfAny = newSelfAny;
 }
 
-void Primer::setSelfEnd(short selfEnd) {
-    this->selfEnd = selfEnd;
+void Primer::setSelfEnd(short newSelfEnd) {
+    selfEnd = newSelfEnd;
 }
 
-void Primer::setEndStability(double endStability) {
-    this->endStability = endStability;
+void Primer::setEndStability(double newEndStability) {
+    endStability = newEndStability;
 }
 
 // PrimerPair
@@ -231,28 +231,28 @@ int PrimerPair::getProductSize() const {
     return productSize;
 }
 
-void PrimerPair::setLeftPrimer(Primer* leftPrimer) {
-    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new Primer(*leftPrimer));
+void PrimerPair::setLeftPrimer(Primer* newLeftPrimer) {
+    this->leftPrimer.reset(newLeftPrimer == nullptr ? nullptr : new Primer(*leftPrimer));
 }
 
-void PrimerPair::setRightPrimer(Primer* rightPrimer) {
-    this->rightPrimer.reset((nullptr == rightPrimer) ? nullptr : new Primer(*rightPrimer));
+void PrimerPair::setRightPrimer(Primer* newRightPrimer) {
+    this->rightPrimer.reset(newRightPrimer == nullptr ? nullptr : new Primer(*rightPrimer));
 }
 
-void PrimerPair::setInternalOligo(Primer* internalOligo) {
-    this->internalOligo.reset((nullptr == internalOligo) ? nullptr : new Primer(*internalOligo));
+void PrimerPair::setInternalOligo(Primer* newInternalOligo) {
+    this->internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*internalOligo));
 }
 
-void PrimerPair::setComplAny(short complAny) {
-    this->complAny = complAny;
+void PrimerPair::setComplAny(short newComplAny) {
+    complAny = newComplAny;
 }
 
-void PrimerPair::setComplEnd(short complEnd) {
-    this->complEnd = complEnd;
+void PrimerPair::setComplEnd(short newComplEnd) {
+    complEnd = newComplEnd;
 }
 
-void PrimerPair::setProductSize(int productSize) {
-    this->productSize = productSize;
+void PrimerPair::setProductSize(int newProductSize) {
+    productSize = newProductSize;
 }
 
 bool PrimerPair::operator<(const PrimerPair& pair) const {
@@ -625,38 +625,26 @@ void Primer3SWTask::prepare() {
     }
 }
 
-inline int getIntersectingRegionIndex(const U2Region& reg, const QList<U2Region>& regions) {
-    for (int i = 0; i < regions.size(); ++i) {
-        const U2Region& targetRegion = regions.at(i);
-        if (targetRegion.contains(reg.startPos)) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 Task::ReportResult Primer3SWTask::report() {
-    foreach (Primer3Task* task, regionTasks) {
+    for (Primer3Task* task : qAsConst(regionTasks)) {
         bestPairs.append(task->getBestPairs());
         singlePrimers.append(task->getSinglePrimers());
     }
 
-    foreach (Primer3Task* task, circRegionTasks) {
-        // relocate primers that were found for sequence splitted in the center
-        QList<PrimerPair> pairs = task->getBestPairs();
-        for (const PrimerPair& p : qAsConst(pairs)) {
+    for (Primer3Task* task : qAsConst(circRegionTasks)) {
+        // Relocate primers that were found for sequence split in the center.
+        foreach (PrimerPair p, task->getBestPairs()) {
             relocatePrimerOverMedian(p.getLeftPrimer());
             relocatePrimerOverMedian(p.getRightPrimer());
-            if (!pairs.contains(p)) {
-                pairs.append(p);
+            if (!bestPairs.contains(p)) {
+                bestPairs.append(p);
             }
         }
 
-        QList<Primer> singles = task->getSinglePrimers();
-        for (Primer p : qAsConst(singles)) {
+        foreach (Primer p, task->getSinglePrimers()) {
             relocatePrimerOverMedian(&p);
-            if (!singles.contains(p)) {
-                singles.append(p);
+            if (!singlePrimers.contains(p)) {
+                singlePrimers.append(p);
             }
         }
     }
@@ -674,14 +662,14 @@ Task::ReportResult Primer3SWTask::report() {
     return Task::ReportResult_Finished;
 }
 
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, const U2Region& rangeToSplit, QList<Primer3Task*>& list) {
+void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& list) {
     QVector<U2Region> regions = SequenceWalkerTask::splitRange(rangeToSplit,
                                                                CHUNK_SIZE,
                                                                0,
                                                                CHUNK_SIZE / 2,
                                                                false);
     foreach (const U2Region& region, regions) {
-        Primer3TaskSettings regionSettings = settings;
+        Primer3TaskSettings regionSettings = taskSettings;
         regionSettings.setIncludedRegion(region);
         Primer3Task* task = new Primer3Task(regionSettings);
         list.append(task);
@@ -689,8 +677,8 @@ void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, cons
     }
 }
 
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& list) {
-    addPrimer3Subtasks(settings, settings.getIncludedRegion(), list);
+void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& list) {
+    addPrimer3Subtasks(taskSettings, taskSettings.getIncludedRegion(), list);
 }
 
 void Primer3SWTask::relocatePrimerOverMedian(Primer* primer) {
