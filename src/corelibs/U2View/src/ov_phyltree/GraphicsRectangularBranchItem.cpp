@@ -92,7 +92,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
     if (collapsed) {
         drawCollapsedRegion();
     } else {
-        setSelectedRecurs(true, true);
+        setSelected(true);
     }
     getRoot()->emitBranchCollapsed(this);
 }
