@@ -324,7 +324,7 @@ void GTWidget::showMaximized(GUITestOpStatus& os, QWidget* widget) {
             widget->showMaximized();
             if (isOsWindows()) {
                 GTGlobals::sleep(500);
-                widget->setFocus();
+                widget->setFocus(Qt::ActiveWindowFocusReason);
             } else {
                 GTGlobals::sleep(100);
             }
