@@ -34,8 +34,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 
-#include <U2Gui/MainWindow.h>
-
 #include "GTUtilsTaskTreeView.h"
 #include "PreliminaryActions.h"
 

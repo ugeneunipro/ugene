@@ -34,6 +34,8 @@
 #include <QTextBrowser>
 #include <QWindow>
 
+#include <U2Core/global.h>
+
 #include "drivers/GTMouseDriver.h"
 #include "utils/GTThread.h"
 #include "utils/GTUtilsText.h"
@@ -320,10 +322,12 @@ void GTWidget::showMaximized(GUITestOpStatus& os, QWidget* widget) {
         void run(GUITestOpStatus& os) override {
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showMaximized();
-            if (auto window = qobject_cast<QWindow*>(widget)) {
-                window->requestActivate();
+            if (isOsWindows()) {
+                GTGlobals::sleep(500);
+                widget->setFocus();
+            } else {
+                GTGlobals::sleep(100);
             }
-            GTGlobals::sleep(100);
         }
 
     private:
