@@ -79,7 +79,6 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
 
     if (!mainWindow->isMaximized()) {
         GTWidget::showMaximized(os, mainWindow);
-        GTGlobals::sleep(1000);
     }
 }
 
