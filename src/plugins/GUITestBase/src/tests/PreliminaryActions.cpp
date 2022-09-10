@@ -72,8 +72,6 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     // Maximize the main window
-
-    Q_UNUSED(os);
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mainWindow != nullptr, "main window is NULL");
 

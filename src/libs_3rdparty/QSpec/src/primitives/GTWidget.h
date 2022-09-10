@@ -109,6 +109,7 @@ public:
     static void close(GUITestOpStatus& os, QWidget* widget);
     static void showMaximized(GUITestOpStatus& os, QWidget* widget);
     static void showNormal(GUITestOpStatus& os, QWidget* widget);
+    static void showMinimized(GUITestOpStatus& os, QWidget* widget);
 
     static void clickLabelLink(GUITestOpStatus& os, QWidget* label, int step = 10, int indent = 0);
     static void clickWindowTitle(GUITestOpStatus& os, QWidget* window);

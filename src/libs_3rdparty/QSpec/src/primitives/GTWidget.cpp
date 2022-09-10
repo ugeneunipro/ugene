@@ -309,26 +309,36 @@ void GTWidget::close(GUITestOpStatus& os, QWidget* widget) {
 
 #define GT_METHOD_NAME "showMaximized"
 void GTWidget::showMaximized(GUITestOpStatus& os, QWidget* widget) {
-    GT_CHECK(widget != nullptr, "Widget is NULL");
-
-    class Scenario : public CustomScenario {
+    class ShowMaximizedScenario : public CustomScenario {
     public:
-        Scenario(QWidget* _widget)
-            : widget(_widget) {
+        ShowMaximizedScenario(QWidget* w)
+            : widget(w) {
         }
-
-        void run(GUITestOpStatus& os) override {
-            CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
+        void run(HI::GUITestOpStatus&) override {
+            widget->setWindowState(Qt::WindowActive);
             widget->showMaximized();
-            widget->setFocus(Qt::ActiveWindowFocusReason);
         }
-
-    private:
         QWidget* widget;
     };
+    GTThread::runInMainThread(os, new ShowMaximizedScenario(widget));
+    GTGlobals::sleep(1000);  // Wait for OS to complete the op.
+}
+#undef GT_METHOD_NAME
 
-    GTThread::runInMainThread(os, new Scenario(widget));
-    GTGlobals::sleep(1000);
+#define GT_METHOD_NAME "showMinimized"
+void GTWidget::showMinimized(GUITestOpStatus& os, QWidget* widget) {
+    class ShowMinimizedScenario : public CustomScenario {
+    public:
+        ShowMinimizedScenario(QWidget* w)
+            : widget(w) {
+        }
+        void run(HI::GUITestOpStatus&) override {
+            widget->showMinimized();
+        }
+        QWidget* widget;
+    };
+    GTThread::runInMainThread(os, new ShowMinimizedScenario(widget));
+    GTGlobals::sleep(1000);  // Wait for OS to complete the op.
 }
 #undef GT_METHOD_NAME
 

@@ -2872,8 +2872,8 @@ GUI_TEST_CLASS_DEFINITION(test_0967_1) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    GTMainWindow::minimizeMainWindow(os, mainWindow);
-    GTMainWindow::maximizeMainWindow(os, mainWindow);
+    GTWidget::showMinimized(os, mainWindow);
+    GTWidget::showMaximized(os, mainWindow);
 
     // Check that the project is still visible.
     CHECK_SET_ERR(GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #2)");
@@ -2888,8 +2888,8 @@ GUI_TEST_CLASS_DEFINITION(test_0967_2) {
     CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    GTMainWindow::minimizeMainWindow(os, mainWindow);
-    GTMainWindow::maximizeMainWindow(os, mainWindow);
+   GTWidget::showMinimized(os, mainWindow);
+    GTWidget::showMaximized(os, mainWindow);
 
     logView = GTWidget::findWidget(os, "dock_log_view");
     CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #2)");
@@ -2904,8 +2904,8 @@ GUI_TEST_CLASS_DEFINITION(test_0967_3) {
     CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    GTMainWindow::minimizeMainWindow(os, mainWindow);
-    GTMainWindow::maximizeMainWindow(os, mainWindow);
+    GTWidget::showMinimized(os, mainWindow);
+    GTWidget::showMaximized(os, mainWindow);
 
     tasksView = GTWidget::findWidget(os, "taskViewTree");
     CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #2)");
