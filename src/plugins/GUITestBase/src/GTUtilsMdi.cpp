@@ -53,21 +53,10 @@ void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) 
     QMainWindow* mainWindow = mw->getQMainWindow();
     GT_CHECK(mainWindow != nullptr, "QMainWindow == NULL");
 
-    // TODO: batch tests run fails because of not maximized window by default from settings
-    //    if ((action == GTGlobals::Maximize) || (action == GTGlobals::Minimize)) {
-    //        return;
-    //    }
-
     if (!isOsMac()) {
         switch (action) {
             case GTGlobals::Close: {
-                if (isOsUnix()) {
-                    GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
-                } else {
-                    GTKeyboardDriver::keyPress(Qt::Key_Control);
-                    GTKeyboardDriver::keyClick(Qt::Key_F4);
-                    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-                }
+                GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
                 break;
             }
             default:
@@ -92,8 +81,7 @@ void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) 
                 break;
             }
             default:
-                assert(false);
-                break;
+                GT_FAIL("Unsupported action", );
         }
     }
 }
@@ -175,15 +163,6 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
     };
 
     GTThread::runInMainThread(os, new Scenario());
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "isTabbedLayout"
-bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus& os) {
-    MainWindow* mainWindow = AppContext::getMainWindow();
-    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == NULL", false);
-    auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
-    return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME
 

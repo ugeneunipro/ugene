@@ -2888,7 +2888,7 @@ GUI_TEST_CLASS_DEFINITION(test_0967_2) {
     CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #1)");
 
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
-   GTWidget::showMinimized(os, mainWindow);
+    GTWidget::showMinimized(os, mainWindow);
     GTWidget::showMaximized(os, mainWindow);
 
     logView = GTWidget::findWidget(os, "dock_log_view");
