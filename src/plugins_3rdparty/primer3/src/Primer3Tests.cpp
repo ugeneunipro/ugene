@@ -507,7 +507,7 @@ bool GTest_Primer3::checkPrimer(const Primer* primer, const Primer* expectedPrim
         return false;
     }
     if (!internalOligo) {
-        if (!checkDoubleProperty(primer->getEndStabilyty(), expectedPrimer->getEndStabilyty(), prefix + "_END_STABILITY")) {
+        if (!checkDoubleProperty(primer->getEndStability(), expectedPrimer->getEndStability(), prefix + "_END_STABILITY")) {
             return false;
         }
     }

@@ -103,7 +103,7 @@ short Primer::getSelfEnd() const {
     return selfEnd;
 }
 
-double Primer::getEndStabilyty() const {
+double Primer::getEndStability() const {
     return endStability;
 }
 
@@ -232,15 +232,15 @@ int PrimerPair::getProductSize() const {
 }
 
 void PrimerPair::setLeftPrimer(Primer* newLeftPrimer) {
-    this->leftPrimer.reset(newLeftPrimer == nullptr ? nullptr : new Primer(*leftPrimer));
+    leftPrimer.reset(newLeftPrimer == nullptr ? nullptr : new Primer(*newLeftPrimer));
 }
 
 void PrimerPair::setRightPrimer(Primer* newRightPrimer) {
-    this->rightPrimer.reset(newRightPrimer == nullptr ? nullptr : new Primer(*rightPrimer));
+    rightPrimer.reset(newRightPrimer == nullptr ? nullptr : new Primer(*newRightPrimer));
 }
 
 void PrimerPair::setInternalOligo(Primer* newInternalOligo) {
-    this->internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*internalOligo));
+    internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*newInternalOligo));
 }
 
 void PrimerPair::setComplAny(short newComplAny) {

@@ -50,7 +50,7 @@ public:
     double getGcContent() const;
     short getSelfAny() const;
     short getSelfEnd() const;
-    double getEndStabilyty() const;
+    double getEndStability() const;
 
     void setStart(int start);
     void setLength(int length);
