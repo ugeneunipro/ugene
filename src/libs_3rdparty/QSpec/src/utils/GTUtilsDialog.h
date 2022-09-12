@@ -41,6 +41,12 @@ public:
 class HI_EXPORT GUIDialogWaiter : public QObject {
     Q_OBJECT
 public:
+    /**
+     * Dialog waiter activation time:
+     * any test that expects a dialog waiter to be activated must 'sleep' at least this amount of time.
+     */
+    static constexpr int ACTIVATION_TIME = 100;
+
     enum class DialogType {
         Modal,
         Popup
@@ -110,7 +116,6 @@ private:
 
 class HI_EXPORT GTUtilsDialog {
     friend class GUIDialogWaiter;
-    friend class HangChecker;
 
 public:
     enum class CleanupMode {
@@ -145,7 +150,6 @@ public:
 
 private:
     static QList<GUIDialogWaiter*> waiterList;
-    static const int timerPeriod = 100;
 };
 
 }  // namespace HI

@@ -121,7 +121,6 @@ static bool compare(QString s1, QString s2, Qt::MatchFlag matchFlag) {
 #define GT_METHOD_NAME "clickMainMenuItem"
 void GTMenu::clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
     GTMenuPrivate::clickMainMenuItem(os, fixMenuItemPath(itemPath), method, matchFlag);
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
@@ -141,25 +140,10 @@ void GTMenu::checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& men
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showContextMenu"
-QMenu* GTMenu::showContextMenu(GUITestOpStatus& os, QWidget* ground, GTGlobals::UseMethod m) {
-    GT_CHECK_RESULT(ground != NULL, "ground widget is NULL", NULL);
-
-    switch (m) {
-        case GTGlobals::UseMouse:
-            GTWidget::click(os, ground, Qt::RightButton);
-            break;
-
-        case GTGlobals::UseKey:
-
-            break;
-        default:
-            break;
-    }
-
+void GTMenu::showContextMenu(GUITestOpStatus& os, QWidget* target) {
+    GT_CHECK(target != nullptr, "ground widget is NULL");
+    GTWidget::click(os, target, Qt::RightButton);
     GTGlobals::sleep(1000);
-
-    QMenu* menu = static_cast<QMenu*>(QApplication::activePopupWidget());
-    return menu;
 }
 #undef GT_METHOD_NAME
 
