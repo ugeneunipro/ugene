@@ -105,7 +105,7 @@ if [ "${UGENE_BUILD_AND_TEST_SKIP_TESTING}" -ne "1" ]; then
 
     echo "${UGENE_DIR}/ugeneui --gui-test-suite=${UGENE_GUI_TEST_SUITE_NUMBER}"
     if [ "${i}" == "${FIRST_DISPLAY}" ]; then
-      stdbuf -oL "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE_NUMBER}" | tee "output${i}.txt" &
+      stdbuf -oL "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE_NUMBER}" 2>&1 | tee "output${i}.txt" &
     else
       "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE_NUMBER}" >"output${i}.txt" 2>&1 &
     fi
