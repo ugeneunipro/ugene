@@ -22,9 +22,12 @@
 #ifndef _U2_DYN_TABLE_H_
 #define _U2_DYN_TABLE_H_
 
-#include "RollingMatrix.h"
+#include <iostream>
+
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/global.h>
+
+#include "RollingMatrix.h"
 
 namespace U2 {
 
@@ -93,9 +96,10 @@ protected:
      * Returns match length for the current point in the matrix.
      * Returns -1 if some unexpected error occurs.
      */
-    int getLen(int x, int y) const { // NOLINT(misc-no-recursion)
+    int getLen(int x, int y) const {  // NOLINT(misc-no-recursion)
+        std::cout << "########################## getLen(" << x << ", " << y << std::endl;
         int lengthBefore = 0;
-        for (; x >= 0 && y >= 0; ) {
+        for (; x >= 0 && y >= 0;) {
             if (y == -1 || x == -1) {
                 return 0;  // End of the matrix.
             }
