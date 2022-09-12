@@ -376,7 +376,7 @@ void DocumentUpdater::reloadDocuments(QList<Document*> docs2Reload) {
     QList<GObjectViewState*> states;
     QList<GObjectViewWindow*> viewWindows;
 
-    foreach (Document* doc, docs2Reload) {
+    for (Document* doc : qAsConst(docs2Reload)) {
         QList<GObjectViewWindow*> viewWnds = GObjectViewUtils::findViewsWithAnyOfObjects(doc->getObjects());
         foreach (GObjectViewWindow* vw, viewWnds) {
             viewWindows.append(vw);
@@ -826,9 +826,9 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
             if (ov->getViewFactoryId() != f->getId()) {
                 continue;
             }
-            const QList<GObject*>& viewObjects = ov->getObjects();
+            QList<GObject*> viewObjects = ov->getObjects();
             bool contains = false;
-            foreach (GObject* o, viewObjects) {
+            for (GObject* o : qAsConst(viewObjects)) {
                 if (objectsInSelection.contains(o) && !projectTreeController->isObjectInRecycleBin(o)) {
                     contains = true;
                     break;
@@ -878,7 +878,7 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
 
 void ProjectViewImpl::buildOpenViewMenu(const MultiGSelection& ms, QMenu* m) {
     QList<GObjectViewFactory*> fs = AppContext::getObjectViewFactoryRegistry()->getAllFactories();
-    foreach (GObjectViewFactory* f, fs) {
+    for (GObjectViewFactory* f : qAsConst(fs)) {
         QList<QAction*> openActions = selectOpenViewActions(f, ms, m);
         if (openActions.isEmpty()) {
             continue;
@@ -889,7 +889,7 @@ void ProjectViewImpl::buildOpenViewMenu(const MultiGSelection& ms, QMenu* m) {
             m->addAction(openAction);
             continue;
         }
-        foreach (QAction* a, openActions) {
+        for (QAction* a : qAsConst(openActions)) {
             m->addAction(a);
         }
     }
@@ -939,7 +939,7 @@ void ProjectViewImpl::buildRelocateMenu(QMenu* m) {
                 allWritableFormats.append(format);
             }
         }
-        foreach (DocumentFormat* f, allWritableFormats) {
+        for (DocumentFormat* f : qAsConst(allWritableFormats)) {
             const QSet<GObjectType>& supportedObjectTypes = f->getSupportedObjectTypes();
             bool allObjectsWitable = true;
             foreach (GObject* gobj, doc->getObjects()) {

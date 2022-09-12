@@ -233,7 +233,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument*>& docs, QMap<QDElemen
         QString group;
         if (!definedIn.isEmpty()) {
             QDElementStatement* actualStmt = nullptr;
-            foreach (QDDocument* importedDoc, docs) {
+            for (QDDocument* importedDoc : qAsConst(docs)) {
                 if (importedDoc->getName() == definedIn) {
                     actualStmt = importedDoc->getElement(grpStmt->getId());
                 }
@@ -302,8 +302,8 @@ QDDocument* QDSceneSerializer::scene2doc(QueryScene* scene) {
     QDDocument* doc = new QDDocument;
     QMap<QDSchemeUnit*, QDElementStatement*> unit2stmt;
     QDScheme* scheme = scene->getScheme();
-    const QList<QDActor*>& sceneActors = scheme->getActors();
-    foreach (QDActor* actor, sceneActors) {
+    QList<QDActor*> sceneActors = scheme->getActors();
+    for (QDActor* actor : qAsConst(sceneActors)) {
         QDElementStatement* actorElement = QDSchemeSerializer::saveActor(actor, doc);
         foreach (QDSchemeUnit* su, actor->getSchemeUnits()) {
             QString name = actorElement->getId() + ".";

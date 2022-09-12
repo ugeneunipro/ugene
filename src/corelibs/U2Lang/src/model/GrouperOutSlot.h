@@ -89,7 +89,10 @@ public:
     GrouperOutSlot(const GrouperOutSlot& another);
     ~GrouperOutSlot();
 
+    GrouperOutSlot& operator=(const GrouperOutSlot& t);
+
     bool operator==(const GrouperOutSlot& other) const;
+
 
     GrouperSlotAction* getAction();
     GrouperSlotAction* getAction() const;

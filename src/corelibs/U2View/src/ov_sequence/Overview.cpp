@@ -429,14 +429,15 @@ void OverviewRenderArea::setAnnotationsOnPos() {
 
     const U2Region sequenceRange(0, ctx->getSequenceObject()->getSequenceLength());
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
-    const QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);
+    QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);
 
-    foreach (AnnotationTableObject* at, aObjs) {
+    for (AnnotationTableObject* at : qAsConst(aObjs)) {
         foreach (Annotation* a, at->getAnnotations()) {
             const SharedAnnotationData& ad = a->getData();
             const AnnotationSettings* as = asr->getAnnotationSettings(ad);
             if (as->visible) {
-                foreach (const U2Region& r, ad->getRegions()) {
+                QVector<U2Region> regions = ad->getRegions();
+                for (const U2Region& r : qAsConst(regions)) {
                     const U2Region innerRegion = r.intersect(sequenceRange);
                     for (qint64 i = innerRegion.startPos; i < innerRegion.endPos(); i++) {
                         annotationsOnPos[i]++;

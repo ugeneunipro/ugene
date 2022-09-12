@@ -122,7 +122,7 @@ void UnitTestSuite::runTest(const QString& testName) {
 void UnitTestSuite::runAllTests() {
     foreach (const QString& suite, tests.keys()) {
         QStringList testList = tests.value(suite);
-        foreach (const QString& testName, testList) {
+        for (const QString& testName : qAsConst(testList)) {
             runTest(suite + "_" + testName);
         }
     }

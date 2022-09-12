@@ -365,7 +365,7 @@ void DotPlotFilterTask::createSuperRegionsList(ADVSequenceObjectContext* seq, Fi
     }
 
     foreach (const QString& aName, cursequenceAnnotationNames) {
-        foreach (AnnotationTableObject* at, aTableSet) {
+        for (AnnotationTableObject* at : qAsConst(aTableSet)) {
             selectedAnnotations << at->getAnnotationsByName(aName);
         }
     }

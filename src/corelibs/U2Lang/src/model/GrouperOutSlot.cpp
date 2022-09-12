@@ -171,11 +171,14 @@ GrouperOutSlot::GrouperOutSlot(const QString& outSlotId, const QString& inSlotSt
 GrouperOutSlot::GrouperOutSlot(const GrouperOutSlot& another) {
     outSlotId = another.outSlotId;
     inSlotStr = another.inSlotStr;
-    if (nullptr == another.action) {
-        action = nullptr;
-    } else {
-        action = new GrouperSlotAction(*another.action);
-    }
+    action = another.action == nullptr ? nullptr : new GrouperSlotAction(*another.action);
+}
+
+GrouperOutSlot& GrouperOutSlot::operator=(const GrouperOutSlot& another) {
+    outSlotId = another.outSlotId;
+    inSlotStr = another.inSlotStr;
+    action = another.action == nullptr ? nullptr : new GrouperSlotAction(*another.action);
+    return *this;
 }
 
 GrouperOutSlot::~GrouperOutSlot() {

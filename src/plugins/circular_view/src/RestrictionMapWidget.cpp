@@ -194,7 +194,7 @@ void RestrctionMapWidget::initTreeWidget() {
     QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);
     foreach (AnnotationTableObject* obj, aObjs) {
         QList<Annotation*> anns = obj->getAnnotations();
-        foreach (Annotation* a, anns) {
+        for (Annotation* a : qAsConst(anns)) {
             QString aName = a->getName();
             EnzymeFolderItem* folderItem = findEnzymeFolderByName(aName);
             if (folderItem) {

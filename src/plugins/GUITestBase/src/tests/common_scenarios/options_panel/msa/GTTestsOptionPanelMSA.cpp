@@ -871,12 +871,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
 
-namespace {
-void setHighlightingType(HI::GUITestOpStatus& os, const QString& type) {
+static void setHighlightingType(HI::GUITestOpStatus& os, const QString& type) {
     auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, type);
 }
-}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0007) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1529,7 +1527,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     auto breadthScaleAdjustmentSlider = GTWidget::findWidget(os, "breadthScaleAdjustmentSlider");
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
 
-    QImage initImage = GTWidget::getImage(os, treeView);
+    QImage rectImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
@@ -1537,7 +1535,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    Expected state: layout changed, height slider is disabled
     QImage circularImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage != circularImage, "tree view not changed to circular");
+    CHECK_SET_ERR(rectImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for circular layout");
 
     //    4. Select unrooted layout
@@ -1546,7 +1544,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    Expected state: layout changed, height slider is disabled
     QImage unrootedImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
+    CHECK_SET_ERR(rectImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for unrooted layout");
 
     //    5. Select rectangular layout
@@ -1554,8 +1552,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: tree is similar to the beginning, height slider is enabled
-    QImage rectangularImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
+    QImage rectImage2 = GTWidget::getImage(os, treeView);
+    CHECK_SET_ERR(rectImage == rectImage2, "final image is not equal to initial");
     CHECK_SET_ERR(breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in disabled for rectangular layout");
 }
 
@@ -1585,31 +1583,31 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     // Capture 2 variants of  'Phylogram', 'Default', 'Cladogram' images.
     GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage phylogramImage1 = GTWidget::getImage(os, treeView);
+    QImage phylogramImage1 = GTWidget::getImage(os, treeView);
 
     GTComboBox::selectItemByText(os, treeViewCombo, "Default");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage defaultImage1 = GTWidget::getImage(os, treeView);
+    QImage defaultImage1 = GTWidget::getImage(os, treeView);
 
     GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage cladogramImage1 = GTWidget::getImage(os, treeView);
+    QImage cladogramImage1 = GTWidget::getImage(os, treeView);
 
     GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage phylogramImage2 = GTWidget::getImage(os, treeView);
+    QImage phylogramImage2 = GTWidget::getImage(os, treeView);
 
     GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage cladogramImage2 = GTWidget::getImage(os, treeView);
+    QImage cladogramImage2 = GTWidget::getImage(os, treeView);
 
     GTComboBox::selectItemByText(os, treeViewCombo, "Default");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QImage defaultImage2 = GTWidget::getImage(os, treeView);
+    QImage defaultImage2 = GTWidget::getImage(os, treeView);
 
     CHECK_SET_ERR(defaultImage1 == defaultImage2, "Default images are not equal");
     CHECK_SET_ERR(cladogramImage1 == cladogramImage2, "Cladogram images are not equal");
-    CHECK_SET_ERR(phylogramImage1 == phylogramImage1, "Phylogram images are not equal");
+    CHECK_SET_ERR(phylogramImage1 == phylogramImage2, "Phylogram images are not equal");
 
     CHECK_SET_ERR(defaultImage1 != cladogramImage1, "Default image must not be equal to Cladogram");
     CHECK_SET_ERR(defaultImage1 != phylogramImage1, "Default image must not be equal to Phylogram");

@@ -36,10 +36,6 @@ U2Triplet::U2Triplet(const QString& _key, const QString& _role, const QString& _
     : id(-1), key(_key), role(_role), value(_value) {
 }
 
-U2Triplet::U2Triplet(const U2Triplet& other)
-    : id(other.id), key(other.key), role(other.role), value(other.value) {
-}
-
 QString U2Triplet::getKey() const {
     return key;
 }
@@ -285,7 +281,7 @@ QList<U2Triplet> U2SQLiteTripleStore::getTriplets(U2OpStatus& os) const {
     while (q.step()) {
         U2Triplet t(q.getString(1), q.getString(2), q.getString(3));
         t.id = q.getInt64(0);
-        result << t;
+        result.append(t);
     }
     return result;
 }

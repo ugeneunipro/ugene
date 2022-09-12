@@ -23,8 +23,6 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
-#include <QMenu>
-#include <QPainter>
 #include <QPen>
 
 #include <U2Core/PhyTreeObject.h>
@@ -37,19 +35,21 @@
 
 namespace U2 {
 
-const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor("#ea9700"));
-const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
+/** Button radius in pixels. */
+static constexpr double radius = 5;
+
+static const QBrush normalStateBrush(Qt::gray);
+static const QBrush hoveredStateBrush(QColor("#ea9700"));
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
       nodeValue(nodeValue) {
     setPen(QColor(0, 0, 0));
-    setBrush(ordinaryBrush);
+    setBrush(normalStateBrush);
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
-
     if (nodeValue >= 0) {
         nodeLabel = new QGraphicsSimpleTextItem(QString::number(nodeValue), this);
         nodeLabel->setFont(TreeViewerUtils::getFont());
@@ -68,11 +68,11 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TreeViewerUI* ui = getTreeViewerUI();
     if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ShiftModifier)) {
         // Invert selection state on Shift.
-        parentBranchItem->setSelectedRecurs(!isSelected, true);
+        parentBranchItem->setSelected(!isSelected);
     } else {
-        // Set a new selection .
-        ui->getRoot()->setSelectedRecurs(false, true);
-        parentBranchItem->setSelectedRecurs(true, true);
+        // Set a new selection.
+        ui->getRoot()->setSelected(false);
+        parentBranchItem->setSelected(true);
     }
     ui->isSelectionStateManagedByChildOnClick = true;
     e->accept();
@@ -80,7 +80,7 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
-    collapse();
+    toggleCollapsedState();
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
@@ -101,11 +101,11 @@ void GraphicsButtonItem::setSelected(bool selected) {
 }
 
 void GraphicsButtonItem::setHighlighting(bool isOn) {
-    setBrush(isOn ? highlightingBrush : ordinaryBrush);
+    setBrush(isOn ? hoveredStateBrush : normalStateBrush);
     update();
 }
 
-void GraphicsButtonItem::collapse() {
+void GraphicsButtonItem::toggleCollapsedState() {
     auto branch = dynamic_cast<GraphicsBranchItem*>(parentItem());
     SAFE_POINT(branch != nullptr, "Collapsing is impossible because button has not parent branch", );
     if (dynamic_cast<GraphicsBranchItem*>(branch->parentItem()) != nullptr) {
@@ -161,7 +161,7 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
 }
 
 void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
-    CHECK(nullptr != nodeLabel, );
+    CHECK(nodeLabel != nullptr, );
     QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
     newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
     newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));

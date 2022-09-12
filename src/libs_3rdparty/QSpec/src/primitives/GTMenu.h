@@ -36,7 +36,9 @@ public:
     static void clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     static void checkMainMenuItemState(GUITestOpStatus& os, const QStringList& itemPath, PopupChecker::CheckOption expectedState);
     static void checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState);
-    static QMenu* showContextMenu(GUITestOpStatus& os, QWidget* ground, GTGlobals::UseMethod m = GTGlobals::UseMouse);
+
+    /** Activates context menu using right mouse click to the center of the target widget. */
+    static void showContextMenu(GUITestOpStatus& os, QWidget* target);
 
     static void clickMenuItemByName(GUITestOpStatus& os, const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     static void clickMenuItemByText(GUITestOpStatus& os, const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);

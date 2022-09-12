@@ -68,7 +68,8 @@ void QDGroupsEditor::rebuild() {
     QDScheme* scheme = view->getScheme();
     foreach (const QString& group, scheme->getActorGroups()) {
         QStringList grpItemTexts;
-        int grpSize = scheme->getActors(group).size();
+        QList<QDActor*> actors = scheme->getActors(group);
+        int grpSize = actors.size();
         int reqNum = grpSize ? scheme->getRequiredNumber(group) : 0;
         QString countLbl = QString("%1/%2")
                                .arg(reqNum)
@@ -76,7 +77,7 @@ void QDGroupsEditor::rebuild() {
         grpItemTexts << group << countLbl;
         QTreeWidgetItem* groupItem = new QTreeWidgetItem(this, grpItemTexts);
         addTopLevelItem(groupItem);
-        foreach (QDActor const* actor, scheme->getActors(group)) {
+        for (const QDActor* actor : qAsConst(actors)) {
             const QString& actorLabel = actor->getParameters()->getLabel();
             /*QTreeWidgetItem* actorItem = */ new QTreeWidgetItem(groupItem, QStringList(actorLabel));
         }

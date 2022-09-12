@@ -29,19 +29,6 @@
 
 namespace HI {
 
-class HI_EXPORT ThreadWaiter : public QObject {
-    Q_OBJECT
-public:
-    ThreadWaiter();
-
-    void wait();
-
-private:
-    // GUITestOpStatus &os;
-    qint64 startValue;
-    qint64 endValue;
-};
-
 class HI_EXPORT GTThread {
 public:
     static void waitForMainThread();

@@ -154,10 +154,10 @@ void SpadesTask::writeYamlReads() {
     }
     QString res = "";
     res.append("[\n");
-    foreach (const AssemblyReads& r, settings.reads) {
+    for (const AssemblyReads& r : qAsConst(settings.reads)) {
         res.append("{\n");
 
-        const bool isLibraryPaired = GenomeAssemblyUtils::isLibraryPaired(r.libName);
+        bool isLibraryPaired = GenomeAssemblyUtils::isLibraryPaired(r.libName);
 
         if (isLibraryPaired) {
             res.append(QString("orientation: \"%1\",\n").arg(r.orientation));

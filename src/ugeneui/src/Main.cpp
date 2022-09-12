@@ -382,9 +382,8 @@ static QString findKey(const QStringList& envList, const QString& key) {
     return result;
 }
 
-namespace {
 #ifdef Q_OS_DARWIN
-void fixMacFonts() {
+static void fixMacFonts() {
     if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_8) {
         // fix Mac OS X 10.9 (mavericks) font issue
         // https://bugreports.qt-project.org/browse/QTBUG-32789
@@ -393,7 +392,6 @@ void fixMacFonts() {
     }
 }
 #endif
-}  // namespace
 
 int main(int argc, char** argv) {
     if (CrashHandler::isEnabled()) {
@@ -403,8 +401,6 @@ int main(int argc, char** argv) {
     if (qgetenv(ENV_SEND_CRASH_REPORTS) == "0") {
         CrashHandler::setSendCrashReports(false);
     }
-
-    QT_REQUIRE_VERSION(argc, argv, QT_VERSION_STR);
 
     GTIMER(c1, t1, "main()->QApp::exec");
 

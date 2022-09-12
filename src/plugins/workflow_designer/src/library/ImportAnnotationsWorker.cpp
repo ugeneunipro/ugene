@@ -104,7 +104,7 @@ static QList<SharedAnnotationData> getAnnsFromDoc(Document* doc) {
         return ret;
     }
     QList<GObject*> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-    foreach (GObject* obj, objs) {
+    for (GObject* obj : qAsConst(objs)) {
         AnnotationTableObject* annObj = qobject_cast<AnnotationTableObject*>(obj);
         if (nullptr == annObj) {
             continue;

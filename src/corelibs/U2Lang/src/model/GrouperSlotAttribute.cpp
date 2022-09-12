@@ -54,7 +54,7 @@ void GrouperOutSlotAttribute::addOutSlot(const GrouperOutSlot& outSlot) {
 
 void GrouperOutSlotAttribute::updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap) {
     QList<GrouperOutSlot> newOutSlots;
-    foreach (const GrouperOutSlot& gSlot, outSlots) {
+    for (const GrouperOutSlot& gSlot : qAsConst(outSlots)) {
         QString slotStr = gSlot.getInSlotStr();
         slotStr = GrouperOutSlot::readable2busMap(slotStr);
         Workflow::IntegralBusType::remapSlotString(slotStr, actorIdsMap);

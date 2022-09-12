@@ -85,44 +85,6 @@ void GTMainWindow::checkTitle(GUITestOpStatus& os, const QString& title) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "maximizeMainWindow"
-void GTMainWindow::maximizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
-    class MaximizeMainWindowScenario : public CustomScenario {
-    public:
-        MaximizeMainWindowScenario(QMainWindow* mw)
-            : mainWindow(mw) {
-        }
-        void run(HI::GUITestOpStatus&) override {
-            mainWindow->setWindowState(mainWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
-        }
-        QMainWindow* mainWindow;
-    };
-    // Minimize main window.
-    GTThread::runInMainThread(os, new MaximizeMainWindowScenario(mainWindow));
-    // Wait for OS to complete the op.
-    GTGlobals::sleep(1500);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "minimizeMainWindow"
-void GTMainWindow::minimizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
-    class MinimizeMainWindowScenario : public CustomScenario {
-    public:
-        MinimizeMainWindowScenario(QMainWindow* mw)
-            : mainWindow(mw) {
-        }
-        void run(HI::GUITestOpStatus&) override {
-            mainWindow->setWindowState(mainWindow->windowState() | Qt::WindowMinimized);
-        }
-        QMainWindow* mainWindow;
-    };
-    // Minimize main window.
-    GTThread::runInMainThread(os, new MinimizeMainWindowScenario(mainWindow));
-    // Wait for OS to complete the op.
-    GTGlobals::sleep(1500);
-}
-#undef GT_METHOD_NAME
-
 #undef GT_CLASS_NAME
 
 }  // namespace HI

@@ -564,7 +564,7 @@ void TestViewController::sl_saveSelectedSuitesAction() {
             }
             foreach (GTestRef* t, tlItem->ts->getExcludedTests().keys()) {  // get one of the old excluded tests
                 bool flag = true;
-                foreach (GTestState* ttr, testsToRun) {  // get one by one new enabled tests
+                for (GTestState* ttr : qAsConst(testsToRun)) {  // get one by one new enabled tests
                     if (t->getShortName() == ttr->getTestRef()->getShortName()) {
                         flag = false;
                         break;
@@ -575,7 +575,8 @@ void TestViewController::sl_saveSelectedSuitesAction() {
                         oldToAdd.insert(t, tlItem->ts->getExcludedTests().value(t));
                     } else {
                         bool flag2 = true;
-                        foreach (GTestRef* tte, testsToEx.keys()) {
+                        QList<GTestRef*> excludedTestKeys = testsToEx.keys();
+                        for (GTestRef* tte : qAsConst(excludedTestKeys)) {
                             if (tte->getShortName() == t->getShortName()) {
                                 flag2 = false;
                                 break;

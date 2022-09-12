@@ -122,7 +122,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
         }
     }
     free(buff);
-    fclose(fp);
+    pclose(fp);
 #elif defined(Q_OS_WIN)
     HANDLE hProcessSnap;
     HANDLE hProcess;

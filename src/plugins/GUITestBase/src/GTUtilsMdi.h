@@ -68,8 +68,6 @@ public:
     static void closeWindow(HI::GUITestOpStatus& os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static void closeAllWindows(HI::GUITestOpStatus& os);
 
-    static bool isTabbedLayout(HI::GUITestOpStatus& os);
-
     static QTabBar* getTabBar(HI::GUITestOpStatus& os);
     static int getCurrentTab(HI::GUITestOpStatus& os);
     static void clickTab(HI::GUITestOpStatus& os, int tabIndex);

@@ -237,7 +237,7 @@ void SaveOnlyProjectTask::prepare() {
                 phantomDocs.append(d);
             }
         } else {  // merged document
-            foreach (QString url, urls) {
+            for (const QString& url : qAsConst(urls)) {
                 QFile pathToDoc(url);
                 if (!pathToDoc.exists()) {
                     phantomDocs.append(d);

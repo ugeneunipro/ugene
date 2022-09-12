@@ -357,8 +357,8 @@ void LoadSeqTask::run() {
         QList<GObject*> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         QList<GObject*> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject* go, seqObjs) {
-            SAFE_POINT(nullptr != go, "Invalid object encountered!", );
+        for (GObject* go: qAsConst(seqObjs)) {
+            SAFE_POINT(go != nullptr, "Invalid object encountered!", );
             if (!selector->objectMatches(static_cast<U2SequenceObject*>(go))) {
                 continue;
             }
@@ -370,7 +370,7 @@ void LoadSeqTask::run() {
             QList<GObject*> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(go, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allLoadedAnnotations, UOF_LoadedOnly);
             if (!annotations.isEmpty()) {
                 QList<SharedAnnotationData> l;
-                foreach (GObject* annGObj, annotations) {
+                for (GObject* annGObj : qAsConst(annotations)) {
                     AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annGObj);
                     foreach (Annotation* a, att->getAnnotations()) {
                         l << a->getData();
@@ -384,7 +384,7 @@ void LoadSeqTask::run() {
         }
 
         // if there are annotations that are not connected to a sequence -> put them  independently
-        foreach (GObject* annObj, annObjs) {
+        for (GObject* annObj : qAsConst(annObjs)) {
             AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annObj);
             if (att->findRelatedObjectsByRole(ObjectRole_Sequence).isEmpty()) {
                 SAFE_POINT(nullptr != att, "Invalid annotation table object encountered!", );

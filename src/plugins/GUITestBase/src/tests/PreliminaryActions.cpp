@@ -34,8 +34,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 
-#include <U2Gui/MainWindow.h>
-
 #include "GTUtilsTaskTreeView.h"
 #include "PreliminaryActions.h"
 
@@ -59,7 +57,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
 
     if (!isOsWindows()) {
         GTMouseDriver::release(Qt::RightButton);
-        GTMouseDriver::release();
+        GTMouseDriver::release(Qt::LeftButton);
         GTKeyboardDriver::keyRelease(Qt::Key_Control);
         GTKeyboardDriver::keyRelease(Qt::Key_Shift);
         GTKeyboardDriver::keyRelease(Qt::Key_Alt);
@@ -74,14 +72,11 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     // Maximize the main window
-
-    Q_UNUSED(os);
     QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mainWindow != nullptr, "main window is NULL");
 
     if (!mainWindow->isMaximized()) {
         GTWidget::showMaximized(os, mainWindow);
-        GTGlobals::sleep(1000);
     }
 }
 

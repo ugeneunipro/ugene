@@ -294,7 +294,7 @@ void CutAdaptParser::parseErrOutput(const QString& partOfLog) {
 }
 
 QString CutAdaptParser::parseTextForErrors(const QStringList& lastPartOfLog) {
-    foreach (const QString& buf, lastPartOfLog) {
+    for (const QString& buf : qAsConst(lastPartOfLog)) {
         bool ignoredStringFound = false;
         foreach (const QString& ignoredStr, stringsToIgnore) {
             if (buf.contains(ignoredStr, Qt::CaseInsensitive)) {

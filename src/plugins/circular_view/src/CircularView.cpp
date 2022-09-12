@@ -495,7 +495,8 @@ void CircularViewRenderArea::drawAnnotationsSelection(QPainter& p) {
                 CircularAnnotationItem* item = circItems[annotation];
                 item->setSelected(true);
                 item->paint(&p, nullptr, this);
-                foreach (const CircularAnnotationRegionItem* r, item->getRegions()) {
+                QList<CircularAnnotationRegionItem*> regions = item->getRegions();
+                for (const CircularAnnotationRegionItem* r : qAsConst(regions)) {
                     SAFE_POINT(r != nullptr, "NULL annotation region item is CV!", );
                     CircularAnnotationLabel* lbl = r->getLabel();
                     SAFE_POINT(lbl != nullptr, "NULL annotation label item is CV!", );
@@ -828,7 +829,7 @@ void CircularViewRenderArea::buildItems(QFont labelFont) {
     QSet<AnnotationTableObject*> anns = ctx->getAnnotationObjects(true);
     QSet<AnnotationTableObject*> autoAnns = ctx->getAutoAnnotationObjects();
     QSet<Annotation*> restrictionSites;
-    foreach (AnnotationTableObject* ao, anns) {
+    for (AnnotationTableObject* ao : qAsConst(anns)) {
         bool isAutoAnnotation = autoAnns.contains(ao);
         foreach (Annotation* a, ao->getAnnotations()) {
             if (a->getType() == U2FeatureTypes::RestrictionSite) {
@@ -855,7 +856,7 @@ int CircularViewRenderArea::findOrbit(const QVector<U2Region>& location, Annotat
     for (; yLevel < regionY.count(); yLevel++) {
         bool intersects = false;
         foreach (const U2Region& r, regionY[yLevel]) {
-            foreach (const U2Region& locRegion, location) {
+            for (const U2Region& locRegion : qAsConst(location)) {
                 if (r.intersects(locRegion)) {
                     intersects = true;
                 }

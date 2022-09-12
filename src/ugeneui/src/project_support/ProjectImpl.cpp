@@ -73,7 +73,7 @@ void ProjectImpl::makeClean() {
 
 void ProjectImpl::sl_removeAllrelationsWithObject(GObject* obj) {
     QList<GObject*> allObjs;
-    for (Document *d : qAsConst(getDocuments())) {
+    for (Document* d : qAsConst(getDocuments())) {
         allObjs << d->getObjects();
     }
     for (GObject* object : qAsConst(allObjs)) {
@@ -238,7 +238,7 @@ void ProjectImpl::sl_onObjectRelationChanged(const QList<GObjectRelation>& previ
     foreach (Document* d, getDocuments()) {
         allObjs << d->getObjects();
     }
-    foreach (GObject* obj, allObjs) {
+    for (GObject* obj : qAsConst(allObjs)) {
         foreach (const GObjectRelation& rel, relationsSet) {
             if (obj->getEntityRef() == rel.ref.entityRef) {
                 obj->relatedObjectRelationChanged();
@@ -297,7 +297,7 @@ int ProjectImpl::updateReferenceFields(const QString& stateName, QVariantMap& ma
             int nBefore = n;
             QList<GObjectReference> refList = v.value<QList<GObjectReference>>();
             QList<GObjectReference> newRefList;
-            foreach (const GObjectReference& ref, refList) {
+            for (const GObjectReference& ref : qAsConst(refList)) {
                 if (ref == from) {
                     coreLog.trace(QString("Renaming reference in [] state '%1': %2 -> %3").arg(stateName).arg(from.objName).arg(to.objName));
                     newRefList << to;
@@ -338,14 +338,16 @@ void ProjectImpl::updateObjectRelations(const GObjectReference& oldRef, const GO
 }
 void ProjectImpl::removeRelations(const QString& removedDocUrl) {
     foreach (Document* d, getDocuments()) {
-        foreach (GObject* obj, d->getObjects()) {
+        QList<GObject*> objects = d->getObjects();
+        for (GObject* obj : qAsConst(objects)) {
             obj->removeRelations(removedDocUrl);
         }
     }
 }
 
 void ProjectImpl::updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl) {
-    foreach (Document* d, getDocuments()) {
+    QList<Document*> documents = getDocuments();
+    for (Document* d : qAsConst(documents)) {
         foreach (GObject* obj, d->getObjects()) {
             obj->updateDocInRelations(oldDocUrl, newDocUrl);
         }

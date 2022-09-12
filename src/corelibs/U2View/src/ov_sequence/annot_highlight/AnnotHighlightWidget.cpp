@@ -207,7 +207,7 @@ bool AnnotHighlightWidget::findFirstAnnotatedRegionAfterPos(AnnotatedRegion& ann
         SAFE_POINT(annotatedDnaView->getSequenceContext(annObject) != nullptr, tr("Sequence context is NULL"), false);
         qint64 seqLen = annotatedDnaView->getSequenceContext(annObject)->getSequenceLength();
         QList<Annotation*> annots = annObject->getAnnotationsByRegion(U2Region(isForward ? startPos : 0, isForward ? seqLen - startPos : startPos));
-        foreach (Annotation* a, annots) {
+        for (Annotation* a : qAsConst(annots)) {
             QVector<U2Region> regions = a->getRegions();
             for (int i = 0; i < regions.size(); i++) {
                 if (sign * regions[i].startPos > sign * startPos && sign * regions[i].startPos < sign * pos) {
@@ -240,7 +240,7 @@ bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion& an
     // detect the most right/left start position in selection
     const QList<Annotation*> selectionData = as->getAnnotations();
     int start = -1;
-    foreach (Annotation* selectionItem, selectionData) {
+    for (Annotation* selectionItem : qAsConst(selectionData)) {
         foreach (U2Region region, selectionItem->getRegions()) {
             if (start == -1) {
                 start = region.startPos;
@@ -297,7 +297,8 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
 
         // find first or last annotation region
         foreach (Annotation* a, as->getAnnotations()) {
-            foreach (U2Region region, a->getRegions()) {
+            QVector<U2Region> regions = a->getRegions();
+            for (const U2Region& region : qAsConst(regions)) {
                 if (isFirstAnnotatedRegion(a, region, false)) {
                     nextAnnotationButton->setDisabled(true);
                 }
@@ -401,11 +402,10 @@ void AnnotHighlightWidget::findAllAnnotationsNamesForSequence() {
         bool isAminoSeq = seqAlphabet->isAmino();
 
         QSet<AnnotationTableObject*> seqAnnotTableObjects = seqContext->getAnnotationObjects(true);
-
-        foreach (AnnotationTableObject* annotTableObj, seqAnnotTableObjects) {
+        for (AnnotationTableObject* annotTableObj : qAsConst(seqAnnotTableObjects)) {
             const QList<Annotation*> annotations = annotTableObj->getAnnotations();
 
-            foreach (Annotation* annot, annotations) {
+            for (Annotation* annot : qAsConst(annotations)) {
                 const QString annotName = annot->getName();
 
                 // If the annotation was found on a nucleotide sequence
@@ -540,7 +540,7 @@ void AnnotHighlightWidget::sl_onAnnotationsRemoved(const QList<Annotation*>& ann
     QList<AnnotationTableObject*> annTables = annotatedDnaView->getAnnotationObjects(true);
     foreach (const QString& annotName, observedAnnNames.keys()) {
         int count = 0;
-        foreach (AnnotationTableObject* t, annTables) {
+        for (AnnotationTableObject* t : qAsConst(annTables)) {
             count += t->getAnnotationsByName(annotName).size();
         }
         if (count == observedAnnNames[annotName]) {

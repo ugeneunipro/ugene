@@ -533,20 +533,11 @@ QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus& os, const QString
     GT_CHECK_RESULT(y1 != y2, "coordinates are unexpectidly equal", nullptr);
 
     if (number == 1) {
-        if (y1 < y2) {
-            return w1;
-        } else {
-            return w2;
-        }
+        return y1 < y2 ? w1 : w2;
     } else if (number == 2) {
-        if (y1 < y2) {
-            return w2;
-        } else {
-            return w1;
-        }
-    } else {
-        GT_CHECK_RESULT(false, "number should be 1 or 2", nullptr);
+        return y1 < y2 ? w2 : w1;
     }
+    GT_FAIL("Number should be 1 or 2", nullptr);
 }
 #undef GT_METHOD_NAME
 

@@ -144,10 +144,6 @@ public:
      */
     QList<QStringList> getGroupingStateForMsa() const;
 
-protected:
-    /** Overrides the original method to trigger MSA related updates as the result of tree update. */
-    void updateScene(bool fitSceneToView) override;
-
 private slots:
     void sl_selectionChanged(const QStringList& selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);

@@ -409,7 +409,7 @@ bool MergeAnnotationPerformer::applyAction(const QVariant& newData) {
     }
 
     if (unique) {
-        foreach (SharedAnnotationData newD, newAnns) {
+        for (SharedAnnotationData newD : qAsConst(newAnns)) {
             bool found = false;
             foreach (const SharedAnnotationData& d, result) {
                 if (*newD == *d) {

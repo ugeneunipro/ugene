@@ -167,13 +167,14 @@ void RemoteDBFetcherWorker::sl_taskFinished() {
     }
 
     Document* doc = loadTask->getDocument();
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     doc->setDocumentOwnsDbiResources(false);
     monitor()->addOutputFile(doc->getURLString(), getActorId());
 
-    foreach (GObject* gobj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
-        U2SequenceObject* dnao = qobject_cast<U2SequenceObject*>(gobj);
-        SAFE_POINT(nullptr != dnao, "NULL sequence", );
+    QList<GObject*> sequences = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    for (GObject* gobj : qAsConst(sequences)) {
+        auto dnao = qobject_cast<U2SequenceObject*>(gobj);
+        SAFE_POINT(dnao != nullptr, "NULL sequence", );
 
         QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject*> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(gobj,
@@ -461,9 +462,10 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
     doc->setDocumentOwnsDbiResources(false);
     monitor()->addOutputFile(doc->getURLString(), getActorId());
 
-    foreach (GObject* gobj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
-        U2SequenceObject* dnao = qobject_cast<U2SequenceObject*>(gobj);
-        SAFE_POINT(nullptr != dnao, "NULL sequence", );
+    QList<GObject*> sequences = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    for (GObject* gobj : qAsConst(sequences)) {
+        auto dnao = qobject_cast<U2SequenceObject*>(gobj);
+        SAFE_POINT(dnao != nullptr, "NULL sequence", );
 
         QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject*> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(gobj,

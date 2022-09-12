@@ -257,7 +257,7 @@ void AppFileStorage::cleanup(U2OpStatus& os) {
                 unremovedFiles << info.getKey();  // source url for hash
             }
         } else {
-            newData << triplet;
+            newData.append(triplet);
         }
     }
 

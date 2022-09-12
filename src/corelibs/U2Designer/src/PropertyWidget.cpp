@@ -527,7 +527,8 @@ void URLWidget::setValue(const QVariant& value) {
     if (value.canConvert<QList<Dataset>>()) {
         QStringList urls;
         foreach (const Dataset& set, value.value<QList<Dataset>>()) {
-            foreach (URLContainer* c, set.getUrls()) {
+            QList<URLContainer*> containers = set.getUrls();
+            for (URLContainer* c : qAsConst(containers)) {
                 urls << c->getUrl();
             }
         }

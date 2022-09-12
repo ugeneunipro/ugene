@@ -50,45 +50,33 @@ QMenu* GTMenu::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlob
     GT_CHECK_RESULT(list.count() < 2, QString("There are %1 actions with this text").arg(list.count()), NULL);
 
     QAction* menu = list.takeFirst();
-
-    GT_CHECK_RESULT(menu != NULL, QString("menu \"%1\" not found").arg(menuName), NULL);
-
-    QPoint pos;
-    QPoint gPos;
-    QString menuText;
-    int key = 0, key_pos = 0;
+    GT_CHECK_RESULT(menu != nullptr, QString("menu \"%1\" not found").arg(menuName), NULL);
 
     switch (m) {
-        case GTGlobals::UseMouse:
-            pos = mainWindow->menuBar()->actionGeometry(menu).center();
-            gPos = mainWindow->menuBar()->mapToGlobal(pos);
-
+        case GTGlobals::UseMouse: {
+            QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
+            QPoint gPos = mainWindow->menuBar()->mapToGlobal(pos);
             GTMouseDriver::moveTo(gPos);
             GTMouseDriver::click();
             break;
-
+        }
         case GTGlobals::UseKeyBoard:
-        case GTGlobals::UseKey:
-            menuText = menu->text();
-            key_pos = menuText.indexOf('&');
-            key = (menuText.at(key_pos + 1)).toLatin1();
-
+        case GTGlobals::UseKey: {
+            QString menuText = menu->text();
+            int key_pos = menuText.indexOf('&');
+            int key = (menuText.at(key_pos + 1)).toLatin1();
             GTKeyboardDriver::keyClick(key, Qt::AltModifier);
             break;
-
+        }
         default:
             break;
     }
-
     GTGlobals::sleep(1000);
-
     return menu->menu();
 }
 #undef GT_METHOD_NAME
 
-namespace {
-
-QStringList fixMenuItemPath(const QStringList& itemPath) {
+static QStringList fixMenuItemPath(const QStringList& itemPath) {
     QStringList fixedItemPath = itemPath;
 #ifdef Q_OS_DARWIN
     // Some actions are moved to the application menu on mac
@@ -116,12 +104,11 @@ QStringList fixMenuItemPath(const QStringList& itemPath) {
 #endif
     return fixedItemPath;
 }
-bool compare(QString s1, QString s2, Qt::MatchFlag mathcFlag, bool replaceSpecSymbol = true) {
-    if (replaceSpecSymbol) {
-        s1.remove('&');
-        s2.remove('&');
-    }
-    switch (mathcFlag) {
+
+static bool compare(QString s1, QString s2, Qt::MatchFlag matchFlag) {
+    s1.remove('&');
+    s2.remove('&');
+    switch (matchFlag) {
         case Qt::MatchContains:
             return s1.contains(s2);
         case Qt::MatchExactly:
@@ -131,12 +118,9 @@ bool compare(QString s1, QString s2, Qt::MatchFlag mathcFlag, bool replaceSpecSy
     }
 }
 
-}  // namespace
-
 #define GT_METHOD_NAME "clickMainMenuItem"
 void GTMenu::clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
     GTMenuPrivate::clickMainMenuItem(os, fixMenuItemPath(itemPath), method, matchFlag);
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
@@ -156,25 +140,10 @@ void GTMenu::checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& men
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showContextMenu"
-QMenu* GTMenu::showContextMenu(GUITestOpStatus& os, QWidget* ground, GTGlobals::UseMethod m) {
-    GT_CHECK_RESULT(ground != NULL, "ground widget is NULL", NULL);
-
-    switch (m) {
-        case GTGlobals::UseMouse:
-            GTWidget::click(os, ground, Qt::RightButton);
-            break;
-
-        case GTGlobals::UseKey:
-
-            break;
-        default:
-            break;
-    }
-
+void GTMenu::showContextMenu(GUITestOpStatus& os, QWidget* target) {
+    GT_CHECK(target != nullptr, "ground widget is NULL");
+    GTWidget::click(os, target, Qt::RightButton);
     GTGlobals::sleep(1000);
-
-    QMenu* menu = static_cast<QMenu*>(QApplication::activePopupWidget());
-    return menu;
 }
 #undef GT_METHOD_NAME
 
@@ -243,15 +212,16 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus& os, const QMenu* menu, const QSt
             GTMouseDriver::moveTo(actionPosition);  // move cursor to action
             GTGlobals::sleep(200);
 
-#ifdef Q_OS_WIN
-            GTMouseDriver::click();
-#else
             QMenu* actionMenu = action->menu();
-            bool isClickingSubMenu = actionMenu != nullptr;
-            if (!isClickingSubMenu) {
+            bool isSubmenu = actionMenu != nullptr;
+            if (isSubmenu) {
+                // Hover on Linux, click on Windows to expand the child menu.
+#ifdef Q_OS_WIN
+                GTMouseDriver::click();
+#endif
+            } else {  // Click the final action.
                 GTMouseDriver::click();
             }
-#endif
             break;
         }
         case GTGlobals::UseKey:
@@ -261,11 +231,10 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus& os, const QMenu* menu, const QSt
             GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::NoModifier, false);
             break;
         default:
-            GT_CHECK_RESULT(false, "clickMenuItem: unsupported method" + QString::number(useMethod), nullptr);
-            break;
+            GT_FAIL("clickMenuItem: unsupported method" + QString::number(useMethod), nullptr);
     }
     GTThread::waitForMainThread();
-    QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     return activePopupMenu == nullptr ? nullptr : action;
 }
 #undef GT_METHOD_NAME

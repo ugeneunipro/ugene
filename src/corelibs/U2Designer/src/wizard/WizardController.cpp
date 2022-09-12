@@ -539,7 +539,8 @@ void WizardController::setAttributeValue(const AttributeInfo& info, const QVaria
         if (otherAttr == attr) {
             continue;
         }
-        foreach (const AttributeRelation* relation, otherAttr->getRelations()) {
+        QVector<const AttributeRelation*> relations = otherAttr->getRelations();
+        for (const AttributeRelation* relation : qAsConst(relations)) {
             if (relation->getType() != VISIBILITY || relation->getRelatedAttrId() != attr->getId()) {
                 continue;
             }

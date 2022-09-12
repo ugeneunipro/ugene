@@ -38,8 +38,8 @@ void TubeGLRenderer::drawTubes(const BioStruct3DColorScheme* colorScheme) {
     static float ribbonThickness = 0.3f;
     SharedAtom bufAtom;
 
-    foreach (Tube tube, tubeMap) {
-        foreach (int index, shownModelsIds) {
+    for (const Tube& tube : qAsConst(tubeMap)) {
+        for (int index : qAsConst(shownModelsIds)) {
             const AtomsVector& tubeAtoms = tube.modelsMap.value(index);
             foreach (const SharedAtom atom, tubeAtoms) {
                 Color4f atomColor = colorScheme->getAtomColor(atom);
@@ -86,9 +86,9 @@ bool TubeGLRenderer::isAvailableFor(const BioStruct3D& bioStruct) {
     const char* alphaCarbonTag = "CA";
     const char* phosporTag = "P";
 
-    foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
+    for (const SharedMolecule& mol : qAsConst(bioStruct.moleculeMap)) {
         foreach (const Molecule3DModel& model, mol->models.values()) {
-            foreach (const SharedAtom atom, model.atoms) {
+            for (const SharedAtom& atom : qAsConst(model.atoms)) {
                 if (atom->name == alphaCarbonTag || atom->name == phosporTag) {
                     available = true;
                 }
@@ -107,10 +107,10 @@ void TubeGLRenderer::create() {
     const char* alphaCarbonTag = "CA";
     const char* phosporTag = "P";
 
-    foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
+    for (const SharedMolecule& mol : qAsConst(bioStruct.moleculeMap)) {
         foreach (int modelId, mol->models.keys()) {
             const Molecule3DModel& model = mol->models.value(modelId);
-            foreach (const SharedAtom atom, model.atoms) {
+            for (const SharedAtom& atom : qAsConst(model.atoms)) {
                 if (atom->name == alphaCarbonTag || atom->name == phosporTag) {
                     tubeMap[atom->chainIndex].modelsMap[modelId].append(atom);
                 }

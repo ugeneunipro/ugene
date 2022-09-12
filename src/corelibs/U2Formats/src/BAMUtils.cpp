@@ -477,7 +477,9 @@ void* BAMUtils::loadIndex(const QString& filePath) {
     }
     CHECK(fp != nullptr, nullptr);
     bam_index_t* idx = bam_index_load_core(fp);
-    closeFileIfOpen(fp);
+    if (idx != nullptr) {
+        closeFileIfOpen(fp);
+    }
     return idx;
 }
 

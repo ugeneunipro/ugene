@@ -198,9 +198,6 @@ protected:
     /** Fits current scene into the view, so the whole tree is visible. Does not change aspect ratio. **/
     void fitIntoView();
 
-    virtual void onLayoutChanged(const TreeLayout&) {
-    }
-
     /**
      * Recomputes scene layout and triggers redraw.
      * Updates legend, scene rect, label alignment and other UI properties.
@@ -244,6 +241,12 @@ private slots:
 private:
     void updateDistanceToViewScale();
     void rebuildTreeLayout();
+
+    /** Update scales of fixed size elements so the elements keeps their on-screen sizes not changed on view zoom/resize ops. */
+    void updateFixedSizeItemScales();
+
+    /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
+    QList<QGraphicsItem*> getFixedSizeItems() const;
 
     void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
 

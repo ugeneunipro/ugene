@@ -97,7 +97,7 @@ void ExportAnnotations2CSVTask::run() {
     }
 
     bool hasSequenceNameQualifier = false;
-    foreach (Annotation* annotation, annotations) {
+    for (Annotation* annotation: qAsConst(annotations)) {
         foreach (const U2Qualifier& qualifier, annotation->getQualifiers()) {
             const QString& qName = qualifier.name;
             if (qName == SEQUENCE_NAME) {
@@ -114,8 +114,9 @@ void ExportAnnotations2CSVTask::run() {
     CHECK_OP(stateInfo, );
 
     bool noComplementarySequence = false;
-    foreach (Annotation* annotation, annotations) {
-        foreach (const U2Region& region, annotation->getRegions()) {
+    for (Annotation* annotation: qAsConst(annotations)) {
+        QVector<U2Region> regions = annotation->getRegions();
+        for (const U2Region& region: qAsConst(regions)) {
             QStringList values;
             values << annotation->getGroup()->getGroupPath();
             values << annotation->getName();

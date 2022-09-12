@@ -216,8 +216,8 @@ Task::ReportResult GTest_RemoteBLAST::report() {
         return ReportResult_Finished;
     }
     if (ao != nullptr) {
-        QList<Annotation*> alist(ao->getAnnotations());
-        foreach (Annotation* an, alist) {
+        QList<Annotation*> alist = ao->getAnnotations();
+        for (Annotation* an : qAsConst(alist)) {
             foreach (const U2Qualifier& q, an->getQualifiers()) {
                 if (q.name == "accession") {
                     if (!result.contains(q.value))  // Don't count different hsp

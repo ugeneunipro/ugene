@@ -70,7 +70,8 @@ void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema& schema)
         assert(actor != nullptr);
         QMap<Descriptor, QString> aliasMap;
         QMap<Descriptor, QString> helpMap;
-        foreach (Attribute* attr, actor->getParameters().values()) {
+        QList<Attribute*> attributes = actor->getParameters().values();
+        for (Attribute* attr : qAsConst(attributes)) {
             assert(attr != nullptr);
             QString alias = actor->getParamAliases().value(attr->getId());
             QString help = actor->getAliasHelp().value(alias);
@@ -85,7 +86,8 @@ void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema& schema)
 
 SchemaAliasesCfgDlgModel SchemaAliasesConfigurationDialogImpl::getModel() const {
     SchemaAliasesCfgDlgModel ret;
-    foreach (const ActorId& id, model.aliases.keys()) {
+    QList<ActorId> actorIds = model.aliases.keys();
+    for (const ActorId& id : qAsConst(actorIds)) {
         QMap<Descriptor, QString> aliases;
         foreach (const Descriptor& d, model.aliases.value(id).keys()) {
             QString aliasStr = model.aliases.value(id).value(d);
@@ -110,7 +112,8 @@ bool SchemaAliasesConfigurationDialogImpl::validateModel() const {
     SchemaAliasesCfgDlgModel m = getModel();
     QStringList allAliases;
     foreach (const ActorId& id, m.aliases.keys()) {
-        foreach (const Descriptor& d, m.aliases.value(id).keys()) {
+        QList<Descriptor> descriptors = m.aliases.value(id).keys();
+        for (const Descriptor& d : qAsConst(descriptors)) {
             allAliases << m.aliases.value(id).value(d);
         }
     }
