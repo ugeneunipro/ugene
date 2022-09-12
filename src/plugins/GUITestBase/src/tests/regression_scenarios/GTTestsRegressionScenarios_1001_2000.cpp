@@ -6702,6 +6702,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTMenu::showContextMenu(os, pdb1Widget);
     // Close PDB 1 view.
     GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Check that PDB 2 image was not changed.
     QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget, true);
