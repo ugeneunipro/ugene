@@ -42,7 +42,6 @@ class CDSearchFactoryRegistry;
 class CMDLineRegistry;
 class ConvertFactoryRegistry;
 class CredentialsAsker;
-class CudaGpuRegistry;
 class DBXRefRegistry;
 class DNAAlphabetRegistry;
 class DNATranslationRegistry;
@@ -103,9 +102,6 @@ class WorkflowScriptRegistry;
 class U2CORE_EXPORT AppContext : public QObject {
     Q_OBJECT
 public:
-    virtual ~AppContext() {
-    }
-
     static PluginSupport* getPluginSupport() {
         return getInstance()->_getPluginSupport();
     }
@@ -228,10 +224,6 @@ public:
 
     static SecStructPredictAlgRegistry* getSecStructPredictAlgRegistry() {
         return getInstance()->_getSecStructPredictAlgRegistry();
-    }
-
-    static CudaGpuRegistry* getCudaGpuRegistry() {
-        return getInstance()->_getCudaGpuRegistry();
     }
 
     static OpenCLGpuRegistry* getOpenCLGpuRegistry() {
@@ -448,7 +440,6 @@ protected:
     virtual MsaColorSchemeRegistry* _getMsaColorSchemeRegistry() const = 0;
     virtual MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const = 0;
     virtual SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const = 0;
-    virtual CudaGpuRegistry* _getCudaGpuRegistry() const = 0;
     virtual OpenCLGpuRegistry* _getOpenCLGpuRegistry() const = 0;
     virtual RecentlyDownloadedCache* _getRecentlyDownloadedCache() const = 0;
     virtual ProtocolInfoRegistry* _getProtocolInfoRegistry() const = 0;

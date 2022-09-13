@@ -39,9 +39,6 @@ namespace U2 {
 /** Memory resource - amount of memory in megabytes */
 #define RESOURCE_MEMORY 2
 
-/** CUDA GPU resource - ensures that device is busy or not*/
-#define RESOURCE_CUDA_GPU 3
-
 /** OPENCL GPU resource - ensures that device is busy or not*/
 #define RESOURCE_OPENCL_GPU 4
 

@@ -33,16 +33,14 @@
 
 namespace U2 {
 
-
-
 static QStringList getFileNames(QWidget* parent,
                                 const QString& caption,
                                 const QString& dir,
                                 const QString& filter,
                                 const QString& selectedFilter,
-                                QFileDialog::Options options,
-                                QFileDialog::AcceptMode acceptMode,
-                                QFileDialog::FileMode fileMode) {
+                                const QFileDialog::Options& options,
+                                const QFileDialog::AcceptMode& acceptMode,
+                                const QFileDialog::FileMode& fileMode) {
     QFileDialog fileDialog(parent, caption, dir, filter);
     if (!selectedFilter.isEmpty()) {
         fileDialog.selectNameFilter(selectedFilter);
@@ -171,6 +169,5 @@ QString U2FileDialog::getSaveFileName(QWidget* parent,
                        QFileDialog::AcceptSave,
                        QFileDialog::AnyFile);
 }
-
 
 }  // namespace U2
