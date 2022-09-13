@@ -55,7 +55,6 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
-#include <QProgressBar>
 #include <QPushButton>
 #include <QStandardItemModel>
 #include <QTableWidget>
@@ -6703,9 +6702,13 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     // Close PDB 1 view.
     GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
     GTUtilsDialog::checkNoActiveWaiters(os);
+    GTThread::waitForMainThread();
 
     // Check that PDB 2 image was not changed.
+    GTGlobals::sleep(5000);
     QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget, true);
+    pdb2ImageBefore.save("/tmp/1701-before.png");
+    pdb2ImageAfter.save("/tmp/1701-after.png");
     CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3D image is changed");
 }
 
