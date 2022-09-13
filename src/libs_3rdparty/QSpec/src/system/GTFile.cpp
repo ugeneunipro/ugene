@@ -26,6 +26,13 @@
 
 #include "system/GTFile.h"
 
+#ifdef Q_OS_LINUX
+// We using c++14, while <filesystem> is in c++17, so using experimental version.
+// TODO: check on Windows & Mac.
+#    include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+
 #ifdef Q_OS_WIN
 
 // Microsoft's example of how to change file system permissions is used below.
@@ -245,6 +252,16 @@ void GTFile::copy(GUITestOpStatus& os, const QString& from, const QString& to) {
 
 #define GT_METHOD_NAME "copyDir"
 void GTFile::copyDir(GUITestOpStatus& os, const QString& dirToCopy, const QString& dirToPaste) {
+#ifdef Q_OS_LINUX
+    QByteArray from = dirToCopy.toLocal8Bit();
+    QByteArray to = dirToPaste.toLocal8Bit();
+    GT_CHECK(!fs::exists(to.constData()), "Target dir is already exists: " + dirToPaste);
+
+    std::error_code errorCode;
+    fs::copy_options options = fs::copy_options::recursive;
+    fs::copy(from.constData(), to.constData(), options, errorCode);
+    GT_CHECK(errorCode.value() == 0, "Failed to copy " + dirToCopy + " to " + dirToPaste);
+#else
     QDir from;
     from.setFilter(QDir::Hidden | QDir::AllDirs | QDir::Files);
     from.setPath(dirToCopy);
@@ -264,6 +281,7 @@ void GTFile::copyDir(GUITestOpStatus& os, const QString& dirToCopy, const QStrin
             copyDir(os, info.filePath(), pastePath + '/' + info.fileName());
         }
     }
+#endif
 }
 #undef GT_METHOD_NAME
 
