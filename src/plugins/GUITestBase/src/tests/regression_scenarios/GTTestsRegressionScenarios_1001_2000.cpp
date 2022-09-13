@@ -383,13 +383,13 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
     GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::HTML, sandBoxDir + "test_1020.html"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    CHECK_SET_ERR(QFileInfo(sandBoxDir + "test_1020.html").exists(), "Distance matrix file not found");
+    CHECK_SET_ERR(QFileInfo::exists(sandBoxDir + "test_1020.html"), "Distance matrix file not found");
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::CSV, sandBoxDir + "test_1020.csv"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    CHECK_SET_ERR(QFileInfo(sandBoxDir + "test_1020.csv").exists(), "Distance matrix file not found");
+    CHECK_SET_ERR(QFileInfo::exists(sandBoxDir + "test_1020.csv"), "Distance matrix file not found");
 
     // Expected result : Distance matrix is generated and / or saved correctly in all cases.
     GTUtilsLog::check(os, lt);
@@ -6688,7 +6688,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Render Style", "Ball-and-Stick"}));
     GTMenu::showContextMenu(os, pdb2Widget);
 
-    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget, true);
+    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget);
 
     // Activate PDB 1 and update 3d rendering settings too.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
@@ -6705,10 +6705,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTThread::waitForMainThread();
 
     // Check that PDB 2 image was not changed.
-    GTGlobals::sleep(5000);
-    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget, true);
-    pdb2ImageBefore.save("/tmp/1701-before.png");
-    pdb2ImageAfter.save("/tmp/1701-after.png");
+    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget);
     CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3D image is changed");
 }
 
