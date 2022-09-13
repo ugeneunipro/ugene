@@ -1225,13 +1225,10 @@ imageformats/libqgif.so
 imageformats/libqicns.so
 imageformats/libqjpeg.so
 imageformats/libqsvg.so
+imageformats/libqtiff.so
 imageformats/libqwbmp.so
 imageformats/libqwebp.so
 libbreakpad.so
-libcrypto.so.1.1
-libicudata.so.56
-libicui18n.so.56
-libicuuc.so.56
 libQt5Core.so.5
 libQt5DBus.so.5
 libQt5Gui.so.5
@@ -1245,7 +1242,6 @@ libQt5Test.so.5
 libQt5Widgets.so.5
 libQt5XcbQpa.so.5
 libQt5Xml.so.5
-libssl.so.1.1
 libU2Algorithm.so
 libU2Core.so
 libU2Designer.so
