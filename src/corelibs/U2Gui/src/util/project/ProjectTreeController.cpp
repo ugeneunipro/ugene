@@ -393,20 +393,20 @@ void ProjectTreeController::sl_onAddObjectToSelectedDocument() {
     SAFE_POINT(selectedDocuments.size() == 1, "No document selected", );
     Document* doc = selectedDocuments.values().first();
 
-    ProjectTreeControllerModeSettings settings;
+    ProjectTreeControllerModeSettings controllerModeSettings;
 
     // do not show objects from the selected document
     QList<GObject*> docObjects = doc->getObjects();
     foreach (GObject* obj, docObjects) {
-        settings.excludeObjectList.append(obj);
+        controllerModeSettings.excludeObjectList.append(obj);
     }
 
     QSet<GObjectType> types = doc->getDocumentFormat()->getSupportedObjectTypes();
     foreach (const GObjectType& type, types) {
-        settings.objectTypesToShow.insert(type);
+        controllerModeSettings.objectTypesToShow.insert(type);
     }
 
-    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, tree);
+    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(controllerModeSettings, tree);
     CHECK(!objects.isEmpty(), );
 
     AppContext::getTaskScheduler()->registerTopLevelTask(new AddObjectsToDocumentTask(objects, doc));
@@ -815,17 +815,6 @@ QList<Folder> ProjectTreeController::getSelectedFolders() const {
 void ProjectTreeController::removeItems(const QList<Document*>& docs, QList<Folder> folders, QList<GObject*> objs) {
     excludeUnremovableObjectsFromList(objs);
     excludeUnremovableFoldersFromList(folders);
-    QMessageBox::StandardButton choice = QMessageBox::warning(QApplication::activeWindow(),
-                                                              QObject::tr("Confirm Deletion"),
-                                                              QObject::tr("Are you sure you want to delete selected items?\n"
-                                                                          "The items cannot be recovered once deleted."),
-                                                              QMessageBox::No | QMessageBox::Yes,
-                                                              QMessageBox::No);
-
-    if (choice == QMessageBox::No) {
-        return;
-    }
-
     bool objectsRemoved = removeObjects(objs, docs, folders, true);
     bool foldersRemoved = removeFolders(folders, docs);
     removeDocuments(docs);
