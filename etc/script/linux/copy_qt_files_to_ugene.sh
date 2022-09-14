@@ -41,7 +41,7 @@ cp -r "${QT_DIR}/plugins/imageformats/libqgif.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqicns.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqjpeg.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqsvg.so" "${UGENE_DIR}/imageformats"
-cp -r "${QT_DIR}/plugins/imageformats/libtiff.so" "${UGENE_DIR}/imageformats"
+cp -r "${QT_DIR}/plugins/imageformats/libqtiff.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwbmp.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwebp.so" "${UGENE_DIR}/imageformats"
 # shellcheck disable=SC2016
