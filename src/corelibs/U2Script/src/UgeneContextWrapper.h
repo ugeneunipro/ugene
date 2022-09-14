@@ -62,7 +62,6 @@ class AlignmentAlgorithmsRegistry;
 class OpenCLGpuRegistry;
 #endif
 class RecentlyDownloadedCache;
-class DistributedComputingUtil;
 class VirtualFileSystemRegistry;
 class DnaAssemblyAlgRegistry;
 class GenomeAssemblyAlgRegistry;
