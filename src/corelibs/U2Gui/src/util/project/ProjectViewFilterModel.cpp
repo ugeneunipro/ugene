@@ -197,9 +197,7 @@ void ProjectViewFilterModel::sl_objectsFiltered(const QString& groupName, const 
     for (const QPointer<GObject>& obj : qAsConst(objs)) {
         CHECK_CONTINUE(!obj.isNull());
         QString objPath = srcModel->getObjectFolder(obj->getDocument(), obj);
-        if (!ProjectUtils::isFolderInRecycleBinSubtree(objPath)) {
-            addFilteredObject(groupName, obj);
-        }
+        addFilteredObject(groupName, obj);
     }
 }
 

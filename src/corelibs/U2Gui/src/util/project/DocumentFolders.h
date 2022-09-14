@@ -37,7 +37,6 @@ class Folder;
 class DocumentFoldersUpdate {
 public:
     DocumentFoldersUpdate();
-    DocumentFoldersUpdate(const U2DbiRef& dbiRef, U2OpStatus& os);
     QStringList folders;  // all folders
     QHash<U2DataId, QString> objectIdFolders;  // objectId -> path
     QHash<U2Object, QString> u2objectFolders;  // U2Object -> path
@@ -52,36 +51,23 @@ public:
     GObject* getObject(const U2DataId& id) const;
     void addObject(GObject* obj, const QString& path);
     void removeObject(GObject* obj, const QString& path);
-    void moveObject(GObject* obj, const QString& oldPath, const QString& newPath);
     QString getObjectFolder(GObject* obj) const;
 
     QList<GObject*> getObjectsNatural(const QString& path) const;
 
     const DocumentFoldersUpdate& getLastUpdate() const;
 
-    // objects from DB which have IDs from the `ids` list won't be affected by merging procedure
-    // pass an empty set as `ids` to unset the filter
-    void setIgnoredObjects(const QSet<U2DataId>& ids);
     void addIgnoredObject(const U2DataId& id);
-    // folders from DB which have paths from the `paths` list won't be affected by merging procedure
-    // pass an empty set as `paths` to unset the filter
-    void setIgnoredFolders(const QSet<QString>& paths);
     void addIgnoredFolder(const QString& path);
 
     void excludeFromObjFilter(const QSet<U2DataId>& ids);
     void excludeFromFolderFilter(const QSet<QString>& paths);
 
-    bool isObjectIgnored(const U2DataId& id) const;
-    bool isFolderIgnored(const QString& path) const;
-
 protected:
-    void setLastUpdate(const DocumentFoldersUpdate& value);
     const QStringList& allFolders() const;
     void addFolderToStorage(const QString& path);  // insert sorted
     void removeFolderFromStorage(const QString& path);
-    bool hasFolderInfo(const U2DataId& id) const;
     bool hasFolderInfo(GObject* obj) const;
-    QString getFolderByObjectId(const U2DataId& id) const;
 
     /** Returns the insertion pos */
     static int insertSorted(const QString& value, QStringList& list);
@@ -114,7 +100,6 @@ public:
     Folder* getFolder(const QString& path) const;
     void addFolder(const QString& path);
     void removeFolder(const QString& path);
-    void renameFolder(const QString& oldPath, const QString& newPath);
 
     int getNewFolderRowInParent(const QString& path) const;
     int getNewObjectRowInParent(GObject* obj, const QString& parentPath) const;

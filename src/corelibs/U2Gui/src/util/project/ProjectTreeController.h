@@ -52,7 +52,6 @@ public:
     const GObjectSelection* getGObjectSelection() const;
     QList<Folder> getSelectedFolders() const;
 
-    bool isObjectInRecycleBin(GObject* obj) const;
     bool isObjectInFolder(GObject* obj, const Folder& folder) const;
     const ProjectTreeControllerModeSettings& getModeSettings() const;
     void highlightItem(Document* doc);
@@ -86,8 +85,6 @@ private slots:
     void sl_onResourceUserUnregistered(const QString& res, Task* t);
     void sl_onLoadingDocumentProgressChanged();
     void sl_onRename();
-    void sl_onRestoreSelectedItems();
-    void sl_onEmptyRecycleBin();
     void sl_onProjectItemRenamed(const QModelIndex& index);
     void sl_onObjRemovalTaskFinished();
     void sl_onFolderRemovalTaskFinished();
@@ -119,8 +116,6 @@ private:
     bool removeFolders(const QList<Folder>& folders, const QList<Document*>& excludedDocs);
     void removeDocuments(const QList<Document*>& docs);
     void updateObjectActiveStateVisual(GObject* obj);
-    void restoreSelectedObjects();
-    void restoreSelectedFolders();
 
     void updateAddObjectAction();
     void updateImportToDbAction();
@@ -145,8 +140,6 @@ private:
 
     static bool isObjectRemovable(GObject* object);
     static bool isFolderRemovable(const Folder& folder);
-    bool isAnyObjectInRecycleBin(const QList<GObject*>& objects);
-    static bool isAnyFolderInRecycleBin(const QList<Folder>& folders);
     static void excludeUnremovableObjectsFromList(QList<GObject*>& objects);
     static void excludeUnremovableFoldersFromList(QList<Folder>& folders);
     static bool isSubFolder(const QList<Folder>& folders, const Folder& expectedSubFolder, bool trueIfSamePath);
@@ -167,8 +160,6 @@ private:
     QAction* removeReadonlyFlagAction;
     QAction* removeSelectedItemsAction;
     QAction* importToDatabaseAction;
-    QAction* restoreSelectedItemsAction;
-    QAction* emptyRecycleBinAction;
 
     DocumentSelection documentSelection;
     FolderSelection folderSelection;

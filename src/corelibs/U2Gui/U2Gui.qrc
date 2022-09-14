@@ -19,8 +19,6 @@
         <file>images/arrow_right.png</file>
         <file>images/arrow_rotate_clockwise.png</file>
         <file>images/backward.png</file>
-        <file>images/bin_restore1.png</file>
-        <file>images/bin_restore2.png</file>
         <file>images/biostruct3d.png</file>
         <file>images/bookmark.png</file>
         <file>images/bookmark_add.png</file>
@@ -32,8 +30,6 @@
         <file>images/chart_bar.png</file>
         <file>images/chart_organisation.png</file>
         <file>images/circular_seq.png</file>
-        <file>images/clean_empty_bin.png</file>
-        <file>images/clean_full_bin.png</file>
         <file>images/close.png</file>
         <file>images/close_2.png</file>
         <file>images/close_small.png</file>
@@ -54,29 +50,6 @@
         <file>images/copy_translation.png</file>
         <file>images/create_annotation.png</file>
         <file>images/create_annotation_icon.png</file>
-        <file>images/db/database.png</file>
-        <file>images/db/database_add.png</file>
-        <file>images/db/database_connect.png</file>
-        <file>images/db/database_copy.png</file>
-        <file>images/db/database_delete.png</file>
-        <file>images/db/database_edit.png</file>
-        <file>images/db/database_error.png</file>
-        <file>images/db/database_gear.png</file>
-        <file>images/db/database_go.png</file>
-        <file>images/db/database_key.png</file>
-        <file>images/db/database_lightning.png</file>
-        <file>images/db/database_link.png</file>
-        <file>images/db/database_lock.png</file>
-        <file>images/db/database_lock_yellow.png</file>
-        <file>images/db/database_refresh.png</file>
-        <file>images/db/database_save.png</file>
-        <file>images/db/database_start.png</file>
-        <file>images/db/database_stop.png</file>
-        <file>images/db/database_table.png</file>
-        <file>images/db/database_wrench.png</file>
-        <file>images/db/database_yellow.png</file>
-        <file>images/db/database_yellow_start.png</file>
-        <file>images/db/database_yellow_stop.png</file>
         <file>images/details_view.png</file>
         <file>images/dna.png</file>
         <file>images/dna_helix.png</file>
@@ -131,7 +104,6 @@
         <file>images/pushpin_fixed.png</file>
         <file>images/question.png</file>
         <file>images/realign_some_sequences.png</file>
-        <file>images/recycle_bin.png</file>
         <file>images/redo.png</file>
         <file>images/refresh.png</file>
         <file>images/regions.png</file>
