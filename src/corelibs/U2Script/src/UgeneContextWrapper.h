@@ -57,7 +57,6 @@ class SmithWatermanTaskFactoryRegistry;
 class MolecularSurfaceFactoryRegistry;
 class SWResultFilterRegistry;
 class SecStructPredictAlgRegistry;
-class CudaGpuRegistry;
 class AlignmentAlgorithmsRegistry;
 #ifdef OPENCL_SUPPORT
 class OpenCLGpuRegistry;
@@ -120,7 +119,6 @@ private:
     MolecularSurfaceFactoryRegistry* msfr;
     SWResultFilterRegistry* swrfr;
     SecStructPredictAlgRegistry* sspar;
-    CudaGpuRegistry* cgr;
     AlignmentAlgorithmsRegistry* alignmentAlgorithmRegistry;
 #ifdef OPENCL_SUPPORT
     OpenCLGpuRegistry* oclgr;
