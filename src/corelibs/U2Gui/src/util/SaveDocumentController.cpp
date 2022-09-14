@@ -174,7 +174,7 @@ void SaveDocumentController::sl_fileDialogButtonClicked() {
 
     cutGzExtension(defaultUrl);
 
-    lod.url = U2FileDialog::getSaveFileName(conf.parentWidget, conf.saveTitle, defaultUrl, filter, &defaultFilter);
+    lod.url = U2FileDialog::getSaveFileName(conf.parentWidget, conf.saveTitle, defaultUrl, filter, defaultFilter);
     if (lod.url.isEmpty()) {
         return;
     }

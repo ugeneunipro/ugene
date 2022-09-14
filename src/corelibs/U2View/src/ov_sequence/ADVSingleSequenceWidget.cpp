@@ -843,7 +843,8 @@ void ADVSingleSequenceWidget::sl_createCustomRuler() {
         }
 
         // find minimum of start positions of selected annotations
-        foreach (const U2Region& region, ann->getRegions()) {
+        QVector<U2Region> regions = ann->getRegions();
+        for (const U2Region& region : qAsConst(regions)) {
             annOffset = annOffset > region.startPos ? region.startPos : annOffset;
         }
     }

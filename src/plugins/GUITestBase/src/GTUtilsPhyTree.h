@@ -41,6 +41,9 @@ public:
     static QList<GraphicsButtonItem*> getUnselectedNodes(HI::GUITestOpStatus& os);
     static QList<GraphicsButtonItem*> getNodes(HI::GUITestOpStatus& os);
 
+    /** Returns bounding rectangle in view-local on-screen coordinates. */
+    static QRect getItemViewRect(HI::GUITestOpStatus& os, QGraphicsItem* item);
+
     /** Finds 'button' node in the tree by 2 branch texts: left & right. */
     static GraphicsButtonItem* getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText);
 

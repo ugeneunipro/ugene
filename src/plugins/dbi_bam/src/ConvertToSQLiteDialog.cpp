@@ -217,8 +217,8 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
             rgList << QString(rg.getSequencingCenter()) << QString(rg.getDescription()) << QString(rg.getDate().toString()) << QString(rg.getLibrary())
                    << QString(rg.getPlatform()) << QString(rg.getPredictedInsertSize()) << QString(rg.getPlatform()) << QString(rg.getPlatformUnit()) << QString(rg.getSample());
             int j = 0;
-            foreach (const QString& s, rgList) {
-                QTableWidgetItem* item = new QTableWidgetItem(s);
+            for (const QString& s : qAsConst(rgList)) {
+                auto item = new QTableWidgetItem(s);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, j, item);
                 j++;
@@ -240,8 +240,8 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
             QStringList pgList;
             pgList << QString(pg.getName()) << QString(pg.getVersion()) << QString(pg.getCommandLine()) << QString(pg.getPreviousId());
             int j = 0;
-            foreach (const QString& s, pgList) {
-                QTableWidgetItem* item = new QTableWidgetItem(s);
+            for (const QString& s : qAsConst(pgList)) {
+                auto item = new QTableWidgetItem(s);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, j, item);
                 j++;

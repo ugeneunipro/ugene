@@ -49,7 +49,7 @@ struct TreeOpWidgetViewSettings {
 class TreeOptionsSavableWidget : public U2SavableWidget {
 public:
     TreeOptionsSavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
-    ~TreeOptionsSavableWidget();
+    ~TreeOptionsSavableWidget() override;
 
     void disableSavingForWidgets(const QStringList& s);
 
@@ -65,7 +65,7 @@ class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWid
 public:
     TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& viewSettings);
     TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetViewSettings& viewSettings);
-    ~TreeOptionsWidget();
+    ~TreeOptionsWidget() override;
 
     const TreeOpWidgetViewSettings& getViewSettings();
 
@@ -103,10 +103,10 @@ private:
     void connectSlots();
 
     void updateButtonColor(QPushButton* button, const QColor& newColor);
-    void updateShowFontOpLabel(QString newText);
-    void updateShowPenOpLabel(QString newText);
+    void updateShowFontOpLabel(const QString& labelText);
+    void updateShowPenOpLabel(const QString& labelText);
 
-    void updateRelations(TreeViewOption option, QVariant newValue);
+    void updateRelatedOptionsState(const TreeViewOption& option, const QVariant& newValue);
 
     TreeViewerUI* getTreeViewer() const;
 

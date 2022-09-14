@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
+    <width>238</width>
     <height>800</height>
    </rect>
   </property>
@@ -67,9 +67,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-          </property>
          </widget>
         </item>
         <item row="1" column="0">
@@ -80,11 +77,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QComboBox" name="treeViewCombo">
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-          </property>
-         </widget>
+         <widget class="QComboBox" name="treeViewCombo"/>
         </item>
        </layout>
       </item>
@@ -280,7 +273,6 @@
               <widget class="QToolButton" name="boldAttrButton">
                <property name="font">
                 <font>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -305,7 +297,6 @@
               <widget class="QToolButton" name="underlineAttrButton">
                <property name="font">
                 <font>
-                 <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
                  <underline>true</underline>
@@ -447,42 +438,40 @@
          <number>4</number>
         </property>
         <item row="0" column="1">
-         <widget class="QSlider" name="widthSlider">
+         <widget class="QSlider" name="breadthScaleAdjustmentSlider">
           <property name="minimum">
-           <number>10</number>
+           <number>50</number>
           </property>
           <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="pageStep">
            <number>50</number>
+          </property>
+          <property name="sliderPosition">
+           <number>100</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="invertedAppearance">
+           <bool>false</bool>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::NoTicks</enum>
+          </property>
+          <property name="tickInterval">
+           <number>3</number>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="lblWidthSlider">
+         <widget class="QLabel" name="breadthScaleAdjustmentLabel">
+          <property name="styleSheet">
+           <string notr="true">margin-right: 5px</string>
+          </property>
           <property name="text">
-           <string>Width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lblHeightSlider">
-          <property name="text">
-           <string>Height</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSlider" name="heightSlider">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>20</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <string>Expansion </string>
           </property>
          </widget>
         </item>
@@ -604,8 +593,6 @@
   <tabstop>showNamesCheck</tabstop>
   <tabstop>showDistancesCheck</tabstop>
   <tabstop>alignLabelsCheck</tabstop>
-  <tabstop>widthSlider</tabstop>
-  <tabstop>heightSlider</tabstop>
   <tabstop>labelsColorButton</tabstop>
   <tabstop>fontSizeSpinBox</tabstop>
   <tabstop>boldAttrButton</tabstop>

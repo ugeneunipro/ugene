@@ -116,12 +116,15 @@ int WorkflowRunTask::getMsgPassed(const Link* l) {
 
 QString WorkflowRunTask::generateReport() const {
     QString report;
-    foreach (WorkflowMonitor* monitor, getMonitors()) {
+    QList<WorkflowMonitor*> monitors = getMonitors();
+    for (const WorkflowMonitor* monitor : qAsConst(monitors)) {
         const QMap<QString, QMultiMap<QString, QString>> workersReports = monitor->getWorkersReports();
-        foreach (const QString& worker, workersReports.keys()) {
-            const QMultiMap<QString, QString> tasksReports = workersReports[worker];
+        QList<QString> workerReportKeys = workersReports.keys();
+        for (const QString& worker : qAsConst(workerReportKeys)) {
+            QMultiMap<QString, QString> tasksReports = workersReports[worker];
             QString workerReport;
-            foreach (const QString& taskName, tasksReports.uniqueKeys()) {
+            QList<QString> taskNames = tasksReports.uniqueKeys();
+            for (const QString& taskName : qAsConst(taskNames)) {
                 foreach (const QString& taskReport, tasksReports.values(taskName)) {
                     if (!taskReport.isEmpty()) {
                         workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(QString(taskReport.toUtf8().toBase64()));
@@ -139,7 +142,7 @@ QString WorkflowRunTask::getTaskError() const {
         return getError();
     }
 
-    foreach (WorkflowMonitor* monitor, monitors) {
+    for (const WorkflowMonitor* monitor : qAsConst(monitors)) {
         foreach (const WorkflowNotification& notification, monitor->getNotifications()) {
             if (WorkflowNotification::U2_ERROR == notification.type) {
                 return notification.message;
@@ -323,7 +326,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
     foreach (Actor* a, schema->getProcesses()) {
         LocalWorkflow::BaseWorker* bw = a->castPeer<LocalWorkflow::BaseWorker>();
         QStringList urls = bw->getOutputFiles();
-        foreach (const QString& url, urls) {
+        for (const QString& url : qAsConst(urls)) {
             QString absUrl = context->absolutePath(url);
             if (isValidFile(absUrl, startTimeSec)) {
                 context->getMonitor()->addOutputFile(absUrl, a->getId());

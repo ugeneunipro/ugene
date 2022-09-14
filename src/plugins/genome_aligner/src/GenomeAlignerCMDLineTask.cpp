@@ -73,7 +73,7 @@ GenomeAlignerCMDLineTask::GenomeAlignerCMDLineTask()
             resultPath = opt.second;
         } else if (opt.first == OPTION_SHORTREADS) {
             QStringList urls = opt.second.split(";");
-            foreach (const QString& url, urls) {
+            for (const QString& url : qAsConst(urls)) {
                 shortReadUrls.append(url);
             }
         } else if (opt.first == OPTION_USE_OPENCL) {

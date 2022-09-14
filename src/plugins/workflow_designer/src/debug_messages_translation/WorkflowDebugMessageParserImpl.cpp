@@ -93,7 +93,8 @@ WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() 
         }
         initParsedInfo();
         foreach (const QVariantMap& messageContent, sourceMessages) {
-            foreach (const QString& key, messageContent.keys()) {
+            QList<QString> keys = messageContent.keys();
+            for (const QString& key : qAsConst(keys)) {
                 SAFE_POINT(messageTypes.contains(key), "Unexpected message type encountered!", parsedInfo);
                 parsedInfo[key].enqueue(convertToString(key, messageContent[key]));
             }

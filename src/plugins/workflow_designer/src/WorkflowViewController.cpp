@@ -1593,7 +1593,8 @@ void WorkflowView::sl_configureParameterAliases() {
             }
             SchemaAliasesCfgDlgModel model = dlg->getModel();
             foreach (const ActorId& id, model.aliases.keys()) {
-                foreach (const Descriptor& d, model.aliases.value(id).keys()) {
+                QList<Descriptor> descriptors = model.aliases.value(id).keys();
+                for (const Descriptor& d : qAsConst(descriptors)) {
                     Actor* actor = schema->actorById(id);
                     assert(actor != nullptr);
                     QString alias = model.aliases.value(id).value(d);
@@ -2253,7 +2254,8 @@ const Workflow::Metadata& WorkflowView::getMeta() {
 const Workflow::Metadata& WorkflowView::updateMeta() {
     meta.setSampleMark(false);
     meta.resetVisual();
-    foreach (QGraphicsItem* it, scene->items()) {
+    QList<QGraphicsItem*> sceneItems = scene->items();
+    for (QGraphicsItem* it : qAsConst(sceneItems)) {
         switch (it->type()) {
             case WorkflowProcessItemType: {
                 WorkflowProcessItem* proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
@@ -2299,12 +2301,13 @@ Workflow::Metadata WorkflowView::getMeta(const QList<WorkflowProcessItem*>& item
     result.url = meta.url;
     result.comment = meta.comment;
 
-    foreach (WorkflowProcessItem* proc, items) {
+    for (WorkflowProcessItem* proc : qAsConst(items)) {
         bool contains = false;
         ActorVisualData visual = meta.getActorVisualData(proc->getProcess()->getId(), contains);
         assert(contains);
         result.setActorVisualData(visual);
-        foreach (WorkflowPortItem* port1, proc->getPortItems()) {
+        QList<WorkflowPortItem*> portItems = proc->getPortItems();
+        for (WorkflowPortItem* port1 : qAsConst(portItems)) {
             foreach (WorkflowBusItem* bus, port1->getDataFlows()) {
                 WorkflowPortItem* port2 = (bus->getInPort() == port1) ? bus->getOutPort() : bus->getInPort();
                 WorkflowProcessItem* proc2 = port2->getOwner();
@@ -2364,7 +2367,7 @@ static bool canDrop(const QMimeData* m, QList<ActorPrototype*>& lst) {
         }
     } else {
         foreach (QList<ActorPrototype*> l, WorkflowEnv::getProtoRegistry()->getProtos().values()) {
-            foreach (ActorPrototype* proto, l) {
+            for (ActorPrototype* proto : qAsConst(l)) {
                 if (proto->isAcceptableDrop(m)) {
                     lst << proto;
                 }
@@ -2716,7 +2719,8 @@ WorkflowScene* SceneCreator::createScene() {
     foreach (Actor* actor, schema->getProcesses()) {
         WorkflowProcessItem* procItem = createProcess(actor);
         scene->addItem(procItem);
-        foreach (WorkflowPortItem* portItem, procItem->getPortItems()) {
+        QList<WorkflowPortItem*> portItems = procItem->getPortItems();
+        for (WorkflowPortItem* portItem : qAsConst(portItems)) {
             ports[portItem->getPort()] = portItem;
         }
     }

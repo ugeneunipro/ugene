@@ -33,7 +33,6 @@
 
 #include <U2Core/AddObjectsToDocumentTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/DeleteObjectsTask.h>
@@ -59,7 +58,6 @@
 
 #include "EditableTreeView.h"
 #include "FilteredProjectItemDelegate.h"
-#include "FolderNameDialog.h"
 #include "ProjectFilterProxyModel.h"
 #include "ProjectUtils.h"
 #include "ProjectViewFilterModel.h"
@@ -317,7 +315,6 @@ void ProjectTreeController::sl_updateActions() {
 
     bool canRestore = (selectedModifiableFoldersExist && allSelectedFoldersAreInRecycleBin) || (selectedModifiableObjectsExist && allObjectsAreInRecycleBin);
     restoreSelectedItemsAction->setEnabled(canRestore);
-    createFolderAction->setEnabled(canCreateSubFolder());
 
     bool hasSelectedDocs = !getDocsInSelection(false).isEmpty();
 
@@ -373,8 +370,6 @@ void ProjectTreeController::updateRenameAction() {
             GObject* selectedObj = objectSelection.getSelectedObjects().first();
             bool parentDocLocked = selectedObj->getDocument() != nullptr && selectedObj->getDocument()->isStateLocked();
             renameIsOk = !isObjectInRecycleBin(selectedObj) && !parentDocLocked && !settings.isObjectFilterActive();
-        } else {
-            renameIsOk = canRenameFolder();
         }
     }
     renameAction->setEnabled(renameIsOk);
@@ -410,20 +405,6 @@ void ProjectTreeController::sl_documentContentChanged(Document*) {
     if (proxyModel != nullptr) {
         proxyModel->invalidate();
     }
-}
-
-bool ProjectTreeController::canCreateSubFolder() const {
-    CHECK(objectSelection.isEmpty(), false);
-    QList<Document*> docs = documentSelection.getSelectedDocuments();
-    QList<Folder> folders = folderSelection.getSelection();
-    CHECK((folders.isEmpty() && (1 == docs.size())) ||
-              (docs.isEmpty() && (1 == folders.size())),
-          false);
-
-    QList<Folder> selection = getSelectedFolders();
-    CHECK(selection.size() == 1, false);
-    const Folder& selectedFolder = selection.first();
-    return !ProjectUtils::isFolderInRecycleBinSubtree(selectedFolder.getFolderPath()) && !selectedFolder.getDocument()->isStateLocked();
 }
 
 void ProjectTreeController::sl_onAddObjectToSelectedDocument() {
@@ -469,7 +450,7 @@ void ProjectTreeController::sl_onUnloadSelectedDocuments() {
     foreach (Document* doc, docsInSelection) {
         if (doc->isLoaded()) {
             docsToUnload.append(QPointer<Document>(doc));
-            StateLock* lock = new StateLock(Document::UNLOAD_LOCK_NAME, StateLockFlag_LiveLock);
+            auto lock = new StateLock(Document::UNLOAD_LOCK_NAME, StateLockFlag_LiveLock);
             doc->lockState(lock);
             locks.insert(doc, lock);
         }
@@ -498,7 +479,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint&) {
 
     ProjectView* pv = AppContext::getProjectView();
 
-    bool addActionsExist = addObjectToDocumentAction->isEnabled() || createFolderAction->isEnabled();
+    bool addActionsExist = addObjectToDocumentAction->isEnabled();
 
     if (pv != nullptr && addActionsExist) {
         QMenu* addMenu = m.addMenu(tr("Add"));
@@ -509,10 +490,6 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint&) {
 
         if (importToDatabaseAction->isEnabled()) {
             addMenu->addAction(importToDatabaseAction);
-        }
-
-        if (createFolderAction->isEnabled()) {
-            addMenu->addAction(createFolderAction);
         }
     }
 
@@ -559,7 +536,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint&) {
 }
 
 void ProjectTreeController::sl_onDocumentLoadedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(doc != nullptr, "NULL document", );
 
     if (doc->isLoaded()) {
@@ -632,15 +609,6 @@ void ProjectTreeController::sl_onEmptyRecycleBin() {
     removeItems(QList<Document*>(), removedFolders, removedObjects);
 }
 
-bool ProjectTreeController::canRenameFolder() const {
-    CHECK(objectSelection.isEmpty(), false);
-    CHECK(documentSelection.isEmpty(), false);
-    QList<Folder> selection = getSelectedFolders();
-    CHECK(1 == selection.size(), false);
-    const Folder& selectedFolder = selection.first();
-    return !ProjectUtils::isFolderInRecycleBinSubtree(selectedFolder.getFolderPath()) && !selectedFolder.getDocument()->isStateLocked();
-}
-
 void ProjectTreeController::restoreSelectedObjects() {
     QList<GObject*> objs = objectSelection.getSelectedObjects();
 
@@ -704,24 +672,6 @@ void ProjectTreeController::sl_onToggleReadonly() {
     doc->setUserModLock(!doc->hasUserModLock());
 }
 
-void ProjectTreeController::sl_onCreateFolder() {
-    QList<Folder> folders = getSelectedFolders();
-    CHECK(folders.size() == 1, );
-    Folder folder = folders.first();
-    QString folderPath = folder.getFolderPath();
-    CHECK(!ProjectUtils::isFolderInRecycleBinSubtree(folderPath), );
-
-    QObjectScopedPointer<FolderNameDialog> d = new FolderNameDialog("", tree);
-    int dialogResult = d->exec();
-    CHECK(!d.isNull(), );
-
-    if (QDialog::Accepted == dialogResult) {
-        QString path = Folder::createPath(folderPath, d->getResult());
-        Document* doc = folder.getDocument();
-        model->createFolder(doc, path);
-    }
-}
-
 void ProjectTreeController::sl_onRemoveSelectedItems() {
     bool deriveDocsFromObjs = settings.groupMode != ProjectTreeGroupMode_ByDocument;
 
@@ -733,7 +683,7 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
 }
 
 void ProjectTreeController::sl_onLockedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(doc != nullptr, "NULL document", );
 
     if (settings.readOnlyFilter != TriState_Unknown) {
@@ -778,7 +728,7 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow* w) {
         markActiveView.clear();
     }
 
-    GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
+    auto ow = qobject_cast<GObjectViewWindow*>(w);
     CHECK(ow != nullptr, );
     uiLog.trace(QString("Project view now listens object events in '%1' view").arg(ow->windowTitle()));
     markActiveView = ow->getObjectView();
@@ -790,7 +740,7 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow* w) {
 }
 
 void ProjectTreeController::sl_windowDeactivated(MWMDIWindow* w) {
-    GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
+    auto ow = qobject_cast<GObjectViewWindow*>(w);
     CHECK(ow != nullptr, );
     foreach (GObject* obj, ow->getObjects()) {
         updateObjectActiveStateVisual(obj);
@@ -810,14 +760,14 @@ void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectView*, GObject
 }
 
 void ProjectTreeController::sl_onResourceUserRegistered(const QString& /*res*/, Task* t) {
-    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+    auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
     CHECK(lut != nullptr, );
     CHECK(model->hasDocument(lut->getDocument()), );
     connect(lut, SIGNAL(si_progressChanged()), SLOT(sl_onLoadingDocumentProgressChanged()));
 }
 
 void ProjectTreeController::sl_onResourceUserUnregistered(const QString& /*res*/, Task* t) {
-    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+    auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
     CHECK(lut != nullptr, );
     lut->disconnect(this);
 
@@ -828,7 +778,7 @@ void ProjectTreeController::sl_onResourceUserUnregistered(const QString& /*res*/
 }
 
 void ProjectTreeController::sl_onLoadingDocumentProgressChanged() {
-    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(sender());
+    auto lut = qobject_cast<LoadUnloadedDocumentTask*>(sender());
     CHECK(lut != nullptr, );
     Document* doc = lut->getDocument();
     CHECK(doc != nullptr, );
@@ -902,11 +852,6 @@ void ProjectTreeController::setupActions() {
     tree->addAction(removeSelectedItemsAction);
     connect(removeSelectedItemsAction, SIGNAL(triggered()), SLOT(sl_onRemoveSelectedItems()));
 
-    createFolderAction = new QAction(QIcon(":U2Designer/images/add_directory.png"), tr("Add folder..."), this);
-    createFolderAction->setObjectName(ACTION_PROJECT__CREATE_FOLDER);
-    connect(createFolderAction, SIGNAL(triggered()), SLOT(sl_onCreateFolder()));
-    tree->addAction(createFolderAction);
-
     restoreSelectedItemsAction = new QAction(QIcon(":core/images/bin_restore2.png"), tr("Restore selected items"), this);
     connect(restoreSelectedItemsAction, SIGNAL(triggered()), SLOT(sl_onRestoreSelectedItems()));
     tree->addAction(restoreSelectedItemsAction);
@@ -938,7 +883,7 @@ void ProjectTreeController::connectToResourceTracker() {
     foreach (Document* doc, AppContext::getProject()->getDocuments()) {
         QString resName = LoadUnloadedDocumentTask::getResourceName(doc);
         QList<Task*> users = AppContext::getResourceTracker()->getResourceUsers(resName);
-        foreach (Task* t, users) {
+        for (Task* t : qAsConst(users)) {
             sl_onResourceUserRegistered(resName, t);
         }
     }

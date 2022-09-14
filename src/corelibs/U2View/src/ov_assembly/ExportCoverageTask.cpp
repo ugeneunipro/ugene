@@ -135,7 +135,7 @@ void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo>* regionCo
     CHECK(alphabetChars.size() == 4, );
     foreach (const CoveragePerBaseInfo& info, *regionCoverage) {
         QList<char> chars = info.basesCount.keys();
-        foreach (char curChar, chars) {
+        for (char curChar : qAsConst(chars)) {
             if (EXTENDED_CHARACTERS.contains(curChar)) {
                 alphabetChars.append(EXTENDED_CHARACTERS);
                 return;
@@ -240,12 +240,12 @@ void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo>* 
     foreach (const CoveragePerBaseInfo& info, *data) {
         alreadyProcessed++;
 
-        const bool coverageSatisfy = settings.exportCoverage && (settings.threshold <= info.coverage);
+        bool coverageSatisfy = settings.exportCoverage && (settings.threshold <= info.coverage);
         int baseCountsScore = 0;
-        foreach (char curChar, alphabetChars) {
+        for (char curChar : qAsConst(alphabetChars)) {
             baseCountsScore += info.basesCount.value(curChar, 0);
         }
-        const bool basesCountSatisfy = settings.exportBasesCount && (settings.threshold <= baseCountsScore);
+        bool basesCountSatisfy = settings.exportBasesCount && (settings.threshold <= baseCountsScore);
         if (!coverageSatisfy && !basesCountSatisfy) {
             continue;
         }

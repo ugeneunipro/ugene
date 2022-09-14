@@ -33,7 +33,6 @@
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/AssemblyConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
-#include <U2Algorithm/CudaGpuRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
@@ -235,9 +234,6 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
     sspar = new SecStructPredictAlgRegistry();
     appContext->setSecStructPedictAlgRegistry(sspar);
 
-    cgr = new CudaGpuRegistry();
-    appContext->setCudaGpuRegistry(cgr);
-
     alignmentAlgorithmRegistry = new AlignmentAlgorithmsRegistry();
     appContext->setAlignmentAlgorithmsRegistry(alignmentAlgorithmRegistry);
 
@@ -294,7 +290,7 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
 
     t1.stop();
     QObject::connect(psp, SIGNAL(si_allStartUpPluginsLoaded()), &app, SLOT(quit()));
-    app.exec();
+    QCoreApplication::exec();
 }
 
 UgeneContextWrapper::~UgeneContextWrapper() {
@@ -357,9 +353,6 @@ UgeneContextWrapper::~UgeneContextWrapper() {
     delete resTrack;
     appContext->setResourceTracker(nullptr);
 
-    delete cgr;
-    appContext->setCudaGpuRegistry(nullptr);
-
 #ifdef OPENCL_SUPPORT
     delete oclgr;
     appContext->setOpenCLGpuRegistry(nullptr);
@@ -419,7 +412,7 @@ int UgeneContextWrapper::processTask(Task* task) {
                      .arg(Version::appArchitecture));
     ts->registerTopLevelTask(task);
     QObject::connect(ts, SIGNAL(si_topLevelTaskUnregistered(Task*)), &app, SLOT(quit()));
-    return app.exec();
+    return QCoreApplication::exec();
 }
 
 // TODO: fix this dummy check

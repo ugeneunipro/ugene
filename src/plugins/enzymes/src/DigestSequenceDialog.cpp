@@ -338,7 +338,7 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
     QSet<AnnotationTableObject*> aObjs = seqCtx->getAnnotationObjects(false);
     foreach (AnnotationTableObject* aObj, aObjs) {
         QList<Annotation*> anns = aObj->getAnnotations();
-        foreach (Annotation* a, anns) {
+        for (Annotation* a : qAsConst(anns)) {
             const SharedAnnotationData& d = a->getData();
             auto location = U1AnnotationUtils::buildLocationString(d);
             auto itemText = QString("%1 %2").arg(d->name).arg(location);

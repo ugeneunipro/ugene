@@ -123,18 +123,19 @@ Task::ReportResult GTest_AddPartToSequenceTask::report() {
         if (strat != U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Separate) {
             Document* loadedDocument = getContext<Document>(this, docName);
             QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            foreach (GObject* table, annotationTablesList) {
+            for (GObject* table : qAsConst(annotationTablesList)) {
                 AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
                 foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                     if (curentAnnotation->getName() == annotationName) {
                         int i = 0;
-                        if (curentAnnotation->getRegions().size() != expectedRegions.size()) {
+                        QVector<U2Region> regions = curentAnnotation->getRegions();
+                        if (regions.size() != expectedRegions.size()) {
                             stateInfo.setError(GTest::tr("Regions is incorrect. Expected size:%1 Actual size:%2")
                                                    .arg(expectedRegions.size())
-                                                   .arg(curentAnnotation->getRegions().size()));
+                                                   .arg(regions.size()));
                             break;
                         }
-                        foreach (const U2Region& curRegion, curentAnnotation->getRegions()) {
+                        for (const U2Region& curRegion : qAsConst(regions)) {
                             if (curRegion != expectedRegions.at(i)) {
                                 stateInfo.setError(GTest::tr("Regions is incorrect. Expected:%3,%4, but Actual:%1,%2")
                                                        .arg(curRegion.startPos)
@@ -151,11 +152,12 @@ Task::ReportResult GTest_AddPartToSequenceTask::report() {
         } else {
             Document* loadedDocument = getContext<Document>(this, docName);
             QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            foreach (GObject* table, annotationTablesList) {
+            for (GObject* table : qAsConst(annotationTablesList)) {
                 AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
                 foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                     if (curentAnnotation->getName() == annotationName) {
-                        foreach (const U2Region& curRegion, curentAnnotation->getRegions()) {
+                        QVector<U2Region> regions = curentAnnotation->getRegions();
+                        for (const U2Region& curRegion : qAsConst(regions)) {
                             if (!expectedRegions.contains(curRegion)) {
                                 stateInfo.setError(GTest::tr("Regions is incorrect. actual region didn't found in expected region list"));
                             }
@@ -254,18 +256,19 @@ Task::ReportResult GTest_RemovePartFromSequenceTask::report() {
     if (annotationName.length() != 0) {
         Document* loadedDocument = getContext<Document>(this, docName);
         QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject* table, annotationTablesList) {
+        for (GObject* table : qAsConst(annotationTablesList)) {
             AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
             foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                 if (curentAnnotation->getName() == annotationName) {
                     int i = 0;
-                    if (curentAnnotation->getRegions().size() != expectedRegions.size()) {
+                    QVector<U2Region> currentAnnotationRegions = curentAnnotation->getRegions();
+                    if (currentAnnotationRegions.size() != expectedRegions.size()) {
                         stateInfo.setError(GTest::tr("Regions is incorrect. Expected size:%1 Actual size:%2")
                                                .arg(expectedRegions.size())
-                                               .arg(curentAnnotation->getRegions().size()));
+                                               .arg(currentAnnotationRegions.size()));
                         break;
                     }
-                    foreach (const U2Region& curRegion, curentAnnotation->getRegions()) {
+                    for (const U2Region& curRegion : qAsConst(currentAnnotationRegions)) {
                         if (curRegion != expectedRegions.at(i)) {
                             stateInfo.setError(GTest::tr("Regions is incorrect. Expected:%3,%4, but Actual:%1,%2")
                                                    .arg(curRegion.startPos)
@@ -382,18 +385,19 @@ Task::ReportResult GTest_ReplacePartOfSequenceTask::report() {
     if (!annotationName.isEmpty()) {
         Document* loadedDocument = getContext<Document>(this, docName);
         QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject* table, annotationTablesList) {
+        for (GObject* table : qAsConst(annotationTablesList)) {
             AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
             foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                 if (curentAnnotation->getName() == annotationName) {
                     int i = 0;
-                    if (curentAnnotation->getRegions().size() != expectedRegions.size()) {
+                    QVector<U2Region> currentAnnotationRegions = curentAnnotation->getRegions();
+                    if (currentAnnotationRegions.size() != expectedRegions.size()) {
                         stateInfo.setError(GTest::tr("Regions is incorrect. Expected size:%1 Actual size:%2")
                                                .arg(expectedRegions.size())
-                                               .arg(curentAnnotation->getRegions().size()));
+                                               .arg(currentAnnotationRegions.size()));
                         break;
                     }
-                    foreach (const U2Region& curRegion, curentAnnotation->getRegions()) {
+                    for (const U2Region& curRegion : currentAnnotationRegions) {
                         if (curRegion != expectedRegions.at(i)) {
                             stateInfo.setError(GTest::tr("Regions is incorrect. Expected:%3,%4, but Actual:%1,%2")
                                                    .arg(curRegion.startPos)

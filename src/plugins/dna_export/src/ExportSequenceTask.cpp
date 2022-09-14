@@ -604,7 +604,7 @@ void ExportAnnotationSequenceSubTask::run() {
             coreLog.info(tr("Exported sequence has been deleted unexpectedly"));
             continue;
         }
-        foreach (const SharedAnnotationData& ad, ei.annotations) {
+        for (const SharedAnnotationData& ad : qAsConst(ei.annotations)) {
             QVector<U2Region> resultRegions;
             const U2Sequence annSeqDbiObject = importAnnotatedSeq2Dbi(ad, ei, dbiRef, resultRegions, stateInfo);
             CHECK_OP(stateInfo, );

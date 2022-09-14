@@ -27,6 +27,7 @@
 #include <QPen>
 #include <QStack>
 
+#include <U2Core/Log.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -91,7 +92,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
     if (collapsed) {
         drawCollapsedRegion();
     } else {
-        setSelectedRecurs(true, true);
+        setSelected(true);
     }
     getRoot()->emitBranchCollapsed(this);
 }
@@ -169,11 +170,11 @@ void GraphicsRectangularBranchItem::setHeight(double newHeight) {
     height = newHeight;
 }
 
-void GraphicsRectangularBranchItem::setHeightCoef(int newCoef) {
-    CHECK(newCoef != currentHeightCoef, );
-    SAFE_POINT(newCoef > 0, "Invalid newCoef", );
-    double newHeight = height * newCoef / currentHeightCoef;
-    currentHeightCoef = newCoef;
+void GraphicsRectangularBranchItem::setBreathScaleAdjustment(double newBreadthScaleAdjustment) {
+    SAFE_POINT(newBreadthScaleAdjustment > 0, "Illegal breadth scale adjustment: " + QString::number(newBreadthScaleAdjustment), )
+    CHECK(newBreadthScaleAdjustment != breadthScaleAdjustment, )
+    double newHeight = height * newBreadthScaleAdjustment / breadthScaleAdjustment;
+    breadthScaleAdjustment = newBreadthScaleAdjustment;
     setHeight(newHeight);
 }
 
@@ -188,12 +189,7 @@ void GraphicsRectangularBranchItem::swapSiblings() {
 
 // TODO: move to the algorithm.
 void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyNode* root) {
-    const PhyNode* node = nullptr;
-    if (phyBranch) {
-        node = phyBranch->node2;
-    } else if (root) {
-        node = root;
-    }
+    const PhyNode* node = phyBranch ? phyBranch->node2 : root;
     CHECK(node != nullptr, );
 
     int branches = node->branchCount();
@@ -248,7 +244,6 @@ void GraphicsRectangularBranchItem::recalculateBranches(int& current, const PhyN
                 items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
                 items[i]->setWidthW(dist);
                 items[i]->setDist(dist);
-                items[i]->setHeightCoefW(1);
                 items[i]->setParentItem(item);
                 QRectF rect = items[i]->getDistanceTextItem()->boundingRect();
                 items[i]->getDistanceTextItem()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
@@ -278,10 +273,6 @@ GraphicsRectangularBranchItem::Side GraphicsRectangularBranchItem::getSide() con
 
 double GraphicsRectangularBranchItem::getHeight() const {
     return height;
-}
-
-void GraphicsRectangularBranchItem::setHeightCoefW(int coef) {
-    currentHeightCoef = coef;
 }
 
 const PhyBranch* GraphicsRectangularBranchItem::getPhyBranch() const {

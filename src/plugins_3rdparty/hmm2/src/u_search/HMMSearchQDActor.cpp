@@ -87,7 +87,7 @@ Task* HMM2QDActor::getAlgorithmTask(const QVector<U2Region>& location) {
     stngs.domT = (float)cfg->getParameter(DOM_T_ATTR)->getAttributeValueWithoutScript<double>();
     stngs.eValueNSeqs = cfg->getParameter(NSEQ_ATTR)->getAttributeValueWithoutScript<int>();
 
-    foreach (QString hmmFile, hmmFiles) {
+    for (const QString& hmmFile : qAsConst(hmmFiles)) {
         foreach (U2Region r, location) {
             DNASequence sequence;
             sequence.seq = QByteArray(seq + r.startPos, r.length);
@@ -109,7 +109,7 @@ void HMM2QDActor::sl_onTaskFinished(Task*) {
     foreach (HMMSearchTask* t, offsets.keys()) {
         QList<SharedAnnotationData> annotations = t->getResultsAsAnnotations(U2FeatureTypes::MiscSignal, aname);
         int offset = offsets.value(t);
-        foreach (const SharedAnnotationData& d, annotations) {
+        for (const SharedAnnotationData& d : qAsConst(annotations)) {
             U2Region r = d->location->regions.first();
             if (r.length < getMinResultLen() || r.length > getMaxResultLen()) {
                 continue;

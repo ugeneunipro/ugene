@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,44 +82,6 @@ void GTMainWindow::checkTitle(GUITestOpStatus& os, const QString& title) {
         }
     }
     GT_FAIL(QString("Can't find window with the title: '%1'").arg(title), );
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "maximizeMainWindow"
-void GTMainWindow::maximizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
-    class MaximizeMainWindowScenario : public CustomScenario {
-    public:
-        MaximizeMainWindowScenario(QMainWindow* mw)
-            : mainWindow(mw) {
-        }
-        void run(HI::GUITestOpStatus&) override {
-            mainWindow->setWindowState(mainWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
-        }
-        QMainWindow* mainWindow;
-    };
-    // Minimize main window.
-    GTThread::runInMainThread(os, new MaximizeMainWindowScenario(mainWindow));
-    // Wait for OS to complete the op.
-    GTGlobals::sleep(1500);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "minimizeMainWindow"
-void GTMainWindow::minimizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
-    class MinimizeMainWindowScenario : public CustomScenario {
-    public:
-        MinimizeMainWindowScenario(QMainWindow* mw)
-            : mainWindow(mw) {
-        }
-        void run(HI::GUITestOpStatus&) override {
-            mainWindow->setWindowState(mainWindow->windowState() | Qt::WindowMinimized);
-        }
-        QMainWindow* mainWindow;
-    };
-    // Minimize main window.
-    GTThread::runInMainThread(os, new MinimizeMainWindowScenario(mainWindow));
-    // Wait for OS to complete the op.
-    GTGlobals::sleep(1500);
 }
 #undef GT_METHOD_NAME
 

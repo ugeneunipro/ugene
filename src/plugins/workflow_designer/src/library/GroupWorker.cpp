@@ -121,7 +121,8 @@ Task* GroupWorker::tick() {
         groupSize[foundId] = groupSize[foundId] + 1;
     }
     if (inChannel->isEnded()) {
-        foreach (int id, groupedData.keys()) {
+        QList<int> groupKeys = groupedData.keys();
+        for (int id : qAsConst(groupKeys)) {
             QMap<QString, ActionPerformer*> perfs = groupedData[id];
 
             QVariantMap data;
@@ -155,7 +156,8 @@ Task* GroupWorker::tick() {
 }
 
 void GroupWorker::cleanup() {
-    foreach (const PerformersMap& perfs, groupedData.values()) {
+    QList<PerformersMap> performers = groupedData.values();
+    for (const PerformersMap& perfs : qAsConst(performers)) {
         foreach (ActionPerformer* p, perfs.values()) {
             delete p;
         }

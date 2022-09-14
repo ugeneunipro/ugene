@@ -1176,7 +1176,8 @@ static void setFlows(WorkflowSchemaReaderData& data) {
     } else {
         FlowGraph graph(data.dataflowLinks);
         graph.minimize();
-        foreach (Port* input, graph.graph.keys()) {
+        QList<Port*> ports = graph.graph.keys();
+        for (Port* input : qAsConst(ports)) {
             foreach (Port* output, graph.graph.value(input)) {
                 tryToConnect(data.schema, input, output);
             }
@@ -1185,14 +1186,15 @@ static void setFlows(WorkflowSchemaReaderData& data) {
 }
 
 void HRSchemaSerializer::addEmptyValsToBindings(const QList<Actor*>& procs) {
-    foreach (Actor* actor, procs) {
+    for (Actor* actor : qAsConst(procs)) {
         foreach (Port* p, actor->getInputPorts()) {
             IntegralBusPort* port = qobject_cast<IntegralBusPort*>(p);
             StrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             DataTypePtr t = port->Port::getType();
             assert(t->isMap());
             QMap<Descriptor, DataTypePtr> typeMap = t->getDatatypesMap();
-            foreach (const Descriptor& d, typeMap.keys()) {
+            QList<Descriptor> descriptors = typeMap.keys();
+            for (const Descriptor& d : qAsConst(descriptors)) {
                 if (!busMap.contains(d.getId())) {
                     port->setBusMapValue(d.getId(), "");
                 }
@@ -1238,9 +1240,11 @@ void HRSchemaSerializer::postProcessing(Schema* schema) {
         CHECK(a != nullptr, );
         ActorPrototype* proto = a->getProto();
         CHECK(proto != nullptr, );
-        foreach (Attribute* attr, proto->getAttributes()) {
+        QList<Attribute*> attributes = proto->getAttributes();
+        for (Attribute* attr : qAsConst(attributes)) {
             CHECK(attr != nullptr, );
-            foreach (PortRelationDescriptor* pd, attr->getPortRelations()) {
+            QList<PortRelationDescriptor*> portRelations = attr->getPortRelations();
+            for (PortRelationDescriptor* pd : qAsConst(portRelations)) {
                 Port* p = a->getPort(pd->getPortId());
                 CHECK(p != nullptr, );
                 CHECK(a->hasParameter(attr->getId()), );
@@ -1436,7 +1440,8 @@ QString HRSchemaSerializer::grouperOutSlotsDefinition(Attribute* attribute) {
         if (nullptr != action) {
             QString actionBlock;
             actionBlock += makeEqualsPair(Constants::TYPE_ATTR, action->getType(), 4);
-            foreach (const QString& paramId, action->getParameters().keys()) {
+            QList<QString> parameters = action->getParameters().keys();
+            for (const QString& paramId : qAsConst(parameters)) {
                 QVariant value = action->getParameterValue(paramId);
                 actionBlock += makeEqualsPair(paramId, value.toString(), 4);
             }
@@ -1545,7 +1550,7 @@ private:
 
 static QString inUrlDefinitionBlocks(const QString& attrId, const QList<Dataset>& sets, int depth) {
     QString res;
-    foreach (const Dataset& dSet, sets) {
+    for (const Dataset& dSet : qAsConst(sets)) {
         QString setDef;
         setDef += HRSchemaSerializer::makeEqualsPair(Constants::DATASET_NAME, dSet.getName(), depth + 1);
         foreach (URLContainer* url, dSet.getUrls()) {
@@ -1721,7 +1726,8 @@ static QString actorBindingsBlock(const ActorBindingsGraph& graph, const HRSchem
     foreach (Port* srcPort, graph.getBindings().keys()) {
         QString srcActorId = nmap[srcPort->owner()->getId()];
         QString srcPortId = srcPort->getId();
-        foreach (Port* dstPort, graph.getBindings().value(srcPort)) {
+        QList<Port*> ports = graph.getBindings().value(srcPort);
+        for (Port* dstPort : qAsConst(ports)) {
             QString dstActorId = nmap[dstPort->owner()->getId()];
             QString dstPortId = dstPort->getId();
 
@@ -1751,21 +1757,22 @@ static bool containsProcWithId(const QList<Actor*>& procs, const ActorId& id) {
 
 QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const NamesMap& nmap) {
     QString res;
-    foreach (Actor* actor, procs) {
+    for (Actor* actor : qAsConst(procs)) {
         foreach (Port* inputPort, actor->getEnabledInputPorts()) {
             StrStrMap busMap = inputPort->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(inputPort);
 
-            foreach (const QString& key, busMap.keys()) {
+            const QList<QString>& keys = busMap.keys();
+            for (const QString& key : qAsConst(keys)) {
                 QStringList srcList = busMap.value(key).split(";", QString::SkipEmptyParts);
                 QStringList uniqList;
-                foreach (QString src, srcList) {
+                for (QString src : qAsConst(srcList)) {
                     if (!uniqList.contains(src)) {
                         uniqList << src;
                     }
                 }
 
-                foreach (QString src, uniqList) {
+                for (QString src : qAsConst(uniqList)) {
                     if (src.isEmpty()) {
                         continue;
                     }
@@ -1781,7 +1788,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const
                         if (paths.isEmpty()) {
                             res += makeIndent(1) + arrowPair + Constants::NEW_LINE;
                         } else {
-                            foreach (const QStringList& path, paths) {
+                            for (const QStringList& path : qAsConst(paths)) {
                                 QString pathString = path.join(", ");
                                 QString pair = makeEqualsPair(Constants::PATH_THROUGH, pathString, 2);
                                 res += makeBlock(arrowPair, Constants::NO_NAME, pair);
@@ -1850,7 +1857,7 @@ static QString metaData(const Schema& schema, const Metadata* meta, const HRSche
 
 QString HRSchemaSerializer::schemaParameterAliases(const QList<Actor*>& procs, const NamesMap& nmap) {
     QString res;
-    foreach (Actor* actor, procs) {
+    for (Actor* actor : qAsConst(procs)) {
         const QMap<QString, QString>& aliases = actor->getParamAliases();
         foreach (const QString& attrId, aliases.uniqueKeys()) {
             QString pairs;

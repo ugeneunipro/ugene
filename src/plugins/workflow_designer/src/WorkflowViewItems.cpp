@@ -283,7 +283,7 @@ void WorkflowProcessItem::paint(QPainter* painter, const QStyleOptionGraphicsIte
 }
 
 void WorkflowProcessItem::updatePorts() {
-    foreach (WorkflowPortItem* pit, ports) {
+    for (WorkflowPortItem* pit : qAsConst(ports)) {
         pit->setPos(pos());
         foreach (WorkflowBusItem* bit, pit->getDataFlows()) {
             bit->updatePos();
@@ -621,8 +621,9 @@ static bool checkTypes(Port* p1, Port* p2) {
     Port* op = p1->isInput() ? p2 : p1;
     DataTypePtr idt = ip->getType();
     DataTypePtr odt = op->getType();
+    QList<Descriptor> odtDescriptors = odt->getAllDescriptors();
     if (idt->isSingle() && odt->isMap()) {
-        foreach (Descriptor d, odt->getAllDescriptors()) {
+        foreach (Descriptor d, odtDescriptors) {
             if (idt == odt->getDatatypeByDescriptor(d))
                 return true;
         }
@@ -633,7 +634,7 @@ static bool checkTypes(Port* p1, Port* p2) {
             return proto->isAllowsEmptyPorts();
         }
         foreach (Descriptor d1, idt->getAllDescriptors()) {
-            foreach (Descriptor d2, odt->getAllDescriptors()) {
+            for (const Descriptor& d2 : qAsConst(odtDescriptors)) {
                 if (idt->getDatatypeByDescriptor(d1) == odt->getDatatypeByDescriptor(d2))
                     return true;
             }

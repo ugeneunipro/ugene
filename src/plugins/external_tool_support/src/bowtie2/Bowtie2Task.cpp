@@ -259,8 +259,8 @@ void Bowtie2Task::prepare() {
         settings.refSeqUrl = GUrl(QFileInfo(temp).absoluteFilePath());
     }
 
+    QString indexFileName = settings.indexFileName;
     if (!settings.prebuiltIndex) {
-        QString indexFileName = settings.indexFileName;
         if (indexFileName.isEmpty()) {
             if (isBuildOnlyTask) {
                 indexFileName = settings.refSeqUrl.dirPath() + "/" + settings.refSeqUrl.baseFileName();
@@ -281,6 +281,15 @@ void Bowtie2Task::prepare() {
     } else if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);
     } else if (!isBuildOnlyTask) {
+        if (!indexFileName.isEmpty()) {
+            for (const QString& indexSuffix : indexSuffixes) {
+                QFileInfo indexFileInfo(indexFileName + indexSuffix);
+                if (!indexFileInfo.exists()) {
+                    stateInfo.setError(tr("Index file \"%1\" does not exist").arg(indexFileInfo.absoluteFilePath()));
+                    return;
+                }
+            }
+        }
         addSubTask(alignTask);
     } else {
         assert(false);

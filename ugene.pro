@@ -66,10 +66,6 @@ SUBDIRS += \
           src/plugins/weight_matrix \
           src/plugins/workflow_designer
 
-use_cuda() {
-    SUBDIRS += src/plugins/cuda_support
-}
-
 use_opencl() {
     SUBDIRS += src/plugins/opencl_support
 }

@@ -20,47 +20,35 @@
  */
 
 #include "SelectModelsDialog.h"
-#include <cassert>
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Gui/HelpButton.h>
 
-#include "SettingsDialog.h"
-
 namespace U2 {
 
-SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& selectedModelIds, QWidget* parent /* = 0*/)
+SelectModelsDialog::SelectModelsDialog(const QList<int>& _modelIds, const QList<int>& initiallySelectedModelIds, QWidget* parent)
     : QDialog(parent), Ui_SelectModelsDialog(), modelIds(_modelIds) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929544");
-    buttonBox_1->button(QDialogButtonBox::Cancel)->setText(::U2::SelectModelsDialog::tr("All"));
-    buttonBox_1->button(QDialogButtonBox::No)->setText(::U2::SelectModelsDialog::tr("Invert"));
-    buttonBox->button(QDialogButtonBox::Ok)->setText(::U2::SelectModelsDialog::tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(::U2::SelectModelsDialog::tr("Cancel"));
 
     for (int modelId : qAsConst(modelIds)) {
         auto it = new QListWidgetItem(QString::number(modelId));
-        it->setCheckState(selectedModelIds.contains(modelId) ? Qt::Checked : Qt::Unchecked);
+        it->setCheckState(initiallySelectedModelIds.contains(modelId) ? Qt::Checked : Qt::Unchecked);
         modelsList->addItem(it);
     }
 
-    connect(modelsList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(sl_onItemDoubleClicked(QListWidgetItem*)));
-
-    QPushButton* allButton = buttonBox_1->button(QDialogButtonBox::Cancel);
-    QPushButton* invertButton = buttonBox_1->button(QDialogButtonBox::No);
-
-    connect(allButton, SIGNAL(clicked()), this, SLOT(sl_onSlectAll()));
-    connect(invertButton, SIGNAL(clicked()), this, SLOT(sl_onInvertSelection()));
+    connect(modelsList, &QListWidget::itemDoubleClicked, this, &SelectModelsDialog::sl_onItemDoubleClicked);
+    connect(selectAllButton, &QPushButton::clicked, this, &SelectModelsDialog::sl_onSelectAll);
+    connect(invertSelectionButton, &QPushButton::clicked, this, &SelectModelsDialog::sl_onInvertSelection);
 }
 
 /** Toggle item by double click */
 void SelectModelsDialog::sl_onItemDoubleClicked(QListWidgetItem* item) {
-    item->setCheckState((item->checkState() == Qt::Unchecked) ? Qt::Checked : Qt::Unchecked);
+    item->setCheckState(item->checkState() == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
 }
 
-void SelectModelsDialog::sl_onSlectAll() {
+void SelectModelsDialog::sl_onSelectAll() {
     for (int i = 0; i < modelsList->count(); ++i) {
         modelsList->item(i)->setCheckState(Qt::Checked);
     }
@@ -69,7 +57,7 @@ void SelectModelsDialog::sl_onSlectAll() {
 void SelectModelsDialog::sl_onInvertSelection() {
     for (int i = 0; i < modelsList->count(); ++i) {
         QListWidgetItem* item = modelsList->item(i);
-        item->setCheckState((item->checkState() == Qt::Unchecked) ? Qt::Checked : Qt::Unchecked);
+        item->setCheckState(item->checkState() == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
     }
 }
 
@@ -91,9 +79,6 @@ void SelectModelsDialog::accept() {
 
 const QList<int>& SelectModelsDialog::getSelectedModelsIds() const {
     return selectedModelIds;
-}
-
-SelectModelsDialog::~SelectModelsDialog() {
 }
 
 }  // namespace U2

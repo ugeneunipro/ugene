@@ -42,7 +42,6 @@ public:
         assemblyConsensusAlgoRegistry = nullptr;
         cdsfr = nullptr;
         cfr = nullptr;
-        cgr = nullptr;
         cmdLineRegistry = nullptr;
         credentialsAsker = nullptr;
         dal = nullptr;
@@ -107,7 +106,7 @@ public:
         workingDirectoryPath = "";
     }
 
-    ~AppContextImpl();
+    ~AppContextImpl() override;
 
     void setPluginSupport(PluginSupport* _ps) {
         assert(ps == nullptr || _ps == nullptr);
@@ -257,11 +256,6 @@ public:
     void setSecStructPedictAlgRegistry(SecStructPredictAlgRegistry* _sspar) {
         assert(secStructPredictRegistry == nullptr || _sspar == nullptr);
         secStructPredictRegistry = _sspar;
-    }
-
-    void setCudaGpuRegistry(CudaGpuRegistry* _cgr) {
-        assert(cgr == nullptr || _cgr == nullptr);
-        cgr = _cgr;
     }
 
     void setOpenCLGpuRegistry(OpenCLGpuRegistry* _oclgr) {
@@ -453,7 +447,7 @@ public:
         guiMode = v;
     }
 
-    void _setActiveWindowName(const QString& name) {
+    void _setActiveWindowName(const QString& name) override {
         activeWindow = name;
     }
 
@@ -465,223 +459,220 @@ public:
     static AppContextImpl* getApplicationContext();
 
 protected:
-    virtual PluginSupport* _getPluginSupport() const {
+    PluginSupport* _getPluginSupport() const override {
         return ps;
     }
-    virtual ServiceRegistry* _getServiceRegistry() const {
+    ServiceRegistry* _getServiceRegistry() const override {
         return sr;
     }
-    virtual ProjectLoader* _getProjectLoader() const {
+    ProjectLoader* _getProjectLoader() const override {
         return pl;
     }
-    virtual Project* _getProject() const {
+    Project* _getProject() const override {
         return prj;
     }
-    virtual ProjectService* _getProjectService() const {
+    ProjectService* _getProjectService() const override {
         return prs;
     }
-    virtual MainWindow* _getMainWindow() const {
+    MainWindow* _getMainWindow() const override {
         return mw;
     }
-    virtual ProjectView* _getProjectView() const {
+    ProjectView* _getProjectView() const override {
         return pv;
     }
-    virtual PluginViewer* _getPluginViewer() const {
+    PluginViewer* _getPluginViewer() const override {
         return plv;
     }
-    virtual Settings* _getSettings() const {
+    Settings* _getSettings() const override {
         return ss;
     }
-    virtual Settings* _getGlobalSettings() const {
+    Settings* _getGlobalSettings() const override {
         return gs;
     }
-    virtual AppSettings* _getAppSettings() const {
+    AppSettings* _getAppSettings() const override {
         return as;
     }
-    virtual AppSettingsGUI* _getAppSettingsGUI() const {
+    AppSettingsGUI* _getAppSettingsGUI() const override {
         return asg;
     }
 
-    virtual DocumentFormatRegistry* _getDocumentFormatRegistry() const {
+    DocumentFormatRegistry* _getDocumentFormatRegistry() const override {
         return dfr;
     }
-    virtual IOAdapterRegistry* _getIOAdapterRegistry() const {
+    IOAdapterRegistry* _getIOAdapterRegistry() const override {
         return io;
     }
-    virtual DNATranslationRegistry* _getDNATranslationRegistry() const {
+    DNATranslationRegistry* _getDNATranslationRegistry() const override {
         return dtr;
     }
-    virtual DNAAlphabetRegistry* _getDNAAlphabetRegistry() const {
+    DNAAlphabetRegistry* _getDNAAlphabetRegistry() const override {
         return dal;
     }
-    virtual GObjectViewFactoryRegistry* _getObjectViewFactoryRegistry() const {
+    GObjectViewFactoryRegistry* _getObjectViewFactoryRegistry() const override {
         return ovfr;
     }
-    virtual TaskScheduler* _getTaskScheduler() const {
+    TaskScheduler* _getTaskScheduler() const override {
         return ts;
     }
-    virtual ResourceTracker* _getResourceTracker() const {
+    ResourceTracker* _getResourceTracker() const override {
         return rt;
     }
-    virtual AnnotationSettingsRegistry* _getAnnotationsSettingsRegistry() const {
+    AnnotationSettingsRegistry* _getAnnotationsSettingsRegistry() const override {
         return asr;
     }
-    virtual TestFramework* _getTestFramework() const {
+    TestFramework* _getTestFramework() const override {
         return tf;
     }
-    virtual DBXRefRegistry* _getDBXRefRegistry() const {
+    DBXRefRegistry* _getDBXRefRegistry() const override {
         return dbxr;
     }
-    virtual SubstMatrixRegistry* _getSubstMatrixRegistry() const {
+    SubstMatrixRegistry* _getSubstMatrixRegistry() const override {
         return smr;
     }
-    virtual SmithWatermanTaskFactoryRegistry* _getSmithWatermanTaskFactoryRegistry() const {
+    SmithWatermanTaskFactoryRegistry* _getSmithWatermanTaskFactoryRegistry() const override {
         return swar;
     }
-    virtual PhyTreeGeneratorRegistry* _getPhyTreeGeneratorRegistry() const {
+    PhyTreeGeneratorRegistry* _getPhyTreeGeneratorRegistry() const override {
         return treeGeneratorRegistry;
     }
 
-    virtual MolecularSurfaceFactoryRegistry* _getMolecularSurfaceFactoryRegistry() const {
+    MolecularSurfaceFactoryRegistry* _getMolecularSurfaceFactoryRegistry() const override {
         return msfr;
     }
-    virtual SWResultFilterRegistry* _getSWResultFilterRegistry() const {
+    SWResultFilterRegistry* _getSWResultFilterRegistry() const override {
         return swrfr;
     }
-    virtual SWMulAlignResultNamesTagsRegistry* _getSWMulAlignResultNamesTagsRegistry() const {
+    SWMulAlignResultNamesTagsRegistry* _getSWMulAlignResultNamesTagsRegistry() const override {
         return swmarntr;
     }
-    virtual MsaColorSchemeRegistry* _getMsaColorSchemeRegistry() const {
+    MsaColorSchemeRegistry* _getMsaColorSchemeRegistry() const override {
         return mcsr;
     }
-    virtual MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const {
+    MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const override {
         return mhsr;
     }
-    virtual SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const {
+    SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const override {
         return secStructPredictRegistry;
     }
-    virtual CudaGpuRegistry* _getCudaGpuRegistry() const {
-        return cgr;
-    }
-    virtual OpenCLGpuRegistry* _getOpenCLGpuRegistry() const {
+    OpenCLGpuRegistry* _getOpenCLGpuRegistry() const override {
         return oclgr;
     }
-    virtual RecentlyDownloadedCache* _getRecentlyDownloadedCache() const {
+    RecentlyDownloadedCache* _getRecentlyDownloadedCache() const override {
         return rdc;
     }
-    virtual ProtocolInfoRegistry* _getProtocolInfoRegistry() const {
+    ProtocolInfoRegistry* _getProtocolInfoRegistry() const override {
         return protocolInfoRegistry;
     }
-    virtual RemoteMachineMonitor* _getRemoteMachineMonitor() const {
+    RemoteMachineMonitor* _getRemoteMachineMonitor() const override {
         return remoteMachineMonitor;
     }
-    virtual CMDLineRegistry* _getCMDLineRegistry() const {
+    CMDLineRegistry* _getCMDLineRegistry() const override {
         return cmdLineRegistry;
     }
-    virtual MSAConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const {
+    MSAConsensusAlgorithmRegistry* _getMSAConsensusAlgorithmRegistry() const override {
         return msaConsensusAlgoRegistry;
     }
-    virtual MSADistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const {
+    MSADistanceAlgorithmRegistry* _getMSADistanceAlgorithmRegistry() const override {
         return msaDistanceAlgoRegistry;
     }
-    virtual AssemblyConsensusAlgorithmRegistry* _getAssemblyConsensusAlgorithmRegistry() const {
+    AssemblyConsensusAlgorithmRegistry* _getAssemblyConsensusAlgorithmRegistry() const override {
         return assemblyConsensusAlgoRegistry;
     }
-    virtual PWMConversionAlgorithmRegistry* _getPWMConversionAlgorithmRegistry() const {
+    PWMConversionAlgorithmRegistry* _getPWMConversionAlgorithmRegistry() const override {
         return pwmConversionAlgoRegistry;
     }
-    virtual VirtualFileSystemRegistry* _getVirtualFileSystemRegistry() const {
+    VirtualFileSystemRegistry* _getVirtualFileSystemRegistry() const override {
         return virtualFileSystemRegistry;
     }
-    virtual DnaAssemblyAlgRegistry* _getDnaAssemblyAlgRegistry() const {
+    DnaAssemblyAlgRegistry* _getDnaAssemblyAlgRegistry() const override {
         return dnaAssemblyAlgRegistry;
     }
-    virtual GenomeAssemblyAlgRegistry* _getGenomeAssemblyAlgRegistry() const {
+    GenomeAssemblyAlgRegistry* _getGenomeAssemblyAlgRegistry() const override {
         return genomeAssemblyAlgRegistry;
     }
-    virtual DataBaseRegistry* _getDataBaseRegistry() const {
+    DataBaseRegistry* _getDataBaseRegistry() const override {
         return dataBaseRegistry;
     }
-    virtual ExternalToolRegistry* _getExternalToolRegistry() const {
+    ExternalToolRegistry* _getExternalToolRegistry() const override {
         return externalToolRegistry;
     }
-    virtual RepeatFinderTaskFactoryRegistry* _getRepeatFinderTaskFactoryRegistry() const {
+    RepeatFinderTaskFactoryRegistry* _getRepeatFinderTaskFactoryRegistry() const override {
         return rfr;
     }
-    virtual QDActorPrototypeRegistry* _getQDActorFactoryRegistry() const {
+    QDActorPrototypeRegistry* _getQDActorFactoryRegistry() const override {
         return qdafr;
     }
-    virtual StructuralAlignmentAlgorithmRegistry* _getStructuralAlignmentAlgorithmRegistry() const {
+    StructuralAlignmentAlgorithmRegistry* _getStructuralAlignmentAlgorithmRegistry() const override {
         return saar;
     }
-    virtual AutoAnnotationsSupport* _getAutoAnnotationsSupport() const {
+    AutoAnnotationsSupport* _getAutoAnnotationsSupport() const override {
         return aaSupport;
     }
-    virtual CDSearchFactoryRegistry* _getCDSFactoryRegistry() const {
+    CDSearchFactoryRegistry* _getCDSFactoryRegistry() const override {
         return cdsfr;
     }
-    virtual U2DbiRegistry* _getDbiRegistry() const {
+    U2DbiRegistry* _getDbiRegistry() const override {
         return dbiRegistry;
     }
-    virtual UdrSchemaRegistry* _getUdrSchemaRegistry() const {
+    UdrSchemaRegistry* _getUdrSchemaRegistry() const override {
         return udrSchemaRegistry;
     }
-    virtual SplicedAlignmentTaskRegistry* _getSplicedAlignmentTaskRegistry() const {
+    SplicedAlignmentTaskRegistry* _getSplicedAlignmentTaskRegistry() const override {
         return splicedAlignmentTaskRegistry;
     }
-    virtual OPCommonWidgetFactoryRegistry* _getOPCommonWidgetFactoryRegistry() const {
+    OPCommonWidgetFactoryRegistry* _getOPCommonWidgetFactoryRegistry() const override {
         return opCommonWidgetFactoryRegistry;
     }
-    virtual OPWidgetFactoryRegistry* _getOPWidgetFactoryRegistry() const {
+    OPWidgetFactoryRegistry* _getOPWidgetFactoryRegistry() const override {
         return opWidgetFactoryRegistry;
     }
-    virtual WorkflowScriptRegistry* _getWorkflowScriptRegistry() const {
+    WorkflowScriptRegistry* _getWorkflowScriptRegistry() const override {
         return workflowScriptRegistry;
     }
-    virtual AppFileStorage* _getAppFileStorage() const {
+    AppFileStorage* _getAppFileStorage() const override {
         return appFileStorage;
     }
-    virtual AlignmentAlgorithmsRegistry* _getAlignmentAlgorithmsRegistry() const {
+    AlignmentAlgorithmsRegistry* _getAlignmentAlgorithmsRegistry() const override {
         return alignmentAlgorithmsRegistry;
     }
-    virtual U2DataPathRegistry* _getDataPathRegistry() const {
+    U2DataPathRegistry* _getDataPathRegistry() const override {
         return dpr;
     }
-    virtual ScriptingToolRegistry* _getScriptingToolRegistry() const {
+    ScriptingToolRegistry* _getScriptingToolRegistry() const override {
         return str;
     }
-    virtual CredentialsAsker* _getCredentialsAsker() const {
+    CredentialsAsker* _getCredentialsAsker() const override {
         return credentialsAsker;
     }
-    virtual PasswordStorage* _getPasswordStorage() const {
+    PasswordStorage* _getPasswordStorage() const override {
         return passwordStorage;
     }
-    virtual ConvertFactoryRegistry* _getConvertFactoryRegistry() const {
+    ConvertFactoryRegistry* _getConvertFactoryRegistry() const override {
         return cfr;
     }
-    virtual IdRegistry<WelcomePageAction>* _getWelcomePageActionRegistry() const {
+    IdRegistry<WelcomePageAction>* _getWelcomePageActionRegistry() const override {
         return welcomePageActionRegistry;
     }
-    virtual ProjectFilterTaskRegistry* _getProjectFilterTaskRegistry() const {
+    ProjectFilterTaskRegistry* _getProjectFilterTaskRegistry() const override {
         return projectFilterTaskRegistry;
     }
-    virtual PasteFactory* _getPasteFactory() const {
+    PasteFactory* _getPasteFactory() const override {
         return pf;
     }
-    virtual DashboardInfoRegistry* _getDashboardInfoRegistry() const {
+    DashboardInfoRegistry* _getDashboardInfoRegistry() const override {
         return dashboardInfoRegistry;
     }
 
-    virtual void _registerGlobalObject(AppGlobalObject* go);
-    virtual void _unregisterGlobalObject(const QString& id);
-    virtual AppGlobalObject* _getGlobalObjectById(const QString& id) const;
-    virtual bool _isGUIMode() const {
+    void _registerGlobalObject(AppGlobalObject* go) override;
+    void _unregisterGlobalObject(const QString& id) override;
+    AppGlobalObject* _getGlobalObjectById(const QString& id) const override;
+    bool _isGUIMode() const override {
         return guiMode;
     }
-    virtual QString _getActiveWindowName() const {
+    QString _getActiveWindowName() const override {
         return activeWindow;
     }
-    virtual QString _getWorkingDirectoryPath() const {
+    QString _getWorkingDirectoryPath() const override {
         return workingDirectoryPath;
     }
 
@@ -697,7 +688,6 @@ private:
     CMDLineRegistry* cmdLineRegistry;
     ConvertFactoryRegistry* cfr;
     CredentialsAsker* credentialsAsker;
-    CudaGpuRegistry* cgr;
     DBXRefRegistry* dbxr;
     DNAAlphabetRegistry* dal;
     DNATranslationRegistry* dtr;

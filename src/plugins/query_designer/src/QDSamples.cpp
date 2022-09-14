@@ -39,7 +39,7 @@ QList<QDSample> QDSamplesRegistry::data;
 
 QDLoadSamplesTask::QDLoadSamplesTask(const QStringList& _dirs)
     : Task(tr("Load query samples"), TaskFlag_NoRun) {
-    foreach (const QString& s, _dirs) {
+    for (const QString& s : qAsConst(_dirs)) {
         QDir dir(s);
         QStringList names(QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
         foreach (const QFileInfo& fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {

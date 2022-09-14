@@ -143,19 +143,20 @@ void DigestSequenceTask::findCutSites() {
             return;
         }
 
-        QList<Annotation*> anns;
-        foreach (Annotation* a, sourceObj->getAnnotations()) {
+        QList<Annotation*> enzymeAnnotations;
+        QList<Annotation*> annotations = sourceObj->getAnnotations();
+        for (Annotation* a : qAsConst(annotations)) {
             if (a->getName() == enzyme->id) {
-                anns.append(a);
+                enzymeAnnotations.append(a);
             }
         }
 
-        if (anns.isEmpty()) {
+        if (enzymeAnnotations.isEmpty()) {
             stateInfo.setError(QString("Restriction site %1 is not found").arg(enzyme->id));
             continue;
         }
 
-        foreach (Annotation* a, anns) {
+        for (Annotation* a : qAsConst(enzymeAnnotations)) {
             const QVector<U2Region>& location = a->getRegions();
             int cutPos = location.first().startPos;
             cutSiteMap.insertMulti(GenomicPosition(cutPos, a->getStrand().isDirect()), enzyme);
@@ -326,7 +327,7 @@ QString DigestSequenceTask::generateReport() const {
     res += tr("<h3><br>Digest into fragments %1 (%2)</h3>").arg(dnaObj->getDocument()->getName()).arg(topology);
     res += tr("<br>Generated %1 fragments.").arg(results.count());
     int counter = 1;
-    foreach (const SharedAnnotationData& sdata, results) {
+    for (const SharedAnnotationData& sdata : qAsConst(results)) {
         const int startPos = sdata->location->regions.first().startPos + 1;
         const int endPos = sdata->location->regions.last().endPos();
         int len = 0;
@@ -478,7 +479,8 @@ void LigateFragmentsTask::prepare() {
 
         // handle fragment annotations
         int resultLen = resultSeq.length() + overhangAddition.length();
-        foreach (AnnotationTableObject* aObj, dnaFragment.getRelatedAnnotations()) {
+        QList<AnnotationTableObject*> relatedAnnotations = dnaFragment.getRelatedAnnotations();
+        for (AnnotationTableObject* aObj : qAsConst(relatedAnnotations)) {
             QList<SharedAnnotationData> toSave = cloneAnnotationsInFragmentRegion(dnaFragment, aObj, resultLen);
             annotations.append(toSave);
         }
@@ -558,8 +560,8 @@ QList<SharedAnnotationData> LigateFragmentsTask::cloneAnnotationsInRegion(const 
     // TODO: consider optimizing the code below using AnnotationTableObject::getAnnotationsByRegion()
     foreach (Annotation* a, source->getAnnotations()) {
         bool ok = true;
-        const QVector<U2Region>& location = a->getRegions();
-        foreach (const U2Region& region, location) {
+        QVector<U2Region> location = a->getRegions();
+        for (const U2Region& region : qAsConst(location)) {
             if (!fragmentRegion.contains(region) || fragmentRegion == region) {
                 ok = false;
                 break;
@@ -569,7 +571,7 @@ QList<SharedAnnotationData> LigateFragmentsTask::cloneAnnotationsInRegion(const 
             int newPos = globalOffset + location.first().startPos - fragmentRegion.startPos;
             SharedAnnotationData cloned(new AnnotationData(*a->getData()));
             QVector<U2Region> newLocation;
-            foreach (const U2Region& region, a->getRegions()) {
+            for (const U2Region& region : qAsConst(location)) {
                 U2Region newRegion(region);
                 newRegion.startPos = newPos;
                 newLocation.append(newRegion);
@@ -625,7 +627,7 @@ QList<SharedAnnotationData> LigateFragmentsTask::cloneAnnotationsInFragmentRegio
         }
 
         bool ok = true;
-        foreach (const U2Region& r, location) {
+        for (const U2Region& r : qAsConst(location)) {
             // sneaky annotations shall not pass!
             if (!fragmentContainsRegion(fragment, r)) {
                 ok = false;
@@ -636,7 +638,7 @@ QList<SharedAnnotationData> LigateFragmentsTask::cloneAnnotationsInFragmentRegio
         if (ok) {
             SharedAnnotationData cloned(new AnnotationData(*a->getData()));
             QVector<U2Region> newLocation;
-            foreach (const U2Region& region, location) {
+            for (const U2Region& region : qAsConst(location)) {
                 int startPos = getRelativeStartPos(fragment, region);
                 if (fragment.isInverted()) {
                     startPos = fragment.getLength() - startPos - region.length;

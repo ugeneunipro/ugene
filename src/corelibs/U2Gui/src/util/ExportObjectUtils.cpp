@@ -194,7 +194,7 @@ Task* ExportObjectUtils::saveAnnotationsTask(const QString& filepath, const Docu
     QMap<U2DataId, AnnotationTableObject*> annTables;
     QMap<AnnotationTableObject*, QMap<QString, QList<SharedAnnotationData>>> annTable2Anns;
 
-    foreach (Annotation* a, annList) {
+    for (Annotation* a : qAsConst(annList)) {
         const AnnotationTableObject* parentObject = a->getGObject();
         if (parentObject != nullptr) {
             U2DataId objId = parentObject->getRootFeatureId();
@@ -216,7 +216,8 @@ Task* ExportObjectUtils::saveAnnotationsTask(const QString& filepath, const Docu
         }
     }
 
-    foreach (AnnotationTableObject* ato, annTable2Anns.keys()) {
+    QList<AnnotationTableObject*> annotationObjects = annTable2Anns.keys();
+    for (AnnotationTableObject* ato : qAsConst(annotationObjects)) {
         foreach (const QString& groupName, annTable2Anns[ato].keys()) {
             ato->addAnnotations(annTable2Anns[ato][groupName], groupName);
         }

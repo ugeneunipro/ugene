@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -109,15 +109,14 @@ public:
     static void close(GUITestOpStatus& os, QWidget* widget);
     static void showMaximized(GUITestOpStatus& os, QWidget* widget);
     static void showNormal(GUITestOpStatus& os, QWidget* widget);
+    static void showMinimized(GUITestOpStatus& os, QWidget* widget);
 
     static void clickLabelLink(GUITestOpStatus& os, QWidget* label, int step = 10, int indent = 0);
     static void clickWindowTitle(GUITestOpStatus& os, QWidget* window);
-    static void moveWidgetTo(GUITestOpStatus& os, QWidget* window, const QPoint& point);
     static void resizeWidget(GUITestOpStatus& os, QWidget* widget, const QSize& size);
     static QPoint getWidgetGlobalTopLeftPoint(GUITestOpStatus& os, QWidget* widget);
 
     static QWidget* getActiveModalWidget(GUITestOpStatus& os);
-    static QWidget* getActivePopupWidget(GUITestOpStatus& os);
     static QMenu* getActivePopupMenu(GUITestOpStatus& os);
 
     static void checkEnabled(GUITestOpStatus& os, QWidget* widget, bool expectedEnabledState = true);

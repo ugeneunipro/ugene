@@ -120,7 +120,8 @@ Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel* channel
 }
 
 void BaseWorker::bindScriptValues() {
-    foreach (IntegralBus* bus, ports.values()) {
+    QList<IntegralBus*> busList = ports.values();
+    for (IntegralBus* bus : qAsConst(busList)) {
         assert(bus != nullptr);
         if (!bus->hasMessage()) {  // means that it is bus for output port
             continue;

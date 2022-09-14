@@ -344,20 +344,20 @@ bool CreateCmdlineBasedWorkerWizardGeneralSettingsPage::validatePage() {
     QStringList reservedNames;
     QStringList reservedIds;
 
-    foreach (const QList<ActorPrototype*>& group, groups) {
+    for (const QList<ActorPrototype*>& group : qAsConst(groups)) {
         foreach (ActorPrototype* proto, group) {
             reservedNames << proto->getDisplayName();
             reservedIds << proto->getId();
         }
     }
 
-    if (nullptr == initialConfig || initialConfig->name != name) {
+    if (initialConfig == nullptr || initialConfig->name != name) {
         name = WorkflowUtils::createUniqueString(name, " ", reservedNames);
         setField(CreateCmdlineBasedWorkerWizard::WORKER_NAME_FIELD, name);
     }
 
     QString id;
-    if (nullptr == initialConfig) {
+    if (initialConfig == nullptr) {
         id = WorkflowUtils::createUniqueString(WorkflowUtils::generateIdFromName(name), "-", reservedIds);
     } else {
         id = initialConfig->id;
@@ -383,7 +383,7 @@ void CreateCmdlineBasedWorkerWizardGeneralSettingsPage::makeUniqueWorkerName(QSt
     const QMap<Descriptor, QList<ActorPrototype*>> groups = Workflow::WorkflowEnv::getProtoRegistry()->getProtos();
     QStringList reservedNames;
     foreach (const QList<ActorPrototype*>& group, groups) {
-        foreach (ActorPrototype* proto, group) {
+        for (ActorPrototype* proto : qAsConst(group)) {
             reservedNames << proto->getDisplayName();
         }
     }
@@ -927,7 +927,7 @@ void ExternalToolSelectComboBox::addSupportedToolsPopupMenu() {
             cbDelegate->addUngroupedItem(standardModel, tool->getName(), tool->getId());
         } else {
             cbDelegate->addParentItem(standardModel, toolKitName, false, false);
-            foreach (ExternalTool* tool, currentToolKitTools) {
+            for (ExternalTool* tool : qAsConst(currentToolKitTools)) {
                 cbDelegate->addChildItem(standardModel, tool->getName(), tool->getId());
             }
         }

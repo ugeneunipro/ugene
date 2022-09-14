@@ -107,14 +107,17 @@ Task* AnnotatedDNAViewFactory::createViewTask(const MultiGSelection& multiSelect
     const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
     if (ds != nullptr) {
         foreach (Document* doc, ds->getSelectedDocuments()) {
-            foreach (GObject* obj, doc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded)) {
+            QList<GObject*> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
+            for (GObject* obj : qAsConst(sequenceObjects)) {
                 if (!objectsToOpen.contains(obj)) {
                     objectsToOpen.append(obj);
                 }
             }
-            foreach (GObject* obj, GObjectUtils::selectObjectsWithRelation(doc->getObjects(), GObjectTypes::SEQUENCE, ObjectRole_Sequence, UOF_LoadedAndUnloaded, true)) {
-                if (!objectsToOpen.contains(obj)) {
-                    objectsToOpen.append(obj);
+            QList<GObject*> objectsWithRelation = GObjectUtils::selectObjectsWithRelation(
+                doc->getObjects(), GObjectTypes::SEQUENCE, ObjectRole_Sequence, UOF_LoadedAndUnloaded, true);
+            for (GObject* objectWithRelation : qAsConst(objectsWithRelation)) {
+                if (!objectsToOpen.contains(objectWithRelation)) {
+                    objectsToOpen.append(objectWithRelation);
                 }
             }
         }
@@ -147,7 +150,7 @@ bool AnnotatedDNAViewFactory::isStateInSelection(const MultiGSelection& multiSel
 
         // check that object associated with sequence object is in selection
         bool refIsSelected = false;
-        foreach (const GObject* selObject, selectedObjects) {
+        for (const GObject* selObject : qAsConst(selectedObjects)) {
             GObjectReference selRef(selObject);
             if (ref == selRef) {
                 refIsSelected = true;

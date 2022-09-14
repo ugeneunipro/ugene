@@ -69,7 +69,6 @@ private slots:
     void sl_doubleClicked(const QModelIndex& index);
     void sl_documentContentChanged(Document* doc);
 
-    void sl_onCreateFolder();
     void sl_onAddObjectToSelectedDocument();
     void sl_onLoadSelectedDocuments();
     void sl_onUnloadSelectedDocuments();
@@ -107,7 +106,7 @@ signals:
 
 private:
     // QObject
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
 
     void setupActions();
     void connectDocument(Document* doc);
@@ -120,8 +119,6 @@ private:
     bool removeFolders(const QList<Folder>& folders, const QList<Document*>& excludedDocs);
     void removeDocuments(const QList<Document*>& docs);
     void updateObjectActiveStateVisual(GObject* obj);
-    bool canCreateSubFolder() const;
-    bool canRenameFolder() const;
     void restoreSelectedObjects();
     void restoreSelectedFolders();
 
@@ -138,7 +135,7 @@ private:
 
     // after folders or objects has been removed from Project View,
     // they can still present in the database during the next merge procedure (due to their large sizes).
-    // Therefore when delete task is created, corresponding objects and folders are added to some ignore filters
+    // Therefore, when delete task is created, corresponding objects and folders are added to some ignore filters
     // which keep them untouched by merging. After the task has finished the objects/folders have to be
     // removed from filters.
     //
@@ -162,7 +159,6 @@ private:
     ProjectFilterProxyModel* proxyModel;
 
     // Actions
-    QAction* createFolderAction;
     QAction* addObjectToDocumentAction;
     QAction* loadSelectedDocumentsAction;
     QAction* unloadSelectedDocumentsAction;

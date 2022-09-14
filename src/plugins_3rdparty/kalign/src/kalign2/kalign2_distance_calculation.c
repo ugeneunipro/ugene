@@ -364,7 +364,7 @@ struct alignment* protein_wu_sw(struct node* hash[],struct alignment* aln,int a,
 					n = malloc(sizeof(struct feature));
 					n->next = 0;
 					n->color = 0;
-					n->type = malloc(sizeof(char)*8);
+					n->type = malloc(sizeof(char)*9);
 					n->type[0] = 'w';
 					n->type[1] = 'u';
 					n->type[2] = 'm';
@@ -414,7 +414,7 @@ struct alignment* protein_wu_sw(struct node* hash[],struct alignment* aln,int a,
 					n->next = 0;
 					n->color = 0;
 					
-					n->type = malloc(sizeof(char)*8);
+					n->type = malloc(sizeof(char)*9);
 					n->type[0] = 'w';
 					n->type[1] = 'u';
 					n->type[2] = 'm';
@@ -481,7 +481,7 @@ struct alignment* protein_wu_sw(struct node* hash[],struct alignment* aln,int a,
 				n->next = 0;
 				n->color = 0;
 				
-				n->type = malloc(sizeof(char)*8);
+				n->type = malloc(sizeof(char)*9);
 				n->type[0] = 'w';
 				n->type[1] = 'u';
 				n->type[2] = 'm';
@@ -530,7 +530,7 @@ struct alignment* protein_wu_sw(struct node* hash[],struct alignment* aln,int a,
 				n->next = 0;
 				n->color = 0;
 				
-				n->type = malloc(sizeof(char)*8);
+				n->type = malloc(sizeof(char)*9);
 				n->type[0] = 'w';
 				n->type[1] = 'u';
 				n->type[2] = 'm';

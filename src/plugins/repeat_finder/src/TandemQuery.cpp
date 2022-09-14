@@ -101,7 +101,7 @@ void QDTandemActor::sl_onAlgorithmTaskFinished() {
         }
     }
     subTasks.clear();
-    foreach (const SharedAnnotationData& annotation, annotations) {
+    for (const SharedAnnotationData& annotation : qAsConst(annotations)) {
         QDResultGroup* group = new QDResultGroup(QDStrand_Both);
         foreach (U2Region region, annotation->location->regions) {
             QDResultUnit resultUnit(new QDResultUnitData);

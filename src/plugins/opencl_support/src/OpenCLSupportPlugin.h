@@ -52,7 +52,6 @@ private:
     void unregisterAvailableGpus();
     bool hasOPENCLError(cl_int err, QString& errMessage);
 
-    //    static QString getCudaErrorString( CUresult code );
     static QString getSettingsErrorString(OpenCLSupportError err);
 
     QList<OpenCLGpuModel*> gpus;

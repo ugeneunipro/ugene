@@ -36,7 +36,6 @@ class U2CORE_EXPORT U2Triplet {
 
 public:
     U2Triplet(const QString& key, const QString& role, const QString& value);
-    U2Triplet(const U2Triplet& other);
     QString getKey() const;
     QString getRole() const;
     QString getValue() const;

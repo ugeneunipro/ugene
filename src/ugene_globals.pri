@@ -68,6 +68,9 @@ linux-g++ {
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
+    # TODO: a lot of deprecated declarations after the migration to Qt 5.15.2
+    QMAKE_CXXFLAGS +=-Wno-deprecated-declarations
+
     # To enable 'ugene-warnings-as-errors' block below add the following qmake params:
     # QMAKE_DEFAULT_INCDIRS+="<path-to>/gcc_64/include" QMAKE_PROJECT_DEPTH=0 CONFIG+=ugene-warnings-as-errors
     #

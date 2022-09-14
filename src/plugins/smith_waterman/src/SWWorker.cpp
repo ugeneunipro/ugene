@@ -521,7 +521,7 @@ void SWWorker::sl_taskFinished(Task* t) {
     QList<Task*> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );
     QStringList ptrns;
-    foreach (Task* sub, subs) {
+    for (Task* sub : qAsConst(subs)) {
         SAFE_POINT(nullptr != sub, "Invalid task is encountered", );
         if (sub->isCanceled()) {
             return;

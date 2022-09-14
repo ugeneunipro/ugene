@@ -1,0 +1,3 @@
+<multi-test>
+    <import-document index="incorrect_bai" url="scenarios/_regression/7674/incorrect_bai.bam" io="local_file" format="bam"/>
+</multi-test>

@@ -3892,7 +3892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
 
 GUI_TEST_CLASS_DEFINITION(test_0078) {
     //    Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Open tree with msa
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
@@ -3900,18 +3900,18 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTWidget::click(os, tree);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Shrink tree view to show horizontal scrollbar
-    //    Move wheel
+    // Zoom in the tree to make horizontal scroll bar visible.
     auto parent = GTWidget::findWidget(os, "qt_scrollarea_hcontainer", GTWidget::findWidget(os, "treeView"));
-    QScrollBar* hbar = parent->findChild<QScrollBar*>();
-    int val = hbar->value();
+    auto horizontalScrollbar = parent->findChild<QScrollBar*>();
+    int valueBefore = GTScrollBar::getValue(os, horizontalScrollbar);
 
     GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 10; i++) {
         GTMouseDriver::scroll(1);
     }
-    int val1 = hbar->value();
-    CHECK_SET_ERR(val1 < val, QString("unexpected scroll value: %1").arg(val1));
+    // Check that scroll bar is shifted to the center: the value is increased.
+    int valueAfter = GTScrollBar::getValue(os, horizontalScrollbar);
+    CHECK_SET_ERR(valueAfter > valueBefore, QString("Unexpected scroll value: %1, original value: %2").arg(valueAfter).arg(valueBefore));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0079) {
@@ -3972,7 +3972,6 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-
 
     QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 

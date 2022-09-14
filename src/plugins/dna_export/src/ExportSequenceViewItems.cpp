@@ -601,7 +601,8 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
         }
         const DNAAlphabet* seqAl = seqCtx->getAlphabet();
         DNATranslation* aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : nullptr;
-        foreach (const U2Region& r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
+        QVector<U2Region> regions = seqCtx->getSequenceSelection()->getSelectedRegions();
+        for (const U2Region& r : qAsConst(regions)) {
             maxLen = qMax(maxLen, r.length);
             CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
             QByteArray seq = seqCtx->getSequenceData(r, os);

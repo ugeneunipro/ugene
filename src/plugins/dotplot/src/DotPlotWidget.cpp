@@ -99,7 +99,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_timer()));
 
     exitButton = new QToolButton(this);
-    connect(exitButton, &QToolButton::clicked, this, [this]{ sl_showDeleteDialog(true); });
+    connect(exitButton, &QToolButton::clicked, this, [this] { sl_showDeleteDialog(true); });
     exitButton->setToolTip("Close");
     QIcon exitIcon = QIcon(QString(":dotplot/images/exit.png"));
     exitButton->setIcon(exitIcon);
@@ -1210,7 +1210,8 @@ void DotPlotWidget::drawSelection(QPainter& p) const {
         drawRectCorrect(p, QRectF(xLeft + shiftX, yBottom + shiftY, xLen, yLen));
     } else {
         if (selectionX) {
-            foreach (const U2Region& rx, selectionX->getSelectedRegions()) {
+            QVector<U2Region> selectedXRegions = selectionX->getSelectedRegions();
+            for (const U2Region& rx : qAsConst(selectedXRegions)) {
                 xLeft = rx.startPos / (float)xSeqLen * w * zoom.x();
                 xLen = rx.length / (float)xSeqLen * w * zoom.x();
 
@@ -1428,7 +1429,8 @@ void DotPlotWidget::sequencesCoordsSelection(const QPointF& start, const QPointF
     SAFE_POINT(dnaView, "dnaView is NULL", );
     foreach (ADVSequenceWidget* w, dnaView->getSequenceWidgets()) {
         SAFE_POINT(w, "w is NULL", );
-        foreach (ADVSequenceObjectContext* s, w->getSequenceContexts()) {
+        QList<ADVSequenceObjectContext*> sequenceContexts = w->getSequenceContexts();
+        for (ADVSequenceObjectContext* s : qAsConst(sequenceContexts)) {
             SAFE_POINT(s, "s is NULL", );
 
             if (((int)(endX - startX) > 0) && (s == sequenceX)) {
@@ -1488,7 +1490,8 @@ void DotPlotWidget::selectNearestRepeat(const QPointF& p) {
         QPoint(nearestRepeat->x + nearestRepeat->len, nearestRepeat->y + nearestRepeat->len));
 
     foreach (ADVSequenceWidget* w, dnaView->getSequenceWidgets()) {
-        foreach (ADVSequenceObjectContext* s, w->getSequenceContexts()) {
+        QList<ADVSequenceObjectContext*> sequenceContexts = w->getSequenceContexts();
+        for (ADVSequenceObjectContext* s : qAsConst(sequenceContexts)) {
             if (s == sequenceX) {
                 w->centerPosition(nearestRepeat->x);
             }
@@ -1498,7 +1501,7 @@ void DotPlotWidget::selectNearestRepeat(const QPointF& p) {
 }
 
 float DotPlotWidget::calculateDistance(float x, float y, DotPlotResults r, bool isReverse) const {
-    //apply ratio to every coordinate
+    // apply ratio to every coordinate
     SAFE_POINT(r.x >= 0 && r.y >= 0 && r.len >= 0, "Wrong DotPlotResults, data member(s) have negative value!", 0.0);
     if (isReverse) {
         r = DotPlotResults(r.x, r.y + r.len, r.len);
@@ -1800,7 +1803,8 @@ void DotPlotWidget::sequenceClearSelection() {
     SAFE_POINT(dnaView, "dnaView is NULL", );
     foreach (ADVSequenceWidget* w, dnaView->getSequenceWidgets()) {
         SAFE_POINT(w, "w is NULL", );
-        foreach (ADVSequenceObjectContext* s, w->getSequenceContexts()) {
+        QList<ADVSequenceObjectContext*> sequenceContexts = w->getSequenceContexts();
+        for (ADVSequenceObjectContext* s : qAsConst(sequenceContexts)) {
             SAFE_POINT(s, "s is NULL", );
             s->getSequenceSelection()->clear();
         }

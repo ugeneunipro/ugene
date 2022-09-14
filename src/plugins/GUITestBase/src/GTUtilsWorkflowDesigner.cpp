@@ -589,7 +589,8 @@ WorkflowProcessItem* GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus& os,
 #define GT_METHOD_NAME "getWorkerText"
 QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus& os, const QString& itemName, const GTGlobals::FindOptions& options) {
     WorkflowProcessItem* worker = getWorker(os, itemName, options);
-    foreach (QGraphicsItem* child, worker->childItems()) {
+    QList<QGraphicsItem*> workerChildren = worker->childItems();
+    for (QGraphicsItem* child : qAsConst(workerChildren)) {
         foreach (QGraphicsItem* subchild, child->childItems()) {
             QGraphicsObject* graphObject = subchild->toGraphicsObject();
             QGraphicsTextItem* textItem = qobject_cast<QGraphicsTextItem*>(graphObject);
@@ -629,12 +630,12 @@ bool GTUtilsWorkflowDesigner::isWorkerExtended(HI::GUITestOpStatus& os, const QS
 #define GT_METHOD_NAME "getPortById"
 WorkflowPortItem* GTUtilsWorkflowDesigner::getPortById(HI::GUITestOpStatus& os, WorkflowProcessItem* worker, QString id) {
     QList<WorkflowPortItem*> list = getPorts(os, worker);
-    foreach (WorkflowPortItem* p, list) {
+    for (WorkflowPortItem* p : qAsConst(list)) {
         if (p && p->getPort()->getId() == id) {
             return p;
         }
     }
-    GT_CHECK_RESULT(false, "port with id " + id + "not found", nullptr);
+    GT_FAIL("Port with id " + id + "not found", nullptr);
 }
 #undef GT_METHOD_NAME
 
@@ -836,20 +837,18 @@ WorkflowBusItem* GTUtilsWorkflowDesigner::getConnectionArrow(HI::GUITestOpStatus
     GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr)
     QList<WorkflowPortItem*> fromList = from->getPortItems();
     QList<WorkflowPortItem*> toList = to->getPortItems();
-
     QList<WorkflowBusItem*> arrows = getAllConnectionArrows(os);
 
-    foreach (WorkflowPortItem* fromPort, fromList) {
-        foreach (WorkflowPortItem* toPort, toList) {
-            foreach (WorkflowBusItem* arrow, arrows) {
+    for (WorkflowPortItem* fromPort : qAsConst(fromList)) {
+        for (WorkflowPortItem* toPort : qAsConst(toList)) {
+            for (WorkflowBusItem* arrow : qAsConst(arrows)) {
                 if (arrow->getInPort() == toPort && arrow->getOutPort() == fromPort) {
                     return arrow;
                 }
             }
         }
     }
-
-    GT_CHECK_RESULT(false, "no suitable ports to connect", nullptr);
+    GT_FAIL("No suitable ports to connect", nullptr);
 }
 #undef GT_METHOD_NAME
 
