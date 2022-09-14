@@ -21,6 +21,10 @@
 
 #include "MsaUtilsUnitTests.h"
 
+#include <U2Algorithm/DynTable.h>
+#include <U2Algorithm/FindAlgorithm.h>
+#include <U2Algorithm/RollingArray.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MSAUtils.h>
@@ -95,6 +99,25 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, all_names_with_spaces) {
 
     MSAUtils::assignOriginalDataIds(ma1, ma2, os);
     CHECK_NO_ERROR(os);
+}
+
+IMPLEMENT_TEST(MsaUtilsUnitTests, get_len_with_big_args) {
+    U2OpStatusImpl os;
+
+    DynTable dynTable(4733, 4733, false);
+    int newLen = dynTable.getLastLen();
+    CHECK_NO_ERROR(os);
+    CHECK_EQUAL(4733, newLen, "getLastLen() return value");
+
+    DynTable dynTable2(3733, 4733, false);
+    newLen = dynTable2.getLastLen();
+    CHECK_NO_ERROR(os);
+    CHECK_EQUAL(3733, newLen, "getLastLen() return value");
+
+    DynTable dynTable3(44733, 44733, false);
+    newLen = dynTable3.getLastLen();
+    CHECK_NO_ERROR(os);
+    CHECK_EQUAL(44733, newLen, "getLastLen() return value");
 }
 
 }  // namespace U2

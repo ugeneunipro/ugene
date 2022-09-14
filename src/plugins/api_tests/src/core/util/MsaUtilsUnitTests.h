@@ -29,6 +29,7 @@ namespace U2 {
 DECLARE_TEST(MsaUtilsUnitTests, one_name_with_spaces);
 DECLARE_TEST(MsaUtilsUnitTests, two_names_with_spaces);
 DECLARE_TEST(MsaUtilsUnitTests, all_names_with_spaces);
+DECLARE_TEST(MsaUtilsUnitTests, get_len_with_big_args);
 
 }  // namespace U2
 
