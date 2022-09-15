@@ -64,7 +64,7 @@ workflow find-sw{
             }
             ssearch.algorithm {
                 alias:algo;
-                description:"Version of the Smith-Waterman algorithm. You can use the optimized versions of the algorithm(SSE2, CUDA and OpenCL) if your hardware supports these capabilities (using 'Classic 2' by default)";
+                description:"Version of the Smith-Waterman algorithm. You can use the optimized versions of the algorithm (SSE2) if your hardware supports these capabilities (using 'Classic 2' by default)";
             }
             ssearch.amino {
                 alias:amino;

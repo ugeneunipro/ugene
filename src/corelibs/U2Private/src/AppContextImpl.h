@@ -63,7 +63,6 @@ public:
         msaDistanceAlgoRegistry = nullptr;
         msfr = nullptr;
         mw = nullptr;
-        oclgr = nullptr;
         opCommonWidgetFactoryRegistry = nullptr;
         opWidgetFactoryRegistry = nullptr;
         ovfr = nullptr;
@@ -256,11 +255,6 @@ public:
     void setSecStructPedictAlgRegistry(SecStructPredictAlgRegistry* _sspar) {
         assert(secStructPredictRegistry == nullptr || _sspar == nullptr);
         secStructPredictRegistry = _sspar;
-    }
-
-    void setOpenCLGpuRegistry(OpenCLGpuRegistry* _oclgr) {
-        assert(oclgr == nullptr || _oclgr == nullptr);
-        oclgr = _oclgr;
     }
 
     void setRecentlyDownloadedCache(RecentlyDownloadedCache* _rdc) {
@@ -554,9 +548,6 @@ protected:
     SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const override {
         return secStructPredictRegistry;
     }
-    OpenCLGpuRegistry* _getOpenCLGpuRegistry() const override {
-        return oclgr;
-    }
     RecentlyDownloadedCache* _getRecentlyDownloadedCache() const override {
         return rdc;
     }
@@ -708,7 +699,6 @@ private:
     MsaHighlightingSchemeRegistry* mhsr;
     OPCommonWidgetFactoryRegistry* opCommonWidgetFactoryRegistry;
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry;
-    OpenCLGpuRegistry* oclgr;
     PWMConversionAlgorithmRegistry* pwmConversionAlgoRegistry;
     PasswordStorage* passwordStorage;
     PasteFactory* pf;

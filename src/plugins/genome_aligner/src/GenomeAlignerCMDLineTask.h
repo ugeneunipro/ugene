@@ -39,7 +39,6 @@ public:
 
 private:
     int mismatchCount, ptMismatchCount, memSize, refSize, qualityThreshold;
-    bool useOpenCL;
     bool alignRevCompl, bestMode, samOutput;
     DnaAssemblyToRefTaskSettings settings;
     QString indexPath, resultPath, refPath;

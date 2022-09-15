@@ -1,8 +1,7 @@
 include (U2Algorithm.pri)
 
 # Input
-HEADERS += src/misc/BinaryFindOpenCL.h \
-           src/misc/BitsTable.h \
+HEADERS += src/misc/BitsTable.h \
            src/misc/CDSearchTaskFactory.h \
            src/misc/DnaAssemblyMultiTask.h \
            src/misc/DynTable.h \
@@ -36,7 +35,6 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/registry/DnaAssemblyAlgRegistry.h \
            src/registry/DnaAssemblyTask.h \
            src/registry/GenomeAssemblyRegistry.h \
-           src/registry/OpenCLGpuRegistry.h \
            src/registry/RepeatFinderTaskFactoryRegistry.h \
            src/registry/SecStructPredictAlgRegistry.h \
            src/registry/SecStructPredictTask.h \
@@ -112,12 +110,9 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_weight_matrix/PWMConversionAlgorithmLOD.h \
            src/util_weight_matrix/PWMConversionAlgorithmMCH.h \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.h \
-           src/util_weight_matrix/PWMConversionAlgorithmRegistry.h \
-           src/util_gpu/opencl/OpenCLHelper.h \
-           src/util_gpu/opencl/OpenCLUtils.h
+           src/util_weight_matrix/PWMConversionAlgorithmRegistry.h
 
-SOURCES += src/misc/BinaryFindOpenCL.cpp \
-           src/misc/BitsTable.cpp \
+SOURCES += src/misc/BitsTable.cpp \
            src/misc/DnaAssemblyMultiTask.cpp \
            src/misc/EnzymeModel.cpp \
            src/misc/FindAlgorithm.cpp \
@@ -142,7 +137,6 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/registry/DnaAssemblyAlgRegistry.cpp \
            src/registry/DnaAssemblyTask.cpp \
            src/registry/GenomeAssemblyRegistry.cpp \
-           src/registry/OpenCLGpuRegistry.cpp \       
            src/registry/RepeatFinderTaskFactoryRegistry.cpp \
            src/registry/SecStructPredictAlgRegistry.cpp \
            src/registry/SecStructPredictTask.cpp \
@@ -215,9 +209,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmLOD.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmMCH.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.cpp \
-           src/util_weight_matrix/PWMConversionAlgorithmRegistry.cpp \
-           src/util_gpu/opencl/OpenCLHelper.cpp \
-           src/util_gpu/opencl/OpenCLUtils.cpp
+           src/util_weight_matrix/PWMConversionAlgorithmRegistry.cpp
 
-RESOURCES += U2Algorithm.qrc
+
 TRANSLATIONS += transl/russian.ts

@@ -41,10 +41,7 @@ namespace U2 {
 enum SW_AlgType {
     SW_classic,
     SW_sse2,
-    SW_opencl
 };
-
-class OpenCLGpuModel;
 
 class SWAlgorithmTask : public Task, public SequenceWalkerCallback {
     Q_OBJECT
@@ -53,8 +50,6 @@ public:
                     const QString& taskName,
                     SW_AlgType algType);
     ~SWAlgorithmTask() override;
-
-    void prepare() override;
 
     void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) override;
 
@@ -81,8 +76,6 @@ private:
     QList<SmithWatermanResult> resultList;
     SmithWatermanSettings sWatermanConfig;
     SequenceWalkerTask* t = nullptr;
-
-    OpenCLGpuModel* openClGpu = nullptr;
 };
 
 class SWResultsPostprocessingTask : public Task {
@@ -159,7 +152,6 @@ protected:
     QByteArray* sqnc = nullptr;
     QByteArray* ptrn = nullptr;
     SequenceWalkerTask* t = nullptr;
-    OpenCLGpuModel* openClGpu = nullptr;
 };
 
 class PairwiseAlignmentSWResultsPostprocessingTask : public Task {
@@ -169,7 +161,6 @@ public:
     PairwiseAlignmentSWResultsPostprocessingTask(SmithWatermanResultFilter* rf, SmithWatermanResultListener* rl, QList<SmithWatermanResult>& _resultList, QList<PairAlignSequences>& _resPAS);
 
     void run() override;
-    void prepare() override;
     ReportResult report() override {
         return ReportResult_Finished;
     }

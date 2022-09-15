@@ -292,11 +292,6 @@ namespace BALL
 			{
 			}
 
-			CUDAError::CUDAError(const char *file, int line, const BALL::String &error)
-				: GeneralException(file, line, String("CUDA error: ") + error, "")
-			{
-			}
-			
 			NoBufferAvailable::NoBufferAvailable(const char* file, int line, const String& reason)
 				: GeneralException(file, line, "NoBufferAvailable", String("Unavailable because: ") + reason)
 			{

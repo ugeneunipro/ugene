@@ -58,9 +58,6 @@ class MolecularSurfaceFactoryRegistry;
 class SWResultFilterRegistry;
 class SecStructPredictAlgRegistry;
 class AlignmentAlgorithmsRegistry;
-#ifdef OPENCL_SUPPORT
-class OpenCLGpuRegistry;
-#endif
 class RecentlyDownloadedCache;
 class VirtualFileSystemRegistry;
 class DnaAssemblyAlgRegistry;
@@ -119,9 +116,6 @@ private:
     SWResultFilterRegistry* swrfr;
     SecStructPredictAlgRegistry* sspar;
     AlignmentAlgorithmsRegistry* alignmentAlgorithmRegistry;
-#ifdef OPENCL_SUPPORT
-    OpenCLGpuRegistry* oclgr;
-#endif
     RecentlyDownloadedCache* rdc;
     VirtualFileSystemRegistry* vfsReg;
     DnaAssemblyAlgRegistry* assemblyReg;

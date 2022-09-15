@@ -61,7 +61,6 @@ class MsaColorSchemeRegistry;
 class MsaHighlightingSchemeRegistry;
 class OPCommonWidgetFactoryRegistry;
 class OPWidgetFactoryRegistry;
-class OpenCLGpuRegistry;
 class PWMConversionAlgorithmRegistry;
 class PasswordStorage;
 class PasteFactory;
@@ -224,10 +223,6 @@ public:
 
     static SecStructPredictAlgRegistry* getSecStructPredictAlgRegistry() {
         return getInstance()->_getSecStructPredictAlgRegistry();
-    }
-
-    static OpenCLGpuRegistry* getOpenCLGpuRegistry() {
-        return getInstance()->_getOpenCLGpuRegistry();
     }
 
     static RecentlyDownloadedCache* getRecentlyDownloadedCache() {
@@ -440,7 +435,6 @@ protected:
     virtual MsaColorSchemeRegistry* _getMsaColorSchemeRegistry() const = 0;
     virtual MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const = 0;
     virtual SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const = 0;
-    virtual OpenCLGpuRegistry* _getOpenCLGpuRegistry() const = 0;
     virtual RecentlyDownloadedCache* _getRecentlyDownloadedCache() const = 0;
     virtual ProtocolInfoRegistry* _getProtocolInfoRegistry() const = 0;
     virtual RemoteMachineMonitor* _getRemoteMachineMonitor() const = 0;

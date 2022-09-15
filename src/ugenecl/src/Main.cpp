@@ -30,9 +30,6 @@
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
-#ifdef OPENCL_SUPPORT
-#    include <U2Algorithm/OpenCLGpuRegistry.h>
-#endif
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -364,11 +361,6 @@ int main(int argc, char** argv) {
     auto pwr = new AlignmentAlgorithmsRegistry();
     appContext->setAlignmentAlgorithmsRegistry(pwr);
 
-#ifdef OPENCL_SUPPORT
-    auto oclgr = new OpenCLGpuRegistry();
-    appContext->setOpenCLGpuRegistry(oclgr);
-#endif
-
     auto rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
@@ -552,11 +544,6 @@ int main(int argc, char** argv) {
 
     delete resTrack;
     appContext->setResourceTracker(nullptr);
-
-#ifdef OPENCL_SUPPORT
-    delete oclgr;
-#endif
-    appContext->setOpenCLGpuRegistry(nullptr);
 
     appContext->setAppSettings(nullptr);
     delete appSettings;

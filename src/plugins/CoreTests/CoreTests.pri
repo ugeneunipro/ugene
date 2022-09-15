@@ -3,7 +3,3 @@ PLUGIN_NAME=Tests for core functionality of Ugene
 PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
-
-use_opencl(){
-    DEFINES += OPENCL_SUPPORT
-}

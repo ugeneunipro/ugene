@@ -22,7 +22,6 @@
 #include "SWAlgorithmPlugin.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/OpenCLGpuRegistry.h>
 #include <U2Algorithm/SmithWatermanTaskFactoryRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
@@ -90,13 +89,14 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     coreLog.trace("Registering classic SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));  // ADV search register
     par->registerAlgorithm(new SWPairwiseAlignmentAlgorithm());
-    regDependedIMPLFromOtherPlugins();
 
     coreLog.trace("Registering SSE2 SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_sse2), QString("SSE2"));
-    par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2), "SSE2");
-
-    this->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(regDependedIMPLFromOtherPlugins()));
+    par->getAlgorithm("Smith-Waterman")
+        ->addAlgorithmRealization(
+            new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2),
+            new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2),
+            "SSE2");
 }
 
 QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
@@ -104,30 +104,6 @@ QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
     res.append(GTest_SmithWatermnan::createFactory());
     res.append(GTest_SmithWatermnanPerf::createFactory());
     return res;
-}
-
-// SLOT
-void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
-    SmithWatermanTaskFactoryRegistry* swar = AppContext::getSmithWatermanTaskFactoryRegistry();
-    AlignmentAlgorithmsRegistry* par = AppContext::getAlignmentAlgorithmsRegistry();
-    Q_UNUSED(swar);
-    Q_UNUSED(par);
-
-#ifdef SW2_BUILD_WITH_CUDA
-    if (!AppContext::getCudaGpuRegistry()->empty()) {
-        coreLog.trace("Registering CUDA SW implementation");
-        swar->registerFactory(new SWTaskFactory(SW_cuda), QString("CUDA"));
-        par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_cuda), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_cuda), "CUDA");
-    }
-#endif
-
-#ifdef SW2_BUILD_WITH_OPENCL
-    if (!AppContext::getOpenCLGpuRegistry()->empty()) {
-        coreLog.trace("Registering OpenCL SW implementation");
-        swar->registerFactory(new SWTaskFactory(SW_opencl), QString("OPENCL"));
-        par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_opencl), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_opencl), "OPENCL");
-    }
-#endif
 }
 
 SWAlgorithmADVContext::SWAlgorithmADVContext(QObject* p)

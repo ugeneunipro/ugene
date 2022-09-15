@@ -1346,10 +1346,6 @@ plugins/linkdata_support.dll
 plugins/linkdata_support.license
 plugins/linkdata_support.map
 plugins/linkdata_support.plugin
-plugins/opencl_support.dll
-plugins/opencl_support.license
-plugins/opencl_support.map
-plugins/opencl_support.plugin
 plugins/orf_marker.dll
 plugins/orf_marker.license
 plugins/orf_marker.map

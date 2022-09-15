@@ -1313,7 +1313,6 @@ plugins/libgor4.so
 plugins/libhmm2.so
 plugins/libkalign.so
 plugins/liblinkdata_support.so
-plugins/libopencl_support.so
 plugins/liborf_marker.so
 plugins/libpcr.so
 plugins/libphylip.so
@@ -1331,8 +1330,6 @@ plugins/libweight_matrix.so
 plugins/libworkflow_designer.so
 plugins/linkdata_support.license
 plugins/linkdata_support.plugin
-plugins/opencl_support.license
-plugins/opencl_support.plugin
 plugins/orf_marker.license
 plugins/orf_marker.plugin
 plugins/pcr.license

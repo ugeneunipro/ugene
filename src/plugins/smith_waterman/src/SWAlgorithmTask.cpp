@@ -23,7 +23,6 @@
 
 #include <QMap>
 #include <QMutexLocker>
-#include <QVariant>
 
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
@@ -34,17 +33,13 @@
 #include <U2Core/Counter.h>
 #include <U2Core/Log.h>
 #include <U2Core/Timer.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 
-#include "SmithWatermanAlgorithmOPENCL.h"
 #include "SmithWatermanAlgorithmSSE2.h"
 
 using namespace std;
-
-const double B_TO_MB_FACTOR = 1048576.0;
 
 namespace U2 {
 
@@ -73,11 +68,6 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings& s,
     minScore = (maxScore * s.percentOfScore) / 100;
     if ((maxScore * (int)s.percentOfScore) % 100 != 0)
         minScore += 1;
-
-    // acquiring resources for GPU computations
-    if (algType == SW_opencl) {
-        addTaskResource(TaskResourceUsage(RESOURCE_OPENCL_GPU, 1, true /*prepareStage*/));
-    }
 
     setupTask(maxScore);
 }
@@ -120,10 +110,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
             computationMatrixSquare = 751948900.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
-        case SW_opencl:
-            computationMatrixSquare = 58484916.67;  // the same as previous
-            c.nThreads = 1;
-            break;
         default:
             assert(0);
     }
@@ -151,11 +137,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     // acquiring memory resources for computations
     quint64 neededRam = 0;
     switch (algType) {
-        case SW_opencl:
-#ifdef SW2_BUILD_WITH_OPENCL
-            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView);
-#endif
-            break;
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
                                                                         sWatermanConfig.gapModel.scoreGapExtd,
@@ -177,39 +158,12 @@ void SWAlgorithmTask::setupTask(int maxScore) {
         default:
             assert(0);
     }
-    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && algType != SW_opencl) {
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
         addSubTask(t);
-    }
-}
-
-void SWAlgorithmTask::prepare() {
-    if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
-        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
-
-        const SequenceWalkerConfig& config = t->getConfig();
-        const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
-            sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
-        const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();
-
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
-                                       "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
-            return;
-        } else {
-            algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(openClGpu->getName()));
-#else
-        assert(0);
-#endif
     }
 }
 
@@ -229,13 +183,6 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     SmithWatermanAlgorithm* sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
-    } else if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        sw = new SmithWatermanAlgorithmOPENCL;
-#else
-        coreLog.error("OPENCL was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -349,12 +296,6 @@ int SWAlgorithmTask::calculateMaxScore(const QByteArray& seq, const SMatrix& sub
 }
 
 Task::ReportResult SWAlgorithmTask::report() {
-    if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu->setAcquired(false);
-#endif
-    }
-
     SmithWatermanResultListener* rl = sWatermanConfig.resultListener;
     QList<SmithWatermanResult> resultList = rl->getResults();
 
@@ -499,11 +440,6 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
         minScore += 1;
     }
 
-    // acquiring resources for GPU computations
-    if (SW_opencl == algType) {
-        addTaskResource(TaskResourceUsage(RESOURCE_OPENCL_GPU, 1, true /*prepareStage*/));
-    }
-
     setupTask();
 }
 
@@ -523,13 +459,6 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
     SmithWatermanAlgorithm* sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
-    } else if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        sw = new SmithWatermanAlgorithmOPENCL;
-#else
-        coreLog.error("OPENCL was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -624,10 +553,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
             computationMatrixSquare = 7519489.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
-        case SW_opencl:
-            computationMatrixSquare = 58484916.67;  // the same as previous
-            c.nThreads = 1;
-            break;
         default:
             assert(0);
     }
@@ -648,14 +573,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     // acquiring memory resources for computations
     quint64 neededRam = 0;
     switch (algType) {
-        case SW_opencl:
-#ifdef SW2_BUILD_WITH_OPENCL
-            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix,
-                                                                              *ptrn,
-                                                                              sqnc->left(c.chunkSize * c.nThreads),
-                                                                              SmithWatermanSettings::MULTIPLE_ALIGNMENT);
-#endif
-            break;
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen,
                                                                         settings->gapExtd,
@@ -677,7 +594,7 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
         default:
             assert(0);
     }
-    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && algType != SW_opencl) {
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
@@ -704,30 +621,6 @@ int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray& 
 }
 
 void PairwiseAlignmentSmithWatermanTask::prepare() {
-    if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
-        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
-
-        const SequenceWalkerConfig& config = t->getConfig();
-        const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
-            settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
-        const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();
-
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
-                                       "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
-            return;
-        } else {
-            algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(openClGpu->getName()));
-#else
-        assert(0);
-#endif
-    }
 }
 
 QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
@@ -738,12 +631,6 @@ QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
 }
 
 Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
-    if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu->setAcquired(false);
-#endif
-    }
-
     assert(settings->resultListener != nullptr);
     QList<SmithWatermanResult> resultList = settings->resultListener->getResults();
 
@@ -876,9 +763,6 @@ void PairwiseAlignmentSWResultsPostprocessingTask::run() {
     foreach (const SmithWatermanResult& r, resultList) { /* push results after filters */
         rl->pushResult(r);
     }
-}
-
-void PairwiseAlignmentSWResultsPostprocessingTask::prepare() {
 }
 
 }  // namespace U2

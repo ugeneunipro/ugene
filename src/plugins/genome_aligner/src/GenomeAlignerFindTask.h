@@ -87,7 +87,7 @@ class AlignContext {
 public:
     AlignContext()
         : w(-1), ptMismatches(0), nMismatches(0), absMismatches(0), bestMode(false),
-          openCL(false), minReadLength(-1), maxReadLength(-1), isReadingFinished(false), isReadingStarted(false),
+          minReadLength(-1), maxReadLength(-1), isReadingFinished(false), isReadingStarted(false),
           needIndex(true), indexLoaded(-1) {
     }
     ~AlignContext() {
@@ -98,7 +98,6 @@ public:
     int nMismatches;
     bool absMismatches;
     bool bestMode;
-    bool openCL;
     int minReadLength;
     int maxReadLength;
 
@@ -122,7 +121,6 @@ public:
 class GenomeAlignerFindTask : public Task {
     Q_OBJECT
     friend class ShortReadAlignerCPU;
-    friend class ShortReadAlignerOpenCL;
 
 public:
     GenomeAlignerFindTask(GenomeAlignerIndex* i, AlignContext* s, GenomeAlignerWriteTask* writeTask);
@@ -173,19 +171,6 @@ class ShortReadAlignerCPU : public Task {
     Q_OBJECT
 public:
     ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex* index, AlignContext* alignContext, GenomeAlignerWriteTask* writeTask);
-    virtual void run();
-
-private:
-    int taskNo;
-    GenomeAlignerIndex* index;
-    AlignContext* alignContext;
-    GenomeAlignerWriteTask* writeTask;
-};
-
-class ShortReadAlignerOpenCL : public Task {
-    Q_OBJECT
-public:
-    ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex* index, AlignContext* alignContext, GenomeAlignerWriteTask* writeTask);
     virtual void run();
 
 private:

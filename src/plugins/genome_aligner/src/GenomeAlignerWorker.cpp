@@ -21,10 +21,6 @@
 
 #include "GenomeAlignerWorker.h"
 
-#ifdef OPENCL_SUPPORT
-#    include <U2Algorithm/OpenCLGpuRegistry.h>
-#endif
-
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/GUrlUtils.h>
@@ -198,10 +194,6 @@ DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus& os) {
     settings.setCustomValue(GenomeAlignerTask::OPTION_BEST, best);
     int qual = actor->getParameter(QUAL_ATTR)->getAttributeValue<int>(context);
     settings.setCustomValue(GenomeAlignerTask::OPTION_QUAL_THRESHOLD, qual);
-    if (GenomeAlignerWorkerFactory::openclEnabled) {
-        bool gpu = actor->getParameter(GPU_ATTR)->getAttributeValue<bool>(context);
-        settings.setCustomValue(GenomeAlignerTask::OPTION_OPENCL, gpu);
-    }
     return settings;
 }
 
@@ -230,8 +222,6 @@ QString GenomeAlignerPrompter::composeRichDoc() {
 /************************************************************************/
 /* Factory */
 /************************************************************************/
-bool GenomeAlignerWorkerFactory::openclEnabled(false);
-
 class GenomeAlignerInputSlotsValidator : public PortValidator {
 public:
     bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
@@ -356,15 +346,6 @@ void GenomeAlignerWorkerFactory::init() {
                         GenomeAlignerWorker::tr("Omit reads with qualities lower than"),
                         GenomeAlignerWorker::tr("<html><body>Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.\
                                     <p>Set <b>\"0\"</b> to switch off this option.</p></body></html>"));
-
-#ifdef OPENCL_SUPPORT
-        openclEnabled = AppContext::getOpenCLGpuRegistry()->getEnabledGpu() != nullptr;
-#endif
-        if (openclEnabled) {
-            Descriptor gpu(GPU_ATTR, GenomeAlignerWorker::tr("Use GPU-optimization"), GenomeAlignerWorker::tr("<html><body>Use GPU-calculatings while aligning reads. This option requires OpenCL-enable GPU-device.</body></html>"));
-
-            attrs << new Attribute(gpu, BaseTypes::BOOL_TYPE(), false /*required*/, false);
-        }
 
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
         Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));

@@ -47,9 +47,6 @@
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
-#ifdef OPENCL_SUPPORT
-#    include <U2Algorithm/OpenCLGpuRegistry.h>
-#endif
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -717,11 +714,6 @@ int main(int argc, char** argv) {
     auto sspar = new SecStructPredictAlgRegistry();
     appContext->setSecStructPedictAlgRegistry(sspar);
 
-#ifdef OPENCL_SUPPORT
-    OpenCLGpuRegistry* oclgr = new OpenCLGpuRegistry();
-    appContext->setOpenCLGpuRegistry(oclgr);
-#endif
-
     auto vfsReg = new VirtualFileSystemRegistry();
     appContext->setVirtualFileSystemRegistry(vfsReg);
 
@@ -935,11 +927,6 @@ int main(int argc, char** argv) {
 
     appContext->setVirtualFileSystemRegistry(nullptr);
     delete vfsReg;
-
-#ifdef OPENCL_SUPPORT
-    appContext->setOpenCLGpuRegistry(nullptr);
-    delete oclgr;
-#endif
 
     appContext->setSecStructPedictAlgRegistry(nullptr);
     delete sspar;

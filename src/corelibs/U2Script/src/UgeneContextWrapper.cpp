@@ -39,10 +39,6 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
 
-#ifdef OPENCL_SUPPORT
-#    include <U2Algorithm/OpenCLGpuRegistry.h>
-#endif
-
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -237,11 +233,6 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
     alignmentAlgorithmRegistry = new AlignmentAlgorithmsRegistry();
     appContext->setAlignmentAlgorithmsRegistry(alignmentAlgorithmRegistry);
 
-#ifdef OPENCL_SUPPORT
-    oclgr = new OpenCLGpuRegistry();
-    appContext->setOpenCLGpuRegistry(oclgr);
-#endif
-
     rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
@@ -352,11 +343,6 @@ UgeneContextWrapper::~UgeneContextWrapper() {
 
     delete resTrack;
     appContext->setResourceTracker(nullptr);
-
-#ifdef OPENCL_SUPPORT
-    delete oclgr;
-    appContext->setOpenCLGpuRegistry(nullptr);
-#endif
 
     delete appSettings;
     appContext->setAppSettings(nullptr);

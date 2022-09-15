@@ -31,7 +31,6 @@
 #include "AnnotationTableObjectTest.h"
 #include "AnnotationUtilsTests.h"
 #include "AsnParserTests.h"
-#include "BinaryFindOpenCLTests.h"
 #include "BioStruct3DObjectTests.h"
 #include "CMDLineTests.h"
 #include "DNASequenceObjectTests.h"
@@ -148,12 +147,7 @@ void CoreTests::registerFactories() {
     // GUrl tests
     registerFactory<GUrlTests>(xmlTestFormat);
 
-    // BinaryFindOpencl tests
-#ifdef OPENCL_SUPPORT
-    registerFactory<BinaryFindOpenCLTests>(xmlTestFormat);
-#endif
-
-    // FindAlforithm tests
+    // FindAlgorithm tests
     registerFactory<FindAlgorithmTests>(xmlTestFormat);
 
     // Automatic format detection tests

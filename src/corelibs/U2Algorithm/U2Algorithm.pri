@@ -3,10 +3,6 @@ include( ../../ugene_lib_common.pri )
 
 QT += widgets
 
-use_opencl(){
-    DEFINES += OPENCL_SUPPORT
-}
-
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2ALGORITHM_DLL
 
 LIBS += -L../../$$out_dir()

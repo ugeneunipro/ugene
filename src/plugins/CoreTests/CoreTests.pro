@@ -3,7 +3,6 @@ include (CoreTests.pri)
 HEADERS += src/AnnotationTableObjectTest.h \
            src/AnnotationUtilsTests.h \
            src/AsnParserTests.h \
-           src/BinaryFindOpenCLTests.h \
            src/BioStruct3DObjectTests.h \
            src/CMDLineTests.h \
            src/CoreTests.h \
@@ -34,7 +33,6 @@ HEADERS += src/AnnotationTableObjectTest.h \
 SOURCES += src/AnnotationTableObjectTest.cpp \
            src/AnnotationUtilsTests.cpp \
            src/AsnParserTests.cpp \
-           src/BinaryFindOpenCLTests.cpp \
            src/BioStruct3DObjectTests.cpp \
            src/CMDLineTests.cpp \
            src/CoreTests.cpp \

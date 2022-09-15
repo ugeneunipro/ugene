@@ -145,7 +145,6 @@ PLUGIN_LIST="annotator \
              hmm2 \
              kalign \
              linkdata_support \
-             opencl_support \
              orf_marker \
              pcr \
              perf_monitor \

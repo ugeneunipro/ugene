@@ -39,9 +39,6 @@ namespace U2 {
 /** Memory resource - amount of memory in megabytes */
 #define RESOURCE_MEMORY 2
 
-/** OPENCL GPU resource - ensures that device is busy or not*/
-#define RESOURCE_OPENCL_GPU 4
-
 /**
     Project resource. There is 1 project active in the system and if the resource is locked
     no project load/unload operation is possible

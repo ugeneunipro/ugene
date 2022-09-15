@@ -10,9 +10,3 @@ include( ../../ugene_plugin_common.pri )
 INCLUDEPATH += ../../corelibs/U2View/_tmp
 
 win32-msvc2015 : DEFINES+=LAME_MSC
-
-#adding OPENCL specific parameters
-use_opencl() {
-    DEFINES += SW2_BUILD_WITH_OPENCL
-    DEFINES += OPENCL_SUPPORT
-}

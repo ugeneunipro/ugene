@@ -6,7 +6,6 @@ HEADERS += src/PairAlignSequences.h \
            src/SmithWatermanAlgorithmSSE2.h \
            src/SWAlgorithmPlugin.h \
            src/SWAlgorithmTask.h \
-           src/SmithWatermanAlgorithmOPENCL.h \
            src/SWTaskFactory.h \
            src/SmithWatermanTests.h \
            src/SWWorker.h \
@@ -18,14 +17,11 @@ SOURCES += src/PairAlignSequences.cpp \
            src/SmithWatermanAlgorithmSSE2.cpp \
            src/SWAlgorithmPlugin.cpp \
            src/SWAlgorithmTask.cpp \
-           src/SmithWatermanAlgorithmOPENCL.cpp \
            src/SWTaskFactory.cpp \
            src/SmithWatermanTests.cpp \
            src/SWWorker.cpp \
            src/SWQuery.cpp \
     src/PairwiseAlignmentSmithWatermanGUIExtension.cpp
-
-RESOURCES += smith_waterman.qrc
 
 TRANSLATIONS += transl/russian.ts
 
