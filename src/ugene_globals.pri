@@ -55,6 +55,9 @@ clang {
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     QMAKE_CXXFLAGS += -Wno-char-subscripts
+
+    # Clang v9 on MacOS 10.13.
+    QMAKE_CXXFLAGS += -Wno-invalid-constexpr
 }
 
 macx {
