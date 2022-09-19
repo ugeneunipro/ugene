@@ -70,7 +70,7 @@ else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
- TODO  exit 1
+  exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
 
