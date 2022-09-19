@@ -150,6 +150,7 @@ void DatasetsListWidget::sl_renameDataset() {
 void DatasetsListWidget::sl_contextMenu(const QPoint& p, int idx) {
     QMenu menu;
     QAction* renameAction = new QAction(tr("Rename dataset"), &menu);
+    renameAction->setObjectName("rename_dataset_action");
     renameAction->setProperty("idx", idx);
     connect(renameAction, SIGNAL(triggered()), SLOT(sl_renameDataset()));
     menu.addAction(renameAction);
