@@ -69,8 +69,6 @@ public:
 
     virtual void toggleCollapsedState();
 
-    void setSelectedRecurs(bool sel, bool selectChilds);
-
     void setSelected(bool isSelected);
 
     bool isCollapsed() const;
@@ -116,7 +114,7 @@ signals:
     void si_branchCollapsed(GraphicsBranchItem* branch);
 
 protected:
-    GraphicsBranchItem(const QString& name);
+    explicit GraphicsBranchItem(const QString& name);
 
     GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
 
@@ -129,7 +127,12 @@ protected:
     QGraphicsSimpleTextItem* distanceText = nullptr;
     QGraphicsSimpleTextItem* nameText = nullptr;
     GraphicsButtonItem* buttonItem = nullptr;
-    QGraphicsEllipseItem* nameItemSelection = nullptr;
+
+    /**
+     * Leaf branches have additional UI element to show selected state.
+     * TODO: this must be a fixed size (non-scaling) component same as node or branch text.
+     */
+    QGraphicsEllipseItem* leafBranchSelectionMarker = nullptr;
 
     double width = 0;
     /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */

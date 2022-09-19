@@ -21,14 +21,11 @@
 
 #include "GraphicsCircularBranchItem.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QPen>
-#include <QStack>
 #include <QtMath>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -68,7 +65,7 @@ QRectF GraphicsCircularBranchItem::boundingRect() const {
     double rad = qSqrt(p.x() * p.x() + p.y() * p.y());
     double w = width + rad * (1 - qCos(height));
     double h = rad * qSin(height);
-    return QRectF(-w, side == GraphicsBranchItem::Right ? -h : 0, w, h);
+    return {-w, side == GraphicsBranchItem::Right ? -h : 0, w, h};
 }
 
 void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {

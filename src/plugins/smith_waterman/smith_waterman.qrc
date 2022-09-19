@@ -1,5 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-   <qresource>
-        <file>src/sw_opencl.cl</file>
-    </qresource>
-</RCC>

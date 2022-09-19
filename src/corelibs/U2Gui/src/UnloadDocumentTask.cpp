@@ -104,7 +104,7 @@ QList<Task*> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document*>& doc
 
     QList<Task*> result;
 
-    foreach (Document* doc, docs) {
+    for (Document* doc : qAsConst(docs)) {
         QString err = checkSafeUnload(doc);
         if (err == ACTIVE_VIEW_ERROR) {
             QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No;
@@ -234,7 +234,7 @@ void ReloadDocumentTask::saveObjectRelationsFromDoc() {
             if (savedObjectRelations.contains(curObjName)) {
                 coreLog.error("Objects with same names detected during saving of object relations!");
             }
-            foreach (const GObjectRelation& relation, curObjRelations) {
+            for (const GObjectRelation& relation : qAsConst(curObjRelations)) {
                 if (doc->getURLString() != relation.getDocURL()) {  // don't save relations within a single object
                     savedObjectRelations.insert(curObjName, relation);
                 }

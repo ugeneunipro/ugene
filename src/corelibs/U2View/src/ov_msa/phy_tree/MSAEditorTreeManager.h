@@ -79,9 +79,9 @@ private:
     MSAEditor* editor;
     QPointer<MultipleSequenceAlignmentObject> msaObject;
     CreatePhyTreeSettings settings;
-    bool addExistingTree;
+    bool addExistingTree = false;
     PhyTree phyTree;
-    Document* treeDocument;
+    Document* treeDocument = nullptr;
     QMap<MSAEditorTreeViewer*, Task*> activeRefreshTasks;
 };
 

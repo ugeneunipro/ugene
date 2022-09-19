@@ -93,6 +93,7 @@ QTransform TreeViewer::getTransform() const {
 
 void TreeViewer::setTransform(const QTransform& m) {
     ui->setTransform(m);
+    ui->updateFixedSizeItemScales();
 }
 
 QVariantMap TreeViewer::saveState() {
@@ -197,20 +198,20 @@ void TreeViewer::setupLayoutSettingsMenu(QMenu* m) {
     m->addActions(layoutActionGroup->actions());
 }
 
-void TreeViewer::setupShowLabelsMenu(QMenu* m) {
+void TreeViewer::setupShowLabelsMenu(QMenu* m) const {
     m->addAction(nameLabelsAction);
     m->addAction(distanceLabelsAction);
 }
 
-void TreeViewer::setupExportTreeImageMenu(QMenu* m) {
+void TreeViewer::setupExportTreeImageMenu(QMenu* m) const {
     m->addAction(captureTreeAction);
     m->addAction(exportAction);
 }
 
 void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     // Layout
-    QToolButton* layoutButton = new QToolButton(tb);
-    QMenu* layoutMenu = new QMenu(tr("Layout"), ui);
+    auto layoutButton = new QToolButton(tb);
+    auto layoutMenu = new QMenu(tr("Layout"), ui);
     setupLayoutSettingsMenu(layoutMenu);
     layoutButton->setDefaultAction(layoutMenu->menuAction());
     layoutButton->setPopupMode(QToolButton::InstantPopup);
@@ -220,8 +221,8 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
     // Labels and Text Settings
     tb->addSeparator();
-    QToolButton* showLabelsButton = new QToolButton();
-    QMenu* showLabelsMenu = new QMenu(tr("Show Labels"), ui);
+    auto showLabelsButton = new QToolButton();
+    auto showLabelsMenu = new QMenu(tr("Show Labels"), ui);
     showLabelsButton->setObjectName("Show Labels");
     setupShowLabelsMenu(showLabelsMenu);
     showLabelsButton->setDefaultAction(showLabelsMenu->menuAction());
@@ -281,7 +282,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addAction(treeSettingsAction);
 
     // Layout
-    QMenu* layoutMenu = new QMenu(tr("Layout"), ui);
+    auto layoutMenu = new QMenu(tr("Layout"), ui);
     setupLayoutSettingsMenu(layoutMenu);
     layoutMenu->setIcon(QIcon(":core/images/tree_layout.png"));
     m->addMenu(layoutMenu);
@@ -295,7 +296,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     // Labels and Text Settings
     m->addSeparator();
 
-    QMenu* labelsMenu = new QMenu(tr("Show Labels"), ui);
+    auto labelsMenu = new QMenu(tr("Show Labels"), ui);
     labelsMenu->menuAction()->setObjectName("show_labels_action");
     setupShowLabelsMenu(labelsMenu);
     labelsMenu->setIcon(QIcon(":/core/images/text_ab.png"));
@@ -314,7 +315,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addSeparator();
     m->addAction(printAction);
 
-    QMenu* cameraMenu = new QMenu(tr("Export Tree Image"), ui);
+    auto cameraMenu = new QMenu(tr("Export Tree Image"), ui);
     setupExportTreeImageMenu(cameraMenu);
     cameraMenu->setIcon(QIcon(":/core/images/cam2.png"));
     cameraMenu->menuAction()->setObjectName("Export Tree Image");
@@ -327,7 +328,7 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
 }
 
 QWidget* TreeViewer::createWidget() {
-    assert(ui == nullptr);
+    SAFE_POINT(ui == nullptr, "createWidget: UI is not null", ui);
     ui = new TreeViewerUI(this);
 
     optionsPanel = new OptionsPanel(this);
@@ -337,12 +338,10 @@ QWidget* TreeViewer::createWidget() {
     filters.append(new OPFactoryFilterVisitor(ObjViewType_PhylogeneticTree));
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
-    foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {
+    for (OPWidgetFactory* factory : qAsConst(opWidgetFactoriesForSeqView)) {
         optionsPanel->addGroup(factory);
     }
-
     qDeleteAll(filters);
-
     return ui;
 }
 
@@ -437,7 +436,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
 
     updateActionsState();
     setObjectName("treeView");
-    updateScene(true);
+    updateRectLayoutBranches();
     connect(root, &GraphicsBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
 }
 
@@ -453,7 +452,7 @@ QVariant TreeViewerUI::getOptionValue(TreeViewOption option) const {
     return settings[option];
 }
 
-void TreeViewerUI::setOptionValue(TreeViewOption option, QVariant value) {
+void TreeViewerUI::setOptionValue(TreeViewOption option, const QVariant& value) {
     settings[option] = value;
     if (!dontSendOptionChangedSignal) {
         emit si_optionChanged(option, value);
@@ -510,8 +509,7 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
             updateRectLayoutBranches();
             changeTreeLayout(getTreeLayout());
             break;
-        case WIDTH_COEF:
-        case HEIGHT_COEF:
+        case BREADTH_SCALE_ADJUSTMENT_PERCENT:
             updateScene(true);
             break;
         case LABEL_COLOR:
@@ -590,14 +588,13 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(BRANCH_COLOR, QColor(0, 0, 0));
     setOptionValue(BRANCH_THICKNESS, 1);
 
-    setOptionValue(WIDTH_COEF, 1);
-    setOptionValue(HEIGHT_COEF, 1);
+    setOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT, 100);
 
     setOptionValue(NODE_RADIUS, 2);
     setOptionValue(NODE_COLOR, QColor(0, 0, 0));
 
     for (unsigned int i = 0; i < OPTION_ENUM_END; i++) {
-        TreeViewOption option = static_cast<TreeViewOption>(i);
+        auto option = static_cast<TreeViewOption>(i);
         SAFE_POINT(settings.keys().contains(option), "Not all options have been initialized", );
     }
 }
@@ -676,7 +673,7 @@ void TreeViewerUI::updateRectLayoutBranches() {
 
     updateStepsToLeafOnBranches();
     double averageBranchDistance = getAverageBranchDistance();
-    int heightCoef = getOptionValue(HEIGHT_COEF).toInt();
+    double breadthScaleAdjustment = getOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble() / 100;
 
     QStack<GraphicsBranchItem*> stack;
     stack.push(rectRoot);
@@ -695,9 +692,9 @@ void TreeViewerUI::updateRectLayoutBranches() {
 
         auto rectItem = dynamic_cast<GraphicsRectangularBranchItem*>(item);
         SAFE_POINT(rectItem != nullptr, "Not a rect root!", );
-        rectItem->setHeightCoef(heightCoef);
+        rectItem->setBreathScaleAdjustment(breadthScaleAdjustment);
 
-        double coef = qMax(1.0, SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
+        double coef = qMax(1.0, SIZE_COEF);
 
         switch (type) {
             case DEFAULT:
@@ -737,7 +734,6 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
     updateRectLayoutBranches();
     updateLegend();
     updateRect();
-    scene()->update();
 
     showLabels(LabelType_Distance);
     showLabels(LabelType_SequenceName);
@@ -746,7 +742,6 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
         updateLabelsAlignment();
     }
 
-    defaultZoom();
     if (fitSceneToView) {
         fitIntoView();
     }
@@ -802,16 +797,15 @@ void TreeViewerUI::updateStepsToLeafOnBranches() {
 
 QVariantMap TreeViewerUI::getSettingsState() const {
     QString branchColor("branch_color");
-    QString branchThisckness("branch_thickness");
+    QString branchThickness("branch_thickness");
     QVariantMap m;
 
     int i = 0;
     foreach (QGraphicsItem* graphItem, items()) {
-        GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem);
-        if (branchItem != nullptr) {
+        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
             OptionsMap branchSettings = branchItem->getSettings();
             m[branchColor] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
-            m[branchThisckness + i] = branchSettings[BRANCH_THICKNESS].toInt();
+            m[branchThickness + i] = branchSettings[BRANCH_THICKNESS].toInt();
             i++;
         }
     }
@@ -821,7 +815,7 @@ QVariantMap TreeViewerUI::getSettingsState() const {
 
 void TreeViewerUI::setSettingsState(const QVariantMap& m) {
     QString branchColor("branch_color");
-    QString branchThisckness("branch_thickness");
+    QString branchThickness("branch_thickness");
     int i = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
@@ -832,7 +826,7 @@ void TreeViewerUI::setSettingsState(const QVariantMap& m) {
                 branchSettings[BRANCH_COLOR] = vColor.value<QColor>();
             }
 
-            QVariant vThickness = m[branchThisckness + i];
+            QVariant vThickness = m[branchThickness + i];
             if (vThickness.type() == QVariant::Int) {
                 branchSettings[BRANCH_THICKNESS] = vThickness.toInt();
             }
@@ -862,7 +856,7 @@ void TreeViewerUI::addLegend() {
 }
 
 void TreeViewerUI::updateLegend() {
-    qreal coef = qMax(1.0, SIZE_COEF * getOptionValue(WIDTH_COEF).toInt());
+    qreal coef = qMax(1.0, SIZE_COEF);
     qreal WIDTH = getOptionValue(SCALEBAR_RANGE).toDouble() * coef * distanceToViewScale;
 
     qreal d = getOptionValue(SCALEBAR_RANGE).toDouble();
@@ -902,16 +896,28 @@ void TreeViewerUI::setZoomLevel(double newZoomLevel) {
     uiLog.trace("New zoom level: " + QString::number(newZoomLevel));
     double scaleChange = newZoomLevel / zoomLevel;
     zoomLevel = newZoomLevel;
+    scale(scaleChange, scaleChange);
+    updateFixedSizeItemScales();
+    updateActionsState();
+}
 
-    double nodeScale = zoomLevel * (isRectangularLayoutMode() ? 1.2 : 0.4);
-    QList<QGraphicsItem*> itemList = scene()->items();
-    for (QGraphicsItem* item : qAsConst(itemList)) {
+QList<QGraphicsItem*> TreeViewerUI::getFixedSizeItems() const {
+    QList<QGraphicsItem*> result;
+    QList<QGraphicsItem*> items = scene()->items();
+    for (QGraphicsItem* item : qAsConst(items)) {
         if (auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item)) {
-            nodeItem->setScale(1 / nodeScale);
+            result.append(nodeItem);
         }
     }
-    scale(scaleChange, scaleChange);
-    updateActionsState();
+    return result;
+}
+
+void TreeViewerUI::updateFixedSizeItemScales() {
+    double sceneToScreenScale = qMin(transform().m11(), transform().m22());
+    QList<QGraphicsItem*> fixedSizeItems = getFixedSizeItems();
+    for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
+        item->setScale(1 / sceneToScreenScale);  // Scale back to screen coordinates.
+    }
 }
 
 void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
@@ -942,7 +948,7 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
     bool isLeftButton = e->button() == Qt::LeftButton;
     bool isDragEvent = isLeftButton && (e->globalPos() - lastMousePressPos).manhattanLength() >= QApplication::startDragDistance();
     if (!isSelectionStateManagedByChildOnClick && isLeftButton && !isDragEvent) {
-        root->setSelectedRecurs(false, true);  // Clear selection on any right button click with no shift.
+        root->setSelected(false);  // Clear selection on any right button click with no shift.
     }
     updateActionsState();
     updateBranchSettings();
@@ -950,16 +956,36 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
 }
 
 void TreeViewerUI::resizeEvent(QResizeEvent* e) {
-    fitIntoView();
     QGraphicsView::resizeEvent(e);
+    updateScene(true);
 }
 
 void TreeViewerUI::fitIntoView() {
-    QRectF rect = scene()->sceneRect();
-    rect.setWidth(rect.width() / zoomLevel);
-    rect.setHeight(rect.height() / zoomLevel);
-    rect.moveCenter(scene()->sceneRect().center());
-    fitInView(rect, Qt::KeepAspectRatio);
+    // First hide all fixed size items, so they do not affect current size estimation.
+    QList<QGraphicsItem*> fixedSizeItems = getFixedSizeItems();
+    for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
+        item->setVisible(false);
+    }
+
+    // Set new scene rect with margins.
+    updateRect();
+
+    // Fit to screen scene rect. Preserve zoom.
+    QRectF sceneRect = scene()->sceneRect();
+    QRectF sceneRectWithZoomEffect = sceneRect;
+    sceneRectWithZoomEffect.setWidth(sceneRect.width() / zoomLevel);
+    sceneRectWithZoomEffect.setHeight(sceneRect.height() / zoomLevel);
+    sceneRectWithZoomEffect.moveCenter(sceneRect.center());
+    fitInView(sceneRectWithZoomEffect, Qt::KeepAspectRatio);
+
+    // Re-scale fixed size items to preserve the size and make them visible.
+    updateFixedSizeItemScales();
+    for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
+        item->setVisible(true);
+    }
+
+    // Re-apply margins with fixed size items visible.
+    updateRect();
 }
 
 void TreeViewerUI::paint(QPainter& painter) {
@@ -1005,8 +1031,9 @@ void TreeViewerUI::sl_swapTriggered() {
 }
 
 void TreeViewerUI::sl_rerootTriggered() {
-    foreach (QGraphicsItem* graphItem, items()) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+    QList<QGraphicsItem*> childItems = items();
+    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
+        auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
             buttonItem->rerootTree(phyObject);
             break;
@@ -1016,10 +1043,10 @@ void TreeViewerUI::sl_rerootTriggered() {
 
 void TreeViewerUI::collapseSelected() {
     QList<QGraphicsItem*> childItems = items();
-    foreach (QGraphicsItem* graphItem, childItems) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
+        auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            buttonItem->collapse();
+            buttonItem->toggleCollapsedState();
             break;
         }
     }
@@ -1061,7 +1088,7 @@ void TreeViewerUI::updateBranchSettings() {
 
 bool TreeViewerUI::isSelectedCollapsed() {
     foreach (QGraphicsItem* graphItem, items()) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+        auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
             return buttonItem->isCollapsed();
         }
@@ -1099,11 +1126,11 @@ void TreeViewerUI::sl_exportTriggered() {
     QRect rect = scene()->sceneRect().toRect();
     rect.moveTo(0, 0);
 
-    QBuffer qbuffer;
-    qbuffer.open(QBuffer::ReadWrite);
+    QBuffer buffer;
+    buffer.open(QBuffer::ReadWrite);
 
     QSvgGenerator generator;
-    generator.setOutputDevice(&qbuffer);
+    generator.setOutputDevice(&buffer);
     generator.setSize(rect.size());
     generator.setViewBox(rect);
 
@@ -1112,8 +1139,8 @@ void TreeViewerUI::sl_exportTriggered() {
     paint(painter);
     painter.end();
 
-    qbuffer.seek(0);  // move pointer to the buffer's start
-    QString svgText(qbuffer.readAll());
+    buffer.seek(0);  // move pointer to the buffer's start
+    QString svgText(buffer.readAll());
 
     if (svgText.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Failed to generate SVG image."));
@@ -1139,12 +1166,9 @@ void TreeViewerUI::changeLabelsAlignment() {
     switch (curLayout) {
         case CIRCULAR_LAYOUT:
             changeTreeLayout(CIRCULAR_LAYOUT);
-            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
             break;
-
         case UNROOTED_LAYOUT:
             changeTreeLayout(UNROOTED_LAYOUT);
-            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
             break;
         case RECTANGULAR_LAYOUT:
             // Do nothing
@@ -1219,7 +1243,6 @@ void TreeViewerUI::rebuildTreeLayout() {
             setNewTreeLayout(rectRoot, RECTANGULAR_LAYOUT);
             break;
     }
-    fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
     updateScene(true);
     updateSettings();
     updateTextSettings(LABEL_COLOR);
@@ -1234,20 +1257,14 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
     // In rectangular mode perform a complete re-layout of the tree, so there is no empty space left.
     // TODO: do the same in circular & unrooted layouts.
     CHECK(isRectangularLayoutMode(), );
-
-    QTransform curTransform = viewportTransform();
-    setTransformationAnchor(NoAnchor);
-
     recalculateRectangularLayout();
     updateScene(false);
-
-    setTransform(curTransform);
+    updateFixedSizeItemScales();
     updateActionsState();
-    setTransformationAnchor(AnchorUnderMouse);
 }
 
 void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout) {
-    root->setSelectedRecurs(false, true);  // clear selection
+    root->setSelected(false);
     setOptionValue(TREE_LAYOUT, treeLayout);
 
     scene()->removeItem(root);
@@ -1257,17 +1274,13 @@ void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayou
     connect(newRoot, &GraphicsBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
 
     scene()->addItem(root);
-    defaultZoom();
-    updateRect();
-
     updateScene(true);
-    onLayoutChanged(treeLayout);
 
     bool showNames = getOptionValue(SHOW_LABELS).toBool();
     bool showDistances = getOptionValue(SHOW_DISTANCES).toBool();
 
+    // TODO: cleanup labels logic.
     changeNodeValuesDisplay();
-
     if (!showNames || !showDistances) {
         LabelTypes lt;
         if (!showDistances) {
@@ -1278,9 +1291,6 @@ void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayou
         }
         showLabels(lt);
     }
-    show();
-
-    fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void TreeViewerUI::showLabels(LabelTypes labelTypes) {
@@ -1304,9 +1314,8 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
             }
         }
         foreach (QGraphicsItem* item, node->childItems()) {
-            GraphicsBranchItem* bitem = dynamic_cast<GraphicsBranchItem*>(item);
-            if (bitem != nullptr) {
-                stack.push(bitem);
+            if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(item)) {
+                stack.push(branchItem);
             }
         }
     }
@@ -1329,8 +1338,7 @@ void TreeViewerUI::changeNamesDisplay() {
 void TreeViewerUI::changeNodeValuesDisplay() {
     const QList<QGraphicsItem*> itemList = scene()->items();
     for (QGraphicsItem* curItem : qAsConst(itemList)) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(curItem);
-        if (buttonItem != nullptr) {
+        if (auto buttonItem = dynamic_cast<GraphicsButtonItem*>(curItem)) {
             buttonItem->updateSettings(getSettings());
         }
     }
@@ -1369,9 +1377,8 @@ void TreeViewerUI::sl_textSettingsTriggered() {
             while (!stack.empty()) {
                 GraphicsBranchItem* item = stack.pop();
                 if (item->getNameTextItem() == nullptr) {
-                    foreach (QGraphicsItem* citem, item->childItems()) {
-                        GraphicsBranchItem* gbi = dynamic_cast<GraphicsBranchItem*>(citem);
-                        if (gbi != nullptr) {
+                    foreach (QGraphicsItem* childItem, item->childItems()) {
+                        if (auto gbi = dynamic_cast<GraphicsBranchItem*>(childItem)) {
                             stack.push(gbi);
                         }
                     }
@@ -1386,7 +1393,7 @@ void TreeViewerUI::sl_textSettingsTriggered() {
 }
 
 void TreeViewerUI::sl_treeSettingsTriggered() {
-    QObjectScopedPointer<TreeSettingsDialog> dialog = new TreeSettingsDialog(this, getSettings(), getTreeLayout() == RECTANGULAR_LAYOUT);
+    QObjectScopedPointer<TreeSettingsDialog> dialog = new TreeSettingsDialog(this, getSettings());
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -1402,7 +1409,7 @@ void TreeViewerUI::sl_zoomToSel() {
     } else {
         GraphicsButtonItem* topButton = nullptr;
         foreach (QGraphicsItem* graphItem, selectedItems) {
-            GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+            auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
             if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
                 topButton = buttonItem;
                 break;
@@ -1494,7 +1501,7 @@ double TreeViewerUI::getAverageBranchDistance() const {
 }
 
 void TreeViewerUI::updateActionsState() {
-    int widthCoeff = getOptionValue(WIDTH_COEF).toInt();
+    int widthCoeff = 1;
     treeViewer->zoomToSelectionAction->setEnabled(zoomLevel < MAXIMUM_ZOOM * qMax(widthCoeff * SIZE_COEF, 1.0));
     treeViewer->zoomOutAction->setEnabled(zoomLevel > MINIMUM_ZOOM);
 
@@ -1553,10 +1560,9 @@ void TreeViewerUI::updateLabelsAlignment() {
         GraphicsBranchItem* item = stack.pop();
         QGraphicsSimpleTextItem* nameText = item->getNameTextItem();
         if (nameText == nullptr) {
-            foreach (QGraphicsItem* citem, item->childItems()) {
-                GraphicsBranchItem* gbi = dynamic_cast<GraphicsBranchItem*>(citem);
-                if (gbi != nullptr) {
-                    stack.push(gbi);
+            foreach (QGraphicsItem* childItem, item->childItems()) {
+                if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(childItem)) {
+                    stack.push(branchItem);
                 }
             }
         } else {
@@ -1587,7 +1593,7 @@ void TreeViewerUI::updateLabelsAlignment() {
 bool TreeViewerUI::isOnlyLeafSelected() const {
     int selectedItems = 0;
     foreach (QGraphicsItem* graphItem, items()) {
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
+        auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
         if (buttonItem != nullptr && buttonItem->isNodeSelected()) {
             selectedItems++;
         }

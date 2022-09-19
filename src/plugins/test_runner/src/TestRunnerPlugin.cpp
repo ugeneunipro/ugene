@@ -118,7 +118,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
 
                     return;
                 }
-                foreach (GTestSuite* testSuite, testSuiteList) {
+                for (GTestSuite* testSuite : qAsConst(testSuiteList)) {
                     QString testSuiteUrl = testSuite->getURL();
                     if (testRunnerService->findTestSuiteByURL(testSuiteUrl) != nullptr) {
                         delete testSuite;  // duplicate.

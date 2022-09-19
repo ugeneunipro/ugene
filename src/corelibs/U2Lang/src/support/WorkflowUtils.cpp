@@ -126,7 +126,7 @@ QStringList WorkflowUtils::expandToUrls(const QString& s) {
     QStringList urls = s.split(";");
     QStringList result;
     QRegExp wcard("[*?\\[\\]]");
-    foreach (QString url, urls) {
+    for (QString url : qAsConst(urls)) {
         int idx = url.indexOf(wcard);
         if (idx >= 0) {
             int dirIdx = url.lastIndexOf('/', idx);
@@ -205,7 +205,7 @@ bool validatePorts(Actor* a, NotificationsList& infoList) {
         NotificationsList notificationList;
         good = p->validate(notificationList) && good;
         if (!notificationList.isEmpty()) {
-            foreach (WorkflowNotification notification, notificationList) {
+            for (const WorkflowNotification& notification : qAsConst(notificationList)) {
                 WorkflowNotification item;
                 item.message = notification.message;
                 item.port = p->getId();
@@ -222,7 +222,7 @@ bool graphDepthFirstSearch(Actor* vertex, QList<Actor*>& visitedVertices) {
     visitedVertices.append(vertex);
     const QList<Port*> outputPorts = vertex->getOutputPorts();
     QList<Actor*> receivingVertices;
-    foreach (Port* outputPort, outputPorts) {
+    for (Port* outputPort : qAsConst(outputPorts)) {
         foreach (Port* receivingPort, outputPort->getLinks().keys()) {
             receivingVertices.append(receivingPort->owner());
         }
@@ -330,7 +330,7 @@ bool WorkflowUtils::validate(const Workflow::Schema& schema, QStringList& errs) 
     NotificationsList notifications;
     bool good = validate(schema, notifications);
 
-    foreach (const WorkflowNotification& notification, notifications) {
+    for (const WorkflowNotification& notification : qAsConst(notifications)) {
         QString res = QString();
         Actor* a = schema.actorById(notification.actorId);
         if (notification.actorId.isEmpty() || a == nullptr) {
@@ -474,7 +474,8 @@ QString WorkflowUtils::findPathToSchemaFile(const QString& name) {
 void WorkflowUtils::getLinkedActorsId(Actor* a, QList<QString>& linkedActors) {
     if (!linkedActors.contains(a->getId())) {
         linkedActors.append(a->getId());
-        foreach (Port* p, a->getPorts()) {
+        QList<Port*> ports = a->getPorts();
+        for (Port* p : qAsConst(ports)) {
             foreach (Port* pp, p->getLinks().keys()) {
                 getLinkedActorsId(pp->owner(), linkedActors);
             }
@@ -493,7 +494,8 @@ bool WorkflowUtils::isPathExist(const Port* src, const Port* dest) {
     }
     const Actor* destElement = dest->owner();
 
-    foreach (const Port* port, src->owner()->getPorts()) {
+    QList<Port*> ports = src->owner()->getPorts();
+    for (const Port* port : qAsConst(ports)) {
         if (src == port) {
             continue;
         }
@@ -656,7 +658,8 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) 
         }
     }
 
-    foreach (Actor* actor, s.getProcesses()) {
+    QList<Actor*> processes = s.getProcesses();
+    for (Actor* actor : qAsConst(processes)) {
         // check that free input ports are aliased
         foreach (Port* port, actor->getPorts()) {
             if (!port->isInput()) {
@@ -691,7 +694,7 @@ void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pat
     QStringList path;
     foreach (const QString& dest, busMap.keys()) {
         QStringList srcs = busMap.value(dest).split(";");
-        foreach (const QString& src, srcs) {
+        for (const QString& src : qAsConst(srcs)) {
             BusMap::parseSource(src, srcId, path);
             if (!path.isEmpty()) {
                 QPair<QString, QString> slotPair(dest, srcId);
@@ -703,18 +706,19 @@ void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pat
 }
 
 void WorkflowUtils::applyPathsToBusMap(StrStrMap& busMap, const SlotPathMap& pathMap) {
-    foreach (const QString& dest, busMap.keys()) {
+    QList<QString> busMapKeys = busMap.keys();
+    for (const QString& dest : qAsConst(busMapKeys)) {
         QStringList newSrcs;
 
         QStringList srcs = busMap.value(dest).split(";");
         QStringList uniqList;
-        foreach (QString src, srcs) {
+        for (const QString& src : qAsConst(srcs)) {
             if (!uniqList.contains(src)) {
                 uniqList << src;
             }
         }
 
-        foreach (const QString& src, uniqList) {
+        for (const QString& src : qAsConst(uniqList)) {
             QPair<QString, QString> slotPair(dest, src);
             if (pathMap.contains(slotPair)) {
                 QList<QStringList> paths = pathMap.values(slotPair);
@@ -738,7 +742,7 @@ bool WorkflowUtils::startExternalProcess(QProcess* process, const QString& progr
 
 QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset>& sets) {
     QStringList result;
-    foreach (const Dataset& dSet, sets) {
+    for (const Dataset& dSet : qAsConst(sets)) {
         foreach (URLContainer* url, dSet.getUrls()) {
             result << url->getUrl();
         }
@@ -1215,7 +1219,7 @@ bool WorkflowUtils::validateSharedDbUrl(const QString& url, NotificationsList& n
 
 bool WorkflowUtils::validateDatasets(const QList<Dataset>& sets, NotificationsList& notificationList) {
     bool res = true;
-    foreach (const Dataset& set, sets) {
+    for (const Dataset& set : qAsConst(sets)) {
         foreach (URLContainer* urlContainer, set.getUrls()) {
             SAFE_POINT(nullptr != urlContainer, "NULL URLContainer!", false);
             bool urlIsValid = urlContainer->validateUrl(notificationList);

@@ -19,15 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifdef SW2_BUILD_WITH_CUDA
-#    include <cuda_runtime.h>
-#endif
+#include "SWAlgorithmTask.h"
 
 #include <QMap>
 #include <QMutexLocker>
-#include <QVariant>
 
-#include <U2Algorithm/CudaGpuRegistry.h>
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
@@ -37,20 +33,13 @@
 #include <U2Core/Counter.h>
 #include <U2Core/Log.h>
 #include <U2Core/Timer.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 
-#include "SWAlgorithmTask.h"
-#include "SmithWatermanAlgorithmCUDA.h"
-#include "SmithWatermanAlgorithmOPENCL.h"
 #include "SmithWatermanAlgorithmSSE2.h"
-#include "sw_cuda_cpp.h"
 
 using namespace std;
-
-const double B_TO_MB_FACTOR = 1048576.0;
 
 namespace U2 {
 
@@ -79,13 +68,6 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings& s,
     minScore = (maxScore * s.percentOfScore) / 100;
     if ((maxScore * (int)s.percentOfScore) % 100 != 0)
         minScore += 1;
-
-    // acquiring resources for GPU computations
-    if (SW_cuda == algType) {
-        addTaskResource(TaskResourceUsage(RESOURCE_CUDA_GPU, 1, true /*prepareStage*/));
-    } else if (SW_opencl == algType) {
-        addTaskResource(TaskResourceUsage(RESOURCE_OPENCL_GPU, 1, true /*prepareStage*/));
-    }
 
     setupTask(maxScore);
 }
@@ -128,11 +110,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
             computationMatrixSquare = 751948900.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
-        case SW_cuda:
-        case SW_opencl:
-            computationMatrixSquare = 58484916.67;  // the same as previous
-            c.nThreads = 1;
-            break;
         default:
             assert(0);
     }
@@ -160,16 +137,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     // acquiring memory resources for computations
     quint64 neededRam = 0;
     switch (algType) {
-        case SW_cuda:
-#ifdef SW2_BUILD_WITH_CUDA
-            neededRam = SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView);
-#endif
-            break;
-        case SW_opencl:
-#ifdef SW2_BUILD_WITH_OPENCL
-            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView);
-#endif
-            break;
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
                                                                         sWatermanConfig.gapModel.scoreGapExtd,
@@ -191,62 +158,12 @@ void SWAlgorithmTask::setupTask(int maxScore) {
         default:
             assert(0);
     }
-    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && !(algType == SW_cuda || algType == SW_opencl)) {
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
         addSubTask(t);
-    }
-}
-
-void SWAlgorithmTask::prepare() {
-    if (SW_cuda == algType) {
-        cudaGpu = AppContext::getCudaGpuRegistry()->acquireAnyReadyGpu();
-        assert(cudaGpu);
-#ifdef SW2_BUILD_WITH_CUDA
-        const SequenceWalkerConfig& config = t->getConfig();
-        quint64 needMemBytes = SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(
-            sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads), sWatermanConfig.resultView);
-        quint64 gpuMemBytes = cudaGpu->getGlobalMemorySizeBytes();
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(tr("Not enough memory on CUDA-enabled device. "
-                                  "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(cudaGpu->getId()), QString(cudaGpu->getName())));
-            return;
-        } else {
-            algoLog.details(tr("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(cudaGpu->getName()));
-
-        cudaSetDevice(cudaGpu->getId());
-#else
-        assert(false);
-#endif
-    } else if (SW_opencl == algType) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
-        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
-
-        const SequenceWalkerConfig& config = t->getConfig();
-        const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
-            sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
-        const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();
-
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
-                                       "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
-            return;
-        } else {
-            algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(openClGpu->getName()));
-#else
-        assert(0);
-#endif
     }
 }
 
@@ -266,20 +183,6 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     SmithWatermanAlgorithm* sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
-    } else if (algType == SW_cuda) {
-#ifdef SW2_BUILD_WITH_CUDA
-        sw = new SmithWatermanAlgorithmCUDA;
-#else
-        coreLog.error("CUDA was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_CUDA
-    } else if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        sw = new SmithWatermanAlgorithmOPENCL;
-#else
-        coreLog.error("OPENCL was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -292,12 +195,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
 
     quint64 t1 = GTimer::currentTimeMicros();
     sw->launch(sWatermanConfig.pSm, sWatermanConfig.ptrn, localSeq, sWatermanConfig.gapModel.scoreGapOpen + sWatermanConfig.gapModel.scoreGapExtd, sWatermanConfig.gapModel.scoreGapExtd, minScore, resultView);
-    QString algName;
-    if (algType == SW_cuda) {
-        algName = "CUDA";
-    } else {
-        algName = "Classic";
-    }
+    QString algName = "Classic";
     QString testName;
     if (getParentTask() != nullptr) {
         testName = getParentTask()->getTaskName();
@@ -398,14 +296,6 @@ int SWAlgorithmTask::calculateMaxScore(const QByteArray& seq, const SMatrix& sub
 }
 
 Task::ReportResult SWAlgorithmTask::report() {
-    if (SW_cuda == algType) {
-        cudaGpu->setAcquired(false);
-    } else if (SW_opencl == algType) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu->setAcquired(false);
-#endif
-    }
-
     SmithWatermanResultListener* rl = sWatermanConfig.resultListener;
     QList<SmithWatermanResult> resultList = rl->getResults();
 
@@ -485,10 +375,6 @@ PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSe
       percentOfScore(0) {
 }
 
-PairwiseAlignmentSmithWatermanTaskSettings::~PairwiseAlignmentSmithWatermanTaskSettings() {
-    // all dynamic objects in the world will be destroyed by the task
-}
-
 bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
     if ((customSettings.contains(PA_SW_GAP_OPEN) == false) ||
         (customSettings.contains(PA_SW_GAP_EXTD) == false) ||
@@ -554,13 +440,6 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
         minScore += 1;
     }
 
-    // acquiring resources for GPU computations
-    if (SW_cuda == algType) {
-        addTaskResource(TaskResourceUsage(RESOURCE_CUDA_GPU, 1, true /*prepareStage*/));
-    } else if (SW_opencl == algType) {
-        addTaskResource(TaskResourceUsage(RESOURCE_OPENCL_GPU, 1, true /*prepareStage*/));
-    }
-
     setupTask();
 }
 
@@ -580,20 +459,6 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
     SmithWatermanAlgorithm* sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
-    } else if (algType == SW_cuda) {
-#ifdef SW2_BUILD_WITH_CUDA
-        sw = new SmithWatermanAlgorithmCUDA;
-#else
-        coreLog.error("CUDA was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_CUDA
-    } else if (algType == SW_opencl) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        sw = new SmithWatermanAlgorithmOPENCL;
-#else
-        coreLog.error("OPENCL was not enabled in this build");
-        return;
-#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -601,12 +466,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
 
     quint64 t1 = GTimer::currentTimeMicros();
     sw->launch(settings->sMatrix, *ptrn, localSeq, settings->gapOpen + settings->gapExtd, settings->gapExtd, minScore, SmithWatermanSettings::MULTIPLE_ALIGNMENT);
-    QString algName;
-    if (algType == SW_cuda) {
-        algName = "CUDA";
-    } else {
-        algName = "Classic";
-    }
+    QString algName = "Classic";
     QString testName;
     if (getParentTask() != nullptr) {
         testName = getParentTask()->getTaskName();
@@ -693,11 +553,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
             computationMatrixSquare = 7519489.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
-        case SW_cuda:
-        case SW_opencl:
-            computationMatrixSquare = 58484916.67;  // the same as previous
-            c.nThreads = 1;
-            break;
         default:
             assert(0);
     }
@@ -718,22 +573,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     // acquiring memory resources for computations
     quint64 neededRam = 0;
     switch (algType) {
-        case SW_cuda:
-#ifdef SW2_BUILD_WITH_CUDA
-            neededRam = SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(settings->sMatrix,
-                                                                            *ptrn,
-                                                                            sqnc->left(c.chunkSize * c.nThreads),
-                                                                            SmithWatermanSettings::MULTIPLE_ALIGNMENT);
-#endif
-            break;
-        case SW_opencl:
-#ifdef SW2_BUILD_WITH_OPENCL
-            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix,
-                                                                              *ptrn,
-                                                                              sqnc->left(c.chunkSize * c.nThreads),
-                                                                              SmithWatermanSettings::MULTIPLE_ALIGNMENT);
-#endif
-            break;
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen,
                                                                         settings->gapExtd,
@@ -755,7 +594,7 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
         default:
             assert(0);
     }
-    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && !(algType == SW_cuda || algType == SW_opencl)) {
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
@@ -782,53 +621,6 @@ int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray& 
 }
 
 void PairwiseAlignmentSmithWatermanTask::prepare() {
-    if (SW_cuda == algType) {
-        cudaGpu = AppContext::getCudaGpuRegistry()->acquireAnyReadyGpu();
-        assert(cudaGpu);
-#ifdef SW2_BUILD_WITH_CUDA
-        const SequenceWalkerConfig& config = t->getConfig();
-        quint64 needMemBytes = SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(
-            settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT);
-        quint64 gpuMemBytes = cudaGpu->getGlobalMemorySizeBytes();
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(tr("Not enough memory on CUDA-enabled device. "
-                                  "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(cudaGpu->getId()), QString(cudaGpu->getName())));
-            return;
-        } else {
-            algoLog.details(tr("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(cudaGpu->getName()));
-
-        cudaSetDevice(cudaGpu->getId());
-#else
-        assert(false);
-#endif
-    } else if (SW_opencl == algType) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
-        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
-
-        const SequenceWalkerConfig& config = t->getConfig();
-        const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
-            settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
-        const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();
-
-        if (gpuMemBytes < needMemBytes) {
-            stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
-                                       "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4")
-                                   .arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
-            return;
-        } else {
-            algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").arg(QString::number(needMemBytes), QString::number(needMemBytes / B_TO_MB_FACTOR)));
-        }
-
-        coreLog.details(QString("GPU model: %1").arg(openClGpu->getName()));
-#else
-        assert(0);
-#endif
-    }
 }
 
 QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
@@ -839,14 +631,6 @@ QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
 }
 
 Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
-    if (SW_cuda == algType) {
-        cudaGpu->setAcquired(false);
-    } else if (SW_opencl == algType) {
-#ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu->setAcquired(false);
-#endif
-    }
-
     assert(settings->resultListener != nullptr);
     QList<SmithWatermanResult> resultList = settings->resultListener->getResults();
 
@@ -979,9 +763,6 @@ void PairwiseAlignmentSWResultsPostprocessingTask::run() {
     foreach (const SmithWatermanResult& r, resultList) { /* push results after filters */
         rl->pushResult(r);
     }
-}
-
-void PairwiseAlignmentSWResultsPostprocessingTask::prepare() {
 }
 
 }  // namespace U2

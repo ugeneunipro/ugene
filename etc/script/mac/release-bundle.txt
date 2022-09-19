@@ -1403,7 +1403,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/libgor4.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libhmm2.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libkalign.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/liblinkdata_support.dylib
-Unipro UGENE.app/Contents/MacOS/plugins/libopencl_support.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/liborf_marker.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libpcr.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libphylip.dylib
@@ -1421,8 +1420,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/libweight_matrix.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libworkflow_designer.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/linkdata_support.license
 Unipro UGENE.app/Contents/MacOS/plugins/linkdata_support.plugin
-Unipro UGENE.app/Contents/MacOS/plugins/opencl_support.license
-Unipro UGENE.app/Contents/MacOS/plugins/opencl_support.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.license
 Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/pcr.license

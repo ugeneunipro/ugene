@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -559,14 +559,19 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //    "Copy reverse-complement translation"
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
-    QStringList enabledItemsNamesFirst = {"Copy selected sequence", "Copy selected complementary 5'-3' sequence", "Copy amino acids", "Copy amino acids of complementary 5'-3' strand", "Copy annotation sequence", "Copy annotation amino acids"};
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, enabledItemsNamesFirst, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    QStringList disabledItemsWithNoSelection = {
+        "Copy selected sequence",
+        "Copy selected complementary 5'-3' sequence",
+        "Copy amino acids",
+        "Copy amino acids of complementary 5'-3' strand",
+        "Copy annotation sequence",
+        "Copy annotation amino acids"};
+    GTUtilsDialog::add(os, new PopupCheckerByText(os, {"Copy/Paste"}, disabledItemsWithNoSelection, PopupChecker::IsDisabled));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select a sequence region using the mouse.
-    GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
+    GTUtilsSequenceView::selectSequenceRegion(os, 100, 200, false);
 
     //    Expected state :
     //    The following buttons are enabled :
@@ -574,32 +579,35 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //    "Copy reverse-complement sequence"
     //    "Copy translation"
     //    "Copy reverse-complement translation"
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {"Copy selected sequence", "Copy selected complementary 5'-3' sequence", "Copy amino acids", "Copy amino acids of complementary 5'-3' strand"}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    QStringList enabledItemNamesWithSelection = {
+        "Copy selected sequence",
+        "Copy selected complementary 5'-3' sequence",
+        "Copy amino acids",
+        "Copy amino acids of complementary 5'-3' strand"};
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, enabledItemNamesWithSelection, PopupChecker::IsEnabled));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
-    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    The following buttons are disabled :
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {"Copy annotation sequence", "Copy annotation amino acids"}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    QStringList disabledItemsWithNoAnnotationSelection = {"Copy annotation sequence", "Copy annotation amino acids"};
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, disabledItemsWithNoAnnotationSelection, PopupChecker::IsDisabled));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy amino acids"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state : the selected region translation is stored in the clipboard.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR("RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V" == text, QString("Unexpected text in the clipboard, expected: RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V, current: %1").arg(text));
 
     // 4. Press Ctrl + C(or Cmd + C on Mac OS X) on the keyboard.
     GTKeyboardUtils::copy();
-
     //    Expected state : the selected region is stored in the clipboard.
     text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("AGGTCAGGAA"), QString("Unexpected start of the clipboard text, expected: AGGTCAGGAA, current: %1").arg(text.left(10)));

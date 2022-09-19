@@ -304,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         }
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
             auto memSpinBox = GTWidget::findSpinBox(os, "memBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
@@ -348,7 +348,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
         }
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
             auto memSpinBox = GTWidget::findSpinBox(os, "memBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
@@ -3204,7 +3204,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             bool isAddToProject = GTCheckBox::getState(os, "addToProjectCheckbox", dialog);
             CHECK_SET_ERR(isAddToProject, QString("Incorrect addToProject state: expected true, got false"));
 
-            // Expected state: "Result aligment" field is filled by default
+            // Expected state: "Result alignment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit", dialog);
             CHECK_SET_ERR(!output.isEmpty(), "Incorrect output line: is empty");
 
@@ -3243,7 +3243,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
 
     // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
+    int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x() - 1;
     GTMouseDriver::dragAndDrop(currentPos, QPoint(newXPos, currentPos.y()));
 
     // Expected: selected length = 4.

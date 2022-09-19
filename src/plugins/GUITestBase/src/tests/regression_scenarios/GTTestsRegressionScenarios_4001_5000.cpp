@@ -51,10 +51,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QGroupBox>
-#include <QListWidget>
 #include <QMainWindow>
-#include <QPlainTextEdit>
-#include <QTableView>
 #include <QTextStream>
 
 #include <U2Algorithm/MsaColorScheme.h>
@@ -1354,7 +1351,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
             auto memBox = GTWidget::findSpinBox(os, "memBox", dialog);
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
@@ -3309,7 +3306,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     class MemoryLimitSetScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
             GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4230,24 +4227,23 @@ GUI_TEST_CLASS_DEFINITION(test_4714_2) {
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit new sequence"}));
     GTUtilsDialog::add(os, new AddNewDocumentDialogFiller(os, "FASTA", sandBoxDir + "test_4714_2.fa"));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a new sequence is added to the project and to the current sequence view.
     //    3. Lock the added document.
     GTUtilsDocument::lockDocument(os, "test_4714_2.fa");
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    4. Remove the added document from the project.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save document:"));
     GTUtilsDocument::removeDocument(os, "test_4714_2.fa", GTGlobals::UseMouse);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the sequence is removed from the view,
     //                    context menu contains "Edit new sequence" and "Edit existing sequence" items
     //                    and doesn't contain "Remove edited sequence" and "Undo changes" actions.
     int sequencesCount = GTUtilsSequenceView::getSeqWidgetsNumber(os);
-    CHECK_SET_ERR(1 == sequencesCount, QString("An incorrect vount of sequences in the view: expect %1, got %2").arg(1).arg(sequencesCount));
+    CHECK_SET_ERR(sequencesCount == 1, QString("An incorrect count of sequences in the view: expect %1, got %2").arg(1).arg(sequencesCount));
 
     const QStringList visibleItems = {"Edit new sequence", "Edit existing sequence"};
     GTUtilsDialog::add(os, new PopupCheckerByText(os, QStringList(), visibleItems));

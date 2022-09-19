@@ -119,11 +119,6 @@ p, li { white-space: pre-wrap; }
         <translation>Использовать &quot;best&quot; режим в процессе выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="246"/>
-        <source>Use an openCL-enabled GPU during the aligning.</source>
-        <translation>Использовать доступные openCL GPU в процессе выравнивания.</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="249"/>
         <source>Use GPU-optimization</source>
         <translation>Использовать GPU оптимизацию</translation>
@@ -900,11 +895,6 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <translation>Использовать GPU оптимизацию</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="364"/>
-        <source>&lt;html&gt;&lt;body&gt;Use GPU-calculatings while aligning reads. This option requires OpenCL-enable GPU-device.&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;Использовать GPU-вычисления в процессе выравнивания. Эта опция требует наличие устройства OpenCL GPU.&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="95"/>
         <source>Short reads list is empty.</source>
         <translation>Список считываемых последовательностей пуст.</translation>
@@ -916,14 +906,6 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <location filename="../src/GenomeAlignerFindTask.cpp" line="215"/>
         <source>[%1] Index size for part %2/%3 is zero, skipping it.</source>
         <translation>[%1] Размер индекса для части %2/%3 равен нулю, пропустить его.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ShortReadAlignerOpenCL</name>
-    <message>
-        <location filename="../src/GenomeAlignerFindTask.cpp" line="311"/>
-        <source>Index size for part %1/%2 is zero, skipping it.</source>
-        <translation>Размер индекса для части %1/%2 равен нулю, пропустить его.</translation>
     </message>
 </context>
 </TS>

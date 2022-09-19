@@ -135,7 +135,7 @@ void GTest_CalculateDispersionAndAverage::init(XMLTestFormat*, const QDomElement
             stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(DINUCLEOTIDE_POSITIONS));
             return;
         }
-        foreach (QString propStr, propsList) {
+        for (const QString& propStr : qAsConst(propsList)) {
             int propIndex = propStr.toInt(&isOk);
             if (!isOk) {
                 stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(PROPERTIES_INDEXES));
@@ -529,7 +529,7 @@ Task::ReportResult GTest_SiteconSearchTask::report() {
     }
     /**/
     foreach (SiteconSearchResult exp, expectedResults) {
-        foreach (SiteconSearchResult act, results) {
+        for (SiteconSearchResult act : qAsConst(results)) {
             int ePsum = qRound(exp.psum * 10), aPsum = qRound(act.psum * 10);
             if (exp.region == act.region && aPsum == ePsum && exp.strand == act.strand) {
                 matchesCount++;

@@ -29,7 +29,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h \
 #   Runnables / UGENE / corelibs
 #   Runnables / UGENE / corelibs / U2Gui
-            src/runnables/ugene/corelibs/U2Gui/AddFolderDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h \
@@ -305,7 +304,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.cpp \
 #   Runnables / UGENE / corelibs
 #   Runnables / UGENE / corelibs / U2Gui
-            src/runnables/ugene/corelibs/U2Gui/AddFolderDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.cpp \

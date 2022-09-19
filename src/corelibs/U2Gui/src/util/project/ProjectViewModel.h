@@ -68,8 +68,6 @@ public:
     bool hasObject(Document* doc, GObject* obj) const;
 
     void moveObject(Document* doc, GObject* obj, const QString& newFolder);
-    bool restoreObjectItemFromRecycleBin(Document* doc, GObject* obj);
-    bool restoreFolderItemFromRecycleBin(Document* doc, const QString& oldPath);
     QList<GObject*> getFolderObjects(Document* doc, const QString& path) const;
     QList<Folder*> getSubfolders(Document* doc, const QString& path) const;
     void removeFolder(Document* doc, const QString& path);
@@ -142,7 +140,7 @@ private:
     QVariant getDocumentDecorationData(Document* doc) const;
     QVariant getDocumentToolTipData(Document* doc) const;
 
-    QVariant getFolderDecorationData(Folder* folder) const;
+    QVariant getFolderDecorationData() const;
 
     QVariant getObjectDisplayData(GObject* obj, Document* parentDoc) const;
     QVariant getObjectFontData(GObject* obj, bool itemIsEnabled) const;
@@ -154,7 +152,6 @@ private:
     QModelIndex setObjectData(GObject* obj, const QString& newName);
 
     void insertFolder(Document* doc, const QString& path);
-    void insertFolderInRecycleBin(Document* doc, const QString& path);
 
     void insertObject(Document* doc, GObject* obj, const QString& path);
     void removeObject(Document* doc, GObject* obj);
@@ -170,7 +167,7 @@ private:
     void dropDocument(Document* doc, Document* targetDoc, const QString& targetFolderPath);
 
     bool renameFolderInDb(Document* doc, const QString& oldPath, QString& newPath) const;
-    bool isFolderVisible(Document* doc, const QString& path) const;
+    bool isFolderVisible(Document* doc) const;
 
     int beforeInsertDocument(Document* doc);
     int beforeInsertPath(Document* doc, const QString& path);

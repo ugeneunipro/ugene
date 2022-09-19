@@ -4,10 +4,6 @@ TEMPLATE = subdirs
 
 CONFIG += ordered debug_and_release
 
-use_opencl() {
-    DEFINES += OPENCL_SUPPORT
-}
-
 message("Qt version is $${QT_VERSION}")
 !versionAtLeast(QT_VERSION, 5.12.0):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
 !versionAtMost(QT_VERSION, 5.15.99):error("UGENE requires Qt version between 5.12.0 and 5.15.x")

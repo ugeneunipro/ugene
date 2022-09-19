@@ -39,11 +39,8 @@ public:
     QString getParentPath() const;
     QString getFolderName() const;
 
-    void setFolderPath(const QString& newPath);
-
     bool operator==(const Folder& other) const;
 
-    static bool isCorrectFolderName(const QString& name);
     static QString createPath(const QString& parentFolder, const QString& folderName);
     static QString getFolderParentPath(const QString& path);
     static QString getFolderName(const QString& path);

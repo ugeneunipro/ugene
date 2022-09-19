@@ -1836,7 +1836,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     }
 
     QSpinBox* qsb = nullptr;
-    foreach (QWidget* w, list) {
+    for (QWidget* w : qAsConst(list)) {
         foreach (QObject* o, w->findChildren<QObject*>()) {
             qsb = qobject_cast<QSpinBox*>(o);
             if (qsb != nullptr) {
@@ -5562,7 +5562,7 @@ GUI_TEST_CLASS_DEFINITION(test_6826) {
     class ThreadsLimitScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
             auto cpuBox = GTWidget::findSpinBox(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 1, GTGlobals::UseKeyBoard);

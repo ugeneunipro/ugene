@@ -211,12 +211,13 @@ QVector<U2Region> QDResultLinker::findLocation(QDStep* step) {
     }
     QDActor* actor = step->getActor();
     const QList<QDSchemeUnit*>& units = actor->getSchemeUnits();
-    foreach (QDResultGroup* candidate, candidates) {
+    for (QDResultGroup* candidate : qAsConst(candidates)) {
         bool complement = candidate->strand == QDStrand_ComplementOnly;
         QVector<U2Region> actorLocation;
-        foreach (QDSchemeUnit* su, units) {
+        for (QDSchemeUnit* su : qAsConst(units)) {
             U2Region suRegion(0, scheme->getSequence().length());
-            foreach (const QDResultUnit& ru, candidate->getResultsList()) {
+            QList<QDResultUnit> resultList = candidate->getResultsList();
+            for (const QDResultUnit& ru : qAsConst(resultList)) {
                 foreach (QDConstraint* c, step->getConstraints(su, ru->owner)) {
                     QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
                     const U2Region& reg = QDConstraintController::matchLocation(dc, ru, complement);
@@ -322,14 +323,14 @@ void QDResultLinker::formGroupResults() {
     }
 
     currentResults.clear();
-    foreach (const QList<QDActor*>& selection, groupSelections) {
+    for (const QList<QDActor*>& selection : qAsConst(groupSelections)) {
         assert(currentGroupResults.keys().contains(selection.first()));
         QList<QDResultGroup*> results = currentGroupResults.value(selection.first());
         for (int i = 1; i < selection.size(); i++) {
             QList<QDResultGroup*> newResults;
             assert(currentGroupResults.keys().contains(selection.at(i)));
             QList<QDResultGroup*> nextResults = currentGroupResults.value(selection.at(i));
-            foreach (QDResultGroup* res, results) {
+            for (QDResultGroup* res : qAsConst(results)) {
                 foreach (QDResultGroup* nextRes, nextResults) {
                     QDResultGroup* newRes = new QDResultGroup(*res);
                     newRes->add(nextRes->getResultsList());
@@ -424,7 +425,7 @@ void QDResultLinker::updateCandidates(int& progress) {
     int i = 0;
 
     foreach (QDResultGroup* candidate, candidates) {
-        foreach (QDResultGroup* actorRes, currentResults) {
+        for (QDResultGroup* actorRes : qAsConst(currentResults)) {
             if (sched->isCanceled()) {
                 cleanupCandidates();
                 qDeleteAll(newCandidates);
@@ -507,10 +508,10 @@ bool QDResultLinker::canAdd(QDResultGroup* actorResult, QDResultGroup* candidate
         actorResults = actorResult->getResultsList();
         candidateResults = candidate->getResultsList();
     }
-    foreach (const QDResultUnit& actorResUnit, actorResults) {
-        foreach (const QDResultUnit& candidateResUnit, candidateResults) {
-            const QList<QDConstraint*>& cl = currentStep->getConstraints(actorResUnit->owner, candidateResUnit->owner);
-            foreach (QDConstraint* c, cl) {
+    for (const QDResultUnit& actorResUnit : qAsConst(actorResults)) {
+        for (const QDResultUnit& candidateResUnit : qAsConst(candidateResults)) {
+            QList<QDConstraint*> constraints = currentStep->getConstraints(actorResUnit->owner, candidateResUnit->owner);
+            for (QDConstraint* c : qAsConst(constraints)) {
                 if (!QDConstraintController::match(c, actorResUnit, candidateResUnit, complement)) {
                     return false;
                 }
@@ -576,7 +577,8 @@ void QDResultLinker::createAnnotations(const QString& groupPrefix) {
 
         QList<SharedAnnotationData> groupAnns;
 
-        foreach (const QDResultUnit& res, candidate->getResultsList()) {
+        QList<QDResultUnit> results = candidate->getResultsList();
+        for (const QDResultUnit& res : qAsConst(results)) {
             SharedAnnotationData a = result2annotation.value(res, SharedAnnotationData());
             if (a == SharedAnnotationData()) {
                 SharedAnnotationData ad(new AnnotationData);
@@ -607,9 +609,10 @@ void QDResultLinker::createMergedAnnotations(const QString& groupPrefix) {
             return;
         }
 
-        qint64 startPos = candidate->getResultsList().first()->region.startPos;
-        qint64 endPos = candidate->getResultsList().first()->region.endPos();
-        foreach (const QDResultUnit& ru, candidate->getResultsList()) {
+        QList<QDResultUnit> results = candidate->getResultsList();
+        qint64 startPos = results.first()->region.startPos;
+        qint64 endPos = results.first()->region.endPos();
+        for (const QDResultUnit& ru : qAsConst(results)) {
             startPos = qMin(startPos, ru->region.startPos);
             endPos = qMax(endPos, ru->region.endPos());
         }

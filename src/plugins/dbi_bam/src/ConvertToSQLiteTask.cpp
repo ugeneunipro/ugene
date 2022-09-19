@@ -382,7 +382,8 @@ public:
           hasReads(false) {
         {
             VirtualOffset minOffset = VirtualOffset(0xffffffffffffLL, 0xffff);
-            foreach (const Index::ReferenceIndex::Bin& bin, index.getReferenceIndices()[referenceId].getBins()) {
+            QList<Index::ReferenceIndex::Bin> bins = index.getReferenceIndices()[referenceId].getBins();
+            for (const Index::ReferenceIndex::Bin& bin : qAsConst(bins)) {
                 foreach (const Index::ReferenceIndex::Chunk& chunk, bin.getChunks()) {
                     if (minOffset > chunk.getStart()) {
                         minOffset = chunk.getStart();
@@ -653,7 +654,8 @@ qint64 ConvertToSQLiteTask::importUnmappedSortedReads(BamReader* bamReader, Read
         VirtualOffset maxOffset = VirtualOffset(0, 0);
 
         for (int refId = 0; refId < reader->getHeader().getReferences().size(); ++refId) {
-            foreach (const Index::ReferenceIndex::Bin& bin, index.getReferenceIndices()[refId].getBins()) {
+            QList<Index::ReferenceIndex::Bin> bins = index.getReferenceIndices()[refId].getBins();
+            for (const Index::ReferenceIndex::Bin& bin : qAsConst(bins)) {
                 foreach (const Index::ReferenceIndex::Chunk& chunk, bin.getChunks()) {
                     if (chunk.getStart() < chunk.getEnd() && maxOffset < chunk.getStart()) {
                         maxOffset = chunk.getStart();

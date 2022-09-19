@@ -515,7 +515,7 @@ UrlAndDatasetController::UrlAndDatasetController(const QList<Dataset>& _urls, co
 }
 
 void UrlAndDatasetController::initSets(const QList<Dataset>& _urls, const QList<Dataset>& s) {
-    foreach (Dataset urlSet, _urls) {
+    for (Dataset urlSet : qAsConst(_urls)) {
         foreach (URLContainer* urlCon, urlSet.getUrls()) {
             urls << urlCon->getUrl();
         }

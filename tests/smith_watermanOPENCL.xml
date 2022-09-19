@@ -1,5 +1,0 @@
-<suite name="Smith Waterman Tests on GPU using OpenCL">
-
-    <env-var name="IMPL" value="OPENCL"/>
-    <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"/>
-</suite>

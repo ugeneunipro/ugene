@@ -38,7 +38,7 @@ class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
     MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
-    ~MSAEditorTreeViewer();
+    ~MSAEditorTreeViewer() override;
 
     const CreatePhyTreeSettings& getCreatePhyTreeSettings() const;
 
@@ -144,13 +144,12 @@ public:
      */
     QList<QStringList> getGroupingStateForMsa() const;
 
-protected:
-    /** Overrides the original method to trigger MSA related updates as the result of tree update. */
-    void updateScene(bool fitSceneToView) override;
+public slots:
+    // TODO: listen model, not the name list.
+    void sl_sequenceNameChanged(const QString& prevName, const QString& newName);
 
 private slots:
     void sl_selectionChanged(const QStringList& selectedSequenceNameList);
-    void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onBranchCollapsed(GraphicsBranchItem* branch) override;
 
 private:

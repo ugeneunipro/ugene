@@ -123,7 +123,7 @@ QString GTest_RunCMDLine::splitVal(const QString& val, const QString& prefValue,
     foreach (const QString& dsVal, dsVals) {
         QStringList realVals = dsVal.split(splitter);
         QStringList dsResult;
-        foreach (QString s, realVals) {
+        for (QString s : qAsConst(realVals)) {
             if (s.startsWith(prefValue)) {
                 s = s.mid(midSize);
             }

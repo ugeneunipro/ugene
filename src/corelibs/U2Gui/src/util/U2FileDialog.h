@@ -28,37 +28,33 @@
 
 namespace U2 {
 
-/** A workaround for the issue: UGENE-3443 (part 1)
- * https://bugreports.qt-project.org/browse/QTBUG-25295
- * This class should be removed after switching to Qt 5.1 or newer
- */
 class U2GUI_EXPORT U2FileDialog {
 public:
-    static QString getOpenFileName(QWidget* parent = 0,
+    static QString getOpenFileName(QWidget* parent = nullptr,
                                    const QString& caption = QString(),
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
-                                   QString* selectedFilter = 0,
-                                   const QFileDialog::Options& options = 0);
+                                   const QString& selectedFilter = QString(),
+                                   const QFileDialog::Options& options = nullptr);
 
-    static QStringList getOpenFileNames(QWidget* parent = 0,
+    static QStringList getOpenFileNames(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
                                         const QString& dir = QString(),
                                         const QString& filter = QString(),
-                                        QString* selectedFilter = 0,
-                                        const QFileDialog::Options& options = 0);
+                                        const QString& selectedFilter = QString(),
+                                        const QFileDialog::Options& options = nullptr);
 
-    static QString getExistingDirectory(QWidget* parent = 0,
+    static QString getExistingDirectory(QWidget* parent = nullptr,
                                         const QString& caption = QString(),
                                         const QString& dir = QString(),
                                         const QFileDialog::Options& options = QFileDialog::ShowDirsOnly);
 
-    static QString getSaveFileName(QWidget* parent = 0,
+    static QString getSaveFileName(QWidget* parent = nullptr,
                                    const QString& caption = QString(),
                                    const QString& dir = QString(),
                                    const QString& filter = QString(),
-                                   QString* selectedFilter = 0,
-                                   const QFileDialog::Options& options = 0);
+                                   const QString& selectedFilter = QString(),
+                                   const QFileDialog::Options& options = nullptr);
 };
 
 }  // namespace U2

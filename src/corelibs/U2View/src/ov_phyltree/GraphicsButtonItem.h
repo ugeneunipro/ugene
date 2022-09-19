@@ -44,7 +44,7 @@ public:
 
     bool isNodeSelected() const;
 
-    void collapse();
+    void toggleCollapsedState();
 
     void swapSiblings();
 
@@ -77,10 +77,6 @@ private:
     void setHighlighting(bool isOn);
 
     TreeViewerUI* getTreeViewerUI() const;
-
-    static const QBrush highlightingBrush;
-    static const QBrush ordinaryBrush;
-    static constexpr double radius = 5.0;
 
     bool isSelected = false;
     QGraphicsSimpleTextItem* nodeLabel = nullptr;

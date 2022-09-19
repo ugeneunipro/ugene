@@ -707,10 +707,10 @@ void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus& os, con
 QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus& os) {
     ensureFilteringIsDisabled(os);
     GTGlobals::FindOptions options(false, Qt::MatchContains, 1);
-    const QModelIndexList documentsItems = findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 0, options);
+    QModelIndexList documentsItems = findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 0, options);
 
     QMap<QString, QStringList> documents;
-    foreach (const QModelIndex& documentItem, documentsItems) {
+    for (const QModelIndex& documentItem : qAsConst(documentsItems)) {
         const QModelIndexList objectsItems = findIndeciesInProjectViewNoWait(os, "", documentItem, 0, options);
         QStringList objects;
         foreach (const QModelIndex& objectItem, objectsItems) {

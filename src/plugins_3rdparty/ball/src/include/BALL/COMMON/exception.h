@@ -441,16 +441,6 @@ namespace BALL
 			TooManyBonds(const char* file, int line, const String& error);
 		};
 		
-		/**	CUDA Error
-			CUDA or any of its calls caused an error
-		*/
-		class BALL_EXPORT CUDAError 
-			: public Exception::GeneralException
-		{
-			public:
-			CUDAError(const char* file, int line, const String& error);									
-		};
-
 		/**
 		* RenderTarget error
 		* A buffer was requested from \link RenderTarget \endlink but could not be supplied

@@ -887,8 +887,8 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_undo) {
 
     QList<QList<U2SingleModStep>> modSteps = sqliteDbi->getSQLiteModDbi()->getModSteps(msaId, oldMsaVersion, os);
     QList<U2SingleModStep> msaSingleModSteps;
-    foreach (QList<U2SingleModStep> multiStep, modSteps) {
-        foreach (U2SingleModStep singleStep, multiStep) {
+    for (const QList<U2SingleModStep>& multiStep : qAsConst(modSteps)) {
+        for (const U2SingleModStep& singleStep : qAsConst(multiStep)) {
             msaSingleModSteps.append(singleStep);
         }
     }
@@ -1007,8 +1007,8 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_redo) {
 
     QList<QList<U2SingleModStep>> modSteps = sqliteDbi->getSQLiteModDbi()->getModSteps(msaId, oldMsaVersion, os);
     QList<U2SingleModStep> msaSingleModSteps;
-    foreach (QList<U2SingleModStep> multiStep, modSteps) {
-        foreach (U2SingleModStep singleStep, multiStep) {
+    for (const QList<U2SingleModStep>& multiStep : qAsConst(modSteps)) {
+        for (const U2SingleModStep& singleStep : qAsConst(multiStep)) {
             msaSingleModSteps.append(singleStep);
         }
     }
@@ -1174,9 +1174,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     QList<U2MsaRow> newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1266,9 +1266,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     QList<U2MsaRow> newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1320,9 +1320,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1411,9 +1411,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     QList<U2MsaRow> newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1464,9 +1464,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1517,9 +1517,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {
@@ -1645,9 +1645,9 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     QList<U2MsaRow> newRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldRows.length(), newRows.length(), "rows length");
-    foreach (U2MsaRow newRow, newRows) {
+    for (const U2MsaRow& newRow : qAsConst(newRows)) {
         bool ok = false;
-        foreach (U2MsaRow oldRow, oldRows) {
+        for (const U2MsaRow& oldRow : qAsConst(oldRows)) {
             if (newRow.gaps == oldRow.gaps && newRow.gend == oldRow.gend &&
                 newRow.gstart == oldRow.gstart && newRow.length == oldRow.length &&
                 newRow.rowId == oldRow.rowId && newRow.sequenceId == oldRow.sequenceId) {

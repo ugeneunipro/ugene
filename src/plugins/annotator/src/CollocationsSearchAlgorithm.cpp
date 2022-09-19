@@ -34,7 +34,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem>& items,
 
     qint64 i = searchRegion.endPos();
     foreach (const CollocationsAlgorithmItem& item, items) {
-        foreach (const U2Region& r, item.regions) {
+        for (const U2Region& r : qAsConst(item.regions)) {
             SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             i = qMin(i, r.startPos);
         }
@@ -49,7 +49,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem>& items,
         U2Region currentRegion(i, qMin(i + distance, searchRegion.endPos()) - i);
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem& item, items) {
+        for (const CollocationsAlgorithmItem& item : qAsConst(items)) {
             bool foundItem = false;
             qint64 nextItemStart = currentRegion.endPos();
             foreach (const U2Region& r, item.regions) {
@@ -105,7 +105,7 @@ void averagingRes(U2Region& res, const U2Region& min, const U2Region& max, qint6
 
 void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance) {
     qint64 i = searchRegion.endPos();
-    foreach (const CollocationsAlgorithmItem& item, items) {
+    for (const CollocationsAlgorithmItem& item : qAsConst(items)) {
         foreach (const U2Region& r, item.regions) {
             SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             if (i > r.endPos() - 1) {
@@ -126,7 +126,7 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem>& items,
         max.startPos = 0;
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem& item, items) {
+        for (const CollocationsAlgorithmItem& item : qAsConst(items)) {
             bool foundItem = false;
             qint64 nextItemEnd = searchRegion.endPos();
             foreach (const U2Region& r, item.regions) {

@@ -143,11 +143,11 @@ void PluginViewerController::buildItems() {
         QTreeWidget* treeWidget = ui.treeWidget;
         PlugViewPluginItem* pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
-            const QList<Service*>& services = p->getServices();
+            QList<Service*> services = p->getServices();
             // this method is called for default state init also -> look for registered plugin services
             ServiceRegistry* sr = AppContext::getServiceRegistry();
             QList<Service*> registered = sr->getServices();
-            foreach (Service* s, services) {
+            for (Service* s : qAsConst(services)) {
                 if (registered.contains(s)) {
                     PlugViewTreeItem* serviceItem = new PlugViewServiceItem(pluginItem, s);
                     pluginItem->addChild(serviceItem);

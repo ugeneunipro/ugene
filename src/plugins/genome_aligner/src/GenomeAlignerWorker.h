@@ -70,7 +70,6 @@ public:
     virtual Worker* createWorker(Actor* a) {
         return new GenomeAlignerWorker(a);
     }
-    static bool openclEnabled;
 };
 
 }  // namespace LocalWorkflow

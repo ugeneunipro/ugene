@@ -22,8 +22,6 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include <U2Algorithm/OpenCLGpuRegistry.h>
-
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/ConsoleShutdownTask.h>
@@ -38,7 +36,6 @@
 // U2Private
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
-#include <DocumentFormatRegistryImpl.h>
 #include <IOAdapterRegistryImpl.h>
 #include <PluginSupportImpl.h>
 #include <ServiceRegistryImpl.h>
@@ -143,11 +140,6 @@ int main(int argc, char** argv) {
 
     ServiceRegistryImpl* sreg = new ServiceRegistryImpl();
     appContext->setServiceRegistry(sreg);
-
-#ifdef OPENCL_SUPPORT
-    OpenCLGpuRegistry* oclgr = new OpenCLGpuRegistry();
-    appContext->setOpenCLGpuRegistry(oclgr);
-#endif
 
     registerCoreServices();
 

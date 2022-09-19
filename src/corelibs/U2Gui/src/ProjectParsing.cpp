@@ -130,7 +130,8 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus& ts, Project* project, const Q
     QDir projectDir = projectFile.absoluteDir();
 
     // save documents
-    foreach (Document* gbDoc, project->getDocuments()) {
+    QList<Document*> documents = project->getDocuments();
+    for (Document* gbDoc : qAsConst(documents)) {
         gbDoc->getDocumentFormat()->updateFormatSettings(gbDoc);
 
         QString docUrl = gbDoc->getURLString();

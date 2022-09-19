@@ -30,7 +30,6 @@ class TreeViewerUtils {
     static QFont* font;
 
 public:
-    static const char* IMAGE_FILTERS;
     static void saveImageDialog(const QString& filters, QString& fileName, QString& format);
     static const QFont& getFont();
 };

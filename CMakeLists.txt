@@ -45,6 +45,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=unused-parameter"
             " -Werror=unused-value"
             " -Werror=unused-variable"
+            " -Wno-deprecated-declarations"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined )

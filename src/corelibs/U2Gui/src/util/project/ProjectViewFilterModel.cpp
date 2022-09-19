@@ -197,9 +197,7 @@ void ProjectViewFilterModel::sl_objectsFiltered(const QString& groupName, const 
     for (const QPointer<GObject>& obj : qAsConst(objs)) {
         CHECK_CONTINUE(!obj.isNull());
         QString objPath = srcModel->getObjectFolder(obj->getDocument(), obj);
-        if (!ProjectUtils::isFolderInRecycleBinSubtree(objPath)) {
-            addFilteredObject(groupName, obj);
-        }
+        addFilteredObject(groupName, obj);
     }
 }
 
@@ -306,7 +304,7 @@ void ProjectViewFilterModel::sl_rowsAboutToBeRemoved(const QModelIndex& parent, 
             FAIL("Unexpected project item type", );
     }
 
-    foreach (GObject* obj, objectsBeingRemoved) {
+    for (GObject* obj : qAsConst(objectsBeingRemoved)) {
         foreach (FilteredProjectGroup* group, filterGroups) {
             WrappedObject* wrappedObj = group->getWrappedObject(obj);
             if (wrappedObj != nullptr) {

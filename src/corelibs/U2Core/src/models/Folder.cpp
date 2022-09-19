@@ -60,20 +60,8 @@ QString Folder::getFolderName() const {
     return getFolderName(folderPath);
 }
 
-void Folder::setFolderPath(const QString& newPath) {
-    SAFE_POINT(newPath.startsWith(U2ObjectDbi::ROOT_FOLDER), "Invalid folder path detected", );
-    folderPath = newPath;
-}
-
 bool Folder::operator==(const Folder& other) const {
     return other.getDocument() == doc && other.getFolderPath() == folderPath;
-}
-
-bool Folder::isCorrectFolderName(const QString& name) {
-    if (name.isEmpty()) {
-        return false;
-    }
-    return !name.contains(U2ObjectDbi::PATH_SEP);
 }
 
 QString Folder::createPath(const QString& parentFolder, const QString& folderName) {
@@ -109,16 +97,7 @@ bool Folder::isSubFolder(const QString& path, const QString& expectedSubpath) {
 }
 
 bool Folder::folderNameLessThan(const QString& first, const QString& second) {
-    const bool firstIsRecycleBin = U2ObjectDbi::RECYCLE_BIN_FOLDER == first;
-    const bool secondIsRecycleBin = U2ObjectDbi::RECYCLE_BIN_FOLDER == second;
-
-    if (firstIsRecycleBin && !secondIsRecycleBin) {
-        return true;
-    } else if (!firstIsRecycleBin && secondIsRecycleBin) {
-        return false;
-    } else {
-        return QString::compare(first, second, Qt::CaseInsensitive) < 0;
-    }
+    return QString::compare(first, second, Qt::CaseInsensitive) < 0;
 }
 
 /************************************************************************/

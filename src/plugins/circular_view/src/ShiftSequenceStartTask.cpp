@@ -76,9 +76,9 @@ Task::ReportResult ShiftSequenceStartTask::report() {
         documentsToUpdate.append(documentWithSequence);
     }
 
-    foreach (Document* document, documentsToUpdate) {
+    for (Document* document : qAsConst(documentsToUpdate)) {
         QList<GObject*> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject* object, annotationTablesList) {
+        for (GObject* object : qAsConst(annotationTablesList)) {
             AnnotationTableObject* annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
             if (annotationTableObject->hasObjectRelation(sequenceObject, ObjectRole_Sequence)) {
                 foreach (Annotation* annotation, annotationTableObject->getAnnotations()) {

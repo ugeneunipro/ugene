@@ -22,9 +22,7 @@
 #include "ProjectUtils.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/Folder.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -33,41 +31,32 @@
 namespace U2 {
 
 const int ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS = 100;
-const QString ProjectUtils::RECYCLE_BIN_FOLDER_PATH = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER;
-
-bool ProjectUtils::isFolderInRecycleBin(const QString& folderPath) {
-    return folderPath.startsWith(RECYCLE_BIN_FOLDER_PATH + U2ObjectDbi::PATH_SEP);
-}
-
-bool ProjectUtils::isFolderInRecycleBinSubtree(const QString& folderPath) {
-    return (folderPath == RECYCLE_BIN_FOLDER_PATH || isFolderInRecycleBin(folderPath));
-}
 
 bool ProjectUtils::isSystemFolder(const QString& folderPath) {
-    return folderPath == U2ObjectDbi::ROOT_FOLDER || folderPath == RECYCLE_BIN_FOLDER_PATH;
+    return folderPath == U2ObjectDbi::ROOT_FOLDER;
 }
 
 Document* ProjectUtils::findDocument(const QString& url) {
     Project* project = AppContext::getProject();
-    CHECK(nullptr != project, nullptr);
+    CHECK(project != nullptr, nullptr);
     return project->findDocumentByURL(url);
 }
 
 bool ProjectUtils::hasLoadedDocument(const QString& url) {
-    const Document* doc = findDocument(url);
-    CHECK(nullptr != doc, false);
+    Document* doc = findDocument(url);
+    CHECK(doc != nullptr, false);
     return doc->isLoaded();
 }
 
 bool ProjectUtils::hasUnloadedDocument(const QString& url) {
     const Document* doc = findDocument(url);
-    CHECK(nullptr != doc, false);
+    CHECK(doc != nullptr, false);
     return !doc->isLoaded();
 }
 
 LoadUnloadedDocumentTask* ProjectUtils::findLoadTask(const QString& url) {
     Document* doc = findDocument(url);
-    CHECK(nullptr != doc, nullptr);
+    CHECK(doc != nullptr, nullptr);
     return LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
 }
 

@@ -28,6 +28,8 @@ CONFIG(release, debug|release) {
 unix {
     !macx {
         LIBS += -lXtst -lX11
+        # Experimental filesystem API used in GTFile
+        LIBS += -lstdc++fs
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
     macx {

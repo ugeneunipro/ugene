@@ -48,7 +48,6 @@ class TreeViewerUI;
 class GraphicsBranchItem;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
-class CreateBranchesTask;
 
 class TreeViewer : public GObjectView {
     Q_OBJECT
@@ -133,8 +132,8 @@ private:
     GraphicsRectangularBranchItem* root = nullptr;
 
     void setupLayoutSettingsMenu(QMenu* m);
-    void setupShowLabelsMenu(QMenu* m);
-    void setupExportTreeImageMenu(QMenu* m);
+    void setupShowLabelsMenu(QMenu* m) const;
+    void setupExportTreeImageMenu(QMenu* m) const;
 
 protected:
     TreeViewerUI* ui = nullptr;
@@ -146,12 +145,12 @@ class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     friend class TreeViewer;
 
 public:
-    TreeViewerUI(TreeViewer* treeViewer);
-    virtual ~TreeViewerUI();
+    explicit TreeViewerUI(TreeViewer* treeViewer);
+    ~TreeViewerUI() override;
 
     const QMap<TreeViewOption, QVariant>& getSettings() const;
     QVariant getOptionValue(TreeViewOption option) const;
-    void setOptionValue(TreeViewOption option, QVariant value);
+    void setOptionValue(TreeViewOption option, const QVariant& value);
 
     void updateSettings(const OptionsMap& settings);
     void changeOption(TreeViewOption option, const QVariant& newValue);
@@ -164,12 +163,6 @@ public:
     bool isRectangularLayoutMode() const {
         return getTreeLayout() == RECTANGULAR_LAYOUT;
     }
-
-    bool isCircularLayoutMode() const {
-        return getTreeLayout() == CIRCULAR_LAYOUT;
-    }
-
-    void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
 
@@ -197,9 +190,6 @@ protected:
 
     /** Fits current scene into the view, so the whole tree is visible. Does not change aspect ratio. **/
     void fitIntoView();
-
-    virtual void onLayoutChanged(const TreeLayout&) {
-    }
 
     /**
      * Recomputes scene layout and triggers redraw.
@@ -244,6 +234,12 @@ private slots:
 private:
     void updateDistanceToViewScale();
     void rebuildTreeLayout();
+
+    /** Update scales of fixed size elements so the elements keeps their on-screen sizes not changed on view zoom/resize ops. */
+    void updateFixedSizeItemScales();
+
+    /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
+    QList<QGraphicsItem*> getFixedSizeItems() const;
 
     void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
 

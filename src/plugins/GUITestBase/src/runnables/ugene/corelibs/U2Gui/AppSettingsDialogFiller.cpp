@@ -34,8 +34,6 @@
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QFile>
-#include <QListWidget>
-#include <QTextBrowser>
 #include <QToolButton>
 #include <QTreeWidget>
 
@@ -48,7 +46,7 @@ using namespace HI;
 QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap() {
     QMap<Tabs, QString> result;
     result.insert(General, "  General");
-    result.insert(Resourses, "  Resources");
+    result.insert(Resources, "  Resources");
     result.insert(Network, "  Network");
     result.insert(FileFormat, "  File Format");
     result.insert(Directories, "  Directories");
@@ -57,7 +55,6 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap() 
     result.insert(GenomeAligner, "  Genome Aligner");
     result.insert(WorkflowDesigner, "  Workflow Designer");
     result.insert(ExternalTools, "  External Tools");
-    result.insert(OpenCL, "  OpenCL");
     return result;
 }
 
@@ -180,7 +177,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
 
     auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
-    foreach (QTreeWidgetItem* item, listOfItems) {
+    for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
             GTTreeWidget::click(os, item);
             GTMouseDriver::doubleClick();
@@ -188,7 +185,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
     }
-    GT_CHECK_RESULT(false, "external tool " + toolName + " not found in tree view", false);
+    GT_FAIL("external tool " + toolName + " not found in tree view", false);
 }
 #undef GT_METHOD_NAME
 

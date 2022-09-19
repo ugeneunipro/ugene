@@ -112,7 +112,7 @@ public:
     QFont getFont(bool selected) const;
 
 signals:
-    void si_sequenceNameChanged(QString prevName, QString newName);
+    void si_sequenceNameChanged(const QString& prevName, const QString& newName);
     void si_startMaChanging();
     void si_stopMaChanging(bool modified);
 

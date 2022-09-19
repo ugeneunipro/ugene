@@ -94,7 +94,7 @@ ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
             return node;
         }
     }
-    GT_CHECK_RESULT(false, "External tool node by text not found: " + textPattern, nullptr);
+    GT_FAIL("External tool node by text not found: " + textPattern, nullptr);
 }
 #undef GT_METHOD_NAME
 

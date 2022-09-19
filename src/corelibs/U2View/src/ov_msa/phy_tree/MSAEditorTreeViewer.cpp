@@ -91,7 +91,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList&)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList&)));
 
     MaEditorNameList* msaNameList = editor->getUI()->getEditorNameList();
-    connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));
+    connect(msaNameList, &MaEditorNameList::si_sequenceNameChanged, msaTreeViewerUi, &MSAEditorTreeViewerUI::sl_sequenceNameChanged);
 
     return view;
 }
@@ -253,7 +253,7 @@ MSAEditorTreeViewerUI::MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer)
 
 void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSequenceNameList) {
     CHECK(msaEditorTreeViewer->isSyncModeEnabled(), );
-    bool cleanSelection = true;
+    getRoot()->setSelected(false);
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
         auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
@@ -264,22 +264,14 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
         if (nameItem == nullptr) {
             continue;
         }
-        if (selectedSequenceNameList.contains(nameItem->text(), Qt::CaseInsensitive)) {
-            if (cleanSelection) {
-                cleanSelection = false;
-                getRoot()->setSelectedRecurs(false, true);
-            }
-            branchItem->setSelectedRecurs(true, false);
-        } else {
-            branchItem->setSelectedRecurs(false, false);
-        }
+        branchItem->setSelected(selectedSequenceNameList.contains(nameItem->text(), Qt::CaseInsensitive));
     }
 }
 
-void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString newName) {
+void MSAEditorTreeViewerUI::sl_sequenceNameChanged(const QString& prevName, const QString& newName) {
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
-        GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(item);
+        auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
         if (branchItem == nullptr) {
             continue;
         }
@@ -301,22 +293,6 @@ void MSAEditorTreeViewerUI::highlightBranches() {
         rectRoot->updateSettings(rootSettings);
         rectRoot->updateChildSettings(rootSettings);
     }
-}
-
-void MSAEditorTreeViewerUI::updateScene(bool) {
-    // A tree viewer embedded into MSA editor never uses 'fitSceneToView' option today:
-    // 1. The option is not compatible with sync mode.
-    // 2. If sync mode if OFF:
-    //   2.1. 'fit-to-view' will fit the tree into a limited screen space and will cause tree text labels overlap (tree labels do not scale).
-    //   2.2. There are no tree-related zoom actions in Sync-OFF mode, so a user can't fix the bad looking tree layout from 2.1.
-    // Until the issues above are not resolved we enforce 'fit-to-screen' to be false.
-    // With 'fit-to-screen' equal to false a tree is rendered using the default zoom level and enables scroll bars to handle overflow.
-    TreeViewerUI::updateScene(false);
-
-    MSAEditor* msaEditor = msaEditorTreeViewer->getMsaEditor();
-    CHECK(msaEditor != nullptr, );
-    msaEditor->getUI()->getSequenceArea()->onVisibleRangeChanged();
-    updateRect();
 }
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem* branch) {

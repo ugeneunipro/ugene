@@ -23,8 +23,6 @@
 
 #include <QtEndian>
 
-#include <U2Algorithm/OpenCLGpuRegistry.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>

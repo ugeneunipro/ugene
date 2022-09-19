@@ -650,7 +650,7 @@ void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation*>& as) 
     foreach (Annotation* a, as) {
         QList<AVAnnotationItem*> aItems;
         groupItem->findAnnotationItems(aItems, a);
-        foreach (AVAnnotationItem* ai, aItems) {
+        for (AVAnnotationItem* ai : qAsConst(aItems)) {
             selectedAnnotation.remove(ai);
 
             AVGroupItem* parentGroup = static_cast<AVGroupItem*>(ai->parent());
@@ -678,7 +678,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
             case AnnotationModification_TypeChanged: {
                 QList<AVAnnotationItem*> aItems = findAnnotationItems(annotationModification.annotation);
                 assert(!aItems.isEmpty());
-                foreach (AVAnnotationItem* ai, aItems) {
+                for (AVAnnotationItem* ai : qAsConst(aItems)) {
                     ai->updateVisual(ATVAnnUpdateFlag_BaseColumns);
                 }
             } break;
@@ -686,14 +686,14 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
             case AnnotationModification_QualifierRemoved: {
                 const QualifierModification& qm = static_cast<const QualifierModification&>(annotationModification);
                 QList<AVAnnotationItem*> aItems = findAnnotationItems(qm.annotation);
-                foreach (AVAnnotationItem* ai, aItems) {
+                for (AVAnnotationItem* ai : qAsConst(aItems)) {
                     ai->removeQualifier(qm.getQualifier());
                 }
             } break;
             case AnnotationModification_QualifierAdded: {
                 const QualifierModification& qm = static_cast<const QualifierModification&>(annotationModification);
                 QList<AVAnnotationItem*> aItems = findAnnotationItems(qm.annotation);
-                foreach (AVAnnotationItem* ai, aItems) {
+                for (AVAnnotationItem* ai : qAsConst(aItems)) {
                     if (ai->isExpanded() || ai->childCount() > 1) {  // if item was expanded - add real qualifier items
                         ai->addQualifier(qm.getQualifier());
                     } else {
@@ -1000,7 +1000,7 @@ void AnnotationsTreeView::sl_pasteFinished(Task* _pasteTask) {
     if (docs.length() == 0) {
         return;
     }
-    foreach (Document* doc, docs) {
+    for (Document* doc : qAsConst(docs)) {
         foreach (GObject* annObj, doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE)) {
             ctx->tryAddObject(annObj);
         }
@@ -1808,8 +1808,9 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
             }
         }
         foreach (AVAnnotationItem* annItem, selectedAnnotations.keys()) {
-            foreach (U2Region newRegion, selectedAnnotations.value(annItem)) {
-                foreach (const U2Region& toSel, toSelect) {
+            QList<U2Region> regions = selectedAnnotations.value(annItem);
+            for (U2Region newRegion : qAsConst(regions)) {
+                for (const U2Region& toSel : qAsConst(toSelect)) {
                     if (toSel.intersects(newRegion)) {
                         newRegion = U2Region::containingRegion(newRegion, toSel);
                         toSelect.removeOne(toSel);
@@ -1840,8 +1841,8 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
 
     QList<U2Region> regionsToSelect = selectedRegions;
     const QVector<U2Region> regions = sequenceSelection->getSelectedRegions();
-    foreach (const U2Region& reg, regions) {
-        foreach (const U2Region& selectedRegion, selectedRegions) {
+    for (const U2Region& reg : qAsConst(regions)) {
+        for (const U2Region& selectedRegion : qAsConst(selectedRegions)) {
             if (reg.intersects(selectedRegion)) {
                 sequenceSelection->removeRegion(reg);
                 regionsToSelect.removeOne(selectedRegion);

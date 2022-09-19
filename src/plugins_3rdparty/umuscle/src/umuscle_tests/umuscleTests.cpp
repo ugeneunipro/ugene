@@ -253,15 +253,15 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     for (int i = 0; i < listSize; i++) {
         MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
         MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+        QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
+        QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
         if (ma1->objectName() != ma2->objectName()) {
             stateInfo.setError(QString("MAlignmentObjects name not matched \"%1\", expected \"%2\"").arg(ma1->objectName()).arg(ma2->objectName()));
             return ReportResult_Finished;
         }
         foreach (const MultipleSequenceAlignmentRow& maItem1, alignedSeqs1) {
             bool nameFound = false;
-            foreach (const MultipleSequenceAlignmentRow& maItem2, alignedSeqs2) {
+            for (const MultipleSequenceAlignmentRow& maItem2 : qAsConst(alignedSeqs2)) {
                 if (maItem1->getName() == maItem2->getName()) {
                     nameFound = true;
                     int l1 = maItem1->getCoreEnd();
@@ -304,7 +304,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat* /*tf*/, con
     foreach (const QString& s, gapsPerSeq) {
         QList<int> seqGaps;
         QStringList nums = s.split(',');
-        foreach (const QString& n, nums) {
+        for (const QString& n : qAsConst(nums)) {
             if (n.isEmpty()) {
                 continue;
             }
@@ -737,12 +737,12 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 }
 
 void Muscle_Load_Align_Compare_Task::run() {
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+    QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
+    QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
 
-    foreach (const MultipleSequenceAlignmentRow& maItem1, alignedSeqs1) {
+    for (const MultipleSequenceAlignmentRow& maItem1 : qAsConst(alignedSeqs1)) {
         bool nameFound = false;
-        foreach (const MultipleSequenceAlignmentRow& maItem2, alignedSeqs2) {
+        for (const MultipleSequenceAlignmentRow& maItem2 : qAsConst(alignedSeqs2)) {
             if (maItem1->getName() == maItem2->getName()) {
                 nameFound = true;
                 int l1 = maItem1->getCoreLength();

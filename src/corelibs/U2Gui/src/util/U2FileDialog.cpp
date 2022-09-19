@@ -33,6 +33,54 @@
 
 namespace U2 {
 
+static QStringList getFileNames(QWidget* parent,
+                                const QString& caption,
+                                const QString& dir,
+                                const QString& filter,
+                                const QString& selectedFilter,
+                                const QFileDialog::Options& options,
+                                const QFileDialog::AcceptMode& acceptMode,
+                                const QFileDialog::FileMode& fileMode) {
+    QFileDialog fileDialog(parent, caption, dir, filter);
+    if (!selectedFilter.isEmpty()) {
+        fileDialog.selectNameFilter(selectedFilter);
+    }
+    fileDialog.setOptions(options);
+    fileDialog.setFileMode(fileMode);
+    fileDialog.setAcceptMode(acceptMode);
+    auto deleteConnection = QObject::connect(parent, &QWidget::destroyed, [&]() {
+        fileDialog.setParent(nullptr);
+        fileDialog.close();
+    });
+
+    QStringList result;
+    if (fileDialog.exec() == QFileDialog::Accepted) {
+        result = fileDialog.selectedFiles();
+    }
+    QObject::disconnect(deleteConnection);
+
+    return result;
+}
+
+static QString getFileName(QWidget* parent,
+                           const QString& caption,
+                           const QString& dir,
+                           const QString& filter,
+                           const QString& selectedFilter,
+                           QFileDialog::Options options,
+                           QFileDialog::AcceptMode acceptMode,
+                           QFileDialog::FileMode fileMode) {
+    auto names = getFileNames(parent,
+                              caption,
+                              dir,
+                              filter,
+                              selectedFilter,
+                              options,
+                              acceptMode,
+                              fileMode);
+    return !names.isEmpty() ? names.first() : QString();
+}
+
 static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
     CHECK(!options.testFlag(QFileDialog::DontUseNativeDialog), options);
 
@@ -63,22 +111,36 @@ QString U2FileDialog::getOpenFileName(QWidget* parent,
                                       const QString& caption,
                                       const QString& dir,
                                       const QString& filter,
-                                      QString* selectedFilter,
+                                      const QString& selectedFilter,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return QFileDialog::getOpenFileName(parent, caption, dir, filter, selectedFilter, effectiveOptions);
+    return getFileName(parent,
+                       caption,
+                       dir,
+                       filter,
+                       selectedFilter,
+                       effectiveOptions,
+                       QFileDialog::AcceptOpen,
+                       QFileDialog::ExistingFile);
 }
 
 QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
                                            const QString& caption,
                                            const QString& dir,
                                            const QString& filter,
-                                           QString* selectedFilter,
+                                           const QString& selectedFilter,
                                            const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return QFileDialog::getOpenFileNames(parent, caption, dir, filter, selectedFilter, effectiveOptions);
+    return getFileNames(parent,
+                        caption,
+                        dir,
+                        filter,
+                        selectedFilter,
+                        effectiveOptions,
+                        QFileDialog::AcceptOpen,
+                        QFileDialog::ExistingFiles);
 }
 
 QString U2FileDialog::getExistingDirectory(QWidget* parent,
@@ -94,11 +156,18 @@ QString U2FileDialog::getSaveFileName(QWidget* parent,
                                       const QString& caption,
                                       const QString& dir,
                                       const QString& filter,
-                                      QString* selectedFilter,
+                                      const QString& selectedFilter,
                                       const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
-    return QFileDialog::getSaveFileName(parent, caption, dir, filter, selectedFilter, effectiveOptions);
+    return getFileName(parent,
+                       caption,
+                       dir,
+                       filter,
+                       selectedFilter,
+                       effectiveOptions,
+                       QFileDialog::AcceptSave,
+                       QFileDialog::AnyFile);
 }
 
 }  // namespace U2

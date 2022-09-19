@@ -114,7 +114,6 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/project/EditableTreeView.h \
            src/util/project/FilteredProjectItemDelegate.h \
            src/util/project/FilteredProjectGroup.h \
-           src/util/project/FolderNameDialog.h \
            src/util/project/LoadDocumentTaskProvider.h \
            src/util/project/ProjectFilteringController.h \
            src/util/project/ProjectFilterNames.h \
@@ -146,7 +145,6 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/ExportAnnotationsDialog.ui \
          src/util/ExportDocumentDialog.ui \
          src/util/ExportImageDialog.ui \
-         src/util/project/FolderNameDialog.ui \
          src/util/MultipartDocFormatConfiguratorWidget.ui \
          src/util/ProjectTreeItemSelectorDialogBase.ui \
          src/util/RangeSelectionDialog.ui \
@@ -270,7 +268,6 @@ SOURCES += src/MainWindow.cpp \
            src/util/project/EditableTreeView.cpp \
            src/util/project/FilteredProjectItemDelegate.cpp \
            src/util/project/FilteredProjectGroup.cpp \
-           src/util/project/FolderNameDialog.cpp \
            src/util/project/ProjectFilteringController.cpp \
            src/util/project/ProjectFilterNames.cpp \
            src/util/project/ProjectFilterProxyModel.cpp \

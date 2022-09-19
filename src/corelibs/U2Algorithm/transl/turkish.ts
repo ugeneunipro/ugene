@@ -4,89 +4,9 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="62"/>
-        <source>Loading OPENCL driver library</source>
-        <translation>OPENCL sürücü kitaplığı yükleniyor</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="66"/>
-        <source>Cannot load OpenCL library. Error while loading %1</source>
-        <translation>OpenCL kitaplığı yüklenemiyor. %1 yüklenirken hata oluştu</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="73"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="80"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="87"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="94"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="103"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="110"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="117"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="124"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="131"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="138"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="145"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="152"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="159"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="166"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="173"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="180"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="187"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="194"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="201"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="208"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="215"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="222"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="229"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="236"/>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="243"/>
-        <source>Cannot resolve symbol %1</source>
-        <translation>%1 sembolü çözülemiyor</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="258"/>
-        <source>Cannot load library: %1</source>
-        <translation>Kitaplık yüklenemiyor: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLHelper.cpp" line="261"/>
-        <source>Some errors occurs in library: %1</source>
-        <translation>Kitaplıkta bazı hatalar oluşuyor: %1</translation>
-    </message>
-    <message>
         <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="118"/>
         <source>Gaps:</source>
         <translation>Boşluklar:</translation>
-    </message>
-    <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="70"/>
-        <source>clear OpenCL resources</source>
-        <translation>OpenCL kaynaklarını temizle</translation>
-    </message>
-    <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="174"/>
-        <source>GPU memory usage: %1 Mb</source>
-        <translation>GPU bellek kullanımı: %1 Mb</translation>
-    </message>
-    <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="190"/>
-        <source>Device&apos;s preferred work group size multiple is %1</source>
-        <translation>Cihazın tercih edilen çalışma grubu boyutu katsayısı %1</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLUtils.cpp" line="72"/>
-        <source>OPENCL: BUILD LOG 
- ******************** 
- %1 
- ********************</source>
-        <translation>OPENCL: GÜNLÜK OLUŞTUR 
- ******************** 
- %1 
- ********************</translation>
-    </message>
-    <message>
-        <location filename="../src/util_gpu/opencl/OpenCLUtils.cpp" line="73"/>
-        <source>OPENCL: Program::build() failed. (%1)</source>
-        <translation>OPENCL: Program :: build () başarısız oldu. (%1)</translation>
     </message>
 </context>
 <context>

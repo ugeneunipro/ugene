@@ -108,7 +108,8 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
     QSet<QString> allNames;
 
     foreach (AnnotationTableObject* ao, av->getAnnotationObjects()) {
-        foreach (Annotation* annotation, ao->getAnnotations()) {
+        QList<Annotation*> annotations = ao->getAnnotations();
+        for (Annotation* annotation : qAsConst(annotations)) {
             allNames.insert(annotation->getName());
         }
     }

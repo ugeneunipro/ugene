@@ -21,14 +21,11 @@
 
 #include "GraphicsUnrootedBranchItem.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QPen>
-#include <QStack>
 #include <QtMath>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
 #include "GraphicsRectangularBranchItem.h"
@@ -84,7 +81,7 @@ void GraphicsUnrootedBranchItem::setLabelPositions() {
 
 QRectF GraphicsUnrootedBranchItem::boundingRect() const {
     double penWidth = 1;
-    return QRectF(-width, -penWidth * 0.5, width, penWidth);
+    return {-width, -penWidth * 0.5, width, penWidth};
 }
 
 void GraphicsUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {

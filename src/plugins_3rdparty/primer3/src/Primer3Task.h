@@ -50,7 +50,7 @@ public:
     double getGcContent() const;
     short getSelfAny() const;
     short getSelfEnd() const;
-    double getEndStabilyty() const;
+    double getEndStability() const;
 
     void setStart(int start);
     void setLength(int length);
@@ -150,8 +150,8 @@ public:
     }
 
 private:
-    void addPrimer3Subtasks(const Primer3TaskSettings& settings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
-    void addPrimer3Subtasks(const Primer3TaskSettings& settings, QList<Primer3Task*>& listToRemember);
+    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
+    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& listToRemember);
     void relocatePrimerOverMedian(Primer* primer);
 
     static const int CHUNK_SIZE = 1024 * 256;

@@ -149,9 +149,10 @@ static QMap<char, QByteArray> createRnaAlphabetResolutionMap() {
 }
 
 static void fillMapWithAvarageValues(QVector<QVector<int>>& map, const QMap<char, QByteArray>& alphabetResolutionMap) {
-    foreach (const char i, alphabetResolutionMap.keys()) {
-        foreach (const char j, alphabetResolutionMap.keys()) {
-            if (0 == map[i][j]) {
+    QList<char> keys = alphabetResolutionMap.keys();
+    for (const char i : qAsConst(keys)) {
+        for (const char j : qAsConst(keys)) {
+            if (map[i][j] == 0) {
                 // Unambiguous nucleotide pairs are already registered
                 // If at least one nucleotide in pair is ambiguous, then the pair value should be an avarage value of all possible variants.
                 int value = 0;
@@ -367,9 +368,9 @@ void DNAStatisticsTask::computeStats() {
         return;
     }
 
-    foreach (const U2Region& region, regions) {
+    for (const U2Region& region : qAsConst(regions)) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach (const U2Region& block, blocks) {
+        for (const U2Region& block : qAsConst(blocks)) {
             if (isCanceled() || hasError()) {
                 break;
             }
@@ -515,9 +516,9 @@ void DNAStatisticsTask::computeStats() {
 double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
     U2OpStatus2Log os;
     QVector<qint64> countMap(256, 0);
-    foreach (const U2Region& region, regions) {
+    for (const U2Region& region : qAsConst(regions)) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach (const U2Region& block, blocks) {
+        for (const U2Region& block : qAsConst(blocks)) {
             if (isCanceled() || hasError()) {
                 break;
             }

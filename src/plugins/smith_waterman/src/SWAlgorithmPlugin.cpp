@@ -22,18 +22,12 @@
 #include "SWAlgorithmPlugin.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/CudaGpuRegistry.h>
-#include <U2Algorithm/OpenCLGpuRegistry.h>
 #include <U2Algorithm/SmithWatermanTaskFactoryRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -41,7 +35,6 @@
 
 #include <U2Lang/QueryDesignerRegistry.h>
 
-#include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
 
@@ -49,7 +42,6 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/MSAEditor.h>
 
 #include "PairwiseAlignmentSmithWatermanGUIExtension.h"
 #include "SWAlgorithmTask.h"
@@ -79,10 +71,10 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
 
     // Smith-Waterman algorithm tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    U2::GAutoDeleteList<U2::XMLTestFactory>* l = new U2::GAutoDeleteList<U2::XMLTestFactory>(this);
+    auto l = new U2::GAutoDeleteList<U2::XMLTestFactory>(this);
     l->qlist = SWAlgorithmTests::createTestFactories();
 
     foreach (XMLTestFactory* f, l->qlist) {
@@ -97,13 +89,14 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     coreLog.trace("Registering classic SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));  // ADV search register
     par->registerAlgorithm(new SWPairwiseAlignmentAlgorithm());
-    regDependedIMPLFromOtherPlugins();
 
     coreLog.trace("Registering SSE2 SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_sse2), QString("SSE2"));
-    par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2), "SSE2");
-
-    this->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(regDependedIMPLFromOtherPlugins()));
+    par->getAlgorithm("Smith-Waterman")
+        ->addAlgorithmRealization(
+            new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2),
+            new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2),
+            "SSE2");
 }
 
 QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
@@ -113,38 +106,14 @@ QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
     return res;
 }
 
-// SLOT
-void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
-    SmithWatermanTaskFactoryRegistry* swar = AppContext::getSmithWatermanTaskFactoryRegistry();
-    AlignmentAlgorithmsRegistry* par = AppContext::getAlignmentAlgorithmsRegistry();
-    Q_UNUSED(swar);
-    Q_UNUSED(par);
-
-#ifdef SW2_BUILD_WITH_CUDA
-    if (!AppContext::getCudaGpuRegistry()->empty()) {
-        coreLog.trace("Registering CUDA SW implementation");
-        swar->registerFactory(new SWTaskFactory(SW_cuda), QString("CUDA"));
-        par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_cuda), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_cuda), "CUDA");
-    }
-#endif
-
-#ifdef SW2_BUILD_WITH_OPENCL
-    if (!AppContext::getOpenCLGpuRegistry()->empty()) {
-        coreLog.trace("Registering OpenCL SW implementation");
-        swar->registerFactory(new SWTaskFactory(SW_opencl), QString("OPENCL"));
-        par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_opencl), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_opencl), "OPENCL");
-    }
-#endif
-}
-
 SWAlgorithmADVContext::SWAlgorithmADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), dialogConfig() {
 }
 
 void SWAlgorithmADVContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     assert(av != nullptr);
-    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
+    auto a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
     a->setObjectName("find_pattern_smith_waterman_action");
 
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
@@ -155,10 +124,10 @@ void SWAlgorithmADVContext::initViewContext(GObjectView* view) {
 }
 
 void SWAlgorithmADVContext::sl_search() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     assert(0 != action);
 
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     assert(av != nullptr);
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();

@@ -51,7 +51,7 @@ QList<OPWidgetFactory*> OPWidgetFactoryRegistry::getRegisteredFactories(const QL
 
     QList<OPWidgetFactory*> factoriesForObjView;
 
-    foreach (OPWidgetFactory* factory, opWidgetFactories) {
+    for (OPWidgetFactory* factory : qAsConst(opWidgetFactories)) {
         bool pass = true;
         foreach (OPFactoryFilterVisitorInterface* filter, filters) {
             pass &= factory->passFiltration(filter);

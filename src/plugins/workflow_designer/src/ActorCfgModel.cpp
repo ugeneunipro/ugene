@@ -83,7 +83,7 @@ void dumpDescriptors(const QList<Descriptor>& descriptors) {
 }
 
 void ActorCfgModel::setupAttributesScripts() {
-    foreach (Attribute* attribute, attrs) {
+    for (Attribute* attribute : qAsConst(attrs)) {
         assert(attribute != nullptr);
         attribute->getAttributeScript().clearScriptVars();
 
@@ -93,7 +93,8 @@ void ActorCfgModel::setupAttributesScripts() {
             continue;
         }
 
-        foreach (const PortDescriptor* descr, subject->getProto()->getPortDesciptors()) {
+        QList<PortDescriptor*> portDesciptors = subject->getProto()->getPortDesciptors();
+        for (const PortDescriptor* descr : qAsConst(portDesciptors)) {
             if (descr->isInput()) {
                 DataTypePtr dataTypePtr = descr->getType();
                 if (dataTypePtr->isMap()) {
@@ -355,11 +356,13 @@ QMap<Attribute*, bool> ActorCfgModel::getAttributeRelatedVisibility(Attribute* c
     QMap<Attribute*, bool> relatedAttributesVisibility = foundRelatedAttrs;
     foreach (Attribute* a, attrs) {
         if (a != changedAttr && !relatedAttributesVisibility.contains(a)) {
-            foreach (const AttributeRelation* rel, a->getRelations()) {
+            QVector<const AttributeRelation*> relations = a->getRelations();
+            for (const AttributeRelation* rel : qAsConst(relations)) {
                 if (rel->getRelatedAttrId() == changedAttr->getId()) {
                     relatedAttributesVisibility.insert(a, isVisible(a));
-                    const QMap<Attribute*, bool> dependentAttributeVisibility = getAttributeRelatedVisibility(a, relatedAttributesVisibility);
-                    foreach (Attribute* dependentAttr, dependentAttributeVisibility.keys()) {
+                    QMap<Attribute*, bool> dependentAttributeVisibility = getAttributeRelatedVisibility(a, relatedAttributesVisibility);
+                    QList<Attribute*> dependentAttributes = dependentAttributeVisibility.keys();
+                    for (Attribute* dependentAttr : qAsConst(dependentAttributes)) {
                         relatedAttributesVisibility[dependentAttr] = dependentAttributeVisibility[dependentAttr];
                     }
                 }

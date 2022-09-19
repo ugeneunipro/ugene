@@ -1,5 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-   <qresource>
-        <file>src/util_gpu/opencl/BinaryFind.cl</file>
-    </qresource>
-</RCC>

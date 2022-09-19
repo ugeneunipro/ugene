@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-static quint8 cigarOp2samtools(U2CigarOp op, U2OpStatus &os) {
+static quint8 cigarOp2samtools(U2CigarOp op, U2OpStatus& os) {
     switch (op) {
         case U2CigarOp_M:  // alignment match
             return 0;
@@ -61,14 +61,14 @@ static quint8 cigarOp2samtools(U2CigarOp op, U2OpStatus &os) {
     lower 4 bits gives a CIGAR operation and the higher 28 bits keep the
     length of a CIGAR.
 */
-QByteArray SamtoolsAdapter::cigar2samtools(QList<U2CigarToken> cigar, U2OpStatus &os) {
+QByteArray SamtoolsAdapter::cigar2samtools(QList<U2CigarToken> cigar, U2OpStatus& os) {
     QByteArray samtoolsCigar;
-    foreach (const U2CigarToken &token, cigar) {
+    foreach (const U2CigarToken& token, cigar) {
         qint8 op = cigarOp2samtools(token.op, os);
         qint32 value = (token.count << 4) | (op & 0xf);
 
         CHECK_OP(os, samtoolsCigar);
-        samtoolsCigar.append((char *)(&value), sizeof(value));
+        samtoolsCigar.append((char*)(&value), sizeof(value));
     }
     return samtoolsCigar;
 }
@@ -79,13 +79,13 @@ QByteArray SamtoolsAdapter::cigar2samtools(QList<U2CigarToken> cigar, U2OpStatus
     8 for T and 15 for N. Two bases are packed in one byte with the base
     at the higher 4 bits having smaller coordinate on the read.
 */
-QByteArray SamtoolsAdapter::sequence2samtools(QByteArray sequence, U2OpStatus &os) {
+QByteArray SamtoolsAdapter::sequence2samtools(QByteArray sequence, U2OpStatus& os) {
     int packedLength = (sequence.length() + 1) / 2;
     QByteArray samtoolsSequence(packedLength, 0);
     for (int i = 0; i < packedLength; ++i) {
-        qint8 value = bam_nt16_table[sequence[2 * i]] << 4;
+        qint8 value = bam_nt16_table[(int)sequence[2 * i]] << 4;
         if (2 * i + 1 < sequence.length()) {
-            value |= bam_nt16_table[sequence[2 * i + 1]] & 0xf;
+            value |= bam_nt16_table[(int)sequence[2 * i + 1]] & 0xf;
         }
         CHECK_OP(os, samtoolsSequence);
         samtoolsSequence[i] = value;
@@ -93,9 +93,9 @@ QByteArray SamtoolsAdapter::sequence2samtools(QByteArray sequence, U2OpStatus &o
     return samtoolsSequence;
 }
 
-QByteArray SamtoolsAdapter::aux2string(const QList<U2AuxData> &auxData) {
+QByteArray SamtoolsAdapter::aux2string(const QList<U2AuxData>& auxData) {
     QByteArray result;
-    foreach (const U2AuxData &aux, auxData) {
+    foreach (const U2AuxData& aux, auxData) {
         result.append(aux.tag, 2);
         result.append(aux.type);
         if ('B' == aux.type) {
@@ -112,7 +112,7 @@ QByteArray SamtoolsAdapter::aux2string(const QList<U2AuxData> &auxData) {
             int n = aux.value.length() / typeSize;
             n = qToLittleEndian<int>(n);
             result.append(aux.subType);
-            result.append((char *)&n, 4);
+            result.append((char*)&n, 4);
         }
         result.append(aux.value);
         if ('Z' == aux.type || 'H' == aux.type) {
@@ -123,17 +123,17 @@ QByteArray SamtoolsAdapter::aux2string(const QList<U2AuxData> &auxData) {
 }
 
 template<class T>
-inline static void addNum(T num, int tSize, QByteArray &result) {
+inline static void addNum(T num, int tSize, QByteArray& result) {
     T leNum = qToLittleEndian<T>(num);
-    result.append((char *)&leNum, tSize);
+    result.append((char*)&leNum, tSize);
 }
 
-QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
+QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray& auxString) {
     CHECK(!auxString.isEmpty(), QList<U2AuxData>());
     // Adapted samtools code:
     QList<U2AuxData> result;
     QList<QByteArray> tokens = auxString.split('\t');
-    foreach (const QByteArray &str, tokens) {
+    foreach (const QByteArray& str, tokens) {
         U2AuxData aux;
         if (str.length() < 6 || str[2] != ':' || str[4] != ':') {
             coreLog.error("Samtools: missing colon in auxiliary data");
@@ -152,13 +152,13 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             if (x < 0) {
                 if (x >= -127) {
                     aux.type = 'c';
-                    aux.value.append((char *)&leX, 1);
+                    aux.value.append((char*)&leX, 1);
                 } else if (x >= -32767) {
                     aux.type = 'x';
-                    aux.value.append((char *)&leX, 2);
+                    aux.value.append((char*)&leX, 2);
                 } else {
                     aux.type = 'i';
-                    aux.value.append((char *)&leX, 4);
+                    aux.value.append((char*)&leX, 4);
                     if (x < -2147483648ll) {
                         coreLog.error(QString("Samtools: parse warning: integer %1 is out of range.").arg(x));
                     }
@@ -166,13 +166,13 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             } else {
                 if (x <= 255) {
                     aux.type = 'C';
-                    aux.value.append((char *)&leX, 1);
+                    aux.value.append((char*)&leX, 1);
                 } else if (x <= 65535) {
                     aux.type = 'S';
-                    aux.value.append((char *)&leX, 2);
+                    aux.value.append((char*)&leX, 2);
                 } else {
                     aux.type = 'I';
-                    aux.value.append((char *)&leX, 4);
+                    aux.value.append((char*)&leX, 4);
                     if (x > 4294967295ll) {
                         coreLog.error(QString("Samtools: parse warning: integer %1 is out of range.").arg(x));
                     }
@@ -181,11 +181,11 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
         } else if (aux.type == 'f') {
             QByteArray num = str.mid(5, 4);
             float leX = qToLittleEndian<float>(num.toFloat());
-            aux.value.append((char *)&leX, 4);
+            aux.value.append((char*)&leX, 4);
         } else if (aux.type == 'd') {
             QByteArray num = str.mid(9, 4);
             float leX = qToLittleEndian<float>(num.toFloat());
-            aux.value.append((char *)&leX, 4);
+            aux.value.append((char*)&leX, 4);
         } else if (aux.type == 'Z' || aux.type == 'H') {
             if (aux.type == 'H') {  // check whether the hex string is valid
                 if ((str.length() - 5) % 2 == 1) {
@@ -208,7 +208,7 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             }
             aux.subType = str[5];
             QList<QByteArray> nums = str.mid(7).split(',');
-            for (const QByteArray &num : qAsConst(nums)) {
+            for (const QByteArray& num : qAsConst(nums)) {
                 if (aux.subType == 'c')
                     addNum<char>((char)num.toShort(), 1, aux.value);
                 else if (aux.subType == 'C')
@@ -237,12 +237,12 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
     return result;
 }
 
-QList<U2AuxData> SamtoolsAdapter::string2aux(const QByteArray &auxString) {
+QList<U2AuxData> SamtoolsAdapter::string2aux(const QByteArray& auxString) {
     CHECK(!auxString.isEmpty(), QList<U2AuxData>());
     // Adapted samtools code:
     QList<U2AuxData> result;
-    const char *s = auxString.constData();
-    const char *end = s + auxString.length();
+    const char* s = auxString.constData();
+    const char* end = s + auxString.length();
     while (s < end) {
         U2AuxData aux;
         aux.tag[0] = s[0];
@@ -316,16 +316,16 @@ QList<U2AuxData> SamtoolsAdapter::string2aux(const QByteArray &auxString) {
     return result;
 }
 
-typedef quint8 *data_ptr;
-inline static void copyArray(data_ptr &dest, const QByteArray array) {
+typedef quint8* data_ptr;
+inline static void copyArray(data_ptr& dest, const QByteArray array) {
     memcpy(dest, array.constData(), array.length());
     dest += array.length();
 }
 
 static const int SAMTOOLS_QUALITY_OFFSET = 33;
 static const char SAMTOOLS_QUALITY_OFF_CHAR = 0xff;
-bool SamtoolsAdapter::hasQuality(const QByteArray &qualString) {
-    const char *data = qualString.constData();
+bool SamtoolsAdapter::hasQuality(const QByteArray& qualString) {
+    const char* data = qualString.constData();
     int size = qualString.length();
 
     bool result = false;
@@ -338,7 +338,7 @@ bool SamtoolsAdapter::hasQuality(const QByteArray &qualString) {
     return result;
 }
 
-QByteArray SamtoolsAdapter::quality2samtools(const QByteArray &quality) {
+QByteArray SamtoolsAdapter::quality2samtools(const QByteArray& quality) {
     QByteArray samtoolsQuality = quality;
     if (hasQuality(quality)) {
         for (int i = 0; i < quality.size(); i++) {
@@ -348,7 +348,7 @@ QByteArray SamtoolsAdapter::quality2samtools(const QByteArray &quality) {
     return samtoolsQuality;
 }
 
-QByteArray SamtoolsAdapter::samtools2quality(const QByteArray &samtoolsQuality) {
+QByteArray SamtoolsAdapter::samtools2quality(const QByteArray& samtoolsQuality) {
     QByteArray quality = samtoolsQuality;
     if (hasQuality(quality)) {
         for (int i = 0; i < quality.size(); i++) {
@@ -358,17 +358,17 @@ QByteArray SamtoolsAdapter::samtools2quality(const QByteArray &samtoolsQuality) 
     return quality;
 }
 
-inline static void copyQuality(data_ptr &dest, const QByteArray &quality) {
+inline static void copyQuality(data_ptr& dest, const QByteArray& quality) {
     QByteArray samtoolsQuality = SamtoolsAdapter::quality2samtools(quality);
     copyArray(dest, samtoolsQuality);
 }
 
-inline static void copyChar(data_ptr &dest, quint8 c) {
+inline static void copyChar(data_ptr& dest, quint8 c) {
     *dest = c;
     ++dest;
 }
 
-void SamtoolsAdapter::reads2samtools(U2DbiIterator<U2AssemblyRead> *reads, U2OpStatus &os, ReadsContainer &result) {
+void SamtoolsAdapter::reads2samtools(U2DbiIterator<U2AssemblyRead>* reads, U2OpStatus& os, ReadsContainer& result) {
     while (reads->hasNext()) {
         U2AssemblyRead r = reads->next();
         bam1_t resRead;
@@ -378,7 +378,7 @@ void SamtoolsAdapter::reads2samtools(U2DbiIterator<U2AssemblyRead> *reads, U2OpS
     }
 }
 
-void SamtoolsAdapter::read2samtools(const U2AssemblyRead &read, const ReadsContext &ctx, U2OpStatus &os, bam1_t &result) {
+void SamtoolsAdapter::read2samtools(const U2AssemblyRead& read, const ReadsContext& ctx, U2OpStatus& os, bam1_t& result) {
     read2samtools(read, os, result);
     CHECK_OP(os, );
     result.core.tid = ctx.getReadAssemblyNum();
@@ -388,8 +388,8 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead &read, const ReadsConte
     result.core.mpos = read->pnext;
 }
 
-void SamtoolsAdapter::read2samtools(const U2AssemblyRead &r, U2OpStatus &os, bam1_t &resRead) {
-    bam1_core_t &core = resRead.core;
+void SamtoolsAdapter::read2samtools(const U2AssemblyRead& r, U2OpStatus& os, bam1_t& resRead) {
+    bam1_core_t& core = resRead.core;
 
     memset(&resRead, 0, sizeof(resRead));
 
@@ -417,8 +417,8 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead &r, U2OpStatus &os, bam
     QByteArray seq = sequence2samtools(r->readSequence, os);
     QByteArray aux = aux2string(r->aux);
     int dataLen = r->name.length() + 1 + cigar.length() + seq.length() + quality.length() + aux.length();
-    quint8 *data = new quint8[dataLen];
-    quint8 *dest = data;
+    quint8* data = new quint8[dataLen];
+    quint8* dest = data;
     copyArray(dest, r->name);
     copyChar(dest, '\0');
     copyArray(dest, cigar);
@@ -433,7 +433,7 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead &r, U2OpStatus &os, bam
     CHECK_OP(os, );
 }
 
-static bool startPosLessThan(const bam1_t &a, const bam1_t &b) {
+static bool startPosLessThan(const bam1_t& a, const bam1_t& b) {
     return a.core.pos < b.core.pos;
 }
 
@@ -442,7 +442,7 @@ void ReadsContainer::sortByStartPos() {
 }
 
 ReadsContainer::~ReadsContainer() {
-    foreach (const bam1_t &b, vector) {
+    foreach (const bam1_t& b, vector) {
         delete b.data;
     }
 }
@@ -450,8 +450,8 @@ ReadsContainer::~ReadsContainer() {
 /************************************************************************/
 /* ReadsContext */
 /************************************************************************/
-ReadsContext::ReadsContext(const QString &_assemblyName,
-                           const QMap<QString, int> &_assemblyNumMap)
+ReadsContext::ReadsContext(const QString& _assemblyName,
+                           const QMap<QString, int>& _assemblyNumMap)
     : assemblyName(_assemblyName), assemblyNumMap(_assemblyNumMap) {
 }
 
@@ -459,7 +459,7 @@ int ReadsContext::getReadAssemblyNum() const {
     return assemblyNumMap.value(assemblyName, -1);
 }
 
-int ReadsContext::getAssemblyNum(const QString &assemblyName) const {
+int ReadsContext::getAssemblyNum(const QString& assemblyName) const {
     if (assemblyName == "=") {
         return getReadAssemblyNum();
     } else if (assemblyName == "*") {

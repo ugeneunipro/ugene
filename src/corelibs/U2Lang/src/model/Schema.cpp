@@ -52,7 +52,7 @@ Schema& Schema::operator=(const Schema& other) {
     procs = other.procs;
     domain = other.domain;
     graph = ActorBindingsGraph(other.graph);
-    deepCopy = false;    
+    deepCopy = false;
     includedTypeName = other.includedTypeName;
     return *this;
 }
@@ -250,8 +250,9 @@ QList<Wizard*> Schema::takeWizards() {
 
 void Schema::removeProcess(Actor* actor) {
     // remove actors flows
-    foreach (Port* p, actor->getPorts()) {
-        foreach (Link* l, p->getLinks()) {
+    QList<Port*> ports = actor->getPorts();
+    for (auto port : qAsConst(ports)) {
+        foreach (Link* l, port->getLinks()) {
             removeFlow(l);
         }
     }
@@ -328,7 +329,7 @@ QStringList removeAliasesDupliucates(const QList<Actor*>& actors, Actor* newActo
 void Schema::merge(Schema& other) {
     foreach (Actor* newActor, other.procs) {
         QStringList removed = removeAliasesDupliucates(procs, newActor);
-        foreach (const QString& alias, removed) {
+        for (const QString& alias : qAsConst(removed)) {
             coreLog.error(QObject::tr("Duplicate alias '%1'. It has been removed").arg(alias));
         }
         procs << newActor;
@@ -342,7 +343,8 @@ void Schema::replaceProcess(Actor* oldActor, Actor* newActor, const QList<PortMa
     QMap<int, QList<Actor*>> top = graph.getTopologicalSortedGraph(procs);
 
     // replace actors flows
-    foreach (Port* p, oldActor->getPorts()) {
+    QList<Port*> ports = oldActor->getPorts();
+    for (Port* p : qAsConst(ports)) {
         U2OpStatus2Log os;
         PortMapping pm = PortMapping::getMappingBySrcPort(p->getId(), mappings, os);
         if (os.hasError()) {
@@ -738,7 +740,7 @@ QMap<int, QList<Actor*>> ActorBindingsGraph::getTopologicalSortedGraph(QList<Act
 
         foreach (Actor* a, graph.keys()) {
             QList<Port*> ports = graph.value(a);
-            foreach (Port* p, ports) {
+            for (Port* p : qAsConst(ports)) {
                 if (endVertexes.contains(p->owner())) {
                     ports.removeOne(p);
                 }
@@ -770,7 +772,8 @@ bool ActorBindingsGraph::isEmpty() const {
 
 QList<Link*> ActorBindingsGraph::getFlows() const {
     QList<Link*> result;
-    foreach (Port* src, bindings.keys()) {
+    QList<Port*> ports = bindings.keys();
+    for (Port* src : qAsConst(ports)) {
         foreach (Link* l, src->getLinks()) {
             SAFE_POINT(l->source() == src, "Link's source port mismatch", result);
             Port* dst = l->destination();

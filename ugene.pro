@@ -66,14 +66,6 @@ SUBDIRS += \
           src/plugins/weight_matrix \
           src/plugins/workflow_designer
 
-use_cuda() {
-    SUBDIRS += src/plugins/cuda_support
-}
-
-use_opencl() {
-    SUBDIRS += src/plugins/opencl_support
-}
-
 #foreach 'language'
 for( i, UGENE_TRANSL_IDX ) {
     UGENE_TRANSLATIONS =

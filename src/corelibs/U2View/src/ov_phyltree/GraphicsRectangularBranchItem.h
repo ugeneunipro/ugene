@@ -38,7 +38,7 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
+    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem);
     GraphicsRectangularBranchItem();
     GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
     GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
@@ -54,13 +54,9 @@ public:
 
     double getHeight() const;
 
-    void setHeightW(double h);
-
     void setHeight(double newHeight);
 
-    void setHeightCoef(int newCoef);
-
-    void setHeightCoefW(int coef);
+    void setBreathScaleAdjustment(double newBreadthScaleAdjustment);
 
     void setSide(const Side& side);
 
@@ -77,8 +73,12 @@ public:
     void drawCollapsedRegion();
 
 private:
+    /** Height (breadth) of the branch in pixels. */
     double height = 0;
-    int currentHeightCoef = 1;
+
+    /** See BREADTH_SCALE_ADJUSTMENT doc. */
+    double breadthScaleAdjustment = 1;
+
     PhyBranch* phyBranch = nullptr;
 };
 }  // namespace U2

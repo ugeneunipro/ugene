@@ -188,6 +188,17 @@ void BwaAlignTask::prepare() {
 
         arguments.append("-f");
         arguments.append(getSAIPath(currentReadSet.url.getURLString()));
+
+        if (!indexPath.isEmpty()) {
+            for (const QString& indexSuffix : BwaTask::indexSuffixes) {
+                QFileInfo indexFileInfo(indexPath + indexSuffix);
+                if (!indexFileInfo.exists()) {
+                    stateInfo.setError(tr("Index file \"%1\" does not exist").arg(indexFileInfo.absoluteFilePath()));
+                    return;
+                }
+            }
+        }
+
         arguments.append(indexPath);
         arguments.append(currentReadSet.url.getURLString());
         ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), nullptr);
@@ -389,6 +400,16 @@ void BwaMemAlignTask::prepare() {
 
         arguments.append("-T");
         arguments.append(settings.getCustomValue(BwaTask::OPTION_SCORE_THRESHOLD, 30).toString());
+
+        if (!indexPath.isEmpty()) {
+            for (const QString& indexSuffix : BwaTask::indexSuffixes) {
+                QFileInfo indexFileInfo(indexPath + indexSuffix);
+                if (!indexFileInfo.exists()) {
+                    stateInfo.setError(tr("Index file \"%1\" does not exist").arg(indexFileInfo.absoluteFilePath()));
+                    return;
+                }
+            }
+        }
 
         arguments.append(indexPath);
 

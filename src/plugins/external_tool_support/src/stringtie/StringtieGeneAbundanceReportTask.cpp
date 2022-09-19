@@ -189,7 +189,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
     foreach (const QString& key, map.keys()) {
         QVector<QString> values = map[key];
         out << key;
-        foreach (const QString val, values) {
+        for (const QString& val : qAsConst(values)) {
             out << outputDelimiter << val;
         }
         out << "\n";

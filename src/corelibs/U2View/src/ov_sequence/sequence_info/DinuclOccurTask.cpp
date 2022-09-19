@@ -70,9 +70,9 @@ void DinuclOccurTask::run() {
     QVector<quint64> dinuclOccurrence(256 * 256, 0);
     qint64 totalLength = U2Region::sumLength(regions);
     qint64 processedLength = 0;
-    foreach (const U2Region& region, regions) {
+    for (const U2Region& region : qAsConst(regions)) {
         QList<U2Region> blocks = U2Region::split(region, REGION_TO_ANALAYZE);
-        foreach (const U2Region& block, blocks) {
+        for (const U2Region& block : qAsConst(blocks)) {
             // Get the selected region and verify that the data has been correctly read
             QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             if (os.hasError() || sequence.isEmpty()) {
@@ -98,8 +98,8 @@ void DinuclOccurTask::run() {
     }
 
     // Convert to the result
-    foreach (char firstChar, alphabetChars) {
-        foreach (char secondChar, alphabetChars) {
+    for (char firstChar : qAsConst(alphabetChars)) {
+        for (char secondChar : qAsConst(alphabetChars)) {
             qint64 count = (qint64)dinuclOccurrence[DI_NUCL_CODE(firstChar, secondChar)];
             if (count == 0) {
                 continue;
