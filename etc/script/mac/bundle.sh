@@ -168,7 +168,7 @@ for PLUGIN in ${PLUGIN_LIST}; do
 done
 
 echo Running macdeployqt
-"${QT_DIR}/bin/macdeployqt" -verbose=3 "${TARGET_APP_DIR}" -no-strip \
+"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -verbose=3 \
   -executable="${TARGET_EXE_DIR}/ugeneui" \
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
