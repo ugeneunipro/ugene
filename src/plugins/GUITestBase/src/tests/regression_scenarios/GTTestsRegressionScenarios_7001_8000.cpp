@@ -2943,7 +2943,7 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
-    CHECK_SET_ERR_RESULT(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
+    CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7668) {
