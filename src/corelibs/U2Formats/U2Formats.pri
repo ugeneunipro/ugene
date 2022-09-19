@@ -14,7 +14,7 @@ win32-msvc2013 {
     DEFINES += NOMINMAX _XKEYCHECK_H
 }
 
-QT += sql widgets
+QT += widgets
 
 # Force re-linking when lib changes
 unix:POST_TARGETDEPS += ../../$$out_dir()/libsamtools$${D}.a
