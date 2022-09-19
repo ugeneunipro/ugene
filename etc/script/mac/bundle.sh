@@ -168,14 +168,11 @@ for PLUGIN in ${PLUGIN_LIST}; do
 done
 
 echo Running macdeployqt
-"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -verbose=3 \
+"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -verbose=2 \
   -executable="${TARGET_EXE_DIR}/ugeneui" \
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \
   -executable="${TARGET_EXE_DIR}/plugins_checker"
-
-echo Remove unused libs copied by macdeployqt
-rm -rf "${TARGET_APP_DIR}/Contents/PlugIns/sqldrivers"
 
 echo Copying extra libraries
 cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
