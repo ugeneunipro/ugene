@@ -1442,8 +1442,7 @@ void TreeViewerUI::defaultZoom() {
 }
 
 void TreeViewerUI::recalculateRectangularLayout() {
-    int current = 0;
-    rectRoot->recalculateBranches(current, phyObject->getTree()->getRootNode());
+    RectangularTreeLayoutAlgorithm::recalculateTreeLayout(rectRoot, phyObject->getTree()->getRootNode());
     updateDistanceToViewScale();
 }
 

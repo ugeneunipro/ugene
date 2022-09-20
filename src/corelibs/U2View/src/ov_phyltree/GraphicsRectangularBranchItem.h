@@ -64,11 +64,7 @@ public:
 
     void swapSiblings();
 
-    void recalculateBranches(int& current, const PhyNode* root);
-
     const PhyBranch* getPhyBranch() const;
-
-    GraphicsRectangularBranchItem* getChildItemByPhyBranch(const PhyBranch* branch);
 
     void drawCollapsedRegion();
 

@@ -30,83 +30,134 @@
 
 namespace U2 {
 
-static GraphicsRectangularBranchItem* createBranch(const PhyNode* node, int& current) {
-    int branches = node->branchCount();
-    if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
-        assert(node != node->getSecondNodeOfBranch(0));
-        return createBranch(node->getSecondNodeOfBranch(0), current);
+static GraphicsRectangularBranchItem* createBranch(const PhyNode* phyNode) {
+    int branchCount = phyNode->branchCount();
+    if (branchCount == 1 && (phyNode->getName() == "" || phyNode->getName() == "ROOT")) {
+        SAFE_POINT(phyNode != phyNode->getSecondNodeOfBranch(0), "Invalid getSecondNodeOfBranch", nullptr);
+        return createBranch(phyNode->getSecondNodeOfBranch(0));
     }
-    if (branches > 1) {
-        QList<GraphicsRectangularBranchItem*> items;
-        int ind = -1;
-        for (int i = 0; i < branches; i++) {
-            if (node->getSecondNodeOfBranch(i) != node) {
-                GraphicsRectangularBranchItem* item = createBranch(node->getSecondNodeOfBranch(i), current);
-                items.append(item);
-            } else {
-                items.append(nullptr);
-                ind = i;
-            }
+    if (branchCount == 0) {
+        return new GraphicsRectangularBranchItem(0, 0, phyNode->getName());
+    }
+    if (branchCount == 1) {
+        return new GraphicsRectangularBranchItem(0, 0, phyNode->getName(), phyNode->getBranchesDistance(0), phyNode->getBranch(0));
+    }
+    QList<GraphicsRectangularBranchItem*> childRectBranches;
+    int branchIndex = -1;
+    for (int i = 0; i < branchCount; i++) {
+        if (phyNode->getSecondNodeOfBranch(i) == phyNode) {
+            branchIndex = i;
+            continue;
         }
-
-        GraphicsRectangularBranchItem* item = nullptr;
-        if (ind < 0) {
-            item = new GraphicsRectangularBranchItem();
-        } else {
-            const PhyBranch* parentBranch = node->getParentBranch();
-            if (parentBranch != nullptr) {
-                item = new GraphicsRectangularBranchItem(node->getBranchesDistance(ind), node->getBranch(ind), parentBranch->nodeValue);
-            }
-        }
-        SAFE_POINT(item != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
-        int itemSize = items.size();
-        assert(itemSize > 0);
-
-        {
-            double xmin = 0;
-            double ymin = items[0] ? items[0]->pos().y() : items[1]->pos().y();
-            double ymax = 0;
-            for (int i = 0; i < itemSize; i++) {
-                if (items[i] == nullptr) {
-                    continue;
-                }
-                QPointF pos1 = items[i]->pos();
-                xmin = qMin(xmin, pos1.x());
-                ymin = qMin(ymin, pos1.y());
-                ymax = qMax(ymax, pos1.y());
-            }
-            xmin -= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
-
-            int y = (ymax + ymin) / 2;
-            item->setPos(xmin, y);
-
-            for (int i = 0; i < itemSize; i++) {
-                if (items[i] == nullptr) {
-                    continue;
-                }
-                double dist = qAbs(node->getBranchesDistance(i));
-                items[i]->setSide(items[i]->pos().y() > y ? GraphicsRectangularBranchItem::Right : GraphicsRectangularBranchItem::Left);
-                items[i]->setWidthW(dist);
-                items[i]->setDist(dist);
-                items[i]->setParentItem(item);
-                QRectF rect = items[i]->getDistanceTextItem()->boundingRect();
-                items[i]->getDistanceTextItem()->setPos(-(items[i]->getWidth() + rect.width()) / 2, 0);
-            }
-        }
-        return item;
+        childRectBranches.append(createBranch(phyNode->getSecondNodeOfBranch(i)));
+    }
+    GraphicsRectangularBranchItem* rectBranch;
+    if (branchIndex < 0) {
+        rectBranch = new GraphicsRectangularBranchItem();
     } else {
-        int y = (current++ + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
-        auto item = branches != 1
-                        ? new GraphicsRectangularBranchItem(0, y, node->getName())
-                        : new GraphicsRectangularBranchItem(0, y, node->getName(), node->getBranchesDistance(0), node->getBranch(0));
+        const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
+        SAFE_POINT(parentPhyBranch != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
+        double distance = phyNode->getBranchesDistance(branchIndex);
+        PhyBranch* phyBranch = phyNode->getBranch(branchIndex);
+        rectBranch = new GraphicsRectangularBranchItem(distance, phyBranch, parentPhyBranch->nodeValue);
+    }
+    for (auto childRectBranch : qAsConst(childRectBranches)) {
+        childRectBranch->setParentItem(rectBranch);
+    }
+    return rectBranch;
+}
 
-        return item;
+GraphicsRectangularBranchItem* RectangularTreeLayoutAlgorithm::buildTreeLayout(const PhyNode* phyRoot) {
+    GraphicsRectangularBranchItem* rectRoot = createBranch(phyRoot);
+    recalculateTreeLayout(rectRoot, phyRoot);
+    return rectRoot;
+}
+
+static GraphicsRectangularBranchItem* getChildItemByPhyBranch(GraphicsRectangularBranchItem* branchItem, const PhyBranch* branch) {
+    QList<QGraphicsItem*> childItems = branchItem->childItems();
+    for (QGraphicsItem* ci : qAsConst(childItems)) {
+        if (auto gbi = dynamic_cast<GraphicsRectangularBranchItem*>(ci)) {
+            if (gbi->getPhyBranch() == branch) {
+                return gbi;
+            }
+        }
+    }
+    return nullptr;
+}
+
+void static recalculateBranches(GraphicsRectangularBranchItem* branch, const PhyNode* rootPhyNode, int& currentRow) {
+    const PhyNode* phyNode = branch->getPhyBranch() != nullptr ? branch->getPhyBranch()->node2 : rootPhyNode;
+    CHECK(phyNode != nullptr, );
+
+    if (phyNode->branchCount() <= 1) {
+        double y = (currentRow + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
+        branch->setPos(0, y);
+        currentRow++;
+        return;
+    }
+    QList<GraphicsRectangularBranchItem*> childBranches;
+    for (int i = 0; i < phyNode->branchCount(); ++i) {
+        if (phyNode->getSecondNodeOfBranch(i) != phyNode) {
+            GraphicsRectangularBranchItem* childBranch = getChildItemByPhyBranch(branch, phyNode->getBranch(i));
+            if (childBranch->isVisible()) {
+                recalculateBranches(childBranch, nullptr, currentRow);
+            }
+            childBranches.append(childBranch);
+        } else {
+            childBranches.append(nullptr);
+        }
+    }
+
+    SAFE_POINT(childBranches.size() == phyNode->branchCount(), "Invalid count of child branches", );
+
+    QPointF firstPos = childBranches[0] ? childBranches[0]->pos() : childBranches[1]->pos();
+    double xMin = firstPos.x();
+    double yMin = firstPos.y();
+    double yMax = firstPos.y();
+    for (int i = 1; i < childBranches.size(); ++i) {
+        if (childBranches[i] == nullptr) {
+            continue;
+        }
+        QPointF pos1 = childBranches[i]->pos();
+        xMin = qMin(xMin, pos1.x());
+        yMin = qMin(yMin, pos1.y());
+        yMax = qMax(yMax, pos1.y());
+    }
+    xMin -= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
+
+    int y;
+    if (branch->isCollapsed()) {
+        y = (currentRow + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
+        branch->setPos(0, y);
+        currentRow++;
+    } else {
+        y = (yMax + yMin) / 2;
+        branch->setPos(xMin, y);
+    }
+
+    for (int i = 0; i < childBranches.size(); ++i) {
+        GraphicsRectangularBranchItem* childBranch = childBranches[i];
+        if (childBranch == nullptr) {
+            continue;
+        }
+        double dist = qAbs(phyNode->getBranchesDistance(i));
+        auto side = childBranch->pos().y() > y
+                        ? GraphicsRectangularBranchItem::Right
+                        : GraphicsRectangularBranchItem::Left;
+        childBranch->setSide(side);
+        childBranch->setWidthW(dist);
+        childBranch->setDist(dist);
+        childBranch->setParentItem(branch);
+
+        QRectF rect = childBranch->getDistanceTextItem()->boundingRect();
+        double textX = -(childBranch->getWidth() + rect.width()) / 2;
+        childBranch->getDistanceTextItem()->setPos(textX, 0);
     }
 }
 
-GraphicsRectangularBranchItem* RectangularTreeLayoutAlgorithm::buildTreeLayout(const PhyNode* node) {
-    int current = 0;
-    return createBranch(node, current);
+void RectangularTreeLayoutAlgorithm::recalculateTreeLayout(GraphicsRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode) {
+    int currentRow = 0;
+    recalculateBranches(rootBranchItem, rootPhyNode, currentRow);
 }
 
 }  // namespace U2
