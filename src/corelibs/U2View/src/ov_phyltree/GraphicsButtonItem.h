@@ -42,15 +42,11 @@ public:
 
     bool isPathToRootSelected() const;
 
-    bool isNodeSelected() const;
-
     void toggleCollapsedState();
 
     void swapSiblings();
 
     bool isCollapsed();
-
-    void setSelected(bool selected);
 
     void rerootTree(PhyTreeObject* treeObject);
 
@@ -65,6 +61,7 @@ public:
     GraphicsBranchItem* getLeftBranchItem() const;
 
     GraphicsBranchItem* getRightBranchItem() const;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
@@ -74,13 +71,11 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 private:
-    void setHighlighting(bool isOn);
-
     TreeViewerUI* getTreeViewerUI() const;
 
-    bool isSelected = false;
     QGraphicsSimpleTextItem* nodeLabel = nullptr;
     double nodeValue = 0;
+    bool isHovered = false;
 };
 
 }  // namespace U2

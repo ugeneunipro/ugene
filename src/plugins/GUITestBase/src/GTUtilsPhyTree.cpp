@@ -75,7 +75,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus&
     QList<GraphicsButtonItem*> nodes = getNodes(os);
     QList<GraphicsButtonItem*> selectedNodes;
     for (auto node : qAsConst(nodes)) {
-        if (node->isNodeSelected()) {
+        if (node->isSelected()) {
             selectedNodes << node;
         }
     }
@@ -88,7 +88,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatu
     QList<GraphicsButtonItem*> nodes = getNodes(os);
     QList<GraphicsButtonItem*> unselectedNodes;
     for (auto node : qAsConst(nodes)) {
-        if (node->isNodeSelected()) {
+        if (node->isSelected()) {
             unselectedNodes << node;
         }
     }

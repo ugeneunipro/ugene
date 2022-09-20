@@ -56,20 +56,7 @@ bool CrashHandler::isEnabled() {
 #endif
 
     static QString useCrashHandlerValue = qgetenv(ENV_USE_CRASH_HANDLER);
-
-    if ("0" == useCrashHandlerValue) {
-        return false;
-    }
-
-    if ("1" == useCrashHandlerValue) {
-        return true;
-    }
-
-    return true;
-}
-
-bool CrashHandler::getSendCrashReports() {
-    return sendCrashReports;
+    return useCrashHandlerValue != "0";
 }
 
 void CrashHandler::setSendCrashReports(bool sendReports) {
@@ -84,7 +71,7 @@ void CrashHandler::handleException(const QString& exceptionType, const QString& 
         return;
     }
 
-    if (nullptr != crashHandlerPrivate) {
+    if (crashHandlerPrivate != nullptr) {
         crashHandlerPrivate->storeStackTrace();
     }
 
@@ -169,13 +156,9 @@ QString CrashHandler::generateReport(const QString& exceptionType, int maxReport
         messageLog += "None";
     }
 
-    AppResourcePool* pool = AppResourcePool::instance();
-    if (pool) {
-        size_t memoryBytes = pool->getCurrentAppMemory();
-        QString memInfo = QString("AppMemory: %1Mb; ").arg(memoryBytes / (1000 * 1000));
-
-        reportText += (memInfo + "\n");
-    }
+    size_t memoryBytes = U2::AppResourcePool::getCurrentAppMemory();
+    QString memInfo = QString("AppMemory: %1Mb; ").arg(memoryBytes / (1000 * 1000));
+    reportText += (memInfo + "\n");
     reportText += messageLog + " | ";
 
     QString taskList;

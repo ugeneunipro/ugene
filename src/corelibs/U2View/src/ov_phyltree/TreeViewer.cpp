@@ -1594,7 +1594,7 @@ bool TreeViewerUI::isOnlyLeafSelected() const {
     int selectedItems = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isNodeSelected()) {
+        if (buttonItem != nullptr && buttonItem->isSelected()) {
             selectedItems++;
         }
     }

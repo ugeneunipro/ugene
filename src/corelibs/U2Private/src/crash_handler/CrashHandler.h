@@ -39,10 +39,6 @@ class ExceptionHandler;
 
 namespace U2 {
 
-struct ExceptionInfo {
-    QString errorType;
-};
-
 class CrashHandlerArgsHelper;
 class CrashHandlerPrivate;
 class LogCache;
@@ -57,7 +53,6 @@ public:
     static void shutdown();
 
     static bool isEnabled();
-    static bool getSendCrashReports();
     static void setSendCrashReports(bool sendReports);
 
     static void releaseReserve();

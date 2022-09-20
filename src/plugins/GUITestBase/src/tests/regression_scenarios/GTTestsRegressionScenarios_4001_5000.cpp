@@ -2166,8 +2166,8 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
 
     selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
     CHECK_SET_ERR(selectedNodes.size() == 3, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
-    CHECK_SET_ERR(!rootNode->isNodeSelected(), "Root not must not be selected");
-    CHECK_SET_ERR(childNode->isNodeSelected(), "Child node must be selected");
+    CHECK_SET_ERR(!rootNode->isSelected(), "Root not must not be selected");
+    CHECK_SET_ERR(childNode->isSelected(), "Child node must be selected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
