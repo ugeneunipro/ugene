@@ -41,7 +41,7 @@ static constexpr double radius = 5;
 
 static const QBrush normalStateBrush(Qt::gray);
 static const QBrush selectedStateBrush(QColor("#EA9700"));
-static const QBrush hoveredStateBrush(QColor("#FFA500")); // The same hue as selected but lighter.
+static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
@@ -197,7 +197,7 @@ GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
 void GraphicsButtonItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));
 
-    // Drop default 'selected' / 'focused': we draw it by ourselves using a custom brush.
+    // Drop the default 'selected' & 'focused' decoration: we draw these states by ourselves using a custom brush.
     QStyleOptionGraphicsItem clonedStyleOption(*option);
     clonedStyleOption.state.setFlag(QStyle::State_Selected, false);
     clonedStyleOption.state.setFlag(QStyle::State_HasFocus, false);
