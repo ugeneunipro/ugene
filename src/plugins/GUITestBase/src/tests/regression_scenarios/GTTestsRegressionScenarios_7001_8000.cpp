@@ -91,8 +91,10 @@
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
@@ -2922,6 +2924,44 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, dataDir + "samples/CLUSTALW/", "COI.aln", ExportDocumentDialogFiller::CLUSTALW), false, true);
     GTWidget::click(os, GTAction::button(os, "Save alignment as"));
     GTUtilsProjectTreeView::click(os, "COI.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7652) {
+    // 1. Open files samples/CLUSTALW/COI.aln, _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
+    // 2. Export consensus from Klebsislla
+    // 3. Switch to COI.aln
+    // 4. Do menu Actions->Add->Sequence from file... 
+    // 5. Do not choose file, wait until export task finishes 
+    //Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/Klebsislla.sort.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class SimpleExport : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+    //    Export consensus
+    GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new SimpleExport()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export consensus..."}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Consensus area"), Qt::RightButton);
+    
+    class WaitLogMessage : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            auto targetButton = GTWidget::findButtonByText(os, "Cancel", GTWidget::getActiveModalWidget(os));
+            GTWidget::click(os, targetButton);            
+        }
+    };
+
+    GTLogTracer logTracer;
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
+    CHECK_SET_ERR(logTracer.checkMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7668) {
