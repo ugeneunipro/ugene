@@ -34,7 +34,7 @@ cp "${QT_DIR}/plugins/platforms/libqxcb.so" "${UGENE_DIR}/platforms"
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms"/*.so
 # Qt 5.15 requires external libxcb-xinerama.so.0 library.
-cp "${QT_DIR}/libxcb-xinerama.so.0" "${UGENE_DIR}/"
+cp "${QT_DIR}/lib_extra/libxcb-xinerama.so.0" "${UGENE_DIR}/"
 
 # Image formats.
 rm -rf "${UGENE_DIR}/imageformats"
