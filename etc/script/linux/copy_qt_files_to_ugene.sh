@@ -18,7 +18,7 @@ fi
 echo "copy_qt_files_to_ugene.sh is called with QT_DIR: '${QT_DIR}', UGENE dir: '${UGENE_DIR}'"
 
 # QT core libraries.
-QT_LIBS=("Core" "DBus" "Gui" "Network" "PrintSupport" "Script" "ScriptTools" "Sql" "Svg" "Test" "Widgets" "XcbQpa" "Xml")
+QT_LIBS=("Core" "DBus" "Gui" "Network" "PrintSupport" "Script" "ScriptTools" "Svg" "Test" "Widgets" "XcbQpa" "Xml")
 for LIB in ${QT_LIBS[*]}; do
   FULL_LIB_NAME="libQt5${LIB}.so.5"
   rm -rf "${UGENE_DIR:?}/${FULL_LIB_NAME}"

@@ -72,16 +72,6 @@ Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resource
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/Info.plist
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/QtScriptTools.prl
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/Current
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/QtSql
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Resources
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/QtSql
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/Resources
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/Resources/Info.plist
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/Resources/QtSql.prl
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/QtSvg
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Resources

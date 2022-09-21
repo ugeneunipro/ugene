@@ -1362,21 +1362,17 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongId) {
     QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
-    QList<qint64> rowIds;
-    qint64 customId;
-    while (true == baseRowIds.contains(customId)) {
-        customId = rand();
+    // Generate non-existing id.
+    qint64 wrongId = 1 + *std::max_element(baseRowIds.begin(), baseRowIds.end());
+    QStringList baseRowIdStrings;
+    for (qint64 id : qAsConst(baseRowIds)) {
+        baseRowIdStrings << QString::number(id);
     }
+    coreLog.details(QString("MsaDbiUtilsUnitTests_removeRegion_wrongId: Existing IDs: %1; a custom wrong ID: %2").arg(baseRowIdStrings.join(", ")).arg(wrongId));
 
-    QStringList ids;
-    foreach (qint64 id, rowIds) {
-        ids << QString::number(id);
-    }
-    coreLog.details(QString("MsaDbiUtilsUnitTests_removeRegion_wrongId: Existing IDs: %1; a custom wrong ID: %2").arg(ids.join(", ")).arg(customId));
-
-    rowIds << customId;
+    // Check that MsaDbiUtils::removeRegion sets error if wrong id is used.
     U2OpStatusImpl tmpOs;
-    MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 5, tmpOs);
+    MsaDbiUtils::removeRegion(msaRef, {wrongId}, 0, 5, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for wrong ID");
     coreLog.details(QString("MsaDbiUtilsUnitTests_removeRegion_wrongId: an error message in tmpOs: %1").arg(tmpOs.getError()));
 }

@@ -88,7 +88,12 @@ public:
         return lastMousePressPoint;
     }
 
-    QList<Actor*> getSelectedActors() const;
+    enum ActorsSelector {
+        Selected,
+        All
+    };
+
+    const QList<Actor*> getActors(ActorsSelector selector) const;
 
     void clearScene();
     void onModified();

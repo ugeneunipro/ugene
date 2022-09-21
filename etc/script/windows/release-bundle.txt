@@ -12,7 +12,6 @@ Qt5Quick.dll
 Qt5Script.dll
 Qt5ScriptTools.dll
 Qt5Sensors.dll
-Qt5Sql.dll
 Qt5Svg.dll
 Qt5Test.dll
 Qt5Widgets.dll

@@ -106,6 +106,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
@@ -2962,6 +2963,27 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
     CHECK_SET_ERR(logTracer.checkMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7659) {
+    //1. Open WD sampe "Call variants
+    //2. Select "Read Assembly (BAM/SAM)" worker
+    //3. Rename dataset "Dataset" -> "NewSet"
+    //4.Select "Read Sequence"
+    //Expected state: dataset renamed to "NewSet" too
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
+    GTUtilsDialog::waitForDialog(os, new DatasetNameEditDialogFiller(os, "NewSet"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"rename_dataset_action"}));
+    QTabBar* barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
+    GTWidget::click(os, barWidget->tabButton(0, QTabBar::RightSide), Qt::RightButton);
+    
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
+    barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
+    CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7668) {
