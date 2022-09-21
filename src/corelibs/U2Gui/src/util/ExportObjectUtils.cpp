@@ -125,7 +125,7 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     }
 
     if (dialog->getSourceDoc() != nullptr && dialog->getSourceDoc()->getURLString() == dstUrl) {
-        QMessageBox::warning(QApplication::activeWindow(), L10N::warningTitle(), QObject::tr("You're trying to export document to its own destination, use option direct document save instead."));
+        QMessageBox::warning(QApplication::activeWindow(), L10N::warningTitle(), QObject::tr("Can't export document to its own file. Please select another file."));
         return;
     }
 
