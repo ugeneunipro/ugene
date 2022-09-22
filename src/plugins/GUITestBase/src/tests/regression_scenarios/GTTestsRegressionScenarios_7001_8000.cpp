@@ -2959,6 +2959,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     };
 
     GTLogTracer logTracer;
+    GTGlobals::sleep(750); //need pause to redraw/update ui, sometimes test can't preform next action
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});

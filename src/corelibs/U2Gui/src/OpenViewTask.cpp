@@ -84,16 +84,11 @@ static Task* createOpenViewTask(const MultiGSelection& ms) {
             ls.removeAll(f);
         }
     }
-    Task* t = nullptr;
     if (QApplication::activeModalWidget() != nullptr) {
         coreLog.info(QObject::tr("Unable to open view because of active modal widget."));
-        return t;
+        return nullptr;
     }
-    if (ls.size() == 1) {
-        GObjectViewFactory* f = ls.first();
-        t = f->createViewTask(ms, true);
-    }
-    return t;
+    return ls.size() == 1 ? ls[0]->createViewTask(ms, true) : nullptr;
 }
 
 Document* LoadUnloadedDocumentAndOpenViewTask::getDocument() {
