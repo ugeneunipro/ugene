@@ -1229,7 +1229,6 @@ imageformats/libqtiff.so
 imageformats/libqwbmp.so
 imageformats/libqwebp.so
 libbreakpad.so
-libxcb-xinerama.so.0
 libQt5Core.so.5
 libQt5DBus.so.5
 libQt5Gui.so.5
@@ -1253,6 +1252,7 @@ libU2Script.so
 libU2Test.so
 libU2View.so
 libugenedb.so
+libxcb-xinerama.so.0
 LICENSE.3rd_party.txt
 LICENSE.txt
 platforms
