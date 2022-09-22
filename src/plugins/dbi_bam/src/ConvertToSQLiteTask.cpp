@@ -493,7 +493,7 @@ QList<U2Assembly> ConvertToSQLiteTask::getAssemblies() const {
 bool ConvertToSQLiteTask::isSorted(Reader* reader) const {
     return Header::Coordinate == reader->getHeader().getSortingOrder() ||
            Header::QueryName == reader->getHeader().getSortingOrder() ||
-           bamInfo.hasIndex();
+           bamInfo.hasNotEmptyIndex();
 }
 
 qint64 ConvertToSQLiteTask::importReads() {
@@ -579,7 +579,7 @@ qint64 ConvertToSQLiteTask::importSortedReads(SamReader* samReader, BamReader* b
     qint64 totalReadsImported = 0;
 
     QScopedPointer<Iterator> iterator;
-    if (!bamInfo.hasIndex()) {
+    if (!bamInfo.hasNotEmptyIndex()) {
         if (sam) {
             iterator.reset(new SamIterator(*samReader));
         } else {
@@ -589,7 +589,7 @@ qint64 ConvertToSQLiteTask::importSortedReads(SamReader* samReader, BamReader* b
 
     totalReadsImported += importMappedSortedReads(bamReader, reader, iterator.data(), ioAdapter);
 
-    if (bamInfo.isUnmappedSelected()) {
+    if (bamInfo.isUnmappedSelected() && !iterator.isNull()) {
         totalReadsImported += importUnmappedSortedReads(bamReader, reader, iterator, ioAdapter);
     }
 
@@ -614,7 +614,7 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader* bamReader, Reader
             enableCoverageOnImport(importInfo.coverageInfo, references[referenceId].getLength());
 
             QScopedPointer<DbiIterator> dbiIterator;
-            if (bamInfo.hasIndex()) {
+            if (bamInfo.hasNotEmptyIndex()) {
                 dbiIterator.reset(new IndexedBamDbiIterator(referenceId, !bamInfo.isUnmappedSelected(), *bamReader, bamInfo.getIndex(), stateInfo, *ioAdapter));
             } else {
                 dbiIterator.reset(new SequentialDbiIterator(referenceId, !bamInfo.isUnmappedSelected(), *iterator, stateInfo, *ioAdapter));
@@ -631,7 +631,7 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader* bamReader, Reader
                                 .arg(assembly.visualName)
                                 .arg(totalReadsImported));
         } else {
-            if (!bamInfo.hasIndex()) {
+            if (!bamInfo.hasNotEmptyIndex()) {
                 while (iterator->hasNext() && iterator->peekReferenceId() == referenceId) {
                     iterator->skip();
                 }
@@ -648,7 +648,7 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader* bamReader, Reader
 qint64 ConvertToSQLiteTask::importUnmappedSortedReads(BamReader* bamReader, Reader* reader, QScopedPointer<Iterator>& iterator, IOAdapter* ioAdapter) {
     taskLog.details(tr("Importing unmapped reads"));
 
-    if (bamInfo.hasIndex() && !reader->getHeader().getReferences().isEmpty()) {
+    if (bamInfo.hasNotEmptyIndex() && !reader->getHeader().getReferences().isEmpty()) {
         const Index& index = bamInfo.getIndex();
         bool maxOffsetFound = false;
         VirtualOffset maxOffset = VirtualOffset(0, 0);

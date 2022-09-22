@@ -91,6 +91,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
@@ -883,6 +884,20 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CheckDocumentFormatSelectorTextScenario()));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7338) {
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_1.ugenedb", "", "", true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_2.ugenedb", "", "", true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7367) {
