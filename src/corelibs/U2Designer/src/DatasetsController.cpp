@@ -266,12 +266,12 @@ void AttributeDatasetsController::renameDataset(int dsNum, const QString& newNam
 
     Dataset* dSet = sets.at(dsNum);
     SAFE_POINT(nullptr != dSet, "NULL dataset", );
-
+    QPair<QString, QString> oldNewNames(dSet->getName(), newName);
     checkName(newName, os, dSet->getName());
     CHECK_OP(os, );
 
     dSet->setName(newName);
-    update();
+    emit si_datasetRenamed(oldNewNames);
 }
 
 QStringList AttributeDatasetsController::names() const {

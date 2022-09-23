@@ -37,72 +37,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="147"/>
-        <source>START SmithWatermanAlgorithmOPENCL::launch</source>
-        <translation>START SmithWatermanAlgorithmOPENCL::launch</translation>
-    </message>
-    <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="307"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="312"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="317"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="322"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="327"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="332"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="337"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="342"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="347"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="352"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="357"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="363"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="368"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="373"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="378"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="383"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="388"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="394"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="400"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="405"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="410"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="415"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="420"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="425"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="430"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="435"/>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="440"/>
-        <source>Kernel::setArg(%1) failed</source>
-        <translation>Kernel::setArg(%1) failed</translation>
-    </message>
-    <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="452"/>
-        <source>OPENCL: Running CL program</source>
-        <translation>OPENCL: Running CL program</translation>
-    </message>
-    <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="651"/>
-        <source>FINISH SmithWatermanAlgorithmOPENCL::launch</source>
-        <translation>FINISH SmithWatermanAlgorithmOPENCL::launch</translation>
-    </message>
-    <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="655"/>
-        <source>Starting cleanup OpenCL resources</source>
-        <translation>Starting cleanup OpenCL resources</translation>
-    </message>
-    <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="724"/>
-        <source>Finish cleanup OpenCL resources</source>
-        <translation>Finish cleanup OpenCL resources</translation>
-    </message>
-    <message>
-        <location filename="../src/sw_cuda_cpp.cpp" line="122"/>
-        <source>Pattern length (%1) is longer than search sequence length (%2).</source>
-        <translation>Pattern length (%1) is longer than search sequence length (%2).</translation>
-    </message>
-    <message>
-        <location filename="../src/sw_cuda_cpp.cpp" line="212"/>
-        <source>CUDA malloc error</source>
-        <translation>CUDA malloc error</translation>
-    </message>
-    <message>
         <location filename="../src/SmithWatermanAlgorithm.cpp" line="155"/>
         <source>Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.</source>
         <translation>Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.</translation>
@@ -196,8 +130,8 @@
     </message>
     <message>
         <location filename="../src/SWWorker.cpp" line="136"/>
-        <source>Version of the Smith-Waterman algorithm. You can use the optimized versions of the algorithm (SSE, CUDA and OpenCL) if your hardware supports these capabilities.</source>
-        <translation>Версия реализации алгоритма Смита-Ватермана. Если имеется соответствующее аппаратное обеспечения для ускорения вычислений могут быть использованы оптимизированные версии алгоритма (SSE, CUDA и OpenCL).</translation>
+        <source>Version of the Smith-Waterman algorithm. You can use the optimized versions of the algorithm (SSE) if your hardware supports these capabilities.</source>
+        <translation>Версия реализации алгоритма Смита-Ватермана. Если имеется соответствующее аппаратное обеспечения для ускорения вычислений могут быть использованы оптимизированные версии алгоритма (SSE).</translation>
     </message>
     <message>
         <location filename="../src/SWWorker.cpp" line="141"/>
@@ -421,16 +355,6 @@
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="794"/>
-        <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
-        <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
-    </message>
-    <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="799"/>
-        <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
-        <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
-    </message>
-    <message>
         <location filename="../src/SWAlgorithmTask.cpp" line="854"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
@@ -626,16 +550,6 @@
         <location filename="../src/SWAlgorithmTask.cpp" line="198"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
-    </message>
-    <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="213"/>
-        <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
-        <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
-    </message>
-    <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="218"/>
-        <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
-        <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
         <location filename="../src/SWAlgorithmTask.cpp" line="413"/>

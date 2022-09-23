@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,19 +28,6 @@
 #include <QTimer>
 
 namespace HI {
-
-class HI_EXPORT ThreadWaiter : public QObject {
-    Q_OBJECT
-public:
-    ThreadWaiter();
-
-    void wait();
-
-private:
-    // GUITestOpStatus &os;
-    qint64 startValue;
-    qint64 endValue;
-};
 
 class HI_EXPORT GTThread {
 public:

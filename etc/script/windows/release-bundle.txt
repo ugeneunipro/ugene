@@ -12,7 +12,6 @@ Qt5Quick.dll
 Qt5Script.dll
 Qt5ScriptTools.dll
 Qt5Sensors.dll
-Qt5Sql.dll
 Qt5Svg.dll
 Qt5Test.dll
 Qt5Widgets.dll
@@ -39,7 +38,6 @@ U2View.dll
 U2View.map
 breakpad.dll
 breakpad.map
-cudart64_110.dll
 data
 data/DBXRefRegistry.txt
 data/adapters
@@ -1295,10 +1293,6 @@ plugins/circular_view.dll
 plugins/circular_view.license
 plugins/circular_view.map
 plugins/circular_view.plugin
-plugins/cuda_support.dll
-plugins/cuda_support.license
-plugins/cuda_support.map
-plugins/cuda_support.plugin
 plugins/dbi_bam.dll
 plugins/dbi_bam.license
 plugins/dbi_bam.map
@@ -1351,10 +1345,6 @@ plugins/linkdata_support.dll
 plugins/linkdata_support.license
 plugins/linkdata_support.map
 plugins/linkdata_support.plugin
-plugins/opencl_support.dll
-plugins/opencl_support.license
-plugins/opencl_support.map
-plugins/opencl_support.plugin
 plugins/orf_marker.dll
 plugins/orf_marker.license
 plugins/orf_marker.map

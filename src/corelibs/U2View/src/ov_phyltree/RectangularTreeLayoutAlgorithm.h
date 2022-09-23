@@ -31,7 +31,9 @@ class RectangularTreeLayoutAlgorithm {
 public:
     RectangularTreeLayoutAlgorithm() = delete;
 
-    static GraphicsRectangularBranchItem* buildTreeLayout(const PhyNode* node);
+    static GraphicsRectangularBranchItem* buildTreeLayout(const PhyNode* phyRoot);
+
+    static void recalculateTreeLayout(GraphicsRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode);
 };
 
 }  // namespace U2

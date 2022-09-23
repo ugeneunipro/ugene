@@ -1,5 +1,0 @@
-<suite name="Smith Waterman Tests GPU of NVidia big and long test">
-
-    <env-var name="IMPL" value="CUDA"/>
-    <test-dir path="smith_waterman_big" test-format="XML" test-ext="*.xml"/>
-</suite>

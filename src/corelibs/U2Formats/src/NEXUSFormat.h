@@ -49,7 +49,7 @@ protected:
 
 private:
     QList<GObject*> loadObjects(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& ti);
-    void storeObjects(QList<GObject*> objects, bool simpleNames, IOAdapter* io, U2OpStatus& ti);
+    void storeObjects(const QList<GObject*>& objects, bool simpleNames, IOAdapter* io, U2OpStatus& ti);
 };
 
 }  // namespace U2

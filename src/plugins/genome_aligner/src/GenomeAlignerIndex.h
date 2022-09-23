@@ -51,9 +51,7 @@ public:
     bool loadPart(int part);
     void alignShortRead(SearchQuery* qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext* settings, BMType bitFilter, int w);
     BinarySearchResult bitMaskBinarySearch(BMType bitValue, BMType bitFilter);
-#ifdef OPENCL_SUPPORT
-    BinarySearchResult* bitMaskBinarySearchOpenCL(const BMType* bitValues, int size, const int* windowSizes);
-#endif
+
     const QString& getFirstSequenceObjectName() const {
         return firstSequenceObjectName;
     }

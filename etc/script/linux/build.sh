@@ -18,7 +18,6 @@ fi
 TEAMCITY_WORK_DIR=$(pwd)
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 SCRIPTS_DIR="${UGENE_DIR}/etc/script/linux"
-EXTRA_LIBS_DIR="${UGENE_DIR}/etc/lib/linux/x86_64"
 
 # Below this point the script works in 'UGENE_DIR' folder.
 cd "${UGENE_DIR}" || {
@@ -85,7 +84,7 @@ echo "##teamcity[blockOpened name='Bundle']"
 rm -f "${BUILD_DIR}"/*.a
 
 # Copy & patch Qt libs.
-"${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${EXTRA_LIBS_DIR}" "${BUILD_DIR}" || {
+"${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${BUILD_DIR}" || {
   echo "'copy_qt_files_to_ugene.sh' script failed"
   exit 1
 }

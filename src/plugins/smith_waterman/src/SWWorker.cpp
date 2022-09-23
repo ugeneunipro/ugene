@@ -134,7 +134,7 @@ void SWWorkerFactory::init() {
         Descriptor ald(ALGO_ATTR,
                        SWWorker::tr("Algorithm"),
                        SWWorker::tr("Version of the Smith-Waterman algorithm. You can use the optimized"
-                                    " versions of the algorithm (SSE, CUDA and OpenCL) if your hardware supports"
+                                    " versions of the algorithm (SSE) if your hardware supports"
                                     " these capabilities."));
 
         Descriptor amd(AMINO_ATTR,

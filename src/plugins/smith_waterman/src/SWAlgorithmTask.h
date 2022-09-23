@@ -38,13 +38,10 @@
 
 namespace U2 {
 
-enum SW_AlgType { SW_classic,
-                  SW_sse2,
-                  SW_cuda,
-                  SW_opencl };
-
-class CudaGpuModel;
-class OpenCLGpuModel;
+enum SW_AlgType {
+    SW_classic,
+    SW_sse2,
+};
 
 class SWAlgorithmTask : public Task, public SequenceWalkerCallback {
     Q_OBJECT
@@ -52,22 +49,20 @@ public:
     SWAlgorithmTask(const SmithWatermanSettings& s,
                     const QString& taskName,
                     SW_AlgType algType);
-    ~SWAlgorithmTask();
+    ~SWAlgorithmTask() override;
 
-    void prepare();
-
-    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti);
+    void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) override;
 
     QList<PairAlignSequences>& getResult();
-    ReportResult report();
+    ReportResult report() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void addResult(QList<PairAlignSequences>& res);
     int calculateMatrixLength(int searchSeqLen, int patternLen, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences>& res);
-    int calculateMaxScore(const QByteArray& seq, const SMatrix& substitutionMatrix);
+    int calculateMaxScore(const QByteArray& sequence, const SMatrix& substitutionMatrix);
 
     void setupTask(int maxScore);
 
@@ -80,22 +75,17 @@ private:
 
     QList<SmithWatermanResult> resultList;
     SmithWatermanSettings sWatermanConfig;
-    SequenceWalkerTask* t;
-
-    CudaGpuModel* cudaGpu;
-    OpenCLGpuModel* openClGpu;
+    SequenceWalkerTask* t = nullptr;
 };
 
 class SWResultsPostprocessingTask : public Task {
     Q_OBJECT
 public:
     SWResultsPostprocessingTask(SmithWatermanSettings& _sWatermanConfig, QList<SmithWatermanResult>& _resultList, QList<PairAlignSequences>& _resPAS);
-    ~SWResultsPostprocessingTask() {
-    }
 
-    void prepare();
-    void run();
-    ReportResult report() {
+    void prepare() override;
+    void run() override;
+    ReportResult report() override {
         return ReportResult_Finished;
     }
 
@@ -108,9 +98,8 @@ private:
 class PairwiseAlignmentSmithWatermanTaskSettings : public PairwiseAlignmentTaskSettings {
 public:
     PairwiseAlignmentSmithWatermanTaskSettings(const PairwiseAlignmentTaskSettings& s);
-    virtual ~PairwiseAlignmentSmithWatermanTaskSettings();
 
-    virtual bool convertCustomSettings();
+    bool convertCustomSettings() override;
 
     // all settings except sMatrix and pointers must be set up through customSettings and then must be converted by convertCustomSettings().
     SmithWatermanReportCallbackMAImpl* reportCallback;
@@ -135,21 +124,22 @@ class PairwiseAlignmentSmithWatermanTask : public PairwiseAlignmentTask, public 
     Q_OBJECT
 public:
     PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings* _settings, SW_AlgType algType);
-    ~PairwiseAlignmentSmithWatermanTask();
-    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti);
-    void prepare();
-    QList<PairAlignSequences>& getResult();
-    ReportResult report();
+    ~PairwiseAlignmentSmithWatermanTask() override;
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) override;
+    void prepare() override;
+    QList<PairAlignSequences>& getResult();
+    ReportResult report() override;
+
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 protected:
     void addResult(QList<PairAlignSequences>& res);
-    int calculateMaxScore(const QByteArray& seq, const SMatrix& substitutionMatrix);
+    int calculateMaxScore(const QByteArray& sequence, const SMatrix& substitutionMatrix);
     void setupTask();
     int calculateMatrixLength(const QByteArray& searchSeq, const QByteArray& patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences>& res);
-    QList<PairAlignSequences> expandResults(QList<PairAlignSequences>& res);
+    QList<PairAlignSequences> expandResults(QList<PairAlignSequences>& results);
 
 protected:
     QMutex lock;
@@ -159,12 +149,9 @@ protected:
     QList<SmithWatermanResult> resultList;
     int minScore;
     int maxScore;
-    QByteArray* sqnc;
-    QByteArray* ptrn;
-    SequenceWalkerTask* t;
-
-    CudaGpuModel* cudaGpu;
-    OpenCLGpuModel* openClGpu;
+    QByteArray* sqnc = nullptr;
+    QByteArray* ptrn = nullptr;
+    SequenceWalkerTask* t = nullptr;
 };
 
 class PairwiseAlignmentSWResultsPostprocessingTask : public Task {
@@ -172,12 +159,9 @@ class PairwiseAlignmentSWResultsPostprocessingTask : public Task {
 
 public:
     PairwiseAlignmentSWResultsPostprocessingTask(SmithWatermanResultFilter* rf, SmithWatermanResultListener* rl, QList<SmithWatermanResult>& _resultList, QList<PairAlignSequences>& _resPAS);
-    ~PairwiseAlignmentSWResultsPostprocessingTask() {
-    }
 
-    void run();
-    void prepare();
-    ReportResult report() {
+    void run() override;
+    ReportResult report() override {
         return ReportResult_Finished;
     }
 

@@ -1351,7 +1351,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
             auto memBox = GTWidget::findSpinBox(os, "memBox", dialog);
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
@@ -2166,8 +2166,8 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
 
     selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
     CHECK_SET_ERR(selectedNodes.size() == 3, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
-    CHECK_SET_ERR(!rootNode->isNodeSelected(), "Root not must not be selected");
-    CHECK_SET_ERR(childNode->isNodeSelected(), "Child node must be selected");
+    CHECK_SET_ERR(!rootNode->isSelected(), "Root not must not be selected");
+    CHECK_SET_ERR(childNode->isSelected(), "Child node must be selected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
@@ -3306,7 +3306,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     class MemoryLimitSetScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
             GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

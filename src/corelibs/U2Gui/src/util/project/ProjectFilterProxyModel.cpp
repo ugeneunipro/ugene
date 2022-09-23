@@ -80,10 +80,7 @@ bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder* folder) const {
 
     if (!settings.isObjectFilterActive()) {
         return true;
-    } else if (ProjectUtils::isFolderInRecycleBinSubtree(path)) {
-        return false;
     }
-
     Document* doc = folder->getDocument();
     QList<GObject*> objs = srcModel->getFolderObjects(doc, path);
     foreach (GObject* obj, objs) {

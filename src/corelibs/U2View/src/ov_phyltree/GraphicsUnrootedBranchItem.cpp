@@ -21,14 +21,11 @@
 
 #include "GraphicsUnrootedBranchItem.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QPen>
-#include <QStack>
 #include <QtMath>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
 
 #include "GraphicsRectangularBranchItem.h"
@@ -36,14 +33,14 @@
 namespace U2 {
 
 GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, double angle, GraphicsRectangularBranchItem* from, double nodeValue)
-    : GraphicsBranchItem(true, nodeValue) {
+    : GraphicsBranchItem(true, from->getSide(), nodeValue) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
     width = from->getWidth();
     setDist(from->getDist());
     setPos(width, 0);
-    angle = from->getSide() == GraphicsBranchItem::Right ? angle : -angle;
+    angle = side == GraphicsBranchItem::Side::Right ? angle : -angle;
     setTransform(QTransform().translate(-width, 0).rotate(angle).translate(width, 0));
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);
@@ -84,11 +81,11 @@ void GraphicsUnrootedBranchItem::setLabelPositions() {
 
 QRectF GraphicsUnrootedBranchItem::boundingRect() const {
     double penWidth = 1;
-    return QRectF(-width, -penWidth * 0.5, width, penWidth);
+    return {-width, -penWidth * 0.5, width, penWidth};
 }
 
 void GraphicsUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
-    painter->setPen(pen());
+    setUpPainter(painter);
     painter->drawLine(0, 0, -width, 0);
 }
 

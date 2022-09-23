@@ -33,16 +33,11 @@
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/AssemblyConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
-#include <U2Algorithm/CudaGpuRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
-
-#ifdef OPENCL_SUPPORT
-#    include <U2Algorithm/OpenCLGpuRegistry.h>
-#endif
 
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -235,16 +230,8 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
     sspar = new SecStructPredictAlgRegistry();
     appContext->setSecStructPedictAlgRegistry(sspar);
 
-    cgr = new CudaGpuRegistry();
-    appContext->setCudaGpuRegistry(cgr);
-
     alignmentAlgorithmRegistry = new AlignmentAlgorithmsRegistry();
     appContext->setAlignmentAlgorithmsRegistry(alignmentAlgorithmRegistry);
-
-#ifdef OPENCL_SUPPORT
-    oclgr = new OpenCLGpuRegistry();
-    appContext->setOpenCLGpuRegistry(oclgr);
-#endif
 
     rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
@@ -294,7 +281,7 @@ UgeneContextWrapper::UgeneContextWrapper(const QString& workingDirectoryPath)
 
     t1.stop();
     QObject::connect(psp, SIGNAL(si_allStartUpPluginsLoaded()), &app, SLOT(quit()));
-    app.exec();
+    QCoreApplication::exec();
 }
 
 UgeneContextWrapper::~UgeneContextWrapper() {
@@ -357,14 +344,6 @@ UgeneContextWrapper::~UgeneContextWrapper() {
     delete resTrack;
     appContext->setResourceTracker(nullptr);
 
-    delete cgr;
-    appContext->setCudaGpuRegistry(nullptr);
-
-#ifdef OPENCL_SUPPORT
-    delete oclgr;
-    appContext->setOpenCLGpuRegistry(nullptr);
-#endif
-
     delete appSettings;
     appContext->setAppSettings(nullptr);
 
@@ -419,7 +398,7 @@ int UgeneContextWrapper::processTask(Task* task) {
                      .arg(Version::appArchitecture));
     ts->registerTopLevelTask(task);
     QObject::connect(ts, SIGNAL(si_topLevelTaskUnregistered(Task*)), &app, SLOT(quit()));
-    return app.exec();
+    return QCoreApplication::exec();
 }
 
 // TODO: fix this dummy check

@@ -1,3 +1,0 @@
-<suite name="Binary find  algorithm using OpenCL tests">
-    <test-dir path="binary_find_opencl" test-format="XML" test-ext="*.xml"/>
-</suite>

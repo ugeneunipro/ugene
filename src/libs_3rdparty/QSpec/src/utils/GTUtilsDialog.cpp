@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <core/GUITest.h>
-
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
@@ -38,8 +36,8 @@ namespace HI {
 
 #define GT_CLASS_NAME "GUIDialogWaiter"
 
-/** Check for dialog every 100 ms. */
-static const int DIALOG_CHECK_PERIOD = 100;
+/** Check for dialog every twice as fast as ACTIVATION_TIME. */
+static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
 
 GUIDialogWaiter::GUIDialogWaiter(GUITestOpStatus& _os, Runnable* _r, const WaitSettings& _settings)
     : os(_os), runnable(_r), settings(_settings) {

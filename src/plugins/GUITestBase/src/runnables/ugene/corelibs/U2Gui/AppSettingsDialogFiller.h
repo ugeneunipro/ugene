@@ -31,17 +31,18 @@ public:
     enum style { minimal,
                  extended,
                  none };
-    enum Tabs { General,
-                Resourses,
-                Network,
-                FileFormat,
-                Directories,
-                Logging,
-                AlignmentColorScheme,
-                GenomeAligner,
-                WorkflowDesigner,
-                ExternalTools,
-                OpenCL };
+    enum Tabs {
+        General,
+        Resources,
+        Network,
+        FileFormat,
+        Directories,
+        Logging,
+        AlignmentColorScheme,
+        GenomeAligner,
+        WorkflowDesigner,
+        ExternalTools
+    };
     AppSettingsDialogFiller(HI::GUITestOpStatus& _os, style _itemStyle = extended)
         : Filler(_os, "AppSettingsDialog"),
           itemStyle(_itemStyle), r(-1), g(-1), b(-1) {

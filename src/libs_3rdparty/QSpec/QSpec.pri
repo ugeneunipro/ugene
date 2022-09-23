@@ -5,7 +5,7 @@ QMAKE_PROJECT_NAME = QSpec
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off qt dll
 INCLUDEPATH += src _tmp
-QT += testlib network xml svg sql widgets printsupport
+QT += testlib network xml svg widgets printsupport
 
 DEFINES += BUILDING_QSPEC_DLL
 DEFINES += QT_DLL
@@ -28,6 +28,8 @@ CONFIG(release, debug|release) {
 unix {
     !macx {
         LIBS += -lXtst -lX11
+        # Experimental filesystem API used in GTFile
+        LIBS += -lstdc++fs
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
     macx {

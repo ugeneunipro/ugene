@@ -10,6 +10,7 @@ Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/5/QtCore
 Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/5/Resources/QtCore.prl
 Unipro UGENE.app/Contents/Frameworks/QtCore.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/QtDBus
@@ -19,6 +20,7 @@ Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/5/Resources/QtDBus.prl
 Unipro UGENE.app/Contents/Frameworks/QtDBus.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework/QtGui
@@ -28,6 +30,7 @@ Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/5/QtGui
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/5/Resources/QtGui.prl
 Unipro UGENE.app/Contents/Frameworks/QtGui.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/QtNetwork
@@ -37,6 +40,7 @@ Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/5/QtNetwork
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/5/Resources/QtNetwork.prl
 Unipro UGENE.app/Contents/Frameworks/QtNetwork.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/QtPrintSupport
@@ -46,6 +50,7 @@ Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/5/QtPrintSupport
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/5/Resources/QtPrintSupport.prl
 Unipro UGENE.app/Contents/Frameworks/QtPrintSupport.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/QtScript
@@ -55,6 +60,7 @@ Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/QtScript
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/5/Resources/QtScript.prl
 Unipro UGENE.app/Contents/Frameworks/QtScript.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/QtScriptTools
@@ -64,16 +70,8 @@ Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/QtScriptTools
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/5/Resources/QtScriptTools.prl
 Unipro UGENE.app/Contents/Frameworks/QtScriptTools.framework/Versions/Current
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/QtSql
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Resources
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/QtSql
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/Resources
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/5/Resources/Info.plist
-Unipro UGENE.app/Contents/Frameworks/QtSql.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/QtSvg
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Resources
@@ -82,6 +80,7 @@ Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/QtSvg
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources/QtSvg.prl
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework/QtTest
@@ -91,6 +90,7 @@ Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/QtTest
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources/QtTest.prl
 Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/QtWidgets
@@ -100,6 +100,7 @@ Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/5/QtWidgets
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/5/Resources/QtWidgets.prl
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/QtXml
@@ -109,6 +110,7 @@ Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/QtXml
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources/Info.plist
+Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/5/Resources/QtXml.prl
 Unipro UGENE.app/Contents/Frameworks/QtXml.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/libcrypto.1.1.dylib
 Unipro UGENE.app/Contents/Frameworks/libssl.1.1.dylib
@@ -1403,7 +1405,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/libgor4.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libhmm2.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libkalign.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/liblinkdata_support.dylib
-Unipro UGENE.app/Contents/MacOS/plugins/libopencl_support.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/liborf_marker.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libpcr.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libphylip.dylib
@@ -1421,8 +1422,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/libweight_matrix.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libworkflow_designer.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/linkdata_support.license
 Unipro UGENE.app/Contents/MacOS/plugins/linkdata_support.plugin
-Unipro UGENE.app/Contents/MacOS/plugins/opencl_support.license
-Unipro UGENE.app/Contents/MacOS/plugins/opencl_support.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.license
 Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/pcr.license

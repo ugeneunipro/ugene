@@ -24,7 +24,6 @@
 #include <QFile>
 #include <QtEndian>
 
-#include <U2Algorithm/BinaryFindOpenCL.h>
 #include <U2Algorithm/SyncSort.h>
 
 #include <U2Core/Counter.h>
@@ -273,22 +272,6 @@ BinarySearchResult GenomeAlignerIndex::bitMaskBinarySearch(BMType bitValue, BMTy
     }
     return -1;
 }
-
-#ifdef OPENCL_SUPPORT
-BinarySearchResult* GenomeAlignerIndex::bitMaskBinarySearchOpenCL(const BMType* bitValues, int size, const int* windowSizes) {
-    taskLog.trace(QString("Binary search on GPU for %1 Mb search-values in %2 Mb base values")
-                      .arg((8 * size) / (1 << 20))
-                      .arg((8 * indexPart.getLoadedPartSize()) / (1 << 20)));
-    assert(indexPart.getLoadedPartSize() != 0);
-    assert(size > 0);
-
-    BinaryFindOpenCL bf((NumberType*)indexPart.bitMask, indexPart.getLoadedPartSize(), (NumberType*)bitValues, size, windowSizes);
-
-    NumberType* ans = bf.launch();
-
-    return (BinarySearchResult*)ans;
-}
-#endif
 
 bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAType& fisrtSymbol, SearchQuery* qu, SAType& loadedSeqStart) {
     assert(offset < objLens[objCount - 1]);

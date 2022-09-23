@@ -119,11 +119,6 @@ p, li { white-space: pre-wrap; }
         <translation>Hizalama sırasında &quot;en iyi&quot; modunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="246"/>
-        <source>Use an openCL-enabled GPU during the aligning.</source>
-        <translation>Hizalama sırasında openCL özellikli bir GPU kullanın.</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="249"/>
         <source>Use GPU-optimization</source>
         <translation>GPU optimizasyonunu kullanın</translation>
@@ -900,11 +895,6 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
         <translation>GPU optimizasyonunu kullanın</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="368"/>
-        <source>&lt;html&gt;&lt;body&gt;Use GPU-calculatings while aligning reads. This option requires OpenCL-enable GPU-device.&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;Okumaları hizalarken GPU hesaplamalarını kullanın. Bu seçenek, OpenCL etkin GPU cihazı gerektirir.&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="99"/>
         <source>Short reads list is empty.</source>
         <translation>Kısa okuma listesi boş.</translation>
@@ -916,14 +906,6 @@ Bu parametreyi veya indeks klasörünü değiştirmek için &quot;İptal&quot; e
         <location filename="../src/GenomeAlignerFindTask.cpp" line="215"/>
         <source>[%1] Index size for part %2/%3 is zero, skipping it.</source>
         <translation>[%1] %2/%3 parçasının dizin boyutu sıfır, atlanır.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ShortReadAlignerOpenCL</name>
-    <message>
-        <location filename="../src/GenomeAlignerFindTask.cpp" line="311"/>
-        <source>Index size for part %1/%2 is zero, skipping it.</source>
-        <translation>%1/%2 parçasının dizin boyutu sıfırdır, atlanır.</translation>
     </message>
 </context>
 </TS>

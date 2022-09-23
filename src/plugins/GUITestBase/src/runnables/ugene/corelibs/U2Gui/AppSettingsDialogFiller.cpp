@@ -34,8 +34,6 @@
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QFile>
-#include <QListWidget>
-#include <QTextBrowser>
 #include <QToolButton>
 #include <QTreeWidget>
 
@@ -48,7 +46,7 @@ using namespace HI;
 QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap() {
     QMap<Tabs, QString> result;
     result.insert(General, "  General");
-    result.insert(Resourses, "  Resources");
+    result.insert(Resources, "  Resources");
     result.insert(Network, "  Network");
     result.insert(FileFormat, "  File Format");
     result.insert(Directories, "  Directories");
@@ -57,7 +55,6 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap() 
     result.insert(GenomeAligner, "  Genome Aligner");
     result.insert(WorkflowDesigner, "  Workflow Designer");
     result.insert(ExternalTools, "  External Tools");
-    result.insert(OpenCL, "  OpenCL");
     return result;
 }
 

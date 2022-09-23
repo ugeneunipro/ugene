@@ -1,9 +1,5 @@
 include( ../ugene_globals.pri )
 
-use_opencl(){
-    DEFINES += OPENCL_SUPPORT
-}
-
 QT += xml network script widgets
 
 TEMPLATE = app

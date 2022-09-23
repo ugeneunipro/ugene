@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatic
  * s Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,39 +28,20 @@
 #include "GTGlobals.h"
 #include "core/MainThreadTimer.h"
 #include "utils/GTThread.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace HI {
 
-#define GT_CLASS_NAME "ThreadWaiter"
-const qint64 TIMER_INTERVAL = 100;
-
-ThreadWaiter::ThreadWaiter()
-    :  // os(os),
-      startValue(0),
-      endValue(0) {
-}
-
-#define GT_METHOD_NAME "wait"
-void ThreadWaiter::wait() {
-    MainThreadTimer mainThreadTimer(TIMER_INTERVAL);
-    startValue = mainThreadTimer.getCounter();
-    while (endValue <= startValue) {
-        GTGlobals::sleep(TIMER_INTERVAL);
-        endValue = mainThreadTimer.getCounter();
-    }
-}
-#undef GT_METHOD_NAME
-
-#undef GT_CLASS_NAME
-
 #define GT_CLASS_NAME "GTThread"
 
-#define GT_METHOD_NAME "waitForMainThread"
 void GTThread::waitForMainThread() {
-    ThreadWaiter waiter;
-    waiter.wait();
+    // Wait enough time for all active dialog waiters to be activated.
+    int waitTime = GUIDialogWaiter::ACTIVATION_TIME;
+    MainThreadTimer mainThreadTimer(waitTime);
+    while (mainThreadTimer.getCounter() == 0) {  // Wait until incremented at least once.
+        GTGlobals::sleep(waitTime);
+    }
 }
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "runInMainThread"
 void GTThread::runInMainThread(GUITestOpStatus& os, CustomScenario* scenario) {

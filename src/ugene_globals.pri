@@ -49,13 +49,15 @@ win32 : DEFINES += "PSAPI_VERSION=1"
 
 clang {
     CONFIG -= warn_on
-    #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
     QMAKE_CXXFLAGS += -Wall
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
     QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     QMAKE_CXXFLAGS += -Wno-char-subscripts
+
+    # Clang v9 on MacOS 10.13.
+    QMAKE_CXXFLAGS += -Wno-invalid-constexpr
 }
 
 macx {
@@ -118,25 +120,6 @@ isEmpty(PREFIX): PREFIX  = dist/ugene-$${UGENE_VERSION}
 
 
 win32 : QMAKE_LFLAGS *= /MACHINE:X64
-
-# CUDA environment
-UGENE_NVCC         = nvcc
-UGENE_CUDA_LIB_DIR = $$(CUDA_LIB_PATH)
-UGENE_CUDA_INC_DIR = $$(CUDA_INC_PATH)
-
-# CUDA detection tools
-isEmpty(UGENE_CUDA_DETECTED) : UGENE_CUDA_DETECTED = 0
-defineTest( use_cuda ) {
-    contains( UGENE_CUDA_DETECTED, 1) : return (true)
-    return (false)
-}
-
-# OPENCL detection tools
-isEmpty(UGENE_OPENCL_DETECTED) : UGENE_OPENCL_DETECTED = 1
-defineTest( use_opencl ) {
-    contains( UGENE_OPENCL_DETECTED, 1) : return (true)
-    return (false)
-}
 
 # new conditional function for case 'unix but not macx'
 defineTest( unix_not_mac ) {

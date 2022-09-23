@@ -101,7 +101,7 @@ void GraphicsBranchItem::updateSettings(const OptionsMap& newSettings) {
 
     int penWidth = settings[BRANCH_THICKNESS].toInt();
     if (isSelected()) {
-        penWidth += SELECTED_PEN_WIDTH;
+        penWidth += SELECTED_PEN_WIDTH_DELTA;
     }
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
@@ -181,7 +181,7 @@ void GraphicsBranchItem::toggleCollapsedState() {
         }
         int penWidth = settings[BRANCH_THICKNESS].toInt();
         if (isSelected()) {
-            penWidth += SELECTED_PEN_WIDTH;
+            penWidth += SELECTED_PEN_WIDTH_DELTA;
         }
 
         QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
@@ -191,40 +191,29 @@ void GraphicsBranchItem::toggleCollapsedState() {
         auto rectItem = new QGraphicsRectItem(0, -4, 16, 8, this);
         rectItem->setPen(pen1);
     } else {
-        for (int i = 0, s = items.size(); i < s; ++i) {
-            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(items[i])) {
+        for (auto& item : qAsConst(items)) {
+            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(item)) {
                 rectItem->setParentItem(nullptr);
                 scene()->removeItem(rectItem);
-            } else if (items[i] != getDistanceTextItem() && items[i] != getNameTextItem()) {
-                items[i]->show();
+            } else if (item != getDistanceTextItem() && item != getNameTextItem()) {
+                item->show();
             }
         }
-        setSelected(true);
+        setSelectedRecursively(true);
     }
     getRoot()->emitBranchCollapsed(this);
 }
 
-void GraphicsBranchItem::setSelected(bool isSelected) {
+void GraphicsBranchItem::setSelectedRecursively(bool isSelected) {
     if (buttonItem) {
         buttonItem->setSelected(isSelected);
     }
-
     QList<QGraphicsItem*> children = childItems();
     for (QGraphicsItem* graphItem : qAsConst(children)) {
         if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
-            childBranch->setSelected(isSelected);
+            childBranch->setSelectedRecursively(isSelected);
         }
     }
-
-    // Update UI state.
-    int penWidth = settings[BRANCH_THICKNESS].toInt();
-    if (isSelected) {
-        penWidth += SELECTED_PEN_WIDTH;
-    }
-    QPen currentPen = this->pen();
-    currentPen.setWidth(penWidth);
-    this->setPen(currentPen);
-
     QAbstractGraphicsShapeItem::setSelected(isSelected);
 }
 
@@ -283,26 +272,11 @@ bool GraphicsBranchItem::isCollapsed() const {
     return collapsed;
 }
 
-void GraphicsBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
-    CHECK(nameText != nullptr, );
-    if (isSelected()) {
-        double radius = settings[BRANCH_THICKNESS].toInt() + 1.5;
-        QRectF rect(-radius, -radius, radius * 2, radius * 2);
-        QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-        painter->setBrush(branchColor);
-        if (leafBranchSelectionMarker == nullptr) {
-            leafBranchSelectionMarker = scene()->addEllipse(rect, branchColor, branchColor);
-            leafBranchSelectionMarker->setParentItem(this);
-            leafBranchSelectionMarker->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-            leafBranchSelectionMarker->setPen(QPen(Qt::gray));
-            leafBranchSelectionMarker->setBrush(branchColor);
-        } else if (!leafBranchSelectionMarker->isVisible()) {
-            leafBranchSelectionMarker->setRect(rect);
-            leafBranchSelectionMarker->show();
-        }
-    } else if (leafBranchSelectionMarker != nullptr) {
-        leafBranchSelectionMarker->hide();
-    }
+void GraphicsBranchItem::setUpPainter(QPainter* p) {
+    QPen currentPen = pen();
+    currentPen.setWidth(settings[BRANCH_THICKNESS].toInt() + (isSelected() ? SELECTED_PEN_WIDTH_DELTA : 0));
+    setPen(currentPen);
+    p->setPen(currentPen);
 }
 
 void GraphicsBranchItem::initDistanceText(const QString& text) {
@@ -315,7 +289,7 @@ void GraphicsBranchItem::initDistanceText(const QString& text) {
 }
 
 QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform) const {
-    QRectF childsBoundingRect;
+    QRectF childrenBoundingRect;
     QStack<const QGraphicsItem*> graphicsItems;
     graphicsItems.push(this);
 
@@ -332,11 +306,11 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
                 QRectF transformedRect = invertedTransform.mapRect(itemRect);
                 itemRect.setWidth(transformedRect.width());
             }
-            childsBoundingRect |= itemRect;
+            childrenBoundingRect |= itemRect;
             graphicsItems.push(graphItem);
         }
     } while (!graphicsItems.isEmpty());
-    return childsBoundingRect;
+    return childrenBoundingRect;
 }
 
 bool GraphicsBranchItem::isRoot() const {

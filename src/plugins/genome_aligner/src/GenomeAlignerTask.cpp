@@ -48,7 +48,6 @@ namespace U2 {
 // TODO: calling tr() int static context! Translator is not initialized yet!
 const QString GenomeAlignerTask::taskName(QObject::tr("UGENE Genome Aligner"));
 const QString GenomeAlignerTask::OPTION_ALIGN_REVERSED("align_reversed");
-const QString GenomeAlignerTask::OPTION_OPENCL("use_gpu_optimization");
 const QString GenomeAlignerTask::OPTION_IF_ABS_MISMATCHES("if_absolute_mismatches_value");
 const QString GenomeAlignerTask::OPTION_MISMATCHES("mismatches_allowed");
 const QString GenomeAlignerTask::OPTION_PERCENTAGE_MISMATCHES("mismatches_percentage_allowed");
@@ -85,7 +84,6 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings& _settin
     noDataToAlign = false;
 
     alignReversed = settings.getCustomValue(OPTION_ALIGN_REVERSED, true).toBool();
-    alignContext.openCL = settings.getCustomValue(OPTION_OPENCL, false).toBool();
     alignContext.absMismatches = settings.getCustomValue(OPTION_IF_ABS_MISMATCHES, true).toBool();
     alignContext.nMismatches = settings.getCustomValue(OPTION_MISMATCHES, 0).toInt();
     alignContext.ptMismatches = settings.getCustomValue(OPTION_PERCENTAGE_MISMATCHES, 0).toInt();
@@ -129,9 +127,6 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings& _settin
         memUseMB += readMemSize;
     }
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, true));
-    if (alignContext.openCL) {
-        addTaskResource(TaskResourceUsage(RESOURCE_OPENCL_GPU, 1, true));
-    }
 }
 
 GenomeAlignerTask::~GenomeAlignerTask() {

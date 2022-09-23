@@ -52,7 +52,6 @@ public:
     const GObjectSelection* getGObjectSelection() const;
     QList<Folder> getSelectedFolders() const;
 
-    bool isObjectInRecycleBin(GObject* obj) const;
     bool isObjectInFolder(GObject* obj, const Folder& folder) const;
     const ProjectTreeControllerModeSettings& getModeSettings() const;
     void highlightItem(Document* doc);
@@ -69,7 +68,6 @@ private slots:
     void sl_doubleClicked(const QModelIndex& index);
     void sl_documentContentChanged(Document* doc);
 
-    void sl_onCreateFolder();
     void sl_onAddObjectToSelectedDocument();
     void sl_onLoadSelectedDocuments();
     void sl_onUnloadSelectedDocuments();
@@ -87,8 +85,6 @@ private slots:
     void sl_onResourceUserUnregistered(const QString& res, Task* t);
     void sl_onLoadingDocumentProgressChanged();
     void sl_onRename();
-    void sl_onRestoreSelectedItems();
-    void sl_onEmptyRecycleBin();
     void sl_onProjectItemRenamed(const QModelIndex& index);
     void sl_onObjRemovalTaskFinished();
     void sl_onFolderRemovalTaskFinished();
@@ -107,7 +103,7 @@ signals:
 
 private:
     // QObject
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
 
     void setupActions();
     void connectDocument(Document* doc);
@@ -120,10 +116,6 @@ private:
     bool removeFolders(const QList<Folder>& folders, const QList<Document*>& excludedDocs);
     void removeDocuments(const QList<Document*>& docs);
     void updateObjectActiveStateVisual(GObject* obj);
-    bool canCreateSubFolder() const;
-    bool canRenameFolder() const;
-    void restoreSelectedObjects();
-    void restoreSelectedFolders();
 
     void updateAddObjectAction();
     void updateImportToDbAction();
@@ -138,7 +130,7 @@ private:
 
     // after folders or objects has been removed from Project View,
     // they can still present in the database during the next merge procedure (due to their large sizes).
-    // Therefore when delete task is created, corresponding objects and folders are added to some ignore filters
+    // Therefore, when delete task is created, corresponding objects and folders are added to some ignore filters
     // which keep them untouched by merging. After the task has finished the objects/folders have to be
     // removed from filters.
     //
@@ -148,8 +140,6 @@ private:
 
     static bool isObjectRemovable(GObject* object);
     static bool isFolderRemovable(const Folder& folder);
-    bool isAnyObjectInRecycleBin(const QList<GObject*>& objects);
-    static bool isAnyFolderInRecycleBin(const QList<Folder>& folders);
     static void excludeUnremovableObjectsFromList(QList<GObject*>& objects);
     static void excludeUnremovableFoldersFromList(QList<Folder>& folders);
     static bool isSubFolder(const QList<Folder>& folders, const Folder& expectedSubFolder, bool trueIfSamePath);
@@ -162,7 +152,6 @@ private:
     ProjectFilterProxyModel* proxyModel;
 
     // Actions
-    QAction* createFolderAction;
     QAction* addObjectToDocumentAction;
     QAction* loadSelectedDocumentsAction;
     QAction* unloadSelectedDocumentsAction;
@@ -171,8 +160,6 @@ private:
     QAction* removeReadonlyFlagAction;
     QAction* removeSelectedItemsAction;
     QAction* importToDatabaseAction;
-    QAction* restoreSelectedItemsAction;
-    QAction* emptyRecycleBinAction;
 
     DocumentSelection documentSelection;
     FolderSelection folderSelection;

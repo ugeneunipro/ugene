@@ -38,7 +38,7 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
+    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem);
     GraphicsRectangularBranchItem();
     GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
     GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
@@ -64,11 +64,7 @@ public:
 
     void swapSiblings();
 
-    void recalculateBranches(int& current, const PhyNode* root);
-
     const PhyBranch* getPhyBranch() const;
-
-    GraphicsRectangularBranchItem* getChildItemByPhyBranch(const PhyBranch* branch);
 
     void drawCollapsedRegion();
 
@@ -80,7 +76,14 @@ private:
     double breadthScaleAdjustment = 1;
 
     PhyBranch* phyBranch = nullptr;
+
+    /**
+     * Leaf branches have additional UI element to show selected state.
+     * TODO: this must be a fixed size (non-scaling) component same as node or branch text.
+     */
+    QGraphicsEllipseItem* leafBranchSelectionMarker = nullptr;
 };
+
 }  // namespace U2
 
 #endif

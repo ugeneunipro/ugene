@@ -51,11 +51,11 @@ public:
         (void)get();
     }
 
-    QStringList getUntil(QString what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
+    QStringList getUntil(const QString& what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
 
-    void skipUntil(QString what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
+    void skipUntil(const QString& what, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
 
-    QString readUntil(QRegExp rwhat);
+    QString readUntil(const QRegExp& regExpMatcher);
 
     bool isEof() {
         return io->isEof();
@@ -68,10 +68,9 @@ public:
     QString whiteSpacesAfterLastToken;
 
 private:
-    IOAdapter* io;
+    IOAdapter* io = nullptr;
     QString next;
 
-    static const int BUFF_SIZE;
     QString buff;
     QTextStream buffStream;
 };

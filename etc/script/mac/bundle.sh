@@ -38,10 +38,10 @@ VERSION_PARSING_COMMAND="sed -n 's/^ *\$UGENE_VER_type *= *\([0-9][0-9]*\) *\(#.
 UGENE_VERSION_MAJOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MAJOR}")
 UGENE_VERSION_MINOR=$(eval "${VERSION_PARSING_COMMAND/\$UGENE_VER_type/UGENE_VER_MINOR}")
 if [ ! "${UGENE_VERSION_MAJOR}" -o ! "${UGENE_VERSION_MINOR}" ]; then
-    echo "Unable to parse UGENE version from ugene_version.pri"
-    exit 1
+  echo "Unable to parse UGENE version from ugene_version.pri"
+  exit 1
 fi
-sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" > "${TARGET_APP_DIR}/Contents/Info.plist"
+sed "s/\${UGENE_VERSION}/${UGENE_VERSION_MAJOR}.${UGENE_VERSION_MINOR}/g" "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" >"${TARGET_APP_DIR}/Contents/Info.plist"
 
 echo Copying translations
 cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
@@ -145,7 +145,6 @@ PLUGIN_LIST="annotator \
              hmm2 \
              kalign \
              linkdata_support \
-             opencl_support \
              orf_marker \
              pcr \
              perf_monitor \
@@ -169,7 +168,7 @@ for PLUGIN in ${PLUGIN_LIST}; do
 done
 
 echo Running macdeployqt
-"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip \
+"${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip -verbose=2 \
   -executable="${TARGET_EXE_DIR}/ugeneui" \
   -executable="${TARGET_EXE_DIR}/ugenecl" \
   -executable="${TARGET_EXE_DIR}/ugenem" \

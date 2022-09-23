@@ -48,7 +48,6 @@ class TreeViewerUI;
 class GraphicsBranchItem;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
-class CreateBranchesTask;
 
 class TreeViewer : public GObjectView {
     Q_OBJECT
@@ -146,8 +145,8 @@ class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     friend class TreeViewer;
 
 public:
-    TreeViewerUI(TreeViewer* treeViewer);
-    virtual ~TreeViewerUI();
+    explicit TreeViewerUI(TreeViewer* treeViewer);
+    ~TreeViewerUI() override;
 
     const QMap<TreeViewOption, QVariant>& getSettings() const;
     QVariant getOptionValue(TreeViewOption option) const;
@@ -164,12 +163,6 @@ public:
     bool isRectangularLayoutMode() const {
         return getTreeLayout() == RECTANGULAR_LAYOUT;
     }
-
-    bool isCircularLayoutMode() const {
-        return getTreeLayout() == CIRCULAR_LAYOUT;
-    }
-
-    void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
 

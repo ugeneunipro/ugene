@@ -46,12 +46,10 @@ namespace U2 {
 #define FONT SETTINGS + "font"
 #define DIR "workflow_settings/path"
 #define BG_COLOR SETTINGS + "bgcolor"
-#define RUN_MODE SETTINGS + "runMode"
 #define SCRIPT_MODE SETTINGS + "scriptMode"
 #define EXTERNAL_TOOL_WORKER_PATH SETTINGS + "externalToolWorkerPath"
 #define INCLUDED_WORKER_PATH SETTINGS + "includedWorkerPath"
 #define WORKFLOW_OUTPUT_PATH SETTINGS + "workflowOutputPath"
-#define SHOW_LOAD_BUTTON_HINT SETTINGS + "showLoadButtonHint"
 
 Watcher* const WorkflowSettings::watcher = new Watcher;
 
@@ -107,7 +105,7 @@ QFont WorkflowSettings::defaultFont() {
 
 void WorkflowSettings::setDefaultFont(const QFont& f) {
     if (defaultFont() != f) {
-        AppContext::getSettings()->setValue(FONT, qVariantFromValue(f));
+        AppContext::getSettings()->setValue(FONT, QVariant::fromValue<QFont>(f));
         emit watcher->changed();
     }
 }
@@ -231,39 +229,12 @@ void WorkflowSettings::setBGColor(const QColor& color) {
     s->setValue(BG_COLOR, newColor);
 }
 
-int WorkflowSettings::getRunMode() {
-    Settings* s = AppContext::getSettings();
-    int ret = 0;
-    QString runModeStr = s->getValue(RUN_MODE).value<QString>();
-    if (!runModeStr.isEmpty()) {
-        bool ok = false;
-        int num = runModeStr.toInt(&ok);
-        if (ok && num >= 0) {
-            ret = num;
-        }
-    }
-    return ret;
-}
-
-void WorkflowSettings::setRunMode(int md) {
-    Settings* s = AppContext::getSettings();
-    s->setValue(RUN_MODE, QString::number(md));
-}
-
 bool WorkflowSettings::getScriptingMode() {
     return AppContext::getSettings()->getValue(SCRIPT_MODE, QVariant(false)).value<bool>();
 }
 
 void WorkflowSettings::setScriptingMode(bool md) {
     AppContext::getSettings()->setValue(SCRIPT_MODE, md);
-}
-
-QString WorkflowSettings::getCmdlineUgenePath() {
-    QString path = CMDLineRegistryUtils::getCmdlineUgenePath();
-    if (path.isEmpty()) {
-        coreLog.info(tr("Command line UGENE path not found, a possibility to run in separate process will be disabled"));
-    }
-    return path;
 }
 
 void WorkflowSettings::setIncludedElementsDirectory(const QString& newDir) {
@@ -278,20 +249,6 @@ const QString WorkflowSettings::getIncludedElementsDirectory() {
     defaultPath += "/IncludedWorkers/";
     QString path = s->getValue(INCLUDED_WORKER_PATH, defaultPath, true).toString();
     return path;
-}
-
-bool WorkflowSettings::isShowLoadButtonHint() {
-    Settings* s = AppContext::getSettings();
-    SAFE_POINT(nullptr != s, "NULL settings!", false);
-
-    return s->getValue(SHOW_LOAD_BUTTON_HINT, QVariant(true)).toBool();
-}
-
-void WorkflowSettings::setShowLoadButtonHint(bool value) {
-    Settings* s = AppContext::getSettings();
-    SAFE_POINT(nullptr != s, "NULL settings!", );
-
-    s->setValue(SHOW_LOAD_BUTTON_HINT, value);
 }
 
 }  // namespace U2

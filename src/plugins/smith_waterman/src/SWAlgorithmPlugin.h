@@ -41,9 +41,6 @@ class SWAlgorithmPlugin : public Plugin {
 public:
     SWAlgorithmPlugin();
 
-public slots:
-    void regDependedIMPLFromOtherPlugins();
-
 private:
     QList<XMLTestFactory*> fs;
     SWAlgorithmADVContext* ctxADV;

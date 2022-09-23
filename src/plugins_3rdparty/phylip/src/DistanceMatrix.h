@@ -73,18 +73,18 @@ private:
     void calculateQMatrix();
     float calculateRawDivergence(int i);
     float getDistance(QString seq1, QString seq2);
-    void dumpRawData(matrix& m);
+    void dumpRawData(matrix& m) const;
     void dumpQData();
     QString getTaxaName(int index);
     void addPairToTree(QPair<int, int>* location);
     int getSize() {
         return size;
     }
-    PhyNode* getNodeByName(QString name);
-    PhyNode* findNode(PhyNode* startnode, QString name);
+    PhyNode* getNodeByName(const QString& name);
+    PhyNode* findNode(PhyNode* startNode, const QString& name);
     float calculateRootDistance(int i, int j);
     float calculateAdjacentDistance(int i, int j, float rootDistance);
-    QString generateNodeName(QString name1, QString name2);
+    QString generateNodeName(const QString& name1, const QString& name2);
     void recalculateDistanceMatrix(int i, int j, PhyNode* newnode);
     float calculateNewDistance(QPair<int, int>* location, int current);
     bool hasUnprocessedTaxa() {
@@ -94,7 +94,7 @@ private:
     void printPhyTree();
     static void printPhyNode(PhyNode* node, int tab, QList<PhyNode*>& nodes);
     void printIndex();
-    int getNewIndex(QString name, QPair<int, int> loc, QMap<QString, int>& old_map);
+    int getNewIndex(const QString& name, QPair<int, int> loc, QMap<QString, int>& old_map);
     void dumpRawData();
     static bool areTreesEqual(PhyTree* tree1, PhyTree* tree2);
     static void addNodeToList(QList<PhyNode*>& nodelist, QMap<QString, int>& nodemap, QList<PhyBranch*>& branches, PhyNode* node);

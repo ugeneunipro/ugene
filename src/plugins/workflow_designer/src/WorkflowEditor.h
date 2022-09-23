@@ -58,7 +58,7 @@ public:
     void commitDatasets(const QString& attrId, const QList<Dataset>& sets);
 
 public slots:
-    void editActor(Actor*);
+    void editActor(Actor*, const QList<Actor*>& allActors);
     void editPort(Port*);
     void setDescriptor(Descriptor* d, const QString& hint = QString());
     void edit(Configuration* subject);
@@ -108,7 +108,7 @@ public:
     SpecialParametersPanel(WorkflowEditor* parent);
     virtual ~SpecialParametersPanel();
 
-    void editActor(Actor* a);
+    void editActor(Actor* a, const QList<Actor*>& allActors);
     void reset();
     void setDatasetsEnabled(bool isEnabled);
     int contentHeight() const;
@@ -118,6 +118,7 @@ signals:
 
 private slots:
     void sl_datasetsChanged();
+    void sl_datasetRenamed(QPair<QString, QString>&);
 
 private:
     WorkflowEditor* editor;
@@ -127,6 +128,7 @@ private:
 private:
     void addWidget(AttributeDatasetsController* controller);
     void removeWidget(AttributeDatasetsController* controller);
+    QList<Actor*> allActors;
 };
 
 }  // namespace U2
