@@ -887,6 +887,10 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7338) {
+    //1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
+    //2. Close project
+    //3. Repeat step 1
+    //Expected state: no crash
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_1.ugenedb", "", "", true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);

@@ -66,7 +66,8 @@ public:
     };
     Index(const QList<ReferenceIndex>& referenceIndices);
     const QList<ReferenceIndex>& getReferenceIndices() const;
-
+    bool isEmpty() const;
+    
 private:
     QList<ReferenceIndex> referenceIndices;
 };

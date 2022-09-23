@@ -42,7 +42,7 @@ public:
         return selected;
     }
     inline bool hasNotEmptyIndex() const {
-        return _hasIndex && index.getReferenceIndices().size() != 0;
+        return _hasIndex && !index.isEmpty();
     }
     inline bool isReferenceSelected(int id) {
         if (id == -1)
