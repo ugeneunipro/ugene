@@ -125,7 +125,7 @@ void static recalculateBranches(GraphicsRectangularBranchItem* branch, const Phy
     }
     xMin -= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
 
-    int y;
+    double y;
     if (branch->isCollapsed()) {
         y = (currentRow + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
         branch->setPos(0, y);
@@ -142,8 +142,8 @@ void static recalculateBranches(GraphicsRectangularBranchItem* branch, const Phy
         }
         double dist = qAbs(phyNode->getBranchesDistance(i));
         auto side = childBranch->pos().y() > y
-                        ? GraphicsRectangularBranchItem::Right
-                        : GraphicsRectangularBranchItem::Left;
+                        ? GraphicsBranchItem::Side::Right
+                        : GraphicsBranchItem::Side::Left;
         childBranch->setSide(side);
         childBranch->setWidthW(dist);
         childBranch->setDist(dist);

@@ -948,7 +948,7 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
     bool isLeftButton = e->button() == Qt::LeftButton;
     bool isDragEvent = isLeftButton && (e->globalPos() - lastMousePressPos).manhattanLength() >= QApplication::startDragDistance();
     if (!isSelectionStateManagedByChildOnClick && isLeftButton && !isDragEvent) {
-        root->setSelected(false);  // Clear selection on any right button click with no shift.
+        root->setSelectedRecursively(false);  // Clear selection on any right button click with no shift.
     }
     updateActionsState();
     updateBranchSettings();
@@ -1264,7 +1264,7 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
 }
 
 void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout) {
-    root->setSelected(false);
+    root->setSelectedRecursively(false);
     setOptionValue(TREE_LAYOUT, treeLayout);
 
     scene()->removeItem(root);

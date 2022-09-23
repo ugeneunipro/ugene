@@ -37,11 +37,11 @@ class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphic
     Q_OBJECT
 public:
     /** Side of the branch in the binary tree relative to the root node: left of right. */
-    enum Side {
+    enum class Side {
         Left,
         Right
     };
-    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue = -1.0);
+    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue);
 
     GraphicsButtonItem* getButtonItem() const;
 
@@ -69,7 +69,8 @@ public:
 
     virtual void toggleCollapsedState();
 
-    void setSelected(bool isSelected);
+    /** Recursively selects/unselects current branch item and children. */
+    void setSelectedRecursively(bool isSelected);
 
     bool isCollapsed() const;
 
@@ -90,7 +91,7 @@ public:
     static constexpr int TEXT_SPACING = 8;
 
     /** Width of the selected branch line. */
-    static constexpr int SELECTED_PEN_WIDTH = 1;
+    static constexpr int SELECTED_PEN_WIDTH_DELTA = 1;
 
     /** Maximum distance (count) from this branch to the end (leaf) of the tree. */
     int maxStepsToLeaf = 0;
@@ -116,23 +117,21 @@ signals:
 protected:
     explicit GraphicsBranchItem(const QString& name);
 
-    GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
-
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
+    GraphicsBranchItem(double distance, bool withButton, double nodeValue);
 
     virtual void setLabelPositions();
+
+    /**
+     * Sets up common painter properties based on the current selection/hover state.
+     * Called before in the beginning of the paint() method.
+     */
+    virtual void setUpPainter(QPainter* p);
 
     void initText(double d);
 
     QGraphicsSimpleTextItem* distanceText = nullptr;
     QGraphicsSimpleTextItem* nameText = nullptr;
     GraphicsButtonItem* buttonItem = nullptr;
-
-    /**
-     * Leaf branches have additional UI element to show selected state.
-     * TODO: this must be a fixed size (non-scaling) component same as node or branch text.
-     */
-    QGraphicsEllipseItem* leafBranchSelectionMarker = nullptr;
 
     double width = 0;
     /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */

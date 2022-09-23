@@ -69,11 +69,11 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TreeViewerUI* ui = getTreeViewerUI();
     if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ShiftModifier)) {
         // Invert selection state on Shift.
-        parentBranchItem->setSelected(!isSelected());
+        parentBranchItem->setSelectedRecursively(!isSelected());
     } else {
         // Set a new selection.
-        ui->getRoot()->setSelected(false);
-        parentBranchItem->setSelected(true);
+        ui->getRoot()->setSelectedRecursively(false);
+        parentBranchItem->setSelectedRecursively(true);
     }
     ui->isSelectionStateManagedByChildOnClick = true;
     e->accept();

@@ -33,14 +33,14 @@
 namespace U2 {
 
 GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, double angle, GraphicsRectangularBranchItem* from, double nodeValue)
-    : GraphicsBranchItem(true, nodeValue) {
+    : GraphicsBranchItem(true, from->getSide(), nodeValue) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
     width = from->getWidth();
     setDist(from->getDist());
     setPos(width, 0);
-    angle = from->getSide() == GraphicsBranchItem::Right ? angle : -angle;
+    angle = side == GraphicsBranchItem::Side::Right ? angle : -angle;
     setTransform(QTransform().translate(-width, 0).rotate(angle).translate(width, 0));
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);
@@ -85,7 +85,7 @@ QRectF GraphicsUnrootedBranchItem::boundingRect() const {
 }
 
 void GraphicsUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
-    painter->setPen(pen());
+    setUpPainter(painter);
     painter->drawLine(0, 0, -width, 0);
 }
 

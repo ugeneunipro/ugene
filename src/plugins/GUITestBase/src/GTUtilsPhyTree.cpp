@@ -343,7 +343,7 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(GraphicsRectangularBranchItem* fi
     SAFE_POINT(second != nullptr, "Second rectangular branch item is NULL", false);
 
     if (first->getSide() == second->getSide()) {
-        return first->getSide() == GraphicsBranchItem::Right
+        return first->getSide() == GraphicsBranchItem::Side::Right
                    ? first->getDist() < second->getDist()
                    : first->getDist() > second->getDist();
     }
