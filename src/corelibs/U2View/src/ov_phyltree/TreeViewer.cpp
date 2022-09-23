@@ -161,7 +161,7 @@ void TreeViewer::createActions() {
     nameLabelsAction->setObjectName("Show Names");
     // Show Node Labels
     nodeLabelsAction = new QAction(tr("Show Node Labels"), ui);
-    nodeLabelsAction->setCheckable(phyObject->haveNodeLabels());
+    nodeLabelsAction->setCheckable(phyObject->hasNodeLabels());
     nodeLabelsAction->setChecked(true);
     nodeLabelsAction->setObjectName("Show Names");
 
@@ -581,8 +581,8 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(LABEL_FONT_UNDERLINE, false);
 
     setOptionValue(SHOW_LABELS, true);
-    setOptionValue(SHOW_DISTANCES, !phyObject->haveNodeLabels());
-    setOptionValue(SHOW_NODE_LABELS, phyObject->haveNodeLabels());
+    setOptionValue(SHOW_DISTANCES, !phyObject->hasNodeLabels());
+    setOptionValue(SHOW_NODE_LABELS, phyObject->hasNodeLabels());
     setOptionValue(ALIGN_LABELS, false);
 
     setOptionValue(BRANCH_COLOR, QColor(0, 0, 0));

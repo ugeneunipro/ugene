@@ -179,7 +179,7 @@ void GraphicsRectangularBranchItem::setBreathScaleAdjustment(double newBreadthSc
 void GraphicsRectangularBranchItem::swapSiblings() {
     CHECK(phyBranch != nullptr, );
     PhyNode* nodeTo = phyBranch->node2;
-    int branchCount = nodeTo->branchCount();
+    int branchCount = nodeTo->getBranches().size();
     if (branchCount > 2) {
         nodeTo->swapBranches(0, 2);
     }

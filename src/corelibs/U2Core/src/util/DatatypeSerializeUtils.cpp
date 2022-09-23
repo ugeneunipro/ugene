@@ -166,7 +166,7 @@ QByteArray DNAChromatogramSerializer::serialize(const DNAChromatogram& chroma) {
 
 DNAChromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
     DNAChromatogram result;
-    const uchar* data = (const uchar*)(binary.data());
+    auto data = (const uchar*)(binary.data());
     int offset = 0;
     int length = binary.length();
 
@@ -208,8 +208,9 @@ enum ReadState {
 };
 
 void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& os) {
-    int branchCount = node->branchCount();
-    const QString& nodeName = node->getName();
+    const QList<PhyBranch*>& branches = node->getBranches();
+    int branchCount = branches.size();
+    QString nodeName = node->name;
     if (branchCount == 1 && (nodeName.isEmpty() || nodeName == "ROOT")) {
         const PhyNode* sibling = node->getSecondNodeOfBranch(0);
         CHECK_EXT(node != sibling, os.setError(DatatypeSerializers::tr("Invalid tree topology")), );
@@ -229,11 +230,12 @@ void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& os) {
                 }
                 packTreeNode(resultText, node->getSecondNodeOfBranch(i), os);
                 CHECK_OP(os, );
-                if (node->getBranchesNodeValue(i) >= 0) {
-                    resultText.append(QString::number(node->getBranchesNodeValue(i)));
+                PhyBranch* branch = branches.at(i);
+                if (branch->nodeValue >= 0) {
+                    resultText.append(QString::number(branch->nodeValue));
                 }
                 resultText.append(":");
-                resultText.append(QString::number(node->getBranchesDistance(i)));
+                resultText.append(QString::number(branch->distance));
             }
         }
         resultText.append(")");
@@ -258,7 +260,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
     QString block;
     int blockLen;
     bool done = true;
-    bool haveNodeLabels = false;
+    bool hasNodeLabels = false;
 
     QBitArray ops(256);
     ops['('] = true;
@@ -278,7 +280,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
     while ((blockLen = reader.read(si, block, BUFF_SIZE)) > 0) {
         for (int i = 0; i < blockLen; i++) {
             QChar ch = block[i];
-            uchar latin1CharCode = (uchar)ch.toLatin1();
+            auto latin1CharCode = (uchar)ch.toLatin1();
             if (TextUtils::WHITES[latin1CharCode]) {
                 if (state == RS_QUOTED_NAME) {
                     lastStr.append(ch);
@@ -316,7 +318,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
 
             if (!lastStr.isEmpty()) {
                 if (state == RS_NAME) {
-                    nodeStack.top()->setName(lastStr);
+                    nodeStack.top()->name = lastStr;
                 } else {
                     CHECK_EXT_BREAK(state == RS_WEIGHT, si.setError(DatatypeSerializers::tr("Incorrect tree parsing state")));
                     if (!branchStack.isEmpty()) {  // Ignore root node weight if present.
@@ -333,8 +335,8 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
             // Advance in state.
             if (ch == '(') {  // A new child.
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
-                PhyNode* pn = new PhyNode();
-                PhyBranch* bd = PhyTreeData::addBranch(nodeStack.top(), pn, 0);
+                auto pn = new PhyNode();
+                PhyBranch* bd = PhyTreeUtils::addBranch(nodeStack.top(), pn, 0);
                 nodeStack.push(pn);
                 branchStack.push(bd);
                 state = RS_NAME;
@@ -347,7 +349,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                             si.setError(DatatypeSerializers::tr("Error parsing nodeValue: %1").arg(lastStr));
                             break;
                         } else {
-                            haveNodeLabels = true;
+                            hasNodeLabels = true;
                         }
                     }
                 }
@@ -362,7 +364,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                 nodeStack.pop();
                 branchStack.pop();
                 auto node = new PhyNode();
-                PhyBranch* branch = PhyTreeData::addBranch(nodeStack.top(), node, 0);
+                PhyBranch* branch = PhyTreeUtils::addBranch(nodeStack.top(), node, 0);
                 nodeStack.push(node);
                 branchStack.push(branch);
                 state = RS_NAME;
@@ -382,7 +384,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                 }
                 PhyTree tree(new PhyTreeData());
                 tree->setRootNode(nodeStack.pop());
-                tree->setUsingNodeLabels(haveNodeLabels);
+                tree->hasNodeLabels = hasNodeLabels;
                 result << tree;
                 rootNode = new PhyNode();
                 nodeStack.push(rootNode);
@@ -407,7 +409,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
             PhyNode* node = nodeStack.pop();
             PhyTree tree(new PhyTreeData());
             tree->setRootNode(node);
-            tree->setUsingNodeLabels(haveNodeLabels);
+            tree->hasNodeLabels = hasNodeLabels;
             result << tree;
         } else {
             delete rootNode;
@@ -650,7 +652,7 @@ inline Bond unpack(const uchar* data, int length, int& offset, U2OpStatus& os, P
     SharedAtom atom1 = unpack<SharedAtom>(data, length, offset, os, ctx);
     CHECK_OP(os, Bond(SharedAtom(), SharedAtom()));
     SharedAtom atom2 = unpack<SharedAtom>(data, length, offset, os, ctx);
-    return Bond(atom1, atom2);
+    return {atom1, atom2};
 }
 
 inline QByteArray pack(const SecondaryStructure& data) {
@@ -810,7 +812,7 @@ QByteArray BioStruct3DSerializer::serialize(const BioStruct3D& bioStruct) {
 }
 
 BioStruct3D BioStruct3DSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
-    const uchar* data = (const uchar*)(binary.data());
+    auto data = (const uchar*)(binary.data());
     int offset = 0;
     int length = binary.length();
 
@@ -893,13 +895,13 @@ QByteArray WMatrixSerializer::serialize(const PWMatrix& matrix) {
 }
 
 PWMatrix WMatrixSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
-    const uchar* data = (const uchar*)(binary.data());
+    auto data = (const uchar*)(binary.data());
     int offset = 0;
     int length = binary.length();
 
     QVarLengthArray<float> matrix = unpackArray<float>(data, length, offset, os);
     CHECK_OP(os, PWMatrix());
-    PWMatrixType type = PWMatrixType(unpack<char>(data, length, offset, os));
+    auto type = PWMatrixType(unpack<char>(data, length, offset, os));
     CHECK_OP(os, PWMatrix());
     QMap<QString, QString> props = unpackMap(data, length, offset, os);
     CHECK_OP(os, PWMatrix());
@@ -922,13 +924,13 @@ QByteArray FMatrixSerializer::serialize(const PFMatrix& matrix) {
 }
 
 PFMatrix FMatrixSerializer::deserialize(const QByteArray& binary, U2OpStatus& os) {
-    const uchar* data = (const uchar*)(binary.data());
+    auto data = (const uchar*)(binary.data());
     int offset = 0;
     int length = binary.length();
 
     QVarLengthArray<int> matrix = unpackArray<int>(data, length, offset, os);
     CHECK_OP(os, PFMatrix());
-    PFMatrixType type = PFMatrixType(unpack<char>(data, length, offset, os));
+    auto type = PFMatrixType(unpack<char>(data, length, offset, os));
     CHECK_OP(os, PFMatrix());
     QMap<QString, QString> props = unpackMap(data, length, offset, os);
     CHECK_OP(os, PFMatrix());

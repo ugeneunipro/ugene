@@ -31,16 +31,18 @@
 namespace U2 {
 
 static GraphicsRectangularBranchItem* createBranch(const PhyNode* phyNode) {
-    int branchCount = phyNode->branchCount();
-    if (branchCount == 1 && (phyNode->getName() == "" || phyNode->getName() == "ROOT")) {
+    const QList<PhyBranch*> branches = phyNode->getBranches();
+    int branchCount = branches.size();
+    if (branchCount == 1 && (phyNode->name.isEmpty() || phyNode->name == "ROOT")) {
         SAFE_POINT(phyNode != phyNode->getSecondNodeOfBranch(0), "Invalid getSecondNodeOfBranch", nullptr);
         return createBranch(phyNode->getSecondNodeOfBranch(0));
     }
     if (branchCount == 0) {
-        return new GraphicsRectangularBranchItem(0, 0, phyNode->getName());
+        return new GraphicsRectangularBranchItem(0, 0, phyNode->name);
     }
     if (branchCount == 1) {
-        return new GraphicsRectangularBranchItem(0, 0, phyNode->getName(), phyNode->getBranchesDistance(0), phyNode->getBranch(0));
+        PhyBranch* firstBranch = branches.at(0);
+        return new GraphicsRectangularBranchItem(0, 0, phyNode->name, firstBranch->distance, firstBranch);
     }
     QList<GraphicsRectangularBranchItem*> childRectBranches;
     int branchIndex = -1;
@@ -57,9 +59,8 @@ static GraphicsRectangularBranchItem* createBranch(const PhyNode* phyNode) {
     } else {
         const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
         SAFE_POINT(parentPhyBranch != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
-        double distance = phyNode->getBranchesDistance(branchIndex);
-        PhyBranch* phyBranch = phyNode->getBranch(branchIndex);
-        rectBranch = new GraphicsRectangularBranchItem(distance, phyBranch, parentPhyBranch->nodeValue);
+        PhyBranch* phyBranch = branches.at(branchIndex);
+        rectBranch = new GraphicsRectangularBranchItem(phyBranch->distance, phyBranch, parentPhyBranch->nodeValue);
     }
     for (auto childRectBranch : qAsConst(childRectBranches)) {
         childRectBranch->setParentItem(rectBranch);
@@ -89,16 +90,17 @@ void static recalculateBranches(GraphicsRectangularBranchItem* branch, const Phy
     const PhyNode* phyNode = branch->getPhyBranch() != nullptr ? branch->getPhyBranch()->node2 : rootPhyNode;
     CHECK(phyNode != nullptr, );
 
-    if (phyNode->branchCount() <= 1) {
+    const QList<PhyBranch*> branches = phyNode->getBranches();
+    if (branches.size() <= 1) {
         double y = (currentRow + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
         branch->setPos(0, y);
         currentRow++;
         return;
     }
     QList<GraphicsRectangularBranchItem*> childBranches;
-    for (int i = 0; i < phyNode->branchCount(); ++i) {
+    for (int i = 0; i < branches.size(); ++i) {
         if (phyNode->getSecondNodeOfBranch(i) != phyNode) {
-            GraphicsRectangularBranchItem* childBranch = getChildItemByPhyBranch(branch, phyNode->getBranch(i));
+            GraphicsRectangularBranchItem* childBranch = getChildItemByPhyBranch(branch, branches.at(i));
             if (childBranch->isVisible()) {
                 recalculateBranches(childBranch, nullptr, currentRow);
             }
@@ -108,7 +110,7 @@ void static recalculateBranches(GraphicsRectangularBranchItem* branch, const Phy
         }
     }
 
-    SAFE_POINT(childBranches.size() == phyNode->branchCount(), "Invalid count of child branches", );
+    SAFE_POINT(childBranches.size() == branches.size(), "Invalid count of child branches", );
 
     QPointF firstPos = childBranches[0] ? childBranches[0]->pos() : childBranches[1]->pos();
     double xMin = firstPos.x();
@@ -140,7 +142,7 @@ void static recalculateBranches(GraphicsRectangularBranchItem* branch, const Phy
         if (childBranch == nullptr) {
             continue;
         }
-        double dist = qAbs(phyNode->getBranchesDistance(i));
+        double dist = qAbs(branches.at(i)->distance);
         auto side = childBranch->pos().y() > y
                         ? GraphicsRectangularBranchItem::Right
                         : GraphicsRectangularBranchItem::Left;
