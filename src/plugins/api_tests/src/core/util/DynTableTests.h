@@ -19,16 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_UTILS_UNIT_TESTS_H_
-#define _U2_MSA_UTILS_UNIT_TESTS_H_
+#ifndef _U2_DYN_TABLE_TESTS_H_
+#define _U2_DYN_TABLE_TESTS_H_
 
-#include "MsaDbiUtilsUnitTests.h"
+#include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
-DECLARE_TEST(MsaUtilsUnitTests, one_name_with_spaces);
-DECLARE_TEST(MsaUtilsUnitTests, two_names_with_spaces);
-DECLARE_TEST(MsaUtilsUnitTests, all_names_with_spaces);
+DECLARE_TEST(DynTableTests, bigTable);
+DECLARE_TEST(DynTableTests, fullMatch);
+DECLARE_TEST(DynTableTests, fullMismatch);
+DECLARE_TEST(DynTableTests, mismatch);
+DECLARE_TEST(DynTableTests, insDelMode_fullMatch);
+DECLARE_TEST(DynTableTests, insDelMode_fullMismatch);
+DECLARE_TEST(DynTableTests, insDelMode_mismatch);
+DECLARE_TEST(DynTableTests, insDelMode_deletion);
+DECLARE_TEST(DynTableTests, insDelMode_insertion);
 
 }  // namespace U2
 

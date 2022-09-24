@@ -39,7 +39,8 @@ struct U2ALGORITHM_EXPORT MatchScores {
 class U2ALGORITHM_EXPORT DynTable : public RollingMatrix {
 public:
     DynTable(int sizeX, int sizeY, bool _allowInsDel, const MatchScores& _scores = {})
-        : RollingMatrix(sizeX, sizeY), allowInsDel(_allowInsDel), scores(_scores) {
+        : RollingMatrix(sizeX, sizeY), scores(_scores), allowInsDel(_allowInsDel) {
+        // TODO: initial fill of the table does not respect the provided match scores and uses hardcoded 0,1,1,1 scores.
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 setValue(x, y, y + 1, false);
@@ -94,14 +95,9 @@ protected:
      * Returns match length for the current point in the matrix.
      * Returns -1 if some unexpected error occurs.
      */
-    int getLen(int x, int y) const {  // NOLINT(misc-no-recursion)
+    int getLen(int x, int y) const {
         int lengthBefore = 0;
         for (; x >= 0 && y >= 0;) {
-            if (y == -1 || x == -1) {
-                return 0;  // End of the matrix.
-            }
-            SAFE_POINT(x >= 0 && y >= 0, "Invalid X/Y range", -1);
-
             if (!allowInsDel) {
                 lengthBefore += 1;
                 x--;
@@ -133,7 +129,6 @@ protected:
             SAFE_POINT(v == l + scores.ins, "Invalid value", -1);
             lengthBefore += 1;
             x--;
-            continue;
         }
         return lengthBefore;
     }
