@@ -1501,10 +1501,6 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
-    if (!labelsColorButton->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
-    }
     QString defaultFontFamily;
     int defaultSize;
 
@@ -1550,10 +1546,6 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
-    if (!labelsColorButton->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
-    }
     QString defaultFontFamily;
     int defaultSize;
 

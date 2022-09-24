@@ -46,9 +46,6 @@
 
 namespace U2 {
 
-const static QString SHOW_FONT_OPTIONS_LINK("show_font_options_link");
-const static QString SHOW_PEN_OPTIONS_LINK("show_pen_options_link");
-
 static inline QVBoxLayout* initLayout(QWidget* w) {
     auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
@@ -58,8 +55,8 @@ static inline QVBoxLayout* initLayout(QWidget* w) {
     return layout;
 }
 
-TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetViewSettings& viewSettings)
-    : editor(msaEditor), viewSettings(viewSettings),
+TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor)
+    : editor(msaEditor),
       savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(editor != nullptr, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
     setObjectName("TreeOptionsWidget");
@@ -74,8 +71,8 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetVie
     sl_selectionChanged();
 }
 
-TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& _viewSettings)
-    : treeViewer(tree->getTreeViewerUI()), viewSettings(_viewSettings),
+TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree)
+    : treeViewer(tree->getTreeViewerUI()),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())) {
     SAFE_POINT(treeViewer != nullptr, "Invalid parameter were passed into constructor TreeOptionsWidget", );
     setObjectName("TreeOptionsWidget");
@@ -91,7 +88,6 @@ TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSet
 }
 
 TreeOptionsWidget::~TreeOptionsWidget() {
-    emit saveViewSettings(getViewSettings());
     delete contentWidget;
 }
 
@@ -102,27 +98,22 @@ void TreeOptionsWidget::initColorButtonsStyle() {
     branchesColorButton->setStyle(buttonStyle);
 }
 
-const TreeOpWidgetViewSettings& TreeOptionsWidget::getViewSettings() {
-    viewSettings.showFontSettings = showFontSettings;
-    viewSettings.showPenSettings = showPenSettings;
-    return viewSettings;
-}
-
 void TreeOptionsWidget::createGroups() {
     QVBoxLayout* mainLayout = initLayout(this);
     mainLayout->setSpacing(0);
 
-    auto generalOpGroup = new ShowHideSubgroupWidget("TREE_GENERAL_OP", tr("General"), treeLayoutWidget, true);
+    generalOpGroup = new ShowHideSubgroupWidget("TREE_GENERAL_OP", tr("General"), treeLayoutWidget, true);
     mainLayout->addWidget(generalOpGroup);
 
-    auto labelsOpGroup = new ShowHideSubgroupWidget("TREE_LABELS_OP", tr("Labels"), labelsGroup, true);
+    labelsOpGroup = new ShowHideSubgroupWidget("TREE_LABELS_OP", tr("Labels"), labelsGroup, true);
     mainLayout->addWidget(labelsOpGroup);
 
-    auto scalebarOpGroup = new ShowHideSubgroupWidget("SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
-    mainLayout->addWidget(scalebarOpGroup);
-
-    auto branchesOpGroup = new ShowHideSubgroupWidget("TREE_BRANCHES_OP", tr("Branches"), branchesGroup, true);
+    branchesOpGroup = new ShowHideSubgroupWidget("TREE_BRANCHES_OP", tr("Branches"), branchesGroup, true);
     mainLayout->addWidget(branchesOpGroup);
+
+    scalebarOpGroup = new ShowHideSubgroupWidget("SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
+    scalebarOpGroup->setVisible(false);
+    mainLayout->addWidget(scalebarOpGroup);
 
     initializeOptionsMap();
     createGeneralSettingsWidgets();
@@ -131,18 +122,8 @@ void TreeOptionsWidget::createGroups() {
 }
 
 void TreeOptionsWidget::updateAllWidgets() {
-    showFontSettings = viewSettings.showFontSettings;
-    showPenSettings = viewSettings.showPenSettings;
-
-    QString fontLabel = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
-    updateShowFontOpLabel(fontLabel);
-    QString penLabel = showPenSettings ? tr("Hide pen settings") : tr("Show pen settings");
-    updateShowPenOpLabel(penLabel);
-    fontSettingsWidget->setVisible(viewSettings.showFontSettings);
-    penGroup->setVisible(viewSettings.showPenSettings);
-
     QMap<TreeViewOption, QVariant> settings = getTreeViewer()->getSettings();
-    const QList<TreeViewOption> keyList = settings.keys();
+    QList<TreeViewOption> keyList = settings.keys();
     for (const TreeViewOption& option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
@@ -215,10 +196,6 @@ void TreeOptionsWidget::initializeOptionsMap() {
 }
 
 void TreeOptionsWidget::connectSlots() {
-    // Show more options labels
-    connect(lblPenSettings, SIGNAL(linkActivated(const QString&)), SLOT(sl_onLblLinkActivated(const QString&)));
-    connect(lblFontSettings, SIGNAL(linkActivated(const QString&)), SLOT(sl_onLblLinkActivated(const QString&)));
-
     // General settings widgets
     connect(treeViewCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_valueChanged()));
     connect(layoutCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_valueChanged()));
@@ -261,12 +238,14 @@ void TreeOptionsWidget::connectSlots() {
 
 void TreeOptionsWidget::sl_valueChanged() {
     auto inputWidget = qobject_cast<QWidget*>(sender());
-    SAFE_POINT(inputWidget != nullptr, "Null sender in slot", );
+    SAFE_POINT(inputWidget != nullptr, "sl_valueChanged: Sender is not a widget", );
 
     QVariant newValue = savableTab.getChildValue(inputWidget->objectName());
     TreeViewOption option = optionsMap[inputWidget->objectName()];
     if (option == SHOW_LABELS) {
         alignLabelsCheck->setEnabled(newValue.toBool());
+    } else if (option == BRANCHES_TRANSFORMATION_TYPE) {
+        scalebarOpGroup->setVisible(newValue.toInt() == TreeType::PHYLOGRAM);
     }
     updateRelatedOptionsState(option, newValue);
 
@@ -352,38 +331,10 @@ void TreeOptionsWidget::sl_branchesColorButton() {
     }
 }
 
-void TreeOptionsWidget::sl_onLblLinkActivated(const QString& link) {
-    if (link == SHOW_FONT_OPTIONS_LINK) {
-        showFontSettings = !showFontSettings;
-        QString labelText = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
-        updateShowFontOpLabel(labelText);
-        fontSettingsWidget->setVisible(showFontSettings);
-    } else if (link == SHOW_PEN_OPTIONS_LINK) {
-        showPenSettings = !showPenSettings;
-        QString labelText = showPenSettings ? tr("Hide pen settings") : tr("Show pen settings");
-        updateShowPenOpLabel(labelText);
-        penGroup->setVisible(showPenSettings);
-    }
-}
-
 void TreeOptionsWidget::updateButtonColor(QPushButton* button, const QColor& newColor) {
     QPalette palette = button->palette();
     palette.setColor(button->backgroundRole(), newColor);
     button->setPalette(palette);
-}
-
-void TreeOptionsWidget::updateShowFontOpLabel(const QString& labelText) {
-    QString labelTextHtml = QString(R"(<a href="%1" style="color: %2">)").arg(SHOW_FONT_OPTIONS_LINK).arg(Theme::linkColorLabelStr()) +
-                            labelText + "</a>";
-    lblFontSettings->setText(labelTextHtml);
-    lblFontSettings->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
-}
-
-void TreeOptionsWidget::updateShowPenOpLabel(const QString& labelText) {
-    QString labelTextHtml = QString(R"(<a href="%1" style="color: %2">)").arg(SHOW_PEN_OPTIONS_LINK).arg(Theme::linkColorLabelStr()) +
-                            labelText + "</a>";
-    lblPenSettings->setText(labelTextHtml);
-    lblPenSettings->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 }
 
 void TreeOptionsWidget::updateRelatedOptionsState(const TreeViewOption& option, const QVariant& newValue) {

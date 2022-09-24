@@ -2567,20 +2567,15 @@ GUI_TEST_CLASS_DEFINITION(test_2432) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2449) {
-    //    1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Create a phylogenetic tree for the alignment.
+    // Create a phylogenetic tree for the alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_2449.nwk", 0, 0, true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Tree", "Build Tree"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Open tree options panel widget (it can be opened automatically after tree building).
-    //    4. Open font settings on the OP widget.
-    GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
-
-    //    There is a font size spinbox. You can set zero value to it: in this case font has its standard size (on mac), but this value is incorrect.
+    // There is a font size spinbox. You can set zero value to it: in this case font has its standard size (on Mac), but this value is incorrect.
     auto sizeSpinBox = GTWidget::findSpinBox(os, "fontSizeSpinBox");
 
     GTWidget::setFocus(os, sizeSpinBox);
@@ -4142,7 +4137,7 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new customFiller(os));
     GTMouseDriver::click(Qt::RightButton);
-    //    4. Set the destination path to the dir that does not exists
+    //    4. Set the destination path to the dir that does not exist.
     //    5. Click "Extract".
     //    Expected: the message about write permissions to the dir appears. The extraction task is not run.
 }
@@ -4152,7 +4147,7 @@ GUI_TEST_CLASS_DEFINITION(test_2762) {
     2. Close the project.
         Expected state: a dialog will appear that offer you to save the project.
     3. Press escape key.
-        Expected state: the dialog will closed as canceled.
+        Expected state: the dialog will be closed as canceled.
 */
     class EscClicker : public Filler {
     public:
@@ -4289,7 +4284,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     QAbstractButton* undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(!undoButton->isEnabled(), "'Undo' button is unexpectedly enabled");
 
-    // 2. Choose in the context menu{ Align->Align with MUSCLE… }
+    // 2. Choose in the context menu: Align->Align with MUSCLE….
     // Expected state : The "Align with MUSCLE" dialog has appeared
     // 3. Check the "Translation to amino when aligning" checkbox and press "Align"
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 0), QPoint(43, 17));
@@ -4372,7 +4367,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    // 3. Cancel the align task.
+    // 3. Cancel "align" task.
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::checkTaskIsPresent(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
@@ -4402,7 +4397,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801_1) {
 GUI_TEST_CLASS_DEFINITION(test_2808) {
     //    1. Open WD.
     //    2. Add "Sequence Marker" element to the scene, select it.
-    //    Expected state: there are buttons on the parameters widget: "add", "edit" and "remove". The "add" button is enabled, other buttons are disabled.
+    //    Expected state: there are buttons on the "parameters" widget: "add", "edit" and "remove". The "add" button is enabled, other buttons are disabled.
     //    3. Add a new marker group (click the "add" button and fill the dialog).
     //    Expected state: a new group was added, there is no selection in the marker group list, the "add" button is enabled, other buttons are disabled.
     //    4. Select the added group.

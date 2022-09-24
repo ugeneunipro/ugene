@@ -265,7 +265,6 @@ static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariant
         }
         sequenceStart += sequenceLen;
         sequenceNumber++;
-        ioLog.trace(FastaFormat::tr("Sequence #%1 is processed").arg(sequenceNumber));
     }
 
     if (hints.value(DocumentFormat::STRONG_FORMAT_ACCORDANCE, QVariant(false)).toBool() && !emptySeqNames.isEmpty()) {

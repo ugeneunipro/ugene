@@ -44,26 +44,14 @@ QWidget* GTUtilsOptionPanelPhyTree::getOptionsPanelWidget(HI::GUITestOpStatus& o
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "expandFontSettingsPanel"
-void GTUtilsOptionPanelPhyTree::expandFontSettingsPanel(HI::GUITestOpStatus& os) {
-    QWidget* optionsPanel = getOptionsPanelWidget(os);
-    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton", optionsPanel);
-    if (!labelsColorButton->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings", optionsPanel));
-    }
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "getFontSize"
 int GTUtilsOptionPanelPhyTree::getFontSize(HI::GUITestOpStatus& os) {
-    expandFontSettingsPanel(os);
     return GTSpinBox::getValue(os, "fontSizeSpinBox", getOptionsPanelWidget(os));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFontSize"
 void GTUtilsOptionPanelPhyTree::setFontSize(HI::GUITestOpStatus& os, int fontSize) {
-    expandFontSettingsPanel(os);
     GTSpinBox::setValue(os, "fontSizeSpinBox", fontSize, getOptionsPanelWidget(os));
 }
 #undef GT_METHOD_NAME
