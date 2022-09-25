@@ -156,39 +156,40 @@ void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionG
     CHECK(!qFuzzyCompare(width, 0), );
 
     // (0, 0) is a coordinate of the tip of the branch -> move (0, 0) to the root side point.
-    // Note: can't use QMatrix directly here, because it is not default: has external transformations.
+    // Note: can't use QMatrix directly here because the current painter's matrix is not empty at this point.
     int ySign = side == Side::Right ? 1 : -1;
     QPointF translation(-width, -ySign * height);
     painter->translate(translation);
 
-    // Use the same curve parameters with sibling branch: minimum for both.
-    // It makes branches of different length to look symmetrical.
-    double curveSegmentWidth = width;
-    double curveSegmentHeight = height;
+    double curveSegmentWidth = width * curvature / 100;
+    double curveSegmentHeight = height * curvature / 100;
+
+    // Use the same curve width (depth) with sibling branch: minimum for both.
+    // It makes branches of different length to look symmetrical and helps to avoid intersections.
     QList<QGraphicsItem*> siblings = parentItem()->childItems();
     for (QGraphicsItem* item : qAsConst(siblings)) {
+        CHECK_CONTINUE(item != this);
         if (auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(item)) {
             double branchCurveSegmentWidth = rectBranchItem->width * curvature / 100;
-            double branchCurveSegmentHeight = rectBranchItem->height * curvature / 100;
             curveSegmentWidth = qMin(branchCurveSegmentWidth, curveSegmentWidth);
-            curveSegmentHeight = qMin(branchCurveSegmentHeight, curveSegmentHeight);
         }
     }
+
     double straightSegmentWidth = width - curveSegmentWidth;
     double straightSegmentHeight = height - curveSegmentHeight;
 
-    // Draw straight segments.
     QPointF curveStartPoint = QPointF(0, ySign * straightSegmentHeight);
     QPointF curveEndPoint = QPointF(curveSegmentWidth, ySign * height);
 
+    // Draw straight line segments.
     painter->drawLine(QPointF(0, 0), curveStartPoint);  // Vertical segment.
     painter->drawLine(curveEndPoint, QPointF(width, ySign * height));  // Horizontal segment.
 
-    // Draw curve between straight segments.
+    // Draw curve between straight line segments if needed.
     if (curvature > 0) {
-        QPointF controlPoint1(0, ySign * height);
-        QPointF controlPoint2(curveSegmentWidth, ySign * height);
-
+        double controlPointOffset = qMin(curveSegmentHeight, curveSegmentWidth) / 2;
+        QPointF controlPoint1(0, ySign * (height - controlPointOffset));
+        QPointF controlPoint2(controlPointOffset, ySign * height);
         QPainterPath path(curveStartPoint);
         path.cubicTo(controlPoint1, controlPoint2, curveEndPoint);
         painter->drawPath(path);
