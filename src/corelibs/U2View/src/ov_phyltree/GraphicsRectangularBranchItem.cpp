@@ -153,11 +153,47 @@ QRectF GraphicsRectangularBranchItem::boundingRect() const {
 
 void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     setUpPainter(painter);
+    CHECK(!qFuzzyCompare(width, 0), );
 
-    if (!qFuzzyCompare(width, 0)) {
-        painter->drawLine(QPointF(0, 0), QPointF(-width, 0));
-        painter->drawLine(QPointF(-width, 0), QPointF(-width, side == Side::Right ? -height : height));
+    // (0, 0) is a coordinate of the tip of the branch -> move (0, 0) to the root side point.
+    // Note: can't use QMatrix directly here, because it is not default: has external transformations.
+    int ySign = side == Side::Right ? 1 : -1;
+    QPointF translation(-width, -ySign * height);
+    painter->translate(translation);
+
+    // Use the same curve parameters with sibling branch: minimum for both.
+    // It makes branches of different length to look symmetrical.
+    double curveSegmentWidth = width;
+    double curveSegmentHeight = height;
+    QList<QGraphicsItem*> siblings = parentItem()->childItems();
+    for (QGraphicsItem* item : qAsConst(siblings)) {
+        if (auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(item)) {
+            double branchCurveSegmentWidth = rectBranchItem->width * curvature / 100;
+            double branchCurveSegmentHeight = rectBranchItem->height * curvature / 100;
+            curveSegmentWidth = qMin(branchCurveSegmentWidth, curveSegmentWidth);
+            curveSegmentHeight = qMin(branchCurveSegmentHeight, curveSegmentHeight);
+        }
     }
+    double straightSegmentWidth = width - curveSegmentWidth;
+    double straightSegmentHeight = height - curveSegmentHeight;
+
+    // Draw straight segments.
+    QPointF curveStartPoint = QPointF(0, ySign * straightSegmentHeight);
+    QPointF curveEndPoint = QPointF(curveSegmentWidth, ySign * height);
+
+    painter->drawLine(QPointF(0, 0), curveStartPoint);  // Vertical segment.
+    painter->drawLine(curveEndPoint, QPointF(width, ySign * height));  // Horizontal segment.
+
+    // Draw curve between straight segments.
+    if (curvature > 0) {
+        QPointF controlPoint1(0, ySign * height);
+        QPointF controlPoint2(curveSegmentWidth, ySign * height);
+
+        QPainterPath path(curveStartPoint);
+        path.cubicTo(controlPoint1, controlPoint2, curveEndPoint);
+        painter->drawPath(path);
+    }
+    painter->translate(-translation);  // Restore original offsets.
 }
 
 void GraphicsRectangularBranchItem::setHeight(double newHeight) {
@@ -174,6 +210,10 @@ void GraphicsRectangularBranchItem::setBreathScaleAdjustment(double newBreadthSc
     double newHeight = height * newBreadthScaleAdjustment / breadthScaleAdjustment;
     breadthScaleAdjustment = newBreadthScaleAdjustment;
     setHeight(newHeight);
+}
+
+void GraphicsRectangularBranchItem::setCurvature(double newCurvature) {
+    curvature = newCurvature;
 }
 
 void GraphicsRectangularBranchItem::swapSiblings() {

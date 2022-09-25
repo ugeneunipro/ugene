@@ -56,6 +56,9 @@ enum TreeViewOption {
      */
     BREADTH_SCALE_ADJUSTMENT_PERCENT,
 
+    /** Curvature of branches in Rectangular layout mode. 0 -> no curvature. 100 -> maximum possible curvature. */
+    BRANCH_CURVATURE,
+
     LABEL_COLOR,
     LABEL_FONT_TYPE,
     LABEL_FONT_SIZE,
