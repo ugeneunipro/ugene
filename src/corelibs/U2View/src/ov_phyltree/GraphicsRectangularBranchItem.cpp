@@ -175,10 +175,7 @@ void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionG
         }
     }
 
-    double straightSegmentWidth = width - curveSegmentWidth;
-    double straightSegmentHeight = height - curveSegmentHeight;
-
-    QPointF curveStartPoint = QPointF(0, ySign * straightSegmentHeight);
+    QPointF curveStartPoint = QPointF(0, ySign * (height - curveSegmentHeight));
     QPointF curveEndPoint = QPointF(curveSegmentWidth, ySign * height);
 
     // Draw straight line segments.
