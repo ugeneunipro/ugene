@@ -43,6 +43,7 @@ public:
 
 private slots:
     void sl_loginClicked();
+    void sl_logoutClicked();
     void sl_testClicked();
     void sl_fetchResultsClicked();
     void sl_registerNewClicked();
@@ -52,7 +53,7 @@ private:
     static void errorMessage(const QString& message, QLabel* errorLabel);
     static void successMessage(QNetworkReply* reply, QLabel* label);
     static void successMessage(const QString& message, QLabel* label);
-    static void setButtonsEnabled(QList<QPushButton*> buttons, bool enabled);
+    static void setWidgetsEnabled(QList<QWidget*> wgts, bool enabled);
 
     bool areRegistrationDataValid() const;
     AnnotatedDNAView* annDnaView = nullptr;
@@ -68,9 +69,10 @@ private:
     static const QString API_REQUEST_URL;
     static const QString API_REQUEST_TYPE;
     static const QString API_REQUEST_LOGIN;
+    static const QString API_REQUEST_LOGOUT;
     static const QString API_REQUEST_REGISTER;
     static const QString API_REQUEST_TEST;
-    static const QString API_REQUEST_FETCH_RESULTS;
+    static const QString API_REQUEST_REPORTS;
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;

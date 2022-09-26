@@ -42,9 +42,10 @@ const QString GenecutOPWidget::HEADER_VALUE = "application/json";
 const QString GenecutOPWidget::API_REQUEST_URL = "http://192.168.16.230:5000/api/";
 const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
+const QString GenecutOPWidget::API_REQUEST_LOGOUT = "logout";
 const QString GenecutOPWidget::API_REQUEST_REGISTER = "registration";
 const QString GenecutOPWidget::API_REQUEST_TEST = "test";
-const QString GenecutOPWidget::API_REQUEST_FETCH_RESULTS = "results?langId='%1'";
+const QString GenecutOPWidget::API_REQUEST_REPORTS = "reports";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
 const QString GenecutOPWidget::JSON_PASSWORD = "password";
 const QString GenecutOPWidget::JSON_ROLE = "role";
@@ -76,6 +77,7 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     mgr = new QNetworkAccessManager(this);
 
     connect(pbLogin, &QPushButton::clicked, this, &GenecutOPWidget::sl_loginClicked);
+    connect(pbLogout, &QPushButton::clicked, this, &GenecutOPWidget::sl_logoutClicked);
     connect(pbTest, &QPushButton::clicked, this, &GenecutOPWidget::sl_testClicked);
     connect(pbRegister, &QPushButton::clicked, [this]() {
         stackedWidget->setCurrentIndex(2);
@@ -88,8 +90,6 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         stackedWidget->setCurrentIndex(0);
     });
     connect(pbFetchResults, &QPushButton::clicked, this, &GenecutOPWidget::sl_fetchResultsClicked);
-
-
 
 }
 
@@ -104,10 +104,10 @@ void GenecutOPWidget::sl_loginClicked() {
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson();
     QNetworkReply* reply = mgr->post(request, data);
-    setButtonsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, false);
+    setWidgetsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setButtonsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, true);
+        setWidgetsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, true);
         if (reply->error() == QNetworkReply::NoError) {
             lbLoginWarning->hide();
             QString contents = QString::fromUtf8(reply->readAll());
@@ -128,6 +128,31 @@ void GenecutOPWidget::sl_loginClicked() {
     });
 }
 
+void GenecutOPWidget::sl_logoutClicked() {
+    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGOUT);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+
+    QJsonObject obj;
+    obj[JSON_REFRESH_TOKEN] = refreshToken;
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->post(request, data);
+    setWidgetsEnabled({ wtMainForm }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setWidgetsEnabled({ wtMainForm }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            accessToken.clear();
+            refreshToken.clear();
+            stackedWidget->setCurrentIndex(0);
+        } else {
+            errorMessage(reply, lbTestInfo);
+        }
+        reply->deleteLater();
+    });
+}
+
 void GenecutOPWidget::sl_testClicked() {
     const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_TEST);
     QNetworkRequest request(url);
@@ -136,10 +161,10 @@ void GenecutOPWidget::sl_testClicked() {
     request.setRawHeader("Authorization", aut.toLocal8Bit());
 
     QNetworkReply* reply = mgr->get(request);
-    setButtonsEnabled({ pbTest, pbFetchResults }, false);
+    setWidgetsEnabled({ pbTest, pbFetchResults }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setButtonsEnabled({ pbTest, pbFetchResults }, true);
+        setWidgetsEnabled({ pbTest, pbFetchResults }, true);
         if (reply->error() == QNetworkReply::NoError) {
             successMessage(reply, lbTestInfo);
         } else {
@@ -147,22 +172,21 @@ void GenecutOPWidget::sl_testClicked() {
         }
         reply->deleteLater();
     });
-
-
 }
 
 void GenecutOPWidget::sl_fetchResultsClicked() {
-    const QUrl url(QString(API_REQUEST_URL + API_REQUEST_FETCH_RESULTS).arg(L10N::getActiveLanguageCode()));
+    //.arg(L10N::getActiveLanguageCode())
+    const QUrl url(API_REQUEST_URL + API_REQUEST_REPORTS);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     auto aut = QString("Bearer %1").arg(accessToken);
     request.setRawHeader("Authorization", aut.toLocal8Bit());
 
     QNetworkReply* reply = mgr->get(request);
-    setButtonsEnabled({ pbTest, pbFetchResults }, false);
+    setWidgetsEnabled({ pbTest, pbFetchResults }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setButtonsEnabled({ pbTest, pbFetchResults }, true);
+        setWidgetsEnabled({ pbTest, pbFetchResults }, true);
         if (reply->error() == QNetworkReply::NoError) {
             QString contents = QString::fromUtf8(reply->readAll());
             QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
@@ -199,10 +223,10 @@ void GenecutOPWidget::sl_registerNewClicked() {
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson();
     QNetworkReply* reply = mgr->post(request, data);
-    setButtonsEnabled({ pbRegisterNew }, false);
+    setWidgetsEnabled({ pbRegisterNew }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setButtonsEnabled({ pbRegisterNew }, true);
+        setWidgetsEnabled({ pbRegisterNew }, true);
         if (reply->error() == QNetworkReply::NoError) {
             //QString contents = reply->readAll();
             //coreLog.info(contents);
@@ -247,9 +271,9 @@ void GenecutOPWidget::successMessage(const QString& message, QLabel* label) {
     label->setText(tr("Success: ") + message);
 }
 
-void GenecutOPWidget::setButtonsEnabled(QList<QPushButton*> buttons, bool enabled) {
-    for (auto button : buttons) {
-        button->setEnabled(enabled);
+void GenecutOPWidget::setWidgetsEnabled(QList<QWidget*> wgts, bool enabled) {
+    for (auto wgt : wgts) {
+        wgt->setEnabled(enabled);
     }
 }
 
