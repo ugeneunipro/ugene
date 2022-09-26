@@ -39,14 +39,14 @@ namespace U2 {
 /** Button radius in pixels. */
 static constexpr double radius = 5;
 
-static const QBrush normalStateBrush(Qt::gray);
+static const QBrush normalStateBrush(Qt::lightGray);
 static const QBrush selectedStateBrush(QColor("#EA9700"));
 static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
       nodeValue(nodeValue) {
-    setPen(QColor(0, 0, 0));
+    setPen(QColor(Qt::black));
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -196,7 +196,7 @@ GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
 
 void GraphicsButtonItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));
-
+    painter->setRenderHint(QPainter::Antialiasing);
     // Drop the default 'selected' & 'focused' decoration: we draw these states by ourselves using a custom brush.
     QStyleOptionGraphicsItem clonedStyleOption(*option);
     clonedStyleOption.state.setFlag(QStyle::State_Selected, false);
