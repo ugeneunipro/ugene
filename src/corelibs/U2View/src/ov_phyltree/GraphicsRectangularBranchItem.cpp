@@ -153,7 +153,7 @@ QRectF GraphicsRectangularBranchItem::boundingRect() const {
 
 void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     setUpPainter(painter);
-    CHECK(!qFuzzyCompare(width, 0), );
+    CHECK(width > 0, );
 
     // (0, 0) is a coordinate of the tip of the branch -> move (0, 0) to the root side point.
     // Note: can't use QMatrix directly here because the current painter's matrix is not empty at this point.

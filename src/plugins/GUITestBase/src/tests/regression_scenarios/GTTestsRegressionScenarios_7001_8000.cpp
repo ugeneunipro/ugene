@@ -3055,6 +3055,17 @@ GUI_TEST_CLASS_DEFINITION(test_7682) {
     GTSlider::setValue(os, curvatureSlider, 50);
     QImage imageAfter = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageBefore != imageAfter, "Image is not changed");
+
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo", optionPanel);
+
+    // Switch to the 'Circular', check that 'curvature' is disabled.
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    CHECK_SET_ERR(!curvatureSlider->isEnabled(), "Slider must be disabled");
+
+    // Switch back to the 'Rectangular' and check that curvature is enabled again.
+    GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider must be re-enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 50, "Slider value must be restored, current value: " + QString::number(curvatureSlider->value()));
 }
 
 }  // namespace GUITest_regression_scenarios
