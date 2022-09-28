@@ -3345,7 +3345,31 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_penalty_all);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_quality_all);*/
 
-    REGISTER_TEST(GUITest_common_scenarios_primer3::test_boundary_0001);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0009);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0012);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0013);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0017);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0018);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0020);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0021);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0022);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0023);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0024);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0025);
 
 
     /////////////////////////////////////////////////////////////////////////

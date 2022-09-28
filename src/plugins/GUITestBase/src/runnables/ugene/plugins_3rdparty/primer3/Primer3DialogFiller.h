@@ -45,7 +45,7 @@ public:
         bool rtPcrDesign = false;
         // The file to the primer3 settings. All settings from this file will be set with the dialog
         QString filePath;
-        // Load settings manually if true, with the "Load settings" button if false
+        // Set settings manually if true, with the "Load settings" button if false
         bool loadManually = true;
     };
 
