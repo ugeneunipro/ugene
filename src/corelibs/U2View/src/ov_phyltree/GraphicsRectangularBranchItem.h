@@ -68,9 +68,13 @@ public:
 
     void drawCollapsedRegion();
 
+    void setCurvature(double newCurvature);
+
 private:
     /** Height (breadth) of the branch in pixels. */
     double height = 0;
+
+    double curvature = 0;
 
     /** See BREADTH_SCALE_ADJUSTMENT doc. */
     double breadthScaleAdjustment = 1;

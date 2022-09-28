@@ -303,7 +303,14 @@
       </sizepolicy>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
        <widget class="QPushButton" name="branchesColorButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -316,25 +323,42 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="lineWeightSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>40</number>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="breadthScaleAdjustmentLabel">
-        <property name="styleSheet">
-         <string notr="true">margin-right: 5px</string>
-        </property>
         <property name="text">
          <string>Expansion </string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="3" column="0">
+       <widget class="QLabel" name="lineWeightLabel">
         <property name="text">
-         <string>Color</string>
+         <string>Line width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="curvatureLabel">
+        <property name="text">
+         <string>Curvature</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QSlider" name="breadthScaleAdjustmentSlider">
+        <property name="styleSheet">
+         <string notr="true">min-height: 24px</string>
+        </property>
         <property name="minimum">
          <number>50</number>
         </property>
@@ -361,20 +385,37 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lineWeightLabel">
-        <property name="text">
-         <string>Line width</string>
+      <item row="1" column="1">
+       <widget class="QSlider" name="curvatureSlider">
+        <property name="styleSheet">
+         <string notr="true">min-height: 24px</string>
         </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="lineWeightSpinBox">
         <property name="minimum">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="maximum">
-         <number>40</number>
+         <number>100</number>
+        </property>
+        <property name="pageStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="sliderPosition">
+         <number>0</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="invertedAppearance">
+         <bool>false</bool>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::NoTicks</enum>
+        </property>
+        <property name="tickInterval">
+         <number>3</number>
         </property>
        </widget>
       </item>

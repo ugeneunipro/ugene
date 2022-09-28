@@ -32,6 +32,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
@@ -77,6 +78,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -891,10 +893,10 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7338) {
-    // 1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
-    // 2. Close project
-    // 3. Repeat step 1
-    // Expected state: no crash
+    //1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
+    //2. Close project
+    //3. Repeat step 1
+    //Expected state: no crash
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_1.ugenedb", "", "", true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3137,6 +3139,37 @@ GUI_TEST_CLASS_DEFINITION(test_7686) {
     GTUtilsPhyTree::zoomWithMouseWheel(os, 20);
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Image is too large. Please zoom out."));
     GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7682) {
+    // Check 'curvature' controls for rectangular branches.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    QWidget* optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+
+    // Check 'curvature' slider is enabled and current value is 0.
+    QSlider* curvatureSlider = GTWidget::findSlider(os, "curvatureSlider", optionPanel);
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider is not enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "By default there is no curvature");
+    CHECK_SET_ERR(curvatureSlider->minimum() == 0, "Incorrect minimum curvature");
+    CHECK_SET_ERR(curvatureSlider->maximum() == 100, "Incorrect maximum curvature");
+
+    // Change slider and check that image changes too.
+    QImage imageBefore = GTUtilsPhyTree::captureTreeImage(os);
+    GTSlider::setValue(os, curvatureSlider, 50);
+    QImage imageAfter = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageBefore != imageAfter, "Image is not changed");
+
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo", optionPanel);
+
+    // Switch to the 'Circular', check that 'curvature' is disabled.
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    CHECK_SET_ERR(!curvatureSlider->isEnabled(), "Slider must be disabled");
+
+    // Switch back to the 'Rectangular' and check that curvature is enabled again.
+    GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider must be re-enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 50, "Slider value must be restored, current value: " + QString::number(curvatureSlider->value()));
 }
 
 }  // namespace GUITest_regression_scenarios

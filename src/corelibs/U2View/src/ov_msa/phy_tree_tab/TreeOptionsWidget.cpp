@@ -190,6 +190,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
     optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
+    optionsMap[curvatureSlider->objectName()] = BRANCH_CURVATURE;
 
     optionsMap[treeViewCombo->objectName()] = BRANCHES_TRANSFORMATION_TYPE;
     optionsMap[layoutCombo->objectName()] = TREE_LAYOUT;
@@ -224,6 +225,7 @@ void TreeOptionsWidget::connectSlots() {
 
     // Branches settings widgets
     connect(breadthScaleAdjustmentSlider, &QSlider::valueChanged, this, &TreeOptionsWidget::sl_valueChanged);
+    connect(curvatureSlider, &QSlider::valueChanged, this, &TreeOptionsWidget::sl_valueChanged);
 
     connect(branchesColorButton, SIGNAL(clicked()), SLOT(sl_branchesColorButton()));
     connect(lineWeightSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
@@ -344,6 +346,7 @@ void TreeOptionsWidget::updateRelatedOptionsState(const TreeViewOption& option, 
     } else if (option == TREE_LAYOUT) {
         auto layout = static_cast<TreeLayout>(newValue.toUInt());
         breadthScaleAdjustmentSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
+        curvatureSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
     }
 }
 
