@@ -164,7 +164,7 @@ bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomIn"
+#define GT_METHOD_NAME "clickZoomInButton"
 void GTUtilsAssemblyBrowser::zoomIn(HI::GUITestOpStatus& os, Method method) {
     checkAssemblyBrowserWindowIsActive(os);
     switch (method) {

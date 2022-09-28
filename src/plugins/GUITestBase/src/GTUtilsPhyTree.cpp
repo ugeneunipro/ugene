@@ -20,6 +20,7 @@
  */
 
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
@@ -376,6 +377,32 @@ void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus& os, const QS
                             .arg(titlePart)
                             .arg(windowTitle), );
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickZoomInButton"
+void GTUtilsPhyTree::clickZoomInButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomInTreeViewerAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickZoomOutButton"
+void GTUtilsPhyTree::clickZoomOutButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomOutTreeViewerAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickResetZoomButton"
+void GTUtilsPhyTree::clickResetZoomButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "resetZoomTreeViewerAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getSceneWidth"
+int GTUtilsPhyTree::getSceneWidth(HI::GUITestOpStatus& os) {
+    TreeViewerUI* ui = getTreeViewerUi(os);
+    QRect rect = ui->mapFromScene(ui->sceneRect()).boundingRect();
+    return rect.width();
 }
 #undef GT_METHOD_NAME
 

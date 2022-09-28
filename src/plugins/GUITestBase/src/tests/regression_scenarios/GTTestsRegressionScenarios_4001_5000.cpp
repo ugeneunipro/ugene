@@ -2246,15 +2246,15 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Use context menu on tree view.
-    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
+    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zoom" actions in the menu.
+    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zoom" actions in the menu.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Zoom In"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Zoom Out"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reset Zooming"}, PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reset Zoom"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
 }
 
@@ -2264,8 +2264,8 @@ GUI_TEST_CLASS_DEFINITION(test_4306_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Use context menu on the tree view.
-    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QStringList items = {"Zoom In", "Zoom Out", "Reset Zooming"};
+    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zoom" actions in the menu.
+    QStringList items = {"Zoom In", "Zoom Out", "Reset Zoom"};
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), items));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 }

@@ -1142,5 +1142,32 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0030) {
+    // Check zoom-in/zoom-out/reset-zoom buttons.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int originalWidth = GTUtilsPhyTree::getSceneWidth(os);
+    int prevStepWidth = originalWidth;
+    for (int i = 0; i < 3; i++) {
+        GTUtilsPhyTree::clickZoomInButton(os);
+        int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
+        CHECK_SET_ERR(sceneWidth > prevStepWidth, "Unexpected scene width on zoom in");
+        prevStepWidth = sceneWidth;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        GTUtilsPhyTree::clickZoomOutButton(os);
+        int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
+        CHECK_SET_ERR(sceneWidth < prevStepWidth, "Unexpected scene width on zoom out");
+        prevStepWidth = sceneWidth;
+    }
+
+    GTUtilsPhyTree::clickResetZoomButton(os);
+    int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
+    CHECK_SET_ERR(sceneWidth == originalWidth, "Unexpected scene width on reset zoom");
+}
+
 }  // namespace GUITest_common_scenarios_tree_viewer
 }  // namespace U2

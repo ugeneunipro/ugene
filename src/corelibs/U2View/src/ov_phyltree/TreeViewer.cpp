@@ -180,9 +180,12 @@ void TreeViewer::createActions() {
     alignTreeLabelsAction->setObjectName("Align Labels");
 
     // Zooming
-    zoomToSelectionAction = new QAction(QIcon(":core/images/zoom_in.png"), tr("Zoom In"), ui);
+    zoomInAction = new QAction(QIcon(":core/images/zoom_in.png"), tr("Zoom In"), ui);
+    zoomInAction->setObjectName("zoomInTreeViewerAction");
     zoomOutAction = new QAction(QIcon(":core/images/zoom_out.png"), tr("Zoom Out"), ui);
-    zoomToAllAction = new QAction(QIcon(":core/images/zoom_whole.png"), tr("Reset Zooming"), ui);
+    zoomOutAction->setObjectName("zoomOutTreeViewerAction");
+    resetZoomAction = new QAction(QIcon(":core/images/zoom_whole.png"), tr("Reset Zoom"), ui);
+    resetZoomAction->setObjectName("resetZoomTreeViewerAction");
 
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
@@ -261,16 +264,16 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
     // Zooming
     tb->addSeparator();
-    tb->addAction(zoomToSelectionAction);
+    tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
-    tb->addAction(zoomToAllAction);
+    tb->addAction(resetZoomAction);
 }
 
 void TreeViewer::buildMSAEditorStaticToolbar(QToolBar* tb) {
     buildStaticToolbar(tb);
-    tb->removeAction(zoomToSelectionAction);
+    tb->removeAction(zoomInAction);
     tb->removeAction(zoomOutAction);
-    tb->removeAction(zoomToAllAction);
+    tb->removeAction(resetZoomAction);
 }
 
 void TreeViewer::buildMenu(QMenu* m, const QString& type) {
@@ -307,9 +310,9 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addAction(alignTreeLabelsAction);
     // Zooming
     m->addSeparator();
-    m->addAction(zoomToSelectionAction);
+    m->addAction(zoomInAction);
     m->addAction(zoomOutAction);
-    m->addAction(zoomToAllAction);
+    m->addAction(resetZoomAction);
 
     // Print and Capture
     m->addSeparator();
@@ -353,17 +356,17 @@ void TreeViewer::onObjectRenamed(GObject*, const QString&) {
 ////////////////////////////
 // TreeViewerUI
 
-/** Zoom level change per single zoomIn/zoomOut operation. */
+/** Zoom level change per single clickZoomInButton/clickZoomOutButton operation. */
 static constexpr double ZOOM_LEVEL_STEP = 1.2;
 
 /** Minimum zoom level: 1/4 of the fit-to-view size. */
-static constexpr double MINIMUM_ZOOM = 0.25;
+static constexpr double MINIMUM_ZOOM_LEVEL = 0.25;
 
 /**
  * Maximum zoom level: 100x of the fit-to-view size.
  * TODO: a static value may be not enough for very big trees: make this value dynamic.
  */
-static const double MAXIMUM_ZOOM = 100.0;
+static const double MAXIMUM_ZOOM_LEVEL = 100.0;
 
 /** Margins around the whole tree on the scene. On-screen pixels. */
 static constexpr int TREE_MARGINS = 10;
@@ -399,9 +402,9 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     connect(treeViewer->unrootedLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_unrootedLayoutTriggered()));
     connect(treeViewer->textSettingsAction, SIGNAL(triggered()), SLOT(sl_textSettingsTriggered()));
     connect(treeViewer->treeSettingsAction, SIGNAL(triggered()), SLOT(sl_treeSettingsTriggered()));
-    connect(treeViewer->zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSel()));
-    connect(treeViewer->zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
-    connect(treeViewer->zoomToAllAction, SIGNAL(triggered()), SLOT(sl_zoomToAll()));
+    connect(treeViewer->zoomInAction, &QAction::triggered, this, &TreeViewerUI::zoomIn);
+    connect(treeViewer->zoomOutAction, &QAction::triggered, this, &TreeViewerUI::zoomOut);
+    connect(treeViewer->resetZoomAction, &QAction::triggered, this, &TreeViewerUI::resetZoom);
     connect(treeViewer->branchesSettingsAction, SIGNAL(triggered()), SLOT(sl_setSettingsTriggered()));
     connect(treeViewer->collapseAction, SIGNAL(triggered()), SLOT(sl_collapseTriggered()));
     connect(treeViewer->rerootAction, SIGNAL(triggered()), SLOT(sl_rerootTriggered()));
@@ -411,9 +414,9 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
 
     // chrootAction->setEnabled(false); //not implemented yet
 
-    buttonPopup->addAction(treeViewer->zoomToSelectionAction);
+    buttonPopup->addAction(treeViewer->zoomInAction);
     buttonPopup->addAction(treeViewer->zoomOutAction);
-    buttonPopup->addAction(treeViewer->zoomToAllAction);
+    buttonPopup->addAction(treeViewer->resetZoomAction);
     buttonPopup->addSeparator();
 
     buttonPopup->addAction(treeViewer->swapAction);
@@ -895,7 +898,7 @@ void TreeViewerUI::wheelEvent(QWheelEvent* we) {
 }
 
 void TreeViewerUI::setZoomLevel(double newZoomLevel) {
-    CHECK(newZoomLevel >= MINIMUM_ZOOM && newZoomLevel <= MAXIMUM_ZOOM, );
+    CHECK(newZoomLevel >= MINIMUM_ZOOM_LEVEL && newZoomLevel <= MAXIMUM_ZOOM_LEVEL, );
 
     uiLog.trace("New zoom level: " + QString::number(newZoomLevel));
     double scaleChange = newZoomLevel / zoomLevel;
@@ -1406,38 +1409,17 @@ void TreeViewerUI::sl_treeSettingsTriggered() {
     }
 }
 
-void TreeViewerUI::sl_zoomToSel() {
-    QList<QGraphicsItem*> selectedItems = scene()->selectedItems();
-    if (selectedItems.isEmpty()) {
-        setZoomLevel(ZOOM_LEVEL_STEP);
-    } else {
-        GraphicsButtonItem* topButton = nullptr;
-        foreach (QGraphicsItem* graphItem, selectedItems) {
-            auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
-            if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-                topButton = buttonItem;
-                break;
-            }
-        }
-        if (!topButton) {
-            setZoomLevel(ZOOM_LEVEL_STEP);
-        } else {
-            defaultZoom();
-            QGraphicsItem* topItem = topButton->parentItem();
-            QRectF rect = topItem->mapRectToScene(topItem->childrenBoundingRect());
-            QRectF rect1 = scene()->sceneRect();
-            qreal zoom1 = qMin(rect1.width() / rect.width(), rect1.height() / rect.height());
-            setZoomLevel(zoom1);
-            centerOn(rect.center());
-        }
-    }
+void TreeViewerUI::zoomIn() {
+    double newZoomLevel = zoomLevel * ZOOM_LEVEL_STEP;
+    setZoomLevel(newZoomLevel);
 }
 
-void TreeViewerUI::sl_zoomOut() {
-    setZoomLevel(1.0 / ZOOM_LEVEL_STEP);
+void TreeViewerUI::zoomOut() {
+    double newZoomLevel = zoomLevel / ZOOM_LEVEL_STEP;
+    setZoomLevel(newZoomLevel);
 }
 
-void TreeViewerUI::sl_zoomToAll() {
+void TreeViewerUI::resetZoom() {
     defaultZoom();
 }
 
@@ -1504,9 +1486,8 @@ double TreeViewerUI::getAverageBranchDistance() const {
 }
 
 void TreeViewerUI::updateActionsState() {
-    int widthCoeff = 1;
-    treeViewer->zoomToSelectionAction->setEnabled(zoomLevel < MAXIMUM_ZOOM * qMax(widthCoeff * SIZE_COEF, 1.0));
-    treeViewer->zoomOutAction->setEnabled(zoomLevel > MINIMUM_ZOOM);
+    treeViewer->zoomInAction->setEnabled(zoomLevel * ZOOM_LEVEL_STEP < MAXIMUM_ZOOM_LEVEL);
+    treeViewer->zoomOutAction->setEnabled(zoomLevel / ZOOM_LEVEL_STEP > MINIMUM_ZOOM_LEVEL);
 
     if (isSelectedCollapsed()) {
         treeViewer->collapseAction->setText(QObject::tr("Expand"));

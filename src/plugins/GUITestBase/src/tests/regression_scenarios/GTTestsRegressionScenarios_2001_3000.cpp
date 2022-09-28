@@ -5060,7 +5060,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTAction::button(os, "CircularViewAction"));
     QWidget* zoomIn = GTAction::button(os, "tbZoomIn_NC_001363 [murine.gb]");
-    CHECK_SET_ERR(zoomIn != nullptr, "zoomIn action on CV not found");
+    CHECK_SET_ERR(zoomIn != nullptr, "clickZoomInButton action on CV not found");
 
     auto splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
     GTWidget::click(os, splitterHandler);

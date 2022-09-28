@@ -112,8 +112,8 @@ public:
     QAction* textSettingsAction = nullptr;
     QAction* alignTreeLabelsAction = nullptr;
 
-    QAction* zoomToSelectionAction = nullptr;
-    QAction* zoomToAllAction = nullptr;
+    QAction* zoomInAction = nullptr;
+    QAction* resetZoomAction = nullptr;
     QAction* zoomOutAction = nullptr;
 
     QAction* printAction = nullptr;
@@ -172,6 +172,16 @@ public:
     GraphicsBranchItem* getRoot() const;
 
     bool isSelectionStateManagedByChildOnClick = false;
+
+    /** Makes 1 zoom-in step, until maximum zoom limit is reached. */
+    void zoomIn();
+
+    /** Makes 1 zoom-out step, until minimum zoom limit is reached. */
+    void zoomOut();
+
+    /** Resets zoom. Fits the tree into view. */
+    void resetZoom();
+
 signals:
     /* emits when branch settings is updated */
     void si_updateBranch();
@@ -210,9 +220,6 @@ protected slots:
     virtual void sl_swapTriggered();
     virtual void sl_collapseTriggered();
     virtual void sl_onBranchCollapsed(GraphicsBranchItem*);
-    virtual void sl_zoomToAll();
-    virtual void sl_zoomToSel();
-    virtual void sl_zoomOut();
 
 private slots:
     void sl_printTriggered();

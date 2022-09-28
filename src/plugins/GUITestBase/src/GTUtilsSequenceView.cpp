@@ -593,7 +593,7 @@ void GTUtilsSequenceView::toggleGraphByName(HI::GUITestOpStatus& os, const QStri
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomIn"
+#define GT_METHOD_NAME "clickZoomInButton"
 void GTUtilsSequenceView::zoomIn(HI::GUITestOpStatus& os, int sequenceViewIndex) {
     QWidget* sequenceWidget = getSeqWidgetByNumber(os, sequenceViewIndex);
     QAction* zoomInAction = GTAction::findActionByText(os, "Zoom In", sequenceWidget);

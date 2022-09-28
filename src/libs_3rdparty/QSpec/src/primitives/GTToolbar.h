@@ -41,6 +41,9 @@ public:
 
     static void clickButtonByTooltipOnToolbar(GUITestOpStatus& os, const QString& toolbarSysName, const QString& tooltip);
 
+    /** Clicks on a widget with the given action name on the toolbar. Fails if the widget is not found or disabled. */
+    static void clickWidgetByActionName(GUITestOpStatus& os, const QString& toolbarSysName, const QString& actionObjectName);
+
 private:
     static QAction* getActionByObjectName(GUITestOpStatus& os, const QString& actionName, const QToolBar* toolbar);
 };

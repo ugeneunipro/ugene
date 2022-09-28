@@ -64,6 +64,18 @@ public:
     /** Returns image of the current tree view. */
     static QImage captureTreeImage(HI::GUITestOpStatus& os);
 
+    /** Clicks zoom-in button once. */
+    static void clickZoomInButton(HI::GUITestOpStatus& os);
+
+    /** Clicks zoom-out button once. */
+    static void clickZoomOutButton(HI::GUITestOpStatus& os);
+
+    /** Clicks reset zoom button once. */
+    static void clickResetZoomButton(HI::GUITestOpStatus& os);
+
+    /** Returns current on-screen scene width. */
+    static int getSceneWidth(HI::GUITestOpStatus& os);
+
     /**
      * Branches are enumerated:
      * - right subtree is enumerated
