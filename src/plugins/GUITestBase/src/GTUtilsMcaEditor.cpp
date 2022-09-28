@@ -328,19 +328,19 @@ void GTUtilsMcaEditor::redo(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickZoomInButton"
+#define GT_METHOD_NAME "zoomIn"
 void GTUtilsMcaEditor::zoomIn(HI::GUITestOpStatus& os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickZoomOutButton"
+#define GT_METHOD_NAME "zoomOut"
 void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus& os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickResetZoomButton"
+#define GT_METHOD_NAME "resetZoom"
 void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus& os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
 }

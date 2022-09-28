@@ -488,7 +488,7 @@ void GTUtilsMsaEditor::redo(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickZoomInButton"
+#define GT_METHOD_NAME "zoomIn"
 void GTUtilsMsaEditor::zoomIn(GUITestOpStatus& os) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     QWidget* zoomInButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom In");
@@ -496,7 +496,7 @@ void GTUtilsMsaEditor::zoomIn(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickZoomOutButton"
+#define GT_METHOD_NAME "zoomOut"
 void GTUtilsMsaEditor::zoomOut(GUITestOpStatus& os) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     QWidget* zoomOutButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom Out");
@@ -517,7 +517,7 @@ void GTUtilsMsaEditor::zoomToSelection(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickResetZoomButton"
+#define GT_METHOD_NAME "resetZoom"
 void GTUtilsMsaEditor::resetZoom(GUITestOpStatus& os) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     QWidget* resetZoomButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Reset Zoom");
