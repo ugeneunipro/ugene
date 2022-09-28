@@ -379,6 +379,17 @@ void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus& os, const QS
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomWithMouseWheel"
+void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus& os, int steps) {
+    TreeViewerUI* treeViewer = getTreeViewerUi(os);
+    QPoint treeViewCenter = treeViewer->mapToGlobal(treeViewer->rect().center());
+    GTMouseDriver::moveTo(treeViewCenter);
+    for (int i = 0; i < qAbs(steps); i++) {
+        GTMouseDriver::scroll(steps > 0 ? 1 : -1);
+    }
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

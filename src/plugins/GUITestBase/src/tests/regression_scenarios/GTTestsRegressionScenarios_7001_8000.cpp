@@ -891,10 +891,10 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7338) {
-    //1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
-    //2. Close project
-    //3. Repeat step 1
-    //Expected state: no crash
+    // 1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
+    // 2. Close project
+    // 3. Repeat step 1
+    // Expected state: no crash
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_1.ugenedb", "", "", true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3015,11 +3015,11 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
-    //1. Open WD sampe "Call variants
-    //2. Select "Read Assembly (BAM/SAM)" worker
-    //3. Rename dataset "Dataset" -> "NewSet"
-    //4.Select "Read Sequence"
-    //Expected state: dataset renamed to "NewSet" too
+    // 1. Open WD sampe "Call variants
+    // 2. Select "Read Assembly (BAM/SAM)" worker
+    // 3. Rename dataset "Dataset" -> "NewSet"
+    // 4.Select "Read Sequence"
+    // Expected state: dataset renamed to "NewSet" too
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -3029,7 +3029,7 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"rename_dataset_action"}));
     QTabBar* barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     GTWidget::click(os, barWidget->tabButton(0, QTabBar::RightSide), Qt::RightButton);
-    
+
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
@@ -3122,6 +3122,21 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
 
     CHECK_SET_ERR(viewRectBefore.height() == viewRectAfter.height(),
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7686) {
+    // Check "copy tree image to clipboard".
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    GTClipboard::clear(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+    GTClipboard::checkHasNonEmptyImage(os);
+
+    // Zoom so image becomes very large: UGENE should show an error message.
+    GTUtilsPhyTree::zoomWithMouseWheel(os, 20);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Image is too large. Please zoom out."));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
 }
 
 }  // namespace GUITest_regression_scenarios

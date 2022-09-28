@@ -117,8 +117,9 @@ public:
     QAction* zoomOutAction = nullptr;
 
     QAction* printAction = nullptr;
-    QAction* captureTreeAction = nullptr;
-    QAction* exportAction = nullptr;
+    QAction* saveVisibleViewToFileAction = nullptr;
+    QAction* saveWholeTreeToSvgAction = nullptr;
+    QAction* copyWholeTreeImageToClipboardAction = nullptr;
 
     QAction* collapseAction = nullptr;
     QAction* rerootAction = nullptr;
@@ -216,9 +217,7 @@ protected slots:
 
 private slots:
     void sl_printTriggered();
-    void sl_captureTreeTriggered();
     void sl_contTriggered(bool on);
-    void sl_exportTriggered();
     void sl_showNameLabelsTriggered(bool on);
     void sl_showDistanceLabelsTriggered(bool on);
     void sl_rectangularLayoutTriggered();
@@ -234,6 +233,15 @@ private slots:
 private:
     void updateDistanceToViewScale();
     void rebuildTreeLayout();
+
+    /** Copies whole tree image to clipboard. */
+    void copyWholeTreeImageToClipboard();
+
+    /** Opens ExportImageDialog for visible tree area. */
+    void saveVisibleViewToFile();
+
+    /** Opens SVG file selector and exports the whole tree as SVG. */
+    void saveWholeTreeToSvg();
 
     /** Update scales of fixed size elements so the elements keeps their on-screen sizes not changed on view zoom/resize ops. */
     void updateFixedSizeItemScales();

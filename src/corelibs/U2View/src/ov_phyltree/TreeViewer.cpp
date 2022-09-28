@@ -22,6 +22,7 @@
 #include "TreeViewer.h"
 
 #include <QBuffer>
+#include <QClipboard>
 #include <QFileInfo>
 #include <QGraphicsSimpleTextItem>
 #include <QMessageBox>
@@ -187,11 +188,14 @@ void TreeViewer::createActions() {
     // Print Tree
     printAction = new QAction(QIcon(":/core/images/printer.png"), tr("Print Tree..."), ui);
 
-    // Screen Capture
-    captureTreeAction = new QAction(tr("Screen Capture..."), ui);
-    captureTreeAction->setObjectName("Screen Capture");
-    exportAction = new QAction(tr("Whole Tree as SVG..."), ui);
-    exportAction->setObjectName("Whole Tree as SVG");
+    copyWholeTreeImageToClipboardAction = new QAction(tr("Copy to clipboard"));
+    copyWholeTreeImageToClipboardAction->setObjectName("copyWholeTreeImageToClipboardAction");
+
+    saveVisibleViewToFileAction = new QAction(tr("Save visible area to file..."), ui);
+    saveVisibleViewToFileAction->setObjectName("saveVisibleViewToFileAction");
+
+    saveWholeTreeToSvgAction = new QAction(tr("Save whole tree as SVG..."), ui);
+    saveWholeTreeToSvgAction->setObjectName("saveWholeTreeToSvgAction");
 }
 
 void TreeViewer::setupLayoutSettingsMenu(QMenu* m) {
@@ -204,8 +208,10 @@ void TreeViewer::setupShowLabelsMenu(QMenu* m) const {
 }
 
 void TreeViewer::setupExportTreeImageMenu(QMenu* m) const {
-    m->addAction(captureTreeAction);
-    m->addAction(exportAction);
+    m->addAction(copyWholeTreeImageToClipboardAction);
+    m->addSeparator();
+    m->addAction(saveVisibleViewToFileAction);
+    m->addAction(saveWholeTreeToSvgAction);
 }
 
 void TreeViewer::buildStaticToolbar(QToolBar* tb) {
@@ -235,15 +241,16 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     // Print and Capture
     tb->addSeparator();
 
-    auto exportTreeImageButton = new QToolButton();
-    auto exportTreeImageButtonMenu = new QMenu(tr("Export Tree Image"), ui);
+    auto treeImageActionsButton = new QToolButton();
+    treeImageActionsButton->setObjectName("treeImageActionsButton");
+    auto exportTreeImageButtonMenu = new QMenu(tr("Tree image"), ui);
     setupExportTreeImageMenu(exportTreeImageButtonMenu);
-    exportTreeImageButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
-    exportTreeImageButton->setPopupMode(QToolButton::InstantPopup);
-    exportTreeImageButton->setIcon(QIcon(":/core/images/cam2.png"));
-    exportTreeImageButtonMenu->menuAction()->setObjectName("Export Tree Image");
-    exportTreeImageButton->setObjectName("exportTreeImageButton");
-    tb->addWidget(exportTreeImageButton);
+    exportTreeImageButtonMenu->menuAction()->setObjectName("treeImageActionsButtonMenuAction");
+    treeImageActionsButton->setDefaultAction(exportTreeImageButtonMenu->menuAction());
+    treeImageActionsButton->setPopupMode(QToolButton::InstantPopup);
+    treeImageActionsButton->setIcon(QIcon(":/core/images/cam2.png"));
+
+    tb->addWidget(treeImageActionsButton);
     tb->addAction(printAction);
     tb->addSeparator();
 
@@ -315,11 +322,11 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addSeparator();
     m->addAction(printAction);
 
-    auto cameraMenu = new QMenu(tr("Export Tree Image"), ui);
-    setupExportTreeImageMenu(cameraMenu);
-    cameraMenu->setIcon(QIcon(":/core/images/cam2.png"));
-    cameraMenu->menuAction()->setObjectName("Export Tree Image");
-    m->addMenu(cameraMenu);
+    auto treeImageActionsSubmenu = new QMenu(tr("Tree image"), ui);
+    treeImageActionsSubmenu->menuAction()->setObjectName("treeImageActionsSubmenu");
+    treeImageActionsSubmenu->setIcon(QIcon(":/core/images/cam2.png"));
+    setupExportTreeImageMenu(treeImageActionsSubmenu);
+    m->addMenu(treeImageActionsSubmenu);
 
     m->addSeparator();
 
@@ -391,8 +398,9 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     connect(treeViewer->nameLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_showNameLabelsTriggered(bool)));
     connect(treeViewer->distanceLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_showDistanceLabelsTriggered(bool)));
     connect(treeViewer->printAction, SIGNAL(triggered()), SLOT(sl_printTriggered()));
-    connect(treeViewer->captureTreeAction, SIGNAL(triggered()), SLOT(sl_captureTreeTriggered()));
-    connect(treeViewer->exportAction, SIGNAL(triggered()), SLOT(sl_exportTriggered()));
+    connect(treeViewer->copyWholeTreeImageToClipboardAction, &QAction::triggered, this, &TreeViewerUI::copyWholeTreeImageToClipboard);
+    connect(treeViewer->saveVisibleViewToFileAction, &QAction::triggered, this, &TreeViewerUI::saveVisibleViewToFile);
+    connect(treeViewer->saveWholeTreeToSvgAction, &QAction::triggered, this, &TreeViewerUI::saveWholeTreeToSvg);
     connect(treeViewer->alignTreeLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_contTriggered(bool)));
     connect(treeViewer->rectangularLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_rectangularLayoutTriggered()));
     connect(treeViewer->circularLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_circularLayoutTriggered()));
@@ -427,12 +435,14 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
 
     buttonPopup->addAction(treeViewer->branchesSettingsAction);
 
-    auto cameraMenu = new QMenu(tr("Export Tree Image"), this);
-    cameraMenu->addAction(treeViewer->captureTreeAction);
-    cameraMenu->addAction(treeViewer->exportAction);
-    cameraMenu->menuAction()->setObjectName("Export Tree Image");
-    cameraMenu->setIcon(QIcon(":/core/images/cam2.png"));
-    buttonPopup->addMenu(cameraMenu);
+    auto treeImageActionsMenu = new QMenu(tr("Tree image"), this);
+    treeImageActionsMenu->menuAction()->setObjectName("treeImageActionsMenu");
+    treeImageActionsMenu->addAction(treeViewer->copyWholeTreeImageToClipboardAction);
+    treeImageActionsMenu->addSeparator();
+    treeImageActionsMenu->addAction(treeViewer->saveVisibleViewToFileAction);
+    treeImageActionsMenu->addAction(treeViewer->saveWholeTreeToSvgAction);
+    treeImageActionsMenu->setIcon(QIcon(":/core/images/cam2.png"));
+    buttonPopup->addMenu(treeImageActionsMenu);
 
     updateActionsState();
     setObjectName("treeView");
@@ -1100,7 +1110,21 @@ void TreeViewerUI::sl_collapseTriggered() {
     collapseSelected();
 }
 
-void TreeViewerUI::sl_captureTreeTriggered() {
+void TreeViewerUI::copyWholeTreeImageToClipboard() {
+    QRect rect = mapFromScene(sceneRect()).boundingRect();
+    if (rect.width() > GUIUtils::MAX_SAFE_PIXMAP_WIDTH || rect.height() > GUIUtils::MAX_SAFE_PIXMAP_HEIGHT) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Image is too large. Please zoom out."));
+        return;
+    }
+    QPixmap pixmap = viewport()->grab(rect);
+    if (pixmap.isNull()) {
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Failed to copy image."));
+        return;
+    }
+    QApplication::clipboard()->setImage(pixmap.toImage());
+}
+
+void TreeViewerUI::saveVisibleViewToFile() {
     Document* doc = phyObject->getDocument();
     const GUrl& url = doc->getURL();
     const QString& fileName = url.baseFileName();
@@ -1109,7 +1133,7 @@ void TreeViewerUI::sl_captureTreeTriggered() {
     dialog->exec();
 }
 
-void TreeViewerUI::sl_exportTriggered() {
+void TreeViewerUI::saveWholeTreeToSvg() {
     QString fileName = phyObject->getDocument()->getName();
     QString format = "SVG - Scalable Vector Graphics (*.svg)";
     TreeViewerUtils::saveImageDialog(format, fileName, format);
