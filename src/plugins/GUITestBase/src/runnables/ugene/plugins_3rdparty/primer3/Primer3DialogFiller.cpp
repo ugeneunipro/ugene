@@ -238,8 +238,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
             auto v = d.second.toDouble(&ok);
             GT_CHECK(ok, QString("Can't cast QDoubleSpinBox value to double: %1").arg(d.second));
 
-            auto method = d.second.split(QRegExp("[.,]")).removeAll("0") == 2 ? GTGlobals::UseMethod::UseMouse : GTGlobals::UseMethod::UseKeyBoard;
-            GTDoubleSpinbox::setValue(os, d.first, v, method);
+            //auto method = d.second.split(QRegExp("[.,]")).removeAll("0") == 2 ? GTGlobals::UseMethod::UseKey : GTGlobals::UseMethod::UseKeyBoard;
+            GTDoubleSpinbox::setValue(os, d.first, v, GTGlobals::UseMethod::UseKeyBoard);
         }
         for (const auto& l : widgets2click.line) {
             GTLineEdit::setText(os, l.first, l.second);
