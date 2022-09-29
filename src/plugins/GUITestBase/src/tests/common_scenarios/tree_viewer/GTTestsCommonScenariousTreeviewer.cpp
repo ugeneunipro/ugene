@@ -87,53 +87,34 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
-    // Screenshoting MSA editor (regression test)
+    // Export tree image to file (via toolbar button).
 
-    // 1. Open file samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Click on "Build tree" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
-
-    QAbstractButton* tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    // Expected state: "Create Phylogenetic Tree" dialog appears
-
-    // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk . Click  OK button
-    // Expected state: Phylogenetic tree appears
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::add(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
-    GTUtilsDialog::add(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "treeView"));
+    // Use "Capture tree" button on toolbar to make screenshots
+    QString fileName = testDir + "_common_data/scenarios/sandbox/GUITest_common_scenarios_tree_viewer_test_0001_1.jpg";
+    GTUtilsDialog::add(os, new PopupChooser(os, {"saveVisibleViewToFileAction"}));
+    GTUtilsDialog::add(os, new ExportImage(os, fileName, "JPG", 50));
+    GTWidget::click(os, GTAction::button(os, "treeImageActionsButtonMenuAction"));
 
-    GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
-    // Expected state: images on screenshots same as on your screen
+    qint64 fileSize = GTFile::getSize(os, fileName);
+    CHECK_SET_ERR(fileSize > 10000, "File is not found or is too small: " + QString::number(fileSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
-    // Screenshoting MSA editor (regression test)
+    // Export tree image to file (via main menu).
 
-    // 1. Open file samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Click on "Build tree" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
 
-    QAbstractButton* tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    // Expected state: "Create Phylogenetic Tree" dialog appears
+    // Use "Capture tree" button on toolbar to make screenshots
+    QString fileName = testDir + "_common_data/scenarios/sandbox/GUITest_common_scenarios_tree_viewer_test_0001_2.png";
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os, fileName, "PNG"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Save visible area to file..."});
 
-    // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk . Click  OK button
-    // Expected state: Phylogenetic tree appears
-
-    // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
-    GTMenu::clickMainMenuItem(os, {"Actions", "Export Tree Image", "Screen Capture..."});
-
-    GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
-    // Expected state: images on screenshots same as on your screen
+    qint64 fileSize = GTFile::getSize(os, fileName);
+    CHECK_SET_ERR(fileSize > 10000, "File is not found or is too small: " + QString::number(fileSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

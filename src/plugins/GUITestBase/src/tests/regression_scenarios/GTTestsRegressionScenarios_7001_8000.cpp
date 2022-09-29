@@ -3126,6 +3126,21 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7686) {
+    // Check "copy tree image to clipboard".
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    GTClipboard::clear(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+    GTClipboard::checkHasNonEmptyImage(os);
+
+    // Zoom so image becomes very large: UGENE should show an error message.
+    GTUtilsPhyTree::zoomWithMouseWheel(os, 20);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Image is too large. Please zoom out."));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7682) {
     // Check 'curvature' controls for rectangular branches.
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");

@@ -66,6 +66,32 @@ QString GTClipboard::text(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkHasNonEmptyImage"
+void GTClipboard::checkHasNonEmptyImage(GUITestOpStatus& os) {
+    class Scenario : public CustomScenario {
+    public:
+        Scenario(QImage& _image)
+            : image(_image) {
+        }
+        void run(GUITestOpStatus& os) {
+            QClipboard* clipboard = QApplication::clipboard();
+            const QMimeData* mimeData = clipboard->mimeData();
+            GT_CHECK(mimeData->hasImage(), "Clipboard doesn't contain image data");
+            QPixmap pixmap = qvariant_cast<QPixmap>(mimeData->imageData());
+            image = pixmap.toImage();
+        }
+
+    private:
+        QImage& image;
+    };
+
+    QImage image;
+    GTThread::runInMainThread(os, new Scenario(image));
+    GTThread::waitForMainThread();
+    GT_CHECK(!image.isNull(), "Clipboard image is empty");
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setText"
 void GTClipboard::setText(GUITestOpStatus& os, QString text) {
     class Scenario : public CustomScenario {

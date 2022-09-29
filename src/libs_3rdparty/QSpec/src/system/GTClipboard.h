@@ -35,6 +35,9 @@ public:
 
     static void setUrls(GUITestOpStatus& os, const QList<QString>& urls);
 
+    /** Checks that there is an image in the system clipboard. */
+    static void checkHasNonEmptyImage(GUITestOpStatus& os);
+
     static void clear(GUITestOpStatus& os);
 };
 

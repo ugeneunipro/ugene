@@ -64,6 +64,9 @@ public:
     /** Returns image of the current tree view. */
     static QImage captureTreeImage(HI::GUITestOpStatus& os);
 
+    /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
+    static void zoomWithMouseWheel(HI::GUITestOpStatus& os, int steps);
+
     /** Clicks zoom-in button once. */
     static void clickZoomInButton(HI::GUITestOpStatus& os);
 
