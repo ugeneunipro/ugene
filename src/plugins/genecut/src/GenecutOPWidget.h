@@ -44,11 +44,27 @@ public:
 private slots:
     void sl_loginClicked();
     void sl_logoutClicked();
-    void sl_testClicked();
+    void sl_openInGenecut();
     void sl_fetchResultsClicked();
     void sl_registerNewClicked();
+    void sl_getResultSequence();
+    void sl_removeSelectedResult();
 
 private:
+    enum class TableColumns {
+        Date = 0,
+        Status = 1
+    };
+
+    enum class ResultData {
+        Date = 1000,
+        Status = 1001,
+        Id = 1002,
+        Completed = 1003,
+        CompletedWithError = 1004,
+        Interrupted = 1005
+    };
+
     static void errorMessage(QNetworkReply* reply, QLabel* errorLabel);
     static void errorMessage(const QString& message, QLabel* errorLabel);
     static void successMessage(QNetworkReply* reply, QLabel* label);
@@ -56,6 +72,8 @@ private:
     static void setWidgetsEnabled(QList<QWidget*> wgts, bool enabled);
 
     bool areRegistrationDataValid() const;
+    QString getSelectedResultId() const;
+
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
 
@@ -71,8 +89,10 @@ private:
     static const QString API_REQUEST_LOGIN;
     static const QString API_REQUEST_LOGOUT;
     static const QString API_REQUEST_REGISTER;
-    static const QString API_REQUEST_TEST;
+    static const QString API_REQUEST_UPLOAD_SEQUENCE;
     static const QString API_REQUEST_REPORTS;
+    static const QString API_REQUEST_GET_REPORT;
+    static const QString API_REQUEST_DEL_REPORT;
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;
@@ -85,9 +105,15 @@ private:
     static const QString JSON_MESSAGE;
     static const QString JSON_DATE;
     static const QString JSON_STATUS;
+    static const QString JSON_ID;
+    static const QString JSON_COMPLETED;
+    static const QString JSON_COMPLETED_WITH_ERROR;
+    static const QString JSON_INTERRUPTED;
+    static const QString JSON_SEQUENCE_FILE_NAME;
+    static const QString JSON_SEQUENCE_FILE_BODY;
+    static const QString JSON_REPORT_ID;
+    static const QString JSON_LANG_ID;
 
-    static constexpr int RESULT_DATE_INDEX = 0;
-    static constexpr int RESULT_STATUS_INDEX = 1;
 };
 
 

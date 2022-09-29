@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>274</width>
-    <height>746</height>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,7 @@
        <item>
         <widget class="QLineEdit" name="leEmail">
          <property name="text">
-          <string>dsukhomlinov@unipro.ru</string>
+          <string>a.seryakov@unipro.ru</string>
          </property>
          <property name="placeholderText">
           <string>username@server.com</string>
@@ -65,7 +65,7 @@
        <item>
         <widget class="QLineEdit" name="lePasword">
          <property name="text">
-          <string>vbkktybev</string>
+          <string>a$er702405</string>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
@@ -156,7 +156,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pbTest">
+        <widget class="QPushButton" name="pbOpenInGenecut">
          <property name="text">
           <string>Open this sequence in GeneCut</string>
          </property>
@@ -176,6 +176,9 @@
            <width>0</width>
            <height>200</height>
           </size>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -200,44 +203,67 @@
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit">
+        <widget class="QTextBrowser" name="textBrowser">
          <property name="minimumSize">
           <size>
            <width>0</width>
            <height>210</height>
           </size>
          </property>
-         <property name="plainText">
-          <string>Отчет о запуске 2022.08.24 07:41:59
-Шаги:
- - Оптимизация кодонного состава.
-        Целевой организм - b_subtilis_1423
-        Величина отсечения кодонов - 10 %
-        Семя - 3978449778
- - Разбиение на длинные блоки.
-        Метод - Gibson
-        Длина блока - 1000 пн
-        Допустимое отклонение длины блока - 20%
-        Длина перекрывания блоков - 40 пн</string>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Отчет о запуске 2022.08.24 07:41:59&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Шаги:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; - Оптимизация кодонного состава.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Целевой организм - b_subtilis_1423&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Величина отсечения кодонов - 10 %&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Семя - 3978449778&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; - Разбиение на длинные блоки.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Метод - Gibson&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Длина блока - 1000 пн&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Допустимое отклонение длины блока - 20%&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        Длина перекрывания блоков - 40 пн&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="pbRemoveSelectedResult">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Remove selected result</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbOpenResultInBrowser">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Open the &quot;Result&quot; page in GeneCut</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="pbGetInputSequence">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Get the input sequence</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pbGetResultSequence">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Get full result sequence</string>
          </property>

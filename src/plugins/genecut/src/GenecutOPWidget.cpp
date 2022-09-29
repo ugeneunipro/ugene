@@ -21,20 +21,31 @@
 
 #include "GenecutOPWidget.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/Theme.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/L10n.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#include <QCheckBox>
-#include <QPushButton>
+#include <U2View/AnnotatedDNAView.h>
+#include <U2View/ADVSequenceObjectContext.h>
 
+#include <QCheckBox>
+#include <QDesktopServices>
+#include <QPushButton>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QTableWidgetItem>
+#include <QUrlQuery>
 
 namespace U2 {
 
@@ -44,8 +55,10 @@ const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
 const QString GenecutOPWidget::API_REQUEST_LOGOUT = "logout";
 const QString GenecutOPWidget::API_REQUEST_REGISTER = "registration";
-const QString GenecutOPWidget::API_REQUEST_TEST = "test";
+const QString GenecutOPWidget::API_REQUEST_UPLOAD_SEQUENCE = "uploadSequence";
 const QString GenecutOPWidget::API_REQUEST_REPORTS = "reports";
+const QString GenecutOPWidget::API_REQUEST_GET_REPORT = "getReport";
+const QString GenecutOPWidget::API_REQUEST_DEL_REPORT = "delReport";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
 const QString GenecutOPWidget::JSON_PASSWORD = "password";
 const QString GenecutOPWidget::JSON_ROLE = "role";
@@ -57,7 +70,14 @@ const QString GenecutOPWidget::JSON_LAST_NAME = "lastName";
 const QString GenecutOPWidget::JSON_MESSAGE = "message";
 const QString GenecutOPWidget::JSON_DATE = "name";
 const QString GenecutOPWidget::JSON_STATUS = "title";
-
+const QString GenecutOPWidget::JSON_ID = "id";
+const QString GenecutOPWidget::JSON_COMPLETED = "completed";
+const QString GenecutOPWidget::JSON_COMPLETED_WITH_ERROR = "completedWithError";
+const QString GenecutOPWidget::JSON_INTERRUPTED = "interrupted";
+const QString GenecutOPWidget::JSON_SEQUENCE_FILE_NAME = "sequenceFileName";
+const QString GenecutOPWidget::JSON_SEQUENCE_FILE_BODY = "sequenceFileBody";
+const QString GenecutOPWidget::JSON_REPORT_ID = "reportId";
+const QString GenecutOPWidget::JSON_LANG_ID = "langId";
 
 GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
@@ -78,7 +98,7 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
 
     connect(pbLogin, &QPushButton::clicked, this, &GenecutOPWidget::sl_loginClicked);
     connect(pbLogout, &QPushButton::clicked, this, &GenecutOPWidget::sl_logoutClicked);
-    connect(pbTest, &QPushButton::clicked, this, &GenecutOPWidget::sl_testClicked);
+    connect(pbOpenInGenecut, &QPushButton::clicked, this, &GenecutOPWidget::sl_openInGenecut);
     connect(pbRegister, &QPushButton::clicked, [this]() {
         stackedWidget->setCurrentIndex(2);
     });
@@ -90,7 +110,12 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         stackedWidget->setCurrentIndex(0);
     });
     connect(pbFetchResults, &QPushButton::clicked, this, &GenecutOPWidget::sl_fetchResultsClicked);
+    connect(pbGetResultSequence, &QPushButton::clicked, this, &GenecutOPWidget::sl_getResultSequence);
+    connect(pbRemoveSelectedResult, &QPushButton::clicked, this, &GenecutOPWidget::sl_removeSelectedResult);
+    connect(twResults, &QTableWidget::itemSelectionChanged, [this]() {
+        setWidgetsEnabled({ pbRemoveSelectedResult, pbOpenResultInBrowser, pbGetInputSequence, pbGetResultSequence }, !twResults->selectedItems().isEmpty());
 
+    });
 }
 
 void GenecutOPWidget::sl_loginClicked() {
@@ -145,6 +170,9 @@ void GenecutOPWidget::sl_logoutClicked() {
         if (reply->error() == QNetworkReply::NoError) {
             accessToken.clear();
             refreshToken.clear();
+            lbTestInfo->clear();
+            twResults->clearContents();
+            twResults->setRowCount(0);
             stackedWidget->setCurrentIndex(0);
         } else {
             errorMessage(reply, lbTestInfo);
@@ -153,20 +181,47 @@ void GenecutOPWidget::sl_logoutClicked() {
     });
 }
 
-void GenecutOPWidget::sl_testClicked() {
-    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_TEST);
+void GenecutOPWidget::sl_openInGenecut() {
+    const QUrl url(API_REQUEST_URL + API_REQUEST_UPLOAD_SEQUENCE);
     QNetworkRequest request(url);
     auto aut = QString("Bearer %1").arg(accessToken);
     request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     request.setRawHeader("Authorization", aut.toLocal8Bit());
 
-    QNetworkReply* reply = mgr->get(request);
-    setWidgetsEnabled({ pbTest, pbFetchResults }, false);
+    auto seqObj = annDnaView->getActiveSequenceContext()->getSequenceObject();
+    U2::U2OpStatus2Log os;
+    QJsonObject obj;
+    obj[JSON_SEQUENCE_FILE_BODY] = QString(seqObj->getWholeSequenceData(os));
+    SAFE_POINT_OP(os, );
+
+    obj[JSON_SEQUENCE_FILE_NAME] = seqObj->getSequenceName();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->post(request, data);
+    setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setWidgetsEnabled({ pbTest, pbFetchResults }, true);
+        setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, true);
         if (reply->error() == QNetworkReply::NoError) {
-            successMessage(reply, lbTestInfo);
+            QFile f(":genecut/template/hidden_login.html");
+            SAFE_POINT(f.open(QIODevice::ReadOnly), L10N::errorReadingFile(f.fileName()), );
+
+            QString hiddenLoginHtml = f.readAll();
+            hiddenLoginHtml = hiddenLoginHtml.arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken);
+
+            QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("genecut");
+            U2OpStatus2Log os;
+            GUrlUtils::prepareDirLocation(tmpDir, os);
+            CHECK_OP(os, );
+
+            QFile tmpFile(tmpDir + QDir::separator() + "genecut_template.html");
+            SAFE_POINT(!tmpFile.exists() || tmpFile.remove(), "Can't reuse tmp file", );
+            SAFE_POINT(tmpFile.open(QIODevice::WriteOnly), L10N::errorOpeningFileRead(tmpFile.fileName()), );
+
+            QTextStream out(&tmpFile);
+            out << hiddenLoginHtml;
+            tmpFile.close();
+            QDesktopServices::openUrl(QUrl::fromLocalFile(tmpFile.fileName()));
         } else {
             errorMessage(reply, lbTestInfo);
         }
@@ -175,29 +230,37 @@ void GenecutOPWidget::sl_testClicked() {
 }
 
 void GenecutOPWidget::sl_fetchResultsClicked() {
-    //.arg(L10N::getActiveLanguageCode())
     const QUrl url(API_REQUEST_URL + API_REQUEST_REPORTS);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     auto aut = QString("Bearer %1").arg(accessToken);
     request.setRawHeader("Authorization", aut.toLocal8Bit());
 
-    QNetworkReply* reply = mgr->get(request);
-    setWidgetsEnabled({ pbTest, pbFetchResults }, false);
+    QJsonObject obj;
+    obj[JSON_LANG_ID] = L10N::getActiveLanguageCode();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->sendCustomRequest(request, "GET", data);
+    setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setWidgetsEnabled({ pbTest, pbFetchResults }, true);
+        setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, true);
         if (reply->error() == QNetworkReply::NoError) {
             QString contents = QString::fromUtf8(reply->readAll());
             QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
             auto jsonArray = doc.array();
-            twResults->clear();
+            twResults->clearContents();
             int rowCount = jsonArray.size();
             twResults->setRowCount(rowCount);
             for (int i = 0; i < rowCount; i++) {
                 const auto& arrayObj = jsonArray.at(i).toObject();
-                twResults->setItem(i, RESULT_DATE_INDEX, new QTableWidgetItem(arrayObj.value(JSON_DATE).toString()));
-                twResults->setItem(i, RESULT_STATUS_INDEX, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString()));
+                auto dateWgtItem = new QTableWidgetItem(arrayObj.value(JSON_DATE).toString(), (int)ResultData::Date);
+                dateWgtItem->setData((int)ResultData::Id, arrayObj.value(JSON_ID).toString());
+                dateWgtItem->setData((int)ResultData::Completed, arrayObj.value(JSON_COMPLETED).toBool());
+                dateWgtItem->setData((int)ResultData::CompletedWithError, arrayObj.value(JSON_COMPLETED_WITH_ERROR).toBool());
+                dateWgtItem->setData((int)ResultData::Interrupted, arrayObj.value(JSON_INTERRUPTED).toBool());
+                twResults->setItem(i, (int)TableColumns::Date, dateWgtItem);
+                twResults->setItem(i, (int)TableColumns::Status, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString(), (int)ResultData::Status));
             }
             successMessage(tr("results have been fetched"), lbTestInfo);
         } else {
@@ -228,14 +291,78 @@ void GenecutOPWidget::sl_registerNewClicked() {
     connect(reply, &QNetworkReply::finished, [this, reply]() {
         setWidgetsEnabled({ pbRegisterNew }, true);
         if (reply->error() == QNetworkReply::NoError) {
-            //QString contents = reply->readAll();
-            //coreLog.info(contents);
             successMessage(tr("user created!"), lbRegisterWarning);
         } else {
             errorMessage(reply, lbRegisterWarning);
         }
         reply->deleteLater();
     });
+}
+
+void GenecutOPWidget::sl_getResultSequence() {
+    QString resultId = getSelectedResultId();
+    CHECK(!resultId.isEmpty(), );
+
+    const QUrl url(API_REQUEST_URL + API_REQUEST_GET_REPORT);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+    auto aut = QString("Bearer %1").arg(accessToken);
+    request.setRawHeader("Authorization", aut.toLocal8Bit());
+
+    QJsonObject obj;
+    obj[JSON_REPORT_ID] = resultId;
+    obj[JSON_LANG_ID] = L10N::getActiveLanguageCode();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->sendCustomRequest(request, "GET", data);
+    setWidgetsEnabled({ wtMainForm }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setWidgetsEnabled({ wtMainForm }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            //TODO: handle it
+            successMessage(tr("the result has been recieved"), lbTestInfo);
+        } else {
+            errorMessage(reply, lbTestInfo);
+        }
+        reply->deleteLater();
+    });
+
+}
+
+void GenecutOPWidget::sl_removeSelectedResult() {
+    QString resultId = getSelectedResultId();
+    CHECK(!resultId.isEmpty(), );
+
+    const QUrl url(API_REQUEST_URL + API_REQUEST_DEL_REPORT);
+    QNetworkRequest request(url);
+    auto aut = QString("Bearer %1").arg(accessToken);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+    request.setRawHeader("Authorization", aut.toLocal8Bit());
+
+    auto seqObj = annDnaView->getActiveSequenceContext()->getSequenceObject();
+    QJsonObject obj;
+    obj[JSON_REPORT_ID] = resultId;
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->post(request, data);
+    setWidgetsEnabled({ wtMainForm }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setWidgetsEnabled({ wtMainForm }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            auto selected = twResults->selectedItems();
+            CHECK(!selected.isEmpty(), );
+
+            twResults->removeRow(twResults->row(selected.first()));
+
+            int i = 0;
+        } else {
+            errorMessage(reply, lbTestInfo);
+        }
+        reply->deleteLater();
+    });
+
 }
 
 void GenecutOPWidget::errorMessage(QNetworkReply* reply, QLabel* errorLabel) {
@@ -322,6 +449,19 @@ bool GenecutOPWidget::areRegistrationDataValid() const {
     }
 
     return valid;
+}
+
+QString GenecutOPWidget::getSelectedResultId() const {
+    CHECK(!twResults->selectedItems().isEmpty(), QString());
+
+    auto selection = twResults->selectedItems();
+    SAFE_POINT(selection.size() == 2, "Unexpected selection size", QString());
+
+    auto dataItem = selection.first()->type() == (int)ResultData::Date ? selection.first() : selection.last();
+    auto resultId = dataItem->data((int)ResultData::Id).toString();
+    SAFE_POINT(!resultId.isEmpty(), "Result data ID is empty", QString());
+
+    return resultId;
 }
 
 }

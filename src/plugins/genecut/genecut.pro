@@ -11,4 +11,6 @@ SOURCES += src/GenecutOPWidget.cpp \
 
 FORMS   += src/GenecutOPWidget.ui
 
+RESOURCES += genecut.qrc
+
 TRANSLATIONS += transl/russian.ts
