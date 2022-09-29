@@ -391,21 +391,21 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "top_primers  (0, 2)", { {610, 629}, {1089, 1108} });
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0022) {
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0023) {
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0024) {
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0025) {
-
-}
+//GUI_TEST_CLASS_DEFINITION(test_0022) {
+//
+//}
+//
+//GUI_TEST_CLASS_DEFINITION(test_0023) {
+//
+//}
+//
+//GUI_TEST_CLASS_DEFINITION(test_0024) {
+//
+//}
+//
+//GUI_TEST_CLASS_DEFINITION(test_0025) {
+//
+//}
 
 }  // namespace GUITest_common_scenarios_phyml
 }  // namespace U2
