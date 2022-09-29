@@ -24,13 +24,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2Msa.h>
-#include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SequenceDbi.h>
 
 namespace U2 {
 

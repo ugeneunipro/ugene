@@ -1407,8 +1407,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
 
     setOutputPath(os, sandBoxDir, fileName);
     align(os);
-    //    Expected state: file rewrited
-    int size = GTFile::getSize(os, sandBoxDir + fileName);
+    //    Expected state: file is rewritten.
+    qint64 size = GTFile::getSize(os, sandBoxDir + fileName);
     CHECK_SET_ERR(size == 185, QString("unexpected file size %1").arg(size));
     GTUtilsProjectTreeView::doubleClickItem(os, fileName);
 }
@@ -1683,15 +1683,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     CHECK_SET_ERR(finalImg == initImg, "tree is aligned");
 }
 
-static void expandFontSettings(HI::GUITestOpStatus& os) {
-    auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
-    if (!labelsColorButton->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
-    }
-}
-
 static void setLabelsColor(HI::GUITestOpStatus& os, int r, int g, int b) {
-    expandFontSettings(os);
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
     auto labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
     GTWidget::click(os, labelsColorButton);
@@ -1744,8 +1736,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTUtilsMsaEditor::clickBuildTreeButton(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    expandFontSettings(os);
 
     // Change labels font.
     auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
@@ -1833,39 +1823,29 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     QGraphicsScene* scene = treeView->scene();
 
     // Decrease breadthScaleAdjustmentSlider value.
-    int initialHeight = scene->height();
+    double initialHeight = scene->height();
     auto breadthScaleAdjustmentSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider");
     GTSlider::setValue(os, breadthScaleAdjustmentSlider, 50);
 
     // Expected state: the tree breadth (height) was reduced.
-    int reducedHeight = scene->height();
+    double reducedHeight = scene->height();
     CHECK_SET_ERR(reducedHeight < initialHeight, QString("Scene height is not reduced! Initial: %1, final: %2").arg(initialHeight).arg(reducedHeight));
 
     // Increase breadthScaleAdjustmentSlider value.
     GTSlider::setValue(os, breadthScaleAdjustmentSlider, 200);
 
     // Expected state: the tree breadth (height) was increased.
-    int increasedHeight = scene->height();
+    double increasedHeight = scene->height();
     CHECK_SET_ERR(increasedHeight > initialHeight, QString("Height is not increased! Initial: %1, final: %2").arg(initialHeight).arg(increasedHeight));
 }
 
-namespace {
-
-void expandPenSettings(HI::GUITestOpStatus& os) {
-    auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
-    if (!branchesColorButton->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "lblPenSettings"));
-    }
-}
-
 void setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b) {
-    expandPenSettings(os);
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
     auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
     GTWidget::click(os, branchesColorButton);
 }
 
-double colorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName) {
+static double colorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName) {
     int total = 0;
     int found = 0;
     const QImage img = GTWidget::getImage(os, widget);
@@ -1888,8 +1868,6 @@ double colorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& col
     return result;
 }
 
-}  // namespace
-
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -1909,20 +1887,11 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     globalCoord += QPoint(node->boundingRect().width() / 2 + 8, node->boundingRect().height() / 2 + 8);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
-    // Change branch color
-    if (!isOsMac()) {
-        setBranchColor(os, 255, 0, 0);
-    } else {
-        expandPenSettings(os);
-    }
+    setBranchColor(os, 255, 0, 0);
+
     // Expected state: color changed
     CHECK_SET_ERR(treeView != nullptr, "tree view not found");
-    QString colorName;
-    if (!isOsMac()) {
-        colorName = "#ff0000";
-    } else {
-        colorName = "#000000";
-    }
+    QString colorName = "#ff0000";
     double initPercent = colorPercent(os, treeView, colorName);
     CHECK_SET_ERR(initPercent != 0, "color not changed");
 
@@ -1959,7 +1928,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: file rewrited
-    int size = GTFile::getSize(os, sandBoxDir + fileName);
+    qint64 size = GTFile::getSize(os, sandBoxDir + fileName);
     CHECK_SET_ERR(size == 604, QString("unexpected file size %1").arg(size));
     GTUtilsProjectTreeView::doubleClickItem(os, fileName);
 }
@@ -2357,7 +2326,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // set some values
-    expandFontSettings(os);
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
 
@@ -2418,7 +2386,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     auto showDistancesCheck = GTWidget::findCheckBox(os, "showDistancesCheck");
     auto breadthScaleAdjustmentSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider");
 
-    expandPenSettings(os);
     auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
 
     // set some values

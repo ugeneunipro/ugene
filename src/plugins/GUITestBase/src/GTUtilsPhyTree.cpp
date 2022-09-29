@@ -75,7 +75,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus&
     QList<GraphicsButtonItem*> nodes = getNodes(os);
     QList<GraphicsButtonItem*> selectedNodes;
     for (auto node : qAsConst(nodes)) {
-        if (node->isNodeSelected()) {
+        if (node->isSelected()) {
             selectedNodes << node;
         }
     }
@@ -88,7 +88,7 @@ QList<GraphicsButtonItem*> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatu
     QList<GraphicsButtonItem*> nodes = getNodes(os);
     QList<GraphicsButtonItem*> unselectedNodes;
     for (auto node : qAsConst(nodes)) {
-        if (node->isNodeSelected()) {
+        if (node->isSelected()) {
             unselectedNodes << node;
         }
     }
@@ -343,7 +343,7 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(GraphicsRectangularBranchItem* fi
     SAFE_POINT(second != nullptr, "Second rectangular branch item is NULL", false);
 
     if (first->getSide() == second->getSide()) {
-        return first->getSide() == GraphicsBranchItem::Right
+        return first->getSide() == GraphicsBranchItem::Side::Right
                    ? first->getDist() < second->getDist()
                    : first->getDist() > second->getDist();
     }

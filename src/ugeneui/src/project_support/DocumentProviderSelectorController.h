@@ -38,6 +38,8 @@ class ImportWidget;
 class DocumentProviderSelectorController : public QDialog, private Ui_DocumentProviderSelectorDialog {
     Q_OBJECT
 public:
+    ~DocumentProviderSelectorController();
+
     static int selectResult(const GUrl& url, QList<FormatDetectionResult>& results);
 
 private slots:
@@ -46,6 +48,7 @@ private slots:
 
 private:
     DocumentProviderSelectorController(const GUrl& url, QList<FormatDetectionResult>& results, QWidget* parent);
+
     ImportWidget* getRadioButtonWgt(const FormatDetectionResult& result, QString& radioButtonName, const GUrl& url, int it);
     int getSelectedFormatIdx() const;
     void addFormatRadioButton(const GUrl& url, QList<FormatDetectionResult>& results, QButtonGroup* bg, int it);

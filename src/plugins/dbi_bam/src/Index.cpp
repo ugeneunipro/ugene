@@ -77,5 +77,9 @@ const QList<Index::ReferenceIndex>& Index::getReferenceIndices() const {
     return referenceIndices;
 }
 
+bool Index::isEmpty() const {
+    return referenceIndices.isEmpty();
+}
+
 }  // namespace BAM
 }  // namespace U2

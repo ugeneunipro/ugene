@@ -37,15 +37,6 @@ class TreeViewerUI;
 class MultipleAlignment;
 class MaModificationInfo;
 
-struct TreeOpWidgetViewSettings {
-    TreeOpWidgetViewSettings()
-        : showFontSettings(false), showPenSettings(false) {
-    }
-
-    bool showFontSettings;
-    bool showPenSettings;
-};
-
 class TreeOptionsSavableWidget : public U2SavableWidget {
 public:
     TreeOptionsSavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
@@ -63,14 +54,9 @@ private:
 class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWidget {
     Q_OBJECT
 public:
-    TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& viewSettings);
-    TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetViewSettings& viewSettings);
+    TreeOptionsWidget(TreeViewer* tree);
+    TreeOptionsWidget(MSAEditor* msaEditor);
     ~TreeOptionsWidget() override;
-
-    const TreeOpWidgetViewSettings& getViewSettings();
-
-signals:
-    void saveViewSettings(const TreeOpWidgetViewSettings&);
 
 private slots:
     void sl_labelsColorButton();
@@ -81,7 +67,6 @@ private slots:
     void sl_fontItalicChanged();
     void sl_fontUnderlineChanged();
 
-    void sl_onLblLinkActivated(const QString& link);
     void sl_valueChanged();
 
     void sl_onOptionChanged(TreeViewOption option, const QVariant& value);
@@ -103,28 +88,24 @@ private:
     void connectSlots();
 
     void updateButtonColor(QPushButton* button, const QColor& newColor);
-    void updateShowFontOpLabel(const QString& labelText);
-    void updateShowPenOpLabel(const QString& labelText);
-
     void updateRelatedOptionsState(const TreeViewOption& option, const QVariant& newValue);
 
     TreeViewerUI* getTreeViewer() const;
 
     MSAEditor* editor = nullptr;
     TreeViewerUI* treeViewer = nullptr;
-
-    TreeOpWidgetViewSettings viewSettings;
-
-    bool showFontSettings = false;
-    bool showPenSettings = false;
-
-    QWidget* contentWidget;
+    QWidget* contentWidget = nullptr;
 
     TreeOptionsSavableWidget savableTab;
 
     QMap<QString, TreeViewOption> optionsMap;
 
     bool isUpdating = false;
+
+    ShowHideSubgroupWidget* generalOpGroup = nullptr;
+    ShowHideSubgroupWidget* labelsOpGroup = nullptr;
+    ShowHideSubgroupWidget* branchesOpGroup = nullptr;
+    ShowHideSubgroupWidget* scalebarOpGroup = nullptr;
 };
 
 class U2VIEW_EXPORT AddTreeWidget : public QWidget {

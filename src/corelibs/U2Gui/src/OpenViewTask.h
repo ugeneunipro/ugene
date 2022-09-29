@@ -89,6 +89,7 @@ public:
     OpenViewTask(Document* d);
 
     static const int MAX_DOC_NUMBER_TO_OPEN_VIEWS;
+    static const QString IGNORE_MODAL_WIDGET;
 
 protected:
     void prepare();

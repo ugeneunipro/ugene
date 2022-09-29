@@ -161,7 +161,7 @@ void TreeViewer::createActions() {
     nameLabelsAction->setObjectName("Show Names");
     // Show Node Labels
     nodeLabelsAction = new QAction(tr("Show Node Labels"), ui);
-    nodeLabelsAction->setCheckable(phyObject->haveNodeLabels());
+    nodeLabelsAction->setCheckable(phyObject->hasNodeLabels());
     nodeLabelsAction->setChecked(true);
     nodeLabelsAction->setObjectName("Show Names");
 
@@ -581,8 +581,8 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(LABEL_FONT_UNDERLINE, false);
 
     setOptionValue(SHOW_LABELS, true);
-    setOptionValue(SHOW_DISTANCES, !phyObject->haveNodeLabels());
-    setOptionValue(SHOW_NODE_LABELS, phyObject->haveNodeLabels());
+    setOptionValue(SHOW_DISTANCES, !phyObject->hasNodeLabels());
+    setOptionValue(SHOW_NODE_LABELS, phyObject->hasNodeLabels());
     setOptionValue(ALIGN_LABELS, false);
 
     setOptionValue(BRANCH_COLOR, QColor(0, 0, 0));
@@ -948,7 +948,7 @@ void TreeViewerUI::mouseReleaseEvent(QMouseEvent* e) {
     bool isLeftButton = e->button() == Qt::LeftButton;
     bool isDragEvent = isLeftButton && (e->globalPos() - lastMousePressPos).manhattanLength() >= QApplication::startDragDistance();
     if (!isSelectionStateManagedByChildOnClick && isLeftButton && !isDragEvent) {
-        root->setSelected(false);  // Clear selection on any right button click with no shift.
+        root->setSelectedRecursively(false);  // Clear selection on any right button click with no shift.
     }
     updateActionsState();
     updateBranchSettings();
@@ -1264,7 +1264,7 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
 }
 
 void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout) {
-    root->setSelected(false);
+    root->setSelectedRecursively(false);
     setOptionValue(TREE_LAYOUT, treeLayout);
 
     scene()->removeItem(root);
@@ -1442,8 +1442,7 @@ void TreeViewerUI::defaultZoom() {
 }
 
 void TreeViewerUI::recalculateRectangularLayout() {
-    int current = 0;
-    rectRoot->recalculateBranches(current, phyObject->getTree()->getRootNode());
+    RectangularTreeLayoutAlgorithm::recalculateTreeLayout(rectRoot, phyObject->getTree()->getRootNode());
     updateDistanceToViewScale();
 }
 
@@ -1594,7 +1593,7 @@ bool TreeViewerUI::isOnlyLeafSelected() const {
     int selectedItems = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         auto buttonItem = dynamic_cast<GraphicsButtonItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isNodeSelected()) {
+        if (buttonItem != nullptr && buttonItem->isSelected()) {
             selectedItems++;
         }
     }

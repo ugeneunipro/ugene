@@ -19,22 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
-#define _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
+#ifndef _U2_DYN_TABLE_TESTS_H_
+#define _U2_DYN_TABLE_TESTS_H_
+
+#include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
-class PhyNode;
-class GraphicsRectangularBranchItem;
-
-class RectangularTreeLayoutAlgorithm {
-public:
-    RectangularTreeLayoutAlgorithm() = delete;
-
-    static GraphicsRectangularBranchItem* buildTreeLayout(const PhyNode* phyRoot);
-
-    static void recalculateTreeLayout(GraphicsRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode);
-};
+DECLARE_TEST(DynTableTests, bigTable);
+DECLARE_TEST(DynTableTests, fullMatch);
+DECLARE_TEST(DynTableTests, fullMismatch);
+DECLARE_TEST(DynTableTests, mismatch);
+DECLARE_TEST(DynTableTests, insDelMode_fullMatch);
+DECLARE_TEST(DynTableTests, insDelMode_fullMismatch);
+DECLARE_TEST(DynTableTests, insDelMode_mismatch);
+DECLARE_TEST(DynTableTests, insDelMode_deletion);
+DECLARE_TEST(DynTableTests, insDelMode_insertion);
 
 }  // namespace U2
 

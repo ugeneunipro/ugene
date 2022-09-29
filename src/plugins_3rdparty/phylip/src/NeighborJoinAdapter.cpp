@@ -23,10 +23,8 @@
 
 #include <QString>
 #include <QTemporaryFile>
-#include <QVector>
 
 #include <U2Core/Counter.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Task.h>
 
@@ -61,13 +59,13 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment& ma, node* p, d
         static int counter = 0;
         if (p->tip) {
             if (bootstrap_repl != 0) {
-                current->setName(QString::fromLatin1(p->nayme));
+                current->name = QString::fromLatin1(p->nayme);
             } else {
                 assert(p->index - 1 < ma->getRowCount());
-                current->setName(QString(ma->getMsaRow(p->index - 1)->getName()));
+                current->name = ma->getMsaRow(p->index - 1)->getName();
             }
         } else {
-            current->setName(QString("node %1").arg(counter++));
+            current->name = QString("node %1").arg(counter++);
             createPhyTreeFromPhylipTree(ma, p->next->back, m, njoin, start, current, bootstrap_repl);
             createPhyTreeFromPhylipTree(ma, p->next->next->back, m, njoin, start, current, bootstrap_repl);
             if (p == start && njoin) {
@@ -79,13 +77,9 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment& ma, node* p, d
             counter = 0;
         } else {
             if (bootstrap_repl != 0) {
-                if (p->deltav == 0) {
-                    PhyTreeData::addBranch(root, current, bootstrap_repl);
-                } else {
-                    PhyTreeData::addBranch(root, current, p->deltav);
-                }
+                PhyTreeUtils::addBranch(root, current, p->deltav == 0 ? bootstrap_repl : p->deltav == 0);
             } else {
-                PhyTreeData::addBranch(root, current, p->v);
+                PhyTreeUtils::addBranch(root, current, p->v);
             }
         }
     }
@@ -115,7 +109,7 @@ NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSeque
 void NeighborJoinCalculateTreeTask::run() {
     QMutexLocker runLocker(&runLock);
 
-    GCOUNTER(cvar, "PhylipNeigborJoin");
+    GCOUNTER(cvar, "PhylipNeighborJoin");
 
     PhyTree phyTree(nullptr);
 
@@ -226,7 +220,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
             consens_free_res();
 
-            PhyTreeData* data = new PhyTreeData();
+            auto data = new PhyTreeData();
             data->setRootNode(rootPhy);
 
             phyTree = data;
@@ -279,7 +273,7 @@ void NeighborJoinCalculateTreeTask::run() {
             // Calculate tree
             const tree* curTree = neighbour_calc_tree();
 
-            PhyNode* root = new PhyNode();
+            auto root = new PhyNode();
             bool njoin = true;
 
             stateInfo.progress = 99;
@@ -287,7 +281,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
             neighbour_free_resources();
 
-            PhyTreeData* data = new PhyTreeData();
+            auto data = new PhyTreeData();
             data->setRootNode(root);
 
             phyTree = data;

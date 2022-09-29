@@ -41,8 +41,8 @@ public:
     inline QList<bool>& getSelected() {
         return selected;
     }
-    inline bool hasIndex() const {
-        return _hasIndex;
+    inline bool hasNotEmptyIndex() const {
+        return _hasIndex && !index.isEmpty();
     }
     inline bool isReferenceSelected(int id) {
         if (id == -1)

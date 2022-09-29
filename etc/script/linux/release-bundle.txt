@@ -1252,6 +1252,7 @@ libU2Script.so
 libU2Test.so
 libU2View.so
 libugenedb.so
+libxcb-xinerama.so.0
 LICENSE.3rd_party.txt
 LICENSE.txt
 platforms

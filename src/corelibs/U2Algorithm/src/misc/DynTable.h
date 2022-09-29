@@ -22,6 +22,9 @@
 #ifndef _U2_DYN_TABLE_H_
 #define _U2_DYN_TABLE_H_
 
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/global.h>
+
 #include "RollingMatrix.h"
 
 namespace U2 {
@@ -36,7 +39,8 @@ struct U2ALGORITHM_EXPORT MatchScores {
 class U2ALGORITHM_EXPORT DynTable : public RollingMatrix {
 public:
     DynTable(int sizeX, int sizeY, bool _allowInsDel, const MatchScores& _scores = {})
-        : RollingMatrix(sizeX, sizeY), allowInsDel(_allowInsDel), scores(_scores) {
+        : RollingMatrix(sizeX, sizeY), scores(_scores), allowInsDel(_allowInsDel) {
+        // TODO: initial fill of the table does not respect the provided match scores and uses hardcoded 0,1,1,1 scores.
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 setValue(x, y, y + 1, false);
@@ -91,42 +95,42 @@ protected:
      * Returns match length for the current point in the matrix.
      * Returns -1 if some unexpected error occurs.
      */
-    int getLen(int x, int y) const { // NOLINT(misc-no-recursion)
-        if (y == -1 || x == -1) {
-            return 0;  // End of the matrix.
-        }
-        SAFE_POINT(x >= 0 && y >= 0, "Invalid X/Y range", -1);
+    int getLen(int x, int y) const {
+        int lengthBefore = 0;
+        for (; x >= 0 && y >= 0;) {
+            if (!allowInsDel) {
+                lengthBefore += 1;
+                x--;
+                y--;
+                continue;
+            }
+            int v = getValue(x, y);
+            bool match = isMatch(x, y);
+            int d = getValue(x - 1, y - 1);
+            int l = getValue(x - 1, y);
+            int u = getValue(x, y - 1);
 
-        if (!allowInsDel) {
-            int lengthBefore = getLen(x - 1, y - 1);
-            CHECK(lengthBefore >= 0, -1);
-            return 1 + lengthBefore;
+            if (match && v == d + scores.match) {
+                lengthBefore += 1;
+                x--;
+                y--;
+                continue;
+            }
+            if (v == u + scores.del) {  // Prefer deletion in X sequence to minimize result length.
+                y--;
+                continue;
+            }
+            if (!match && v == d + scores.mismatch) {  // Prefer a mismatch instead of insertion into X sequence.
+                lengthBefore += 1;
+                x--;
+                y--;
+                continue;
+            }
+            SAFE_POINT(v == l + scores.ins, "Invalid value", -1);
+            lengthBefore += 1;
+            x--;
         }
-        int v = getValue(x, y);
-        bool match = isMatch(x, y);
-        int d = getValue(x - 1, y - 1);
-        int l = getValue(x - 1, y);
-        int u = getValue(x, y - 1);
-
-        if (match && v == d + scores.match) {
-            int lengthBefore = getLen(x - 1, y - 1);
-            CHECK(lengthBefore >= 0, -1);
-            return 1 + lengthBefore;
-        }
-        if (v == u + scores.del) {  // Prefer deletion in X sequence to minimize result length.
-            int lengthBefore = getLen(x, y - 1);
-            CHECK(lengthBefore >= 0, -1);
-            return lengthBefore;
-        }
-        if (!match && v == d + scores.mismatch) {  // Prefer a mismatch instead of insertion into X sequence.
-            int lengthBefore = getLen(x - 1, y - 1);
-            CHECK(lengthBefore >= 0, -1);
-            return 1 + lengthBefore;
-        }
-        SAFE_POINT(v == l + scores.ins, "Invalid value", -1);
-        int lengthBefore = getLen(x - 1, y);  // This is an insertion into X sequence.
-        CHECK(lengthBefore >= 0, -1);
-        return 1 + lengthBefore;
+        return lengthBefore;
     }
 
 private:

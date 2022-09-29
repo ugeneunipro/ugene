@@ -77,7 +77,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
     connect(ui.selectAllToolButton, SIGNAL(clicked()), SLOT(sl_selectAll()));
     connect(ui.selectNoneToolButton, SIGNAL(clicked()), SLOT(sl_unselectAll()));
     connect(ui.inverseSelectionToolButton, SIGNAL(clicked()), SLOT(sl_inverseSelection()));
-    ui.indexNotAvailableLabel->setVisible(!sam && !bamInfo.hasIndex());
+    ui.indexNotAvailableLabel->setVisible(!sam && !bamInfo.hasNotEmptyIndex());
 
     if (sam && bamInfo.getHeader().getReferences().isEmpty()) {
         hideReferencesTable();

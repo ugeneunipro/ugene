@@ -60,7 +60,7 @@ public:
     // Compares number of nodes and nodes with names (how many nodes etc.)
     static bool treesAreAlike(const PhyTree& tree1, const PhyTree& tree2);
 
-    bool haveNodeLabels() const;
+    bool hasNodeLabels() const;
 
 signals:
     void si_phyTreeChanged();

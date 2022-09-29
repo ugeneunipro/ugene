@@ -24,6 +24,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
 #include <QPen>
+#include <QStyleOptionGraphicsItem>
 
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
@@ -38,14 +39,14 @@ namespace U2 {
 /** Button radius in pixels. */
 static constexpr double radius = 5;
 
-static const QBrush normalStateBrush(Qt::gray);
-static const QBrush hoveredStateBrush(QColor("#ea9700"));
+static const QBrush normalStateBrush(Qt::lightGray);
+static const QBrush selectedStateBrush(QColor("#EA9700"));
+static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
       nodeValue(nodeValue) {
-    setPen(QColor(0, 0, 0));
-    setBrush(normalStateBrush);
+    setPen(QColor(Qt::black));
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -68,15 +69,14 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TreeViewerUI* ui = getTreeViewerUI();
     if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ShiftModifier)) {
         // Invert selection state on Shift.
-        parentBranchItem->setSelected(!isSelected);
+        parentBranchItem->setSelectedRecursively(!isSelected());
     } else {
         // Set a new selection.
-        ui->getRoot()->setSelected(false);
-        parentBranchItem->setSelected(true);
+        ui->getRoot()->setSelectedRecursively(false);
+        parentBranchItem->setSelectedRecursively(true);
     }
     ui->isSelectionStateManagedByChildOnClick = true;
     e->accept();
-    update();
 }
 
 void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
@@ -85,24 +85,13 @@ void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void GraphicsButtonItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-    CHECK(!isSelected, );
+    isHovered = true;
     QGraphicsItem::hoverEnterEvent(event);
-    setHighlighting(true);
 }
+
 void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-    CHECK(!isSelected, );
+    isHovered = false;
     QGraphicsItem::hoverLeaveEvent(event);
-    setHighlighting(false);
-}
-
-void GraphicsButtonItem::setSelected(bool selected) {
-    isSelected = selected;
-    setHighlighting(isSelected);
-}
-
-void GraphicsButtonItem::setHighlighting(bool isOn) {
-    setBrush(isOn ? hoveredStateBrush : normalStateBrush);
-    update();
 }
 
 void GraphicsButtonItem::toggleCollapsedState() {
@@ -125,7 +114,7 @@ void GraphicsButtonItem::swapSiblings() {
 }
 
 bool GraphicsButtonItem::isPathToRootSelected() const {
-    CHECK(isSelected, false);
+    CHECK(isSelected(), false);
 
     auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
     CHECK(branchItem != nullptr, true);
@@ -183,10 +172,6 @@ TreeViewerUI* GraphicsButtonItem::getTreeViewerUI() const {
     return ui;
 }
 
-bool GraphicsButtonItem::isNodeSelected() const {
-    return isSelected;
-}
-
 double GraphicsButtonItem::getNodeValue() const {
     return nodeValue;
 }
@@ -207,6 +192,17 @@ GraphicsBranchItem* GraphicsButtonItem::getLeftBranchItem() const {
 
 GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
     return getParentBranchItem()->getChildBranch(GraphicsBranchItem::Side::Right);
+}
+
+void GraphicsButtonItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+    setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));
+    painter->setRenderHint(QPainter::Antialiasing);
+    // Drop the default 'selected' & 'focused' decoration: we draw these states by ourselves using a custom brush.
+    QStyleOptionGraphicsItem clonedStyleOption(*option);
+    clonedStyleOption.state.setFlag(QStyle::State_Selected, false);
+    clonedStyleOption.state.setFlag(QStyle::State_HasFocus, false);
+
+    QGraphicsEllipseItem::paint(painter, &clonedStyleOption, widget);
 }
 
 }  // namespace U2

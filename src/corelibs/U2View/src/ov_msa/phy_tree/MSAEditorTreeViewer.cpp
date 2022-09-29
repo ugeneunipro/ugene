@@ -253,7 +253,7 @@ MSAEditorTreeViewerUI::MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer)
 
 void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSequenceNameList) {
     CHECK(msaEditorTreeViewer->isSyncModeEnabled(), );
-    getRoot()->setSelected(false);
+    getRoot()->setSelectedRecursively(false);
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
         auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
@@ -264,7 +264,7 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
         if (nameItem == nullptr) {
             continue;
         }
-        branchItem->setSelected(selectedSequenceNameList.contains(nameItem->text(), Qt::CaseInsensitive));
+        branchItem->setSelectedRecursively(selectedSequenceNameList.contains(nameItem->text(), Qt::CaseInsensitive));
     }
 }
 

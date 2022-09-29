@@ -99,17 +99,14 @@ void PhyTreeObjectTestData::shutdown() {
 namespace {
 PhyTree createTree() {
     PhyTree result(new PhyTreeData());
-    PhyNode* root = new PhyNode();
-    root->setName("ROOT");
+    auto root = new PhyNode();
+    root->name = "ROOT";
     result->setRootNode(root);
-    QStringList names;
-    names << "A"
-          << "B"
-          << "C";
-    foreach (const QString& name, names) {
-        PhyNode* node = new PhyNode();
-        node->setName(name);
-        result->addBranch(root, node, 5.1);
+    QStringList names = {"A", "B", "C"};
+    for (const QString& name : qAsConst(names)) {
+        auto node = new PhyNode();
+        node->name = name;
+        PhyTreeUtils::addBranch(root, node, 5.1);
     }
     return result;
 }

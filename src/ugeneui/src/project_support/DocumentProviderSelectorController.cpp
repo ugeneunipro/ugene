@@ -38,6 +38,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/ImportWidget.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Gui/OpenViewTask.h>
 
 #include <U2View/AssemblyBrowserFactory.h>
 #include <U2View/MaEditorFactory.h>
@@ -70,7 +71,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
       formatDetectionResults(results),
       selectedRadioButton(0) {
     setupUi(this);
-
+    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, true);
     setObjectName("Select Document Format");
     new HelpButton(this, buttonBox, "65929699");
     gbFormats->setTitle(QString("Options for %1").arg(url.fileName()));
@@ -99,6 +100,10 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
 
     CHECK(!formatsRadioButtons.isEmpty(), );
     formatsRadioButtons[0]->setFocus();
+}
+
+ DocumentProviderSelectorController::~DocumentProviderSelectorController() {
+    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, false);
 }
 
 int DocumentProviderSelectorController::getSelectedFormatIdx() const {

@@ -26,48 +26,34 @@
 
 namespace U2 {
 
-struct TreeOpWidgetViewSettings;
-
 class U2VIEW_EXPORT MSATreeOptionsWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     MSATreeOptionsWidgetFactory();
-    ~MSATreeOptionsWidgetFactory();
 
     QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
-private slots:
-    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings);
-
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
-
-    TreeOpWidgetViewSettings* viewSettings;
 };
 
 class U2VIEW_EXPORT TreeOptionsWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     TreeOptionsWidgetFactory();
-    ~TreeOptionsWidgetFactory();
 
     QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
-private slots:
-    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings);
-
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
-
-    TreeOpWidgetViewSettings* viewSettings;
 };
 
 class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {

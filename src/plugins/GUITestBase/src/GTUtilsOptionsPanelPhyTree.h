@@ -34,9 +34,6 @@ public:
     /** Returns tree-options widget. */
     static QWidget* getOptionsPanelWidget(HI::GUITestOpStatus& os);
 
-    /** Expands label font settings panel if needed. */
-    static void expandFontSettingsPanel(HI::GUITestOpStatus& os);
-
     /** Returns currently shown font size. */
     static int getFontSize(HI::GUITestOpStatus& os);
 

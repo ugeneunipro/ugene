@@ -36,50 +36,43 @@ class PhyBranch;
 
 class U2CORE_EXPORT PhyTreeData : public QSharedData {
 public:
-    PhyTreeData();
+    PhyTreeData() = default;
+
+    /** TODO: class has no copy operator! */
     PhyTreeData(const PhyTreeData& other);
+
+    // TODO: this destructor is not virtual!
     ~PhyTreeData();
 
     /** Returns all nodes in the tree using pre-order tree traversal algorithm. */
     QList<PhyNode*> getNodesPreOrder() const;
 
+    /** Dumps tree into std output. */
     void print() const;
 
-    void setRootNode(PhyNode* _rootNode) {
-        rootNode = _rootNode;
-    }
-    PhyNode* getRootNode() const {
-        return rootNode;
-    }
+    void setRootNode(PhyNode* rootNode);
 
-    static PhyBranch* addBranch(PhyNode* node1, PhyNode* node2, double distance);
-    static void removeBranch(PhyNode* node1, PhyNode* node2);
+    PhyNode* getRootNode() const;
 
-    void setUsingNodeLabels(bool haveNodeLabels);
-    bool usingNodeLabels() const {
-        return haveNodeLabels;
-    }
-
-    void renameNodes(const QMap<QString, QString>& newNamesByOldNames);
+    bool hasNodeLabels = false;
 
 private:
     PhyTreeData& operator=(const PhyTreeData&);
-    PhyNode* rootNode;
-    bool haveNodeLabels;
+    PhyNode* rootNode = nullptr;
 };
 typedef QSharedDataPointer<PhyTreeData> PhyTree;
 
 class U2CORE_EXPORT PhyBranch : public QObject {
     Q_OBJECT
 public:
-    PhyBranch();
+    PhyBranch() = default;
 
-    void movingToAnotherAddress(PhyBranch* newAdress);
+    void movingToAnotherAddress(PhyBranch* newAddress);
 
-    PhyNode* node1;
-    PhyNode* node2;
-    double distance;
-    double nodeValue;
+    PhyNode* node1 = nullptr;
+    PhyNode* node2 = nullptr;
+    double distance = 0;
+    double nodeValue = -1.0;
 };
 
 class U2CORE_EXPORT PhyNode {
@@ -88,63 +81,56 @@ class U2CORE_EXPORT PhyNode {
     friend class PhyTreeData;
 
 public:
-    PhyNode();
+    PhyNode() = default;
     ~PhyNode();
 
-    /* const */
-    const QString& getName() const {
-        return name;
-    }
-    int branchCount() const {
-        return branches.size();
-    }
+    const QList<PhyBranch*>& getBranches() const;
+
     const PhyNode* getSecondNodeOfBranch(int branchNumber) const;
-    double getBranchesDistance(int branchNumber) const;
-    double getBranchesNodeValue(int branchNumber) const;
 
     /** Adds current node and all node children into the collection using pre-order algorithm. */
     void addIfNotPreset(QList<PhyNode*>& nodes);
     void addIfNotPreset(QList<const PhyNode*>& nodes) const;
 
     bool isConnected(const PhyNode* node) const;
-    PhyNode* clone() const;
 
-    PhyBranch* getBranch(int i) const;
-    void setName(const QString& _name) {
-        name = _name;
-    }
+    PhyNode* clone() const;
 
     /* For distance matrix */
     const PhyNode* getParentNode() const;
+
     PhyNode* getParentNode();
-    void setBranchesDistance(int branchNumber, double distance) {
-        branches.at(branchNumber)->distance = distance;
-    }
-    void print(QList<PhyNode*>& nodes, int distance, int tab);
+
+    void print(QList<PhyNode*>& nodes, int distance, int tabSize);
 
     /* For reroot */
     void setParentNode(PhyNode* newParent, double distance);
+
     QList<PhyNode*> getChildrenNodes() const;
-    void swapBranches(int firstBrunch, int secondBranch) {
-        branches.swap(firstBrunch, secondBranch);
-    }
+
+    void swapBranches(int branchIndex1, int branchIndex2);
+
     double getDistanceToRoot() const;
 
     const PhyBranch* getParentBranch() const;
 
-private:
     QString name;
-    QList<PhyBranch*> branches;
 
 private:
-    PhyBranch* getBranchAt(int i) const;
     PhyNode* parent() const;
+
+    QList<PhyBranch*> branches;
 };
 
 class U2CORE_EXPORT PhyTreeUtils {
 public:
     static int getNumSeqsFromNode(const PhyNode* node, const QSet<QString>& names);
+
     static void rerootPhyTree(PhyTree& phyTree, PhyNode* node);
+
+    static PhyBranch* addBranch(PhyNode* node1, PhyNode* node2, double distance);
+
+    static void removeBranch(PhyNode* node1, PhyNode* node2);
 };
 
 }  // namespace U2

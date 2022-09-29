@@ -42,7 +42,7 @@ GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, do
     setDist(from->getDist());
     setPos(width, 0);
     QPointF p = mapFromScene(0, 0);
-    double angle = (side == GraphicsBranchItem::Right ? 1 : -1) * height / M_PI * 180;
+    double angle = (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height / M_PI * 180;
     setTransform(QTransform().translate(p.x(), p.y()).rotate(angle).translate(-p.x(), -p.y()));
 
     if (from->getNameTextItem() != nullptr) {
@@ -65,16 +65,16 @@ QRectF GraphicsCircularBranchItem::boundingRect() const {
     double rad = qSqrt(p.x() * p.x() + p.y() * p.y());
     double w = width + rad * (1 - qCos(height));
     double h = rad * qSin(height);
-    return {-w, side == GraphicsBranchItem::Right ? -h : 0, w, h};
+    return {-w, side == GraphicsBranchItem::Side::Right ? -h : 0, w, h};
 }
 
 void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     CHECK(!isRoot(), );  // Do not render root branch.
-    painter->setPen(pen());
+    setUpPainter(painter);
     QPointF p = scenePos();
     double rad = qSqrt(p.x() * p.x() + p.y() * p.y()) - width;
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
-    painter->drawArc(rect, 0, (side == GraphicsBranchItem::Right ? 1 : -1) * height * 16 * 180 / M_PI);
+    painter->drawArc(rect, 0, (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
     painter->drawLine(0, 0, -width, 0);
 }
 
@@ -85,7 +85,7 @@ QPainterPath GraphicsCircularBranchItem::shape() const {
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
 
     path.lineTo(width, 0);
-    path.arcTo(rect, 0, (side == GraphicsBranchItem::Right ? 1 : -1) * height * 16 * 180 / M_PI);
+    path.arcTo(rect, 0, (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
 
     return path;
 }
