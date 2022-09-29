@@ -922,7 +922,7 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer.getGcContent())));
     annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer.getSelfAny())));
     annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer.getSelfEnd())));
-    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer.getEndStabilyty())));
+    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer.getEndStability())));
     annotationData->qualifiers.append(U2Qualifier("penalty'", QString::number(primer.getQuality())));
 
     auto areDoubleValuesEqual = [](double val, double reference) -> bool {
