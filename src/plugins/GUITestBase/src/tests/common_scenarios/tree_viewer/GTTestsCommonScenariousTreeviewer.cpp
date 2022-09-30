@@ -47,6 +47,7 @@
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -1122,6 +1123,26 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsPhyTree::clickResetZoomButton(os);
     int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
     CHECK_SET_ERR(sceneWidth == originalWidth, "Unexpected scene width on reset zoom");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0031) {
+    // Check that show/hide node shape option works.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    GTCheckBox::checkState(os, "showNodeShapeCheck", true);
+    QImage imageWithNodes = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithoutNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodes != imageWithoutNodes, "Image with no nodes is the same with the image with nodes");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage image = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(image == imageWithNodes, "Image with no nodes does not match the original image");
 }
 
 }  // namespace GUITest_common_scenarios_tree_viewer

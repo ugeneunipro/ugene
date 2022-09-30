@@ -536,6 +536,7 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
+        case SHOW_NODE_SHAPE:
         case NODE_COLOR:
         case NODE_RADIUS:
             updateSettings();
@@ -605,10 +606,12 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT, 100);
     setOptionValue(BRANCH_CURVATURE, 0);
 
+    setOptionValue(SHOW_NODE_SHAPE, true);
+    // TODO: these 2 options are not shown and not used. Make them used again & use correct defaults.
     setOptionValue(NODE_RADIUS, 2);
     setOptionValue(NODE_COLOR, QColor(0, 0, 0));
 
-    for (unsigned int i = 0; i < OPTION_ENUM_END; i++) {
+    for (int i = 0; i < OPTION_ENUM_END; i++) {
         auto option = static_cast<TreeViewOption>(i);
         SAFE_POINT(settings.keys().contains(option), "Not all options have been initialized", );
     }
@@ -627,15 +630,17 @@ void TreeViewerUI::updateSettings() {
         }
     }
 
-    for (QGraphicsItem* graphItem : qAsConst(updatingItems)) {
-        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
+    for (QGraphicsItem* item : qAsConst(updatingItems)) {
+        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(item)) {
             branchItem->updateSettings(settings);
             if (branchItem->correspondingRectangularBranchItem != nullptr) {
                 branchItem->correspondingRectangularBranchItem->updateSettings(settings);
             }
+        } else if (auto nodeItem = dynamic_cast<GraphicsButtonItem*>(item)) {
+            nodeItem->updateSettings(settings);
         }
-        scene()->update();
     }
+    scene()->update();
 }
 
 static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {

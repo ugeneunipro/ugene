@@ -150,6 +150,9 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
 }
 
 void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
+    isNodeShapeVisible = settings[SHOW_NODE_SHAPE].toBool();
+    uiLog.info("isShowShapeOnHoverOnly: " + QString::number(isNodeShapeVisible ? 1 : 0));
+
     CHECK(nodeLabel != nullptr, );
     QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
     newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
@@ -195,6 +198,8 @@ GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
 }
 
 void GraphicsButtonItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+    CHECK(isNodeShapeVisible || isHovered || isSelected(), );
+
     setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));
     painter->setRenderHint(QPainter::Antialiasing);
     // Drop the default 'selected' & 'focused' decoration: we draw these states by ourselves using a custom brush.

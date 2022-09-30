@@ -105,6 +105,7 @@ private:
     ShowHideSubgroupWidget* generalOpGroup = nullptr;
     ShowHideSubgroupWidget* labelsOpGroup = nullptr;
     ShowHideSubgroupWidget* branchesOpGroup = nullptr;
+    ShowHideSubgroupWidget* nodesOpGroup = nullptr;
     ShowHideSubgroupWidget* scalebarOpGroup = nullptr;
 };
 

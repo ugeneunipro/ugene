@@ -111,7 +111,10 @@ void TreeOptionsWidget::createGroups() {
     branchesOpGroup = new ShowHideSubgroupWidget("TREE_BRANCHES_OP", tr("Branches"), branchesGroup, true);
     mainLayout->addWidget(branchesOpGroup);
 
-    scalebarOpGroup = new ShowHideSubgroupWidget("SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
+    nodesOpGroup = new ShowHideSubgroupWidget("TREE_NODES_OP", tr("Nodes"), nodesGroup, true);
+    mainLayout->addWidget(nodesOpGroup);
+
+    scalebarOpGroup = new ShowHideSubgroupWidget("TREE_SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
     scalebarOpGroup->setVisible(false);
     mainLayout->addWidget(scalebarOpGroup);
 
@@ -127,9 +130,8 @@ void TreeOptionsWidget::updateAllWidgets() {
     for (const TreeViewOption& option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
-    if (!settings[SHOW_NODE_LABELS].toBool()) {
-        showNodeLabelsCheck->setEnabled(false);
-    }
+    showNodeLabelsCheck->setEnabled(settings[SHOW_NODE_LABELS].toBool());
+    showNodeShapeCheck->setEnabled(settings[SHOW_NODE_SHAPE].toBool());
 }
 
 void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant& value) {
@@ -187,6 +189,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[showDistancesCheck->objectName()] = SHOW_DISTANCES;
     optionsMap[alignLabelsCheck->objectName()] = ALIGN_LABELS;
     optionsMap[showNodeLabelsCheck->objectName()] = SHOW_NODE_LABELS;
+    optionsMap[showNodeShapeCheck->objectName()] = SHOW_NODE_SHAPE;
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
     optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
@@ -217,6 +220,9 @@ void TreeOptionsWidget::connectSlots() {
     connect(underlineAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontUnderlineChanged()));
     connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontSizeChanged()));
     connect(fontComboBox, SIGNAL(currentFontChanged(const QFont&)), SLOT(sl_fontTypeChanged()));
+
+    // Nodes.
+    connect(showNodeShapeCheck, &QCheckBox::stateChanged, this, &TreeOptionsWidget::sl_valueChanged);
 
     // Scalebar settings widgets
     connect(scaleSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_valueChanged()));

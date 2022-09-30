@@ -76,6 +76,7 @@ private:
     QGraphicsSimpleTextItem* nodeLabel = nullptr;
     double nodeValue = 0;
     bool isHovered = false;
+    bool isNodeShapeVisible = true;
 };
 
 }  // namespace U2

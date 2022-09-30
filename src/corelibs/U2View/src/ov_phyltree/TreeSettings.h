@@ -69,6 +69,11 @@ enum TreeViewOption {
     BRANCH_COLOR,
     BRANCH_THICKNESS,
 
+    /**
+     * If true (default): nodes shapes are visible (circles).
+     * If false: the shape is visible only for selected nodes or on hover over the node area.
+     */
+    SHOW_NODE_SHAPE,
     NODE_COLOR,
     NODE_RADIUS,
 

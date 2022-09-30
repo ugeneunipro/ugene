@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>238</width>
-    <height>758</height>
+    <height>791</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,7 +22,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QWidget" name="treeLayoutWidget" native="true">
      <property name="sizePolicy">
@@ -416,6 +416,19 @@
         </property>
         <property name="tickInterval">
          <number>3</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="nodesGroup" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="showNodeShapeCheck">
+        <property name="text">
+         <string>Show nodes</string>
         </property>
        </widget>
       </item>
