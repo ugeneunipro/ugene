@@ -43,12 +43,14 @@ public:
 
 private slots:
     void sl_loginClicked();
+    void sl_resetPasswordClicked();
     void sl_logoutClicked();
     void sl_openInGenecut();
     void sl_fetchResultsClicked();
     void sl_registerNewClicked();
-    void sl_getResultSequence();
-    void sl_removeSelectedResult();
+    void sl_getResultSequenceClicked();
+    void sl_removeSelectedResultClicked();
+    void sl_openResultInBrowserClicked();
 
 private:
     enum class TableColumns {
@@ -62,7 +64,8 @@ private:
         Id = 1002,
         Completed = 1003,
         CompletedWithError = 1004,
-        Interrupted = 1005
+        Interrupted = 1005,
+        ShortDescription = 1006
     };
 
     static void errorMessage(QNetworkReply* reply, QLabel* errorLabel);
@@ -72,7 +75,7 @@ private:
     static void setWidgetsEnabled(QList<QWidget*> wgts, bool enabled);
 
     bool areRegistrationDataValid() const;
-    QString getSelectedResultId() const;
+    QString getSelectedReportData(ResultData datatype) const;
 
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
@@ -84,13 +87,16 @@ private:
     QString lastName;
 
     static const QString HEADER_VALUE;
+    static const QString API_SERVER;
     static const QString API_REQUEST_URL;
     static const QString API_REQUEST_TYPE;
     static const QString API_REQUEST_LOGIN;
+    static const QString API_REQUEST_RESET_PASSWORD;
     static const QString API_REQUEST_LOGOUT;
     static const QString API_REQUEST_REGISTER;
     static const QString API_REQUEST_UPLOAD_SEQUENCE;
     static const QString API_REQUEST_REPORTS;
+    static const QString API_REQUEST_OPEN_REPORT_IN_BROWSER;
     static const QString API_REQUEST_GET_REPORT;
     static const QString API_REQUEST_DEL_REPORT;
 
@@ -109,6 +115,7 @@ private:
     static const QString JSON_COMPLETED;
     static const QString JSON_COMPLETED_WITH_ERROR;
     static const QString JSON_INTERRUPTED;
+    static const QString JSON_SHORT_DESCRIPTION;
     static const QString JSON_SEQUENCE_FILE_NAME;
     static const QString JSON_SEQUENCE_FILE_BODY;
     static const QString JSON_REPORT_ID;

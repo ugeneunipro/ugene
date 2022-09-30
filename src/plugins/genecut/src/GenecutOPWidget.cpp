@@ -50,13 +50,16 @@
 namespace U2 {
 
 const QString GenecutOPWidget::HEADER_VALUE = "application/json";
-const QString GenecutOPWidget::API_REQUEST_URL = "http://192.168.16.230:5000/api/";
+const QString GenecutOPWidget::API_SERVER = "http://192.168.16.230:5000";
+const QString GenecutOPWidget::API_REQUEST_URL = API_SERVER + "/api/";
 const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
+const QString GenecutOPWidget::API_REQUEST_RESET_PASSWORD = "sendChangePassLink";
 const QString GenecutOPWidget::API_REQUEST_LOGOUT = "logout";
 const QString GenecutOPWidget::API_REQUEST_REGISTER = "registration";
 const QString GenecutOPWidget::API_REQUEST_UPLOAD_SEQUENCE = "uploadSequence";
 const QString GenecutOPWidget::API_REQUEST_REPORTS = "reports";
+const QString GenecutOPWidget::API_REQUEST_OPEN_REPORT_IN_BROWSER = "showReport";
 const QString GenecutOPWidget::API_REQUEST_GET_REPORT = "getReport";
 const QString GenecutOPWidget::API_REQUEST_DEL_REPORT = "delReport";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
@@ -74,6 +77,7 @@ const QString GenecutOPWidget::JSON_ID = "id";
 const QString GenecutOPWidget::JSON_COMPLETED = "completed";
 const QString GenecutOPWidget::JSON_COMPLETED_WITH_ERROR = "completedWithError";
 const QString GenecutOPWidget::JSON_INTERRUPTED = "interrupted";
+const QString GenecutOPWidget::JSON_SHORT_DESCRIPTION = "short";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_NAME = "sequenceFileName";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_BODY = "sequenceFileBody";
 const QString GenecutOPWidget::JSON_REPORT_ID = "reportId";
@@ -97,10 +101,17 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     mgr = new QNetworkAccessManager(this);
 
     connect(pbLogin, &QPushButton::clicked, this, &GenecutOPWidget::sl_loginClicked);
+    connect(pbForgot, &QPushButton::clicked, [this]() {
+        stackedWidget->setCurrentIndex(1);
+    });
+    connect(pbReset, &QPushButton::clicked, this, &GenecutOPWidget::sl_resetPasswordClicked);
+    connect(pbGoBack2, &QPushButton::clicked, [this]() {
+        stackedWidget->setCurrentIndex(0);
+    });
     connect(pbLogout, &QPushButton::clicked, this, &GenecutOPWidget::sl_logoutClicked);
     connect(pbOpenInGenecut, &QPushButton::clicked, this, &GenecutOPWidget::sl_openInGenecut);
     connect(pbRegister, &QPushButton::clicked, [this]() {
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(3);
     });
     connect(cbShowPass, &QCheckBox::toggled, [this](bool toggled) {
         lePasword->setEchoMode(toggled ? QLineEdit::Normal : QLineEdit::Password);
@@ -110,11 +121,16 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         stackedWidget->setCurrentIndex(0);
     });
     connect(pbFetchResults, &QPushButton::clicked, this, &GenecutOPWidget::sl_fetchResultsClicked);
-    connect(pbGetResultSequence, &QPushButton::clicked, this, &GenecutOPWidget::sl_getResultSequence);
-    connect(pbRemoveSelectedResult, &QPushButton::clicked, this, &GenecutOPWidget::sl_removeSelectedResult);
+    connect(pbGetResultSequence, &QPushButton::clicked, this, &GenecutOPWidget::sl_getResultSequenceClicked);
+    connect(pbRemoveSelectedResult, &QPushButton::clicked, this, &GenecutOPWidget::sl_removeSelectedResultClicked);
+    connect(pbOpenResultInBrowser, &QPushButton::clicked, this, &GenecutOPWidget::sl_openResultInBrowserClicked);
     connect(twResults, &QTableWidget::itemSelectionChanged, [this]() {
-        setWidgetsEnabled({ pbRemoveSelectedResult, pbOpenResultInBrowser, pbGetInputSequence, pbGetResultSequence }, !twResults->selectedItems().isEmpty());
+        setWidgetsEnabled({ pbRemoveSelectedResult, pbOpenResultInBrowser, pbGetResultSequence }, !twResults->selectedItems().isEmpty());
 
+        QString shortDescription = getSelectedReportData(ResultData::ShortDescription);
+        CHECK_EXT(!shortDescription.isEmpty(), tbShortDescription->setText(""), );
+
+        tbShortDescription->setText(shortDescription);
     });
 }
 
@@ -129,10 +145,10 @@ void GenecutOPWidget::sl_loginClicked() {
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson();
     QNetworkReply* reply = mgr->post(request, data);
-    setWidgetsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, false);
+    setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, false);
 
     connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setWidgetsEnabled({ pbLogin, /*pbForgot,*/ pbRegister }, true);
+        setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, true);
         if (reply->error() == QNetworkReply::NoError) {
             lbLoginWarning->hide();
             QString contents = QString::fromUtf8(reply->readAll());
@@ -145,12 +161,36 @@ void GenecutOPWidget::sl_loginClicked() {
             firstName = userObject.value(JSON_FIRST_NAME).toString();
             lastName = userObject.value(JSON_LAST_NAME).toString();
             lbWelcome->setText(tr("Welcome, %1").arg(firstName));
-            stackedWidget->setCurrentIndex(1);
+            stackedWidget->setCurrentIndex(2);
         } else {
             errorMessage(reply, lbLoginWarning);
         }
         reply->deleteLater();
     });
+}
+
+void GenecutOPWidget::sl_resetPasswordClicked() {
+    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_RESET_PASSWORD);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+
+    QJsonObject obj;
+    obj[JSON_EMAIL] = leResetPassword->text();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->post(request, data);
+    setWidgetsEnabled({ leResetPassword, pbReset }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply]() {
+        setWidgetsEnabled({ leResetPassword, pbReset }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            successMessage(tr("Check your email"), lbResetStatus);
+        } else {
+            errorMessage(reply, lbResetStatus);
+        }
+        reply->deleteLater();
+    });
+
 }
 
 void GenecutOPWidget::sl_logoutClicked() {
@@ -259,6 +299,7 @@ void GenecutOPWidget::sl_fetchResultsClicked() {
                 dateWgtItem->setData((int)ResultData::Completed, arrayObj.value(JSON_COMPLETED).toBool());
                 dateWgtItem->setData((int)ResultData::CompletedWithError, arrayObj.value(JSON_COMPLETED_WITH_ERROR).toBool());
                 dateWgtItem->setData((int)ResultData::Interrupted, arrayObj.value(JSON_INTERRUPTED).toBool());
+                dateWgtItem->setData((int)ResultData::ShortDescription, arrayObj.value(JSON_SHORT_DESCRIPTION).toString());
                 twResults->setItem(i, (int)TableColumns::Date, dateWgtItem);
                 twResults->setItem(i, (int)TableColumns::Status, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString(), (int)ResultData::Status));
             }
@@ -291,7 +332,7 @@ void GenecutOPWidget::sl_registerNewClicked() {
     connect(reply, &QNetworkReply::finished, [this, reply]() {
         setWidgetsEnabled({ pbRegisterNew }, true);
         if (reply->error() == QNetworkReply::NoError) {
-            successMessage(tr("user created!"), lbRegisterWarning);
+            successMessage(tr("user created! Check your email"), lbRegisterWarning);
         } else {
             errorMessage(reply, lbRegisterWarning);
         }
@@ -299,8 +340,8 @@ void GenecutOPWidget::sl_registerNewClicked() {
     });
 }
 
-void GenecutOPWidget::sl_getResultSequence() {
-    QString resultId = getSelectedResultId();
+void GenecutOPWidget::sl_getResultSequenceClicked() {
+    QString resultId = getSelectedReportData(ResultData::Id);
     CHECK(!resultId.isEmpty(), );
 
     const QUrl url(API_REQUEST_URL + API_REQUEST_GET_REPORT);
@@ -330,8 +371,8 @@ void GenecutOPWidget::sl_getResultSequence() {
 
 }
 
-void GenecutOPWidget::sl_removeSelectedResult() {
-    QString resultId = getSelectedResultId();
+void GenecutOPWidget::sl_removeSelectedResultClicked() {
+    QString resultId = getSelectedReportData(ResultData::Id);
     CHECK(!resultId.isEmpty(), );
 
     const QUrl url(API_REQUEST_URL + API_REQUEST_DEL_REPORT);
@@ -363,6 +404,31 @@ void GenecutOPWidget::sl_removeSelectedResult() {
         reply->deleteLater();
     });
 
+}
+
+void GenecutOPWidget::sl_openResultInBrowserClicked() {
+    auto reportId = getSelectedReportData(ResultData::Id);
+    CHECK(!reportId.isEmpty(), );
+
+    QFile f(":genecut/template/show_report.html");
+    SAFE_POINT(f.open(QIODevice::ReadOnly), L10N::errorReadingFile(f.fileName()), );
+
+    QString showReportHtml = f.readAll();
+    showReportHtml = showReportHtml.arg(reportId).arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken).arg(API_SERVER);
+
+    QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("genecut");
+    U2OpStatus2Log os;
+    GUrlUtils::prepareDirLocation(tmpDir, os);
+    CHECK_OP(os, );
+
+    QFile tmpFile(tmpDir + QDir::separator() + "genecut_template.html");
+    SAFE_POINT(!tmpFile.exists() || tmpFile.remove(), "Can't reuse tmp file", );
+    SAFE_POINT(tmpFile.open(QIODevice::WriteOnly), L10N::errorOpeningFileRead(tmpFile.fileName()), );
+
+    QTextStream out(&tmpFile);
+    out << showReportHtml;
+    tmpFile.close();
+    QDesktopServices::openUrl(QUrl::fromLocalFile(tmpFile.fileName()));
 }
 
 void GenecutOPWidget::errorMessage(QNetworkReply* reply, QLabel* errorLabel) {
@@ -451,14 +517,14 @@ bool GenecutOPWidget::areRegistrationDataValid() const {
     return valid;
 }
 
-QString GenecutOPWidget::getSelectedResultId() const {
+QString GenecutOPWidget::getSelectedReportData(ResultData datatype) const {
     CHECK(!twResults->selectedItems().isEmpty(), QString());
 
     auto selection = twResults->selectedItems();
     SAFE_POINT(selection.size() == 2, "Unexpected selection size", QString());
 
     auto dataItem = selection.first()->type() == (int)ResultData::Date ? selection.first() : selection.last();
-    auto resultId = dataItem->data((int)ResultData::Id).toString();
+    auto resultId = dataItem->data((int)datatype).toString();
     SAFE_POINT(!resultId.isEmpty(), "Result data ID is empty", QString());
 
     return resultId;
