@@ -3025,7 +3025,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/Klebsislla.sort.bam.ugenedb");
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class SimpleExport : public CustomScenario {
