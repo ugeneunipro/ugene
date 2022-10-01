@@ -273,11 +273,7 @@ private:
 
     void collapseSelected();
 
-    void updateSettings();
-
     void updateLayout();
-
-    void updateTextSettings(const TreeViewOption& option);
 
     void updateBranchSettings();
 
@@ -296,7 +292,16 @@ private:
 
     void changeTreeLayout(const TreeLayout& newTreeLayout);
     void changeNamesDisplay();
-    void changeNodeValuesDisplay();
+
+    /** Updates settings for selected items only. If there is no selection updates setting for all items. */
+    void updateTextOptionOnSelectedItems(const TreeViewOption& option);
+
+    /** Updates settings for selected items only. If there is no selection updates setting for all items. */
+    void updateTreeSettingsOnSelectedItems();
+
+    /** Updates settings for all nodes in the tree. */
+    void updateTreeSettingsOnAllNodes();
+
     void changeLabelsAlignment();
 
     void initializeSettings();

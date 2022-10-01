@@ -532,14 +532,13 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
         case LABEL_FONT_BOLD:
         case LABEL_FONT_ITALIC:
         case LABEL_FONT_UNDERLINE:
-            updateTextSettings(option);
+            updateTextOptionOnSelectedItems(option);
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
-        case SHOW_NODE_SHAPE:
         case NODE_COLOR:
         case NODE_RADIUS:
-            updateSettings();
+            updateTreeSettingsOnSelectedItems();
             break;
         case SHOW_LABELS:
             changeNamesDisplay();
@@ -550,7 +549,8 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
             treeViewer->distanceLabelsAction->setChecked(newValue.toBool());
             break;
         case SHOW_NODE_LABELS:
-            changeNodeValuesDisplay();
+        case SHOW_NODE_SHAPE:
+            updateTreeSettingsOnAllNodes();
             break;
         case ALIGN_LABELS:
             changeLabelsAlignment();
@@ -617,7 +617,7 @@ void TreeViewerUI::initializeSettings() {
     }
 }
 
-void TreeViewerUI::updateSettings() {
+void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();
     if (updatingItems.isEmpty()) {
         updatingItems = items();
@@ -653,7 +653,7 @@ static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {
     return result;
 }
 
-void TreeViewerUI::updateTextSettings(const TreeViewOption& option) {
+void TreeViewerUI::updateTextOptionOnSelectedItems(const TreeViewOption& option) {
     QSet<QGraphicsItem*> itemsToUpdate = scene()->selectedItems().toSet();
     if (itemsToUpdate.isEmpty()) {
         itemsToUpdate = scene()->items().toSet();
@@ -1280,13 +1280,13 @@ void TreeViewerUI::rebuildTreeLayout() {
             break;
     }
     updateScene(true);
-    updateSettings();
-    updateTextSettings(LABEL_COLOR);
-    updateTextSettings(LABEL_FONT_TYPE);
-    updateTextSettings(LABEL_FONT_SIZE);
-    updateTextSettings(LABEL_FONT_BOLD);
-    updateTextSettings(LABEL_FONT_ITALIC);
-    updateTextSettings(LABEL_FONT_UNDERLINE);
+    updateTreeSettingsOnSelectedItems();
+    updateTextOptionOnSelectedItems(LABEL_COLOR);
+    updateTextOptionOnSelectedItems(LABEL_FONT_TYPE);
+    updateTextOptionOnSelectedItems(LABEL_FONT_SIZE);
+    updateTextOptionOnSelectedItems(LABEL_FONT_BOLD);
+    updateTextOptionOnSelectedItems(LABEL_FONT_ITALIC);
+    updateTextOptionOnSelectedItems(LABEL_FONT_UNDERLINE);
 }
 
 void TreeViewerUI::sl_onBranchCollapsed(TvBranchItem*) {
@@ -1316,7 +1316,7 @@ void TreeViewerUI::setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& tre
     bool showDistances = getOptionValue(SHOW_DISTANCES).toBool();
 
     // TODO: cleanup labels logic.
-    changeNodeValuesDisplay();
+    updateTreeSettingsOnAllNodes();
     if (!showNames || !showDistances) {
         LabelTypes lt;
         if (!showDistances) {
@@ -1371,13 +1371,15 @@ void TreeViewerUI::changeNamesDisplay() {
     scene()->setSceneRect(rect);
 }
 
-void TreeViewerUI::changeNodeValuesDisplay() {
+void TreeViewerUI::updateTreeSettingsOnAllNodes() {
+    QMap<TreeViewOption, QVariant> settings = getSettings();
     const QList<QGraphicsItem*> itemList = scene()->items();
     for (QGraphicsItem* curItem : qAsConst(itemList)) {
-        if (auto buttonItem = dynamic_cast<TvNodeItem*>(curItem)) {
-            buttonItem->updateSettings(getSettings());
+        if (auto nodeItem = dynamic_cast<TvNodeItem*>(curItem)) {
+            nodeItem->updateSettings(settings);
         }
     }
+    scene()->update();
 }
 
 void TreeViewerUI::sl_showDistanceLabelsTriggered(bool on) {

@@ -1143,6 +1143,20 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
     QImage image = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(image == imageWithNodes, "Image with no nodes does not match the original image");
+
+    // No check the same but with selected nodes.
+    GTUtilsPhyTree::clickNode(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.003", "0.038"));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20, 0));  // Remove hover effect from node.
+    QImage imageWithSelectionWithNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithSelectionWithNodes != imageWithNodes, "Image with selected node must be different");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithSelectionWithoutNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithSelectionWithNodes != imageWithSelectionWithoutNodes, "Image with selection not changed after hiding nodes");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithSelectionWithNodesAfter = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithSelectionWithNodesAfter == imageWithSelectionWithNodes, "Image with selection not matched original image");
 }
 
 }  // namespace GUITest_common_scenarios_tree_viewer
