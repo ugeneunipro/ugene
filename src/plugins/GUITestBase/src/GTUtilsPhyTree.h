@@ -22,8 +22,8 @@
 #ifndef _U2_GT_UTILS_PHY_TREE_H_
 #define _U2_GT_UTILS_PHY_TREE_H_
 
-#include <U2View/GraphicsButtonItem.h>
 #include <U2View/TreeViewer.h>
+#include <U2View/TvNodeItem.h>
 
 #include "GTGlobals.h"
 
@@ -37,15 +37,15 @@ public:
     /** Checks that the active MDI window is a Tree Viewer window or fails. */
     static void checkTreeViewerWindowIsActive(HI::GUITestOpStatus& os, const QString& titlePart = "");
 
-    static QList<GraphicsButtonItem*> getSelectedNodes(HI::GUITestOpStatus& os);
-    static QList<GraphicsButtonItem*> getUnselectedNodes(HI::GUITestOpStatus& os);
-    static QList<GraphicsButtonItem*> getNodes(HI::GUITestOpStatus& os);
+    static QList<TvNodeItem*> getSelectedNodes(HI::GUITestOpStatus& os);
+    static QList<TvNodeItem*> getUnselectedNodes(HI::GUITestOpStatus& os);
+    static QList<TvNodeItem*> getNodes(HI::GUITestOpStatus& os);
 
     /** Returns bounding rectangle in view-local on-screen coordinates. */
     static QRect getItemViewRect(HI::GUITestOpStatus& os, QGraphicsItem* item);
 
     /** Finds 'button' node in the tree by 2 branch texts: left & right. */
-    static GraphicsButtonItem* getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText);
+    static TvNodeItem* getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText);
 
     static QList<QGraphicsSimpleTextItem*> getLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView = nullptr);
     static QList<QGraphicsSimpleTextItem*> getVisibleLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView = nullptr);
@@ -55,9 +55,9 @@ public:
     static QList<double> getDistancesValues(HI::GUITestOpStatus& os);
     static QPoint getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item);
 
-    static void clickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node, const Qt::MouseButton& mouseButton = Qt::LeftButton);
-    static void doubleClickNode(HI::GUITestOpStatus& os, GraphicsButtonItem* node);
-    static qreal getNodeDistance(HI::GUITestOpStatus& os, GraphicsButtonItem* node);
+    static void clickNode(HI::GUITestOpStatus& os, TvNodeItem* node, const Qt::MouseButton& mouseButton = Qt::LeftButton);
+    static void doubleClickNode(HI::GUITestOpStatus& os, TvNodeItem* node);
+    static qreal getNodeDistance(HI::GUITestOpStatus& os, TvNodeItem* node);
 
     static TreeViewerUI* getTreeViewerUi(HI::GUITestOpStatus& os);
 
@@ -101,16 +101,16 @@ public:
      *    |-10-
      *
      */
-    static QList<GraphicsButtonItem*> getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount = -1);
-    static QList<GraphicsRectangularBranchItem*> getOrderedRectangularBranches(HI::GUITestOpStatus& os);
+    static QList<TvNodeItem*> getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount = -1);
+    static QList<TvRectangularBranchItem*> getOrderedRectangularBranches(HI::GUITestOpStatus& os);
 
-    static GraphicsButtonItem* getRootNode(HI::GUITestOpStatus& os);
-    static GraphicsBranchItem* getRootBranch(HI::GUITestOpStatus& os);
-    static GraphicsRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
+    static TvNodeItem* getRootNode(HI::GUITestOpStatus& os);
+    static TvBranchItem* getRootBranch(HI::GUITestOpStatus& os);
+    static TvRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
 
 private:
-    static QList<GraphicsRectangularBranchItem*> getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, GraphicsRectangularBranchItem* rootBranch);
-    static bool rectangularBranchLessThan(GraphicsRectangularBranchItem* first, GraphicsRectangularBranchItem* second);
+    static QList<TvRectangularBranchItem*> getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, TvRectangularBranchItem* rootBranch);
+    static bool rectangularBranchLessThan(TvRectangularBranchItem* first, TvRectangularBranchItem* second);
 };
 
 }  // namespace U2

@@ -19,20 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
-#define _U2_UNROOTED_TREE_LAYOUT_ALGORITHM_H_
+#ifndef _U2_TV_CIRCULAR_LAYOUT_ALGORITHM_H_
+#define _U2_TV_CIRCULAR_LAYOUT_ALGORITHM_H_
 
 namespace U2 {
 
-class GraphicsRectangularBranchItem;
-class GraphicsUnrootedBranchItem;
-class GraphicsBranchItem;
+class TvRectangularBranchItem;
+class TvCircularBranchItem;
+class TvBranchItem;
 
-class UnrootedTreeLayoutAlgorithm {
+class TvCircularLayoutAlgorithm {
 public:
-    UnrootedTreeLayoutAlgorithm() = delete;
+    TvCircularLayoutAlgorithm() = delete;
 
-    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot);
+    static TvBranchItem* convert(TvRectangularBranchItem* rectRoot, bool degeneratedCase);
 };
 
 }  // namespace U2

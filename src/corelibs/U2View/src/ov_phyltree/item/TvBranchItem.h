@@ -19,21 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHICS_BRANCH_ITEM_H_
-#define _U2_GRAPHICS_BRANCH_ITEM_H_
+#ifndef _U2_TV_BRANCH_ITEM_H_
+#define _U2_TV_BRANCH_ITEM_H_
 
 #include <QAbstractGraphicsShapeItem>
 
 #include <U2Core/global.h>
 
-#include "TreeSettings.h"
+#include "../TreeSettings.h"
 
 namespace U2 {
 
-class GraphicsButtonItem;
-class GraphicsRectangularBranchItem;
+class TvNodeItem;
+class TvTextItem;
+class TvRectangularBranchItem;
 
-class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
+class U2VIEW_EXPORT TvBranchItem : public QObject, public QAbstractGraphicsShapeItem {
     Q_OBJECT
 public:
     /** Side of the branch in the binary tree relative to the root node: left of right. */
@@ -41,19 +42,19 @@ public:
         Left,
         Right
     };
-    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue);
+    TvBranchItem(bool withButton, const Side& side, double nodeValue);
 
-    GraphicsButtonItem* getButtonItem() const;
+    TvNodeItem* getButtonItem() const;
 
-    GraphicsBranchItem* getChildBranch(const Side& side) const;
+    TvBranchItem* getChildBranch(const Side& side) const;
 
     double getNodeLabelValue() const;
 
-    QGraphicsSimpleTextItem* getDistanceTextItem() const;
+    TvTextItem* getDistanceTextItem() const;
 
     QString getDistanceText() const;
 
-    QGraphicsSimpleTextItem* getNameTextItem() const;
+    TvTextItem* getNameTextItem() const;
 
     double getWidth() const;
 
@@ -100,24 +101,24 @@ public:
     int maxStepsToLeafParentDelta = 1;
 
     /** Corresponding rectangular branch item for the branch. Set only for circular & unrooted branch items. */
-    GraphicsRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
+    TvRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
 
     /** Returns top level (root) branch item in the tree. */
-    GraphicsBranchItem* getRoot();
+    TvBranchItem* getRoot();
 
     /**Returns true if the branch is a root branch of the tree. */
     bool isRoot() const;
 
     /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
-    void emitBranchCollapsed(GraphicsBranchItem* branch);
+    void emitBranchCollapsed(TvBranchItem* branch);
 
 signals:
-    void si_branchCollapsed(GraphicsBranchItem* branch);
+    void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    explicit GraphicsBranchItem(const QString& name);
+    explicit TvBranchItem(const QString& name);
 
-    GraphicsBranchItem(double distance, bool withButton, double nodeValue);
+    TvBranchItem(double distance, bool withButton, double nodeValue);
 
     virtual void setLabelPositions();
 
@@ -129,9 +130,9 @@ protected:
 
     void initText(double d);
 
-    QGraphicsSimpleTextItem* distanceText = nullptr;
-    QGraphicsSimpleTextItem* nameText = nullptr;
-    GraphicsButtonItem* buttonItem = nullptr;
+    TvTextItem* distanceTextItem = nullptr;
+    TvTextItem* nameTextItem = nullptr;
+    TvNodeItem* nodeItem = nullptr;
 
     double width = 0;
     /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */

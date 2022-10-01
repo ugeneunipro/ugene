@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsUnrootedBranchItem.h"
+#include "TvUnrootedBranchItem.h"
 
 #include <QGraphicsView>
 #include <QPainter>
@@ -28,63 +28,64 @@
 
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsRectangularBranchItem.h"
+#include "TvRectangularBranchItem.h"
+#include "TvTextItem.h"
 
 namespace U2 {
 
-GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, double angle, GraphicsRectangularBranchItem* from, double nodeValue)
-    : GraphicsBranchItem(true, from->getSide(), nodeValue) {
+TvUnrootedBranchItem::TvUnrootedBranchItem(QGraphicsItem* parent, double angle, TvRectangularBranchItem* from, double nodeValue)
+    : TvBranchItem(true, from->getSide(), nodeValue) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
     width = from->getWidth();
     setDist(from->getDist());
     setPos(width, 0);
-    angle = side == GraphicsBranchItem::Side::Right ? angle : -angle;
+    angle = side == TvBranchItem::Side::Right ? angle : -angle;
     setTransform(QTransform().translate(-width, 0).rotate(angle).translate(width, 0));
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);
 
     if (from->getNameTextItem() != nullptr) {
-        nameText = new QGraphicsSimpleTextItem(from->getNameTextItem()->text(), this);
-        nameText->setFont(from->getNameTextItem()->font());
-        nameText->setBrush(from->getNameTextItem()->brush());
+        nameTextItem = new TvTextItem(this, from->getNameTextItem()->text());
+        nameTextItem->setFont(from->getNameTextItem()->font());
+        nameTextItem->setBrush(from->getNameTextItem()->brush());
     }
     if (from->getDistanceTextItem() != nullptr) {
-        distanceText = new QGraphicsSimpleTextItem(from->getDistanceTextItem()->text(), this);
-        distanceText->setFont(from->getDistanceTextItem()->font());
-        distanceText->setBrush(from->getDistanceTextItem()->brush());
+        distanceTextItem = new TvTextItem(this, from->getDistanceTextItem()->text());
+        distanceTextItem->setFont(from->getDistanceTextItem()->font());
+        distanceTextItem->setBrush(from->getDistanceTextItem()->brush());
     }
     setLabelPositions();
     setPen(from->pen());
 }
 
-void GraphicsUnrootedBranchItem::setLabelPositions() {
-    if (nameText != nullptr) {
-        QRectF rect = nameText->boundingRect();
+void TvUnrootedBranchItem::setLabelPositions() {
+    if (nameTextItem != nullptr) {
+        QRectF rect = nameTextItem->boundingRect();
         double h = rect.height();
-        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -h * 0.5);
-        if (nameText->scenePos().x() < 0.0) {
+        nameTextItem->setPos(TvBranchItem::TEXT_SPACING, -h * 0.5);
+        if (nameTextItem->scenePos().x() < 0.0) {
             QPointF p = rect.center();
-            nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
+            nameTextItem->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
     }
-    if (distanceText != nullptr) {
-        QRectF rect = distanceText->boundingRect();
-        if (distanceText->scenePos().x() < 0) {
+    if (distanceTextItem != nullptr) {
+        QRectF rect = distanceTextItem->boundingRect();
+        if (distanceTextItem->scenePos().x() < 0) {
             QPointF p(rect.center().x(), rect.height());
-            distanceText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
+            distanceTextItem->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
-        distanceText->setPos(-0.5 * (width + rect.width()), -rect.height());
+        distanceTextItem->setPos(-0.5 * (width + rect.width()), -rect.height());
     }
 }
 
-QRectF GraphicsUnrootedBranchItem::boundingRect() const {
+QRectF TvUnrootedBranchItem::boundingRect() const {
     double penWidth = 1;
     return {-width, -penWidth * 0.5, width, penWidth};
 }
 
-void GraphicsUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
+void TvUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     setUpPainter(painter);
     painter->drawLine(0, 0, -width, 0);
 }

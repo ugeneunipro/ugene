@@ -30,11 +30,12 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/GraphicsButtonItem.h>
-#include <U2View/GraphicsRectangularBranchItem.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/TvNodeItem.h>
+#include <U2View/TvTextItem.h>
+#include <U2View/TvRectangularBranchItem.h>
 
 namespace U2 {
 
@@ -256,11 +257,11 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
     getRoot()->setSelectedRecursively(false);
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
-        auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
+        auto branchItem = dynamic_cast<TvBranchItem*>(item);
         if (branchItem == nullptr) {
             continue;
         }
-        QGraphicsSimpleTextItem* nameItem = branchItem->getNameTextItem();
+        TvTextItem* nameItem = branchItem->getNameTextItem();
         if (nameItem == nullptr) {
             continue;
         }
@@ -271,11 +272,11 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList& selectedSeque
 void MSAEditorTreeViewerUI::sl_sequenceNameChanged(const QString& prevName, const QString& newName) {
     QList<QGraphicsItem*> items = scene()->items();
     for (QGraphicsItem* item : qAsConst(items)) {
-        auto branchItem = dynamic_cast<GraphicsBranchItem*>(item);
+        auto branchItem = dynamic_cast<TvBranchItem*>(item);
         if (branchItem == nullptr) {
             continue;
         }
-        QGraphicsSimpleTextItem* nameItem = branchItem->getNameTextItem();
+        TvTextItem* nameItem = branchItem->getNameTextItem();
         if (nameItem == nullptr) {
             continue;
         }
@@ -295,7 +296,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
     }
 }
 
-void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem* branch) {
+void MSAEditorTreeViewerUI::sl_onBranchCollapsed(TvBranchItem* branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
     if (msaEditorTreeViewer->isSyncModeEnabled()) {
         msaEditorTreeViewer->orderAlignmentByTree();
@@ -306,11 +307,11 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
     QList<QStringList> groupList;
 
     // treeBranchStack is used here for Depth-First-Search algorithm implementation with no recursion.
-    QStack<GraphicsBranchItem*> treeBranchStack;
+    QStack<TvBranchItem*> treeBranchStack;
     treeBranchStack.push(getRoot());
 
     while (!treeBranchStack.isEmpty()) {
-        GraphicsBranchItem* branchItem = treeBranchStack.pop();
+        TvBranchItem* branchItem = treeBranchStack.pop();
         if (branchItem->isCollapsed()) {
             groupList.append(MSAEditorTreeViewerUtils::getSeqsNamesInBranch(branchItem));
             continue;
@@ -328,7 +329,7 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
         std::reverse(childItemList.begin(), childItemList.end());
 
         for (QGraphicsItem* childItem : qAsConst(childItemList)) {
-            auto childBranchItem = dynamic_cast<GraphicsBranchItem*>(childItem);
+            auto childBranchItem = dynamic_cast<TvBranchItem*>(childItem);
             if (childBranchItem != nullptr) {
                 treeBranchStack.push(childBranchItem);
             }
@@ -337,17 +338,17 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
     return groupList;
 }
 
-QStringList MSAEditorTreeViewerUtils::getSeqsNamesInBranch(const GraphicsBranchItem* branch) {
+QStringList MSAEditorTreeViewerUtils::getSeqsNamesInBranch(const TvBranchItem* branch) {
     QStringList seqNames;
-    QStack<const GraphicsBranchItem*> treeBranches;
+    QStack<const TvBranchItem*> treeBranches;
     treeBranches.push(branch);
 
     do {
-        const GraphicsBranchItem* parentBranch = treeBranches.pop();
+        const TvBranchItem* parentBranch = treeBranches.pop();
 
         QList<QGraphicsItem*> childItemList = parentBranch->childItems();
         for (QGraphicsItem* graphItem : qAsConst(childItemList)) {
-            auto childrenBranch = dynamic_cast<GraphicsBranchItem*>(graphItem);
+            auto childrenBranch = dynamic_cast<TvBranchItem*>(graphItem);
             if (childrenBranch == nullptr) {
                 continue;
             }

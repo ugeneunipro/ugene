@@ -150,7 +150,7 @@ public slots:
 
 private slots:
     void sl_selectionChanged(const QStringList& selectedSequenceNameList);
-    void sl_onBranchCollapsed(GraphicsBranchItem* branch) override;
+    void sl_onBranchCollapsed(TvBranchItem* branch) override;
 
 private:
     MSAEditorTreeViewer* const msaEditorTreeViewer;
@@ -158,7 +158,7 @@ private:
 
 class MSAEditorTreeViewerUtils {
 public:
-    static QStringList getSeqsNamesInBranch(const GraphicsBranchItem* branch);
+    static QStringList getSeqsNamesInBranch(const TvBranchItem* branch);
 };
 
 }  // namespace U2

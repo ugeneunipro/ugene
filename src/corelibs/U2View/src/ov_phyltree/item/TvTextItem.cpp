@@ -19,22 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CIRCULAR_TREE_LAYOUT_ALGORITHM_H_
-#define _U2_CIRCULAR_TREE_LAYOUT_ALGORITHM_H_
+#include "TvTextItem.h"
 
 namespace U2 {
 
-class GraphicsRectangularBranchItem;
-class GraphicsCircularBranchItem;
-class GraphicsBranchItem;
-
-class CircularTreeLayoutAlgorithm {
-public:
-    CircularTreeLayoutAlgorithm() = delete;
-
-    static GraphicsBranchItem* convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase);
-};
+TvTextItem::TvTextItem(QGraphicsItem* parent, const QString& text)
+    : QGraphicsSimpleTextItem(text, parent) {
+}
 
 }  // namespace U2
-
-#endif

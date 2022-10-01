@@ -65,8 +65,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(nameList == expectedExpandedTreeNameList, "Initial full tree name list not matched: " + nameList.join(","));
 
     // Collapse subtree. Check that MSA name list has a collapsed group.
-    QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    GraphicsButtonItem* parentOfSequenceC = nodeList[1];
+    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    TvNodeItem* parentOfSequenceC = nodeList[1];
     GTUtilsPhyTree::doubleClickNode(os, parentOfSequenceC);
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     expectedExpandedTreeNameList = QStringList({"h", "b", "f", "d", "g", "a"});

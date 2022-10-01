@@ -59,8 +59,9 @@
 #include <U2Gui/Notification.h>
 
 #include <U2View/ADVConstants.h>
-#include <U2View/GraphicsBranchItem.h>
-#include <U2View/GraphicsButtonItem.h>
+#include <U2View/TvBranchItem.h>
+#include <U2View/TvNodeItem.h>
+#include <U2View/TvTextItem.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -3051,12 +3052,12 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     auto syncModeButton = GTAction::button(os, "sync_msa_action");
     auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
 
-    auto collapsedNodeSelector = [&](GraphicsButtonItem* buttonNode) {
-        auto branchNode = dynamic_cast<GraphicsBranchItem*>(buttonNode->parentItem());
+    auto collapsedNodeSelector = [&](TvNodeItem* buttonNode) {
+        auto branchNode = dynamic_cast<TvBranchItem*>(buttonNode->parentItem());
         auto distanceTextNode = branchNode->getDistanceTextItem();
         return distanceTextNode != nullptr && distanceTextNode->text() == "0.068";
     };
-    auto selectNodeToCollapse = [&](QList<GraphicsButtonItem*> nodes) -> GraphicsButtonItem* {
+    auto selectNodeToCollapse = [&](QList<TvNodeItem*> nodes) -> TvNodeItem* {
         auto it = std::find_if(nodes.begin(), nodes.end(), collapsedNodeSelector);
         CHECK_SET_ERR_RESULT(it != nodes.end(), "Node to collapse is not found!", nullptr);
         return *it;
@@ -3066,8 +3067,8 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     QStringList allRows = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after opening");
 
-    QList<GraphicsButtonItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
-    GraphicsButtonItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
+    QList<TvNodeItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
+    TvNodeItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, rectNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Rectangular");
     QStringList rowsInRectCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
@@ -3081,7 +3082,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     QStringList rowsInSyncModeCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(rowsInSyncModeCircular == allRows, "Nodes in Circular layout do not match");
     treeNodes = GTUtilsPhyTree::getNodes(os);
-    GraphicsButtonItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
+    TvNodeItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, circularNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Circular");
     QStringList rowsInCircularCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
@@ -3094,7 +3095,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     QStringList rowsInSyncModeUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(rowsInSyncModeUnrooted == allRows, "Nodes in Unrooted layout do not match");
     treeNodes = GTUtilsPhyTree::getNodes(os);
-    GraphicsButtonItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
+    TvNodeItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, unrootedNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Unrooted");
     QStringList rowsInUnrootedCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
@@ -3110,7 +3111,7 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
     // Check that tree buttons size remains not changed on window resize.
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getNodes(os);
+    QList<TvNodeItem*> nodes = GTUtilsPhyTree::getNodes(os);
     auto node = nodes[5];
 
     QRect viewRectBefore = GTUtilsPhyTree::getItemViewRect(os, node);

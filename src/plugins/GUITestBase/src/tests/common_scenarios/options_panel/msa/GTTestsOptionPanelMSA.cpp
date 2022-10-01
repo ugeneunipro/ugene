@@ -1880,7 +1880,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
 
     // Click to empty space near the node to reset selection
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
     QPointF sceneCoord = node->mapToScene(node->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);

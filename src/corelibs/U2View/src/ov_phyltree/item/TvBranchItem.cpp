@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsBranchItem.h"
+#include "TvBranchItem.h"
 
 #include <QGraphicsScene>
 #include <QPainter>
@@ -27,13 +27,14 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include "GraphicsButtonItem.h"
-#include "GraphicsRectangularBranchItem.h"
-#include "TreeViewerUtils.h"
+#include "../TreeViewerUtils.h"
+#include "TvNodeItem.h"
+#include "TvRectangularBranchItem.h"
+#include "TvTextItem.h"
 
 namespace U2 {
 
-GraphicsBranchItem::GraphicsBranchItem(bool withButton, const GraphicsBranchItem::Side& _side, double nodeValue)
+TvBranchItem::TvBranchItem(bool withButton, const TvBranchItem::Side& _side, double nodeValue)
     : side(_side) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -41,8 +42,8 @@ GraphicsBranchItem::GraphicsBranchItem(bool withButton, const GraphicsBranchItem
     setAcceptedMouseButtons(Qt::NoButton);
 
     if (withButton) {
-        buttonItem = new GraphicsButtonItem(nodeValue);
-        buttonItem->setParentItem(this);
+        nodeItem = new TvNodeItem(nodeValue);
+        nodeItem->setParentItem(this);
     }
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
@@ -52,7 +53,7 @@ GraphicsBranchItem::GraphicsBranchItem(bool withButton, const GraphicsBranchItem
     setPen(pen1);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(const QString& name) {
+TvBranchItem::TvBranchItem(const QString& name) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -64,15 +65,14 @@ GraphicsBranchItem::GraphicsBranchItem(const QString& name) {
     pen1.setCosmetic(true);
     setPen(pen1);
 
-    nameText = new QGraphicsSimpleTextItem(name);
-    nameText->setFont(TreeViewerUtils::getFont());
-    nameText->setBrush(Qt::darkGray);
+    nameTextItem = new TvTextItem(this, name);
+    nameTextItem->setFont(TreeViewerUtils::getFont());
+    nameTextItem->setBrush(Qt::darkGray);
     setLabelPositions();
-    nameText->setParentItem(this);
-    nameText->setZValue(1);
+    nameTextItem->setZValue(1);
 }
 
-GraphicsBranchItem::GraphicsBranchItem(double _distance, bool withButton, double nodeValue)
+TvBranchItem::TvBranchItem(double _distance, bool withButton, double nodeValue)
     : distance(_distance) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -80,8 +80,8 @@ GraphicsBranchItem::GraphicsBranchItem(double _distance, bool withButton, double
     setAcceptedMouseButtons(Qt::NoButton);
 
     if (withButton) {
-        buttonItem = new GraphicsButtonItem(nodeValue);
-        buttonItem->setParentItem(this);
+        nodeItem = new TvNodeItem(nodeValue);
+        nodeItem->setParentItem(this);
     }
 
     initText(distance);
@@ -95,7 +95,7 @@ GraphicsBranchItem::GraphicsBranchItem(double _distance, bool withButton, double
     setBrush(branchColor);
 }
 
-void GraphicsBranchItem::updateSettings(const OptionsMap& newSettings) {
+void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
     settings[BRANCH_COLOR] = newSettings[BRANCH_COLOR];
     settings[BRANCH_THICKNESS] = newSettings[BRANCH_THICKNESS];
 
@@ -112,19 +112,19 @@ void GraphicsBranchItem::updateSettings(const OptionsMap& newSettings) {
     this->setPen(currentPen);
 }
 
-void GraphicsBranchItem::updateChildSettings(const OptionsMap& newSettings) {
+void TvBranchItem::updateChildSettings(const OptionsMap& newSettings) {
     QList<QGraphicsItem*> childItems = this->childItems();
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-        if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
+        if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             branchItem->updateSettings(newSettings);
             branchItem->updateChildSettings(newSettings);
         }
     }
 }
 
-void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVariant& propertyVal) {
-    QFont dtFont = distanceText ? distanceText->font() : QFont();
-    QFont ntFont = nameText ? nameText->font() : QFont();
+void TvBranchItem::updateTextProperty(TreeViewOption property, const QVariant& propertyVal) {
+    QFont dtFont = distanceTextItem ? distanceTextItem->font() : QFont();
+    QFont ntFont = nameTextItem ? nameTextItem->font() : QFont();
     switch (property) {
         case U2::LABEL_FONT_TYPE:
             dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
@@ -147,35 +147,35 @@ void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVari
             ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
             break;
         case U2::LABEL_COLOR:
-            if (distanceText) {
-                distanceText->setBrush(qvariant_cast<QColor>(propertyVal));
+            if (distanceTextItem) {
+                distanceTextItem->setBrush(qvariant_cast<QColor>(propertyVal));
             }
-            if (nameText) {
-                nameText->setBrush(qvariant_cast<QColor>(propertyVal));
+            if (nameTextItem) {
+                nameTextItem->setBrush(qvariant_cast<QColor>(propertyVal));
             }
             break;
         default:
             break;
     }
 
-    if (distanceText) {
-        distanceText->setFont(dtFont);
+    if (distanceTextItem) {
+        distanceTextItem->setFont(dtFont);
     }
-    if (nameText) {
-        nameText->setFont(ntFont);
+    if (nameTextItem) {
+        nameTextItem->setFont(ntFont);
     }
 }
 
-const OptionsMap& GraphicsBranchItem::getSettings() const {
+const OptionsMap& TvBranchItem::getSettings() const {
     return settings;
 }
 
-void GraphicsBranchItem::toggleCollapsedState() {
+void TvBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
     QList<QGraphicsItem*> items = childItems();
     if (collapsed) {
         for (auto item : qAsConst(items)) {
-            if (dynamic_cast<GraphicsBranchItem*>(item)) {
+            if (dynamic_cast<TvBranchItem*>(item)) {
                 item->hide();
             }
         }
@@ -204,20 +204,20 @@ void GraphicsBranchItem::toggleCollapsedState() {
     getRoot()->emitBranchCollapsed(this);
 }
 
-void GraphicsBranchItem::setSelectedRecursively(bool isSelected) {
-    if (buttonItem) {
-        buttonItem->setSelected(isSelected);
+void TvBranchItem::setSelectedRecursively(bool isSelected) {
+    if (nodeItem) {
+        nodeItem->setSelected(isSelected);
     }
     QList<QGraphicsItem*> children = childItems();
     for (QGraphicsItem* graphItem : qAsConst(children)) {
-        if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
+        if (auto childBranch = dynamic_cast<TvBranchItem*>(graphItem)) {
             childBranch->setSelectedRecursively(isSelected);
         }
     }
     QAbstractGraphicsShapeItem::setSelected(isSelected);
 }
 
-void GraphicsBranchItem::initText(double d) {
+void TvBranchItem::initText(double d) {
     QString str = QString::number(d, 'f', 3);
     // Trim trailing zeros.
     int i = str.length() - 1;
@@ -234,28 +234,28 @@ void GraphicsBranchItem::initText(double d) {
     initDistanceText(str);
 }
 
-qreal GraphicsBranchItem::getNodeLabelValue() const {
-    return buttonItem != nullptr ? buttonItem->getNodeValue() : -1;
+qreal TvBranchItem::getNodeLabelValue() const {
+    return nodeItem != nullptr ? nodeItem->getNodeValue() : -1;
 }
 
-void GraphicsBranchItem::setLabelPositions() {
-    if (nameText != nullptr) {
-        QRectF rect = nameText->boundingRect();
-        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -rect.height() / 2);
+void TvBranchItem::setLabelPositions() {
+    if (nameTextItem != nullptr) {
+        QRectF rect = nameTextItem->boundingRect();
+        nameTextItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
     }
-    if (distanceText != nullptr) {
-        QRectF rect = distanceText->boundingRect();
-        distanceText->setPos(-rect.width() / 2 - width / 2, 0);
-    }
-}
-
-void GraphicsBranchItem::setDistanceText(const QString& text) {
-    if (distanceText != nullptr) {
-        distanceText->setText(text);
+    if (distanceTextItem != nullptr) {
+        QRectF rect = distanceTextItem->boundingRect();
+        distanceTextItem->setPos(-rect.width() / 2 - width / 2, 0);
     }
 }
 
-void GraphicsBranchItem::setWidth(double newWidth) {
+void TvBranchItem::setDistanceText(const QString& text) {
+    if (distanceTextItem != nullptr) {
+        distanceTextItem->setText(text);
+    }
+}
+
+void TvBranchItem::setWidth(double newWidth) {
     CHECK(width != newWidth, )
     double delta = newWidth - width;
     setPos(pos() + QPointF(delta, 0));
@@ -268,27 +268,26 @@ void GraphicsBranchItem::setWidth(double newWidth) {
     width = newWidth;
 }
 
-bool GraphicsBranchItem::isCollapsed() const {
+bool TvBranchItem::isCollapsed() const {
     return collapsed;
 }
 
-void GraphicsBranchItem::setUpPainter(QPainter* p) {
+void TvBranchItem::setUpPainter(QPainter* p) {
     QPen currentPen = pen();
     currentPen.setWidth(settings[BRANCH_THICKNESS].toInt() + (isSelected() ? SELECTED_PEN_WIDTH_DELTA : 0));
     setPen(currentPen);
     p->setPen(currentPen);
 }
 
-void GraphicsBranchItem::initDistanceText(const QString& text) {
-    distanceText = new QGraphicsSimpleTextItem(text);
-    distanceText->setFont(TreeViewerUtils::getFont());
-    distanceText->setBrush(Qt::darkGray);
+void TvBranchItem::initDistanceText(const QString& text) {
+    distanceTextItem = new TvTextItem(this, text);
+    distanceTextItem->setFont(TreeViewerUtils::getFont());
+    distanceTextItem->setBrush(Qt::darkGray);
     setLabelPositions();
-    distanceText->setParentItem(this);
-    distanceText->setZValue(1);
+    distanceTextItem->setZValue(1);
 }
 
-QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform) const {
+QRectF TvBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform) const {
     QRectF childrenBoundingRect;
     QStack<const QGraphicsItem*> graphicsItems;
     graphicsItems.push(this);
@@ -313,29 +312,29 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
     return childrenBoundingRect;
 }
 
-bool GraphicsBranchItem::isRoot() const {
+bool TvBranchItem::isRoot() const {
     return parentItem() == nullptr;
 }
 
-GraphicsBranchItem* GraphicsBranchItem::getRoot() {
-    auto root = dynamic_cast<GraphicsBranchItem*>(topLevelItem());
+TvBranchItem* TvBranchItem::getRoot() {
+    auto root = dynamic_cast<TvBranchItem*>(topLevelItem());
     SAFE_POINT(root != nullptr, "Top level item is not a branch item", root);
     return root;
 }
 
-void GraphicsBranchItem::emitBranchCollapsed(GraphicsBranchItem* branch) {
+void TvBranchItem::emitBranchCollapsed(TvBranchItem* branch) {
     SAFE_POINT(isRoot(), "Not a root branch!", );
     emit si_branchCollapsed(branch);
 }
 
-GraphicsButtonItem* GraphicsBranchItem::getButtonItem() const {
-    return buttonItem;
+TvNodeItem* TvBranchItem::getButtonItem() const {
+    return nodeItem;
 }
 
-GraphicsBranchItem* GraphicsBranchItem::getChildBranch(const GraphicsBranchItem::Side& childBranchSide) const {
+TvBranchItem* TvBranchItem::getChildBranch(const TvBranchItem::Side& childBranchSide) const {
     QList<QGraphicsItem*> children = childItems();
     for (QGraphicsItem* childItem : qAsConst(children)) {
-        if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(childItem)) {
+        if (auto childBranch = dynamic_cast<TvBranchItem*>(childItem)) {
             if (childBranch->side == childBranchSide) {
                 return childBranch;
             }
@@ -344,31 +343,31 @@ GraphicsBranchItem* GraphicsBranchItem::getChildBranch(const GraphicsBranchItem:
     return nullptr;
 }
 
-QGraphicsSimpleTextItem* GraphicsBranchItem::getDistanceTextItem() const {
-    return distanceText;
+TvTextItem* TvBranchItem::getDistanceTextItem() const {
+    return distanceTextItem;
 }
 
-QString GraphicsBranchItem::getDistanceText() const {
-    return distanceText == nullptr ? "" : distanceText->text();
+QString TvBranchItem::getDistanceText() const {
+    return distanceTextItem == nullptr ? "" : distanceTextItem->text();
 }
 
-QGraphicsSimpleTextItem* GraphicsBranchItem::getNameTextItem() const {
-    return nameText;
+TvTextItem* TvBranchItem::getNameTextItem() const {
+    return nameTextItem;
 }
 
-double GraphicsBranchItem::getWidth() const {
+double TvBranchItem::getWidth() const {
     return width;
 }
 
-double GraphicsBranchItem::getDist() const {
+double TvBranchItem::getDist() const {
     return distance;
 }
 
-void GraphicsBranchItem::setWidthW(double w) {
+void TvBranchItem::setWidthW(double w) {
     width = w;
 }
 
-void GraphicsBranchItem::setDist(double d) {
+void TvBranchItem::setDist(double d) {
     distance = d;
 }
 

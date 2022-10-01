@@ -19,21 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
-#define _U2_RECTANGULAR_TREE_LAYOUT_ALGORITHM_H_
+#ifndef _U2_TV_TEXT_ITEM_H_
+#define _U2_TV_TEXT_ITEM_H_
+
+#include <QGraphicsSimpleTextItem>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
+class TvNodeItem;
+class TvRectangularBranchItem;
 class PhyNode;
-class GraphicsRectangularBranchItem;
 
-class RectangularTreeLayoutAlgorithm {
+class U2VIEW_EXPORT TvTextItem : public QGraphicsSimpleTextItem {
 public:
-    RectangularTreeLayoutAlgorithm() = delete;
-
-    static GraphicsRectangularBranchItem* buildTreeLayout(const PhyNode* phyRoot);
-
-    static void recalculateTreeLayout(GraphicsRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode);
+    TvTextItem(QGraphicsItem* parent, const QString& text);
 };
 
 }  // namespace U2

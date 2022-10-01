@@ -45,9 +45,10 @@ namespace U2 {
 
 class GObjectView;
 class TreeViewerUI;
-class GraphicsBranchItem;
-class GraphicsButtonItem;
-class GraphicsRectangularBranchItem;
+class TvBranchItem;
+class TvNodeItem;
+class TvTextItem;
+class TvRectangularBranchItem;
 
 class TreeViewer : public GObjectView {
     Q_OBJECT
@@ -71,10 +72,10 @@ public:
     PhyTreeObject* getPhyObject() const {
         return phyObject;
     }
-    GraphicsRectangularBranchItem* getRoot() const {
+    TvRectangularBranchItem* getRoot() const {
         return root;
     }
-    void setRoot(GraphicsRectangularBranchItem* rectRoot) {
+    void setRoot(TvRectangularBranchItem* rectRoot) {
         root = rectRoot;
     }
 
@@ -130,7 +131,7 @@ private:
 
     QByteArray state;
     PhyTreeObject* phyObject = nullptr;
-    GraphicsRectangularBranchItem* root = nullptr;
+    TvRectangularBranchItem* root = nullptr;
 
     void setupLayoutSettingsMenu(QMenu* m);
     void setupShowLabelsMenu(QMenu* m) const;
@@ -170,7 +171,7 @@ public:
     void updateRect();
 
     /** Returns current root item of the tree. */
-    GraphicsBranchItem* getRoot() const;
+    TvBranchItem* getRoot() const;
 
     bool isSelectionStateManagedByChildOnClick = false;
 
@@ -220,7 +221,7 @@ signals:
 protected slots:
     virtual void sl_swapTriggered();
     virtual void sl_collapseTriggered();
-    virtual void sl_onBranchCollapsed(GraphicsBranchItem*);
+    virtual void sl_onBranchCollapsed(TvBranchItem*);
 
 private slots:
     void sl_printTriggered();
@@ -256,7 +257,7 @@ private:
     /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
     QList<QGraphicsItem*> getFixedSizeItems() const;
 
-    void setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayout& treeLayout);
+    void setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& treeLayout);
 
     enum LabelType {
         LabelType_SequenceName = 1,
@@ -303,7 +304,7 @@ private:
     PhyTreeObject* phyObject = nullptr;
 
     /** Currently shown tree. Can be rect, circular or unrooted one. */
-    GraphicsBranchItem* root = nullptr;
+    TvBranchItem* root = nullptr;
 
     double maxNameWidth = 0;
 
@@ -316,8 +317,8 @@ private:
     /** Used to compute on-screen length of every branch: length = distance * distanceToScreenScale. */
     double distanceToViewScale = 1;
 
-    QGraphicsLineItem* legend = nullptr;
-    QGraphicsSimpleTextItem* scalebarText = nullptr;
+    QGraphicsLineItem* legendItem = nullptr;
+    TvTextItem* scalebarTextItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
     TreeViewer* treeViewer = nullptr;
@@ -325,7 +326,7 @@ private:
     bool dontSendOptionChangedSignal = false;
 
 protected:
-    GraphicsRectangularBranchItem* rectRoot = nullptr;
+    TvRectangularBranchItem* rectRoot = nullptr;
 
     /** View global pos of the last mouse-press event. */
     QPoint lastMousePressPos;

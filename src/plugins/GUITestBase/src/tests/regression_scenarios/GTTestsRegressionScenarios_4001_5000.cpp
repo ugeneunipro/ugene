@@ -1505,7 +1505,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     int defaultSize;
 
     // Open samples/CLUSTALW/COI.aln and build tree for it
-    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
     // 2. Select node, change font size to 16, also remember default parameters
     GTUtilsPhyTree::clickNode(os, node);
     getFontSettings(os, defaultFontFamily, defaultSize);
@@ -1515,7 +1515,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
 
     // Click on the parent node for node.
     // Change its font to Arial with size 22.
-    GraphicsButtonItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
+    TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
     GTUtilsPhyTree::clickNode(os, parentNode);
     changeFontAndSize(os, customFontName, 22);
     // 4. Go back to first one node
@@ -1549,7 +1549,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     QString defaultFontFamily;
     int defaultSize;
 
-    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
     GTUtilsPhyTree::clickNode(os, node);
     getFontSettings(os, defaultFontFamily, defaultSize);
     changeFontAndSize(os, defaultFontFamily, 16);
@@ -2130,8 +2130,8 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTFileDialog::openFile(os, testDir + "_common_data/newick/sample5.newick");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
-    GraphicsButtonItem* rootNode = GTUtilsPhyTree::getRootNode(os);
-    GraphicsButtonItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.336", "0.061");
+    TvNodeItem* rootNode = GTUtilsPhyTree::getRootNode(os);
+    TvNodeItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.336", "0.061");
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot Tree"}, PopupChecker::IsDisabled));
     GTUtilsPhyTree::clickNode(os, rootNode, Qt::RightButton);
@@ -2141,7 +2141,7 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTUtilsPhyTree::clickNode(os, rootNode, Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QList<GraphicsButtonItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
+    QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
     CHECK_SET_ERR(selectedNodes.size() == 5, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot tree"}));
@@ -5181,9 +5181,9 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelPhyTree::openTab(os);
 
-    GraphicsButtonItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
-    GraphicsButtonItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
-    GraphicsButtonItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.068", "0.007");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
+    TvNodeItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
+    TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.068", "0.007");
     GTUtilsPhyTree::clickNode(os, node);
 
     int originalFontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);

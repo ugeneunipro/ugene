@@ -19,18 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
-#define _U2_GRAPHICS_RECTANGULAR_BRANCH_ITEM_H_
+#ifndef _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
+#define _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
 
-#include "GraphicsBranchItem.h"
+#include "TvBranchItem.h"
 
 namespace U2 {
 
 class PhyNode;
 class PhyBranch;
-class GraphicsButtonItem;
+class TvNodeItem;
 
-class U2VIEW_EXPORT GraphicsRectangularBranchItem : public GraphicsBranchItem {
+class U2VIEW_EXPORT TvRectangularBranchItem : public TvBranchItem {
     Q_OBJECT
 public:
     static constexpr double DEFAULT_WIDTH = 25.0;
@@ -38,11 +38,11 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem);
-    GraphicsRectangularBranchItem();
-    GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
-    GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
-    GraphicsRectangularBranchItem(double x, double y, const QString& name);
+    TvRectangularBranchItem(const QString& name, TvRectangularBranchItem* parentBranchItem);
+    TvRectangularBranchItem();
+    TvRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
+    TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
+    TvRectangularBranchItem(double x, double y, const QString& name);
 
     QRectF boundingRect() const override;
 

@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "CircularTreeLayoutAlgorithm.h"
+#include "TvCircularLayoutAlgorithm.h"
 
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsCircularBranchItem.h"
-#include "GraphicsRectangularBranchItem.h"
+#include "../item/TvCircularBranchItem.h"
+#include "../item/TvRectangularBranchItem.h"
 
 namespace U2 {
 
@@ -32,25 +32,25 @@ static constexpr double DEGENERATED_WIDTH = 300;
 static constexpr double WIDTH_RADIUS = 30;
 static constexpr double SCALE = 6.0;
 
-static GraphicsCircularBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
-                                                 GraphicsCircularBranchItem* convertedParentBranchItem,
-                                                 double coef) {
+static TvCircularBranchItem* convertBranch(TvRectangularBranchItem* originalBranchItem,
+                                           TvCircularBranchItem* convertedParentBranchItem,
+                                             double coef) {
     double height = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new GraphicsCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabelValue());
+    auto convertedBranch = new TvCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildItems)) {
-        if (auto ri = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {
+        if (auto ri = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {
             convertBranch(ri, convertedBranch, coef);
         }
     }
     return convertedBranch;
 }
 
-GraphicsBranchItem* CircularTreeLayoutAlgorithm::convert(GraphicsRectangularBranchItem* rectRoot, bool degeneratedCase) {
+TvBranchItem* TvCircularLayoutAlgorithm::convert(TvRectangularBranchItem* rectRoot, bool degeneratedCase) {
     double coef = SCALE / rectRoot->childrenBoundingRect().height();
     double originalWidth = rectRoot->getWidth();
     rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);
-    GraphicsCircularBranchItem* circularLayoutRoot = convertBranch(rectRoot, nullptr, coef);
+    TvCircularBranchItem* circularLayoutRoot = convertBranch(rectRoot, nullptr, coef);
     rectRoot->setWidthW(originalWidth);
     return circularLayoutRoot;
 }

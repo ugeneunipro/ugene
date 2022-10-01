@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsButtonItem.h"
+#include "TvNodeItem.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
@@ -29,11 +29,11 @@
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "GraphicsBranchItem.h"
-#include "GraphicsRectangularBranchItem.h"
-#include "TreeViewer.h"
-#include "TreeViewerUtils.h"
-
+#include "../TreeViewer.h"
+#include "../TreeViewerUtils.h"
+#include "TvBranchItem.h"
+#include "TvRectangularBranchItem.h"
+#include "TvTextItem.h"
 namespace U2 {
 
 /** Button radius in pixels. */
@@ -43,7 +43,7 @@ static const QBrush normalStateBrush(Qt::lightGray);
 static const QBrush selectedStateBrush(QColor("#EA9700"));
 static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
-GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
+TvNodeItem::TvNodeItem(double nodeValue)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
       nodeValue(nodeValue) {
     setPen(QColor(Qt::black));
@@ -52,19 +52,19 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
     if (nodeValue >= 0) {
-        nodeLabel = new QGraphicsSimpleTextItem(QString::number(nodeValue), this);
-        nodeLabel->setFont(TreeViewerUtils::getFont());
-        nodeLabel->setBrush(Qt::darkGray);
-        QRectF rect = nodeLabel->boundingRect();
-        nodeLabel->setPos(GraphicsBranchItem::TEXT_SPACING, -rect.height() / 2);
-        nodeLabel->setParentItem(this);
-        nodeLabel->setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
-        nodeLabel->setZValue(1);
+        labelItem = new TvTextItem(this, QString::number(nodeValue));
+        labelItem->setFont(TreeViewerUtils::getFont());
+        labelItem->setBrush(Qt::darkGray);
+        QRectF rect = labelItem->boundingRect();
+        labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
+        labelItem->setParentItem(this);
+        labelItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
+        labelItem->setZValue(1);
     }
 }
 
-void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+    auto parentBranchItem = dynamic_cast<TvBranchItem*>(parentItem());
     SAFE_POINT(parentBranchItem != nullptr, "No parentBranchItem", );
     TreeViewerUI* ui = getTreeViewerUI();
     if (e->button() == Qt::LeftButton && e->modifiers().testFlag(Qt::ShiftModifier)) {
@@ -79,33 +79,33 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     e->accept();
 }
 
-void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
+void TvNodeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
     toggleCollapsedState();
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
-void GraphicsButtonItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+void TvNodeItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     isHovered = true;
     QGraphicsItem::hoverEnterEvent(event);
 }
 
-void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
+void TvNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     isHovered = false;
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-void GraphicsButtonItem::toggleCollapsedState() {
-    auto branch = dynamic_cast<GraphicsBranchItem*>(parentItem());
-    SAFE_POINT(branch != nullptr, "Collapsing is impossible because button has not parent branch", );
-    if (dynamic_cast<GraphicsBranchItem*>(branch->parentItem()) != nullptr) {
+void TvNodeItem::toggleCollapsedState() {
+    auto branch = dynamic_cast<TvBranchItem*>(parentItem());
+    SAFE_POINT(branch != nullptr, "Collapsing is impossible because node item has not parent branch", );
+    if (dynamic_cast<TvBranchItem*>(branch->parentItem()) != nullptr) {
         branch->toggleCollapsedState();
     }
 }
 
-void GraphicsButtonItem::swapSiblings() {
-    auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+void TvNodeItem::swapSiblings() {
+    auto branchItem = dynamic_cast<TvBranchItem*>(parentItem());
     CHECK(branchItem != nullptr, );
-    auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
+    auto rectBranchItem = dynamic_cast<TvRectangularBranchItem*>(branchItem);
     if (rectBranchItem == nullptr) {
         SAFE_POINT(branchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
         rectBranchItem = branchItem->correspondingRectangularBranchItem;
@@ -113,28 +113,28 @@ void GraphicsButtonItem::swapSiblings() {
     rectBranchItem->swapSiblings();
 }
 
-bool GraphicsButtonItem::isPathToRootSelected() const {
+bool TvNodeItem::isPathToRootSelected() const {
     CHECK(isSelected(), false);
 
-    auto branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    auto branchItem = dynamic_cast<TvBranchItem*>(parentItem());
     CHECK(branchItem != nullptr, true);
 
-    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(branchItem->parentItem());
+    auto parentBranchItem = dynamic_cast<TvBranchItem*>(branchItem->parentItem());
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
-bool GraphicsButtonItem::isCollapsed() {
-    auto parent = dynamic_cast<GraphicsBranchItem*>(parentItem());
+bool TvNodeItem::isCollapsed() {
+    auto parent = dynamic_cast<TvBranchItem*>(parentItem());
     return parent != nullptr && parent->isCollapsed();
 }
 
-void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
+void TvNodeItem::rerootTree(PhyTreeObject* treeObject) {
     SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
 
-    auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
+    auto parentBranchItem = dynamic_cast<TvBranchItem*>(parentItem());
     CHECK(parentBranchItem != nullptr, );
 
-    auto parentRectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(parentBranchItem);
+    auto parentRectBranchItem = dynamic_cast<TvRectangularBranchItem*>(parentBranchItem);
     if (parentRectBranchItem == nullptr) {
         SAFE_POINT(parentBranchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
         parentRectBranchItem = parentBranchItem->correspondingRectangularBranchItem;
@@ -149,24 +149,23 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
     treeObject->rerootPhyTree(newRoot);
 }
 
-void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
+void TvNodeItem::updateSettings(const OptionsMap& settings) {
     isNodeShapeVisible = settings[SHOW_NODE_SHAPE].toBool();
-    uiLog.info("isShowShapeOnHoverOnly: " + QString::number(isNodeShapeVisible ? 1 : 0));
-
-    CHECK(nodeLabel != nullptr, );
-    QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
-    newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
-    newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
-    newFont.setItalic(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
-    newFont.setUnderline(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
-    nodeLabel->setFont(newFont);
-    QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
-    nodeLabel->setBrush(labelsColor);
-    bool showNodeLabels = settings[SHOW_NODE_LABELS].toBool();
-    nodeLabel->setVisible(showNodeLabels);
+    if (labelItem != nullptr) {
+        QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
+        newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
+        newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
+        newFont.setItalic(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
+        newFont.setUnderline(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
+        labelItem->setFont(newFont);
+        QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
+        labelItem->setBrush(labelsColor);
+        bool showNodeLabels = settings[SHOW_NODE_LABELS].toBool();
+        labelItem->setVisible(showNodeLabels);
+    }
 }
 
-TreeViewerUI* GraphicsButtonItem::getTreeViewerUI() const {
+TreeViewerUI* TvNodeItem::getTreeViewerUI() const {
     QList<QGraphicsView*> views = scene()->views();
     SAFE_POINT(views.size() == 1, "getTreeViewerUI: invalid number of views: " + QString::number(views.size()), nullptr);
 
@@ -175,29 +174,29 @@ TreeViewerUI* GraphicsButtonItem::getTreeViewerUI() const {
     return ui;
 }
 
-double GraphicsButtonItem::getNodeValue() const {
+double TvNodeItem::getNodeValue() const {
     return nodeValue;
 }
 
-const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
-    return nodeLabel;
+const TvTextItem* TvNodeItem::getLabelItem() const {
+    return labelItem;
 }
 
-GraphicsBranchItem* GraphicsButtonItem::getParentBranchItem() const {
-    auto result = dynamic_cast<GraphicsBranchItem*>(parentItem());
+TvBranchItem* TvNodeItem::getParentBranchItem() const {
+    auto result = dynamic_cast<TvBranchItem*>(parentItem());
     SAFE_POINT(result != nullptr, "Node item has no parent branch", nullptr);
     return result;
 }
 
-GraphicsBranchItem* GraphicsButtonItem::getLeftBranchItem() const {
-    return getParentBranchItem()->getChildBranch(GraphicsBranchItem::Side::Left);
+TvBranchItem* TvNodeItem::getLeftBranchItem() const {
+    return getParentBranchItem()->getChildBranch(TvBranchItem::Side::Left);
 }
 
-GraphicsBranchItem* GraphicsButtonItem::getRightBranchItem() const {
-    return getParentBranchItem()->getChildBranch(GraphicsBranchItem::Side::Right);
+TvBranchItem* TvNodeItem::getRightBranchItem() const {
+    return getParentBranchItem()->getChildBranch(TvBranchItem::Side::Right);
 }
 
-void GraphicsButtonItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+void TvNodeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     CHECK(isNodeShapeVisible || isHovered || isSelected(), );
 
     setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));

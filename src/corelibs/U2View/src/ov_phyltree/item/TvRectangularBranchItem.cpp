@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsRectangularBranchItem.h"
-
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QPainter>
@@ -31,40 +29,42 @@
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "TvRectangularBranchItem.h"
+
 namespace U2 {
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem)
-    : GraphicsBranchItem(name) {
+TvRectangularBranchItem::TvRectangularBranchItem(const QString& name, TvRectangularBranchItem* parentBranchItem)
+    : TvBranchItem(name) {
     setParentItem(parentBranchItem);
     setPos(0, 0);
 }
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double x, double y, const QString& name)
-    : GraphicsBranchItem(false, Side::Left, -1) {
-    new GraphicsRectangularBranchItem(name, this);
+TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name)
+    : TvBranchItem(false, Side::Left, -1) {
+    new TvRectangularBranchItem(name, this);
     setPos(x, y);
 }
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch)
-    : GraphicsBranchItem(distance, false, -1), phyBranch(branch) {
-    new GraphicsRectangularBranchItem(name, this);
+TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch)
+    : TvBranchItem(distance, false, -1), phyBranch(branch) {
+    new TvRectangularBranchItem(name, this);
     setPos(x, y);
 }
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue)
-    : GraphicsBranchItem(distance, true, nodeValue), phyBranch(branch) {
+TvRectangularBranchItem::TvRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue)
+    : TvBranchItem(distance, true, nodeValue), phyBranch(branch) {
 }
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem()
-    : GraphicsBranchItem(true, Side::Left, -1) {
+TvRectangularBranchItem::TvRectangularBranchItem()
+    : TvBranchItem(true, Side::Left, -1) {
 }
 
-void GraphicsRectangularBranchItem::toggleCollapsedState() {
+void TvRectangularBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
-    QStack<GraphicsBranchItem*> graphicsItems;
+    QStack<TvBranchItem*> graphicsItems;
     graphicsItems.push(this);
     do {
-        GraphicsBranchItem* branchItem = graphicsItems.pop();
+        TvBranchItem* branchItem = graphicsItems.pop();
         QList<QGraphicsItem*> childItems = branchItem->childItems();
         for (QGraphicsItem* graphItem : qAsConst(childItems)) {
             if (dynamic_cast<QGraphicsRectItem*>(graphItem) && !branchItem->isCollapsed()) {
@@ -73,7 +73,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
                 continue;
             }
 
-            auto childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
+            auto childItem = dynamic_cast<TvRectangularBranchItem*>(graphItem);
             CHECK_CONTINUE(childItem != nullptr);
 
             childItem->collapsed = !childItem->collapsed;
@@ -95,7 +95,7 @@ void GraphicsRectangularBranchItem::toggleCollapsedState() {
     getRoot()->emitBranchCollapsed(this);
 }
 
-void GraphicsRectangularBranchItem::drawCollapsedRegion() {
+void TvRectangularBranchItem::drawCollapsedRegion() {
     QList<QGraphicsItem*> items = childItems();
     double xMin = 0;
     double yMin = 0;
@@ -103,7 +103,7 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
     bool isFirstIteration = true;
 
     for (QGraphicsItem* graphItem : qAsConst(items)) {
-        auto branchItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
+        auto branchItem = dynamic_cast<TvRectangularBranchItem*>(graphItem);
         if (!branchItem) {
             continue;
         }
@@ -119,10 +119,10 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
         yMin = qMin(yMin, pos1.y());
         yMax = qMax(yMax, pos1.y());
     }
-    if (xMin >= 2 * GraphicsRectangularBranchItem::DEFAULT_WIDTH)
+    if (xMin >= 2 * TvRectangularBranchItem::DEFAULT_WIDTH)
         xMin /= 2;
-    if (xMin < GraphicsRectangularBranchItem::DEFAULT_WIDTH)
-        xMin = GraphicsRectangularBranchItem::DEFAULT_WIDTH;
+    if (xMin < TvRectangularBranchItem::DEFAULT_WIDTH)
+        xMin = TvRectangularBranchItem::DEFAULT_WIDTH;
 
     QPen blackPen(Qt::black);
     prepareGeometryChange();
@@ -133,7 +133,7 @@ void GraphicsRectangularBranchItem::drawCollapsedRegion() {
     rectItem->setPen(blackPen);
 }
 
-void GraphicsRectangularBranchItem::setParentItem(QGraphicsItem* item) {
+void TvRectangularBranchItem::setParentItem(QGraphicsItem* item) {
     prepareGeometryChange();
     height = side == Side::Right ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
     setPos(width, side == Side::Right ? height : -height);
@@ -141,17 +141,17 @@ void GraphicsRectangularBranchItem::setParentItem(QGraphicsItem* item) {
     QAbstractGraphicsShapeItem::setParentItem(item);
 }
 
-void GraphicsRectangularBranchItem::setSide(const Side& newSide) {
+void TvRectangularBranchItem::setSide(const Side& newSide) {
     CHECK(side != newSide, );
     prepareGeometryChange();
     side = newSide;
 }
 
-QRectF GraphicsRectangularBranchItem::boundingRect() const {
+QRectF TvRectangularBranchItem::boundingRect() const {
     return {-width - 0.5, side == Side::Right ? -height : -0.5, width + 0.5, height + 0.5};
 }
 
-void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
+void TvRectangularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     setUpPainter(painter);
     CHECK(width > 0, );
 
@@ -169,7 +169,7 @@ void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionG
     QList<QGraphicsItem*> siblings = parentItem()->childItems();
     for (QGraphicsItem* item : qAsConst(siblings)) {
         CHECK_CONTINUE(item != this);
-        if (auto rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(item)) {
+        if (auto rectBranchItem = dynamic_cast<TvRectangularBranchItem*>(item)) {
             double branchCurveSegmentWidth = rectBranchItem->width * curvature / 100;
             curveSegmentWidth = qMin(branchCurveSegmentWidth, curveSegmentWidth);
         }
@@ -194,7 +194,7 @@ void GraphicsRectangularBranchItem::paint(QPainter* painter, const QStyleOptionG
     painter->translate(-translation);  // Restore original offsets.
 }
 
-void GraphicsRectangularBranchItem::setHeight(double newHeight) {
+void TvRectangularBranchItem::setHeight(double newHeight) {
     CHECK(height != newHeight, );
     double delta = newHeight - height;
     setPos(pos() + QPointF(0, side == Side::Right ? delta : -delta));
@@ -202,7 +202,7 @@ void GraphicsRectangularBranchItem::setHeight(double newHeight) {
     height = newHeight;
 }
 
-void GraphicsRectangularBranchItem::setBreathScaleAdjustment(double newBreadthScaleAdjustment) {
+void TvRectangularBranchItem::setBreathScaleAdjustment(double newBreadthScaleAdjustment) {
     SAFE_POINT(newBreadthScaleAdjustment > 0, "Illegal breadth scale adjustment: " + QString::number(newBreadthScaleAdjustment), )
     CHECK(newBreadthScaleAdjustment != breadthScaleAdjustment, )
     double newHeight = height * newBreadthScaleAdjustment / breadthScaleAdjustment;
@@ -210,11 +210,11 @@ void GraphicsRectangularBranchItem::setBreathScaleAdjustment(double newBreadthSc
     setHeight(newHeight);
 }
 
-void GraphicsRectangularBranchItem::setCurvature(double newCurvature) {
+void TvRectangularBranchItem::setCurvature(double newCurvature) {
     curvature = newCurvature;
 }
 
-void GraphicsRectangularBranchItem::swapSiblings() {
+void TvRectangularBranchItem::swapSiblings() {
     CHECK(phyBranch != nullptr, );
     PhyNode* nodeTo = phyBranch->node2;
     int branchCount = nodeTo->getBranches().size();
@@ -223,15 +223,15 @@ void GraphicsRectangularBranchItem::swapSiblings() {
     }
 }
 
-GraphicsRectangularBranchItem::Side GraphicsRectangularBranchItem::getSide() const {
+TvRectangularBranchItem::Side TvRectangularBranchItem::getSide() const {
     return side;
 }
 
-double GraphicsRectangularBranchItem::getHeight() const {
+double TvRectangularBranchItem::getHeight() const {
     return height;
 }
 
-const PhyBranch* GraphicsRectangularBranchItem::getPhyBranch() const {
+const PhyBranch* TvRectangularBranchItem::getPhyBranch() const {
     return phyBranch;
 }
 

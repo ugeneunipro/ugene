@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHICS_BUTTON_ITEM_H_
-#define _U2_GRAPHICS_BUTTON_ITEM_H_
+#ifndef _U2_TV_BUTTON_ITEM_H_
+#define _U2_TV_BUTTON_ITEM_H_
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
@@ -28,17 +28,18 @@
 
 #include <U2Core/global.h>
 
-#include "TreeSettings.h"
+#include "../TreeSettings.h"
 
 namespace U2 {
 
 class TreeViewerUI;
 class PhyTreeObject;
-class GraphicsBranchItem;
+class TvBranchItem;
+class TvTextItem;
 
-class U2VIEW_EXPORT GraphicsButtonItem : public QGraphicsEllipseItem {
+class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
-    GraphicsButtonItem(double nodeValue = 0);
+    TvNodeItem(double nodeValue = 0);
 
     bool isPathToRootSelected() const;
 
@@ -52,15 +53,15 @@ public:
 
     void updateSettings(const OptionsMap& settings);
 
-    const QGraphicsSimpleTextItem* getLabel() const;
+    const TvTextItem* getLabelItem() const;
 
     double getNodeValue() const;
 
-    GraphicsBranchItem* getParentBranchItem() const;
+    TvBranchItem* getParentBranchItem() const;
 
-    GraphicsBranchItem* getLeftBranchItem() const;
+    TvBranchItem* getLeftBranchItem() const;
 
-    GraphicsBranchItem* getRightBranchItem() const;
+    TvBranchItem* getRightBranchItem() const;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
@@ -73,7 +74,7 @@ protected:
 private:
     TreeViewerUI* getTreeViewerUI() const;
 
-    QGraphicsSimpleTextItem* nodeLabel = nullptr;
+    TvTextItem* labelItem = nullptr;
     double nodeValue = 0;
     bool isHovered = false;
     bool isNodeShapeVisible = true;

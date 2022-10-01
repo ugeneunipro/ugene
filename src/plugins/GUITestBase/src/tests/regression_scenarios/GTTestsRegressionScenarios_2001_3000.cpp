@@ -2749,7 +2749,7 @@ GUI_TEST_CLASS_DEFINITION(test_2482) {
     GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
 
     // 3. Select any node in the tree that is not a leaf.
-    QList<GraphicsButtonItem*> items = GTUtilsPhyTree::getNodes(os);
+    QList<TvNodeItem*> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(items.size() >= 4, "Incorrect tree size");
 
     QPoint nodeCoords = GTUtilsPhyTree::getGlobalCenterCoord(os, items.at(3));
@@ -2775,7 +2775,7 @@ GUI_TEST_CLASS_DEFINITION(test_2487) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<GraphicsButtonItem*> items = GTUtilsPhyTree::getNodes(os);
+    QList<TvNodeItem*> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!items.empty(), "Tree is empty");
 
     QPoint rootCoords = GTUtilsPhyTree::getGlobalCenterCoord(os, items.first());
@@ -2851,7 +2851,7 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
 
     //    Select the last node, then call a context menu for it. It contains two menu items: "swap siblings" and "reroot".
     // The first one should be always disabled (for the tree leafs), the second one should be always enabled.
-    QList<GraphicsButtonItem*> nodes = GTUtilsPhyTree::getNodes(os);
+    QList<TvNodeItem*> nodes = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Nodes list is empty");
 
     GTUtilsPhyTree::clickNode(os, nodes[25]);

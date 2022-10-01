@@ -19,32 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#include "UnrootedTreeLayoutAlgorithm.h"
-
 #include <QStack>
 
 #include <U2Core/PhyTreeObject.h>
 
-#include "GraphicsRectangularBranchItem.h"
-#include "GraphicsUnrootedBranchItem.h"
+#include "../item/TvRectangularBranchItem.h"
+#include "../item/TvUnrootedBranchItem.h"
+#include "TvUnrootedLayoutAlgorithm.h"
 
 namespace U2 {
 
-static GraphicsUnrootedBranchItem* convertBranch(GraphicsRectangularBranchItem* originalBranchItem,
-                                                 GraphicsUnrootedBranchItem* convertedParentBranchItem,
-                                                 double coef) {
+static TvUnrootedBranchItem* convertBranch(TvRectangularBranchItem* originalBranchItem,
+                                           TvUnrootedBranchItem* convertedParentBranchItem,
+                                             double coef) {
     double angle = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new GraphicsUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabelValue());
+    auto convertedBranch = new TvUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabelValue());
     const QList<QGraphicsItem*>& originalChildBranchItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildBranchItems)) {
-        if (auto originalChildBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(originalChildItem)) {
+        if (auto originalChildBranchItem = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {
             convertBranch(originalChildBranchItem, convertedBranch, coef);
         }
     }
     return convertedBranch;
 }
 
-GraphicsBranchItem* UnrootedTreeLayoutAlgorithm::convert(GraphicsRectangularBranchItem* rectRoot) {
+TvBranchItem* TvUnrootedLayoutAlgorithm::convert(TvRectangularBranchItem* rectRoot) {
     double coef = 360.0 / rectRoot->childrenBoundingRect().height();
     return convertBranch(rectRoot, nullptr, coef);
 }

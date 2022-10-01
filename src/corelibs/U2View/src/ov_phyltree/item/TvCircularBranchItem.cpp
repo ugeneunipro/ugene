@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsCircularBranchItem.h"
+#include "TvCircularBranchItem.h"
 
 #include <QGraphicsView>
 #include <QPainter>
@@ -29,12 +29,13 @@
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "GraphicsRectangularBranchItem.h"
+#include "TvRectangularBranchItem.h"
+#include "TvTextItem.h"
 
 namespace U2 {
 
-GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, double h, GraphicsRectangularBranchItem* from, double nodeValue)
-    : GraphicsBranchItem(true, from->getSide(), nodeValue), height(h) {
+TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRectangularBranchItem* from, double nodeValue)
+    : TvBranchItem(true, from->getSide(), nodeValue), height(h) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
@@ -42,71 +43,71 @@ GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, do
     setDist(from->getDist());
     setPos(width, 0);
     QPointF p = mapFromScene(0, 0);
-    double angle = (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height / M_PI * 180;
+    double angle = (side == TvBranchItem::Side::Right ? 1 : -1) * height / M_PI * 180;
     setTransform(QTransform().translate(p.x(), p.y()).rotate(angle).translate(-p.x(), -p.y()));
 
     if (from->getNameTextItem() != nullptr) {
-        nameText = new QGraphicsSimpleTextItem(from->getNameTextItem()->text(), this);
-        nameText->setFont(from->getNameTextItem()->font());
+        nameTextItem = new TvTextItem(this, from->getNameTextItem()->text());
+        nameTextItem->setFont(from->getNameTextItem()->font());
 
-        nameText->setBrush(from->getNameTextItem()->brush());
+        nameTextItem->setBrush(from->getNameTextItem()->brush());
     }
     if (from->getDistanceTextItem() != nullptr) {
-        distanceText = new QGraphicsSimpleTextItem(from->getDistanceTextItem()->text(), this);
-        distanceText->setFont(from->getDistanceTextItem()->font());
-        distanceText->setBrush(from->getDistanceTextItem()->brush());
+        distanceTextItem = new TvTextItem(this, from->getDistanceTextItem()->text());
+        distanceTextItem->setFont(from->getDistanceTextItem()->font());
+        distanceTextItem->setBrush(from->getDistanceTextItem()->brush());
     }
     setLabelPositions();
     setPen(from->pen());
 }
 
-QRectF GraphicsCircularBranchItem::boundingRect() const {
+QRectF TvCircularBranchItem::boundingRect() const {
     QPointF p = scenePos();
     double rad = qSqrt(p.x() * p.x() + p.y() * p.y());
     double w = width + rad * (1 - qCos(height));
     double h = rad * qSin(height);
-    return {-w, side == GraphicsBranchItem::Side::Right ? -h : 0, w, h};
+    return {-w, side == TvBranchItem::Side::Right ? -h : 0, w, h};
 }
 
-void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
+void TvCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     CHECK(!isRoot(), );  // Do not render root branch.
     setUpPainter(painter);
     QPointF p = scenePos();
     double rad = qSqrt(p.x() * p.x() + p.y() * p.y()) - width;
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
-    painter->drawArc(rect, 0, (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
+    painter->drawArc(rect, 0, (side == TvBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
     painter->drawLine(0, 0, -width, 0);
 }
 
-QPainterPath GraphicsCircularBranchItem::shape() const {
+QPainterPath TvCircularBranchItem::shape() const {
     QPainterPath path;
 
     double rad = 30.0;  // all hardcode will be deleted later during complete refactoring
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
 
     path.lineTo(width, 0);
-    path.arcTo(rect, 0, (side == GraphicsBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
+    path.arcTo(rect, 0, (side == TvBranchItem::Side::Right ? 1 : -1) * height * 16 * 180 / M_PI);
 
     return path;
 }
 
-void GraphicsCircularBranchItem::setLabelPositions() {
-    if (nameText != nullptr) {
-        QRectF rect = nameText->boundingRect();
+void TvCircularBranchItem::setLabelPositions() {
+    if (nameTextItem != nullptr) {
+        QRectF rect = nameTextItem->boundingRect();
         double h = rect.height();
-        nameText->setPos(GraphicsBranchItem::TEXT_SPACING, -h * 0.5);
-        if (nameText->scenePos().x() < 0.0) {
+        nameTextItem->setPos(TvBranchItem::TEXT_SPACING, -h * 0.5);
+        if (nameTextItem->scenePos().x() < 0.0) {
             QPointF p = rect.center();
-            nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
+            nameTextItem->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
     }
-    if (distanceText != nullptr) {
-        QRectF rect = distanceText->boundingRect();
-        if (distanceText->scenePos().x() < 0) {
+    if (distanceTextItem != nullptr) {
+        QRectF rect = distanceTextItem->boundingRect();
+        if (distanceTextItem->scenePos().x() < 0) {
             QPointF p(rect.center().x(), rect.height());
-            distanceText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
+            distanceTextItem->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
-        distanceText->setPos(-0.5 * (width + rect.width()), -rect.height());
+        distanceTextItem->setPos(-0.5 * (width + rect.width()), -rect.height());
     }
 }
 

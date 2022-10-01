@@ -19,27 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
-#define _U2_GRAPHICS_UNROOTED_BRANCH_ITEM_H_
+#ifndef _U2_TV_CIRCULAR_BRANCH_ITEM_H_
+#define _U2_TV_CIRCULAR_BRANCH_ITEM_H_
 
-#include "GraphicsBranchItem.h"
+#include "TvBranchItem.h"
 
 namespace U2 {
 
-class GraphicsButtonItem;
-class GraphicsRectangularBranchItem;
-class PhyNode;
+class TvNodeItem;
+class TvRectangularBranchItem;
 
-class U2VIEW_EXPORT GraphicsUnrootedBranchItem : public GraphicsBranchItem {
+class U2VIEW_EXPORT TvCircularBranchItem : public TvBranchItem {
 public:
-    GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
+    TvCircularBranchItem(QGraphicsItem* parent, double height, TvRectangularBranchItem* from, double nodeValue = -1.0);
 
     QRectF boundingRect() const override;
+
+    QPainterPath shape() const override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
     void setLabelPositions() override;
+
+private:
+    double height = 0;
 };
 
 }  // namespace U2
