@@ -260,7 +260,6 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
     QString block;
     int blockLen;
     bool done = true;
-    bool hasNodeLabels = false;
 
     QBitArray ops(256);
     ops['('] = true;
@@ -348,8 +347,6 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                         if (!ok) {
                             si.setError(DatatypeSerializers::tr("Error parsing nodeValue: %1").arg(lastStr));
                             break;
-                        } else {
-                            hasNodeLabels = true;
                         }
                     }
                 }
@@ -384,7 +381,6 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                 }
                 PhyTree tree(new PhyTreeData());
                 tree->setRootNode(nodeStack.pop());
-                tree->hasNodeLabels = hasNodeLabels;
                 result << tree;
                 rootNode = new PhyNode();
                 nodeStack.push(rootNode);
@@ -409,7 +405,6 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
             PhyNode* node = nodeStack.pop();
             PhyTree tree(new PhyTreeData());
             tree->setRootNode(node);
-            tree->hasNodeLabels = hasNodeLabels;
             result << tree;
         } else {
             delete rootNode;

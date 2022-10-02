@@ -130,12 +130,11 @@ void TreeOptionsWidget::updateAllWidgets() {
     for (const TreeViewOption& option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
-    showNodeLabelsCheck->setEnabled(settings[SHOW_NODE_LABELS].toBool());
-    showNodeShapeCheck->setEnabled(settings[SHOW_NODE_SHAPE].toBool());
+    showNodeLabelsCheck->setVisible(treeViewer->phyObject->getTree()->hasNamedInnerNodes());
 }
 
 void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant& value) {
-    if (option == SHOW_LABELS) {
+    if (option == SHOW_LEAF_NODE_LABELS) {
         alignLabelsCheck->setEnabled(value.toBool());
     }
     if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
@@ -185,10 +184,10 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[scaleFontSizeSpinBox->objectName()] = SCALEBAR_FONT_SIZE;
     optionsMap[lineWidthSpinBox->objectName()] = SCALEBAR_LINE_WIDTH;
 
-    optionsMap[showNamesCheck->objectName()] = SHOW_LABELS;
-    optionsMap[showDistancesCheck->objectName()] = SHOW_DISTANCES;
-    optionsMap[alignLabelsCheck->objectName()] = ALIGN_LABELS;
-    optionsMap[showNodeLabelsCheck->objectName()] = SHOW_NODE_LABELS;
+    optionsMap[showNamesCheck->objectName()] = SHOW_LEAF_NODE_LABELS;
+    optionsMap[showDistancesCheck->objectName()] = SHOW_BRANCH_DISTANCE_LABELS;
+    optionsMap[alignLabelsCheck->objectName()] = ALIGN_LEAF_NODE_LABELS;
+    optionsMap[showNodeLabelsCheck->objectName()] = SHOW_INNER_NODE_LABELS;
     optionsMap[showNodeShapeCheck->objectName()] = SHOW_NODE_SHAPE;
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
@@ -250,7 +249,7 @@ void TreeOptionsWidget::sl_valueChanged() {
 
     QVariant newValue = savableTab.getChildValue(inputWidget->objectName());
     TreeViewOption option = optionsMap[inputWidget->objectName()];
-    if (option == SHOW_LABELS) {
+    if (option == SHOW_LEAF_NODE_LABELS) {
         alignLabelsCheck->setEnabled(newValue.toBool());
     } else if (option == BRANCHES_TRANSFORMATION_TYPE) {
         scalebarOpGroup->setVisible(newValue.toInt() == TreeType::PHYLOGRAM);

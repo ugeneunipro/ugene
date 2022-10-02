@@ -34,15 +34,15 @@
 
 namespace U2 {
 
-TvBranchItem::TvBranchItem(bool withButton, const TvBranchItem::Side& _side, double nodeValue)
+TvBranchItem::TvBranchItem(bool withNode, const TvBranchItem::Side& _side, const QString& nodeName)
     : side(_side) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
     setAcceptedMouseButtons(Qt::NoButton);
 
-    if (withButton) {
-        nodeItem = new TvNodeItem(nodeValue);
+    if (withNode) {
+        nodeItem = new TvNodeItem(nodeName);
         nodeItem->setParentItem(this);
     }
 
@@ -53,7 +53,7 @@ TvBranchItem::TvBranchItem(bool withButton, const TvBranchItem::Side& _side, dou
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const QString& name) {
+TvBranchItem::TvBranchItem(const QString& nodeName) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -65,22 +65,22 @@ TvBranchItem::TvBranchItem(const QString& name) {
     pen1.setCosmetic(true);
     setPen(pen1);
 
-    nameTextItem = new TvTextItem(this, name);
+    nameTextItem = new TvTextItem(this, nodeName);
     nameTextItem->setFont(TreeViewerUtils::getFont());
     nameTextItem->setBrush(Qt::darkGray);
     setLabelPositions();
     nameTextItem->setZValue(1);
 }
 
-TvBranchItem::TvBranchItem(double _distance, bool withButton, double nodeValue)
+TvBranchItem::TvBranchItem(double _distance, bool withNode, const QString& nodeName)
     : distance(_distance) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
     setAcceptedMouseButtons(Qt::NoButton);
 
-    if (withButton) {
-        nodeItem = new TvNodeItem(nodeValue);
+    if (withNode) {
+        nodeItem = new TvNodeItem(nodeName);
         nodeItem->setParentItem(this);
     }
 
@@ -234,8 +234,8 @@ void TvBranchItem::initText(double d) {
     initDistanceText(str);
 }
 
-qreal TvBranchItem::getNodeLabelValue() const {
-    return nodeItem != nullptr ? nodeItem->getNodeValue() : -1;
+QString TvBranchItem::getNodeNameFromNodeItem() const {
+    return nodeItem != nullptr ? nodeItem->nodeName : "";
 }
 
 void TvBranchItem::setLabelPositions() {
@@ -327,7 +327,7 @@ void TvBranchItem::emitBranchCollapsed(TvBranchItem* branch) {
     emit si_branchCollapsed(branch);
 }
 
-TvNodeItem* TvBranchItem::getButtonItem() const {
+TvNodeItem* TvBranchItem::getNodeItem() const {
     return nodeItem;
 }
 

@@ -34,8 +34,8 @@
 
 namespace U2 {
 
-TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRectangularBranchItem* from, double nodeValue)
-    : TvBranchItem(true, from->getSide(), nodeValue), height(h) {
+TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRectangularBranchItem* from, const QString& nodeName)
+    : TvBranchItem(true, from->getSide(), nodeName), height(h) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();

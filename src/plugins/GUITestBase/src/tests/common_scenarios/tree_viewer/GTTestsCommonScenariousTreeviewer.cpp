@@ -1159,5 +1159,37 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     CHECK_SET_ERR(imageWithSelectionWithNodesAfter == imageWithSelectionWithNodes, "Image with selection not matched original image");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0032) {
+    // Check that 'Show node labels' option works as expected.
+
+    // Check that if there are no node labels in the model the option is not shown.
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/sample1.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+    auto showNodeLabelsCheckbox = GTWidget::findCheckBox(os, "showNodeLabelsCheck", optionPanel);
+    CHECK_SET_ERR(!showNodeLabelsCheckbox->isVisible(), "showNodeLabelsCheck is visible for a tree with no labels");
+
+    // Now check the tree with labels.
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/node-labels.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+    showNodeLabelsCheckbox = GTWidget::findCheckBox(os, "showNodeLabelsCheck", optionPanel);
+    CHECK_SET_ERR(showNodeLabelsCheckbox->isVisible(), "showNodeLabelsCheck is not visible for a tree with no labels");
+    CHECK_SET_ERR(showNodeLabelsCheckbox->isEnabled(), "showNodeLabelsCheck is not enabled for a tree with no labels");
+
+    GTCheckBox::checkState(os, showNodeLabelsCheckbox, false);
+    QImage imageWithoutLabels = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, showNodeLabelsCheckbox, true);
+    QImage imageWithLabels = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithLabels != imageWithoutLabels, "Image with no node labels is the same with the image with node labels");
+
+    GTCheckBox::setChecked(os, showNodeLabelsCheckbox, false);
+    QImage image = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(image == imageWithoutLabels, "Image with no node labels does not match the original image");
+}
+
 }  // namespace GUITest_common_scenarios_tree_viewer
 }  // namespace U2

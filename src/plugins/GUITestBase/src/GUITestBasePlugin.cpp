@@ -3217,6 +3217,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0029);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0030);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0031);
+    REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0032);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Repeat Finder

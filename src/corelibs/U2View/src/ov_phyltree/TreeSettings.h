@@ -77,10 +77,17 @@ enum TreeViewOption {
     NODE_COLOR,
     NODE_RADIUS,
 
-    SHOW_LABELS,
-    SHOW_DISTANCES,
-    SHOW_NODE_LABELS,
-    ALIGN_LABELS,
+    /** Shows/hides branch distance labels. */
+    SHOW_BRANCH_DISTANCE_LABELS,
+
+    /** Shows/hides inner node labels: names/heights (heights are not implemented yet). */
+    SHOW_INNER_NODE_LABELS,
+
+    /** Shows/hides leaf node labels (sequence/species names). */
+    SHOW_LEAF_NODE_LABELS,
+
+    /** Aligns leaf node labels (sequence/species names). */
+    ALIGN_LEAF_NODE_LABELS,
 
     SCALEBAR_RANGE,
     SCALEBAR_FONT_SIZE,

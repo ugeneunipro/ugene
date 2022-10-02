@@ -43,23 +43,22 @@ static const QBrush normalStateBrush(Qt::lightGray);
 static const QBrush selectedStateBrush(QColor("#EA9700"));
 static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
-TvNodeItem::TvNodeItem(double nodeValue)
+TvNodeItem::TvNodeItem(const QString& _nodeName)
     : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
-      nodeValue(nodeValue) {
+      nodeName(_nodeName) {
     setPen(QColor(Qt::black));
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
-    if (nodeValue >= 0) {
-        labelItem = new TvTextItem(this, QString::number(nodeValue));
+    if (!nodeName.isEmpty()) {
+        labelItem = new TvTextItem(this, nodeName);
         labelItem->setFont(TreeViewerUtils::getFont());
         labelItem->setBrush(Qt::darkGray);
         QRectF rect = labelItem->boundingRect();
         labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
-        labelItem->setParentItem(this);
-        labelItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
         labelItem->setZValue(1);
+        labelItem->setVisible(false);
     }
 }
 
@@ -160,7 +159,7 @@ void TvNodeItem::updateSettings(const OptionsMap& settings) {
         labelItem->setFont(newFont);
         QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
         labelItem->setBrush(labelsColor);
-        bool showNodeLabels = settings[SHOW_NODE_LABELS].toBool();
+        bool showNodeLabels = settings[SHOW_INNER_NODE_LABELS].toBool();
         labelItem->setVisible(showNodeLabels);
     }
 }
@@ -172,14 +171,6 @@ TreeViewerUI* TvNodeItem::getTreeViewerUI() const {
     auto ui = qobject_cast<TreeViewerUI*>(views[0]);
     SAFE_POINT(ui != nullptr, "getTreeViewerUI: ui is null", nullptr);
     return ui;
-}
-
-double TvNodeItem::getNodeValue() const {
-    return nodeValue;
-}
-
-const TvTextItem* TvNodeItem::getLabelItem() const {
-    return labelItem;
 }
 
 TvBranchItem* TvNodeItem::getParentBranchItem() const {

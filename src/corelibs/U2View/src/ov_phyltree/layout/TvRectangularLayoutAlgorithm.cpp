@@ -39,11 +39,11 @@ static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
         return createBranch(phyNode->getSecondNodeOfBranch(0));
     }
     if (branchCount == 0) {
-        return new TvRectangularBranchItem(0, 0, phyNode->name);
+        return new TvRectangularBranchItem(0.0, 0.0, phyNode->name);
     }
     if (branchCount == 1) {
         PhyBranch* firstBranch = branches.at(0);
-        return new TvRectangularBranchItem(0, 0, phyNode->name, firstBranch->distance, firstBranch);
+        return new TvRectangularBranchItem(0.0, 0.0, phyNode->name, firstBranch->distance, firstBranch);
     }
     QList<TvRectangularBranchItem*> childRectBranches;
     int branchIndex = -1;
@@ -54,15 +54,14 @@ static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
         }
         childRectBranches.append(createBranch(phyNode->getSecondNodeOfBranch(i)));
     }
-    TvRectangularBranchItem* rectBranch;
-    if (branchIndex < 0) {
-        rectBranch = new TvRectangularBranchItem();
-    } else {
+    PhyBranch* phyBranch = nullptr;
+    if (branchIndex >= 0) {
         const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
         SAFE_POINT(parentPhyBranch != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
-        PhyBranch* phyBranch = branches.at(branchIndex);
-        rectBranch = new TvRectangularBranchItem(phyBranch->distance, phyBranch, parentPhyBranch->nodeValue);
+        phyBranch = branches.at(branchIndex);
     }
+    double distance = phyBranch == nullptr ? 0.0 : phyBranch->distance;
+    auto rectBranch = new TvRectangularBranchItem(distance, phyBranch, phyNode->name);
     for (auto childRectBranch : qAsConst(childRectBranches)) {
         childRectBranch->setParentItem(rectBranch);
     }

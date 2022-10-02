@@ -38,9 +38,8 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    TvRectangularBranchItem(const QString& name, TvRectangularBranchItem* parentBranchItem);
-    TvRectangularBranchItem();
-    TvRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue);
+    TvRectangularBranchItem(const QString& nodeName, TvRectangularBranchItem* parentBranchItem);
+    TvRectangularBranchItem(double distance, PhyBranch* branch, const QString& nodeName);
     TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
     TvRectangularBranchItem(double x, double y, const QString& name);
 

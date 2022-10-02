@@ -160,11 +160,10 @@ void TreeViewer::createActions() {
     nameLabelsAction->setCheckable(true);
     nameLabelsAction->setChecked(true);
     nameLabelsAction->setObjectName("Show Names");
-    // Show Node Labels
-    nodeLabelsAction = new QAction(tr("Show Node Labels"), ui);
-    nodeLabelsAction->setCheckable(phyObject->hasNodeLabels());
-    nodeLabelsAction->setChecked(true);
-    nodeLabelsAction->setObjectName("Show Names");
+
+    // Show Node Labels.
+    showNodeLabelsAction = new QAction(tr("Show Node Labels"), ui);
+    showNodeLabelsAction->setObjectName("showNodeLabelsAction");
 
     distanceLabelsAction = new QAction(tr("Show Distances"), ui);
     distanceLabelsAction->setCheckable(true);
@@ -382,8 +381,8 @@ static constexpr double SIZE_COEF = 0.1;
 
 TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     : phyObject(_treeViewer->getPhyObject()),
-      root(_treeViewer->getRoot()),
       treeViewer(_treeViewer),
+      root(_treeViewer->getRoot()),
       rectRoot(_treeViewer->getRoot()) {
     updateDistanceToViewScale();
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
@@ -540,19 +539,19 @@ void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVarian
         case NODE_RADIUS:
             updateTreeSettingsOnSelectedItems();
             break;
-        case SHOW_LABELS:
+        case SHOW_LEAF_NODE_LABELS:
             changeNamesDisplay();
             treeViewer->nameLabelsAction->setChecked(newValue.toBool());
             break;
-        case SHOW_DISTANCES:
+        case SHOW_BRANCH_DISTANCE_LABELS:
             showLabels(LabelType_Distance);
             treeViewer->distanceLabelsAction->setChecked(newValue.toBool());
             break;
-        case SHOW_NODE_LABELS:
+        case SHOW_INNER_NODE_LABELS:
         case SHOW_NODE_SHAPE:
             updateTreeSettingsOnAllNodes();
             break;
-        case ALIGN_LABELS:
+        case ALIGN_LEAF_NODE_LABELS:
             changeLabelsAlignment();
             treeViewer->alignTreeLabelsAction->setChecked(newValue.toBool());
             break;
@@ -595,10 +594,11 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(LABEL_FONT_ITALIC, false);
     setOptionValue(LABEL_FONT_UNDERLINE, false);
 
-    setOptionValue(SHOW_LABELS, true);
-    setOptionValue(SHOW_DISTANCES, !phyObject->hasNodeLabels());
-    setOptionValue(SHOW_NODE_LABELS, phyObject->hasNodeLabels());
-    setOptionValue(ALIGN_LABELS, false);
+    setOptionValue(SHOW_LEAF_NODE_LABELS, true);
+
+    setOptionValue(SHOW_BRANCH_DISTANCE_LABELS, true);
+    setOptionValue(SHOW_INNER_NODE_LABELS, false);
+    setOptionValue(ALIGN_LEAF_NODE_LABELS, false);
 
     setOptionValue(BRANCH_COLOR, QColor(0, 0, 0));
     setOptionValue(BRANCH_THICKNESS, 1);
@@ -759,7 +759,7 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
 
     showLabels(LabelType_Distance);
     showLabels(LabelType_SequenceName);
-    bool alignLabels = getOptionValue(ALIGN_LABELS).toBool();
+    bool alignLabels = getOptionValue(ALIGN_LEAF_NODE_LABELS).toBool();
     if (alignLabels) {
         updateLabelsAlignment();
     }
@@ -939,6 +939,12 @@ void TreeViewerUI::updateFixedSizeItemScales() {
     QList<QGraphicsItem*> fixedSizeItems = getFixedSizeItems();
     for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
         item->setScale(1 / sceneToScreenScale);  // Scale back to screen coordinates.
+        if (auto nodeItem = dynamic_cast<TvNodeItem*>(item)) {
+            // Scale back node labels. Only node circle must stay fixed size.
+            if (nodeItem->labelItem != nullptr) {
+                nodeItem->labelItem->setScale(sceneToScreenScale);
+            }
+        }
     }
 }
 
@@ -1055,9 +1061,9 @@ void TreeViewerUI::sl_swapTriggered() {
 void TreeViewerUI::sl_rerootTriggered() {
     QList<QGraphicsItem*> childItems = items();
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            buttonItem->rerootTree(phyObject);
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+            nodeItem->rerootTree(phyObject);
             break;
         }
     }
@@ -1066,9 +1072,9 @@ void TreeViewerUI::sl_rerootTriggered() {
 void TreeViewerUI::collapseSelected() {
     QList<QGraphicsItem*> childItems = items();
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            buttonItem->toggleCollapsedState();
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+            nodeItem->toggleCollapsedState();
             break;
         }
     }
@@ -1078,10 +1084,10 @@ void TreeViewerUI::updateBranchSettings() {
     QList<QGraphicsItem*> childItems = items();
     TvBranchItem* branch = root;
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            branch = dynamic_cast<TvBranchItem*>(buttonItem->parentItem());
-            SAFE_POINT(branch != nullptr, "Collapsing is impossible because button has not parent branch", );
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+            branch = dynamic_cast<TvBranchItem*>(nodeItem->parentItem());
+            SAFE_POINT(branch != nullptr, "Collapsing is impossible because node has not parent branch", );
             break;
         }
     }
@@ -1110,9 +1116,9 @@ void TreeViewerUI::updateBranchSettings() {
 
 bool TreeViewerUI::isSelectedCollapsed() {
     foreach (QGraphicsItem* graphItem, items()) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            return buttonItem->isCollapsed();
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+            return nodeItem->isCollapsed();
         }
     }
     return false;
@@ -1192,7 +1198,7 @@ void TreeViewerUI::saveWholeTreeToSvg() {
 }
 
 void TreeViewerUI::sl_contTriggered(bool on) {
-    onSettingsChanged(ALIGN_LABELS, on);
+    onSettingsChanged(ALIGN_LEAF_NODE_LABELS, on);
 }
 
 void TreeViewerUI::changeLabelsAlignment() {
@@ -1312,8 +1318,8 @@ void TreeViewerUI::setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& tre
     scene()->addItem(root);
     updateScene(true);
 
-    bool showNames = getOptionValue(SHOW_LABELS).toBool();
-    bool showDistances = getOptionValue(SHOW_DISTANCES).toBool();
+    bool showNames = getOptionValue(SHOW_LEAF_NODE_LABELS).toBool();
+    bool showDistances = getOptionValue(SHOW_BRANCH_DISTANCE_LABELS).toBool();
 
     // TODO: cleanup labels logic.
     updateTreeSettingsOnAllNodes();
@@ -1337,32 +1343,32 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
     }
     maxNameWidth = 0.0;
     while (!stack.isEmpty()) {
-        TvBranchItem* node = stack.pop();
+        TvBranchItem* branchItem = stack.pop();
         if (labelTypes.testFlag(LabelType_SequenceName)) {
-            if (node->getNameTextItem() != nullptr) {
-                node->setVisible(getOptionValue(SHOW_LABELS).toBool());
-                maxNameWidth = qMax(maxNameWidth, node->getNameTextItem()->sceneBoundingRect().width());
+            if (branchItem->getNameTextItem() != nullptr) {
+                branchItem->setVisible(getOptionValue(SHOW_LEAF_NODE_LABELS).toBool());
+                maxNameWidth = qMax(maxNameWidth, branchItem->getNameTextItem()->sceneBoundingRect().width());
             }
         }
         if (labelTypes.testFlag(LabelType_Distance)) {
-            if (node->getDistanceTextItem() != nullptr) {
-                node->getDistanceTextItem()->setVisible(getOptionValue(SHOW_DISTANCES).toBool());
+            if (branchItem->getDistanceTextItem() != nullptr) {
+                branchItem->getDistanceTextItem()->setVisible(getOptionValue(SHOW_BRANCH_DISTANCE_LABELS).toBool());
             }
         }
-        foreach (QGraphicsItem* item, node->childItems()) {
-            if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
-                stack.push(branchItem);
+        foreach (QGraphicsItem* item, branchItem->childItems()) {
+            if (auto childBranchItem = dynamic_cast<TvBranchItem*>(item)) {
+                stack.push(childBranchItem);
             }
         }
     }
 }
 
 void TreeViewerUI::sl_showNameLabelsTriggered(bool on) {
-    onSettingsChanged(SHOW_LABELS, on);
+    onSettingsChanged(SHOW_LEAF_NODE_LABELS, on);
 }
 
 void TreeViewerUI::changeNamesDisplay() {
-    bool showNames = getOptionValue(SHOW_LABELS).toBool();
+    bool showNames = getOptionValue(SHOW_LEAF_NODE_LABELS).toBool();
     treeViewer->alignTreeLabelsAction->setEnabled(showNames);
 
     showLabels(LabelType_SequenceName);
@@ -1383,7 +1389,7 @@ void TreeViewerUI::updateTreeSettingsOnAllNodes() {
 }
 
 void TreeViewerUI::sl_showDistanceLabelsTriggered(bool on) {
-    onSettingsChanged(SHOW_DISTANCES, on);
+    onSettingsChanged(SHOW_BRANCH_DISTANCE_LABELS, on);
 }
 
 void TreeViewerUI::sl_printTriggered() {
@@ -1406,7 +1412,7 @@ void TreeViewerUI::sl_textSettingsTriggered() {
 
     if (QDialog::Accepted == dialog->result()) {
         updateSettings(dialog->getSettings());
-        if (getOptionValue(ALIGN_LABELS).toBool()) {
+        if (getOptionValue(ALIGN_LEAF_NODE_LABELS).toBool()) {
             QStack<TvBranchItem*> stack;
             stack.push(root);
             if (root != rectRoot) {
@@ -1557,14 +1563,14 @@ void TreeViewerUI::updateLayout() {
 }
 
 void TreeViewerUI::updateLabelsAlignment() {
-    bool on = getOptionValue(ALIGN_LABELS).toBool();
+    bool on = getOptionValue(ALIGN_LEAF_NODE_LABELS).toBool();
     QStack<TvBranchItem*> stack;
     stack.push(root);
     if (root != rectRoot) {
         stack.push(rectRoot);
     }
 
-    if (!getOptionValue(SHOW_LABELS).toBool()) {
+    if (!getOptionValue(SHOW_LEAF_NODE_LABELS).toBool()) {
         return;
     }
 
@@ -1608,8 +1614,8 @@ void TreeViewerUI::updateLabelsAlignment() {
 bool TreeViewerUI::isOnlyLeafSelected() const {
     int selectedItems = 0;
     foreach (QGraphicsItem* graphItem, items()) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isSelected()) {
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isSelected()) {
             selectedItems++;
         }
     }

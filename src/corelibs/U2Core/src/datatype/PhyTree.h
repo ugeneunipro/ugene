@@ -54,7 +54,8 @@ public:
 
     PhyNode* getRootNode() const;
 
-    bool hasNodeLabels = false;
+    /** Returns true if the tree has at least 1 non-leaf node with a label. */
+    bool hasNamedInnerNodes() const;
 
 private:
     PhyTreeData& operator=(const PhyTreeData&);
@@ -106,13 +107,16 @@ public:
     /* For reroot */
     void setParentNode(PhyNode* newParent, double distance);
 
-    QList<PhyNode*> getChildrenNodes() const;
+    QList<PhyNode*> getChildNodes() const;
 
     void swapBranches(int branchIndex1, int branchIndex2);
 
     double getDistanceToRoot() const;
 
     const PhyBranch* getParentBranch() const;
+
+    /** Returns true if the node is a leaf (tip) node in the tree. */
+    bool isLeafNode() const;
 
     QString name;
 
