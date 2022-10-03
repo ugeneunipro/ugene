@@ -130,7 +130,9 @@ void TreeOptionsWidget::updateAllWidgets() {
     for (const TreeViewOption& option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
-    showNodeLabelsCheck->setVisible(treeViewer->phyObject->getTree()->hasNamedInnerNodes());
+    if (treeViewer != nullptr) {
+        showNodeLabelsCheck->setVisible(treeViewer->phyObject->getTree()->hasNamedInnerNodes());
+    }
 }
 
 void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant& value) {
