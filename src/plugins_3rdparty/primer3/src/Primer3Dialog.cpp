@@ -575,17 +575,7 @@ void Primer3Dialog::sl_pbPick_clicked() {
         rs->showErrorMessage();
         return;
     }
-    if (doDataExchange()) {
-        bool objectPrepared = createAnnotationWidgetController->prepareAnnotationObject();
-        if (!objectPrepared) {
-            QMessageBox::critical(this, L10N::errorTitle(), tr("Cannot create an annotation object. Please check settings."));
-            return;
-        }
-        const CreateAnnotationModel& m = createAnnotationWidgetController->getModel();
-        AnnotationTableObject* obj = m.getAnnotationObject();
-        context->getAnnotatedDNAView()->tryAddObject(obj);
-        accept();
-    }
+    doDataExchange() ? accept() : reject();
 }
 
 void Primer3Dialog::sl_saveSettings() {

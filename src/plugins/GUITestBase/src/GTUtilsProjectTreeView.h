@@ -130,6 +130,9 @@ public:
 
     // Get all documents names with their object names (database connections are processed incorrectly)
     static QMap<QString, QStringList> getDocuments(HI::GUITestOpStatus& os);
+    
+    //count FILES in project view, NOT OBJECTS
+    static int countFilesInProjectView(HI::GUITestOpStatus& os);
 
     static const QString widgetName;
 

@@ -146,7 +146,9 @@ void Primer3ADVContext::sl_showDialog() {
                 return;
             }
             const CreateAnnotationModel& model = dialog->getCreateAnnotationModel();
-            AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), model.getAnnotationObject(), model.groupName, model.data->name, model.description));
+            auto ato = model.getAnnotationObject();
+            seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
+            AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description));
         }
     }
 }
