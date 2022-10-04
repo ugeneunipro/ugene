@@ -606,7 +606,7 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(BREADTH_SCALE_ADJUSTMENT_PERCENT, 100);
     setOptionValue(BRANCH_CURVATURE, 0);
 
-    setOptionValue(SHOW_NODE_SHAPE, true);
+    setOptionValue(SHOW_NODE_SHAPE, false);
     // TODO: these 2 options are not shown and not used. Make them used again & use correct defaults.
     setOptionValue(NODE_RADIUS, 2);
     setOptionValue(NODE_COLOR, QColor(0, 0, 0));

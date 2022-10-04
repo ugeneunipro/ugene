@@ -39,7 +39,7 @@ class TvTextItem;
 
 class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
-    TvNodeItem(const QString& nodeName = 0);
+    TvNodeItem(const QString& nodeName = nullptr);
 
     bool isPathToRootSelected() const;
 
@@ -74,7 +74,12 @@ protected:
     TreeViewerUI* getTreeViewerUI() const;
 
     bool isHovered = false;
-    bool isNodeShapeVisible = true;
+
+    /**
+     * TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
+     *  Or pass initial settings into the every item constructor.
+     */
+    bool isNodeShapeVisible = false;
 };
 
 }  // namespace U2

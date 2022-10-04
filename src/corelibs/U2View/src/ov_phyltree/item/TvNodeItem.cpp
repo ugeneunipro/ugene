@@ -58,6 +58,8 @@ TvNodeItem::TvNodeItem(const QString& _nodeName)
         QRectF rect = labelItem->boundingRect();
         labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
         labelItem->setZValue(1);
+        // TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
+        //  Or pass initial settings into the every item constructor.
         labelItem->setVisible(false);
     }
 }
