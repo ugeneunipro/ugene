@@ -337,8 +337,8 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                 }
                 state = RS_WEIGHT;
             } else if (ch == ',') {  // New sibling.
-                CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
-                CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Branch node stack is empty")));
+                CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Missing nodes in node stack")));
+                CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Missing branches in branch stack")));
                 if (nodeStack.isEmpty() || branchStack.isEmpty()) {
                     si.setError(DatatypeSerializers::tr("Unexpected new sibling %1").arg(lastStr));
                     break;

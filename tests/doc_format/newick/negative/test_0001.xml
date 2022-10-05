@@ -1,4 +1,4 @@
 <multi-test>
-    <!-- Multiple nodes have empty names. -->
-    <load-broken-document index="doc" url="newick/sample8.newick" io="local_file" format="newick"/>
+    <!-- 2 sets of branches to connected into a single tree. -->
+    <load-broken-document index="doc" url="newick/broken.nwk" io="local_file" format="newick"/>
 </multi-test>
