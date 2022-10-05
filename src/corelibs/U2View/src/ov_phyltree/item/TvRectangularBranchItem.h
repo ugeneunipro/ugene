@@ -38,10 +38,7 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    TvRectangularBranchItem(const QString& nodeName, TvRectangularBranchItem* parentBranchItem);
-    TvRectangularBranchItem(double distance, PhyBranch* branch, const QString& nodeName);
-    TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch);
-    TvRectangularBranchItem(double x, double y, const QString& name);
+    TvRectangularBranchItem(const PhyBranch* branch, const QString& name);
 
     QRectF boundingRect() const override;
 
@@ -61,8 +58,6 @@ public:
 
     void toggleCollapsedState() override;
 
-    void swapSiblings();
-
     const PhyBranch* getPhyBranch() const;
 
     void drawCollapsedRegion();
@@ -77,8 +72,6 @@ private:
 
     /** See BREADTH_SCALE_ADJUSTMENT doc. */
     double breadthScaleAdjustment = 1;
-
-    PhyBranch* phyBranch = nullptr;
 
     /**
      * Leaf branches have additional UI element to show selected state.

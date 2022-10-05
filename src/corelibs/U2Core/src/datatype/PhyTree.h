@@ -93,8 +93,6 @@ public:
 
     PhyBranch* getParentBranch();
 
-    const PhyBranch* getChildBranchByIndex(int branchIndex) const;
-
     /** Adds current node and all node children into the collection using pre-order algorithm. */
     void getNodesPreOrder(QList<PhyNode*>& nodes);
     void getNodesPreOrder(QList<const PhyNode*>& nodes) const;

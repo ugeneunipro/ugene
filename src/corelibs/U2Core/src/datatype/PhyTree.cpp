@@ -84,11 +84,6 @@ PhyBranch* PhyNode::getParentBranch() {
     return parentBranch;
 }
 
-const PhyBranch* PhyNode::getChildBranchByIndex(int branchIndex) const {
-    SAFE_POINT(branchIndex >= 0 && branchIndex < childBranches.size(), "Invalid child branch index: " + QString::number(branchIndex), nullptr);
-    return childBranches.at(branchIndex);
-}
-
 void PhyNode::getNodesPreOrder(QList<PhyNode*>& nodes) {
     nodes.append(this);
     for (PhyBranch* branch : qAsConst(childBranches)) {
