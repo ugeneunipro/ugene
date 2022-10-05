@@ -87,36 +87,26 @@ public:
     PhyNode() = default;
     ~PhyNode();
 
+    PhyBranch* getParentBranch() const;
+
+    PhyNode* getParentNode() const;
+
     const QList<PhyBranch*>& getChildBranches() const;
 
-    const PhyBranch* getParentBranch() const;
-
-    PhyBranch* getParentBranch();
-
     /** Adds current node and all node children into the collection using pre-order algorithm. */
-    void getNodesPreOrder(QList<PhyNode*>& nodes);
-    void getNodesPreOrder(QList<const PhyNode*>& nodes) const;
+    void collectNodesPreOrder(QList<PhyNode*>& nodes);
+    void collectNodesPreOrder(QList<const PhyNode*>& nodes) const;
 
     bool isConnected(const PhyNode* node) const;
 
     /** Clones current node & sub-tree. */
     PhyNode* clone() const;
 
-    /* For distance matrix */
-    const PhyNode* getParentNode() const;
-
-    PhyNode* getParentNode();
-
     /** Prints sub-tree to stdout. */
     void print(int distance = 0, int tabSize = 0) const;
 
-    /** Returns direct child nodes of this node. To get all nodes use getNodesPreOrder(). */
-    QList<PhyNode*> getChildNodes() const;
-
     /**Inverts order of the child node branches. */
     void invertOrderOrChildBranches();
-
-    double getDistanceToRoot() const;
 
     /** Returns true if the node is a leaf (tip) node in the tree. */
     bool isLeafNode() const;

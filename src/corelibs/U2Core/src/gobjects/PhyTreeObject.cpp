@@ -156,7 +156,7 @@ bool PhyTreeObject::treesAreAlike(const PhyTree& tree1, const PhyTree& tree2) {
             if (n2->name != n1->name) {
                 continue;
             }
-            if (n1->getChildNodes().size() != n2->getChildNodes().size()) {
+            if (n1->getChildBranches().size() != n2->getChildBranches().size()) {
                 return false;
             }
         }
