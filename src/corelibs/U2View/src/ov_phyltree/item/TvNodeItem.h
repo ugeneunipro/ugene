@@ -36,6 +36,7 @@ class TreeViewerUI;
 class PhyTreeObject;
 class TvBranchItem;
 class TvTextItem;
+class PhyNode;
 
 class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
@@ -45,11 +46,9 @@ public:
 
     void toggleCollapsedState();
 
-    void swapSiblings();
-
     bool isCollapsed();
 
-    void rerootTree(PhyTreeObject* treeObject);
+    PhyNode* getPhyNode() const;
 
     void updateSettings(const OptionsMap& settings);
 

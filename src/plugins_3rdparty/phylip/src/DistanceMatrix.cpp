@@ -393,9 +393,13 @@ void DistanceMatrix::switchName(PhyNode* node) {
     if (str.startsWith("___")) {
         node->name = "";
     }
-    const QList<PhyBranch*> branches = node->getBranches();
+    const QList<PhyBranch*>& branches = node->getChildBranches();
     for (PhyBranch* branch : qAsConst(branches)) {
         branch->distance = qIsNaN(branch->distance) ? 1.0 : qAbs(branch->distance);
+    }
+    PhyBranch* parentBranch = node->getParentBranch();
+    if (parentBranch != nullptr) {
+        parentBranch->distance = qIsNaN(parentBranch->distance) ? 1.0 : qAbs(parentBranch->distance);
     }
 }
 
@@ -410,9 +414,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int>* location) {
         return;
     }
     PhyNode* rootnode1 = oldnode1->getParentNode();
-
-    PhyTreeUtils::removeBranch(rootnode1, oldnode1);
-
+    oldnode1->unlinkFromParent();
     // printPhyTree();
 
     QString name2 = getTaxaName(location->second);
@@ -420,8 +422,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int>* location) {
         unprocessed_taxa.removeAll(name2);
     }
     PhyNode* oldnode2 = getNodeByName(name2);
-    PhyNode* rootnode2 = oldnode2->getParentNode();
-    PhyTreeUtils::removeBranch(rootnode2, oldnode2);
+    oldnode2->unlinkFromParent();
     if (oldnode1 == oldnode2) {
         return;
     }
@@ -506,15 +507,12 @@ PhyNode* DistanceMatrix::getNodeByName(const QString& name) {
 }
 
 PhyNode* DistanceMatrix::findNode(PhyNode* startNode, const QString& name) {
-    visited_list.append(startNode->name);
     CHECK(startNode->name != name, startNode);
-    const QList<PhyBranch*> branches = startNode->getBranches();
-    for (auto branch : qAsConst(branches)) {
-        if (!visited_list.contains(branch->node2->name)) {
-            PhyNode* node2 = findNode(branch->node2, name);
-            if (node2 != nullptr) {
-                return node2;
-            }
+    const QList<PhyBranch*>& childBranches = startNode->getChildBranches();
+    for (auto childBranch : qAsConst(childBranches)) {
+        PhyNode* resultNode = findNode(childBranch->childNode, name);
+        if (resultNode != nullptr) {
+            return resultNode;
         }
     }
     return nullptr;
@@ -579,9 +577,9 @@ void DistanceMatrix::printPhyNode(PhyNode* node, int tab, QList<PhyNode*>& nodes
     }
     tab++;
     std::cout << "name: " << node->name.toLatin1().constData() << std::endl;
-    const QList<PhyBranch*> branches = node->getBranches();
+    const QList<PhyBranch*> branches = node->getChildBranches();
     for (auto branch : qAsConst(branches)) {
-        printPhyNode(branch->node2, tab, nodes);
+        printPhyNode(branch->childNode, tab, nodes);
     }
 }
 bool DistanceMatrix::areTreesEqual(PhyTree* tree1, PhyTree* tree2) {
@@ -621,24 +619,17 @@ bool DistanceMatrix::areTreesEqual(PhyTree* tree1, PhyTree* tree2) {
 }
 
 void DistanceMatrix::addNodeToList(QList<PhyNode*>& nodelist, QMap<QString, int>& nodemap, QList<PhyBranch*>& branches, PhyNode* node) {
-    if (node == nullptr || nodelist.contains(node)) {
-        return;
-    }
+    CHECK(node != nullptr && !nodelist.contains(node), );
     nodelist.append(node);
 
-    const QList<PhyBranch*> nodeBranches = node->getBranches();
+    const QList<PhyBranch*> nodeBranches = node->getChildBranches();
     if (node->name != "ROOT" && !node->name.isEmpty() && !node->name.startsWith("___")) {
-        for (auto branch : qAsConst(nodeBranches)) {
-            if (branch->node2 == node) {
-                nodemap.insert(node->name, branch->distance);
-            }
-        }
+        PhyBranch* parentBranch = node->getParentBranch();
+        nodemap.insert(node->name, parentBranch->distance);
     }
     for (auto branch : qAsConst(nodeBranches)) {
-        if (!branches.contains(branch)) {
-            branches.append(branch);
-            addNodeToList(nodelist, nodemap, branches, branch->node2);
-        }
+        branches.append(branch);
+        addNodeToList(nodelist, nodemap, branches, branch->childNode);
     }
 }
 

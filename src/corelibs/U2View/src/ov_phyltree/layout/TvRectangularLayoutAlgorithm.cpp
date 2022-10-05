@@ -32,40 +32,20 @@
 namespace U2 {
 
 static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
-    const QList<PhyBranch*> branches = phyNode->getBranches();
-    int branchCount = branches.size();
-    if (branchCount == 1 && (phyNode->name.isEmpty() || phyNode->name == "ROOT")) {
-        SAFE_POINT(phyNode != phyNode->getSecondNodeOfBranch(0), "Invalid getSecondNodeOfBranch", nullptr);
-        return createBranch(phyNode->getSecondNodeOfBranch(0));
+    const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
+    auto parentTvBranch = new TvRectangularBranchItem(parentPhyBranch, "");
+    if (phyNode->isLeafNode()) {
+        // TODO: do not use branches to draw names.
+        auto branchTvItemForName = new TvRectangularBranchItem(nullptr, phyNode->name);
+        branchTvItemForName->setParentItem(parentTvBranch);
     }
-    if (branchCount == 0) {
-        return new TvRectangularBranchItem(0.0, 0.0, phyNode->name);
+
+    const QList<PhyBranch*>& childPhyBranches = phyNode->getChildBranches();
+    for (auto childPhyBranch : qAsConst(childPhyBranches)) {
+        auto childTvBranch = createBranch(childPhyBranch->childNode);
+        childTvBranch->setParentItem(parentTvBranch);
     }
-    if (branchCount == 1) {
-        PhyBranch* firstBranch = branches.at(0);
-        return new TvRectangularBranchItem(0.0, 0.0, phyNode->name, firstBranch->distance, firstBranch);
-    }
-    QList<TvRectangularBranchItem*> childRectBranches;
-    int branchIndex = -1;
-    for (int i = 0; i < branchCount; i++) {
-        if (phyNode->getSecondNodeOfBranch(i) == phyNode) {
-            branchIndex = i;
-            continue;
-        }
-        childRectBranches.append(createBranch(phyNode->getSecondNodeOfBranch(i)));
-    }
-    PhyBranch* phyBranch = nullptr;
-    if (branchIndex >= 0) {
-        const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
-        SAFE_POINT(parentPhyBranch != nullptr, "An internal error: a tree is in an incorrect state, can't create a branch", nullptr);
-        phyBranch = branches.at(branchIndex);
-    }
-    double distance = phyBranch == nullptr ? 0.0 : phyBranch->distance;
-    auto rectBranch = new TvRectangularBranchItem(distance, phyBranch, phyNode->name);
-    for (auto childRectBranch : qAsConst(childRectBranches)) {
-        childRectBranch->setParentItem(rectBranch);
-    }
-    return rectBranch;
+    return parentTvBranch;
 }
 
 TvRectangularBranchItem* TvRectangularLayoutAlgorithm::buildTreeLayout(const PhyNode* phyRoot) {
@@ -87,40 +67,31 @@ static TvRectangularBranchItem* getChildItemByPhyBranch(TvRectangularBranchItem*
 }
 
 void static recalculateBranches(TvRectangularBranchItem* branch, const PhyNode* rootPhyNode, int& currentRow) {
-    const PhyNode* phyNode = branch->getPhyBranch() != nullptr ? branch->getPhyBranch()->node2 : rootPhyNode;
+    const PhyNode* phyNode = branch->getPhyBranch() != nullptr ? branch->getPhyBranch()->childNode : rootPhyNode;
     CHECK(phyNode != nullptr, );
 
-    const QList<PhyBranch*> branches = phyNode->getBranches();
-    if (branches.size() <= 1) {
+    const QList<PhyBranch*>& childPhyBranches = phyNode->getChildBranches();
+    if (childPhyBranches.isEmpty()) {
         double y = (currentRow + 0.5) * TvRectangularBranchItem::DEFAULT_HEIGHT;
         branch->setPos(0, y);
         currentRow++;
         return;
     }
-    QList<TvRectangularBranchItem*> childBranches;
-    for (int i = 0; i < branches.size(); ++i) {
-        if (phyNode->getSecondNodeOfBranch(i) != phyNode) {
-            TvRectangularBranchItem* childBranch = getChildItemByPhyBranch(branch, branches.at(i));
-            if (childBranch->isVisible()) {
-                recalculateBranches(childBranch, nullptr, currentRow);
-            }
-            childBranches.append(childBranch);
-        } else {
-            childBranches.append(nullptr);
+    QList<TvRectangularBranchItem*> childTvBranches;
+    for (const PhyBranch* childPhyBranch : qAsConst(childPhyBranches)) {
+        TvRectangularBranchItem* childTvBranch = getChildItemByPhyBranch(branch, childPhyBranch);
+        if (childTvBranch->isVisible()) {
+            recalculateBranches(childTvBranch, nullptr, currentRow);
         }
+        childTvBranches.append(childTvBranch);
     }
 
-    SAFE_POINT(childBranches.size() == branches.size(), "Invalid count of child branches", );
-
-    QPointF firstPos = childBranches[0] ? childBranches[0]->pos() : childBranches[1]->pos();
+    QPointF firstPos = childTvBranches.first()->pos();
     double xMin = firstPos.x();
     double yMin = firstPos.y();
     double yMax = firstPos.y();
-    for (int i = 1; i < childBranches.size(); ++i) {
-        if (childBranches[i] == nullptr) {
-            continue;
-        }
-        QPointF pos1 = childBranches[i]->pos();
+    for (int i = 1; i < childTvBranches.size(); ++i) {
+        QPointF pos1 = childTvBranches[i]->pos();
         xMin = qMin(xMin, pos1.x());
         yMin = qMin(yMin, pos1.y());
         yMax = qMax(yMax, pos1.y());
@@ -137,23 +108,20 @@ void static recalculateBranches(TvRectangularBranchItem* branch, const PhyNode* 
         branch->setPos(xMin, y);
     }
 
-    for (int i = 0; i < childBranches.size(); ++i) {
-        TvRectangularBranchItem* childBranch = childBranches[i];
-        if (childBranch == nullptr) {
-            continue;
-        }
-        double dist = qAbs(branches.at(i)->distance);
-        auto side = childBranch->pos().y() > y
+    for (auto childTvBranch : qAsConst(childTvBranches)) {
+        double dist = qAbs(childTvBranch->getDist());
+        auto side = childTvBranch->pos().y() > y
                         ? TvBranchItem::Side::Right
                         : TvBranchItem::Side::Left;
-        childBranch->setSide(side);
-        childBranch->setWidthW(dist);
-        childBranch->setDist(dist);
-        childBranch->setParentItem(branch);
+        childTvBranch->setSide(side);
+        childTvBranch->setWidthW(dist);
+        childTvBranch->setDist(dist);
+        childTvBranch->setParentItem(branch);
 
-        QRectF rect = childBranch->getDistanceTextItem()->boundingRect();
-        double textX = -(childBranch->getWidth() + rect.width()) / 2;
-        childBranch->getDistanceTextItem()->setPos(textX, 0);
+        TvTextItem* distanceTextItem = childTvBranch->getDistanceTextItem();
+        QRectF rect = distanceTextItem->boundingRect();
+        double textX = -(childTvBranch->getWidth() + rect.width()) / 2;
+        distanceTextItem->setPos(textX, 0);
     }
 }
 

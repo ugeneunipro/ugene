@@ -62,203 +62,125 @@ PhyNode* PhyTreeData::getRootNode() const {
 }
 
 void PhyTreeData::print() const {
-    QList<PhyNode*> nodes;
-    int tab = 0;
-    int distance = 0;
-    rootNode->print(nodes, distance, tab);
+    rootNode->print();
 }
 
 QList<PhyNode*> PhyTreeData::getNodesPreOrder() const {
+    CHECK(rootNode != nullptr, {});
     QList<PhyNode*> nodes;
-    if (rootNode != nullptr) {
-        rootNode->addIfNotPreset(nodes);
-    }
+    rootNode->getNodesPreOrder(nodes);
     return nodes;
 }
 
-const QList<PhyBranch*>& PhyNode::getBranches() const {
-    return branches;
+const QList<PhyBranch*>& PhyNode::getChildBranches() const {
+    return childBranches;
 }
 
-const PhyNode* PhyNode::getSecondNodeOfBranch(int branchNumber) const {
-    SAFE_POINT(branchNumber < branches.size() && branchNumber >= 0, "Invalid branch number", nullptr);
-    return branches.at(branchNumber)->node2;
+const PhyBranch* PhyNode::getParentBranch() const {
+    return parentBranch;
 }
 
-void PhyNode::addIfNotPreset(QList<PhyNode*>& nodes) {
-    CHECK(!nodes.contains(this), );
+PhyBranch* PhyNode::getParentBranch() {
+    return parentBranch;
+}
+
+const PhyBranch* PhyNode::getChildBranchByIndex(int branchIndex) const {
+    SAFE_POINT(branchIndex >= 0 && branchIndex < childBranches.size(), "Invalid child branch index: " + QString::number(branchIndex), nullptr);
+    return childBranches.at(branchIndex);
+}
+
+void PhyNode::getNodesPreOrder(QList<PhyNode*>& nodes) {
     nodes.append(this);
-    for (PhyBranch* b : qAsConst(branches)) {
-        assert(b->node1 != nullptr && b->node2 != nullptr);
-        b->node1->addIfNotPreset(nodes);
-        b->node2->addIfNotPreset(nodes);
+    for (PhyBranch* branch : qAsConst(childBranches)) {
+        branch->childNode->getNodesPreOrder(nodes);
     }
 }
 
-void PhyNode::addIfNotPreset(QList<const PhyNode*>& nodes) const {
-    CHECK(!nodes.contains(this), );
+void PhyNode::getNodesPreOrder(QList<const PhyNode*>& nodes) const {
     nodes.append(this);
-    for (PhyBranch* b : qAsConst(branches)) {
-        assert(b->node1 != nullptr && b->node2 != nullptr);
-        b->node1->addIfNotPreset(nodes);
-        b->node2->addIfNotPreset(nodes);
+    for (PhyBranch* branch : qAsConst(childBranches)) {
+        branch->childNode->getNodesPreOrder(nodes);
     }
 }
 
 bool PhyNode::isConnected(const PhyNode* node) const {
-    foreach (PhyBranch* b, branches) {
-        if (b->node1 == node || b->node2 == node) {
-            return true;
-        }
-    }
-    return false;
-}
-
-PhyNode* PhyNode::parent() const {
-    foreach (PhyBranch* currentBrunch, branches) {
-        if (currentBrunch->node2 == this)
-            return currentBrunch->node1;
-    }
-    return nullptr;
+    CHECK(node != getParentNode(), true);
+    return std::any_of(childBranches.begin(), childBranches.end(), [node](auto branch) { return branch->childNode == node; });
 }
 
 const PhyNode* PhyNode::getParentNode() const {
-    return parent();
+    return parentBranch == nullptr ? nullptr : parentBranch->parentNode;
 }
 
 PhyNode* PhyNode::getParentNode() {
-    return parent();
+    return parentBranch == nullptr ? nullptr : parentBranch->parentNode;
 }
 
 bool PhyNode::isLeafNode() const {
-    return branches.size() == 1 && branches[0] == getParentBranch();
+    return childBranches.isEmpty();
 }
 
-void PhyNode::setParentNode(PhyNode* newParent, double distance) {
-    int branchesNumber = branches.size();
-    for (int i = 0; i < branchesNumber; i++) {
-        PhyBranch* currentBrunch = branches.at(i);
-
-        if (currentBrunch->node1 == newParent) {
-            return;
-        } else if (currentBrunch->node2 == newParent) {
-            // Invert branch nodes if newParent currently is a child
-            currentBrunch->node1 = newParent;
-            currentBrunch->node2 = this;
-            currentBrunch->distance = distance;
-            return;
-        } else if (currentBrunch->node2 == this) {
-            // Remove link between the node and previous parent
-            PhyNode* parentNode = currentBrunch->node1;
-            if (nullptr != parentNode) {
-                parentNode->branches.removeOne(currentBrunch);
-            }
-            // Link the node to the new parent
-            if (nullptr != newParent) {
-                currentBrunch->node1 = newParent;
-                currentBrunch->distance = distance;
-                newParent->branches.append(currentBrunch);
-            }
-            return;
-        }
-    }
-
-    auto branch = new PhyBranch();
-    branch->distance = distance;
-    branch->node1 = newParent;
-    branch->node2 = this;
-
-    newParent->branches.append(branch);
-    branches.append(branch);
+bool PhyNode::isRootNode() const {
+    return parentBranch == nullptr;
 }
 
 QList<PhyNode*> PhyNode::getChildNodes() const {
     QList<PhyNode*> childNodes;
-    for (PhyBranch* branch : qAsConst(branches)) {
-        if (branch->node1 == this) {
-            childNodes.append(branch->node2);
-        }
+    for (PhyBranch* childBranch : qAsConst(childBranches)) {
+        childNodes.append(childBranch->childNode);
     }
     return childNodes;
 }
 
-const PhyBranch* PhyNode::getParentBranch() const {
-    foreach (PhyBranch* branch, branches) {
-        if (branch->node2 == this) {
-            return branch;
-        }
-    }
-
-    return nullptr;
-}
-
 PhyNode::~PhyNode() {
-    for (PhyBranch* branch : branches) {
-        SAFE_POINT(branch != nullptr, "NULL pointer to PhyBranch", );
-        PhyNode* childNode = branch->node2;
-        SAFE_POINT(childNode != nullptr, "NULL pointer to PhyNode", );
-        if (childNode != this) {
-            childNode->branches.removeOne(branch);
-            delete childNode;
-        } else {
-            PhyNode* parentNode = branch->node1;
-            if (parentNode != nullptr) {
-                parentNode->branches.removeOne(branch);
-            }
-        }
-        delete branch;
+    // Delete branch connected to parent.
+    unlinkFromParent();
+
+    // Delete all child nodes. These nodes will auto-delete their parent branches first.
+    for (PhyBranch* childBranch : childBranches) {
+        PhyNode* childNode = childBranch->childNode;
+        SAFE_POINT(childNode->getParentNode() == this, "Child node has incorrect parent!", );
+        delete childNode;
     }
 }
 
 PhyNode* PhyNode::clone() const {
-    QList<const PhyNode*> nodesPreOrder;
-    addIfNotPreset(nodesPreOrder);
+    QList<const PhyNode*> allNodesInTree;
+    getNodesPreOrder(allNodesInTree);
 
-    QList<PhyBranch*> allBranches;
-    QMap<const PhyNode*, PhyNode*> nodeTable;
-    for (const PhyNode* n : qAsConst(nodesPreOrder)) {
-        auto n2 = new PhyNode();
-        n2->name = n->name;
-        nodeTable[n] = n2;
-        for (PhyBranch* b : qAsConst(n->branches)) {
-            if (!allBranches.contains(b)) {
-                allBranches.append(b);
-            }
-        }
+    QList<PhyBranch*> allBranchesInTree;
+    QMap<const PhyNode*, PhyNode*> clonedNodeByOriginalNode;
+    for (const PhyNode* originalNode : qAsConst(allNodesInTree)) {
+        auto clonedNode = new PhyNode();
+        clonedNode->name = originalNode->name;
+        clonedNodeByOriginalNode[originalNode] = clonedNode;
+        allBranchesInTree.append(originalNode->parentBranch);
     }
-    for (PhyBranch* b : qAsConst(allBranches)) {
-        PhyNode* node1 = nodeTable[b->node1];
-        PhyNode* node2 = nodeTable[b->node2];
-        assert(node1 != nullptr && node2 != nullptr);
-        PhyTreeUtils::addBranch(node1, node2, b->distance);
+    for (PhyBranch* originalBranch : qAsConst(allBranchesInTree)) {
+        PhyNode* parentClonedNode = clonedNodeByOriginalNode[originalBranch->parentNode];
+        PhyNode* childClonedNode = clonedNodeByOriginalNode[originalBranch->childNode];
+        SAFE_POINT(parentClonedNode != nullptr && childClonedNode != nullptr, "Cloned node not found!", nullptr);
+        PhyTreeUtils::addBranch(parentClonedNode, childClonedNode, originalBranch->distance);
     }
-    PhyNode* myClone = nodeTable.value(this);
-    assert(myClone != nullptr);
-    return myClone;
+    PhyNode* clonedNode = clonedNodeByOriginalNode.value(this);
+    SAFE_POINT(clonedNode != nullptr, "Cloned node not found for the current node", nullptr);
+    return clonedNode;
 }
 
-void PhyNode::print(QList<PhyNode*>& nodes, int tab, int distance) {
-    if (nodes.contains(this)) {
-        return;
-    }
-    nodes.append(this);
+void PhyNode::print(int tab, int distance) const {
     for (int i = 0; i < tab; i++) {
         std::cout << " ";
     }
     tab++;
     std::cout << "name: " << this->name.toLatin1().constData() << " distance: " << distance << std::endl;
-    QList<PhyBranch*> branchList = this->branches;
+    QList<PhyBranch*> branchList = this->childBranches;
     int s = branchList.size();
     for (int i = 0; i < s; i++) {
-        if (branchList[i]->node2 != nullptr) {
+        if (branchList[i]->childNode != nullptr) {
             int d = branchList[i]->distance;
-            branchList[i]->node2->print(nodes, tab, d);
+            branchList[i]->childNode->print(tab, d);
         }
     }
-}
-
-void PhyNode::swapBranches(int branchIndex1, int branchIndex2) {
-    branches.swap(branchIndex1, branchIndex2);
 }
 
 double PhyNode::getDistanceToRoot() const {
@@ -277,97 +199,57 @@ double PhyNode::getDistanceToRoot() const {
     return distanceToRoot;
 }
 
-int PhyTreeUtils::getNumSeqsFromNode(const PhyNode* node, const QSet<QString>& names) {
-    int size = node->branches.size();
-    if (size > 1) {
-        int s = 0;
-        for (int i = 0; i < size; ++i) {
-            if (node->branches[i]->node2 != node) {
-                int num = getNumSeqsFromNode(node->branches[i]->node2, names);
-                if (!num) {
-                    return 0;
-                }
-                s += num;
-            }
-        }
-        return s;
-    } else {
-        QString str = node->name;
-        return names.contains(str.replace('_', ' ')) ? 1 : 0;
+int PhyNode::countLeafNodesInSubtree() const {
+    int leafNodes = 0;
+    for (auto childBranch : qAsConst(childBranches)) {
+        leafNodes += childBranch->childNode->countLeafNodesInSubtree();
     }
+    return qMax(1, leafNodes);  // Count self (1) if there are no children.
+}
+
+void PhyNode::invertOrderOrChildBranches() {
+    std::reverse(childBranches.begin(), childBranches.end());
+}
+
+void PhyNode::makeRoot() {
+    CHECK(!isRootNode(), );
+    parentBranch->parentNode->makeRoot();
+    SAFE_POINT(parentBranch->parentNode->isRootNode(), "Parent branch must be a root branch.", );
+
+    parentBranch->parentNode->childBranches.removeOne(parentBranch);
+    parentBranch->parentNode->parentBranch = parentBranch;
+    parentBranch->childNode = parentBranch->parentNode;
+    parentBranch->parentNode = this;
+    childBranches.append(parentBranch);
+    parentBranch = nullptr;
 }
 
 void PhyTreeUtils::rerootPhyTree(PhyTree& phyTree, PhyNode* node) {
-    PhyNode* curRoot = phyTree->getRootNode();
-    SAFE_POINT(nullptr != curRoot, "Null pointer argument 'curRoot' were passed to PhyTreeUtils::rerootPhyTree(...)", );
-    SAFE_POINT(nullptr != node, "Null pointer argument 'node' were passed to PhyTreeUtils::rerootPhyTree(...)", );
-    CHECK(node != curRoot, );
-
-    PhyNode* centralNode = node->getParentNode();
-    if (centralNode == curRoot) {
-        if (centralNode->getChildNodes().at(0) != node) {
-            centralNode->swapBranches(0, 1);
-        }
-        return;
-    }
-    auto newRootNode = new PhyNode();
-    PhyNode* newParentNode = newRootNode;
-    double distance = node->getDistanceToRoot() - newRootNode->getDistanceToRoot();
-    node->setParentNode(newRootNode, distance);
-    PhyNode* oldParent = centralNode->getParentNode();
-    if (oldParent != nullptr) {
-        distance = centralNode->getDistanceToRoot() - newRootNode->getDistanceToRoot();
-        centralNode->setParentNode(newRootNode, distance);
-    }
-
-    const PhyNode* firstNode = oldParent;
-    while (oldParent != nullptr) {
-        PhyNode* s = oldParent->getParentNode();
-        SAFE_POINT(s != firstNode, "There is cyclic graph in the phylogenetic tree", );
-        distance = oldParent->getDistanceToRoot() - centralNode->getDistanceToRoot();
-        oldParent->setParentNode(centralNode, distance);
-
-        newParentNode = centralNode;
-        centralNode = oldParent;
-        oldParent = s;
-    }
-
-    if (centralNode->getChildNodes().size() == 1) {
-        /* remove old root */
-        oldParent = centralNode->getChildNodes().at(0);
-        distance = oldParent->getDistanceToRoot() - newParentNode->getDistanceToRoot();
-        oldParent->setParentNode(newParentNode, distance);
-        delete centralNode;
-    }
-
-    phyTree->setRootNode(newRootNode);
+    CHECK(!node->isRootNode(), );
+    node->makeRoot();
+    phyTree->setRootNode(node);
 }
 
-PhyBranch* PhyTreeUtils::addBranch(PhyNode* node1, PhyNode* node2, double distance) {
-    SAFE_POINT(!node1->isConnected(node2), "node1 is not connected to node2", nullptr);
+PhyBranch* PhyTreeUtils::addBranch(PhyNode* parentNode, PhyNode* childNode, double distance) {
+    SAFE_POINT(childNode->parentBranch == nullptr, "PhyTreeUtils::addBranch child branch must have no parent.", nullptr);
+    SAFE_POINT(!childNode->isConnected(parentNode), "PhyTreeUtils::addBranch nodes are already connected", nullptr);
 
     auto newBranch = new PhyBranch();
     newBranch->distance = distance;
-    newBranch->node1 = node1;
-    newBranch->node2 = node2;
+    newBranch->parentNode = parentNode;
+    newBranch->childNode = childNode;
 
-    node1->branches.append(newBranch);
-    node2->branches.append(newBranch);
+    parentNode->childBranches.append(newBranch);
+    childNode->parentBranch = newBranch;
 
     return newBranch;
 }
 
-void PhyTreeUtils::removeBranch(PhyNode* node1, PhyNode* node2) {
-    QList<PhyBranch*> node1BranchesBeforeRemove = node1->branches;
-    for (PhyBranch* branch : qAsConst(node1BranchesBeforeRemove)) {
-        if (branch->node1 == node1 && branch->node2 == node2) {
-            node1->branches.removeAll(branch);
-            node2->branches.removeAll(branch);
-            delete branch;
-            break;
-        }
-    }
-    SAFE_POINT(node1BranchesBeforeRemove.size() == node1->branches.size() + 1, "Branch is not found", );
+void PhyNode::unlinkFromParent() {
+    CHECK(parentBranch != nullptr, );
+    parentBranch->parentNode->childBranches.removeOne(parentBranch);
+    delete parentBranch;
+    parentBranch = nullptr;
 }
 
 }  // namespace U2

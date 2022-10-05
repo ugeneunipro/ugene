@@ -26,7 +26,7 @@
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
 
-#include <U2Core/PhyTreeObject.h>
+#include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../TreeViewer.h"
@@ -103,17 +103,6 @@ void TvNodeItem::toggleCollapsedState() {
     }
 }
 
-void TvNodeItem::swapSiblings() {
-    auto branchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(branchItem != nullptr, );
-    auto rectBranchItem = dynamic_cast<TvRectangularBranchItem*>(branchItem);
-    if (rectBranchItem == nullptr) {
-        SAFE_POINT(branchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
-        rectBranchItem = branchItem->correspondingRectangularBranchItem;
-    }
-    rectBranchItem->swapSiblings();
-}
-
 bool TvNodeItem::isPathToRootSelected() const {
     CHECK(isSelected(), false);
 
@@ -129,25 +118,20 @@ bool TvNodeItem::isCollapsed() {
     return parent != nullptr && parent->isCollapsed();
 }
 
-void TvNodeItem::rerootTree(PhyTreeObject* treeObject) {
-    SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
-
+PhyNode* TvNodeItem::getPhyNode() const {
     auto parentBranchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(parentBranchItem != nullptr, );
+    CHECK(parentBranchItem != nullptr, nullptr);
 
     auto parentRectBranchItem = dynamic_cast<TvRectangularBranchItem*>(parentBranchItem);
     if (parentRectBranchItem == nullptr) {
-        SAFE_POINT(parentBranchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", );
+        SAFE_POINT(parentBranchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", nullptr);
         parentRectBranchItem = parentBranchItem->correspondingRectangularBranchItem;
     }
 
     const PhyBranch* nodeBranch = parentRectBranchItem->getPhyBranch();
-    CHECK(nodeBranch != nullptr, );
+    CHECK(nodeBranch != nullptr, nullptr);
 
-    PhyNode* newRoot = nodeBranch->node2;
-    CHECK(newRoot != nullptr, );
-
-    treeObject->rerootPhyTree(newRoot);
+    return nodeBranch->childNode;
 }
 
 void TvNodeItem::updateSettings(const OptionsMap& settings) {

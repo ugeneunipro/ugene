@@ -70,8 +70,10 @@ public:
 
     void movingToAnotherAddress(PhyBranch* newAddress);
 
-    PhyNode* node1 = nullptr;
-    PhyNode* node2 = nullptr;
+    PhyNode* parentNode = nullptr;
+    PhyNode* childNode = nullptr;
+
+    /** Distance between child and parent nodes. */
     double distance = 0;
     double nodeValue = -1.0;
 };
@@ -85,16 +87,21 @@ public:
     PhyNode() = default;
     ~PhyNode();
 
-    const QList<PhyBranch*>& getBranches() const;
+    const QList<PhyBranch*>& getChildBranches() const;
 
-    const PhyNode* getSecondNodeOfBranch(int branchNumber) const;
+    const PhyBranch* getParentBranch() const;
+
+    PhyBranch* getParentBranch();
+
+    const PhyBranch* getChildBranchByIndex(int branchIndex) const;
 
     /** Adds current node and all node children into the collection using pre-order algorithm. */
-    void addIfNotPreset(QList<PhyNode*>& nodes);
-    void addIfNotPreset(QList<const PhyNode*>& nodes) const;
+    void getNodesPreOrder(QList<PhyNode*>& nodes);
+    void getNodesPreOrder(QList<const PhyNode*>& nodes) const;
 
     bool isConnected(const PhyNode* node) const;
 
+    /** Clones current node & sub-tree. */
     PhyNode* clone() const;
 
     /* For distance matrix */
@@ -102,39 +109,56 @@ public:
 
     PhyNode* getParentNode();
 
-    void print(QList<PhyNode*>& nodes, int distance, int tabSize);
+    /** Prints sub-tree to stdout. */
+    void print(int distance = 0, int tabSize = 0) const;
 
-    /* For reroot */
-    void setParentNode(PhyNode* newParent, double distance);
-
+    /** Returns direct child nodes of this node. To get all nodes use getNodesPreOrder(). */
     QList<PhyNode*> getChildNodes() const;
 
-    void swapBranches(int branchIndex1, int branchIndex2);
+    /**Inverts order of the child node branches. */
+    void invertOrderOrChildBranches();
 
     double getDistanceToRoot() const;
-
-    const PhyBranch* getParentBranch() const;
 
     /** Returns true if the node is a leaf (tip) node in the tree. */
     bool isLeafNode() const;
 
+    /** Returns true if the node is a root node in the tree. */
+    bool isRootNode() const;
+
     QString name;
 
-private:
-    PhyNode* parent() const;
+    int countLeafNodesInSubtree() const;
 
-    QList<PhyBranch*> branches;
+    /** Unlinks current node from the parent node: destroys branch between this node and parent node. */
+    void unlinkFromParent();
+
+private:
+    /** Make this node a root node in the hierarchy. Moves parent node to the children of the current node. */
+    void makeRoot();
+
+    /**
+     * Branch to the parent node.
+     * Null for the root node.
+     * Current node owns this branch: the branch is destroyed by the current node.
+     */
+    PhyBranch* parentBranch = nullptr;
+
+    /**
+     * Branches to child nodes.
+     * Empty for leaf nodes.
+     * Current node does not own these branches: branches are removed as a part of child node removal.
+     */
+    QList<PhyBranch*> childBranches;
 };
 
 class U2CORE_EXPORT PhyTreeUtils {
 public:
-    static int getNumSeqsFromNode(const PhyNode* node, const QSet<QString>& names);
-
+    /** Re-roots tree in-place: all nodes & branches are preserved, but some branches are inverted. */
     static void rerootPhyTree(PhyTree& phyTree, PhyNode* node);
 
-    static PhyBranch* addBranch(PhyNode* node1, PhyNode* node2, double distance);
-
-    static void removeBranch(PhyNode* node1, PhyNode* node2);
+    /** Adds new branch between 2 nodes. The child node must have no parent. */
+    static PhyBranch* addBranch(PhyNode* parentNode, PhyNode* childNode, double distance);
 };
 
 }  // namespace U2

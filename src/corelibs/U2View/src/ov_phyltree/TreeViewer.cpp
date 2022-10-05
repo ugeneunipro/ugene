@@ -1037,9 +1037,10 @@ void TreeViewerUI::updateRect() {
 void TreeViewerUI::sl_swapTriggered() {
     QList<QGraphicsItem*> graphItems = items();
     for (auto graphItem : qAsConst(graphItems)) {
-        auto buttonItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            buttonItem->swapSiblings();
+        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
+        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+            auto phyNode = nodeItem->getPhyNode();
+            phyNode->invertOrderOrChildBranches();
             phyObject->onTreeChanged();
             break;
         }
@@ -1063,7 +1064,8 @@ void TreeViewerUI::sl_rerootTriggered() {
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
         if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
-            nodeItem->rerootTree(phyObject);
+            auto phyNode = nodeItem->getPhyNode();
+            phyObject->rerootPhyTree(phyNode);
             break;
         }
     }

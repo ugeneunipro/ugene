@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QStack>
 
+#include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../TreeViewerUtils.h"
@@ -53,46 +54,37 @@ TvBranchItem::TvBranchItem(bool withNode, const TvBranchItem::Side& _side, const
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const QString& nodeName) {
+TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name)
+    : phyBranch(branch) {
+    distance = branch == nullptr ? 0.0 : branch->distance;
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
     setAcceptedMouseButtons(Qt::NoButton);
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    QPen pen1(branchColor);
-    pen1.setStyle(Qt::DotLine);
-    pen1.setCosmetic(true);
-    setPen(pen1);
+    setBrush(branchColor);
 
-    nameTextItem = new TvTextItem(this, nodeName);
-    nameTextItem->setFont(TreeViewerUtils::getFont());
-    nameTextItem->setBrush(Qt::darkGray);
-    setLabelPositions();
-    nameTextItem->setZValue(1);
-}
+    QPen pen(branchColor);
+    pen.setCosmetic(true);
+    setPen(pen);
 
-TvBranchItem::TvBranchItem(double _distance, bool withNode, const QString& nodeName)
-    : distance(_distance) {
-    settings[BRANCH_THICKNESS] = 1;
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setAcceptHoverEvents(false);
-    setAcceptedMouseButtons(Qt::NoButton);
-
-    if (withNode) {
-        nodeItem = new TvNodeItem(nodeName);
+    if (branch != nullptr && !branch->childNode->isLeafNode()) {
+        nodeItem = new TvNodeItem(branch->childNode->name);
         nodeItem->setParentItem(this);
     }
 
-    initText(distance);
-    QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    QPen pen1(branchColor);
-    pen1.setCosmetic(true);
-    if (distance < 0) {
-        pen1.setStyle(Qt::DashLine);
+    if (name.isEmpty()) {
+        addDistanceTextItem(distance);
+    } else {  // Not a real branch item, but the name label only with dotted alignment lines.
+        nameTextItem = new TvTextItem(this, name);
+        nameTextItem->setFont(TreeViewerUtils::getFont());
+        nameTextItem->setBrush(Qt::darkGray);
+        setLabelPositions();
+        nameTextItem->setZValue(1);
+        pen.setStyle(Qt::DotLine);
+        setPen(pen);
     }
-    setPen(pen1);
-    setBrush(branchColor);
 }
 
 void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
@@ -217,7 +209,7 @@ void TvBranchItem::setSelectedRecursively(bool isSelected) {
     QAbstractGraphicsShapeItem::setSelected(isSelected);
 }
 
-void TvBranchItem::initText(double d) {
+void TvBranchItem::addDistanceTextItem(double d) {
     QString str = QString::number(d, 'f', 3);
     // Trim trailing zeros.
     int i = str.length() - 1;

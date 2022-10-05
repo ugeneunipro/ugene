@@ -58,6 +58,7 @@ public:
 
     // Utility functions
     // Compares number of nodes and nodes with names (how many nodes etc.)
+    // TODO: document the algorithm and usage.
     static bool treesAreAlike(const PhyTree& tree1, const PhyTree& tree2);
 
 signals:

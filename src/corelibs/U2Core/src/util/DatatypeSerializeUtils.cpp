@@ -199,7 +199,6 @@ DNAChromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary,
 /************************************************************************/
 /* NewickPhyTreeSerializer */
 /************************************************************************/
-namespace {
 enum ReadState {
     RS_NAME,
     RS_WEIGHT,
@@ -207,45 +206,31 @@ enum ReadState {
     RS_AFTER_CLOSING_BRACE
 };
 
-void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& os) {
-    const QList<PhyBranch*>& branches = node->getBranches();
-    int branchCount = branches.size();
-    QString nodeName = node->name;
-    if (branchCount == 1 && (nodeName.isEmpty() || nodeName == "ROOT")) {
-        const PhyNode* sibling = node->getSecondNodeOfBranch(0);
-        CHECK_EXT(node != sibling, os.setError(DatatypeSerializers::tr("Invalid tree topology")), );
-        packTreeNode(resultText, sibling, os);
-        CHECK_OP(os, );
-        return;
-    }
-    if (branchCount > 1) {
+static void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& os) {
+    const QList<PhyBranch*>& childBranches = node->getChildBranches();
+    if (!childBranches.isEmpty()) {
         resultText.append("(");
-        bool first = true;
-        for (int i = 0; i < branchCount; ++i) {
-            if (node->getSecondNodeOfBranch(i) != node) {
-                if (first) {
-                    first = false;
-                } else {
-                    resultText.append(",");
-                }
-                packTreeNode(resultText, node->getSecondNodeOfBranch(i), os);
-                CHECK_OP(os, );
-                PhyBranch* branch = branches.at(i);
-                if (branch->nodeValue >= 0) {
-                    resultText.append(QString::number(branch->nodeValue));
-                }
-                resultText.append(":");
-                resultText.append(QString::number(branch->distance));
+        for (int i = 0; i < childBranches.size(); i++) {
+            PhyBranch* childBranch = childBranches[i];
+            if (i > 0) {
+                resultText.append(",");
             }
+            packTreeNode(resultText, childBranch->childNode, os);
+            CHECK_OP(os, );
+            if (childBranch->nodeValue >= 0) {
+                // TODO: this must be node name, not 'value'!
+                resultText.append(QString::number(childBranch->nodeValue));
+            }
+            resultText.append(":");
+            resultText.append(QString::number(childBranch->distance));
         }
         resultText.append(")");
-    } else if (nodeName.contains(QRegExp("\\s|[(]|[)]|[:]|[;]|[,]"))) {
-        resultText.append(QString("\'%1\'").arg(nodeName));
+    } else if (node->name.contains(QRegExp("\\s|[(]|[)]|[:]|[;]|[,]"))) {
+        resultText.append(QString("\'%1\'").arg(node->name));
     } else {
-        resultText.append(QString(nodeName));
+        resultText.append(node->name);
     }
 }
-}  // namespace
 
 #define BUFF_SIZE 1024
 /* TODO:

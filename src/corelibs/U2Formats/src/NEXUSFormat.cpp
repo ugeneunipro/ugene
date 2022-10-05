@@ -846,34 +846,21 @@ void writeMAligment(const MultipleSequenceAlignment& ma, bool simpleName, IOAdap
 }
 
 static void writeNode(const PhyNode* node, IOAdapter* io) {
-    const QList<PhyBranch*>& branches = node->getBranches();
-    int branchCount = branches.size();
-
-    if (branchCount == 1 && (node->name.isEmpty() || node->name == "ROOT")) {
-        assert(node != node->getSecondNodeOfBranch(0));
-        writeNode(node->getSecondNodeOfBranch(0), io);
-        return;
-    }
-
-    if (branchCount > 1) {
+    const QList<PhyBranch*>& childBranches = node->getChildBranches();
+    if (!childBranches.isEmpty()) {
         io->writeBlock("(", 1);
-        bool first = true;
-        for (int i = 0; i < branchCount; ++i) {
-            if (node->getSecondNodeOfBranch(i) != node) {
-                if (first) {
-                    first = false;
-                } else {
-                    io->writeBlock(",", 1);
-                }
-                writeNode(node->getSecondNodeOfBranch(i), io);
-                io->writeBlock(":", 1);
-                io->writeBlock(QByteArray::number(branches.at(i)->distance));
+        for (int i = 0; i < childBranches.size(); i++) {
+            PhyBranch* childBranch = childBranches[i];
+            if (i > 0) {
+                io->writeBlock(",", 1);
             }
+            writeNode(childBranch->childNode, io);
+            io->writeBlock(":", 1);
+            io->writeBlock(QByteArray::number(childBranches.at(i)->distance));
         }
         io->writeBlock(")", 1);
     } else {
         bool containsSpaces = node->name.contains(QRegExp("\\s"));
-
         if (containsSpaces) {
             io->writeBlock("'", 1);
         }

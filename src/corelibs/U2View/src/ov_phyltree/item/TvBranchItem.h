@@ -33,6 +33,7 @@ namespace U2 {
 class TvNodeItem;
 class TvTextItem;
 class TvRectangularBranchItem;
+class PhyBranch;
 
 class U2VIEW_EXPORT TvBranchItem : public QObject, public QAbstractGraphicsShapeItem {
     Q_OBJECT
@@ -116,11 +117,7 @@ signals:
     void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    /** Constructs leaf branch with the given node node. */
-    explicit TvBranchItem(const QString& nodeName);
-
-    /** Constructs non-leaf branch with TvNodeItem inside if 'withNode' is true. */
-    TvBranchItem(double distance, bool withNode, const QString& nodeName);
+    TvBranchItem(const PhyBranch* branch, const QString& name);
 
     virtual void setLabelPositions();
 
@@ -130,7 +127,10 @@ protected:
      */
     virtual void setUpPainter(QPainter* p);
 
-    void initText(double d);
+    void addDistanceTextItem(double d);
+
+    /** Phy-tree related branch. May be null for the root branch item. */
+    const PhyBranch* phyBranch = nullptr;
 
     TvTextItem* distanceTextItem = nullptr;
     TvTextItem* nameTextItem = nullptr;

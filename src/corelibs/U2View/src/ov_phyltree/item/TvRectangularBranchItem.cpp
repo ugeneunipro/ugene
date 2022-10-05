@@ -33,26 +33,8 @@
 
 namespace U2 {
 
-TvRectangularBranchItem::TvRectangularBranchItem(const QString& nodeName, TvRectangularBranchItem* parentBranchItem)
-    : TvBranchItem(nodeName) {
-    setParentItem(parentBranchItem);
-    setPos(0, 0);
-}
-
-TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name)
-    : TvBranchItem(false, Side::Left, "") {
-    new TvRectangularBranchItem(name, this);
-    setPos(x, y);
-}
-
-TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch)
-    : TvBranchItem(distance, false, ""), phyBranch(branch) {
-    new TvRectangularBranchItem(name, this);
-    setPos(x, y);
-}
-
-TvRectangularBranchItem::TvRectangularBranchItem(double distance, PhyBranch* branch, const QString& nodeName)
-    : TvBranchItem(distance, true, nodeName), phyBranch(branch) {
+TvRectangularBranchItem::TvRectangularBranchItem(const PhyBranch* branch, const QString& name)
+    : TvBranchItem(branch, name) {
 }
 
 void TvRectangularBranchItem::toggleCollapsedState() {
@@ -208,15 +190,6 @@ void TvRectangularBranchItem::setBreathScaleAdjustment(double newBreadthScaleAdj
 
 void TvRectangularBranchItem::setCurvature(double newCurvature) {
     curvature = newCurvature;
-}
-
-void TvRectangularBranchItem::swapSiblings() {
-    CHECK(phyBranch != nullptr, );
-    PhyNode* nodeTo = phyBranch->node2;
-    int branchCount = nodeTo->getBranches().size();
-    if (branchCount > 2) {
-        nodeTo->swapBranches(0, 2);
-    }
 }
 
 TvRectangularBranchItem::Side TvRectangularBranchItem::getSide() const {

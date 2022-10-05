@@ -149,14 +149,14 @@ Task::ReportResult GTest_CheckPhyNodeHasSibling::report() {
 
     bool foundSibling = false;
 
-    SAFE_POINT(node->getBranches().size() == 1, "Expected node to have 1 branch", ReportResult_Finished);
-    const PhyBranch* parentBranch = node->getBranches().first();
-    const PhyNode* parent = parentBranch->node1 == node ? parentBranch->node2 : parentBranch->node1;
+    const PhyBranch* parentBranch = node->getParentBranch();
+    SAFE_POINT(parentBranch != nullptr, "Expected node to have a parent branch", ReportResult_Finished);
+    const PhyNode* parentNode = parentBranch->parentNode;
 
-    const QList<PhyBranch*> parentBranches = parent->getBranches();
+    const QList<PhyBranch*> parentBranches = parentNode->getChildBranches();
     for (PhyBranch* branch : qAsConst(parentBranches)) {
-        if ((parent == branch->node1 && branch->node2->name == siblingName) ||
-            (branch->node1->name == siblingName && node == branch->node1)) {
+        if ((parentNode == branch->parentNode && branch->childNode->name == siblingName) ||
+            (branch->parentNode->name == siblingName && node == branch->parentNode)) {
             foundSibling = true;
             break;
         }
@@ -215,8 +215,8 @@ Task::ReportResult GTest_CheckPhyNodeBranchDistance::report() {
         return ReportResult_Finished;
     }
 
-    SAFE_POINT(node->getBranches().size() == 1, "Expected node to have 1 branch", ReportResult_Finished);
-    const PhyBranch* parentBranch = node->getBranches().first();
+    const PhyBranch* parentBranch = node->getParentBranch();
+    SAFE_POINT(parentBranch != nullptr, "Expected node to have a parent branch", ReportResult_Finished);
     double chkDistance = parentBranch->distance;
     if (distance - chkDistance > EPS) {
         stateInfo.setError(QString("Distances don't match! Expected %1, real dist is %2").arg(distance).arg(chkDistance));
