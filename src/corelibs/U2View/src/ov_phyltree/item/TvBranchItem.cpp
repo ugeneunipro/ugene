@@ -70,8 +70,8 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
     setPen(pen);
 
     if ((branch != nullptr && !branch->childNode->isLeafNode()) || isRoot) {
-        QString name = branch == nullptr ? "" : branch->childNode->name;
-        nodeItem = new TvNodeItem(name);
+        QString nodeName = branch == nullptr ? "" : branch->childNode->name;
+        nodeItem = new TvNodeItem(nodeName);
         nodeItem->setParentItem(this);
     }
 
