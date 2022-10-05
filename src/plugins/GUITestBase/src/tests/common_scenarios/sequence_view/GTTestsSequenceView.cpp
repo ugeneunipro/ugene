@@ -34,6 +34,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
@@ -529,13 +530,13 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsProjectTreeView::markSequenceAsCircular(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "Select", "Sequence region" }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
-    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
-    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));    
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {22172, 22191}, {22369, 22388} });
