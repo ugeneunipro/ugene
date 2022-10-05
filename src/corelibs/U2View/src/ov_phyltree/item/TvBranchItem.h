@@ -117,7 +117,7 @@ signals:
     void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    TvBranchItem(const PhyBranch* branch, const QString& name);
+    TvBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
 
     virtual void setLabelPositions();
 

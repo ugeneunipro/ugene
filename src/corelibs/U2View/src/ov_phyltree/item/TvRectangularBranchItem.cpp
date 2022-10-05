@@ -33,8 +33,8 @@
 
 namespace U2 {
 
-TvRectangularBranchItem::TvRectangularBranchItem(const PhyBranch* branch, const QString& name)
-    : TvBranchItem(branch, name) {
+TvRectangularBranchItem::TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot)
+    : TvBranchItem(branch, name, isRoot) {
 }
 
 void TvRectangularBranchItem::toggleCollapsedState() {

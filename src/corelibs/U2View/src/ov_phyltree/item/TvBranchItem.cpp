@@ -54,7 +54,7 @@ TvBranchItem::TvBranchItem(bool withNode, const TvBranchItem::Side& _side, const
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name)
+TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool isRoot)
     : phyBranch(branch) {
     distance = branch == nullptr ? 0.0 : branch->distance;
     settings[BRANCH_THICKNESS] = 1;
@@ -69,14 +69,15 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name)
     pen.setCosmetic(true);
     setPen(pen);
 
-    if (branch != nullptr && !branch->childNode->isLeafNode()) {
-        nodeItem = new TvNodeItem(branch->childNode->name);
+    if ((branch != nullptr && !branch->childNode->isLeafNode()) || isRoot) {
+        QString name = branch == nullptr ? "" : branch->childNode->name;
+        nodeItem = new TvNodeItem(name);
         nodeItem->setParentItem(this);
     }
 
     if (name.isEmpty()) {
         addDistanceTextItem(distance);
-    } else {  // Not a real branch item, but the name label only with dotted alignment lines.
+    } else {  // 'this' is not a real branch item, but the name label only with dotted alignment lines.
         nameTextItem = new TvTextItem(this, name);
         nameTextItem->setFont(TreeViewerUtils::getFont());
         nameTextItem->setBrush(Qt::darkGray);

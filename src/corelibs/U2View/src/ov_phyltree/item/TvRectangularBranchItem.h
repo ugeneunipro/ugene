@@ -38,7 +38,7 @@ public:
     static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    TvRectangularBranchItem(const PhyBranch* branch, const QString& name);
+    TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
 
     QRectF boundingRect() const override;
 

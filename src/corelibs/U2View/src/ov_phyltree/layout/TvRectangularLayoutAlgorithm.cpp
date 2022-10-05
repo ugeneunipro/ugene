@@ -33,10 +33,10 @@ namespace U2 {
 
 static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
     const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
-    auto parentTvBranch = new TvRectangularBranchItem(parentPhyBranch, "");
+    auto parentTvBranch = new TvRectangularBranchItem(parentPhyBranch, "", phyNode->isRootNode());
     if (phyNode->isLeafNode()) {
         // TODO: do not use branches to draw names.
-        auto branchTvItemForName = new TvRectangularBranchItem(nullptr, phyNode->name);
+        auto branchTvItemForName = new TvRectangularBranchItem(nullptr, phyNode->name, false);
         branchTvItemForName->setParentItem(parentTvBranch);
     }
 
