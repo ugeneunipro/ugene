@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_TASK="generic" 
+			PRIMER_PICK_ANYWAY="1" 
+			PRIMER_LOWERCASE_MASKING="0" 
+			PRIMER_PICK_RIGHT_PRIMER="1" 
+			PRIMER_PICK_INTERNAL_OLIGO="1" 
+			PRIMER_PICK_LEFT_PRIMER="0" 
+			PRIMER_NUM_RETURN="1" 
+			PRIMER_MIN_THREE_PRIME_DISTANCE="0" 
+			SEQUENCE_ID="Pick a right primer and an internal oligo" 
+			SEQUENCE_TEMPLATE="atggatttgatggacatggatgccatcaatgacctccacttctctggacacagctccctcaccaacacccctacttccgacgaggattatggttgcacctggaaccactggtctcccatcgtcaactgggacacctttacaggtgccccagatgactttcaccacctcatggacaccatcatcgaggacagaacaactgtcctcgaacagctcagtccatctatcaccacaaccaccaccaccaccacaaccacggatgaggaagaagaagaaatggaaacaacaaccacaacaacaacaacggcaataaaaacgcatgaagttggtgatgattcaaaagggctaaaactagtgcacctattgatggctggcgcggaagccttaaccggttcaaccaaaaaccgtgacttagctcgagtgatattgatccggctcaaggaattagtctcacaacatgctaacggctccaacatggagagacttgccgctcatttcaccgaagcccttcatggactactagaaggtgctgggggtgcgcataataaccaccatcaccacaacaacaacaaacattacctcaccacaaatggtccccacgacaaccaaaacgacacacttgctgctttccaactacttcaagacatgtcaccttacgtcaaattcggccacttcacagccaatcaagccatcatcgaagccgtggcccacgaacgccgcgtccatgtcatcgactacgatatcatggaaggggtccaatgggcctcattaatccaatcacttgcttccaacaacaacggtccacatcttcggataaccgcattatcgcggacaggaaccggccggaggtcaatcgccaccgtacaagaaaccggcaggcgattaacctcctttgccgcttccctcggacaaccattttcttttcatcactgcagattagactccgatgaaactttccgtccttctgcattaaagcttgtacgtggagaggctttggttttcaactgcatgctgaatttacctcaccttagttaccgtgcaccggaatcagttgcttcgtttttaaacggagcaaaaacgttgaatccaaagcttgtgacgttggttgaagaagaagttggttctgttattggtgggtttgtggaaaggttcatggactcacttcatcattattcagcggtttttgattcattggaggctggttttccgatgcagaaccgggcccggactttggtggagagggtattttttgggcctagaattgcaggctcgttgggccggatatatagaacgggtggtgaagaggagagaaggtcatggggggagtggttaggtgaggtagggtttaggggagttccggtgagctttgcaaatcattgtcaagcaaagctgttgttagggctttttaatgatgggtatagggttgaagaggtgggtgtgggtagtaataagttggtgttggattggaaatcaagacgtttgctttctgcttccctttggacttgttcttcttcagattctgatttatag"/>
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="1" 
+			PRIMER_INTERNAL_NUM_RETURNED="1" 
+			PRIMER_PAIR_NUM_RETURNED="0" 
+			PRIMER_RIGHT_0_PENALTY="0.000037" 
+			PRIMER_INTERNAL_0_PENALTY="0.000037" 
+			PRIMER_RIGHT_0_SEQUENCE="ggaagcagaaagcaaacgtc" 
+			PRIMER_INTERNAL_0_SEQUENCE="gacgtttgctttctgcttcc" 
+			PRIMER_RIGHT_0="1490,20" 
+			PRIMER_INTERNAL_0="1471,20" 
+			PRIMER_RIGHT_0_TM="60.000" 
+			PRIMER_INTERNAL_0_TM="60.000" 
+			PRIMER_RIGHT_0_GC_PERCENT="50.000" 
+			PRIMER_INTERNAL_0_GC_PERCENT="50.000" 
+			PRIMER_RIGHT_0_SELF_ANY="4.00" 
+			PRIMER_INTERNAL_0_SELF_ANY="4.00" 
+			PRIMER_RIGHT_0_SELF_END="2.00" 
+			PRIMER_INTERNAL_0_SELF_END="0.00" 
+			PRIMER_RIGHT_0_END_STABILITY="7.8000"/>
+	</plugin_primer_3>
+</multi-test>

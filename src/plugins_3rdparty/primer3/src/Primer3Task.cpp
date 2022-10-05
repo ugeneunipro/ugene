@@ -25,53 +25,87 @@
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+#include "Primer3Plugin.h"
 #include "Primer3Task.h"
-#include "primer3_core/boulder_input.h"
-#include "primer3_core/primer3_main.h"
+
+#include "primer3_core/primer3_boulder_main.h"
+#include "primer3_core/print_boulder.h"
+#include "primer3_core/p3_seq_lib.h"
+#include "primer3_core/libprimer3.h"
 
 namespace U2 {
 
-// Primer
+// PrimerSingle
 
-Primer::Primer()
+PrimerSingle::PrimerSingle(oligo_type type)
     : start(0),
       length(0),
       meltingTemperature(0),
+      bound(0),
       gcContent(0),
       selfAny(0),
       selfEnd(0),
-      endStability(0) {
+      hairpin(0.0),
+      endStability(0),
+      templateMispriming(0),
+      quality(0),
+      repeatSim(0),
+      type(type) {
 }
 
-Primer::Primer(const primer_rec& primerRec)
-    : start(primerRec.start),
+PrimerSingle::PrimerSingle(const primer_rec& primerRec, oligo_type _type, int offset)
+    : start(primerRec.start + offset),
       length(primerRec.length),
       meltingTemperature(primerRec.temp),
+      bound(primerRec.bound),
       gcContent(primerRec.gc_content),
       selfAny(primerRec.self_any),
       selfEnd(primerRec.self_end),
-      endStability(primerRec.end_stability) {
+      templateMispriming(primerRec.template_mispriming),
+      hairpin(primerRec.hairpin_th),
+      endStability(primerRec.end_stability),
+      quality(primerRec.quality),
+      repeatSim(primerRec.repeat_sim.score != nullptr ? primerRec.repeat_sim.score[primerRec.repeat_sim.max] : 0),
+      repeatSimName(primerRec.repeat_sim.name),
+      selfAnyStruct(primerRec.self_any_struct),
+      selfEndStruct(primerRec.self_end_struct),
+      type(_type) {
+    if (type == oligo_type::OT_RIGHT) {
+        // Primer3 calculates all positions from 5' to 3' sequence ends - 
+        // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
+        start = start - length + 1;
+    }
 }
 
-bool Primer::operator==(const Primer& p) const {
+bool PrimerSingle::operator==(const PrimerSingle& p) const {
     bool result = true;
 
     result &= start == p.start;
     result &= length == p.length;
     result &= meltingTemperature == p.meltingTemperature;
+    result &= bound == p.bound;
     result &= gcContent == p.gcContent;
     result &= selfAny == p.selfAny;
     result &= selfEnd == p.selfEnd;
+    result &= templateMispriming == p.templateMispriming;
+    result &= hairpin == p.hairpin;
     result &= endStability == p.endStability;
+    result &= quality == p.quality;
+    result &= repeatSim == p.repeatSim;
+    result &= repeatSimName == p.repeatSimName;
+    result &= selfAnyStruct == p.selfAnyStruct;
+    result &= selfEndStruct == p.selfEndStruct;
+    result &= type == p.type;
 
     return result;
 }
 
-bool Primer::areEqual(const Primer* p1, const Primer* p2) {
+bool PrimerSingle::areEqual(const PrimerSingle* p1, const PrimerSingle* p2) {
     if (p1 != nullptr && p2 != nullptr) {
         return (*p1 == *p2);
     } else {
@@ -79,60 +113,128 @@ bool Primer::areEqual(const Primer* p1, const Primer* p2) {
     }
 }
 
-int Primer::getStart() const {
+int PrimerSingle::getStart() const {
     return start;
 }
 
-int Primer::getLength() const {
+int PrimerSingle::getLength() const {
     return length;
 }
 
-double Primer::getMeltingTemperature() const {
+double PrimerSingle::getMeltingTemperature() const {
     return meltingTemperature;
 }
 
-double Primer::getGcContent() const {
+double PrimerSingle::getBound() const {
+    return bound;
+}
+
+double PrimerSingle::getGcContent() const {
     return gcContent;
 }
 
-short Primer::getSelfAny() const {
+double PrimerSingle::getSelfAny() const {
     return selfAny;
 }
 
-short Primer::getSelfEnd() const {
+double PrimerSingle::getSelfEnd() const {
     return selfEnd;
 }
 
-double Primer::getEndStability() const {
+double PrimerSingle::getTemplateMispriming() const {
+    return templateMispriming;
+}
+
+double PrimerSingle::getHairpin() const {
+    return hairpin;
+}
+
+double PrimerSingle::getEndStability() const {
     return endStability;
 }
 
-void Primer::setStart(int newStart) {
-    start = newStart;
+double PrimerSingle::getQuality() const {
+    return quality;
 }
 
-void Primer::setLength(int newLength) {
-    length = newLength;
+double PrimerSingle::getRepeatSim() const {
+    return repeatSim;
 }
 
-void Primer::setMeltingTemperature(double newMeltingTemperature) {
-    meltingTemperature = newMeltingTemperature;
+const QString& PrimerSingle::getRepeatSimName() const {
+    return repeatSimName;
 }
 
-void Primer::setGcContent(double newGcContent) {
-    gcContent = newGcContent;
+const QString& PrimerSingle::getSelfAnyStruct() const {
+    return selfAnyStruct;
 }
 
-void Primer::setSelfAny(short newSelfAny) {
-    selfAny = newSelfAny;
+const QString& PrimerSingle::getSelfEndStruct() const {
+    return selfEndStruct;
 }
 
-void Primer::setSelfEnd(short newSelfEnd) {
-    selfEnd = newSelfEnd;
+oligo_type PrimerSingle::getType() const {
+    return type;
 }
 
-void Primer::setEndStability(double newEndStability) {
-    endStability = newEndStability;
+void PrimerSingle::setStart(int start) {
+    this->start = start;
+}
+
+void PrimerSingle::setLength(int length) {
+    this->length = length;
+}
+
+void PrimerSingle::setMeltingTemperature(double meltingTemperature) {
+    this->meltingTemperature = meltingTemperature;
+}
+
+void PrimerSingle::setBound(double bound) {
+    this->bound = bound;
+}
+
+void PrimerSingle::setGcContent(double gcContent) {
+    this->gcContent = gcContent;
+}
+
+void PrimerSingle::setSelfAny(double selfAny) {
+    this->selfAny = selfAny;
+}
+
+void PrimerSingle::setSelfEnd(double selfEnd) {
+    this->selfEnd = selfEnd;
+}
+
+void PrimerSingle::setTemplateMispriming(double templateMispriming) {
+    this->templateMispriming = templateMispriming;
+}
+
+void PrimerSingle::setHairpin(double hairpin) {
+    this->hairpin = hairpin;
+}
+
+void PrimerSingle::setEndStability(double endStability) {
+    this->endStability = endStability;
+}
+
+void PrimerSingle::setQuality(double quality) {
+    this->quality = quality;
+}
+
+void PrimerSingle::setRepeatSim(double repeatSim) {
+    this->repeatSim = repeatSim;
+}
+
+void PrimerSingle::setRepeatSimName(const QString& repeatSimName) {
+    this->repeatSimName = repeatSimName;
+}
+
+void PrimerSingle::setSelfAnyStruct(const QString& selfAnyStruct) {
+    this->selfAnyStruct = selfAnyStruct;
+}
+
+void PrimerSingle::setSelfEndStruct(const QString& selfEndStruct) {
+    this->selfEndStruct = selfEndStruct;
 }
 
 // PrimerPair
@@ -145,85 +247,94 @@ PrimerPair::PrimerPair()
       complEnd(0),
       productSize(0),
       quality(0),
-      complMeasure(0) {
+      tm(0),
+      repeatSim(0) {
 }
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
-    : leftPrimer((nullptr == primerPair.left) ? nullptr : new Primer(*primerPair.left)),
-      rightPrimer((nullptr == primerPair.right) ? nullptr : new Primer(*primerPair.right)),
-      internalOligo((nullptr == primerPair.intl) ? nullptr : new Primer(*primerPair.intl)),
+    : leftPrimer((nullptr == primerPair.left) ? nullptr : new PrimerSingle(*primerPair.left, oligo_type::OT_LEFT, offset)),
+      rightPrimer((nullptr == primerPair.right) ? nullptr : new PrimerSingle(*primerPair.right, oligo_type::OT_RIGHT, offset)),
+      internalOligo((nullptr == primerPair.intl) ? nullptr : new PrimerSingle(*primerPair.intl, oligo_type::OT_INTL, offset)),
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
       quality(primerPair.pair_quality),
-      complMeasure(primerPair.compl_measure) {
-    if (!leftPrimer.isNull()) {
-        leftPrimer->setStart(leftPrimer->getStart() + offset);
-    }
-    if (!rightPrimer.isNull()) {
-        rightPrimer->setStart(rightPrimer->getStart() + offset);
-    }
-    if (!internalOligo.isNull()) {
-        internalOligo->setStart(internalOligo->getStart() + offset);
-    }
+      tm(primerPair.product_tm), 
+      repeatSim(primerPair.repeat_sim),
+      repeatSimName(primerPair.rep_name),
+      complAnyStruct(primerPair.compl_any_struct),
+      complEndStruct(primerPair.compl_end_struct) {
 }
 
 PrimerPair::PrimerPair(const PrimerPair& primerPair)
-    : leftPrimer((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer)),
-      rightPrimer((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer)),
-      internalOligo((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo)),
+    : leftPrimer((primerPair.leftPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.leftPrimer)),
+      rightPrimer((primerPair.rightPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.rightPrimer)),
+      internalOligo((primerPair.internalOligo.isNull()) ? nullptr : new PrimerSingle(*primerPair.internalOligo)),
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
       quality(primerPair.quality),
-      complMeasure(primerPair.complMeasure) {
+      tm(primerPair.tm),
+      repeatSim(primerPair.repeatSim),
+      repeatSimName(primerPair.repeatSimName),
+      complAnyStruct(primerPair.complAnyStruct),
+      complEndStruct(primerPair.complEndStruct) {
 }
 
 PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
-    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer));
-    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer));
-    internalOligo.reset((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo));
+    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.leftPrimer));
+    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? nullptr : new PrimerSingle(*primerPair.rightPrimer));
+    internalOligo.reset((primerPair.internalOligo.isNull()) ? nullptr : new PrimerSingle(*primerPair.internalOligo));
     complAny = primerPair.complAny;
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
     quality = primerPair.quality;
-    complMeasure = primerPair.complMeasure;
+    tm = primerPair.tm;
+    repeatSim = primerPair.repeatSim;
+    repeatSimName = primerPair.repeatSimName;
+    complAnyStruct = primerPair.complAnyStruct;
+    complEndStruct = primerPair.complEndStruct;
+
     return *this;
 }
 
 bool PrimerPair::operator==(const PrimerPair& primerPair) const {
     bool result = true;
 
-    result &= Primer::areEqual(leftPrimer.data(), primerPair.leftPrimer.data());
-    result &= Primer::areEqual(rightPrimer.data(), primerPair.rightPrimer.data());
-    result &= Primer::areEqual(internalOligo.data(), primerPair.internalOligo.data());
+    result &= PrimerSingle::areEqual(leftPrimer.data(), primerPair.leftPrimer.data());
+    result &= PrimerSingle::areEqual(rightPrimer.data(), primerPair.rightPrimer.data());
+    result &= PrimerSingle::areEqual(internalOligo.data(), primerPair.internalOligo.data());
 
     result &= complAny == primerPair.complAny;
     result &= complEnd == primerPair.complEnd;
     result &= productSize == primerPair.productSize;
     result &= quality == primerPair.quality;
-    result &= complMeasure == primerPair.complMeasure;
+    result &= tm == primerPair.tm;
+    result &= repeatSim == primerPair.repeatSim;
+    result &= repeatSimName == primerPair.repeatSimName;
+    result &= complAnyStruct == primerPair.complAnyStruct;
+    result &= complEndStruct == primerPair.complEndStruct;
 
     return result;
 }
 
-Primer* PrimerPair::getLeftPrimer() const {
+PrimerSingle* PrimerPair::getLeftPrimer() const {
     return leftPrimer.data();
 }
 
-Primer* PrimerPair::getRightPrimer() const {
+PrimerSingle* PrimerPair::getRightPrimer() const {
     return rightPrimer.data();
 }
 
-Primer* PrimerPair::getInternalOligo() const {
+PrimerSingle* PrimerPair::getInternalOligo() const {
     return internalOligo.data();
 }
 
-short PrimerPair::getComplAny() const {
+double PrimerPair::getComplAny() const {
     return complAny;
 }
 
-short PrimerPair::getComplEnd() const {
+double PrimerPair::getComplEnd() const {
     return complEnd;
 }
 
@@ -231,28 +342,76 @@ int PrimerPair::getProductSize() const {
     return productSize;
 }
 
-void PrimerPair::setLeftPrimer(Primer* newLeftPrimer) {
-    leftPrimer.reset(newLeftPrimer == nullptr ? nullptr : new Primer(*newLeftPrimer));
+double PrimerPair::getProductQuality() const {
+    return quality;
 }
 
-void PrimerPair::setRightPrimer(Primer* newRightPrimer) {
-    rightPrimer.reset(newRightPrimer == nullptr ? nullptr : new Primer(*newRightPrimer));
+double PrimerPair::getProductTm() const {
+    return tm;
 }
 
-void PrimerPair::setInternalOligo(Primer* newInternalOligo) {
-    internalOligo.reset(newInternalOligo == nullptr ? nullptr : new Primer(*newInternalOligo));
+void PrimerPair::setLeftPrimer(PrimerSingle* leftPrimer) {
+    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new PrimerSingle(*leftPrimer));
 }
 
-void PrimerPair::setComplAny(short newComplAny) {
+void PrimerPair::setRightPrimer(PrimerSingle* rightPrimer) {
+    this->rightPrimer.reset((nullptr == rightPrimer) ? nullptr : new PrimerSingle(*rightPrimer));
+}
+
+void PrimerPair::setInternalOligo(PrimerSingle* internalOligo) {
+    this->internalOligo.reset((nullptr == internalOligo) ? nullptr : new PrimerSingle(*internalOligo));
+}
+
+void PrimerPair::setComplAny(double newComplAny) {
     complAny = newComplAny;
 }
 
-void PrimerPair::setComplEnd(short newComplEnd) {
+void PrimerPair::setComplEnd(double newComplEnd) {
     complEnd = newComplEnd;
 }
 
 void PrimerPair::setProductSize(int newProductSize) {
     productSize = newProductSize;
+}
+
+double PrimerPair::getRepeatSim() const {
+    return repeatSim;
+}
+
+void PrimerPair::setProductQuality(double quality) {
+    this->quality = quality;
+}
+
+const QString& PrimerPair::getRepeatSimName() const {
+    return repeatSimName;
+}
+
+void PrimerPair::setProductTm(double tm) {
+    this->tm = tm;
+}
+
+const QString& PrimerPair::getComplAnyStruct() const {
+    return complAnyStruct;
+}
+
+const QString& PrimerPair::getComplEndStruct() const {
+    return complEndStruct;
+}
+
+void PrimerPair::setRepeatSim(double repeatSim) {
+    this->repeatSim = repeatSim;
+}
+
+void PrimerPair::setRepeatSimName(const QString& repeatSimName) {
+    this->repeatSimName = repeatSimName;
+}
+
+void PrimerPair::setComplAnyStruct(const QString& complAnyStruct) {
+    this->complAnyStruct = complAnyStruct;
+}
+
+void PrimerPair::setComplEndStruct(const QString& complEndStruct) {
+    this->complEndStruct = complEndStruct;
 }
 
 bool PrimerPair::operator<(const PrimerPair& pair) const {
@@ -262,14 +421,12 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (quality > pair.quality) {
         return false;
     }
-
-    if (complMeasure < pair.complMeasure) {
+    if (tm < pair.tm) {
         return true;
     }
-    if (complMeasure > pair.complMeasure) {
+    if (tm > pair.tm) {
         return false;
     }
-
     if (leftPrimer->getStart() > pair.leftPrimer->getStart()) {
         return true;
     }
@@ -303,190 +460,122 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
 
 // Primer3Task
 
-namespace {
-bool clipRegion(U2Region& region, const U2Region& clippingRegion) {
-    qint64 start = qMax(region.startPos, clippingRegion.startPos);
-    qint64 end = qMin(region.endPos(), clippingRegion.endPos());
-    if (start > end) {
-        return false;
-    }
-    region.startPos = start;
-    region.length = end - start;
-    return true;
-}
-}  // namespace
-
-Primer3Task::Primer3Task(const Primer3TaskSettings& settingsArg)
+Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
-      settings(settingsArg) {
+      settings(_settings) {
     GCOUNTER(cvar, "Primer3Task");
-    {
-        U2Region region = settings.getIncludedRegion();
-        region.startPos -= settings.getFirstBaseIndex();
-        settings.setIncludedRegion(region);
-    }
-    offset = settings.getIncludedRegion().startPos;
-    settings.setSequence(settings.getSequence().mid(
-        settings.getIncludedRegion().startPos, settings.getIncludedRegion().length));
-    settings.setSequenceQuality(settings.getSequenceQuality().mid(
-        settings.getIncludedRegion().startPos, settings.getIncludedRegion().length));
-    settings.setIncludedRegion(0, settings.getIncludedRegion().length);
-    if (!PR_START_CODON_POS_IS_NULL(settings.getSeqArgs())) {
-        int startCodonPosition = PR_DEFAULT_START_CODON_POS;
-        if (settings.getIntProperty("PRIMER_START_CODON_POSITION", &startCodonPosition)) {
-            settings.setIntProperty("PRIMER_START_CODON_POSITION",
-                                    startCodonPosition - settings.getFirstBaseIndex());
-        }
-    }
-    {
-        QList<U2Region> regionList;
-        foreach (U2Region region, settings.getTarget()) {
-            region.startPos -= settings.getFirstBaseIndex();
-            region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
-                regionList.append(region);
-            }
-        }
-        settings.setTarget(regionList);
-    }
-    {
-        QList<U2Region> regionList;
-        foreach (U2Region region, settings.getExcludedRegion()) {
-            region.startPos -= settings.getFirstBaseIndex();
-            region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
-                regionList.append(region);
-            }
-        }
-        settings.setExcludedRegion(regionList);
-    }
-    {
-        QList<U2Region> regionList;
-        foreach (U2Region region, settings.getInternalOligoExcludedRegion()) {
-            region.startPos -= settings.getFirstBaseIndex();
-            region.startPos -= offset;
-            if (clipRegion(region, settings.getIncludedRegion())) {
-                regionList.append(region);
-            }
-        }
-        settings.setInternalOligoExcludedRegion(regionList);
-    }
+
+    const auto& sequenceRange = settings->getSequenceRange();
+    const auto& includedRegion = settings->getIncludedRegion();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings->getFirstBaseIndex() : 0;
+    offset = sequenceRange.startPos + includedRegionOffset;
+
+    settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
+    settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
+
+    addTaskResource(TaskResourceUsage(PRIMER3_STATIC_LOCK, 1));
 }
 
 void Primer3Task::run() {
-    if (!settings.getRepeatLibrary().isEmpty()) {
-        read_seq_lib(&settings.getPrimerArgs()->repeat_lib, settings.getRepeatLibrary().constData(), "mispriming library");
-        if (nullptr != settings.getPrimerArgs()->repeat_lib.error.data) {
-            pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->repeat_lib.error.data);
-            pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->repeat_lib.error.data);
-            return;
+    QByteArray repeatLibPath = settings->getRepeatLibraryPath();
+    if (!repeatLibPath.isEmpty()) {
+        auto primerSettings = settings->getPrimerSettings();
+        p3_set_gs_primer_mispriming_library(primerSettings, repeatLibPath.data());
+        if (primerSettings->p_args.repeat_lib->error.storage_size != 0) {
+            stateInfo.setError(primerSettings->p_args.repeat_lib->error.data);
+        }
+        if (primerSettings->p_args.repeat_lib->warning.storage_size != 0) {
+            stateInfo.addWarning(primerSettings->p_args.repeat_lib->warning.data);
         }
     }
-    if (!settings.getMishybLibrary().isEmpty()) {
-        read_seq_lib(&settings.getPrimerArgs()->io_mishyb_library, settings.getMishybLibrary().constData(), "internal oligo mishyb library");
-        if (nullptr != settings.getPrimerArgs()->io_mishyb_library.error.data) {
-            pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->io_mishyb_library.error.data);
-            pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->io_mishyb_library.error.data);
-            return;
-        }
-    }
+    CHECK_OP(stateInfo, );
 
-    bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
-    int toReturn = settings.getPrimerArgs()->num_return;
-    if (spanExonsEnabled) {
-        settings.getPrimerArgs()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
+    QByteArray mishybLibPath = settings->getMishybLibraryPath();
+    if (!mishybLibPath.isEmpty()) {
+        auto primerSettings = settings->getPrimerSettings();
+        p3_set_gs_primer_internal_oligo_mishyb_library(primerSettings, mishybLibPath.data());
+        if (primerSettings->o_args.repeat_lib->error.storage_size != 0) {
+            stateInfo.setError(primerSettings->o_args.repeat_lib->error.data);
+        }
+        if (primerSettings->o_args.repeat_lib->warning.storage_size != 0) {
+            stateInfo.addWarning(primerSettings->o_args.repeat_lib->warning.data);
+        }
     }
-    primers_t primers = runPrimer3(settings.getPrimerArgs(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
+    CHECK_OP(stateInfo, );
+
+    QByteArray thermodynamicParametersPath = settings->getThermodynamicParametersPath();
+    if (!thermodynamicParametersPath.isEmpty()) {
+        auto primerSettings = settings->getPrimerSettings();
+        char* path = thermodynamicParametersPath.data();
+        if (path[strlen(path) - 1] == '\n') {
+            path[strlen(path) - 1] = '\0';
+        }
+        thal_results o;
+        if (thal_load_parameters(path, &primerSettings->thermodynamic_parameters, &o) == -1) {
+            stateInfo.setError(o.msg);
+        }
+    }
+    CHECK_OP(stateInfo, );
+
+    bool spanExonsEnabled = settings->getSpanIntronExonBoundarySettings().enabled;
+    int toReturn = settings->getPrimerSettings()->num_return;
+    if (spanExonsEnabled) {
+        settings->getPrimerSettings()->num_return = settings->getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
+    }
+    
+    p3retval* resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
+    settings->setP3RetVal(resultPrimers);
 
     bestPairs.clear();
-
-    if (settings.getSpanIntronExonBoundarySettings().enabled) {
-        if (settings.getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
-            selectPairsSpanningExonJunction(primers, toReturn);
+    if (settings->getSpanIntronExonBoundarySettings().enabled) {
+        if (settings->getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
+            selectPairsSpanningExonJunction(resultPrimers, toReturn);
         } else {
-            selectPairsSpanningIntron(primers, toReturn);
+            selectPairsSpanningIntron(resultPrimers, toReturn);
         }
     } else {
-        for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-            bestPairs.append(PrimerPair(primers.best_pairs.pairs[index], offset));
+        for (int index = 0; index < resultPrimers->best_pairs.num_pairs; index++) {
+            bestPairs.append(PrimerPair(resultPrimers->best_pairs.pairs[index], offset));
         }
     }
 
-    int maxCount = 0;
-    settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
-
-    if (settings.getTask() == pick_left_only) {
-        if (primers.left != nullptr) {
-            for (int i = 0; i < settings.getSeqArgs()->left_expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(primers.left + i)));
+    if (resultPrimers->output_type == primer_list) {
+        singlePrimers.clear();
+        int maxCount = 0;
+        settings->getIntProperty("PRIMER_NUM_RETURN", &maxCount);
+        if (resultPrimers->fwd.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(PrimerSingle(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset));
             }
         }
-    } else if (settings.getTask() == pick_right_only) {
-        if (primers.right != nullptr) {
-            for (int i = 0; i < settings.getSeqArgs()->right_expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(Primer(*(primers.right + i)));
+        if (resultPrimers->rev.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->rev.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(PrimerSingle(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT, offset));
             }
         }
-    }
-
-    if (primers.best_pairs.num_pairs > 0) {
-        std::free(primers.best_pairs.pairs);
-        primers.best_pairs.pairs = nullptr;
-    }
-    if (nullptr != primers.left) {
-        std::free(primers.left);
-        primers.left = nullptr;
-    }
-    if (nullptr != primers.right) {
-        std::free(primers.right);
-        primers.right = nullptr;
-    }
-    if (nullptr != primers.intl) {
-        std::free(primers.intl);
-        primers.intl = nullptr;
+        if (resultPrimers->intl.oligo != nullptr) {
+            for (int i = 0; i < resultPrimers->intl.expl.ok && i < maxCount; ++i) {
+                singlePrimers.append(PrimerSingle(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL, offset));
+            }
+        }
     }
 }
 
 Task::ReportResult Primer3Task::report() {
-    if (!settings.getError().isEmpty()) {
-        stateInfo.setError(settings.getError());
+    CHECK_OP(stateInfo, Task::ReportResult_Finished);
+
+    auto resultPrimers = settings->getP3RetVal();
+    if (resultPrimers->glob_err.storage_size != 0) {
+        stateInfo.setError(resultPrimers->glob_err.data);
     }
+    if (resultPrimers->per_sequence_err.storage_size != 0) {
+        stateInfo.setError(resultPrimers->per_sequence_err.data);
+    }
+    if (resultPrimers->warnings.storage_size != 0) {
+        stateInfo.addWarning(resultPrimers->warnings.data);
+    }
+    
     return Task::ReportResult_Finished;
-}
-
-void Primer3Task::sumStat(Primer3TaskSettings* st) {
-    st->getSeqArgs()->left_expl.considered += settings.getSeqArgs()->left_expl.considered;
-    st->getSeqArgs()->left_expl.ns += settings.getSeqArgs()->left_expl.ns;
-    st->getSeqArgs()->left_expl.target += settings.getSeqArgs()->left_expl.target;
-    st->getSeqArgs()->left_expl.excluded += settings.getSeqArgs()->left_expl.excluded;
-    st->getSeqArgs()->left_expl.gc += settings.getSeqArgs()->left_expl.gc;
-    st->getSeqArgs()->left_expl.gc_clamp += settings.getSeqArgs()->left_expl.gc_clamp;
-    st->getSeqArgs()->left_expl.temp_min += settings.getSeqArgs()->left_expl.temp_min;
-    st->getSeqArgs()->left_expl.temp_max += settings.getSeqArgs()->left_expl.temp_max;
-    st->getSeqArgs()->left_expl.compl_any += settings.getSeqArgs()->left_expl.compl_any;
-    st->getSeqArgs()->left_expl.compl_end += settings.getSeqArgs()->left_expl.compl_end;
-    st->getSeqArgs()->left_expl.poly_x += settings.getSeqArgs()->left_expl.poly_x;
-    st->getSeqArgs()->left_expl.stability += settings.getSeqArgs()->left_expl.stability;
-    st->getSeqArgs()->left_expl.ok += settings.getSeqArgs()->left_expl.ok;
-
-    st->getSeqArgs()->right_expl.considered += settings.getSeqArgs()->right_expl.considered;
-    st->getSeqArgs()->right_expl.ns += settings.getSeqArgs()->right_expl.ns;
-    st->getSeqArgs()->right_expl.target += settings.getSeqArgs()->right_expl.target;
-    st->getSeqArgs()->right_expl.excluded += settings.getSeqArgs()->right_expl.excluded;
-    st->getSeqArgs()->right_expl.gc += settings.getSeqArgs()->right_expl.gc;
-    st->getSeqArgs()->right_expl.gc_clamp += settings.getSeqArgs()->right_expl.gc_clamp;
-    st->getSeqArgs()->right_expl.temp_min += settings.getSeqArgs()->right_expl.temp_min;
-    st->getSeqArgs()->right_expl.temp_max += settings.getSeqArgs()->right_expl.temp_max;
-    st->getSeqArgs()->right_expl.compl_any += settings.getSeqArgs()->right_expl.compl_any;
-    st->getSeqArgs()->right_expl.compl_end += settings.getSeqArgs()->right_expl.compl_end;
-    st->getSeqArgs()->right_expl.poly_x += settings.getSeqArgs()->right_expl.poly_x;
-    st->getSeqArgs()->right_expl.stability += settings.getSeqArgs()->right_expl.stability;
-    st->getSeqArgs()->right_expl.ok += settings.getSeqArgs()->right_expl.ok;
-
-    st->getSeqArgs()->pair_expl.considered += settings.getSeqArgs()->pair_expl.considered;
-    st->getSeqArgs()->pair_expl.product += settings.getSeqArgs()->pair_expl.product;
-    st->getSeqArgs()->pair_expl.compl_end += settings.getSeqArgs()->pair_expl.compl_end;
-    st->getSeqArgs()->pair_expl.ok += settings.getSeqArgs()->pair_expl.ok;
 }
 
 // TODO: reuse functions from U2Region!
@@ -507,7 +596,7 @@ static QList<int> findIntersectingRegions(const QList<U2Region>& regions, int st
 static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qint64>& junctions, int minLeftOverlap, int minRightOverlap) {
     U2Region primerRegion(primerRec->start, primerRec->length);
 
-    foreach (qint64 junctionPos, junctions) {
+    for (qint64 junctionPos : junctions) {
         U2Region testRegion(junctionPos - minLeftOverlap, minLeftOverlap + minRightOverlap);
         if (primerRegion.contains(testRegion)) {
             return true;
@@ -517,19 +606,19 @@ static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qi
     return false;
 }
 
-void Primer3Task::selectPairsSpanningExonJunction(primers_t& primers, int toReturn) {
-    int minLeftOverlap = settings.getSpanIntronExonBoundarySettings().minLeftOverlap;
-    int minRightOverlap = settings.getSpanIntronExonBoundarySettings().minRightOverlap;
+void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toReturn) {
+    int minLeftOverlap = settings->getSpanIntronExonBoundarySettings().minLeftOverlap;
+    int minRightOverlap = settings->getSpanIntronExonBoundarySettings().minRightOverlap;
 
     QVector<qint64> junctionPositions;
-    const QList<U2Region>& regions = settings.getExonRegions();
+    const QList<U2Region>& regions = settings->getExonRegions();
     for (int i = 0; i < regions.size() - 1; ++i) {
         qint64 end = regions.at(i).endPos();
         junctionPositions.push_back(end);
     }
 
-    for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-        const primer_pair& pair = primers.best_pairs.pairs[index];
+    for (int index = 0; index < primers->best_pairs.num_pairs; index++) {
+        const primer_pair& pair = primers->best_pairs.pairs[index];
         const primer_rec* left = pair.left;
         const primer_rec* right = pair.right;
 
@@ -543,11 +632,11 @@ void Primer3Task::selectPairsSpanningExonJunction(primers_t& primers, int toRetu
     }
 }
 
-void Primer3Task::selectPairsSpanningIntron(primers_t& primers, int toReturn) {
-    const QList<U2Region>& regions = settings.getExonRegions();
+void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
+    const QList<U2Region>& regions = settings->getExonRegions();
 
-    for (int index = 0; index < primers.best_pairs.num_pairs; index++) {
-        const primer_pair& pair = primers.best_pairs.pairs[index];
+    for (int index = 0; index < primers->best_pairs.num_pairs; index++) {
+        const primer_pair& pair = primers->best_pairs.pairs[index];
         const primer_rec* left = pair.left;
         const primer_rec* right = pair.right;
 
@@ -555,7 +644,7 @@ void Primer3Task::selectPairsSpanningIntron(primers_t& primers, int toReturn) {
 
         int numIntersecting = 0;
         U2Region rightRegion(right->start, right->length);
-        foreach (int idx, regionIndexes) {
+        for (int idx : regionIndexes) {
             const U2Region& exonRegion = regions.at(idx);
             if (exonRegion.intersects(rightRegion)) {
                 ++numIntersecting;
@@ -574,129 +663,63 @@ void Primer3Task::selectPairsSpanningIntron(primers_t& primers, int toReturn) {
 
 // Primer3SWTask
 
-Primer3SWTask::Primer3SWTask(const Primer3TaskSettings& settingsArg)
-    : Task("Pick primers SW task", TaskFlags_NR_FOSCOE),
-      settings(settingsArg) {
-    median = settings.getSequenceSize() / 2;
-    setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
+Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings)
+    : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
+      settings(_settings) {
+    median = settings->getSequenceSize() / 2;
 }
 
 void Primer3SWTask::prepare() {
-    if ((settings.getIncludedRegion().startPos < settings.getFirstBaseIndex()) ||
-        (settings.getIncludedRegion().length <= 0)) {
-        setError("invalid included region");
-        return;
-    }
-
     // selected region covers circular junction
-    if (settings.getIncludedRegion().endPos() > settings.getSequenceSize() + settings.getFirstBaseIndex()) {
-        if (!settings.isSequenceCircular()) {
-            U2Region endRegion(settings.getIncludedRegion().startPos,
-                               settings.getSequenceSize() - settings.getIncludedRegion().startPos + 1);
-            U2Region startRegion(1, settings.getIncludedRegion().endPos() - settings.getSequenceSize());
+    const auto& sequenceRange = settings->getSequenceRange();
+    int sequenceSize = settings->getSequenceSize();
 
-            if (settings.checkIncludedRegion(startRegion)) {
-                addPrimer3Subtasks(settings, startRegion, regionTasks);
-            }
-            if (settings.checkIncludedRegion(endRegion)) {
-                addPrimer3Subtasks(settings, endRegion, regionTasks);
-            }
-            return;
-        } else {
-            QByteArray seq = settings.getSequence();
-            seq.append(seq.left(settings.getIncludedRegion().endPos() - settings.getSequenceSize() - settings.getFirstBaseIndex()));
-            settings.setSequence(seq);
-        }
+    const auto& includedRegion = settings->getIncludedRegion();
+    int fbs = settings->getFirstBaseIndex();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+    CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
+
+    if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
+        SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
+
+        QByteArray seq = settings->getSequence();
+        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
+        settings->setSequence(seq);
     }
 
-    addPrimer3Subtasks(settings, regionTasks);
-
-    if (settings.isSequenceCircular() && settings.getIncludedRegion().startPos == 1 &&
-        settings.getIncludedRegion().length == settings.getSequenceSize()) {
-        // Based on conversation with Vladimir Trifonov:
-        // Consider the start position in the center of the sequence and find primers for it.
-        // This should be enough for circular primers search.
-        QByteArray oppositeSeq = settings.getSequence().right(median);
-        oppositeSeq.append(settings.getSequence().left(settings.getSequenceSize() - median));
-        Primer3TaskSettings circSettings = settings;
-        circSettings.setSequence(oppositeSeq, true);
-
-        addPrimer3Subtasks(circSettings, circRegionTasks);
-    }
+    primer3Task = new Primer3Task(settings);
+    addSubTask(primer3Task);
 }
 
 Task::ReportResult Primer3SWTask::report() {
-    for (Primer3Task* task : qAsConst(regionTasks)) {
-        bestPairs.append(task->getBestPairs());
-        singlePrimers.append(task->getSinglePrimers());
-    }
+    CHECK(primer3Task != nullptr, Task::ReportResult_Finished);
 
-    for (Primer3Task* task : qAsConst(circRegionTasks)) {
-        // Relocate primers that were found for sequence split in the center.
-        foreach (PrimerPair p, task->getBestPairs()) {
-            relocatePrimerOverMedian(p.getLeftPrimer());
-            relocatePrimerOverMedian(p.getRightPrimer());
-            if (!bestPairs.contains(p)) {
-                bestPairs.append(p);
-            }
-        }
+    bestPairs.append(primer3Task->getBestPairs());
+    singlePrimers.append(primer3Task->getSinglePrimers());
 
-        foreach (Primer p, task->getSinglePrimers()) {
-            relocatePrimerOverMedian(&p);
-            if (!singlePrimers.contains(p)) {
-                singlePrimers.append(p);
-            }
-        }
-    }
-
-    if (regionTasks.size() + circRegionTasks.size() > 1) {
-        std::stable_sort(bestPairs.begin(), bestPairs.end());
-        int pairsCount = 0;
-        if (!settings.getIntProperty("PRIMER_NUM_RETURN", &pairsCount)) {
-            setError("can't get PRIMER_NUM_RETURN property");
-            return Task::ReportResult_Finished;
-        }
-
-        bestPairs = bestPairs.mid(0, pairsCount);
-    }
     return Task::ReportResult_Finished;
 }
 
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& list) {
-    QVector<U2Region> regions = SequenceWalkerTask::splitRange(rangeToSplit,
-                                                               CHUNK_SIZE,
-                                                               0,
-                                                               CHUNK_SIZE / 2,
-                                                               false);
-    foreach (const U2Region& region, regions) {
-        Primer3TaskSettings regionSettings = taskSettings;
-        regionSettings.setIncludedRegion(region);
-        Primer3Task* task = new Primer3Task(regionSettings);
-        list.append(task);
-        addSubTask(task);
-    }
-}
-
-void Primer3SWTask::addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& list) {
-    addPrimer3Subtasks(taskSettings, taskSettings.getIncludedRegion(), list);
-}
-
-void Primer3SWTask::relocatePrimerOverMedian(Primer* primer) {
-    primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings.getSequenceSize() - median));
+void Primer3SWTask::relocatePrimerOverMedian(PrimerSingle* primer) {
+    primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings->getSequenceSize() - median));
 }
 
 //////////////////////////////////////////////////////////////////////////
 ////Primer3ToAnnotationsTask
 
-Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(const Primer3TaskSettings& settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
-    : Task(tr("Search primers to annotations"), /*TaskFlags_NR_FOSCOE*/ TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
-      settings(settings), annotationTableObject(aobj_), seqObj(so_),
+Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(Primer3TaskSettings* _settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
+    : Task(tr("Search primers to annotations"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
+      settings(_settings), annotationTableObject(aobj_), seqObj(so_),
       groupName(groupName_), annName(annName_), annDescription(annDescription), searchTask(nullptr), findExonsTask(nullptr) {
 }
 
+Primer3ToAnnotationsTask::~Primer3ToAnnotationsTask() {
+    delete settings;
+}
+
 void Primer3ToAnnotationsTask::prepare() {
-    if (settings.getSpanIntronExonBoundarySettings().enabled) {
-        findExonsTask = new FindExonRegionsTask(seqObj, settings.getSpanIntronExonBoundarySettings().exonAnnotationName);
+    if (settings->getSpanIntronExonBoundarySettings().enabled) {
+        findExonsTask = new FindExonRegionsTask(seqObj, settings->getSpanIntronExonBoundarySettings().exonAnnotationName);
         addSubTask(findExonsTask);
     } else {
         searchTask = new Primer3SWTask(settings);
@@ -723,7 +746,7 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
                          .arg(seqObj->getSequenceName()));
             return res;
         } else {
-            const U2Range<int>& exonRange = settings.getSpanIntronExonBoundarySettings().exonRange;
+            const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
 
             if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
                 int firstExonIdx = exonRange.minValue;
@@ -746,16 +769,16 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
 
                 regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);
                 int totalLen = 0;
-                foreach (const U2Region& r, regions) {
+                for (const U2Region& r : regions) {
                     totalLen += r.length;
                 }
-                settings.setIncludedRegion(regions.first().startPos + settings.getFirstBaseIndex(), totalLen);
+                settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
             }
-            settings.setExonRegions(regions);
+            settings->setExonRegions(regions);
             // reset target and excluded regions regions
             QList<U2Region> emptyList;
-            settings.setExcludedRegion(emptyList);
-            settings.setTarget(emptyList);
+            settings->setExcludedRegion(emptyList);
+            settings->setTarget(emptyList);
         }
 
         searchTask = new Primer3SWTask(settings);
@@ -772,16 +795,9 @@ QString Primer3ToAnnotationsTask::generateReport() const {
         return res;
     }
 
-    foreach (Primer3Task* t, searchTask->regionTasks) {
-        t->sumStat(&searchTask->settings);
-    }
-    foreach (Primer3Task* t, searchTask->circRegionTasks) {
-        t->sumStat(&searchTask->settings);
-    }
-
-    oligo_stats leftStats = searchTask->settings.getSeqArgs()->left_expl;
-    oligo_stats rightStats = searchTask->settings.getSeqArgs()->right_expl;
-    pair_stats pairStats = searchTask->settings.getSeqArgs()->pair_expl;
+    oligo_stats leftStats = settings->getP3RetVal()->fwd.expl;
+    oligo_stats rightStats = settings->getP3RetVal()->rev.expl;
+    pair_stats pairStats = settings->getP3RetVal()->best_pairs.expl;
 
     if (!leftStats.considered) {
         leftStats.considered = leftStats.ns + leftStats.target + leftStats.excluded + leftStats.gc + leftStats.gc_clamp + leftStats.temp_min + leftStats.temp_max + leftStats.compl_any + leftStats.compl_end + leftStats.poly_x + leftStats.stability + leftStats.ok;
@@ -795,7 +811,7 @@ QString Primer3ToAnnotationsTask::generateReport() const {
     res += "<tr><th>Statistics</th></tr>\n";
 
     res += QString("<tr><th></th> <th>con</th> <th>too</th> <th>in</th> <th>in</th> <th></th> <th>no</th> <th>tm</th> <th>tm</th> <th>high</th> <th>high</th> <th></th> <th>high</th> <th></th></tr>");
-    res += QString("<tr><th></th> <th>sid</th> <th>many</th> <th>tar</th> <th>excl</th> <th>bag</th> <th>GC</th> <th>too</th> <th>too</th> <th>any</th> <th>3'</th> <th>poly</th> <th>end</th> <th></th></tr>");
+    res += QString("<tr><th></th> <th>sid</th> <th>many</th> <th>tar</th> <th>excl</th> <th>bad</th> <th>GC</th> <th>too</th> <th>too</th> <th>any</th> <th>3'</th> <th>poly</th> <th>end</th> <th></th></tr>");
     res += QString("<tr><th></th> <th>ered</th> <th>Ns</th> <th>get</th> <th>reg</th> <th>GC&#37;</th> <th>clamp</th> <th>low</th> <th>high</th> <th>compl</th> <th>compl</th> <th>X</th> <th>stab</th> <th>ok</th></tr>");
 
     res += QString("<tr><th>Left</th><th> %1 </th><th> %2 </th><th> %3 </th><th> %4 </th><th> %5 </th><th> %6 </th><th> %7 </th><th> %8 </th><th> %9 </th><th> %10 </th><th> %11 </th><th> %12 </th><th> %13 </th></tr>")
@@ -841,15 +857,13 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
-    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), {});
-
-    assert(searchTask);
+    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), ReportResult_Finished);
+    SAFE_POINT(searchTask != nullptr, L10N::nullPointerError("Primer3Task"), ReportResult_Finished);
 
     const QList<PrimerPair>& bestPairs = searchTask->getBestPairs();
-
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
     int index = 0;
-    foreach (const PrimerPair& pair, bestPairs) {
+    for (const PrimerPair& pair : bestPairs) {
         QList<SharedAnnotationData> annotations;
         if (pair.getLeftPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, *pair.getLeftPrimer(), pair.getProductSize(), U2Strand::Direct));
@@ -864,12 +878,14 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         index++;
     }
 
-    if (settings.getTask() == pick_left_only || settings.getTask() == pick_right_only) {
-        const QList<Primer> singlePrimers = searchTask->getSinglePrimers();
+    const auto& singlePrimers = searchTask->getSinglePrimers();
+    if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
-        U2Strand s = settings.getTask() == pick_left_only ? U2Strand::Direct : U2Strand::Complementary;
-        foreach (const Primer& p, singlePrimers) {
-            annotations.append(oligoToAnnotation(annName, p, 0, s));
+        for (const auto& primer : singlePrimers) {
+            auto type = primer.getType();
+            U2Strand s = type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
+            QString annotationName = type == OT_INTL ? "internalOligo" : annName;
+            annotations.append(oligoToAnnotation(annotationName, primer, 0, s));
         }
         U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
 
@@ -883,7 +899,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
-SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const Primer& primer, int productSize, U2Strand strand) {
+SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand) {
     SharedAnnotationData annotationData(new AnnotationData);
     annotationData->name = title;
     annotationData->type = U2FeatureTypes::Primer;
@@ -901,25 +917,26 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
 
     annotationData->setStrand(strand);
 
-    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));
-    annotationData->qualifiers.append(U2Qualifier("any", QString::number(0.01 * primer.getSelfAny())));
-    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(0.01 * primer.getSelfEnd())));
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
+    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));
+    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer.getGcContent())));
+    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer.getSelfAny())));
+    annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer.getSelfEnd())));
+    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer.getEndStability())));
+    annotationData->qualifiers.append(U2Qualifier("penalty'", QString::number(primer.getQuality())));
 
-    // recalculate gc content
-    QByteArray primerSequence;
-    foreach (const U2Region& region, annotationData->getRegions()) {
-        primerSequence.append(seqObj->getSequence(region, stateInfo).seq);
+    auto areDoubleValuesEqual = [](double val, double reference) -> bool {
+        return qAbs(reference - val) > 0.1;
+    };
+    if (areDoubleValuesEqual(primer.getBound(), OLIGOTM_ERROR)) {
+        annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer.getBound())));
     }
-
-    int gcCounter = 0;
-    foreach (QChar c, primerSequence) {
-        if (c.toUpper() == 'G' || c.toUpper() == 'C') {
-            gcCounter++;
-        }
+    if (areDoubleValuesEqual(primer.getTemplateMispriming(), ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer.getTemplateMispriming())));
     }
-    double gcContentPercentage = ((double)gcCounter / primerSequence.size()) * 100;
-    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(gcContentPercentage)));
+    if (areDoubleValuesEqual(primer.getHairpin(), ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer.getHairpin())));
+    }
 
     return annotationData;
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -120,10 +120,12 @@ public:
 
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
 #define GT_FAIL(errorMessage, result) \
-    GT_DEBUG_MESSAGE(false, errorMessage, result); \
-    HI::GTGlobals::GUITestFail(); \
-    os.setError(errorMessage); \
-    return result;
+    { \
+        GT_DEBUG_MESSAGE(false, errorMessage, result); \
+        HI::GTGlobals::GUITestFail(); \
+        os.setError(errorMessage); \
+        return result; \
+    }
 
 #define CHECK_OP_SET_ERR_RESULT(os, errorMessage, result) \
     CHECK_SET_ERR_RESULT(!os.isCoR(), errorMessage, result)

@@ -41,6 +41,7 @@ public:
     static void clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
 
     static QString getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int idx);
+    static QString getTabNameByWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QWidget* widget);
 
     static int getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName);
     static QWidget* getTabCornerWidget(GUITestOpStatus& os, QTabWidget* tabWidget, int idx);

@@ -51,7 +51,7 @@ QTabBar* GTTabWidget::getTabBar(GUITestOpStatus& os, QTabWidget* tabWidget) {
     GT_CHECK_RESULT(tabWidget != NULL, "tabWidget is NULL", NULL);
     QList<QTabBar*> tabBars = tabWidget->findChildren<QTabBar*>();
     int numToCheck = tabBars.size();
-    GT_CHECK_RESULT(numToCheck < 2, QString("too many tab bars found: ").arg(numToCheck), NULL);
+    GT_CHECK_RESULT(numToCheck < 2, QString("too many tab bars found: %1").arg(numToCheck), NULL);
     GT_CHECK_RESULT(numToCheck != 0, "tab bar not found", NULL);
     return tabBars.first();
 }
@@ -89,6 +89,10 @@ void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QW
 
 QString GTTabWidget::getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int idx) {
     return getTabBar(os, tabWidget)->tabText(idx);
+}
+
+QString GTTabWidget::getTabNameByWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QWidget* widget) {
+    return getTabBar(os, tabWidget)->tabText(tabWidget->indexOf(widget));
 }
 
 #define GT_METHOD_NAME "getTabNumByName"

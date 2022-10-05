@@ -31,32 +31,48 @@ class Primer3DialogFiller : public Filler {
 public:
     class Primer3Settings {
     public:
-        Primer3Settings()
-            : resultsCount(-1),
-              start(-1),
-              end(-1),
-              pickRight(true),
-              pickLeft(true),
-              shortRegion(false),
-              rtPcrDesign(false) {
-        }
+        Primer3Settings() {}
 
-        int resultsCount;
+        int resultsCount = -1;
         QString primersGroupName;
         QString primersName;
-        int start;
-        int end;
-        bool pickRight;
-        bool pickLeft;
-        bool shortRegion;
-        bool rtPcrDesign;
+        int start = -1;
+        int end = -1;
+        bool pickRight = true;
+        bool pickLeft = true;
+        bool pickInternal = false;
+        bool shortRegion = false;
+        bool rtPcrDesign = false;
+        // The file to the primer3 settings. All settings from this file will be set with the dialog
+        QString filePath;
+        // Set settings manually if true, with the "Load settings" button if false
+        bool loadManually = true;
     };
 
     Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings = Primer3Settings());
     void commonScenario();
 
 private:
+    struct Widgets {
+        QList<QPair<QSpinBox*, QString>> spin;
+        QList<QPair<QCheckBox*, QString>> check;
+        QList<QPair<QComboBox*, QString>> combo;
+        QList<QPair<QDoubleSpinBox*, QString>> doubleSpin;
+        QList<QPair<QLineEdit*, QString>> line;
+        QPair<QPlainTextEdit*, QString> plainText;
+    };
+
+    void loadFromFileManually(QWidget* parent);
+    QWidget* getWidgetTab(QWidget* wt) const;
+    void findAllChildrenWithNames(QObject* obj, QMap<QString, QObject*>& children);
+
+
     Primer3Settings settings;
+
+    static const QStringList PREFIXES;
+    static const QStringList DOUBLE_WITH_CHECK_NAMES;
+    static const QStringList DEBUG_PARAMETERS;
+    static const QMap<QString, QString> LIBRARIES_PATH_AND_NAME;
 };
 
 }  // namespace U2

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_NUM_RETURN="1" 
+			PRIMER_EXPLAIN_FLAG="1" 
+			PRIMER_PRODUCT_SIZE_RANGE="40-100" 
+			PRIMER_MIN_GC="0" 
+			PRIMER_MIN_TM="0" 
+			PRIMER_PICK_ANYWAY="0" 
+			PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION="2" 
+			PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION="2" 
+			PRIMER_TASK="pick_detection_primers" 
+			PRIMER_PICK_RIGHT_PRIMER="1" 
+			PRIMER_PICK_INTERNAL_OLIGO="0" 
+			PRIMER_PICK_LEFT_PRIMER="1" 
+			PRIMER_MAX_POLY_X="100" 
+			PRIMER_MAX_SELF_ANY="100" 
+			PRIMER_MAX_SELF_END="100" 
+			PRIMER_FIRST_BASE_INDEX="1" 
+			PRIMER_MIN_SIZE="16" 
+			SEQUENCE_ID="Details of SEQUENCE_OVERLAP_JUNCTION_LIST and PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION TEST 09 -- NO OVERLAP" 
+			SEQUENCE_TEMPLATE="cttgattcaatgaatctcaaaaatggattactattgttcattctgtttcTggattgtgtttttttcaaagttgaatccaaatgtgtaaaagggtgtgatg" 
+			SEQUENCE_OVERLAP_JUNCTION_LIST="50" 
+			SEQUENCE_PRIMER="ttgttcattctgtttcTg" 
+			SEQUENCE_PRIMER_REVCOMP="catcacacccttttacacatt"/>
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="0" 
+			PRIMER_INTERNAL_NUM_RETURNED="0" 
+			PRIMER_PAIR_NUM_RETURNED="0"/>
+	</plugin_primer_3>
+</multi-test>
