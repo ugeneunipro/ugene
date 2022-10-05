@@ -31,11 +31,11 @@ namespace GUITest_common_scenarios_primer3 {
 #define GUI_TEST_SUITE "GUITest_common_scenarios_primer3"
 
 GUI_TEST_CLASS_DECLARATION(test_tab_main_all)
-//GUI_TEST_CLASS_DECLARATION(test_tab_general_all)
-//GUI_TEST_CLASS_DECLARATION(test_tab_advancev_all)
-//GUI_TEST_CLASS_DECLARATION(test_tab_internal_all)
-//GUI_TEST_CLASS_DECLARATION(test_tab_penalty_all)
-//GUI_TEST_CLASS_DECLARATION(test_tab_quality_all)
+GUI_TEST_CLASS_DECLARATION(test_tab_general_all)
+GUI_TEST_CLASS_DECLARATION(test_tab_advanced_all)
+GUI_TEST_CLASS_DECLARATION(test_tab_internal_all)
+GUI_TEST_CLASS_DECLARATION(test_tab_penalty_all)
+GUI_TEST_CLASS_DECLARATION(test_tab_quality_all)
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
