@@ -128,12 +128,14 @@ PhyNode* PhyNode::clone() const {
     collectNodesPreOrder(allNodesInTree);
 
     QList<PhyBranch*> allBranchesInTree;
-    QMap<const PhyNode*, PhyNode*> clonedNodeByOriginalNode;
+    QHash<const PhyNode*, PhyNode*> clonedNodeByOriginalNode;
     for (const PhyNode* originalNode : qAsConst(allNodesInTree)) {
         auto clonedNode = new PhyNode();
         clonedNode->name = originalNode->name;
         clonedNodeByOriginalNode[originalNode] = clonedNode;
-        allBranchesInTree.append(originalNode->parentBranch);
+        if (originalNode->parentBranch) {
+            allBranchesInTree.append(originalNode->parentBranch);
+        }
     }
     for (PhyBranch* originalBranch : qAsConst(allBranchesInTree)) {
         PhyNode* parentClonedNode = clonedNodeByOriginalNode[originalBranch->parentNode];
