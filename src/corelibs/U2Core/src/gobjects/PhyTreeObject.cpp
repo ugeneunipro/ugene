@@ -165,10 +165,6 @@ bool PhyTreeObject::treesAreAlike(const PhyTree& tree1, const PhyTree& tree2) {
     return true;
 }
 
-bool PhyTreeObject::hasNodeLabels() const {
-    return tree->hasNodeLabels;
-}
-
 const PhyNode* PhyTreeObject::findPhyNodeByName(const QString& name) {
     ensureDataLoaded();
     QList<PhyNode*> nodes = tree.constData()->getNodesPreOrder();

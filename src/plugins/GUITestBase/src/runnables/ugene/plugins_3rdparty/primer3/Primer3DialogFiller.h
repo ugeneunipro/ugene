@@ -47,6 +47,7 @@ public:
         QString filePath;
         // Set settings manually if true, with the "Load settings" button if false
         bool loadManually = true;
+        bool notRun = false;
     };
 
     Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings = Primer3Settings());

@@ -32,7 +32,7 @@ class PhyNode;
 
 class U2VIEW_EXPORT TvUnrootedBranchItem : public TvBranchItem {
 public:
-    TvUnrootedBranchItem(QGraphicsItem* parent, qreal angle, TvRectangularBranchItem* from, double nodeValue = -1.0);
+    TvUnrootedBranchItem(QGraphicsItem* parent, qreal angle, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 

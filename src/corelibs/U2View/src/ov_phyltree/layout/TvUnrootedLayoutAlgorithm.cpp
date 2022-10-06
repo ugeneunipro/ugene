@@ -19,21 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#include "TvUnrootedLayoutAlgorithm.h"
+
 #include <QStack>
 
 #include <U2Core/PhyTreeObject.h>
 
 #include "../item/TvRectangularBranchItem.h"
 #include "../item/TvUnrootedBranchItem.h"
-#include "TvUnrootedLayoutAlgorithm.h"
 
 namespace U2 {
 
 static TvUnrootedBranchItem* convertBranch(TvRectangularBranchItem* originalBranchItem,
                                            TvUnrootedBranchItem* convertedParentBranchItem,
-                                             double coef) {
+                                           double coef) {
     double angle = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new TvUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeLabelValue());
+    auto convertedBranch = new TvUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeNameFromNodeItem());
     const QList<QGraphicsItem*>& originalChildBranchItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildBranchItems)) {
         if (auto originalChildBranchItem = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {

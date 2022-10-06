@@ -23,6 +23,9 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
+#include <U2View/TreeViewerFactory.h>
+
+#include "GTUtilsMdi.h"
 #include "GTUtilsOptionsPanelPhyTree.h"
 
 namespace U2 {
@@ -32,7 +35,8 @@ using namespace HI;
 
 #define GT_METHOD_NAME "openTab"
 QWidget* GTUtilsOptionPanelPhyTree::openTab(HI::GUITestOpStatus& os) {
-    QWidget* tabButton = GTWidget::findWidget(os, "OP_TREES_WIDGET");
+    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
+    QWidget* tabButton = GTWidget::findWidget(os, "OP_TREES_WIDGET", activeObjectViewWindow);
     GTWidget::click(os, tabButton);
     return getOptionsPanelWidget(os);
 }
@@ -40,7 +44,8 @@ QWidget* GTUtilsOptionPanelPhyTree::openTab(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getOptionsPanelWidget"
 QWidget* GTUtilsOptionPanelPhyTree::getOptionsPanelWidget(HI::GUITestOpStatus& os) {
-    return GTWidget::findWidget(os, "TreeOptionsWidget");
+    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
+    return GTWidget::findWidget(os, "TreeOptionsWidget", activeObjectViewWindow);
 }
 #undef GT_METHOD_NAME
 

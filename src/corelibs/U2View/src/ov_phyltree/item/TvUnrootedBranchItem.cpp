@@ -33,8 +33,8 @@
 
 namespace U2 {
 
-TvUnrootedBranchItem::TvUnrootedBranchItem(QGraphicsItem* parent, double angle, TvRectangularBranchItem* from, double nodeValue)
-    : TvBranchItem(true, from->getSide(), nodeValue) {
+TvUnrootedBranchItem::TvUnrootedBranchItem(QGraphicsItem* parent, double angle, TvRectangularBranchItem* from, const QString& nodeName)
+    : TvBranchItem(true, from->getSide(), nodeName) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();

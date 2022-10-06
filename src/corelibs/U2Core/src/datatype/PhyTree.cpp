@@ -30,7 +30,7 @@
 namespace U2 {
 
 PhyTreeData::PhyTreeData(const PhyTreeData& other)
-    : QSharedData(other), hasNodeLabels(false) {
+    : QSharedData(other) {
     rootNode = other.rootNode == nullptr ? nullptr : other.rootNode->clone();
 }
 
@@ -39,6 +39,17 @@ PhyTreeData::~PhyTreeData() {
         delete rootNode;
         rootNode = nullptr;
     }
+}
+
+static bool hasNamedInnerNode(const PhyNode* node) {
+    CHECK(node != nullptr && !node->isLeafNode(), false);
+    CHECK(node->name.isEmpty(), true);
+    QList<PhyNode*> childNodes = node->getChildNodes();
+    return std::any_of(childNodes.begin(), childNodes.end(), [](auto childNode) { return hasNamedInnerNode(childNode); });
+}
+
+bool PhyTreeData::hasNamedInnerNodes() const {
+    return hasNamedInnerNode(rootNode);
 }
 
 void PhyTreeData::setRootNode(PhyNode* newRootNode) {
@@ -119,6 +130,10 @@ PhyNode* PhyNode::getParentNode() {
     return parent();
 }
 
+bool PhyNode::isLeafNode() const {
+    return branches.size() == 1 && branches[0] == getParentBranch();
+}
+
 void PhyNode::setParentNode(PhyNode* newParent, double distance) {
     int branchesNumber = branches.size();
     for (int i = 0; i < branchesNumber; i++) {
@@ -157,14 +172,13 @@ void PhyNode::setParentNode(PhyNode* newParent, double distance) {
     branches.append(branch);
 }
 
-QList<PhyNode*> PhyNode::getChildrenNodes() const {
+QList<PhyNode*> PhyNode::getChildNodes() const {
     QList<PhyNode*> childNodes;
-    foreach (PhyBranch* branch, branches) {
+    for (PhyBranch* branch : qAsConst(branches)) {
         if (branch->node1 == this) {
             childNodes.append(branch->node2);
         }
     }
-
     return childNodes;
 }
 
@@ -291,7 +305,7 @@ void PhyTreeUtils::rerootPhyTree(PhyTree& phyTree, PhyNode* node) {
 
     PhyNode* centralNode = node->getParentNode();
     if (centralNode == curRoot) {
-        if (centralNode->getChildrenNodes().at(0) != node) {
+        if (centralNode->getChildNodes().at(0) != node) {
             centralNode->swapBranches(0, 1);
         }
         return;
@@ -318,9 +332,9 @@ void PhyTreeUtils::rerootPhyTree(PhyTree& phyTree, PhyNode* node) {
         oldParent = s;
     }
 
-    if (centralNode->getChildrenNodes().size() == 1) {
+    if (centralNode->getChildNodes().size() == 1) {
         /* remove old root */
-        oldParent = centralNode->getChildrenNodes().at(0);
+        oldParent = centralNode->getChildNodes().at(0);
         distance = oldParent->getDistanceToRoot() - newParentNode->getDistanceToRoot();
         oldParent->setParentNode(newParentNode, distance);
         delete centralNode;

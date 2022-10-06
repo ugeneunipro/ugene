@@ -40,6 +40,7 @@
 #include <QTextStream>
 
 #include <U2Core/global.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "Primer3DialogFiller.h"
@@ -119,6 +120,11 @@ void Primer3DialogFiller::commonScenario() {
         }
     }
 
+    if (settings.notRun) {
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        return;
+    }
+
     if (!settings.shortRegion) {
         auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
@@ -144,6 +150,7 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
     QMap<QWidget*, Widgets> tabsAndWidgets;
     while (!stream.atEnd()) {
         auto line = stream.readLine();
+        CHECK_BREAK(line != "=");
         auto par = line.split('=');
         CHECK_CONTINUE(par.size() == 2);
         CHECK_CONTINUE(!DEBUG_PARAMETERS.contains(par.first()));

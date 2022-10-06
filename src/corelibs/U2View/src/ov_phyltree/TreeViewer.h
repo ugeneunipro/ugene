@@ -108,7 +108,7 @@ public:
     QAction* branchesSettingsAction = nullptr;
 
     QAction* nameLabelsAction = nullptr;
-    QAction* nodeLabelsAction = nullptr;
+    QAction* showNodeLabelsAction = nullptr;
     QAction* distanceLabelsAction = nullptr;
     QAction* textSettingsAction = nullptr;
     QAction* alignTreeLabelsAction = nullptr;
@@ -126,11 +126,12 @@ public:
     QAction* rerootAction = nullptr;
     QAction* swapAction = nullptr;
 
+    PhyTreeObject* const phyObject;
+
 private:
     QActionGroup* layoutActionGroup = nullptr;
 
     QByteArray state;
-    PhyTreeObject* phyObject = nullptr;
     TvRectangularBranchItem* root = nullptr;
 
     void setupLayoutSettingsMenu(QMenu* m);
@@ -306,11 +307,20 @@ private:
 
     void initializeSettings();
 
-    PhyTreeObject* phyObject = nullptr;
+public:
+    PhyTreeObject* const phyObject = nullptr;
+    TreeViewer* const treeViewer = nullptr;
 
+protected:
     /** Currently shown tree. Can be rect, circular or unrooted one. */
     TvBranchItem* root = nullptr;
 
+    TvRectangularBranchItem* rectRoot = nullptr;
+
+    /** View global pos of the last mouse-press event. */
+    QPoint lastMousePressPos;
+
+private:
     double maxNameWidth = 0;
 
     /**
@@ -326,15 +336,8 @@ private:
     TvTextItem* scalebarTextItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
-    TreeViewer* treeViewer = nullptr;
     OptionsMap settings;
     bool dontSendOptionChangedSignal = false;
-
-protected:
-    TvRectangularBranchItem* rectRoot = nullptr;
-
-    /** View global pos of the last mouse-press event. */
-    QPoint lastMousePressPos;
 };
 
 }  // namespace U2

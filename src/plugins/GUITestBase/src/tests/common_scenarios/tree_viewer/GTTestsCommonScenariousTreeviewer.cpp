@@ -1133,30 +1133,62 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 
     GTUtilsOptionPanelPhyTree::openTab(os);
 
-    GTCheckBox::checkState(os, "showNodeShapeCheck", true);
-    QImage imageWithNodes = GTUtilsPhyTree::captureTreeImage(os);
-
-    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
-    QImage imageWithoutNodes = GTUtilsPhyTree::captureTreeImage(os);
-    CHECK_SET_ERR(imageWithNodes != imageWithoutNodes, "Image with no nodes is the same with the image with nodes");
+    GTCheckBox::checkState(os, "showNodeShapeCheck", false);
+    QImage originalImage = GTUtilsPhyTree::captureTreeImage(os);
 
     GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
-    QImage image = GTUtilsPhyTree::captureTreeImage(os);
-    CHECK_SET_ERR(image == imageWithNodes, "Image with no nodes does not match the original image");
+    QImage imageWithNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodes != originalImage, "imageWithNodes != originalImage failed");
 
-    // No check the same but with selected nodes.
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodes == originalImage, "imageWithNoNodes == originalImage failed");
+
+    // Now check the same but with selected nodes.
     GTUtilsPhyTree::clickNode(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.003", "0.038"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20, 0));  // Remove hover effect from node.
-    QImage imageWithSelectionWithNodes = GTUtilsPhyTree::captureTreeImage(os);
-    CHECK_SET_ERR(imageWithSelectionWithNodes != imageWithNodes, "Image with selected node must be different");
-
-    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
-    QImage imageWithSelectionWithoutNodes = GTUtilsPhyTree::captureTreeImage(os);
-    CHECK_SET_ERR(imageWithSelectionWithNodes != imageWithSelectionWithoutNodes, "Image with selection not changed after hiding nodes");
+    QImage originalImageWithSelection = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(originalImageWithSelection != originalImage, "imageWithSelection != originalImage failed");
 
     GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
-    QImage imageWithSelectionWithNodesAfter = GTUtilsPhyTree::captureTreeImage(os);
-    CHECK_SET_ERR(imageWithSelectionWithNodesAfter == imageWithSelectionWithNodes, "Image with selection not matched original image");
+    QImage imageWithSelectionWithNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithSelectionWithNodes != originalImageWithSelection, "imageWithSelectionWithNodes != originalImageWithSelection failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithSelectionWithNoNodes = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithSelectionWithNoNodes == originalImageWithSelection, "imageWithSelectionWithNoNodes == originalImageWithSelection failed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0032) {
+    // Check that 'Show node labels' option works as expected.
+
+    // Check that if there are no node labels in the model the option is not shown.
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/sample1.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+    auto showNodeLabelsCheckbox = GTWidget::findCheckBox(os, "showNodeLabelsCheck", optionPanel);
+    CHECK_SET_ERR(!showNodeLabelsCheckbox->isVisible(), "showNodeLabelsCheck is visible for a tree with no labels");
+
+    // Now check the tree with labels.
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/node-labels.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+    showNodeLabelsCheckbox = GTWidget::findCheckBox(os, "showNodeLabelsCheck", optionPanel);
+    CHECK_SET_ERR(showNodeLabelsCheckbox->isVisible(), "showNodeLabelsCheck is not visible for a tree with no labels");
+    CHECK_SET_ERR(showNodeLabelsCheckbox->isEnabled(), "showNodeLabelsCheck is not enabled for a tree with no labels");
+
+    GTCheckBox::checkState(os, showNodeLabelsCheckbox, false);
+    QImage imageWithoutLabels = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, showNodeLabelsCheckbox, true);
+    QImage imageWithLabels = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithLabels != imageWithoutLabels, "Image with no node labels is the same with the image with node labels");
+
+    GTCheckBox::setChecked(os, showNodeLabelsCheckbox, false);
+    QImage image = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(image == imageWithoutLabels, "Image with no node labels does not match the original image");
 }
 
 }  // namespace GUITest_common_scenarios_tree_viewer

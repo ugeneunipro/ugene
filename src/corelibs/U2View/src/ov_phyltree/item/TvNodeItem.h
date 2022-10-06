@@ -39,7 +39,7 @@ class TvTextItem;
 
 class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
-    TvNodeItem(double nodeValue = 0);
+    TvNodeItem(const QString& nodeName = nullptr);
 
     bool isPathToRootSelected() const;
 
@@ -53,16 +53,16 @@ public:
 
     void updateSettings(const OptionsMap& settings);
 
-    const TvTextItem* getLabelItem() const;
-
-    double getNodeValue() const;
-
     TvBranchItem* getParentBranchItem() const;
 
     TvBranchItem* getLeftBranchItem() const;
 
     TvBranchItem* getRightBranchItem() const;
+
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+
+    TvTextItem* labelItem = nullptr;
+    const QString nodeName;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
@@ -71,13 +71,15 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
-private:
     TreeViewerUI* getTreeViewerUI() const;
 
-    TvTextItem* labelItem = nullptr;
-    double nodeValue = 0;
     bool isHovered = false;
-    bool isNodeShapeVisible = true;
+
+    /**
+     * TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
+     *  Or pass initial settings into the every item constructor.
+     */
+    bool isNodeShapeVisible = false;
 };
 
 }  // namespace U2

@@ -41,17 +41,84 @@ namespace U2 {
 namespace GUITest_common_scenarios_primer3 {
 
 GUI_TEST_CLASS_DEFINITION(test_tab_main_all) {
-    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "boundary.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     Primer3DialogFiller::Primer3Settings settings;
-    settings.filePath = testDir + "_common_data/primer3/all_parameters_are_changed.txt";
+    settings.filePath = testDir + "_common_data/primer3/tab_Main_all_changed.txt";
+    settings.notRun = true;
 
-    GTUtilsDialog::add(os, new PopupChooser(os, { "ADV_MENU_ANALYSE", "primer3_action" }));
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_tab_general_all) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/tab_General_Settings_all_changed.txt";
+    settings.notRun = true;
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_tab_advanced_all) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/tab_Advanced_Settings_all_changed.txt";
+    settings.notRun = true;
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_tab_internal_all) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/tab_Internal_Oligo_all_changed.txt";
+    settings.notRun = true;
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_tab_penalty_all) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/tab_Penalty_Weights_all_changed.txt";
+    settings.notRun = true;
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_tab_quality_all) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "all_settingsfiles.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/tab_Sequence_Quality_all_changed.txt";
+    settings.notRun = true;
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 }
 
@@ -391,21 +458,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "top_primers  (0, 2)", { {610, 629}, {1089, 1108} });
 }
 
-//GUI_TEST_CLASS_DEFINITION(test_0022) {
-//
-//}
-//
-//GUI_TEST_CLASS_DEFINITION(test_0023) {
-//
-//}
-//
-//GUI_TEST_CLASS_DEFINITION(test_0024) {
-//
-//}
-//
-//GUI_TEST_CLASS_DEFINITION(test_0025) {
-//
-//}
 
 }  // namespace GUITest_common_scenarios_phyml
 }  // namespace U2

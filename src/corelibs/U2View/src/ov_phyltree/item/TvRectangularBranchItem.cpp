@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "TvRectangularBranchItem.h"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QPainter>
@@ -29,34 +31,28 @@
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "TvRectangularBranchItem.h"
-
 namespace U2 {
 
-TvRectangularBranchItem::TvRectangularBranchItem(const QString& name, TvRectangularBranchItem* parentBranchItem)
-    : TvBranchItem(name) {
+TvRectangularBranchItem::TvRectangularBranchItem(const QString& nodeName, TvRectangularBranchItem* parentBranchItem)
+    : TvBranchItem(nodeName) {
     setParentItem(parentBranchItem);
     setPos(0, 0);
 }
 
 TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name)
-    : TvBranchItem(false, Side::Left, -1) {
+    : TvBranchItem(false, Side::Left, "") {
     new TvRectangularBranchItem(name, this);
     setPos(x, y);
 }
 
 TvRectangularBranchItem::TvRectangularBranchItem(double x, double y, const QString& name, double distance, PhyBranch* branch)
-    : TvBranchItem(distance, false, -1), phyBranch(branch) {
+    : TvBranchItem(distance, false, ""), phyBranch(branch) {
     new TvRectangularBranchItem(name, this);
     setPos(x, y);
 }
 
-TvRectangularBranchItem::TvRectangularBranchItem(double distance, PhyBranch* branch, double nodeValue)
-    : TvBranchItem(distance, true, nodeValue), phyBranch(branch) {
-}
-
-TvRectangularBranchItem::TvRectangularBranchItem()
-    : TvBranchItem(true, Side::Left, -1) {
+TvRectangularBranchItem::TvRectangularBranchItem(double distance, PhyBranch* branch, const QString& nodeName)
+    : TvBranchItem(distance, true, nodeName), phyBranch(branch) {
 }
 
 void TvRectangularBranchItem::toggleCollapsedState() {

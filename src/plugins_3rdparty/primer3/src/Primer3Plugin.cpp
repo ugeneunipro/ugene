@@ -125,8 +125,7 @@ void Primer3ADVContext::sl_showDialog() {
                                                                             tr("Error"), 
                                                                             tr("Cannot create an annotation object. Please check settings")), );
             
-        const CreateAnnotationModel& model = dialog.getCreateAnnotationModel();
-        auto ato = model.getAnnotationObject();
+        const CreateAnnotationModel& model = dialog.getCreateAnnotationModel(); auto ato = model.getAnnotationObject();
         seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
         AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description));
     }

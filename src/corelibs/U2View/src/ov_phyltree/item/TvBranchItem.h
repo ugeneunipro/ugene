@@ -42,13 +42,13 @@ public:
         Left,
         Right
     };
-    TvBranchItem(bool withButton, const Side& side, double nodeValue);
+    TvBranchItem(bool withNode, const Side& side, const QString& nodeName);
 
-    TvNodeItem* getButtonItem() const;
+    TvNodeItem* getNodeItem() const;
 
     TvBranchItem* getChildBranch(const Side& side) const;
 
-    double getNodeLabelValue() const;
+    QString getNodeNameFromNodeItem() const;
 
     TvTextItem* getDistanceTextItem() const;
 
@@ -116,9 +116,11 @@ signals:
     void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    explicit TvBranchItem(const QString& name);
+    /** Constructs leaf branch with the given node node. */
+    explicit TvBranchItem(const QString& nodeName);
 
-    TvBranchItem(double distance, bool withButton, double nodeValue);
+    /** Constructs non-leaf branch with TvNodeItem inside if 'withNode' is true. */
+    TvBranchItem(double distance, bool withNode, const QString& nodeName);
 
     virtual void setLabelPositions();
 

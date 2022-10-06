@@ -49,8 +49,8 @@ using namespace HI;
 
 const QString GTUtilsProjectTreeView::widgetName = "documentTreeWidget";
 
-#define GT_METHOD_NAME "countFilesInProjectView"
-int GTUtilsProjectTreeView::countFilesInProjectView(HI::GUITestOpStatus& os) {
+#define GT_METHOD_NAME "countTopLevelItems"
+int GTUtilsProjectTreeView::countTopLevelItems(HI::GUITestOpStatus& os) {
     QTreeView* treeView = getTreeView(os);
     QAbstractItemModel* model = treeView->model();
     CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", {});

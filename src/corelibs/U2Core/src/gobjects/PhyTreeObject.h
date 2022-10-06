@@ -33,7 +33,7 @@ public:
     U2PhyTree();
     U2PhyTree(const U2DbiRef& dbiRef);
 
-    U2DataType getType() const;
+    U2DataType getType() const override;
 };
 
 class U2CORE_EXPORT PhyTreeObject : public GObject {
@@ -54,19 +54,17 @@ public:
     // TODO: move branches to private data, add getters and setters
     const PhyNode* findPhyNodeByName(const QString& name);
 
-    virtual GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const override;
 
     // Utility functions
     // Compares number of nodes and nodes with names (how many nodes etc.)
     static bool treesAreAlike(const PhyTree& tree1, const PhyTree& tree2);
 
-    bool hasNodeLabels() const;
-
 signals:
     void si_phyTreeChanged();
 
 protected:
-    void loadDataCore(U2OpStatus& os);
+    void loadDataCore(U2OpStatus& os) override;
 
 private:
     PhyTreeObject(const PhyTree& tree, const QString& objectName, const U2EntityRef& treeRef, const QVariantMap& hintsMap);

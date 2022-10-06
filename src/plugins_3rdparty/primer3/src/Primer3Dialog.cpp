@@ -727,7 +727,9 @@ void Primer3Dialog::sl_pickClicked() {
         rs->showErrorMessage();
         return;
     }
-    doDataExchange() ? accept() : reject();
+    if (doDataExchange()) {
+        accept();
+    }
 }
 
 void Primer3Dialog::sl_saveSettings() {

@@ -31,7 +31,7 @@ class TvRectangularBranchItem;
 
 class U2VIEW_EXPORT TvCircularBranchItem : public TvBranchItem {
 public:
-    TvCircularBranchItem(QGraphicsItem* parent, double height, TvRectangularBranchItem* from, double nodeValue = -1.0);
+    TvCircularBranchItem(QGraphicsItem* parent, double height, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 

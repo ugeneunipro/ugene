@@ -253,7 +253,7 @@ QList<TvNodeItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITestOpStatu
     QList<TvRectangularBranchItem*> graphicsRectangularBranchItems = getOrderedRectangularBranches(os);
     for (TvRectangularBranchItem* rectangularBranch : qAsConst(graphicsRectangularBranchItems)) {
         GT_CHECK_RESULT(rectangularBranch != nullptr, "Rectangular branch is NULL", QList<TvNodeItem*>());
-        TvNodeItem* rectangularNode = rectangularBranch->getButtonItem();
+        TvNodeItem* rectangularNode = rectangularBranch->getNodeItem();
         if (rectangularNode != nullptr) {
             orderedRectangularNodes << rectangularNode;
         }
@@ -275,7 +275,7 @@ QList<TvRectangularBranchItem*> GTUtilsPhyTree::getOrderedRectangularBranches(HI
 #define GT_METHOD_NAME "getRootNode"
 TvNodeItem* GTUtilsPhyTree::getRootNode(HI::GUITestOpStatus& os) {
     TvBranchItem* rootItem = getRootBranch(os);
-    TvNodeItem* buttonItem = rootItem->getButtonItem();
+    TvNodeItem* buttonItem = rootItem->getNodeItem();
     GT_CHECK_RESULT(buttonItem != nullptr, "Root branch has no button", nullptr);
     return buttonItem;
 }

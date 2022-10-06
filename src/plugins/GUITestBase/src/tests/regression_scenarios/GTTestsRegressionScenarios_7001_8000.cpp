@@ -3016,10 +3016,10 @@ GUI_TEST_CLASS_DEFINITION(test_7645) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::add(os, new Primer3DialogFiller(os));
-    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(GTUtilsProjectTreeView::countFilesInProjectView(os) == 2, "two opened files expected");
+    CHECK_SET_ERR(GTUtilsProjectTreeView::countTopLevelItems(os) == 2, "two opened files expected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7650) {
