@@ -429,6 +429,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth || maEditor->getMultilineMode());
 
     hScrollBar->setMinimum(0);
+    // TODO:ichebyki
     int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
     hScrollBar->setMaximum(hScrollBarMax);
     hScrollBar->setSingleStep(columnWidth);
@@ -479,7 +480,6 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool repor
     }
     return QPoint(-1, -1);
 }
-
 
 void ScrollController::setHScrollBarVisible(bool visible) {
     hScrollBarVisible = visible;

@@ -152,18 +152,13 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         // X position is defined by the first visible child
         qint64 screenWidth = 0;
         int screenPositionX = -1;
-        MaEditorWgt* wgt = editor->getMaEditorWgt(0);
-        for (uint i = 0; wgt != nullptr;) {
-            if (wgt->isVisible()) {
-                QRegion r = wgt->visibleRegion();
-                if (r.rectCount() > 0) {
-                    if (screenPositionX == -1) {
-                        screenPositionX = wgt->getScrollController()->getScreenPosition().x();
-                    }
-                    screenWidth += wgt->getSequenceArea()->width();
-                }
-            }
-            wgt = editor->getMaEditorWgt(++i);
+        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+        if (mui != nullptr && mui->getMultilineMode()) {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        } else {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width();
         }
 
         cachedVisibleRange.setY(0);
@@ -317,15 +312,25 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     newVisibleRange.moveCenter(newPos);
 
-    int newScrollBarValue = newVisibleRange.x() * stepX;
     MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
         if (mui->getMultilineMode()) {
-            newScrollBarValue = newVisibleRange.x() * (double)editor->getAlignmentLen() / (double)width();
-            mui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
-            mui->getScrollController()->setFirstVisibleBase(newScrollBarValue);
+            // value = <overview-rect>.X / <overview>.width * <alignment-len>
+            // but scroll bar has other min/max, so map it
+            if (newVisibleRange.right() >= width()) {
+                mui->getScrollController()->setMultilineVScrollbarValue(mui->getScrollController()->getVerticalScrollBar()->maximum());
+                mui->getScrollController()->setMultilineHScrollbarValue(mui->getScrollController()->getHorizontalScrollBar()->maximum());
+            } else {
+                int newVScrollBarBase = newVisibleRange.x() * (double)editor->getAlignmentLen() / (double)width();
+                mui->getScrollController()->setMultilineVScrollbarBase(newVScrollBarBase);
+
+                int hScrollMaximum = mui->getScrollController()->getHorizontalScrollBar()->maximum();
+                int newHScrollBarValue = newVisibleRange.x() * (double)hScrollMaximum / ((double)width() - newVisibleRange.width());
+                mui->getScrollController()->setMultilineVScrollbarBase(newVScrollBarBase);
+            }
         } else {
-            mui->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
+            int newScrollBarValue = newVisibleRange.x() * stepX;
+            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
         }
     }
 

@@ -170,7 +170,12 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode) {
             uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         }
         updateChildren();
-        scrollController->setMultilineVScrollbarValue(currentScroll);
+        if (multilineMode) {
+            scrollController->setEnable(true);
+            scrollController->setMultilineVScrollbarValue(currentScroll);
+        } else {
+            scrollController->setEnable(false);
+        }
 
         emit si_maEditorUIChanged();
 

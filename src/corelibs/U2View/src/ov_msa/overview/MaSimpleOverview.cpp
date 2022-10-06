@@ -173,19 +173,14 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
         setVisibleRangeForEmptyAlignment();
     } else {
         qint64 screenWidth = 0;
-        MaEditorWgt* wgt = editor->getMaEditorWgt(0);
         int screenPositionX = -1;
-        for (uint i = 0; wgt != nullptr;) {
-            if (wgt->isVisible()) {
-                QRegion r = wgt->visibleRegion();
-                if (r.rectCount() > 0) {
-                    if (screenPositionX == -1) {
-                        screenPositionX = wgt->getScrollController()->getScreenPosition().x();
-                    }
-                    screenWidth += wgt->getSequenceArea()->width();
-                }
-            }
-            wgt = editor->getMaEditorWgt(++i);
+        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+        if (mui != nullptr && mui->getMultilineMode()) {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        } else {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
         }
         QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
         QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
@@ -231,17 +226,19 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     int newPosX = qBound(cachedVisibleRange.width() / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
     int newPosY = qBound(cachedVisibleRange.height() / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     QPoint newPos(newPosX, newPosY);
-    MaEditorMultilineWgt* multiUi = qobject_cast<MaEditorMultilineWgt*>(ui);
-    CHECK(multiUi != nullptr, );
 
     newVisibleRange.moveCenter(newPos);
 
     const int newScrollBarValue = newVisibleRange.x() * stepX;
-    multiUi->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
-
-    if (!multiUi->getMultilineMode()) {
-        const int newVScrollBarValue = newVisibleRange.y() * stepY;
-        multiUi->getScrollController()->setMultilineVScrollbarValue(newVScrollBarValue);
+    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+    if (mui != nullptr) {
+        if (mui->getMultilineMode()) {
+            mui->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
+        } else {
+            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+            const int newVScrollBarValue = newVisibleRange.y() * stepY;
+            mui->getUI(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+        }
     }
 
     update();

@@ -17,7 +17,9 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
 
 public:
     MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* ui);
-    void scrollVert(const MultilineScrollController::Directions& directions, bool byStep);
+    void scrollVert(const MultilineScrollController::Directions& directions,
+                    bool byStep,
+                    bool wheel = false);
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected:
@@ -26,6 +28,10 @@ protected:
 private:
     MaEditor* maEditor;
     MaEditorMultilineWgt* maEditorUi;
+
+    void moveVSlider(int currPos,
+                     int newPos,
+                     const MultilineScrollController::Directions& wheelDirections);
 };
 
 }  // namespace U2

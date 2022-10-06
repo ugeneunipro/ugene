@@ -121,11 +121,8 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt* child, int index) {
     child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "_%1").arg(index));
     child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
 
-    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), getScrollController(), SLOT(sl_updateScrollBars()));
+    connect(child->getScrollController(), &ScrollController::si_visibleAreaChanged, scrollController, &MultilineScrollController::si_visibleAreaChanged);
 
-    if (getMultilineMode()) {
-        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), scrollController, SIGNAL(si_hScrollValueChanged()));
-    }
     scrollController->sl_updateScrollBars();
 
     setActiveChild(child);

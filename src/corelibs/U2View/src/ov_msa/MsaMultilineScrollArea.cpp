@@ -11,6 +11,7 @@
 #include "MultilineScrollController.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
+#include "ov_msa/BaseWidthController.h"
 
 namespace U2 {
 
@@ -19,6 +20,7 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMulti
       maEditor(maEditor),
       maEditorUi(maEditorUi) {
     verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
+    horizontalScrollBar()->setSingleStep(maEditor->getColumnWidth());
     this->installEventFilter(this);
 }
 
@@ -52,101 +54,124 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions& directions,
-                                        bool byStep) {
+                                        bool byStep,
+                                        bool wheel) {
     QScrollBar* vbar = verticalScrollBar();
+    GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
     maEditorUi->updateChildrenCount();
 
     if (directions.testFlag(MultilineScrollController::SliderMinimum)) {
-        vbar->setValue(0);
         maEditorUi->getScrollController()->setFirstVisibleBase(0);
+        vbar->setValue(0);
+        globalVBar->setValue(0);
     } else if (directions.testFlag(MultilineScrollController::SliderMaximum)) {
         vbar->setValue(vbar->maximum());
         maEditorUi->getScrollController()->setFirstVisibleBase(
             maEditor->getAlignmentLen() - maEditorUi->getSequenceAreaAllBaseLen());
+        globalVBar->setValue(
+            globalVBar->maximum());
     } else if (directions.testFlag(MultilineScrollController::SliderMoved)) {
-        QScrollBar* vScrollBar = maEditorUi->getScrollController()->getVerticalScrollBar();
-        int vSliderPos = vScrollBar->sliderPosition();
-
-        if (vSliderPos == vScrollBar->maximum()) {
-            scrollVert(MultilineScrollController::SliderMaximum, byStep);
-        } else if (vSliderPos == 0) {
-            scrollVert(MultilineScrollController::SliderMinimum, byStep);
-        } else {
-            int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
-            int width = maEditorUi->getSequenceAreaWidth();
-
-            vbar->setValue(maEditorUi->getUI(0)->height() / 2);
-            maEditorUi->getScrollController()->setFirstVisibleBase(
-                vSliderPos / width * (length - 1));
-        }
+        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
     } else if (byStep) {
-        if (directions.testFlag(MultilineScrollController::Down)) {
-            if (vbar->value() == vbar->maximum()) {
-                int linesCount = maEditorUi->getChildrenCount();
-                int index = linesCount - 1;
-                int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
-                int fullLength = maEditor->getAlignmentLen();
-                int newScrollValue = maEditorUi->getLastVisibleBase(0) + 1;
-
-                if (maEditorUi->getLastVisibleBase(index) < (fullLength - length)) {
-                    int lineHeight = maEditorUi->getUI(0)->height();
-                    int vertValue = vbar->value();
-
-                    vbar->setValue(vertValue - lineHeight + vbar->singleStep());
-                }
-                maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
-            } else {
-                vbar->setValue(vbar->value() + vbar->singleStep());
-            }
-        } else if (directions.testFlag(MultilineScrollController::Up)) {
-            if (vbar->value() == vbar->minimum()) {
-                int index = 0;
-                int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
-                int newScrollValue = maEditorUi->getFirstVisibleBase(index) - length;
-
-                if (maEditorUi->getFirstVisibleBase(index) > length) {
-                    int lineHeight = maEditorUi->getUI(0)->height();
-                    vbar->setValue(lineHeight - vbar->singleStep());
-                }
-                maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
-            } else {
-                vbar->setValue(vbar->value() - vbar->singleStep());
-            }
-        }
+        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
     } else {
-        int currScroll = vbar->value();
-        int linesCount = maEditorUi->getChildrenCount();
-        int lastIndex = linesCount - 1;
-        int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
-        int fullLength = maEditor->getAlignmentLen();
-        int firstBase = maEditorUi->getFirstVisibleBase(0);
-        int lineHeight = maEditorUi->getUI(0)->height();
-
-        if (directions.testFlag(MultilineScrollController::Down)) {
-            int offsetBase = (height() + currScroll) / lineHeight * (length - 1);
-            int newScroll = (height() + currScroll) % lineHeight;
-
-            if ((maEditorUi->getLastVisibleBase(lastIndex) + offsetBase) <= fullLength) {
-                maEditorUi->getScrollController()->setFirstVisibleBase(
-                    maEditorUi->getFirstVisibleBase() + offsetBase);
-                verticalScrollBar()->setValue(newScroll);
-            } else {
-                maEditorUi->getScrollController()->setFirstVisibleBase(fullLength - maEditorUi->getSequenceAreaAllBaseLen());
-            }
-        } else if (directions.testFlag(MultilineScrollController::Up)) {
-            int offsetBase = (abs(currScroll - height()) / lineHeight + 1) * (length - 1);
-            int newScroll = lineHeight - abs(currScroll - height()) % lineHeight;
-
-            if ((firstBase - offsetBase) >= 0) {
-                maEditorUi->getScrollController()->setFirstVisibleBase(firstBase - offsetBase);
-                verticalScrollBar()->setValue(newScroll);
-            } else {
-                maEditorUi->getScrollController()->setFirstVisibleBase(0);
-            }
-        }
+        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
     }
     maEditorUi->setUpdatesEnabled(true);
+}
+
+void MsaMultilineScrollArea::moveVSlider(
+    int currPos,
+    int newPos,
+    const MultilineScrollController::Directions& wheelDirections) {
+    QScrollBar* vbar = verticalScrollBar();
+    GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
+    int currAreaScroll = vbar->value();
+    int currGlobalScroll = globalVBar->value();
+    int currFirstVisibleBase = maEditorUi->getFirstVisibleBase(0);
+    int newAreaScroll = currAreaScroll;
+    int newGlobalScroll = currGlobalScroll;
+    int newFirstVisibleBase = currFirstVisibleBase;
+    int linesCount = maEditorUi->getChildrenCount();
+    int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
+    int fullLength = maEditor->getAlignmentLen();
+    int lineHeight = maEditorUi->getUI(0)->height();
+    int maxAreaScroll = vbar->maximum();
+    int maxGlobalScroll = globalVBar->maximum();
+    int direction = (newPos - currPos) > 0 ? 1 : (newPos - currPos) < 0 ? -1 : 0;
+    int step = abs(newPos - currPos);
+
+    if (wheelDirections.testFlag(MultilineScrollController::Down)) {
+        direction = 1;
+        step = verticalScrollBar()->singleStep();
+    } else if (wheelDirections.testFlag(MultilineScrollController::Up)) {
+        direction = -1;
+        step = verticalScrollBar()->singleStep();
+    }
+
+    if (direction > 0) {
+        if ((currAreaScroll + step) < maxAreaScroll) {
+            newAreaScroll += step;
+            newGlobalScroll += step;
+        } else {
+            newGlobalScroll = currGlobalScroll + step;
+            if (newGlobalScroll >= maxGlobalScroll) {
+                newGlobalScroll = maxGlobalScroll;
+                newAreaScroll = maxAreaScroll;
+            } else {
+                newFirstVisibleBase = newGlobalScroll / lineHeight * length;
+                newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;
+                while ((newFirstVisibleBase + length * (linesCount - 1)) > fullLength && newFirstVisibleBase >= 0) {
+                    newFirstVisibleBase -= length;
+                    if ((newAreaScroll + lineHeight) < maxAreaScroll) {
+                        newAreaScroll += lineHeight;
+                    } else {
+                        newAreaScroll = maxAreaScroll;
+                    }
+                }
+                if (newFirstVisibleBase < 0) {
+                    newGlobalScroll = 0;
+                    newFirstVisibleBase = 0;
+                    newAreaScroll = 0;
+                }
+            }
+        }
+        maEditorUi->getScrollController()->setFirstVisibleBase(newFirstVisibleBase);
+        if (newFirstVisibleBase != maEditorUi->getScrollController()->getFirstVisibleBase()) {
+            newFirstVisibleBase = maEditorUi->getScrollController()->getFirstVisibleBase();
+            newGlobalScroll = newFirstVisibleBase / length * lineHeight;
+            newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;
+            vbar->setValue(newAreaScroll);
+            globalVBar->setValue(newGlobalScroll);
+        } else {
+            vbar->setValue(newAreaScroll);
+            globalVBar->setValue(newGlobalScroll);
+        }
+    } else if (direction < 0) {
+        if ((currAreaScroll - step) > 0) {
+            newAreaScroll -= step;
+            newGlobalScroll -= step;
+        } else {
+            newGlobalScroll = currGlobalScroll - step;
+            if (newGlobalScroll < 0) {
+                newGlobalScroll = 0;
+                newAreaScroll = 0;
+            } else {
+                newFirstVisibleBase = newGlobalScroll / lineHeight * length;
+                newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;
+                while ((newFirstVisibleBase) < 0) {
+                    newFirstVisibleBase += length;
+                    if ((newAreaScroll - step) > 0) {
+                        newAreaScroll -= step;
+                    }
+                }
+            }
+        }
+        maEditorUi->getScrollController()->setFirstVisibleBase(newFirstVisibleBase);
+        vbar->setValue(newAreaScroll);
+        globalVBar->setValue(newGlobalScroll);
+    }
 }
 
 void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
@@ -162,11 +187,11 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
             event->accept();
             return;
         } else if (direction < 0) {
-            scrollVert(MultilineScrollController::Down, true);
+            scrollVert(MultilineScrollController::Down, true, true);
             event->accept();
             return;
         } else if (direction > 0) {
-            scrollVert(MultilineScrollController::Up, true);
+            scrollVert(MultilineScrollController::Up, true, true);
             event->accept();
             return;
         }

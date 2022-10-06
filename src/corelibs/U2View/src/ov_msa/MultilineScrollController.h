@@ -52,6 +52,12 @@ public:
 
     void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar, QScrollArea* childrenArea);
 
+    // enable/disable multiline scroll controller while switching multiline mode
+    void setEnable(bool enable = true);
+    bool isEnabled() {
+        return enabled;
+    };
+
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
     void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
@@ -62,6 +68,8 @@ public:
 
     void setMultilineHScrollbarValue(int value);
     void setMultilineVScrollbarValue(int value);
+    void setMultilineHScrollbarBase(int base);
+    void setMultilineVScrollbarBase(int base);
 
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleViewRow(int viewRowIndex);
@@ -102,9 +110,21 @@ public slots:
     void sl_zoomScrollBars();
     void sl_hScrollValueChanged();
     void sl_vScrollValueChanged();
+    void sl_handleHScrollAction(int action);
     void sl_handleVScrollAction(int action);
 
 private:
+    // enabled status
+    bool enabled = false;
+    // the enableSignals() must be called after init()
+    // the function create/remove connections
+    void initSignals(bool enable);
+    QMetaObject::Connection connAreaChanged;
+    QMetaObject::Connection connHValueChanged;
+    QMetaObject::Connection connHActionTriggered;
+    QMetaObject::Connection connVValueChanged;
+    QMetaObject::Connection connVActionTriggered;
+
     int getAdditionalXOffset() const;  // in pixels;
     int getAdditionalYOffset() const;  // in pixels;
 
@@ -115,6 +135,7 @@ private:
     void zoomVerticalScrollBarPrivate();
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
+    void updateChildrenScrollBarsPeivate();
 
     bool eventFilter(QObject* object, QEvent* event);
     bool vertEventFilter(QWheelEvent* event);
@@ -124,6 +145,8 @@ private:
     QScrollArea* childrenScrollArea;
     GScrollBar* hScrollBar;
     GScrollBar* vScrollBar;
+    int hScrollTail;
+    int vScrollTail;
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
