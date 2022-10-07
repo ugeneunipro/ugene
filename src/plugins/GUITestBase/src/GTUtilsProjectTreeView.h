@@ -130,6 +130,9 @@ public:
 
     // Get all documents names with their object names (database connections are processed incorrectly)
     static QMap<QString, QStringList> getDocuments(HI::GUITestOpStatus& os);
+    
+    // Counts visible top level items in project tree (after applying filtering, if present).
+    static int countTopLevelItems(HI::GUITestOpStatus& os);
 
     static const QString widgetName;
 
