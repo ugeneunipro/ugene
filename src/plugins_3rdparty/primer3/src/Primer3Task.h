@@ -175,7 +175,8 @@ private:
 class Primer3SWTask : public Task {
     Q_OBJECT
 public:
-    Primer3SWTask(Primer3TaskSettings* settings);
+    Primer3SWTask(Primer3TaskSettings* settings, bool ownsSettings = false);
+    ~Primer3SWTask();
 
     void prepare();
     Task::ReportResult report();
@@ -195,6 +196,7 @@ private:
     Primer3Task* primer3Task = nullptr;
     int median;
     Primer3TaskSettings* settings;
+    bool ownsSettings;
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
 };

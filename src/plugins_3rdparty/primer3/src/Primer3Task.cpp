@@ -587,10 +587,17 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 
 // Primer3SWTask
 
-Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings)
+Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings, bool _ownsSettings)
     : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
-      settings(_settings) {
+      settings(_settings),
+      ownsSettings(_ownsSettings) {
     median = settings->getSequenceSize() / 2;
+}
+
+Primer3SWTask::~Primer3SWTask() {
+    if (ownsSettings) {
+        delete settings;
+    }
 }
 
 void Primer3SWTask::prepare() {

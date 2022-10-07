@@ -33,7 +33,6 @@ class QDPrimerActor : public QDActor {
     Q_OBJECT
 public:
     QDPrimerActor(QDActorPrototype const* proto);
-    ~QDPrimerActor();
 
     int getMinResultLen() const {
         return 1;
@@ -47,13 +46,8 @@ public:
         return QColor(0x88, 0x78, 0xEC);
     }
 
-private:
-    void setDefaultSettings();
 private slots:
     void sl_onAlgorithmTaskFinished(Task* t);
-
-private:
-    Primer3TaskSettings* settings = nullptr;
 };
 
 class QDPrimerActorPrototype : public QDActorPrototype {

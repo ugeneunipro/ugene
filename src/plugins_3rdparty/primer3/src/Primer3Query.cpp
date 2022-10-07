@@ -52,11 +52,6 @@ QDPrimerActor::QDPrimerActor(QDActorPrototype const* proto)
     cfg->setAnnotationKey("top primers");
     units[LEFT_PRIMER_ID] = new QDSchemeUnit(this);
     units[RIGHT_PRIMER_ID] = new QDSchemeUnit(this);
-    setDefaultSettings();
-}
-
-QDPrimerActor::~QDPrimerActor() {
-    delete settings;
 }
 
 QString QDPrimerActor::getText() const {
@@ -65,6 +60,12 @@ QString QDPrimerActor::getText() const {
 
 Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     Task* t = nullptr;
+
+    auto settings = new Primer3TaskSettings;
+    settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
+    settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
+    settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
+
     const DNASequence& dnaSeq = scheme->getSequence();
     settings->setSequence(dnaSeq.seq);
 
@@ -101,27 +102,27 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     int numRet = cfg->getParameter(NUM_RETURN_ATTR)->getAttributeValueWithoutScript<int>();
     settings->setIntProperty("PRIMER_NUM_RETURN", numRet);
 
-    /*qreal maxMispriming = cfg->getParameter(MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings->setAlignProperty("PRIMER_MAX_MISPRIMING", maxMispriming);
-    assert(settings->getAlignPropertyList().contains("PRIMER_MAX_MISPRIMING"));*/
+    qreal maxMispriming = cfg->getParameter(MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
+    settings->setDoubleProperty("PRIMER_MAX_LIBRARY_MISPRIMING", maxMispriming);
+    assert(settings->getDoublePropertyList().contains("PRIMER_MAX_LIBRARY_MISPRIMING"));
 
-    /*qreal maxTemplateMispriming = cfg->getParameter(MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings->setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", maxTemplateMispriming);
-    assert(settings->getAlignPropertyList().contains("PRIMER_MAX_TEMPLATE_MISPRIMING"));*/
+    qreal maxTemplateMispriming = cfg->getParameter(MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
+    settings->setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", maxTemplateMispriming);
+    assert(settings->getDoublePropertyList().contains("PRIMER_MAX_TEMPLATE_MISPRIMING"));
 
     qreal stability = cfg->getParameter(STABILITY_ATTR)->getAttributeValueWithoutScript<double>();
     settings->setDoubleProperty("PRIMER_MAX_END_STABILITY", stability);
     assert(settings->getDoublePropertyList().contains("PRIMER_MAX_END_STABILITY"));
 
-    /*qreal pairMispriming = cfg->getParameter(PAIR_MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings->setAlignProperty("PRIMER_PAIR_MAX_MISPRIMING", pairMispriming);
-    assert(settings->getAlignPropertyList().contains("PRIMER_PAIR_MAX_MISPRIMING"));*/
+    qreal pairMispriming = cfg->getParameter(PAIR_MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
+    settings->setDoubleProperty("PRIMER_PAIR_MAX_LIBRARY_MISPRIMING", pairMispriming);
+    assert(settings->getDoublePropertyList().contains("PRIMER_PAIR_MAX_LIBRARY_MISPRIMING"));
 
-    /*qreal pairtemplateMispriming = cfg->getParameter(PAIR_MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings->setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", pairtemplateMispriming);
-    assert(settings->getAlignPropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"));*/
+    qreal pairtemplateMispriming = cfg->getParameter(PAIR_MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
+    settings->setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", pairtemplateMispriming);
+    assert(settings->getDoublePropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"));
 
-    t = new Primer3SWTask(settings);
+    t = new Primer3SWTask(settings, true);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
 
     return t;
@@ -142,7 +143,7 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
             ru1->owner = units.value(LEFT_PRIMER_ID);
             QDResultUnit ru2(new QDResultUnitData);
             ru2->strand = U2Strand::Complementary;
-            ru2->region = U2Region(rightPrimer->getStart() - rightPrimer->getLength() - 1,
+            ru2->region = U2Region(rightPrimer->getStart(),
                                    rightPrimer->getLength());
             ru2->owner = units.value(RIGHT_PRIMER_ID);
             QDResultGroup* g = new QDResultGroup;
@@ -151,27 +152,6 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
             results.append(g);
         }
     }
-}
-
-void QDPrimerActor::setDefaultSettings() {
-    {
-        QList<U2Region> sizeRange;
-        sizeRange.append(U2Region(150, 101));  // 150-250
-        sizeRange.append(U2Region(100, 201));  // 100-300
-        sizeRange.append(U2Region(301, 100));  // 301-400
-        sizeRange.append(U2Region(401, 100));  // 401-500
-        sizeRange.append(U2Region(501, 100));  // 501-600
-        sizeRange.append(U2Region(601, 100));  // 601-700
-        sizeRange.append(U2Region(701, 150));  // 701-850
-        sizeRange.append(U2Region(851, 150));  // 851-1000
-        settings->setProductSizeRange(sizeRange);
-    }
-    settings->setDoubleProperty("PRIMER_MAX_END_STABILITY", 9.0);
-    //settings->setAlignProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", 1200.0);
-    //settings->setAlignProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", 2400.0);
-    settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
-    settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
-    settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
 }
 
 QDPrimerActorPrototype::QDPrimerActorPrototype() {
