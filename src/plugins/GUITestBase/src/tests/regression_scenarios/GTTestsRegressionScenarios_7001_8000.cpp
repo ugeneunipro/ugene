@@ -3140,6 +3140,33 @@ static void runSchema(GUITestOpStatus& os, const QString& inputPath = "", bool a
     GTMenu::clickMainMenuItem(os, {"Actions", "Run Schema..."});
 }
 
+// Sets the cell (`row`, 1) of `table` to `value`.
+void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
+    QModelIndex modelIndex;
+
+    class FindModelIndexScenario : public CustomScenario {
+        QTableView* table_;
+        int rowNum;
+        QModelIndex& modelInd;
+
+    public:
+        FindModelIndexScenario(QTableView* table_, int rowNum, QModelIndex& modelInd)
+            : table_(table_), rowNum(rowNum), modelInd(modelInd) {
+        }
+        void run(GUITestOpStatus& os) override {
+            modelInd = table_->model()->index(rowNum, 1);
+        }
+    };
+    GTThread::runInMainThread(os, new FindModelIndexScenario(table, row, modelIndex));
+
+    GTWidget::scrollToIndex(os, table, modelIndex);
+    clickOn(GTTableView::getCellPosition(os, table, 1, row));
+    GTDoubleSpinbox::setValue(os,
+                              GTWidget::findWidgetByType<QDoubleSpinBox*>(os, table, "7667-" + QString::number(row)),
+                              value,
+                              GTGlobals::UseKeyBoard);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7667) {
     // Run 2 tasks one by one with different settings.
 
@@ -3199,20 +3226,11 @@ GUI_TEST_CLASS_DEFINITION(test_7667) {
         clickOn(GTTableView::getCellPosition(os, table, 1, 3));
         GTSpinBox::setValue(os, GTWidget::findWidgetByType<QSpinBox*>(os, table, "7667-0"), 3);
     }
-    auto setDouble = [&os, table](int row, double value) {
-        clickOn(GTTableView::getCellPosition(os, table, 1, row));
-        GTDoubleSpinbox::setValue(os,
-                                  GTWidget::findWidgetByType<QDoubleSpinBox*>(os,
-                                                                              table,
-                                                                              "7667-" + QString::number(row)),
-                                  value,
-                                  GTGlobals::UseKeyBoard);
-    };
-    setDouble(4, 10);  // Max repeat mispriming.
-    setDouble(5, 10);  // Max template mispriming.
-    setDouble(6, 10);  // Max 3' stability.
-    setDouble(7, 20);  // Pair max repeat mispriming.
-    setDouble(8, 20);  // Pair max template mispriming.
+    setDouble(os, table, 4, 10);  // Max repeat mispriming.
+    setDouble(os, table, 5, 10);  // Max template mispriming.
+    setDouble(os, table, 6, 10);  // Max 3' stability.
+    setDouble(os, table, 7, 20);  // Pair max repeat mispriming.
+    setDouble(os, table, 8, 20);  // Pair max template mispriming.
     runSchema(os);
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 1  (0, 2)", {{199, 218}, {297, 316}});
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 2  (0, 2)", {{40, 59}, {297, 316}});
@@ -3229,7 +3247,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667_0) {
     // Run Schema.
     //     The "Run Schema" dialog appears.
     // Set:
-    //     Load sequence      _common_data/cmdline/workflow_samples/raw_ngs/bwa_index/test.fa
+    //     Load sequence      _common_data/bwa/NC_000021.gbk.min.fa
     //     Save results to    tmp/7667.gb
     //     Add to project     ☐
     // Click Run.
@@ -3242,7 +3260,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667_0) {
     GTFileDialog::openFile(os, testDir + "_common_data/primer3/only_primer.uql");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     clickOn(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
-    runSchema(os, testDir + "_common_data/cmdline/workflow_samples/raw_ngs/bwa_index/test.fa", false);
+    runSchema(os, testDir + "_common_data/bwa/NC_000021.gbk.min.fa", false);
 
     auto table = GTWidget::findTableView(os, "table");
     clickOn(GTTableView::getCellPosition(os, table, 1, 3));
