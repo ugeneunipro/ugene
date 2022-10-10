@@ -3153,7 +3153,7 @@ void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
         FindModelIndexScenario(QTableView* table_, int rowNum, QModelIndex& modelInd)
             : table_(table_), rowNum(rowNum), modelInd(modelInd) {
         }
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus&) override {
             modelInd = table_->model()->index(rowNum, 1);
         }
     };
