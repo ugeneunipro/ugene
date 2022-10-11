@@ -3141,7 +3141,7 @@ static void runSchema(GUITestOpStatus& os, const QString& inputPath = "", bool a
 }
 
 // Sets the cell (`row`, 1) of `table` to `value`.
-void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
+static void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
     QModelIndex modelIndex;
 
     class FindModelIndexScenario : public CustomScenario {
