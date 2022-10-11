@@ -136,8 +136,6 @@ class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
 public:
     MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer);
 
-    void highlightBranches();
-
     /**
      * Return virtual grouping state for MSA that corresponds to the current tree state.
      * All sequences are ordered by 'y' position. All collapsed branches are mapped to the virtual groups.

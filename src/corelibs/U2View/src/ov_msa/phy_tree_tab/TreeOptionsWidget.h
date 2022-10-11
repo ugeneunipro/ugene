@@ -69,10 +69,7 @@ private slots:
 
     void sl_valueChanged();
 
-    void sl_onOptionChanged(TreeViewOption option, const QVariant& value);
-
-    /* Slot for handling scene selection changes */
-    void sl_selectionChanged();
+    void sl_onOptionChanged(const TreeViewOption& option, const QVariant& value);
 
 private:
     QStringList getSaveDisabledWidgets() const;
@@ -88,7 +85,6 @@ private:
     void connectSlots();
 
     void updateButtonColor(QPushButton* button, const QColor& newColor);
-    void updateRelatedOptionsState(const TreeViewOption& option, const QVariant& newValue);
 
     TreeViewerUI* getTreeViewer() const;
 
@@ -99,8 +95,6 @@ private:
     TreeOptionsSavableWidget savableTab;
 
     QMap<QString, TreeViewOption> optionsMap;
-
-    bool isUpdating = false;
 
     ShowHideSubgroupWidget* generalOpGroup = nullptr;
     ShowHideSubgroupWidget* labelsOpGroup = nullptr;

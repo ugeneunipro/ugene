@@ -79,8 +79,6 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
         addDistanceTextItem(distance);
     } else {  // 'this' is not a real branch item, but the name label only with dotted alignment lines.
         nameTextItem = new TvTextItem(this, name);
-        nameTextItem->setFont(TreeViewerUtils::getFont());
-        nameTextItem->setBrush(Qt::darkGray);
         setLabelPositions();
         nameTextItem->setZValue(1);
         pen.setStyle(Qt::DotLine);
@@ -89,73 +87,27 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
 }
 
 void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
-    settings[BRANCH_COLOR] = newSettings[BRANCH_COLOR];
-    settings[BRANCH_THICKNESS] = newSettings[BRANCH_THICKNESS];
-
+    settings = newSettings;
     int penWidth = settings[BRANCH_THICKNESS].toInt();
     if (isSelected()) {
         penWidth += SELECTED_PEN_WIDTH_DELTA;
     }
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
-    QPen currentPen = this->pen();
+    QPen currentPen = pen();
     currentPen.setColor(branchColor);
     currentPen.setWidth(penWidth);
+    setPen(currentPen);
 
-    this->setPen(currentPen);
-}
-
-void TvBranchItem::updateChildSettings(const OptionsMap& newSettings) {
-    QList<QGraphicsItem*> childItems = this->childItems();
-    for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-        if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
-            branchItem->updateSettings(newSettings);
-            branchItem->updateChildSettings(newSettings);
-        }
+    QFont font = TreeViewerUtils::getFontFromSettings(settings);
+    QColor labelColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
+    if (distanceTextItem != nullptr) {
+        distanceTextItem->setFont(font);
+        distanceTextItem->setBrush(labelColor);
     }
-}
-
-void TvBranchItem::updateTextProperty(TreeViewOption property, const QVariant& propertyVal) {
-    QFont dtFont = distanceTextItem ? distanceTextItem->font() : QFont();
-    QFont ntFont = nameTextItem ? nameTextItem->font() : QFont();
-    switch (property) {
-        case U2::LABEL_FONT_TYPE:
-            dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
-            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
-            break;
-        case U2::LABEL_FONT_SIZE:
-            dtFont.setPointSize(qvariant_cast<int>(propertyVal));
-            ntFont.setPointSize(qvariant_cast<int>(propertyVal));
-            break;
-        case U2::LABEL_FONT_BOLD:
-            dtFont.setBold(qvariant_cast<bool>(propertyVal));
-            ntFont.setBold(qvariant_cast<bool>(propertyVal));
-            break;
-        case U2::LABEL_FONT_ITALIC:
-            dtFont.setItalic(qvariant_cast<bool>(propertyVal));
-            ntFont.setItalic(qvariant_cast<bool>(propertyVal));
-            break;
-        case U2::LABEL_FONT_UNDERLINE:
-            dtFont.setUnderline(qvariant_cast<bool>(propertyVal));
-            ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
-            break;
-        case U2::LABEL_COLOR:
-            if (distanceTextItem) {
-                distanceTextItem->setBrush(qvariant_cast<QColor>(propertyVal));
-            }
-            if (nameTextItem) {
-                nameTextItem->setBrush(qvariant_cast<QColor>(propertyVal));
-            }
-            break;
-        default:
-            break;
-    }
-
-    if (distanceTextItem) {
-        distanceTextItem->setFont(dtFont);
-    }
-    if (nameTextItem) {
-        nameTextItem->setFont(ntFont);
+    if (nameTextItem != nullptr) {
+        nameTextItem->setFont(font);
+        nameTextItem->setBrush(labelColor);
     }
 }
 
@@ -274,8 +226,6 @@ void TvBranchItem::setUpPainter(QPainter* p) {
 
 void TvBranchItem::initDistanceText(const QString& text) {
     distanceTextItem = new TvTextItem(this, text);
-    distanceTextItem->setFont(TreeViewerUtils::getFont());
-    distanceTextItem->setBrush(Qt::darkGray);
     setLabelPositions();
     distanceTextItem->setZValue(1);
 }

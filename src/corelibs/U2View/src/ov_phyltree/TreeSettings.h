@@ -60,7 +60,7 @@ enum TreeViewOption {
     BRANCH_CURVATURE,
 
     LABEL_COLOR,
-    LABEL_FONT_TYPE,
+    LABEL_FONT_FAMILY,
     LABEL_FONT_SIZE,
     LABEL_FONT_BOLD,
     LABEL_FONT_ITALIC,
@@ -97,5 +97,6 @@ enum TreeViewOption {
 };
 
 typedef QMap<TreeViewOption, QVariant> OptionsMap;
+
 }  // namespace U2
 #endif

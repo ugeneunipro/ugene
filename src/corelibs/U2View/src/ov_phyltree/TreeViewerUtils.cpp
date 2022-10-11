@@ -21,6 +21,7 @@
 
 #include "TreeViewerUtils.h"
 
+#include <QApplication>
 #include <QMessageBox>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -29,8 +30,6 @@
 #define IMAGE_DIR "image"
 
 namespace U2 {
-
-QFont* TreeViewerUtils::font = nullptr;
 
 void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName, QString& format) {
     LastUsedDirHelper lod(IMAGE_DIR);
@@ -56,12 +55,17 @@ void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName,
     }
 }
 
-const QFont& TreeViewerUtils::getFont() {
-    if (font == nullptr) {
-        font = new QFont();
-        font->setPointSize(8);
+QFont TreeViewerUtils::getFontFromSettings(const OptionsMap& settings) {
+    QFont font = QApplication::font();
+    QString family = settings[LABEL_FONT_FAMILY].toString();
+    if (!family.isEmpty()) {
+        font.setFamily(family);
     }
-    return *font;
+    font.setPointSize(settings[LABEL_FONT_SIZE].toInt());
+    font.setBold(settings[LABEL_FONT_BOLD].toBool());
+    font.setItalic(settings[LABEL_FONT_ITALIC].toBool());
+    font.setUnderline(settings[LABEL_FONT_UNDERLINE].toBool());
+    return font;
 }
 
 }  // namespace U2

@@ -149,7 +149,6 @@ bool MSAEditorTreeViewer::enableSyncMode() {
         return false;
     }
     orderAlignmentByTree();
-    msaTreeViewerUi->highlightBranches();
     updateSyncModeActionState(true);
 
     // Trigger si_visibleRangeChanged that will make tree widget update geometry to the correct scale. TODO: create a better API for this.
@@ -285,15 +284,6 @@ void MSAEditorTreeViewerUI::sl_sequenceNameChanged(const QString& prevName, cons
         }
     }
     scene()->update();
-}
-
-void MSAEditorTreeViewerUI::highlightBranches() {
-    OptionsMap rootSettings = rectRoot->getSettings();
-    rootSettings[BRANCH_COLOR] = static_cast<int>(Qt::black);
-    if (rectRoot) {
-        rectRoot->updateSettings(rootSettings);
-        rectRoot->updateChildSettings(rootSettings);
-    }
 }
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(TvBranchItem* branch) {

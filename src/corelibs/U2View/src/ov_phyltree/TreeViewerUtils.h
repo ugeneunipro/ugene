@@ -23,15 +23,18 @@
 #define _TREE_VIEWER_UTILS_H_
 
 #include <QFont>
+#include "TreeSettings.h"
+
 
 namespace U2 {
 
 class TreeViewerUtils {
-    static QFont* font;
 
 public:
     static void saveImageDialog(const QString& filters, QString& fileName, QString& format);
-    static const QFont& getFont();
+
+    /** Restores QFont from tree viewer settings. */
+    static QFont getFontFromSettings(const OptionsMap& settings);
 };
 
 }  // namespace U2
