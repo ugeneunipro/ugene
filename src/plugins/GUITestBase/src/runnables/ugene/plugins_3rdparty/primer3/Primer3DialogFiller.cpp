@@ -182,8 +182,8 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
             ws.spin.append({ s, par.last() });
         } else if (auto c = qobject_cast<QCheckBox*>(widget)) {
             ws.check.append({ c, par.last() });
-        } else if (auto c = qobject_cast<QComboBox*>(widget)) {
-            ws.combo.append({ c, par.last() });
+        } else if (auto cb = qobject_cast<QComboBox*>(widget)) {
+            ws.combo.append({ cb, par.last() });
         } else if (auto d = qobject_cast<QDoubleSpinBox*>(widget)) {
             ws.doubleSpin.append({ d, par.last() });
         } else if (auto l = qobject_cast<QLineEdit*>(widget)) {
