@@ -3145,16 +3145,16 @@ static void setDouble(GUITestOpStatus& os, QTableView* table, int row, double va
     QModelIndex modelIndex;
 
     class FindModelIndexScenario : public CustomScenario {
-        QTableView* table_;
+        QTableView* table;
         int rowNum;
         QModelIndex& modelInd;
 
     public:
         FindModelIndexScenario(QTableView* table_, int rowNum, QModelIndex& modelInd)
-            : table_(table_), rowNum(rowNum), modelInd(modelInd) {
+            : table(table_), rowNum(rowNum), modelInd(modelInd) {
         }
         void run(GUITestOpStatus&) override {
-            modelInd = table_->model()->index(rowNum, 1);
+            modelInd = table->model()->index(rowNum, 1);
         }
     };
     GTThread::runInMainThread(os, new FindModelIndexScenario(table, row, modelIndex));
@@ -3167,7 +3167,7 @@ static void setDouble(GUITestOpStatus& os, QTableView* table, int row, double va
                               GTGlobals::UseKeyBoard);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7667) {
+GUI_TEST_CLASS_DEFINITION(test_7667_1) {
     // Run 2 tasks one by one with different settings.
 
     // Open _common_data/primer3/only_primer.uql.
@@ -3237,7 +3237,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667) {
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 3  (0, 2)", {{39, 58}, {297, 316}});
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7667_0) {
+GUI_TEST_CLASS_DEFINITION(test_7667_2) {
     // Run 2 tasks at the same time with different settings.
 
     // Open _common_data/primer3/only_primer.uql.

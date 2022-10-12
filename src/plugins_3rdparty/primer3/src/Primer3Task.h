@@ -196,7 +196,7 @@ private:
     Primer3Task* primer3Task = nullptr;
     int median;
     Primer3TaskSettings* settings;
-    bool ownsSettings;
+    bool ownsSettings {};
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
 };
