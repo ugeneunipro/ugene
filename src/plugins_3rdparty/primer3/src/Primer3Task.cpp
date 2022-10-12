@@ -43,19 +43,7 @@ namespace U2 {
 // PrimerSingle
 
 PrimerSingle::PrimerSingle(oligo_type type)
-    : start(0),
-      length(0),
-      meltingTemperature(0),
-      bound(0),
-      gcContent(0),
-      selfAny(0),
-      selfEnd(0),
-      hairpin(0.0),
-      endStability(0),
-      templateMispriming(0),
-      quality(0),
-      repeatSim(0),
-      type(type) {
+    : type(type) {
 }
 
 PrimerSingle::PrimerSingle(const primer_rec& primerRec, oligo_type _type, int offset)
@@ -79,37 +67,6 @@ PrimerSingle::PrimerSingle(const primer_rec& primerRec, oligo_type _type, int of
         // Primer3 calculates all positions from 5' to 3' sequence ends - 
         // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
         start = start - length + 1;
-    }
-}
-
-bool PrimerSingle::operator==(const PrimerSingle& p) const {
-    bool result = true;
-
-    result &= start == p.start;
-    result &= length == p.length;
-    result &= meltingTemperature == p.meltingTemperature;
-    result &= bound == p.bound;
-    result &= gcContent == p.gcContent;
-    result &= selfAny == p.selfAny;
-    result &= selfEnd == p.selfEnd;
-    result &= templateMispriming == p.templateMispriming;
-    result &= hairpin == p.hairpin;
-    result &= endStability == p.endStability;
-    result &= quality == p.quality;
-    result &= repeatSim == p.repeatSim;
-    result &= repeatSimName == p.repeatSimName;
-    result &= selfAnyStruct == p.selfAnyStruct;
-    result &= selfEndStruct == p.selfEndStruct;
-    result &= type == p.type;
-
-    return result;
-}
-
-bool PrimerSingle::areEqual(const PrimerSingle* p1, const PrimerSingle* p2) {
-    if (p1 != nullptr && p2 != nullptr) {
-        return (*p1 == *p2);
-    } else {
-        return (p1 == p2);
     }
 }
 
@@ -238,19 +195,6 @@ void PrimerSingle::setSelfEndStruct(const QString& selfEndStruct) {
 }
 
 // PrimerPair
-
-PrimerPair::PrimerPair()
-    : leftPrimer(nullptr),
-      rightPrimer(nullptr),
-      internalOligo(nullptr),
-      complAny(0),
-      complEnd(0),
-      productSize(0),
-      quality(0),
-      tm(0),
-      repeatSim(0) {
-}
-
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
     : leftPrimer((nullptr == primerPair.left) ? nullptr : new PrimerSingle(*primerPair.left, oligo_type::OT_LEFT, offset)),
       rightPrimer((nullptr == primerPair.right) ? nullptr : new PrimerSingle(*primerPair.right, oligo_type::OT_RIGHT, offset)),
@@ -296,26 +240,6 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     complEndStruct = primerPair.complEndStruct;
 
     return *this;
-}
-
-bool PrimerPair::operator==(const PrimerPair& primerPair) const {
-    bool result = true;
-
-    result &= PrimerSingle::areEqual(leftPrimer.data(), primerPair.leftPrimer.data());
-    result &= PrimerSingle::areEqual(rightPrimer.data(), primerPair.rightPrimer.data());
-    result &= PrimerSingle::areEqual(internalOligo.data(), primerPair.internalOligo.data());
-
-    result &= complAny == primerPair.complAny;
-    result &= complEnd == primerPair.complEnd;
-    result &= productSize == primerPair.productSize;
-    result &= quality == primerPair.quality;
-    result &= tm == primerPair.tm;
-    result &= repeatSim == primerPair.repeatSim;
-    result &= repeatSimName == primerPair.repeatSimName;
-    result &= complAnyStruct == primerPair.complAnyStruct;
-    result &= complEndStruct == primerPair.complEndStruct;
-
-    return result;
 }
 
 PrimerSingle* PrimerPair::getLeftPrimer() const {
@@ -473,7 +397,7 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
 
-    addTaskResource(TaskResourceUsage(PRIMER3_STATIC_LOCK, 1));
+    addTaskResource(TaskResourceUsage(PRIMER3_STATIC_LOCK_RESOURCE, 1));
 }
 
 void Primer3Task::run() {
@@ -692,6 +616,7 @@ void Primer3SWTask::prepare() {
 }
 
 Task::ReportResult Primer3SWTask::report() {
+    CHECK_OP(stateInfo, Task::ReportResult_Finished);
     CHECK(primer3Task != nullptr, Task::ReportResult_Finished);
 
     bestPairs.append(primer3Task->getBestPairs());

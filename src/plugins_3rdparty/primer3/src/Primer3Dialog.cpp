@@ -28,8 +28,10 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -143,9 +145,7 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    if (settings != nullptr) {
-        delete settings;
-    }
+    delete settings;
     rs->deleteLater();
     createAnnotationWidgetController->deleteLater();
 }
@@ -190,7 +190,7 @@ QString Primer3Dialog::intervalListToString(const QList<U2Region>& intervalList,
 QString Primer3Dialog::intListToString(const QList<int>& intList, const QString& delimiter) {
     QString result;
     bool first = true;
-    for (int num : intList) {
+    for (int num : qAsConst(intList)) {
         if (!first) {
             result += " ";
         }
@@ -204,7 +204,7 @@ QString Primer3Dialog::intListToString(const QList<int>& intList, const QString&
 QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
     QString result;
     bool first = true;
-    for (const auto& numList : regionLins) {
+    for (const auto& numList : qAsConst(regionLins)) {
         if (!first) {
             result += " ";
         }
@@ -220,7 +220,7 @@ QString Primer3Dialog::okRegions2String(const QList<QList<int>>& regionLins) {
 bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
     QStringList intervalStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    for (const auto& intervalString : intervalStringList) {
+    for (const auto& intervalString : qAsConst(intervalStringList)) {
         QStringList valueStringList = intervalString.split(delimiter);
         if (2 != valueStringList.size()) {
             return false;
@@ -254,7 +254,7 @@ bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString&
 bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputList) {
     QList<int> result;
     QStringList intStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    for (const auto& numString : intStringList) {
+    for (const auto& numString : qAsConst(intStringList)) {
         bool ok = false;
         int num = numString.toInt(&ok);
         if (!ok) {
@@ -270,7 +270,7 @@ bool Primer3Dialog::parseIntList(const QString& inputString, QList<int>* outputL
 bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>* outputList) {
     QList<QList<int>> result;
     QStringList intStringList = inputString.split(";", QString::SkipEmptyParts);
-    for (const auto& numList : intStringList) {
+    for (const auto& numList : qAsConst(intStringList)) {
         QStringList numStringList = numList.split(",");
         if (numStringList.size() != 4) {
             return false;
@@ -301,21 +301,19 @@ void Primer3Dialog::reset() {
                 spinBox->setValue(value);
                 continue;
             }
-            QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key);
-            if (checkBox != nullptr) {
+            if (QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key)) {
                 checkBox->setChecked(value);
             }
         }
     }
-    for (const auto& key : defaultSettings.getDoublePropertyList()) {
+    const auto& doublePropertyList = defaultSettings.getDoublePropertyList();
+    for (const auto& key : qAsConst(doublePropertyList)) {
         double value = 0;
         if (defaultSettings.getDoubleProperty(key, &value)) {
-            QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
-            if (checkBox != nullptr) {
+            if (QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key)) {
                 checkBox->setChecked(false);
             }
-            QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
-            if (spinBox != nullptr) {
+            if (QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key)) {
                 spinBox->setValue(value);
             }
         }
@@ -342,7 +340,8 @@ void Primer3Dialog::reset() {
     {
         QString qualityString;
         bool first = true;
-        for (int qualityValue : defaultSettings.getSequenceQuality()) {
+        const auto& seqQuality = defaultSettings.getSequenceQuality();
+        for (int qualityValue : qAsConst(seqQuality)) {
             if (!first) {
                 qualityString += " ";
             }
@@ -447,7 +446,8 @@ bool Primer3Dialog::doDataExchange() {
 
         settings->setSpanIntronExonBoundarySettings(s);
     }
-    for (const auto& key : settings->getIntPropertyList()) {
+    const auto& intProps = settings->getIntPropertyList();
+    for (const auto& key : qAsConst(intProps)) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             settings->setIntProperty(key, spinBox->value());
@@ -459,7 +459,8 @@ bool Primer3Dialog::doDataExchange() {
             continue;
         }
     }
-    for (const auto& key : settings->getDoublePropertyList()) {
+    const auto& doubleProps = settings->getDoublePropertyList();
+    for (const auto& key : qAsConst(doubleProps)) {
         QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
         if (checkBox != nullptr && !checkBox->isChecked()) {
             continue;
@@ -609,7 +610,7 @@ bool Primer3Dialog::doDataExchange() {
     {
         QVector<int> qualityList;
         QStringList stringList = edit_SEQUENCE_QUALITY->toPlainText().split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        for (const QString& string : stringList) {
+        for (const QString& string : qAsConst(stringList)) {
             bool ok = false;
             int value = string.toInt(&ok);
             if (!ok) {
@@ -740,16 +741,14 @@ void Primer3Dialog::sl_saveSettings() {
     }
 
     QFile file(fileName);
-    if (file.exists()) {
-        file.remove();
-    }
-    if (!file.open(QIODevice::ReadWrite)) {
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
         QMessageBox::critical(this, windowTitle(), tr("Can't write to \"%1\"").arg(fileName));
         return;
     }
 
     QTextStream stream(&file);
-    for (const auto& key : defaultSettings.getIntPropertyList()) {
+    const auto& intProps = defaultSettings.getIntPropertyList();
+    for (const auto& key : qAsConst(intProps)) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
             stream << key << "=" << spinBox->value() << endl;
@@ -760,7 +759,8 @@ void Primer3Dialog::sl_saveSettings() {
             stream << key << "=" << (int)checkbox->isChecked() << endl;
         }
     }
-    for (const auto& key : defaultSettings.getDoublePropertyList()) {
+    const auto& doubleProps = defaultSettings.getDoublePropertyList();
+    for (const auto& key : qAsConst(doubleProps)) {
         QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key);
         if (checkBox != nullptr && !checkBox->isChecked()) {
             continue;
@@ -771,7 +771,7 @@ void Primer3Dialog::sl_saveSettings() {
         }
     }
 
-    for (const auto& par : LINE_EDIT_PARAMETERS) {
+    for (const auto& par : qAsConst(LINE_EDIT_PARAMETERS)) {
         QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par);
         if (lineEdit != nullptr) {
             auto text = lineEdit->text();
@@ -797,7 +797,7 @@ void Primer3Dialog::sl_saveSettings() {
     
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
-    for (const auto& lib : repeatLibraries) {
+    for (const auto& lib : qAsConst(repeatLibraries)) {
         if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
             QFileInfo fi(lib.second);
             stream << "PRIMER_MISPRIMING_LIBRARY=" << fi.fileName() << endl;
@@ -815,7 +815,9 @@ void Primer3Dialog::sl_saveSettings() {
 
 void Primer3Dialog::sl_loadSettings() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, tr("All files") + " ( * );;" + tr("Text files") + "(*.txt)");
+    QStringList filters;
+    filters.append(tr("Text files") + "(*.txt)");
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, FileFilters::withAllFilesFilter(filters));
     if (lod.url.isNull()) {  // user clicked 'Cancel' button
         return;
     }

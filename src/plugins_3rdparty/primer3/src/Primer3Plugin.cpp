@@ -63,7 +63,7 @@ Primer3Plugin::Primer3Plugin()
         viewCtx->init();
     }
 
-    auto p3Lock = new AppResourceSemaphore(PRIMER3_STATIC_LOCK, 1, tr("Primer3 lock"));
+    auto p3Lock = new AppResourceSemaphore(PRIMER3_STATIC_LOCK_RESOURCE, 1, tr("Primer3 lock"));
     AppContext::getAppSettings()->getAppResourcePool()->registerResource(p3Lock);
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
@@ -112,7 +112,7 @@ void Primer3ADVContext::sl_showDialog() {
     Primer3Dialog dialog(seqCtx);
     dialog.exec();
 
-    if (QDialog::Accepted == dialog.result()) {
+    if (dialog.result() == QDialog::Accepted) {
         Primer3TaskSettings* settings = dialog.takeSettings();
         U2OpStatusImpl os;
         QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);

@@ -40,8 +40,6 @@ class PrimerSingle {
 public:
     PrimerSingle(oligo_type type = oligo_type::OT_LEFT);
     PrimerSingle(const primer_rec& primerRec, oligo_type type, int offset);
-    bool operator==(const PrimerSingle& primer) const;
-    static bool areEqual(const PrimerSingle* p1, const PrimerSingle* p2);
 
     int getStart() const;
     int getLength() const;
@@ -77,32 +75,33 @@ public:
     void setSelfEndStruct(const QString& selfEndStruct);
 
 private:
-    // don't forget to change copy constructor and assignment operator when changing this!
-    int start;
-    int length;
-    double meltingTemperature;
-    double bound;
-    double gcContent;
-    double selfAny;
-    double selfEnd;
-    double templateMispriming;
-    double hairpin;
-    double endStability;
-    double quality;
-    double repeatSim;
+    int start = 0;
+    int length = 0;
+    double meltingTemperature = 0.0;
+    double bound = 0.0;
+    double gcContent = 0.0;
+    double selfAny = 0.0;
+    double selfEnd = 0.0;
+    double templateMispriming = 0.0;
+    double hairpin = 0.0;
+    double endStability = 0.0;
+    double quality = 0.0;
+    double repeatSim = 0.0;
     QString repeatSimName;
     QString selfAnyStruct;
     QString selfEndStruct;
-    oligo_type type;
+    oligo_type type = OT_LEFT;
 };
 
 class PrimerPair {
 public:
-    PrimerPair();
+    PrimerPair() = default;
     PrimerPair(const primer_pair& primerPair, int offset = 0);
     PrimerPair(const PrimerPair& primerPair);
-    PrimerPair& operator=(const PrimerPair& primerPair);
-    bool operator==(const PrimerPair& primerPair) const;
+    PrimerPair& operator=(const PrimerPair& other);
+    PrimerPair(PrimerPair&& other) noexcept = delete;
+    PrimerPair& operator=(PrimerPair&& other) noexcept = delete;
+    bool operator==(const PrimerPair& primerPair) const = delete;
 
     PrimerSingle* getLeftPrimer() const;
     PrimerSingle* getRightPrimer() const;
@@ -137,12 +136,12 @@ private:
     QScopedPointer<PrimerSingle> leftPrimer;
     QScopedPointer<PrimerSingle> rightPrimer;
     QScopedPointer<PrimerSingle> internalOligo;
-    double complAny;
-    double complEnd;
-    int productSize;
-    double quality;
-    double tm;
-    double repeatSim;
+    double complAny = 0.0;
+    double complEnd = 0.0;
+    int productSize = 0;
+    double quality = 0.0;
+    double tm = 0.0;
+    double repeatSim = 0.0;
     QString repeatSimName;
     QString complAnyStruct;
     QString complEndStruct;

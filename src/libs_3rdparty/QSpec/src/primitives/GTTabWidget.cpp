@@ -87,13 +87,17 @@ void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QW
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getTabName"
 QString GTTabWidget::getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int idx) {
     return getTabBar(os, tabWidget)->tabText(idx);
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getTabNameByWidget"
 QString GTTabWidget::getTabNameByWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QWidget* widget) {
     return getTabBar(os, tabWidget)->tabText(tabWidget->indexOf(widget));
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabNumByName"
 int GTTabWidget::getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName) {

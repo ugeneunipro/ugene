@@ -21,19 +21,13 @@
 
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTAction.h>
-//#include <primitives/GTComboBox.h>
-//#include <primitives/GTLineEdit.h>
-//#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
-//#include <QApplication>
-
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "GTTestsCommonScenariosPrimer3.h"
 #include "GTUtilsAnnotationsTreeView.h"
-//#include "GTUtilsLog.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsSequenceView.h"
 
