@@ -233,7 +233,7 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
         if (mui->getMultilineMode()) {
-            mui->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
+            mui->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
         } else {
             mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
             const int newVScrollBarValue = newVisibleRange.y() * stepY;

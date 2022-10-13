@@ -17,6 +17,7 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
 
 public:
     MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMultilineWgt* ui);
+    // wheel arg signals that this is non scrollbar scrolling
     void scrollVert(const MultilineScrollController::Directions& directions,
                     bool byStep,
                     bool wheel = false);

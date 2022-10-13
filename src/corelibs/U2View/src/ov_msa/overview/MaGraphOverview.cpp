@@ -153,7 +153,7 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         qint64 screenWidth = 0;
         int screenPositionX = -1;
         MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
-        if (mui != nullptr && mui->getMultilineMode()) {
+        if (mui->getMultilineMode()) {
             screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
             screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
         } else {
@@ -318,14 +318,11 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
             // value = <overview-rect>.X / <overview>.width * <alignment-len>
             // but scroll bar has other min/max, so map it
             if (newVisibleRange.right() >= width()) {
-                mui->getScrollController()->setMultilineVScrollbarValue(mui->getScrollController()->getVerticalScrollBar()->maximum());
-                mui->getScrollController()->setMultilineHScrollbarValue(mui->getScrollController()->getHorizontalScrollBar()->maximum());
+                mui->getScrollController()->scrollToEnd(MultilineScrollController::Down);
             } else {
-                int newVScrollBarBase = newVisibleRange.x() * (double)editor->getAlignmentLen() / (double)width();
-                mui->getScrollController()->setMultilineVScrollbarBase(newVScrollBarBase);
-
-                int hScrollMaximum = mui->getScrollController()->getHorizontalScrollBar()->maximum();
-                int newHScrollBarValue = newVisibleRange.x() * (double)hScrollMaximum / ((double)width() - newVisibleRange.width());
+                int rest = editor->getAlignmentLen() % mui->getSequenceAreaBaseLen();
+                int evenLength = (editor->getAlignmentLen() / mui->getSequenceAreaBaseLen() + (rest > 0 ? 1 : 0)) * mui->getSequenceAreaBaseLen();
+                int newVScrollBarBase = newVisibleRange.x() * (double)evenLength / (double)width();
                 mui->getScrollController()->setMultilineVScrollbarBase(newVScrollBarBase);
             }
         } else {

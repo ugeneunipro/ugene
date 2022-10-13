@@ -431,6 +431,10 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     hScrollBar->setMinimum(0);
     // TODO:ichebyki
     int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
+    if (maEditor->getMultilineMode()) {
+        int moreLength = (alignmentLength * columnWidth / sequenceAreaWidth + (alignmentLength * columnWidth % sequenceAreaWidth > 0 ? 1 : 0)) * sequenceAreaWidth - sequenceAreaWidth;
+        hScrollBarMax = qMax(hScrollBarMax, moreLength);
+    }
     hScrollBar->setMaximum(hScrollBarMax);
     hScrollBar->setSingleStep(columnWidth);
     hScrollBar->setPageStep(sequenceAreaWidth);

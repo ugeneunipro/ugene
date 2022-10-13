@@ -268,9 +268,17 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
         return;
     }
 
-    editor->setCursorPosition(editor->getCursorPosition() + QPoint(dx, dy));
     setSelectionRect(newSelectionRect);
-    ui->getScrollController()->scrollToMovedSelection(dx, dy);
+    QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
+    if ((editor->getMultilineMode() &&
+         newCursorPos.x() <= getLastVisibleBase(false) &&
+         newCursorPos.x() >= getFirstVisibleBase()) ||
+        !editor->getMultilineMode()) {
+        editor->setCursorPosition(newCursorPos);
+    }
+    if (!editor->getMultilineMode()) {
+        ui->getScrollController()->scrollToMovedSelection(dx, dy);
+    }
 }
 
 int MaEditorSequenceArea::getTopSelectedMaRow() const {
@@ -679,7 +687,7 @@ void MaEditorSequenceArea::sl_completeRedraw() {
 void MaEditorSequenceArea::sl_triggerUseDots(int checkState) {
     bool currState = useDotsAction->isChecked();
     if ((currState && checkState == Qt::Unchecked) ||
-            (!currState && checkState == Qt::Checked)) {
+        (!currState && checkState == Qt::Checked)) {
         useDotsAction->trigger();
     }
 }
@@ -1126,10 +1134,18 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_PageUp:
-            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
+            if (editor->getMultilineMode()) {
+                break;
+            } else {
+                ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
+            }
             break;
         case Qt::Key_PageDown:
-            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
+            if (editor->getMultilineMode()) {
+                break;
+            } else {
+                ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
+            }
             break;
         case Qt::Key_Backspace:
             removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);

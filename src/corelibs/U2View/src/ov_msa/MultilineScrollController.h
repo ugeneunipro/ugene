@@ -44,13 +44,15 @@ public:
         Right = 1 << 3,
         SliderMaximum = 1 << 4,
         SliderMinimum = 1 << 5,
-        SliderMoved = 1 << 6
+        SliderMoved = 1 << 6,
+        PageUp = 1 << 7,
+        PageDown = 1 << 8
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
     MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* ui);
 
-    void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar, QScrollArea* childrenArea);
+    void init(GScrollBar* vScrollBar, QScrollArea* childrenArea);
 
     // enable/disable multiline scroll controller while switching multiline mode
     void setEnable(bool enable = true);
@@ -58,17 +60,15 @@ public:
         return enabled;
     };
 
-    void scrollToViewRow(int viewRowIndex, int widgetHeight);
-    void scrollToBase(int baseNumber, int widgetWidth);
-    void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
+    void scrollToViewRow(QPoint maPoint);
+    void scrollToBase(QPoint maPoint);
+    void scrollToPoint(const QPoint& maPoint);
 
-    void centerBase(int baseNumber, int widgetWidth);
-    void centerViewRow(int viewRowIndex, int widgetHeight);
-    void centerPoint(const QPoint& maPoint, const QSize& widgetSize);
+    void centerBase(int baseNumber);
+    void centerViewRow(QPoint maPoint);
+    void centerPoint(const QPoint& maPoint);
 
-    void setMultilineHScrollbarValue(int value);
     void setMultilineVScrollbarValue(int value);
-    void setMultilineHScrollbarBase(int base);
     void setMultilineVScrollbarBase(int base);
 
     void setFirstVisibleBase(int firstVisibleBase);
@@ -89,7 +89,6 @@ public:
     int getFirstVisibleViewRowIndex(bool countClipped = false) const;
     int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
-    GScrollBar* getHorizontalScrollBar() const;
     GScrollBar* getVerticalScrollBar() const;
 
     void vertScroll(const Directions& directions, bool byStep = true);
@@ -102,15 +101,12 @@ public:
 
 signals:
     void si_visibleAreaChanged();
-    void si_hScrollValueChanged();
     void si_vScrollValueChanged();
 
 public slots:
     void sl_updateScrollBars();
     void sl_zoomScrollBars();
-    void sl_hScrollValueChanged();
     void sl_vScrollValueChanged();
-    void sl_handleHScrollAction(int action);
     void sl_handleVScrollAction(int action);
 
 private:
@@ -120,20 +116,15 @@ private:
     // the function create/remove connections
     void initSignals(bool enable);
     QMetaObject::Connection connAreaChanged;
-    QMetaObject::Connection connHValueChanged;
-    QMetaObject::Connection connHActionTriggered;
     QMetaObject::Connection connVValueChanged;
     QMetaObject::Connection connVActionTriggered;
 
     int getAdditionalXOffset() const;  // in pixels;
     int getAdditionalYOffset() const;  // in pixels;
 
-    U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;  // in pixels
     U2Region getVerticalRangeToDrawIn(int widgetHeight) const;  // in pixels
 
-    void zoomHorizontalScrollBarPrivate();
     void zoomVerticalScrollBarPrivate();
-    void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
     void updateChildrenScrollBarsPeivate();
 
@@ -143,7 +134,6 @@ private:
     MaEditor* maEditor;
     MaEditorMultilineWgt* ui;
     QScrollArea* childrenScrollArea;
-    GScrollBar* hScrollBar;
     GScrollBar* vScrollBar;
     int hScrollTail;
     int vScrollTail;

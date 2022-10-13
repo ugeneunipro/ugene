@@ -19,8 +19,6 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMulti
     : QScrollArea(maEditorUi),
       maEditor(maEditor),
       maEditorUi(maEditorUi) {
-    verticalScrollBar()->setSingleStep(maEditor->getRowHeight());
-    horizontalScrollBar()->setSingleStep(maEditor->getColumnWidth());
     this->installEventFilter(this);
 }
 
@@ -42,10 +40,10 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
                 // ignore MSA sequence view widget keys
                 return true;
             case Qt::Key_PageUp:
-                scrollVert(MultilineScrollController::Up, false);
+                scrollVert(MultilineScrollController::PageUp, false, true);
                 return true;
             case Qt::Key_PageDown:
-                scrollVert(MultilineScrollController::Down, false);
+                scrollVert(MultilineScrollController::PageDown, false, true);
                 return true;
         }
     }
@@ -56,27 +54,22 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
 void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directions& directions,
                                         bool byStep,
                                         bool wheel) {
-    QScrollBar* vbar = verticalScrollBar();
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
     maEditorUi->updateChildrenCount();
 
-    if (directions.testFlag(MultilineScrollController::SliderMinimum)) {
-        maEditorUi->getScrollController()->setFirstVisibleBase(0);
-        vbar->setValue(0);
-        globalVBar->setValue(0);
-    } else if (directions.testFlag(MultilineScrollController::SliderMaximum)) {
-        vbar->setValue(vbar->maximum());
-        maEditorUi->getScrollController()->setFirstVisibleBase(
-            maEditor->getAlignmentLen() - maEditorUi->getSequenceAreaAllBaseLen());
-        globalVBar->setValue(
-            globalVBar->maximum());
-    } else if (directions.testFlag(MultilineScrollController::SliderMoved)) {
-        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
+    if (directions.testFlag(MultilineScrollController::SliderMoved)) {
+        moveVSlider(globalVBar->value(),
+                    globalVBar->sliderPosition(),
+                    wheel ? directions : MultilineScrollController::None);
     } else if (byStep) {
-        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
+        moveVSlider(globalVBar->value(),
+                    globalVBar->sliderPosition(),
+                    wheel ? directions : MultilineScrollController::None);
     } else {
-        moveVSlider(globalVBar->value(), globalVBar->sliderPosition(), wheel ? directions : MultilineScrollController::None);
+        moveVSlider(globalVBar->value(),
+                    globalVBar->sliderPosition(),
+                    wheel ? directions : MultilineScrollController::None);
     }
     maEditorUi->setUpdatesEnabled(true);
 }
@@ -108,6 +101,12 @@ void MsaMultilineScrollArea::moveVSlider(
     } else if (wheelDirections.testFlag(MultilineScrollController::Up)) {
         direction = -1;
         step = verticalScrollBar()->singleStep();
+    } else if (wheelDirections.testFlag(MultilineScrollController::PageDown)) {
+        direction = 1;
+        step = verticalScrollBar()->pageStep();
+    } else if (wheelDirections.testFlag(MultilineScrollController::PageUp)) {
+        direction = -1;
+        step = verticalScrollBar()->pageStep();
     }
 
     if (direction > 0) {
