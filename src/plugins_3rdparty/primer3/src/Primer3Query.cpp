@@ -62,9 +62,9 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     Task* t = nullptr;
 
     auto settings = new Primer3TaskSettings();
-    settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
-    settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0.0);
     settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
+    settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
+    settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0);
 
     const DNASequence& dnaSeq = scheme->getSequence();
     settings->setSequence(dnaSeq.seq);
@@ -102,34 +102,33 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     int numRet = cfg->getParameter(NUM_RETURN_ATTR)->getAttributeValueWithoutScript<int>();
     settings->setIntProperty("PRIMER_NUM_RETURN", numRet);
 
+    auto getValue = [this](const QString& attributeName) {
+        return cfg->getParameter(attributeName)->getAttributeValueWithoutScript<double>();
+    };
     QString errMsg = "There is no property '%1' in the Primer3 settings";
 
-    double maxMispriming = cfg->getParameter(MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings->setDoubleProperty("PRIMER_MAX_LIBRARY_MISPRIMING", maxMispriming);
-    SAFE_POINT(settings->getDoublePropertyList().contains("PRIMER_MAX_LIBRARY_MISPRIMING"),
-               errMsg.arg("PRIMER_MAX_LIBRARY_MISPRIMING"),
+    QString propertyKey = "PRIMER_MAX_LIBRARY_MISPRIMING";
+    SAFE_POINT(settings->setDoubleProperty(propertyKey, getValue(MAX_MISPRIMING_ATTR)),
+               errMsg.arg(propertyKey),
                nullptr);
 
-    double maxTemplateMispriming = cfg->getParameter(MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings->setDoubleProperty("PRIMER_MAX_TEMPLATE_MISPRIMING", maxTemplateMispriming);
-    SAFE_POINT(settings->getDoublePropertyList().contains("PRIMER_MAX_TEMPLATE_MISPRIMING"),
-               errMsg.arg("PRIMER_MAX_TEMPLATE_MISPRIMING"),
+    propertyKey = "PRIMER_MAX_TEMPLATE_MISPRIMING";
+    SAFE_POINT(settings->setDoubleProperty(propertyKey, getValue(MAX_TEMPLATE_MISPRIMING_ATTR) * 100),
+               errMsg.arg(propertyKey),
                nullptr);
 
     qreal stability = cfg->getParameter(STABILITY_ATTR)->getAttributeValueWithoutScript<double>();
     settings->setDoubleProperty("PRIMER_MAX_END_STABILITY", stability);
     assert(settings->getDoublePropertyList().contains("PRIMER_MAX_END_STABILITY"));
 
-    double pairMispriming = cfg->getParameter(PAIR_MAX_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>();
-    settings->setDoubleProperty("PRIMER_PAIR_MAX_LIBRARY_MISPRIMING", pairMispriming);
-    SAFE_POINT(settings->getDoublePropertyList().contains("PRIMER_PAIR_MAX_LIBRARY_MISPRIMING"),
-               errMsg.arg("PRIMER_PAIR_MAX_LIBRARY_MISPRIMING"),
+    propertyKey = "PRIMER_PAIR_MAX_LIBRARY_MISPRIMING";
+    SAFE_POINT(settings->setDoubleProperty(propertyKey, getValue(PAIR_MAX_MISPRIMING_ATTR)),
+               errMsg.arg(propertyKey),
                nullptr);
 
-    double pairtemplateMispriming = cfg->getParameter(PAIR_MAX_TEMPLATE_MISPRIMING_ATTR)->getAttributeValueWithoutScript<double>() * 100;
-    settings->setDoubleProperty("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING", pairtemplateMispriming);
-    SAFE_POINT(settings->getDoublePropertyList().contains("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"),
-               errMsg.arg("PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING"),
+    propertyKey = "PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING";
+    SAFE_POINT(settings->setDoubleProperty(propertyKey, getValue(PAIR_MAX_TEMPLATE_MISPRIMING_ATTR) * 100),
+               errMsg.arg(propertyKey),
                nullptr);
 
     t = new Primer3SWTask(settings, true);
