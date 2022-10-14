@@ -84,8 +84,8 @@ QString GTTableView::data(GUITestOpStatus& os, QTableView* table, int row, int c
 
 #define GT_METHOD_NAME "click"
 void GTTableView::click(GUITestOpStatus& os, QTableView* table, int row, int column) {
-    GT_CHECK(table != nullptr, "Table is nullptr", );
-    GT_CHECK(table->model() != nullptr, "Table model is nullptr", );
+    GT_CHECK(table != nullptr, "Table is nullptr");
+    GT_CHECK(table->model() != nullptr, "Table model is nullptr");
 
     QModelIndex modelIndex;
     class FindModelIndexScenario : public CustomScenario {
@@ -103,7 +103,7 @@ void GTTableView::click(GUITestOpStatus& os, QTableView* table, int row, int col
         }
     };
     GTThread::runInMainThread(os, new FindModelIndexScenario(table, row, column, modelIndex));
-    GT_CHECK(modelIndex.isValid(), "Model index is invalid", );
+    GT_CHECK(modelIndex.isValid(), "Model index is invalid");
 
     GTWidget::scrollToIndex(os, table, modelIndex);
     GTWidget::moveToAndClick(GTTableView::getCellPosition(os, table, column, row));
