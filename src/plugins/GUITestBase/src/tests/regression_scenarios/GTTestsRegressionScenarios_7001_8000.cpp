@@ -118,6 +118,7 @@
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -3004,6 +3005,21 @@ GUI_TEST_CLASS_DEFINITION(test_7644) {
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "Would you like"));
     GTKeyboardDriver::keyClick(Qt::Key::Key_Backspace);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7645) {
+    //1. Open file "/_common_data/primer3/7645.seq"
+    //2. Run Primer 3 with default parameters
+    //Expected state: there is only two files in project view - sequence and annotations
+    GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "7645.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsProjectTreeView::countTopLevelItems(os) == 2, "two opened files expected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7650) {

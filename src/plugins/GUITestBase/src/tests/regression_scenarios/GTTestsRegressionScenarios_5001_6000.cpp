@@ -4786,7 +4786,7 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     GTUtilsAnnotationsTreeView::selectItems(os, {items[0]});
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[0]) == "55", "wrong gc percentage");
     GTUtilsAnnotationsTreeView::selectItems(os, {items[1]});
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "55", "wrong gc percentage");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5941) {

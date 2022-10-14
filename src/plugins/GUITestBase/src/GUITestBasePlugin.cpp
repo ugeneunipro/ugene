@@ -65,6 +65,7 @@
 #include "tests/common_scenarios/pcr/GTTestsInSilicoPcr.h"
 #include "tests/common_scenarios/pcr/GTTestsPrimerLibrary.h"
 #include "tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h"
+#include "tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h"
 #include "tests/common_scenarios/project/GTTestsProject.h"
 #include "tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h"
 #include "tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h"
@@ -1800,6 +1801,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7631);
     REGISTER_TEST(GUITest_regression_scenarios::test_7635);
     REGISTER_TEST(GUITest_regression_scenarios::test_7644);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7645);
     REGISTER_TEST(GUITest_regression_scenarios::test_7650);
     REGISTER_TEST(GUITest_regression_scenarios::test_7659);
     REGISTER_TEST(GUITest_regression_scenarios::test_7652);
@@ -1952,7 +1954,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0022);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0023);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0024);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0025);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0026);
@@ -3334,6 +3335,38 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_phyml::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/primer3
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_main_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_general_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_advanced_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_internal_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_penalty_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_tab_quality_all);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0009);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0012);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0013);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0017);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0018);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0020);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0021);
+
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

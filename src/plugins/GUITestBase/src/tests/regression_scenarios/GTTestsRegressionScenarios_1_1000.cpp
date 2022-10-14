@@ -732,9 +732,9 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
             exceptions << "start_edit_line"
                        << "end_edit_line"
                        << "region_type_combo"
-                       << "edit_PRIMER_LEFT_INPUT"
-                       << "edit_PRIMER_RIGHT_INPUT"
-                       << "edit_PRIMER_INTERNAL_OLIGO_INPUT"
+                       << "edit_SEQUENCE_PRIMER"
+                       << "edit_SEQUENCE_PRIMER_REVCOMP"
+                       << "edit_SEQUENCE_INTERNAL_OLIGO"
                        << "cbExistingTable"
                        << "cbAnnotationType"
                        << "leNewTablePath"
@@ -744,7 +744,7 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
                        << "leGroupName"
                        << "leAnnotationName";
 
-            foreach (const QString& name, objsWithoutTooltips) {
+            for (const QString& name : objsWithoutTooltips) {
                 CHECK_SET_ERR(exceptions.contains(name), QString("The following field has no tool tip: %1").arg(name));
             }
 

@@ -89,7 +89,7 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, dou
                 break;
             }
             case GTGlobals::UseKeyBoard:
-                QString s = QString::number(v);
+                QString s = QString::number(v).replace('.', QLocale().decimalPoint());
                 GTWidget::setFocus(os, spinBox);
 
                 GTGlobals::sleep(100);

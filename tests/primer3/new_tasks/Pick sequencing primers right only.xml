@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<plugin_primer_3>
+		<plugin_primer_3_in 
+			PRIMER_TASK="pick_sequencing_primers" 
+			PRIMER_PICK_ANYWAY="1" 
+			PRIMER_LOWERCASE_MASKING="0" 
+			PRIMER_PICK_RIGHT_PRIMER="1" 
+			PRIMER_PICK_INTERNAL_OLIGO="0" 
+			PRIMER_PICK_LEFT_PRIMER="0" 
+			PRIMER_NUM_RETURN="50" 
+			SEQUENCE_ID="Pick sequencing primers right only" 
+			SEQUENCE_TEMPLATE="atggatttgatggacatggatgccatcaatgacctccacttctctggacacagctccctcaccaacacccctacttccgacgaggattatggttgcacctggaaccactggtctcccatcgtcaactgggacacctttacaggtgccccagatgactttcaccacctcatggacaccatcatcgaggacagaacaactgtcctcgaacagctcagtccatctatcaccacaaccaccaccaccaccacaaccacggatgaggaagaagaagaaatggaaacaacaaccacaacaacaacaacggcaataaaaacgcatgaagttggtgatgattcaaaagggctaaaactagtgcacctattgatggctggcgcggaagccttaaccggttcaaccaaaaaccgtgacttagctcgagtgatattgatccggctcaaggaattagtctcacaacatgctaacggctccaacatggagagacttgccgctcatttcaccgaagcccttcatggactactagaaggtgctgggggtgcgcataataaccaccatcaccacaacaacaacaaacattacctcaccacaaatggtccccacgacaaccaaaacgacacacttgctgctttccaactacttcaagacatgtcaccttacgtcaaattcggccacttcacagccaatcaagccatcatcgaagccgtggcccacgaacgccgcgtccatgtcatcgactacgatatcatggaaggggtccaatgggcctcattaatccaatcacttgcttccaacaacaacggtccacatcttcggataaccgcattatcgcggacaggaaccggccggaggtcaatcgccaccgtacaagaaaccggcaggcgattaacctcctttgccgcttccctcggacaaccattttcttttcatcactgcagattagactccgatgaaactttccgtccttctgcattaaagcttgtacgtggagaggctttggttttcaactgcatgctgaatttacctcaccttagttaccgtgcaccggaatcagttgcttcgtttttaaacggagcaaaaacgttgaatccaaagcttgtgacgttggttgaagaagaagttggttctgttattggtgggtttgtggaaaggttcatggactcacttcatcattattcagcggtttttgattcattggaggctggttttccgatgcagaaccgggcccggactttggtggagagggtattttttgggcctagaattgcaggctcgttgggccggatatatagaacgggtggtgaagaggagagaaggtcatggggggagtggttaggtgaggtagggtttaggggagttccggtgagctttgcaaatcattgtcaagcaaagctgttgttagggctttttaatgatgggtatagggttgaagaggtgggtgtgggtagtaataagttggtgttggattggaaatcaagacgtttgctttctgcttccctttggacttgttcttcttcagattctgatttatag" 
+			SEQUENCE_TARGET="150,800"/>
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="2" 
+			PRIMER_INTERNAL_NUM_RETURNED="0" 
+			PRIMER_PAIR_NUM_RETURNED="0" 
+			PRIMER_RIGHT_0_PENALTY="0.032351" 
+			PRIMER_RIGHT_0_SEQUENCE="tggaaagcagcaagtgtgtc" 
+			PRIMER_RIGHT_0="628,20" 
+			PRIMER_RIGHT_0_TM="60.032" 
+			PRIMER_RIGHT_0_GC_PERCENT="50.000" 
+			PRIMER_RIGHT_0_SELF_ANY="3.00" 
+			PRIMER_RIGHT_0_SELF_END="1.00" 
+			PRIMER_RIGHT_0_END_STABILITY="6.1000" 
+			PRIMER_RIGHT_1_PENALTY="0.660780" 
+			PRIMER_RIGHT_1_SEQUENCE="cttcaaccaacgtcacaagc" 
+			PRIMER_RIGHT_1="1107,20" 
+			PRIMER_RIGHT_1_TM="59.339" 
+			PRIMER_RIGHT_1_GC_PERCENT="50.000" 
+			PRIMER_RIGHT_1_SELF_ANY="4.00" 
+			PRIMER_RIGHT_1_SELF_END="2.00" 
+			PRIMER_RIGHT_1_END_STABILITY="8.5000"/>
+	</plugin_primer_3>
+</multi-test>

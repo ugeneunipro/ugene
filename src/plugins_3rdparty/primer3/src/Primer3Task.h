@@ -29,115 +29,153 @@
 
 #include "FindExonRegionsTask.h"
 #include "Primer3TaskSettings.h"
-#include "primer3_core/primer3.h"
+#include "primer3_core/libprimer3.h"
 
-struct primers_t;
 
 namespace U2 {
 
 class AnnotationTableObject;
 
-class Primer {
+class PrimerSingle {
 public:
-    Primer();
-    Primer(const primer_rec& primerRec);
-    bool operator==(const Primer& primer) const;
-    static bool areEqual(const Primer* p1, const Primer* p2);
+    PrimerSingle(oligo_type type = oligo_type::OT_LEFT);
+    PrimerSingle(const primer_rec& primerRec, oligo_type type, int offset);
 
     int getStart() const;
     int getLength() const;
     double getMeltingTemperature() const;
+    double getBound() const;
     double getGcContent() const;
-    short getSelfAny() const;
-    short getSelfEnd() const;
+    double getSelfAny() const;
+    double getSelfEnd() const;
+    double getTemplateMispriming() const;
+    double getHairpin() const;
     double getEndStability() const;
+    double getQuality() const;
+    double getRepeatSim() const;
+    const QString& getRepeatSimName() const;
+    const QString& getSelfAnyStruct() const;
+    const QString& getSelfEndStruct() const;
+    oligo_type getType() const;
 
     void setStart(int start);
     void setLength(int length);
     void setMeltingTemperature(double meltingTemperature);
+    void setBound(double bound);
     void setGcContent(double gcContent);
-    void setSelfAny(short selfAny);
-    void setSelfEnd(short selfEnd);
+    void setSelfAny(double selfAny);
+    void setSelfEnd(double selfEnd);
+    void setTemplateMispriming(double templateMispriming);
+    void setHairpin(double hairpin);
     void setEndStability(double endStability);
+    void setQuality(double quality);
+    void setRepeatSim(double repeatSim);
+    void setRepeatSimName(const QString& repeatSimName);
+    void setSelfAnyStruct(const QString& selfAnyStruct);
+    void setSelfEndStruct(const QString& selfEndStruct);
 
 private:
-    int start;
-    int length;
-    double meltingTemperature;
-    double gcContent;
-    short selfAny;
-    short selfEnd;
-    double endStability;
+    int start = 0;
+    int length = 0;
+    double meltingTemperature = 0.0;
+    double bound = 0.0;
+    double gcContent = 0.0;
+    double selfAny = 0.0;
+    double selfEnd = 0.0;
+    double templateMispriming = 0.0;
+    double hairpin = 0.0;
+    double endStability = 0.0;
+    double quality = 0.0;
+    double repeatSim = 0.0;
+    QString repeatSimName;
+    QString selfAnyStruct;
+    QString selfEndStruct;
+    oligo_type type = OT_LEFT;
 };
 
 class PrimerPair {
 public:
-    PrimerPair();
+    PrimerPair() = default;
     PrimerPair(const primer_pair& primerPair, int offset = 0);
     PrimerPair(const PrimerPair& primerPair);
-    PrimerPair& operator=(const PrimerPair& primerPair);
-    bool operator==(const PrimerPair& primerPair) const;
+    PrimerPair& operator=(const PrimerPair& other);
+    PrimerPair(PrimerPair&& other) noexcept = delete;
+    PrimerPair& operator=(PrimerPair&& other) noexcept = delete;
+    bool operator==(const PrimerPair& primerPair) const = delete;
 
-    Primer* getLeftPrimer() const;
-    Primer* getRightPrimer() const;
-    Primer* getInternalOligo() const;
-    short getComplAny() const;
-    short getComplEnd() const;
+    PrimerSingle* getLeftPrimer() const;
+    PrimerSingle* getRightPrimer() const;
+    PrimerSingle* getInternalOligo() const;
+    double getComplAny() const;
+    double getComplEnd() const;
     int getProductSize() const;
+    double getProductQuality() const;
+    double getProductTm() const;
+    double getRepeatSim() const;
+    const QString& getRepeatSimName() const;
+    const QString& getComplAnyStruct() const;
+    const QString& getComplEndStruct() const;
 
-    void setLeftPrimer(Primer* leftPrimer);
-    void setRightPrimer(Primer* rightPrimer);
-    void setInternalOligo(Primer* internalOligo);
-    void setComplAny(short complAny);
-    void setComplEnd(short complEnd);
+    void setLeftPrimer(PrimerSingle* leftPrimer);
+    void setRightPrimer(PrimerSingle* rightPrimer);
+    void setInternalOligo(PrimerSingle* internalOligo);
+    void setComplAny(double complAny);
+    void setComplEnd(double complEnd);
     void setProductSize(int productSize);
+    void setProductQuality(double quality);
+    void setProductTm(double tm);
+    void setRepeatSim(double repeatSim);
+    void setRepeatSimName(const QString& repeatSimName);
+    void setComplAnyStruct(const QString& complAnyStruct);
+    void setComplEndStruct(const QString& complEndStruct);
 
     bool operator<(const PrimerPair& pair) const;
 
 private:
     // don't forget to change copy constructor and assignment operator when changing this!
-    QScopedPointer<Primer> leftPrimer;
-    QScopedPointer<Primer> rightPrimer;
-    QScopedPointer<Primer> internalOligo;
-    short complAny;
-    short complEnd;
-    int productSize;
-    double quality;
-    double complMeasure;
+    QScopedPointer<PrimerSingle> leftPrimer;
+    QScopedPointer<PrimerSingle> rightPrimer;
+    QScopedPointer<PrimerSingle> internalOligo;
+    double complAny = 0.0;
+    double complEnd = 0.0;
+    int productSize = 0;
+    double quality = 0.0;
+    double tm = 0.0;
+    double repeatSim = 0.0;
+    QString repeatSimName;
+    QString complAnyStruct;
+    QString complEndStruct;
 };
 
 class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Task(const Primer3TaskSettings& settings);
+    Primer3Task(Primer3TaskSettings* settings);
 
     void run();
     Task::ReportResult report();
-    void sumStat(Primer3TaskSettings* st);
-    void selectPairsSpanningExonJunction(primers_t& primers, int toReturn);
-    void selectPairsSpanningIntron(primers_t& primers, int toReturn);
+    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
+    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
     }
-    const QList<Primer>& getSinglePrimers() const {
+    const QList<PrimerSingle>& getSinglePrimers() const {
         return singlePrimers;
     }
 
 private:
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings;
     QList<PrimerPair> bestPairs;
-    QList<Primer> singlePrimers;
+    QList<PrimerSingle> singlePrimers;
 
-    int offset;
+    int offset = 0;
 };
-
-class Primer3ToAnnotationsTask;
 
 class Primer3SWTask : public Task {
     Q_OBJECT
 public:
-    Primer3SWTask(const Primer3TaskSettings& settings);
+    Primer3SWTask(Primer3TaskSettings* settings);
 
     void prepare();
     Task::ReportResult report();
@@ -145,36 +183,32 @@ public:
     const QList<PrimerPair>& getBestPairs() const {
         return bestPairs;
     }
-    const QList<Primer>& getSinglePrimers() const {
+    QList<PrimerSingle> getSinglePrimers() const {
         return singlePrimers;
     }
 
 private:
-    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, const U2Region& rangeToSplit, QList<Primer3Task*>& listToRemember);
-    void addPrimer3Subtasks(const Primer3TaskSettings& taskSettings, QList<Primer3Task*>& listToRemember);
-    void relocatePrimerOverMedian(Primer* primer);
+    void relocatePrimerOverMedian(PrimerSingle* primer);
 
     static const int CHUNK_SIZE = 1024 * 256;
 
-    QList<Primer3Task*> regionTasks;
-    QList<Primer3Task*> circRegionTasks;
+    Primer3Task* primer3Task = nullptr;
     int median;
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings;
     QList<PrimerPair> bestPairs;
-    QList<Primer> singlePrimers;
-
-    friend class Primer3ToAnnotationsTask;
+    QList<PrimerSingle> singlePrimers;
 };
 
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    Primer3ToAnnotationsTask(const Primer3TaskSettings& settings,
+    Primer3ToAnnotationsTask(Primer3TaskSettings* settings,
                              U2SequenceObject* seqObj_,
                              AnnotationTableObject* aobj_,
                              const QString& groupName_,
                              const QString& annName_,
                              const QString& annDescription);
+    ~Primer3ToAnnotationsTask();
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
@@ -183,10 +217,9 @@ public:
     Task::ReportResult report();
 
 private:
-    SharedAnnotationData oligoToAnnotation(const QString& title, const Primer& primer, int productSize, U2Strand strand);
+    SharedAnnotationData oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand);
 
-    Primer3TaskSettings settings;
-
+    Primer3TaskSettings* settings;
     QPointer<AnnotationTableObject> annotationTableObject;
     U2SequenceObject* seqObj;
     QString groupName;

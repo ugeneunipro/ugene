@@ -34,6 +34,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
@@ -472,6 +473,12 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     //     1. Open '_common_data/primer3/linear_circular_results.fa'
     //     2. Launch Primer3 with default settings
     //     Expected state: even the sequence is linear, Primer3 finds primers on junction
+    // 
+    //     The line above has the incorrect statement,
+    //     which appeared because of a major bug, which was in primer3 results implementation.
+    //     This bug has been fixed during the primer3 update, 
+    //     results could be located on junction point only if sequence is circular
+    //     and the selected region contains jusnction point (see test_0022).
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "linear_circular_results.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
@@ -481,89 +488,33 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<U2Region> pair2 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 2  (0, 2)");
-    CHECK_SET_ERR(pair2.contains(U2Region(3, 21)), "No 4..24 region");
-    CHECK_SET_ERR(pair2.contains(U2Region(153, 12)), "No 154..165 region");
-    CHECK_SET_ERR(pair2.contains(U2Region(0, 8)), "No 1..8 region");
-
-    QList<U2Region> pair5 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 5  (0, 2)");
-    CHECK_SET_ERR(pair5.contains(U2Region(6, 21)), "No 7..27 region");
-    CHECK_SET_ERR(pair5.contains(U2Region(155, 10)), "No 156..165 region");
-    CHECK_SET_ERR(pair5.contains(U2Region(0, 10)), "No 1..10 region");
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {8, 27}, {105, 124} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {8, 27}, {135, 154} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {4, 24}, {105, 124} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 4  (0, 2)", { {8, 27}, {137, 156} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 5  (0, 2)", { {8, 27}, {113, 132} });
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022) {
     //     1. Open '_common_data/primer3/circular_primers.gb
-    //     2. Launch Primer3 with default settings
+    //     2. Select 1..16,151..351 (region with junction point)
+    //     3. Launch Primer3 with default settings (it will use the selected region)
     //     Expected state: the sequence is circular - a few primers cover junction point
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "circular_primers.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsSequenceView::selectSeveralRegionsByDialog(os, "1..16,151..351");
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::add(os, new Primer3DialogFiller(os));
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
-    CHECK_SET_ERR(pair1.contains(U2Region(139, 20)), "No 140..159 region");
-    CHECK_SET_ERR(pair1.contains(U2Region(331, 20)), "No 332..351 region");
-
-    QList<U2Region> pair5 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 5  (0, 2)");
-    CHECK_SET_ERR(pair5.contains(U2Region(123, 20)), "No 124..143 region");
-    CHECK_SET_ERR(pair5.contains(U2Region(350, 1)), "No 351..351 region");
-    CHECK_SET_ERR(pair5.contains(U2Region(0, 19)), "No 1..19 region");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0023) {
-    //     1. Open '_common_data/primer3/DNA.gb'
-    //     2. Launch Primer3 with default settings
-    //     Expected state: results cover junction point
-    //     3. Remove circular mark
-    //     4. Launch Primer3 with different annotation name
-    //     Expected state: results are linear
-
-    GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "DNA.gb");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
-
-    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os), Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
-    CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
-    CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
-
-    QList<U2Region> pair4 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 4  (0, 2)");
-    CHECK_SET_ERR(pair4.contains(U2Region(66, 20)), "No 67..86 region");
-    CHECK_SET_ERR(pair4.contains(U2Region(606, 20)), "No 607..626 region");
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Primers_DNA"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
-    GTMouseDriver::click(Qt::RightButton);
-
-    GTWidget::click(os, GTWidget::findWidget(os, "render_area_Primers_DNA"));
-
-    Primer3DialogFiller::Primer3Settings settings;
-    settings.resultsCount = 5;
-    settings.primersName = "linear";
-    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
-    GTMouseDriver::click(Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)", "linear  (5, 0)");
-    CHECK_SET_ERR(pair1.contains(U2Region(423, 20)), "No 424..443 region");
-    CHECK_SET_ERR(pair1.contains(U2Region(582, 20)), "No 583..602 region");
-
-    QList<U2Region> pair5 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 5  (0, 2)", "linear  (5, 0)");
-    CHECK_SET_ERR(pair5.contains(U2Region(422, 20)), "No 423..442 region");
-    CHECK_SET_ERR(pair5.contains(U2Region(607, 20)), "No 608..627 region");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
-    GTUtilsDocument::removeDocument(os, "DNA.gb");
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {221, 241}, {335, 351}, {1, 3} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {221, 241}, {336, 351}, {1, 5} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {220, 241}, {335, 351}, {1, 3} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 4  (0, 2)", { {221, 241}, {333, 351} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 5  (0, 2)", { {221, 241}, {333, 351}, {1, 1} });
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -576,35 +527,20 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    ADVSingleSequenceWidget* wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(wgt != nullptr, "ADVSequenceWidget is NULL");
-    GTUtilsCv::cvBtn::click(os, wgt);
+    GTUtilsProjectTreeView::markSequenceAsCircular(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "Select", "Sequence region" }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
-    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
-    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));    
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<U2Region> pair32 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 32  (0, 2)");
-    CHECK_SET_ERR(pair32.contains(U2Region(36311, 20)), "No 36312..36331 region");
-    CHECK_SET_ERR(pair32.contains(U2Region(36552, 20)), "No 36553..36572 region");
-
-    QList<U2Region> pair50 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 50  (0, 2)");
-    CHECK_SET_ERR(pair50.contains(U2Region(2350, 20)), "No 2351..2370 region");
-    CHECK_SET_ERR(pair50.contains(U2Region(2575, 20)), "No 2576..2595 region");
-
-    QList<U2Region> pair14 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 14  (0, 2)");
-    CHECK_SET_ERR(pair14.contains(U2Region(194911, 20)), "No 194912..194931 region");
-    CHECK_SET_ERR(pair14.contains(U2Region(195159, 20)), "No 195160..195179 region");
-
-    QList<U2Region> pair4 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 4  (0, 2)");
-    CHECK_SET_ERR(pair4.contains(U2Region(163701, 20)), "No 163702..163721 region");
-    CHECK_SET_ERR(pair4.contains(U2Region(163856, 20)), "No 163857..163876 region");
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {22172, 22191}, {22369, 22388} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 10  (0, 2)", { {185965, 185984}, {186089, 186108} });
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -630,13 +566,12 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
-    CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
-    CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
 
-    QList<U2Region> pair4 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 4  (0, 2)");
-    CHECK_SET_ERR(pair4.contains(U2Region(66, 20)), "No 67..86 region");
-    CHECK_SET_ERR(pair4.contains(U2Region(606, 20)), "No 607..626 region");
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {95, 114}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {142, 161}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {143, 162}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 4  (0, 2)", { {143, 162}, {607, 626} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 5  (0, 2)", { {47, 66}, {685, 704} });
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
@@ -656,13 +591,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QList<U2Region> pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)");
-    CHECK_SET_ERR(pair1.contains(U2Region(160, 20)), "No 161..180 region");
-    CHECK_SET_ERR(pair1.contains(U2Region(684, 20)), "No 685..704 region");
 
-    QList<U2Region> pair4 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 4  (0, 2)");
-    CHECK_SET_ERR(pair4.contains(U2Region(66, 20)), "No 67..86 region");
-    CHECK_SET_ERR(pair4.contains(U2Region(606, 20)), "No 607..626 region");
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {95, 114}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {142, 161}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {143, 162}, {685, 704} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 4  (0, 2)", { {143, 162}, {607, 626} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 5  (0, 2)", { {47, 66}, {685, 704} });
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {

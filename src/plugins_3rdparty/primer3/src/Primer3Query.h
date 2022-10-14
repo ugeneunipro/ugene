@@ -33,6 +33,8 @@ class QDPrimerActor : public QDActor {
     Q_OBJECT
 public:
     QDPrimerActor(QDActorPrototype const* proto);
+    ~QDPrimerActor();
+
     int getMinResultLen() const {
         return 1;
     }
@@ -51,7 +53,7 @@ private slots:
     void sl_onAlgorithmTaskFinished(Task* t);
 
 private:
-    Primer3TaskSettings settings;
+    Primer3TaskSettings* settings = nullptr;
 };
 
 class QDPrimerActorPrototype : public QDActorPrototype {

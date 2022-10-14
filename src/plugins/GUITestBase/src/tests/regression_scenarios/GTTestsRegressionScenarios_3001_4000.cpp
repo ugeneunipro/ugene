@@ -4193,7 +4193,7 @@ GUI_TEST_CLASS_DEFINITION(test_3821) {
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
 
     Primer3DialogFiller::Primer3Settings settings;
-    settings.shortRegion = true;
+    settings.hasValidationErrors = true;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
     GTWidget::click(os, GTWidget::findWidget(os, "primer3_action_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
