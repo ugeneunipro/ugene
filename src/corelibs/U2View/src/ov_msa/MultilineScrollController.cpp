@@ -434,9 +434,11 @@ void MultilineScrollController::scrollPage(MultilineScrollController::Direction 
 void MultilineScrollController::scrollToEnd(MultilineScrollController::Direction direction) {
     switch (direction) {
         case Up:
+        case SliderMinimum:
             vScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
             break;
         case Down:
+        case SliderMaximum:
             vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
             break;
         case Left:

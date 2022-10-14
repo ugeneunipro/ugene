@@ -270,13 +270,13 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 
     setSelectionRect(newSelectionRect);
     QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
-    if ((editor->getMultilineMode() &&
-         newCursorPos.x() <= getLastVisibleBase(false) &&
-         newCursorPos.x() >= getFirstVisibleBase()) ||
-        !editor->getMultilineMode()) {
+    if (editor->getMultilineMode()) {
+        if (newCursorPos.x() <= getLastVisibleBase(false) &&
+            newCursorPos.x() >= getFirstVisibleBase()) {
+            editor->setCursorPosition(newCursorPos);
+        }
+    } else {
         editor->setCursorPosition(newCursorPos);
-    }
-    if (!editor->getMultilineMode()) {
         ui->getScrollController()->scrollToMovedSelection(dx, dy);
     }
 }
@@ -1116,6 +1116,9 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Home:
+            if (editor->getMultilineMode()) {
+                break;
+            }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Up);
                 editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), 0));
@@ -1125,27 +1128,34 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_End:
+            if (editor->getMultilineMode()) {
+                break;
+            }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(),
+                                                 getViewRowCount() - 1));
             } else {
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);
-                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1,
+                                                 editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_PageUp:
             if (editor->getMultilineMode()) {
                 break;
-            } else {
-                ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
             }
+            ui->getScrollController()->scrollPage(isShiftPressed
+                                                      ? ScrollController::Up
+                                                      : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
             if (editor->getMultilineMode()) {
                 break;
-            } else {
-                ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
             }
+            ui->getScrollController()->scrollPage(isShiftPressed
+                                                      ? ScrollController::Down
+                                                      : ScrollController::Right);
             break;
         case Qt::Key_Backspace:
             removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);

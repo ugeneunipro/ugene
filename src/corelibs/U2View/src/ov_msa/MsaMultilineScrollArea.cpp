@@ -33,11 +33,19 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
             case Qt::Key_Space:
             case Qt::Key_Left:
             case Qt::Key_Right:
-            case Qt::Key_Up:
-            case Qt::Key_Down:
-            case Qt::Key_Home:
-            case Qt::Key_End:
                 // ignore MSA sequence view widget keys
+                return true;
+            case Qt::Key_Up:
+                scrollVert(MultilineScrollController::Up, true, true);
+                return true;
+            case Qt::Key_Down:
+                scrollVert(MultilineScrollController::Down, true, true);
+                return true;
+            case Qt::Key_Home:
+                maEditorUi->getScrollController()->scrollToEnd(MultilineScrollController::SliderMinimum);
+                return true;
+            case Qt::Key_End:
+                maEditorUi->getScrollController()->scrollToEnd(MultilineScrollController::SliderMaximum);
                 return true;
             case Qt::Key_PageUp:
                 scrollVert(MultilineScrollController::PageUp, false, true);
