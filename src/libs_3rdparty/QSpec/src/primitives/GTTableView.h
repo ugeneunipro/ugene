@@ -39,6 +39,9 @@ public:
     static QString data(GUITestOpStatus& os, QTableView* table, int row, int column);
 
     static void scrollTo(GUITestOpStatus& os, QTableView* table, const QModelIndex& index);
+
+    // Scrolls to a cell (`row`, `column`) and clicks on it.
+    static void click(GUITestOpStatus& os, QTableView* table, int row, int column);
 };
 
 }  // namespace HI

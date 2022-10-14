@@ -68,6 +68,9 @@ public:
     // fails if widget is NULL, not visible or not enabled; if p isNull, clicks in the center of widget
     static void click(GUITestOpStatus& os, QWidget* w, Qt::MouseButton mouseButton = Qt::LeftButton, QPoint p = QPoint());
 
+    // use this method if you need to click on a point and not on a widget.
+    static void moveToAndClick(const QPoint& point);
+
     // fails if widget is NULL, GTWidget::click fails or widget hasn't got focus
     static void setFocus(GUITestOpStatus& os, QWidget* w);
 

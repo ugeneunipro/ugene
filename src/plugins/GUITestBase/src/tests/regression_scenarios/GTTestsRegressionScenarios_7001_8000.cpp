@@ -3097,12 +3097,6 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
 }
 
-static void moveToAndClick(const QPoint& point) {
-    GTMouseDriver::moveTo(point);
-    GTThread::waitForMainThread();
-    GTMouseDriver::click();
-}
-
 // Clicks the "Run Schema" menu item;
 // in the "Run Schema" dialog that appears, sets
 //     `inputPath` as "Load sequence" (if `inputPath` is empty, does nothing),
@@ -3141,31 +3135,13 @@ static void runSchema(GUITestOpStatus& os, const QString& inputPath = "", bool a
 
 // Sets the Primer3 algorithm parameter "Number to return" to 3.
 static void setNumberToReturn(GUITestOpStatus& os, QTableView* table) {
-    moveToAndClick(GTTableView::getCellPosition(os, table, 1, 3));
+    GTTableView::click(os, table, 3, 1);
     GTSpinBox::setValue(os, GTWidget::findWidgetByType<QSpinBox*>(os, table, "7667-0"), 3);
 }
 
 // Sets the cell (`row`, 1) of `table` to `value`.
 static void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
-    QModelIndex modelIndex;
-
-    class FindModelIndexScenario : public CustomScenario {
-        QTableView* table;
-        int rowNum;
-        QModelIndex& modelInd;
-
-    public:
-        FindModelIndexScenario(QTableView* table_, int rowNum, QModelIndex& modelInd)
-            : table(table_), rowNum(rowNum), modelInd(modelInd) {
-        }
-        void run(GUITestOpStatus&) override {
-            modelInd = table->model()->index(rowNum, 1);
-        }
-    };
-    GTThread::runInMainThread(os, new FindModelIndexScenario(table, row, modelIndex));
-
-    GTWidget::scrollToIndex(os, table, modelIndex);
-    moveToAndClick(GTTableView::getCellPosition(os, table, 1, row));
+    GTTableView::click(os, table, row, 1);
     GTDoubleSpinbox::setValue(os,
                               GTWidget::findWidgetByType<QDoubleSpinBox*>(os, table, "7667-" + QString::number(row)),
                               value,
@@ -3221,10 +3197,10 @@ GUI_TEST_CLASS_DEFINITION(test_7667_1) {
     GTUtilsProject::closeProject(os, true);
     GTUtilsMdi::activateWindow(os, "Query Designer - NewSchema");
 
-    moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
     auto table = GTWidget::findTableView(os, "table");
     {  // Product size ranges.
-        moveToAndClick(GTTableView::getCellPosition(os, table, 1, 2));
+        GTTableView::click(os, table, 2, 1);
         GTLineEdit::setText(os, GTWidget::findWidgetByType<QLineEdit*>(os, table, "7667"), "100-300");
     }
     setNumberToReturn(os, table);
@@ -3261,7 +3237,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667_2) {
     // Expected: both tasks completed successfully.
     GTFileDialog::openFile(os, testDir + "_common_data/primer3/only_primer.uql");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
     runSchema(os, testDir + "_common_data/bwa/NC_000021.gbk.min.fa", false);
 
     setNumberToReturn(os, GTWidget::findTableView(os, "table"));

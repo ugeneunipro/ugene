@@ -75,6 +75,12 @@ void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouse
 }
 #undef GT_METHOD_NAME
 
+void GTWidget::moveToAndClick(const QPoint& point) {
+    GTMouseDriver::moveTo(point);
+    GTThread::waitForMainThread();
+    GTMouseDriver::click();
+}
+
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
     GT_CHECK(w != nullptr, "widget is NULL");
