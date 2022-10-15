@@ -143,6 +143,7 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
     switch (option) {
         case SHOW_LEAF_NODE_LABELS:
             showNamesCheck->setChecked(value.toBool());
+            alignLabelsCheck->setEnabled(showNamesCheck->isChecked());
             break;
         case BRANCHES_TRANSFORMATION_TYPE:
             treeViewCombo->setCurrentIndex(value.toInt());
@@ -150,6 +151,7 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             break;
         case TREE_LAYOUT: {
             auto layout = static_cast<TreeLayout>(value.toInt());
+            layoutCombo->setCurrentIndex(layout);
             breadthScaleAdjustmentSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
             curvatureSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
             break;

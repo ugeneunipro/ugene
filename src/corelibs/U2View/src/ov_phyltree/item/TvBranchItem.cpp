@@ -109,6 +109,7 @@ void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
         nameTextItem->setFont(font);
         nameTextItem->setBrush(labelColor);
     }
+    setLabelPositions();
 }
 
 const OptionsMap& TvBranchItem::getSettings() const {
