@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDrag>
-#include <QFileInfo>
 #include <QHeaderView>
 #include <QLineEdit>
 #include <QMap>
@@ -2249,15 +2248,13 @@ void AnnotationsTreeView::sl_exportAutoAnnotationsGroup() {
     m.groupName = ag->getName();
     m.sequenceObjectRef = GObjectReference(seqCtx->getSequenceObject());
 
-    QObjectScopedPointer<CreateAnnotationDialog> dlg = new CreateAnnotationDialog(this, m);
+    QObjectScopedPointer<CreateAnnotationDialog> dlg = new CreateAnnotationDialog(this, m, "65929453");
     dlg->setWindowTitle(tr("Create Permanent Annotation"));
     dlg->exec();
-    CHECK(!dlg.isNull(), );
+    CHECK(!dlg.isNull() && dlg->result() == QDialog::Accepted, );
 
-    if (dlg->result() == QDialog::Accepted) {
-        auto task = new ExportAutoAnnotationsGroupTask(ag, m.annotationObjectRef, seqCtx, m.description);
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    }
+    auto task = new ExportAutoAnnotationsGroupTask(ag, m.annotationObjectRef, seqCtx, m.description);
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 //////////////////////////////////////////////////////////////////////////

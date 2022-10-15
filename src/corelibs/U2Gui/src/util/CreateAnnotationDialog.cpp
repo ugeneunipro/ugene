@@ -39,14 +39,14 @@
 
 namespace U2 {
 
-CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m)
+CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m, const QString& helpButtonCode)
     : QDialog(p),
       model(m),
       ui(new Ui_CreateAnnotationDialog) {
     ui->setupUi(this);
     annWidgetController = new CreateAnnotationWidgetController(m, this, CreateAnnotationWidgetController::Full);
 
-    helpButton = new HelpButton(this, ui->buttonBox, "65929465");
+    helpButton = new HelpButton(this, ui->buttonBox, helpButtonCode.isEmpty() ? QString("65929465") : helpButtonCode);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
 
     ui->mainLayout->insertWidget(0, annWidgetController->getWidget());
