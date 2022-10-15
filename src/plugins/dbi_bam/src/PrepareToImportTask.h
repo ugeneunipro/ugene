@@ -34,7 +34,7 @@ public:
     PrepareToImportTask(const GUrl& assebmlyUrl, bool sam, const QString& refUrl, const QString& workingDir);
     void run();
     const GUrl& getSourceUrl() const;
-    bool isNewURL();
+    bool isNewURL() const;
 
 private:
     GUrl sourceURL;

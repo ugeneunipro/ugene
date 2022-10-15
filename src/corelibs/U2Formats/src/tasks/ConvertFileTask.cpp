@@ -162,9 +162,8 @@ void BamSamConversionTask::prepare() {
 }
 
 void BamSamConversionTask::run() {
-    BAMUtils::ConvertOption options(samToBam);
     if (samToBam) {
-        BAMUtils::convertToSamOrBam(sourceURL, targetUrl, options, stateInfo);
+        BAMUtils::convertSamToBam(stateInfo, sourceURL.getURLString(), targetUrl);
         CHECK_OP(stateInfo, );
 
         QString sortedBamBase = targetUrl + ".sorted";
@@ -173,7 +172,7 @@ void BamSamConversionTask::run() {
 
         BAMUtils::createBamIndex(targetUrl, stateInfo);
     } else {
-        BAMUtils::convertToSamOrBam(targetUrl, sourceURL, options, stateInfo);
+        BAMUtils::convertBamToSam(stateInfo, sourceURL.getURLString(), targetUrl);
     }
 }
 
@@ -218,14 +217,6 @@ ConvertFileFactory* ConvertFactoryRegistry::getFactoryByFormats(const QString& d
         }
     }
     return nullptr;
-}
-
-void ConvertFactoryRegistry::unregisterConvertFactory(ConvertFileFactory* f) {
-    if (factories.contains(f)) {
-        int id = factories.indexOf(f);
-        ConvertFileFactory* fdel = factories.takeAt(id);
-        delete fdel;
-    }
 }
 
 bool ConvertFileFactory::isCustomFormatTask(const QString& /*detectedFormat*/, const QString& /*targetFormat*/) {

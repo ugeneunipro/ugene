@@ -32,14 +32,14 @@ public:
     MergeBamTask(const QStringList& urls, const QString& dir, const QString& outName, bool sortInputBams = false);
 
     QString getResult() const;
-    void run();
+    void run() override;
 
 protected:
     QString outputName;
     QString workingDir;
     QString targetUrl;
     QStringList bamUrls;
-    bool sortInputBams;
+    bool sortInputBams = false;
 };  // MergeBamTask
 
 }  // namespace U2

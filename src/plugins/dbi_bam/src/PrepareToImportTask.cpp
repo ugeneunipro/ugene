@@ -24,12 +24,10 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/BAMUtils.h>
 
@@ -94,8 +92,7 @@ void PrepareToImportTask::run() {
         checkReferenceFile();
         CHECK_OP(stateInfo, );
 
-        BAMUtils::ConvertOption options(true /*SAM to BAM*/, refUrl);
-        BAMUtils::convertToSamOrBam(sourceURL, bamUrl, options, stateInfo);
+        BAMUtils::convertSamToBam(stateInfo, sourceURL.getURLString(), bamUrl, refUrl);
         CHECK_OP(stateInfo, );
     }
     stateInfo.setProgress(33);
@@ -140,7 +137,6 @@ void PrepareToImportTask::run() {
     sourceURL = indexedBamUrl;
 }
 
-namespace {
 static bool isUnknownFormat(const QList<FormatDetectionResult>& formats) {
     if (formats.isEmpty()) {
         return true;
@@ -160,7 +156,6 @@ static QString detectedFormatId(const FormatDetectionResult& f) {
     }
     return f.format->getFormatId();
 }
-}  // namespace
 
 void PrepareToImportTask::checkReferenceFile() {
     CHECK(!refUrl.isEmpty(), );
@@ -192,7 +187,7 @@ const GUrl& PrepareToImportTask::getSourceUrl() const {
     return sourceURL;
 }
 
-bool PrepareToImportTask::isNewURL() {
+bool PrepareToImportTask::isNewURL() const {
     return newURL;
 }
 

@@ -39,16 +39,11 @@ class AssemblyObject;
 class U2FORMATS_EXPORT BAMUtils : public QObject {
     Q_OBJECT
 public:
-    class U2FORMATS_EXPORT ConvertOption {
-    public:
-        ConvertOption(bool samToBam, const QString& referenceUrl = "");
-        bool samToBam;
-        QString referenceUrl;
-    };
-    /**
-     * Returns the url to the output BAM or SAM file
-     */
-    static void convertToSamOrBam(const GUrl& samUrl, const GUrl& bamUrl, const ConvertOption& options, U2OpStatus& os);
+    /** Converts BAM file to SAM file. */
+    static void convertBamToSam(U2OpStatus& os, const QString& bamPath, const QString& samPath);
+
+    /** Converts SAM file to BAM file. */
+    static void convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath = "");
 
     static bool isSortedBam(const GUrl& bamUrl, U2OpStatus& os);
 
@@ -59,9 +54,6 @@ public:
     static GUrl sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os);
 
     static GUrl mergeBam(const QStringList& bamUrl, const QString& mergetBamTargetUrl, U2OpStatus& os);
-
-    // deprecated because hangs up on big files
-    static GUrl rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl, U2OpStatus& os, bool removeSingleEnd = false, bool treatReads = false);
 
     static bool hasValidBamIndex(const GUrl& bamUrl);
 

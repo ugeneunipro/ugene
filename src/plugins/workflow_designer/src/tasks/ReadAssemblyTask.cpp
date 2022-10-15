@@ -74,13 +74,13 @@ void ConvertToIndexedBamTask::run() {
     }
 
     GUrl bamUrl = url;
-    if (BaseDocumentFormats::SAM == formatId) {
+    if (formatId == BaseDocumentFormats::SAM) {
         QString bam = FileStorageUtils::getSamToBamConvertInfo(url.getURLString(), ctx->getWorkflowProcess());
         if (bam.isEmpty()) {
             QString dir = fileStorage->createDirectory();
             bamUrl = dir + "/" + url.fileName() + ".bam";
             BAMUtils::ConvertOption options(true);
-            BAMUtils::convertToSamOrBam(url, bamUrl, options, stateInfo);
+            BAMUtils::convertSamToBam(url.getURLString(), bamUrl.getURLString(), "", stateInfo);
             CHECK_OP(stateInfo, );
 
             addConvertedFile(bamUrl);

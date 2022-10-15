@@ -102,7 +102,6 @@ public:
     ConvertFactoryRegistry(QObject* o = 0);
     ~ConvertFactoryRegistry();
     bool registerConvertFactory(ConvertFileFactory* f);
-    void unregisterConvertFactory(ConvertFileFactory* f);
     ConvertFileFactory* getFactoryByFormats(const QString& detectedFormat, const QString& targetFormat);
 
 private:
