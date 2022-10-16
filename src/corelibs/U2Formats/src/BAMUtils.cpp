@@ -214,7 +214,7 @@ void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QSt
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
     char* aux = nullptr;
-    if (referencePath.isEmpty()) {
+    if (!referencePath.isEmpty()) {
         aux = samfaipath(referencePath.toLocal8Bit().constData());
         SAMTOOL_CHECK(aux != nullptr, faiError(referencePath), );
     }
