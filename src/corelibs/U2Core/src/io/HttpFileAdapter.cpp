@@ -26,7 +26,6 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QUrl>
-#include <QWaitCondition>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -89,8 +88,8 @@ bool HttpFileAdapter::open(const GUrl& url_, IOAdapterMode m) {
     gurl = url_;
     init();
 
-    HttpFileAdapterFactory* f = qobject_cast<HttpFileAdapterFactory*>(getFactory());
-    QNetworkProxy proxy = f->getProxyByUrl(url);
+    auto* httpFileAdapterFactory = qobject_cast<HttpFileAdapterFactory*>(getFactory());
+    QNetworkProxy proxy = httpFileAdapterFactory->getProxyByUrl(url);
     return open(url, proxy);
 }
 
@@ -106,7 +105,7 @@ bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
         QStringList splittedStrings = url.toString().split(RemoteRequestConfig::HTTP_BODY_SEPARATOR);
         if (splittedStrings.count() > 1) {
             SAFE_POINT(2 == splittedStrings.count(), tr("Incorrect url string has been passed to HttpFileAdapter::open()"), false);
-            QString headerString = splittedStrings.at(0);
+            const QString& headerString = splittedStrings.at(0);
             postData = splittedStrings.at(1).toLatin1();
             QNetworkRequest netRequest(headerString);
             reply = netManager->post(netRequest, postData);
@@ -159,10 +158,6 @@ qint64 HttpFileAdapter::readBlock(char* data, qint64 size) {
     while (write_offs < size) {
         qint64 howmuch = qMin(size - write_offs, (qint64)firstChunkContains());
         readFromChunk(data + write_offs, howmuch);
-        if (formatMode == TextMode) {
-            cutByteOrderMarks(data, errorMessage, howmuch);
-            CHECK(errorMessage.isEmpty(), -1);
-        }
         write_offs += howmuch;
     }
 
@@ -171,8 +166,7 @@ qint64 HttpFileAdapter::readBlock(char* data, qint64 size) {
 }
 
 qint64 HttpFileAdapter::writeBlock(const char*, qint64) {
-    SAFE_POINT(0, "Operation is not supported!", 0);
-    return 0;
+    FAIL("Operation is not supported!", 0);
 }
 
 bool HttpFileAdapter::skip(qint64 nBytes) {
@@ -319,8 +313,7 @@ void HttpFileAdapter::done() {
         return;
     }
     is_downloaded = true;
-    badstate = (reply->error() != QNetworkReply::NoError);
-
+    badstate = reply->error() != QNetworkReply::NoError;
     loop.exit();
 }
 
@@ -334,13 +327,11 @@ void HttpFileAdapter::progress(qint64 done_, qint64 total_) {
 }
 
 QString HttpFileAdapter::errorString() const {
-    QString result;
-    if (reply) {
-        result = reply->errorString();
-    } else {
-        result = errorMessage;
+    CHECK(errorMessage.isEmpty(), errorMessage);
+    if (reply && reply->error() != QNetworkReply::NoError) {
+        return reply->errorString();
     }
-    return result;
+    return "";
 }
 
 void HttpFileAdapter::onProxyAuthenticationRequired(const QNetworkProxy& proxy, QAuthenticator* auth) {
