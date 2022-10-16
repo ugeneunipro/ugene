@@ -53,8 +53,6 @@ TvNodeItem::TvNodeItem(const QString& _nodeName)
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
     if (!nodeName.isEmpty()) {
         labelItem = new TvTextItem(this, nodeName);
-        labelItem->setFont(TreeViewerUtils::getFont());
-        labelItem->setBrush(Qt::darkGray);
         QRectF rect = labelItem->boundingRect();
         labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
         labelItem->setZValue(1);
@@ -137,16 +135,9 @@ PhyNode* TvNodeItem::getPhyNode() const {
 void TvNodeItem::updateSettings(const OptionsMap& settings) {
     isNodeShapeVisible = settings[SHOW_NODE_SHAPE].toBool();
     if (labelItem != nullptr) {
-        QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
-        newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
-        newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
-        newFont.setItalic(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
-        newFont.setUnderline(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
-        labelItem->setFont(newFont);
-        QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
-        labelItem->setBrush(labelsColor);
-        bool showNodeLabels = settings[SHOW_INNER_NODE_LABELS].toBool();
-        labelItem->setVisible(showNodeLabels);
+        labelItem->setFont(TreeViewerUtils::getFontFromSettings(settings));
+        labelItem->setBrush(qvariant_cast<QColor>(settings[LABEL_COLOR]));
+        labelItem->setVisible(settings[SHOW_INNER_NODE_LABELS].toBool());
     }
 }
 

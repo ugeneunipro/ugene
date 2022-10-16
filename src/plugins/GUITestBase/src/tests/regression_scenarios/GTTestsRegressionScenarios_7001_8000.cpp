@@ -896,10 +896,10 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7338) {
-    //1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
-    //2. Close project
-    //3. Repeat step 1
-    //Expected state: no crash
+    // 1. Open and import _common_data/bam/NoAssemblies.bam, with "Import empty reads" checked.
+    // 2. Close project
+    // 3. Repeat step 1
+    // Expected state: no crash
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7338_1.ugenedb", "", "", true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/NoAssemblies.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3008,9 +3008,9 @@ GUI_TEST_CLASS_DEFINITION(test_7644) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7645) {
-    //1. Open file "/_common_data/primer3/7645.seq"
-    //2. Run Primer 3 with default parameters
-    //Expected state: there is only two files in project view - sequence and annotations
+    // 1. Open file "/_common_data/primer3/7645.seq"
+    // 2. Run Primer 3 with default parameters
+    // Expected state: there is only two files in project view - sequence and annotations
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "7645.seq");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -3038,9 +3038,9 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     // 1. Open files samples/CLUSTALW/COI.aln, _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
     // 2. Export consensus from Klebsislla
     // 3. Switch to COI.aln
-    // 4. Do menu Actions->Add->Sequence from file... 
-    // 5. Do not choose file, wait until export task finishes 
-    //Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
+    // 4. Do menu Actions->Add->Sequence from file...
+    // 5. Do not choose file, wait until export task finishes
+    // Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
@@ -3056,17 +3056,17 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new SimpleExport()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export consensus..."}));
     GTWidget::click(os, GTWidget::findWidget(os, "Consensus area"), Qt::RightButton);
-    
+
     class WaitLogMessage : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             GTUtilsTaskTreeView::waitTaskFinished(os);
             auto targetButton = GTWidget::findButtonByText(os, "Cancel", GTWidget::getActiveModalWidget(os));
-            GTWidget::click(os, targetButton);            
+            GTWidget::click(os, targetButton);
         }
     };
 
     GTLogTracer logTracer;
-    GTGlobals::sleep(750); //need pause to redraw/update ui, sometimes test can't preform next action
+    GTGlobals::sleep(750);  // need pause to redraw/update ui, sometimes test can't preform next action
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
@@ -3183,21 +3183,6 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7686) {
-    // Check "copy tree image to clipboard".
-    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
-    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
-
-    GTClipboard::clear(os);
-    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
-    GTClipboard::checkHasNonEmptyImage(os);
-
-    // Zoom so image becomes very large: UGENE should show an error message.
-    GTUtilsPhyTree::zoomWithMouseWheel(os, 20);
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Image is too large. Please zoom out."));
-    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
-}
-
 GUI_TEST_CLASS_DEFINITION(test_7682) {
     // Check 'curvature' controls for rectangular branches.
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
@@ -3227,6 +3212,51 @@ GUI_TEST_CLASS_DEFINITION(test_7682) {
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
     CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider must be re-enabled");
     CHECK_SET_ERR(curvatureSlider->value() == 50, "Slider value must be restored, current value: " + QString::number(curvatureSlider->value()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7686) {
+    // Check "copy tree image to clipboard".
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    GTClipboard::clear(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+    GTClipboard::checkHasNonEmptyImage(os);
+
+    // Zoom so image becomes very large: UGENE should show an error message.
+    GTUtilsPhyTree::zoomWithMouseWheel(os, 20);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Image is too large. Please zoom out."));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree image", "Copy to clipboard"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7697) {
+    // Check that tree settings are saved/restored correctly.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    auto panel1 = GTUtilsOptionPanelPhyTree::openTab(os);
+    CHECK_SET_ERR(GTCheckBox::getState(os, "showNamesCheck", panel1) == true, "Invalid default showNamesCheck state");
+    GTCheckBox::setChecked(os, "showNamesCheck", false, panel1);
+    CHECK_SET_ERR(GTCheckBox::getState(os, "showDistancesCheck", panel1) == true, "Invalid default showDistancesCheck state");
+    GTCheckBox::setChecked(os, "showDistancesCheck", false, panel1);
+
+    auto curvatureSlider = GTWidget::findSlider(os, "curvatureSlider", panel1);
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "Invalid default curvatureSlider value: " + QString::number(curvatureSlider->value()));
+    GTSlider::setValue(os, curvatureSlider, 20);
+
+    CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel1) == "Default", "Invalid default treeViewCombo value");
+    GTComboBox::selectItemByText(os, "treeViewCombo", panel1, "Cladogram");
+
+    GTUtilsMdi::closeActiveWindow(os);
+
+    GTUtilsProjectTreeView::doubleClickItem(os, "COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    auto panel2 = GTUtilsOptionPanelPhyTree::openTab(os);
+    CHECK_SET_ERR(GTCheckBox::getState(os, "showNamesCheck", panel2) == false, "showNamesCheck state is not restored");
+    CHECK_SET_ERR(GTCheckBox::getState(os, "showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
+    CHECK_SET_ERR(GTWidget::findSlider(os, "curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
+    CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
 }
 
 }  // namespace GUITest_regression_scenarios

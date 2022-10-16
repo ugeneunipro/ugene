@@ -38,18 +38,19 @@ class U2GUI_EXPORT CreateAnnotationDialog : public QDialog {
     Q_OBJECT
 public:
     // saves the results to the provided model
-    CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m);
+    CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m, const QString& helpButtonCode = "");
     ~CreateAnnotationDialog();
 
     void updateAppearance(const QString& newTitle, const QString& newHelpPage, const QString& newOkButtonName);
+
 private slots:
-    void accept();
+    void accept() override;
 
 private:
     CreateAnnotationModel& model;
-    CreateAnnotationWidgetController* annWidgetController;
-    Ui_CreateAnnotationDialog* ui;
-    HelpButton* helpButton;
+    CreateAnnotationWidgetController* annWidgetController = nullptr;
+    Ui_CreateAnnotationDialog* ui = nullptr;
+    HelpButton* helpButton = nullptr;
 };
 
 }  // namespace U2

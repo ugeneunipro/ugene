@@ -31,7 +31,6 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 
     QString buf;
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
-    QSet<QString> changedIntervalValues;
     for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
         QDomNode n = inputParameters.item(inputParametersIndex);
         SAFE_POINT_EXT(n.isElement(), localErrorMessage = GTest::tr("QDomNode isn't element"), );
@@ -66,7 +65,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 
         buf = elInput.attribute("CIRCULAR");
         if (!buf.isEmpty()) {
-            settings->setCircularity(buf == "true" ? true : false);
+            settings->setCircularity(buf == "true");
         }
 
         // 3
@@ -410,63 +409,63 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             }
             auto suffix = "_" + QString::number(pairIndex);
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
-                if (!buf.isEmpty()) {
-                    result.setComplAny(buf.toDouble());
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
+                if (!value.isEmpty()) {
+                    result.setComplAny(value.toDouble());
                 } else {
-                    buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
-                    if (!buf.isEmpty()) {
-                        result.setComplAny(buf.toDouble());
+                    value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
+                    if (!value.isEmpty()) {
+                        result.setComplAny(value.toDouble());
                     }
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
-                if (!buf.isEmpty()) {
-                    result.setComplEnd(buf.toDouble());
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
+                if (!value.isEmpty()) {
+                    result.setComplEnd(value.toDouble());
                 } else {
-                    buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
-                    if (!buf.isEmpty()) {
-                        result.setComplEnd(buf.toDouble());
+                    value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
+                    if (!value.isEmpty()) {
+                        result.setComplEnd(value.toDouble());
                     }
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_SIZE");
-                if (!buf.isEmpty()) {
-                    result.setProductSize(buf.toInt());
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_SIZE");
+                if (!value.isEmpty()) {
+                    result.setProductSize(value.toInt());
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_TM");
-                if (!buf.isEmpty()) {
-                    result.setProductTm(buf.toDouble());
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_TM");
+                if (!value.isEmpty()) {
+                    result.setProductTm(value.toDouble());
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_PENALTY");
-                if (!buf.isEmpty()) {
-                    result.setProductQuality(buf.toDouble());
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PENALTY");
+                if (!value.isEmpty()) {
+                    result.setProductQuality(value.toDouble());
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
-                if (!buf.isEmpty()) {
-                    auto mispriming = buf.split(", ");
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
+                if (!value.isEmpty()) {
+                    auto mispriming = value.split(", ");
                     result.setRepeatSim(mispriming.first().toDouble());
                     result.setRepeatSimName(mispriming.last());
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_STUCT");
-                if (!buf.isEmpty()) {
-                    result.setComplAnyStruct(buf);
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_STUCT");
+                if (!value.isEmpty()) {
+                    result.setComplAnyStruct(value);
                 }
             }
             {
-                QString buf = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_STUCT");
-                if (!buf.isEmpty()) {
-                    result.setComplEndStruct(buf);
+                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_STUCT");
+                if (!value.isEmpty()) {
+                    result.setComplEndStruct(value);
                 }
             }
             expectedBestPairs << result;

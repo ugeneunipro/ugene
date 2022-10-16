@@ -72,12 +72,6 @@ public:
     PhyTreeObject* getPhyObject() const {
         return phyObject;
     }
-    TvRectangularBranchItem* getRoot() const {
-        return root;
-    }
-    void setRoot(TvRectangularBranchItem* rectRoot) {
-        root = rectRoot;
-    }
 
     void setZoomLevel(double zoomLevel);
 
@@ -132,7 +126,6 @@ private:
     QActionGroup* layoutActionGroup = nullptr;
 
     QByteArray state;
-    TvRectangularBranchItem* root = nullptr;
 
     void setupLayoutSettingsMenu(QMenu* m);
     void setupShowLabelsMenu(QMenu* m) const;
@@ -151,15 +144,14 @@ public:
     explicit TreeViewerUI(TreeViewer* treeViewer);
     ~TreeViewerUI() override;
 
-    const QMap<TreeViewOption, QVariant>& getSettings() const;
-    QVariant getOptionValue(TreeViewOption option) const;
-    void setOptionValue(TreeViewOption option, const QVariant& value);
-
-    void updateSettings(const OptionsMap& settings);
-    void changeOption(TreeViewOption option, const QVariant& newValue);
+    /** Returns option value by looking up first in 'selectionSettings and next in the 'setting'. */
+    QVariant getOption(const TreeViewOption& option) const;
 
     QVariantMap getSettingsState() const;
     void setSettingsState(const QVariantMap& m);
+
+    /** Returns current settings adjusted by 'selectionSettings'. */
+    OptionsMap getSelectionSettings() const;
 
     TreeLayout getTreeLayout() const;
 
@@ -185,9 +177,11 @@ public:
     /** Resets zoom. Fits the tree into view. */
     void resetZoom();
 
-signals:
-    /* emits when branch settings is updated */
-    void si_updateBranch();
+    /** Updates single option. */
+    void updateOption(const TreeViewOption& option, const QVariant& newValue);
+
+    /** Updates all options from the 'changedOptions' map. */
+    void updateOptions(const OptionsMap& changedOptions);
 
 protected:
     void wheelEvent(QWheelEvent* e) override;
@@ -214,10 +208,9 @@ protected:
     /** Updates parameter of rect-layout branches using current settings. */
     void updateRectLayoutBranches();
 
-    virtual void onSettingsChanged(const TreeViewOption& option, const QVariant& newValue);
-
 signals:
-    void si_optionChanged(TreeViewOption option, const QVariant& value);
+    /** Emitted when option is changed: either due to selection change or an explicit option update. */
+    void si_optionChanged(const TreeViewOption& option, const QVariant& value);
 
 protected slots:
     virtual void sl_swapTriggered();
@@ -240,6 +233,20 @@ private slots:
     void sl_branchSettings();
 
 private:
+    /**
+     * Returns true if there is a selection and only part of the tree is selected.
+     * In case of partial selection some UI styling (fonts/colors) are applied only to the selected part of the tree and
+     * are not stored as view default.
+     * See 'isSelectionScopeOption' to check which option can be applied only to selection.
+     */
+    bool hasPartialSelection() const;
+
+    /**
+     * Sets single option value to the settings only (does not handle view update like in updateOption).
+     * Updates only selection settings if there is an active selection and 'option' can be 'selection-only' option.
+     */
+    void saveOptionToSettings(const TreeViewOption& option, const QVariant& value);
+
     void updateDistanceToViewScale();
     void rebuildTreeLayout();
 
@@ -276,7 +283,8 @@ private:
 
     void updateLayout();
 
-    void updateBranchSettings();
+    /** Updates 'selectionSettings' every time selection is changed. */
+    void updateSettingsOnSelectionChange();
 
     void recalculateRectangularLayout();
     bool isSelectedCollapsed();
@@ -295,7 +303,7 @@ private:
     void changeNamesDisplay();
 
     /** Updates settings for selected items only. If there is no selection updates setting for all items. */
-    void updateTextOptionOnSelectedItems(const TreeViewOption& option);
+    void updateTextOptionOnSelectedItems();
 
     /** Updates settings for selected items only. If there is no selection updates setting for all items. */
     void updateTreeSettingsOnSelectedItems();
@@ -336,8 +344,11 @@ private:
     TvTextItem* scalebarTextItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
+    /** Settings for the whole view. Saved & restored on view creation and applied to all new elements by default. */
     OptionsMap settings;
-    bool dontSendOptionChangedSignal = false;
+
+    /** Settings override for the currently selected items. Contains only option that override 'settings' for the current selection. */
+    OptionsMap selectionSettingsDelta;
 };
 
 }  // namespace U2
