@@ -1,6 +1,10 @@
 project(zlib)
 
-find_package(Qt5 REQUIRED Core)
+
+if (CMAKE_COMPILER_IS_GNUCXX)
+    # Disable all warning from 3rd party code.
+    string(CONCAT GCC_WARNING_FLAGS " -w")
+endif ()
 
 include_directories(src)
 include_directories(../../include)
@@ -10,6 +14,4 @@ file(GLOB_RECURSE HDRS src/*.h)
 
 add_library(zlib STATIC ${HDRS} ${SRCS})
 
-target_link_libraries(zlib
-        Qt5::Core)
-
+target_link_libraries(zlib)
