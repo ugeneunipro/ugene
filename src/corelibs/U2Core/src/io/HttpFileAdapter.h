@@ -40,23 +40,23 @@ class U2CORE_EXPORT HttpFileAdapterFactory : public IOAdapterFactory {
 public:
     HttpFileAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter* createIOAdapter();
+    IOAdapter* createIOAdapter() override;
 
-    virtual IOAdapterId getAdapterId() const {
+    IOAdapterId getAdapterId() const override {
         return BaseIOAdapters::HTTP_FILE;
     }
 
-    virtual const QString& getAdapterName() const {
+    const QString& getAdapterName() const override {
         return name;
     }
 
-    virtual bool isIOModeSupported(IOAdapterMode m) const {
+    bool isIOModeSupported(IOAdapterMode m) const override {
         return m == IOAdapterMode_Read;
     }  // read-only
 
     QNetworkProxy getProxyByUrl(const QUrl& url) const;
 
-    virtual TriState isResourceAvailable(const GUrl&) const {
+    TriState isResourceAvailable(const GUrl&) const override {
         return TriState_Unknown;
     }
 
@@ -67,9 +67,9 @@ protected:
 class U2CORE_EXPORT GzippedHttpFileAdapterFactory : public HttpFileAdapterFactory {
     Q_OBJECT
 public:
-    GzippedHttpFileAdapterFactory(QObject* obj = 0);
-    virtual IOAdapter* createIOAdapter();
-    virtual IOAdapterId getAdapterId() const {
+    GzippedHttpFileAdapterFactory(QObject* obj = nullptr);
+    IOAdapter* createIOAdapter() override;
+    IOAdapterId getAdapterId() const override {
         return BaseIOAdapters::GZIPPED_HTTP_FILE;
     }
 };
@@ -78,33 +78,33 @@ class U2CORE_EXPORT HttpFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
     HttpFileAdapter(HttpFileAdapterFactory* f, QObject* o = nullptr);
-    ~HttpFileAdapter();
+    ~HttpFileAdapter() override;
 
-    virtual bool open(const GUrl& url, IOAdapterMode m);
+    bool open(const GUrl& url, IOAdapterMode m) override;
 
     bool open(const QUrl& url, const QNetworkProxy& p);
 
-    virtual bool isOpen() const {
+    bool isOpen() const override {
         return (bool)reply;
     }
 
-    virtual void close();
+    void close() override;
 
-    virtual qint64 readBlock(char* data, qint64 maxSize);
+    qint64 readBlock(char* data, qint64 maxSize) override;
 
-    virtual qint64 writeBlock(const char* data, qint64 size);
+    qint64 writeBlock(const char* data, qint64 size) override;
 
-    virtual bool skip(qint64 nBytes);
+    bool skip(qint64 nBytes) override;
 
-    virtual qint64 left() const;
+    qint64 left() const override;
 
-    virtual int getProgress() const;
+    int getProgress() const override;
 
-    virtual GUrl getURL() const {
+    GUrl getURL() const override {
         return gurl;
     }
 
-    virtual QString errorString() const;
+    QString errorString() const override;
 
 private:
     void init();

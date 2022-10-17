@@ -39,7 +39,9 @@
 #    pragma GCC diagnostic ignored "-Wclass-memaccess"
 #    pragma GCC diagnostic ignored "-Wdeprecated"
 #    pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#    pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
 #    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#    pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
 #    pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
 #    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #    pragma GCC diagnostic ignored "-Wmisleading-indentation"
@@ -50,6 +52,8 @@
 #    pragma GCC diagnostic ignored "-Wshadow=local"
 #    pragma GCC diagnostic ignored "-Wsign-compare"
 #    pragma GCC diagnostic ignored "-Wsizeof-pointer-memaccess"
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#    pragma GCC diagnostic ignored "-Wstringop-truncation"
 #    pragma GCC diagnostic ignored "-Wswitch"
 #    pragma GCC diagnostic ignored "-Wuninitialized"
 #    pragma GCC diagnostic ignored "-Wunused-but-set-variable"
@@ -57,6 +61,7 @@
 #    pragma GCC diagnostic ignored "-Wunused-parameter"
 #    pragma GCC diagnostic ignored "-Wunused-value"
 #    pragma GCC diagnostic ignored "-Wunused-variable"
+#    pragma GCC diagnostic ignored "-Wuse-after-free"
 #
 #    ifndef __cplusplus  // The macros below are not valid in C++ context but are needed for plain C files.
 #        pragma GCC diagnostic ignored "-Wimplicit-function-declaration"

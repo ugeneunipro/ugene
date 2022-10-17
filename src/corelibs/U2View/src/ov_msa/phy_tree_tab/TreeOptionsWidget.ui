@@ -433,7 +433,7 @@
    </item>
    <item>
     <widget class="QWidget" name="nodesGroup" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_1">
       <item>
        <widget class="QCheckBox" name="showNodeShapeCheck">
         <property name="text">

@@ -2,6 +2,8 @@
  * Copyright (C) 2004-2019 Mark Adler
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
 
 #include "gzguts.h"
 

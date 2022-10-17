@@ -197,8 +197,10 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             break;
         case SCALEBAR_FONT_SIZE:
             scaleFontSizeSpinBox->setValue(value.toInt());
+            break;
         case SCALEBAR_LINE_WIDTH:
             lineWidthSpinBox->setValue(value.toInt());
+            break;
         default:
             break;
     }

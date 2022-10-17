@@ -210,10 +210,10 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
 
 QList<Task*> DNASequenceGeneratorTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> tasks;
+    propagateSubtaskError();
     if (hasError() || isCanceled() || subTask->isCanceled()) {
         return tasks;
     }
-    propagateSubtaskError();
 
     if (subTask == loadRefTask) {
         tasks << onLoadRefTaskFinished();

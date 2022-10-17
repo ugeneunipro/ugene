@@ -22,6 +22,8 @@
 	Please send bug reports, comments etc. to:
 	timolassmann@gmail.com
 */
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
 
 #include "kalign2.h"
 

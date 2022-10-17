@@ -36,6 +36,9 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include <signal.h>
 #include <ctype.h>
 #include <string.h> /* strcmp() */

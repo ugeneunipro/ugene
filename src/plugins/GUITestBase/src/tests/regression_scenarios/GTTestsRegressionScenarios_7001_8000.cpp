@@ -1761,6 +1761,17 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7459) {
+    // Check that UGENE can fetch remote file as a reference for the generator task.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7459.fa");
+    model.referenceUrl = "https://raw.githubusercontent.com/ugeneunipro/ugene/master/data/samples/FASTA/human_T1.fa";
+    GTUtilsDialog::add(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7460) {
     // Check that UGENE can open an alignment of [1_000 x 10_000] fast enough.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7460.fa");
