@@ -4060,12 +4060,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="91"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="92"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="104"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="105"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -4149,28 +4149,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastWithExtFileRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="145"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="147"/>
         <source>Select input file</source>
         <translation>Выберите входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="193"/>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="239"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="199"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="245"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="193"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="199"/>
         <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="239"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="245"/>
         <source>This file does not contain sequences.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastRunDialog.cpp" line="295"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="301"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
@@ -4210,6 +4210,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2::Bowtie2Task</name>
+    <message>
+        <location filename="../src/bowtie2/Bowtie2Task.cpp" line="288"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::BowtieAlignTask</name>
     <message>
         <location filename="../src/bowtie/BowtieTask.cpp" line="156"/>
@@ -4246,32 +4254,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="107"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="101"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="125"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="119"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Укажите одинаковое количество файлов с парными ридами.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="197"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="190"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="202"/>
         <source>Align reads with BWA Multitask</source>
         <translation>Align reads with BWA Multitask</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="238"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="243"/>
         <source>Saming reads with BWA Multitask</source>
         <translation>Saming reads with BWA Multitask</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="290"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="293"/>
         <source>Log is incomplete</source>
         <translation>Log is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="293"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="296"/>
         <source>Log is incorrect</source>
         <translation>Log is incorrect</translation>
     </message>
@@ -4279,17 +4292,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaMemAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="316"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="319"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="335"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="338"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Укажите одинаковое количество файлов с парными ридами.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="427"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="400"/>
+        <source>Index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="440"/>
         <source>Align reads with BWA-MEM Multitask</source>
         <translation>Align reads with BWA-MEM Multitask</translation>
     </message>
@@ -4313,12 +4331,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaSwAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="477"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="488"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="486"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="497"/>
         <source>BWA SW can not align paired reads</source>
         <translation>BWA SW can not align paired reads</translation>
     </message>
@@ -4334,12 +4352,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="629"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="640"/>
         <source>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</source>
         <translation>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="636"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="647"/>
         <source>Please, provide same number of files with downstream and upstream reads.</source>
         <translation>Укажите одинаковое количество файлов с парными ридами.</translation>
     </message>

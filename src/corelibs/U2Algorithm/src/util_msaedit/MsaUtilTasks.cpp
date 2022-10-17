@@ -45,8 +45,8 @@ namespace U2 {
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj)
     : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj) {
-    SAFE_POINT_EXT(nullptr != maObj, setError(tr("Invalid MSA object detected")), );
-    SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("Multiple alignment already has amino-acid alphabet")), );
+    SAFE_POINT_EXT(nullptr != maObj, setError("Invalid MSA object detected"), );
+    SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
     QList<DNATranslation*> translations =
         AppContext::getDNATranslationRegistry()->lookupTranslation(maObj->getAlphabet(), DNATranslationType_NUCL_2_AMINO);
@@ -57,14 +57,14 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* 
 
 TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& translationId)
     : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj) {
-    SAFE_POINT_EXT(nullptr != maObj, setError(tr("Invalid MSA object detected")), );
-    SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("Multiple alignment already has amino-acid alphabet")), );
+    SAFE_POINT_EXT(nullptr != maObj, setError("Invalid MSA object detected"), );
+    SAFE_POINT_EXT(maObj->getAlphabet()->isNucleic(), setError("Multiple alignment already has amino-acid alphabet"), );
 
     translation = AppContext::getDNATranslationRegistry()->lookupTranslation(translationId);
 }
 
 void TranslateMsa2AminoTask::run() {
-    SAFE_POINT_EXT(nullptr != translation, setError(tr("Invalid translation object")), );
+    SAFE_POINT_EXT(nullptr != translation, setError("Invalid translation object"), );
 
     QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getMultipleAlignment(), stateInfo, true);
     CHECK_OP(stateInfo, );
@@ -100,7 +100,7 @@ AlignInAminoFormTask::~AlignInAminoFormTask() {
 }
 
 void AlignInAminoFormTask::prepare() {
-    SAFE_POINT_EXT(nullptr != maObj, setError(tr("Invalid MSA object detected")), );
+    SAFE_POINT_EXT(nullptr != maObj, setError("Invalid MSA object detected"), );
     CHECK_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("AlignInAminoFormTask: Input alphabet is not nucleic!")), );
     CHECK_EXT(!maObj->getMultipleAlignment()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
 
@@ -109,17 +109,17 @@ void AlignInAminoFormTask::prepare() {
 
     // Create temporal document for the workflow run task
     const AppSettings* appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(nullptr != appSettings, setError(tr("Invalid applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != appSettings, setError("Invalid applications settings detected"), );
 
     UserAppsSettings* usersSettings = appSettings->getUserAppsSettings();
-    SAFE_POINT_EXT(nullptr != usersSettings, setError(tr("Invalid users applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != usersSettings, setError("Invalid users applications settings detected"), );
     const QString tmpDirPath = usersSettings->getCurrentProcessTemporaryDirPath();
     U2OpStatus2Log os;
     const QString fileName = GUrlUtils::prepareTmpFileLocation(tmpDirPath, "tmpAlignment", "fasta", os);
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     const Document* maDocument = maObj->getDocument();
-    SAFE_POINT_EXT(nullptr != maDocument, setError(tr("Invalid MSA document detected")), );
+    SAFE_POINT_EXT(nullptr != maDocument, setError("Invalid MSA document detected"), );
     DocumentFormat* docFormat = maDocument->getDocumentFormat();
     tmpDoc = docFormat->createNewLoadedDocument(iof, fileName, os);
     CHECK_OP(os, );
@@ -139,7 +139,7 @@ void AlignInAminoFormTask::prepare() {
 void AlignInAminoFormTask::run() {
     CHECK_OP(stateInfo, );
 
-    SAFE_POINT_EXT(nullptr != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")), );
+    SAFE_POINT_EXT(nullptr != clonedObj, setError("NULL clonedObj in AlignInAminoFormTask::prepare!"), );
 
     const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
     const QList<MultipleSequenceAlignmentRow> rows = newMsa->getMsaRows();
@@ -148,7 +148,7 @@ void AlignInAminoFormTask::run() {
     for (const MultipleSequenceAlignmentRow& row : qAsConst(rows)) {
         int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
         MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
-        SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())), );
+        SAFE_POINT_EXT(rowIdx >= 0, setError(QString("Can not find row %1 in original alignment.").arg(row->getName())), );
 
         QVector<U2MsaGap> gapsList;
         foreach (const U2MsaGap& gap, row->getGaps()) {

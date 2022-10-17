@@ -474,7 +474,7 @@
         <translation>Это не является файлом: </translation>
     </message>
     <message>
-        <location filename="../src/model/Schema.cpp" line="332"/>
+        <location filename="../src/model/Schema.cpp" line="333"/>
         <source>Duplicate alias &apos;%1&apos;. It has been removed</source>
         <translation>Повторяющийся псевдоним &apos;%1&apos;. Был удален</translation>
     </message>
@@ -871,27 +871,27 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1687"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1692"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2050"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2057"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2074"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2081"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2077"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2084"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2084"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2091"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
@@ -1358,19 +1358,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1317"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1340"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1376"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1321"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1344"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1380"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1355"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1359"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>файл(ы) рядом с исходным(и) &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1323"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1327"/>
         <source>the list of files</source>
         <translation>список файлов</translation>
     </message>
@@ -1892,42 +1892,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="161"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="164"/>
         <source>Workflow run</source>
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="175"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="178"/>
         <source>Unknown domain %1</source>
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="218"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="221"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="226"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="229"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="236"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="239"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="250"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="253"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="315"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="318"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="256"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="259"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
@@ -2040,9 +2040,8 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="264"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
-        <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
+        <translation type="vanished">Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
 </context>
 <context>
@@ -2078,22 +2077,22 @@
         <translation>Список значений</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="566"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="568"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>%1 actors in workflow have &apos;%2&apos; alias</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="643"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="645"/>
         <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
         <translation>%1 элемент %2. Текущая версия UGENE не поддерживает фильтрацию и группировку.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="651"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="653"/>
         <source>filter</source>
         <translation>filter</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="653"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="655"/>
         <source>grouper</source>
         <translation>grouper</translation>
     </message>
@@ -2110,47 +2109,47 @@
         <translation type="vanished">The free port %1.%2 is not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="678"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="681"/>
         <source>The required parameter %1.%2 is empty and not aliased</source>
         <translation>The required parameter %1.%2 is empty and not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="874"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="878"/>
         <source>Specified variable &quot;%%1%&quot; does not exist, please check the command again.</source>
         <translation>Указанная переменная &quot;%%1%&quot; не существует, проверьте команду.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="878"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="882"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="882"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="890"/>
         <source>Custom tool &quot;%1&quot;, specified for the &quot;%2&quot; element, didn&apos;t pass validation.</source>
         <translation>Custom tool &quot;%1&quot;, specified for the &quot;%2&quot; element, didn&apos;t pass validation.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1158"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1162"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1175"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1179"/>
         <source>Workflow output folder &apos;%1&apos; can&apos;t be accessed. Check that the folder exists and you have enough permissions to write to it, or choose another folder in the UGENE Application Settings.</source>
         <translation>Нет доступа к папке &apos;%1&apos;. Проверьте, что папка существует и у вас есть права на запиьс в неё или выберите другую папку в диалоге настроек UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1197"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1201"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1269"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1273"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

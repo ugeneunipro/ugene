@@ -45,7 +45,7 @@
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="171"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="140"/>
         <source>Smith-Waterman</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
@@ -340,22 +340,22 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="549"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="435"/>
         <source>Substitution matrix is empty</source>
         <translation>Substitution matrix is empty</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="759"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="598"/>
         <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
         <translation>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="762"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="601"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="854"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="638"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>
@@ -521,7 +521,7 @@
 <context>
     <name>U2::SWAlgorithmADVContext</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="147"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="116"/>
         <source>Find pattern [Smith-Waterman]...</source>
         <translation>Поиск подстроки (алгоритм Смита-Ватермана)...</translation>
     </message>
@@ -529,12 +529,12 @@
 <context>
     <name>U2::SWAlgorithmPlugin</name>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="68"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="60"/>
         <source>Optimized Smith-Waterman </source>
         <translation>Оптимизированный алгроитм Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmPlugin.cpp" line="68"/>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="60"/>
         <source>Various implementations of Smith-Waterman algorithm</source>
         <translation>Различные реализации алгоритма Смита-Ватермана</translation>
     </message>
@@ -542,17 +542,17 @@
 <context>
     <name>U2::SWAlgorithmTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="195"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="162"/>
         <source>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</source>
         <translation>Needed amount of memory for this task is %1 MB, but it limited to %2 MB.</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="198"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="165"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="413"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="303"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>

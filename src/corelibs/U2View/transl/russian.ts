@@ -1264,27 +1264,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1480"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1610"/>
         <source>Expand</source>
         <translation>Раскрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1483"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1613"/>
         <source>Collapse</source>
         <translation>Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="52"/>
+        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="41"/>
         <source>Save As</source>
         <translation>Сохранить как</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="61"/>
+        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="50"/>
         <source>Replace file</source>
         <translation>Заменить файл</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="61"/>
+        <location filename="../src/ov_phyltree/TreeViewerUtils.cpp" line="50"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
@@ -1336,7 +1336,7 @@ Do you want to replace it?</source>
         <translation>Экспорт консенсусной последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/GraphicsButtonItem.cpp" line="52"/>
+        <location filename="../src/ov_phyltree/item/TvNodeItem.cpp" line="53"/>
         <source>Left click to select the branch
 Double-click to collapse the branch</source>
         <translation>Левый щелчок мышью выделяет ветвь, двойной щелчок сворачивает ветвь</translation>
@@ -1547,9 +1547,9 @@ Double-click to collapse the branch</source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="64"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="103"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="133"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="56"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="81"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp" line="106"/>
         <source>Tree Settings</source>
         <translation>Настройки дерева</translation>
     </message>
@@ -1628,9 +1628,8 @@ Double-click to collapse the branch</source>
         <translation>Поиск в выравнивании</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/CreateBranchesTask.h" line="37"/>
         <source>Rendering tree view</source>
-        <translation>Отрисовка дерева</translation>
+        <translation type="vanished">Отрисовка дерева</translation>
     </message>
     <message>
         <location filename="../src/ov_mca/reads_tab/McaReadsTabFactory.cpp" line="71"/>
@@ -2065,103 +2064,114 @@ Double-click to collapse the branch</source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="78"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="75"/>
         <source>Tree view</source>
         <translation>Дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="120"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="113"/>
         <source>Show names</source>
         <translation>Показать имена</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="127"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="120"/>
         <source>Show distances</source>
         <translation>Показать расстояния</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="134"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="127"/>
         <source>Show node labels</source>
         <translation>Показать метки узлов</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="141"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="134"/>
         <source>Align labels</source>
         <translation>Выровнять надписи</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="163"/>
         <source>Show font settings</source>
-        <translation>Показать настройки шрифта</translation>
+        <translation type="vanished">Показать настройки шрифта</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="192"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="161"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="199"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="168"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="229"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="198"/>
         <source>Color  </source>
         <translation>Цвет  </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="262"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="231"/>
         <source>Attributes</source>
         <translation>Аттрибуты</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="288"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="256"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="300"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="271"/>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="316"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="289"/>
         <source>U</source>
         <translation>U</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="345"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="348"/>
+        <source>Expansion </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="362"/>
+        <source>Curvature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="440"/>
+        <source>Show nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="476"/>
         <source>Font size</source>
         <translation>Размер шрифта</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="374"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="462"/>
         <source>Scale range</source>
         <translation>Диапазон шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="381"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="544"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="355"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="469"/>
         <source>Line width</source>
         <translation>Толщина линии</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="465"/>
         <source>Width</source>
-        <translation>Ширина</translation>
+        <translation type="vanished">Ширина</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="472"/>
         <source>Height</source>
-        <translation>Высота</translation>
+        <translation type="vanished">Высота</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="509"/>
         <source>Show pen settings</source>
-        <translation>Показать настройки пера</translation>
+        <translation type="vanished">Показать настройки пера</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="561"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="318"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
@@ -2174,22 +2184,24 @@ Double-click to collapse the branch</source>
         <translation>Настройки дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="76"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="22"/>
+        <source>Tree view</source>
+        <translation type="unfinished">Дерево</translation>
+    </message>
+    <message>
         <source>Width</source>
-        <translation>Ширина</translation>
+        <translation type="vanished">Ширина</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="83"/>
         <source>Height (Rectangular)</source>
-        <translation>Высота (для прямоугольного)</translation>
+        <translation type="vanished">Высота (для прямоугольного)</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="93"/>
         <source>Tree View</source>
-        <translation>Тип дерева</translation>
+        <translation type="vanished">Тип дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="103"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.ui" line="35"/>
         <source>Scale Range</source>
         <translation>Диапазон шкалы</translation>
     </message>
@@ -2337,7 +2349,7 @@ Double-click to collapse the branch</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="690"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="689"/>
         <source>Zoom to range</source>
         <translation>Выбор масштаба</translation>
     </message>
@@ -2557,17 +2569,17 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AddTreeWidget</name>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="414"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="380"/>
         <source>There are no displayed trees so settings are hidden.</source>
         <translation>Настройки скрыты потому, что нет открытого дерева.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="422"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="388"/>
         <source>Open tree</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="431"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="397"/>
         <source>Build tree</source>
         <translation>Построить</translation>
     </message>
@@ -2640,12 +2652,12 @@ Double-click to collapse the branch</source>
         <translation>Sequence context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="316"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="317"/>
         <source>The sequence doesn&apos;t have any annotations.</source>
         <translation>Последовательность не имеет аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="318"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="319"/>
         <source>The sequences do not have any annotations.</source>
         <translation>Последовательности не имеют аннотаций.</translation>
     </message>
@@ -2728,7 +2740,7 @@ Double-click to collapse the branch</source>
         <translation>Перейти к позиции</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1153"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1154"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
@@ -2784,68 +2796,68 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AnnotationsTreeView</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="128"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="127"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="128"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="127"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="189"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="188"/>
         <source>Selected objects with annotations from view</source>
         <translation>Удалить выбранные объекты с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1185"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1184"/>
         <source>Copy qualifier text</source>
         <translation>Копировать значение квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="202"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1189"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="201"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1188"/>
         <source>Copy qualifier URL</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="205"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1193"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="204"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1192"/>
         <source>Toggle column</source>
         <translation>Переключить столбец</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="209"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="208"/>
         <source>Hide column</source>
         <translation>Убрать столбец</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="213"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="212"/>
         <source>Find qualifier...</source>
         <translation>Поиск квалификатора...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="218"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="217"/>
         <source>Invert annotation selection</source>
         <translation>Инвертировать выделенную аннотацию</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="222"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="848"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="221"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="847"/>
         <source>Copy column text</source>
         <translation>Копировать значение</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="225"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="862"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="224"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="861"/>
         <source>copy column URL</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="228"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="454"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="501"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="227"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="453"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="500"/>
         <source>Annotation</source>
         <translation>Аннотация</translation>
     </message>
@@ -2865,78 +2877,78 @@ Double-click to collapse the branch</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="186"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="185"/>
         <source>Objects with annotations...</source>
         <translation>Добавить объекты с аннотациями...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="128"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="127"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="196"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="195"/>
         <source>Selected annotations and qualifiers</source>
         <translation>Удалить выбранные аннотации и квалификаторы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="235"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="234"/>
         <source>Qualifier...</source>
         <translation>Добавить квалификатор...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="246"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="245"/>
         <source>Make auto-annotations persistent</source>
         <translation>Сделать автоаннотации постоянными</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="448"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="447"/>
         <source>Group</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="451"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="450"/>
         <source>Qualifier</source>
         <translation>Квалификатор</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="622"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="621"/>
         <source>At least one dragged annotation is out of the sequence range!</source>
         <translation>Как минимум одна из аннотаций вне диапазона последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="854"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="853"/>
         <source>Copy column &apos;%1&apos; text</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="857"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="856"/>
         <source>Copy &apos;%1&apos; annotation location</source>
         <translation>Копировать позицию аннотации &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="866"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="865"/>
         <source>Copy column &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="891"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1193"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="890"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1192"/>
         <source>Hide &apos;%1&apos; column</source>
         <translation>Скрыть столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1185"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1184"/>
         <source>Copy qualifier &apos;%1&apos; value</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1189"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1188"/>
         <source>Copy qualifier &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1193"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1192"/>
         <source>Add &apos;%1&apos; column</source>
         <translation>Добавить столбец &quot;%1&quot;</translation>
     </message>
@@ -3937,9 +3949,8 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateRectangularBranchesTask</name>
     <message>
-        <location filename="../src/ov_phyltree/CreateRectangularBranchesTask.cpp" line="72"/>
         <source>An internal error: a tree is in an incorrect state, can&apos;t create a branch</source>
-        <translation>An internal error: a tree is in an incorrect state, can&apos;t create a branch</translation>
+        <translation type="vanished">An internal error: a tree is in an incorrect state, can&apos;t create a branch</translation>
     </message>
 </context>
 <context>
@@ -4036,12 +4047,12 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateTreeViewerTask</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="233"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="217"/>
         <source>Open tree viewer</source>
         <translation>Открыть дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="239"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="221"/>
         <source>Invalid tree object detected</source>
         <translation>Invalid tree object detected</translation>
     </message>
@@ -4057,13 +4068,13 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::DNAStatisticsTask</name>
     <message>
-        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="336"/>
+        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="337"/>
         <source>Calculate sequence statistics</source>
         <translation>Вычислить статистику последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="344"/>
-        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="360"/>
+        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="345"/>
+        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="361"/>
         <source>Alphabet is NULL</source>
         <translation>Alphabet is NULL</translation>
     </message>
@@ -5797,44 +5808,44 @@ Directory Path: %1</translation>
 <context>
     <name>U2::MSAEditorTreeManager</name>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="109"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="108"/>
         <source>Calculate phy tree</source>
         <translation>Построение филогенетического дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="109"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="108"/>
         <source>No algorithms for building phylogenetic tree are available.</source>
         <translation>Нет доступных алгоритмов для построения дерева.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="269"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="267"/>
         <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
         <translation>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="302"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="300"/>
         <source>Select files to open...</source>
         <translation>Выберите файлы...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="319"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="317"/>
         <source>Failed to load document: %1</source>
         <translation>Не удалось загрузить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="324"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="322"/>
         <source>Tree loading task is finished with error: %1</source>
         <translation>Задача загрузки дерева завершена с ошибкой: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="332"/>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="346"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="330"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="344"/>
         <source>Document contains no tree objects!</source>
         <translation>Документ не содержит объектов дерева!</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="365"/>
         <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="367"/>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="369"/>
         <source>Incorrect reference to the MSAEditor</source>
         <translation>Incorrect reference to the MSAEditor</translation>
     </message>
@@ -5842,22 +5853,22 @@ Directory Path: %1</translation>
 <context>
     <name>U2::MSAEditorTreeViewer</name>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="62"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="63"/>
         <source>MSAEditor tree toolbar</source>
         <translation>Панель опций редактора деревьев</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="125"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="121"/>
         <source>Disable Tree and Alignment synchronization</source>
         <translation>Выключить синхронизацию дерева и выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="125"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="121"/>
         <source>Enable Tree and Alignment synchronization</source>
         <translation>Синхронизовать дерево и выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="71"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp" line="72"/>
         <source>Refresh tree</source>
         <translation>Обновить дерево</translation>
     </message>
@@ -7322,7 +7333,7 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::OpenSavedTreeViewerTask</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="149"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="143"/>
         <source>Phylogeny tree object not found: %1</source>
         <translation>Phylogeny tree object not found: %1</translation>
     </message>
@@ -7354,12 +7365,12 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::OpenTreeViewerTask</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="95"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="89"/>
         <source>Opening tree viewer for object %1</source>
         <translation>Открытие визуализатора филогенетических деревьев %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="90"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="84"/>
         <source>Phylogenetic tree object not found</source>
         <translation>Филогенетическое дерево не найдено</translation>
     </message>
@@ -7385,12 +7396,12 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::OverviewRenderArea</name>
     <message>
-        <location filename="../src/ov_sequence/Overview.cpp" line="486"/>
+        <location filename="../src/ov_sequence/Overview.cpp" line="487"/>
         <source>Overview is NULL</source>
         <translation>Overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/Overview.cpp" line="488"/>
+        <location filename="../src/ov_sequence/Overview.cpp" line="489"/>
         <source>ADVSingleSequenceWidget is NULL</source>
         <translation>ADVSingleSequenceWidget is NULL</translation>
     </message>
@@ -8167,12 +8178,12 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::TextSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="36"/>
+        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="38"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="37"/>
+        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="39"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -8180,61 +8191,58 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::TreeOptionsWidget</name>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="115"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="116"/>
         <source>General</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="118"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="119"/>
         <source>Labels</source>
         <translation>Названия</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="121"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="125"/>
+        <source>Nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="128"/>
         <source>Scale Bar</source>
         <translation>Шкала</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="124"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="122"/>
         <source>Branches</source>
         <translation>Ветви</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="137"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="363"/>
         <source>Hide font settings</source>
-        <translation>Скрыть настройки шрифта</translation>
+        <translation type="vanished">Скрыть настройки шрифта</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="137"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="363"/>
         <source>Show font settings</source>
-        <translation>Показать настройки шрифта</translation>
+        <translation type="vanished">Показать настройки шрифта</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="139"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="368"/>
         <source>Hide pen settings</source>
-        <translation>Скрыть настройки пера</translation>
+        <translation type="vanished">Скрыть настройки пера</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="139"/>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="368"/>
         <source>Show pen settings</source>
-        <translation>Показать настройки пера</translation>
+        <translation type="vanished">Показать настройки пера</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="283"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="292"/>
         <source>Rectangular</source>
         <translation>Прямоугольное</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="284"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="293"/>
         <source>Circular</source>
         <translation>Круговое</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="285"/>
+        <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="294"/>
         <source>Unrooted</source>
         <translation>Неукорененное</translation>
     </message>
@@ -8252,17 +8260,17 @@ Please, load the corresponding plugins.</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="94"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="86"/>
         <source>Default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="98"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="90"/>
         <source>Phylogram</source>
         <translation>Филограмма</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="102"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="94"/>
         <source>Cladogram</source>
         <translation>Кладограмма</translation>
     </message>
@@ -8270,84 +8278,109 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::TreeViewer</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="130"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="128"/>
         <source>Tree Settings...</source>
         <translation>Настройки дерева...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="135"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="133"/>
         <source>Rectangular</source>
         <translation>Прямоугольное</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="140"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="138"/>
         <source>Circular</source>
         <translation>Круговое</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="144"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="142"/>
         <source>Unrooted</source>
         <translation>Неукорененное</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="149"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="147"/>
         <source>Branch Settings...</source>
         <translation>Настройки ветвей дерева...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="151"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="149"/>
         <source>Collapse</source>
         <translation>Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="153"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="151"/>
         <source>Reroot tree</source>
         <translation>Изменить корни</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="155"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="153"/>
         <source>Swap Siblings</source>
         <translation>Поменять ветви местами</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="159"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="157"/>
         <source>Show Names</source>
         <translation>Показывать имена</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="164"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="163"/>
         <source>Show Node Labels</source>
         <translation>Показать метки узлов</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="169"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="166"/>
         <source>Show Distances</source>
         <translation>Показывать расстояния</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="175"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="172"/>
         <source>Formatting...</source>
         <translation>Форматирование...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="179"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="176"/>
         <source>Align Labels</source>
         <translation>Выровнять надписи</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="184"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="181"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="185"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="183"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="186"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="185"/>
+        <source>Reset Zoom</source>
+        <translation type="unfinished">Вернуться к приближению &quot;по умолчанию&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="191"/>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="194"/>
+        <source>Save visible area to file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="197"/>
+        <source>Save whole tree as SVG...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="246"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="325"/>
+        <source>Tree image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reset Zooming</source>
-        <translation>Восстановить размер по умолчанию</translation>
+        <translation type="vanished">Восстановить размер по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="189"/>
@@ -8355,32 +8388,28 @@ Please, load the corresponding plugins.</source>
         <translation>Печатать дерево...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="192"/>
         <source>Screen Capture...</source>
-        <translation>Снимок экрана...</translation>
+        <translation type="vanished">Снимок экрана...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="194"/>
         <source>Whole Tree as SVG...</source>
-        <translation>Все дерево в SVG...</translation>
+        <translation type="vanished">Все дерево в SVG...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="215"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="286"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="220"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="292"/>
         <source>Layout</source>
         <translation>Представление дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="226"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="300"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="231"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="306"/>
         <source>Show Labels</source>
         <translation>Показывать надписи</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="240"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="319"/>
         <source>Export Tree Image</source>
-        <translation>Экспортировать изображение дерева</translation>
+        <translation type="vanished">Экспортировать изображение дерева</translation>
     </message>
 </context>
 <context>
@@ -8399,31 +8428,50 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::TreeViewerUI</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="427"/>
         <source>Export Tree Image</source>
-        <translation>Экспортировать изображение дерева</translation>
+        <translation type="vanished">Экспортировать изображение дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1114"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1138"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1144"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="523"/>
+        <source>Tree image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1226"/>
+        <source>Image is too large. Please zoom out.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1231"/>
+        <source>Failed to copy image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1256"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1280"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1286"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1114"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1256"/>
         <source>Selected dir is read only: %1</source>
         <translation>Указанная директория доступна только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1138"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1280"/>
         <source>Failed to generate SVG image.</source>
         <translation>Невозможно создать SVG изображение.</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1144"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1286"/>
         <source>Failed to open file for writing: %1</source>
         <translation>Невозможно открыть файл для записи: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1366"/>
+        <source>Failed to build tree layout.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

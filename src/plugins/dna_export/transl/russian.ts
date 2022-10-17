@@ -537,12 +537,12 @@
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="639"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
         <source>Create alignment</source>
         <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="641"/>
         <source>Save alignment to file</source>
         <translation>Сохранить выравнивание в файл</translation>
     </message>
@@ -582,7 +582,7 @@
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="495"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="551"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="606"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="607"/>
         <source>Alignment is too large</source>
         <translation>Слишком большой размер выравнивания</translation>
     </message>
@@ -1173,12 +1173,12 @@
 <context>
     <name>U2::ExportSelectedSeqRegionsTask</name>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="189"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="190"/>
         <source>Export selected regions from a sequence task</source>
         <translation>Export selected regions from a sequence task</translation>
     </message>
     <message>
-        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="195"/>
+        <location filename="../src/ExportSelectedSeqRegionsTask.cpp" line="196"/>
         <source>Invalid annotation table detected</source>
         <translation>Invalid annotation table detected</translation>
     </message>
@@ -1691,12 +1691,12 @@ Please assign a column role by clicking on a column header in &apos;Results prev
         <translation>Импортировать аннотации из CSV</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="127"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="128"/>
         <source>Annotations can&apos;t be added to the document %1</source>
         <translation>Аннотации не могут быть добавлены к документу %1</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="131"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="132"/>
         <source>Document is locked and can&apos;t be modified %1</source>
         <translation>Документ заблокирован и не может быть изменён %1</translation>
     </message>
@@ -2030,42 +2030,42 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::ReadCSVAsAnnotationsTask</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="190"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="192"/>
         <source>Parse CSV file %1</source>
         <translation>Разобрать CSV %1</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="245"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="247"/>
         <source>Invalid annotation name: &apos;%1&apos;</source>
         <translation>Неправильное имя аннотации: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="253"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="255"/>
         <source>Start offset is not numeric: &apos;%1&apos;</source>
         <translation>Смещение начала не является числом: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="260"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="262"/>
         <source>End offset is not numeric: &apos;%1&apos;</source>
         <translation>Смещение конца не является числом: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="267"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="269"/>
         <source>Length is not numeric: &apos;%1&apos;</source>
         <translation>Длина не является числом: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="305"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="307"/>
         <source>Invalid location: start: %1  len: %2, in line :%3, ignoring</source>
         <translation>Неверная позиция: начало: %1  длина: %2, в строке :%3, пропуск</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="315"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="317"/>
         <source>Can&apos;t parse line: &apos;%1&apos;, error = %2, ignoring</source>
         <translation>Невозможно разобрать строку: &apos;%1&apos;, ошибка = %2, пропуск</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="396"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="398"/>
         <source>Script result is not an array of strings!</source>
         <translation>Script result is not an array of strings!</translation>
     </message>

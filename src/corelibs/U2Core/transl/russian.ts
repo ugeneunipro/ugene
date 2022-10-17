@@ -74,9 +74,8 @@
         <translation>Трансляция</translation>
     </message>
     <message>
-        <location filename="../src/datatype/PhyTree.cpp" line="79"/>
         <source>UGENE internal error</source>
-        <translation>Внутренняя ошибка UGENE</translation>
+        <translation type="vanished">Внутренняя ошибка UGENE</translation>
     </message>
     <message>
         <location filename="../src/dbi/U2DbiRegistry.cpp" line="488"/>
@@ -1222,65 +1221,72 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DatatypeSerializers</name>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="215"/>
         <source>Invalid tree topology</source>
-        <translation>Invalid tree topology</translation>
+        <translation type="vanished">Invalid tree topology</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="321"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="307"/>
         <source>Incorrect tree parsing state</source>
         <translation>Incorrect tree parsing state</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="324"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="310"/>
         <source>Unexpected weight: %1</source>
         <translation>Неожиданный вес: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="328"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="314"/>
         <source>Error parsing weight: %1</source>
         <translation>Ошибка парсинга веса: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="335"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="356"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="321"/>
         <source>Tree node stack is empty</source>
         <translation>Tree node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="347"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="333"/>
         <source>Error parsing nodeValue: %1</source>
         <translation>Error parsing nodeValue: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="357"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="375"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="340"/>
+        <source>Missing nodes in node stack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="341"/>
+        <source>Missing branches in branch stack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="359"/>
         <source>Branch node stack is empty</source>
         <translation>Branch node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="359"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="343"/>
         <source>Unexpected new sibling %1</source>
         <translation>Неожиданный новый родственник %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="372"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="356"/>
         <source>Unexpected closing bracket :%1</source>
         <translation>Неожиданные закрывающие скобки: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="380"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="403"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="364"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="386"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="415"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="397"/>
         <source>Empty file</source>
         <translation>Пустой файл</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="437"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="419"/>
         <source>Unexpected count of trees objects in input: %1</source>
         <translation>Unexpected count of trees objects in input: %1</translation>
     </message>
@@ -2742,42 +2748,42 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::TripleStoreL10N</name>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="85"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="81"/>
         <source>Database is already opened!</source>
         <translation>База данных уже открыта!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="89"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="85"/>
         <source>Illegal database state: %1</source>
         <translation>Нелегальное состояние базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="94"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="90"/>
         <source>URL is not specified</source>
         <translation>Путь не задан</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="105"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="101"/>
         <source>Error opening SQLite database: %1!</source>
         <translation>Ошибка открытия базы данных SQLite: %1!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="151"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="147"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Ошибка проверки базы данных SQLite: %1!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="169"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="165"/>
         <source>Database is already closed!</source>
         <translation>База данных уже закрыта!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="173"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="169"/>
         <source>Illegal database state %1!</source>
         <translation>Нелегальное состояние базы данных: %1!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="183"/>
+        <location filename="../src/dbi/U2SQLiteTripleStore.cpp" line="179"/>
         <source>Failed to close triple store database: %1</source>
         <translation>Не удалось закрыть тройное хранилище базы данных:%1</translation>
     </message>

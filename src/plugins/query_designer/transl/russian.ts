@@ -102,9 +102,9 @@ p, li { white-space: pre-wrap; }
         <translation>Ошибка загрузки схемы. Схема не содержит группу %1.</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="114"/>
-        <location filename="../src/QDGroupsEditor.cpp" line="118"/>
-        <location filename="../src/QDGroupsEditor.cpp" line="157"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="115"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="119"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="158"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
@@ -657,47 +657,47 @@ p, li { white-space: pre-wrap; }
         <translation>Задать число элементов</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="110"/>
         <source>Create element group</source>
         <translation>Создать группу элементов</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="110"/>
         <source>Group name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="114"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="115"/>
         <source>Group &apos;%1&apos; already exists!</source>
         <translation>Группа &apos;%1&apos; уже существует!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="118"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="119"/>
         <source>Invalid group name!</source>
         <translation>Недопустимое имя группы!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="149"/>
         <source>Add Element To Group &apos;%1&apos;</source>
         <translation>Добавить элемент к группе &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="149"/>
         <source>Element:</source>
         <translation>Элемент:</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="157"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="158"/>
         <source>Actor is already in group!</source>
         <translation>Элемент уже присутствует в группе!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="180"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="181"/>
         <source>Set required number for &apos;%1&apos;</source>
         <translation>Задать минимальное число элементов группы &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="181"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="182"/>
         <source>Number:</source>
         <translation>Число:</translation>
     </message>

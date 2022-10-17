@@ -1018,22 +1018,22 @@ bowtie index file</source>
 <context>
     <name>U2::GroupBox</name>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="909"/>
+        <location filename="../src/wizard/WizardController.cpp" line="910"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="914"/>
+        <location filename="../src/wizard/WizardController.cpp" line="915"/>
         <source>Hide</source>
         <translation>Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="934"/>
+        <location filename="../src/wizard/WizardController.cpp" line="935"/>
         <source>additional</source>
         <translation>дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/wizard/WizardController.cpp" line="938"/>
+        <location filename="../src/wizard/WizardController.cpp" line="939"/>
         <source> settings</source>
         <translation> настройки</translation>
     </message>
@@ -1303,12 +1303,12 @@ Set up the folder:</source>
         <translation>Invalid users applications settings detected</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="367"/>
+        <location filename="../src/QDScheduler.cpp" line="368"/>
         <source>No results have been found for this scheme</source>
         <translation>Для этой схемы результатов не найдено</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="484"/>
+        <location filename="../src/QDScheduler.cpp" line="485"/>
         <source>Too many results have been found for this scheme. Try to set stricter search conditions.</source>
         <translation>Было найдено очень много результатов для этой схемы. Попробуйте изменить условия поиска.</translation>
     </message>
@@ -1316,7 +1316,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDTask</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="755"/>
+        <location filename="../src/QDScheduler.cpp" line="758"/>
         <source>Query task: %1</source>
         <translation>Запрос: %1</translation>
     </message>

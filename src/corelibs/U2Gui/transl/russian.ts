@@ -843,14 +843,12 @@
 <context>
     <name>FolderNameDialog</name>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation>Диалог</translation>
+        <translation type="vanished">Диалог</translation>
     </message>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.ui" line="26"/>
         <source>Enter the folder name:</source>
-        <translation>Введите имя папки:</translation>
+        <translation type="vanished">Введите имя папки:</translation>
     </message>
 </context>
 <context>
@@ -1123,8 +1121,12 @@
     </message>
     <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="128"/>
+        <source>Can&apos;t export document to its own file. Please select another file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>You&apos;re trying to export document to its own destination, use option &quot;Save document...&quot; instead.</source>
-        <translation>Вы пытаетесь экспортировать документ сам в себя, вместо этого используйте опцию «Сохранить документ...».</translation>
+        <translation type="vanished">Вы пытаетесь экспортировать документ сам в себя, вместо этого используйте опцию «Сохранить документ...».</translation>
     </message>
     <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="136"/>
@@ -1164,16 +1166,19 @@ Remove it from the project first.</source>
         <translation>Error! No object DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1002"/>
         <source>Confirm Deletion</source>
-        <translation>Подтверждение удаления</translation>
+        <translation type="vanished">Подтверждение удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1003"/>
         <source>Are you sure you want to delete items in Recycle Bin?
 The items cannot be recovered once deleted.</source>
-        <translation>Вы уверены, что хотите удалить элементы в корзину?
+        <translation type="vanished">Вы уверены, что хотите удалить элементы в корзину?
 Элементы не могут быть восстановлены после удаления.</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="90"/>
+        <source>Unable to open view because of active modal widget.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1997,17 +2002,17 @@ Are you sure you want to open all of them?</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="127"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="128"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="127"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="128"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="173"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="174"/>
         <source>Attaching a sequence to an annotation was ignored. The annotation is on the complementary strand. Can not generate a complementary sequence for a non-nucleic alphabet.</source>
         <translation>Прикрепление последовательности к аннотации не было выполнено. Аннотация находится в комплементарной цепи. Невозможно сгенерировать комплементарную последовательность для алфавита, который не является нуклеиновым.</translation>
     </message>
@@ -2146,14 +2151,12 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FolderNameDialog</name>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.cpp" line="34"/>
         <source>Add Folder</source>
-        <translation>Добавить папку</translation>
+        <translation type="vanished">Добавить папку</translation>
     </message>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.cpp" line="34"/>
         <source>Rename Folder</source>
-        <translation>Переименовать папку</translation>
+        <translation type="vanished">Переименовать папку</translation>
     </message>
 </context>
 <context>
@@ -2458,7 +2461,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::LoadUnloadedDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="64"/>
+        <location filename="../src/OpenViewTask.cpp" line="66"/>
         <source>Load document: &apos;%1&apos;</source>
         <translation>Загрузка документа: %1</translation>
     </message>
@@ -2685,17 +2688,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectFileUtils</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="255"/>
+        <location filename="../src/ProjectParsing.cpp" line="256"/>
         <source>Project version is not a double value</source>
         <translation>Версия проекта не является вещественным значением</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="260"/>
+        <location filename="../src/ProjectParsing.cpp" line="261"/>
         <source>Project file was created by a newer version of UGENE. Please update UGENE.</source>
         <translation>Файл проекта был создан более ранней версией UGENE. Пожалуйста, обновите UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="266"/>
+        <location filename="../src/ProjectParsing.cpp" line="267"/>
         <source>Not a valid UGENE project file %1</source>
         <translation>Некорректный файл проекта UGENE: &quot;%1&quot;</translation>
     </message>
@@ -2703,12 +2706,12 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="337"/>
+        <location filename="../src/ProjectParsing.cpp" line="338"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Невозможно найти файл проекта: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="341"/>
+        <location filename="../src/ProjectParsing.cpp" line="342"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Найдены одинаковые документы: %1, игнорируется</translation>
     </message>
@@ -2717,7 +2720,7 @@ Are you sure you want to open all of them?</source>
         <translation type="vanished">Документ базы данных: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="389"/>
+        <location filename="../src/ProjectParsing.cpp" line="390"/>
         <source>The last loaded state was locked by format</source>
         <translation>Крайнее загруженное состояние было заблокировано форматом</translation>
     </message>
@@ -2725,113 +2728,106 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="504"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="466"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="276"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="270"/>
         <source>Import to the database...</source>
         <translation>Импортировать в базу данных...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="276"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="270"/>
         <source>Import to the folder...</source>
         <translation>Импортировать в папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="664"/>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="694"/>
         <source>Unable to Restore</source>
-        <translation>Невозможно восстановить</translation>
+        <translation type="vanished">Невозможно восстановить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="664"/>
         <source>UGENE is unable to restore some object from Recycle Bin because its original location does not exist. You can still restore the objects by dragging them with mouse from Recycle Bin.</source>
-        <translation>UGENE не может восстановить некоторые объекты из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить объекты путем перетаскивания мышью из корзины.</translation>
+        <translation type="vanished">UGENE не может восстановить некоторые объекты из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить объекты путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="694"/>
         <source>UGENE is unable to restore some folder from Recycle Bin because its original location does not exist. You can still restore the folders by dragging them with mouse from Recycle Bin.</source>
-        <translation>UGENE не может восстановить некоторые папки из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить папки путем перетаскивания мышью из корзины.</translation>
+        <translation type="vanished">UGENE не может восстановить некоторые папки из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить папки путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="760"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="592"/>
         <source>Select a database to import anything</source>
         <translation>Выберите базу данных для того, чтобы что-то импортировать</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="801"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="633"/>
         <source>No object to add to view</source>
         <translation>Нет объектов для добавления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="807"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="639"/>
         <source>No object to remove from view</source>
         <translation>Нет объектов для удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="863"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="695"/>
         <source>Add object to document...</source>
         <translation>Добавить объект в документ...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="868"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="700"/>
         <source>Import...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="873"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="705"/>
         <source>Load selected document(s)</source>
         <translation>Загрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="880"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="712"/>
         <source>Unload selected document(s)</source>
         <translation>Выгрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="899"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="731"/>
         <source>Remove selected items</source>
         <translation>Удалить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="905"/>
         <source>Add folder...</source>
-        <translation>Добавить папку...</translation>
+        <translation type="vanished">Добавить папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="910"/>
         <source>Restore selected items</source>
-        <translation>Восстановить выбранные элементы</translation>
+        <translation type="vanished">Восстановить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="914"/>
         <source>Empty recycle bin</source>
-        <translation>Очистить корзину</translation>
+        <translation type="vanished">Очистить корзину</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1019"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="824"/>
         <source>Unable to Remove</source>
         <translation>Невозможно удалить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1020"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="825"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="892"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="724"/>
         <source>Rename...</source>
         <translation>Переименовать...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="884"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="716"/>
         <source>Lock document for editing</source>
         <translation>Заблокировать внесение изменений</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="888"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="720"/>
         <source>Unlock document for editing</source>
         <translation>Снять блокировку изменений</translation>
     </message>
@@ -2852,29 +2848,29 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1012"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="900"/>
         <source>[unloaded] </source>
         <translation>[выгружен] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1015"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1114"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="903"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="994"/>
         <source>[loading] </source>
         <translation>[загрузка] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1017"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1116"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="905"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="996"/>
         <source>[loading %1%] </source>
         <translation>[загрузка %1%] </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1040"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="926"/>
         <source>Locks:</source>
         <translation>Блокировки:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1043"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="929"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>

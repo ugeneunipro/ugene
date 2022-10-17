@@ -40,36 +40,32 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="152"/>
-        <location filename="../src/BAMUtils.cpp" line="156"/>
+        <location filename="../src/BAMUtils.cpp" line="147"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="160"/>
-        <location filename="../src/BAMUtils.cpp" line="164"/>
+        <location filename="../src/BAMUtils.cpp" line="151"/>
         <source>Fail to read the header from the file: &quot;%1&quot;</source>
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="168"/>
+        <location filename="../src/BAMUtils.cpp" line="155"/>
         <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
         <translation>Невозможно построить индекс для файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="172"/>
-        <location filename="../src/BAMUtils.cpp" line="176"/>
+        <location filename="../src/BAMUtils.cpp" line="159"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="180"/>
-        <location filename="../src/BAMUtils.cpp" line="184"/>
+        <location filename="../src/BAMUtils.cpp" line="163"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="874"/>
+        <location filename="../src/BAMUtils.cpp" line="812"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
@@ -85,7 +81,7 @@
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="270"/>
-        <location filename="../src/FastaFormat.cpp" line="301"/>
+        <location filename="../src/FastaFormat.cpp" line="300"/>
         <location filename="../src/FastqFormat.cpp" line="414"/>
         <source>Document sequences were merged</source>
         <translation>Последовательности были соединены</translation>
@@ -438,37 +434,36 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="245"/>
+        <location filename="../src/BAMUtils.cpp" line="226"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="402"/>
+        <location filename="../src/BAMUtils.cpp" line="376"/>
         <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
         <translation>Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="417"/>
+        <location filename="../src/BAMUtils.cpp" line="391"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="434"/>
         <source>Remove PCR duplicate in BAM file: &quot;%1&quot;. Resulting  file is: &quot;%2&quot;</source>
-        <translation>Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
+        <translation type="vanished">Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="558"/>
+        <location filename="../src/BAMUtils.cpp" line="496"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="562"/>
+        <location filename="../src/BAMUtils.cpp" line="500"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="815"/>
+        <location filename="../src/BAMUtils.cpp" line="753"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -926,7 +921,7 @@
     <name>U2::Document</name>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
-        <location filename="../src/FastaFormat.cpp" line="277"/>
+        <location filename="../src/FastaFormat.cpp" line="276"/>
         <location filename="../src/FastqFormat.cpp" line="400"/>
         <location filename="../src/PDWFormat.cpp" line="152"/>
         <source>Document is empty.</source>
@@ -1296,38 +1291,37 @@
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="268"/>
         <source>Sequence #%1 is processed</source>
-        <translation>Sequence #%1 is processed</translation>
+        <translation type="vanished">Sequence #%1 is processed</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="272"/>
+        <location filename="../src/FastaFormat.cpp" line="271"/>
         <source>The file format is invalid.</source>
         <translation>The file format is invalid.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="283"/>
+        <location filename="../src/FastaFormat.cpp" line="282"/>
         <source>Loaded sequences: %1. 
 </source>
         <translation>Loaded sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="284"/>
+        <location filename="../src/FastaFormat.cpp" line="283"/>
         <source>Skipped sequences: %1. 
 </source>
         <translation>Skipped sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="285"/>
+        <location filename="../src/FastaFormat.cpp" line="284"/>
         <source>The following sequences are empty: 
 %1</source>
         <translation>The following sequences are empty: 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="468"/>
+        <location filename="../src/FastaFormat.cpp" line="467"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Неиспользуемая последовательность в начале образцов: %1</translation>
     </message>
@@ -2008,17 +2002,17 @@
 <context>
     <name>U2::NEXUSFormat</name>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="53"/>
+        <location filename="../src/NEXUSFormat.cpp" line="51"/>
         <source>NEXUS</source>
         <translation>NEXUS</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="54"/>
+        <location filename="../src/NEXUSFormat.cpp" line="52"/>
         <source>Nexus is a multiple alignment and phylogenetic trees file format</source>
         <translation>Nexus формат файла для множественных выравниваний и филогенетических деревьев</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="726"/>
+        <location filename="../src/NEXUSFormat.cpp" line="724"/>
         <source>#NEXUS header missing</source>
         <translation>Отсутствует заголовок #NEXUS</translation>
     </message>
@@ -2059,12 +2053,12 @@
         <translation>PDB предупреждение: неизвестное имя остатка: %1</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="488"/>
+        <location filename="../src/PDBFormat.cpp" line="489"/>
         <source>Invalid secondary structure record</source>
         <translation>Неверная запись вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="522"/>
+        <location filename="../src/PDBFormat.cpp" line="523"/>
         <source>Invalid SEQRES: less then 24 characters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
