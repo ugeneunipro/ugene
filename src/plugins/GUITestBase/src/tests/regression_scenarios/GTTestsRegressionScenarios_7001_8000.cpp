@@ -1767,7 +1767,6 @@ GUI_TEST_CLASS_DEFINITION(test_7459) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTUtilsLog::checkNoErrorsInLog(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7460) {
