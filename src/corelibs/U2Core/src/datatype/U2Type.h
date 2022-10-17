@@ -36,7 +36,7 @@ class U2Dbi;
 
     U2DataType - data types supported by U2Dbi
     U2DataId - object ids associated with Data by U2Dbi.
-    Note that U2DataId == empty check must be suppoted by DBI to check empty fields.
+    Note that U2DataId == empty check must be supported by DBI to check empty fields.
 */
 typedef quint16 U2DataType;
 typedef QByteArray U2DataId;
@@ -62,54 +62,52 @@ typedef QString U2DbiId;
 class U2CORE_EXPORT U2Type {
 public:
     /** Type is unknown. Default value. */
-    static const U2DataType Unknown = 0;
+    static constexpr U2DataType Unknown = 0;
 
     /** Object types */
-    static const U2DataType Sequence = 1;
-    static const U2DataType Msa = 2;
-    static const U2DataType Assembly = 4;
-    static const U2DataType VariantTrack = 5;
-    static const U2DataType VariantType = 6;
-    static const U2DataType FilterTableType = 7;
-    static const U2DataType KnownMutationsTrackType = 8;
-    static const U2DataType AnnotationTable = 10;
-    static const U2DataType Mca = 11;
+    static constexpr U2DataType Sequence = 1;
+    static constexpr U2DataType Msa = 2;
+    static constexpr U2DataType Assembly = 4;
+    static constexpr U2DataType VariantTrack = 5;
+    static constexpr U2DataType VariantType = 6;
+    static constexpr U2DataType AnnotationTable = 10;
+    static constexpr U2DataType Mca = 11;
     /** UDR object types 101..199 */
-    static const U2DataType Text = 101;
-    static const U2DataType PhyTree = 102;
-    static const U2DataType Chromatogram = 103;
-    static const U2DataType BioStruct3D = 104;
-    static const U2DataType PFMatrix = 105;
-    static const U2DataType PWMatrix = 106;
+    static constexpr U2DataType Text = 101;
+    static constexpr U2DataType PhyTree = 102;
+    static constexpr U2DataType Chromatogram = 103;
+    static constexpr U2DataType BioStruct3D = 104;
+    static constexpr U2DataType PFMatrix = 105;
+    static constexpr U2DataType PWMatrix = 106;
 
-    static const U2DataType CrossDatabaseReference = 999;
+    static constexpr U2DataType CrossDatabaseReference = 999;
 
     /** SCO (non-object, non-root) types */
-    static const U2DataType Annotation = 1000;
-    static const U2DataType AnnotationGroup = 1001;
+    static constexpr U2DataType Annotation = 1000;
+    static constexpr U2DataType AnnotationGroup = 1001;
 
     /**  Assembly read */
-    static const U2DataType AssemblyRead = 1100;
+    static constexpr U2DataType AssemblyRead = 1100;
 
     /** Sequence feature */
-    static const U2DataType Feature = 1300;
+    static constexpr U2DataType Feature = 1300;
 
-    static const U2DataType UdrRecord = 1400;
+    static constexpr U2DataType UdrRecord = 1400;
 
     /**  Attribute types */
-    static const U2DataType AttributeInteger = 2001;
-    static const U2DataType AttributeReal = 2002;
-    static const U2DataType AttributeString = 2003;
-    static const U2DataType AttributeByteArray = 2004;
+    static constexpr U2DataType AttributeInteger = 2001;
+    static constexpr U2DataType AttributeReal = 2002;
+    static constexpr U2DataType AttributeString = 2003;
+    static constexpr U2DataType AttributeByteArray = 2004;
 
-    static bool isObjectType(U2DataType type) {
+    static bool isObjectType(const U2DataType& type) {
         return type > 0 && type <= 999;
     }
-    static bool isUdrObjectType(U2DataType type) {
+    static bool isUdrObjectType(const U2DataType& type) {
         return type > 100 && type < 200;
     }
 
-    static bool isAttributeType(U2DataType type) {
+    static bool isAttributeType(const U2DataType& type) {
         return type >= 2000 && type < 2100;
     }
 };

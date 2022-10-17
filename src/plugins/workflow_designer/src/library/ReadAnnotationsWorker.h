@@ -43,21 +43,21 @@ class ReadAnnotationsWorker : public GenericDocReader {
     Q_OBJECT
 public:
     ReadAnnotationsWorker(Actor* p);
-    virtual void init();
+    void init() override;
 
 protected slots:
-    virtual void sl_datasetEnded();
+    void sl_datasetEnded() override;
 
 protected:
-    virtual void onTaskFinished(Task* task);
-    virtual Task* createReadTask(const QString& url, const QString& datasetName);
-    virtual QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data);
+    void onTaskFinished(Task* task) override;
+    Task* createReadTask(const QString& url, const QString& datasetName) override;
+    QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data) override;
 
 private:
     void sendData(const QList<QVariantMap>& data);
 
 private:
-    ReadAnnotationsProto::Mode mode;
+    ReadAnnotationsProto::Mode mode = ReadAnnotationsProto::SPLIT;
     QList<QVariantMap> datasetData;
 };  // ReadAnnotationsWorker
 

@@ -35,7 +35,6 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ImportObjectToDatabaseTask.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -49,7 +48,6 @@
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
@@ -77,6 +75,10 @@ static const QString MERGE_TABLES_SHARED("merge_in_shared_db");
 /*******************************
  * WriteAnnotationsWorker
  *******************************/
+WriteAnnotationsWorker::WriteAnnotationsWorker(Actor* p)
+    : BaseWorker(p) {
+}
+
 WriteAnnotationsWorker::~WriteAnnotationsWorker() {
     qDeleteAll(createdAnnotationObjects);
 }
@@ -85,29 +87,27 @@ void WriteAnnotationsWorker::init() {
     annotationsPort = ports.value(BasePorts::IN_ANNOTATIONS_PORT_ID());
 }
 
-namespace {
-QString getExtension(const QString& formatId) {
+static QString getExtension(const QString& formatId) {
     CHECK(formatId != CSV_FORMAT_ID, "csv");
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    CHECK(nullptr != format, "");
+    CHECK(format != nullptr, "");
     QStringList exts = format->getSupportedDocumentFileExtensions();
     CHECK(!exts.isEmpty(), "");
     return exts[0];
 }
-}  // namespace
 
 Task* WriteAnnotationsWorker::takeParameters(QString& formatId, SaveDocFlags& fl, QString& resultPath, U2DbiRef& dstDbiRef, WriteAnnotationsWorker::DataStorage& storage) {
     const QString storageStr = getValue<QString>(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
-    if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storageStr) {
+    if (storageStr == BaseAttributes::LOCAL_FS_DATA_STORAGE()) {
         storage = LocalFs;
         formatId = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
         DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         fl = SaveDocFlags(getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId()));
         resultPath = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
-        if (formatId != CSV_FORMAT_ID && nullptr == format) {
+        if (formatId != CSV_FORMAT_ID && format == nullptr) {
             return new FailTask(tr("Unrecognized formatId: '%1'").arg(formatId));
         }
-    } else if (BaseAttributes::SHARED_DB_DATA_STORAGE() == storageStr) {
+    } else if (storageStr == BaseAttributes::SHARED_DB_DATA_STORAGE()) {
         storage = SharedDb;
         dstDbiRef = SharedDbUrlUtils::getDbRefFromEntityUrl(getValue<QString>(BaseAttributes::DATABASE_ATTRIBUTE().getId()));
         CHECK(dstDbiRef.isValid(), new FailTask(tr("Invalid shared DB URL")));
@@ -120,7 +120,7 @@ Task* WriteAnnotationsWorker::takeParameters(QString& formatId, SaveDocFlags& fl
 }
 
 void WriteAnnotationsWorker::updateResultPath(int metadataId, const QString& formatId, DataStorage storage, QString& resultPath, bool byDataset) {
-    CHECK(LocalFs == storage, );
+    CHECK(storage == LocalFs, );
     CHECK(resultPath.isEmpty(), );
 
     MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
@@ -137,7 +137,7 @@ Task* WriteAnnotationsWorker::tick() {
     DataStorage storage;
 
     Task* failTask = takeParameters(formatId, fl, resultPath, dstDbiRef, storage);
-    CHECK(nullptr == failTask, failTask);
+    CHECK(failTask == nullptr, failTask);
 
     bool merge = getValue<bool>(MERGE_TABLES_LOCAL);
     while (annotationsPort->hasMessage()) {
@@ -147,20 +147,20 @@ Task* WriteAnnotationsWorker::tick() {
         }
         const QVariantMap qm = inputMessage.getData().toMap();
 
-        if (LocalFs == storage) {
+        if (storage == LocalFs) {
             resultPath = qm.value(BaseSlots::URL_SLOT().getId(), resultPath).value<QString>();
             // We have two cases, when we need to write several annotation objects to the same file:
             // 1) If the path to the output file has been defined as a parameter,
-            // 2) If there are several (two or more) annotaiton objects has come from the same file.
+            // 2) If there are several (two or more) annotation objects has come from the same file.
             //
             // And we have a case, when we need to write each annotation object to the separate file (roll file name):
-            // 1) When we recieve annotations from files, which have the same name, but located in different directories.
+            // 1) When we receive annotations from files, which have the same name, but located in different directories.
             // The flag below handle all these cases.
             bool write2TheSameFile = !resultPath.isEmpty();
             updateResultPath(inputMessage.getMetadataId(), formatId, storage, resultPath, merge);
             CHECK(!resultPath.isEmpty(), new FailTask(tr("Unspecified URL to write")));
             resultPath = context->absolutePath(resultPath);
-            // to avoide uniting at the same file in case of similar names
+            // to avoid uniting at the same file in case of similar names
             if (!write2TheSameFile) {
                 resultPath = GUrlUtils::rollFileName(resultPath, "_", existedResultFiles);
             }
@@ -176,9 +176,9 @@ Task* WriteAnnotationsWorker::tick() {
     }
 
     setDone();
-    if (LocalFs == storage) {
+    if (storage == LocalFs) {
         return getSaveDocTask(formatId, fl);
-    } else if (SharedDb == storage) {
+    } else if (storage == SharedDb) {
         return getSaveObjTask(dstDbiRef);
     } else {
         // this branch must never execute, it was added to avoid a compiler warning
@@ -211,9 +211,9 @@ QString WriteAnnotationsWorker::getAnnotationTableName() const {
     const QString storageStr = getValue<QString>(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
     QString objName;
-    if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storageStr) {
+    if (storageStr == BaseAttributes::LOCAL_FS_DATA_STORAGE()) {
         objName = getValue<QString>(ANN_TABLE_NAME_4_LOCAL_ST);
-    } else if (BaseAttributes::SHARED_DB_DATA_STORAGE() == storageStr) {
+    } else if (storageStr == BaseAttributes::SHARED_DB_DATA_STORAGE()) {
         objName = getValue<QString>(ANN_TABLE_NAME_4_SHARED_ST);
     } else {
         FAIL("Invalid worker data storage attribute", ANNOTATIONS_NAME_DEF_VAL);
@@ -227,7 +227,7 @@ QString WriteAnnotationsWorker::getAnnotationTableName() const {
 }
 
 void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap& incomingData, const QString& resultPath) {
-    const QVariant annVar = incomingData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
+    QVariant annVar = incomingData[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
     QList<AnnotationTableObject*> annTables = StorageUtils::getAnnotationTableObjects(context->getDataStorage(), annVar);
     annotationsByUrl[resultPath] << annTables;
 
@@ -266,7 +266,7 @@ Task* WriteAnnotationsWorker::createWriteMultitask(const QList<Task*>& taskList)
     if (taskList.isEmpty()) {
         monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
         return nullptr;
-    } else if (1 == taskList.size()) {
+    } else if (taskList.size() == 1) {
         return taskList.first();
     }
     return new MultiTask(QObject::tr("Save annotations"), taskList);
@@ -284,8 +284,7 @@ Task* WriteAnnotationsWorker::getSaveObjTask(const U2DbiRef& dstDbiRef) const {
     return createWriteMultitask(taskList);
 }
 
-namespace {
-QString rollName(const QString& name, const QSet<QString>& usedNames) {
+static QString rollName(const QString& name, const QSet<QString>& usedNames) {
     QString result = name;
     int counter = 1;
     while (usedNames.contains(result)) {
@@ -295,14 +294,13 @@ QString rollName(const QString& name, const QSet<QString>& usedNames) {
     return result;
 }
 
-void updateAnnotationsName(AnnotationTableObject* object, QSet<QString>& usedNames) {
+static void updateAnnotationsName(AnnotationTableObject* object, QSet<QString>& usedNames) {
     QString newName = rollName(object->getGObjectName(), usedNames);
     usedNames << newName;
     if (object->getGObjectName() != newName) {
         object->setGObjectName(newName);
     }
 }
-}  // namespace
 
 Task* WriteAnnotationsWorker::getSaveDocTask(const QString& formatId, SaveDocFlags& fl) {
     SAFE_POINT(!formatId.isEmpty(), "Invalid format ID", nullptr);
@@ -359,8 +357,8 @@ void WriteAnnotationsWorker::cleanup() {
 }
 
 void WriteAnnotationsWorker::sl_saveDocTaskFinished() {
-    Task* task = dynamic_cast<Task*>(sender());
-    CHECK(nullptr != task, );
+    auto task = dynamic_cast<Task*>(sender());
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
     CHECK(!task->isCanceled() && !task->hasError(), );
 
@@ -522,7 +520,7 @@ QString WriteAnnotationsPrompter::composeRichDoc() {
     annName = annName.isEmpty() ? unsetStr : annName;
 
     Attribute* dataStorageAttr = target->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
-    SAFE_POINT(nullptr != dataStorageAttr, "Invalid attribute", QString());
+    SAFE_POINT(dataStorageAttr != nullptr, "Invalid attribute", QString());
     const QVariant dataStorage = dataStorageAttr->getAttributePureValue();
 
     QString url;
@@ -534,12 +532,12 @@ QString WriteAnnotationsPrompter::composeRichDoc() {
         url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
     } else if (dataStorage == BaseAttributes::SHARED_DB_DATA_STORAGE()) {
         Attribute* dbPathAttr = target->getParameter(BaseAttributes::DB_PATH().getId());
-        SAFE_POINT(nullptr != dbPathAttr, "Invalid attribute", QString());
+        SAFE_POINT(dbPathAttr != nullptr, "Invalid attribute", QString());
         url = dbPathAttr->getAttributePureValue().toString();
         url = getHyperlink(BaseAttributes::DB_PATH().getId(), url);
 
         Attribute* dbAttr = target->getParameter(BaseAttributes::DATABASE_ATTRIBUTE().getId());
-        SAFE_POINT(nullptr != dbAttr, "Invalid attribute", QString());
+        SAFE_POINT(dbAttr != nullptr, "Invalid attribute", QString());
         const QString dbUrl = dbAttr->getAttributePureValue().toString();
         dbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(dbUrl);
         dbName = dbName.isEmpty() ? unsetStr : getHyperlink(BaseAttributes::DATABASE_ATTRIBUTE().getId(), dbName);
