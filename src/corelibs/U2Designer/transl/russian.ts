@@ -205,24 +205,17 @@ this merge sequence slot:</source>
         <translation>Интервал:</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="26"/>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="67"/>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="97"/>
-        <source>radioButtonsGroup</source>
-        <translation>radioButtonsGroup</translation>
-    </message>
-    <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="45"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="42"/>
         <source>..</source>
         <translation>..</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="64"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="61"/>
         <source>Less than:</source>
         <translation>Меньше чем:</translation>
     </message>
     <message>
-        <location filename="../src/EditIntegerMarkerWidget.ui" line="94"/>
+        <location filename="../src/EditIntegerMarkerWidget.ui" line="88"/>
         <source>Greater than:</source>
         <translation>Больше чем:</translation>
     </message>

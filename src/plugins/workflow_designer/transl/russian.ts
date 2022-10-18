@@ -3327,22 +3327,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::LoadMSATask</name>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="221"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="228"/>
         <source>File &apos;%1&apos; not exists</source>
         <translation>Файл &apos;%1&apos;  не существует</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="241"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="248"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="244"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="251"/>
         <source>Reading MSA from %1 [%2]</source>
         <translation>Читается множественное выравнивание из %1 [формат %2]</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="197"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="204"/>
         <source>Read MSA from %1</source>
         <translation>Чтение выравнивания из %1</translation>
     </message>
@@ -3350,22 +3350,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::LoadSeqTask</name>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="326"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="333"/>
         <source>File &apos;%1&apos; not exists</source>
         <translation>Файл &apos;%1&apos; не существует</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="339"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="346"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.cpp" line="346"/>
+        <location filename="../src/library/GenericReadWorker.cpp" line="353"/>
         <source>Reading sequences from %1 [%2]</source>
         <translation>Читается последовательность из %1 [формат %2]</translation>
     </message>
     <message>
-        <location filename="../src/library/GenericReadWorker.h" line="91"/>
+        <location filename="../src/library/GenericReadWorker.h" line="88"/>
         <source>Read sequences from %1</source>
         <translation>Чтение последовательности из %1</translation>
     </message>
@@ -3869,7 +3869,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadAnnotationsTask</name>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="231"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="232"/>
         <source>Read annotations from %1</source>
         <translation>Читать аннотации из %1</translation>
     </message>
@@ -3892,62 +3892,62 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ReadAnnotationsWorker</name>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="166"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="167"/>
         <source>Read Annotations</source>
         <translation>Чтение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="167"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="168"/>
         <source>Input one or several files with annotations: a file may also contain a sequence (e.g. GenBank format) or contain annotations only (e.g. GTF format). The element outputs message(s) with the annotations data.</source>
         <translation>Введите один или несколько файлов с аннотациями: файл может также содержать последовательность (например в формате GenBank) или содержать только аннотации (например в формате GTF). Элемент выведет данные аннотаций в виде сообщения(ий).</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="177"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="178"/>
         <source>Annotations</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="178"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="179"/>
         <source>Annotations.</source>
         <translation>Аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="183"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="184"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="183"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="184"/>
         <source>&lt;ul&gt;&lt;li&gt;&lt;i&gt;&quot;Separate&quot;&lt;/i&gt; mode keeps the tables as they are;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from file&quot;&lt;/i&gt; unites annotation tables from one file into one annotations table;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from dataset&quot;&lt;/i&gt; unites all annotation tables from all files from dataset;&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>&lt;ul&gt;&lt;li&gt;&lt;i&gt;&quot;Separate&quot;&lt;/i&gt; mode keeps the tables as they are;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from file&quot;&lt;/i&gt; unites annotation tables from one file into one annotations table;&lt;/li&gt;&lt;li&gt;&lt;i&gt;&quot;Merge from dataset&quot;&lt;/i&gt; unites all annotation tables from all files from dataset;&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="190"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="191"/>
         <source>Annotation table name</source>
         <translation>Имя таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="190"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="191"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Имя таблицы аннотаций, которая содержит все аннотации из файла или набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="198"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="199"/>
         <source>Separate annotation tables</source>
         <translation>Раздельные таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="199"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="200"/>
         <source>Merge annotation tables from file</source>
         <translation>Соединить таблицы аннотаций в одну</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="200"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="201"/>
         <source>Merge all annotation tables from dataset</source>
         <translation>Соединить все таблицы аннотаций в одну</translation>
     </message>
     <message>
-        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="207"/>
+        <location filename="../src/library/ReadAnnotationsWorker.cpp" line="208"/>
         <source>Reads annotations from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Прочитать аннотации из &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -5070,32 +5070,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::WriteAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="519"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="517"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="532"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="530"/>
         <source>default file</source>
         <translation>файл по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="553"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="551"/>
         <source>Save all annotations from &lt;u&gt;%1&lt;/u&gt; to %2</source>
         <translation>Сохранить все аннотации из &lt;u&gt;%1&lt;/u&gt; в %2</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="556"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
         <source> in %1 format.</source>
         <translation> в формат %1.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="556"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
         <source> in the </source>
         <translation> в </translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="556"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="554"/>
         <source> database.</source>
         <translation> базе данных.</translation>
     </message>
@@ -5143,78 +5143,78 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Нет данных для записи</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="384"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="382"/>
         <source>Input annotations</source>
         <translation>Входные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="384"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="382"/>
         <source>Input annotations which will be written to output file</source>
         <translation>Входные аннотации, которые будут записаны в выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="423"/>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="421"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
         <source>Merge annotation tables</source>
         <translation>Соединить таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="423"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="421"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one. The value of &lt;i&gt;Annotation table name&lt;/i&gt; parameter will be used as the name of result annotation table.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы аннотаций из набора данных будут соединены в один. Значение &lt;i&gt;Имя таблиицы аннотаций&lt;/i&gt; параметра будет использовано как имя результирующей таблицы аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="433"/>
         <source>Annotation table name</source>
         <translation>Имя таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="433"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Имя таблицы аннотаций, которая содержит соединённые аннотации из файла или набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one annotation object. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы из набора данных будут соединены в одну аннотацию. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="479"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="477"/>
         <source>The element gets message(s) with annotations data and saves the data to the specified file(s) in one of the appropriate formats (GenBank, GTF, etc.).</source>
         <translation>Этот элемент сохраняет сообщения с данными аннотаций в файл в указанном формате (GenBank, GTF, и т. д.).</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="452"/>
         <source>Annotation object name</source>
         <translation>Имя объекта аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="452"/>
         <source>Name of the saved annotation object.</source>
         <translation>Имя аннотаций: имя для сохранения объекта аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="461"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
         <source>CSV separator</source>
         <translation>Разделитель CSV</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="461"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
         <source>String which separates values in CSV files.</source>
         <translation>символ, который разделяет значения в файлах CSV.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="467"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="465"/>
         <source>Write sequence names</source>
         <translation>Записать имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="467"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="465"/>
         <source>Add names of sequences into CSV file.</source>
         <translation>добавить имена последовательностей в CSV-файл.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="478"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="476"/>
         <source>Write Annotations</source>
         <translation>Запись аннотаций</translation>
     </message>

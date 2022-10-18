@@ -1682,7 +1682,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GzippedHttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="54"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="53"/>
         <source>HTTP GZIP adaptor</source>
         <translation>HTTP GZIP адаптер</translation>
     </message>
@@ -1698,17 +1698,17 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="108"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="107"/>
         <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
         <translation>Неправильная строка адреса была передана в HttpFileAdapter::open()</translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="123"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="122"/>
         <source>Downloading from %1</source>
         <translation>Downloading from %1</translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="313"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="307"/>
         <source>Redirecting to %1</source>
         <translation>Redirecting to %1</translation>
     </message>
@@ -1716,7 +1716,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="45"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="44"/>
         <source>HTTP file</source>
         <translation>HTTP адаптер</translation>
     </message>
