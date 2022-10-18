@@ -277,7 +277,7 @@ U2DbiPool::~U2DbiPool() {
 
 U2Dbi* U2DbiPool::createDbi(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties) {
     U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(ref.dbiFactoryId);
-    CHECK_EXT(nullptr != dbiFactory, os.setError(QString("Invalid database type: %1").arg(ref.dbiFactoryId)), nullptr);
+    CHECK_EXT(nullptr != dbiFactory, os.setError(tr("Invalid database type: %1").arg(ref.dbiFactoryId)), nullptr);
     U2Dbi* result = dbiFactory->createDbi();
 
     const QString url = dbiFactory->id2Url(ref.dbiId).getURLString();
