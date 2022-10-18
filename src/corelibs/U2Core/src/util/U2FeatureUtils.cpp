@@ -235,15 +235,16 @@ AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeature
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, nullptr);
     U2FeatureDbi* dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(nullptr != dbi, L10N::nullPointerError("Feature DBI"), nullptr);
+    SAFE_POINT(dbi != nullptr, L10N::nullPointerError("Feature DBI"), nullptr);
 
-    AnnotationGroup* rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, nullptr, parentObj);
+    auto rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, nullptr, parentObj);
 
     QList<FeatureAndKey> rawData = dbi->getFeatureTable(rootFeatureId, os);
     QList<FeatureAndKey> groups = getSortedSubgroups(rawData, rootFeatureId);
-    rawData = groups + rawData;
+    std::stable_sort(rawData.begin(), rawData.end(), [](auto& fnk1, auto& fnk2) { return fnk1.feature.id < fnk2.feature.id; });
+    QList<FeatureAndKey> groupNextRootsNextRegions = groups + rawData;
 
-    for (const FeatureAndKey& fnk : qAsConst(rawData)) {
+    for (const FeatureAndKey& fnk : qAsConst(groupNextRootsNextRegions)) {
         if (fnk.feature.featureClass == U2Feature::Group) {
             rootGroup->addSubgroup(fnk.feature);
         } else if (auto parentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId)) {
@@ -263,13 +264,13 @@ AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeature
             aData->type = fnk.feature.featureType;
             aData->name = fnk.feature.name;
             aData->location->strand = fnk.feature.location.strand;
-            aData->location->regions.append(fnk.feature.location.region);
+            aData->location->regions = {fnk.feature.location.region};
             addFeatureKeyToAnnotation(fnk.key, aData, os);
             CHECK_OP(os, nullptr);
 
             AnnotationGroup* parentGroup = rootGroup->findSubgroupById(fnk.feature.parentFeatureId);
             SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
-            parentGroup->addShallowAnnotations(QList<Annotation*>() << new Annotation(fnk.feature.id, aData, parentGroup, parentObj), false);
+            parentGroup->addShallowAnnotations({new Annotation(fnk.feature.id, aData, parentGroup, parentObj)}, false);
         }
     }
     return rootGroup;

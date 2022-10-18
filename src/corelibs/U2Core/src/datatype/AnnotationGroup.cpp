@@ -272,7 +272,7 @@ AnnotationGroup* AnnotationGroup::addSubgroup(const U2Feature& feature) {
         return result;
     } else {
         AnnotationGroup* parentGroup = findSubgroupById(feature.parentFeatureId);
-        SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("annotation group"), nullptr);
+        SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
         return parentGroup->addSubgroup(feature);
     }
 }
