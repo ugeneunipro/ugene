@@ -241,10 +241,10 @@ AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeature
 
     QList<FeatureAndKey> rawData = dbi->getFeatureTable(rootFeatureId, os);
     QList<FeatureAndKey> groups = getSortedSubgroups(rawData, rootFeatureId);
-    std::stable_sort(rawData.begin(), rawData.end(), [](auto& fnk1, auto& fnk2) { return fnk1.feature.id < fnk2.feature.id; });
-    QList<FeatureAndKey> groupNextRootsNextRegions = groups + rawData;
+    QList<FeatureAndKey> groupsAndFeatures = groups + rawData;
+    QList<FeatureAndKey> multiRegionSubfeatures;
 
-    for (const FeatureAndKey& fnk : qAsConst(groupNextRootsNextRegions)) {
+    for (const FeatureAndKey& fnk : qAsConst(groupsAndFeatures)) {
         if (fnk.feature.featureClass == U2Feature::Group) {
             rootGroup->addSubgroup(fnk.feature);
         } else if (auto parentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId)) {
@@ -259,6 +259,11 @@ AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeature
             SharedAnnotationData& editableData = const_cast<SharedAnnotationData&>(currentAnnotation->getData());
             addFeatureKeyToAnnotation(fnk.key, editableData, os);
         } else {
+            AnnotationGroup* parentGroup = rootGroup->findSubgroupById(fnk.feature.parentFeatureId);
+            if (parentGroup == nullptr) {
+                multiRegionSubfeatures.append(fnk);
+                continue;
+            }
             // fetch annotation
             SharedAnnotationData aData(new AnnotationData());
             aData->type = fnk.feature.featureType;
@@ -267,11 +272,15 @@ AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeature
             aData->location->regions = {fnk.feature.location.region};
             addFeatureKeyToAnnotation(fnk.key, aData, os);
             CHECK_OP(os, nullptr);
-
-            AnnotationGroup* parentGroup = rootGroup->findSubgroupById(fnk.feature.parentFeatureId);
-            SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
             parentGroup->addShallowAnnotations({new Annotation(fnk.feature.id, aData, parentGroup, parentObj)}, false);
         }
+    }
+    for (const FeatureAndKey& fnk : qAsConst(multiRegionSubfeatures)) {
+        // Add a region to an already fetched annotation.
+        auto parentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId);
+        SAFE_POINT(parentAnnotation != nullptr, "parent annotation is not found for a region feature-and-key", nullptr);
+        SAFE_POINT(!fnk.feature.location.region.isEmpty() && !fnk.key.isValid(), "Unexpected feature data fetched from DB", nullptr);
+        const_cast<SharedAnnotationData&>(parentAnnotation->getData())->location->regions.append(fnk.feature.location.region);
     }
     return rootGroup;
 }
