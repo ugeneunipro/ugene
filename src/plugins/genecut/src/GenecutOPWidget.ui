@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -55,7 +55,7 @@
        <item>
         <widget class="QLineEdit" name="leEmail">
          <property name="text">
-          <string>a.seryakov@unipro.ru</string>
+          <string/>
          </property>
          <property name="placeholderText">
           <string>username@server.com</string>
@@ -65,7 +65,7 @@
        <item>
         <widget class="QLineEdit" name="lePasword">
          <property name="text">
-          <string>a$er702405</string>
+          <string/>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
@@ -86,12 +86,22 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="cbRememberMe">
+         <property name="text">
+          <string>Remember me</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="lbLoginWarning">
          <property name="styleSheet">
           <string notr="true">font-weight: 600;</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -170,6 +180,9 @@
          <property name="text">
           <string/>
          </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -202,7 +215,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="wtMainForm">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -246,6 +259,9 @@
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -297,6 +313,16 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pbGetInputSequence">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Get the input sequence</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="pbOpenResultInBrowser">
          <property name="enabled">
           <bool>false</bool>
@@ -312,7 +338,17 @@ p, li { white-space: pre-wrap; }
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Get full report sequence</string>
+          <string>Get the result sequence</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbCompare">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Compare input and output sequences</string>
          </property>
         </widget>
        </item>
@@ -323,6 +359,9 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -372,7 +411,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLineEdit" name="leEmailNew">
          <property name="text">
-          <string>user@mail.com</string>
+          <string/>
          </property>
          <property name="placeholderText">
           <string>username@server.com</string>
@@ -382,7 +421,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLineEdit" name="lePasswordNew">
          <property name="text">
-          <string>123</string>
+          <string/>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
@@ -395,7 +434,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLineEdit" name="lePasswordConformationNew">
          <property name="text">
-          <string>123</string>
+          <string/>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
@@ -408,7 +447,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLineEdit" name="leFirstName">
          <property name="text">
-          <string>Name</string>
+          <string/>
          </property>
          <property name="placeholderText">
           <string>First name</string>
@@ -418,7 +457,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLineEdit" name="leLastName">
          <property name="text">
-          <string>Lastname</string>
+          <string/>
          </property>
          <property name="placeholderText">
           <string>Last name</string>
@@ -432,6 +471,9 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

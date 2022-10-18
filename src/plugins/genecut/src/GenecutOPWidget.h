@@ -29,8 +29,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-
-
 namespace U2 {
 
 class AnnotatedDNAView;
@@ -40,6 +38,7 @@ class GenecutOPWidget : public QWidget, private Ui_GenecutOPWidget {
     Q_OBJECT
 public:
     GenecutOPWidget(AnnotatedDNAView* annDnaView);
+    ~GenecutOPWidget();
 
 private slots:
     void sl_loginClicked();
@@ -48,9 +47,11 @@ private slots:
     void sl_openInGenecut();
     void sl_fetchResultsClicked();
     void sl_registerNewClicked();
+    void sl_getInputSequenceClicked();
     void sl_getResultSequenceClicked();
     void sl_removeSelectedResultClicked();
     void sl_openResultInBrowserClicked();
+    void sl_compareInputAndOutput();
 
 private:
     enum class TableColumns {
@@ -65,17 +66,27 @@ private:
         Completed = 1003,
         CompletedWithError = 1004,
         Interrupted = 1005,
-        ShortDescription = 1006
+        ShortDescription = 1006,
+        IsAmino = 1007
+    };
+
+    enum class ServerFileType {
+        Input,
+        Result
     };
 
     static void errorMessage(QNetworkReply* reply, QLabel* errorLabel);
     static void errorMessage(const QString& message, QLabel* errorLabel);
     static void successMessage(QNetworkReply* reply, QLabel* label);
     static void successMessage(const QString& message, QLabel* label);
+    static void warningMessage(const QString& message, QLabel* label);
     static void setWidgetsEnabled(QList<QWidget*> wgts, bool enabled);
 
     bool areRegistrationDataValid() const;
+    bool hasFullReportFile() const;
+    bool hasNucleicInput() const;
     QString getSelectedReportData(ResultData datatype) const;
+    void downloadAndSaveFileFromServer(ServerFileType fileType, bool add2Project = true);
 
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
@@ -97,8 +108,9 @@ private:
     static const QString API_REQUEST_UPLOAD_SEQUENCE;
     static const QString API_REQUEST_REPORTS;
     static const QString API_REQUEST_OPEN_REPORT_IN_BROWSER;
-    static const QString API_REQUEST_GET_REPORT;
-    static const QString API_REQUEST_DEL_REPORT;
+    static const QString API_REQUEST_GET_INPUT;
+    static const QString API_REQUEST_GET_RESULT;
+    static const QString API_REQUEST_DEL_RESULT;
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;
@@ -118,9 +130,13 @@ private:
     static const QString JSON_SHORT_DESCRIPTION;
     static const QString JSON_SEQUENCE_FILE_NAME;
     static const QString JSON_SEQUENCE_FILE_BODY;
+    static const QString JSON_RESPOND_SEQUENCE_FILE_NAME;
+    static const QString JSON_RESPOND_SEQUENCE_FILE_BODY;
     static const QString JSON_REPORT_ID;
     static const QString JSON_LANG_ID;
 
+    static const QString GENECUT_USER_EMAIL_SETTINGS;
+    static const QString GENECUT_USER_PASSWORD_SETTINGS;
 };
 
 

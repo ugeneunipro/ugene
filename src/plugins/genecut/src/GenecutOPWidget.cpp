@@ -28,6 +28,8 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -60,8 +62,9 @@ const QString GenecutOPWidget::API_REQUEST_REGISTER = "registration";
 const QString GenecutOPWidget::API_REQUEST_UPLOAD_SEQUENCE = "uploadSequence";
 const QString GenecutOPWidget::API_REQUEST_REPORTS = "reports";
 const QString GenecutOPWidget::API_REQUEST_OPEN_REPORT_IN_BROWSER = "showReport";
-const QString GenecutOPWidget::API_REQUEST_GET_REPORT = "getReport";
-const QString GenecutOPWidget::API_REQUEST_DEL_REPORT = "delReport";
+const QString GenecutOPWidget::API_REQUEST_GET_INPUT = "getInputFile";
+const QString GenecutOPWidget::API_REQUEST_GET_RESULT = "getReport";
+const QString GenecutOPWidget::API_REQUEST_DEL_RESULT = "delReport";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
 const QString GenecutOPWidget::JSON_PASSWORD = "password";
 const QString GenecutOPWidget::JSON_ROLE = "role";
@@ -80,8 +83,14 @@ const QString GenecutOPWidget::JSON_INTERRUPTED = "interrupted";
 const QString GenecutOPWidget::JSON_SHORT_DESCRIPTION = "short";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_NAME = "sequenceFileName";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_BODY = "sequenceFileBody";
+const QString GenecutOPWidget::JSON_RESPOND_SEQUENCE_FILE_NAME = "file_name";
+const QString GenecutOPWidget::JSON_RESPOND_SEQUENCE_FILE_BODY = "file_body";
 const QString GenecutOPWidget::JSON_REPORT_ID = "reportId";
 const QString GenecutOPWidget::JSON_LANG_ID = "langId";
+
+const QString GenecutOPWidget::GENECUT_USER_EMAIL_SETTINGS = "/genecut/email";
+const QString GenecutOPWidget::GENECUT_USER_PASSWORD_SETTINGS = "/genecut/password";
+
 
 GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
@@ -91,12 +100,17 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     lbLoginWarning->hide();
     lbLoginWarning->setStyleSheet(lbLoginWarning->styleSheet() + "color: " + Theme::errorColorLabelStr());
     lbLoginWarning->setAlignment(Qt::AlignLeft);
-    lbLoginWarning->setWordWrap(true);
     lbRegisterWarning->hide();
     lbRegisterWarning->setStyleSheet(lbRegisterWarning->styleSheet() + "color: " + Theme::errorColorLabelStr());
     lbRegisterWarning->setAlignment(Qt::AlignLeft);
-    lbRegisterWarning->setWordWrap(true);
     stackedWidget->setCurrentIndex(0);
+
+    auto settings = AppContext::getSettings();
+    if (settings->contains(GENECUT_USER_EMAIL_SETTINGS)) {
+        cbRememberMe->setChecked(true);
+        leEmail->setText(settings->getValue(GENECUT_USER_EMAIL_SETTINGS).toString());
+        lePasword->setText(settings->getValue(GENECUT_USER_PASSWORD_SETTINGS).toString());
+    }
 
     mgr = new QNetworkAccessManager(this);
 
@@ -121,17 +135,36 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         stackedWidget->setCurrentIndex(0);
     });
     connect(pbFetchResults, &QPushButton::clicked, this, &GenecutOPWidget::sl_fetchResultsClicked);
+    connect(pbGetInputSequence, &QPushButton::clicked, this, &GenecutOPWidget::sl_getInputSequenceClicked);
     connect(pbGetResultSequence, &QPushButton::clicked, this, &GenecutOPWidget::sl_getResultSequenceClicked);
     connect(pbRemoveSelectedResult, &QPushButton::clicked, this, &GenecutOPWidget::sl_removeSelectedResultClicked);
     connect(pbOpenResultInBrowser, &QPushButton::clicked, this, &GenecutOPWidget::sl_openResultInBrowserClicked);
+    connect(pbCompare, &QPushButton::clicked, this, &GenecutOPWidget::sl_compareInputAndOutput);
     connect(twResults, &QTableWidget::itemSelectionChanged, [this]() {
-        setWidgetsEnabled({ pbRemoveSelectedResult, pbOpenResultInBrowser, pbGetResultSequence }, !twResults->selectedItems().isEmpty());
+        bool hasSelected = !twResults->selectedItems().isEmpty();
+        setWidgetsEnabled({ pbRemoveSelectedResult, pbGetInputSequence, pbOpenResultInBrowser, pbGetResultSequence, pbCompare }, hasSelected);
+        CHECK(hasSelected, );
 
-        QString shortDescription = getSelectedReportData(ResultData::ShortDescription);
-        CHECK_EXT(!shortDescription.isEmpty(), tbShortDescription->setText(""), );
+        QString warning;
+        if (!hasFullReportFile()) {
+            setWidgetsEnabled({ pbGetResultSequence, pbCompare }, false);
+            warning = tr("calculation wasn't finished correctly, the result sequence and the comparison with the input sequence are not available");
+        } else if (!hasNucleicInput()) {
+            setWidgetsEnabled({ pbCompare }, false);
+            warning = tr("the input sequence is amino, can't compare with the nucleic result");
+        }
+        if (!warning.isEmpty()) {
+            warningMessage(warning, lbTestInfo);
+        } else {
+            lbTestInfo->hide();
+        }
 
-        tbShortDescription->setText(shortDescription);
+        tbShortDescription->setText(getSelectedReportData(ResultData::ShortDescription));
     });
+}
+
+GenecutOPWidget::~GenecutOPWidget() {
+    mgr->deleteLater();
 }
 
 void GenecutOPWidget::sl_loginClicked() {
@@ -162,6 +195,14 @@ void GenecutOPWidget::sl_loginClicked() {
             lastName = userObject.value(JSON_LAST_NAME).toString();
             lbWelcome->setText(tr("Welcome, %1").arg(firstName));
             stackedWidget->setCurrentIndex(2);
+            auto settings = AppContext::getSettings();
+            if (cbRememberMe->isChecked()) {
+                settings->setValue(GENECUT_USER_EMAIL_SETTINGS, leEmail->text());
+                settings->setValue(GENECUT_USER_PASSWORD_SETTINGS, lePasword->text());
+            } else {
+                settings->remove(GENECUT_USER_EMAIL_SETTINGS);
+                settings->remove(GENECUT_USER_PASSWORD_SETTINGS);
+            }
         } else {
             errorMessage(reply, lbLoginWarning);
         }
@@ -184,7 +225,7 @@ void GenecutOPWidget::sl_resetPasswordClicked() {
     connect(reply, &QNetworkReply::finished, [this, reply]() {
         setWidgetsEnabled({ leResetPassword, pbReset }, true);
         if (reply->error() == QNetworkReply::NoError) {
-            successMessage(tr("Check your email"), lbResetStatus);
+            successMessage(tr("check your email"), lbResetStatus);
         } else {
             errorMessage(reply, lbResetStatus);
         }
@@ -300,6 +341,7 @@ void GenecutOPWidget::sl_fetchResultsClicked() {
                 dateWgtItem->setData((int)ResultData::CompletedWithError, arrayObj.value(JSON_COMPLETED_WITH_ERROR).toBool());
                 dateWgtItem->setData((int)ResultData::Interrupted, arrayObj.value(JSON_INTERRUPTED).toBool());
                 dateWgtItem->setData((int)ResultData::ShortDescription, arrayObj.value(JSON_SHORT_DESCRIPTION).toString());
+                dateWgtItem->setData((int)ResultData::IsAmino, arrayObj.value(JSON_SHORT_DESCRIPTION).toBool());
                 twResults->setItem(i, (int)TableColumns::Date, dateWgtItem);
                 twResults->setItem(i, (int)TableColumns::Status, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString(), (int)ResultData::Status));
             }
@@ -340,42 +382,19 @@ void GenecutOPWidget::sl_registerNewClicked() {
     });
 }
 
+void GenecutOPWidget::sl_getInputSequenceClicked() {
+    downloadAndSaveFileFromServer(ServerFileType::Input);
+}
+
 void GenecutOPWidget::sl_getResultSequenceClicked() {
-    QString resultId = getSelectedReportData(ResultData::Id);
-    CHECK(!resultId.isEmpty(), );
-
-    const QUrl url(API_REQUEST_URL + API_REQUEST_GET_REPORT);
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
-    auto aut = QString("Bearer %1").arg(accessToken);
-    request.setRawHeader("Authorization", aut.toLocal8Bit());
-
-    QJsonObject obj;
-    obj[JSON_REPORT_ID] = resultId;
-    obj[JSON_LANG_ID] = L10N::getActiveLanguageCode();
-    QJsonDocument doc(obj);
-    QByteArray data = doc.toJson();
-    QNetworkReply* reply = mgr->sendCustomRequest(request, "GET", data);
-    setWidgetsEnabled({ wtMainForm }, false);
-
-    connect(reply, &QNetworkReply::finished, [this, reply]() {
-        setWidgetsEnabled({ wtMainForm }, true);
-        if (reply->error() == QNetworkReply::NoError) {
-            //TODO: handle it
-            successMessage(tr("the result has been recieved"), lbTestInfo);
-        } else {
-            errorMessage(reply, lbTestInfo);
-        }
-        reply->deleteLater();
-    });
-
+    downloadAndSaveFileFromServer(ServerFileType::Result);
 }
 
 void GenecutOPWidget::sl_removeSelectedResultClicked() {
     QString resultId = getSelectedReportData(ResultData::Id);
     CHECK(!resultId.isEmpty(), );
 
-    const QUrl url(API_REQUEST_URL + API_REQUEST_DEL_REPORT);
+    const QUrl url(API_REQUEST_URL + API_REQUEST_DEL_RESULT);
     QNetworkRequest request(url);
     auto aut = QString("Bearer %1").arg(accessToken);
     request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
@@ -396,8 +415,6 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
             CHECK(!selected.isEmpty(), );
 
             twResults->removeRow(twResults->row(selected.first()));
-
-            int i = 0;
         } else {
             errorMessage(reply, lbTestInfo);
         }
@@ -431,6 +448,10 @@ void GenecutOPWidget::sl_openResultInBrowserClicked() {
     QDesktopServices::openUrl(QUrl::fromLocalFile(tmpFile.fileName()));
 }
 
+void GenecutOPWidget::sl_compareInputAndOutput() {
+
+}
+
 void GenecutOPWidget::errorMessage(QNetworkReply* reply, QLabel* errorLabel) {
     QString contents = QString::fromUtf8(reply->readAll());
     QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
@@ -462,6 +483,12 @@ void GenecutOPWidget::successMessage(const QString& message, QLabel* label) {
     label->setStyleSheet("font-weight: 600;color: " + Theme::successColorLabelStr());
     label->show();
     label->setText(tr("Success: ") + message);
+}
+
+void GenecutOPWidget::warningMessage(const QString& message, QLabel* label) {
+    label->setStyleSheet("font-weight: 600;color: " + Theme::warningColorLabelHtmlStr());
+    label->show();
+    label->setText(tr("Warning: ") + message);
 }
 
 void GenecutOPWidget::setWidgetsEnabled(QList<QWidget*> wgts, bool enabled) {
@@ -517,6 +544,33 @@ bool GenecutOPWidget::areRegistrationDataValid() const {
     return valid;
 }
 
+bool GenecutOPWidget::hasFullReportFile() const {
+    CHECK(!twResults->selectedItems().isEmpty(), false);
+
+    auto selection = twResults->selectedItems();
+    SAFE_POINT(selection.size() == 2, "Unexpected selection size", false);
+
+    auto dataItem = selection.first()->type() == (int)ResultData::Date ? selection.first() : selection.last();
+    auto completed = dataItem->data((int)ResultData::Completed).toBool();
+    auto completedWithError = dataItem->data((int)ResultData::CompletedWithError).toBool();
+    auto interrupted = dataItem->data((int)ResultData::Interrupted).toBool();
+
+    return completed && !completedWithError && !interrupted;
+}
+
+bool GenecutOPWidget::hasNucleicInput() const {
+    CHECK(!twResults->selectedItems().isEmpty(), false);
+
+    auto selection = twResults->selectedItems();
+    SAFE_POINT(selection.size() == 2, "Unexpected selection size", false);
+
+    auto dataItem = selection.first()->type() == (int)ResultData::Date ? selection.first() : selection.last();
+    auto isAmino = dataItem->data((int)ResultData::IsAmino).toBool();
+
+    return !isAmino;
+
+}
+
 QString GenecutOPWidget::getSelectedReportData(ResultData datatype) const {
     CHECK(!twResults->selectedItems().isEmpty(), QString());
 
@@ -528,6 +582,73 @@ QString GenecutOPWidget::getSelectedReportData(ResultData datatype) const {
     SAFE_POINT(!resultId.isEmpty(), "Result data ID is empty", QString());
 
     return resultId;
+}
+
+void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, bool add2Project) {
+    QString endpoint;
+    QString textFileType;
+    switch (fileType) {
+    case ServerFileType::Input:
+        endpoint = API_REQUEST_GET_INPUT;
+        textFileType = tr("input");
+        break;
+    case ServerFileType::Result:
+        endpoint = API_REQUEST_GET_RESULT;
+        textFileType = tr("result");
+        break;
+    default:
+        FAIL("Unexpected ServerFileType", );
+        break;
+    }
+
+    QString resultId = getSelectedReportData(ResultData::Id);
+    CHECK(!resultId.isEmpty(), );
+
+    const QUrl url(API_REQUEST_URL + endpoint);
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+    auto aut = QString("Bearer %1").arg(accessToken);
+    request.setRawHeader("Authorization", aut.toLocal8Bit());
+
+    QJsonObject obj;
+    obj[JSON_REPORT_ID] = resultId;
+    obj[JSON_LANG_ID] = L10N::getActiveLanguageCode();
+    QJsonDocument doc(obj);
+    QByteArray data = doc.toJson();
+    QNetworkReply* reply = mgr->sendCustomRequest(request, "GET", data);
+    setWidgetsEnabled({ wtMainForm }, false);
+
+    connect(reply, &QNetworkReply::finished, [this, reply, textFileType, add2Project]() {
+        setWidgetsEnabled({ wtMainForm }, true);
+        if (reply->error() == QNetworkReply::NoError) {
+            QString contents = QString::fromUtf8(reply->readAll());
+            QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+            auto jsonObj = doc.object();
+            auto fileName = jsonObj.value(JSON_RESPOND_SEQUENCE_FILE_NAME).toString();
+            auto fileBody = jsonObj.value(JSON_RESPOND_SEQUENCE_FILE_BODY).toString();
+            QString dataDir = GUrlUtils::getDefaultDataPath();
+            QString resultFilePath = QDir::toNativeSeparators(dataDir + "/" + fileName);
+            resultFilePath = GUrlUtils::rollFileName(resultFilePath, "_");
+            QFile resultFile(resultFilePath);
+            bool opened = resultFile.open(QIODevice::OpenModeFlag::WriteOnly | QIODevice::OpenModeFlag::Truncate | QIODevice::OpenModeFlag::Text);
+            CHECK_EXT(opened, coreLog.error(tr("Can't save the %1 file, probably, no permissions to write to the data directory: %2").arg(textFileType).arg(dataDir)), );
+
+            resultFile.write(fileBody.toLocal8Bit());
+            resultFile.close();
+            successMessage(tr("the %1 file has been saved").arg(textFileType), lbTestInfo);
+            coreLog.details(tr("The %1 file has been saved to %2").arg(textFileType).arg(resultFilePath));
+
+            if (add2Project) {
+                auto loadTask = AppContext::getProjectLoader()->openWithProjectTask({ GUrl(resultFilePath) });
+                CHECK_EXT(loadTask != nullptr, coreLog.error(tr("Can't load the %1 file %2").arg(textFileType).arg(resultFilePath)), );
+
+                AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+            }
+        } else {
+            errorMessage(reply, lbTestInfo);
+        }
+        reply->deleteLater();
+    });
 }
 
 }
