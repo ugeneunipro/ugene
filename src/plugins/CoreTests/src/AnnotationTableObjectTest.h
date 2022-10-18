@@ -82,13 +82,13 @@ class GTest_FindAnnotationByName : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindAnnotationByName, "find-annotation-by-name")
 
-    ReportResult report();
+    ReportResult report() override;
 
     Annotation* getAnnotation() const {
         return result;
     }
 
-    void cleanup();
+    void cleanup() override;
 
 private:
     QString objContextName;

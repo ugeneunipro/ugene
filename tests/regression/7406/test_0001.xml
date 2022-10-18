@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!/regression/7406/7406.uwl"
+            in="!common_data_dir!/regression/7406/ABCGTD000000000.gb"
+            out="!tmp_data_dir!7406_out.gb"
+    />
+
+    <load-document index="doc" url="7406_out.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS"/>
+
+    <find-object-by-name index="obj" doc="doc" name="ABCGTD010000000 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann" obj="obj" name="source"/>
+    <check-annotation-location annotation="ann" location="1..23" complement="0"/>
+
+</multi-test>
