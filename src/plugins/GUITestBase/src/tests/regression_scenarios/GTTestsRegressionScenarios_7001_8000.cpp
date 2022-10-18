@@ -1254,6 +1254,31 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
     CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7406) {
+    // Check that read/write of annotation file with COMMENT does not crash UGENE.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Annotations");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker(os, "Read Annotations");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::connect(os, read, write);
+
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Annotations"));
+    GTMouseDriver::click();
+
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/7406/ABCGTD000000000.gb");
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Annotations"));
+    GTMouseDriver::click();
+    QString outputFilePath = QDir(sandBoxDir).absolutePath() + "/test_7406.gb";
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
+
+    GTLogTracer lt;
+    GTWidget::click(os, GTAction::button(os, "Run workflow"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found unexpected errors in the log: " + lt.getJoinedErrorString());
+    GTFile::check(os, outputFilePath);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7407) {
     // Check that UGENE can generate a single character sequence.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7407.fa");

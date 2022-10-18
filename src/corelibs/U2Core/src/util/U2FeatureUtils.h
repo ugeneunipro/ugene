@@ -139,15 +139,26 @@ public:
 private:
     static QList<U2Feature> getFeaturesByParent(const U2DataId& parentFeatureId, const U2DbiRef& dbiRef, U2OpStatus& os, OperationScope scope = Recursive, const FeatureFlags& featureClass = U2Feature::Annotation, SubfeatureSelectionMode mode = NotSelectParentFeature);
     static QList<U2Feature> getFeaturesByRoot(const U2DataId& rootFeatureId, const U2DbiRef& dbiRef, U2OpStatus& os, OperationScope scope = Recursive, const FeatureFlags& featureClass = U2Feature::Annotation);
-    /**
-     * Adds a set of subfeatures to the feature having @parentFeatureId
-     * and representing an annotation. Each new subfeature corresponds an item from @regions.
-     * The parent feature has to represent an annotation.
-     */
-    static void addSubFeatures(const QVector<U2Region>& regions, const U2Strand& strand, const U2DataId& parentFeatureId, const U2DataId& rootFeatureId, const U2DbiRef& dbiRef, U2OpStatus& os);
 
-    static void createFeatureEntityFromAnnotationData(const SharedAnnotationData& annotation, const U2DataId& rootFeatureId, const U2DataId& parentFeatureId, U2Feature& resFeature, QList<U2FeatureKey>& resFeatureKeys);
-    static U2FeatureKey createFeatureKeyLocationOperator(U2LocationOperator value);
+    /**
+     * Creates 1 sub-features per every region in the list for the given parent feature.
+     * Sub-features are used store multi-region locations (1 sub-feature == 1 region) for multi-region features.
+     * The first region of the multi-region location is stored as a part of parent feature.
+     */
+    static void createSubFeatures(const QVector<U2Region>& regions,
+                                  const U2Strand& strand,
+                                  const U2DataId& parentFeatureId,
+                                  const U2DataId& rootFeatureId,
+                                  const U2DbiRef& dbiRef,
+                                  U2OpStatus& os);
+
+    static void createFeatureEntityFromAnnotationData(const SharedAnnotationData& annotation,
+                                                      const U2DataId& rootFeatureId,
+                                                      const U2DataId& parentFeatureId,
+                                                      U2Feature& resFeature,
+                                                      QList<U2FeatureKey>& resFeatureKeys);
+
+    static U2FeatureKey createFeatureKeyLocationOperator(const U2LocationOperator& value);
 };
 
 }  // namespace U2
