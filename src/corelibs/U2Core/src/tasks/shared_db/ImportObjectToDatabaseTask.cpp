@@ -44,9 +44,9 @@ ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject* object, const U2
 void ImportObjectToDatabaseTask::run() {
     DbiConnection con(dstDbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != con.dbi, setError(tr("Error! No DBI")), );
+    SAFE_POINT_EXT(nullptr != con.dbi, setError(QString("Error! No DBI")), );
     U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
-    SAFE_POINT_EXT(nullptr != oDbi, setError(tr("Error! No object DBI")), );
+    SAFE_POINT_EXT(nullptr != oDbi, setError(QString("Error! No object DBI")), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_FOLDER_HINT] = U2DbiUtils::makeFolderCanonical(dstFolder);

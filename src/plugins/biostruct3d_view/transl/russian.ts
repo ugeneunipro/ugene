@@ -84,6 +84,16 @@
         <source>Select Models</source>
         <translation>Выбор моделей</translation>
     </message>
+    <message>
+        <location filename="../src/SelectModelsDialog.ui" line="25"/>
+        <source>All</source>
+        <translation type="unfinished">Все</translation>
+    </message>
+    <message>
+        <location filename="../src/SelectModelsDialog.ui" line="32"/>
+        <source>Invert</source>
+        <translation type="unfinished">Инвертировать</translation>
+    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
@@ -338,32 +348,28 @@ You may try to upgrade your system by updating the video card driver.</translati
 <context>
     <name>U2::SelectModelsDialog</name>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="38"/>
         <source>All</source>
-        <translation>Все</translation>
+        <translation type="vanished">Все</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="39"/>
         <source>Invert</source>
-        <translation>Инвертировать</translation>
+        <translation type="vanished">Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="40"/>
         <source>OK</source>
-        <translation>Применить</translation>
+        <translation type="vanished">Применить</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="41"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="91"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="73"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="91"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="73"/>
         <source>At least one model should be selected.</source>
         <translation>Выберите как минимум одну модель.</translation>
     </message>

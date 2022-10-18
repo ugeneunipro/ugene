@@ -67,7 +67,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
 
     QList<U2McaRow> rows = importRows(os, connection, dbMca, mcaRowsDatabaseData);
     CHECK_OP(os, nullptr);
-    SAFE_POINT_EXT(rows.size() == mca->getRowCount(), os.setError(QObject::tr("Unexpected error on MCA rows import")), nullptr);
+    SAFE_POINT_EXT(rows.size() == mca->getRowCount(), os.setError(QString("Unexpected error on MCA rows import")), nullptr);
 
     for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
         mca->getMcaRow(i)->setRowDbInfo(rows.at(i));

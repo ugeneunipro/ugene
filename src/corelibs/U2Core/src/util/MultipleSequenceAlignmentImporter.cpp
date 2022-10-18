@@ -79,7 +79,7 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
 
     QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapsPerRow, os);
     CHECK_OP(os, nullptr);
-    SAFE_POINT_EXT(rows.size() == al->getRowCount(), os.setError(QObject::tr("Unexpected error on MSA rows import")), nullptr);
+    SAFE_POINT_EXT(rows.size() == al->getRowCount(), os.setError(QString("Unexpected error on MSA rows import")), nullptr);
 
     if (!rows.isEmpty()) {
         // if the imported alignment is not empty -> set it length to the max(len, orig-len).

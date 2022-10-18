@@ -99,7 +99,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     CHECK_OP(os, res);
 
     U2SequenceDbi* srcSeqDbi = srcCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != srcSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
+    SAFE_POINT_EXT(nullptr != srcSeqDbi, os.setError("Invalid sequence DBI"), res);
     U2Sequence seq = srcSeqDbi->getSequenceObject(srcSeq.entityId, os);
     CHECK_OP(os, res);
 
@@ -115,7 +115,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     DbiConnection dstCon(dstDbi, os);
     CHECK_OP(os, res);
     U2SequenceDbi* dstSeqDbi = dstCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != dstSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
+    SAFE_POINT_EXT(nullptr != dstSeqDbi, os.setError("Invalid sequence DBI"), res);
     dstSeqDbi->createSequenceObject(res, dstFolder, os);
     CHECK_OP(os, res);
 
@@ -714,7 +714,7 @@ void U2MemorySequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus
 }
 
 void U2MemorySequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus& os) {
-    SAFE_POINT_EXT(n >= 0, os.setError(QObject::tr("Invalid number of symbols: %1").arg(n)), );
+    SAFE_POINT_EXT(n >= 0, os.setError(QString("Invalid number of symbols: %1").arg(n)), );
     char defaultChar = U2AlphabetUtils::getDefaultSymbol(sequence.alphabet);
     QByteArray a(n, defaultChar);
 

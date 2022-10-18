@@ -133,12 +133,12 @@
         <translation>Автоматический поиск плазмид...</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="116"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="117"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/AnnotatorPlugin.cpp" line="116"/>
+        <location filename="../src/AnnotatorPlugin.cpp" line="117"/>
         <source>No annotations found</source>
         <translation>Аннотаций не найдено</translation>
     </message>
@@ -147,7 +147,7 @@
     <name>U2::CollocationSearchTask</name>
     <message>
         <location filename="../src/CollocationsDialogController.cpp" line="315"/>
-        <location filename="../src/CollocationsDialogController.cpp" line="343"/>
+        <location filename="../src/CollocationsDialogController.cpp" line="344"/>
         <source>Search for annotated regions</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>

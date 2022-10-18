@@ -278,7 +278,7 @@ AutoAnnotationsUpdateTask::~AutoAnnotationsUpdateTask() {
 }
 
 void AutoAnnotationsUpdateTask::prepare() {
-    SAFE_POINT(autoAnnotationObject != nullptr, tr("Empty auto-annotation object"), );
+    SAFE_POINT(autoAnnotationObject != nullptr, "Empty auto-annotation object", );
 
     lock = new StateLock("Auto-annotations update", StateLockFlag_LiveLock);
     sequenceObject = autoAnnotationObject->getSequenceObject();

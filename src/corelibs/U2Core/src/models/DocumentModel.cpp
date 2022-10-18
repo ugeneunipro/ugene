@@ -684,7 +684,7 @@ bool Document::unload(bool deleteObjects) {
     QList<StateLock*> locks = findLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock);
     bool liveLocked = (locks.size() > 1);
     if (locks.size() == 1 && !liveLocked) {
-        SAFE_POINT(locks.first() != nullptr, tr("Lock is NULL"), false);
+        SAFE_POINT(locks.first() != nullptr, "Lock is NULL", false);
         liveLocked &= (locks.first()->getUserDesc() == UNLOAD_LOCK_NAME);
     }
     if (liveLocked) {

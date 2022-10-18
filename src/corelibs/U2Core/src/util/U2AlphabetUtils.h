@@ -120,7 +120,7 @@ private:
 
 int ExtendedDNAlphabetComparator::getMatchMask(char c) const {
     int i = c - ' ';
-    SAFE_POINT(i >= 0 && i < DNA_AL_EX_INDEX_SIZE, QObject::tr("Symbol is not belong to alphabet"), 0);
+    SAFE_POINT(i >= 0 && i < DNA_AL_EX_INDEX_SIZE, QString("Symbol is not belong to alphabet"), 0);
     return index[i];
 }
 

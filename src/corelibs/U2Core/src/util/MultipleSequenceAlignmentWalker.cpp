@@ -74,7 +74,7 @@ private:
         CHECK(!gaps.isEmpty(), false);
         const U2MsaGap& gap = gaps.first();
 
-        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start"))), false);
+        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(QString("Unexpected gap start")), false);
 
         if (gap.startPos >= startPos + length) {
             return false;
@@ -83,8 +83,8 @@ private:
     }
 
     static void splitGap(int startPos, int length, const U2MsaGap& gap, U2MsaGap& inRegion, U2MsaGap& outRegion, U2OpStatus& os) {
-        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too small)"))), );
-        SAFE_POINT_EXT(gap.startPos < startPos + length, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too big)"))), );
+        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(QString("Unexpected gap start (too small)")), );
+        SAFE_POINT_EXT(gap.startPos < startPos + length, os.setError(QString("Unexpected gap start (too big)")), );
 
         int endPos = startPos + length - 1;
         if (gap.startPos + gap.length <= endPos) {
@@ -131,8 +131,8 @@ bool MultipleSequenceAlignmentWalker::isEnded() const {
 
 QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus& os) {
     QList<QByteArray> result;
-    SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment walker is ended")), result);
-    SAFE_POINT_EXT(msa->getRowCount() == rowWalkerList.size(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment changed")), result);
+    SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + QString(" Alignment walker is ended")), result);
+    SAFE_POINT_EXT(msa->getRowCount() == rowWalkerList.size(), os.setError(L10N::internalError() + QString(" Alignment changed")), result);
 
     int charsRemain = msa->getLength() - currentOffset;
     int chunkSize = (charsRemain < length) ? charsRemain : length;
