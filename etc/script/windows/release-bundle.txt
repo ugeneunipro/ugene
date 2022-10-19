@@ -1325,6 +1325,10 @@ plugins/external_tool_support.dll
 plugins/external_tool_support.license
 plugins/external_tool_support.map
 plugins/external_tool_support.plugin
+plugins/genecut.dll
+plugins/genecut.license
+plugins/genecut.map
+plugins/genecut.plugin
 plugins/genome_aligner.dll
 plugins/genome_aligner.license
 plugins/genome_aligner.map
