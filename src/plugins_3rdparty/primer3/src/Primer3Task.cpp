@@ -684,19 +684,21 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
                 int firstExonIdx = exonRange.minValue;
                 int lastExonIdx = exonRange.maxValue;
                 if (firstExonIdx > regions.size()) {
-                    setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%2)."
+                    setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%3)."
                                 " Please set correct exon range.")
                                  .arg(firstExonIdx)
                                  .arg(lastExonIdx)
                                  .arg(regions.size()));
+                    return res;
                 }
 
                 if (lastExonIdx > regions.size()) {
-                    setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%2)."
+                    setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%3)."
                                 " Please set correct exon range.")
                                  .arg(firstExonIdx)
                                  .arg(lastExonIdx)
                                  .arg(regions.size()));
+                    return res;
                 }
 
                 regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);

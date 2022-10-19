@@ -52,6 +52,8 @@ public:
         bool hasValidationErrors = false;
         // Set true if you need to enable "RT-PCR" design on the corresponding tab
         bool rtPcrDesign = false;
+        // Value to exon range on the "RT-PCR" tab
+        QString exonRangeLine;
         // The file to the primer3 settings. All settings from this file will be set with the dialog
         QString filePath;
         // Set settings manually if true, with the "Load settings" button if false
