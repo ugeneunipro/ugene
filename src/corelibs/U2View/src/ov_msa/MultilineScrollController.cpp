@@ -540,7 +540,7 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
 
     const int alignmentLength = maEditor->getAlignmentLen();
     const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
+    const int sequenceAreaWidth = qMax(1, ui->getSequenceAreaBaseWidth(0));
     const int restWidth = (alignmentLength * columnWidth) % sequenceAreaWidth;
     const int scrollAreaHeight = childrenScrollArea->height();
 

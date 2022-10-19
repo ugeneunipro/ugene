@@ -424,7 +424,8 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
     const int alignmentLength = maEditor->getAlignmentLen();
     const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth;
+    const int sequenceAreaWidth = qMax(1,
+                                       ui->getSequenceArea()->width() - ui->getSequenceArea()->width() % columnWidth);
 
     maEditor->multilineViewAction->setEnabled(hScrollBar->maximum() > sequenceAreaWidth || maEditor->getMultilineMode());
 
@@ -432,7 +433,10 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     // TODO:ichebyki
     int hScrollBarMax = qMax(0, alignmentLength * columnWidth - sequenceAreaWidth);
     if (maEditor->getMultilineMode()) {
-        int moreLength = (alignmentLength * columnWidth / sequenceAreaWidth + (alignmentLength * columnWidth % sequenceAreaWidth > 0 ? 1 : 0)) * sequenceAreaWidth - sequenceAreaWidth;
+        int moreLength = (alignmentLength * columnWidth / sequenceAreaWidth +
+                          (alignmentLength * columnWidth % sequenceAreaWidth > 0 ? 1 : 0)) *
+                             sequenceAreaWidth -
+                         sequenceAreaWidth;
         hScrollBarMax = qMax(hScrollBarMax, moreLength);
     }
     hScrollBar->setMaximum(hScrollBarMax);
