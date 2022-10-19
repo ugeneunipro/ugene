@@ -64,6 +64,10 @@ namespace LocalWorkflow {
 /**************************
  * GenericDocReader
  **************************/
+GenericDocReader::GenericDocReader(Actor* a)
+    : BaseWorker(a) {
+}
+
 void GenericDocReader::init() {
     assert(ports.size() == 1);
     ch = ports.values().first();
@@ -145,6 +149,9 @@ QString GenericDocReader::getObjectName(const SharedDbiDataHandler& handler, con
 
 bool GenericDocReader::isDone() const {
     return BaseWorker::isDone() && cache.isEmpty();
+}
+
+void GenericDocReader::cleanup() {
 }
 
 void GenericDocReader::sl_taskFinished() {
@@ -357,7 +364,7 @@ void LoadSeqTask::run() {
         QList<GObject*> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         QList<GObject*> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        for (GObject* go: qAsConst(seqObjs)) {
+        for (GObject* go : qAsConst(seqObjs)) {
             SAFE_POINT(go != nullptr, "Invalid object encountered!", );
             if (!selector->objectMatches(static_cast<U2SequenceObject*>(go))) {
                 continue;

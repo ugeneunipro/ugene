@@ -278,7 +278,7 @@ void AnnotationTableObject::emit_onAnnotationsInGroupRemoved(const QList<Annotat
 }
 
 void AnnotationTableObject::loadDataCore(U2OpStatus& os) {
-    SAFE_POINT(nullptr == rootGroup, "Annotation table is initialized unexpectedly", );
+    SAFE_POINT(rootGroup == nullptr, "Annotation table is initialized unexpectedly", );
 
     U2AnnotationTable table = U2FeatureUtils::getAnnotationTable(entityRef, os);
     CHECK_OP(os, );

@@ -85,37 +85,39 @@ static void addTableToTable(AnnotationTableObject* from, const QScopedPointer<An
 /* Worker */
 /************************************************************************/
 ReadAnnotationsWorker::ReadAnnotationsWorker(Actor* p)
-    : GenericDocReader(p), mode(ReadAnnotationsProto::SPLIT) {
+    : GenericDocReader(p) {
 }
 
 void ReadAnnotationsWorker::init() {
     GenericDocReader::init();
     mode = ReadAnnotationsProto::Mode(getValue<int>(MODE_ATTR));
-    IntegralBus* outBus = dynamic_cast<IntegralBus*>(ch);
-    assert(outBus);
+    auto outBus = dynamic_cast<IntegralBus*>(ch);
+    SAFE_POINT(outBus != nullptr, "IntegralBus is null!", );
     mtype = outBus->getBusType();
 }
 
 Task* ReadAnnotationsWorker::createReadTask(const QString& url, const QString& datasetName) {
-    bool mergeAnnotations = (mode != ReadAnnotationsProto::SPLIT);
+    bool mergeAnnotations = mode != ReadAnnotationsProto::SPLIT;
     return new ReadAnnotationsTask(url, datasetName, context, mode, mergeAnnotations ? getValue<QString>(ANN_TABLE_NAME_ATTR) : "");
 }
 
 QString ReadAnnotationsWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    // return getObjectName(handler, U2Type::AnnotationTable);
-    return getObjectName(handler, 10);
+    // Using local var to have memory address for the static constant. TODO: switch build to std++17.
+    // See https://en.cppreference.com/w/cpp/language/static
+    auto type = U2Type::AnnotationTable;
+    return getObjectName(handler, type);
 }
 
 void ReadAnnotationsWorker::onTaskFinished(Task* task) {
-    ReadAnnotationsTask* t = qobject_cast<ReadAnnotationsTask*>(task);
-    if (ReadAnnotationsProto::MERGE_FILES == mode) {
-        datasetData << t->takeResults();
+    auto readAnnotationsTask = qobject_cast<ReadAnnotationsTask*>(task);
+    if (mode == ReadAnnotationsProto::MERGE_FILES) {
+        datasetData << readAnnotationsTask->takeResults();
         return;
     }
 
-    sendData(t->takeResults());
+    sendData(readAnnotationsTask->takeResults());
 }
 
 void ReadAnnotationsWorker::sl_datasetEnded() {
@@ -128,15 +130,14 @@ void ReadAnnotationsWorker::sl_datasetEnded() {
         getValue<QString>(ANN_TABLE_NAME_ATTR), context->getDataStorage()->getDbiRef()));
 
     foreach (const QVariantMap& m, datasetData) {
-        const QVariant annsVar = m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
-        for (AnnotationTableObject* t : StorageUtils::getAnnotationTableObjects(context->getDataStorage(),
-                                                                                annsVar)) {
+        QVariant annsVar = m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
+        QList<AnnotationTableObject*> annotations = StorageUtils::getAnnotationTableObjects(context->getDataStorage(), annsVar);
+        for (AnnotationTableObject* t : qAsConst(annotations)) {
             addTableToTable(t, mergedAnnotationTable);
         }
     }
 
-    const SharedDbiDataHandler resultTableId =
-        context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.data());
+    SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(mergedAnnotationTable.data());
 
     QVariantMap m;
     m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(resultTableId);
@@ -234,13 +235,12 @@ ReadAnnotationsTask::ReadAnnotationsTask(const QString& url,
       mergeAnnotations(mergeAnnotations),
       mergedAnnTableName(mergedAnnTableName),
       context(context) {
-    SAFE_POINT(nullptr != context, "Invalid workflow context encountered!", );
+    SAFE_POINT(context != nullptr, "Invalid workflow context encountered!", );
 }
 
 void ReadAnnotationsTask::prepare() {
-    int memUseMB = 0;
     QFileInfo file(url);
-    memUseMB = file.size() / (1024 * 1024) + 1;
+    int memUseMB = file.size() / (1024 * 1024) + 1;
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (BaseIOAdapters::GZIPPED_LOCAL_FILE == iof->getAdapterId()) {
         memUseMB = ZlibAdapter::getUncompressedFileSizeInBytes(url) / (1024 * 1024) + 1;
@@ -266,7 +266,7 @@ void ReadAnnotationsTask::run() {
             break;
         }
     }
-    CHECK_EXT(nullptr != format, stateInfo.setError(tr("Unsupported document format: %1").arg(url)), );
+    CHECK_EXT(format != nullptr, stateInfo.setError(tr("Unsupported document format: %1").arg(url)), );
 
     ioLog.info(tr("Reading annotations from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -286,9 +286,8 @@ void ReadAnnotationsTask::run() {
     // Only needed if merge mode.
     QScopedPointer<AnnotationTableObject> mergedAnnotationTable;
     if (isMerge) {
-        mergedAnnotationTable.reset(new AnnotationTableObject(mergedAnnTableName.isEmpty() ? ANN_TABLE_DEFAULT_NAME
-                                                                                           : mergedAnnTableName,
-                                                              context->getDataStorage()->getDbiRef()));
+        QString objectName = mergedAnnTableName.isEmpty() ? ANN_TABLE_DEFAULT_NAME : mergedAnnTableName;
+        mergedAnnotationTable.reset(new AnnotationTableObject(objectName, context->getDataStorage()->getDbiRef()));
     }
 
     for (GObject* go : qAsConst(annsObjList)) {
@@ -300,18 +299,16 @@ void ReadAnnotationsTask::run() {
         // If "MERGE_FILES", transfer the file tables as is and merge them in ReadAnnotationsWorker::sl_datasetEnded.
         // Otherwise ("MERGE" with several tables of annotations in one file), merge these tables into one.
         if (!isMerge) {
-            const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsObj);
+            SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsObj);
             m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
             results.append(m);
 
             SAFE_POINT(doc->removeObject(go, DocumentObjectRemovalMode_Detach),
-                       QString("Cannot remove object '%1' from document '%2'")
-                           .arg(go->getGObjectName(), doc->getName()), )
+                       QString("Cannot remove object '%1' from document '%2'").arg(go->getGObjectName(), doc->getName()), )
         } else {
             U2OpStatusImpl os;
             DbiOperationsBlock operationBlock(context->getDataStorage()->getDbiRef(), os);
             SAFE_POINT_OP(os, )
-
             addTableToTable(annsObj, mergedAnnotationTable);
         }
     }
@@ -326,7 +323,6 @@ void ReadAnnotationsTask::run() {
 QList<QVariantMap> ReadAnnotationsTask::takeResults() {
     QList<QVariantMap> ret = results;
     results.clear();
-
     return ret;
 }
 

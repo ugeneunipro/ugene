@@ -66,17 +66,17 @@ IMPLEMENT_TEST(AnnotationUnitTest, get_IdObjectData) {
     SharedAnnotationData anData = createTestAnnotationData();
 
     AnnotationTableObject ft("aname_table_multy", dbiRef);
-    ft.addAnnotations(QList<SharedAnnotationData>() << anData);
+    ft.addAnnotations({anData});
 
-    const QList<Annotation*> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
     Annotation* annotation = annotations.first();
 
     CHECK_TRUE(&ft == annotation->getGObject(), "Unexpected value of annotation's parent object");
 
     U2OpStatusImpl os;
-    const U2Feature feature = U2FeatureUtils::getFeatureById(annotation->id, dbiRef, os);
-    CHECK_EQUAL(U2Region(), feature.location.region, "Annotation's region");
+    U2Feature feature = U2FeatureUtils::getFeatureById(annotation->id, dbiRef, os);
+    CHECK_EQUAL(U2Region(1, 2), feature.location.region, "Annotation's region");
     CHECK_TRUE(feature.location.strand.isDirect(), "Annotation has to belong to direct strand");
 
     CHECK_TRUE(*anData == *(annotation->getData()), "Unexpected value of annotation's data");

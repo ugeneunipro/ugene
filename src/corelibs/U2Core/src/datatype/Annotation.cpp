@@ -317,10 +317,10 @@ bool Annotation::annotationLessThan(Annotation* first, Annotation* second) {
 }
 
 bool Annotation::annotationLessThanByRegion(Annotation* first, Annotation* second) {
-    SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
+    SAFE_POINT(first != nullptr && second != nullptr, "Invalid annotation detected", false);
 
-    const U2Location firstLocation = first->getLocation();
-    const U2Location secondLocation = second->getLocation();
+    const U2Location& firstLocation = first->getLocation();
+    const U2Location& secondLocation = second->getLocation();
     SAFE_POINT(!firstLocation->isEmpty() && !secondLocation->isEmpty(), "Invalid annotation's location detected!", false);
 
     const U2Region& r1 = firstLocation->regions.first();

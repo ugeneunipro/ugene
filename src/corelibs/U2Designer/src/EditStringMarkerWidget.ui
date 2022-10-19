@@ -22,9 +22,6 @@
      <property name="checked">
       <bool>true</bool>
      </property>
-     <attribute name="buttonGroup">
-      <string>buttonGroup</string>
-     </attribute>
     </widget>
    </item>
    <item row="0" column="1">
@@ -35,9 +32,6 @@
      <property name="text">
       <string>Ends with</string>
      </property>
-     <attribute name="buttonGroup">
-      <string>buttonGroup</string>
-     </attribute>
     </widget>
    </item>
    <item row="1" column="1">
@@ -48,9 +42,6 @@
      <property name="text">
       <string>Contains</string>
      </property>
-     <attribute name="buttonGroup">
-      <string>buttonGroup</string>
-     </attribute>
     </widget>
    </item>
    <item row="2" column="1">
@@ -61,9 +52,6 @@
      <property name="text">
       <string>Regular expression</string>
      </property>
-     <attribute name="buttonGroup">
-      <string>buttonGroup</string>
-     </attribute>
     </widget>
    </item>
    <item row="3" column="1">

@@ -155,10 +155,10 @@ QDResultLinker::QDResultLinker(QDScheduler* _sched)
     : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(nullptr),
       needInit(true), maxMemorySizeInMB(-1) {
     const AppSettings* appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(nullptr != appSettings, taskLog.error(QDScheduler::tr("Invalid applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != appSettings, taskLog.error("Invalid applications settings detected"), );
 
     AppResourcePool* appResourcePool = appSettings->getAppResourcePool();
-    SAFE_POINT_EXT(nullptr != appResourcePool, taskLog.error(QDScheduler::tr("Invalid users applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != appResourcePool, taskLog.error("Invalid users applications settings detected"), );
     maxMemorySizeInMB = AppContext::getAppSettings()->getAppResourcePool()->getMaxMemorySizeInMB();
 }
 

@@ -42,9 +42,6 @@
        <property name="checked">
         <bool>true</bool>
        </property>
-       <attribute name="buttonGroup">
-        <string>buttonGroup</string>
-       </attribute>
       </widget>
      </item>
      <item>
@@ -98,9 +95,6 @@
        <property name="text">
         <string>Merge into alignment</string>
        </property>
-       <attribute name="buttonGroup">
-        <string>buttonGroup</string>
-       </attribute>
       </widget>
      </item>
      <item>

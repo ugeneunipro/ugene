@@ -53,14 +53,12 @@ public:
         SharedDb
     };
 
-    WriteAnnotationsWorker(Actor* p)
-        : BaseWorker(p), annotationsPort(nullptr) {
-    }
+    WriteAnnotationsWorker(Actor* p);
     ~WriteAnnotationsWorker();
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_saveDocTaskFinished();
@@ -79,7 +77,7 @@ private:
     Task* getSaveObjTask(const U2DbiRef& dstDbiRef) const;
     Task* createWriteMultitask(const QList<Task*>& taskList) const;
 
-    IntegralBus* annotationsPort;
+    IntegralBus* annotationsPort = nullptr;
     QList<AnnotationTableObject*> createdAnnotationObjects;
     QMap<QString, QList<AnnotationTableObject*>> annotationsByUrl;
     QSet<QString> existedResultFiles;

@@ -19,7 +19,7 @@ out="!tmp_data_dir!7227_out.ugenedb"
 <find-annotation-by-name index="ann2" obj="obj" name="misc_feature" number="0" /> 
 <check-annotation-location annotation="ann2" location="2..590" complement="0" />
 
-<find-annotation-by-name index="ann3" obj="obj" name="CDS" number="1" /> 
+<find-annotation-by-name index="ann3" obj="obj" name="CDS" number="0" />
 <check-annotation-location annotation="ann3" location="1042..2658" complement="0" />
 
 <find-annotation-by-name index="ann4" obj="obj" name="CDS" number="2" /> 
