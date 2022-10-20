@@ -1,11 +1,15 @@
 include (genecut.pri)
 
 # Input
-HEADERS += src/GenecutOPWidget.h \
+HEADERS += src/io/GenecutHttpFileAdapter.h \
+           src/io/GenecutHttpFileAdapterFactory.h \
+           src/GenecutOPWidget.h \
            src/GenecutOPWidgetFactory.h \
            src/GenecutPlugin.h
 
-SOURCES += src/GenecutOPWidget.cpp \
+SOURCES += src/io/GenecutHttpFileAdapter.cpp \
+           src/io/GenecutHttpFileAdapterFactory.cpp \
+           src/GenecutOPWidget.cpp \
            src/GenecutOPWidgetFactory.cpp \
            src/GenecutPlugin.cpp
 

@@ -106,7 +106,7 @@ public:
 
     QString errorString() const override;
 
-private:
+protected:
     void init();
     qint64 stored() const;
     inline bool singleChunk() const {
@@ -147,9 +147,10 @@ private:
     QEventLoop loop;
     GUrl gurl;
     QByteArray postData;
-private slots:
+
+protected slots:
     void add_data();
-    void done();
+    virtual void done();
     void progress(qint64 done, qint64 total);
     void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
 };

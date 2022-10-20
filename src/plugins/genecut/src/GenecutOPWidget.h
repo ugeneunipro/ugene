@@ -32,7 +32,9 @@
 namespace U2 {
 
 class AnnotatedDNAView;
-class PCRPrimerDesignForDNAAssemblyTask;
+class GenecutHttpFileAdapter;
+class GenecutHttpFileAdapterFactory;
+//class PCRPrimerDesignForDNAAssemblyTask;
 
 class GenecutOPWidget : public QWidget, private Ui_GenecutOPWidget {
     Q_OBJECT
@@ -90,6 +92,9 @@ private:
 
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
+
+    GenecutHttpFileAdapterFactory* factory = nullptr;
+    GenecutHttpFileAdapter* adapter = nullptr;
 
     QString accessToken;
     QString refreshToken;

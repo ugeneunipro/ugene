@@ -20,6 +20,8 @@
  */
 
 #include "GenecutOPWidget.h"
+#include "io/GenecutHttpFileAdapter.h"
+#include "io/GenecutHttpFileAdapterFactory.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -52,7 +54,7 @@
 namespace U2 {
 
 const QString GenecutOPWidget::HEADER_VALUE = "application/json";
-const QString GenecutOPWidget::API_SERVER = "http://95.170.150.101:5000";
+const QString GenecutOPWidget::API_SERVER = "http://192.168.16.230:5000";
 const QString GenecutOPWidget::API_REQUEST_URL = API_SERVER + "/api/";
 const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
@@ -113,6 +115,8 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     }
 
     mgr = new QNetworkAccessManager(this);
+    factory = new GenecutHttpFileAdapterFactory(this);
+    adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
 
     connect(pbLogin, &QPushButton::clicked, this, &GenecutOPWidget::sl_loginClicked);
     connect(pbForgot, &QPushButton::clicked, [this]() {
@@ -164,11 +168,58 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
 }
 
 GenecutOPWidget::~GenecutOPWidget() {
-    mgr->deleteLater();
+    adapter->deleteLater();
 }
 
 void GenecutOPWidget::sl_loginClicked() {
-    const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
+    adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
+    adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
+    adapter->addDataValue(JSON_EMAIL, leEmail->text());
+    adapter->addDataValue(JSON_PASSWORD, lePasword->text());
+    QString url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
+    SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
+
+    setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, false);
+
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this]() {
+        setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, true);
+        if (!adapter->hasError()) {
+            lbLoginWarning->hide();
+
+            QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
+            int readSize = adapter->readBlock(contents.data(), DocumentFormat::READ_BUFF_SIZE);
+            SAFE_POINT(readSize != -1, "Cannot read request data", );
+
+            contents.resize(readSize);
+            QJsonDocument doc = QJsonDocument::fromJson(contents);
+            auto jsonObj = doc.object();
+            accessToken = jsonObj.value(JSON_ACCESS_TOKEN).toString();
+            refreshToken = jsonObj.value(JSON_REFRESH_TOKEN).toString();
+            auto userObject = jsonObj.value(JSON_USER_OBJECT).toObject();
+            email = userObject.value(JSON_EMAIL).toString();
+            firstName = userObject.value(JSON_FIRST_NAME).toString();
+            lastName = userObject.value(JSON_LAST_NAME).toString();
+            lbWelcome->setText(tr("Welcome, %1").arg(firstName));
+            stackedWidget->setCurrentIndex(2);
+            auto settings = AppContext::getSettings();
+            if (cbRememberMe->isChecked()) {
+                settings->setValue(GENECUT_USER_EMAIL_SETTINGS, leEmail->text());
+                settings->setValue(GENECUT_USER_PASSWORD_SETTINGS, lePasword->text());
+            } else {
+                settings->remove(GENECUT_USER_EMAIL_SETTINGS);
+                settings->remove(GENECUT_USER_PASSWORD_SETTINGS);
+            }
+        } else {
+            errorMessage(adapter->errorString(), lbLoginWarning);
+        }
+    });
+
+    return;
+
+
+
+
+    /*const QUrl url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
 
@@ -207,7 +258,7 @@ void GenecutOPWidget::sl_loginClicked() {
             errorMessage(reply, lbLoginWarning);
         }
         reply->deleteLater();
-    });
+    });*/
 }
 
 void GenecutOPWidget::sl_resetPasswordClicked() {
