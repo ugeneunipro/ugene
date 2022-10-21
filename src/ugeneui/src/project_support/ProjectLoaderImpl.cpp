@@ -30,6 +30,7 @@
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/DocumentImport.h>
@@ -486,9 +487,25 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
     }
 
     if (abilityUniteDocuments) {
-        bool ok = MultipleDocumentsReadingModeSelectorController::adjustReadingMode(hintsOverDocuments, urls, headerSequenceLengths);
-        if (!ok) {
-            return nullptr;
+        auto noGuiAlignmentPath = hints.value(ProjectLoaderHint_SkipGuiAndMergeSequeencesIntoAlignmentPath, "").toString();
+        if (!noGuiAlignmentPath.isEmpty()) {
+            hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat] = BaseDocumentFormats::CLUSTAL_ALN;
+            hintsOverDocuments[DocumentReadingMode_SequenceAsAlignmentHint] = true;
+            hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_URLDocument] = noGuiAlignmentPath;
+            hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_SaveDocumentFlag] = true;
+            hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_Flag] = true;
+            QStringList urlsStr;
+            foreach(GUrl url, _urls) {
+                urlsStr << url.getURLString();
+            }
+            hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_URLsDocumentConsistOf] = urlsStr;
+            urls.clear();
+            urls << noGuiAlignmentPath;
+        } else {
+            bool ok = MultipleDocumentsReadingModeSelectorController::adjustReadingMode(hintsOverDocuments, urls, headerSequenceLengths);
+            if (!ok) {
+                return nullptr;
+            }
         }
     }
 

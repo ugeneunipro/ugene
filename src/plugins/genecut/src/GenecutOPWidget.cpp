@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
@@ -83,6 +84,7 @@ const QString GenecutOPWidget::JSON_COMPLETED = "completed";
 const QString GenecutOPWidget::JSON_COMPLETED_WITH_ERROR = "completedWithError";
 const QString GenecutOPWidget::JSON_INTERRUPTED = "interrupted";
 const QString GenecutOPWidget::JSON_SHORT_DESCRIPTION = "short";
+const QString GenecutOPWidget::JSON_IS_AMINO = "is_amino";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_NAME = "sequenceFileName";
 const QString GenecutOPWidget::JSON_SEQUENCE_FILE_BODY = "sequenceFileBody";
 const QString GenecutOPWidget::JSON_RESPOND_SEQUENCE_FILE_NAME = "file_name";
@@ -116,7 +118,7 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
 
     mgr = new QNetworkAccessManager(this);
     factory = new GenecutHttpFileAdapterFactory(this);
-    adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
+    //adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
 
     connect(pbLogin, &QPushButton::clicked, this, &GenecutOPWidget::sl_loginClicked);
     connect(pbForgot, &QPushButton::clicked, [this]() {
@@ -167,11 +169,8 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     });
 }
 
-GenecutOPWidget::~GenecutOPWidget() {
-    adapter->deleteLater();
-}
-
 void GenecutOPWidget::sl_loginClicked() {
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_EMAIL, leEmail->text());
@@ -180,8 +179,7 @@ void GenecutOPWidget::sl_loginClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, true);
         if (!adapter->hasError()) {
             lbLoginWarning->hide();
@@ -191,6 +189,7 @@ void GenecutOPWidget::sl_loginClicked() {
             SAFE_POINT(readSize != -1, "Cannot read request data", );
 
             contents.resize(readSize);
+            coreLog.info(contents);
             QJsonDocument doc = QJsonDocument::fromJson(contents);
             auto jsonObj = doc.object();
             accessToken = jsonObj.value(JSON_ACCESS_TOKEN).toString();
@@ -210,13 +209,14 @@ void GenecutOPWidget::sl_loginClicked() {
                 settings->remove(GENECUT_USER_PASSWORD_SETTINGS);
             }
         } else {
-            errorMessage(adapter->errorString(), lbLoginWarning);
+            errorMessage(adapter, lbLoginWarning);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
 void GenecutOPWidget::sl_resetPasswordClicked() {
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_EMAIL, leResetPassword->text());
@@ -224,19 +224,19 @@ void GenecutOPWidget::sl_resetPasswordClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ leResetPassword, pbReset }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ leResetPassword, pbReset }, true);
         if (!adapter->hasError()) {
             successMessage(tr("check your email"), lbResetStatus);
         } else {
-            errorMessage(adapter->errorString(), lbResetStatus);
+            errorMessage(adapter, lbResetStatus);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
 void GenecutOPWidget::sl_logoutClicked() {
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_REFRESH_TOKEN, refreshToken);
@@ -244,8 +244,7 @@ void GenecutOPWidget::sl_logoutClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ wtMainForm }, true);
         if (!adapter->hasError()) {
             accessToken.clear();
@@ -255,13 +254,14 @@ void GenecutOPWidget::sl_logoutClicked() {
             twResults->setRowCount(0);
             stackedWidget->setCurrentIndex(0);
         } else {
-            errorMessage(adapter->errorString(), lbTestInfo);
+            errorMessage(adapter, lbTestInfo);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
 void GenecutOPWidget::sl_openInGenecut() {
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
@@ -275,8 +275,7 @@ void GenecutOPWidget::sl_openInGenecut() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, true);
         if (!adapter->hasError()) {
             QFile f(":genecut/template/hidden_login.html");
@@ -299,13 +298,14 @@ void GenecutOPWidget::sl_openInGenecut() {
             tmpFile.close();
             QDesktopServices::openUrl(QUrl::fromLocalFile(tmpFile.fileName()));
         } else {
-            errorMessage(adapter->errorString(), lbTestInfo);
+            errorMessage(adapter, lbTestInfo);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
 void GenecutOPWidget::sl_fetchResultsClicked() {
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Get);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
@@ -314,8 +314,7 @@ void GenecutOPWidget::sl_fetchResultsClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, true);
         if (!adapter->hasError()) {
             QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
@@ -336,21 +335,22 @@ void GenecutOPWidget::sl_fetchResultsClicked() {
                 dateWgtItem->setData((int)ResultData::CompletedWithError, arrayObj.value(JSON_COMPLETED_WITH_ERROR).toBool());
                 dateWgtItem->setData((int)ResultData::Interrupted, arrayObj.value(JSON_INTERRUPTED).toBool());
                 dateWgtItem->setData((int)ResultData::ShortDescription, arrayObj.value(JSON_SHORT_DESCRIPTION).toString());
-                dateWgtItem->setData((int)ResultData::IsAmino, arrayObj.value(JSON_SHORT_DESCRIPTION).toBool());
+                dateWgtItem->setData((int)ResultData::IsAmino, arrayObj.value(JSON_IS_AMINO).toBool());
                 twResults->setItem(i, (int)TableColumns::Date, dateWgtItem);
                 twResults->setItem(i, (int)TableColumns::Status, new QTableWidgetItem(arrayObj.value(JSON_STATUS).toString(), (int)ResultData::Status));
             }
             successMessage(tr("results have been fetched"), lbTestInfo);
         } else {
-            errorMessage(adapter->errorString(), lbTestInfo);
+            errorMessage(adapter, lbTestInfo);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
 void GenecutOPWidget::sl_registerNewClicked() {
     CHECK(areRegistrationDataValid(), );
 
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_EMAIL, leEmailNew->text());
@@ -363,15 +363,14 @@ void GenecutOPWidget::sl_registerNewClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbRegisterNew }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbRegisterNew }, true);
         if (!adapter->hasError()) {
             successMessage(tr("user created! Check your email"), lbRegisterWarning);
         } else {
-            errorMessage(adapter->errorString(), lbRegisterWarning);
+            errorMessage(adapter, lbRegisterWarning);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
@@ -387,6 +386,7 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
     QString resultId = getSelectedReportData(ResultData::Id);
     CHECK(!resultId.isEmpty(), );
 
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Post);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
@@ -395,8 +395,7 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ wtMainForm }, true);
         if (!adapter->hasError()) {
             auto selected = twResults->selectedItems();
@@ -404,9 +403,9 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
 
             twResults->removeRow(twResults->row(selected.first()));
         } else {
-            errorMessage(adapter->errorString(), lbTestInfo);
+            errorMessage(adapter, lbTestInfo);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
 }
 
@@ -436,18 +435,24 @@ void GenecutOPWidget::sl_openResultInBrowserClicked() {
 }
 
 void GenecutOPWidget::sl_compareInputAndOutput() {
-
+    loadedFilesPaths.clear();
+    downloadAndSaveFileFromServer(ServerFileType::Input, true);
+    downloadAndSaveFileFromServer(ServerFileType::Result, true);
 }
 
-void GenecutOPWidget::errorMessage(QNetworkReply* reply, QLabel* errorLabel) {
-    QString contents = QString::fromUtf8(reply->readAll());
-    QJsonDocument doc = QJsonDocument::fromJson(contents.toUtf8());
+void GenecutOPWidget::errorMessage(GenecutHttpFileAdapter* adapter, QLabel* errorLabel) {
+    QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
+    int readSize = adapter->readBlock(contents.data(), DocumentFormat::READ_BUFF_SIZE);
+    SAFE_POINT(readSize != -1, "Cannot read request data", );
+
+    contents.resize(readSize);
+    QJsonDocument doc = QJsonDocument::fromJson(contents);
     auto value = doc.object().value(JSON_MESSAGE).toString();
     QString err;
     if (!value.isEmpty()) {
         err = value;
     } else {
-        err = reply->errorString();
+        err = adapter->errorString();
     }
     errorMessage(err, errorLabel);
 }
@@ -571,7 +576,7 @@ QString GenecutOPWidget::getSelectedReportData(ResultData datatype) const {
     return resultId;
 }
 
-void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, bool add2Project) {
+void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, bool silentDownload) {
     QString endpoint;
     QString textFileType;
     switch (fileType) {
@@ -591,6 +596,7 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
     QString resultId = getSelectedReportData(ResultData::Id);
     CHECK(!resultId.isEmpty(), );
 
+    auto adapter = qobject_cast<GenecutHttpFileAdapter*>(factory->createIOAdapter());
     adapter->setRequestType(GenecutHttpFileAdapter::RequestType::Get);
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
@@ -600,8 +606,7 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);
-    auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = connect(adapter, &GenecutHttpFileAdapter::si_done, [this, connection, textFileType, add2Project]() {
+    connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter, textFileType, silentDownload]() {
         setWidgetsEnabled({ wtMainForm }, true);
         if (!adapter->hasError()) {
             QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
@@ -622,20 +627,39 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
 
             resultFile.write(fileBody.toLocal8Bit());
             resultFile.close();
-            successMessage(tr("the %1 file has been saved").arg(textFileType), lbTestInfo);
-            coreLog.details(tr("The %1 file has been saved to %2").arg(textFileType).arg(resultFilePath));
+            if (!silentDownload) {
+                successMessage(tr("the %1 file has been saved").arg(textFileType), lbTestInfo);
+                coreLog.details(tr("The %1 file has been saved to %2").arg(textFileType).arg(resultFilePath));
+            }
 
-            if (add2Project) {
+            if (!silentDownload) {
                 auto loadTask = AppContext::getProjectLoader()->openWithProjectTask({ GUrl(resultFilePath) });
                 CHECK_EXT(loadTask != nullptr, coreLog.error(tr("Can't load the %1 file %2").arg(textFileType).arg(resultFilePath)), );
 
                 AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+            } else {
+                fileFromServerLoaded(resultFilePath);
             }
         } else {
-            errorMessage(adapter->errorString(), lbTestInfo);
+            errorMessage(adapter, lbTestInfo);
         }
-        disconnect(*connection);
+        adapter->deleteLater();
     });
+}
+
+void GenecutOPWidget::fileFromServerLoaded(const QString& loadedFile) {
+    loadedFilesPaths << loadedFile;
+    CHECK(loadedFilesPaths.size() == 2, );
+
+    QString dataDir = GUrlUtils::getDefaultDataPath();
+    QString resultFilePath = QDir::toNativeSeparators(dataDir + "/" + loadedFilesPaths.first().baseFileName()+ "_compare_" + loadedFilesPaths.last().baseFileName() + ".aln");
+    resultFilePath = GUrlUtils::rollFileName(resultFilePath, "_");
+    QVariantMap hints;
+    hints[ProjectLoaderHint_SkipGuiAndMergeSequeencesIntoAlignmentPath] = resultFilePath;
+    auto loadTask = AppContext::getProjectLoader()->openWithProjectTask(loadedFilesPaths, hints);
+    CHECK_EXT(loadTask != nullptr, coreLog.error(tr("Can't merge input and result into alignment")), );
+
+    AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 
 }

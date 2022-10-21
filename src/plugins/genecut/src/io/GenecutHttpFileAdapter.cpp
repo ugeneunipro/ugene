@@ -106,7 +106,8 @@ void GenecutHttpFileAdapter::setRequestType(RequestType type) {
 }
 
 void GenecutHttpFileAdapter::done() {
-    HttpFileAdapter::done();
+    is_downloaded = true;
+    loop.exit();
     requestType = RequestType::Undefined;
     headers.clear();
     rawHeaders.clear();

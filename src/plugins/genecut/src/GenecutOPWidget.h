@@ -29,18 +29,18 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
+#include <U2Core/GUrl.h>
+
 namespace U2 {
 
 class AnnotatedDNAView;
 class GenecutHttpFileAdapter;
 class GenecutHttpFileAdapterFactory;
-//class PCRPrimerDesignForDNAAssemblyTask;
 
 class GenecutOPWidget : public QWidget, private Ui_GenecutOPWidget {
     Q_OBJECT
 public:
     GenecutOPWidget(AnnotatedDNAView* annDnaView);
-    ~GenecutOPWidget();
 
 private slots:
     void sl_loginClicked();
@@ -77,7 +77,7 @@ private:
         Result
     };
 
-    static void errorMessage(QNetworkReply* reply, QLabel* errorLabel);
+    static void errorMessage(GenecutHttpFileAdapter* adapter, QLabel* errorLabel);
     static void errorMessage(const QString& message, QLabel* errorLabel);
     static void successMessage(QNetworkReply* reply, QLabel* label);
     static void successMessage(const QString& message, QLabel* label);
@@ -88,19 +88,21 @@ private:
     bool hasFullReportFile() const;
     bool hasNucleicInput() const;
     QString getSelectedReportData(ResultData datatype) const;
-    void downloadAndSaveFileFromServer(ServerFileType fileType, bool add2Project = true);
+    void downloadAndSaveFileFromServer(ServerFileType fileType, bool silentDownload = false);
+    void fileFromServerLoaded(const QString& loadedFile);
 
     AnnotatedDNAView* annDnaView = nullptr;
     QNetworkAccessManager* mgr = nullptr;
 
     GenecutHttpFileAdapterFactory* factory = nullptr;
-    GenecutHttpFileAdapter* adapter = nullptr;
 
     QString accessToken;
     QString refreshToken;
     QString email;
     QString firstName;
     QString lastName;
+
+    QList<GUrl> loadedFilesPaths;
 
     static const QString HEADER_VALUE;
     static const QString API_SERVER;
@@ -133,6 +135,7 @@ private:
     static const QString JSON_COMPLETED_WITH_ERROR;
     static const QString JSON_INTERRUPTED;
     static const QString JSON_SHORT_DESCRIPTION;
+    static const QString JSON_IS_AMINO;
     static const QString JSON_SEQUENCE_FILE_NAME;
     static const QString JSON_SEQUENCE_FILE_BODY;
     static const QString JSON_RESPOND_SEQUENCE_FILE_NAME;
