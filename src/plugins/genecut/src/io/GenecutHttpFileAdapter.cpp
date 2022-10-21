@@ -113,6 +113,9 @@ void GenecutHttpFileAdapter::done() {
     replyData.clear();
 
     emit si_done();
+
+    close();
+    Empty();
 }
 
 }
