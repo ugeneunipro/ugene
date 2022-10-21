@@ -205,6 +205,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
     int indexFound = -1;
     for (int atIndex = 0; atIndex < widgetIndex.length(); atIndex++) {
         int i = widgetIndex.at(atIndex);
+        indexFound = -1;
 
         if (baseNumber >= ui->getFirstVisibleBase(i) && baseNumber <= ui->getLastVisibleBase(i)) {
             indexFound = i;
@@ -220,16 +221,19 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
             if (pTop.y() >= 0 && pBottom.y() <= height) {
                 return;
             }
+            break;
         }
     }
 
     auto scroller = ui->getChildrenScrollArea()->verticalScrollBar();
-    if (pTop.y() < 0) {
-        vScrollBar->setValue(vScrollBar->value() + pTop.y());
-        scroller->setValue(scroller->value() + pTop.y());
-    } else if (pBottom.y() > height) {
-        vScrollBar->setValue(vScrollBar->value() + pBottom.y() - height);
-        scroller->setValue(scroller->value() + pBottom.y() - height);
+    if (indexFound != -1) {
+        if (pTop.y() < 0) {
+            vScrollBar->setValue(vScrollBar->value() + pTop.y());
+            scroller->setValue(scroller->value() + pTop.y());
+        } else if (pBottom.y() > height) {
+            vScrollBar->setValue(vScrollBar->value() + pBottom.y() - height);
+            scroller->setValue(scroller->value() + pBottom.y() - height);
+        }
     }
 }
 
@@ -257,7 +261,16 @@ void MultilineScrollController::scrollToBase(QPoint maPoint) {
         } else if ((baseNumber + length / 2) >= maEditor->getAlignmentLen()) {
             setFirstVisibleBase(maEditor->getAlignmentLen() - ui->getChildrenCount() * length);
         } else {
-            setFirstVisibleBase(baseNumber - length / 2);
+            int evenFirstVisibleBase = baseNumber / length * length;
+            int scrollChildrenAreaValue = 0;
+            const int lineHeight = ui->getUI(0)->height();
+            while ((evenFirstVisibleBase + length * ((int)ui->getChildrenCount() - 1)) >= maEditor->getAlignmentLen()) {
+                evenFirstVisibleBase -= length;
+                scrollChildrenAreaValue += lineHeight;
+            }
+            setFirstVisibleBase(evenFirstVisibleBase);
+            setMultilineVScrollbarBase(evenFirstVisibleBase);
+            childrenScrollArea->verticalScrollBar()->setValue(scrollChildrenAreaValue);
         }
     }
 }

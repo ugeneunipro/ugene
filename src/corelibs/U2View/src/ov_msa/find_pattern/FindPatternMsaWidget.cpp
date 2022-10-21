@@ -916,7 +916,8 @@ void FindPatternMsaWidget::selectCurrentResult() {
     MaEditorSequenceArea* seqArea = mui->getUI()->getSequenceArea();
     seqArea->setSelectionRect(selection);
     if (msaEditor->getUI()->getMultilineMode()) {
-        mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());
+        //mui->getScrollController()->setCenterVisibleBase(selection.topLeft().x());
+        mui->getScrollController()->scrollToPoint(selection.topLeft());
     } else {
         seqArea->centerPos(selection.topLeft());
     }

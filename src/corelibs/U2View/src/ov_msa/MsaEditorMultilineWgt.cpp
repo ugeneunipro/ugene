@@ -398,7 +398,7 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 }
 
 void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
-    getScrollController()->centerBase(position);
+    getScrollController()->scrollToBase(QPoint(position, 0));
     // Keep the vertical part of the selection but limit the horizontal to the given position.
     // In case of 1-row selection it will procude a single cell selection as the result.
     // If there is no active selection - select a cell of the first visible row on the screen.

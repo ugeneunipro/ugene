@@ -64,9 +64,7 @@ public:
     void scrollToBase(QPoint maPoint);
     void scrollToPoint(const QPoint& maPoint);
 
-    void centerBase(int baseNumber);
     void centerViewRow(QPoint maPoint);
-    void centerPoint(const QPoint& maPoint);
 
     void setMultilineVScrollbarValue(int value);
     void setMultilineVScrollbarBase(int base);
@@ -74,7 +72,6 @@ public:
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleViewRow(int viewRowIndex);
     void setFirstVisibleMaRow(int maRowIndex);
-    void setCenterVisibleBase(int firstVisibleBase);
 
     void scrollSmoothly(const Directions& directions);
     void stopSmoothScrolling();
@@ -140,6 +137,12 @@ private:
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
+
+    // TODO:ichebyki
+    // Deprecated, will be removed
+    void centerBase(int baseNumber);
+    void centerPoint(const QPoint& maPoint);
+    void setCenterVisibleBase(int firstVisibleBase);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)

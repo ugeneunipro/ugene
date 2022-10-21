@@ -126,6 +126,9 @@ void MsaMultilineScrollArea::moveVSlider(
             if (newGlobalScroll >= maxGlobalScroll) {
                 newGlobalScroll = maxGlobalScroll;
                 newAreaScroll = maxAreaScroll;
+                newFirstVisibleBase = (fullLength / length + (fullLength % length ? 1 : 0)) *
+                                          length -
+                                      length * maEditorUi->getChildrenCount();
             } else {
                 newFirstVisibleBase = newGlobalScroll / lineHeight * length;
                 newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;
