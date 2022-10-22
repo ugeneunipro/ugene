@@ -83,7 +83,9 @@ void MsaEditorMultilineWgt::deleteChild(int index) {
     QVBoxLayout* layout = (QVBoxLayout*)uiChildrenArea->layout();
 
     uiLog.details(tr("Deleting widget from grid, count %1, index %2").arg(layout->count()).arg(index));
-    toDelete->hide();
+    // TODO:ichebyki
+    // Is it needed to hide before delete?
+    // toDelete->hide();
     layout->removeWidget(toDelete);
 
     uiLog.details(

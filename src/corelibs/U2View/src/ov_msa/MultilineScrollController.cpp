@@ -256,10 +256,10 @@ void MultilineScrollController::scrollToBase(QPoint maPoint) {
     }
 
     if (indexFound == -1) {
-        if ((baseNumber - length / 2) < 0) {
-            setFirstVisibleBase(0);
-        } else if ((baseNumber + length / 2) >= maEditor->getAlignmentLen()) {
-            setFirstVisibleBase(maEditor->getAlignmentLen() - ui->getChildrenCount() * length);
+        if ((baseNumber - length) < 0) {
+            vertScroll(SliderMinimum, false);
+        } else if ((baseNumber + length) >= maEditor->getAlignmentLen()) {
+            vertScroll(SliderMaximum, false);
         } else {
             int evenFirstVisibleBase = baseNumber / length * length;
             int scrollChildrenAreaValue = 0;
