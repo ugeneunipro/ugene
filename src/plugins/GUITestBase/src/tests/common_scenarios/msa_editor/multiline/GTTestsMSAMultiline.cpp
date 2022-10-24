@@ -240,51 +240,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
-GUI_TEST_CLASS_DEFINITION(vscroll_test_0003) {
-    // Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Switch to multiline mode
-    // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
-
-    GScrollBar* hscroll = GTWidget::findExactWidget<GScrollBar*>(os, "multiline_horizontal_sequence_scroll");
-    CHECK_SET_ERR(hscroll != nullptr, QString("Can't find horizontal scroll bar"));
-    CHECK_SET_ERR(hscroll->isVisible(), QString("Horizontal scroll is not visible"));
-    CHECK_SET_ERR(hscroll->isEnabled(), QString("Horizontal scroll is disabled"));
-
-    int minVal = hscroll->minimum();
-    int maxVal = hscroll->maximum();
-    int curVal = hscroll->value();
-    CHECK_SET_ERR(minVal == 0 && maxVal > 600 && curVal == 0,
-                  QString("Unexpected vertical scroll values min=%1, max=%2, value=%3")
-                      .arg(minVal)
-                      .arg(maxVal)
-                      .arg(curVal));
-
-    // Scroll to end
-    hscroll->setValue(maxVal);
-
-    // Find seq last area
-    int lastWgtIndex = 0;
-    MaEditorWgt* lastWgt = nullptr;
-    for (int i = 0; i < 30; i++) {
-        MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
-        if (w == nullptr)
-            break;
-        lastWgt = w;
-        lastWgtIndex = i;
-    }
-    CHECK_SET_ERR(lastWgt != nullptr, QString("Can't find any sequence area"));
-    CHECK_SET_ERR(lastWgtIndex > 1, QString("Not in multiline mode"));
-
-    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, lastWgtIndex);
-    CHECK_SET_ERR(lastBaseIdx == 603, QString("Not at the end"));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
-}
-
 GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
     // UGENE-7524
 
@@ -518,20 +473,19 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
     //    end
-    auto hbar = GTWidget::findScrollBar(os, "multiline_horizontal_sequence_scroll");
+    auto vbar = GTWidget::findScrollBar(os, "multiline_vertical_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End);
-    CHECK_SET_ERR(hbar->value() == hbar->maximum(), QString("end key scrollbar value: %1").arg(hbar->value()))
+    CHECK_SET_ERR(vbar->value() == vbar->maximum(), QString("end key scrollbar value: %1").arg(vbar->value()))
     //    home
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    CHECK_SET_ERR(hbar->value() == 0, QString("home key works wrong. Scrollbar value: %1").arg(hbar->value()))
+    CHECK_SET_ERR(vbar->value() == 0, QString("home key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //    page down
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    CHECK_SET_ERR(hbar->value() > 20, QString("page down key works wrong. Scrollbar value: %1").arg(hbar->value()))
+    CHECK_SET_ERR(vbar->value() > 20, QString("page down key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //    page up
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    CHECK_SET_ERR(hbar->value() == 0, QString("page down key works wrong. Scrollbar value: %1").arg(hbar->value()))
+    CHECK_SET_ERR(vbar->value() == 0, QString("page down key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  end+shift
-    auto vbar = GTWidget::findScrollBar(os, "vertical_sequence_scroll");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ShiftModifier);
     CHECK_SET_ERR(vbar->value() == vbar->maximum(), QString("shift + end key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //  home+shift
@@ -548,19 +502,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
         GTMouseDriver::scroll(-1);
         GTThread::waitForMainThread();
     }
-
-    int scrollBarOffset = hbar->value();
-    int minCharWidth = 12;
-    int maxCharWidth = 24;
-    CHECK_SET_ERR(scrollBarOffset % 3 == 0 && scrollBarOffset >= 3 * minCharWidth && scrollBarOffset <= 3 * maxCharWidth,
-                  QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));
-
-    for (int i = 0; i < 2; i++) {
-        GTMouseDriver::scroll(1);
-        GTThread::waitForMainThread();
-    }
-    scrollBarOffset = hbar->value();
-    CHECK_SET_ERR(scrollBarOffset >= minCharWidth && scrollBarOffset <= maxCharWidth, QString("scroll up works wrong. Scrollbar has value: %1").arg(hbar->value()));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);
 }

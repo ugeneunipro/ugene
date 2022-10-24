@@ -2572,7 +2572,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::zoom_to_selection_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::vscroll_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::menu_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::goto_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_MSA_editor_multiline::overview_test_0001);
@@ -3422,7 +3421,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0021);
-
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

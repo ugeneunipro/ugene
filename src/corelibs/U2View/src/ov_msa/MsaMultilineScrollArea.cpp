@@ -64,7 +64,6 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
                                         bool wheel) {
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
-    maEditorUi->updateChildrenCount();
 
     if (directions.testFlag(MultilineScrollController::SliderMoved)) {
         moveVSlider(globalVBar->value(),

@@ -146,7 +146,7 @@ signals:
 public slots:
     /** Switches between Original and Sequence row orders. */
     void sl_toggleSequenceRowOrder(bool isOrderBySequence);
-    void sl_goto();
+    virtual void sl_goto() {};
 
 private slots:
 

@@ -151,7 +151,6 @@ void MultilineScrollController::sl_handleVScrollAction(int action) {
 
 void MultilineScrollController::vertScroll(const Directions& directions, bool byStep) {
     ui->setUpdatesEnabled(false);
-    ui->updateChildrenCount();
 
     if (maEditor->getMultilineMode()) {
         MsaMultilineScrollArea* scroller = qobject_cast<MsaMultilineScrollArea*>(

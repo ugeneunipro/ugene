@@ -232,15 +232,6 @@ void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     }
 }
 
-void MaEditorMultilineWgt::sl_goto() {
-    QDialog gotoDialog(this);
-    gotoDialog.setModal(true);
-    gotoDialog.setWindowTitle(tr("Go to Position"));
-    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
-    connect(ps, SIGNAL(si_positionChanged(int)), this, SLOT(sl_onPosChangeRequest(int)));
-    gotoDialog.exec();
-}
-
 MaEditorOverviewArea* MaEditorMultilineWgt::getOverviewArea() const {
     return overviewArea;
 }

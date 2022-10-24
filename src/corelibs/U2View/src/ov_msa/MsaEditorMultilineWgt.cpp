@@ -400,7 +400,11 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 }
 
 void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
-    getScrollController()->scrollToBase(QPoint(position, 0));
+    if (getMultilineMode()) {
+        getScrollController()->scrollToBase(QPoint(position, 0));
+    } else {
+        getUI(0)->getScrollController()->scrollToBase(position, getSequenceAreaWidth(0));
+    }
     // Keep the vertical part of the selection but limit the horizontal to the given position.
     // In case of 1-row selection it will procude a single cell selection as the result.
     // If there is no active selection - select a cell of the first visible row on the screen.
@@ -432,6 +436,18 @@ void MsaEditorMultilineWgt::sl_setAllNameAndSequenceAreasSplittersSizes(int pos,
             child->getNameAndSequenceAreasSplitter()->setSizes(sizes);
         }
     }
+}
+
+void MsaEditorMultilineWgt::sl_goto() {
+    QDialog gotoDialog(this);
+    gotoDialog.setModal(true);
+    gotoDialog.setWindowTitle(tr("Go to Position"));
+    PositionSelector* ps = new PositionSelector(&gotoDialog, 1, editor->getMaObject()->getLength(), true);
+    connect(ps,
+            &PositionSelector::si_positionChanged,
+            this,
+            &MsaEditorMultilineWgt::sl_onPosChangeRequest);
+    gotoDialog.exec();
 }
 
 }  // namespace U2
