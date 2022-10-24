@@ -37,8 +37,8 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 }
 
 GenecutPlugin::GenecutPlugin()
-    : Plugin(tr("GeneCut implementation for in silico disassembly and cloning"),
-             tr("GeneCut implementation for in silico experiments for gene assembly and molecular cloning")) {
+    : Plugin(tr("Desktop acess to GeneCut calculation results"),
+             tr("Desktop acess to GeneCut calculation results")) {
     if (AppContext::getMainWindow() != nullptr) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
         SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );

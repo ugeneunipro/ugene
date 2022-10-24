@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>274</width>
-    <height>790</height>
+    <height>722</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -348,7 +348,14 @@ p, li { white-space: pre-wrap; }
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Compare input and output sequences</string>
+          <string>Compare input and result sequences</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbLogout">
+         <property name="text">
+          <string>Logout</string>
          </property>
         </widget>
        </item>
@@ -362,26 +369,6 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="wordWrap">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>491</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pbLogout">
-         <property name="text">
-          <string>Logout</string>
          </property>
         </widget>
        </item>

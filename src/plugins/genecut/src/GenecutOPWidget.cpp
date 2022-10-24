@@ -101,10 +101,10 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
       annDnaView(_annDnaView)/*,
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName()))*/ {
     setupUi(this);
-    lbLoginWarning->hide();
+    lbLoginWarning->clear();
     lbLoginWarning->setStyleSheet(lbLoginWarning->styleSheet() + "color: " + Theme::errorColorLabelStr());
     lbLoginWarning->setAlignment(Qt::AlignLeft);
-    lbRegisterWarning->hide();
+    lbRegisterWarning->clear();
     lbRegisterWarning->setStyleSheet(lbRegisterWarning->styleSheet() + "color: " + Theme::errorColorLabelStr());
     lbRegisterWarning->setAlignment(Qt::AlignLeft);
     stackedWidget->setCurrentIndex(0);
@@ -162,7 +162,7 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
         if (!warning.isEmpty()) {
             warningMessage(warning, lbTestInfo);
         } else {
-            lbTestInfo->hide();
+            lbTestInfo->clear();
         }
 
         tbShortDescription->setText(getSelectedReportData(ResultData::ShortDescription));
@@ -182,7 +182,7 @@ void GenecutOPWidget::sl_loginClicked() {
     connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, true);
         if (!adapter->hasError()) {
-            lbLoginWarning->hide();
+            lbLoginWarning->clear();
 
             QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
             int readSize = adapter->readBlock(contents.data(), DocumentFormat::READ_BUFF_SIZE);
@@ -253,6 +253,7 @@ void GenecutOPWidget::sl_logoutClicked() {
             twResults->clearContents();
             twResults->setRowCount(0);
             stackedWidget->setCurrentIndex(0);
+            tbShortDescription->clear();
         } else {
             errorMessage(adapter, lbTestInfo);
         }
@@ -401,6 +402,8 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
             auto selected = twResults->selectedItems();
             CHECK(!selected.isEmpty(), );
 
+            tbShortDescription->clear();
+            lbTestInfo->clear();
             twResults->removeRow(twResults->row(selected.first()));
         } else {
             errorMessage(adapter, lbTestInfo);
@@ -459,7 +462,6 @@ void GenecutOPWidget::errorMessage(GenecutHttpFileAdapter* adapter, QLabel* erro
 
 void GenecutOPWidget::errorMessage(const QString& message, QLabel* errorLabel) {
     errorLabel->setStyleSheet("font-weight: 600;color: " + Theme::errorColorLabelStr());
-    errorLabel->show();
     errorLabel->setText(tr("Error: ") + message);
     coreLog.error(message);
 }
@@ -473,13 +475,11 @@ void GenecutOPWidget::successMessage(QNetworkReply* reply, QLabel* label) {
 
 void GenecutOPWidget::successMessage(const QString& message, QLabel* label) {
     label->setStyleSheet("font-weight: 600;color: " + Theme::successColorLabelStr());
-    label->show();
     label->setText(tr("Success: ") + message);
 }
 
 void GenecutOPWidget::warningMessage(const QString& message, QLabel* label) {
     label->setStyleSheet("font-weight: 600;color: " + Theme::warningColorLabelHtmlStr());
-    label->show();
     label->setText(tr("Warning: ") + message);
 }
 
@@ -512,7 +512,7 @@ bool GenecutOPWidget::areRegistrationDataValid() const {
             GUIUtils::setWidgetWarningStyle(lePasswordNew, true);
             GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, true);
         } else {
-            lbRegisterWarning->hide();
+            lbRegisterWarning->clear();
         }
         valid &= validPassword;
         valid &= validPasswordConfirmation;
