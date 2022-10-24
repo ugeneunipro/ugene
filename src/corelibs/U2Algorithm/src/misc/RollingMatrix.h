@@ -30,11 +30,10 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
+    // Always check memory overflow on the client side.
     RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        // TODO: check memory overflow on the client side!
         U2_ASSERT(sizeX >= 0 && sizeY >= 0);
-        U2_ASSERT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX);
         data = new int[sizeX * sizeY];
     }
 

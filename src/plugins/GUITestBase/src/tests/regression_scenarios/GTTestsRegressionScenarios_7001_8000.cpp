@@ -2886,6 +2886,27 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7629) {
+    //1. Open human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Copy whole sequence
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //3. Paste it to project filter
+    //Expected: no crash
+    GTUtilsProjectTreeView::openView(os);
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    //necessary sleep to activate search task(s) after pasting sequence
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7630) {
     // Open CVU55762.gb and murine.gb in separate sequence mode.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
