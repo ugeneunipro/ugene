@@ -686,7 +686,9 @@ void TreeViewerUI::sl_setSettingsTriggered() {
 
 OptionsMap TreeViewerUI::getSelectionSettings() const {
     OptionsMap effectiveSettings = settings;
-    effectiveSettings.insert(selectionSettingsDelta);
+    foreach(TreeViewOption key, selectionSettingsDelta.keys()){
+        effectiveSettings.insert(key, selectionSettingsDelta[key]);
+    }
     return effectiveSettings;
 }
 

@@ -5,7 +5,7 @@ TEMPLATE = subdirs
 CONFIG += ordered debug_and_release
 
 message("Qt version is $${QT_VERSION}")
-!versionAtLeast(QT_VERSION, 5.15.0):error("UGENE requires Qt version between 5.15.0 and 5.15.x")
+!versionAtLeast(QT_VERSION, 5.12.0):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
 !versionAtMost(QT_VERSION, 5.15.99):error("UGENE requires Qt version between 5.15.0 and 5.15.x")
 
 # create target build & plugin folders (to copy licenses/descriptors to)
