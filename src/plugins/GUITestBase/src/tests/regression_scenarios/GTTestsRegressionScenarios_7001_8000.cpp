@@ -2887,11 +2887,11 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7629) {
-    //1. Open human_T1.fa
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    //1. Open sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Copy whole sequence
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 29751));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selected sequence"));
