@@ -94,6 +94,9 @@ static samfile_t* samOpen(const QString& url, const char* samMode, const void* a
     QString fileMode = samMode;
     fileMode.replace("h", "");
     FILE* file = BAMUtils::openFile(url, fileMode);
+    if (file == nullptr) {
+        return nullptr;
+    }
     samfile_t* samfile = samopen_with_fd("", fileno(file), samMode, aux);
     if (samfile == nullptr) {
         closeFileIfOpen(file);
@@ -387,21 +390,119 @@ GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2O
     return sortedFileName;
 }
 
-GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergetBamTargetUrl, U2OpStatus& /*os*/) {
-    coreLog.details(BAMUtils::tr("Merging BAM files: \"%1\". Resulting merged file is: \"%2\"")
+/**
+ * Merges multiple sorted BAM.
+ * Copy of the 'bam_merge_core' but with Unicode strings and parameters limited to the current UGENE use-cases.
+ */
+static int bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
+    bam_header_t* hout = nullptr;
+    int n = filesToMerge.length();
+    auto fp = (bamFile*)calloc(n, sizeof(bamFile));
+    auto heap = (heap1_t*)calloc(n, sizeof(heap1_t));
+    auto iter = (bam_iter_t*)calloc(n, sizeof(bam_iter_t));
+    // read the first
+    for (int i = 0; i != n; ++i) {
+        FILE* file = BAMUtils::openFile(filesToMerge[i], "r");
+        int fd = fileno(file);
+        fp[i] = bam_dopen(fd, "r");
+        if (fp[i] == nullptr) {
+            coreLog.error(BAMUtils::tr("[bam_merge_core] fail to open file %1").arg(filesToMerge[i]));
+            for (int j = 0; j < i; ++j) {
+                bam_close(fp[j]);
+            }
+            free(fp);
+            free(heap);
+            return -1;
+        }
+        bam_header_t* hin = bam_header_read(fp[i]);
+        if (i == 0) {  // the first BAM
+            hout = hin;
+        } else {  // validate multiple baf
+            int min_n_targets = hout->n_targets;
+            if (hin->n_targets < min_n_targets)
+                min_n_targets = hin->n_targets;
+
+            for (int j = 0; j < min_n_targets; ++j)
+                if (strcmp(hout->target_name[j], hin->target_name[j]) != 0) {
+                    coreLog.error(BAMUtils::tr("[bam_merge_core] different target sequence name: '%1' != '%2' in file '%3'\n")
+                                      .arg(hout->target_name[j])
+                                      .arg(hin->target_name[j])
+                                      .arg(filesToMerge[i]));
+                    free(fp);
+                    free(heap);
+                    return -1;
+                }
+
+            // If this input file has additional target reference sequences,
+            // add them to the headers to be output
+            if (hin->n_targets > hout->n_targets) {
+                swap_header_targets(hout, hin);
+            }
+            bam_header_destroy(hin);
+        }
+    }
+
+    uint64_t idx = 0;
+    for (int i = 0; i < n; ++i) {
+        heap1_t* h = heap + i;
+        h->i = i;
+        h->b = (bam1_t*)calloc(1, sizeof(bam1_t));
+        if (bam_iter_read(fp[i], iter[i], h->b) >= 0) {
+            h->pos = ((uint64_t)h->b->core.tid << 32) | (uint32_t)((int32_t)h->b->core.pos + 1) << 1 | bam1_strand(h->b);
+            h->idx = idx++;
+        } else {
+            h->pos = HEAP_EMPTY;
+        }
+    }
+    FILE* outFile = BAMUtils::openFile(outFileName, "wb");
+    bamFile fpout = outFile == nullptr ? nullptr : bam_dopen(fileno(outFile), "w");
+    if (fpout == nullptr) {
+        coreLog.error(BAMUtils::tr("Failed to create the output file: %1").arg(outFileName));
+        free(fp);
+        free(heap);
+        return -1;
+    }
+    bam_header_write(fpout, hout);
+    bam_header_destroy(hout);
+
+    ks_heapmake(heap, n, heap);
+    while (heap->pos != HEAP_EMPTY) {
+        bam1_t* b = heap->b;
+        bam_write1_core(fpout, &b->core, b->data_len, b->data);
+        int j = bam_iter_read(fp[heap->i], iter[heap->i], b);
+        if (j >= 0) {
+            heap->pos = ((uint64_t)b->core.tid << 32) | (uint32_t)((int)b->core.pos + 1) << 1 | bam1_strand(b);
+            heap->idx = idx++;
+        } else if (j == -1) {
+            heap->pos = HEAP_EMPTY;
+            free(heap->b->data);
+            free(heap->b);
+            heap->b = nullptr;
+        } else {
+            coreLog.error(BAMUtils::tr("[bam_merge_core] '%1' is truncated. Continue anyway.").arg(filesToMerge[heap->i]));
+        }
+        ks_heapadjust(heap, 0, n, heap);
+    }
+
+    for (int i = 0; i != n; ++i) {
+        bam_iter_destroy(iter[i]);
+        bam_close(fp[i]);
+    }
+    bam_close(fpout);
+    free(fp);
+    free(heap);
+    free(iter);
+    return 0;
+}
+
+GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTargetUrl, U2OpStatus& os) {
+    coreLog.details(tr(R"(Merging BAM files: "%1". Resulting merged file is: "%2")")
                         .arg(QString(bamUrls.join(",")))
-                        .arg(QString(mergetBamTargetUrl)));
+                        .arg(QString(mergedBamTargetUrl)));
 
-    int urlsSize = bamUrls.size();
-    char** mergeArgv = new char*[urlsSize];
-    QList<QByteArray> byteArray = convertStringList(bamUrls);
-    convertByteArray(byteArray, mergeArgv);
-
-    bam_merge_core(0, mergetBamTargetUrl.toLocal8Bit().constData(), 0, urlsSize, mergeArgv, 0, 0);
-
-    delete[] mergeArgv;
-
-    return QString(mergetBamTargetUrl);
+    int rc = bamMergeCore(mergedBamTargetUrl, bamUrls);
+    CHECK_EXT(rc >= 0, os.setError(tr("Failed to merge BAM files: %1 into %2").arg(bamUrls.join(",")).arg(mergedBamTargetUrl)), {});
+    return mergedBamTargetUrl;
 }
 
 void* BAMUtils::loadIndex(const QString& filePath) {
