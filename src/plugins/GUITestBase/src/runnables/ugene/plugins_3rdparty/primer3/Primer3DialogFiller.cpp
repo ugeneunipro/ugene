@@ -111,6 +111,10 @@ void Primer3DialogFiller::commonScenario() {
 
         auto groupBox = GTWidget::findGroupBox(os, "spanIntronExonBox", dialog);
         GTGroupBox::setChecked(os, groupBox);
+
+        if (!settings.exonRangeLine.isEmpty()) {
+            GTLineEdit::setText(os, "exonRangeEdit", settings.exonRangeLine);
+        }
     }
 
     if (!settings.filePath.isEmpty()) {
