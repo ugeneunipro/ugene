@@ -34,6 +34,8 @@ bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
             case Qt::Key_Delete:
             case Qt::Key_Backspace:
             case Qt::Key_Insert:
+                // ignore MSA sequence view widget keys
+                return true;
             case Qt::Key_Space:
                 // ignore MSA sequence view widget keys
                 return true;

@@ -56,6 +56,7 @@
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 #include "ov_msa/highlighting/MSAHighlightingTabFactory.h"
@@ -1235,7 +1236,19 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
         moveSelection(countOfGaps, 0, true);
     }
     if (!editor->getSelection().isEmpty()) {
-        ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+        if (editor->getMultilineMode()) {
+            // TODO:ichebyki
+            // ?
+            QPoint cursorPosition = editor->getCursorPosition();
+            const MaEditorSelection& selection = editor->getSelection();
+            QRect selectionRect = selection.isEmpty()
+                                      ? QRect(cursorPosition, cursorPosition)
+                                      : selection.toRect();
+            QPoint newPos(selectionRect.topLeft());
+            editor->getMaEditorMultilineWgt()->getScrollController()->scrollToPoint(newPos);
+        } else {
+            ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+        }
     }
 }
 
