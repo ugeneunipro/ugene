@@ -59,8 +59,7 @@ MSAEditor* MsaEditorNameList::getEditor() const {
     return qobject_cast<MSAEditor*>(editor);
 }
 
-QSize MsaEditorNameList::sizeHint() const
-{
+QSize MsaEditorNameList::sizeHint() const {
     QSize s = QWidget::sizeHint();
     if (editor->getMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height());
@@ -68,11 +67,13 @@ QSize MsaEditorNameList::sizeHint() const
     return s;
 }
 
-QSize MsaEditorNameList::minimumSizeHint() const
-{
+QSize MsaEditorNameList::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
     if (editor->getMultilineMode()) {
-        int newHeight = (editor->getRowHeight() + 1) * qMax(1, editor->getNumSequences());
+        int viewRowCount = editor->getCollapseModel()->getViewRowCount();
+        int numSequences = editor->getNumSequences();
+        int newHeight = (editor->getRowHeight() + 0) *
+                        (qMax(1, qMin(viewRowCount, numSequences)) + 1);
         return QSize(s.width(), newHeight);
     }
     return s;

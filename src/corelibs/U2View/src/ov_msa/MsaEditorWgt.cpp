@@ -187,7 +187,11 @@ QSize MsaEditorWgt::sizeHint() const {
 QSize MsaEditorWgt::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
     if (editor->getMultilineMode()) {
-        int newHeight = consensusArea->size().height() + qMax(qMax(sequenceArea->minimumSizeHint().height(), nameList->minimumSizeHint().height()), (editor->getRowHeight() + 1)) + 5;
+        int newHeight = consensusArea->size().height() +
+                        qMax(qMax(sequenceArea->minimumSizeHint().height(),
+                                  nameList->minimumSizeHint().height()),
+                             (editor->getRowHeight() + 1)) +
+                        5;
         return QSize(s.width(), newHeight);
     }
     return s;

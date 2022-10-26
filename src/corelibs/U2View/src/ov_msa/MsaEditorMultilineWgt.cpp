@@ -58,6 +58,9 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
         this->updateSize();
     });
+    connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, [this]() {
+        this->updateSize();
+    });
 
     connect(editor,
             SIGNAL(si_cursorPositionChanged(const QPoint&)),
@@ -173,7 +176,7 @@ bool MsaEditorMultilineWgt::updateChildrenCount() {
 
     if (getMultilineMode()) {
         MaEditorWgt* child = nullptr;
-        int rowCount = editor->getNumSequences();
+        int rowCount = editor->getCollapseModel()->getViewRowCount();
         int rowHeight = editor->getRowHeight();
         int headHeight = getUI(0)->getHeaderWidget()->height();
         int childrenAreaHeight = getChildrenScrollArea()->height();
@@ -468,7 +471,8 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
         QPoint newPos(cursorPosition);
 
         if (cursorPosition.y() == 0) {
-            newPos = QPoint(cursorPosition.x() - length, editor->getNumSequences() - 1);
+            newPos = QPoint(cursorPosition.x() - length,
+                            editor->getCollapseModel()->getViewRowCount() - 1);
             CHECK(newPos.x() >= 0, true);
         } else {
             newPos = QPoint(cursorPosition.x(), cursorPosition.y() - 1);
@@ -483,7 +487,7 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
     } else if (key == Qt::Key_Down) {
         QPoint newPos(cursorPosition);
 
-        if (cursorPosition.y() >= (editor->getNumSequences() - 1)) {
+        if (cursorPosition.y() >= (editor->getCollapseModel()->getViewRowCount() - 1)) {
             newPos = QPoint(cursorPosition.x() + length, 0);
             if (newPos.x() >= editor->getAlignmentLen()) {
                 newPos.setX(editor->getAlignmentLen() - 1);
@@ -492,7 +496,7 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
             newPos = QPoint(cursorPosition.x(), cursorPosition.y() + 1);
         }
         if (ctrl) {
-            newPos.setY(editor->getNumSequences() - 1);
+            newPos.setY(editor->getCollapseModel()->getViewRowCount() - 1);
         }
         editor->setCursorPosition(newPos);
         editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
