@@ -82,22 +82,6 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
 
-    int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
-    QPoint cursorPosition = maEditor->getCursorPosition();
-    const MaEditorSelection& selection = maEditor->getSelection();
-    // Use cursor position for empty selection when arrow keys are used.
-    QRect selectionRect = selection.isEmpty()
-                              ? QRect(cursorPosition, cursorPosition)
-                              : selection.toRect();
-    bool isSingleSelection = selectionRect.isEmpty() ||
-                             (selectionRect.width() == 1 && selectionRect.height() == 1);
-    if (isSingleSelection && cursorPosition.y() >= (maEditor->getNumSequences() - 1)) {
-        QPoint newPos(cursorPosition.x() + length, 0);
-        maEditor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
-        maEditorUi->getScrollController()->scrollToPoint(newPos);
-        return;
-    }
-
     if (directions.testFlag(MultilineScrollController::SliderMoved)) {
         moveVSlider(globalVBar->value(),
                     globalVBar->sliderPosition(),

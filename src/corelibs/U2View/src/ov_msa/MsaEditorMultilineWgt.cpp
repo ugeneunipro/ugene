@@ -485,7 +485,9 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
 
         if (cursorPosition.y() >= (editor->getNumSequences() - 1)) {
             newPos = QPoint(cursorPosition.x() + length, 0);
-            CHECK(newPos.x() < editor->getAlignmentLen(), true);
+            if (newPos.x() >= editor->getAlignmentLen()) {
+                newPos.setX(editor->getAlignmentLen() - 1);
+            }
         } else {
             newPos = QPoint(cursorPosition.x(), cursorPosition.y() + 1);
         }
@@ -501,6 +503,9 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
         CHECK(newPos.x() < editor->getAlignmentLen(), true);
         if (ctrl) {
             newPos.setX(newPos.x() / length * length + length - 1);
+            if (newPos.x() >= editor->getAlignmentLen()) {
+                newPos.setX(editor->getAlignmentLen() - 1);
+            }
         }
         editor->setCursorPosition(newPos);
         editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
@@ -528,6 +533,9 @@ bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
     } else if (key == Qt::Key_End) {
         QPoint newPos(cursorPosition.x() / length * length + length - 1, cursorPosition.y());
         if (ctrl) {
+            newPos.setX(editor->getAlignmentLen() - 1);
+        }
+        if (newPos.x() >= editor->getAlignmentLen()) {
             newPos.setX(editor->getAlignmentLen() - 1);
         }
         editor->setCursorPosition(newPos);
