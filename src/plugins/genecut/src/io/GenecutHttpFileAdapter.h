@@ -63,7 +63,7 @@ private:
     QMap<QString, QString> replyData;
 
 private slots:
-    void sl_finished() override;
+    void sl_finished();
 
 };
 
