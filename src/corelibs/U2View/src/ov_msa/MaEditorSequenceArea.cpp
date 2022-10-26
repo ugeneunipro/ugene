@@ -1056,7 +1056,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Left:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1074,7 +1074,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Right:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1092,7 +1092,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Up:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1110,7 +1110,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Down:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1133,7 +1133,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Home:
-            if (isMsaEditor && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
                 break;
             }
             if (isShiftPressed) {
@@ -1145,7 +1145,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_End:
-            if (isMsaEditor && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
                 break;
             }
             if (isShiftPressed) {
@@ -1159,7 +1159,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_PageUp:
-            if (isMsaEditor && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
                 break;
             }
             ui->getScrollController()->scrollPage(isShiftPressed
@@ -1167,7 +1167,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
                                                       : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
-            if (isMsaEditor && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
                 break;
             }
             ui->getScrollController()->scrollPage(isShiftPressed
