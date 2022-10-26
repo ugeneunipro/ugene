@@ -55,8 +55,8 @@
 namespace U2 {
 
 const QString GenecutOPWidget::HEADER_VALUE = "application/json";
-//const QString GenecutOPWidget::API_SERVER = "http://genecut.unipro.ru/";
-const QString GenecutOPWidget::API_SERVER = "http://genecut-test.unipro.ru/";
+const QString GenecutOPWidget::API_SERVER = "http://genecut.unipro.ru/";
+//const QString GenecutOPWidget::API_SERVER = "http://genecut-test.unipro.ru/";
 const QString GenecutOPWidget::API_REQUEST_URL = API_SERVER + "/api/";
 const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
