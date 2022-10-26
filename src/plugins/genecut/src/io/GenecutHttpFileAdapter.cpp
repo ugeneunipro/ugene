@@ -84,7 +84,7 @@ bool GenecutHttpFileAdapter::open(const GUrl& urlString, IOAdapterMode) {
     coreLog.details(tr("Getting data from %1").arg(reply->url().toString()));
     connect(reply, SIGNAL(readyRead()), this, SLOT(add_data()), Qt::DirectConnection);
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(progress(qint64, qint64)), Qt::DirectConnection);
-    connect(reply, SIGNAL(finished()), this, SLOT(done()), Qt::DirectConnection);
+    connect(reply, SIGNAL(finished()), this, SLOT(sl_finished()), Qt::DirectConnection);
 
     return true;
 }
@@ -105,7 +105,7 @@ void GenecutHttpFileAdapter::setRequestType(RequestType type) {
     requestType = type;
 }
 
-void GenecutHttpFileAdapter::done() {
+void GenecutHttpFileAdapter::sl_finished() {
     is_downloaded = true;
     loop.exit();
     requestType = RequestType::Undefined;

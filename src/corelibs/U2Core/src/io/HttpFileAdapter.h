@@ -150,7 +150,7 @@ protected:
 
 protected slots:
     void add_data();
-    virtual void done();
+    void done();
     void progress(qint64 done, qint64 total);
     void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
 };
