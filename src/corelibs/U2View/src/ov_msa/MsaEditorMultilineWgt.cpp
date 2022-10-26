@@ -451,6 +451,7 @@ void MsaEditorMultilineWgt::sl_goto() {
 }
 
 bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
+    Q_UNUSED(shift);
     int length = getLastVisibleBase(0) + 1 - getFirstVisibleBase(0);
     QPoint cursorPosition = editor->getCursorPosition();
     const MaEditorSelection& selection = editor->getSelection();

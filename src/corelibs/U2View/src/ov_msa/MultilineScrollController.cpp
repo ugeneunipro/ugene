@@ -233,6 +233,18 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
             vScrollBar->setValue(vScrollBar->value() + pBottom.y() - height);
             scroller->setValue(scroller->value() + pBottom.y() - height);
         }
+    } else {
+        const int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
+        int firstBase = baseNumber / length * length;
+        setFirstVisibleBase(firstBase);
+        scroller->setValue(0);
+        rowRegion = ui->getUI(0)
+                        ->getRowHeightController()
+                        ->getGlobalYRegionByViewRowIndex(viewRowIndex);
+        pTop = ui->getUI(0)->getSequenceArea()->mapTo(ui->getChildrenScrollArea(),
+                                                      QPoint(0, rowRegion.startPos));
+        vScrollBar->setValue(vScrollBar->value() + pTop.y());
+        scroller->setValue(scroller->value() + pTop.y());
     }
 }
 
