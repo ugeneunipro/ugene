@@ -56,6 +56,7 @@ const QString RemoteDBRegistry::PDB("PDB");
 const QString RemoteDBRegistry::SWISS_PROT("SWISS-PROT");
 const QString RemoteDBRegistry::UNIPROTKB_SWISS_PROT("UniProtKB/Swiss-Prot");
 const QString RemoteDBRegistry::UNIPROTKB_TREMBL("UniProtKB/TrEMBL");
+const QString RemoteDBRegistry::ALPHAFOLD("AlphaFold Protein Structure Database");
 
 ////////////////////////////////////////////////////////////////////////////
 // BaseLoadRemoteDocumentTask
@@ -639,6 +640,7 @@ RemoteDBRegistry::RemoteDBRegistry() {
     aliases.insert("uniprot", UNIPROTKB_SWISS_PROT);
     aliases.insert("nucleotide", GENBANK_DNA);
     aliases.insert("protein", GENBANK_PROTEIN);
+    aliases.insert("alphafold", ALPHAFOLD);
 
     const QMap<QString, DBXRefInfo>& entries = AppContext::getDBXRefRegistry()->getEntries();
     foreach (const DBXRefInfo& info, entries.values()) {
@@ -654,6 +656,7 @@ RemoteDBRegistry::RemoteDBRegistry() {
     hints.insert(SWISS_PROT, QObject::tr("Use SWISS-PROT accession number. For example: %1 or %2").arg(makeIDLink("Q9IGQ6")).arg(makeIDLink("A0N8V2")));
     hints.insert(UNIPROTKB_SWISS_PROT, QObject::tr("Use UniProtKB/Swiss-Prot accession number. For example: %1").arg(makeIDLink("P16152")));
     hints.insert(UNIPROTKB_TREMBL, QObject::tr("Use UniProtKB/TrEMBL accession number. For example: %1").arg(makeIDLink("D0VTW9")));
+    hints.insert(ALPHAFOLD, QObject::tr("Use UniProtKB accession number. For example: %1 or %2").arg(makeIDLink("A2BC19")).arg(makeIDLink("A0A023GPI8")));
 }
 
 RemoteDBRegistry& RemoteDBRegistry::getRemoteDBRegistry() {

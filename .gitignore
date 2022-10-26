@@ -56,6 +56,7 @@ cmake-build-*
 
 # Qt generated
 **/GeneratedFiles/*
+moc_*.h*
 
 # Local/tmp files for personal developer needs in the same root folder
 # to be available from IDE context.

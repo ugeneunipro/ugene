@@ -74,6 +74,7 @@ public:
     static const QString SWISS_PROT;
     static const QString UNIPROTKB_SWISS_PROT;
     static const QString UNIPROTKB_TREMBL;
+    static const QString ALPHAFOLD;
 };
 
 class U2CORE_EXPORT RecentlyDownloadedCache : public QObject {

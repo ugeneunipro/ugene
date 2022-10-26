@@ -274,6 +274,7 @@ QMap<QString, QString> RemoteDBFetcherFactory::initCuteDbNames() {
     ret[RemoteDBRegistry::SWISS_PROT] = "swiss-prot";
     ret[RemoteDBRegistry::UNIPROTKB_SWISS_PROT] = "uniprot-swiss-prot";
     ret[RemoteDBRegistry::UNIPROTKB_TREMBL] = "uniprot-trembl";
+    ret[RemoteDBRegistry::ALPHAFOLD] = "alphafold";
     return ret;
 }
 

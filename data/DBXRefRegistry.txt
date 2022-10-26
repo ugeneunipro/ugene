@@ -4,6 +4,8 @@ AceView/WormGenes|https://www.ncbi.nlm.nih.gov/IEB/Research/Acembly/av.cgi?exdb=
 
 AFTOL|http://aftol1.biology.duke.edu/pub/primers/getPrimersByAFTOLID?aftol_id=%1||Assembling the Fungal Tree of Life
 
+AlphaFold Protein Structure Database||https://alphafold.ebi.ac.uk/files/AF-%1-F1-model_v3.pdb|Protein 3D structure predictions by AlphaFold AI system
+
 AntWeb|http://www.antweb.org/specimen.do?name=%1||Ant Database
 
 APHIDBASE|http://bipaa.genouest.org/apps/grs-2.3/grs?reportID=aphidbase_transcript_report&objectID=%1||Aphid Genome Database
