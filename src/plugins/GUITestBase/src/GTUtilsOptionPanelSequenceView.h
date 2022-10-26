@@ -36,7 +36,8 @@ public:
         AnnotationsHighlighting,
         Statistics,
         InSilicoPcr,
-        CircularView
+        CircularView,
+        GeneCut
     };
 
     enum AddRefMethod {

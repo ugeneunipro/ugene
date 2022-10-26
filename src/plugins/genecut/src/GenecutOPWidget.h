@@ -26,8 +26,6 @@
 #include "ui_GenecutOPWidget.h"
 
 #include <QWidget>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 
 #include <U2Core/GUrl.h>
 
@@ -79,7 +77,6 @@ private:
 
     static void errorMessage(GenecutHttpFileAdapter* adapter, QLabel* errorLabel);
     static void errorMessage(const QString& message, QLabel* errorLabel);
-    static void successMessage(QNetworkReply* reply, QLabel* label);
     static void successMessage(const QString& message, QLabel* label);
     static void warningMessage(const QString& message, QLabel* label);
     static void setWidgetsEnabled(QList<QWidget*> wgts, bool enabled);
@@ -92,8 +89,6 @@ private:
     void fileFromServerLoaded(const QString& loadedFile);
 
     AnnotatedDNAView* annDnaView = nullptr;
-    QNetworkAccessManager* mgr = nullptr;
-
     GenecutHttpFileAdapterFactory* factory = nullptr;
 
     QString accessToken;

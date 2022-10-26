@@ -254,7 +254,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>200</height>
+           <height>210</height>
           </size>
          </property>
          <property name="editTriggers">

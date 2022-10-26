@@ -113,7 +113,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Password confirmation</source>
-        <translation>ПОдтверждение пароля</translation>
+        <translation>Подтверждение пароля</translation>
     </message>
     <message>
         <source>First name</source>

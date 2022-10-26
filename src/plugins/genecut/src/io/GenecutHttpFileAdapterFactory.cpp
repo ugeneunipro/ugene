@@ -43,7 +43,7 @@ IOAdapter* GenecutHttpFileAdapterFactory::createIOAdapter() {
     return new GenecutHttpFileAdapter(this);
 }
 
-inline IOAdapterId GenecutHttpFileAdapterFactory::getAdapterId() const {
+IOAdapterId GenecutHttpFileAdapterFactory::getAdapterId() const {
     return GENECUT_ADAPTER_ID;
 }
 
