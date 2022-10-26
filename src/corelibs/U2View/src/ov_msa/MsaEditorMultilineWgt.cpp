@@ -450,4 +450,92 @@ void MsaEditorMultilineWgt::sl_goto() {
     gotoDialog.exec();
 }
 
+bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
+    int length = getLastVisibleBase(0) + 1 - getFirstVisibleBase(0);
+    QPoint cursorPosition = editor->getCursorPosition();
+    const MaEditorSelection& selection = editor->getSelection();
+    // Use cursor position for empty selection when arrow keys are used.
+    QRect selectionRect = selection.isEmpty()
+                              ? QRect(cursorPosition, cursorPosition)
+                              : selection.toRect();
+    bool isSingleSelection = selectionRect.isEmpty() ||
+                             (selectionRect.width() == 1 && selectionRect.height() == 1);
+
+    CHECK(isSingleSelection, false);
+
+    if (key == Qt::Key_Up) {
+        QPoint newPos(cursorPosition);
+
+        if (cursorPosition.y() == 0) {
+            newPos = QPoint(cursorPosition.x() - length, editor->getNumSequences() - 1);
+            CHECK(newPos.x() >= 0, true);
+        } else {
+            newPos = QPoint(cursorPosition.x(), cursorPosition.y() - 1);
+        }
+        if (ctrl) {
+            newPos.setY(0);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    } else if (key == Qt::Key_Down) {
+        QPoint newPos(cursorPosition);
+
+        if (cursorPosition.y() >= (editor->getNumSequences() - 1)) {
+            newPos = QPoint(cursorPosition.x() + length, 0);
+            CHECK(newPos.x() < editor->getAlignmentLen(), true);
+        } else {
+            newPos = QPoint(cursorPosition.x(), cursorPosition.y() + 1);
+        }
+        if (ctrl) {
+            newPos.setY(editor->getNumSequences() - 1);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    } else if (key == Qt::Key_Right) {
+        QPoint newPos(cursorPosition.x() + 1, cursorPosition.y());
+        CHECK(newPos.x() < editor->getAlignmentLen(), true);
+        if (ctrl) {
+            newPos.setX(newPos.x() / length * length + length - 1);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    } else if (key == Qt::Key_Left) {
+        QPoint newPos(cursorPosition.x() - 1, cursorPosition.y());
+        CHECK(newPos.x() >= 0, true);
+        if (ctrl) {
+            newPos.setX(newPos.x() / length * length);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    } else if (key == Qt::Key_Home) {
+        QPoint newPos(cursorPosition.x() / length * length, cursorPosition.y());
+        if (ctrl) {
+            newPos.setX(0);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    } else if (key == Qt::Key_End) {
+        QPoint newPos(cursorPosition.x() / length * length + length - 1, cursorPosition.y());
+        if (ctrl) {
+            newPos.setX(editor->getAlignmentLen() - 1);
+        }
+        editor->setCursorPosition(newPos);
+        editor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        getScrollController()->scrollToPoint(newPos);
+        return true;
+    }
+
+    return false;
+}
+
 }  // namespace U2

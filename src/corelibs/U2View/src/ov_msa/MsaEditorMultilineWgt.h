@@ -64,6 +64,8 @@ public:
     void showSimilarity() override;
     void hideSimilarity() override;
 
+    bool moveSelection(int key, bool shift, bool ctrl) override;
+
 signals:
 
 public slots:

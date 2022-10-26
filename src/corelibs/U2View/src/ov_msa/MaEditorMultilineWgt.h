@@ -137,6 +137,13 @@ public:
     virtual void showSimilarity() {};
     virtual void hideSimilarity() {};
 
+    virtual bool moveSelection(int key, bool shift, bool ctrl) {
+        Q_UNUSED(key);
+        Q_UNUSED(shift);
+        Q_UNUSED(ctrl);
+        return false;
+    }
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);

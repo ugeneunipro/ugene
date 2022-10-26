@@ -24,33 +24,50 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMulti
 
 bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
     if (obj == this && maEditor->getMultilineMode() && event->type() == QEvent::KeyPress) {
-        auto key = static_cast<QKeyEvent*>(event)->key();
+        auto kEvent = static_cast<QKeyEvent*>(event);
+        bool isShiftPressed = kEvent->modifiers().testFlag(Qt::ShiftModifier);
+        bool isCtrlPressed = kEvent->modifiers().testFlag(Qt::ControlModifier);
+        auto key = kEvent->key();
+
         switch (key) {
             case Qt::Key_Escape:
             case Qt::Key_Delete:
             case Qt::Key_Backspace:
             case Qt::Key_Insert:
             case Qt::Key_Space:
-            case Qt::Key_Left:
-            case Qt::Key_Right:
                 // ignore MSA sequence view widget keys
                 return true;
+            case Qt::Key_Left:
+            case Qt::Key_Right:
+                return maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed);
             case Qt::Key_Up:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 scrollVert(MultilineScrollController::Up, true, true);
                 return true;
             case Qt::Key_Down:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 scrollVert(MultilineScrollController::Down, true, true);
                 return true;
             case Qt::Key_Home:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 maEditorUi->getScrollController()->scrollToEnd(MultilineScrollController::SliderMinimum);
                 return true;
             case Qt::Key_End:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 maEditorUi->getScrollController()->scrollToEnd(MultilineScrollController::SliderMaximum);
                 return true;
             case Qt::Key_PageUp:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 scrollVert(MultilineScrollController::PageUp, false, true);
                 return true;
             case Qt::Key_PageDown:
+                if (maEditorUi->moveSelection(key, isShiftPressed, isCtrlPressed))
+                    return true;
                 scrollVert(MultilineScrollController::PageDown, false, true);
                 return true;
         }
@@ -64,6 +81,22 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
                                         bool wheel) {
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     maEditorUi->setUpdatesEnabled(false);
+
+    int length = maEditorUi->getLastVisibleBase(0) + 1 - maEditorUi->getFirstVisibleBase(0);
+    QPoint cursorPosition = maEditor->getCursorPosition();
+    const MaEditorSelection& selection = maEditor->getSelection();
+    // Use cursor position for empty selection when arrow keys are used.
+    QRect selectionRect = selection.isEmpty()
+                              ? QRect(cursorPosition, cursorPosition)
+                              : selection.toRect();
+    bool isSingleSelection = selectionRect.isEmpty() ||
+                             (selectionRect.width() == 1 && selectionRect.height() == 1);
+    if (isSingleSelection && cursorPosition.y() >= (maEditor->getNumSequences() - 1)) {
+        QPoint newPos(cursorPosition.x() + length, 0);
+        maEditor->getSelectionController()->setSelection(MaEditorSelection({QRect(newPos, newPos)}));
+        maEditorUi->getScrollController()->scrollToPoint(newPos);
+        return;
+    }
 
     if (directions.testFlag(MultilineScrollController::SliderMoved)) {
         moveVSlider(globalVBar->value(),
@@ -81,10 +114,9 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
     maEditorUi->setUpdatesEnabled(true);
 }
 
-void MsaMultilineScrollArea::moveVSlider(
-    int currPos,
-    int newPos,
-    const MultilineScrollController::Directions& wheelDirections) {
+void MsaMultilineScrollArea::moveVSlider(int currPos,
+                                         int newPos,
+                                         const MultilineScrollController::Directions& wheelDirections) {
     QScrollBar* vbar = verticalScrollBar();
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
     int currAreaScroll = vbar->value();
