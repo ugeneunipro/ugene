@@ -269,9 +269,11 @@ void GenecutOPWidget::sl_openInGenecut() {
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
     auto seqObj = annDnaView->getActiveSequenceContext()->getSequenceObject();
-    U2::U2OpStatus2Log os;
-    adapter->addDataValue(JSON_SEQUENCE_FILE_BODY, seqObj->getWholeSequenceData(os));
-    SAFE_POINT_OP(os, );
+    {
+        U2OpStatus2Log os;
+        adapter->addDataValue(JSON_SEQUENCE_FILE_BODY, seqObj->getWholeSequenceData(os));
+        SAFE_POINT_OP(os, );
+    }
 
     adapter->addDataValue(JSON_SEQUENCE_FILE_NAME, seqObj->getSequenceName());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
