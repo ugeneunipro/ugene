@@ -45,29 +45,29 @@ public:
     /** Converts SAM file to BAM file. */
     static void convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath = "");
 
-    static bool isSortedBam(const GUrl& bamUrl, U2OpStatus& os);
+    static bool isSortedBam(const QString& bamUrl, U2OpStatus& os);
 
     /**
      * @sortedBamBaseName is the result file path without extension.
      * Returns @sortedBamBaseName.bam
      */
-    static GUrl sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os);
+    static GUrl sortBam(const QString& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os);
 
-    static GUrl mergeBam(const QStringList& bamUrl, const QString& mergetBamTargetUrl, U2OpStatus& os);
+    static GUrl mergeBam(const QStringList& bamUrl, const QString& mergedBamTargetUrl, U2OpStatus& os);
 
-    static bool hasValidBamIndex(const GUrl& bamUrl);
+    static bool hasValidBamIndex(const QString& bamUrl);
 
     static bool hasValidFastaIndex(const GUrl& fastaUrl);
 
-    static void createBamIndex(const GUrl& bamUrl, U2OpStatus& os);
+    static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
 
-    static GUrl getBamIndexUrl(const GUrl& bamUrl);
+    static GUrl getBamIndexUrl(const QString& bamUrl);
 
     static void writeDocument(Document* doc, U2OpStatus& os);
 
-    static void writeObjects(const QList<GObject*>& objects, const GUrl& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
+    static void writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
 
-    static bool isEqualByLength(const GUrl& fileUrl1, const GUrl& fileUrl2, U2OpStatus& os, bool isBAM = false);
+    static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os, bool isBAM = false);
 
     /**
      * Returns the list of names of references (despite "*") found among reads.
