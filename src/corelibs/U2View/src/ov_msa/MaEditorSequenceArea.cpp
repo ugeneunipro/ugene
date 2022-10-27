@@ -1110,7 +1110,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Down:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && !isShiftPressed && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
