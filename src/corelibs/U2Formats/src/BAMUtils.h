@@ -51,7 +51,7 @@ public:
      * @sortedBamBaseName is the result file path without extension.
      * Returns @sortedBamBaseName.bam
      */
-    static GUrl sortBam(const QString& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os);
+    static GUrl sortBam(const QString& bamUrl, const QString& sortedBamFilePath, U2OpStatus& os);
 
     static GUrl mergeBam(const QStringList& bamUrl, const QString& mergedBamTargetUrl, U2OpStatus& os);
 

@@ -344,15 +344,16 @@ static QString createNumericSuffix(int n) {
     return ("000" + suffix).right(qMin(suffix.length(), 4));
 }
 
-static void sortBlocks(int n, int k, bam1_p* buf, const QString& prefix, const bam_header_t* h) {
+static void bamSortBlocks(int n, int k, bam1_p* buf, const QString& prefix, const bam_header_t* h) {
+    QString sortedFileName = n < 0 ? prefix + ".bam" : prefix + "." + createNumericSuffix(n) + ".bam";
+    const char* mode = n < 0 ? "w" : "w1";
+    coreLog.trace(QString("bamSortBlocks, n: %1, k: %2, prefix: %3, sorted file: %4").arg(n).arg(k).arg(prefix).arg(sortedFileName));
     ks_mergesort(sort, k, buf, nullptr);
-    QString name = n == 0 ? prefix + ".bam" : prefix + "." + createNumericSuffix(n) + ".bam";
-    const char* mode = n == 0 ? "w" : "w1";
-    FILE* file = BAMUtils::openFile(name, mode);
+    FILE* file = BAMUtils::openFile(sortedFileName, mode);
     int fd = file == nullptr ? 0 : fileno(file);
     bamFile fp = fd == 0 ? nullptr : bam_dopen(fd, mode);
     if (fp == nullptr) {
-        coreLog.error(BAMUtils::tr("[sort_blocks] fail to create file %1").arg(name));
+        coreLog.error(BAMUtils::tr("[sort_blocks] fail to create file %1").arg(sortedFileName));
         return;
     }
     bam_header_write(fp, h);
@@ -362,9 +363,14 @@ static void sortBlocks(int n, int k, bam1_p* buf, const QString& prefix, const b
     bam_close(fp);
 }
 
-static void bamSortCore(int fd, const QString& prefix, size_t max_mem) {
+static void bamSortCore(U2OpStatus& os, const QString& bamFileToSort, const QString& prefix) {
+    coreLog.trace("bamSortCore: " + bamFileToSort + ", result prefix: " + prefix);
+    FILE* file = BAMUtils::openFile(bamFileToSort, "rb");
+    CHECK_EXT(file != nullptr, os.setError(BAMUtils::tr("Failed to open file: %1").arg(bamFileToSort)), );
+    int fd = fileno(file);
     int n = 0;
     int k = 0;
+    size_t max_mem = 100 * 1000 * 1000;
     size_t mem = 0;
     bamFile fp = bam_dopen(fd, "r");
     if (fp == nullptr) {
@@ -388,19 +394,19 @@ static void bamSortCore(int fd, const QString& prefix, size_t max_mem) {
         mem += ret;
         ++k;
         if (mem >= max_mem) {
-            sortBlocks(n++, k, buf, prefix, header);
+            bamSortBlocks(n++, k, buf, prefix, header);
             mem = 0;
             k = 0;
         }
     }
     if (ret != -1) {
-        coreLog.details(BAMUtils::tr("[bam_sort_core] truncated file. Continue anyway."));
+        coreLog.trace(QString("[bam_sort_core] truncated file. Continue anyway."));
     }
     if (n == 0) {
-        sortBlocks(-1, k, buf, prefix, header);
+        bamSortBlocks(-1, k, buf, prefix, header);
     } else {  // then merge
-        coreLog.details(BAMUtils::tr("[bam_sort_core] merging from %1 files...").arg(n + 1));
-        sortBlocks(n++, k, buf, prefix, header);
+        coreLog.trace(QString("[bam_sort_core] merging from %1 files...").arg(n + 1));
+        bamSortBlocks(n++, k, buf, prefix, header);
         QString mergedBamPath = prefix + ".bam";
         QStringList filesToMerge;
         for (int i = 0; i < n; ++i) {
@@ -419,31 +425,13 @@ static void bamSortCore(int fd, const QString& prefix, size_t max_mem) {
     bam_close(fp);
 }
 
-GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os) {
-    QString baseName = sortedBamBaseName;
-    if (baseName.endsWith(".bam")) {
-        baseName = baseName.left(baseName.size() - 4);
-    }
-    QString sortedFileName = baseName + ".bam";
-
-    // get memory resource
-    AppSettings* appSettings = AppContext::getAppSettings();
-    AppResourcePool* resPool = appSettings->getAppResourcePool();
-    AppResource* memory = resPool->getResource(RESOURCE_MEMORY);
-    SAFE_POINT_EXT(memory != nullptr, os.setError("No memory resource"), QString());
-
-    // calculate needed memory
-    QFileInfo info(bamUrl);
-    qint64 fileSizeBytes = info.size();
-    CHECK_EXT(fileSizeBytes >= 0, os.setError(BAMUtils::tr("Unknown file size: %1").arg(bamUrl)), {});
-
-    coreLog.details(BAMUtils::tr(R"(Sort bam file: "%1", sorted file: "%2")").arg(bamUrl).arg(sortedFileName));
-    FILE* file = openFile(baseName, "rb");
-    CHECK_EXT(file != nullptr, os.setError(BAMUtils::tr("Failed to open file: %1").arg(baseName)), {});
-    int fd = fileno(file);
-    bamSortCore(fd, baseName, 100 * 1000 * 1000);
-
-    return sortedFileName;
+GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamFilePath, U2OpStatus& os) {
+    QString sortedBamFilePathPrefix = sortedBamFilePath.endsWith(".bam")
+                                          ? sortedBamFilePath.left(sortedBamFilePath.length() - 4)
+                                          : sortedBamFilePath;
+    coreLog.trace(QString("BAMUtils::sortBam %1 to %2").arg(bamUrl).arg(sortedBamFilePath));
+    bamSortCore(os, bamUrl, sortedBamFilePathPrefix);
+    return sortedBamFilePathPrefix + ".bam";
 }
 
 /**
@@ -451,6 +439,7 @@ GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamBaseName, 
  * Copy of the 'bam_merge_core' but with Unicode strings and parameters limited to the current UGENE use-cases.
  */
 static int bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
+    coreLog.trace("bamMergeCore: " + filesToMerge.join(",") + " to " + outFileName);
     bam_header_t* hout = nullptr;
     int n = filesToMerge.length();
     auto fp = (bamFile*)calloc(n, sizeof(bamFile));
