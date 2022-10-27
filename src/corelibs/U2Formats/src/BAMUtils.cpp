@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QFileInfo>
 #include <QTemporaryFile>
 
@@ -71,9 +72,10 @@ static wchar_t* toWideCharsArray(const QString& text) {
 
 FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray("\\\\?\\" + QFileInfo(fileUrl)
-                                                                             .canonicalFilePath()
-                                                                             .replace('/', '\\')));
+    CHECK(!mode.contains('r') || QFileInfo::exists(fileUrl), nullptr);
+
+    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray("\\\\?\\" + QDir::toNativeSeparators(
+                                                                             QFileInfo(fileUrl).absoluteFilePath())));
     QString modeWithBinaryFlag = mode;
     if (!modeWithBinaryFlag.contains("b")) {
         modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
@@ -382,6 +384,8 @@ GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2O
         size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));  // maxMemMB < 500 Mb, so the conversation is correct!
         QByteArray baseNameArray = baseName.toUtf8();
         FILE* file = openFile(bamFileName, "rb");
+        /*QScopedPointer<wchar_t, QScopedPointerArrayDeleter<wchar_t>> unicodeFileName(toWideCharsArray("\\\\?\\" + QDir::toNativeSeparators(
+                                                                                 QFileInfo(bamFileName).absoluteFilePath())));*/
         bam_sort_core_ext(0, "", baseNameArray.constData(), maxMemBytes, false, fileno(file));  // maxMemBytes
     }
     memory->release(maxMemMB);

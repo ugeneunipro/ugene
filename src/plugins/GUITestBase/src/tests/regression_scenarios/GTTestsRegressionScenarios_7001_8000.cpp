@@ -117,6 +117,7 @@
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
@@ -3443,6 +3444,59 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTCheckBox::getState(os, "showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
     CHECK_SET_ERR(GTWidget::findSlider(os, "curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
     CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7700) {
+    // Create a 250 character path. See
+    //     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
+    // Open _common_data/scenarios/_regression/7700/bwa.uwl
+    // The "Choose Output Directory" dialog appears.
+    // Set the created folder as the required directory in this dialog.
+    // Click OK.
+    //     The Workflow window appears.
+    // Set _common_data/bwa/control-chr21.fastq and nrsf-chr21.fastq as input to the "Read File URL(s)" element.
+    // Set _common_data/bwa/NC_000021.gbk.fa as the "Reference genome" of the "Map Reads with BWA" element.
+    // Run workflow.
+    //     Expected: the workflow task finished successfully.
+    // Open the output.sam
+    //     The "Import SAM File" dialog appears.
+    // Click "Import".
+    //     Expected: the ugenedb file is successfully created in the default directory and opened without problem.
+    QString dirPath = QFileInfo(sandBoxDir).canonicalFilePath();
+    int a = 250 - dirPath.size();
+    CHECK_SET_ERR(a >= 0, "Tmp path is too long");
+    QString longPath = dirPath + QString::fromWCharArray(L"/\u221E").repeated(a / 2);
+    CHECK_SET_ERR(QDir().mkpath(longPath), "Failed to create dir: " + longPath);
+
+    class SettingLongWcharPathScenario : public CustomScenario {
+        QString path;
+    public:
+        explicit SettingLongWcharPathScenario(const QString& path)
+            : path(path) {
+        }
+
+        void run(GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "pathEdit", path, dialog, false, true);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "StartupDialog", new SettingLongWcharPathScenario(longPath)));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7700/bwa.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, {testDir + "_common_data/bwa/control-chr21.fastq" /*, testDir + "_common_data/bwa/nrsf-chr21.fastq"*/});
+
+    GTUtilsWorkflowDesigner::click(os, "Map Reads with BWA");
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "_common_data/bwa/NC_000021.gbk.fa", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDashboard::clickOutputFile(os, "out.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 }
 
 }  // namespace GUITest_regression_scenarios
