@@ -208,6 +208,10 @@ p, li { white-space: pre-wrap; }
         <source>Can&apos;t merge input and result into alignment</source>
         <translation>Невозможно слить входную и результирующую последовательности в выравнивание</translation>
     </message>
+    <message>
+        <source>GeneCut test server is in use</source>
+        <translation>Используется тестовый сервер GeneCut</translation>
+    </message>
 </context>
 <context>
     <name>U2::GenecutOPWidgetFactory</name>

@@ -54,10 +54,10 @@
 
 namespace U2 {
 
+const QString GenecutOPWidget::ENV_UGENE_GENECUT_USE_TEST_API_SERVER = "UGENE_GENECUT_USE_TEST_API_SERVER";
+
 const QString GenecutOPWidget::HEADER_VALUE = "application/json";
-const QString GenecutOPWidget::API_SERVER = "http://genecut.unipro.ru/";
-//const QString GenecutOPWidget::API_SERVER = "http://genecut-test.unipro.ru/";
-const QString GenecutOPWidget::API_REQUEST_URL = API_SERVER + "/api/";
+const QString GenecutOPWidget::API_REQUEST_API_SUFFIX = "api/";
 const QString GenecutOPWidget::API_REQUEST_TYPE = "user";
 const QString GenecutOPWidget::API_REQUEST_LOGIN = "login";
 const QString GenecutOPWidget::API_REQUEST_RESET_PASSWORD = "sendChangePassLink";
@@ -99,7 +99,8 @@ const QString GenecutOPWidget::GENECUT_USER_PASSWORD_SETTINGS = "/genecut/passwo
 
 GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
-      annDnaView(_annDnaView)/*,
+      annDnaView(_annDnaView),
+      apiServer(qgetenv("UGENE_GENECUT_USE_TEST_API_SERVER") == "1" ? "http://genecut-test.unipro.ru/" : "http://genecut.unipro.ru/")/*,
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName()))*/ {
     setupUi(this);
     lbLoginWarning->clear();
@@ -109,6 +110,10 @@ GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     lbRegisterWarning->setStyleSheet(lbRegisterWarning->styleSheet() + "color: " + Theme::errorColorLabelStr());
     lbRegisterWarning->setAlignment(Qt::AlignLeft);
     stackedWidget->setCurrentIndex(0);
+
+    if (apiServer.contains("test")) {
+        coreLog.details(tr("GeneCut test server is in use"));
+    }
 
     auto settings = AppContext::getSettings();
     if (settings->contains(GENECUT_USER_EMAIL_SETTINGS)) {
@@ -175,7 +180,7 @@ void GenecutOPWidget::sl_loginClicked() {
     adapter->addDataValue(JSON_EMAIL, leEmail->text());
     adapter->addDataValue(JSON_PASSWORD, lePasword->text());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, false);
@@ -221,7 +226,7 @@ void GenecutOPWidget::sl_resetPasswordClicked() {
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_EMAIL, leResetPassword->text());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_RESET_PASSWORD);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_TYPE + "/" + API_REQUEST_RESET_PASSWORD);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ leResetPassword, pbReset }, false);
@@ -242,7 +247,7 @@ void GenecutOPWidget::sl_logoutClicked() {
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_REFRESH_TOKEN, refreshToken);
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_LOGOUT);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_TYPE + "/" + API_REQUEST_LOGOUT);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);
@@ -277,7 +282,7 @@ void GenecutOPWidget::sl_openInGenecut() {
 
     adapter->addDataValue(JSON_SEQUENCE_FILE_NAME, seqObj->getSequenceName());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_UPLOAD_SEQUENCE);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_UPLOAD_SEQUENCE);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
@@ -288,7 +293,7 @@ void GenecutOPWidget::sl_openInGenecut() {
             SAFE_POINT(f.open(QIODevice::ReadOnly), L10N::errorReadingFile(f.fileName()), );
 
             QString hiddenLoginHtml = f.readAll();
-            hiddenLoginHtml = hiddenLoginHtml.arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken).arg(API_SERVER + API_REQUEST_TYPE + "/");
+            hiddenLoginHtml = hiddenLoginHtml.arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken).arg(apiServer + API_REQUEST_TYPE + "/");
 
             QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("genecut");
             U2OpStatus2Log os;
@@ -316,7 +321,7 @@ void GenecutOPWidget::sl_fetchResultsClicked() {
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_REPORTS);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_REPORTS);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbOpenInGenecut, pbFetchResults }, false);
@@ -366,7 +371,7 @@ void GenecutOPWidget::sl_registerNewClicked() {
     adapter->addDataValue(JSON_LAST_NAME, leLastName->text());
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
 
-    QString url(API_REQUEST_URL + API_REQUEST_TYPE + "/" + API_REQUEST_REGISTER);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_TYPE + "/" + API_REQUEST_REGISTER);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ pbRegisterNew }, false);
@@ -399,7 +404,7 @@ void GenecutOPWidget::sl_removeSelectedResultClicked() {
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
     adapter->addDataValue(JSON_REPORT_ID, resultId);
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + API_REQUEST_DEL_RESULT);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_DEL_RESULT);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);
@@ -427,7 +432,7 @@ void GenecutOPWidget::sl_openResultInBrowserClicked() {
     SAFE_POINT(f.open(QIODevice::ReadOnly), L10N::errorReadingFile(f.fileName()), );
 
     QString showReportHtml = f.readAll();
-    showReportHtml = showReportHtml.arg(reportId).arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken).arg(API_SERVER);
+    showReportHtml = showReportHtml.arg(reportId).arg(L10N::getActiveLanguageCode()).arg(email).arg(accessToken).arg(refreshToken).arg(apiServer);
 
     QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("genecut");
     U2OpStatus2Log os;
@@ -602,7 +607,7 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
     adapter->addRawHeader("Authorization", "Bearer " + accessToken.toLocal8Bit());
     adapter->addDataValue(JSON_REPORT_ID, resultId);
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
-    QString url(API_REQUEST_URL + endpoint);
+    QString url(apiServer + API_REQUEST_API_SUFFIX + endpoint);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );
 
     setWidgetsEnabled({ wtMainForm }, false);

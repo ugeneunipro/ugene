@@ -88,6 +88,8 @@ private:
     void downloadAndSaveFileFromServer(ServerFileType fileType, bool silentDownload = false);
     void fileFromServerLoaded(const QString& loadedFile);
 
+    const QString apiServer;
+
     AnnotatedDNAView* annDnaView = nullptr;
     GenecutHttpFileAdapterFactory* factory = nullptr;
 
@@ -99,9 +101,10 @@ private:
 
     QList<GUrl> loadedFilesPaths;
 
+    static const QString ENV_UGENE_GENECUT_USE_TEST_API_SERVER;
+
     static const QString HEADER_VALUE;
-    static const QString API_SERVER;
-    static const QString API_REQUEST_URL;
+    static const QString API_REQUEST_API_SUFFIX;
     static const QString API_REQUEST_TYPE;
     static const QString API_REQUEST_LOGIN;
     static const QString API_REQUEST_RESET_PASSWORD;
