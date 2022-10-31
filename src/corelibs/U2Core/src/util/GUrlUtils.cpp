@@ -466,4 +466,9 @@ QString GUrlUtils::getSlashEndedPath(const QString& dirPath) {
     return dirPath.endsWith("/") ? dirPath : dirPath + "/";
 }
 
+QString GUrlUtils::getNativeAbsolutePath(const GUrl& url) {
+    QString unixStyleAbsolutePath = url.getURLString();
+    return isOsWindows() ? "\\\\?\\" + QDir::toNativeSeparators(unixStyleAbsolutePath) : unixStyleAbsolutePath;
+}
+
 }  // namespace U2

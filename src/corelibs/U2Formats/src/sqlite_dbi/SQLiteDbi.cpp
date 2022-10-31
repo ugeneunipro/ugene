@@ -22,7 +22,6 @@
 #include "SQLiteDbi.h"
 #include <3rdparty/sqlite3/sqlite3.h>
 
-#include <QDir>
 #include <QFile>
 
 #include <U2Core/GUrl.h>
@@ -346,7 +345,7 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
         if (create) {
             flags |= SQLITE_OPEN_CREATE;
         }
-        QByteArray file = "\\\\?\\" + QDir::toNativeSeparators(QFileInfo(url).absoluteFilePath()).toUtf8();
+        QByteArray file = url.toUtf8();
         int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, nullptr);
         if (rc != SQLITE_OK) {
             QString err = getLastErrorMessage(rc);

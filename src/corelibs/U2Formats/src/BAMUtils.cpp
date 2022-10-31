@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDir>
 #include <QFileInfo>
 #include <QTemporaryFile>
 
@@ -50,6 +49,7 @@ extern "C" {
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -74,8 +74,7 @@ FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
     CHECK(!mode.contains('r') || QFileInfo::exists(fileUrl), nullptr);
 
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray("\\\\?\\" + QDir::toNativeSeparators(
-                                                                             QFileInfo(fileUrl).absoluteFilePath())));
+    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
     QString modeWithBinaryFlag = mode;
     if (!modeWithBinaryFlag.contains("b")) {
         modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.

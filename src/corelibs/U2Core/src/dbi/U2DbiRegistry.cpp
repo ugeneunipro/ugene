@@ -280,7 +280,7 @@ U2Dbi* U2DbiPool::createDbi(const U2DbiRef& ref, bool create, U2OpStatus& os, co
     CHECK_EXT(nullptr != dbiFactory, os.setError(tr("Invalid database type: %1").arg(ref.dbiFactoryId)), nullptr);
     U2Dbi* result = dbiFactory->createDbi();
 
-    const QString url = dbiFactory->id2Url(ref.dbiId).getURLString();
+    const QString url = GUrlUtils::getNativeAbsolutePath(dbiFactory->id2Url(ref.dbiId));
 
     QHash<QString, QString> initProperties = getInitProperties(url, create);
     initProperties.unite(properties);

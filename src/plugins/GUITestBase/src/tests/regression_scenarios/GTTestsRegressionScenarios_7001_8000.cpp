@@ -117,7 +117,6 @@
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
@@ -3447,49 +3446,53 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7700) {
-    // Create a 250 character path. See
+    // Create a 250 Unicode character path. See
     //     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
     // Open _common_data/scenarios/_regression/7700/bwa.uwl
-    // The "Choose Output Directory" dialog appears.
+    //     The "Choose Output Directory" dialog appears.
     // Set the created folder as the required directory in this dialog.
     // Click OK.
     //     The Workflow window appears.
     // Set _common_data/bwa/control-chr21.fastq and nrsf-chr21.fastq as input to the "Read File URL(s)" element.
     // Set _common_data/bwa/NC_000021.gbk.fa as the "Reference genome" of the "Map Reads with BWA" element.
     // Run workflow.
-    //     Expected: the workflow task finished successfully.
+    //     Expected: the workflow task finished successfully with one output file "output.sam".
     // Open the output.sam
     //     The "Import SAM File" dialog appears.
     // Click "Import".
-    //     Expected: the ugenedb file is successfully created in the default directory and opened without problem.
-    QString dirPath = QFileInfo(sandBoxDir).canonicalFilePath();
-    int a = 250 - dirPath.size();
-    CHECK_SET_ERR(a >= 0, "Tmp path is too long");
-    QString longPath = dirPath + QString::fromWCharArray(L"/\u221E").repeated(a / 2);
-    CHECK_SET_ERR(QDir().mkpath(longPath), "Failed to create dir: " + longPath);
+    //     Expected: the ugenedb file is successfully created in the default directory and opens without problems, the
+    //         Assembly Browser shows position 45 890 375 with coverage 2316 as the first well-covered region.
+    QString sandboxPath = QFileInfo(sandBoxDir).canonicalFilePath();
+    int requiredNumOfChars = 250 - sandboxPath.size();
+    QString longPath = sandboxPath + QString::fromWCharArray(L"/\u221E").repeated(requiredNumOfChars / 2);
+    CHECK_SET_ERR(QDir().mkpath(longPath), "Failed to create dir '" + longPath + "'");
 
-    class SettingLongWcharPathScenario : public CustomScenario {
+    class WorkflowOutputScenario : public CustomScenario {
         QString path;
+
     public:
-        explicit SettingLongWcharPathScenario(const QString& path)
+        explicit WorkflowOutputScenario(const QString& path)
             : path(path) {
         }
-
         void run(GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTLineEdit::setText(os, "pathEdit", path, dialog, false, true);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "StartupDialog", new SettingLongWcharPathScenario(longPath)));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "StartupDialog", new WorkflowOutputScenario(longPath)));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7700/bwa.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
-    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, {testDir + "_common_data/bwa/control-chr21.fastq" /*, testDir + "_common_data/bwa/nrsf-chr21.fastq"*/});
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(
+        os, {testDir + "_common_data/bwa/control-chr21.fastq", testDir + "_common_data/bwa/nrsf-chr21.fastq"});
 
     GTUtilsWorkflowDesigner::click(os, "Map Reads with BWA");
-    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "_common_data/bwa/NC_000021.gbk.fa", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+    GTUtilsWorkflowDesigner::setParameter(os,
+                                          "Reference genome",
+                                          testDir + "_common_data/bwa/NC_000021.gbk.fa",
+                                          GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3497,6 +3500,24 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTUtilsDashboard::clickOutputFile(os, "out.sam");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+
+    QString coveredRegionsText;
+    class GetLabelTextScenario : public CustomScenario {
+        QLabel* label;
+        QString& text;
+
+    public:
+        GetLabelTextScenario(QLabel* label, QString& text)
+            : label(label), text(text) {
+        }
+        void run(GUITestOpStatus& os) override {
+            text = label->text();
+        }
+    };
+    GTThread::runInMainThread(
+        os, new GetLabelTextScenario(GTWidget::findLabel(os, "CoveredRegionsLabel"), coveredRegionsText));
+    CHECK_SET_ERR(coveredRegionsText.contains("<td><a href=\"0\">45 890 375</a></td><td align=\"center\">2 316</td>"),
+                  "Position 45 890 375 with 2 316 coverage isn't the first well-covered region");
 }
 
 }  // namespace GUITest_regression_scenarios

@@ -144,6 +144,12 @@ public:
     static QString getSlashEndedPath(const QString& dirPath);
 
     static bool containSpaces(const QString& string);
+    /**
+     * Returns, for example, "/home/User/Desktop/File.txt" on Unix, "\\?\C:\Users\User\Desktop\File.txt" on Windows.
+     * Can be used for platform specific system calls. Doesn't check the correctness of the path,
+     * the existence of the directory/file, and other situations. For file systems only.
+     */
+    static QString getNativeAbsolutePath(const GUrl& url);
 };
 
 }  // namespace U2
