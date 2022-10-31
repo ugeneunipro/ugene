@@ -53,7 +53,7 @@ void LoadInfoTask::run() {
             ioAdapter.reset(factory->createIOAdapter());
         }
 
-        GUrl baiUrl = BAMUtils::getBamIndexUrl(sourceUrl);
+        GUrl baiUrl = BAMUtils::getBamIndexUrl(sourceUrl.getURLString());
 
         QScopedPointer<IOAdapter> ioIndexAdapter;
         IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(baiUrl));

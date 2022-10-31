@@ -91,7 +91,7 @@ void ConvertToIndexedBamTask::run() {
         CHECK_EXT(BaseDocumentFormats::BAM == formatId, setError("Only BAM/SAM files could be converted"), );
     }
 
-    bool sorted = BAMUtils::isSortedBam(bamUrl, stateInfo);
+    bool sorted = BAMUtils::isSortedBam(bamUrl.getURLString(), stateInfo);
     CHECK_OP(stateInfo, );
 
     GUrl sortedBamUrl = bamUrl;
@@ -104,14 +104,14 @@ void ConvertToIndexedBamTask::run() {
             baseName = dir + "/" + bamUrl.fileName();
         }
         baseName += ".sorted";
-        sortedBamUrl = BAMUtils::sortBam(bamUrl, baseName, stateInfo);
+        sortedBamUrl = BAMUtils::sortBam(bamUrl.getURLString(), baseName, stateInfo);
         CHECK_OP(stateInfo, );
         addConvertedFile(sortedBamUrl);
     }
 
-    bool indexed = sorted && BAMUtils::hasValidBamIndex(sortedBamUrl);
+    bool indexed = sorted && BAMUtils::hasValidBamIndex(sortedBamUrl.getURLString());
     if (!indexed) {
-        BAMUtils::createBamIndex(sortedBamUrl, stateInfo);
+        BAMUtils::createBamIndex(sortedBamUrl.getURLString(), stateInfo);
         CHECK_OP(stateInfo, );
     }
 

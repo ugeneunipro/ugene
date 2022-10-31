@@ -62,7 +62,7 @@ void BAMFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
 
     BAMUtils::writeObjects(
         d->findGObjectByType(GObjectTypes::ASSEMBLY),
-        url,
+        url.getURLString(),
         getFormatId(),
         os);
 }

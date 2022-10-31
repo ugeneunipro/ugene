@@ -133,7 +133,7 @@ void WriteBAMTask::run() {
 
     // BAM only
     if (buildIndex && BaseDocumentFormats::BAM == doc->getDocumentFormatId()) {
-        BAMUtils::createBamIndex(doc->getURL(), stateInfo);
+        BAMUtils::createBamIndex(doc->getURLString(), stateInfo);
     }
 }
 
