@@ -454,7 +454,11 @@ void MsaEditorMultilineWgt::sl_goto() {
 }
 
 bool MsaEditorMultilineWgt::moveSelection(int key, bool shift, bool ctrl) {
-    Q_UNUSED(shift);
+    // Ignore shift
+    // See src/corelibs/U2View/src/ov_msa/MaEditorSequenceArea.cpp
+    if (shift) {
+        return false;
+    }
     int length = getLastVisibleBase(0) + 1 - getFirstVisibleBase(0);
     QPoint cursorPosition = editor->getCursorPosition();
     const MaEditorSelection& selection = editor->getSelection();

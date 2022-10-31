@@ -309,7 +309,7 @@ void GTUtilsMSAEditorSequenceArea::moveMouseToPosition(GUITestOpStatus& os, cons
     uint muiCount = msaSeqArea->getEditor()->getUI()->getChildrenCount();
     uint multilineIndex = 0;
     if (GTUtilsMsaEditor::getMultilineMode(os)) {
-        ui->getScrollController()->scrollToBase(globalMaPosition);
+        ui->getScrollController()->scrollToPoint(globalMaPosition);
     } else {
         scrollToPosition(os, globalMaPosition);
     }

@@ -474,10 +474,10 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5, 5), QPoint(5, 5)));
     //    end
     auto vbar = GTWidget::findScrollBar(os, "multiline_vertical_sequence_scroll");
-    GTKeyboardDriver::keyClick(Qt::Key_End);
-    CHECK_SET_ERR(vbar->value() == vbar->maximum(), QString("end key scrollbar value: %1").arg(vbar->value()))
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
+    CHECK_SET_ERR(vbar->value() > 20, QString("end key scrollbar value: %1").arg(vbar->value()))
     //    home
-    GTKeyboardDriver::keyClick(Qt::Key_Home);
+    GTKeyboardDriver::keyClick(Qt::Key_Home, Qt::ControlModifier);
     CHECK_SET_ERR(vbar->value() == 0, QString("home key works wrong. Scrollbar value: %1").arg(vbar->value()))
     //    page down
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
