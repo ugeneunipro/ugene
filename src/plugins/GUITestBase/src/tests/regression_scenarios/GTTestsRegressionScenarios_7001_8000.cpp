@@ -2893,18 +2893,39 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     //2. Copy whole sequence
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 29751));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
-    GTMouseDriver::click(Qt::RightButton);
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selected sequence"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //3. Paste it to project filter
-    //Expected: no crash
-    GTUtilsProjectTreeView::openView(os);
+    //Expected: no crash, here is error in log
+    GTLogTracer logTracer;
     auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
     //necessary sleep to activate search task(s) after pasting sequence
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(logTracer.hasErrors(), "Log should contain errors");
+    
+    //4. Copy region with acceptable length 23 170 ( length * length < MAX_INT) 
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 23170));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //5. Paste it to project filter
+    //Expected: no crash, no error in log
+    GTLogTracer logTracer2;
+    GTLineEdit::clear(os, nameFilterEdit);
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    //necessary sleep to activate search task(s) after pasting sequence
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7630) {

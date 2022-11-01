@@ -24,16 +24,24 @@
 
 #include <cstdio>
 
+#include <U2Core/U2OpStatus.h>
+
 namespace U2 {
 
 // TODO: rename n,m to rows, columns
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
-    // Always check memory overflow on the client side.
-    RollingMatrix(int _sizeX, int _sizeY)
+    RollingMatrix(int _sizeX, int _sizeY, U2OpStatus *os)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        U2_ASSERT(sizeX >= 0 && sizeY >= 0);
+        if (sizeX < 0 || sizeY < 0) {
+            os->setError(QObject::tr("RollingMatrix::RollingMatrix(): One of the given dimensions less than zero."));
+            return;
+        }
+        if (getMatrixSizeInBytes(sizeX, sizeY) >= INT_MAX) {
+            os->setError(QObject::tr("RollingMatrix::RollingMatrix(): Matrix too big for calculation given dimensions."));
+            return;
+        }
         data = new int[sizeX * sizeY];
     }
 
