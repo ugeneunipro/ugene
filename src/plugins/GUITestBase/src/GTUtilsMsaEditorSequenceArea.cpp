@@ -253,12 +253,16 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
 
     while (!msaSeqArea->isPositionVisible(position.x(), false)) {
         const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
+        const QPoint leftEdge(sliderSpaceRect.x(), sliderSpaceRect.height() / 2);
         const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        int lastBase = msaSeqArea->getLastVisibleBase(true);
+        int firstBase = msaSeqArea->getFirstVisibleBase();
+        int lastBase = msaSeqArea->getLastVisibleBase(false);
         QPoint p;
-        if (position.x() == lastBase) {
+        if (position.x() >= lastBase) {
             p = hBar->mapToGlobal(rightEdge) + QPoint(3, 0);
+        } else if (position.x() <= firstBase) {
+            p = hBar->mapToGlobal(leftEdge) - QPoint(3, 0);
         } else {
             p = hBar->mapToGlobal(rightEdge) - QPoint(1, 0);
         }
