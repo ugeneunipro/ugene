@@ -3510,7 +3510,7 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
         GetLabelTextScenario(QLabel* label, QString& text)
             : label(label), text(text) {
         }
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus&) override {
             text = label->text();
         }
     };
