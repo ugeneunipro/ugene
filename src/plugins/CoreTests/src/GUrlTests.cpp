@@ -28,6 +28,7 @@
 #include <U2Core/GHints.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -66,6 +67,25 @@ Task::ReportResult GTest_ConvertPath::report() {
         }
     }
     return ReportResult_Finished;
+}
+
+/************************************************************************/
+/* GTest_ConvertPathToNative */
+/************************************************************************/
+void GTest_ConvertPathToNative::init(XMLTestFormat*, const QDomElement& el) {
+    checkNecessaryAttributeExistence(el, ORIGINAL_URL_ATTR);
+    checkNecessaryAttributeExistence(el, EXPECTED_RESULT_ATTR);
+    checkAttribute(el, PLATFORM_ATTR, {PLATFORM_UNIX, PLATFORM_WIN}, false);
+    QString osName = el.attribute(PLATFORM_ATTR);
+    if (osName.isNull() || (osName == PLATFORM_WIN) == isOsWindows()) {
+        QString originalUrl = el.attribute(ORIGINAL_URL_ATTR);
+        QString expectedUrl = el.attribute(EXPECTED_RESULT_ATTR);
+        QString currentUrl = GUrlUtils::getNativeAbsolutePath(originalUrl);
+        if (currentUrl != expectedUrl) {
+            stateInfo.setError(QString("Original URL: '%1', expected URL: '%2', current URL: '%3'")
+                                   .arg(originalUrl, expectedUrl, currentUrl));
+        }
+    }
 }
 
 /************************************************************************/
@@ -312,6 +332,7 @@ Task::ReportResult GTest_CheckFilesNum::report() {
 QList<XMLTestFactory*> GUrlTests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_ConvertPath::createFactory());
+    res.append(GTest_ConvertPathToNative::createFactory());
     res.append(GTest_CreateTmpDir::createFactory());
     res.append(GTest_RemoveTmpDir::createFactory());
     res.append(GTest_RemoveTmpFile::createFactory());

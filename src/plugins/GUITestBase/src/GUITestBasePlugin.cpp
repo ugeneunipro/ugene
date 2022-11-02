@@ -273,6 +273,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
+    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7700);
 
     // Memory allocation related tests. Test only 32-bit platforms.
     // These tests should be rewritten to check 64-bit memory allocation.
@@ -1814,8 +1815,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7682);
     REGISTER_TEST(GUITest_regression_scenarios::test_7686);
     REGISTER_TEST(GUITest_regression_scenarios::test_7697);
-
-    REGISTER_TEST(GUITest_regression_scenarios::test_7700);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

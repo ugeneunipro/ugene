@@ -145,7 +145,7 @@ public:
 
     static bool containSpaces(const QString& string);
     /**
-     * Returns, for example, "/home/User/Desktop/File.txt" on Unix, "\\?\C:\Users\User\Desktop\File.txt" on Windows.
+     * Returns, for example, "/home/user/Desktop/File.txt" on Unix, "\\?\C:\Users\User\Desktop\File.txt" on Windows.
      * Can be used for platform specific system calls. Doesn't check the correctness of the path,
      * the existence of the directory/file, and other situations. For file systems only.
      */
