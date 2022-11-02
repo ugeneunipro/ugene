@@ -221,7 +221,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 10));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
     GTMouseDriver::press();
+    GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15, 5));
+    GTThread::waitForMainThread();
 
     //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
     //    Simple overview updates simultaneously.
@@ -232,11 +234,14 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 #ifdef Q_OS_WIN
     const QPoint point(6, 6);
+    // On Windows the graph overview is not blocked for updates
+    const QString expectedColor = "#ededed";
 #else
     const QPoint point(overviewGraph->rect().center() - QPoint(0, 20));
+    const QString expectedColor = "#a0a0a4";
 #endif
     const QColor c = GTWidget::getColor(os, overviewGraph, point);
-    CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
+    CHECK_SET_ERR(c.name() == expectedColor, "simple overview has wrong color. Expected: " + expectedColor + ", Found: " + c.name());
 
     GTMouseDriver::release();
     GTThread::waitForMainThread();
