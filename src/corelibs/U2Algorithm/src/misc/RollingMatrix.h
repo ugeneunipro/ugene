@@ -32,16 +32,10 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
-    RollingMatrix(int _sizeX, int _sizeY, U2OpStatus *os)
+    RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        if (sizeX < 0 || sizeY < 0) {
-            os->setError(QObject::tr("RollingMatrix::RollingMatrix(): One of the given dimensions less than zero."));
-            return;
-        }
-        if (getMatrixSizeInBytes(sizeX, sizeY) >= INT_MAX) {
-            os->setError(QObject::tr("RollingMatrix::RollingMatrix(): Matrix too big for calculation given dimensions."));
-            return;
-        }
+        CHECK(sizeX >= 0 && sizeY >= 0, );
+        CHECK(getMatrixSizeInBytes(sizeX, sizeY), );
         data = new int[sizeX * sizeY];
     }
 
@@ -79,8 +73,8 @@ public:
         }
     }
 
-    static qint64 getMatrixSizeInBytes(int sizeX, int sizeY) {
-        return (qint64)sizeX * sizeY * (int)sizeof(int);
+    static bool isAcceptableMatrixDimensions(int sizeX, int sizeY) {
+        return getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX;
     }
 
 private:
@@ -104,6 +98,10 @@ private:
     }
 
 protected:
+    static qint64 getMatrixSizeInBytes(int sizeX, int sizeY) {
+        return (qint64)sizeX * sizeY * (int)sizeof(int);
+    }
+
     const int sizeX;
     const int sizeY;
     int* data = nullptr;

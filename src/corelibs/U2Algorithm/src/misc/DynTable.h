@@ -38,11 +38,8 @@ struct U2ALGORITHM_EXPORT MatchScores {
 
 class U2ALGORITHM_EXPORT DynTable : public RollingMatrix {
 public:
-    DynTable(int sizeX, int sizeY, bool _allowInsDel, U2OpStatus *os, const MatchScores& _scores = {})
-        : RollingMatrix(sizeX, sizeY, os), allowInsDel(_allowInsDel), scores(_scores) {
-        if (os->hasError()) {
-            return;
-        }
+    DynTable(int sizeX, int sizeY, bool _allowInsDel, const MatchScores& _scores = {})
+        : RollingMatrix(sizeX, sizeY), allowInsDel(_allowInsDel), scores(_scores) {
         // TODO: initial fill of the table does not respect the provided match scores and uses hardcoded 0,1,1,1 scores.
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {

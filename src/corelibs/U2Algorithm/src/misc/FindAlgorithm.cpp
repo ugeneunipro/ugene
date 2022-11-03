@@ -29,9 +29,9 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -78,12 +78,12 @@ bool FindAlgorithmResult::lessByRegionStartPos(const U2::FindAlgorithmResult& r1
 
 class StrandContext {
 public:
-    StrandContext(int width, int height, bool insDel, const char* p, U2OpStatus *os)
-        : dynTable(width, height, insDel, os), pattern(p) {
+    StrandContext(int width, int height, bool insDel, const char* p)
+        : dynTable(width, height, insDel), pattern(p) {
     }
 
-    StrandContext(const char* data, int arr_size, const char* p, U2OpStatus* os)  // using rolling array only in subst mode
-        : dynTable(0, 0, false, os), rollArr(data, arr_size), pattern(p) {
+    StrandContext(const char* data, int arr_size, const char* p)  // using rolling array only in subst mode
+        : dynTable(0, 0, false), rollArr(data, arr_size), pattern(p) {
     }
 
     static quint64 estimateRamUsageForOneContext(int width, int height) {
@@ -156,19 +156,18 @@ static void findInAmino(FindAlgorithmResultsListener* rl,
     QByteArray revPattern(pattern);
     TextUtils::reverse(revPattern.data(), patternLen);
 
-    U2OpStatus2Log os;
-    StrandContext context[] = {
-        StrandContext(width, height, insDel, pattern, &os),
-        StrandContext(width, height, insDel, pattern, &os),
-        StrandContext(width, height, insDel, pattern, &os),
-        StrandContext(width, height, insDel, revPattern.data(), &os),
-        StrandContext(width, height, insDel, revPattern.data(), &os),
-        StrandContext(width, height, insDel, revPattern.data(), &os)};
-    if (os.hasError()) {
-        const FindAlgorithmResult result(FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR);
-        rl->onResult(result);
+    if (!DynTable::isAcceptableMatrixDimensions(width, height)) {
+        coreLog.error(QObject::tr("Matrix with given dimensions too big for calculation."));
         return;
     }
+    StrandContext context[] = {
+        StrandContext(width, height, insDel, pattern),
+        StrandContext(width, height, insDel, pattern),
+        StrandContext(width, height, insDel, pattern),
+        StrandContext(width, height, insDel, revPattern.data()),
+        StrandContext(width, height, insDel, revPattern.data()),
+        StrandContext(width, height, insDel, revPattern.data())};
+
     int onePercentLen = range.length / 100;
     int leftTillPercent = onePercentLen;
 
@@ -298,20 +297,15 @@ static void findInAmino_subst(FindAlgorithmResultsListener* rl,
     aminoTT->translate(compl_seq.data() + 2 * if0slot + if2slot, patternLenInNucl - 2 * if0slot, translatedPiece2c.data(), patternLen);
     aminoTT->translate(compl_seq.data() + 2 * if1slot + if0slot, patternLenInNucl - if0slot - if1slot, translatedPiece3c.data(), patternLen);
 
-    U2OpStatus2Log os;
     StrandContext context[] = {
-        StrandContext(translatedPiece1, patternLen, pattern, &os),
-        StrandContext(translatedPiece2, patternLen, pattern, &os),
-        StrandContext(translatedPiece3, patternLen, pattern, &os),
-        StrandContext(translatedPiece1c, patternLen, revPattern.data(), &os),
-        StrandContext(translatedPiece2c, patternLen, revPattern.data(), &os),
-        StrandContext(translatedPiece3c, patternLen, revPattern.data(), &os),
+        StrandContext(translatedPiece1, patternLen, pattern),
+        StrandContext(translatedPiece2, patternLen, pattern),
+        StrandContext(translatedPiece3, patternLen, pattern),
+        StrandContext(translatedPiece1c, patternLen, revPattern.data()),
+        StrandContext(translatedPiece2c, patternLen, revPattern.data()),
+        StrandContext(translatedPiece3c, patternLen, revPattern.data()),
     };
-    if (os.hasError()) {
-        const FindAlgorithmResult result(FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR);
-        rl->onResult(result);
-        return;
-    }
+
     int onePercentLen = (range.length + searchIsCircular * (patternLenInNucl - 1)) / 100;
     int leftTillPercent = onePercentLen;
 
@@ -684,15 +678,10 @@ static void find_subst(FindAlgorithmResultsListener* rl,
         TextUtils::reverse(complPattern, patternLen);
     }
 
-    U2OpStatus2Log os;
     StrandContext context[] = {
-        StrandContext(0, 0, false, pattern, &os),
-        StrandContext(0, 0, false, complPattern, &os)};
-    if (os.hasError()) {
-        const FindAlgorithmResult result(FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR);
-        rl->onResult(result);
-        return;
-    }
+        StrandContext(0, 0, false, pattern),
+        StrandContext(0, 0, false, complPattern)};
+
     int onePercentLen = range.length / 100;
     int leftTillPercent = onePercentLen;
     percentsCompleted = 0;
@@ -831,15 +820,14 @@ void FindAlgorithm::find(
     }
 
     try {
-        U2OpStatus2Log os;
-        StrandContext context[] = {
-            StrandContext(width, height, insDel, pattern, &os),
-            StrandContext(width, height, insDel, complPattern, &os)};
-        if (os.hasError()) {
-            const FindAlgorithmResult result(FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR);
-            rl->onResult(result);
+        if (!DynTable::isAcceptableMatrixDimensions(width, height)) {
+            coreLog.error(QObject::tr("Matrix with given dimensions too big for calculation."));
             return;
         }
+        StrandContext context[] = {
+            StrandContext(width, height, insDel, pattern),
+            StrandContext(width, height, insDel, complPattern)};
+
         int onePercentLen = range.length / 100;
         int leftTillPercent = onePercentLen;
         percentsCompleted = 0;
