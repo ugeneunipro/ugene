@@ -34,8 +34,8 @@ class U2ALGORITHM_EXPORT RollingMatrix {
 public:
     RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        CHECK(sizeX >= 0 && sizeY >= 0, );
-        CHECK(getMatrixSizeInBytes(sizeX, sizeY), );
+        U2_ASSERT(sizeX >= 0 && sizeY >= 0);
+        U2_ASSERT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX);
         data = new int[sizeX * sizeY];
     }
 

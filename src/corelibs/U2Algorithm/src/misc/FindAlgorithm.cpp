@@ -821,7 +821,7 @@ void FindAlgorithm::find(
 
     try {
         if (!DynTable::isAcceptableMatrixDimensions(width, height)) {
-            coreLog.error(QObject::tr("Matrix with given dimensions too big for calculation."));
+            coreLog.error(QObject::tr("The search pattern is too long."));
             return;
         }
         StrandContext context[] = {

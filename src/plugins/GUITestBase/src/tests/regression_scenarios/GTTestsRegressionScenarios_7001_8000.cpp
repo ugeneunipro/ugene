@@ -2901,12 +2901,13 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     //3. Paste it to project filter
     //Expected: no crash, here is error in log
     GTLogTracer logTracer;
+    GTUtilsTaskTreeView::openView(os);
     auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
-    //necessary sleep to activate search task(s) after pasting sequence
-    GTGlobals::sleep();
+    //GTGlobals::sleep();
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(logTracer.hasErrors(), "Log should contain errors");
+    CHECK_SET_ERR(logTracer.getJoinedErrorString().contains("The search pattern is too long."), "Log should contain error");
     
     //4. Copy region with acceptable length 23 170 ( length * length < MAX_INT) 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 23170));
@@ -2922,8 +2923,7 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     GTLogTracer logTracer2;
     GTLineEdit::clear(os, nameFilterEdit);
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
-    //necessary sleep to activate search task(s) after pasting sequence
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
 }
