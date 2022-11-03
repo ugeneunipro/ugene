@@ -468,15 +468,20 @@ QString GUrlUtils::getSlashEndedPath(const QString& dirPath) {
 
 QString GUrlUtils::getNativeAbsolutePath(const GUrl& url) {
     QString urlString = url.getURLString();
-    // If Unix, http or Qt resource, returns as is.
+    // If Unix, http or Qt resource, return as is.
     CHECK(isOsWindows() && url.isLocalFile() && !urlString.startsWith(':'), urlString);
-    QString path = QDir::toNativeSeparators(urlString);
 
-    // "C:\Directory\File.txt" -> "\\?\C:\Directory\File.txt"
-    // but
-    // "\\Server\User\Directory\File.txt" -> "\\?\UNC\Server\User\Directory\File.txt"
-    // There shouldn't be any other options.
-    return "\\\\?\\" + (path.startsWith("\\\\") ? "UNC" + path.mid(1) : path);
+    QString path = QDir::toNativeSeparators(urlString);
+    if (path.startsWith("\\\\?\\")) {  // Already done.
+        return path;
+    }
+    if (path.startsWith("\\\\.\\")) {  // Replace '.' with '?'.
+        return path.replace(2, 1, '?');
+    }
+    if (path.startsWith("\\\\")) {  // "\\Server\User\Path"->"\\?\UNC\Server\User\Path"
+        return path.insert(2, "?\\UNC\\");
+    }
+    return "\\\\?\\" + path;  // Add "\\?\" prefix.
 }
 
 }  // namespace U2
