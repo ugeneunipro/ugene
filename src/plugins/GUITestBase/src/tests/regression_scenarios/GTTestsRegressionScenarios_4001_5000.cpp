@@ -5693,9 +5693,11 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     QFile(filePath).remove();
     GTThread::waitForMainThread();
+    GTGlobals::sleep(8000);
 
     GTUtilsStartPage::openStartPage(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(8000);
 
     QString expected = "does not exist";
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", expected));
