@@ -57,6 +57,7 @@ namespace U2 {
 #define FILE_STORAGE_DIR QString("file_storage_dir")
 #define UPDATES_ENABLED QString("check_updates")
 #define SKIP_UPDATE_PREFIX QString("skip_update_")
+#define ENABLE_EXPERIMENTAL_MODE QString("enable_experiments")
 
 // TODO: create a special ENV header to keep all env-vars ugene depends
 #define UGENE_SKIP_TMP_DIR_CLEANUP "UGENE_SKIP_TMP_DIR_CLEANUP"
@@ -296,6 +297,14 @@ bool UserAppsSettings::isUpdateSkipped(const QString& versionString) const {
 
 void UserAppsSettings::skipUpdate(const QString& versionString) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SKIP_UPDATE_PREFIX + versionString, true);
+}
+
+bool UserAppsSettings::isExperimentalFeaturesModeEnabled() const {
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + ENABLE_EXPERIMENTAL_MODE, false).toBool();
+}
+
+void UserAppsSettings::setExperimentalFeaturesModeEnabled(bool flag) {
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + ENABLE_EXPERIMENTAL_MODE, flag);
 }
 
 }  // namespace U2

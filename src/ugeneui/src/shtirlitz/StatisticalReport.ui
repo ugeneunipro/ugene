@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>83</height>
+    <width>562</width>
+    <height>112</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,40 +21,33 @@
   </property>
   <layout class="QVBoxLayout" name="dialogLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QCheckBox" name="chkStat">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="lblStat">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QCheckBox" name="statisticCheckBox">
+     <property name="toolTip">
+      <string>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</string>
+     </property>
+     <property name="text">
+      <string>Allow collection of usage data</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="experimentsCheckBox">
+     <property name="toolTip">
+      <string>Enables experimental features hidden by default. May require restart for some features to be activated.</string>
+     </property>
+     <property name="text">
+      <string>Enable experimental features</string>
+     </property>
+     <property name="shortcut">
+      <string/>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

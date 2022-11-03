@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>641</width>
-    <height>524</height>
+    <height>581</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -101,8 +101,11 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QCheckBox" name="enableStatisticsEdit">
+        <property name="toolTip">
+         <string>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</string>
+        </property>
         <property name="text">
-         <string>Enable statistical reports collecting</string>
+         <string>Share usage metrics with UGENE team</string>
         </property>
        </widget>
       </item>
@@ -117,8 +120,30 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QCheckBox" name="updatesCheckBox">
+        <property name="toolTip">
+         <string>Do not check and ask about UGENE updates during UGENE startup.</string>
+        </property>
         <property name="text">
          <string>Check for updates when UGENE starts</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="experimentsBox">
+     <property name="title">
+      <string>Experimental features</string>
+     </property>
+     <layout class="QVBoxLayout" name="experimentalFeaturesBoxLayout">
+      <item>
+       <widget class="QCheckBox" name="experimentsCheckBox">
+        <property name="toolTip">
+         <string>Enables experimental features hidden by default. May require restart for some features to be activated.</string>
+        </property>
+        <property name="text">
+         <string>Enable experimental features</string>
         </property>
        </widget>
       </item>
@@ -133,6 +158,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <widget class="QCheckBox" name="resetSettingsBox">
+        <property name="toolTip">
+         <string>Resets all UGENE settings to default. Requires restart.</string>
+        </property>
         <property name="text">
          <string>Reset settings to default on the next run</string>
         </property>
