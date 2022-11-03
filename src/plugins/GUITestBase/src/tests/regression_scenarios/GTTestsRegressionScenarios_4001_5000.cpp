@@ -5687,12 +5687,15 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
     IOAdapterUtils::writeTextFile(filePath, "A");
 
     GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QFile(filePath).remove();
-
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
+    QFile(filePath).remove();
+    GTThread::waitForMainThread();
+
     GTUtilsStartPage::openStartPage(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString expected = "does not exist";
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", expected));
