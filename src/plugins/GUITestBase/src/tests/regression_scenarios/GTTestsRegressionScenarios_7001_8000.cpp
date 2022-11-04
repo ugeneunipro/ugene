@@ -2901,11 +2901,9 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     //3. Paste it to project filter
     //Expected: no crash, here is error in log
     GTLogTracer logTracer;
-    GTUtilsTaskTreeView::openView(os);
     auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
-    //GTGlobals::sleep();
-    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
+    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(logTracer.getJoinedErrorString().contains("The search pattern is too long."), "Log should contain error");
     
@@ -2921,6 +2919,7 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     //5. Paste it to project filter
     //Expected: no crash, no error in log
     GTLogTracer logTracer2;
+    GTUtilsTaskTreeView::openView(os);
     GTLineEdit::clear(os, nameFilterEdit);
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
     GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
