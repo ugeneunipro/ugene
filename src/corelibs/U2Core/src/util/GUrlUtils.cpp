@@ -475,13 +475,13 @@ QString GUrlUtils::getNativeAbsolutePath(const GUrl& url) {
     if (path.startsWith("\\\\?\\")) {  // Already done.
         return path;
     }
-    if (path.startsWith("\\\\.\\")) {  // Replace '.' with '?'.
+    if (path.startsWith("\\\\.\\")) {  // Replace '.' on '?'.
         return path.replace(2, 1, '?');
     }
     if (path.startsWith("\\\\")) {  // "\\Server\User\Path"->"\\?\UNC\Server\User\Path"
         return path.insert(2, "?\\UNC\\");
     }
-    return "\\\\?\\" + path;  // Add "\\?\" prefix.
+    return "\\\\?\\" + path;  // Add the "\\?\" prefix.
 }
 
 }  // namespace U2

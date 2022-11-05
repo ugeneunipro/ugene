@@ -25,6 +25,7 @@
 #include <QFile>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -123,7 +124,7 @@ QString U2DbiUtils::text(const U2DataId& id) {
 QString U2DbiUtils::ref2Url(const U2DbiRef& dbiRef) {
     U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(dbiRef.dbiFactoryId);
     SAFE_POINT(nullptr != dbiFactory, QString("Invalid database type: %1").arg(dbiRef.dbiFactoryId), "");
-    return dbiFactory->id2Url(dbiRef.dbiId).getURLString();
+    return GUrlUtils::getNativeAbsolutePath(dbiFactory->id2Url(dbiRef.dbiId));
 }
 
 QString U2DbiUtils::createDbiUrl(const QString& host, int port, const QString& dbName) {
