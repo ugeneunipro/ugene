@@ -32,6 +32,7 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
+    //Use isAcceptableMatrixDimensions(int sizeX, int sizeY) to check your matrix dimensions before construction
     RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
         U2_ASSERT(sizeX >= 0 && sizeY >= 0);
@@ -76,6 +77,10 @@ public:
     static bool isAcceptableMatrixDimensions(int sizeX, int sizeY) {
         return getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX;
     }
+    
+    static qint64 getMatrixSizeInBytes(int sizeX, int sizeY) {
+        return (qint64)sizeX * sizeY * (int)sizeof(int);
+    }
 
 private:
     int getIdx(int x, int y) const {
@@ -98,10 +103,6 @@ private:
     }
 
 protected:
-    static qint64 getMatrixSizeInBytes(int sizeX, int sizeY) {
-        return (qint64)sizeX * sizeY * (int)sizeof(int);
-    }
-
     const int sizeX;
     const int sizeY;
     int* data = nullptr;

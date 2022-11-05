@@ -2896,7 +2896,7 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selected sequence"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //3. Paste it to project filter
     //Expected: no crash, here is error in log
@@ -2907,14 +2907,13 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(logTracer.getJoinedErrorString().contains("The search pattern is too long."), "Log should contain error");
     
-    //4. Copy region with acceptable length 23 170 ( length * length < MAX_INT) 
+    //4. Copy region with acceptable length 23 170 (length * length < MAX_INT) 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 23170));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selected sequence"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy selected sequence"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //5. Paste it to project filter
     //Expected: no crash, no error in log
