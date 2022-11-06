@@ -139,7 +139,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, Mult
     gotoSelectedReadAction->setEnabled(false);
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
-    multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Multiline View"), this);
+    multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Wrap mode"), this);
     multilineViewAction->setObjectName("multilineView");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);
