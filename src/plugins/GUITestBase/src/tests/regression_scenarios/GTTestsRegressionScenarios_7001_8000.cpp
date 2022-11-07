@@ -547,6 +547,37 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7154) {
+    // 1. Open "_common_data/genbank/Smc3_LOCUS_19_45436_bp_DNA_HTG_4_changed.gbk".
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/Smc3_LOCUS_19_45436_bp_DNA_HTG_4_changed.gbk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Create annotation #1
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpA", "annA", "complement(10.. 20)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 3. Create annotations #2
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpB", "annB", "complement(30.. 40)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 7. Drag&drop annotation #1 to group #2
+    QTreeWidgetItem* annA = GTUtilsAnnotationsTreeView::findItem(os, "annA");
+    QTreeWidgetItem* annB = GTUtilsAnnotationsTreeView::findItem(os, "annB");
+    QTreeWidgetItem* grpA = annA->parent();
+    QTreeWidgetItem* grpB = annB->parent();
+    QPoint pointA = GTUtilsAnnotationsTreeView::getItemCenter(os, "annA");
+    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
+    QPoint pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTMouseDriver::dragAndDrop(pointA, pointGrpB);
+
+    // 8. Drag&drop group #1 to group #2
+    pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
+    pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
+
+    // Expected: group moved successfully, no crash
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7161) {
     class ItemPopupChooserByPosition : public PopupChooser {
         // for some reason PopupChooser don not work properly, so we choose item by position
@@ -3328,12 +3359,12 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
     // because the file from the issue was almoust 100 Mb size
-    
+
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Call the Primer3 dialog 
+    // Call the Primer3 dialog
     // In the Primer3 Designer dialog select PT - PCR tab
     // Check in main checkbox and set Exon range : 1424 - 1606
     // Click Pick primers button
@@ -3346,7 +3377,6 @@ GUI_TEST_CLASS_DEFINITION(test_7671) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: no crash
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7680) {

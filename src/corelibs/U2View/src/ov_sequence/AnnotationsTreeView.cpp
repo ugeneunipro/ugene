@@ -608,8 +608,9 @@ void AnnotationsTreeView::sl_onAnnotationsAdded(const QList<Annotation*>& as) {
             }
             SAFE_POINT(gi != nullptr, "AnnotationsTreeView::sl_onAnnotationsAdded: childGroup not found", );
             buildGroupTree(gi, childGroup);
-            createdGroups << childGroup;  // if a group item has been built it already contains corresponding annotation items
-                                          // so in further iterations we skip child annotations of this group
+            // if a group item has been built it already contains corresponding annotation items
+            // so in further iterations we skip child annotations of this group
+            createdGroups << childGroup;
         }
         SAFE_POINT(gi != nullptr, "Invalid annotation view item!", );
         toUpdate.insert(gi);
@@ -711,11 +712,13 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
             case AnnotationModification_RemovedFromGroup: {
                 const AnnotationGroupModification& gmd = static_cast<const AnnotationGroupModification&>(annotationModification);
                 AVAnnotationItem* ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
-                SAFE_POINT(nullptr != ai, L10N::nullPointerError("annotation view item"), );
-                AVGroupItem* gi = dynamic_cast<AVGroupItem*>(ai->parent());
-                selectedAnnotation.remove(ai);
-                delete ai;
-                gi->updateVisual();
+                // Workaround for UGENE-7154
+                if (nullptr != ai) {
+                    AVGroupItem* gi = dynamic_cast<AVGroupItem*>(ai->parent());
+                    selectedAnnotation.remove(ai);
+                    delete ai;
+                    gi->updateVisual();
+                }
             } break;
         }
     }
