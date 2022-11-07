@@ -108,8 +108,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 1);
+    // Fetch results and select 10
+    GTUtilsGeneCut::selectResultByIndex(os, 9);
 
     // Expected: input file AMINO.fa, OptimizeCodonContext was chosen, completed
     GTUtilsGeneCut::checkResultInfo(os, "AMINO.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext });
@@ -130,7 +130,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsGeneCut::login(os);
 
     // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 2);
+    GTUtilsGeneCut::selectResultByIndex(os, 8);
 
     // Expected: input file gfp_cut.fa, OptimizeCodonContext was chosen, completed with errors
     GTUtilsGeneCut::checkResultInfo(os, "gfp_cut.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext }, GTUtilsGeneCut::Status::CompletedWithError);
@@ -153,8 +153,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 3);
+    // Fetch results and select 8
+    GTUtilsGeneCut::selectResultByIndex(os, 7);
 
     // Expected: input file gfp.fa, ExcludeRestrictionSites was chosen, completed
     GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::ExcludeRestrictionSites });
@@ -171,8 +171,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 4);
+    // Fetch results and select 7
+    GTUtilsGeneCut::selectResultByIndex(os, 6);
 
     // Expected: input file gfp.fa, ExcludeRestrictionSites was chosen, completed
     GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::ExcludeRestrictionSites });
@@ -189,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
+    // Fetch results and select 6
     GTUtilsGeneCut::selectResultByIndex(os, 5);
 
     // Expected: input file gfp.fa, OligonucleotidesAssembly was chosen, completed
@@ -215,8 +215,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 6);
+    // Fetch results and select 5
+    GTUtilsGeneCut::selectResultByIndex(os, 4);
 
     // Expected: input file AMINO.fa, OptimizeCodonContext and OligonucleotidesAssembly were chosen, completed with errors
     GTUtilsGeneCut::checkResultInfo(os, "AMINO.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext, GTUtilsGeneCut::Steps::OligonucleotidesAssembly }, GTUtilsGeneCut::Status::CompletedWithError);
@@ -236,8 +236,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 7);
+    // Fetch results and select 4
+    GTUtilsGeneCut::selectResultByIndex(os, 3);
 
     // Expected: input file HLP-hF8-N6M-pA.fa, OptimizeCodonContext and OligonucleotidesAssembly were chosen, Interrupted
     GTUtilsGeneCut::checkResultInfo(os, "HLP-hF8-N6M-pA.fa",
@@ -262,8 +262,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // Login
     GTUtilsGeneCut::login(os);
 
-    // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 8);
+    // Fetch results and select 2
+    GTUtilsGeneCut::selectResultByIndex(os, 1);
 
     // Expected: input file gfp.fa, OligonucleotidesAssembly was chosen, completed
     GTUtilsGeneCut::checkResultInfo(os, "gfp.fa",
