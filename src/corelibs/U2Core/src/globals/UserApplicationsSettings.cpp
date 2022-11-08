@@ -61,10 +61,14 @@ namespace U2 {
 
 // TODO: create a special ENV header to keep all env-vars ugene depends
 #define UGENE_SKIP_TMP_DIR_CLEANUP "UGENE_SKIP_TMP_DIR_CLEANUP"
+#define UGENE_ENABLE_EXPERIMENTAL_FEATURES "UGENE_ENABLE_EXPERIMENTAL_FEATURES"
 
 UserAppsSettings::UserAppsSettings() {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     cleanupTmpDir = !env.contains(UGENE_SKIP_TMP_DIR_CLEANUP);
+    if (env.contains(UGENE_ENABLE_EXPERIMENTAL_FEATURES)) {
+        setExperimentalFeaturesModeEnabled(true);
+    }
 }
 
 UserAppsSettings::~UserAppsSettings() {

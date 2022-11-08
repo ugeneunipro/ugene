@@ -22,7 +22,10 @@
 #include "GenecutOPWidgetFactory.h"
 #include "GenecutOPWidget.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -49,6 +52,12 @@ QWidget* GenecutOPWidgetFactory::createWidget(GObjectView* objView, const QVaria
 
 OPGroupParameters GenecutOPWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), tr("Genecut desktop"), GROUP_DOC_PAGE);
+}
+
+bool GenecutOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
+    CHECK(OPWidgetFactory::passFiltration(filter), false);
+
+    return AppContext::getAppSettings()->getUserAppsSettings()->isExperimentalFeaturesModeEnabled();
 }
 
 }

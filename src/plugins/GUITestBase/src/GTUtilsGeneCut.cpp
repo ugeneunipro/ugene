@@ -156,9 +156,11 @@ void GTUtilsGeneCut::compareFiles(HI::GUITestOpStatus& os, FileType fileType, co
     auto expectedInputSequence = GTUtilsSequenceView::getSequenceAsString(os);
     auto expectedInputSequenceName = GTUtilsSequenceView::getSeqName(os);
     if (!sequencesOnly) {
-        CHECK_SET_ERR(inputSequenceName == expectedInputSequenceName, "Input and expected input sequence names are different");
+        CHECK_SET_ERR(inputSequenceName == expectedInputSequenceName, QString("Input \"%1\" and expected input \"%2\" sequence names are different")
+            .arg(inputSequenceName).arg(expectedInputSequenceName));
     }
-    CHECK_SET_ERR(inputSequence == expectedInputSequence, "Input and expected input sequences are different");
+    CHECK_SET_ERR(inputSequence == expectedInputSequence, QString("Input \"%1\" and expected input \"%2\" sequences are different")
+        .arg(inputSequenceName).arg(expectedInputSequenceName));
 
 }
 

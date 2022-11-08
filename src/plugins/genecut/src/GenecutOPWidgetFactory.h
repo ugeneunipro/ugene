@@ -35,6 +35,8 @@ public:
 
     OPGroupParameters getOPGroupParameters() override;
 
+    bool passFiltration(OPFactoryFilterVisitorInterface* filter) override;
+
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
