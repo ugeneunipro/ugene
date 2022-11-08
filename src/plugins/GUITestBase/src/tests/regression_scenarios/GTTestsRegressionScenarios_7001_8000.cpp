@@ -568,11 +568,13 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
     QPoint pointA = GTUtilsAnnotationsTreeView::getItemCenter(os, "annA");
     QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     QPoint pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointA, pointGrpB);
 
     // 8. Drag&drop group #1 to group #2
     pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
 
     // Expected: group moved successfully, no crash
