@@ -160,7 +160,7 @@ void GTUtilsGeneCut::compareFiles(HI::GUITestOpStatus& os, FileType fileType, co
             .arg(inputSequenceName).arg(expectedInputSequenceName));
     }
     CHECK_SET_ERR(inputSequence == expectedInputSequence, QString("Input \"%1\" and expected input \"%2\" sequences are different")
-        .arg(inputSequenceName).arg(expectedInputSequenceName));
+        .arg(inputSequence).arg(expectedInputSequence));
 
 }
 
