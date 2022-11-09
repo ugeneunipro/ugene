@@ -45,11 +45,8 @@ bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
 bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     GTGlobals::sleep(QApplication::doubleClickInterval() + 1);  // Protect from double-clicks.
     DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
-    GTThread::waitForMainThread();
     DRIVER_CHECK(press(), "Mouse button was not be pressed");
-#ifndef Q_OS_WIN
     GTThread::waitForMainThread();
-#endif
 
     QPoint middlePoint = (end + start) / 2;
     bool isMiddlePointValid = (middlePoint - start).manhattanLength() > 2 * QApplication::startDragDistance();
@@ -66,18 +63,14 @@ bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     DRIVER_CHECK(moveTo(middlePoint), QString("Mouse could not be moved to point (%1, %2)").arg(middlePoint.x()).arg(middlePoint.y()));
 
     DRIVER_CHECK(moveTo(end), QString("Mouse was not moved to the end point (%1, %2)").arg(end.x()).arg(end.y()));
-#ifndef Q_OS_WIN
     GTThread::waitForMainThread();
-#endif
 
 #ifndef Q_OS_WIN
     GTGlobals::sleep(500);  // Do extra wait before the release. Otherwise, the method is not stable on Linux.
 #endif
 
     DRIVER_CHECK(release(), "Mouse button was not released");
-#ifndef Q_OS_WIN
     GTThread::waitForMainThread();
-#endif
     return true;
 }
 
