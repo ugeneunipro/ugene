@@ -578,6 +578,17 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
     GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
 
     // Expected: group moved successfully, no crash
+    GTGlobals::FindOptions findOpt(false, Qt::MatchContains);
+    QTreeWidgetItem* itemGrpA = GTUtilsAnnotationsTreeView::findItem(os, "grpA", nullptr, findOpt);
+    CHECK_SET_ERR(itemGrpA != nullptr, QString("Can't find item grpA"));
+    QTreeWidgetItem* parentGrpA = itemGrpA->parent();
+    CHECK_SET_ERR(parentGrpA != nullptr, QString("Parent of the grpA was not found"));
+    annA = GTUtilsAnnotationsTreeView::findItem(os, "annA");
+    annB = GTUtilsAnnotationsTreeView::findItem(os, "annB");
+    grpA = annA->parent();
+    grpB = annB->parent();
+    CHECK_SET_ERR(grpA == grpB && grpA == parentGrpA,
+                  QString("Parent of the grpA, annA, annB must be the same"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7161) {

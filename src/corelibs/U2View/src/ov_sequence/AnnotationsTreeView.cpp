@@ -713,8 +713,8 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
                 const AnnotationGroupModification& gmd = static_cast<const AnnotationGroupModification&>(annotationModification);
                 AVAnnotationItem* ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
                 // Workaround for UGENE-7154
-                if (nullptr != ai) {
-                    AVGroupItem* gi = dynamic_cast<AVGroupItem*>(ai->parent());
+                if (ai != nullptr) {
+                    auto gi = dynamic_cast<AVGroupItem*>(ai->parent());
                     selectedAnnotation.remove(ai);
                     delete ai;
                     gi->updateVisual();
