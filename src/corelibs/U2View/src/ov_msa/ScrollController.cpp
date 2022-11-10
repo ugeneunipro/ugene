@@ -443,6 +443,10 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     hScrollBar->setSingleStep(columnWidth);
     hScrollBar->setPageStep(sequenceAreaWidth);
 
+    // Disables warnings "QWindowsWindow::setGeometry: Unable to set geometry ... Resulting geometry: 120x17".
+    // May be it will be better to parent hScrollBar or don't calling setVisible (mac focus problem)
+    hScrollBar->setMinimumSize(120, 20);
+
     int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
     SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
 

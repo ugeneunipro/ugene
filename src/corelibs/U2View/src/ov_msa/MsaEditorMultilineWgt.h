@@ -39,6 +39,10 @@ class MSAEditorTreeViewer;
 class MsaMultilineScrollArea;
 class SimilarityStatisticsSettings;
 
+namespace MsaSizeUtil {
+void updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QWidget* setTo);
+}
+
 class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
     Q_OBJECT
 

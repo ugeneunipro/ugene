@@ -71,11 +71,11 @@ MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });
-    connect(mui->getUI(), &MaEditorWgt::si_startMaChanging, this, [this]() {
+    connect(mui, &MaEditorMultilineWgt::si_startMaChanging, this, [this]() {
         isMaChangeInProgress = true;
         graphCalculationTaskRunner.cancel();
     });
-    connect(mui->getUI(), &MaEditorWgt::si_stopMaChanging, this, [this]() {
+    connect(mui, &MaEditorMultilineWgt::si_stopMaChanging, this, [this]() {
         isMaChangeInProgress = false;
         recomputeGraphIfNeeded();
     });

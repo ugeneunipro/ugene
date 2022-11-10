@@ -81,7 +81,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     : MaEditorSequenceArea(_ui, hb, vb) {
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
-    setMinimumSize(minimumSizeHint());
+    MsaSizeUtil::updateMinHeightIfPossible(this, this);
 
     initRenderer();
 
