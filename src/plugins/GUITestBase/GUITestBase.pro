@@ -160,6 +160,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsDocument.h \
             src/GTUtilsEscClicker.h \
             src/GTUtilsExternalTools.h \
+			src/GTUtilsGeneCut.h \
             src/GTUtilsLog.h \
             src/GTUtilsMcaEditor.h \
             src/GTUtilsMcaEditorReference.h \
@@ -217,6 +218,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+			src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
@@ -439,6 +441,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsDocument.cpp \
             src/GTUtilsEscClicker.cpp \
             src/GTUtilsExternalTools.cpp \
+			src/GTUtilsGeneCut.cpp \
             src/GTUtilsLog.cpp \
             src/GTUtilsMcaEditor.cpp \
             src/GTUtilsMcaEditorReference.cpp \
@@ -496,6 +499,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+			src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \

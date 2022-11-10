@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home page</title>
+</head>
+<body>
+	<form id="ugeneShowReportForm" action="" method="POST">
+	<input type="hidden" id="langId" name="langId">
+	<input type="hidden" id="email"  name="email">
+	<input type="hidden" id="access_token" name="access_token">
+	<input type="hidden" id="refresh_token"  name="refresh_token">
+	<input type="hidden" id="reportId"  name="reportId">
+	<input type="hidden" id="reportAction"  name="reportAction" value="show">
+	</form>
+<script>
+	function sendUgeneStartForm() {
+		document.getElementById("reportId").value='%1';
+		document.getElementById("langId").value='%2';
+	    document.getElementById("email").value='%3';
+		document.getElementById("access_token").value='%4';
+	    document.getElementById("refresh_token").value='%5';
+    	document.getElementById("ugeneShowReportForm").action='%6showReport';
+    	document.getElementById("ugeneShowReportForm").submit();
+	}
+	window.onload = sendUgeneStartForm();
+</script>
+</body>
+</html>
+

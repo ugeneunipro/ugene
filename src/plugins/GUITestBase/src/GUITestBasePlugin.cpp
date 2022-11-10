@@ -48,6 +48,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/genecut/GTTestsGeneCut.h"
 #include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
 #include "tests/common_scenarios/msa_editor/GTTestsMsaEditor.h"
@@ -3049,6 +3050,21 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0020);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0025);
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/genecut
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0009);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_genecut::test_0012);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/iqtree
