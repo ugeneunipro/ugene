@@ -29,6 +29,7 @@ MWToolBarManagerImpl::MWToolBarManagerImpl(QMainWindow* _mw)
     : QObject(_mw), mw(_mw) {
     QToolBar* tb = createToolBar(MWTOOLBAR_MAIN);
     tb->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    tb->setIconSize({16, 16});
     createToolBar(MWTOOLBAR_ACTIVEMDI);
 }
 
