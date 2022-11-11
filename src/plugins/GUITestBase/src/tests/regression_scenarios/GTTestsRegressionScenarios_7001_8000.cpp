@@ -3465,16 +3465,14 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     //     Expected: no size messages in the log.
     GTLogTracer ltConnect = "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter";
     GTLogTracer ltSize = "QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes";
+    GTLogTracer ltSizeNameList = "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes";
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    GTUtilsLog::checkContainsMessage(os, ltConnect, false);
-    GTUtilsLog::checkContainsMessage(os, ltSize, false);
 
     GTUtilsMSAEditorSequenceArea::click(os);
 
     GTMouseDriver::press();
     GTThread::waitForMainThread();
-    GTLogTracer ltSizeNameList = "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes";
     GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(
         os, GTUtilsOptionPanelMsa::tabsNames[GTUtilsOptionPanelMsa::General])));
     GTMouseDriver::release();
@@ -3484,17 +3482,14 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     CHECK_SET_ERR(numberOfColors == 5, "Overview is empty (white)");  // The background is white, the bars are gray,
         // the background in the selection is light gray, the bars in the selection are dark gray, the selection frame
         // is black. Total 5 colors.
-    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
-    GTUtilsLog::checkContainsMessage(os, ltSize, false);
 
     GTUtilsMsaEditor::setMultilineMode(os, true);
-    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
-    GTUtilsLog::checkContainsMessage(os, ltSize, false);
 
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all gaps"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
+    GTUtilsLog::checkContainsMessage(os, ltConnect, false);
     GTUtilsLog::checkContainsMessage(os, ltSize, false);
+    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
 }
 
 }  // namespace GUITest_regression_scenarios
