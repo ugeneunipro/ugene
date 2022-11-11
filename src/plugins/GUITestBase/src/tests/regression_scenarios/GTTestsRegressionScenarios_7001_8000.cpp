@@ -3463,9 +3463,9 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     //     Expected: no size messages in the log.
     // Click "Remove all gaps".
     //     Expected: no size messages in the log.
-    GTLogTracer ltConnect = "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter";
-    GTLogTracer ltSize = "QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes";
-    GTLogTracer ltSizeNameList = "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes";
+    GTLogTracer ltConnect("QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter");
+    GTLogTracer ltSize("QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes");
+    GTLogTracer ltSizeNameList("QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes");
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
