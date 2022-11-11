@@ -39,6 +39,7 @@ class MSAEditorTreeViewer;
 class MsaMultilineScrollArea;
 class SimilarityStatisticsSettings;
 
+// Helper function to properly support widget sizes.
 namespace MsaSizeUtil {
 void updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QWidget* setTo);
 }

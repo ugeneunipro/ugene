@@ -170,7 +170,7 @@ protected:
     virtual void initChildrenArea(QGroupBox* _uiChildrenArea = nullptr) = 0;
 
 private:
-    // For unduplicating signals that call "Render overview" task. activeChild may be already deleted, but may be still exist, that's why we need handles.
+    // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
     struct ActiveChild {
         MaEditorWgt* wgt = nullptr;
         QMetaObject::Connection startChangingHandle;
