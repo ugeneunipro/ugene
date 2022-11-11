@@ -82,6 +82,11 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
                                         bool byStep,
                                         bool wheel) {
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
+    if (globalVBar->minimum() == globalVBar->maximum()) {
+        globalVBar->setValue(globalVBar->minimum());
+        return;
+    }
+
     maEditorUi->setUpdatesEnabled(false);
 
     if (directions.testFlag(MultilineScrollController::SliderMoved)) {
@@ -135,7 +140,11 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
     }
 
     if (direction > 0) {
-        if ((currAreaScroll + step) < maxAreaScroll) {
+        if (currGlobalScroll == maxGlobalScroll) {
+            newAreaScroll = maxAreaScroll;
+            vbar->setValue(newAreaScroll);
+            return;
+        } else if ((currAreaScroll + step) < maxAreaScroll) {
             newAreaScroll += step;
             newGlobalScroll += step;
         } else {
@@ -146,6 +155,9 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
                 newFirstVisibleBase = (fullLength / length + (fullLength % length ? 1 : 0)) *
                                           length -
                                       length * maEditorUi->getChildrenCount();
+                if (newFirstVisibleBase < 0) {
+                    newFirstVisibleBase = 0;
+                }
             } else {
                 newFirstVisibleBase = newGlobalScroll / lineHeight * length;
                 newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;

@@ -177,11 +177,56 @@ int MultilineScrollController::getViewHeight() {
     return childrenScrollArea->height();
 }
 
+bool MultilineScrollController::checkBoundary() {
+    int firstBase = -1;
+    int prevFistBase = -1;
+    bool needUpdate = false;
+    int childrenCount = ui->getChildrenCount();
+    int alignmentLen = maEditor->getAlignmentLen();
+    for (int i = 0; i < childrenCount; i++) {
+        firstBase = ui->getUI(i)->getScrollController()->getFirstVisibleBase(false);
+        if (firstBase == prevFistBase) {
+            needUpdate = true;
+            break;
+        }
+        if ((firstBase + 1) >= alignmentLen) {
+            needUpdate = true;
+            break;
+        }
+        prevFistBase = firstBase;
+    }
+    if (needUpdate) {
+        const int length = ui->getSequenceAreaBaseLen(0);
+        if ((firstBase + 1) >= alignmentLen || firstBase == prevFistBase) {
+            firstBase = firstBase == 0
+                            ? 0
+                            : alignmentLen / length * length -
+                                  length * (childrenCount - (alignmentLen % length > 0 ? 1 : 0));
+            if (firstBase < 0) {
+                firstBase = 0;
+            }
+            prevFistBase = -1;
+            for (int i = 0; i < childrenCount; i++) {
+                if (firstBase == prevFistBase || ((firstBase + 1) >= alignmentLen)) {
+                    ui->getUI(i)->setHidden(true);
+                } else {
+                    ui->getUI(i)->setHidden(false);
+                    QSignalBlocker signalBlocker(ui->getUI(i)->getScrollController());
+                    Q_UNUSED(signalBlocker);
+                    ui->getUI(i)->getScrollController()->setFirstVisibleBase(firstBase);
+                }
+                prevFistBase = firstBase;
+                firstBase += length;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
 void MultilineScrollController::sl_vScrollValueChanged() {
-    if (maEditor->getMultilineMode()) {
-        // TODO:ichebyki
-        //int v = vScrollBar->value();
-        //setMultilineHScrollbarValue(v);
+    if (ui->getMultilineMode()) {
+        checkBoundary();
     } else {
         int v = vScrollBar->value();
         ui->getUI(0)->getScrollController()->setHScrollbarValue(v);
@@ -291,13 +336,13 @@ void MultilineScrollController::scrollToPoint(const QPoint& maPoint) {
     scrollToViewRow(maPoint);
 }
 
-void MultilineScrollController::centerBase(int baseNumber) {
+void MultilineScrollController::_centerBase(int baseNumber) {
     int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
     int fistBase = (baseNumber / length) * length;
     setFirstVisibleBase(fistBase);
 }
 
-void MultilineScrollController::centerViewRow(QPoint maPoint) {
+void MultilineScrollController::_centerViewRow(QPoint maPoint) {
     assert(false && "Need to implement");
     int viewRowIndex = maPoint.y();
     const U2Region rowGlobalRange = ui->getUI(0)
@@ -308,9 +353,9 @@ void MultilineScrollController::centerViewRow(QPoint maPoint) {
     vScrollBar->setValue(newScreenYOffset);
 }
 
-void MultilineScrollController::centerPoint(const QPoint& maPoint) {
-    centerBase(maPoint.x());
-    centerViewRow(maPoint);
+void MultilineScrollController::_centerPoint(const QPoint& maPoint) {
+    _centerBase(maPoint.x());
+    _centerViewRow(maPoint);
 }
 
 void MultilineScrollController::setMultilineVScrollbarBase(int base) {
@@ -370,7 +415,7 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
     }
 }
 
-void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
+void MultilineScrollController::_setCenterVisibleBase(int firstVisibleBase) {
     int visibleLength = ui->getSequenceAreaBaseLen(0);
     if (!maEditor->getMultilineMode()) {
         if (ui->getUI(0) != nullptr) {
@@ -523,6 +568,7 @@ void MultilineScrollController::sl_zoomScrollBars() {
     //emit si_visibleAreaChanged();
 }
 void MultilineScrollController::sl_updateScrollBars() {
+    checkBoundary();
     updateVerticalScrollBarPrivate();
     updateChildrenScrollBarsPeivate();
 }
@@ -534,6 +580,9 @@ void MultilineScrollController::updateChildrenScrollBarsPeivate() {
         if (i == 0) {
             val = hbar->value();
         }
+
+        QSignalBlocker signalBlocker(ui->getUI(i)->getScrollController());
+        Q_UNUSED(signalBlocker);
         ui->getUI(i)->getScrollController()->setHScrollbarValue(val);
         val += ui->getSequenceAreaBaseWidth(i);
     }
