@@ -56,6 +56,7 @@ QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequenceVi
     result.insert(Statistics, "OP_SEQ_INFO");
     result.insert(InSilicoPcr, "OP_IN_SILICO_PCR");
     result.insert(CircularView, "OP_CV_SETTINGS");
+    result.insert(GeneCut, "OP_GENECUT");
     return result;
 }
 
@@ -66,6 +67,7 @@ QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequenceVi
     result.insert(Statistics, "SequenceInfo");
     result.insert(InSilicoPcr, "InSilicoPcrOptionPanelWidget");
     result.insert(CircularView, "CircularViewSettingsWidget");
+    result.insert(GeneCut, "GenecutOPWidget");
     return result;
 }
 

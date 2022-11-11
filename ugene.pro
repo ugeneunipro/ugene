@@ -54,6 +54,7 @@ SUBDIRS += \
           src/plugins/enzymes \
           src/plugins/external_tool_support \
           src/plugins/genome_aligner \
+          src/plugins/genecut \
           src/plugins/linkdata_support \
           src/plugins/orf_marker \
           src/plugins/pcr \

@@ -1379,6 +1379,8 @@ Unipro UGENE.app/Contents/MacOS/plugins/enzymes.license
 Unipro UGENE.app/Contents/MacOS/plugins/enzymes.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/external_tool_support.license
 Unipro UGENE.app/Contents/MacOS/plugins/external_tool_support.plugin
+Unipro UGENE.app/Contents/MacOS/plugins/genecut.license
+Unipro UGENE.app/Contents/MacOS/plugins/genecut.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/genome_aligner.license
 Unipro UGENE.app/Contents/MacOS/plugins/genome_aligner.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/gor4.license
@@ -1400,6 +1402,7 @@ Unipro UGENE.app/Contents/MacOS/plugins/libdna_stat.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libdotplot.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libenzymes.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libexternal_tool_support.dylib
+Unipro UGENE.app/Contents/MacOS/plugins/libgenecut.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libgenome_aligner.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libgor4.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libhmm2.dylib
