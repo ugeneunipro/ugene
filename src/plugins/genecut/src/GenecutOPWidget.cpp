@@ -509,13 +509,15 @@ bool GenecutOPWidget::areRegistrationDataValid() const {
     QString passwordNew = lePasswordNew->text();
     {
         QString passwordConformationNew = lePasswordConformationNew->text();
-        bool validPassword = !passwordNew.isEmpty();
-        GUIUtils::setWidgetWarningStyle(lePasswordNew, !validPassword);
-        bool validPasswordConfirmation = !passwordConformationNew.isEmpty();
-        GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, !validPasswordConfirmation);
+        bool validPassword = 5 < passwordNew.size() && passwordNew.size() < 32;
+        bool validPasswordConfirmation = 5 < passwordConformationNew.size() && passwordConformationNew.size() < 32;
         bool match = passwordNew == passwordConformationNew;
         if (!match) {
             errorMessage(tr("passwords do not match"), lbRegisterWarning);
+            GUIUtils::setWidgetWarningStyle(lePasswordNew, true);
+            GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, true);
+        } else if (!validPassword) {
+            errorMessage(tr("password should be between 6 and 31 symbols length"), lbRegisterWarning);
             GUIUtils::setWidgetWarningStyle(lePasswordNew, true);
             GUIUtils::setWidgetWarningStyle(lePasswordConformationNew, true);
         } else {

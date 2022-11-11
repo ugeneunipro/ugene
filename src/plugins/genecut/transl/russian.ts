@@ -212,6 +212,10 @@ p, li { white-space: pre-wrap; }
         <source>GeneCut test server is in use</source>
         <translation>Используется тестовый сервер GeneCut</translation>
     </message>
+    <message>
+        <source>password should be between 6 and 31 symbols length</source>
+        <translation>пароль должен быть от 6 до 31 символа длиной</translation>
+    </message>
 </context>
 <context>
     <name>U2::GenecutOPWidgetFactory</name>
