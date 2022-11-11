@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
@@ -187,6 +188,7 @@ void GenecutOPWidget::sl_loginClicked() {
     connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter]() {
         setWidgetsEnabled({ pbLogin, pbForgot, pbRegister }, true);
         if (!adapter->hasError()) {
+            GCOUNTER(cvar, "GeneCut login");
             lbLoginWarning->clear();
 
             QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
@@ -614,6 +616,7 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
     connect(adapter, &GenecutHttpFileAdapter::si_done, [this, adapter, textFileType, silentDownload]() {
         setWidgetsEnabled({ wtMainForm }, true);
         if (!adapter->hasError()) {
+            GCOUNTER(cvar, "GeneCut get file");
             QByteArray contents(DocumentFormat::READ_BUFF_SIZE, '\0');
             int readSize = adapter->readBlock(contents.data(), DocumentFormat::READ_BUFF_SIZE);
             SAFE_POINT(readSize != -1, "Cannot read request data", );
@@ -655,6 +658,7 @@ void GenecutOPWidget::downloadAndSaveFileFromServer(ServerFileType fileType, boo
 void GenecutOPWidget::fileFromServerLoaded(const QString& loadedFile) {
     loadedFilesPaths << loadedFile;
     CHECK(loadedFilesPaths.size() == 2, );
+    GCOUNTER(cvar, "GeneCut compare");
 
     QString dataDir = GUrlUtils::getDefaultDataPath();
     QString resultFilePath = QDir::toNativeSeparators(dataDir + "/" + loadedFilesPaths.first().baseFileName()+ "_compare_" + loadedFilesPaths.last().baseFileName() + ".aln");
