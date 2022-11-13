@@ -3457,8 +3457,7 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     //         "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes (-1,-1)
     //              are not possible
     //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
-    //              are not possible"
-    //     in the Log.
+    //              are not possible".
     // Click "Wrap mode".
     //     Expected: no size messages in the log.
     // Click "Remove all gaps".
