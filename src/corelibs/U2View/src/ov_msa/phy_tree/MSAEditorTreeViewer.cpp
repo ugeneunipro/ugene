@@ -35,8 +35,8 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/TvNodeItem.h>
-#include <U2View/TvTextItem.h>
 #include <U2View/TvRectangularBranchItem.h>
+#include <U2View/TvTextItem.h>
 
 namespace U2 {
 
@@ -92,9 +92,8 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     connect(collapseModel, SIGNAL(si_toggled()), this, SLOT(sl_alignmentCollapseModelChanged()));
 
-    MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI());
     MSAEditorSequenceArea* msaSequenceArea = msaEditorUi->getSequenceArea();
-    connect(msaSequenceArea, SIGNAL(si_visibleRangeChanged(QStringList, int)), msaTreeViewerUi, SLOT(sl_onVisibleRangeChanged(const QStringList&, int)));
     connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList&)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList&)));
 
     MaEditorNameList* msaNameList = editor->getMaEditorWgt()->getEditorNameList();

@@ -22,7 +22,6 @@
 #include "TreeOptionsWidget.h"
 
 #include <QColorDialog>
-#include <QLineEdit>
 #include <QMainWindow>
 #include <QProxyStyle>
 #include <QStyleFactory>
@@ -273,7 +272,6 @@ void TreeOptionsWidget::connectSlots() {
     connect(branchesColorButton, SIGNAL(clicked()), SLOT(sl_branchesColorButton()));
     connect(lineWeightSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
 
-    connect(treeViewerUi, SIGNAL(si_updateBranch()), SLOT(sl_selectionChanged()));
     if (editor != nullptr) {
         auto multiTreeViewer = qobject_cast<MsaEditorWgt*>(editor->getMaEditorWgt())->getMultiTreeViewer();
         SAFE_POINT(multiTreeViewer != nullptr, "Tree options widget is instantiated with no active tree view", );
