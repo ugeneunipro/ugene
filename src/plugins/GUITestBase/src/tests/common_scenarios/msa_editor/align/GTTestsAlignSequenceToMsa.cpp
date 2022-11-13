@@ -190,6 +190,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                                                            "---------------\n"
                                                                            "---------------\n"
                                                                            "TCTGCTTCCGTACAC"));
+
+    checkAlignedRegion(os, QRect(QPoint(0, 7), QPoint(4, 16)), QString("-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----\n"
+                                                                       "-----"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

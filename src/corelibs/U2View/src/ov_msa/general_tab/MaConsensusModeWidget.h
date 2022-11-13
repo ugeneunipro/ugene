@@ -34,6 +34,7 @@ class MaConsensusModeWidget : public QWidget, public Ui_MaConsensusModeWidget {
 public:
     MaConsensusModeWidget(QWidget* parent = nullptr);
     void init(MultipleAlignmentObject* maObject, MaEditorConsensusArea* consArea);
+    void reInit(MultipleAlignmentObject* maObject, MaEditorConsensusArea* consArea);
 
     void updateState();
     void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);

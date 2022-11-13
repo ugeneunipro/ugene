@@ -36,6 +36,7 @@ export UGENE_GUI_TEST=1
 export UGENE_DEV=1
 export UGENE_USE_NATIVE_DIALOGS=0
 export UGENE_PRINT_TO_CONSOLE=1
+export UGENE_ENABLE_EXPERIMENTAL_FEATURES=1
 
 # Force English by default.
 export LANG=en_US.UTF-8

@@ -47,8 +47,8 @@
 
 namespace U2 {
 
-MoveToObjectMaController::MoveToObjectMaController(MaEditor* maEditor)
-    : QObject(maEditor), MaEditorContext(maEditor) {
+MoveToObjectMaController::MoveToObjectMaController(MaEditor* maEditor, QWidget* wgt)
+    : QObject(maEditor), MaEditorContext(maEditor, wgt) {
     moveSelectionToAnotherObjectAction = new QAction(tr("Move selected rows to another alignment"));
     moveSelectionToAnotherObjectAction->setObjectName("move_selection_to_another_object");
     connect(moveSelectionToAnotherObjectAction, &QAction::triggered, this, &MoveToObjectMaController::showMoveSelectedRowsToAnotherObjectMenu);
@@ -71,7 +71,7 @@ QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
         menu->addSeparator();
         QList<GObject*> writableMsaObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
         writableMsaObjects.removeOne(maObject);
-        std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), GObject::objectLessThan); // Sort objects in the menu by name.
+        std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), GObject::objectLessThan);  // Sort objects in the menu by name.
 
         if (writableMsaObjects.isEmpty()) {
             QAction* noObjectsAction = menu->addAction(tr("No other alignment objects in the project"), []() {});

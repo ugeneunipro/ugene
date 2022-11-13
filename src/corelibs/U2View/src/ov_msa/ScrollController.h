@@ -98,6 +98,11 @@ public:
 
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
     void updateScrollBarsOnFontOrZoomChange();
+    void setHScrollBarVisible(bool visible);
+    bool getHScrollBarVisible();
+
+    void setVScrollBarVisible(bool visible);
+    bool getVScrollBarVisible();
 
 signals:
     void si_visibleAreaChanged();
@@ -132,6 +137,9 @@ private:
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
+
+    bool hScrollBarVisible = true;
+    bool vScrollBarVisible = true;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)

@@ -135,7 +135,7 @@ public:
 public slots:
 
     /** Switches between Original and Sequence row orders. */
-    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence) override;
 
     void sl_copySelectionFormatted();
 
@@ -156,8 +156,10 @@ public:
 
 protected:
     void focusOutEvent(QFocusEvent* fe) override;
-
     void focusInEvent(QFocusEvent* fe) override;
+    void wheelEvent(QWheelEvent* we) override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 private slots:
     void sl_buildMenu(GObjectView* v, QMenu* m, const QString& menuType);
@@ -176,7 +178,6 @@ private slots:
 
     void sl_addSequencesToAlignmentFinished(Task* task);
     void sl_delCol();
-    void sl_goto();
     void sl_removeAllGaps();
 
     /**
@@ -195,20 +196,22 @@ private slots:
 
     void sl_saveSequence();
 
-    void sl_modelChanged();
+    void sl_modelChanged() override;
 
     void sl_fontChanged(QFont font);
 
     void sl_alphabetChanged(const MaModificationInfo& mi, const DNAAlphabet* prevAlphabet);
 
-    void sl_updateActions();
+    void sl_updateActions() override;
 
 private:
-    void initRenderer();
+    void initRenderer() override;
     void runPasteTask(bool isPasteBefore);
 
     /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
     void updateRowOrderActionsState();
+
+    void buildMenu(QMenu* m, bool isContextMenu);
 
     void reverseComplementModification(ModificationType& type);
 

@@ -1,3 +1,4 @@
+
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -81,7 +82,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 4. Select the item.
     // Expected result : the character is selected in the replacement mode.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EDIT, "replace_selected_character"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // 5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
@@ -128,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 3. Open the context menu in the sequence area.
     // Expected result : the "Edit > Replace character" item is disabled.Selection is in normal mode.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EDIT, "replace_selected_character"}, PopupChecker::IsDisabled));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {

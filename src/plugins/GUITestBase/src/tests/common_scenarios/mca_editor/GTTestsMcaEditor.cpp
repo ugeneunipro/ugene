@@ -3578,6 +3578,8 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
         prevRect = rect;
 
         GTUtilsMcaEditor::zoomOut(os);
+        GTUtilsMcaEditor::clickReadName(os, 1);
+        GTKeyboardDriver::keyClick(Qt::Key_Space);
     }
 }
 

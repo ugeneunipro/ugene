@@ -37,13 +37,14 @@
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
-MaSimpleOverview::MaSimpleOverview(MaEditorWgt* ui)
-    : MaOverview(ui) {
+MaSimpleOverview::MaSimpleOverview(MaEditor* editor, QWidget* ui)
+    : MaOverview(editor, ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 }
@@ -119,8 +120,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
 
     recalculateScale();
 
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
-    QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
+    QString highlightingSchemeId = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, tr("Incorrect multiple alignment object!"), );
@@ -129,8 +129,8 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
-            U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
-            U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
+            U2Region yRange = editor->getMaEditorWgt()->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
+            U2Region xRange = editor->getMaEditorWgt()->getBaseWidthController()->getBaseGlobalRange(pos);
 
             QRect rect;
             rect.setLeft(qRound(xRange.startPos / stepX));
@@ -138,7 +138,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             rect.setRight(qRound(xRange.endPos() / stepX));
             rect.setBottom(qRound(yRange.endPos() / stepY));
 
-            QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
@@ -153,8 +153,8 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             }
             drawColor = MaHighlightingOverviewCalculationTask::isCellHighlighted(
                 ma,
-                sequenceArea->getCurrentHighlightingScheme(),
-                sequenceArea->getCurrentColorScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme(),
                 seq,
                 pos,
                 refPos);
@@ -172,11 +172,25 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        QPoint screenPosition = editor->getUI()->getScrollController()->getScreenPosition();
-        QSize screenSize = editor->getUI()->getSequenceArea()->size();
+        qint64 screenWidth = 0;
+        int screenPositionX = -1;
+        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+        if (mui != nullptr && mui->getMultilineMode()) {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        } else {
+            screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
+            screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
+        }
+        QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
+        QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
 
-        cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
-        cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
+        cachedVisibleRange.setX(qRound(screenPositionX / stepX));
+        cachedVisibleRange.setWidth(qRound(screenWidth / stepX));
+
+        if (cachedVisibleRange.width() == 0) {
+            cachedVisibleRange.setWidth(1);
+        }
         cachedVisibleRange.setY(qRound(screenPosition.y() / stepY));
         cachedVisibleRange.setHeight(qRound(screenSize.height() / stepY));
 
@@ -194,9 +208,9 @@ void MaSimpleOverview::drawSelection(QPainter& p) {
 
     QList<QRect> selectedRects = selection.getRectList();
     for (const QRect& selectedRect : qAsConst(selectedRects)) {
-        U2Region columnRange = ui->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
+        U2Region columnRange = editor->getMaEditorWgt()->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
-        U2Region sequenceViewYRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
+        U2Region sequenceViewYRegion = editor->getMaEditorWgt()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
 
         QRect drawRect;
         drawRect.setLeft(qRound(columnRange.startPos / stepX));
@@ -212,12 +226,22 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     int newPosX = qBound(cachedVisibleRange.width() / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
     int newPosY = qBound(cachedVisibleRange.height() / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     QPoint newPos(newPosX, newPosY);
+
     newVisibleRange.moveCenter(newPos);
 
-    int newHScrollBarValue = newVisibleRange.x() * stepX;
-    ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
-    int newVScrollBarValue = newVisibleRange.y() * stepY;
-    ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+    if (mui != nullptr) {
+        if (mui->getMultilineMode()) {
+            mui->getScrollController()->setMultilineVScrollbarValue(newScrollBarValue);
+        } else {
+            mui->getUI(0)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+            const int newVScrollBarValue = newVisibleRange.y() * stepY;
+            mui->getUI(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+        }
+    }
+
+    update();
 }
 
 }  // namespace U2

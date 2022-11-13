@@ -23,6 +23,7 @@
 #define _U2_MCA_EDITOR_H_
 
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/MaEditor.h>
 #include <U2View/MaEditorWgt.h>
@@ -79,6 +80,11 @@ public:
 
     QAction* getGotoSelectedReadAction() const {
         return gotoSelectedReadAction;
+    }
+
+    MaEditorWgt* getMaEditorWgt(uint index = 0) const override {
+        SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
+        return qobject_cast<McaEditorWgt*>(ui);
     }
 
 protected slots:

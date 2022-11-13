@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt* ui, const QString& objectName)
+MaEditorOverviewArea::MaEditorOverviewArea(QWidget* ui, const QString& objectName)
     : QWidget(ui) {
     setObjectName(objectName);
 

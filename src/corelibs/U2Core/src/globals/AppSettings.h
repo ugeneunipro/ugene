@@ -32,16 +32,12 @@ class UserAppsSettings;
 class AppResourcePool;
 class TestRunnerSettings;
 
-/** A collection for all settings used in app that have C++ model description */
-
+/** Global application settings used bu UGENE. */
 class U2CORE_EXPORT AppSettings {
 public:
-    AppSettings()
-        : nc(nullptr), userAppsSettings(nullptr), ri(nullptr), trs(nullptr), formatSettings(nullptr) {
-    }
+    AppSettings() = default;
 
-    virtual ~AppSettings() {
-    }
+    virtual ~AppSettings() = default;
 
     NetworkConfiguration* getNetworkConfiguration() const {
         return nc;
@@ -64,11 +60,11 @@ public:
     }
 
 protected:
-    NetworkConfiguration* nc;
-    UserAppsSettings* userAppsSettings;
-    AppResourcePool* ri;
-    TestRunnerSettings* trs;
-    FormatAppsSettings* formatSettings;
+    NetworkConfiguration* nc = nullptr;
+    UserAppsSettings* userAppsSettings = nullptr;
+    AppResourcePool* ri = nullptr;
+    TestRunnerSettings* trs = nullptr;
+    FormatAppsSettings* formatSettings = nullptr;
 };
 
 }  // namespace U2
