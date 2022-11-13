@@ -3468,7 +3468,6 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTLogTracer ltSizeNameList("QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes");
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-
     GTUtilsMSAEditorSequenceArea::click(os);
 
     GTMouseDriver::press();
@@ -3478,13 +3477,12 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTMouseDriver::release();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    int numberOfColors = GTWidget::countColors(GTWidget::getImage(os, GTUtilsMsaEditor::getGraphOverview(os))).size();
-    CHECK_SET_ERR(numberOfColors == 5, "Overview is empty (white)");  // The background is white, the bars are gray,
-        // the background in the selection is light gray, the bars in the selection are dark gray, the selection frame
-        // is black. Total 5 colors.
+    // The background is white, the bars are gray, the background in the selection is light gray, the bars
+    // in the selection are dark gray, the selection frame is black. Total 5 colors.
+    CHECK_SET_ERR(GTWidget::countColors(GTWidget::getImage(os, GTUtilsMsaEditor::getGraphOverview(os))).size() == 5,
+                  "Overview is empty (white)");
 
     GTUtilsMsaEditor::setMultilineMode(os, true);
-
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all gaps"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsMessage(os, ltConnect, false);
