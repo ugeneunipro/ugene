@@ -34,7 +34,7 @@ namespace U2 {
 
 const QString GenecutOPWidgetFactory::GROUP_ID = "OP_GENECUT";
 const QString GenecutOPWidgetFactory::GROUP_ICON_STR = ":genecut/icon/genecut.ico";
-const QString GenecutOPWidgetFactory::GROUP_DOC_PAGE = "";
+const QString GenecutOPWidgetFactory::GROUP_DOC_PAGE = "88080434";
 
 GenecutOPWidgetFactory::GenecutOPWidgetFactory()
     : OPWidgetFactory() {
