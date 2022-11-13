@@ -140,6 +140,7 @@ PLUGIN_LIST="annotator \
              dotplot \
              enzymes \
              external_tool_support \
+             genecut \
              genome_aligner \
              gor4 \
              hmm2 \
