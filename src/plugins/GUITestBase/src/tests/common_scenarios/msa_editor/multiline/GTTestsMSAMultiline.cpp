@@ -330,8 +330,8 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
-    //    Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    //    Open data/samples/CLUSTALW/HIV-1.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to multiline mode
