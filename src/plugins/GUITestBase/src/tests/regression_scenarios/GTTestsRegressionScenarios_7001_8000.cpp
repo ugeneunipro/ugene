@@ -3500,6 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTUtilsDashboard::clickOutputFile(os, "out.sam");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString coveredRegionsText;
     class GetLabelTextScenario : public CustomScenario {
