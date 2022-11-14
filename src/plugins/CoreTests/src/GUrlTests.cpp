@@ -27,7 +27,6 @@
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GUrl.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
