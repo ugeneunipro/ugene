@@ -169,6 +169,14 @@ protected:
     virtual void initStatusBar(MaEditorStatusBar* statusbar = nullptr) = 0;
     virtual void initChildrenArea(QGroupBox* _uiChildrenArea = nullptr) = 0;
 
+private:
+    // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
+    struct ActiveChild {
+        MaEditorWgt* wgt = nullptr;
+        QMetaObject::Connection startChangingHandle;
+        QMetaObject::Connection stopChangingHandle;
+    };
+
 protected:
     MaEditor* const editor;
     QScrollArea* scrollArea;  // scroll area for multiline widget, it's widget is uiChildrenArea
@@ -180,7 +188,7 @@ protected:
     QSplitter* treeSplitter;
 
     QVector<MaEditorWgt*> uiChild;
-    MaEditorWgt* activeChild = nullptr;
+    ActiveChild activeChild;
     uint uiChildLength = 0;
     uint uiChildCount = 0;
     bool multilineMode = false;

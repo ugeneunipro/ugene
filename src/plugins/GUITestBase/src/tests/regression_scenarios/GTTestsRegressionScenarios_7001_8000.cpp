@@ -3445,5 +3445,49 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7715) {
+    // Open COI.aln.
+    //     Expected: no log messages
+    //         "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter
+    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
+    //              are not possible".
+    // Select the first character.
+    // Quickly and abruptly move the subalignment to the right by at least 20 characters.
+    //     Expected: the Overview isn't empty, no log messages
+    //         "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes (-1,-1)
+    //              are not possible
+    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
+    //              are not possible".
+    // Click "Wrap mode".
+    //     Expected: no size messages in the log.
+    // Click "Remove all gaps".
+    //     Expected: no size messages in the log.
+    GTLogTracer ltConnect("QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter");
+    GTLogTracer ltSize("QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes");
+    GTLogTracer ltSizeNameList("QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsMSAEditorSequenceArea::click(os);
+
+    GTMouseDriver::press();
+    GTThread::waitForMainThread();
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(
+        os, GTUtilsOptionPanelMsa::tabsNames[GTUtilsOptionPanelMsa::General])));
+    GTMouseDriver::release();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // The background is white, the bars are gray, the background in the selection is light gray, the bars
+    // in the selection are dark gray, the selection frame is black. Total 5 colors.
+    CHECK_SET_ERR(GTWidget::countColors(GTWidget::getImage(os, GTUtilsMsaEditor::getGraphOverview(os))).size() == 5,
+                  "Overview is empty (white)");
+
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all gaps"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsMessage(os, ltConnect, false);
+    GTUtilsLog::checkContainsMessage(os, ltSize, false);
+    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

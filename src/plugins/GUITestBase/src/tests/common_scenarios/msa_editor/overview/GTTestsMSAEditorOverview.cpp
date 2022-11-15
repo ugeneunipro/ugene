@@ -234,14 +234,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 #ifdef Q_OS_WIN
     const QPoint point(6, 6);
-    // On Windows the graph overview is not blocked for updates
-    const QString expectedColor = "#ededed";
 #else
     const QPoint point(overviewGraph->rect().center() - QPoint(0, 20));
-    const QString expectedColor = "#a0a0a4";
 #endif
     const QColor c = GTWidget::getColor(os, overviewGraph, point);
-    CHECK_SET_ERR(c.name() == expectedColor, "simple overview has wrong color. Expected: " + expectedColor + ", Found: " + c.name());
+    CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 
     GTMouseDriver::release();
     GTThread::waitForMainThread();
