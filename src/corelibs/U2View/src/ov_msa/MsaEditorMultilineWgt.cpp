@@ -42,6 +42,13 @@
 
 namespace U2 {
 
+void MsaSizeUtil::updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QWidget* setTo) {
+    int recommendedMinimumHeight = heightFrom->minimumSizeHint().height();
+    if (recommendedMinimumHeight >= 0) {
+        setTo->setMinimumHeight(recommendedMinimumHeight);
+    }
+}
+
 MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
     : MaEditorMultilineWgt(editor),
       multiTreeViewer(nullptr),
@@ -301,10 +308,9 @@ void MsaEditorMultilineWgt::updateSize(bool recurse) {
     if (recurse) {
         for (uint i = 0; i < getChildrenCount(); i++) {
             MaEditorWgt* w = getUI(i);
-            QSize s = w->getSequenceArea()->minimumSizeHint();
-
-            w->getEditorNameList()->setMinimumSize(s);
-            w->getSequenceArea()->setMinimumSize(s);
+            MaEditorSequenceArea* area = w->getSequenceArea();
+            MsaSizeUtil::updateMinHeightIfPossible(area, w->getEditorNameList());
+            MsaSizeUtil::updateMinHeightIfPossible(area, area);
             w->setMinimumSize(w->minimumSizeHint());
         }
     }

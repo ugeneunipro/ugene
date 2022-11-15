@@ -288,6 +288,9 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001)
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Open the OP's "General" tab to enable the "Wrap mode" button.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(os, true);

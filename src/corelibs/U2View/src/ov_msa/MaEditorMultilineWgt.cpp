@@ -151,11 +151,23 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode) {
 }
 
 MaEditorWgt* MaEditorMultilineWgt::getActiveChild() {
-    return activeChild;
+    return activeChild.wgt;
 }
 
 void MaEditorMultilineWgt::setActiveChild(MaEditorWgt* child) {
-    activeChild = child;
+    disconnect(activeChild.startChangingHandle);
+    disconnect(activeChild.stopChangingHandle);
+    activeChild.wgt = child;
+    activeChild.startChangingHandle = connect(child,
+                                              &MaEditorWgt::si_startMaChanging,
+                                              this,
+                                              &MaEditorMultilineWgt::si_startMaChanging,
+                                              Qt::UniqueConnection);
+    activeChild.stopChangingHandle = connect(child,
+                                             &MaEditorWgt::si_stopMaChanging,
+                                             this,
+                                             &MaEditorMultilineWgt::si_stopMaChanging,
+                                             Qt::UniqueConnection);
 }
 
 void MaEditorMultilineWgt::initActions() {
