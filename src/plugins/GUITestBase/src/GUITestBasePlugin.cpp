@@ -3465,6 +3465,7 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0003, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0004, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0005, UGUITestBase::PreAdditional);
+    guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0006, UGUITestBase::PreAdditional);
 
     guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0000, UGUITestBase::PostAdditionalChecks);
     guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0001, UGUITestBase::PostAdditionalChecks);

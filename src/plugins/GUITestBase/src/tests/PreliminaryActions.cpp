@@ -33,6 +33,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
+
+#include <U2View/MSAEditor.h>
 
 #include "GTUtilsTaskTreeView.h"
 #include "PreliminaryActions.h"
@@ -119,6 +122,14 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     if (isOsMac()) {
         GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
     }
+}
+
+PRELIMINARY_ACTION_DEFINITION(pre_action_0006) {
+    Q_UNUSED(os);
+    // Clear some multiline mode settings
+
+    Settings* s = AppContext::getSettings();
+    s->setValue(MSAE_SETTINGS_ROOT + MSAE_MULTILINE_MODE, false);
 }
 
 }  // namespace GUITest_preliminary_actions
