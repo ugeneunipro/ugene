@@ -207,7 +207,9 @@ bool MultilineScrollController::checkBoundary() {
             }
             prevFistBase = -1;
             for (int i = 0; i < childrenCount; i++) {
-                if (firstBase == prevFistBase || ((firstBase + 1) >= alignmentLen)) {
+                if (firstBase == prevFistBase ||
+                    ((firstBase + 1) >= alignmentLen && alignmentLen > 1) ||
+                    ((firstBase + 1) >= alignmentLen && alignmentLen == 1 && prevFistBase != -1)) {
                     ui->getUI(i)->setHidden(true);
                 } else {
                     ui->getUI(i)->setHidden(false);
