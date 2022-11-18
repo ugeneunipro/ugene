@@ -133,6 +133,8 @@
 #include <U2View/SeqStatisticsWidgetFactory.h>
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
+#include "../../corelibs/U2View/src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.h"
+
 
 // U2Private imports
 #include <AppContextImpl.h>
@@ -284,6 +286,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new FindPatternWidgetFactory());
     opWidgetFactoryRegistry->registerFactory(new AnnotHighlightWidgetFactory());
     opWidgetFactoryRegistry->registerFactory(new SequenceInfoFactory());
+    opWidgetFactoryRegistry->registerFactory(new EntropyCalculationWidgetFactory());
 
     // Assembly Browser groups
     opWidgetFactoryRegistry->registerFactory(new AssemblyNavigationWidgetFactory());

@@ -191,6 +191,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/SearchQualifierDialog.h \
            src/ov_sequence/SequenceObjectContext.h \
            src/ov_sequence/WindowStepSelectorWidget.h \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidget.h \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.h \
            src/ov_sequence/annot_highlight/AnnotHighlightSettings.h \
            src/ov_sequence/annot_highlight/AnnotHighlightTree.h \
            src/ov_sequence/annot_highlight/AnnotHighlightTreeItem.h \
@@ -268,6 +270,7 @@ FORMS += src/LicenseDialog.ui \
          src/ov_sequence/CreateRulerDialog.ui \
          src/ov_sequence/SaveGraphCutoffsDialog.ui \
          src/ov_sequence/SearchQualifierDialog.ui \
+         src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidget.ui \
          src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
@@ -469,6 +472,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/SearchQualifierDialog.cpp \
            src/ov_sequence/SequenceObjectContext.cpp \
            src/ov_sequence/WindowStepSelectorWidget.cpp \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidget.cpp \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.cpp \
            src/ov_sequence/annot_highlight/AnnotHighlightSettings.cpp \
            src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp \
            src/ov_sequence/annot_highlight/AnnotHighlightTreeItem.cpp \
