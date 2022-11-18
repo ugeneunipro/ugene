@@ -112,7 +112,7 @@ public:
 #define GUI_TEST_CLASS_DECLARATION(className) \
     class className : public UGUITest { \
     public: \
-        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList& labelList = QStringList()) \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &labelList = QStringList()) \
             : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
         } \
 \

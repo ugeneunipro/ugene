@@ -40,7 +40,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/SyncHttp.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/Version.h>
 
@@ -307,11 +306,13 @@ QString Shtirlitz::tr(const char* str) {
 
 void Shtirlitz::showWhatsNewDialog() {
     // Show a non-blocking what's new dialog.
-    auto startupWhatsNewDialog = new StatisticalReportController(getWhatsNewHtml(), nullptr);
+    auto startupWhatsNewDialog = new StatisticalReportController(getWhatsNewHtml());
     startupWhatsNewDialog->setModal(false);
     QSharedPointer<StatisticalReportController> dialog(startupWhatsNewDialog);
     QObject::connect(dialog.data(), &QDialog::accepted, [dialog] {
-        AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(dialog->isInfoSharingAccepted());
+        auto userSettings = AppContext::getAppSettings()->getUserAppsSettings();
+        userSettings->setEnableCollectingStatistics(dialog->isInfoSharingAccepted());
+        userSettings->setExperimentalFeaturesModeEnabled(dialog->isExperimentalFeaturesEnabled());
     });
     dialog->open();
 }

@@ -47,10 +47,11 @@ private slots:
     void sl_showOffsets(bool);
 
 private:
-    void updateOffsets();
+    void updateOffsets(bool show);
 
     MaEditorSequenceArea* seqArea;
     MaEditor* editor;
+    MaEditorWgt* ui = nullptr;
 
 public:
     MSAEditorOffsetsViewWidget* leftWidget;
@@ -83,6 +84,7 @@ private:
 
     MaEditorSequenceArea* seqArea;
     MaEditor* editor;
+    MaEditorWgt* ui = nullptr;
     bool showStartPos;
     bool completeRedraw;
     QPixmap cachedView;

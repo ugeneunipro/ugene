@@ -236,7 +236,7 @@ void McaEditor::initActions() {
     connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
-    ui->getOverviewArea()->setVisible(overviewVisible);
+    getUI()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));

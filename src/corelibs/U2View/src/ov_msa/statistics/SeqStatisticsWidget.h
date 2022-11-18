@@ -59,7 +59,6 @@ private:
     Ui_MSADistanceColumnSettingsForm ui;
 
     MSAEditor* msa;
-    MsaEditorWgt* msaUI;
 
     QWidget* distancesStatisticsGroup;
 

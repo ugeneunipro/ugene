@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_3112) {
 
     auto showOverviewButton = qobject_cast<QToolButton*>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not checked");
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is checked");
 
     // Modify the alignment.
     // Expected state: the overview task starts.
@@ -561,7 +561,7 @@ GUI_TEST_CLASS_DEFINITION(test_3139) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3140) {
@@ -611,7 +611,8 @@ GUI_TEST_CLASS_DEFINITION(test_3142) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick/COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* msaWidget = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(msaWidget != nullptr, "MSASequenceArea not found");
 
     GTUtilsLog::check(os, l);
 }
@@ -1321,7 +1322,7 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTWidget::getColor(os, seqArea, QPoint(1, 1));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -1971,7 +1972,8 @@ GUI_TEST_CLASS_DEFINITION(test_3437) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected: file opened in msa editor
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(w != nullptr, "msa editor not opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3402) {
@@ -2664,7 +2666,7 @@ GUI_TEST_CLASS_DEFINITION(test_3545) {
     //    Select sequence "_common_data\fasta\NC_008253.fna" and press "Open"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta", "NC_008253.fna"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // Close MSAEditor
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -2688,7 +2690,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     // Check progress bar text.
     QString taskProgressBarText = GTWidget::findProgressBar(os, "taskProgressBar", statusBar)->text();
     CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
@@ -2732,7 +2734,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
-    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    MaEditorNameList* nameList = editor->getUI()->getUI(0)->getEditorNameList();
     CHECK_SET_ERR(nameList != nullptr, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 
@@ -3094,11 +3096,14 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
     GTMouseDriver::click(Qt::RightButton);
+    GTThread::waitForMainThread();
 
     class ReplaceSequenceScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
@@ -3109,19 +3114,24 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
             // Select the whole sequence and replace it with '='. Try applying the change.
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+            GTThread::waitForMainThread();
             GTKeyboardDriver::keyClick('=');
+            GTThread::waitForMainThread();
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTThread::waitForMainThread();
 
             // Exit from the warning dialog with Escape. Click "OK" on "Input sequence is empty" notification.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Ok"));
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTThread::waitForMainThread();
 
             // Close the dialog. There is no other way to close it except 'Cancel'.
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTThread::waitForMainThread();
         }
     };
-    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
+    GTUtilsDialog::add(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
@@ -3791,7 +3801,7 @@ GUI_TEST_CLASS_DEFINITION(test_3755) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTWidget::getColor(os, seqArea, QPoint(2, 1));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -3935,7 +3945,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTLogTracer logTracer;
-    // QMenu* menu = GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    // QMenu* menu = GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     // GTMenu::clickMenuItemByName(os, menu, {"Build HMMER3 profile"});
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Advanced", "Build HMMER3 profile"}));
     GTUtilsDialog::add(os, new OkClicker(os));
@@ -4343,7 +4353,7 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
     length = GTUtilsMSAEditorSequenceArea::getLength(os);
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/3870.fa", GTUtilsMSAEditorSequenceArea::getNameList(os), length - 60, length - 1, true, false, false, false, true, "FASTA"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // QFile resFile(testDir + "_common_data/scenarios/sandbox/3870.fa");
     // QFile templateFile(testDir + "_common_data/scenarios/_regression/3870/3870.fa");
@@ -4465,10 +4475,14 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
+    GTThread::waitForMainThread();
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
+    GTThread::waitForMainThread();
 
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Edit", "Remove subsequence..."}));
     GTUtilsDialog::add(os, new RemovePartFromSequenceDialogFiller(os, "100..199950"));
@@ -4478,7 +4492,9 @@ GUI_TEST_CLASS_DEFINITION(test_3903) {
 
     GTLogTracer lt;
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keySequence("A");
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -4799,7 +4815,7 @@ GUI_TEST_CLASS_DEFINITION(test_3994) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, "msa_editor_sequence_area");
+    GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QColor before = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(1, 0));
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));

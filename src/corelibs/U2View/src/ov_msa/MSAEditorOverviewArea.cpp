@@ -34,25 +34,24 @@ namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt* ui)
-    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
+MSAEditorOverviewArea::MSAEditorOverviewArea(MsaEditorMultilineWgt* wgt)
+    : MaEditorOverviewArea(wgt, OVERVIEW_AREA_OBJECT_NAME) {
     // The MSAEditorOverviewArea can't be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    graphOverview = new MaGraphOverview(ui);
+    MSAEditor* editor = wgt->getEditor();
+    graphOverview = new MaGraphOverview(editor, wgt);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 
-    simpleOverview = new MaSimpleOverview(ui);
+    simpleOverview = new MaSimpleOverview(editor, wgt);
     simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_simple");
     simpleOverview->setVisible(false);  // "Simple Overview" is hidden by default.
 
     addOverview(simpleOverview);
     addOverview(graphOverview);
 
-    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()), simpleOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()), graphOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)), graphOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)), simpleOverview, SLOT(sl_highlightingChanged()));
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), graphOverview, SLOT(sl_highlightingChanged()));
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), simpleOverview, SLOT(sl_highlightingChanged()));
 
     contextMenu = new MaOverviewContextMenu(this, simpleOverview, graphOverview);
     setContextMenuPolicy(Qt::DefaultContextMenu);

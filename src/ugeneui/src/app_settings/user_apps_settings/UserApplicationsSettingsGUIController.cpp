@@ -64,7 +64,7 @@ UserApplicationsSettingsPageController::UserApplicationsSettingsPageController(Q
 }
 
 AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState() {
-    UserApplicationsSettingsPageState* state = new UserApplicationsSettingsPageState();
+    auto state = new UserApplicationsSettingsPageState();
     UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->translFile = s->getTranslationFile();
     state->openLastProjectFlag = s->openLastProjectAtStartup();
@@ -74,11 +74,12 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState()
     state->tabbedWindowLayout = s->tabbedWindowLayout();
     state->resetSettings = s->resetSettings();
     state->updatesEnabled = s->updatesEnabled();
+    state->experimentsEnabled = s->isExperimentalFeaturesModeEnabled();
     return state;
 }
 
 void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* s) {
-    UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
+    auto state = qobject_cast<UserApplicationsSettingsPageState*>(s);
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTranslationFile(state->translFile);
     st->setOpenLastProjectAtStartup(state->openLastProjectFlag);
@@ -87,8 +88,9 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     // st->setTabbedWindowLayout(state->tabbedWindowLayout);
     st->setResetSettings(state->resetSettings);
     st->setUpdatesEnabled(state->updatesEnabled);
+    st->setExperimentalFeaturesModeEnabled(state->experimentsEnabled);
 
-    if (0 != state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive)) {
+    if (state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive) != 0) {
         QStyle* style = QStyleFactory::create(state->style);
         QApplication::setStyle(style);
         st->setVisualStyle(state->style);
@@ -96,7 +98,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
 }
 
 AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    UserApplicationsSettingsPageWidget* r = new UserApplicationsSettingsPageWidget(this);
+    auto r = new UserApplicationsSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -120,7 +122,7 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
+    auto state = qobject_cast<UserApplicationsSettingsPageState*>(s);
     enableStatisticsEdit->setChecked(state->enableStatistics);
 
     int idx = langCombo->findData(state->translFile);
@@ -143,10 +145,11 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
 
     resetSettingsBox->setChecked(state->resetSettings);
     updatesCheckBox->setChecked(state->updatesEnabled);
+    experimentsCheckBox->setChecked(state->experimentsEnabled);
 }
 
 AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /*err*/) const {
-    UserApplicationsSettingsPageState* state = new UserApplicationsSettingsPageState();
+    auto state = new UserApplicationsSettingsPageState();
     state->translFile = langCombo->itemData(langCombo->currentIndex()).toString();
     state->openLastProjectFlag = autoOpenProjectBox->isChecked();
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
@@ -154,12 +157,13 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->enableStatistics = enableStatisticsEdit->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
+    state->experimentsEnabled = experimentsCheckBox->isChecked();
 
     return state;
 }
 
 void UserApplicationsSettingsPageWidget::sl_transFileClicked() {
-    QString file = U2FileDialog::getOpenFileName(this, tr("Select translation file"), QString(), 0);
+    QString file = U2FileDialog::getOpenFileName(this, tr("Select translation file"), QString(), nullptr);
     if (!file.isEmpty()) {
         QFileInfo fi(file);
         int idx = langCombo->findData(fi.baseName());

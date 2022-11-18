@@ -66,6 +66,7 @@ private slots:
     void sl_refreshSchemes();
 
 private:
+    void initSeqArea();
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
 

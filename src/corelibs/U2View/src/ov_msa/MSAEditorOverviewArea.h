@@ -28,6 +28,7 @@
 
 namespace U2 {
 
+class MsaEditorMultilineWgt;
 class MaEditorWgt;
 class MaSimpleOverview;
 class MaGraphOverview;
@@ -36,13 +37,20 @@ class MaOverviewContextMenu;
 class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
+    MSAEditorOverviewArea(MsaEditorMultilineWgt* ui);
 
     void contextMenuEvent(QContextMenuEvent* event) override;
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
     void setVisible(bool isVisible) override;
+
+    MaGraphOverview* getGraphOverview() {
+        return graphOverview;
+    }
+    MaSimpleOverview* getSimpleOverview() {
+        return simpleOverview;
+    }
 
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;

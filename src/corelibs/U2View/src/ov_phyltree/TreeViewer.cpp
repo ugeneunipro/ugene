@@ -1189,7 +1189,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
     QList<TreeViewOption> newSelectionSettingsDeltaKeys = newSelectionSettingsDelta.keys();
     OptionsMap changedSettings;
     for (auto option : qAsConst(newSelectionSettingsDeltaKeys)) {
-        QVariant& value = newSelectionSettingsDelta[option];
+        QVariant value = newSelectionSettingsDelta[option];
         if (value == settings[option]) {
             newSelectionSettingsDelta.remove(option);
         }

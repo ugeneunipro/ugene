@@ -37,15 +37,15 @@ class UserApplicationsSettingsPageController : public AppSettingsGUIPageControll
 public:
     UserApplicationsSettingsPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState* getSavedState();
+    AppSettingsGUIPageState* getSavedState() override;
 
-    virtual void saveState(AppSettingsGUIPageState* s);
+    void saveState(AppSettingsGUIPageState* s) override;
 
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
+    AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data) override;
 
     QMap<QString, QString> translations;
 
-    const QString& getHelpPageId() const {
+    const QString& getHelpPageId() const override {
         return helpPageId;
     };
 
@@ -56,19 +56,17 @@ private:
 class UserApplicationsSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    UserApplicationsSettingsPageState()
-        : openLastProjectFlag(false), askToSaveProject(0), enableStatistics(false),
-          tabbedWindowLayout(false), resetSettings(false), updatesEnabled(true) {
-    }
+    UserApplicationsSettingsPageState() = default;
 
     QString translFile;
     QString style;
-    bool openLastProjectFlag;
-    int askToSaveProject;
-    bool enableStatistics;
-    bool tabbedWindowLayout;
-    bool resetSettings;
-    bool updatesEnabled;
+    bool openLastProjectFlag= false;
+    int askToSaveProject= 0;
+    bool enableStatistics = false;
+    bool tabbedWindowLayout = false;
+    bool resetSettings = false;
+    bool updatesEnabled = true;
+    bool experimentsEnabled = false;
 };
 
 class UserApplicationsSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_UserApplicationsSettingsWidget {
@@ -76,9 +74,9 @@ class UserApplicationsSettingsPageWidget : public AppSettingsGUIPageWidget, publ
 public:
     UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState* state);
+    void setState(AppSettingsGUIPageState* state) override;
 
-    virtual AppSettingsGUIPageState* getState(QString& err) const;
+    AppSettingsGUIPageState* getState(QString& err) const override;
 
 private slots:
     void sl_transFileClicked();
@@ -86,8 +84,8 @@ private slots:
 private:
     /**
      * @brief STYLE_KEYS_FIXED_REGISTER
-     * The bunch of "Appearence" with fixed register.
-     * The first value - the original name, prodused by QStyleFactory::keys(), the second value - new name with fixed register.
+     * The bunch of "Appearance" with fixed register.
+     * The first value - the original name, produced by QStyleFactory::keys(), the second value - new name with fixed register.
      * Note, that you can't replace any characters, only register could be changed
      * (see here, https://doc.qt.io/qt-5/qstylefactory.html#details, "keys are case insensitive")
      */

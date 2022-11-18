@@ -22,6 +22,8 @@
 #ifndef _U2_MA_EDITOR_H_
 #define _U2_MA_EDITOR_H_
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -41,6 +43,8 @@ namespace U2 {
 #define MSAE_MENU_ADVANCED "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD "MSAE_MENU_LOAD_SEQ"
 
+#define MSAE_MULTILINE_MODE "multiline_mode"
+
 #define MOBJECT_MIN_COLUMN_WIDTH 1
 
 #define MOBJECT_SETTINGS_COLOR_NUCL "color_nucl"
@@ -56,6 +60,10 @@ namespace U2 {
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
 class MaCollapseModel;
+class MaEditorWgt;
+class MaEditorMultilineWgt;
+class MaEditorOverviewArea;
+class MultipleAlignmentObject;
 class MaEditorSelection;
 class MaEditorSelectionController;
 class MaEditorWgt;
@@ -127,9 +135,20 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual MaEditorWgt* getUI() const {
+    virtual QWidget* getUI() const {
         return ui;
     }
+
+    virtual MaEditorWgt* getMaEditorWgt(uint index = 0) const {
+        SAFE_POINT(false, "The function getMaEditorWgt(index) must be overrided", nullptr);
+        Q_UNUSED(index);
+        return nullptr;
+    };
+
+    virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const {
+        SAFE_POINT(false, "The function getMaEditorMultilineWgt(index) must be overrided", nullptr);
+        return nullptr;
+    };
 
     virtual OptionsPanel* getOptionsPanel() {
         return optionsPanel;
@@ -216,6 +235,12 @@ public:
      */
     void scrollSelectionIntoView();
 
+    virtual void initActionsAndSignals() {};
+    virtual void initChildrenActionsAndSignals() {};
+
+    virtual bool getMultilineMode() const;
+    virtual bool setMultilineMode(bool newmode);
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -224,6 +249,7 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint& cursorPosition);
+    void si_showOffsets(bool);
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint& pos) = 0;
@@ -251,6 +277,11 @@ protected slots:
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
 
+    virtual void sl_multilineViewAction() {
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
+        return;
+    };
+
 private slots:
     void resetColumnWidthCache();
 
@@ -261,7 +292,7 @@ protected:
     virtual void initFont();
     void updateResizeMode();
 
-    virtual void addCopyPasteMenu(QMenu* m);
+    virtual void addCopyPasteMenu(QMenu* m, uint uiIndex);
     virtual void addEditMenu(QMenu* m) = 0;
     virtual void addExportMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
@@ -277,7 +308,7 @@ protected:
     virtual void updateActions();
 
     MultipleAlignmentObject* maObject;
-    MaEditorWgt* ui;
+    QWidget* ui = nullptr;
 
     QFont font;
     ResizeMode resizeMode;
@@ -308,6 +339,8 @@ protected:
     /** Undo-redo support. */
     MaUndoRedoFramework* undoRedoFramework = nullptr;
 
+    bool multilineMode = false;
+
 public:
     QAction* saveAlignmentAction = nullptr;
     QAction* saveAlignmentAsAction = nullptr;
@@ -318,6 +351,7 @@ public:
     QAction* changeFontAction = nullptr;
     QAction* resetZoomAction = nullptr;
     QAction* exportHighlightedAction = nullptr;
+    QAction* multilineViewAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction* clearSelectionAction = nullptr;

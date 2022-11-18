@@ -32,7 +32,7 @@ class U2CORE_EXPORT UserAppsSettings : public QObject {
     Q_OBJECT
 public:
     UserAppsSettings();
-    ~UserAppsSettings();
+    ~UserAppsSettings() override;
 
     QString getWebBrowserURL() const;
     void setWebBrowserURL(const QString& url);
@@ -73,7 +73,7 @@ public:
     // domain is used here to avoid collision between different algorithms
     QString getCurrentProcessTemporaryDirPath(const QString& domain = QString()) const;
 
-    // returns the temropary path: userTemporaryDirPath + "ugene_tmp/p" + processId + "/domain/" + tmpSubDir
+    // returns the temporary path: userTemporaryDirPath + "ugene_tmp/p" + processId + "/domain/" + tmpSubDir
     QString createCurrentProcessTemporarySubDir(U2OpStatus& os, const QString& domain = QString()) const;
 
     // default UGENE data dir
@@ -98,12 +98,21 @@ public:
     bool isUpdateSkipped(const QString& versionString) const;
     void skipUpdate(const QString& versionString);
 
+    /** Returns 'true' if user enabled experimental features mode (off by default). */
+    bool isExperimentalFeaturesModeEnabled() const;
+
+    /**
+     * Updates state of the experimental features mode.
+     * Normally UGENE must be restarted for this change to have an effect.
+     */
+    void setExperimentalFeaturesModeEnabled(bool flag);
+
 signals:
     void si_temporaryPathChanged();
     void si_windowLayoutChanged();
 
 private:
-    bool cleanupTmpDir;
+    bool cleanupTmpDir = false;
 };
 
 }  // namespace U2

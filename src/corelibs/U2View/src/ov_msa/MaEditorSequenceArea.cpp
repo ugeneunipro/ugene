@@ -56,6 +56,7 @@
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 #include "ov_msa/highlighting/MSAHighlightingTabFactory.h"
@@ -104,12 +105,14 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     insertGapsAction = new QAction(tr("Insert gaps"), this);
     insertGapsAction->setObjectName("insert_gaps");
     insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
+    insertGapsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
     addAction(insertGapsAction);
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
     replaceWithGapsAction->setObjectName("replace_with_gaps");
     replaceWithGapsAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Space));
+    replaceWithGapsAction->setShortcutContext(Qt::WidgetShortcut);
     connect(replaceWithGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_replaceSelectionWithGaps);
     addAction(replaceWithGapsAction);
 
@@ -153,8 +156,12 @@ int MaEditorSequenceArea::getFirstVisibleBase() const {
     return ui->getScrollController()->getFirstVisibleBase();
 }
 
+void MaEditorSequenceArea::setFirstVisibleBase(int firstVisibleBase) {
+    ui->getScrollController()->setFirstVisibleBase(firstVisibleBase);
+}
+
 int MaEditorSequenceArea::getLastVisibleBase(bool countClipped) const {
-    return getEditor()->getUI()->getScrollController()->getLastVisibleBase(width(), countClipped);
+    return ui->getScrollController()->getLastVisibleBase(width(), countClipped);
 }
 
 int MaEditorSequenceArea::getNumVisibleBases() const {
@@ -262,9 +269,17 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
         return;
     }
 
-    editor->setCursorPosition(editor->getCursorPosition() + QPoint(dx, dy));
     setSelectionRect(newSelectionRect);
-    ui->getScrollController()->scrollToMovedSelection(dx, dy);
+    QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
+    if (editor->getMultilineMode()) {
+        if (newCursorPos.x() <= getLastVisibleBase(false) &&
+            newCursorPos.x() >= getFirstVisibleBase()) {
+            editor->setCursorPosition(newCursorPos);
+        }
+    } else {
+        editor->setCursorPosition(newCursorPos);
+        ui->getScrollController()->scrollToMovedSelection(dx, dy);
+    }
 }
 
 int MaEditorSequenceArea::getTopSelectedMaRow() const {
@@ -670,8 +685,12 @@ void MaEditorSequenceArea::sl_completeRedraw() {
     update();
 }
 
-void MaEditorSequenceArea::sl_triggerUseDots() {
-    useDotsAction->trigger();
+void MaEditorSequenceArea::sl_triggerUseDots(int checkState) {
+    bool currState = useDotsAction->isChecked();
+    if ((currState && checkState == Qt::Unchecked) ||
+        (!currState && checkState == Qt::Checked)) {
+        useDotsAction->trigger();
+    }
 }
 
 void MaEditorSequenceArea::sl_useDots() {
@@ -757,6 +776,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
+    setFocus();
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     sl_updateActions();
@@ -1035,6 +1055,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             editor->getSelectionController()->clearSelection();
             break;
         case Qt::Key_Left:
+            // Delegate the event to the multiline widgets in case of 1x1 selection
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+                break;
+            }
             if (!isShiftPressed || !isMsaEditor) {
                 moveSelection(-1, 0);
             } else {
@@ -1049,6 +1073,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Right:
+            // Delegate the event to the multiline widgets in case of 1x1 selection
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+                break;
+            }
             if (!isShiftPressed || !isMsaEditor) {
                 moveSelection(1, 0);
             } else {
@@ -1063,6 +1091,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Up:
+            // Delegate the event to the multiline widgets in case of 1x1 selection
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+                break;
+            }
             if (!isShiftPressed || !isMsaEditor) {
                 moveSelection(0, -1);
             } else {
@@ -1077,6 +1109,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Down:
+            // Delegate the event to the multiline widgets in case of 1x1 selection
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+                break;
+            }
             if (!isShiftPressed || !isMsaEditor) {
                 moveSelection(0, 1);
             } else {
@@ -1097,6 +1133,9 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Home:
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+                break;
+            }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Up);
                 editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), 0));
@@ -1106,19 +1145,34 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_End:
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+                break;
+            }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(),
+                                                 getViewRowCount() - 1));
             } else {
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);
-                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1,
+                                                 editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_PageUp:
-            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+                break;
+            }
+            ui->getScrollController()->scrollPage(isShiftPressed
+                                                      ? ScrollController::Up
+                                                      : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
-            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
+            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+                break;
+            }
+            ui->getScrollController()->scrollPage(isShiftPressed
+                                                      ? ScrollController::Down
+                                                      : ScrollController::Right);
             break;
         case Qt::Key_Backspace:
             removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);
@@ -1182,7 +1236,19 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
         moveSelection(countOfGaps, 0, true);
     }
     if (!editor->getSelection().isEmpty()) {
-        ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+        if (editor->getMultilineMode()) {
+            // TODO:ichebyki
+            // ?
+            QPoint cursorPosition = editor->getCursorPosition();
+            const MaEditorSelection& sel = editor->getSelection();
+            QRect rect = sel.isEmpty()
+                             ? QRect(cursorPosition, cursorPosition)
+                             : sel.toRect();
+            QPoint newPos(rect.topLeft());
+            editor->getMaEditorMultilineWgt()->getScrollController()->scrollToPoint(newPos);
+        } else {
+            ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+        }
     }
 }
 

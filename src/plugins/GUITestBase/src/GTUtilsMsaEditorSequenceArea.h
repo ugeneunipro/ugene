@@ -25,21 +25,27 @@
 #include <GTGlobals.h>
 
 #include <U2View/MSAEditorSequenceArea.h>
-
+#include <U2View/MSAEditorConsensusArea.h>
+#include "U2View/MsaEditorSimilarityColumn.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
 namespace U2 {
 
 class GTUtilsMSAEditorSequenceArea {
 public:
-    static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os);
+    // The "index" is line index while multiline mode
+    static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0);
+    static MSAEditorConsensusArea *getConsensusArea(GUITestOpStatus &os, int index = 0);
+    static MsaEditorSimilarityColumn *getSimilarityColumn(GUITestOpStatus &os, int index = 0);
+    static QScrollBar *getHorizontalNamesScroll(GUITestOpStatus &os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
+    static void checkSelectedRect(GUITestOpStatus& os, int multilineIndex, const QRect& expectedRect);
     static void checkSelectedRect(GUITestOpStatus& os, const QRect& expectedRect);
 
-    static void checkConsensus(GUITestOpStatus& os, QString cons);
+    static void checkConsensus(GUITestOpStatus& os, QString cons, int index = 0);
     // may be used for selecting visible columns only
-    static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber);
+    static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber, int index = 0);
 
     // MSAEditorNameList
 
@@ -61,13 +67,14 @@ public:
      */
     static QStringList getVisibleNames(GUITestOpStatus& os, bool asShownInNameList = false);
 
-    static QString getSimilarityValue(GUITestOpStatus& os, int row);
+    // "index" is a line index in multiline mode
+    static QString getSimilarityValue(GUITestOpStatus& os, int row, int index = 0);
     static void clickCollapseTriangle(GUITestOpStatus& os, QString seqName);
     static bool isCollapsed(GUITestOpStatus& os, QString seqName);
     static bool collapsingMode(GUITestOpStatus& os);
 
-    static int getFirstVisibleBaseIndex(GUITestOpStatus& os);
-    static int getLastVisibleBaseIndex(GUITestOpStatus& os);
+    static int getFirstVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex = 0);
+    static int getLastVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex = 0);
 
     /** Returns index of the first visible view row index in the MSA sequence area. */
     static int getFirstVisibleRowIndex(GUITestOpStatus& os, bool countClipped = false);
@@ -86,10 +93,11 @@ public:
     // selects area in MSA coordinates, if some p coordinate less than 0, it becomes max valid coordinate
     // zero-based position
     static void selectArea(GUITestOpStatus& os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectArea(GUITestOpStatus& os, int multilineIndex, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus& os);
     /** Returns on-screen (global) bounding rectangle for the base position. */
-    static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position);
-    static QPoint convertCoordinates(GUITestOpStatus& os, const QPoint p);
+    static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position, int index = 0);
+    static QPoint convertCoordinates(GUITestOpStatus& os, const QPoint p, int index = 0);
     static void click(GUITestOpStatus& os, const QPoint& screenMaPoint = QPoint(0, 0));
 
     /** Calls context menu Copy/Paste->Copy. */
@@ -97,6 +105,7 @@ public:
 
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(GUITestOpStatus& os, const QPoint& position);
+    static void scrollToBottom(GUITestOpStatus& os);
     static void moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
     static void clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
 

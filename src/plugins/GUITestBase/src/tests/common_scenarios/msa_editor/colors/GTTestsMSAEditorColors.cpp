@@ -50,7 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->UGENE} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "UGENE"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -77,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use context menu {Colors->No Colors} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
     GTMenu::showContextMenu(os, seq);
     //    Expected state: background for symbols must be white
@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Colors->Jalview} in MSA editor area.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
     GTMenu::showContextMenu(os, seq);
     // Expected state: background for symbols must be:
@@ -130,7 +130,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    2. Use context menu {Colors->Persentage identity} in MSA editor area.
     //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
     //    Intensity of colour depends on the frequency of appearance in the column.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
     GTMenu::showContextMenu(os, seq);
     //    Symbols and columns at the descending order

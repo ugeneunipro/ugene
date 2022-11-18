@@ -554,7 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto msaEditorView = GTWidget::findWidget(os, "msa_editor_COI");
+    auto msaEditorView = GTWidget::findWidget(os, "msa_editor_COI_0");
     MsaEditorWgt* msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
     MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
     MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
@@ -1442,7 +1442,7 @@ GUI_TEST_CLASS_DEFINITION(test_5382) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
@@ -4685,19 +4685,22 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_no_anns.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_NM_001135099");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    if (!GTUtilsSequenceView::getPanOrDetView(os)->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
+    }
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "NM_001135099 features");
     QWidget* sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
 
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
@@ -4705,7 +4708,6 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     settings.rtPcrDesign = true;
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());

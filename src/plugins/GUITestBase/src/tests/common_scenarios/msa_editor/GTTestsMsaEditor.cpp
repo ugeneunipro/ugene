@@ -1491,7 +1491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
     // 3. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString initial = GTClipboard::text(os);
@@ -1501,7 +1501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: UGENE not crashes, deletion is not performed
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -1641,7 +1641,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     // Call context menu->Add->sequence from file.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // Check that the sequence is present.
     GTUtilsMsaEditor::clickSequenceName(os, "CVU55762");
@@ -1666,8 +1666,8 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     // Expected state: MSA is zoomed
 
     // 4. press toolbar button "Reset zoom"
-    QAbstractButton* reset_zoom = GTAction::button(os, "Reset Zoom");
-    GTWidget::click(os, reset_zoom);
+    QAbstractButton* resetZoom = GTAction::button(os, "Reset Zoom");
+    GTWidget::click(os, resetZoom);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os) == initOffset, "MSA is not zoomed back");
@@ -1681,7 +1681,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt*>(os, "msa_editor_COI")->getEditor();
+    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt*>(os, "msa_editor_COI_0")->getEditor();
     QString initialFont = msaEditor->getFont().toString();
 
     // Click "change font button" on the toolbar.
@@ -1703,7 +1703,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
     GTWidget::click(os, GTAction::button(os, "Change Font"));
 
-    auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
+    auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI_0");
     MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
@@ -2568,7 +2568,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042.png"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042_1) {
@@ -2578,7 +2578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042_1) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042_1.png", ExportMsaImage::Settings(true, true, true) /*include all*/));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042_2) {
@@ -2588,7 +2588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042_2) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042_1", ExportMsaImage::Settings(true, false, true) /*include all*/, true, false, RegionMsa(), "BMP"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0043) {
@@ -2608,7 +2608,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
                                           false,
                                           RegionMsa(U2Region(1, 594), sequences)));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044) {
@@ -2621,7 +2621,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0044.png", ExportMsaImage::Settings(true, true, true), false, true));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0045) {
@@ -2649,7 +2649,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportDialogChecker(os));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0045_1) {
@@ -2684,18 +2684,18 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportChecker(os));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0046) {
     // check quality
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0046", "JPG", 50));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0047) {
@@ -2754,7 +2754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new ExportChecker(os));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0048) {
@@ -2787,7 +2787,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(os, new CustomFiller_0048(os));
 
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0049) {
@@ -3548,7 +3548,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    auto column = GTWidget::findWidget(os, "msa_editor_similarity_column");
+    auto column = GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, 0);
     CHECK_SET_ERR(!column->isVisible(), "similarity column unexpectidly found");
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
