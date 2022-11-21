@@ -450,6 +450,7 @@ void MultilineScrollController::scrollSmoothly(const Directions& directions) {
     if (directions.testFlag(Down)) {
         verticalAction = QAbstractSlider::SliderSingleStepAdd;
     }
+
     if (verticalAction != vScrollBar->getRepeatAction()) {
         vScrollBar->setupRepeatAction(verticalAction, 500, 50);
     }
