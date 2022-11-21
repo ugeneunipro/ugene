@@ -133,8 +133,7 @@
 #include <U2View/SeqStatisticsWidgetFactory.h>
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
-#include "../../corelibs/U2View/src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.h"
-
+#include "U2View/EntropyCalculationWidgetFactory.h"
 
 // U2Private imports
 #include <AppContextImpl.h>
