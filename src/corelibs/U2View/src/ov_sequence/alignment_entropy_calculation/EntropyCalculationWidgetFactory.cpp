@@ -1,8 +1,30 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
 #include "EntropyCalculationWidgetFactory.h"
 
 #include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/L10n.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
@@ -11,7 +33,8 @@
 namespace U2 {
 
 const QString EntropyCalculationWidgetFactory::GROUP_ID = "OP_ENTROPY_CALCULATION";
-const QString EntropyCalculationWidgetFactory::GROUP_ICON_STR = "";
+//TODO: add icon & doc page
+const QString EntropyCalculationWidgetFactory::GROUP_ICON_STR = ""; 
 const QString EntropyCalculationWidgetFactory::GROUP_DOC_PAGE = "";
 
 EntropyCalculationWidgetFactory::EntropyCalculationWidgetFactory() {
@@ -19,17 +42,12 @@ EntropyCalculationWidgetFactory::EntropyCalculationWidgetFactory() {
 }
 
 QWidget* EntropyCalculationWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
-    SAFE_POINT(objView != nullptr,
-               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-               nullptr);
+    SAFE_POINT(objView != nullptr, L10N::nullPointerError("GObjectView"), nullptr);
 
     AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
-    SAFE_POINT(annotatedDnaView != nullptr,
-               QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
-               nullptr);
+    SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
     EntropyCalculationWidget* widget = new EntropyCalculationWidget(annotatedDnaView);
-    widget->setObjectName("EntropyCalculationWidget");
     return widget;
 }
 
