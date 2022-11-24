@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -3502,23 +3503,18 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString coveredRegionsText;
-    class GetLabelTextScenario : public CustomScenario {
-        QLabel* label;
-        QString& text;
-
-    public:
-        GetLabelTextScenario(QLabel* label, QString& text)
-            : label(label), text(text) {
-        }
-        void run(GUITestOpStatus&) override {
-            text = label->text();
-        }
+    QStringList positions = GTLabel::getText(os, "CoveredRegionsLabel")
+                                .section("href=\"0\">", 1, 1)
+                                .split("</a></td><td align=\"center\">");
+    QString positionStr = positions.first();
+    QString coverageStr = positions[1].section(
+        "</td></tr><tr><td align='right'>2&nbsp;&nbsp;</td><td><a href=\"1\">", 0, 0);
+    auto toInt = [](QString str) {
+        return str.remove(' ').toInt();
     };
-    GTThread::runInMainThread(
-        os, new GetLabelTextScenario(GTWidget::findLabel(os, "CoveredRegionsLabel"), coveredRegionsText));
-    CHECK_SET_ERR(coveredRegionsText.contains("<td><a href=\"0\">45 890 375</a></td><td align=\"center\">2 316</td>"),
-                  "Position 45 890 375 with 2 316 coverage isn't the first well-covered region");
+    CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
+                  QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
+                      .arg(positionStr, coverageStr));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7715) {

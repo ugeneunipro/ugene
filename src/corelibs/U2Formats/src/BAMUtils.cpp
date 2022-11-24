@@ -72,8 +72,6 @@ static wchar_t* toWideCharsArray(const QString& text) {
 
 FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
-    CHECK(!mode.contains('r') || QFileInfo::exists(fileUrl), nullptr);
-
     QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
     QString modeWithBinaryFlag = mode;
     if (!modeWithBinaryFlag.contains("b")) {
