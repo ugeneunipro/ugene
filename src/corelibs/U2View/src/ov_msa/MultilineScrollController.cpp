@@ -185,15 +185,13 @@ bool MultilineScrollController::checkBoundary() {
     int alignmentLen = maEditor->getAlignmentLen();
     for (int i = 0; i < childrenCount; i++) {
         MaEditorWgt* wgt = ui->getUI(i);
-        if (wgt == nullptr) {
-            return false;
-        }
+        SAFE_POINT(wgt != nullptr, "Unexpected nullptr multiline editor child widget", false);
         firstBase = wgt->getScrollController()->getFirstVisibleBase(false);
         if (firstBase == prevFistBase) {
             needUpdate = true;
             break;
         }
-        if ((firstBase + 1) >= alignmentLen) {
+        if (firstBase + 1 >= alignmentLen) {
             needUpdate = true;
             break;
         }
@@ -206,9 +204,7 @@ bool MultilineScrollController::checkBoundary() {
             prevFistBase = -1;
             for (int i = 0; i < childrenCount; i++) {
                 MaEditorWgt* wgt = ui->getUI(i);
-                if (wgt == nullptr) {
-                    return false;
-                }
+                SAFE_POINT(wgt != nullptr, "Unexpected nullptr multiline editor child widget", false);
                 if (firstBase == prevFistBase ||
                     ((firstBase + 1) >= alignmentLen && alignmentLen > 1) ||
                     ((firstBase + 1) >= alignmentLen && alignmentLen == 1 && prevFistBase != -1)) {
@@ -335,50 +331,6 @@ void MultilineScrollController::scrollToBase(QPoint maPoint) {
 void MultilineScrollController::scrollToPoint(const QPoint& maPoint) {
     scrollToBase(maPoint);
     scrollToViewRow(maPoint);
-}
-
-// TODO:ichebyki
-// Deprecated, will be removed
-void MultilineScrollController::_centerPoint(const QPoint& maPoint) {
-    _centerBase(maPoint.x());
-    _centerViewRow(maPoint);
-}
-
-// TODO:ichebyki
-// Deprecated, will be removed
-void MultilineScrollController::_setCenterVisibleBase(int firstVisibleBase) {
-    int visibleLength = ui->getSequenceAreaBaseLen(0);
-    if (!maEditor->getMultilineMode()) {
-        if (ui->getUI(0) != nullptr) {
-            ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
-        }
-    } else {
-        //int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
-        ui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
-        ui->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
-        //hScrollBar->setValue(x);
-    }
-}
-
-// TODO:ichebyki
-// Deprecated, will be removed
-void MultilineScrollController::_centerBase(int baseNumber) {
-    int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
-    int fistBase = (baseNumber / length) * length;
-    setFirstVisibleBase(fistBase);
-}
-
-// TODO:ichebyki
-// Deprecated, will be removed
-void MultilineScrollController::_centerViewRow(const QPoint& maPoint) {
-    assert(false && "Need to implement");
-    int viewRowIndex = maPoint.y();
-    const U2Region rowGlobalRange = ui->getUI(0)
-                                        ->getRowHeightController()
-                                        ->getGlobalYRegionByViewRowIndex(viewRowIndex);
-    U2Region visibleRange = getVerticalRangeToDrawIn(childrenScrollArea->width());
-    int newScreenYOffset = int(rowGlobalRange.startPos - visibleRange.length / 2);
-    vScrollBar->setValue(newScreenYOffset);
 }
 
 void MultilineScrollController::setMultilineVScrollbarBase(int base) {
@@ -573,15 +525,17 @@ void MultilineScrollController::sl_updateScrollBars() {
 
 void MultilineScrollController::updateChildrenScrollBarsPeivate() {
     int val;
-    for (int i = 0; i < ui->getChildrenCount(); i++) {
-        GScrollBar* hbar = ui->getUI(i)->getScrollController()->getHorizontalScrollBar();
+    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+        auto wgt = ui->getUI(i);
+        SAFE_POINT(wgt != nullptr, "Unexpected nullptr multiline editor child widget", );
+
+        GScrollBar* hbar = wgt->getScrollController()->getHorizontalScrollBar();
         if (i == 0) {
             val = hbar->value();
         }
 
-        QSignalBlocker signalBlocker(ui->getUI(i)->getScrollController());
-        Q_UNUSED(signalBlocker);
-        ui->getUI(i)->getScrollController()->setHScrollbarValue(val);
+        QSignalBlocker signalBlocker(wgt->getScrollController());
+        wgt->getScrollController()->setHScrollbarValue(val);
         val += ui->getSequenceAreaBaseWidth(i);
     }
 }
@@ -604,7 +558,6 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
 
     SAFE_POINT(nullptr != vScrollBar, "Multiline Vertical scrollbar is not initialized", );
     QSignalBlocker signalBlocker(vScrollBar);
-    Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
     CHECK_EXT(ui->getChildrenCount() > 0, vScrollBar->setVisible(false), );

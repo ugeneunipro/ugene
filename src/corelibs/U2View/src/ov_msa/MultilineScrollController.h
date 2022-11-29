@@ -136,13 +136,6 @@ private:
     int savedFirstVisibleMaRowOffset;
 
     bool checkBoundary();
-
-    // TODO:ichebyki
-    // Deprecated, will be removed
-    void _centerBase(int baseNumber);
-    void _centerPoint(const QPoint& maPoint);
-    void _setCenterVisibleBase(int firstVisibleBase);
-    void _centerViewRow(const QPoint& maPoint);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)
