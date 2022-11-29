@@ -346,7 +346,7 @@ static QString createNumericSuffix(int n) {
 
 static void bamSortBlocks(int n, int k, bam1_p* buf, const QString& prefix, const bam_header_t* h) {
     QString sortedFileName = n < 0 ? prefix + ".bam" : prefix + "." + createNumericSuffix(n) + ".bam";
-    const char* mode = n < 0 ? "w" : "w1";
+    const char* mode = n < 0 ? "w" : "w+";
     coreLog.trace(QString("bamSortBlocks, n: %1, k: %2, prefix: %3, sorted file: %4").arg(n).arg(k).arg(prefix).arg(sortedFileName));
     ks_mergesort(sort, k, buf, nullptr);
     FILE* file = BAMUtils::openFile(sortedFileName, mode);
