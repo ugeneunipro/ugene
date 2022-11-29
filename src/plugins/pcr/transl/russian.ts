@@ -116,63 +116,67 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="105"/>
         <source>Maximum product</source>
-        <translation>Максимальный продукт</translation>
+        <translation type="vanished">Максимальный продукт</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="121"/>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="160"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="154"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="170"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="89"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="92"/>
         <source>3&apos; perfect match</source>
         <translation>3&apos; идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="141"/>
         <source>Extract annotations</source>
         <translation>Извлечь аннотации</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="177"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="124"/>
         <source>Use ambiguous bases</source>
         <translation>Использовать расширенный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="191"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="114"/>
+        <source>Maximum product size</source>
+        <translation>Максимальный размер продукта</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="193"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Показать информацию о праймерах&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="252"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="254"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="347"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="349"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="352"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="354"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="357"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="359"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="386"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="388"/>
         <source>Extract product(s)</source>
         <translation>Извлечь продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="400"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="402"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Информация: выберите нуклеотидную последовательность для запуска In Silico PCR</translation>
     </message>
