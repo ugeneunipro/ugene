@@ -1277,116 +1277,116 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="2065"/>
         <location filename="../src/Primer3Dialog.ui" line="2084"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max template mispriming&lt;/span&gt; but assesses alternative binding sites in the template using thermodynamic models. This parameter specifies the maximum allowed melting temperature of an oligo (primer) at an &amp;quot;ectopic&amp;quot; site within the template sequence; 47.0 would be a reasonable choice if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Tm Min&lt;/span&gt; is 57.0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальный шаблон ошибочного праймирования&lt;/span&gt;но оценивает альтернативные сайты связывания в матрице с использованием термодинамических моделей. Этот параметр определяет максимально допустимую температуру плавления олиго (праймера) при &amp;quot;смещенном&amp;quot; сайт в шаблонной последовательности; 47.0 будет разумным выбором, если &lt;span style=&quot; font-weight:700;&quot;&gt;Минимальная Т. плав. праймера&lt;/span&gt; равна 57.0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2100"/>
         <location filename="../src/Primer3Dialog.ui" line="2116"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the template. A negative value means do not check.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое сходство с смещщенными сайтами в шаблоне. При отрицательном значении не проверяется.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2151"/>
         <source>TH: Pair Max Template Mispriming</source>
-        <translation type="unfinished"></translation>
+        <translation>TH: Парный максимальный шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2148"/>
         <location filename="../src/Primer3Dialog.ui" line="2161"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed melting temperatures of both primers at ectopic sites within the template (with the two primers in an orientation that would allow PCR amplification.) The melting temperatures are calculated as for &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Template Mispriming&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимая суммарная температура плавления обоих праймеров на смещенных участках шаблона (с двумя праймерами в ориентации, позволяющей ПЦР-амплификацию). Температуры плавления рассчитываются как для параметра &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальный шаблон ошибочного праймирования&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2177"/>
         <location filename="../src/Primer3Dialog.ui" line="2193"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed similarity of both primers to ectopic sites in the template. A negative value means do not check.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое суммарное сходство обоих праймеров со смещенными сайтами в шаблоне. При отрицательном значении не учитывается.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2242"/>
         <source>Advanced Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенные настройки</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2245"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section covers more accurate settings, which are related to &lt;span style=&quot; font-weight:700;&quot;&gt;General Settings&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции описаны более точные настройки, относящиеся к &lt;span style=&quot; font-weight:700;&quot;&gt;Общим настройкам&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2255"/>
         <location filename="../src/Primer3Dialog.ui" line="2498"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5&apos; end of the left OR the right primer must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец левого ИЛИ правого праймера должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt; на это значение. Детальное описание смотри в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2274"/>
         <source>Sequencing Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал секвенирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2281"/>
         <location filename="../src/Primer3Dialog.ui" line="2508"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the calculated position of the 3&apos;end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет расстояние от рассчитанного положения 3&apos;-конца до обеих сторон, где Primer3 выбирает лучший праймер. Значение используется, только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей подбора праймера&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2322"/>
         <source>Max GC in primer 3&apos; end</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальный GC на 3&apos; конце праймера</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2345"/>
         <source>Annealing Oligo Concentration</source>
-        <translation type="unfinished"></translation>
+        <translation>Концентрация олигонуклеотидов при отжиге</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2381"/>
         <source>Concentration of Divalent Cations</source>
-        <translation type="unfinished"></translation>
+        <translation>Концентрация двухвалентных катионов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2319"/>
         <location filename="../src/Primer3Dialog.ui" line="2411"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of Gs or Cs allowed in the last five 3&apos; bases of a left or right primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное количество G или C, допустимое в последних пяти символах на 3&apos; конце левого или правого праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2427"/>
         <location filename="../src/Primer3Dialog.ui" line="2768"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;3&apos; End Distance Between Left Primers&lt;/span&gt;, but for right primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Аналогично &lt;span style=&quot; font-weight:700;&quot;&gt;Расстояние между 3&apos; концами левых праймеров&lt;/span&gt;, но для правых праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2443"/>
         <location filename="../src/Primer3Dialog.ui" line="2632"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3&apos;end of the primer to the point were the trace signals are readable. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет расстояние между 3&apos; концом праймера до точки, где след сигнала читаемый. Значение используется только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей Подбора Праймеров&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2459"/>
         <location filename="../src/Primer3Dialog.ui" line="2716"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3&apos; end of the left OR the right primer must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3&apos;-конец левого ИЛИ правого праймера должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt; на это значение. Детальное описание смотри в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2501"/>
         <source>5 Prime Junction Overlap</source>
-        <translation type="unfinished"></translation>
+        <translation>5&apos; перерытие основного соединения</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2511"/>
         <source>Sequencing Accuracy</source>
-        <translation type="unfinished"></translation>
+        <translation>Точность секвенирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2612"/>
         <source>First Base Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Индекс первого символа</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2635"/>
         <source>Sequencing Lead</source>
-        <translation type="unfinished"></translation>
+        <translation>Ведущее значение секвенирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2642"/>
