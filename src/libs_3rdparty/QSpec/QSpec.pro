@@ -23,6 +23,7 @@ HEADERS += \
            src/primitives/GTComboBox.h \
            src/primitives/GTDoubleSpinBox.h \
            src/primitives/GTGroupBox.h \
+           src/primitives/GTLabel.h \
            src/primitives/GTLineEdit.h \
            src/primitives/GTListWidget.h \
            src/primitives/GTMainWindow.h \
@@ -80,6 +81,7 @@ SOURCES += \
            src/primitives/GTComboBox.cpp \
            src/primitives/GTDoubleSpinBox.cpp \
            src/primitives/GTGroupBox.cpp \
+           src/primitives/GTLabel.cpp \
            src/primitives/GTLineEdit.cpp \
            src/primitives/GTListWidget.cpp \
            src/primitives/GTMainWindow.cpp \

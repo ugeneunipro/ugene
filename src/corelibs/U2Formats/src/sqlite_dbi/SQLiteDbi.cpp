@@ -24,7 +24,7 @@
 
 #include <QFile>
 
-#include <U2Core/GUrl.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
@@ -345,7 +345,7 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
         if (create) {
             flags |= SQLITE_OPEN_CREATE;
         }
-        QByteArray file = url.toUtf8();
+        QByteArray file = GUrlUtils::getNativeAbsolutePath(url).toUtf8();
         int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, nullptr);
         if (rc != SQLITE_OK) {
             QString err = getLastErrorMessage(rc);
