@@ -49,6 +49,7 @@ extern "C" {
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeUtils.h>
@@ -71,7 +72,7 @@ static wchar_t* toWideCharsArray(const QString& text) {
 
 FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 #ifdef Q_OS_WIN
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
+    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
     QString modeWithBinaryFlag = mode;
     if (!modeWithBinaryFlag.contains("b")) {
         modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
