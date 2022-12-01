@@ -22,38 +22,38 @@
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если указаны один или больше целевых регионов то пара праймеров должна обрамлять как минимум один из них.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="754"/>
-        <location filename="../src/Primer3Dialog.ui" line="793"/>
+        <location filename="../src/Primer3Dialog.ui" line="757"/>
+        <location filename="../src/Primer3Dialog.ui" line="796"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of product size ranges, for example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt; 150-250 100-300 301-400 &lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primer3 first tries to pick primers in the first range. If that is not possible, it goes to the next range and tries again. It continues in this way until it has either picked all necessary primers or until there are no more ranges. For technical reasons this option makes much lighter computational demands than the Product Size option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Список диапазонов размера продукта, например:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt; 150-250 100-300 301-400 &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="800"/>
-        <location filename="../src/Primer3Dialog.ui" line="813"/>
+        <location filename="../src/Primer3Dialog.ui" line="803"/>
+        <location filename="../src/Primer3Dialog.ui" line="816"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This selection indicates what mispriming library (if any) Primer3 should use to screen for interspersed repeats or for other sequence to avoid as a location for primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Этот параметр указывает какую библиотеку будет использовать Primer3.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="764"/>
-        <location filename="../src/Primer3Dialog.ui" line="830"/>
+        <location filename="../src/Primer3Dialog.ui" line="767"/>
+        <location filename="../src/Primer3Dialog.ui" line="833"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of primer pairs to return.&lt;/p&gt;&lt;p&gt;Primer pairs returned are sorted by their &amp;quot;quality&amp;quot;, in other words by the value of the objective function (where a lower number indicates a better primer pair).&lt;/p&gt;&lt;p&gt;Caution: setting this parameter to a large value will increase running time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное число пар праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="846"/>
-        <location filename="../src/Primer3Dialog.ui" line="862"/>
+        <location filename="../src/Primer3Dialog.ui" line="849"/>
+        <location filename="../src/Primer3Dialog.ui" line="865"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum stability for the last five 3&apos; bases of a left or right primer.&lt;/p&gt;&lt;p&gt;Bigger numbers mean more stable 3&apos; ends. The value is the maximum delta G (kcal/mol) for duplex disruption for the five 3&apos; bases as calculated using the Nearest-Neighbor parameter values specified by the option of &apos;Table of thermodynamic parameters&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум стабильности для последних пяти 3&apos; оснований левого или правого праймеров. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="777"/>
-        <location filename="../src/Primer3Dialog.ui" line="897"/>
+        <location filename="../src/Primer3Dialog.ui" line="780"/>
+        <location filename="../src/Primer3Dialog.ui" line="900"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed weighted similarity with any sequence in Mispriming Library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое взвешенное сходство с любой последовательностью из библиотеки ошибочного праймирования.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="913"/>
-        <location filename="../src/Primer3Dialog.ui" line="929"/>
+        <location filename="../src/Primer3Dialog.ui" line="916"/>
+        <location filename="../src/Primer3Dialog.ui" line="932"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed sum of similarities of a primer pair (one similarity for each primer) with any single sequence in Mispriming Library. &lt;/p&gt;&lt;p&gt;Library sequence weights are not used in computing the sum of similarities.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимая сумма сходств пар праймеров с любой последовательностью из библиотеки ошибочного праймирования.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -80,103 +80,103 @@
         <translation>или использовать этот левый праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="978"/>
+        <location filename="../src/Primer3Dialog.ui" line="981"/>
         <source>General Settings</source>
         <translation>Общие настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="981"/>
+        <location filename="../src/Primer3Dialog.ui" line="984"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section covers such settings as primer size, temperature, GC and other general settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&gt;В этом разделе рассматриваются такие параметры, как размер праймера, температура, GC и другие общие настройки.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1033"/>
-        <location filename="../src/Primer3Dialog.ui" line="1075"/>
-        <location filename="../src/Primer3Dialog.ui" line="1203"/>
-        <location filename="../src/Primer3Dialog.ui" line="1240"/>
-        <location filename="../src/Primer3Dialog.ui" line="1257"/>
+        <location filename="../src/Primer3Dialog.ui" line="1036"/>
+        <location filename="../src/Primer3Dialog.ui" line="1078"/>
+        <location filename="../src/Primer3Dialog.ui" line="1206"/>
+        <location filename="../src/Primer3Dialog.ui" line="1243"/>
+        <location filename="../src/Primer3Dialog.ui" line="1260"/>
         <source>Min</source>
         <translation>Минимум</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1333"/>
-        <location filename="../src/Primer3Dialog.ui" line="1410"/>
-        <location filename="../src/Primer3Dialog.ui" line="1544"/>
-        <location filename="../src/Primer3Dialog.ui" line="1666"/>
-        <location filename="../src/Primer3Dialog.ui" line="1673"/>
+        <location filename="../src/Primer3Dialog.ui" line="1336"/>
+        <location filename="../src/Primer3Dialog.ui" line="1413"/>
+        <location filename="../src/Primer3Dialog.ui" line="1547"/>
+        <location filename="../src/Primer3Dialog.ui" line="1669"/>
+        <location filename="../src/Primer3Dialog.ui" line="1676"/>
         <source>Opt</source>
         <translation>Оптимум</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1118"/>
-        <location filename="../src/Primer3Dialog.ui" line="1164"/>
-        <location filename="../src/Primer3Dialog.ui" line="1226"/>
-        <location filename="../src/Primer3Dialog.ui" line="1233"/>
-        <location filename="../src/Primer3Dialog.ui" line="1603"/>
+        <location filename="../src/Primer3Dialog.ui" line="1121"/>
+        <location filename="../src/Primer3Dialog.ui" line="1167"/>
+        <location filename="../src/Primer3Dialog.ui" line="1229"/>
+        <location filename="../src/Primer3Dialog.ui" line="1236"/>
+        <location filename="../src/Primer3Dialog.ui" line="1606"/>
         <source>Max</source>
         <translation>Максимум</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1147"/>
+        <location filename="../src/Primer3Dialog.ui" line="1150"/>
         <source>Primer Tm</source>
         <translation>Т. плав. праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1317"/>
-        <location filename="../src/Primer3Dialog.ui" line="1362"/>
-        <location filename="../src/Primer3Dialog.ui" line="1384"/>
-        <location filename="../src/Primer3Dialog.ui" line="1400"/>
+        <location filename="../src/Primer3Dialog.ui" line="1320"/>
+        <location filename="../src/Primer3Dialog.ui" line="1365"/>
+        <location filename="../src/Primer3Dialog.ui" line="1387"/>
+        <location filename="../src/Primer3Dialog.ui" line="1403"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная длины олиго праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1020"/>
-        <location filename="../src/Primer3Dialog.ui" line="1046"/>
-        <location filename="../src/Primer3Dialog.ui" line="1131"/>
-        <location filename="../src/Primer3Dialog.ui" line="1144"/>
+        <location filename="../src/Primer3Dialog.ui" line="1023"/>
+        <location filename="../src/Primer3Dialog.ui" line="1049"/>
+        <location filename="../src/Primer3Dialog.ui" line="1134"/>
+        <location filename="../src/Primer3Dialog.ui" line="1147"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum melting temperatures (Celsius) for a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick oligos with temperatures smaller than Min or larger than Max, and with default conditions will try to pick primers with melting temperatures close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная температуры плавления олиго праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1274"/>
-        <location filename="../src/Primer3Dialog.ui" line="1652"/>
+        <location filename="../src/Primer3Dialog.ui" line="1277"/>
+        <location filename="../src/Primer3Dialog.ui" line="1655"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1343"/>
-        <location filename="../src/Primer3Dialog.ui" line="1531"/>
+        <location filename="../src/Primer3Dialog.ui" line="1346"/>
+        <location filename="../src/Primer3Dialog.ui" line="1534"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1247"/>
-        <location filename="../src/Primer3Dialog.ui" line="1455"/>
-        <location filename="../src/Primer3Dialog.ui" line="1487"/>
-        <location filename="../src/Primer3Dialog.ui" line="1509"/>
+        <location filename="../src/Primer3Dialog.ui" line="1250"/>
+        <location filename="../src/Primer3Dialog.ui" line="1458"/>
+        <location filename="../src/Primer3Dialog.ui" line="1490"/>
+        <location filename="../src/Primer3Dialog.ui" line="1512"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная температуры плавления ампликона.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="991"/>
-        <location filename="../src/Primer3Dialog.ui" line="1177"/>
+        <location filename="../src/Primer3Dialog.ui" line="994"/>
+        <location filename="../src/Primer3Dialog.ui" line="1180"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum acceptable (unsigned) difference between the melting temperatures of the left and right primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое различие между температурами плавления левого и правого праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1111"/>
+        <location filename="../src/Primer3Dialog.ui" line="1114"/>
         <source>Table of thermodynamic parameters</source>
         <translation>Таблица термодинамических параметров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4287"/>
+        <location filename="../src/Primer3Dialog.ui" line="4290"/>
         <source>Primers</source>
         <translation>Праймеры</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4943"/>
+        <location filename="../src/Primer3Dialog.ui" line="4946"/>
         <source>Primer Pairs</source>
         <translation>Пары праймеров</translation>
     </message>
@@ -185,18 +185,18 @@
         <translation type="vanished">Гибридизация олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6312"/>
+        <location filename="../src/Primer3Dialog.ui" line="6303"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции можно задать настройки для аннотаций.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1617"/>
+        <location filename="../src/Primer3Dialog.ui" line="1620"/>
         <source>Breslauer et. al 1986</source>
         <translation>Breslauer et. al 1986</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1622"/>
-        <location filename="../src/Primer3Dialog.ui" line="2546"/>
+        <location filename="../src/Primer3Dialog.ui" line="1625"/>
+        <location filename="../src/Primer3Dialog.ui" line="2549"/>
         <source>SantaLucia 1998</source>
         <translation>SantaLucia 1998</translation>
     </message>
@@ -214,12 +214,12 @@
         <translation type="vanished">Диапазоны размера продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="803"/>
+        <location filename="../src/Primer3Dialog.ui" line="806"/>
         <source>Mispriming/Repeat library</source>
         <translation>Библиотека повторов/ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="767"/>
+        <location filename="../src/Primer3Dialog.ui" line="770"/>
         <source>Number to return</source>
         <translation>Результатов не более</translation>
     </message>
@@ -228,7 +228,7 @@
         <translation type="vanished">Максимальный повтор ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2103"/>
+        <location filename="../src/Primer3Dialog.ui" line="2106"/>
         <source>Max template mispriming</source>
         <translation>Максимальный шаблон ошибочного праймирования</translation>
     </message>
@@ -241,7 +241,7 @@
         <translation type="vanished">Парный максимальный повтор ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2180"/>
+        <location filename="../src/Primer3Dialog.ui" line="2183"/>
         <source>Pair max template mispriming</source>
         <translation>Парный максимальный шаблон ошибочного праймирования</translation>
     </message>
@@ -270,23 +270,23 @@
         <translation>или использовать этот правый праймер (5&apos; в 3&apos; в противоположном направлении)</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1403"/>
+        <location filename="../src/Primer3Dialog.ui" line="1406"/>
         <source>Primer size</source>
         <translation>Размер праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1250"/>
-        <location filename="../src/Primer3Dialog.ui" line="5010"/>
+        <location filename="../src/Primer3Dialog.ui" line="1253"/>
+        <location filename="../src/Primer3Dialog.ui" line="5013"/>
         <source>Product Tm</source>
         <translation>Т. плав. продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1278"/>
+        <location filename="../src/Primer3Dialog.ui" line="1281"/>
         <source>Primer GC%</source>
         <translation>GC состав %</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="994"/>
+        <location filename="../src/Primer3Dialog.ui" line="997"/>
         <source>Max Tm difference</source>
         <translation>Максимальная разница Т. плав</translation>
     </message>
@@ -299,17 +299,17 @@
         <translation type="vanished">Максимальная 3&apos; комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2849"/>
+        <location filename="../src/Primer3Dialog.ui" line="2852"/>
         <source>Inside target penalty</source>
         <translation>Внутренний целевой штраф</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2404"/>
+        <location filename="../src/Primer3Dialog.ui" line="2407"/>
         <source>Outside target penalty</source>
         <translation>Внешний целевой штраф</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2491"/>
+        <location filename="../src/Primer3Dialog.ui" line="2494"/>
         <source>Max poly-X</source>
         <translation>Максимум poly-X</translation>
     </message>
@@ -318,13 +318,13 @@
         <translation type="vanished">Индекс первого основания</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2872"/>
+        <location filename="../src/Primer3Dialog.ui" line="2875"/>
         <source>CG clamp</source>
         <translation>Зажим CG</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2534"/>
-        <location filename="../src/Primer3Dialog.ui" line="2745"/>
+        <location filename="../src/Primer3Dialog.ui" line="2537"/>
+        <location filename="../src/Primer3Dialog.ui" line="2748"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies the salt correction formula for the melting temperature calculation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Задает коррекционную формулу для расчета температуры плавления.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -337,7 +337,7 @@
         <translation type="vanished"> Разрешить неоднозначные символы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3096"/>
+        <location filename="../src/Primer3Dialog.ui" line="3099"/>
         <source>Show debugging info</source>
         <translation>Показывать отладочную информацию</translation>
     </message>
@@ -358,30 +358,30 @@
         <translation type="vanished">GC% гибридизации олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3289"/>
-        <location filename="../src/Primer3Dialog.ui" line="3431"/>
-        <location filename="../src/Primer3Dialog.ui" line="3496"/>
-        <location filename="../src/Primer3Dialog.ui" line="3534"/>
+        <location filename="../src/Primer3Dialog.ui" line="3292"/>
+        <location filename="../src/Primer3Dialog.ui" line="3434"/>
+        <location filename="../src/Primer3Dialog.ui" line="3499"/>
+        <location filename="../src/Primer3Dialog.ui" line="3537"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр размера праймера для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3325"/>
-        <location filename="../src/Primer3Dialog.ui" line="3373"/>
-        <location filename="../src/Primer3Dialog.ui" line="3421"/>
-        <location filename="../src/Primer3Dialog.ui" line="3567"/>
+        <location filename="../src/Primer3Dialog.ui" line="3328"/>
+        <location filename="../src/Primer3Dialog.ui" line="3376"/>
+        <location filename="../src/Primer3Dialog.ui" line="3424"/>
+        <location filename="../src/Primer3Dialog.ui" line="3570"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tm олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3357"/>
-        <location filename="../src/Primer3Dialog.ui" line="3461"/>
+        <location filename="../src/Primer3Dialog.ui" line="3360"/>
+        <location filename="../src/Primer3Dialog.ui" line="3464"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3344"/>
-        <location filename="../src/Primer3Dialog.ui" line="3518"/>
+        <location filename="../src/Primer3Dialog.ui" line="3347"/>
+        <location filename="../src/Primer3Dialog.ui" line="3521"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -434,37 +434,37 @@
         <translation type="vanished">3&apos; комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6069"/>
+        <location filename="../src/Primer3Dialog.ui" line="6060"/>
         <source>RT-PCR</source>
         <translation>RT-PCR</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6081"/>
+        <location filename="../src/Primer3Dialog.ui" line="6072"/>
         <source>Design primers for RT-PCR analysis</source>
         <translation>Дизайн праймеров для анализа RT-PCR</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6101"/>
+        <location filename="../src/Primer3Dialog.ui" line="6092"/>
         <source>Exon annotation name:</source>
         <translation>Имя экзон аннотации:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6111"/>
+        <location filename="../src/Primer3Dialog.ui" line="6102"/>
         <source>exon</source>
         <translation>exon</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6136"/>
+        <location filename="../src/Primer3Dialog.ui" line="6127"/>
         <source>Minimum exon junction overlap size</source>
         <translation>Минимальный размер перекрытия соединения экзона</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6200"/>
+        <location filename="../src/Primer3Dialog.ui" line="6191"/>
         <source>Exon range:</source>
         <translation>Диапазон экзона:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6247"/>
+        <location filename="../src/Primer3Dialog.ui" line="6238"/>
         <source>Max number of pairs to query:</source>
         <translation>Максимальное число пар для запроса:</translation>
     </message>
@@ -474,42 +474,46 @@
         <translation>Минимальное качество последовательности:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5991"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the individual primer self binding value as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Self Complementarity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the individual primer self binding value as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Self Complementarity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="5988"/>
         <source>Min 3&apos; sequence quality:</source>
         <translation>Минимальное 3&apos;качество последовательности:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6017"/>
+        <location filename="../src/Primer3Dialog.ui" line="6011"/>
         <source>Sequence quality range min:</source>
         <translation>Минимум интервала качества последовательности:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6043"/>
+        <location filename="../src/Primer3Dialog.ui" line="6034"/>
         <source>Sequence quality range max:</source>
         <translation>Максимум интервала качества последовательности:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6360"/>
+        <location filename="../src/Primer3Dialog.ui" line="6351"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6380"/>
+        <location filename="../src/Primer3Dialog.ui" line="6371"/>
         <source>Save settings</source>
         <translation>Сохранить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6387"/>
+        <location filename="../src/Primer3Dialog.ui" line="6378"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6394"/>
+        <location filename="../src/Primer3Dialog.ui" line="6385"/>
         <source>Reset form</source>
         <translation>Сброс параметров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6401"/>
+        <location filename="../src/Primer3Dialog.ui" line="6392"/>
         <source>Pick primers</source>
         <translation>Подобрать</translation>
     </message>
@@ -518,8 +522,8 @@
         <translation type="vanished">Концентрация одновалентных катионов</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1108"/>
-        <location filename="../src/Primer3Dialog.ui" line="1613"/>
+        <location filename="../src/Primer3Dialog.ui" line="1111"/>
+        <location filename="../src/Primer3Dialog.ui" line="1616"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specifies details of melting temperature calculation.&lt;/p&gt;&lt;p&gt;First method uses the table of thermodynamic parameters from the paper [Breslauer KJ, et. al (1986), Proc Natl Acad Sci 83:4746-50 http://dx.doi.org/10.1073/pnas.83.11.3746]&lt;/p&gt;&lt;p&gt;Second method (recommended) was suggested in the paper [SantaLucia JR (1998), Proc Natl Acad Sci 95:1460-65 http://dx.doi.org/10.1073/pnas.95.4.1460].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Указывает детали расчета температуры плавления.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -532,23 +536,23 @@
         <translation type="vanished">Концентрация двухвалентных катионов</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2748"/>
+        <location filename="../src/Primer3Dialog.ui" line="2751"/>
         <source>Salt correction formula</source>
         <translation>Коррекционная формула</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2537"/>
-        <location filename="../src/Primer3Dialog.ui" line="2541"/>
+        <location filename="../src/Primer3Dialog.ui" line="2540"/>
+        <location filename="../src/Primer3Dialog.ui" line="2544"/>
         <source>Schildkraut and Lifson 1965</source>
         <translation>Schildkraut and Lifson 1965</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2551"/>
+        <location filename="../src/Primer3Dialog.ui" line="2554"/>
         <source>Owczarzy et. 2004</source>
         <translation>Owczarzy et. 2004</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2882"/>
+        <location filename="../src/Primer3Dialog.ui" line="2885"/>
         <source>Concentration of dNTPs</source>
         <translation>Концентрация dNTP</translation>
     </message>
@@ -561,56 +565,56 @@
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная комплементарность.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2778"/>
-        <location filename="../src/Primer3Dialog.ui" line="2895"/>
+        <location filename="../src/Primer3Dialog.ui" line="2781"/>
+        <location filename="../src/Primer3Dialog.ui" line="2898"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of unknown bases (N) allowable in any primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное число неизвестных оснований (N), допустимых в праймере.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2488"/>
-        <location filename="../src/Primer3Dialog.ui" line="2810"/>
+        <location filename="../src/Primer3Dialog.ui" line="2491"/>
+        <location filename="../src/Primer3Dialog.ui" line="2813"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная допустимая для мононуклеотидного повтора, например AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2401"/>
-        <location filename="../src/Primer3Dialog.ui" line="2703"/>
+        <location filename="../src/Primer3Dialog.ui" line="2404"/>
+        <location filename="../src/Primer3Dialog.ui" line="2706"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and does not overlap the target, then multiply this value times the number of nucleotide positions from the 3&apos; end to the (unique) target to get the &apos;position penalty&apos;. The effect of this parameter is to allow Primer3 to include nearness to the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Внешний целевой штраф.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2609"/>
-        <location filename="../src/Primer3Dialog.ui" line="2732"/>
+        <location filename="../src/Primer3Dialog.ui" line="2612"/>
+        <location filename="../src/Primer3Dialog.ui" line="2735"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter is the index of the first base in the input sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Индекс первого основания во входной последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2869"/>
-        <location filename="../src/Primer3Dialog.ui" line="2914"/>
+        <location filename="../src/Primer3Dialog.ui" line="2872"/>
+        <location filename="../src/Primer3Dialog.ui" line="2917"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Require the specified number of consecutive Gs and Cs at the 3&apos; end of both the left and right primer.&lt;/p&gt;&lt;p&gt;This parameter has no effect on the internal oligo if one is requested.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Зажим CG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2303"/>
-        <location filename="../src/Primer3Dialog.ui" line="2985"/>
+        <location filename="../src/Primer3Dialog.ui" line="2306"/>
+        <location filename="../src/Primer3Dialog.ui" line="2988"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar (mM) concentration of monovalent salt cations (usually KCl) in the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to calculate oligo and primer melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация одновалентных катионов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2378"/>
-        <location filename="../src/Primer3Dialog.ui" line="2565"/>
+        <location filename="../src/Primer3Dialog.ui" line="2381"/>
+        <location filename="../src/Primer3Dialog.ui" line="2568"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of divalent salt cations (usually MgCl^(2+)) in the PCR.&lt;/p&gt;&lt;p&gt;Primer3 converts concentration of divalent cations to concentration of monovalent cations using following formula:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;[Monovalent cations] = [Monovalent cations] + 120*(([divalent cations] - [dNTP])^0.5)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In addition, if the specified concentration of dNTPs is larger than the concentration of divalent cations then the effect of the divalent cations is not considered.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация двухвалентных катионов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2590"/>
-        <location filename="../src/Primer3Dialog.ui" line="2879"/>
+        <location filename="../src/Primer3Dialog.ui" line="2593"/>
+        <location filename="../src/Primer3Dialog.ui" line="2882"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The millimolar concentration of the sum of all deoxyribonucleotide triphosphates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация dNTP.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2342"/>
-        <location filename="../src/Primer3Dialog.ui" line="3001"/>
+        <location filename="../src/Primer3Dialog.ui" line="2345"/>
+        <location filename="../src/Primer3Dialog.ui" line="3004"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A value to use as nanomolar (nM) concentration of each annealing oligo over the course the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to esimate oligo melting temperatures.&lt;/p&gt;&lt;p&gt;The default (50nM) works well with the standard protocol used at the Whitehead/MIT Center for Genome Research --0.5 microliters of 20 micromolar concentration for each primer in a 20 microliter reaction with 10 nanograms template, 0.025 units/microliter Taq polymerase in 0.1 mM each dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) using 35 cycles with an annealing temperature of 56 degrees Celsius.&lt;/p&gt;&lt;p&gt;The value of this parameter is less than the actual concentration of oligos in the initial reaction mix because  it is the concentration of annealing oligos, which in turn depends on the amount of template (including PCR product) in a given cycle. This concentration increases a great deal during a PCR; fortunately PCR seems quite robust for a variety of oligo melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация отжига олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -623,17 +627,17 @@
         <translation type="vanished">Не относить неоднозначности кода в библиотеке к консенсусу</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3179"/>
+        <location filename="../src/Primer3Dialog.ui" line="3182"/>
         <source>Lowercase masking</source>
         <translation>Строчная маскировка</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3217"/>
+        <location filename="../src/Primer3Dialog.ui" line="3220"/>
         <source>Internal Oligo</source>
         <translation>Внутреннее олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3220"/>
+        <location filename="../src/Primer3Dialog.ui" line="3223"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameters governing choice of internal oligos are analogous to the parameters governing choice of primer pairs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметры, регулирующие выбор внутренних олиго аналогичны параметрам, регулирующих выбор пар праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -642,31 +646,31 @@
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Исключаемые олиго регионы.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3386"/>
-        <location filename="../src/Primer3Dialog.ui" line="3441"/>
-        <location filename="../src/Primer3Dialog.ui" line="3448"/>
-        <location filename="../src/Primer3Dialog.ui" line="3547"/>
+        <location filename="../src/Primer3Dialog.ui" line="3389"/>
+        <location filename="../src/Primer3Dialog.ui" line="3444"/>
+        <location filename="../src/Primer3Dialog.ui" line="3451"/>
+        <location filename="../src/Primer3Dialog.ui" line="3550"/>
         <source>Min:</source>
         <translation>Мин:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3305"/>
-        <location filename="../src/Primer3Dialog.ui" line="3393"/>
-        <location filename="../src/Primer3Dialog.ui" line="3414"/>
-        <location filename="../src/Primer3Dialog.ui" line="3612"/>
+        <location filename="../src/Primer3Dialog.ui" line="3308"/>
+        <location filename="../src/Primer3Dialog.ui" line="3396"/>
+        <location filename="../src/Primer3Dialog.ui" line="3417"/>
+        <location filename="../src/Primer3Dialog.ui" line="3615"/>
         <source>Opt:</source>
         <translation>Опт:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3312"/>
-        <location filename="../src/Primer3Dialog.ui" line="3400"/>
-        <location filename="../src/Primer3Dialog.ui" line="3407"/>
-        <location filename="../src/Primer3Dialog.ui" line="3554"/>
+        <location filename="../src/Primer3Dialog.ui" line="3315"/>
+        <location filename="../src/Primer3Dialog.ui" line="3403"/>
+        <location filename="../src/Primer3Dialog.ui" line="3410"/>
+        <location filename="../src/Primer3Dialog.ui" line="3557"/>
         <source>Max:</source>
         <translation>Макс:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3902"/>
+        <location filename="../src/Primer3Dialog.ui" line="3905"/>
         <source>Max #Ns</source>
         <translation>Макс N</translation>
     </message>
@@ -715,55 +719,55 @@
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer DNA concentration for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4269"/>
+        <location filename="../src/Primer3Dialog.ui" line="4272"/>
         <source>Penalty Weights</source>
         <translation>Веса штрафов</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4441"/>
+        <location filename="../src/Primer3Dialog.ui" line="4444"/>
         <source>Tm</source>
         <translation>Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4353"/>
+        <location filename="../src/Primer3Dialog.ui" line="4356"/>
         <source>Size  </source>
         <translation>Размер  </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4299"/>
+        <location filename="../src/Primer3Dialog.ui" line="4302"/>
         <source>GC%</source>
         <translation>GC%</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4306"/>
-        <location filename="../src/Primer3Dialog.ui" line="4343"/>
-        <location filename="../src/Primer3Dialog.ui" line="4360"/>
-        <location filename="../src/Primer3Dialog.ui" line="4494"/>
-        <location filename="../src/Primer3Dialog.ui" line="4952"/>
-        <location filename="../src/Primer3Dialog.ui" line="5057"/>
-        <location filename="../src/Primer3Dialog.ui" line="5432"/>
-        <location filename="../src/Primer3Dialog.ui" line="5439"/>
-        <location filename="../src/Primer3Dialog.ui" line="5517"/>
-        <location filename="../src/Primer3Dialog.ui" line="5600"/>
+        <location filename="../src/Primer3Dialog.ui" line="4309"/>
+        <location filename="../src/Primer3Dialog.ui" line="4346"/>
+        <location filename="../src/Primer3Dialog.ui" line="4363"/>
+        <location filename="../src/Primer3Dialog.ui" line="4497"/>
+        <location filename="../src/Primer3Dialog.ui" line="4955"/>
+        <location filename="../src/Primer3Dialog.ui" line="5060"/>
+        <location filename="../src/Primer3Dialog.ui" line="5435"/>
+        <location filename="../src/Primer3Dialog.ui" line="5442"/>
+        <location filename="../src/Primer3Dialog.ui" line="5520"/>
+        <location filename="../src/Primer3Dialog.ui" line="5603"/>
         <source>Lt:</source>
         <translation>Lt:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4329"/>
-        <location filename="../src/Primer3Dialog.ui" line="4336"/>
-        <location filename="../src/Primer3Dialog.ui" line="4415"/>
-        <location filename="../src/Primer3Dialog.ui" line="4501"/>
-        <location filename="../src/Primer3Dialog.ui" line="5033"/>
-        <location filename="../src/Primer3Dialog.ui" line="5050"/>
-        <location filename="../src/Primer3Dialog.ui" line="5494"/>
-        <location filename="../src/Primer3Dialog.ui" line="5524"/>
-        <location filename="../src/Primer3Dialog.ui" line="5583"/>
-        <location filename="../src/Primer3Dialog.ui" line="5607"/>
+        <location filename="../src/Primer3Dialog.ui" line="4332"/>
+        <location filename="../src/Primer3Dialog.ui" line="4339"/>
+        <location filename="../src/Primer3Dialog.ui" line="4418"/>
+        <location filename="../src/Primer3Dialog.ui" line="4504"/>
+        <location filename="../src/Primer3Dialog.ui" line="5036"/>
+        <location filename="../src/Primer3Dialog.ui" line="5053"/>
+        <location filename="../src/Primer3Dialog.ui" line="5497"/>
+        <location filename="../src/Primer3Dialog.ui" line="5527"/>
+        <location filename="../src/Primer3Dialog.ui" line="5586"/>
+        <location filename="../src/Primer3Dialog.ui" line="5610"/>
         <source>Gt:</source>
         <translation>Gt:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4718"/>
+        <location filename="../src/Primer3Dialog.ui" line="4721"/>
         <source>#N&apos;s</source>
         <translation>N</translation>
     </message>
@@ -772,23 +776,23 @@
         <translation type="vanished">Ошибочное праймирование</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4770"/>
-        <location filename="../src/Primer3Dialog.ui" line="5946"/>
+        <location filename="../src/Primer3Dialog.ui" line="4773"/>
+        <location filename="../src/Primer3Dialog.ui" line="5949"/>
         <source>Sequence quality</source>
         <translation>Качество последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4799"/>
+        <location filename="../src/Primer3Dialog.ui" line="4802"/>
         <source>End sequence quality</source>
         <translation>Качество конца последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4828"/>
+        <location filename="../src/Primer3Dialog.ui" line="4831"/>
         <source>Position penalty</source>
         <translation>Позиция штрафа</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4857"/>
+        <location filename="../src/Primer3Dialog.ui" line="4860"/>
         <source>End stability</source>
         <translation>Стабильность конца</translation>
     </message>
@@ -797,7 +801,7 @@
         <translation type="vanished">Шаблон ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5043"/>
+        <location filename="../src/Primer3Dialog.ui" line="5046"/>
         <source>Product size</source>
         <translation>Размер продукта</translation>
     </message>
@@ -842,27 +846,27 @@
         <translation type="vanished">Качество последовательности гибридизации олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6093"/>
+        <location filename="../src/Primer3Dialog.ui" line="6084"/>
         <source>mRNA sequence</source>
         <translation>Последовательность mRNA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6148"/>
+        <location filename="../src/Primer3Dialog.ui" line="6139"/>
         <source>At 5&apos; side (bp):</source>
         <translation>Со стороны 5&apos; (нк):</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6178"/>
+        <location filename="../src/Primer3Dialog.ui" line="6169"/>
         <source>At 3&apos;side (bp)</source>
         <translation>Со стороны 3&apos; (нк)</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6235"/>
+        <location filename="../src/Primer3Dialog.ui" line="6226"/>
         <source>Primer product must span at least one intron on the corresponding genomic DNA</source>
         <translation>Продук праймера должен охватывать по крайней мере один интрон на соответствующей геномной ДНК</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5937"/>
+        <location filename="../src/Primer3Dialog.ui" line="5940"/>
         <source>Sequence Quality</source>
         <translation>Качество последовательности</translation>
     </message>
@@ -1026,47 +1030,47 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Подобласть данной последовательности, в которой нужно выбрать праймеры. Например, часто первая дюжина или около того символов последовательности является вектором и должна быть исключена из рассмотрения. Значение этого параметра имеет вид &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;начало&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;длина&lt;/span&gt;&lt;/p&gt;&lt;p&gt;где &lt;span style=&quot; font-weight:700;&quot;&gt;начало&lt;/span&gt; это индекс первого символа для рассмотрения, а &lt;span style=&quot; font-weight:700;&quot;&gt;длина&lt;/span&gt; - количество последующих символов в области выбора праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="602"/>
+        <location filename="../src/Primer3Dialog.ui" line="504"/>
         <source>Force Right Primer End</source>
         <translation>Принудительный конец правого праймера</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="363"/>
-        <location filename="../src/Primer3Dialog.ui" line="583"/>
+        <location filename="../src/Primer3Dialog.ui" line="517"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Forces the 3&apos; end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the left primer can be anywhere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Заставляет 3&apos;-конец левого праймера находиться в указанной позиции. Праймеры также выбираются, если они нарушают определенные ограничения. Значение по умолчанию указывает, что конец левого праймера может быть где угодно.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="353"/>
-        <location filename="../src/Primer3Dialog.ui" line="650"/>
+        <location filename="../src/Primer3Dialog.ui" line="552"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Forces the 5&apos; end of the left primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the left primer can be anywhere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Заставляет 5&apos;-конец левого праймера находиться в указанной позиции. Праймеры также выбираются, если они нарушают определенные ограничения. Значение по умолчанию указывает, что конец левого праймера может быть где угодно.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="383"/>
-        <location filename="../src/Primer3Dialog.ui" line="732"/>
+        <location filename="../src/Primer3Dialog.ui" line="594"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 5&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Пять совпадений на 5&apos; конце&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="725"/>
+        <location filename="../src/Primer3Dialog.ui" line="604"/>
         <source>Five Matches on Primer&apos;s 3&apos;</source>
         <translation>Пять совпадений на 3&apos; конце</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="570"/>
-        <location filename="../src/Primer3Dialog.ui" line="708"/>
+        <location filename="../src/Primer3Dialog.ui" line="618"/>
+        <location filename="../src/Primer3Dialog.ui" line="625"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 3&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 3&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="711"/>
+        <location filename="../src/Primer3Dialog.ui" line="628"/>
         <source>Five Matches on Internal Oligo&apos;s 3&apos;</source>
         <translation>Пять совпадений на 3&apos; конце Внутренного олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="329"/>
-        <location filename="../src/Primer3Dialog.ui" line="539"/>
+        <location filename="../src/Primer3Dialog.ui" line="635"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter should be considered EXPERIMENTAL at this point. Please check the output carefully; some erroneous inputs might cause an error in Primer3.&lt;br&gt;&lt;br&gt;
 Index of the first base of a start codon. This parameter allows Primer3 to select primer pairs to create in-frame amplicons e.g. to create a template for a fusion protein. Primer3 will attempt to select an in-frame left primer, ideally starting at or to the left of the start codon, or to the right if necessary. Negative values of this parameter are legal if the actual start codon is to the left of available sequence. If this parameter is non-negative Primer3 signals an error if the codon at the position specified by this parameter is not an ATG. A value less than or equal to -10^6 indicates that Primer3 should ignore this parameter.&lt;br&gt;&lt;br&gt;
 Primer3 selects the position of the right primer by scanning right from the left primer for a stop codon. Ideally the right primer will end at or after the stop codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1075,13 +1079,14 @@ Primer3 selects the position of the right primer by scanning right from the left
 Primer3 выбирает положение правого праймера, сканируя справа от левого праймера стоп-кодон. В идеале правильный праймер должен заканчиваться на стоп-кодоне или после него.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="628"/>
+        <location filename="../src/Primer3Dialog.ui" line="675"/>
         <location filename="../src/Primer3Dialog.ui" line="698"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Forces the 5&apos; end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the start of the right primer can be anywhere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Заставляет 5&apos;-конец правого праймера находиться в указанной позиции. Праймеры также выбираются, если они нарушают определенные ограничения. Значение по умолчанию указывает, что конец левого праймера может быть где угодно.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="718"/>
+        <location filename="../src/Primer3Dialog.ui" line="601"/>
+        <location filename="../src/Primer3Dialog.ui" line="691"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discards all primers which do not match this match sequence at the 3&apos; end. Similar parameter to &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 5&apos;&lt;/span&gt;, but limits the 3&apos; end. (New in v. 2.3.6, added by A. Untergasser.)&lt;br/&gt;&lt;br/&gt;The match sequence must be 5 nucletides long and can contain the following letters:&lt;/p&gt;&lt;p&gt;N Any nucleotide&lt;br/&gt;A Adenine&lt;br/&gt;G Guanine&lt;br/&gt;C Cytosine&lt;br/&gt;T Thymine&lt;br/&gt;R Purine (A or G)&lt;br/&gt;Y Pyrimidine (C or T)&lt;br/&gt;W Weak (A or T)&lt;br/&gt;S Strong (G or C)&lt;br/&gt;M Amino (A or C)&lt;br/&gt;K Keto (G or T)&lt;br/&gt;B Not A (G or C or T)&lt;br/&gt;H Not G (A or C or T)&lt;br/&gt;D Not C (A or G or T)&lt;br/&gt;V Not T (A or G or C)&lt;/p&gt;&lt;p&gt;Any primer which will not match the entire match sequence at the 5&apos; end will be discarded and not evaluated. Setting strict requirements here will result in low quality primers due to the high numbers of primers discarded at this step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Отбрасывает все праймеры, которые не соответствуют этой последовательности соответствия на 3&apos;-конце. Аналогичный параметр для &lt;span style=&quot; font-weight:700;&quot;&gt;Пять совпадений на 5&apos; конце&lt;/span&gt;, но ограничивает 3&apos;-конец. (Новый с v. 2.3.6, автор A. Untergasser.)&lt;br/&gt;&lt;br/&gt;Последовательность должна состоять из 5 нуклеотидов и может содержать следующие буквы:&lt;/p&gt;&lt;p&gt;N Любой нуклеотид&lt;br/&gt;A Аденин&lt;br/&gt;G Гуанин&lt;br/&gt;C Цитозин&lt;br/&gt;T Тимин&lt;br/&gt;R Пурин (A или G)&lt;br/&gt;Y Пиримидин (C или T)&lt;br/&gt;W Слабый (A или T)&lt;br/&gt;S Сильный (G или C)&lt;br/&gt;M Амино (A или C)&lt;br/&gt;K Кето (G или T)&lt;br/&gt;B не A (G или C или T)&lt;br/&gt;H не G (A или C или T)&lt;br/&gt;D не C (A или G или T)&lt;br/&gt;V не T (A или G или C)&lt;/p&gt;&lt;p&gt;Любой праймер, который не будет соответствовать всей последовательности соответствия на 5&apos;-конце, будет отброшен и не будет оцениваться. Установление здесь строгих требований приведет к получению праймеров низкого качества из-за большого количества праймеров, отбрасываемых на этом этапе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1091,14 +1096,14 @@ Primer3 выбирает положение правого праймера, с�
         <translation>Принудительный конец правого праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="507"/>
-        <location filename="../src/Primer3Dialog.ui" line="599"/>
+        <location filename="../src/Primer3Dialog.ui" line="501"/>
+        <location filename="../src/Primer3Dialog.ui" line="714"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Forces the 3&apos; end of the right primer to be at the indicated position. Primers are also picked if they violate certain constraints. The default value indicates that the end of the right primer can be anywhere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Заставляет 3&apos;-конец правого праймера находиться в указанной позиции. Праймеры также выбираются, если они нарушают определенные ограничения. Значение по умолчанию указывает, что конец левого праймера может быть где угодно.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="341"/>
-        <location filename="../src/Primer3Dialog.ui" line="679"/>
+        <location filename="../src/Primer3Dialog.ui" line="730"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The sequence of the start codon, by default ATG. Some bacteria use different start codons, this tag allows to specify alternative start codons.
 
 Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1107,1084 +1112,1044 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 Любой триплет может быть использован в качестве стартового кодона.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="684"/>
+        <location filename="../src/Primer3Dialog.ui" line="735"/>
         <source>ATG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="757"/>
+        <location filename="../src/Primer3Dialog.ui" line="760"/>
         <source>Product Size Ranges</source>
         <translation>Диапазоны размеров продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="780"/>
+        <location filename="../src/Primer3Dialog.ui" line="783"/>
         <source>Max Library Mispriming</source>
         <translation>Максимальное несоответствие бибилотеке праймеров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="849"/>
+        <location filename="../src/Primer3Dialog.ui" line="852"/>
         <source>Max 3&apos; Stability</source>
         <translation>Максимальная стабильность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="916"/>
+        <location filename="../src/Primer3Dialog.ui" line="919"/>
         <source>Pair Max Library Mispriming</source>
         <translation>Максимальное несоответствие библиотеке праймеров (пары)</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1735"/>
-        <location filename="../src/Primer3Dialog.ui" line="1822"/>
+        <location filename="../src/Primer3Dialog.ui" line="1738"/>
+        <location filename="../src/Primer3Dialog.ui" line="1825"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the most stable monomer structure of internal oligo calculated by thermodynamic approach. The hairpin loops, bulge loops, internal loops, internal single mismatches, dangling ends, terminal mismatches have been considered. This parameter is calculated only if &lt;span style=&quot; font-weight:700;&quot;&gt;Use Thermodynamic Oligo Alignment&lt;/span&gt; is checked. The default value is 10 degrees lower than the default value of &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Tm Min&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Были рассмотрены петли-шпильки, петли-выпуклости, внутренние петли, внутренние одиночные несовпадения, свисающие концы, концевые несовпадения. Этот параметр рассчитывается только в том случае, если &lt;span style=&quot; font-weight:700;&quot;&gt;Использовать Термодинамическое Олигонуклеотидное Выравнивание&lt;/span&gt; отмечено. Значение по умолчанию на 10 градусов ниже, чем значение по умолчанию &lt;span style=&quot; font-weight:700;&quot;&gt;Миннимамльная Т. плав. праймера&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1095"/>
-        <location filename="../src/Primer3Dialog.ui" line="1264"/>
+        <location filename="../src/Primer3Dialog.ui" line="1098"/>
+        <location filename="../src/Primer3Dialog.ui" line="1267"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The annealing temperature (Celsius) used in the PCR reaction. Usually it is chosen up to 10°C below the melting temperature of the primers. If provided, Primer3 will calculate the fraction of primers bound at the provided annealing temperature for each oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Температура отжига (по Цельсию), используемая в реакции ПЦР. Обычно ее выбирают на 10°С ниже температуры плавления праймеров. Если задано, Primer3 вычислит долю праймеров, связанных при указанной температуре отжига для каждого олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1157"/>
+        <location filename="../src/Primer3Dialog.ui" line="1160"/>
         <source>Primer Bound</source>
         <translation>Связь праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1154"/>
-        <location filename="../src/Primer3Dialog.ui" line="1210"/>
-        <location filename="../src/Primer3Dialog.ui" line="1417"/>
-        <location filename="../src/Primer3Dialog.ui" line="1630"/>
+        <location filename="../src/Primer3Dialog.ui" line="1157"/>
+        <location filename="../src/Primer3Dialog.ui" line="1213"/>
+        <location filename="../src/Primer3Dialog.ui" line="1420"/>
+        <location filename="../src/Primer3Dialog.ui" line="1633"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum acceptable fraction of primer bound at &lt;span style=&quot; font-weight:700;&quot;&gt;Annealing Temperature&lt;/span&gt; for a primer oligo in percent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная допустимая доля Связи праймера при &lt;span style=&quot; font-weight:700;&quot;&gt;Температуре отжига&lt;/span&gt; для олигонуклеотида в процентах.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1267"/>
+        <location filename="../src/Primer3Dialog.ui" line="1270"/>
         <source>Annealing Temperature</source>
         <translation>Температура Отжига</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1691"/>
+        <location filename="../src/Primer3Dialog.ui" line="1694"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use thermodynamic models to calculate the the propensity of oligos to form hairpins and dimers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Используйте термодинамические модели для расчета склонности олигонуклеотидов к образованию шпилек и димеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1694"/>
+        <location filename="../src/Primer3Dialog.ui" line="1697"/>
         <source>Use Thermodynamic Oligo Alignment</source>
         <translation>Использовать Термодинамическое Олигонуклеотидное Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1706"/>
-        <location filename="../src/Primer3Dialog.ui" line="1845"/>
+        <location filename="../src/Primer3Dialog.ui" line="1709"/>
+        <location filename="../src/Primer3Dialog.ui" line="1848"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as&lt;span style=&quot; font-weight:700;&quot;&gt; Max 3&apos; Self Complementarity&lt;/span&gt; but is based on thermodynamical approach - the stability of structure is analyzed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt; Максимальная Самокомплементарность на 3&apos;&lt;/span&gt;, но основанная на термодинамическом подходе - анализируется стабильность структуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1748"/>
-        <location filename="../src/Primer3Dialog.ui" line="2004"/>
+        <location filename="../src/Primer3Dialog.ui" line="1751"/>
+        <location filename="../src/Primer3Dialog.ui" line="2007"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Pair Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Парная Комплементарность на 3&apos;&lt;/span&gt; но для расчета значения (температуры плавления структуры) используется термодинамический подход&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1767"/>
+        <location filename="../src/Primer3Dialog.ui" line="1770"/>
         <source>Max 3&apos; Pair Complementarity</source>
         <translation>Максимальная Парная Комплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1774"/>
-        <location filename="../src/Primer3Dialog.ui" line="2014"/>
+        <location filename="../src/Primer3Dialog.ui" line="1777"/>
+        <location filename="../src/Primer3Dialog.ui" line="2017"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Describes the tendency of a primer to bind to itself (interfering with target sequence binding). It will score ANY binding occurring within the entire primer sequence.&lt;/p&gt;&lt;p&gt;It is the maximum allowable local alignment score when testing a single primer for (local) self-complementarity. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Описывает тенденцию праймера связываться с самим собой (препятствуя связыванию целевой последовательности). Будет оцениваться ЛЮБОЕ связывание, происходящее во всей последовательности праймера.
 &lt;/p&gt;&lt;p&gt;Это максимально допустимая оценка локального выравнивания при тестировании одного праймера на (локальную) самокомплементарность. Локальная самокомплементарность используется для предсказания тенденции праймеров отжигаться друг с другом, не обязательно вызывая самозаполнение в ПЦР. Система подсчета очков дает 1,00 за комплементарные символы, -0,25 за совпадение любого символа (или N) с N, -1,00 за несоответствие и -2,00 за гэп. Разрешаются только одинарные пары гэпов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1793"/>
+        <location filename="../src/Primer3Dialog.ui" line="1796"/>
         <source>TH: Max Self Complementarity</source>
         <translation>TH: Максимальная Самокомплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1790"/>
-        <location filename="../src/Primer3Dialog.ui" line="1806"/>
+        <location filename="../src/Primer3Dialog.ui" line="1793"/>
+        <location filename="../src/Primer3Dialog.ui" line="1809"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The same as &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; but all calculations are based on thermodynamical approach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность&lt;/span&gt; но все расчеты основаны на термодинамическом подходе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1825"/>
+        <location filename="../src/Primer3Dialog.ui" line="1828"/>
         <source>TH: Max Primer Hairpin	</source>
         <translation>TH: Максимальная шпилечная структура	</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1848"/>
+        <location filename="../src/Primer3Dialog.ui" line="1851"/>
         <source>TH: Max 3&apos; Self Complementarity</source>
         <translation>TH: Максимальная Самокомплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1871"/>
+        <location filename="../src/Primer3Dialog.ui" line="1874"/>
         <source>Max Pair Complementarity</source>
         <translation>Максимальная Парная Комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1891"/>
-        <location filename="../src/Primer3Dialog.ui" line="1920"/>
+        <location filename="../src/Primer3Dialog.ui" line="1894"/>
+        <location filename="../src/Primer3Dialog.ui" line="1923"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Describes the tendency of the left primer to bind to the right primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Описывает тенденцию левого праймера связываться с правым праймером.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1923"/>
+        <location filename="../src/Primer3Dialog.ui" line="1926"/>
         <source>TH: Max Pair Complementarity</source>
         <translation>TH: Максимальная Парная Комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1868"/>
-        <location filename="../src/Primer3Dialog.ui" line="1975"/>
+        <location filename="../src/Primer3Dialog.ui" line="1767"/>
+        <location filename="../src/Primer3Dialog.ui" line="1871"/>
+        <location filename="../src/Primer3Dialog.ui" line="1933"/>
+        <location filename="../src/Primer3Dialog.ui" line="1978"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Describes the tendency of the left primer to bind to the right primer. It is the maximum allowable local alignment score when testing for complementarity between left and right primers. It is similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Описывает тенденцию левого праймера связываться с правым праймером. Это максимально допустимая оценка локального выравнивания при тестировании на комплементарность между левым и правым праймерами. Это похоже на &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальную Самокомплементарность&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2024"/>
+        <location filename="../src/Primer3Dialog.ui" line="373"/>
+        <location filename="../src/Primer3Dialog.ui" line="611"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discards all primers which do not match this match sequence at the 3&apos; end. (New in v. 2.3.6, added by A. Untergasser.)&lt;br/&gt;&lt;br/&gt;The match sequence must be 5 nucletides long and can contain the following letters:&lt;/p&gt;&lt;p&gt;N Any nucleotide&lt;br/&gt;A Adenine&lt;br/&gt;G Guanine&lt;br/&gt;C Cytosine&lt;br/&gt;T Thymine&lt;br/&gt;R Purine (A or G)&lt;br/&gt;Y Pyrimidine (C or T)&lt;br/&gt;W Weak (A or T)&lt;br/&gt;S Strong (G or C)&lt;br/&gt;M Amino (A or C)&lt;br/&gt;K Keto (G or T)&lt;br/&gt;B Not A (G or C or T)&lt;br/&gt;H Not G (A or C or T)&lt;br/&gt;D Not C (A or G or T)&lt;br/&gt;V Not T (A or G or C)&lt;/p&gt;&lt;p&gt;Any primer which will not match the entire match sequence at the 5&apos; end will be discarded and not evaluated. Setting strict requirements here will result in low quality primers due to the high numbers of primers discarded at this step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Отбрасывает все праймеры, которые не соответствуют этой последовательности соответствия на 3&apos;-конце. (Новый с v. 2.3.6, автор A. Untergasser.)&lt;br/&gt;&lt;br/&gt;Последовательность должна состоять из 5 нуклеотидов и может содержать следующие буквы:&lt;/p&gt;&lt;p&gt;N Любой нуклеотид&lt;br/&gt;A Аденин&lt;br/&gt;G Гуанин&lt;br/&gt;C Цитозин&lt;br/&gt;T Тимин&lt;br/&gt;R Пурин (A или G)&lt;br/&gt;Y Пиримидин (C или T)&lt;br/&gt;W Слабый (A или T)&lt;br/&gt;S Сильный (G или C)&lt;br/&gt;M Амино (A или C)&lt;br/&gt;K Кето (G или T)&lt;br/&gt;B не A (G или C или T)&lt;br/&gt;H не G (A или C или T)&lt;br/&gt;D не C (A или G или T)&lt;br/&gt;V не T (A или G или C)&lt;/p&gt;&lt;p&gt;Любой праймер, который не будет соответствовать всей последовательности соответствия на 5&apos;-конце, будет отброшен и не будет оцениваться. Установление здесь строгих требований приведет к получению праймеров низкого качества из-за большого количества праймеров, отбрасываемых на этом этапе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="1962"/>
+        <location filename="../src/Primer3Dialog.ui" line="2027"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to bind the 3&apos;-END to a identical primer and scores the best binding it can find. This is critical for primer quality because it allows primers use itself as a target and amplify a short piece (forming a primer-dimer). These primers are then unable to bind and amplify the target sequence.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; is the maximum allowable 3&apos;-anchored global alignment score when testing a single primer for self-complementarity. The 3&apos;-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пытается связать 3&apos;-КОНЕЦ с идентичным праймером и оценивает лучшее связывание, которое может найти. Это имеет решающее значение для качества праймеров, поскольку позволяет праймерам использовать себя в качестве цели и амплифицировать короткий фрагмент (образуя праймер-димер). Затем эти праймеры не могут связываться и амплифицировать целевую последовательность.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos;&lt;/span&gt; это максимально допустимая оценка глобального выравнивания с 3&apos;-привязкой при тестировании одного праймера на самодополняемость. Оценка глобального выравнивания с 3&apos;-привязкой используется для прогнозирования вероятности ПЦР-праймирования димеров праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2007"/>
+        <location filename="../src/Primer3Dialog.ui" line="2010"/>
         <source>TH: Max 3&apos; Pair Complementarity</source>
         <translation>TH: Максимальная Парная Комплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2017"/>
+        <location filename="../src/Primer3Dialog.ui" line="2020"/>
         <source>Max Self Complementarity</source>
         <translation>Максимальная Самокомплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2027"/>
+        <location filename="../src/Primer3Dialog.ui" line="2030"/>
         <source>Max 3&apos; Self Complementarity</source>
         <translation>Максимальная Самокомплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2047"/>
+        <location filename="../src/Primer3Dialog.ui" line="2050"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use thermodynamic models to calculate the the propensity of oligos to anneal to undesired sites in the template sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Используйте термодинамические модели для расчета склонности олигонуклеотидов к отжигу с нежелательными сайтами в шаблонной  последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2050"/>
+        <location filename="../src/Primer3Dialog.ui" line="2053"/>
         <source>Use Thermodynamic Template Alignment	</source>
         <translation>Использовать Термодинамическое Шаблонное Выранивание	</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2068"/>
+        <location filename="../src/Primer3Dialog.ui" line="2071"/>
         <source>TH: Max Template Mispriming</source>
         <translation>TH: Максимальный шаблон ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2065"/>
-        <location filename="../src/Primer3Dialog.ui" line="2084"/>
+        <location filename="../src/Primer3Dialog.ui" line="2068"/>
+        <location filename="../src/Primer3Dialog.ui" line="2087"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max template mispriming&lt;/span&gt; but assesses alternative binding sites in the template using thermodynamic models. This parameter specifies the maximum allowed melting temperature of an oligo (primer) at an &amp;quot;ectopic&amp;quot; site within the template sequence; 47.0 would be a reasonable choice if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Tm Min&lt;/span&gt; is 57.0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальный шаблон ошибочного праймирования&lt;/span&gt;но оценивает альтернативные сайты связывания в матрице с использованием термодинамических моделей. Этот параметр определяет максимально допустимую температуру плавления олиго (праймера) при &amp;quot;смещенном&amp;quot; сайт в шаблонной последовательности; 47.0 будет разумным выбором, если &lt;span style=&quot; font-weight:700;&quot;&gt;Минимальная Т. плав. праймера&lt;/span&gt; равна 57.0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2100"/>
-        <location filename="../src/Primer3Dialog.ui" line="2116"/>
+        <location filename="../src/Primer3Dialog.ui" line="2103"/>
+        <location filename="../src/Primer3Dialog.ui" line="2119"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the template. A negative value means do not check.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое сходство с смещщенными сайтами в шаблоне. При отрицательном значении не проверяется.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2151"/>
+        <location filename="../src/Primer3Dialog.ui" line="2154"/>
         <source>TH: Pair Max Template Mispriming</source>
         <translation>TH: Парный максимальный шаблон ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2148"/>
-        <location filename="../src/Primer3Dialog.ui" line="2161"/>
+        <location filename="../src/Primer3Dialog.ui" line="2151"/>
+        <location filename="../src/Primer3Dialog.ui" line="2164"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed melting temperatures of both primers at ectopic sites within the template (with the two primers in an orientation that would allow PCR amplification.) The melting temperatures are calculated as for &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Template Mispriming&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимая суммарная температура плавления обоих праймеров на смещенных участках шаблона (с двумя праймерами в ориентации, позволяющей ПЦР-амплификацию). Температуры плавления рассчитываются как для параметра &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальный шаблон ошибочного праймирования&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2177"/>
-        <location filename="../src/Primer3Dialog.ui" line="2193"/>
+        <location filename="../src/Primer3Dialog.ui" line="2180"/>
+        <location filename="../src/Primer3Dialog.ui" line="2196"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed summed similarity of both primers to ectopic sites in the template. A negative value means do not check.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое суммарное сходство обоих праймеров со смещенными сайтами в шаблоне. При отрицательном значении не учитывается.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2242"/>
+        <location filename="../src/Primer3Dialog.ui" line="2245"/>
         <source>Advanced Settings</source>
         <translation>Расширенные настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2245"/>
+        <location filename="../src/Primer3Dialog.ui" line="2248"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section covers more accurate settings, which are related to &lt;span style=&quot; font-weight:700;&quot;&gt;General Settings&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции описаны более точные настройки, относящиеся к &lt;span style=&quot; font-weight:700;&quot;&gt;Общим настройкам&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2255"/>
-        <location filename="../src/Primer3Dialog.ui" line="2498"/>
+        <location filename="../src/Primer3Dialog.ui" line="2258"/>
+        <location filename="../src/Primer3Dialog.ui" line="2501"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5&apos; end of the left OR the right primer must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец левого ИЛИ правого праймера должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt; на это значение. Детальное описание смотри в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2274"/>
+        <location filename="../src/Primer3Dialog.ui" line="2277"/>
         <source>Sequencing Interval</source>
         <translation>Интервал секвенирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2281"/>
-        <location filename="../src/Primer3Dialog.ui" line="2508"/>
+        <location filename="../src/Primer3Dialog.ui" line="2284"/>
+        <location filename="../src/Primer3Dialog.ui" line="2511"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the calculated position of the 3&apos;end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет расстояние от рассчитанного положения 3&apos;-конца до обеих сторон, где Primer3 выбирает лучший праймер. Значение используется, только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей подбора праймера&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2322"/>
+        <location filename="../src/Primer3Dialog.ui" line="2325"/>
         <source>Max GC in primer 3&apos; end</source>
         <translation>Максимальный GC на 3&apos; конце праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2345"/>
+        <location filename="../src/Primer3Dialog.ui" line="2348"/>
         <source>Annealing Oligo Concentration</source>
         <translation>Концентрация олигонуклеотидов при отжиге</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2381"/>
+        <location filename="../src/Primer3Dialog.ui" line="2384"/>
         <source>Concentration of Divalent Cations</source>
         <translation>Концентрация двухвалентных катионов</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2319"/>
-        <location filename="../src/Primer3Dialog.ui" line="2411"/>
+        <location filename="../src/Primer3Dialog.ui" line="2322"/>
+        <location filename="../src/Primer3Dialog.ui" line="2414"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum number of Gs or Cs allowed in the last five 3&apos; bases of a left or right primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное количество G или C, допустимое в последних пяти символах на 3&apos; конце левого или правого праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2427"/>
-        <location filename="../src/Primer3Dialog.ui" line="2768"/>
+        <location filename="../src/Primer3Dialog.ui" line="2430"/>
+        <location filename="../src/Primer3Dialog.ui" line="2771"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;3&apos; End Distance Between Left Primers&lt;/span&gt;, but for right primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Аналогично &lt;span style=&quot; font-weight:700;&quot;&gt;Расстояние между 3&apos; концами левых праймеров&lt;/span&gt;, но для правых праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2443"/>
-        <location filename="../src/Primer3Dialog.ui" line="2632"/>
+        <location filename="../src/Primer3Dialog.ui" line="2446"/>
+        <location filename="../src/Primer3Dialog.ui" line="2635"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3&apos;end of the primer to the point were the trace signals are readable. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет расстояние между 3&apos; концом праймера до точки, где след сигнала читаемый. Значение используется только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей Подбора Праймеров&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2459"/>
-        <location filename="../src/Primer3Dialog.ui" line="2716"/>
+        <location filename="../src/Primer3Dialog.ui" line="2462"/>
+        <location filename="../src/Primer3Dialog.ui" line="2719"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3&apos; end of the left OR the right primer must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3&apos;-конец левого ИЛИ правого праймера должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt; на это значение. Детальное описание смотри в &lt;span style=&quot; font-weight:700;&quot;&gt;Списке Перекрывающихся Соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2501"/>
+        <location filename="../src/Primer3Dialog.ui" line="2504"/>
         <source>5 Prime Junction Overlap</source>
         <translation>5&apos; перерытие основного соединения</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2511"/>
+        <location filename="../src/Primer3Dialog.ui" line="2514"/>
         <source>Sequencing Accuracy</source>
         <translation>Точность секвенирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2612"/>
+        <location filename="../src/Primer3Dialog.ui" line="2615"/>
         <source>First Base Index</source>
         <translation>Индекс первого символа</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2635"/>
+        <location filename="../src/Primer3Dialog.ui" line="2638"/>
         <source>Sequencing Lead</source>
         <translation>Ведущее значение секвенирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2642"/>
-        <location filename="../src/Primer3Dialog.ui" line="2826"/>
+        <location filename="../src/Primer3Dialog.ui" line="2645"/>
+        <location filename="../src/Primer3Dialog.ui" line="2829"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When returning multiple primer pairs, the minimum number of base pairs between the 3&apos; ends of any two left primers.&lt;/p&gt;&lt;p&gt;Primers with 3&apos; ends at positions e.g. 30 and 31 in the template sequence have a three-prime distance of 1.&lt;/p&gt;&lt;p&gt;In addition to positive values, the values -1 and 0 are acceptable and have special interpretations:&lt;/p&gt;&lt;p&gt;-1 indicates that a given left primer can appear in multiple primer pairs returned by Primer3. This is the default behavior.&lt;/p&gt;&lt;p&gt;0 indicates that a left primer is acceptable if it was not already used. In other words, two left primers are allowed to have the same 3&apos; position provided their 5&apos; positions differ.&lt;/p&gt;&lt;p&gt;For n &amp;gt; 0: A left primer is acceptable if:&lt;/p&gt;&lt;p&gt;NOT(3&apos; end of left primer closer than n to the 3&apos; end of a previously used left primer)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если найдено несколько пар праймеров, то это значение определяет минимальное количество спаренных оснований между 3&apos;-концами любых двух левых праймеров.&lt;/p&gt;&lt;p&gt;Праймеры с 3&apos;-концами в позициях, скажем, 30 и 31 в шаблонной последовательности, имеют расстояние между данное значение равное 1.&lt;/p&gt;&lt;p&gt;В дополнение к положительным значениям значения -1 и 0 тоже допустимы и имеют специальную интерпретацию:&lt;/p&gt;&lt;p&gt;-1 указывает, что данный левый праймер может появляться в нескольких парах праймеров, найденных с помощью Primer3. Это поведение по умолчанию.&lt;/p&gt;&lt;p&gt;0 означает, что левый праймер подходит, если он еще не использовался. Другими словами, два левых праймера могут иметь одинаковые 3&apos;-положения при условии, что их 5&apos;-положения различаются.&lt;/p&gt;&lt;p&gt;Для n &amp;gt; 0: A левый праймер подходит, если:&lt;/p&gt;&lt;p&gt;НЕ(3&apos;-конец левого праймера ближе, чем n, к 3&apos;-концу ранее использовавшегося левого праймера)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2661"/>
+        <location filename="../src/Primer3Dialog.ui" line="2664"/>
         <source>Sequencing Spacing</source>
         <translation>Пробелы секвенирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2271"/>
-        <location filename="../src/Primer3Dialog.ui" line="2668"/>
+        <location filename="../src/Primer3Dialog.ui" line="2274"/>
+        <location filename="../src/Primer3Dialog.ui" line="2671"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3&apos;end of the primer to the 3&apos;end of the next primer on the reverse strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет пространство от 3&apos;-конца праймера до 3&apos;-конца следующего праймера на обратной цепи. Значение используется только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей Подбора Праймеров&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2719"/>
+        <location filename="../src/Primer3Dialog.ui" line="2722"/>
         <source>3 Prime Junction Overlap</source>
         <translation>3&apos; перекрытие основного соединения</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2771"/>
+        <location filename="../src/Primer3Dialog.ui" line="2774"/>
         <source>3&apos; End Distance Between Right Primers	</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние между 3&apos; концами правых праймеров	</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2781"/>
+        <location filename="../src/Primer3Dialog.ui" line="2784"/>
         <source>Max #N&apos;s accepted</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимально допустимое #N</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2788"/>
-        <location filename="../src/Primer3Dialog.ui" line="2846"/>
+        <location filename="../src/Primer3Dialog.ui" line="2791"/>
+        <location filename="../src/Primer3Dialog.ui" line="2849"/>
         <source>Non-default values are valid only for sequences with 0 or 1 target regions. If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the &apos;position penalty&apos;. The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.</source>
-        <translation type="unfinished"></translation>
+        <translation>Значения, отличные от значений по умолчанию, допустимы только для последовательностей с 0 или 1 целевым регионом. Если праймер является частью пары, которая охватывает цель и перекрывает её, то умножьте это значение на количество позиций нуклеотидов, на которые праймер перекрывает (уникальную) цель, чтобы получить &quot;штраф за позицию&quot;. Эффект этого параметра заключается в том, чтобы позволить Primer3 включать перекрытие с целью в качестве члена в целевой функции.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2829"/>
+        <location filename="../src/Primer3Dialog.ui" line="2832"/>
         <source>3&apos; End Distance Between Left Primers</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние между 3&apos; концами левых праймеров</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2842"/>
+        <source>DMSO Concentration</source>
+        <translation>Концентрация ДМСО</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2661"/>
+        <location filename="../src/Primer3Dialog.ui" line="2972"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3&apos;end of the primer to the 3&apos;end of the next primer on the same strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Определяет расстояние от 3&apos;-конца праймера до 3&apos;-конца следующего праймера на той же цепи. Значение используется только если &lt;span style=&quot; font-weight:700;&quot;&gt;Задачей Подбора Праймеров&lt;/span&gt; является &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2991"/>
+        <source>Concentration of Monovalent Cations</source>
+        <translation>Концентрация одновалентных катионов</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3023"/>
+        <source>Formamide Concentration</source>
+        <translation>Концентрация формамида</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3033"/>
+        <source>DMSO Factor</source>
+        <translation>Фактор ДМСО</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2839"/>
-        <source>DMSO Concentration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="2658"/>
-        <location filename="../src/Primer3Dialog.ui" line="2969"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3&apos;end of the primer to the 3&apos;end of the next primer on the same strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="2988"/>
-        <source>Concentration of Monovalent Cations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3020"/>
-        <source>Formamide Concentration</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3040"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The concentration of DMSO in percent. See PRIMER_DMSO_FACTOR for details of Tm correction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация ДМСО в процентах. Смотри &quot;Фактор ДСМО&quot; для дополнительной информации о коррекции температуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3030"/>
-        <source>DMSO Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="2836"/>
-        <location filename="../src/Primer3Dialog.ui" line="3037"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The concentration of DMSO in percent. See PRIMER_DMSO_FACTOR for details of Tm correction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3027"/>
-        <location filename="../src/Primer3Dialog.ui" line="3050"/>
+        <location filename="../src/Primer3Dialog.ui" line="3053"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The melting temperature of primers can be approximately corrected for DMSO:&lt;/p&gt;&lt;p&gt;Tm = Tm (without DMSO) - &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Factor&lt;/span&gt; * &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; concentration must be given in %.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Температуру плавления праймеров можно приблизительно скорректировать на ДМСО:&lt;/p&gt;&lt;p&gt;Tm = Tm (без ДСМО) - &lt;span style=&quot; font-weight:700;&quot;&gt;Фактор ДСМО&lt;/span&gt; * &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация ДСМО&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация ДСМО&lt;/span&gt; представлена в %.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3017"/>
-        <location filename="../src/Primer3Dialog.ui" line="3069"/>
+        <location filename="../src/Primer3Dialog.ui" line="3020"/>
+        <location filename="../src/Primer3Dialog.ui" line="3072"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The concentration of formamide in mol/l. The melting temperature of primers can be approximately corrected for formamide:&lt;/p&gt;&lt;p&gt;Tm = Tm (without formamide) +(0.453 * PRIMER_[LEFT/INTERNAL/RIGHT]_4_GC_PERCENT / 100 - 2.88) * &lt;span style=&quot; font-weight:700;&quot;&gt;Formamide Concentration&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The &lt;span style=&quot; font-weight:700;&quot;&gt;Formamide Concentration&lt;/span&gt; correction was suggested by Blake and Delcourt (R D Blake and S G Delcourt. Nucleic Acids Research, 24, 11:2095–2103, 1996).&lt;/p&gt;&lt;p&gt;Convert % into mol/l:&lt;/p&gt;&lt;p&gt;[DMSO in mol/l] = [DMSO in % weight] * 10 / 45.04 g/mol&lt;/p&gt;&lt;p&gt;[DMSO in mol/l] = [DMSO in % volume] * 10 * 1.13 g/cm3 / 45.04 g/mol&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация формамида в моль/л. Температуру плавления праймеров можно приблизительно скорректировать на формамид:&lt;/p&gt;&lt;p&gt;Tm = Tm (без формамида) +(0.453 * [GC-состав в процентах для правого/внутреннего/левого праймера] / 100 - 2.88) * &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация формамида&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Значение &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация формамида&lt;/span&gt; было предложено Blake and Delcourt (R D Blake and S G Delcourt. Nucleic Acids Research, 24, 11:2095–2103, 1996).&lt;/p&gt;&lt;p&gt;Преобразовать % в моль/л:&lt;/p&gt;&lt;p&gt;[ДМСО в моль/л] = [массДМСО в %] * 10 / 45.04 г/моль&lt;/p&gt;&lt;p&gt;[ДМСО в моль/л] = [объем ДМСО в %] * 10 * 1.13 г/см3 / 45.04 г/моль&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3109"/>
+        <location filename="../src/Primer3Dialog.ui" line="3112"/>
         <source>Use formatted output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3119"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this flag is true, produce PRIMER_LEFT_EXPLAIN, PRIMER_RIGHT_EXPLAIN, PRIMER_INTERNAL_EXPLAIN and/or PRIMER_PAIR_EXPLAIN output tags as appropriate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать форматированный вывод</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3122"/>
-        <source>Print Statistics</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this flag is true, produce PRIMER_LEFT_EXPLAIN, PRIMER_RIGHT_EXPLAIN, PRIMER_INTERNAL_EXPLAIN and/or PRIMER_PAIR_EXPLAIN output tags as appropriate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если этот флаг установлен, то выходные тэги PRIMER_LEFT_EXPLAIN, PRIMER_RIGHT_EXPLAIN, PRIMER_INTERNAL_EXPLAIN и/или PRIMER_PAIR_EXPLAIN будут сгенерированы по возможности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3132"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the associated value = 1, then Primer3 will print out the calculated secondary structures&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3125"/>
+        <source>Print Statistics</source>
+        <translation>Статистика паймеров</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3135"/>
-        <source>Print secondary structures</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the associated value = 1, then Primer3 will print out the calculated secondary structures&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если отмечено, то Primer3 распечатает рассчитанные вторичные структуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3153"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set to 1, treat ambiguity codes as if they were consensus codes when matching oligos to mispriming or mishyb libraries. For example, if this flag is set, then a C in an oligo will be scored as a perfect match to an S in a library sequence, as will a G in the oligo. More importantly, though, any base in an oligo will be scored as a perfect match to an N in the library. This is very bad if the library contains strings of Ns, as no oligo will be legal (and it will take a long time to find this out). So unless you know for sure that your library does not have runs of Ns (or Xs), then set this flag to 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3138"/>
+        <source>Print secondary structures</source>
+        <translation>Напечатать вторичные структуры</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3156"/>
-        <source>Treat ambiguity codes in libraries as consensus</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set to 1, treat ambiguity codes as if they were consensus codes when matching oligos to mispriming or mishyb libraries. For example, if this flag is set, then a C in an oligo will be scored as a perfect match to an S in a library sequence, as will a G in the oligo. More importantly, though, any base in an oligo will be scored as a perfect match to an N in the library. This is very bad if the library contains strings of Ns, as no oligo will be legal (and it will take a long time to find this out). So unless you know for sure that your library does not have runs of Ns (or Xs), then set this flag to 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если задано, то обрабатывайте неоднозначности кода так, как если бы они были согласованными кодами при сопоставлении олигов с библиотеками mispriming или mishyb. Например, если этот флаг установлен, то C в олигонуклеотиде будет считаться полным совпадением с S в библиотечной последовательности, как и G в олигонуклеотиде.Однако, что еще более важно, любое основание в олиго будет оцениваться как идеальное совпадение с N в библиотеке. Это очень плохо, если в библиотеке есть строки из N, так как ни один олиго не будет легальным (и выяснять это придется долго). Поэтому, если вы точно не знаете, что в вашей библиотеке нет серий N (или X), установите этот флаг на 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3166"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true use primer provided in left, right, or internal primer even if it violates specific constraints.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3159"/>
+        <source>Treat ambiguity codes in libraries as consensus</source>
+        <translation>Относить неоднозначности кода в библиотеке к консенсусу</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3169"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true use primer provided in left, right, or internal primer even if it violates specific constraints.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если true, используйте праймер, указанный в левом, правом или внутреннем праймере, даже если он нарушает определенные ограничения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3172"/>
         <source>Pick anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3176"/>
+        <location filename="../src/Primer3Dialog.ui" line="3179"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option allows for intelligent design of primers in sequence in which masked regions (for example repeat-masked regions) are lower-cased. (New in v. 1.1.0, added by Maido Remm and Triinu Koressaar)&lt;/p&gt;&lt;p&gt;A value of 1 directs Primer3 to reject primers overlapping lowercase a base exactly at the 3&apos; end.&lt;/p&gt;&lt;p&gt;This property relies on the assumption that masked features (e.g. repeats) can partly overlap primer, but they cannot overlap the 3&apos;-end of the primer. In other words, lowercase bases at other positions in the primer are accepted, assuming that the masked features do not influence the primer performance if they do not overlap the 3&apos;-end of primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3186"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter provides a quick-and-dirty way to get Primer3 to accept IUB / IUPAC codes for ambiguous bases (i.e. by changing all unrecognized bases to N). If you wish to include an ambiguous base in an oligo, you must set &lt;span style=&quot; font-weight:700;&quot;&gt;Max #N&apos;s accepted&lt;/span&gt; to a 1 (non-0) value.&lt;/p&gt;&lt;p&gt;Perhaps &apos;-&apos; and &apos;* &apos; should be squeezed out rather than changed to &apos;N&apos;, but currently they simply get converted to N&apos;s. The authors invite user comments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эта опция позволяет интеллектуально проектировать праймеры в последовательности, в которой маскированные области (например, повторяющиеся маскированные области) имеют нижний регистр.&lt;/p&gt;&lt;p&gt;Выставленное значение указывает Primer3 отклонять праймеры, перекрывающие основание в нижнем регистре точно на 3&apos;-конце.&lt;/p&gt;&lt;p&gt;Это свойство основано на предположении, что маскированные признаки (например, повторы) могут частично перекрывать праймер, но не могут перекрывать 3&apos;-конец праймера. Другими словами, символы нижнего регистра в других позициях в праймере допускаются, предполагая, что маскированные признаки не влияют на эффективность праймера, если они не перекрывают 3&apos;-конец праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3189"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter provides a quick-and-dirty way to get Primer3 to accept IUB / IUPAC codes for ambiguous bases (i.e. by changing all unrecognized bases to N). If you wish to include an ambiguous base in an oligo, you must set &lt;span style=&quot; font-weight:700;&quot;&gt;Max #N&apos;s accepted&lt;/span&gt; to a 1 (non-0) value.&lt;/p&gt;&lt;p&gt;Perhaps &apos;-&apos; and &apos;* &apos; should be squeezed out rather than changed to &apos;N&apos;, but currently they simply get converted to N&apos;s. The authors invite user comments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Этот параметр обеспечивает быстрый и грязный способ заставить Primer3 принимать коды IUB / IUPAC для неоднозначных оснований. (т.е. заменив все нераспознанные базы на N). Если вы хотите включить неоднозначное основание в олиго, вы должны выставить &lt;span style=&quot; font-weight:700;&quot;&gt;Максимально допустимое #N&lt;/span&gt; на не-нулевое значение.&lt;/p&gt;&lt;p&gt;Возможно, «-» и «*» следует убрать, а не заменить на «N», но в настоящее время они просто преобразуются в N.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3192"/>
         <source>Liberal base</source>
-        <translation type="unfinished"></translation>
+        <translation>Свободный символ</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3234"/>
+        <source>Internal Oligo Excluded Region</source>
+        <translation>Исключаемые регионы внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3231"/>
-        <source>Internal Oligo Excluded Region</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3241"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base of an excluded region, and &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Средние олигонуклеотиды не могут перекрывать какую-либо область, указанную этим тегом. Связанное значение должно быть списком разделенных пробелом пар&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;начало&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;длина&lt;/span&gt;&lt;/p&gt;&lt;p&gt;, где &lt;span style=&quot; font-weight:700;&quot;&gt;начало&lt;/span&gt; индекс первого символа исключенной области, а &lt;span style=&quot; font-weight:700;&quot;&gt;длина&lt;/span&gt; - это её длина. Достаточно частая задача - сделать &quot;Целевые рерионы&quot; исключенными регионами для внутренних олигонуклеотидов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3228"/>
-        <location filename="../src/Primer3Dialog.ui" line="3238"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base of an excluded region, and &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3251"/>
+        <source>Internal Oligo Overlap Positions</source>
+        <translation>Позиции перекрывания внутренних олигонуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3248"/>
-        <source>Internal Oligo Overlap Positions</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3258"/>
+        <location filename="../src/Primer3Dialog.ui" line="4020"/>
+        <location filename="../src/Primer3Dialog.ui" line="4094"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олиго должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3245"/>
-        <location filename="../src/Primer3Dialog.ui" line="3255"/>
-        <location filename="../src/Primer3Dialog.ui" line="4017"/>
-        <location filename="../src/Primer3Dialog.ui" line="4091"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3279"/>
+        <source>Internal Oligo Bound</source>
+        <translation>Связь внутреннего олигонуклеотида</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3363"/>
+        <source>Internal Oligo GC%</source>
+        <translation>GC% внутреннего олигонуклеотида</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3427"/>
+        <source>Internal Oligo Tm</source>
+        <translation>Т. плав. внутреннего олигонуклеотида</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3437"/>
+        <source>Internal Oligo Size</source>
+        <translation>Размер внутренного олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3276"/>
-        <source>Internal Oligo Bound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3360"/>
-        <source>Internal Oligo GC%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3424"/>
-        <source>Internal Oligo Tm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3434"/>
-        <source>Internal Oligo Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3273"/>
-        <location filename="../src/Primer3Dialog.ui" line="3474"/>
-        <location filename="../src/Primer3Dialog.ui" line="3580"/>
-        <location filename="../src/Primer3Dialog.ui" line="3596"/>
+        <location filename="../src/Primer3Dialog.ui" line="3477"/>
+        <location filename="../src/Primer3Dialog.ui" line="3583"/>
+        <location filename="../src/Primer3Dialog.ui" line="3599"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Bound for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметр, эквивалентный Связи праймера для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="373"/>
-        <location filename="../src/Primer3Dialog.ui" line="691"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discards all primers which do not match this match sequence at the 5&apos; end. (New in v. 2.3.6, added by A. Untergasser.)&lt;/p&gt;&lt;p&gt;The match sequence must be 5 nucletides long and can contain the following letters:&lt;/p&gt;&lt;p&gt;N Any nucleotide&lt;br/&gt;A Adenine&lt;br/&gt;G Guanine&lt;br/&gt;C Cytosine&lt;br/&gt;T Thymine&lt;br/&gt;R Purine (A or G)&lt;br/&gt;Y Pyrimidine (C or T)&lt;br/&gt;W Weak (A or T)&lt;br/&gt;S Strong (G or C)&lt;br/&gt;M Amino (A or C)&lt;br/&gt;K Keto (G or T)&lt;br/&gt;B Not A (G or C or T)&lt;br/&gt;H Not G (A or C or T)&lt;br/&gt;D Not C (A or G or T)&lt;br/&gt;V Not T (A or G or C)&lt;/p&gt;&lt;p&gt;Any primer which will not match the entire match sequence at the 5&apos; end will be discarded and not evaluated. Setting strict requirements here will result in low quality primers due to the high numbers of primers discarded at this step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Отбрасывает все праймеры, которые не соответствуют этой последовательности соответствия на 3&apos;-конце. (Новый с v. 2.3.6, автор A. Untergasser.)&lt;br/&gt;&lt;br/&gt;Последовательность должна состоять из 5 нуклеотидов и может содержать следующие буквы:&lt;/p&gt;&lt;p&gt;N Любой нуклеотид&lt;br/&gt;A Аденин&lt;br/&gt;G Гуанин&lt;br/&gt;C Цитозин&lt;br/&gt;T Тимин&lt;br/&gt;R Пурин (A или G)&lt;br/&gt;Y Пиримидин (C или T)&lt;br/&gt;W Слабый (A или T)&lt;br/&gt;S Сильный (G или C)&lt;br/&gt;M Амино (A или C)&lt;br/&gt;K Кето (G или T)&lt;br/&gt;B не A (G или C или T)&lt;br/&gt;H не G (A или C или T)&lt;br/&gt;D не C (A или G или T)&lt;br/&gt;V не T (A или G или C)&lt;/p&gt;&lt;p&gt;Любой праймер, который не будет соответствовать всей последовательности соответствия на 5&apos;-конце, будет отброшен и не будет оцениваться. Установление здесь строгих требований приведет к получению праймеров низкого качества из-за большого количества праймеров, отбрасываемых на этом этапе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="1764"/>
-        <location filename="../src/Primer3Dialog.ui" line="1930"/>
-        <location filename="../src/Primer3Dialog.ui" line="1959"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to bind the 3&apos;-END of the left primer to the right primer and scores the best binding it can find. It is similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3636"/>
-        <location filename="../src/Primer3Dialog.ui" line="3751"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Self Complementarity&lt;/span&gt; for the internal oligo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3658"/>
-        <location filename="../src/Primer3Dialog.ui" line="3687"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Max 3&apos; End Self Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3690"/>
-        <source>TH: Internal Oligo Max 3&apos; End Self Complementarity	</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3703"/>
-        <location filename="../src/Primer3Dialog.ui" line="3741"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3725"/>
-        <location filename="../src/Primer3Dialog.ui" line="3806"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3744"/>
-        <location filename="../src/Primer3Dialog.ui" line="5735"/>
-        <source>Internal Oligo Self Complementarity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3639"/>
         <location filename="../src/Primer3Dialog.ui" line="3754"/>
-        <location filename="../src/Primer3Dialog.ui" line="5648"/>
-        <source>TH: Internal Oligo Self Complementarity</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Self Complementarity&lt;/span&gt; for the internal oligo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальная Самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3780"/>
-        <location filename="../src/Primer3Dialog.ui" line="3796"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The most stable monomer structure of internal oligo calculated by thermodynamic approach. See &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Primer Hairpin&lt;/span&gt;	 for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3661"/>
+        <location filename="../src/Primer3Dialog.ui" line="3690"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Max 3&apos; End Self Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и  &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos; для внутреннего олиго&lt;/span&gt; но с использованием термодинамического подхода при расчете&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3799"/>
-        <location filename="../src/Primer3Dialog.ui" line="5706"/>
-        <source>TH: Internal Oligo Hairpin</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3693"/>
+        <source>TH: Internal Oligo Max 3&apos; End Self Complementarity	</source>
+        <translation>TH: Максимальная Самокомплементарность на 3&apos; для внутреннего олиго	</translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.ui" line="3706"/>
+        <location filename="../src/Primer3Dialog.ui" line="3744"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3728"/>
         <location filename="../src/Primer3Dialog.ui" line="3809"/>
-        <source>Internal Oligo Max 3&apos; End Self Complementarity</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos;&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3830"/>
+        <location filename="../src/Primer3Dialog.ui" line="3747"/>
+        <location filename="../src/Primer3Dialog.ui" line="5738"/>
+        <source>Internal Oligo Self Complementarity</source>
+        <translation>Самокомплементарность Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3757"/>
+        <location filename="../src/Primer3Dialog.ui" line="5651"/>
+        <source>TH: Internal Oligo Self Complementarity</source>
+        <translation>TH: Максимальная Самокомплементарность Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3783"/>
+        <location filename="../src/Primer3Dialog.ui" line="3799"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The most stable monomer structure of internal oligo calculated by thermodynamic approach. See &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Primer Hairpin&lt;/span&gt;	 for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Смотри &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальная Шпилечаная структура&lt;/span&gt; для деталей&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3802"/>
+        <location filename="../src/Primer3Dialog.ui" line="5709"/>
+        <source>TH: Internal Oligo Hairpin</source>
+        <translation>TH: Шпилечнавя Структура Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3812"/>
+        <source>Internal Oligo Max 3&apos; End Self Complementarity</source>
+        <translation>Самокомплементарность Внутреннего Олиго на 3&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3833"/>
         <source>Internal Oligo Max Poly-X</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимум Poly-X Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3843"/>
+        <source>Internal Oligo DNA Concentration</source>
+        <translation>Концентрация ДНК Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3853"/>
+        <source>Internal Oligo Formamide Concentration</source>
+        <translation>Концентрация Формамида Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3866"/>
+        <location filename="../src/Primer3Dialog.ui" line="4065"/>
+        <location filename="../src/Primer3Dialog.ui" line="4110"/>
+        <location filename="../src/Primer3Dialog.ui" line="4130"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max Library Mispriming&lt;/span&gt; except that this parameter applies to the similarity of candidate internal oligos to the library specified in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Mishyb Library&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальное несоответствие библиотеке праймеров&lt;/span&gt; за исключением того, что этот параметр применяется к сходству внутренних олигонуклеотидов-кандидатов с библиотекой, указанной в &lt;span style=&quot; font-weight:700;&quot;&gt;Библиотека Mishyb Внутреннего Олиго&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3876"/>
+        <source>Internal Oligo Min Sequence Quality</source>
+        <translation>Минимальное Качество Последовательности Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3889"/>
+        <location filename="../src/Primer3Dialog.ui" line="3912"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameter for internal oligos analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметр для внутренних олигов, аналогичный &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрации dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/ HTML&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3915"/>
+        <source>Internal Oligo [dNTP]</source>
+        <translation>Внутренние Олиго [dNTP]</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3840"/>
-        <source>Internal Oligo DNA Concentration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3850"/>
-        <source>Internal Oligo Formamide Concentration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3863"/>
-        <location filename="../src/Primer3Dialog.ui" line="4062"/>
-        <location filename="../src/Primer3Dialog.ui" line="4107"/>
-        <location filename="../src/Primer3Dialog.ui" line="4127"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max Library Mispriming&lt;/span&gt; except that this parameter applies to the similarity of candidate internal oligos to the library specified in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Mishyb Library&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3928"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Annealing Oligo Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация олигонуклеотидов при отжиге&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3873"/>
-        <source>Internal Oligo Min Sequence Quality</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3886"/>
-        <location filename="../src/Primer3Dialog.ui" line="3909"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameter for internal oligos analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3912"/>
-        <source>Internal Oligo [dNTP]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3837"/>
-        <location filename="../src/Primer3Dialog.ui" line="3925"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Annealing Oligo Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3870"/>
-        <location filename="../src/Primer3Dialog.ui" line="3947"/>
+        <location filename="../src/Primer3Dialog.ui" line="3950"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Min sequence quality&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Минимальное качество последовательности&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3966"/>
-        <location filename="../src/Primer3Dialog.ui" line="4027"/>
+        <location filename="../src/Primer3Dialog.ui" line="3969"/>
+        <location filename="../src/Primer3Dialog.ui" line="4030"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of Monovalent Cations&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация одновалентных катионов&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3988"/>
+        <source>Internal Oligo DMSO Concentration</source>
+        <translation>Концнтрация ДМСО для внутреннего олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4001"/>
+        <location filename="../src/Primer3Dialog.ui" line="4140"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of Divalent Cations&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация двухвалентных катионов&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4023"/>
+        <source>Internal Oligo 5 Prime Junction Overlap</source>
+        <translation>5&apos; Перекрытие Основного Соединения для Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4033"/>
+        <source>Internal Oligo Conc of monovalent cations</source>
+        <translation>Концентрация Одновалентных Катионов Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3902"/>
+        <location filename="../src/Primer3Dialog.ui" line="4046"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max #Ns&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Мксимально допустимое к #Ns&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="3850"/>
+        <location filename="../src/Primer3Dialog.ui" line="4081"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Formamide Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация формамида&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/ HTML&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4113"/>
+        <source>Internal Oligo Mishyb Library</source>
+        <translation>Библиотека Mishyb Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4123"/>
+        <source>Internal Oligo 3 Prime Junction Overlap</source>
+        <translation>3&apos; Перекрытие Основного Соединения для Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4133"/>
+        <source>Internal Oligo Max Library Mishyb	</source>
+        <translation>Максимум Библиотеки Mishyb Внутреннего Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4143"/>
+        <source>Internal Oligo conc of divalent cations</source>
+        <translation>Концентрация Двухвалентных Катионов Внутреннего Олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3985"/>
-        <source>Internal Oligo DMSO Concentration</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="4150"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3998"/>
-        <location filename="../src/Primer3Dialog.ui" line="4137"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of Divalent Cations&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="3830"/>
+        <location filename="../src/Primer3Dialog.ui" line="4169"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max poly-X&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Максимум poly-X&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4020"/>
-        <source>Internal Oligo 5 Prime Junction Overlap</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="4185"/>
+        <location filename="../src/Primer3Dialog.ui" line="4204"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Factor&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;фактор ДМСО&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/ HTML&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4030"/>
-        <source>Internal Oligo Conc of monovalent cations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3899"/>
-        <location filename="../src/Primer3Dialog.ui" line="4043"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max #Ns&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3847"/>
-        <location filename="../src/Primer3Dialog.ui" line="4078"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Formamide Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4110"/>
-        <source>Internal Oligo Mishyb Library</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="4207"/>
+        <source>Internal Oligo DMSO Factor</source>
+        <translation>Фактор ДМСО Внутреннего Олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4120"/>
-        <source>Internal Oligo 3 Prime Junction Overlap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4130"/>
-        <source>Internal Oligo Max Library Mishyb	</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4140"/>
-        <source>Internal Oligo conc of divalent cations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3982"/>
-        <location filename="../src/Primer3Dialog.ui" line="4147"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="3827"/>
-        <location filename="../src/Primer3Dialog.ui" line="4166"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max poly-X&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4182"/>
-        <location filename="../src/Primer3Dialog.ui" line="4201"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Factor&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4204"/>
-        <source>Internal Oligo DMSO Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4117"/>
-        <location filename="../src/Primer3Dialog.ui" line="4211"/>
+        <location filename="../src/Primer3Dialog.ui" line="4214"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олиго должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3&apos;?} {700;?} {700;?}</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4227"/>
-        <location filename="../src/Primer3Dialog.ui" line="4243"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;3&apos; End Distance Between Left Primers&lt;/span&gt;, but for internal primer / probe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4230"/>
         <location filename="../src/Primer3Dialog.ui" line="4246"/>
-        <source>Min Internal Oligo End Distance</source>
-        <translation type="unfinished"></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;3&apos; End Distance Between Left Primers&lt;/span&gt;, but for internal primer / probe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Аналогично &lt;span style=&quot; font-weight:700;&quot;&gt;Расстояние Между 3&apos; концами Левых Праймеров&lt;/span&gt;, но для внутреннего праймера.&lt;/p &gt;&lt;/тело&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4272"/>
+        <location filename="../src/Primer3Dialog.ui" line="4249"/>
+        <source>Min Internal Oligo End Distance</source>
+        <translation>Минимальное Расстояние Между Концами Внутренних Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4275"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4296"/>
-        <location filename="../src/Primer3Dialog.ui" line="4319"/>
-        <location filename="../src/Primer3Dialog.ui" line="4350"/>
-        <location filename="../src/Primer3Dialog.ui" line="4373"/>
-        <location filename="../src/Primer3Dialog.ui" line="4389"/>
-        <location filename="../src/Primer3Dialog.ui" line="4405"/>
-        <location filename="../src/Primer3Dialog.ui" line="4428"/>
-        <location filename="../src/Primer3Dialog.ui" line="4438"/>
-        <location filename="../src/Primer3Dialog.ui" line="4454"/>
-        <location filename="../src/Primer3Dialog.ui" line="4464"/>
-        <location filename="../src/Primer3Dialog.ui" line="4474"/>
-        <location filename="../src/Primer3Dialog.ui" line="4484"/>
-        <location filename="../src/Primer3Dialog.ui" line="5590"/>
-        <location filename="../src/Primer3Dialog.ui" line="5614"/>
-        <location filename="../src/Primer3Dialog.ui" line="5624"/>
+        <location filename="../src/Primer3Dialog.ui" line="4299"/>
+        <location filename="../src/Primer3Dialog.ui" line="4322"/>
+        <location filename="../src/Primer3Dialog.ui" line="4353"/>
+        <location filename="../src/Primer3Dialog.ui" line="4376"/>
+        <location filename="../src/Primer3Dialog.ui" line="4392"/>
+        <location filename="../src/Primer3Dialog.ui" line="4408"/>
+        <location filename="../src/Primer3Dialog.ui" line="4431"/>
+        <location filename="../src/Primer3Dialog.ui" line="4441"/>
+        <location filename="../src/Primer3Dialog.ui" line="4457"/>
+        <location filename="../src/Primer3Dialog.ui" line="4467"/>
+        <location filename="../src/Primer3Dialog.ui" line="4477"/>
+        <location filename="../src/Primer3Dialog.ui" line="4487"/>
+        <location filename="../src/Primer3Dialog.ui" line="5617"/>
+        <location filename="../src/Primer3Dialog.ui" line="5627"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для соответствующего параметра праймера меньше чем (Lt) или больше чем (Gt), что является оптимальным значением.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4487"/>
+        <location filename="../src/Primer3Dialog.ui" line="4490"/>
         <source>Bound</source>
-        <translation type="unfinished"></translation>
+        <translation>Связь</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4525"/>
+        <source>TH: Self Complementarity</source>
+        <translation>TH: Самокомплементарность</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4548"/>
+        <source>TH: 3&apos; End Self Complementarity	</source>
+        <translation>TH: Самокомплементарность на 3&apos;	</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4571"/>
+        <source>TH: Hairpin</source>
+        <translation>TH: Шпильки</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4597"/>
+        <source>TH: Template Mispriming</source>
+        <translation>TH: Шаблон Ошибочного Праймирования</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4623"/>
+        <source>Self Complementarity</source>
+        <translation>Самокомплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4522"/>
-        <source>TH: Self Complementarity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4519"/>
-        <location filename="../src/Primer3Dialog.ui" line="4529"/>
-        <location filename="../src/Primer3Dialog.ui" line="5645"/>
-        <location filename="../src/Primer3Dialog.ui" line="5661"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4532"/>
         <location filename="../src/Primer3Dialog.ui" line="4545"/>
-        <source>TH: 3&apos; End Self Complementarity	</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4542"/>
-        <location filename="../src/Primer3Dialog.ui" line="4552"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the individual primer self binding value as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max 3&apos; Self Complementarity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4555"/>
         <location filename="../src/Primer3Dialog.ui" line="4568"/>
-        <source>TH: Hairpin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4565"/>
-        <location filename="../src/Primer3Dialog.ui" line="4575"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the individual primer hairpin structure value as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Primer Hairpin&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4578"/>
         <location filename="../src/Primer3Dialog.ui" line="4594"/>
-        <source>TH: Template Mispriming</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4591"/>
-        <location filename="../src/Primer3Dialog.ui" line="4604"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty for a single primer binding to the template sequence (thermodynamic approach, when &lt;span style=&quot; font-weight:700;&quot;&gt;Use Thermodynamic Template Alignment&lt;/span&gt; is true).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/Primer3Dialog.ui" line="4607"/>
         <location filename="../src/Primer3Dialog.ui" line="4620"/>
-        <source>Self Complementarity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="4617"/>
-        <location filename="../src/Primer3Dialog.ui" line="4633"/>
-        <location filename="../src/Primer3Dialog.ui" line="4646"/>
-        <location filename="../src/Primer3Dialog.ui" line="4662"/>
-        <location filename="../src/Primer3Dialog.ui" line="4675"/>
-        <location filename="../src/Primer3Dialog.ui" line="4691"/>
-        <location filename="../src/Primer3Dialog.ui" line="4715"/>
-        <location filename="../src/Primer3Dialog.ui" line="4731"/>
-        <location filename="../src/Primer3Dialog.ui" line="4744"/>
-        <location filename="../src/Primer3Dialog.ui" line="4754"/>
-        <location filename="../src/Primer3Dialog.ui" line="4767"/>
-        <location filename="../src/Primer3Dialog.ui" line="4783"/>
-        <location filename="../src/Primer3Dialog.ui" line="4796"/>
-        <location filename="../src/Primer3Dialog.ui" line="4812"/>
-        <location filename="../src/Primer3Dialog.ui" line="4854"/>
-        <location filename="../src/Primer3Dialog.ui" line="4870"/>
-        <location filename="../src/Primer3Dialog.ui" line="4883"/>
-        <location filename="../src/Primer3Dialog.ui" line="4899"/>
+        <location filename="../src/Primer3Dialog.ui" line="4636"/>
+        <location filename="../src/Primer3Dialog.ui" line="4649"/>
+        <location filename="../src/Primer3Dialog.ui" line="4665"/>
+        <location filename="../src/Primer3Dialog.ui" line="4678"/>
+        <location filename="../src/Primer3Dialog.ui" line="4694"/>
+        <location filename="../src/Primer3Dialog.ui" line="4718"/>
+        <location filename="../src/Primer3Dialog.ui" line="4734"/>
+        <location filename="../src/Primer3Dialog.ui" line="4747"/>
+        <location filename="../src/Primer3Dialog.ui" line="4757"/>
+        <location filename="../src/Primer3Dialog.ui" line="4770"/>
+        <location filename="../src/Primer3Dialog.ui" line="4786"/>
+        <location filename="../src/Primer3Dialog.ui" line="4799"/>
+        <location filename="../src/Primer3Dialog.ui" line="4815"/>
+        <location filename="../src/Primer3Dialog.ui" line="4857"/>
+        <location filename="../src/Primer3Dialog.ui" line="4873"/>
+        <location filename="../src/Primer3Dialog.ui" line="4886"/>
+        <location filename="../src/Primer3Dialog.ui" line="4902"/>
+        <location filename="../src/Primer3Dialog.ui" line="5078"/>
+        <location filename="../src/Primer3Dialog.ui" line="5094"/>
+        <location filename="../src/Primer3Dialog.ui" line="5107"/>
+        <location filename="../src/Primer3Dialog.ui" line="5123"/>
+        <location filename="../src/Primer3Dialog.ui" line="5139"/>
+        <location filename="../src/Primer3Dialog.ui" line="5158"/>
+        <location filename="../src/Primer3Dialog.ui" line="5648"/>
+        <location filename="../src/Primer3Dialog.ui" line="5664"/>
+        <location filename="../src/Primer3Dialog.ui" line="5677"/>
+        <location filename="../src/Primer3Dialog.ui" line="5693"/>
+        <location filename="../src/Primer3Dialog.ui" line="5706"/>
+        <location filename="../src/Primer3Dialog.ui" line="5722"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для параметра праймера отличается от оптимального предопределенного значения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4649"/>
+        <location filename="../src/Primer3Dialog.ui" line="4652"/>
         <source>3&apos; End Self Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>Самокомплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4678"/>
+        <location filename="../src/Primer3Dialog.ui" line="4681"/>
         <source>Template Mispriming</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаблон Ошибочного Праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4747"/>
-        <location filename="../src/Primer3Dialog.ui" line="5298"/>
+        <location filename="../src/Primer3Dialog.ui" line="4750"/>
+        <location filename="../src/Primer3Dialog.ui" line="5301"/>
         <source>Library Mispriming</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотека Ошибочного Праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4825"/>
-        <location filename="../src/Primer3Dialog.ui" line="4841"/>
+        <location filename="../src/Primer3Dialog.ui" line="4828"/>
+        <location filename="../src/Primer3Dialog.ui" line="4844"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Позиция штрафа.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4886"/>
+        <location filename="../src/Primer3Dialog.ui" line="4889"/>
         <source>Primer failure rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Величина Ошибки праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="4965"/>
-        <location filename="../src/Primer3Dialog.ui" line="4981"/>
-        <location filename="../src/Primer3Dialog.ui" line="4997"/>
-        <location filename="../src/Primer3Dialog.ui" line="5007"/>
-        <location filename="../src/Primer3Dialog.ui" line="5023"/>
-        <location filename="../src/Primer3Dialog.ui" line="5040"/>
+        <location filename="../src/Primer3Dialog.ui" line="4968"/>
+        <location filename="../src/Primer3Dialog.ui" line="4984"/>
+        <location filename="../src/Primer3Dialog.ui" line="5000"/>
+        <location filename="../src/Primer3Dialog.ui" line="5010"/>
+        <location filename="../src/Primer3Dialog.ui" line="5026"/>
+        <location filename="../src/Primer3Dialog.ui" line="5043"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для соответствующего параметра пары праймеров меньше чем (Lt) или больше чем (Gt), что является оптимальным значением.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5078"/>
+        <location filename="../src/Primer3Dialog.ui" line="5081"/>
         <source>TH: Any Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>TH: Любая Комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5075"/>
-        <location filename="../src/Primer3Dialog.ui" line="5091"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the binding value of the primer pair as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Self Complementarity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5107"/>
+        <location filename="../src/Primer3Dialog.ui" line="5110"/>
         <source>TH: 3&apos; End Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>TH: Комплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5104"/>
-        <location filename="../src/Primer3Dialog.ui" line="5120"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the binding value of the primer pair as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max 3&apos; Self Complementarity&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5139"/>
+        <location filename="../src/Primer3Dialog.ui" line="5142"/>
         <source>TH: Template Mispriming Weight</source>
-        <translation type="unfinished"></translation>
+        <translation>TH: Вес Шаблона Ошибочного Праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5136"/>
-        <location filename="../src/Primer3Dialog.ui" line="5155"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty for a primer pair binding to the template sequence (thermodynamic approach, when &lt;span style=&quot; font-weight:700;&quot;&gt;Use Thermodynamic Template Alignment&lt;/span&gt; is true).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/Primer3Dialog.ui" line="5174"/>
+        <source>Any Complementarity</source>
+        <translation>Любая Комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5171"/>
-        <source>Any Complementarity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5168"/>
-        <location filename="../src/Primer3Dialog.ui" line="5184"/>
-        <location filename="../src/Primer3Dialog.ui" line="5197"/>
-        <location filename="../src/Primer3Dialog.ui" line="5213"/>
-        <location filename="../src/Primer3Dialog.ui" line="5226"/>
-        <location filename="../src/Primer3Dialog.ui" line="5242"/>
-        <location filename="../src/Primer3Dialog.ui" line="5266"/>
-        <location filename="../src/Primer3Dialog.ui" line="5282"/>
-        <location filename="../src/Primer3Dialog.ui" line="5295"/>
-        <location filename="../src/Primer3Dialog.ui" line="5311"/>
-        <location filename="../src/Primer3Dialog.ui" line="5324"/>
-        <location filename="../src/Primer3Dialog.ui" line="5340"/>
-        <location filename="../src/Primer3Dialog.ui" line="5353"/>
-        <location filename="../src/Primer3Dialog.ui" line="5369"/>
+        <location filename="../src/Primer3Dialog.ui" line="5187"/>
+        <location filename="../src/Primer3Dialog.ui" line="5200"/>
+        <location filename="../src/Primer3Dialog.ui" line="5216"/>
+        <location filename="../src/Primer3Dialog.ui" line="5229"/>
+        <location filename="../src/Primer3Dialog.ui" line="5245"/>
+        <location filename="../src/Primer3Dialog.ui" line="5269"/>
+        <location filename="../src/Primer3Dialog.ui" line="5285"/>
+        <location filename="../src/Primer3Dialog.ui" line="5298"/>
+        <location filename="../src/Primer3Dialog.ui" line="5314"/>
+        <location filename="../src/Primer3Dialog.ui" line="5327"/>
+        <location filename="../src/Primer3Dialog.ui" line="5343"/>
+        <location filename="../src/Primer3Dialog.ui" line="5356"/>
+        <location filename="../src/Primer3Dialog.ui" line="5372"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для параметра пары праймеров отличается от оптимального предопределенного значения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5200"/>
+        <location filename="../src/Primer3Dialog.ui" line="5203"/>
         <source>3&apos; End Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>Комплементарность на 3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5229"/>
+        <location filename="../src/Primer3Dialog.ui" line="5232"/>
         <source>Template Mispriming Weight</source>
-        <translation type="unfinished"></translation>
+        <translation>Вес Шаблона Ошибочного Праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5269"/>
+        <location filename="../src/Primer3Dialog.ui" line="5272"/>
         <source>Tm Difference</source>
-        <translation type="unfinished"></translation>
+        <translation>Разница Температуры плавления</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5327"/>
+        <location filename="../src/Primer3Dialog.ui" line="5330"/>
         <source>Primer Penalty Weight</source>
-        <translation type="unfinished"></translation>
+        <translation>Вес Штрафа Праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5356"/>
+        <location filename="../src/Primer3Dialog.ui" line="5359"/>
         <source>Internal Oligo Penalty Weight	</source>
-        <translation type="unfinished"></translation>
+        <translation>Вес Штрафа Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5413"/>
+        <location filename="../src/Primer3Dialog.ui" line="5416"/>
         <source>Internal Oligos</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренние Олиго</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="5428"/>
+        <source>Internal oligo Size</source>
+        <translation>Размер внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5425"/>
-        <source>Internal oligo Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5422"/>
-        <location filename="../src/Primer3Dialog.ui" line="5452"/>
-        <location filename="../src/Primer3Dialog.ui" line="5468"/>
-        <location filename="../src/Primer3Dialog.ui" line="5484"/>
-        <location filename="../src/Primer3Dialog.ui" line="5507"/>
-        <location filename="../src/Primer3Dialog.ui" line="5537"/>
-        <location filename="../src/Primer3Dialog.ui" line="5547"/>
-        <location filename="../src/Primer3Dialog.ui" line="5563"/>
-        <location filename="../src/Primer3Dialog.ui" line="5573"/>
+        <location filename="../src/Primer3Dialog.ui" line="5455"/>
+        <location filename="../src/Primer3Dialog.ui" line="5471"/>
+        <location filename="../src/Primer3Dialog.ui" line="5487"/>
+        <location filename="../src/Primer3Dialog.ui" line="5510"/>
+        <location filename="../src/Primer3Dialog.ui" line="5540"/>
+        <location filename="../src/Primer3Dialog.ui" line="5550"/>
+        <location filename="../src/Primer3Dialog.ui" line="5566"/>
+        <location filename="../src/Primer3Dialog.ui" line="5576"/>
+        <location filename="../src/Primer3Dialog.ui" line="5593"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для соответствующего параметра внутреннего олиго меньше чем (Lt) или больше чем (Gt), что является оптимальным значением.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5550"/>
+        <location filename="../src/Primer3Dialog.ui" line="5553"/>
         <source>Internal oligo Tm</source>
-        <translation type="unfinished"></translation>
+        <translation>Т плав. внутреннего олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5576"/>
+        <location filename="../src/Primer3Dialog.ui" line="5579"/>
         <source>Internal oligo GC%</source>
-        <translation type="unfinished"></translation>
+        <translation>GC% внутреннего олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5593"/>
+        <location filename="../src/Primer3Dialog.ui" line="5596"/>
         <source>Internal oligo Bound</source>
-        <translation type="unfinished"></translation>
+        <translation>Связь внутреннего олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5677"/>
+        <location filename="../src/Primer3Dialog.ui" line="5680"/>
         <source>TH: Internal Oligo 3&apos; End Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>TH: Комплементарность на 3&apos; Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5674"/>
-        <location filename="../src/Primer3Dialog.ui" line="5690"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: 3&apos; End Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5703"/>
-        <location filename="../src/Primer3Dialog.ui" line="5719"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for the most stable primer hairpin structure value as in &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Internal Oligo Hairpin&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="5732"/>
-        <location filename="../src/Primer3Dialog.ui" line="5748"/>
-        <location filename="../src/Primer3Dialog.ui" line="5761"/>
-        <location filename="../src/Primer3Dialog.ui" line="5777"/>
-        <location filename="../src/Primer3Dialog.ui" line="5801"/>
-        <location filename="../src/Primer3Dialog.ui" line="5817"/>
-        <location filename="../src/Primer3Dialog.ui" line="5830"/>
-        <location filename="../src/Primer3Dialog.ui" line="5846"/>
-        <location filename="../src/Primer3Dialog.ui" line="5859"/>
-        <location filename="../src/Primer3Dialog.ui" line="5875"/>
-        <location filename="../src/Primer3Dialog.ui" line="5888"/>
-        <location filename="../src/Primer3Dialog.ui" line="5904"/>
+        <location filename="../src/Primer3Dialog.ui" line="5735"/>
+        <location filename="../src/Primer3Dialog.ui" line="5751"/>
+        <location filename="../src/Primer3Dialog.ui" line="5764"/>
+        <location filename="../src/Primer3Dialog.ui" line="5780"/>
+        <location filename="../src/Primer3Dialog.ui" line="5804"/>
+        <location filename="../src/Primer3Dialog.ui" line="5820"/>
+        <location filename="../src/Primer3Dialog.ui" line="5833"/>
+        <location filename="../src/Primer3Dialog.ui" line="5849"/>
+        <location filename="../src/Primer3Dialog.ui" line="5862"/>
+        <location filename="../src/Primer3Dialog.ui" line="5878"/>
+        <location filename="../src/Primer3Dialog.ui" line="5891"/>
+        <location filename="../src/Primer3Dialog.ui" line="5907"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для параметра внутреннего олиго отличается от оптимального предопределенного значения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5764"/>
+        <location filename="../src/Primer3Dialog.ui" line="5767"/>
         <source>Internal Oligo 3&apos; End Complementarity</source>
-        <translation type="unfinished"></translation>
+        <translation>Комплементарность на 3&apos; Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5804"/>
+        <location filename="../src/Primer3Dialog.ui" line="5807"/>
         <source>Internal Oligo #N&apos;s</source>
-        <translation type="unfinished"></translation>
+        <translation>#N Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5833"/>
+        <location filename="../src/Primer3Dialog.ui" line="5836"/>
         <source>Internal Oligo Library Mishybing</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотечный Mishybing Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5862"/>
+        <location filename="../src/Primer3Dialog.ui" line="5865"/>
         <source>Internal Oligo Sequence Quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Качество Последовательности Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5891"/>
+        <location filename="../src/Primer3Dialog.ui" line="5894"/>
         <source>Internal Oligo Sequence End Quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Качество Конца Последовательности Внутреннего Олиго</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6072"/>
+        <location filename="../src/Primer3Dialog.ui" line="6063"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6078"/>
+        <location filename="../src/Primer3Dialog.ui" line="6069"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This feature allows to specify if primer product must span intron-exon boundaries.&lt;/p&gt;&lt;p&gt;Checking this option will result in ignoring &lt;span style=&quot; font-style:italic;&quot;&gt;Excluded&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt; from Main section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эта опция позволяет указать если праймер должен охватывать интрон-экзон границы.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6108"/>
+        <location filename="../src/Primer3Dialog.ui" line="6099"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Имя экзон аннотации.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6213"/>
+        <location filename="../src/Primer3Dialog.ui" line="6204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6254"/>
+        <location filename="../src/Primer3Dialog.ui" line="6245"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This number of found primer pairs wil bel queried to check if they fullfill the requirements for RTPCR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальное число пар для запроса.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5940"/>
+        <location filename="../src/Primer3Dialog.ui" line="5943"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5953"/>
+        <location filename="../src/Primer3Dialog.ui" line="5956"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Список разделенных пробелами целых чисел.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5962"/>
         <location filename="../src/Primer3Dialog.ui" line="5978"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное качество последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="5988"/>
-        <location filename="../src/Primer3Dialog.ui" line="6004"/>
+        <location filename="../src/Primer3Dialog.ui" line="6001"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3&apos; pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное 3&amp;apos;качество последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6014"/>
-        <location filename="../src/Primer3Dialog.ui" line="6030"/>
+        <location filename="../src/Primer3Dialog.ui" line="6024"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимум интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6040"/>
-        <location filename="../src/Primer3Dialog.ui" line="6056"/>
+        <location filename="../src/Primer3Dialog.ui" line="6047"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6309"/>
+        <location filename="../src/Primer3Dialog.ui" line="6300"/>
         <source>Result Settings</source>
         <translation>Параметры результатов</translation>
     </message>
@@ -2559,7 +2524,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="497"/>
         <source>Internal Oligo Overlap Positions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Позиции перекрывания внутренних олигонуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="514"/>
@@ -2774,12 +2739,12 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
     <message>
         <location filename="../src/Primer3Task.cpp" line="687"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
-        <translation type="unfinished">The first exon from the selected range [%1,%2] is larger the number of exons (%2). Please set correct exon range. {1,%2]?} {3)?}</translation>
+        <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
         <location filename="../src/Primer3Task.cpp" line="696"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
-        <translation type="unfinished">The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range. {1,%2]?} {3)?}</translation>
+        <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</source>
