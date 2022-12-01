@@ -34,8 +34,13 @@ class EntropyCalculationWidget : public QWidget, private Ui_EntropyCalculationWi
 public:
     EntropyCalculationWidget(AnnotatedDNAView*);
 
+private slots:
+    void sl_onFileSelectorClicked();
+
 private:
     void initLayout();
+    void initSaveController();
+    void connectSlots();
 
     AnnotatedDNAView* annotatedDnaView;
     SaveDocumentController* saveController;
