@@ -195,6 +195,10 @@ bool MultilineScrollController::checkBoundary() {
             needUpdate = true;
             break;
         }
+        if (!wgt->isVisible()) {
+            needUpdate = true;
+            break;
+        }
         prevFistBase = firstBase;
     }
     if (needUpdate) {
@@ -217,7 +221,20 @@ bool MultilineScrollController::checkBoundary() {
                 prevFistBase = firstBase;
                 firstBase += length;
             }
+        } else {
+            for (int i = 0; i < childrenCount; i++) {
+                MaEditorWgt* wgt = ui->getUI(i);
+                SAFE_POINT(wgt != nullptr, "Unexpected nullptr multiline editor child widget", false);
+                firstBase = wgt->getScrollController()->getFirstVisibleBase(false);
+                if (firstBase == prevFistBase || firstBase + 1 >= alignmentLen) {
+                    wgt->setHidden(true);
+                } else {
+                    wgt->setHidden(false);
+                }
+                prevFistBase = firstBase;
+            }
         }
+        ui->updateGeometry();
         return true;
     }
     return false;
