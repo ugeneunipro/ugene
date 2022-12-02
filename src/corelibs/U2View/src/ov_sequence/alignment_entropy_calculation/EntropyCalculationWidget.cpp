@@ -31,7 +31,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/FileFilters.h>
 
@@ -50,6 +49,8 @@ EntropyCalculationWidget::EntropyCalculationWidget(AnnotatedDNAView* _annotatedD
 void EntropyCalculationWidget::initLayout() {
     additionalSettingsLayout->addWidget(new ShowHideSubgroupWidget(
         QObject::tr("Additional settings"), QObject::tr("Additional settings"), additionalSettingsWidget, true));
+    algorithmComboBox->addItem("MUSCLE");
+    algorithmComboBox->addItem("MAFFT");
 }
 
 void EntropyCalculationWidget::initSaveController() {
