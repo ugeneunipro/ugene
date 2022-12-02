@@ -57,6 +57,9 @@ QList<QWidget*> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus& os) {
     if (mainWindows.isEmpty()) {
         mainWindows = qApp->topLevelWidgets();
     }
+#ifdef _DEBUG
+    if (mainWindows.isEmpty())
+#endif
     GT_CHECK_RESULT(!mainWindows.isEmpty(), "No main window widget found", mainWindows);
     return mainWindows;
 }

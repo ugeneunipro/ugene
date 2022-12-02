@@ -490,8 +490,9 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
 
         // 2) Click "build dotplot" tooltip
         // 3) Click OK in opened dotplot dialog
-        GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 120, 100, true));
+        GTUtilsDialog::add(os, new DotPlotFiller(os, 120, 100, true));
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
+        GTThread::waitForMainThread();
 
         if (i == 0) {
             // GTUtilsMdi::click(os, GTGlobals::Minimize);
@@ -499,9 +500,10 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
         }
 
         // 4) Click on human_T1.fa project tree view item
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
+        GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
+        GTThread::waitForMainThread();
 
         // 5) Press delete key
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -522,7 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
 
         // 2) Click "build dotplot" tooltip
         // 3) Click OK in opened dotplot dialog
-        GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 110, 100, true));
+        GTUtilsDialog::add(os, new DotPlotFiller(os, 110, 100, true));
         GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
         if (i == 0) {
@@ -531,7 +533,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         }
 
         // 4) Click on human_T1.fa project tree view item
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
+        GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
         GTMouseDriver::click();
 
@@ -812,7 +814,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     };
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new custom()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_STATISTICS", "Generate distance matrix"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     //    Expected state: the "Generate Distance matrix" dialog appeared.
 
     //    Expected state: Statistics View opened, it contains two tables: full statistics and additional group statistics.
@@ -2684,7 +2686,7 @@ GUI_TEST_CLASS_DEFINITION(test_1260) {
     GTLogTracer lt;
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/1260.sto", {"Isophya_altaica_EF540820", "Phaneroptera_falcata"}, 1, 51, true, false, false, false, true));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -5245,7 +5247,7 @@ GUI_TEST_CLASS_DEFINITION(test_1584) {
     QFile f1(testDir + "_common_data/genbank/pBR322.gb");
     f1.open(QIODevice::ReadOnly);
     QByteArray firstLine = f1.read(64);  // after 64 position the date of file modification is located,
-                                         // so meaningfull part is before it
+        // so meaningfull part is before it
     f1.close();
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");

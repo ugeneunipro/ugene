@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -3483,6 +3484,121 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTCheckBox::getState(os, "showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
     CHECK_SET_ERR(GTWidget::findSlider(os, "curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
     CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7700) {
+    // Create a 250 Unicode character path. See
+    //     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
+    // Open _common_data/scenarios/_regression/7700/bwa.uwl
+    //     The "Choose Output Directory" dialog appears.
+    // Set the created folder as the required directory in this dialog.
+    // Click OK.
+    //     The Workflow window appears.
+    // Set _common_data/bwa/control-chr21.fastq and nrsf-chr21.fastq as input to the "Read File URL(s)" element.
+    // Set _common_data/bwa/NC_000021.gbk.fa as the "Reference genome" of the "Map Reads with BWA" element.
+    // Run workflow.
+    //     Expected: the workflow task finished successfully with one output file "output.sam".
+    // Open the output.sam
+    //     The "Import SAM File" dialog appears.
+    // Click "Import".
+    //     Expected: the ugenedb file is successfully created in the default directory and opens without problems, the
+    //         Assembly Browser shows position 45 890 375 with coverage 2316 as the first well-covered region.
+    QString sandboxPath = QFileInfo(sandBoxDir).canonicalFilePath();
+    int requiredNumOfChars = 250 - sandboxPath.size();
+    QString longPath = sandboxPath + QString::fromWCharArray(L"/\u221E").repeated(requiredNumOfChars / 2);
+    CHECK_SET_ERR(QDir().mkpath(longPath), "Failed to create dir '" + longPath + "'");
+
+    class WorkflowOutputScenario : public CustomScenario {
+        QString path;
+
+    public:
+        explicit WorkflowOutputScenario(const QString& path)
+            : path(path) {
+        }
+        void run(GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "pathEdit", path, dialog, false, true);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "StartupDialog", new WorkflowOutputScenario(longPath)));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7700/bwa.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(
+        os, {testDir + "_common_data/bwa/control-chr21.fastq", testDir + "_common_data/bwa/nrsf-chr21.fastq"});
+
+    GTUtilsWorkflowDesigner::click(os, "Map Reads with BWA");
+    GTUtilsWorkflowDesigner::setParameter(os,
+                                          "Reference genome",
+                                          testDir + "_common_data/bwa/NC_000021.gbk.fa",
+                                          GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDashboard::clickOutputFile(os, "out.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList positions = GTLabel::getText(os, "CoveredRegionsLabel")
+                                .section("href=\"0\">", 1, 1)
+                                .split("</a></td><td align=\"center\">");
+    QString positionStr = positions.first();
+    QString coverageStr = positions[1].section(
+        "</td></tr><tr><td align='right'>2&nbsp;&nbsp;</td><td><a href=\"1\">", 0, 0);
+    auto toInt = [](QString str) {
+        return str.remove(' ').toInt();
+    };
+    CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
+                  QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
+                      .arg(positionStr, coverageStr));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7715) {
+    // Open COI.aln.
+    //     Expected: no log messages
+    //         "QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter
+    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
+    //              are not possible".
+    // Select the first character.
+    // Quickly and abruptly move the subalignment to the right by at least 20 characters.
+    //     Expected: the Overview isn't empty, no log messages
+    //         "QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes (-1,-1)
+    //              are not possible
+    //          QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes (-1,-1)
+    //              are not possible".
+    // Click "Wrap mode".
+    //     Expected: no size messages in the log.
+    // Click "Remove all gaps".
+    //     Expected: no size messages in the log.
+    GTLogTracer ltConnect("QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter");
+    GTLogTracer ltSize("QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes");
+    GTLogTracer ltSizeNameList("QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsMSAEditorSequenceArea::click(os);
+
+    GTMouseDriver::press();
+    GTThread::waitForMainThread();
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(
+        os, GTUtilsOptionPanelMsa::tabsNames[GTUtilsOptionPanelMsa::General])));
+    GTMouseDriver::release();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // The background is white, the bars are gray, the background in the selection is light gray, the bars
+    // in the selection are dark gray, the selection frame is black. Total 5 colors.
+    CHECK_SET_ERR(GTWidget::countColors(GTWidget::getImage(os, GTUtilsMsaEditor::getGraphOverview(os))).size() == 5,
+                  "Overview is empty (white)");
+
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all gaps"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsMessage(os, ltConnect, false);
+    GTUtilsLog::checkContainsMessage(os, ltSize, false);
+    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
 }
 
 }  // namespace GUITest_regression_scenarios

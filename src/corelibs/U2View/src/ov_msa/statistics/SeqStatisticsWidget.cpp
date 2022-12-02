@@ -68,7 +68,8 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
 }
 
 void SeqStatisticsWidget::copySettings() {
-    const MsaEditorAlignmentDependentWidget* similarityWidget = msa->getUI()->getSimilarityWidget();
+    MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(msa->getUI()->getUI());
+    const MsaEditorAlignmentDependentWidget* similarityWidget = msaEditorUi->getSimilarityWidget();
     statisticsIsShown = false;
     if (nullptr != similarityWidget) {
         const SimilarityStatisticsSettings* s = static_cast<const SimilarityStatisticsSettings*>(similarityWidget->getSettings());
@@ -84,9 +85,8 @@ void SeqStatisticsWidget::copySettings() {
         settings->autoUpdate = true;
         settings->ma = msa->getMaObject();
         settings->usePercents = true;
-        settings->ui = msa->getUI();
+        settings->ui = msaEditorUi;
     }
-    msaUI = settings->ui;
 }
 
 void SeqStatisticsWidget::updateWidgetsSettings() {
@@ -144,17 +144,17 @@ void SeqStatisticsWidget::restoreSettings() {
 
 void SeqStatisticsWidget::sl_onAlgoChanged() {
     settings->algoId = ui.algoComboBox->currentData().toString();
-    msaUI->setSimilaritySettings(settings);
+    msa->getUI()->setSimilaritySettings(settings);
 }
 
 void SeqStatisticsWidget::sl_onGapsChanged(int state) {
     settings->excludeGaps = (Qt::Checked == state);
-    msaUI->setSimilaritySettings(settings);
+    msa->getUI()->setSimilaritySettings(settings);
 }
 
 void SeqStatisticsWidget::sl_onUnitsChanged(bool) {
     settings->usePercents = ui.percentsButton->isChecked();
-    msaUI->setSimilaritySettings(settings);
+    msa->getUI()->setSimilaritySettings(settings);
 }
 
 void SeqStatisticsWidget::sl_onAutoUpdateChanged(int state) {
@@ -162,7 +162,7 @@ void SeqStatisticsWidget::sl_onAutoUpdateChanged(int state) {
     settings->autoUpdate = autoUpdateEnabled;
     ui.updateButton->setEnabled(!autoUpdateEnabled);
     ui.dataState->setEnabled(!autoUpdateEnabled);
-    msaUI->setSimilaritySettings(settings);
+    msa->getUI()->setSimilaritySettings(settings);
 }
 
 void SeqStatisticsWidget::sl_onRefSeqChanged(qint64 referenceRowId) {
@@ -182,22 +182,23 @@ void SeqStatisticsWidget::sl_onShowStatisticsChanged(int state) {
 }
 
 void SeqStatisticsWidget::sl_onUpdateClicked() {
-    msaUI->refreshSimilarityColumn();
+    msa->getUI()->refreshSimilarityColumn();
 }
 
 void SeqStatisticsWidget::hideSimilaritySettings() {
     statisticsIsShown = false;
     ui.optionsWidget->setEnabled(false);
     ui.refSeqWarning->hide();
-    msaUI->hideSimilarity();
+    msa->getUI()->hideSimilarity();
 }
 
 void SeqStatisticsWidget::showSimilaritySettings() {
     statisticsIsShown = true;
     ui.optionsWidget->setEnabled(true);
     ui.refSeqWarning->show();
-    msaUI->showSimilarity();
-    msaUI->setSimilaritySettings(settings);
+    MaEditorMultilineWgt* mui = msa->getUI();
+    mui->showSimilarity();
+    mui->setSimilaritySettings(settings);
     sl_onRefSeqChanged(msa->getReferenceRowId());
 }
 

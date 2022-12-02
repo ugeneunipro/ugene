@@ -33,7 +33,7 @@ UGUITestBase* UGUITestBase::getInstance() {
 bool UGUITestBase::registerTest(GUITest* test, TestType testType) {
     Q_ASSERT(test);
     QString fullTestName = test->getFullName();
-    if (getTest(fullTestName, type) != nullptr) {
+    if (getTest(fullTestName, testType) != nullptr) {
         return false;
     }
     getMap(testType).insert(fullTestName, test);

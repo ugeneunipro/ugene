@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/genecut">
+	    <file>icon/genecut.png</file>
+        <file>template/hidden_login.html</file>
+		<file>template/show_report.html</file>
+    </qresource>
+</RCC>

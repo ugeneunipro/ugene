@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_OVERVIEW_H_
-#define _U2_MSA_OVERVIEW_H_
+#ifndef _U2_MA_OVERVIEW_H_
+#define _U2_MA_OVERVIEW_H_
 
 #include <QWidget>
 
@@ -39,7 +39,7 @@ class MaEditorSequenceArea;
 class U2VIEW_EXPORT MaOverview : public QWidget {
     Q_OBJECT
 public:
-    MaOverview(MaEditorWgt* _ui);
+    MaOverview(MaEditor* _editor, QWidget* _ui);
     virtual bool isValid() const {
         return false;
     }
@@ -77,7 +77,7 @@ protected:
     virtual int getContentWidgetHeight() const;
 
     MaEditor* editor;
-    MaEditorWgt* ui;
+    QWidget* ui;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;
@@ -90,4 +90,4 @@ protected:
 
 }  // namespace U2
 
-#endif  // _U2_MSA_OVERVIEW_H_
+#endif  // _U2_MA_OVERVIEW_H_

@@ -466,4 +466,22 @@ QString GUrlUtils::getSlashEndedPath(const QString& dirPath) {
     return dirPath.endsWith("/") ? dirPath : dirPath + "/";
 }
 
+QString GUrlUtils::getNativeAbsolutePath(const GUrl& url) {
+    QString urlString = url.getURLString();
+    // If Unix, http or Qt resource, return as is.
+    CHECK(isOsWindows() && url.isLocalFile() && !urlString.startsWith(':'), urlString);
+
+    QString path = QDir::toNativeSeparators(urlString);
+    if (path.startsWith("\\\\?\\")) {  // Already done.
+        return path;
+    }
+    if (path.startsWith("\\\\.\\")) {  // Replace '.' on '?'.
+        return path.replace(2, 1, '?');
+    }
+    if (path.startsWith("\\\\")) {  // "\\Server\User\Path"->"\\?\UNC\Server\User\Path"
+        return path.insert(2, "?\\UNC\\");
+    }
+    return "\\\\?\\" + path;  // Add the "\\?\" prefix.
+}
+
 }  // namespace U2

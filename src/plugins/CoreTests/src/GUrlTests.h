@@ -40,6 +40,13 @@ private:
     bool isFileUrl, runThisTest;
 };
 
+// For testing GUrlUtils::getNativeAbsolutePath.
+class GTest_ConvertPathToNative : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_ConvertPathToNative, "convert-path-to-native");
+};
+
 class GTest_CreateTmpDir : public XmlTest {
     Q_OBJECT
 public:

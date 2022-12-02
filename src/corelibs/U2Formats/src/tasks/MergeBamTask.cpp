@@ -73,11 +73,11 @@ void MergeBamTask::run() {
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (sortInputBams) {
         QStringList sortedNamesList;
-        foreach (const QString& url, bamUrls) {
+        for (const QString& url : qAsConst(bamUrls)) {
             QFileInfo fi(url);
-            QString sortedName = tmpDirPath + "/" + fi.completeBaseName() + "_sorted.bam";
-            sortedNamesList.append(sortedName);
-            BAMUtils::sortBam(url, sortedName, stateInfo);
+            QString sortedFilePath = tmpDirPath + "/" + fi.completeBaseName() + "_sorted.bam";
+            sortedNamesList.append(sortedFilePath);
+            BAMUtils::sortBam(url, sortedFilePath, stateInfo);
             if (stateInfo.isCoR()) {
                 cleanupTempDir(sortedNamesList);
                 return;

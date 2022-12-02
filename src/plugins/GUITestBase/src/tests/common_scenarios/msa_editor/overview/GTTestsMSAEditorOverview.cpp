@@ -221,7 +221,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 10));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
     GTMouseDriver::press();
+    GTThread::waitForMainThread();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15, 5));
+    GTThread::waitForMainThread();
 
     //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
     //    Simple overview updates simultaneously.

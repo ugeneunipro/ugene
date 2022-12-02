@@ -1287,6 +1287,8 @@ plugins/enzymes.license
 plugins/enzymes.plugin
 plugins/external_tool_support.license
 plugins/external_tool_support.plugin
+plugins/genecut.license
+plugins/genecut.plugin
 plugins/genome_aligner.license
 plugins/genome_aligner.plugin
 plugins/gor4.license
@@ -1308,6 +1310,7 @@ plugins/libdna_stat.so
 plugins/libdotplot.so
 plugins/libenzymes.so
 plugins/libexternal_tool_support.so
+plugins/libgenecut.so
 plugins/libgenome_aligner.so
 plugins/libgor4.so
 plugins/libhmm2.so

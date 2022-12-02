@@ -34,6 +34,7 @@
 #include "McaEditorSequenceArea.h"
 #include "ov_msa/MSAEditorConsensusCache.h"
 #include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {

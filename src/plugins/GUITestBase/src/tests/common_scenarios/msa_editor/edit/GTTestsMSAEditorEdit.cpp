@@ -107,7 +107,7 @@ void test_3(HI::GUITestOpStatus& os, int i = 0, QString expectedSec = "") {
     // 2. Select 6th symbol for Phaneroptera_falcata sequence. Use context menu {Edit->Insert gap}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, i));
 
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "insert_gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -149,7 +149,7 @@ void test_4(HI::GUITestOpStatus& os, int startPos, int endPos, const QString& ex
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(startPos, i), QPoint(endPos, i));
 
     if (0 != context) {
-        auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+        auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove selection"}));
         GTMenu::showContextMenu(os, seq);
     } else {
@@ -244,7 +244,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -283,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 2. Place cursor on 4th column of alignment. Use msa editor context menu (at the column with gaps) {Edit->Remove column of gaps}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 3));
 
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
@@ -371,11 +371,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
 
     // TODO: shift+delete doesn't work under windows
 
-    //     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
+    //     QWidget* seq=GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     //     GTUtilsDialog::waitForDialog(os,new DeleteGapsDialogFiller(os,1));
     //     GTWidget::click(os,seq);
     //    GTKeyboardDriver::keyClick(Qt::Key_Delete,Qt::Key_Shift);
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::add(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::add(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
@@ -414,7 +414,7 @@ Hetrodes_pupus_EF540832            AAGCTTTTAA---
 }
 
 void test_9(HI::GUITestOpStatus& os, int i = 0) {
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     QString gaps;
 
     if (0 != i) {
@@ -540,7 +540,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
     // Expected state: Zychia_baranovi TTAA
 
@@ -551,7 +551,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
     // 4. Click Redo button on toolbar panel.msa_action_redo
@@ -575,7 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
     // Expected state: Zychia_baranovi TTAA
 
@@ -585,7 +585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
     // 4.DIFFERENCE: 3. Click ctrl+y or ctrl+shift+z
@@ -609,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -678,7 +678,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
         GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
     }
     // Expected state: First sequwnce is AAGACTTCTTTTAA
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -700,7 +700,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     QString clipboardTest = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardTest == "GCTTAT", "\n Expected: \nGCTTAT\nFound:\n" + clipboardTest);
     // 3. Select region 6..12 for Conocephalus_discolor sequence. Use context menu {Copy->Copy selection}.
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 4), QPoint(11, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
@@ -711,7 +711,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
 static void test_13(HI::GUITestOpStatus& os, int comboVal, int spinVal, const QString& expectedCons) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    auto seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
@@ -764,7 +764,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 5), QPoint(10, 5));
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
     // Expected state: Create subaligniment dialog has appeared
 
     // 3. Fill the next fields in dialog:
@@ -875,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     // 3. Click "Replace with gaps" with popup menu
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "replace_with_gaps"}));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
     // Expected: selection hasn't been changed
     auto check = [&]() {

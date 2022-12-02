@@ -56,6 +56,7 @@ class U2OpStatus;
 #define ProjectLoaderHint_DontCheckForExistence "dont-check-for-existence"
 #define ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed "open-by-system-if-format-detection-failed"
 #define ProjectLoaderHint_DoNotAddToRecentDocuments "do-not-add-to-recent-documents"
+#define ProjectLoaderHint_SkipGuiAndMergeSequeencesIntoAlignmentPath "skip-gui-and-merge-sequeences-into-alignment-path"
 
 /**
  * When this hint is provided the 'openWithProjectTask' skips document format detection.

@@ -28,11 +28,11 @@
 
 namespace U2 {
 
-StatisticalReportController::StatisticalReportController(const QString& htmlContent, QWidget* parent)
-    : QDialog(parent) {
+StatisticalReportController::StatisticalReportController(const QString& htmlContent) {
     setupUi(this);
-    lblStat->setText(tr("<b>Optional:</b> Help make UGENE better by automatically sending anonymous usage statistics."));
-    chkStat->setChecked(AppContext::getAppSettings()->getUserAppsSettings()->isStatisticsCollectionEnabled());
+    auto userSettings = AppContext::getAppSettings()->getUserAppsSettings();
+    statisticCheckBox->setChecked(userSettings->isStatisticsCollectionEnabled());
+    experimentsCheckBox->setChecked(userSettings->isExperimentalFeaturesModeEnabled());
 
     Version v = Version::appVersion();
     setWindowTitle(tr("Welcome to UGENE %1.%2").arg(v.major).arg(v.minor));
@@ -42,20 +42,21 @@ StatisticalReportController::StatisticalReportController(const QString& htmlCont
     // Initial vertical dialog position depends on minimum height & the height
     // is not available from ContentSizeHtmlViewer until it is rendered (is visible).
     // Setting a reasonable height here will improve dialog centering.
-    // Otherwise the dialog will be centered as 0-height first an will only grow at bottom
+    // Otherwise, the dialog will be centered as 0-height first an will only grow at bottom
     //  when ContentSizeHtmlViewer renders HTML.
+    htmlView->setMinimumWidth(500);
     htmlView->setMinimumHeight(500);
     dialogLayout->insertWidget(0, htmlView);
 
-    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
-    return chkStat->isChecked();
+    return statisticCheckBox->isChecked();
 }
 
-void StatisticalReportController::accept() {
-    QDialog::close();
+bool StatisticalReportController::isExperimentalFeaturesEnabled() const {
+    return experimentsCheckBox->isChecked();
 }
 
 void StatisticalReportController::resizeEvent(QResizeEvent* event) {

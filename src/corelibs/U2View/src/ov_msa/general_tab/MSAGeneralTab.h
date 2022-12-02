@@ -45,6 +45,7 @@ public slots:
 private:
     void connectSignals();
     void initializeParameters();
+    void reInitializeParameters();
     void updateState();
     void updateConvertAlphabetButtonState();
 
