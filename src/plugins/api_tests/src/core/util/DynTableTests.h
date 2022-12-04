@@ -29,6 +29,7 @@
 namespace U2 {
 
 DECLARE_TEST(DynTableTests, bigTable);
+DECLARE_TEST(DynTableTests, acceptableDimensions);
 DECLARE_TEST(DynTableTests, fullMatch);
 DECLARE_TEST(DynTableTests, fullMismatch);
 DECLARE_TEST(DynTableTests, mismatch);
