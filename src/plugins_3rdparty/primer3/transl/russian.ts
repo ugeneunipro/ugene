@@ -43,7 +43,7 @@
         <location filename="../src/Primer3Dialog.ui" line="849"/>
         <location filename="../src/Primer3Dialog.ui" line="865"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum stability for the last five 3&apos; bases of a left or right primer.&lt;/p&gt;&lt;p&gt;Bigger numbers mean more stable 3&apos; ends. The value is the maximum delta G (kcal/mol) for duplex disruption for the five 3&apos; bases as calculated using the Nearest-Neighbor parameter values specified by the option of &apos;Table of thermodynamic parameters&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум стабильности для последних пяти 3&apos; оснований левого или правого праймеров. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. стабильности для последних пяти 3&apos; оснований левого или правого праймеров. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="780"/>
@@ -230,11 +230,11 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2106"/>
         <source>Max template mispriming</source>
-        <translation>Максимальный шаблон ошибочного праймирования</translation>
+        <translation>Макс. шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <source>Max 3&apos; stability</source>
-        <translation type="vanished">Максимальная 3&apos; стабильность</translation>
+        <translation type="vanished">Макс. 3&apos; стабильность</translation>
     </message>
     <message>
         <source>Pair max repeat mispriming</source>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2183"/>
         <source>Pair max template mispriming</source>
-        <translation>Парный максимальный шаблон ошибочного праймирования</translation>
+        <translation>Парный макс. шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <source>Start codon position</source>
@@ -288,15 +288,15 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="997"/>
         <source>Max Tm difference</source>
-        <translation>Максимальная разница Т. плав</translation>
+        <translation>Макс. разница Т. плав</translation>
     </message>
     <message>
         <source>Max self complementarity</source>
-        <translation type="vanished">Максимальная комплементарность</translation>
+        <translation type="vanished">Макс. комплементарность</translation>
     </message>
     <message>
         <source>Max 3&apos; self complementarity</source>
-        <translation type="vanished">Максимальная 3&apos; комплементарность</translation>
+        <translation type="vanished">Макс. 3&apos; комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2852"/>
@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2494"/>
         <source>Max poly-X</source>
-        <translation>Максимум poly-X</translation>
+        <translation>Макс. poly-X</translation>
     </message>
     <message>
         <source>First base index</source>
@@ -407,15 +407,15 @@
     </message>
     <message>
         <source>Hyb oligo max 3&apos; self complementarity</source>
-        <translation type="vanished">Максимальная 3&apos; комплементарность гибридизации олиго</translation>
+        <translation type="vanished">Макс. 3&apos; комплементарность гибридизации олиго</translation>
     </message>
     <message>
         <source>Hyb oligo max poly-X</source>
-        <translation type="vanished">Максимум poly-X гибридизации олиго</translation>
+        <translation type="vanished">Макс. poly-X гибридизации олиго</translation>
     </message>
     <message>
         <source>Hyb oligo max mishyb</source>
-        <translation type="vanished">Максимум ошибки гибридизации олиго</translation>
+        <translation type="vanished">Макс. ошибки гибридизации олиго</translation>
     </message>
     <message>
         <source>Hyb oligo [dNTP]</source>
@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6034"/>
         <source>Sequence quality range max:</source>
-        <translation>Максимум интервала качества последовательности:</translation>
+        <translation>Макс. интервала качества последовательности:</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6351"/>
@@ -529,7 +529,7 @@
     </message>
     <message>
         <source>Max #N&apos;s</source>
-        <translation type="vanished">Максимум N</translation>
+        <translation type="vanished">Макс. N</translation>
     </message>
     <message>
         <source>Concentration of divalent cations</source>
@@ -558,11 +558,11 @@
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable 3&apos;-anchored global alignment score when testing a single primer for self-complementarity, and the maximum allowable 3&apos;-anchored global alignment score when testing for complementarity between left and right primers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная 3&amp;apos;-комплементарность.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. 3&amp;apos;-комплементарность.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable local alignment score when testing a single primer for (local) self-complementarity and the maximum allowable local alignment score when testing for complementarity between left and right primers.&lt;/p&gt;&lt;p&gt;Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная комплементарность.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. комплементарность.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2781"/>
@@ -574,7 +574,7 @@
         <location filename="../src/Primer3Dialog.ui" line="2491"/>
         <location filename="../src/Primer3Dialog.ui" line="2813"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowable length of a mononucleotide repeat, for example AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная допустимая для мононуклеотидного повтора, например AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. допустимая для мононуклеотидного повтора, например AAAAAA.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2404"/>
@@ -680,7 +680,7 @@
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max #Ns for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум N символов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. N символов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer mispriming library, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -700,15 +700,15 @@
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max 3&apos; self complementarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальная 3&apos; комплементарность олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. 3&apos; комплементарность олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max poly-X for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум poly-X олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. poly-X олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer max library mispriming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум ошибки олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. ошибки олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of the dNTPs for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -807,7 +807,7 @@
     </message>
     <message>
         <source>Tm difference</source>
-        <translation type="vanished">Максимальная разница Tm</translation>
+        <translation type="vanished">Макс. разница Tm</translation>
     </message>
     <message>
         <source>Any complementarity</source>
@@ -873,7 +873,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="47"/>
         <source>Select the Task for primer selection</source>
-        <translation>Выберите Задачу подбора праймеров</translation>
+        <translation>Выберите задачу подбора праймеров</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="44"/>
@@ -934,7 +934,7 @@
         <location filename="../src/Primer3Dialog.ui" line="216"/>
         <location filename="../src/Primer3Dialog.ui" line="250"/>
         <source>5&apos; Overhang:</source>
-        <translation>5&apos; Перекрытие:</translation>
+        <translation>5&apos; перекрытие:</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="213"/>
@@ -1124,23 +1124,23 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="783"/>
         <source>Max Library Mispriming</source>
-        <translation>Максимальное несоответствие бибилотеке праймеров</translation>
+        <translation>Макс. несоответствие бибилотеке праймеров</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="852"/>
         <source>Max 3&apos; Stability</source>
-        <translation>Максимальная стабильность на 3&apos;</translation>
+        <translation>Макс. стабильность на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="919"/>
         <source>Pair Max Library Mispriming</source>
-        <translation>Максимальное несоответствие библиотеке праймеров (пары)</translation>
+        <translation>Макс. несоответствие библиотеке праймеров (пары)</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1738"/>
         <location filename="../src/Primer3Dialog.ui" line="1825"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the most stable monomer structure of internal oligo calculated by thermodynamic approach. The hairpin loops, bulge loops, internal loops, internal single mismatches, dangling ends, terminal mismatches have been considered. This parameter is calculated only if &lt;span style=&quot; font-weight:700;&quot;&gt;Use Thermodynamic Oligo Alignment&lt;/span&gt; is checked. The default value is 10 degrees lower than the default value of &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Tm Min&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Были рассмотрены петли-шпильки, петли-выпуклости, внутренние петли, внутренние одиночные несовпадения, свисающие концы, концевые несовпадения. Этот параметр рассчитывается только в том случае, если &lt;span style=&quot; font-weight:700;&quot;&gt;Использовать Термодинамическое Олигонуклеотидное Выравнивание&lt;/span&gt; отмечено. Значение по умолчанию на 10 градусов ниже, чем значение по умолчанию &lt;span style=&quot; font-weight:700;&quot;&gt;Миннимамльная Т. плав. праймера&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Были рассмотрены петли-шпильки, петли-выпуклости, внутренние петли, внутренние одиночные несовпадения, свисающие концы, концевые несовпадения. Этот параметр рассчитывается только в том случае, если &lt;span style=&quot; font-weight:700;&quot;&gt;Использовать термодинамическое олигонуклеотидное выравнивание&lt;/span&gt; отмечено. Значение по умолчанию на 10 градусов ниже, чем значение по умолчанию &lt;span style=&quot; font-weight:700;&quot;&gt;Миннимамльная Т. плав. праймера&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1098"/>
@@ -1164,7 +1164,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1270"/>
         <source>Annealing Temperature</source>
-        <translation>Температура Отжига</translation>
+        <translation>Температура отжига</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1694"/>
@@ -1174,24 +1174,24 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1697"/>
         <source>Use Thermodynamic Oligo Alignment</source>
-        <translation>Использовать Термодинамическое Олигонуклеотидное Выравнивание</translation>
+        <translation>Использовать термодинамическое олигонуклеотидное выравнивание</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1709"/>
         <location filename="../src/Primer3Dialog.ui" line="1848"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as&lt;span style=&quot; font-weight:700;&quot;&gt; Max 3&apos; Self Complementarity&lt;/span&gt; but is based on thermodynamical approach - the stability of structure is analyzed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt; Максимальная Самокомплементарность на 3&apos;&lt;/span&gt;, но основанная на термодинамическом подходе - анализируется стабильность структуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt; Макс. самокомплементарность на 3&apos;&lt;/span&gt;, но основанная на термодинамическом подходе - анализируется стабильность структуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1751"/>
         <location filename="../src/Primer3Dialog.ui" line="2007"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Pair Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Парная Комплементарность на 3&apos;&lt;/span&gt; но для расчета значения (температуры плавления структуры) используется термодинамический подход&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. Парная Комплементарность на 3&apos;&lt;/span&gt; но для расчета значения (температуры плавления структуры) используется термодинамический подход&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1770"/>
         <source>Max 3&apos; Pair Complementarity</source>
-        <translation>Максимальная Парная Комплементарность на 3&apos;</translation>
+        <translation>Макс. парная комплементарность на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1777"/>
@@ -1203,28 +1203,28 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1796"/>
         <source>TH: Max Self Complementarity</source>
-        <translation>TH: Максимальная Самокомплементарность</translation>
+        <translation>TH: Макс. самокомплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1793"/>
         <location filename="../src/Primer3Dialog.ui" line="1809"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The same as &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; but all calculations are based on thermodynamical approach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность&lt;/span&gt; но все расчеты основаны на термодинамическом подходе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность&lt;/span&gt; но все расчеты основаны на термодинамическом подходе.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1828"/>
         <source>TH: Max Primer Hairpin	</source>
-        <translation>TH: Максимальная шпилечная структура	</translation>
+        <translation>TH: Макс. шпилечная структура	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1851"/>
         <source>TH: Max 3&apos; Self Complementarity</source>
-        <translation>TH: Максимальная Самокомплементарность на 3&apos;</translation>
+        <translation>TH: Макс. самокомплементарность на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1874"/>
         <source>Max Pair Complementarity</source>
-        <translation>Максимальная Парная Комплементарность</translation>
+        <translation>Макс. парная комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1894"/>
@@ -1235,7 +1235,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1926"/>
         <source>TH: Max Pair Complementarity</source>
-        <translation>TH: Максимальная Парная Комплементарность</translation>
+        <translation>TH: Макс. парная комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1767"/>
@@ -1243,7 +1243,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="1933"/>
         <location filename="../src/Primer3Dialog.ui" line="1978"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Describes the tendency of the left primer to bind to the right primer. It is the maximum allowable local alignment score when testing for complementarity between left and right primers. It is similar to &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Описывает тенденцию левого праймера связываться с правым праймером. Это максимально допустимая оценка локального выравнивания при тестировании на комплементарность между левым и правым праймерами. Это похоже на &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальную Самокомплементарность&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Описывает тенденцию левого праймера связываться с правым праймером. Это максимально допустимая оценка локального выравнивания при тестировании на комплементарность между левым и правым праймерами. Это похоже на &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальную самокомплементарность&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="373"/>
@@ -1255,22 +1255,22 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="1962"/>
         <location filename="../src/Primer3Dialog.ui" line="2027"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to bind the 3&apos;-END to a identical primer and scores the best binding it can find. This is critical for primer quality because it allows primers use itself as a target and amplify a short piece (forming a primer-dimer). These primers are then unable to bind and amplify the target sequence.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; is the maximum allowable 3&apos;-anchored global alignment score when testing a single primer for self-complementarity. The 3&apos;-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пытается связать 3&apos;-КОНЕЦ с идентичным праймером и оценивает лучшее связывание, которое может найти. Это имеет решающее значение для качества праймеров, поскольку позволяет праймерам использовать себя в качестве цели и амплифицировать короткий фрагмент (образуя праймер-димер). Затем эти праймеры не могут связываться и амплифицировать целевую последовательность.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos;&lt;/span&gt; это максимально допустимая оценка глобального выравнивания с 3&apos;-привязкой при тестировании одного праймера на самодополняемость. Оценка глобального выравнивания с 3&apos;-привязкой используется для прогнозирования вероятности ПЦР-праймирования димеров праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пытается связать 3&apos;-КОНЕЦ с идентичным праймером и оценивает лучшее связывание, которое может найти. Это имеет решающее значение для качества праймеров, поскольку позволяет праймерам использовать себя в качестве цели и амплифицировать короткий фрагмент (образуя праймер-димер). Затем эти праймеры не могут связываться и амплифицировать целевую последовательность.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos;&lt;/span&gt; это максимально допустимая оценка глобального выравнивания с 3&apos;-привязкой при тестировании одного праймера на самодополняемость. Оценка глобального выравнивания с 3&apos;-привязкой используется для прогнозирования вероятности ПЦР-праймирования димеров праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2010"/>
         <source>TH: Max 3&apos; Pair Complementarity</source>
-        <translation>TH: Максимальная Парная Комплементарность на 3&apos;</translation>
+        <translation>TH: Макс. парная комплементарность на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2020"/>
         <source>Max Self Complementarity</source>
-        <translation>Максимальная Самокомплементарность</translation>
+        <translation>Макс. самокомплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2030"/>
         <source>Max 3&apos; Self Complementarity</source>
-        <translation>Максимальная Самокомплементарность на 3&apos;</translation>
+        <translation>Макс. самокомплементарность на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2050"/>
@@ -1280,12 +1280,12 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2053"/>
         <source>Use Thermodynamic Template Alignment	</source>
-        <translation>Использовать Термодинамическое Шаблонное Выранивание	</translation>
+        <translation>Использовать термодинамическое шаблонное выранивание	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2071"/>
         <source>TH: Max Template Mispriming</source>
-        <translation>TH: Максимальный шаблон ошибочного праймирования</translation>
+        <translation>TH: Макс. шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2068"/>
@@ -1302,7 +1302,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2154"/>
         <source>TH: Pair Max Template Mispriming</source>
-        <translation>TH: Парный максимальный шаблон ошибочного праймирования</translation>
+        <translation>TH: Парный макс. шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2151"/>
@@ -1609,74 +1609,74 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="3639"/>
         <location filename="../src/Primer3Dialog.ui" line="3754"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Self Complementarity&lt;/span&gt; for the internal oligo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальная Самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Макс. самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3661"/>
         <location filename="../src/Primer3Dialog.ui" line="3690"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Max 3&apos; End Self Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и  &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos; для внутреннего олиго&lt;/span&gt; но с использованием термодинамического подхода при расчете&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и  &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos; для внутреннего олиго&lt;/span&gt; но с использованием термодинамического подхода при расчете&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3693"/>
         <source>TH: Internal Oligo Max 3&apos; End Self Complementarity	</source>
-        <translation>TH: Максимальная Самокомплементарность на 3&apos; для внутреннего олиго	</translation>
+        <translation>TH: Макс. самокомплементарность на 3&apos; для внутреннего олиго	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3706"/>
         <location filename="../src/Primer3Dialog.ui" line="3744"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3728"/>
         <location filename="../src/Primer3Dialog.ui" line="3809"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Максимальная Самокомплементарность на 3&apos;&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos;&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3747"/>
         <location filename="../src/Primer3Dialog.ui" line="5738"/>
         <source>Internal Oligo Self Complementarity</source>
-        <translation>Самокомплементарность Внутреннего Олиго</translation>
+        <translation>Самокомплементарность внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3757"/>
         <location filename="../src/Primer3Dialog.ui" line="5651"/>
         <source>TH: Internal Oligo Self Complementarity</source>
-        <translation>TH: Максимальная Самокомплементарность Внутреннего Олиго</translation>
+        <translation>TH: Макс. самокомплементарность внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3783"/>
         <location filename="../src/Primer3Dialog.ui" line="3799"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The most stable monomer structure of internal oligo calculated by thermodynamic approach. See &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Primer Hairpin&lt;/span&gt;	 for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Смотри &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Максимальная Шпилечаная структура&lt;/span&gt; для деталей&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Смотри &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Макс. Шпилечаная структура&lt;/span&gt; для деталей&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3802"/>
         <location filename="../src/Primer3Dialog.ui" line="5709"/>
         <source>TH: Internal Oligo Hairpin</source>
-        <translation>TH: Шпилечнавя Структура Внутреннего Олиго</translation>
+        <translation>TH: Шпилечная структура внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3812"/>
         <source>Internal Oligo Max 3&apos; End Self Complementarity</source>
-        <translation>Самокомплементарность Внутреннего Олиго на 3&apos;</translation>
+        <translation>Самокомплементарность внутреннего олиго на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3833"/>
         <source>Internal Oligo Max Poly-X</source>
-        <translation>Максимум Poly-X Внутреннего Олиго</translation>
+        <translation>Макс. poly-x внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3843"/>
         <source>Internal Oligo DNA Concentration</source>
-        <translation>Концентрация ДНК Внутреннего Олиго</translation>
+        <translation>Концентрация ДНК внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3853"/>
         <source>Internal Oligo Formamide Concentration</source>
-        <translation>Концентрация Формамида Внутреннего Олиго</translation>
+        <translation>Концентрация формамида внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3866"/>
@@ -1700,7 +1700,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3915"/>
         <source>Internal Oligo [dNTP]</source>
-        <translation>Внутренние Олиго [dNTP]</translation>
+        <translation>Внутренние олиго [dNTP]</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3840"/>
@@ -1734,12 +1734,12 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4023"/>
         <source>Internal Oligo 5 Prime Junction Overlap</source>
-        <translation>5&apos; Перекрытие Основного Соединения для Внутреннего Олиго</translation>
+        <translation>5&apos; перекрытие основного соединения для внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4033"/>
         <source>Internal Oligo Conc of monovalent cations</source>
-        <translation>Концентрация Одновалентных Катионов Внутреннего Олиго</translation>
+        <translation>Концентрация одновалентных катионов внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3902"/>
@@ -1756,22 +1756,22 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4113"/>
         <source>Internal Oligo Mishyb Library</source>
-        <translation>Библиотека Mishyb Внутреннего Олиго</translation>
+        <translation>Библиотека mishyb внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4123"/>
         <source>Internal Oligo 3 Prime Junction Overlap</source>
-        <translation>3&apos; Перекрытие Основного Соединения для Внутреннего Олиго</translation>
+        <translation>3&apos; перекрытие основного соединения для внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4133"/>
         <source>Internal Oligo Max Library Mishyb	</source>
-        <translation>Максимум Библиотеки Mishyb Внутреннего Олиго</translation>
+        <translation>Макс. библиотеки Mishyb внутреннего олиго	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4143"/>
         <source>Internal Oligo conc of divalent cations</source>
-        <translation>Концентрация Двухвалентных Катионов Внутреннего Олиго</translation>
+        <translation>Концентрация двухвалентных катионов внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3985"/>
@@ -1783,7 +1783,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="3830"/>
         <location filename="../src/Primer3Dialog.ui" line="4169"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max poly-X&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Максимум poly-X&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. poly-X&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4185"/>
@@ -1794,7 +1794,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4207"/>
         <source>Internal Oligo DMSO Factor</source>
-        <translation>Фактор ДМСО Внутреннего Олиго</translation>
+        <translation>Фактор ДМСО внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4120"/>
@@ -1811,7 +1811,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4249"/>
         <source>Min Internal Oligo End Distance</source>
-        <translation>Минимальное Расстояние Между Концами Внутренних Олиго</translation>
+        <translation>Мин. расстояние между концами внутренних олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4275"/>
@@ -1859,7 +1859,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4597"/>
         <source>TH: Template Mispriming</source>
-        <translation>TH: Шаблон Ошибочного Праймирования</translation>
+        <translation>TH: Шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4623"/>
@@ -1916,13 +1916,13 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4681"/>
         <source>Template Mispriming</source>
-        <translation>Шаблон Ошибочного Праймирования</translation>
+        <translation>Шаблон ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4750"/>
         <location filename="../src/Primer3Dialog.ui" line="5301"/>
         <source>Library Mispriming</source>
-        <translation>Библиотека Ошибочного Праймирования</translation>
+        <translation>Библиотека ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4828"/>
@@ -1933,7 +1933,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4889"/>
         <source>Primer failure rate</source>
-        <translation>Величина Ошибки праймера</translation>
+        <translation>Величина ошибки праймера</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4968"/>
@@ -1948,7 +1948,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5081"/>
         <source>TH: Any Complementarity</source>
-        <translation>TH: Любая Комплементарность</translation>
+        <translation>TH: Любая комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5110"/>
@@ -1958,12 +1958,12 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5142"/>
         <source>TH: Template Mispriming Weight</source>
-        <translation>TH: Вес Шаблона Ошибочного Праймирования</translation>
+        <translation>TH: Вес шаблона ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5174"/>
         <source>Any Complementarity</source>
-        <translation>Любая Комплементарность</translation>
+        <translation>Любая комплементарность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5171"/>
@@ -1991,27 +1991,27 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5232"/>
         <source>Template Mispriming Weight</source>
-        <translation>Вес Шаблона Ошибочного Праймирования</translation>
+        <translation>Вес шаблона ошибочного праймирования</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5272"/>
         <source>Tm Difference</source>
-        <translation>Разница Температуры плавления</translation>
+        <translation>Разница температуры плавления</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5330"/>
         <source>Primer Penalty Weight</source>
-        <translation>Вес Штрафа Праймера</translation>
+        <translation>Вес штрафа праймера</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5359"/>
         <source>Internal Oligo Penalty Weight	</source>
-        <translation>Вес Штрафа Внутреннего Олиго</translation>
+        <translation>Вес штрафа внутреннего олиго	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5416"/>
         <source>Internal Oligos</source>
-        <translation>Внутренние Олиго</translation>
+        <translation>Внутренние олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5428"/>
@@ -2050,7 +2050,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5680"/>
         <source>TH: Internal Oligo 3&apos; End Complementarity</source>
-        <translation>TH: Комплементарность на 3&apos; Внутреннего Олиго</translation>
+        <translation>TH: Комплементарность на 3&apos; внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5735"/>
@@ -2071,27 +2071,27 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5767"/>
         <source>Internal Oligo 3&apos; End Complementarity</source>
-        <translation>Комплементарность на 3&apos; Внутреннего Олиго</translation>
+        <translation>Комплементарность на 3&apos; внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5807"/>
         <source>Internal Oligo #N&apos;s</source>
-        <translation>#N Внутреннего Олиго</translation>
+        <translation>#N внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5836"/>
         <source>Internal Oligo Library Mishybing</source>
-        <translation>Библиотечный Mishybing Внутреннего Олиго</translation>
+        <translation>Библиотечный mishybing внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5865"/>
         <source>Internal Oligo Sequence Quality</source>
-        <translation>Качество Последовательности Внутреннего Олиго</translation>
+        <translation>Качество последовательности внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5894"/>
         <source>Internal Oligo Sequence End Quality</source>
-        <translation>Качество Конца Последовательности Внутреннего Олиго</translation>
+        <translation>Качество конца последовательности внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6063"/>
@@ -2146,7 +2146,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6047"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимум интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6300"/>
@@ -2199,7 +2199,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Query.cpp" line="178"/>
         <source>Max 3&apos; stability</source>
-        <translation>Максимальная 3&apos; стабильность</translation>
+        <translation>Макс. 3&apos; стабильность</translation>
     </message>
     <message>
         <location filename="../src/Primer3Query.cpp" line="179"/>
@@ -2474,7 +2474,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
     <message>
         <source>Product Max Tm</source>
-        <translation type="vanished">Максимальная Tm продукта</translation>
+        <translation type="vanished">Макс. Tm продукта</translation>
     </message>
     <message>
         <source>Opt GC%</source>
