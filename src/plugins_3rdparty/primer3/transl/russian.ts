@@ -127,7 +127,7 @@
         <location filename="../src/Primer3Dialog.ui" line="1387"/>
         <location filename="../src/Primer3Dialog.ui" line="1403"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum lengths (in bases) of a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick primers shorter than Min or longer than Max, and with default arguments will attempt to pick primers close with size close to Opt.&lt;/p&gt;&lt;p&gt;Min cannot be smaller than 1. Max cannot be larger than 36. (This limit is governed by maximum oligo size for which melting-temperature calculations are valid.)&lt;/p&gt;&lt;p&gt;Min cannot be greater than Max.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная длины олиго праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная длины олигонуклеотида праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1023"/>
@@ -135,21 +135,21 @@
         <location filename="../src/Primer3Dialog.ui" line="1134"/>
         <location filename="../src/Primer3Dialog.ui" line="1147"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum melting temperatures (Celsius) for a primer oligo.&lt;/p&gt;&lt;p&gt;Primer3 will not pick oligos with temperatures smaller than Min or larger than Max, and with default conditions will try to pick primers with melting temperatures close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная температуры плавления олиго праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальная, оптимальная и максимальная температуры плавления олигонуклеотида праймера.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1277"/>
         <location filename="../src/Primer3Dialog.ui" line="1655"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олигонуклеотиде.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1346"/>
         <location filename="../src/Primer3Dialog.ui" line="1534"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олигонуклеотиде.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1250"/>
@@ -182,7 +182,7 @@
     </message>
     <message>
         <source>Hyb Oligos</source>
-        <translation type="vanished">Гибридизация олиго</translation>
+        <translation type="vanished">Гибридизация олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6303"/>
@@ -330,7 +330,7 @@
     </message>
     <message>
         <source>Annealing oligo concentration</source>
-        <translation type="vanished">Концентрация отжига олиго</translation>
+        <translation type="vanished">Концентрация отжига олигонуклеотида</translation>
     </message>
     <message>
         <source> Liberal base</source>
@@ -343,19 +343,19 @@
     </message>
     <message>
         <source>Hyb oligo excluded region</source>
-        <translation type="vanished">Исключаемые регионы гибридизации олиго</translation>
+        <translation type="vanished">Исключаемые регионы гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo size</source>
-        <translation type="vanished">Размер гибридизации олиго</translation>
+        <translation type="vanished">Размер гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo Tm</source>
-        <translation type="vanished">Tm гибридизации олиго</translation>
+        <translation type="vanished">Tm гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo GC%</source>
-        <translation type="vanished">GC% гибридизации олиго</translation>
+        <translation type="vanished">GC% гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3292"/>
@@ -363,7 +363,7 @@
         <location filename="../src/Primer3Dialog.ui" line="3499"/>
         <location filename="../src/Primer3Dialog.ui" line="3537"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Size for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр размера праймера для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр размера праймера для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3328"/>
@@ -371,59 +371,59 @@
         <location filename="../src/Primer3Dialog.ui" line="3424"/>
         <location filename="../src/Primer3Dialog.ui" line="3570"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer Tm for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tm олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tm олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3360"/>
         <location filename="../src/Primer3Dialog.ui" line="3464"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3347"/>
         <location filename="../src/Primer3Dialog.ui" line="3521"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of Primer GC% for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GC% олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Hyb oligo self complementarity</source>
-        <translation type="vanished">Комплементарность гибридизации олиго</translation>
+        <translation type="vanished">Комплементарность гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo mishyb library</source>
-        <translation type="vanished">Библиотека гибридизации олиго</translation>
+        <translation type="vanished">Библиотека гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo min sequence quality</source>
-        <translation type="vanished">Минимальное качество последовательности гибридизации олиго</translation>
+        <translation type="vanished">Минимальное качество последовательности гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo conc of monovalent cations</source>
-        <translation type="vanished">Концентрация одновалентных катионов гибридизации олиго</translation>
+        <translation type="vanished">Концентрация одновалентных катионов гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo conc of divalent cations</source>
-        <translation type="vanished">Концентрация двухвалентных катионов гибридизации олиго</translation>
+        <translation type="vanished">Концентрация двухвалентных катионов гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo max 3&apos; self complementarity</source>
-        <translation type="vanished">Макс. 3&apos; комплементарность гибридизации олиго</translation>
+        <translation type="vanished">Макс. 3&apos; комплементарность гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo max poly-X</source>
-        <translation type="vanished">Макс. poly-X гибридизации олиго</translation>
+        <translation type="vanished">Макс. poly-X гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo max mishyb</source>
-        <translation type="vanished">Макс. ошибки гибридизации олиго</translation>
+        <translation type="vanished">Макс. ошибки гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Hyb oligo [dNTP]</source>
-        <translation type="vanished">Гибридизация олиго [dNTP]</translation>
+        <translation type="vanished">Гибридизация олигонуклеотида [dNTP]</translation>
     </message>
     <message>
         <source>Hyb oligo DNA concentration</source>
-        <translation type="vanished">ДНК концентрация гибридизации олиго</translation>
+        <translation type="vanished">ДНК концентрация гибридизации олигонуклеотида</translation>
     </message>
     <message>
         <source>Self complementarity</source>
@@ -616,7 +616,7 @@
         <location filename="../src/Primer3Dialog.ui" line="2345"/>
         <location filename="../src/Primer3Dialog.ui" line="3004"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A value to use as nanomolar (nM) concentration of each annealing oligo over the course the PCR.&lt;/p&gt;&lt;p&gt;Primer3 uses this argument to esimate oligo melting temperatures.&lt;/p&gt;&lt;p&gt;The default (50nM) works well with the standard protocol used at the Whitehead/MIT Center for Genome Research --0.5 microliters of 20 micromolar concentration for each primer in a 20 microliter reaction with 10 nanograms template, 0.025 units/microliter Taq polymerase in 0.1 mM each dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) using 35 cycles with an annealing temperature of 56 degrees Celsius.&lt;/p&gt;&lt;p&gt;The value of this parameter is less than the actual concentration of oligos in the initial reaction mix because  it is the concentration of annealing oligos, which in turn depends on the amount of template (including PCR product) in a given cycle. This concentration increases a great deal during a PCR; fortunately PCR seems quite robust for a variety of oligo melting temperatures.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация отжига олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация отжига олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Non-default values valid only for sequences with 0 or 1 target regions.&lt;/p&gt;&lt;p&gt;If the primer is part of a pair that spans a target and overlaps the target, then multiply this value times the number of nucleotide positions by which the primer overlaps the (unique) target to get the &apos;position penalty&apos;.&lt;/p&gt;&lt;p&gt;The effect of this parameter is to allow Primer3 to include overlap with the target as a term in the objective function.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -634,12 +634,12 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3220"/>
         <source>Internal Oligo</source>
-        <translation>Внутреннее олиго</translation>
+        <translation>Внутренний олигонуклеотид</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3223"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameters governing choice of internal oligos are analogous to the parameters governing choice of primer pairs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметры, регулирующие выбор внутренних олиго аналогичны параметрам, регулирующих выбор пар праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметры, регулирующие выбор внутренних олигонуклеотидов аналогичны параметрам, регулирующих выбор пар праймеров.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&amp;lt;start&amp;gt;,&amp;lt;length&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &amp;lt;start&amp;gt; is the index of the first base of an excluded region, and &amp;lt;length&amp;gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -676,7 +676,7 @@
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max self complemntarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Комплементарность олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Комплементарность олигонуклеотидов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max #Ns for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -684,23 +684,23 @@
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Similar to primer mispriming library, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Библиотека олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Библиотека олигонуклеотидов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer minimum quality for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное качество последовательности олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное качество последовательности олигонуклеотидов.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of monovalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация одновалентных катионов олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация одновалентных катионов олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer concentration of divalent cations for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация двухвалентных катионов олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Концентрация двухвалентных катионов олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max 3&apos; self complementarity for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. 3&apos; комплементарность олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. 3&apos; комплементарность олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer max poly-X for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -996,7 +996,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="386"/>
         <source>Five Matches on Internal Oligo&apos;s  5&apos;</source>
-        <translation>Пять совпадений на 5&apos; конце Внутреннего олиго</translation>
+        <translation>Пять совпадений на 5&apos; конце внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="279"/>
@@ -1050,7 +1050,7 @@
         <location filename="../src/Primer3Dialog.ui" line="383"/>
         <location filename="../src/Primer3Dialog.ui" line="594"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 5&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Пять совпадений на 5&apos; конце&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Пять совпадений на 5&apos; конце&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="604"/>
@@ -1066,7 +1066,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="628"/>
         <source>Five Matches on Internal Oligo&apos;s 3&apos;</source>
-        <translation>Пять совпадений на 3&apos; конце Внутренного олиго</translation>
+        <translation>Пять совпадений на 3&apos; конце внутренного олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="329"/>
@@ -1140,7 +1140,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="1738"/>
         <location filename="../src/Primer3Dialog.ui" line="1825"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the most stable monomer structure of internal oligo calculated by thermodynamic approach. The hairpin loops, bulge loops, internal loops, internal single mismatches, dangling ends, terminal mismatches have been considered. This parameter is calculated only if &lt;span style=&quot; font-weight:700;&quot;&gt;Use Thermodynamic Oligo Alignment&lt;/span&gt; is checked. The default value is 10 degrees lower than the default value of &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Tm Min&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Были рассмотрены петли-шпильки, петли-выпуклости, внутренние петли, внутренние одиночные несовпадения, свисающие концы, концевые несовпадения. Этот параметр рассчитывается только в том случае, если &lt;span style=&quot; font-weight:700;&quot;&gt;Использовать термодинамическое олигонуклеотидное выравнивание&lt;/span&gt; отмечено. Значение по умолчанию на 10 градусов ниже, чем значение по умолчанию &lt;span style=&quot; font-weight:700;&quot;&gt;Миннимамльная Т. плав. праймера&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это наиболее стабильная мономерная структура внутреннего олигонуклеотида, рассчитанная термодинамическим подходом. Были рассмотрены петли-шпильки, петли-выпуклости, внутренние петли, внутренние одиночные несовпадения, свисающие концы, концевые несовпадения. Этот параметр рассчитывается только в том случае, если &lt;span style=&quot; font-weight:700;&quot;&gt;Использовать термодинамическое олигонуклеотидное выравнивание&lt;/span&gt; отмечено. Значение по умолчанию на 10 градусов ниже, чем значение по умолчанию &lt;span style=&quot; font-weight:700;&quot;&gt;Миннимамльная Т. плав. праймера&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1098"/>
@@ -1517,7 +1517,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3156"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set to 1, treat ambiguity codes as if they were consensus codes when matching oligos to mispriming or mishyb libraries. For example, if this flag is set, then a C in an oligo will be scored as a perfect match to an S in a library sequence, as will a G in the oligo. More importantly, though, any base in an oligo will be scored as a perfect match to an N in the library. This is very bad if the library contains strings of Ns, as no oligo will be legal (and it will take a long time to find this out). So unless you know for sure that your library does not have runs of Ns (or Xs), then set this flag to 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если задано, то обрабатывайте неоднозначности кода так, как если бы они были согласованными кодами при сопоставлении олигов с библиотеками mispriming или mishyb. Например, если этот флаг установлен, то C в олигонуклеотиде будет считаться полным совпадением с S в библиотечной последовательности, как и G в олигонуклеотиде.Однако, что еще более важно, любое основание в олиго будет оцениваться как идеальное совпадение с N в библиотеке. Это очень плохо, если в библиотеке есть строки из N, так как ни один олиго не будет легальным (и выяснять это придется долго). Поэтому, если вы точно не знаете, что в вашей библиотеке нет серий N (или X), установите этот флаг на 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если задано, то обрабатывайте неоднозначности кода так, как если бы они были согласованными кодами при сопоставлении олигонуклеотидов с библиотеками mispriming или mishyb. Например, если этот флаг установлен, то C в олигонуклеотиде будет считаться полным совпадением с S в библиотечной последовательности, как и G в олигонуклеотиде.Однако, что еще более важно, любое основание в олигонуклеотида будет оцениваться как идеальное совпадение с N в библиотеке. Это очень плохо, если в библиотеке есть строки из N, так как ни один олигонуклеотид не будет легальным (и выяснять это придется долго). Поэтому, если вы точно не знаете, что в вашей библиотеке нет серий N (или X), установите этот флаг на 0.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3159"/>
@@ -1542,7 +1542,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3189"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter provides a quick-and-dirty way to get Primer3 to accept IUB / IUPAC codes for ambiguous bases (i.e. by changing all unrecognized bases to N). If you wish to include an ambiguous base in an oligo, you must set &lt;span style=&quot; font-weight:700;&quot;&gt;Max #N&apos;s accepted&lt;/span&gt; to a 1 (non-0) value.&lt;/p&gt;&lt;p&gt;Perhaps &apos;-&apos; and &apos;* &apos; should be squeezed out rather than changed to &apos;N&apos;, but currently they simply get converted to N&apos;s. The authors invite user comments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Этот параметр обеспечивает быстрый и грязный способ заставить Primer3 принимать коды IUB / IUPAC для неоднозначных оснований. (т.е. заменив все нераспознанные базы на N). Если вы хотите включить неоднозначное основание в олиго, вы должны выставить &lt;span style=&quot; font-weight:700;&quot;&gt;Максимально допустимое #N&lt;/span&gt; на не-нулевое значение.&lt;/p&gt;&lt;p&gt;Возможно, «-» и «*» следует убрать, а не заменить на «N», но в настоящее время они просто преобразуются в N.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Этот параметр обеспечивает быстрый и грязный способ заставить Primer3 принимать коды IUB / IUPAC для неоднозначных оснований. (т.е. заменив все нераспознанные базы на N). Если вы хотите включить неоднозначное основание в олигонуклеотид, вы должны выставить &lt;span style=&quot; font-weight:700;&quot;&gt;Максимально допустимое #N&lt;/span&gt; на не-нулевое значение.&lt;/p&gt;&lt;p&gt;Возможно, «-» и «*» следует убрать, а не заменить на «N», но в настоящее время они просто преобразуются в N.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3192"/>
@@ -1571,7 +1571,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="4020"/>
         <location filename="../src/Primer3Dialog.ui" line="4094"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олиго должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олигонуклеотида должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3279"/>
@@ -1609,74 +1609,74 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="3639"/>
         <location filename="../src/Primer3Dialog.ui" line="3754"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Self Complementarity&lt;/span&gt; for the internal oligo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Макс. самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Макс. самокомплементарность&lt;/span&gt; для внутреннего олигонуклеотида&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3661"/>
         <location filename="../src/Primer3Dialog.ui" line="3690"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Max 3&apos; End Self Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и  &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos; для внутреннего олиго&lt;/span&gt; но с использованием термодинамического подхода при расчете&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же что и  &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos; для внутреннего олигонуклеотида&lt;/span&gt; но с использованием термодинамического подхода при расчете&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3693"/>
         <source>TH: Internal Oligo Max 3&apos; End Self Complementarity	</source>
-        <translation>TH: Макс. самокомплементарность на 3&apos; для внутреннего олиго	</translation>
+        <translation>TH: Макс. самокомплементарность на 3&apos; для внутреннего олигонуклеотида	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3706"/>
         <location filename="../src/Primer3Dialog.ui" line="3744"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность&lt;/span&gt; для внутреннего олиго&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность&lt;/span&gt; для внутреннего олигонуклеотида&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3728"/>
         <location filename="../src/Primer3Dialog.ui" line="3809"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Self Complementarity&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos;&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. самокомплементарность на 3&apos;&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3747"/>
         <location filename="../src/Primer3Dialog.ui" line="5738"/>
         <source>Internal Oligo Self Complementarity</source>
-        <translation>Самокомплементарность внутреннего олиго</translation>
+        <translation>Самокомплементарность внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3757"/>
         <location filename="../src/Primer3Dialog.ui" line="5651"/>
         <source>TH: Internal Oligo Self Complementarity</source>
-        <translation>TH: Макс. самокомплементарность внутреннего олиго</translation>
+        <translation>TH: Макс. самокомплементарность внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3783"/>
         <location filename="../src/Primer3Dialog.ui" line="3799"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The most stable monomer structure of internal oligo calculated by thermodynamic approach. See &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Max Primer Hairpin&lt;/span&gt;	 for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Наиболее стабильная мономерная структура внутреннего олиго, рассчитанная термодинамическим подходом. Смотри &lt;span style=&quot; font-weight:700;&quot;&gt;TH: Макс. Шпилечаная структура&lt;/span&gt; для деталей&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Наиболее стабильная мономерная структура внутреннего олигонуклеотида, рассчитанная термодинамическим подходом. Смотри &lt;span style=&quot; font-weight:700;&quot;&gt;TH: макс. шпилечаная структура&lt;/span&gt; для деталей&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3802"/>
         <location filename="../src/Primer3Dialog.ui" line="5709"/>
         <source>TH: Internal Oligo Hairpin</source>
-        <translation>TH: Шпилечная структура внутреннего олиго</translation>
+        <translation>TH: Шпилечная структура внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3812"/>
         <source>Internal Oligo Max 3&apos; End Self Complementarity</source>
-        <translation>Самокомплементарность внутреннего олиго на 3&apos;</translation>
+        <translation>Самокомплементарность внутреннего олигонуклеотида на 3&apos;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3833"/>
         <source>Internal Oligo Max Poly-X</source>
-        <translation>Макс. poly-x внутреннего олиго</translation>
+        <translation>Макс. poly-x внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3843"/>
         <source>Internal Oligo DNA Concentration</source>
-        <translation>Концентрация ДНК внутреннего олиго</translation>
+        <translation>Концентрация ДНК внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3853"/>
         <source>Internal Oligo Formamide Concentration</source>
-        <translation>Концентрация формамида внутреннего олиго</translation>
+        <translation>Концентрация формамида внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3866"/>
@@ -1689,63 +1689,63 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3876"/>
         <source>Internal Oligo Min Sequence Quality</source>
-        <translation>Минимальное Качество Последовательности Внутреннего Олиго</translation>
+        <translation>Минимальное качество последовательности внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3889"/>
         <location filename="../src/Primer3Dialog.ui" line="3912"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parameter for internal oligos analogous to &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметр для внутренних олигов, аналогичный &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрации dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/ HTML&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Параметр для внутренних олигонуклеотидов, аналогичный &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрации dNTPs&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/ HTML&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3915"/>
         <source>Internal Oligo [dNTP]</source>
-        <translation>Внутренние олиго [dNTP]</translation>
+        <translation>Внутренние олигонуклеотиды [dNTP]</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3840"/>
         <location filename="../src/Primer3Dialog.ui" line="3928"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Annealing Oligo Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация олигонуклеотидов при отжиге&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация олигонуклеотидов при отжиге&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3873"/>
         <location filename="../src/Primer3Dialog.ui" line="3950"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Min sequence quality&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Минимальное качество последовательности&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Минимальное качество последовательности&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt; /html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3969"/>
         <location filename="../src/Primer3Dialog.ui" line="4030"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of Monovalent Cations&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация одновалентных катионов&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация одновалентных катионов&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3988"/>
         <source>Internal Oligo DMSO Concentration</source>
-        <translation>Концнтрация ДМСО для внутреннего олиго</translation>
+        <translation>Концнтрация ДМСО для внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4001"/>
         <location filename="../src/Primer3Dialog.ui" line="4140"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Concentration of Divalent Cations&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация двухвалентных катионов&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация двухвалентных катионов&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4023"/>
         <source>Internal Oligo 5 Prime Junction Overlap</source>
-        <translation>5&apos; перекрытие основного соединения для внутреннего олиго</translation>
+        <translation>5&apos; перекрытие основного соединения для внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4033"/>
         <source>Internal Oligo Conc of monovalent cations</source>
-        <translation>Концентрация одновалентных катионов внутреннего олиго</translation>
+        <translation>Концентрация одновалентных катионов внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3902"/>
         <location filename="../src/Primer3Dialog.ui" line="4046"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max #Ns&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Мксимально допустимое к #Ns&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Мксимально допустимое к #Ns&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3850"/>
@@ -1756,22 +1756,22 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4113"/>
         <source>Internal Oligo Mishyb Library</source>
-        <translation>Библиотека mishyb внутреннего олиго</translation>
+        <translation>Библиотека mishyb внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4123"/>
         <source>Internal Oligo 3 Prime Junction Overlap</source>
-        <translation>3&apos; перекрытие основного соединения для внутреннего олиго</translation>
+        <translation>3&apos; перекрытие основного соединения для внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4133"/>
         <source>Internal Oligo Max Library Mishyb	</source>
-        <translation>Макс. библиотеки Mishyb внутреннего олиго	</translation>
+        <translation>Макс. библиотеки Mishyb внутреннего олигонуклеотида	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4143"/>
         <source>Internal Oligo conc of divalent cations</source>
-        <translation>Концентрация двухвалентных катионов внутреннего олиго</translation>
+        <translation>Концентрация двухвалентных катионов внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3985"/>
@@ -1783,7 +1783,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="3830"/>
         <location filename="../src/Primer3Dialog.ui" line="4169"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of primer &lt;span style=&quot; font-weight:700;&quot;&gt;Max poly-X&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. poly-X&lt;/span&gt; для внутреннего олиго.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. poly-X&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4185"/>
@@ -1794,13 +1794,13 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4207"/>
         <source>Internal Oligo DMSO Factor</source>
-        <translation>Фактор ДМСО внутреннего олиго</translation>
+        <translation>Фактор ДМСО внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4120"/>
         <location filename="../src/Primer3Dialog.ui" line="4214"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олиго должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3&apos;?} {700;?} {700;?}</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олигонуклеотида должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3&apos;?} {700;?} {700;?}</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4230"/>
@@ -1811,7 +1811,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4249"/>
         <source>Min Internal Oligo End Distance</source>
-        <translation>Мин. расстояние между концами внутренних олиго</translation>
+        <translation>Мин. расстояние между концами внутренних олигонуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4275"/>
@@ -2006,17 +2006,17 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5359"/>
         <source>Internal Oligo Penalty Weight	</source>
-        <translation>Вес штрафа внутреннего олиго	</translation>
+        <translation>Вес штрафа внутреннего олигонуклеотида	</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5416"/>
         <source>Internal Oligos</source>
-        <translation>Внутренние олиго</translation>
+        <translation>Внутренние олигонуклеотиды</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5428"/>
         <source>Internal oligo Size</source>
-        <translation>Размер внутреннего олиго</translation>
+        <translation>Размер внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5425"/>
@@ -2030,27 +2030,27 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="5576"/>
         <location filename="../src/Primer3Dialog.ui" line="5593"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для соответствующего параметра внутреннего олиго меньше чем (Lt) или больше чем (Gt), что является оптимальным значением.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для соответствующего параметра внутреннего олигонуклеотида меньше чем (Lt) или больше чем (Gt), что является оптимальным значением.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5553"/>
         <source>Internal oligo Tm</source>
-        <translation>Т плав. внутреннего олиго</translation>
+        <translation>Т плав. внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5579"/>
         <source>Internal oligo GC%</source>
-        <translation>GC% внутреннего олиго</translation>
+        <translation>GC% внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5596"/>
         <source>Internal oligo Bound</source>
-        <translation>Связь внутреннего олиго</translation>
+        <translation>Связь внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5680"/>
         <source>TH: Internal Oligo 3&apos; End Complementarity</source>
-        <translation>TH: Комплементарность на 3&apos; внутреннего олиго</translation>
+        <translation>TH: Комплементарность на 3&apos; внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5735"/>
@@ -2066,32 +2066,32 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="5891"/>
         <location filename="../src/Primer3Dialog.ui" line="5907"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для параметра внутреннего олиго отличается от оптимального предопределенного значения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вес штрафа для параметра внутреннего олигонуклеотида отличается от оптимального предопределенного значения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5767"/>
         <source>Internal Oligo 3&apos; End Complementarity</source>
-        <translation>Комплементарность на 3&apos; внутреннего олиго</translation>
+        <translation>Комплементарность на 3&apos; внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5807"/>
         <source>Internal Oligo #N&apos;s</source>
-        <translation>#N внутреннего олиго</translation>
+        <translation>#N внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5836"/>
         <source>Internal Oligo Library Mishybing</source>
-        <translation>Библиотечный mishybing внутреннего олиго</translation>
+        <translation>Библиотечный mishybing внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5865"/>
         <source>Internal Oligo Sequence Quality</source>
-        <translation>Качество последовательности внутреннего олиго</translation>
+        <translation>Качество последовательности внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5894"/>
         <source>Internal Oligo Sequence End Quality</source>
-        <translation>Качество конца последовательности внутреннего олиго</translation>
+        <translation>Качество конца последовательности внутреннего олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6063"/>
@@ -2559,12 +2559,12 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="573"/>
         <source>Five Matches on Internal Oligo&apos;s  5&apos;</source>
-        <translation type="unfinished">Пять совпадений на 5&apos; конце Внутреннего олиго</translation>
+        <translation type="unfinished">Пять совпадений на 5&apos; конце внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="584"/>
         <source>Five Matches on Internal Oligo&apos;s 3&apos;</source>
-        <translation type="unfinished">Пять совпадений на 3&apos; конце Внутренного олиго</translation>
+        <translation type="unfinished">Пять совпадений на 3&apos; конце внутренного олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="624"/>
