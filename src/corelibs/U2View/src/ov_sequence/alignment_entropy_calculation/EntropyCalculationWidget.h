@@ -44,6 +44,9 @@ private:
 
     AnnotatedDNAView* annotatedDnaView;
     SaveDocumentController* saveController;
+
+    static const QString MUSCLE;
+    static const QString MAFFT;
 };
 
 }  // namespace U2
