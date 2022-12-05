@@ -3496,12 +3496,12 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
     // because the file from the issue was almoust 100 Mb size
-    
+
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Call the Primer3 dialog 
+    // Call the Primer3 dialog
     // In the Primer3 Designer dialog select PT - PCR tab
     // Check in main checkbox and set Exon range : 1424 - 1606
     // Click Pick primers button
@@ -3513,7 +3513,7 @@ GUI_TEST_CLASS_DEFINITION(test_7671) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: no crash
+    //Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7680) {
@@ -3771,6 +3771,90 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsLog::checkContainsMessage(os, ltConnect, false);
     GTUtilsLog::checkContainsMessage(os, ltSize, false);
     GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7720) {
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
+
+    auto activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is visible");
+
+    auto wgt = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(wgt != nullptr, "Sequence area is visible");
+
+    auto splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is visible");
+
+    QSplitterHandle* handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    GTWidget::click(os, handle);
+    QPoint p = GTMouseDriver::getMousePosition();
+    int deltaMove = wgt->width() / 3 * 2;
+    p.setX(p.x() + deltaMove);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::release();
+
+    GTThread::waitForMainThread();
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+
+    auto count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    bool allAreVisible = true;
+    for (uint i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR(!allAreVisible, "Some line of the multiline view must be hidden");
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget exists");
+
+    wgt = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
+    CHECK_SET_ERR(wgt != nullptr, "Sequence area exists");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter exists");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is not NULL");
+
+    GTWidget::click(os, handle);
+    p = GTMouseDriver::getMousePosition();
+    p.setX(p.x() + deltaMove);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::release();
+
+    count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    allAreVisible = true;
+    for (uint i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR(allAreVisible, "All lines of the multiline view must be visible");
+
+    GTWidget::click(os, handle);
+    p = GTMouseDriver::getMousePosition();
+    p.setX(p.x() - deltaMove);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::release();
+
+    allAreVisible = true;
+    for (uint i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR(!allAreVisible, "Some line of the multiline view must be hidden");
+
+    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7740) {
