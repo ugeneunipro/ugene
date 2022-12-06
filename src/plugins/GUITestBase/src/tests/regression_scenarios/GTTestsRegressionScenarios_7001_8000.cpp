@@ -3137,7 +3137,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "was removed"));
     QFile f(sandBoxDir + "/chrM.sorted.bam.ugenedb");
     f.rename(sandBoxDir + "/Renamed.ugenedb");
-    GTGlobals::sleep(8000);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Rename the file back to "chrM.sorted.bam.ugenedb".
     f.rename(sandBoxDir + "/chrM.sorted.bam.ugenedb");
