@@ -2888,27 +2888,45 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7629) {
-    //1. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    //2. Open Tab "Elements".
-    //3. Add element "Basic Analysis->Find Pattern".
-    WorkflowProcessItem* fp = GTUtilsWorkflowDesigner::addElement(os, "Find Pattern");
-    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, GTWidget::findTableView(os, "table"), 1, 2));
-    GTMouseDriver::click();
-    GTKeyboardDriver::keySequence(testDir + "_common_data/scenarios/_regression/7629/long_pattern.fa");
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    //4. Create element "Data Readers->Read Sequence". Set input file samples/FASTA/human_T1.fa
-    WorkflowProcessItem* rs = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
-    //5. Connect "Read Sequence" to "Find Pattern".
-    GTUtilsWorkflowDesigner::connect(os, rs, fp);   
-    //6. Run schema
-    //Expected state: here is error in log "The search pattern is too long."
-    GTLogTracer logTracer;
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    // 1. Open sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, logTracer, "The search pattern is too long.");
+    // 2. Copy 1001 symbol
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1001));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Paste it to project filter
+    // Expected: no crash, here is info message in log and warning message box
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Patten's length will be decreased to 1000 symbols."));
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(logTracer.checkMessage("The search pattern is too long. Patten's length will be decreased to 1000 symbols."), "Log should contain error");
+
+    // 4. Copy region with acceptable length 1000 symbols
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy selected sequence"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 5. Paste it to project filter
+    // Expected: no crash, no error in log
+    GTLogTracer logTracer2;
+    GTUtilsTaskTreeView::openView(os);
+    GTLineEdit::clear(os, nameFilterEdit);
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7630) {

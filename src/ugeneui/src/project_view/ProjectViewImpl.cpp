@@ -579,6 +579,7 @@ void ProjectViewImpl::initView() {
 
     connect(w->nameFilterEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_filterTextChanged(const QString&)));
     w->nameFilterEdit->installEventFilter(this);
+    w->nameFilterEdit->setMaxLength(MAX_SEARCH_PATTERN_LENGTH + 1);
 
     assert(objectViewController == nullptr);
     objectViewController = new ObjectViewTreeController(w->viewTreeWidget);
@@ -1095,9 +1096,15 @@ void ProjectViewImpl::sl_openStateView() {
 
 void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
     SAFE_POINT(nullptr != projectTreeController, "NULL controller", );
-
     ProjectTreeControllerModeSettings settings = projectTreeController->getModeSettings();
-    settings.tokensToShow = str.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    if (str.length() > MAX_SEARCH_PATTERN_LENGTH) {
+        settings.tokensToShow = str.mid(0, 1000).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        QString warning = ProjectViewImpl::tr("The search pattern is too long. Patten's length will be decreased to 1000 symbols.");
+        coreLog.info(warning);
+        QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), warning);
+    } else {
+        settings.tokensToShow = str.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    }
     projectTreeController->updateSettings(settings);
 }
 
