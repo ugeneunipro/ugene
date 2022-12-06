@@ -1045,5 +1045,19 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     CHECK_SET_ERR(ok, "unexpected clipboard: " + clipboard)
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0038) {
+    // Based on UGENE-7677
+    // 1. open view for _common_data\bam\more_then_100000_reads.bam
+    // Expected state: conversion finished without error
+    GTLogTracer l;
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "more_then_100000_reads.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsLog::check(os, l);
+    auto readsCount = GTUtilsAssemblyBrowser::getReadsCount(os);
+    CHECK_SET_ERR(readsCount > 1000000, QString("Unexpected reads count, expected: >1000000, current: %1").arg(readsCount));
+}
+
 }  // namespace GUITest_Assembly_browser
 }  // namespace U2
