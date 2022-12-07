@@ -56,25 +56,35 @@ const QString GTUtilsMSAEditorSequenceArea::highlightingColor = "#9999cc";
 #define GT_CLASS_NAME "GTUtilsMSAEditorSequenceArea"
 
 #define GT_METHOD_NAME "getSequenceArea"
-MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpStatus& os, int index) {
+MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(GUITestOpStatus& os, int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
-    CHECK_SET_ERR_RESULT(activeWindow != nullptr,
-                         QString("Can't find sequence area #%1").arg(index),
-                         nullptr);
+    if (checkError) {
+        CHECK_SET_ERR_RESULT(activeWindow != nullptr,
+                             QString("Can't find sequence area #%1").arg(index),
+                             nullptr);
+    }
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
     return GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-MSAEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(GUITestOpStatus& os, int index) {
+MSAEditorConsensusArea* GTUtilsMSAEditorSequenceArea::getConsensusArea(GUITestOpStatus& os, int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
-    CHECK_SET_ERR_RESULT(activeWindow != nullptr,
-                         QString("Can't find consensus area #%1").arg(index),
-                         nullptr);
+    if (checkError) {
+        CHECK_SET_ERR_RESULT(activeWindow != nullptr,
+                             QString("Can't find consensus area #%1").arg(index),
+                             nullptr);
+    }
+    if (activeWindow == nullptr) {
+        return nullptr;
+    }
     return GTWidget::findExactWidget<MSAEditorConsensusArea*>(os, "consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
