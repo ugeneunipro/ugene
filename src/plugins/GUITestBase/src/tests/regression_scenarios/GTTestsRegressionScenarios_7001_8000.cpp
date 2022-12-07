@@ -3788,8 +3788,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     QSplitterHandle* handle = splitter->handle(1);
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
-    GTWidget::click(os, handle);
-    QPoint p = GTMouseDriver::getMousePosition();
+    QPoint p = GTWidget::getWidgetCenter(handle);
     int baseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     QPoint delta(baseWidth / 5 * 4, 0);
     GTMouseDriver::dragAndDrop(p, p + delta);
@@ -3814,8 +3813,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     handle = splitter->handle(1);
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
-    GTWidget::click(os, handle);
-    p = GTMouseDriver::getMousePosition();
+    p = GTWidget::getWidgetCenter(handle);
     GTMouseDriver::dragAndDrop(p, p + delta);
 
     count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
@@ -3827,8 +3825,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     }
     CHECK_SET_ERR(allAreVisible, "All lines of the multiline view must be visible");
 
-    GTWidget::click(os, handle);
-    p = GTMouseDriver::getMousePosition();
+    p = GTWidget::getWidgetCenter(handle);
     GTMouseDriver::dragAndDrop(p, p - delta);
 
     allAreVisible = true;
