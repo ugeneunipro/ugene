@@ -3789,11 +3789,58 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
     QPoint p = GTWidget::getWidgetCenter(handle);
-    int baseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
-    QPoint delta(baseWidth / 5 * 4, 0);
-    GTMouseDriver::dragAndDrop(p, p + delta);
+    int seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    int uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    int seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    int baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    int length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    QPoint delta0(seqAreaBaseWidth / 5 * 4, 0);
+    if (length * baseWidth + 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
+    } else if (length * baseWidth < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth, 0);
+    } else if (length * baseWidth - 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    }
+    GTMouseDriver::dragAndDrop(p, p + delta0);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
 
     GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTGlobals::sleep(2000);
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is not visible");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is not visible");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta0 = QPoint(0, 0);
+    if (length * baseWidth + 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
+    } else if (length * baseWidth < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth, 0);
+    } else if (length * baseWidth - 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    } else {
+        delta0 = QPoint(uiWidth - seqAreaWidth - 50, 0);
+    }
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta0);
+    GTGlobals::sleep(2000);
 
     auto count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
     bool allAreVisible = true;
@@ -3813,8 +3860,19 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     handle = splitter->handle(1);
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta0 = QPoint(seqAreaWidth / 5 * 4, 0);
+    if (length * baseWidth / 5 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth / 5, 0);
+    }
     p = GTWidget::getWidgetCenter(handle);
-    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTMouseDriver::dragAndDrop(p, p + delta0);
+    GTGlobals::sleep(2000);
 
     count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
     allAreVisible = true;
@@ -3825,8 +3883,25 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     }
     CHECK_SET_ERR(allAreVisible, "All lines of the multiline view must be visible");
 
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta0 = QPoint(0, 0);
+    if (length * baseWidth + 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
+    } else if (length * baseWidth < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth, 0);
+    } else if (length * baseWidth - 50 < uiWidth) {
+        delta0 = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    } else {
+        delta0 = QPoint(seqAreaWidth - uiWidth + 50, 0);
+    }
     p = GTWidget::getWidgetCenter(handle);
-    GTMouseDriver::dragAndDrop(p, p - delta);
+    GTMouseDriver::dragAndDrop(p, p + delta0);
+    GTGlobals::sleep(2000);
 
     allAreVisible = true;
     for (uint i = 0; i < count; i++) {
