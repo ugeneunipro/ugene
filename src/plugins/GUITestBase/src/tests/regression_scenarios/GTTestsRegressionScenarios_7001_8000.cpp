@@ -3153,6 +3153,47 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7661) {
+    // Duplicate _common_data/ugenedb/chrM.sorted.bam.ugenedb.
+    QString origFilePath = testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb";
+    GTFile::copy(os, origFilePath, sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    
+    // Open duplicate.
+    GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Type "chr" in the search field in the project view.
+    GTUtilsProjectTreeView::filterProject(os, "chr");
+
+    // Wait for the filtration.Found 1 result.Select it.
+    GTGlobals::FindOptions options;
+    options.matchPolicy = Qt::MatchFlag::MatchContains;
+    GTUtilsProjectTreeView::click(os, "chrM", "Object name", Qt::MouseButton::LeftButton, options);
+
+    // Click the cross in the search field in the project view.
+    // Filter clearing has the same result
+    GTUtilsProjectTreeView::filterProject(os, "");
+     
+    // Close the chrM tab.
+    GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
+
+    // Rename the file in the storage from "chrM.sorted.bam.ugenedb" to "Renamed.ugenedb".
+    // UGENE displays the message "File Modification Detected".Click OK.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "was removed"));
+    QFile f(sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    f.rename(sandBoxDir + "/Renamed.ugenedb");
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    // Rename the file back to "chrM.sorted.bam.ugenedb".
+    f.rename(sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    
+    // Open it in UGENE again.
+    GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: no crash
+}
+
 // Clicks the "Run Schema" menu item;
 // in the "Run Schema" dialog that appears, sets
 //     `inputPath` as "Load sequence" (if `inputPath` is empty, does nothing),
