@@ -72,7 +72,7 @@ public:
     static QString createAllSupportedFormatsFileFilter(const QMap<QString, QStringList>& extraFilters = {});
 
     /** Returns a filter with all document formats what support writing of any of the given object types plus 'All files' filter. */
-    static QString createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats = false);
+    static QString createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats = false, bool allFilesFilter = true);
 };
 
 }  // namespace U2

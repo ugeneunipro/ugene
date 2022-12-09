@@ -19,38 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENTROPY_CALCULATION_WIDGET_H_
-#define _U2_ENTROPY_CALCULATION_WIDGET_H_
+#ifndef _U2_ENTROPY_CALCULATION_TASK_H_
+#define _U2_ENTROPY_CALCULATION_TASK_H_
 
-#include "EntropyCalculationTask.h"
-#include "ui_EntropyCalculationWidget.h"
+#include <U2Core/Task.h>
+#include <U2Core/LoadDocumentTask.h>
+#include "U2Core/AddSequencesToAlignmentTask.h"
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+
+#include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
-class AnnotatedDNAView;
-class SaveDocumentController;
 
-class EntropyCalculationWidget : public QWidget, private Ui_EntropyCalculationWidget {
+class U2VIEW_EXPORT EntropyCalculationTask : public Task {
     Q_OBJECT
-
 public:
-    EntropyCalculationWidget(AnnotatedDNAView*);
-
-private slots:
-    void sl_onFileSelectorClicked();
-    void sl_onRunButtonClicked();
+    EntropyCalculationTask(AnnotatedDNAView* annotatedDNAView, const QString& alignmentFilePath, const QString& saveToPath);
+    void prepare();
+    void run();
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    void initLayout();
-    void initSaveController();
-    void connectSlots();
-
-    AnnotatedDNAView* annotatedDnaView;
-    SaveDocumentController* saveController;
-
-    static const QString MUSCLE;
-    static const QString MAFFT;
+    LoadDocumentTask* loadDocumentTask;
+    AddSequenceObjectsToAlignmentTask* addSequenceTask;
+    
+    MultipleSequenceAlignmentObject* alignment;
+    AnnotatedDNAView* annotatedDNAView;
+    QString alignmentFilePath;
+    QString saveToPath;
 };
 
 }  // namespace U2
 
-#endif // _U2_ENTROPY_CALCULATION_WIDGET_H_
+#endif // _U2_ENTROPY_CALCULATION_TASK_H_

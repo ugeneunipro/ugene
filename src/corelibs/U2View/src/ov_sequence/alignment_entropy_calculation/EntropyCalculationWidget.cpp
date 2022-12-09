@@ -72,19 +72,25 @@ void EntropyCalculationWidget::initSaveController() {
         + (match.hasMatch() ? match.captured(1) : annotatedDnaView->getName());
 
     saveController = new SaveDocumentController(conf, {BaseDocumentFormats::PLAIN_PDB}, this);
-}   
+}
 
 void EntropyCalculationWidget::connectSlots() {
     connect(alignmentToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
+    connect(runButton, SIGNAL(clicked()), SLOT(sl_onRunButtonClicked()));
 }
 
 void EntropyCalculationWidget::sl_onFileSelectorClicked() {
     LastUsedDirHelper lod("ENTROPY_CALCULATION_LAST_DIR");
-    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true, false);
     QString defaultFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
     lod.url = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select file to open..."), lod.dir, filter, defaultFilter);
     if (!lod.url.isEmpty())
         alignmentLineEdit->setText(lod.url);
+}
+
+void EntropyCalculationWidget::sl_onRunButtonClicked() {
+    auto loadTask = new EntropyCalculationTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text());
+    AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 
 }  // namespace U2
