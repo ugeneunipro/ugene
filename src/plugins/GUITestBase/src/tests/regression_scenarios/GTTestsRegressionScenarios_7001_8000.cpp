@@ -3805,7 +3805,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
         delta = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
     }
     GT_DEBUG_MESSAGE(true,
-                     QString("#1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#1.1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3816,7 +3816,9 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     p = GTWidget::getWidgetCenter(handle);
     GTMouseDriver::dragAndDrop(p, p + delta);
+    GTThread::waitForMainThread();
     GTGlobals::sleep(2000);
+    GTThread::waitForMainThread();
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
@@ -3824,7 +3826,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
-                     QString("#1    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#1.2    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3863,7 +3865,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
         delta = QPoint(uiWidth - seqAreaWidth - 50, 0);
     }
     GT_DEBUG_MESSAGE(true,
-                     QString("#2 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#2.1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3882,7 +3884,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
-                     QString("#2    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#2.2    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3898,7 +3900,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
         CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
         allAreVisible = allAreVisible && w->isVisible();
     }
-    CHECK_SET_ERR(!allAreVisible, "Some line of the multiline view must be hidden #1");
+    CHECK_SET_ERR((count > 1 && !allAreVisible), "Some line of the multiline view must be hidden #1");
 
     activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
     CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget must exist");
@@ -3920,7 +3922,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
         delta = QPoint(seqAreaWidth - length * baseWidth / 5, 0);
     }
     GT_DEBUG_MESSAGE(true,
-                     QString("#3 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#3.1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3939,7 +3941,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
-                     QString("#3    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#3.2    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3974,7 +3976,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
         delta = QPoint(seqAreaWidth - uiWidth + 50, 0);
     }
     GT_DEBUG_MESSAGE(true,
-                     QString("#4 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#4.1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
@@ -3993,7 +3995,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
-                     QString("#4    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
+                     QString("#4.2    drag&drop --> seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
                          .arg(seqAreaBaseWidth)
                          .arg(uiWidth)
                          .arg(seqAreaWidth)
