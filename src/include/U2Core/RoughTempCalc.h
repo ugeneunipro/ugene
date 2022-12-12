@@ -1,0 +1,1 @@
+#include "../../corelibs/U2Core/src/datatype/temperature/methods/RoughTempCalc.h"
