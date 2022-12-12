@@ -34,6 +34,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "bgzf.h"
+#include "ugene_custom_io.h"
 
 #include "khash.h"
 typedef struct {
