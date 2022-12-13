@@ -35,8 +35,8 @@ public:
     //Use isAcceptableMatrixDimensions(int sizeX, int sizeY) to check your matrix dimensions before construction
     RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        U2_ASSERT(sizeX >= 0 && sizeY >= 0);
-        U2_ASSERT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX);
+        SAFE_POINT(sizeX >= 0 && sizeY >= 0, "Incorrect matrix size.");
+        SAFE_POINT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX, "Matrix size in bytes more than INT_MAX.");
         data = new int[sizeX * sizeY];
     }
 
@@ -84,20 +84,20 @@ public:
 
 private:
     int getIdx(int x, int y) const {
-        U2_ASSERT(x >= 0 && y >= 0 && x < sizeX && y < sizeY);
+        SAFE_POINT(x >= 0 && y >= 0 && x < sizeX && y < sizeY, "Coordinates are out of range.", 0);
         return x * sizeY + y;
     }
 
     int transposeX(int x) const {
 #ifndef U2_SUPPRESS_GCC_5_4_FALSE_WARNINGS
-        U2_ASSERT(x >= 0 && x < sizeX);
+        SAFE_POINT(x >= 0 && x < sizeX, "Coordinate is out of range.", 0);
 #endif
         return (column0 + x) % sizeX;
     }
 
     int transposeY(int y) const {
 #ifndef U2_SUPPRESS_GCC_5_4_FALSE_WARNINGS
-        U2_ASSERT(y >= 0 && y < sizeY);
+        SAFE_POINT(y >= 0 && y < sizeY, "Coordinate is out of range.", 0);
 #endif
         return y;
     }

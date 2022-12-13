@@ -1096,15 +1096,15 @@ void ProjectViewImpl::sl_openStateView() {
 
 void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
     SAFE_POINT(nullptr != projectTreeController, "NULL controller", );
+    QString changedText = str;
     ProjectTreeControllerModeSettings settings = projectTreeController->getModeSettings();
     if (str.length() > MAX_SEARCH_PATTERN_LENGTH) {
-        settings.tokensToShow = str.mid(0, 1000).split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        QString warning = ProjectViewImpl::tr("The search pattern is too long. Patten's length will be decreased to 1000 symbols.");
+        changedText = str.mid(0, MAX_SEARCH_PATTERN_LENGTH);
+        QString warning = ProjectViewImpl::tr("The search pattern is too long. Pattern was truncated to 1000 symbols.");
         coreLog.info(warning);
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), warning);
-    } else {
-        settings.tokensToShow = str.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     }
+    settings.tokensToShow = changedText.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     projectTreeController->updateSettings(settings);
 }
 

@@ -2903,12 +2903,12 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     // 3. Paste it to project filter
     // Expected: no crash, here is info message in log and warning message box
     GTLogTracer logTracer;
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Patten's length will be decreased to 1000 symbols."));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Pattern was truncated to 1000 symbols."));
     auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(logTracer.checkMessage("The search pattern is too long. Patten's length will be decreased to 1000 symbols."), "Log should contain error");
+    CHECK_SET_ERR(logTracer.checkMessage("The search pattern is too long. Pattern was truncated to 1000 symbols."), "Log should contain error");
 
     // 4. Copy region with acceptable length 1000 symbols
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
