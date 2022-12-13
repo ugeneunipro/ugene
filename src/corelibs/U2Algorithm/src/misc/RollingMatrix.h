@@ -35,8 +35,8 @@ public:
     //Use isAcceptableMatrixDimensions(int sizeX, int sizeY) to check your matrix dimensions before construction
     RollingMatrix(int _sizeX, int _sizeY)
         : sizeX(_sizeX), sizeY(_sizeY), column0(0) {
-        SAFE_POINT(sizeX >= 0 && sizeY >= 0, "Incorrect matrix size.");
-        SAFE_POINT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX, "Matrix size in bytes more than INT_MAX.");
+        SAFE_POINT(sizeX >= 0 && sizeY >= 0, "Incorrect matrix size.", );
+        SAFE_POINT(getMatrixSizeInBytes(sizeX, sizeY) < INT_MAX, "Matrix size in bytes more than INT_MAX.", );
         data = new int[sizeX * sizeY];
     }
 
