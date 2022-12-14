@@ -106,6 +106,7 @@ public:
     }
 
     static const QString SETTINGS_ROOT;
+    static const int MAX_SEARCH_PATTERN_LENGTH = 1000;
 
 protected:
     /// returns NULL if no actions are required to enable service

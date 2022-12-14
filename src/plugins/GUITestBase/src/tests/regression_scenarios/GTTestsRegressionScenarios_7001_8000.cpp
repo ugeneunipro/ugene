@@ -2931,6 +2931,47 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7629) {
+    // 1. Open sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 2. Copy 1001 symbol
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1001));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Paste it to project filter
+    // Expected: no crash, here is info message in log and warning message box
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Pattern was truncated to 1000 symbols."));
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "The search pattern is too long. Pattern was truncated to 1000 symbols.", 90000);
+
+    // 4. Copy region with acceptable length 1000 symbols
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy selected sequence"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 5. Paste it to project filter
+    // Expected: no crash, no error in log
+    GTLogTracer logTracer2;
+    GTUtilsTaskTreeView::openView(os);
+    GTLineEdit::clear(os, nameFilterEdit);
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7630) {
     // Open CVU55762.gb and murine.gb in separate sequence mode.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
