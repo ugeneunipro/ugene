@@ -3597,8 +3597,8 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     auto toInt = [](QString str) {
         return str.remove(' ').toInt();
     };
-    CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
-                  QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
+    CHECK_SET_ERR(toInt(positionStr) == 1'558'217 && toInt(coverageStr) == 750,
+                  QString("The first well-covered region: expected 1 558 217 -- 750, current %1 -- %2")
                       .arg(positionStr, coverageStr));
 }
 
