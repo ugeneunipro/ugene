@@ -190,7 +190,7 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
         proxyModel->updateSettings(newSettings);
     }
 
-    sl_updateActions();
+    sl_updateSelection();
 }
 
 void ProjectTreeController::sl_onDocumentAdded(Document* doc) {

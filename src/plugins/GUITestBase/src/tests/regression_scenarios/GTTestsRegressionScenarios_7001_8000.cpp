@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -545,6 +546,50 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
                           GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
     GTMSAEditorStatusWidget::getColumnNumberString(os);
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7154) {
+    // 1. Open "_common_data/genbank/Smc3_LOCUS_19_45436_bp_DNA_HTG_4_changed.gbk".
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/Smc3_LOCUS_19_45436_bp_DNA_HTG_4_changed.gbk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Create annotation #1
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpA", "annA", "complement(10.. 20)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 3. Create annotations #2
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpB", "annB", "complement(30.. 40)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 7. Drag&drop annotation #1 to group #2
+    QTreeWidgetItem* annA = GTUtilsAnnotationsTreeView::findItem(os, "annA");
+    QTreeWidgetItem* annB = GTUtilsAnnotationsTreeView::findItem(os, "annB");
+    QTreeWidgetItem* grpA = annA->parent();
+    QTreeWidgetItem* grpB = annB->parent();
+    QPoint pointA = GTUtilsAnnotationsTreeView::getItemCenter(os, "annA");
+    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
+    QPoint pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTThread::waitForMainThread();
+    GTMouseDriver::dragAndDrop(pointA, pointGrpB);
+
+    // 8. Drag&drop group #1 to group #2
+    pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
+    pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
+    GTThread::waitForMainThread();
+    GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
+
+    // Expected: group moved successfully, no crash
+    GTGlobals::FindOptions findOpt(false, Qt::MatchContains);
+    QTreeWidgetItem* itemGrpA = GTUtilsAnnotationsTreeView::findItem(os, "grpA", nullptr, findOpt);
+    CHECK_SET_ERR(itemGrpA != nullptr, QString("Can't find item grpA"));
+    QTreeWidgetItem* parentGrpA = itemGrpA->parent();
+    CHECK_SET_ERR(parentGrpA != nullptr, QString("Parent of the grpA was not found"));
+    annA = GTUtilsAnnotationsTreeView::findItem(os, "annA");
+    annB = GTUtilsAnnotationsTreeView::findItem(os, "annB");
+    grpA = annA->parent();
+    grpB = annB->parent();
+    CHECK_SET_ERR(grpA == grpB && grpA == parentGrpA,
+                  QString("Parent of the grpA, annA, annB must be the same"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7161) {
@@ -2886,6 +2931,47 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7629) {
+    // 1. Open sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 2. Copy 1001 symbol
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1001));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Paste it to project filter
+    // Expected: no crash, here is info message in log and warning message box
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Pattern was truncated to 1000 symbols."));
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "The search pattern is too long. Pattern was truncated to 1000 symbols.", 90000);
+
+    // 4. Copy region with acceptable length 1000 symbols
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy selected sequence"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 5. Paste it to project filter
+    // Expected: no crash, no error in log
+    GTLogTracer logTracer2;
+    GTUtilsTaskTreeView::openView(os);
+    GTLineEdit::clear(os, nameFilterEdit);
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7630) {
     // Open CVU55762.gb and murine.gb in separate sequence mode.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
@@ -3106,6 +3192,47 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7661) {
+    // Duplicate _common_data/ugenedb/chrM.sorted.bam.ugenedb.
+    QString origFilePath = testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb";
+    GTFile::copy(os, origFilePath, sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    
+    // Open duplicate.
+    GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Type "chr" in the search field in the project view.
+    GTUtilsProjectTreeView::filterProject(os, "chr");
+
+    // Wait for the filtration.Found 1 result.Select it.
+    GTGlobals::FindOptions options;
+    options.matchPolicy = Qt::MatchFlag::MatchContains;
+    GTUtilsProjectTreeView::click(os, "chrM", "Object name", Qt::MouseButton::LeftButton, options);
+
+    // Click the cross in the search field in the project view.
+    // Filter clearing has the same result
+    GTUtilsProjectTreeView::filterProject(os, "");
+     
+    // Close the chrM tab.
+    GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
+
+    // Rename the file in the storage from "chrM.sorted.bam.ugenedb" to "Renamed.ugenedb".
+    // UGENE displays the message "File Modification Detected".Click OK.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "was removed"));
+    QFile f(sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    f.rename(sandBoxDir + "/Renamed.ugenedb");
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    // Rename the file back to "chrM.sorted.bam.ugenedb".
+    f.rename(sandBoxDir + "/chrM.sorted.bam.ugenedb");
+    
+    // Open it in UGENE again.
+    GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: no crash
 }
 
 // Clicks the "Run Schema" menu item;
@@ -3443,6 +3570,77 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTCheckBox::getState(os, "showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
     CHECK_SET_ERR(GTWidget::findSlider(os, "curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
     CHECK_SET_ERR(GTComboBox::getCurrentText(os, "treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7700) {
+    // Create a 250 Unicode character path. See
+    //     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
+    // Open _common_data/scenarios/_regression/7700/bwa.uwl
+    //     The "Choose Output Directory" dialog appears.
+    // Set the created folder as the required directory in this dialog.
+    // Click OK.
+    //     The Workflow window appears.
+    // Set _common_data/bwa/control-chr21.fastq and nrsf-chr21.fastq as input to the "Read File URL(s)" element.
+    // Set _common_data/bwa/NC_000021.gbk.fa as the "Reference genome" of the "Map Reads with BWA" element.
+    // Run workflow.
+    //     Expected: the workflow task finished successfully with one output file "output.sam".
+    // Open the output.sam
+    //     The "Import SAM File" dialog appears.
+    // Click "Import".
+    //     Expected: the ugenedb file is successfully created in the default directory and opens without problems, the
+    //         Assembly Browser shows position 45 890 375 with coverage 2316 as the first well-covered region.
+    QString sandboxPath = QFileInfo(sandBoxDir).canonicalFilePath();
+    int requiredNumOfChars = 250 - sandboxPath.size();
+    QString longPath = sandboxPath + QString::fromWCharArray(L"/\u221E").repeated(requiredNumOfChars / 2);
+    CHECK_SET_ERR(QDir().mkpath(longPath), "Failed to create dir '" + longPath + "'");
+
+    class WorkflowOutputScenario : public CustomScenario {
+        QString path;
+
+    public:
+        explicit WorkflowOutputScenario(const QString& path)
+            : path(path) {
+        }
+        void run(GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "pathEdit", path, dialog, false, true);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "StartupDialog", new WorkflowOutputScenario(longPath)));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7700/bwa.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(
+        os, {testDir + "_common_data/bwa/control-chr21.fastq", testDir + "_common_data/bwa/nrsf-chr21.fastq"});
+
+    GTUtilsWorkflowDesigner::click(os, "Map Reads with BWA");
+    GTUtilsWorkflowDesigner::setParameter(os,
+                                          "Reference genome",
+                                          testDir + "_common_data/bwa/NC_000021.gbk.fa",
+                                          GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
+    GTUtilsDashboard::clickOutputFile(os, "out.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList positions = GTLabel::getText(os, "CoveredRegionsLabel")
+                                .section("href=\"0\">", 1, 1)
+                                .split("</a></td><td align=\"center\">");
+    QString positionStr = positions.first();
+    QString coverageStr = positions[1].section(
+        "</td></tr><tr><td align='right'>2&nbsp;&nbsp;</td><td><a href=\"1\">", 0, 0);
+    auto toInt = [](QString str) {
+        return str.remove(' ').toInt();
+    };
+    CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
+                  QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
+                      .arg(positionStr, coverageStr));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7715) {

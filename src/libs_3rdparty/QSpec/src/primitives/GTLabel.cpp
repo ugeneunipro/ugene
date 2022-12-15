@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * https://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,26 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DYN_TABLE_TESTS_H_
-#define _U2_DYN_TABLE_TESTS_H_
+#include "primitives/GTLabel.h"
 
-#include <unittest.h>
+#include "primitives/GTWidget.h"
 
-#include "core/dbi/DbiTest.h"
+namespace HI {
+QString GTLabel::getText(GUITestOpStatus& os, const QString& labelName, QWidget* parent) {
+    QString text;
+    class GetLabelTextScenario : public CustomScenario {
+        QLabel* label;
+        QString& text;
 
-namespace U2 {
-
-DECLARE_TEST(DynTableTests, bigTable);
-DECLARE_TEST(DynTableTests, acceptableDimensions);
-DECLARE_TEST(DynTableTests, fullMatch);
-DECLARE_TEST(DynTableTests, fullMismatch);
-DECLARE_TEST(DynTableTests, mismatch);
-DECLARE_TEST(DynTableTests, insDelMode_fullMatch);
-DECLARE_TEST(DynTableTests, insDelMode_fullMismatch);
-DECLARE_TEST(DynTableTests, insDelMode_mismatch);
-DECLARE_TEST(DynTableTests, insDelMode_deletion);
-DECLARE_TEST(DynTableTests, insDelMode_insertion);
-
-}  // namespace U2
-
-#endif
+    public:
+        GetLabelTextScenario(QLabel* label, QString& text)
+            : label(label), text(text) {
+        }
+        void run(GUITestOpStatus&) override {
+            text = label->text();
+        }
+    };
+    GTThread::runInMainThread(os, new GetLabelTextScenario(GTWidget::findLabel(os, labelName, parent), text));
+    return text;
+}
+}  // namespace HI

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * https://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,26 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DYN_TABLE_TESTS_H_
-#define _U2_DYN_TABLE_TESTS_H_
+#ifndef _HI_GT_LABEL_H_
+#define _HI_GT_LABEL_H_
 
-#include <unittest.h>
+#include "GTGlobals.h"
 
-#include "core/dbi/DbiTest.h"
+namespace HI {
+/*!
+ * \brief The class for working with QLabel primitive.
+ */
+class HI_EXPORT GTLabel {
+public:
+    static QString getText(GUITestOpStatus& os, const QString& labelName, QWidget* parent = nullptr);
+};
 
-namespace U2 {
+}  // namespace HI
 
-DECLARE_TEST(DynTableTests, bigTable);
-DECLARE_TEST(DynTableTests, acceptableDimensions);
-DECLARE_TEST(DynTableTests, fullMatch);
-DECLARE_TEST(DynTableTests, fullMismatch);
-DECLARE_TEST(DynTableTests, mismatch);
-DECLARE_TEST(DynTableTests, insDelMode_fullMatch);
-DECLARE_TEST(DynTableTests, insDelMode_fullMismatch);
-DECLARE_TEST(DynTableTests, insDelMode_mismatch);
-DECLARE_TEST(DynTableTests, insDelMode_deletion);
-DECLARE_TEST(DynTableTests, insDelMode_insertion);
-
-}  // namespace U2
-
-#endif
+#endif  // _HI_GT_LABEL_H_

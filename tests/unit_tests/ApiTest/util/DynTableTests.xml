@@ -1,14 +1,15 @@
 <unittest>
 
-    DynTableTests
-    + bigTable
-    + fullMatch
-    + fullMismatch
-    + mismatch
-    + insDelMode_fullMatch
-    + insDelMode_fullMismatch
-    + insDelMode_mismatch
-    + insDelMode_deletion
-    + insDelMode_insertion
+DynTableTests
++ acceptableDimensions
++ bigTable
++ fullMatch
++ fullMismatch
++ mismatch
++ insDelMode_fullMatch
++ insDelMode_fullMismatch
++ insDelMode_mismatch
++ insDelMode_deletion
++ insDelMode_insertion
 
 </unittest>

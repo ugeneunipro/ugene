@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -155,6 +156,10 @@ static void findInAmino(FindAlgorithmResultsListener* rl,
     QByteArray revPattern(pattern);
     TextUtils::reverse(revPattern.data(), patternLen);
 
+    if (!DynTable::isAcceptableMatrixDimensions(width, height)) {
+        coreLog.error(QObject::tr("The search pattern is too long."));
+        return;
+    }
     StrandContext context[] = {
         StrandContext(width, height, insDel, pattern),
         StrandContext(width, height, insDel, pattern),
@@ -815,6 +820,10 @@ void FindAlgorithm::find(
     }
 
     try {
+        if (!DynTable::isAcceptableMatrixDimensions(width, height)) {
+            coreLog.error(QObject::tr("The search pattern is too long."));
+            return;
+        }
         StrandContext context[] = {
             StrandContext(width, height, insDel, pattern),
             StrandContext(width, height, insDel, complPattern)};
