@@ -102,19 +102,6 @@ public:
     return result;
 
 /**
- * Assertion triggered in debug or in one of release test modes (like UGENE_GUI_TEST=1).
- * Used to replace standard assert().
- * The important difference from the standard assert method is
- * that the assert 'condition' is always evaluated, even when U2_ASSERT is disabled internally:
- * do not use this assertion in performance hotspots with a resource expensive 'condition'.
- */
-#define U2_ASSERT(condition) \
-    if (Q_UNLIKELY(!(condition))) { \
-        QString message = U2_TOSTRING(condition); \
-        U2::U2SafePoints::fail(QString("Assert: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
-    }
-
-/**
  * Checks condition and runs the extra op if the condition is falsy.
  * Do not use directly: designed to be used as a low level implementation for other utilities.
  */
