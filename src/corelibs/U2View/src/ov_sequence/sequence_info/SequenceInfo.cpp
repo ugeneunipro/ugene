@@ -26,6 +26,9 @@
 #include <QVBoxLayout>
 #include <QScopedPointer>
 
+#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -75,7 +78,9 @@ const QString SequenceInfo::AMINO_ACID_OCCUR_GROUP_ID = "amino_acid_occur_group"
 const QString SequenceInfo::STAT_GROUP_ID = "stat_group";
 
 SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
-    : annotatedDnaView(_annotatedDnaView), savableWidget(this, GObjectViewUtils::findViewByName(_annotatedDnaView->getName())) {
+    : annotatedDnaView(_annotatedDnaView), 
+      savableWidget(this, GObjectViewUtils::findViewByName(_annotatedDnaView->getName())),
+      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator()) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
@@ -84,6 +89,10 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     updateData();
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
+}
+
+SequenceInfo::~SequenceInfo() {
+    delete temperatureCalculator;
 }
 
 void SequenceInfo::initLayout() {
@@ -545,7 +554,9 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
         connect(dialog, &QDialog::finished, this, [this](int result) {
             auto dialog = qobject_cast<TempCalcDialog*>(sender());
             if (result == QDialog::DialogCode::Accepted) {
-                dialog->getSettings();
+                auto tempCalcSettings = dialog->getSettings();
+                delete temperatureCalculator;
+                temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
             }
             dialog->deleteLater();
         });
@@ -622,7 +633,7 @@ void SequenceInfo::launchCalculations(const QString& subgroupId) {
     if (subgroupId.isEmpty() || subgroupId == STAT_GROUP_ID) {
         if ((!statsWidget->isHidden()) && (statsWidget->isSubgroupOpened())) {
             statsWidget->showProgress();
-            dnaStatisticsTaskRunner.run(new DNAStatisticsTask(alphabet, seqRef, currentRegions));
+            dnaStatisticsTaskRunner.run(new DNAStatisticsTask(alphabet, seqRef, currentRegions, temperatureCalculator));
             getCommonStatisticsCache()->sl_invalidate();
             updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
         }

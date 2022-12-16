@@ -34,6 +34,7 @@ using MononucleotidesExtinctionCoefficientsMap = QVector<int>;
 using DinucleotidesExtinctionCoefficientsMap = QVector<QVector<int>>;
 
 class DNAAlphabet;
+class BaseTempCalc;
 class U2SequenceDbi;
 
 struct U2VIEW_EXPORT DNAStatistics {
@@ -61,7 +62,7 @@ struct U2VIEW_EXPORT DNAStatistics {
 class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask<DNAStatistics> {
     Q_OBJECT
 public:
-    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions);
+    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions, BaseTempCalc* temperatureCalculator);
 
 private:
     void run() override;
@@ -69,6 +70,7 @@ private:
     const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
+    BaseTempCalc* temperatureCalculator = nullptr;
 
     QVector<qint64> charactersCount;
     QVector<qint64> rcCharactersCount;

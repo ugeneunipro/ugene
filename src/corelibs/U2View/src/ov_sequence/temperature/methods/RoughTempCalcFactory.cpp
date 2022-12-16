@@ -35,6 +35,12 @@ BaseTempCalc* RoughTempCalcFactory::createTempCalculator(TempCalcSettings* setti
     return new RoughTempCalc(settings);
 }
 
+BaseTempCalc* RoughTempCalcFactory::createDefaultTempCalculator() const {
+    auto settings = new TempCalcSettings;
+    settings->id = ID;
+    return createTempCalculator(settings);
+}
+
 BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
     return new RoughTempCalcWidget(parent, id);
 }

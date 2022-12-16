@@ -40,6 +40,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
 class AnnotatedDNAView;
+class BaseTempCalc;
 class LRegionsSelection;
 class ShowHideSubgroupWidget;
 class AnnotationSelection;
@@ -49,6 +50,7 @@ class U2VIEW_EXPORT SequenceInfo : public QWidget {
     Q_OBJECT
 public:
     SequenceInfo(AnnotatedDNAView*);
+    ~SequenceInfo();
 
 private slots:
     void sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&);
@@ -154,6 +156,8 @@ private:
     QVector<U2Region> currentRegions;
 
     U2SavableWidget savableWidget;
+
+    BaseTempCalc* temperatureCalculator = nullptr;
 
     static const int COMMON_STATISTICS_TABLE_CELLSPACING;
     static const QString CAPTION_SEQ_REGION_LENGTH;

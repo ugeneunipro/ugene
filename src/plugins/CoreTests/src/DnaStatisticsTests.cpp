@@ -138,7 +138,8 @@ void GTest_DnaStatisticsTest::prepare() {
     U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(loadedDocument->findGObjectByName(seqName));
     CHECK_EXT(nullptr != sequenceObject, setError(QString("Sequence object '%1' not found in document '%2'").arg(seqName).arg(docName)), );
 
-    task = new DNAStatisticsTask(sequenceObject->getAlphabet(), sequenceObject->getEntityRef(), regions);
+    //TODO
+    //task = new DNAStatisticsTask(sequenceObject->getAlphabet(), sequenceObject->getEntityRef(), regions);
     addSubTask(task);
 }
 

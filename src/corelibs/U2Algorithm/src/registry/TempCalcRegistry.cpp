@@ -26,4 +26,9 @@
 
 namespace U2 {
 
+BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator() const {
+    //TODO
+    return getAllEntries().first()->createDefaultTempCalculator();
+}
+
 }

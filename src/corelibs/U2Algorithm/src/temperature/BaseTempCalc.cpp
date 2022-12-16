@@ -30,6 +30,10 @@ namespace U2 {
 BaseTempCalc::BaseTempCalc(TempCalcSettings* _settings)
     : settings(_settings) {}
 
+BaseTempCalc::~BaseTempCalc() {
+    delete settings;
+}
+
 double BaseTempCalc::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
     CHECK(isNucleotideSequence(product), INVALID_TM);
 

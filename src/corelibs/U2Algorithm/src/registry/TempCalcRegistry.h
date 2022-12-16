@@ -30,6 +30,8 @@
 namespace U2 {
 
 class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
+public:
+    BaseTempCalc* getDefaultTempCalculator() const;
 };
 
 }

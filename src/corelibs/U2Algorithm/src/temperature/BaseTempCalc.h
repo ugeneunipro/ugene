@@ -35,6 +35,7 @@ struct TempCalcSettings {
 class U2ALGORITHM_EXPORT BaseTempCalc {
 public:
     BaseTempCalc(TempCalcSettings* settings);
+    ~BaseTempCalc();
 
     virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
