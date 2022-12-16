@@ -1,4 +1,3 @@
-#include "Primer3TempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,15 +19,36 @@
  * MA 02110-1301, USA.
  */
 
+#ifndef _U2_BASE_TEMP_CALC_
+#define _U2_BASE_TEMP_CALC_
+
+#include <QString>
+
+#include <U2Core/global.h>
+
 namespace U2 {
 
-const QString Primer3TempCalcFactory::ID = "PRIMER3";
+struct TempCalcSettings {
+    QString id;
+};
 
-Primer3TempCalcFactory::Primer3TempCalcFactory() 
-    : TempCalcFactory(ID) {}
+class U2ALGORITHM_EXPORT BaseTempCalc {
+public:
+    BaseTempCalc(TempCalcSettings* settings);
 
-BaseTempCalc* Primer3TempCalcFactory::createMetlingTempCalculator(TempCalcSettings* settings) const {
-    return nullptr;
+    virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
+    double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
+
+protected:
+    TempCalcSettings* settings = nullptr;
+    static constexpr double INVALID_TM = -1.0;
+
+private:
+    static bool isNucleotideSequence(const QByteArray& sequence);
+    double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
+
+};
+
 }
 
-}
+#endif

@@ -88,6 +88,7 @@ class SplicedAlignmentTaskRegistry;
 class StructuralAlignmentAlgorithmRegistry;
 class SubstMatrixRegistry;
 class TaskScheduler;
+class TempCalcRegistry;
 class TestFramework;
 class U2DataPathRegistry;
 class U2DbiRegistry;
@@ -398,6 +399,10 @@ public:
         return getInstance()->_getDashboardInfoRegistry();
     }
 
+    static TempCalcRegistry* getTempCalcRegistry() {
+        return getInstance()->_getTempCalcRegistry();
+    }
+
 protected:
     static AppContext* getInstance() {
         assert(instance);
@@ -470,6 +475,7 @@ protected:
     virtual ProjectFilterTaskRegistry* _getProjectFilterTaskRegistry() const = 0;
     virtual PasteFactory* _getPasteFactory() const = 0;
     virtual DashboardInfoRegistry* _getDashboardInfoRegistry() const = 0;
+    virtual TempCalcRegistry* _getTempCalcRegistry() const = 0;
 
     virtual void _registerGlobalObject(AppGlobalObject* go) = 0;
     virtual void _unregisterGlobalObject(const QString& id) = 0;

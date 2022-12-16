@@ -27,15 +27,8 @@
 
 namespace U2 {
 
-BaseTempCalc::BaseTempCalc(TempCalcSettings* _settings) : 
-    settings(_settings) {
-
-    SAFE_POINT(isNucleotideSequence(settings->sequence), "NUCL_DNA_DEFAULT alphabet is expected", );
-}
-
-double BaseTempCalc::getMeltingTemperature() {
-    return getMeltingTemperature(settings->sequence);
-}
+BaseTempCalc::BaseTempCalc(TempCalcSettings* _settings)
+    : settings(_settings) {}
 
 double BaseTempCalc::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
     CHECK(isNucleotideSequence(product), INVALID_TM);

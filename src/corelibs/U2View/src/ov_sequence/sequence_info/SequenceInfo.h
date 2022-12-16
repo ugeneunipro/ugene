@@ -75,6 +75,8 @@ private slots:
 
     bool eventFilter(QObject* object, QEvent* event);
 
+    void statisticLabelLinkActivated(const QString& link);
+
 private:
     /** Initializes the whole layout of the widget */
     void initLayout();
@@ -120,7 +122,7 @@ private:
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
-    QString formTableRow(const QString& caption, const QString& value, int availableSpace) const;
+    QString formTableRow(const QString& caption, const QString& value, int availableSpace, bool addHyperlink = false) const;
 
     StatisticsCache<DNAStatistics>* getCommonStatisticsCache() const;
     StatisticsCache<CharactersOccurrence>* getCharactersOccurrenceCache() const;

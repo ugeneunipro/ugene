@@ -1,4 +1,3 @@
-#include "Primer3TempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,15 +19,33 @@
  * MA 02110-1301, USA.
  */
 
+#include "Primer3TempCalcWidget.h"
+
+#include <U2Core/Primer3TempCalc.h>
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
-const QString Primer3TempCalcFactory::ID = "PRIMER3";
+Primer3TempCalcWidget::Primer3TempCalcWidget(QWidget* parent) :
+    BaseTempCalcWidget(parent) {
+    setupUi(this);
 
-Primer3TempCalcFactory::Primer3TempCalcFactory() 
-    : TempCalcFactory(ID) {}
-
-BaseTempCalc* Primer3TempCalcFactory::createMetlingTempCalculator(TempCalcSettings* settings) const {
-    return nullptr;
+    //cbAlgorithm->setCurrentIndex(0);
 }
+
+/*BaseTempCalc* TempCalcWidget::getCurentSettings() const {
+    BaseTempCalc* result = nullptr;
+    switch (cbAlgorithm->currentIndex()) {
+    case 0:
+        break;
+
+    case 1:
+
+        break;
+    default:
+        FAIL("Incorrect algorithm", nullptr);
+    }
+    return nullptr;
+}*/
 
 }

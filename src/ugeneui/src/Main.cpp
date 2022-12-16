@@ -57,6 +57,7 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 #include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
+#include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
@@ -129,6 +130,7 @@
 #include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
+#include <U2View/RoughTempCalcFactory.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
@@ -337,6 +339,12 @@ static void initProjectFilterTaskRegistry() {
     registry->registerTaskFactory(new TextContentFilterTaskFactory);
     registry->registerTaskFactory(new SequenceAccFilterTaskFactory);
     registry->registerTaskFactory(new FeatureKeyFilterTaskFactory);
+}
+
+static void initTemperatureCalculators() {
+    auto tcr = AppContext::getTempCalcRegistry();
+
+    tcr->registerEntry(new RoughTempCalcFactory);
 }
 
 class GApplication : public QApplication {
@@ -769,6 +777,10 @@ int main(int argc, char** argv) {
     auto dashboardInfoRegistry = new DashboardInfoRegistry;
     appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
 
+    auto tcr = new TempCalcRegistry;
+    appContext->setTempCalcRegistry(tcr);
+    initTemperatureCalculators();
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -871,6 +883,9 @@ int main(int argc, char** argv) {
 
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
+
+    appContext->setTempCalcRegistry(nullptr);
+    delete tcr;
 
     appContext->setPasteFactory(nullptr);
     delete pasteFactory;

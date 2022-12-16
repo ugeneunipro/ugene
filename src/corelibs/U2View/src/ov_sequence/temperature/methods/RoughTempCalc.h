@@ -1,4 +1,3 @@
-#include "Primer3TempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,15 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#ifndef _U2_ROUGHT_MELT_TEMP_CALC_
+#define _U2_ROUGHT_MELT_TEMP_CALC_
+
+#include <U2Algorithm/BaseTempCalc.h>
+
 namespace U2 {
 
-const QString Primer3TempCalcFactory::ID = "PRIMER3";
+class RoughTempCalc : public BaseTempCalc {
+public:
+    RoughTempCalc(TempCalcSettings* settings);
 
-Primer3TempCalcFactory::Primer3TempCalcFactory() 
-    : TempCalcFactory(ID) {}
+    double getMeltingTemperature(const QByteArray& sequence) override;
 
-BaseTempCalc* Primer3TempCalcFactory::createMetlingTempCalculator(TempCalcSettings* settings) const {
-    return nullptr;
+};
+
 }
 
-}
+#endif
+

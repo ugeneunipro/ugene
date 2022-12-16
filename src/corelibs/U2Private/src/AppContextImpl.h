@@ -91,6 +91,7 @@ public:
         swar = nullptr;
         swmarntr = nullptr;
         swrfr = nullptr;
+        tcr = nullptr;
         tf = nullptr;
         treeGeneratorRegistry = nullptr;
         ts = nullptr;
@@ -436,6 +437,11 @@ public:
         projectFilterTaskRegistry = value;
     }
 
+    void setTempCalcRegistry(TempCalcRegistry* value) {
+        assert(tcr == nullptr || value == nullptr);
+        tcr = value;
+    }
+
     void setGUIMode(bool v) {
         guiMode = v;
     }
@@ -652,6 +658,9 @@ protected:
     DashboardInfoRegistry* _getDashboardInfoRegistry() const override {
         return dashboardInfoRegistry;
     }
+    TempCalcRegistry* _getTempCalcRegistry() const override {
+        return tcr;
+    }
 
     void _registerGlobalObject(AppGlobalObject* go) override;
     void _unregisterGlobalObject(const QString& id) override;
@@ -727,6 +736,7 @@ private:
     StructuralAlignmentAlgorithmRegistry* saar;
     SubstMatrixRegistry* smr;
     TaskScheduler* ts;
+    TempCalcRegistry* tcr;
     TestFramework* tf;
     U2DataPathRegistry* dpr;
     U2DbiRegistry* dbiRegistry;

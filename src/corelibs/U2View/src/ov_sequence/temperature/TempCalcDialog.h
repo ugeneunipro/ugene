@@ -19,21 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
-#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#ifndef _U2_TEMP_CALC_DIALOG_
+#define _U2_TEMP_CALC_DIALOG_
 
-#include <U2Core/TempCalcFactory.h>
+#include <QDialog>
+
+#include <U2Algorithm/BaseTempCalc.h>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class RoughTempCalcFactory : public TempCalcFactory {
+class TempCalcWidget;
+
+class U2VIEW_EXPORT TempCalcDialog : public QDialog {
+    Q_OBJECT
 public:
-    RoughTempCalcFactory();
+    TempCalcDialog(QWidget* parent);
 
-    BaseTempCalc* createMetlingTempCalculator(TempCalcSettings* settings) const override;
+    TempCalcSettings* getSettings() const;
 
-    static const QString ID;
-
+private:
+    TempCalcWidget* tempCalcWidget = nullptr;
 };
 
 }

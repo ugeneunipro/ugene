@@ -28,16 +28,16 @@
 
 namespace U2 {
 
-struct Primer3MeltTempCalcSettings : public TempCalcSettings {
+struct Primer3TempCalcSettings : public TempCalcSettings {
     /* The table of nearest-neighbor thermodynamic parameters
        and method for Tm calculation */
     enum class TmMethodType {
-        breslauer = 0, /* Method for Tm calculations and the thermodynamic parameters from
+        Breslauer = 0, /* Method for Tm calculations and the thermodynamic parameters from
                           [SantaLucia JR (1998) "A unified view of
                           polymer, dumbbell and oligonucleotide DNA nearest-neighbor
                           thermodynamics", Proc Natl Acad Sci 95:1460-65
                           http://dx.doi.org/10.1073/pnas.95.4.1460] */
-        santalucia = 1, /* Method for Tm
+        Santalucia = 1, /* Method for Tm
                            calculations from the paper [Rychlik W, Spencer WJ and Rhoads RE
                            (1990) "Optimization of the annealing temperature for DNA
                            amplification in vitro", Nucleic Acids Res 18:6409-12
@@ -50,14 +50,14 @@ struct Primer3MeltTempCalcSettings : public TempCalcSettings {
 
     /* Formula for salt correction */
     enum class SaltCorrectionType {
-        schildkraut = 0, /* [Schildkraut, C, and Lifson, S (1965)
+        Schildkraut = 0, /* [Schildkraut, C, and Lifson, S (1965)
                             "Dependence of the melting temperature of DNA on salt
                             concentration", Biopolymers 3:195-208 (not available on-line)] */
-        santalucia = 1, /* [SantaLucia JR (1998) "A
+        Santalucia = 1, /* [SantaLucia JR (1998) "A
                            unified view of polymer, dumbbell and oligonucleotide DNA
                            nearest-neighbor thermodynamics", Proc Natl Acad Sci 95:1460-65
                            http://dx.doi.org/10.1073/pnas.95.4.1460] */
-        owczarzy = 2, /* [Owczarzy, R., Moreira, B.G., You, Y., 
+        Owczarzy = 2, /* [Owczarzy, R., Moreira, B.G., You, Y., 
                           Behlke, M.A., and Walder, J.A. (2008) "Predicting stability of DNA 
                           duplexes in solutions containing magnesium and monovalent cations", 
                           Biochemistry 47:5336-53 http://dx.doi.org/10.1021/bi702363u] */
@@ -76,14 +76,14 @@ struct Primer3MeltTempCalcSettings : public TempCalcSettings {
                             uses the "GC%" formula.
                         */
 
-    TmMethodType tmMethod = TmMethodType::santalucia; /* See description above. */
-    SaltCorrectionType saltCorrections = SaltCorrectionType::santalucia; /* See description above. */
+    TmMethodType tmMethod = TmMethodType::Santalucia; /* See description above. */
+    SaltCorrectionType saltCorrections = SaltCorrectionType::Santalucia; /* See description above. */
     
 };
 
 class Primer3MeltTempCalc : public BaseTempCalc {
 public:
-    Primer3MeltTempCalc(Primer3MeltTempCalcSettings* settings);
+    Primer3MeltTempCalc(Primer3TempCalcSettings* settings);
 
     double getMeltingTemperature(const QByteArray& sequence) override;
 };

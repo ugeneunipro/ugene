@@ -22,17 +22,22 @@
 #ifndef _U2_TEMP_CALC_FACTORY_
 #define _U2_TEMP_CALC_FACTORY_
 
-#include "BaseTempCalc.h"
+#include <U2Core/global.h>
 
 #include <QString>
 
 namespace U2 {
 
-class TempCalcFactory {
+class BaseTempCalc;
+class BaseTempCalcWidget;
+struct TempCalcSettings;
+
+class U2ALGORITHM_EXPORT TempCalcFactory {
 public:
     TempCalcFactory(const QString& id);
 
-    virtual BaseTempCalc* createMetlingTempCalculator(TempCalcSettings* settings) const = 0;
+    virtual BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const = 0;
+    virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const = 0;
 
     const QString& getId() const;
 

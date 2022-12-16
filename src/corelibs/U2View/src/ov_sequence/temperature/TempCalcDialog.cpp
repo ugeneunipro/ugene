@@ -19,36 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BASE_TEMP_CALC_
-#define _U2_BASE_TEMP_CALC_
+#include "TempCalcDialog.h"
+#include "TempCalcWidget.h"
 
-#include <QByteArray>
+
+#include <QDialogButtonBox>
+#include <QLayout>
 
 namespace U2 {
 
-struct TempCalcSettings {
-    QByteArray sequence; /* The sequence. */
-};
-
-class BaseTempCalc {
-public:
-    BaseTempCalc(TempCalcSettings* settings);
-
-    double getMeltingTemperature();
-    double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
-
-protected:
-    TempCalcSettings* settings = nullptr;
-
-    static constexpr double INVALID_TM = -1.0;
-
-private:
-    static bool isNucleotideSequence(const QByteArray& sequence);
-    virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
-    double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
-
-};
-
+TempCalcDialog::TempCalcDialog(QWidget* parent) 
+    : QDialog(parent) {
+    setLayout(new QVBoxLayout);
+    tempCalcWidget = new TempCalcWidget(this);
+    layout()->addWidget(tempCalcWidget);
+    auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    connect(dbb, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(dbb, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    layout()->addWidget(dbb);
 }
 
-#endif
+TempCalcSettings* TempCalcDialog::getSettings() const {
+    return tempCalcWidget->getSettings();
+}
+
+}

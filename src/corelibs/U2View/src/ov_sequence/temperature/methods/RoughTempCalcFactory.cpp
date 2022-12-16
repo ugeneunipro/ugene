@@ -1,4 +1,4 @@
-#include "Primer3TempCalcFactory.h"
+#include "RoughTempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,15 +20,23 @@
  * MA 02110-1301, USA.
  */
 
+#include "RoughTempCalc.h"
+
+#include "RoughTempCalcWidget.h"
+
 namespace U2 {
 
-const QString Primer3TempCalcFactory::ID = "PRIMER3";
+const QString RoughTempCalcFactory::ID = "Rough";
 
-Primer3TempCalcFactory::Primer3TempCalcFactory() 
+RoughTempCalcFactory::RoughTempCalcFactory() 
     : TempCalcFactory(ID) {}
 
-BaseTempCalc* Primer3TempCalcFactory::createMetlingTempCalculator(TempCalcSettings* settings) const {
-    return nullptr;
+BaseTempCalc* RoughTempCalcFactory::createTempCalculator(TempCalcSettings* settings) const {
+    return new RoughTempCalc(settings);
+}
+
+BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
+    return new RoughTempCalcWidget(parent, id);
 }
 
 }

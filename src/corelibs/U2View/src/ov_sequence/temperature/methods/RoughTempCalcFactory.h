@@ -1,4 +1,3 @@
-#include "RoughTempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,17 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "RoughTempCalc.h"
+#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+
+#include <U2Algorithm/TempCalcFactory.h>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-const QString RoughTempCalcFactory::ID = "ROUGH";
+class U2VIEW_EXPORT RoughTempCalcFactory : public TempCalcFactory {
+public:
+    RoughTempCalcFactory();
 
-RoughTempCalcFactory::RoughTempCalcFactory() 
-    : TempCalcFactory(ID) {}
+    BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
+    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 
-BaseTempCalc* RoughTempCalcFactory::createMetlingTempCalculator(TempCalcSettings* settings) const {
-    return new RoughTempCalc(settings);
+    static const QString ID;
+
+};
+
 }
 
-}
+#endif

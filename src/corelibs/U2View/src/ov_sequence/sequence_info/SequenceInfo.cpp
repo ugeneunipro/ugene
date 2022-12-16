@@ -21,8 +21,10 @@
 
 #include "SequenceInfo.h"
 
+#include <QDialog>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QScopedPointer>
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
@@ -39,13 +41,14 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/TempCalcDialog.h>
 
 #include "CodonOccurTask.h"
 
 namespace U2 {
 
 const int SequenceInfo::COMMON_STATISTICS_TABLE_CELLSPACING = 5;
-const QString SequenceInfo::CAPTION_SEQ_REGION_LENGTH = "Length: ";
+const QString SequenceInfo::CAPTION_SEQ_REGION_LENGTH = "Length";
 
 const QString SequenceInfo::CAPTION_SUFFIX_DS_DNA = "dsDNA:";
 const QString SequenceInfo::CAPTION_SUFFIX_SS_DNA = "ssDNA:";
@@ -53,17 +56,17 @@ const QString SequenceInfo::CAPTION_SUFFIX_DS_RNA = "dsRNA:";
 const QString SequenceInfo::CAPTION_SUFFIX_SS_RNA = "ssRNA:";
 
 // nucl
-const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC content: ";
-const QString SequenceInfo::CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = "Molecular weight: ";
-const QString SequenceInfo::CAPTION_SEQ_EXTINCTION_COEFFICIENT = "Extinction coefficient: ";
-const QString SequenceInfo::CAPTION_SEQ_MELTING_TEMPERATURE = "Melting temperature: ";
+const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC content";
+const QString SequenceInfo::CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = "Molecular weight";
+const QString SequenceInfo::CAPTION_SEQ_EXTINCTION_COEFFICIENT = "Extinction coefficient";
+const QString SequenceInfo::CAPTION_SEQ_MELTING_TEMPERATURE = "Melting temperature";
 
-const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>: ";
-const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>: ");  // 0x3BC - greek 'mu'
+const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>";
+const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>");  // 0x3BC - greek 'mu'
 
 // amino
-const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular weight: ";
-const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic point: ";
+const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular weight";
+const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic point";
 
 const QString SequenceInfo::CHAR_OCCUR_GROUP_ID = "char_occur_group";
 const QString SequenceInfo::DINUCL_OCCUR_GROUP_ID = "dinucl_occur_group";
@@ -99,7 +102,9 @@ void SequenceInfo::initLayout() {
     statisticLabel->installEventFilter(this);
     statisticLabel->setMinimumWidth(1);
     statisticLabel->setObjectName("Common Statistics");
+    statisticLabel->setOpenExternalLinks(false);
     statisticLabelContainer->layout()->addWidget(statisticLabel);
+    connect(statisticLabel, &QLabel::linkActivated, this, &SequenceInfo::statisticLabelLinkActivated);
 
     statsWidget = new ShowHideSubgroupWidget(STAT_GROUP_ID, tr("Common Statistics"), statisticLabelContainer, true);
 
@@ -137,7 +142,7 @@ void SequenceInfo::initLayout() {
     dinuclLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     codonLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     aminoAcidLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    statisticLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statisticLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
     updateLayout();
 }
@@ -255,7 +260,7 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValid), availableSpace, true);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
@@ -533,6 +538,20 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
     return false;
 }
 
+void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
+    if (link == CAPTION_SEQ_MELTING_TEMPERATURE) {
+        auto dialog = new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget());
+        dialog->open();
+        connect(dialog, &QDialog::finished, this, [this](int result) {
+            auto dialog = qobject_cast<TempCalcDialog*>(sender());
+            if (result == QDialog::DialogCode::Accepted) {
+                dialog->getSettings();
+            }
+            dialog->deleteLater();
+        });
+    }
+}
+
 void SequenceInfo::updateCurrentRegions() {
     ADVSequenceObjectContext* seqContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != seqContext, "A sequence context is NULL!", );
@@ -668,11 +687,17 @@ void SequenceInfo::sl_updateCodonOccurData() {
     updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
 }
 
-QString SequenceInfo::formTableRow(const QString& caption, const QString& value, int availableSpace) const {
+QString SequenceInfo::formTableRow(const QString& caption, const QString& value, int availableSpace, bool addHyperlink) const {
     QString result;
 
     QFontMetrics metrics = statisticLabel->fontMetrics();
-    result = "<tr><td>" + tr("%1").arg(caption) + "</td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + "</td></tr>";
+    QString hlBefore;
+    QString hlAfter;
+    if (addHyperlink) {
+        hlBefore = QString("<a href=\"%1\">").arg(caption);
+        hlAfter = "</a>";
+    }
+    result = "<tr><td>" + hlBefore + tr("%1").arg(caption) + hlAfter + ": </td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + "</td></tr>";
     return result;
 }
 

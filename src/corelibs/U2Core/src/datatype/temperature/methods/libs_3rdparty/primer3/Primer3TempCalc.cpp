@@ -29,14 +29,14 @@ namespace U2 {
 
 
 
-Primer3MeltTempCalc::Primer3MeltTempCalc(Primer3MeltTempCalcSettings* settings) 
-    : BaseTempCalc (settings) {}
+Primer3MeltTempCalc::Primer3MeltTempCalc(Primer3TempCalcSettings* settings)
+    : BaseTempCalc(settings) {}
 
 double Primer3MeltTempCalc::getMeltingTemperature(const QByteArray& sequence) {
-    auto p3Settings = static_cast<Primer3MeltTempCalcSettings*>(settings);
-    SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3MeltTempCalcSettings"), INVALID_TM);
-
-    return seqtm(p3Settings->sequence, 
+    auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
+    SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), INVALID_TM);    
+    
+    return seqtm(sequence,
                  p3Settings->dnaConc,
                  p3Settings->saltConc,
                  p3Settings->divalentConc,

@@ -19,26 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include "TempCalcRegistry.h"
+#ifndef _U2_TEMP_CALC_REGISTRY_
+#define _U2_TEMP_CALC_REGISTRY_
 
-#include "methods/RoughTempCalcFactory.h"
-#include "methods/libs_3rdparty/primer3/Primer3TempCalcFactory.h"
+#include <U2Core/IdRegistry.h>
+#include <U2Core/global.h>
+
+#include <U2Algorithm/TempCalcFactory.h>
 
 namespace U2 {
 
-QScopedPointer<TempCalcRegistry> TempCalcRegistry::instance;
-
-TempCalcRegistry* TempCalcRegistry::getInstance() {
-    if (instance == nullptr) {
-        instance.reset(new TempCalcRegistry);
-        instance->registerEntry(new RoughTempCalcFactory);
-        instance->registerEntry(new Primer3TempCalcFactory);
-    }
-    return instance.data();
-}
-
-void TempCalcRegistry::releaseInstance() {
-    delete instance.take();
-}
+class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
+};
 
 }
+
+#endif

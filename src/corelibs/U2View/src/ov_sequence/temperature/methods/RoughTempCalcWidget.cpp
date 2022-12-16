@@ -19,26 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEMP_CALC_REGISTRY_
-#define _U2_TEMP_CALC_REGISTRY_
-
-#include <U2Core/IdRegistry.h>
-#include "TempCalcFactory.h"
-
-#include <QScopedPointer>
+#include "RoughTempCalcWidget.h"
+#include "RoughTempCalc.h"
 
 namespace U2 {
 
-class TempCalcRegistry : public IdRegistry<TempCalcFactory> {
-public:
-    static TempCalcRegistry* getInstance();
-    static void releaseInstance();
+RoughTempCalcWidget::RoughTempCalcWidget(QWidget* parent, const QString& id) :
+    BaseTempCalcWidget(parent, id) {}
 
-private:
-    static QScopedPointer<TempCalcRegistry> instance;
 
-};
-
+TempCalcSettings* RoughTempCalcWidget::getSettings() const {
+    auto settings = new TempCalcSettings;
+    settings->id = id;
+    return settings;
 }
 
-#endif
+}

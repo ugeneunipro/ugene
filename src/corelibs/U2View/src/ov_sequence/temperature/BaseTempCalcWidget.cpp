@@ -1,3 +1,4 @@
+#include "BaseTempCalcWidget.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -19,25 +20,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEMP_CALC_WIDGET_
-#define _U2_TEMP_CALC_WIDGET_
-
-#include <QWidget>
-
-#include "ui_TempCalcWidget.h"
-
 namespace U2 {
 
-class BaseTempCalcSettings;
-
-class TempCalcWidget : public QWidget, private Ui_TempCalcWidget {
-    Q_OBJECT
-public:
-    TempCalcWidget(QWidget* parent = nullptr);
-
-private:
-};
+BaseTempCalcWidget::BaseTempCalcWidget(QWidget* parent, const QString& _id)
+    : QWidget(parent),
+      id(_id) {}
 
 }
-
-#endif // TEMPCALCWIDGET_H

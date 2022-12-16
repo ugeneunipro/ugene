@@ -19,16 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "TempCalcWidget.h"
+#include "TempCalcRegistry.h"
+
+//#include "methods/RoughTempCalcFactory.h"
+//#include "methods/libs_3rdparty/primer3/Primer3TempCalcFactory.h"
 
 namespace U2 {
-
-
-TempCalcWidget::TempCalcWidget(QWidget* parent) :
-    QWidget(parent) {
-    setupUi(this);
-
-    cbAlgorithm->setCurrentIndex(0);
-}
 
 }

@@ -53,14 +53,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/udr/RawDataUdrSchema.h \
            src/datatype/U2Msa.h \
            src/datatype/U2Mca.h \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/core/oligotm.h \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/Primer3TempCalcFactory.h \
-           src/datatype/temperature/methods/RoughTempCalc.h \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/Primer3TempCalc.h \
-           src/datatype/temperature/methods/RoughTempCalcFactory.h \
-           src/datatype/temperature/BaseTempCalc.h \
-           src/datatype/temperature/TempCalcRegistry.h \
-           src/datatype/temperature/TempCalcFactory.h \
            src/datatype/msa/MaStateCheck.h \
            src/datatype/msa/MultipleAlignment.h \
            src/datatype/msa/MultipleAlignmentInfo.h \
@@ -319,14 +311,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/U2Mca.cpp \
            src/datatype/U2Msa.cpp \
            src/datatype/DNAChromatogram.cpp \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/core/oligotm.c \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/Primer3TempCalc.cpp \
-           src/datatype/temperature/methods/libs_3rdparty/primer3/Primer3TempCalcFactory.cpp \
-           src/datatype/temperature/methods/RoughTempCalc.cpp \
-           src/datatype/temperature/methods/RoughTempCalcFactory.cpp \
-           src/datatype/temperature/BaseTempCalc.cpp \
-           src/datatype/temperature/TempCalcRegistry.cpp \
-           src/datatype/temperature/TempCalcFactory.cpp \
            src/datatype/msa/MaStateCheck.cpp \
            src/datatype/msa/MultipleAlignment.cpp \
            src/datatype/msa/MultipleAlignmentInfo.cpp \
