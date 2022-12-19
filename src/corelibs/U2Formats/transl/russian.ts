@@ -40,32 +40,32 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="147"/>
+        <location filename="../src/BAMUtils.cpp" line="151"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="151"/>
+        <location filename="../src/BAMUtils.cpp" line="155"/>
         <source>Fail to read the header from the file: &quot;%1&quot;</source>
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="155"/>
+        <location filename="../src/BAMUtils.cpp" line="159"/>
         <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
         <translation>Невозможно построить индекс для файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="159"/>
+        <location filename="../src/BAMUtils.cpp" line="163"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="163"/>
+        <location filename="../src/BAMUtils.cpp" line="167"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="812"/>
+        <location filename="../src/BAMUtils.cpp" line="950"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
@@ -434,17 +434,16 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="226"/>
+        <location filename="../src/BAMUtils.cpp" line="230"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="376"/>
         <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
-        <translation>Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
+        <translation type="vanished">Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="391"/>
+        <location filename="../src/BAMUtils.cpp" line="544"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
@@ -453,17 +452,58 @@
         <translation type="vanished">Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="496"/>
+        <location filename="../src/BAMUtils.cpp" line="356"/>
+        <source>[sort_blocks] fail to create file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="369"/>
+        <source>Failed to open file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="377"/>
+        <source>[bam_sort_core] fail to open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="454"/>
+        <source>[bam_merge_core] fail to open file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="472"/>
+        <source>[bam_merge_core] different target sequence name: &apos;%1&apos; != &apos;%2&apos; in file &apos;%3&apos;
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="505"/>
+        <source>Failed to create the output file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="527"/>
+        <source>[bam_merge_core] &apos;%1&apos; is truncated. Continue anyway.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="549"/>
+        <source>Failed to merge BAM files: %1 into %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="640"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="500"/>
+        <location filename="../src/BAMUtils.cpp" line="643"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="753"/>
+        <location filename="../src/BAMUtils.cpp" line="891"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>

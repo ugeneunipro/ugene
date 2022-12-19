@@ -464,7 +464,7 @@
         <translation>Любая область последовательности, которая участвует в регуляции транскрипции или трансляции</translation>
     </message>
     <message>
-        <location filename="../src/util/U2FeatureUtils.cpp" line="138"/>
+        <location filename="../src/util/U2FeatureUtils.cpp" line="143"/>
         <source>Unexpected feature operator value detected.</source>
         <translation>Обнаружено неожиданное значение оператора функции.</translation>
     </message>
@@ -2720,6 +2720,11 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiPool</name>
     <message>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="280"/>
+        <source>Invalid database type: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dbi/U2DbiRegistry.cpp" line="306"/>
         <source>Invalid database id</source>
         <translation>Неверный идентификатор базы данных</translation>
@@ -2782,7 +2787,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="72"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="77"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Очистка временной папки: %1</translation>
     </message>
