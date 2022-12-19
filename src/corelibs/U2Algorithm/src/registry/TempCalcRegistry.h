@@ -25,13 +25,20 @@
 #include <U2Core/IdRegistry.h>
 #include <U2Core/global.h>
 
+#include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcFactory.h>
 
 namespace U2 {
 
 class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
 public:
-    BaseTempCalc* getDefaultTempCalculator() const;
+    bool registerEntry(TempCalcFactory* t) override;
+    BaseTempCalc* getDefaultTempCalculator(const QString& saveId = "") const;
+    void saveSettings(const QString& saveId, TempCalcSettings* settings);
+
+private:
+    TempCalcFactory* defaultFactory = nullptr;
+    QMap<QString, QMap<QString, QVariant>> savedSettings;
 };
 
 }

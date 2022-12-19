@@ -21,14 +21,28 @@
 
 #include "TempCalcRegistry.h"
 
-//#include "methods/RoughTempCalcFactory.h"
-//#include "methods/libs_3rdparty/primer3/Primer3TempCalcFactory.h"
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator() const {
-    //TODO
-    return getAllEntries().first()->createDefaultTempCalculator();
+bool TempCalcRegistry::registerEntry(TempCalcFactory* t) {
+    if (defaultFactory == nullptr) {
+        defaultFactory = t;
+    }
+    return IdRegistry::registerEntry(t);
+}
+
+BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator(const QString& saveId) const {
+    CHECK(!saveId.isEmpty(), defaultFactory->createDefaultTempCalculator());
+
+    auto savedFactory = getById(savedSettings.value(saveId).value(TempCalcSettings::KEY_ID).toString());
+    CHECK(savedFactory != nullptr, defaultFactory->createDefaultTempCalculator());
+    
+    return savedFactory->createTempCalculator(savedSettings.value(saveId));
+}
+
+void TempCalcRegistry::saveSettings(const QString& saveId, TempCalcSettings* settings) {
+    savedSettings.insert(saveId, settings->toVariantMap());
 }
 
 }

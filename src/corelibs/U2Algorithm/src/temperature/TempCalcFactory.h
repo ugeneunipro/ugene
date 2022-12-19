@@ -37,6 +37,7 @@ public:
     TempCalcFactory(const QString& id);
 
     virtual BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const = 0;
+    virtual BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const = 0;
     virtual BaseTempCalc* createDefaultTempCalculator() const = 0;
     virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const = 0;
 

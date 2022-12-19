@@ -33,6 +33,7 @@ public:
     RoughTempCalcFactory();
 
     BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
+    BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const override;
     BaseTempCalc* createDefaultTempCalculator() const override;
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 

@@ -26,20 +26,20 @@
 
 #include "ui_Primer3TempCalcWidget.h"
 
-#include <U2Core/BaseTempCalc.h>
+#include <U2Algorithm/BaseTempCalc.h>
 
-#include "util/temperature/BaseTempCalcWidget.h"
+#include <U2View/BaseTempCalcWidget.h>
 
 namespace U2 {
 
 class Primer3TempCalcWidget : public BaseTempCalcWidget, private Ui_Primer3TempCalcWidget {
     Q_OBJECT
 public:
-    Primer3TempCalcWidget(QWidget* parent = nullptr);
+    Primer3TempCalcWidget(QWidget* parent, const QString& id);
 
-    //BaseTempCalc* getCurentSettings() const;
+    TempCalcSettings* getSettings() const override;
+    void restoreFromSettings(TempCalcSettings* settings) override;
 
-private:
 };
 
 }

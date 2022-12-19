@@ -80,7 +80,7 @@ const QString SequenceInfo::STAT_GROUP_ID = "stat_group";
 SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView), 
       savableWidget(this, GObjectViewUtils::findViewByName(_annotatedDnaView->getName())),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator()) {
+      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(_annotatedDnaView->getName())) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
@@ -92,6 +92,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 }
 
 SequenceInfo::~SequenceInfo() {
+    AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName(), temperatureCalculator->getSettings());
     delete temperatureCalculator;
 }
 
@@ -232,8 +233,8 @@ void SequenceInfo::updateData() {
     updateCodonsOccurrenceData();
 }
 
-void SequenceInfo::updateCommonStatisticsData() {
-    if (!getCommonStatisticsCache()->isValid(currentRegions)) {
+void SequenceInfo::updateCommonStatisticsData(bool forceUpdate) {
+    if (!getCommonStatisticsCache()->isValid(currentRegions) || forceUpdate) {
         launchCalculations(STAT_GROUP_ID);
     } else {
         updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
@@ -549,7 +550,7 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == CAPTION_SEQ_MELTING_TEMPERATURE) {
-        auto dialog = new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget());
+        auto dialog = new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings());
         dialog->open();
         connect(dialog, &QDialog::finished, this, [this](int result) {
             auto dialog = qobject_cast<TempCalcDialog*>(sender());
@@ -557,6 +558,7 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
                 auto tempCalcSettings = dialog->getSettings();
                 delete temperatureCalculator;
                 temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
+                updateCommonStatisticsData(true);
             }
             dialog->deleteLater();
         });

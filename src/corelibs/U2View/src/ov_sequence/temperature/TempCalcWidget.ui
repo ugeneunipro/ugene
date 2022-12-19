@@ -34,5 +34,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cbAlgorithm</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>swSettings</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

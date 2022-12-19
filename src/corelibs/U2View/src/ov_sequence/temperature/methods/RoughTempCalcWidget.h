@@ -22,10 +22,6 @@
 #ifndef _U2_ROUGHT_TEMP_CALC_WIDGET_
 #define _U2_ROUGHT_TEMP_CALC_WIDGET_
 
-#include <QWidget>
-
-//#include <U2Core/BaseTempCalc.h>
-
 #include "ov_sequence/temperature/BaseTempCalcWidget.h"
 
 namespace U2 {
@@ -36,10 +32,11 @@ public:
     RoughTempCalcWidget(QWidget* parent, const QString& id);
 
     TempCalcSettings* getSettings() const override;
+    void restoreFromSettings(TempCalcSettings* settings) override;
 
 private:
 };
 
 }
 
-#endif // TEMPCALCWIDGET_H
+#endif // _U2_ROUGHT_TEMP_CALC_WIDGET_

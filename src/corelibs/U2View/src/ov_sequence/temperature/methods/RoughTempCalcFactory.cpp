@@ -35,6 +35,12 @@ BaseTempCalc* RoughTempCalcFactory::createTempCalculator(TempCalcSettings* setti
     return new RoughTempCalc(settings);
 }
 
+BaseTempCalc* RoughTempCalcFactory::createTempCalculator(QMap<QString, QVariant> mapSettings) const {
+    auto settings = new TempCalcSettings;
+    settings->fromVariantMap(mapSettings);
+    return new RoughTempCalc(settings);
+}
+
 BaseTempCalc* RoughTempCalcFactory::createDefaultTempCalculator() const {
     auto settings = new TempCalcSettings;
     settings->id = ID;

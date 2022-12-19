@@ -24,16 +24,19 @@
 
 #include <QWidget>
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
 struct TempCalcSettings;
 
-class BaseTempCalcWidget : public QWidget {
+class U2VIEW_EXPORT BaseTempCalcWidget : public QWidget {
     Q_OBJECT
 public:
     BaseTempCalcWidget(QWidget* parent, const QString& id);
 
     virtual TempCalcSettings* getSettings() const = 0;
+    virtual void restoreFromSettings(TempCalcSettings* settings) = 0;
 
 protected:
     QString id;

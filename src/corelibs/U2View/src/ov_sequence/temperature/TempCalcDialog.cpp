@@ -28,10 +28,10 @@
 
 namespace U2 {
 
-TempCalcDialog::TempCalcDialog(QWidget* parent) 
+TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings)
     : QDialog(parent) {
     setLayout(new QVBoxLayout);
-    tempCalcWidget = new TempCalcWidget(this);
+    tempCalcWidget = new TempCalcWidget(this, currentSettings);
     layout()->addWidget(tempCalcWidget);
     auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(dbb, &QDialogButtonBox::rejected, this, &QDialog::reject);

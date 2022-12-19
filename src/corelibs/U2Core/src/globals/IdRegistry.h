@@ -31,7 +31,7 @@ namespace U2 {
 template<class T>
 class IdRegistry {
 public:
-    virtual T* getById(const QString& id) {
+    virtual T* getById(const QString& id) const {
         return registry.value(id, nullptr);
     }
     virtual bool registerEntry(T* t) {

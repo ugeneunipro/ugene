@@ -23,13 +23,20 @@
 #define _U2_BASE_TEMP_CALC_
 
 #include <QString>
+#include <QMap>
+#include <QVariant>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
-struct TempCalcSettings {
+struct U2ALGORITHM_EXPORT TempCalcSettings {
+    virtual QMap<QString, QVariant> toVariantMap() const;
+    virtual void fromVariantMap(const QMap<QString, QVariant>& mapSettings);
+
     QString id;
+
+    static const QString KEY_ID;
 };
 
 class U2ALGORITHM_EXPORT BaseTempCalc {
@@ -39,6 +46,7 @@ public:
 
     virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
+    TempCalcSettings* getSettings() const;
 
 protected:
     TempCalcSettings* settings = nullptr;

@@ -35,7 +35,7 @@ struct TempCalcSettings;
 class TempCalcWidget : public QWidget, private Ui_TempCalcWidget {
     Q_OBJECT
 public:
-    TempCalcWidget(QWidget* parent = nullptr);
+    TempCalcWidget(QWidget* parent, TempCalcSettings* currentSettings);
 
     TempCalcSettings* getSettings() const;
 };

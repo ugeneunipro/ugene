@@ -27,6 +27,18 @@
 
 namespace U2 {
 
+const QString TempCalcSettings::KEY_ID = "id";
+
+QMap<QString, QVariant> TempCalcSettings::toVariantMap() const {
+    QMap<QString, QVariant> result;
+    result.insert(KEY_ID, QVariant(id));
+    return result;
+}
+
+void TempCalcSettings::fromVariantMap(const QMap<QString, QVariant>& mapSettings) {
+    id = mapSettings.value(KEY_ID).toString();
+}
+
 BaseTempCalc::BaseTempCalc(TempCalcSettings* _settings)
     : settings(_settings) {}
 
@@ -66,7 +78,10 @@ double BaseTempCalc::getMeltingTemperature(const QByteArray& initialPrimer, cons
         return getMeltingTemperature(alternativePrimer);
     }
     FAIL("At least one primer should have nucleotide alphabet", INVALID_TM);
-    //return INVALID_TM;
+}
+
+TempCalcSettings* BaseTempCalc::getSettings() const {
+    return settings;
 }
 
 }

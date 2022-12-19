@@ -35,16 +35,27 @@
 
 namespace U2 {
 
-TempCalcWidget::TempCalcWidget(QWidget* parent) :
+TempCalcWidget::TempCalcWidget(QWidget* parent, TempCalcSettings* currentSettings) :
     QWidget(parent) {
     setupUi(this);
     
     const auto& factories = AppContext::getTempCalcRegistry()->getAllEntries();
+    TempCalcFactory* restoreItem = nullptr;
+    BaseTempCalcWidget* restoreWidget = nullptr;
     for (auto tempCalcMethodFactory : qAsConst(factories)) {
-        auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this, tempCalcMethodFactory->getId());
-        cbAlgorithm->addItem(tempCalcMethodFactory->getId());
+        const auto& id = tempCalcMethodFactory->getId();
+        auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this, id);
+        cbAlgorithm->addItem(id);
         swSettings->addWidget(settingsWidget);
+        if (id == currentSettings->id) {
+            restoreItem = tempCalcMethodFactory;
+            restoreWidget = settingsWidget;
+        }
     }
+
+    SAFE_POINT(restoreItem != nullptr, QString("Can't find %1").arg(currentSettings->id), );
+    cbAlgorithm->setCurrentIndex(factories.indexOf(restoreItem));
+    restoreWidget->restoreFromSettings(currentSettings);
 }
 
 TempCalcSettings* TempCalcWidget::getSettings() const {

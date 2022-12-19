@@ -90,7 +90,7 @@ private:
     void updateCodonOccurLayout();
 
     void updateData();
-    void updateCommonStatisticsData();
+    void updateCommonStatisticsData(bool forceUpdate = false);
     void updateCommonStatisticsData(const DNAStatistics& commonStatistics);
     void updateCharactersOccurrenceData();
     void updateCharactersOccurrenceData(const CharactersOccurrence& charactersOccurrence);

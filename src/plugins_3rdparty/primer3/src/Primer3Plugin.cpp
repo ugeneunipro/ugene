@@ -25,6 +25,8 @@
 #include <QMap>
 #include <QMessageBox>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/GAutoDeleteList.h>
@@ -43,6 +45,7 @@
 
 #include "Primer3Dialog.h"
 #include "Primer3Query.h"
+#include "temperature/Primer3TempCalcFactory.h"
 
 namespace U2 {
 
@@ -60,6 +63,8 @@ Primer3Plugin::Primer3Plugin()
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDPrimerActorPrototype());
+
+    AppContext::getTempCalcRegistry()->registerEntry(new Primer3TempCalcFactory);
 
     //////////////////////////////////////////////////////////////////////////
     // tests

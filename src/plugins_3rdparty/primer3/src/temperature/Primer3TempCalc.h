@@ -22,13 +22,18 @@
 #ifndef U2_PRIMER_3_MELT_TEMP_CALC_
 #define U2_PRIMER_3_MELT_TEMP_CALC_
 
-#include <U2Core/BaseTempCalc.h>
+#include <U2Algorithm/BaseTempCalc.h>
+
+#include <QMap>
 
 //#include <U2Core/global.h>
 
 namespace U2 {
 
 struct Primer3TempCalcSettings : public TempCalcSettings {
+    QMap<QString, QVariant> toVariantMap() const override;
+    void fromVariantMap(const QMap<QString, QVariant>& mapSettings) override;
+
     /* The table of nearest-neighbor thermodynamic parameters
        and method for Tm calculation */
     enum class TmMethodType {
@@ -77,13 +82,23 @@ struct Primer3TempCalcSettings : public TempCalcSettings {
                         */
 
     TmMethodType tmMethod = TmMethodType::Santalucia; /* See description above. */
-    SaltCorrectionType saltCorrections = SaltCorrectionType::Santalucia; /* See description above. */
-    
+    SaltCorrectionType saltCorrections = SaltCorrectionType::Santalucia; /* See description above. */    
+
+    static const QString KEY_DNA_CONC;
+    static const QString KEY_SALT_CONC;
+    static const QString KEY_DIVALENT_CONC;
+    static const QString KEY_DNTP_CONC;
+    static const QString KEY_DMSO_CONC;
+    static const QString KEY_DMSO_FACT;
+    static const QString KEY_FPRMAMIDE_CONC;
+    static const QString KEY_MAX_LEN;
+    static const QString KEY_TM_METHOD;
+    static const QString KEY_SALT_CORRECTION;
 };
 
-class Primer3MeltTempCalc : public BaseTempCalc {
+class Primer3TempCalc : public BaseTempCalc {
 public:
-    Primer3MeltTempCalc(Primer3TempCalcSettings* settings);
+    Primer3TempCalc(Primer3TempCalcSettings* settings);
 
     double getMeltingTemperature(const QByteArray& sequence) override;
 };
