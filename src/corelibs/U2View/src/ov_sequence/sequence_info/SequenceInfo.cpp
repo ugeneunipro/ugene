@@ -92,7 +92,9 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 }
 
 SequenceInfo::~SequenceInfo() {
-    AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName(), temperatureCalculator->getSettings());
+    if (annotatedDnaView != nullptr) {
+        AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName(), temperatureCalculator->getSettings());
+    }
     delete temperatureCalculator;
 }
 

@@ -131,7 +131,7 @@ private:
     StatisticsCache<DinucleotidesOccurrence>* getDinucleotidesOccurrenceCache() const;
     StatisticsCache<QMap<QByteArray, qint64>>* getCodonsOccurrenceCache() const;
 
-    AnnotatedDNAView* annotatedDnaView;
+    QPointer<AnnotatedDNAView> annotatedDnaView;
 
     ShowHideSubgroupWidget* statsWidget = nullptr;
     QLabel* statisticLabel = nullptr;

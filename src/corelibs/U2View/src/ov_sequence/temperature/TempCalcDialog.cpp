@@ -30,6 +30,7 @@ namespace U2 {
 
 TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings)
     : QDialog(parent) {
+    setWindowTitle(tr("Melting temperature"));
     setLayout(new QVBoxLayout);
     tempCalcWidget = new TempCalcWidget(this, currentSettings);
     layout()->addWidget(tempCalcWidget);
