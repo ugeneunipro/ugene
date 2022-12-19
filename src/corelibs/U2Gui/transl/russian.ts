@@ -1122,7 +1122,7 @@
     <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="128"/>
         <source>Can&apos;t export document to its own file. Please select another file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно экспортировать файл сам в себя. Выберите другой файл</translation>
     </message>
     <message>
         <source>You&apos;re trying to export document to its own destination, use option &quot;Save document...&quot; instead.</source>
