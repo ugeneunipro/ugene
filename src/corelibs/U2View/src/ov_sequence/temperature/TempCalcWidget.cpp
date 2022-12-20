@@ -32,30 +32,52 @@
 
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QLabel>
+#include <QVBoxLayout>
 
 namespace U2 {
 
-TempCalcWidget::TempCalcWidget(QWidget* parent, TempCalcSettings* currentSettings) :
-    QWidget(parent) {
-    setupUi(this);
+TempCalcWidget::TempCalcWidget(QWidget* parent) :
+    QWidget(parent),
+    cbAlgorithm(new QComboBox(this)),
+    swSettings(new QStackedWidget(this)) {
+    auto label = new QLabel(tr("Choose temperature calculation algorithm:"), this);
+    auto layout = new QVBoxLayout(this);
+    layout->addWidget(label);
+    layout->addWidget(cbAlgorithm);
+    layout->addWidget(swSettings);
+    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
+    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TempCalcWidget::si_settingsChanged);
+    connect(swSettings, &QStackedWidget::currentChanged, this, [this](int index) {
+        //setSizePolicy() is required for widget resizing on @settingsWidget widget changed
+        for (int i = 0; i < swSettings->count(); i++) {
+            CHECK_CONTINUE(i != index);
+
+            swSettings->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        }
+        auto currentWidget = swSettings->widget(index);
+        SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), );
+
+        currentWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    });
     
     const auto& factories = AppContext::getTempCalcRegistry()->getAllEntries();
-    TempCalcFactory* restoreItem = nullptr;
-    BaseTempCalcWidget* restoreWidget = nullptr;
     for (auto tempCalcMethodFactory : qAsConst(factories)) {
         const auto& id = tempCalcMethodFactory->getId();
         auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this, id);
         cbAlgorithm->addItem(id);
         swSettings->addWidget(settingsWidget);
-        if (id == currentSettings->id) {
-            restoreItem = tempCalcMethodFactory;
-            restoreWidget = settingsWidget;
-        }
+        settingsWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        connect(settingsWidget, &BaseTempCalcWidget::si_settingsChanged, this, &TempCalcWidget::si_settingsChanged);
     }
+}
 
-    SAFE_POINT(restoreItem != nullptr, QString("Can't find %1").arg(currentSettings->id), );
-    cbAlgorithm->setCurrentIndex(factories.indexOf(restoreItem));
-    restoreWidget->restoreFromSettings(currentSettings);
+void TempCalcWidget::init(TempCalcSettings* currentSettings) {
+    auto index = cbAlgorithm->findText(currentSettings->id);
+    CHECK(index != -1, );
+
+    cbAlgorithm->setCurrentIndex(index);
+    qobject_cast<BaseTempCalcWidget*>(swSettings->widget(index))->restoreFromSettings(currentSettings);
 }
 
 TempCalcSettings* TempCalcWidget::getSettings() const {

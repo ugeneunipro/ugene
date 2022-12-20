@@ -32,7 +32,8 @@ TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSetting
     : QDialog(parent) {
     setWindowTitle(tr("Melting temperature"));
     setLayout(new QVBoxLayout);
-    tempCalcWidget = new TempCalcWidget(this, currentSettings);
+    tempCalcWidget = new TempCalcWidget(this);
+    tempCalcWidget->init(currentSettings);
     layout()->addWidget(tempCalcWidget);
     auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(dbb, &QDialogButtonBox::rejected, this, &QDialog::reject);

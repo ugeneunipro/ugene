@@ -278,7 +278,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
-         src/ov_sequence/temperature/TempCalcWidget.ui \
          src/phyltree/BranchSettingsDialog.ui \
          src/phyltree/CreatePhyTreeDialog.ui \
          src/phyltree/PhyTreeDisplayOptionsWidget.ui \

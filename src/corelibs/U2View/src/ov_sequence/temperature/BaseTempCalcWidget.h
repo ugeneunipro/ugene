@@ -38,6 +38,9 @@ public:
     virtual TempCalcSettings* getSettings() const = 0;
     virtual void restoreFromSettings(TempCalcSettings* settings) = 0;
 
+signals:
+    void si_settingsChanged();
+
 protected:
     QString id;
 

@@ -63,6 +63,12 @@
        <widget class="U2::ShowHideSubgroupWidget" name="settingsSubgroup" native="true"/>
       </item>
       <item>
+       <widget class="U2::ShowHideSubgroupWidget" name="temperatureSubgroup" native="true"/>
+      </item>
+      <item>
+       <widget class="U2::TempCalcWidget" name="temperatureWidget" native="true"/>
+      </item>
+      <item>
        <widget class="QWidget" name="settingsWidget" native="true">
         <property name="minimumSize">
          <size>
@@ -83,10 +89,36 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item row="3" column="1">
-          <widget class="QComboBox" name="annsComboBox"/>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="productSizeSpinBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="suffix">
+            <string> bp</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999999</number>
+           </property>
+           <property name="value">
+            <number>5000</number>
+           </property>
+          </widget>
          </item>
-         <item row="0" column="0">
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Extract annotations</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>3' perfect match</string>
@@ -96,7 +128,33 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Use ambiguous bases</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="perfectSpinBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="suffix">
+            <string> bp</string>
+           </property>
+           <property name="value">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="annsComboBox"/>
+         </item>
+         <item row="2" column="0">
           <widget class="QLabel" name="label_10">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -118,65 +176,13 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Use ambiguous bases</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QCheckBox" name="useAmbiguousBasesCheckBox">
            <property name="text">
             <string/>
            </property>
            <property name="checked">
             <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Extract annotations</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="perfectSpinBox">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="suffix">
-            <string> bp</string>
-           </property>
-           <property name="value">
-            <number>15</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="productSizeSpinBox">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="suffix">
-            <string> bp</string>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>999999999</number>
-           </property>
-           <property name="value">
-            <number>5000</number>
            </property>
           </widget>
          </item>
@@ -443,6 +449,12 @@ font-weight: 600;</string>
    <class>U2::ShowHideSubgroupWidget</class>
    <extends>QWidget</extends>
    <header location="global">U2Gui/ShowHideSubgroupWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>U2::TempCalcWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">U2View/TempCalcWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

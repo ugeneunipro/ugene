@@ -23,6 +23,8 @@
 
 #include <QMessageBox>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
@@ -39,6 +41,7 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/TempCalcWidget.h>
 
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
@@ -48,22 +51,27 @@ namespace U2 {
 
 namespace {
 const QString DETAILS_LINK = "details";
+const QString ID_POSTFIX = "_in_silico_pcr";
 const QString FORWARD_SUBGROUP_ID = "forward";
 const QString REVERSE_SUBGROUP_ID = "reverse";
 const QString SETTINGS_SUBGROUP_ID = "settings";
+const QString TEMPERATURE_SUBGROUP_ID = "temperature";
 }  // namespace
 
-InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView)
+InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _annotatedDnaView)
     : QWidget(),
-      annotatedDnaView(annotatedDnaView),
+      annotatedDnaView(_annotatedDnaView),
       pcrTask(nullptr),
       resultTableShown(false),
-      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
+      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())),
+      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(annotatedDnaView->getName() + ID_POSTFIX)) {
     GCOUNTER(cvar, "PCR options panel");
     setupUi(this);
     forwardPrimerBoxSubgroup->init(FORWARD_SUBGROUP_ID, tr("Forward primer"), forwardPrimerBox, true);
     reversePrimerBoxSubgroup->init(REVERSE_SUBGROUP_ID, tr("Reverse primer"), reversePrimerBox, true);
     settingsSubgroup->init(SETTINGS_SUBGROUP_ID, tr("Settings"), settingsWidget, true);
+    temperatureWidget->init(temperatureCalculator->getSettings());
+    temperatureSubgroup->init(TEMPERATURE_SUBGROUP_ID, tr("Melting temperature"), temperatureWidget, false);
     annsComboBox->addItem(tr("Inner"), ExtractProductSettings::Inner);
     annsComboBox->addItem(tr("All intersected"), ExtractProductSettings::All);
     annsComboBox->addItem(tr("None"), ExtractProductSettings::None);
@@ -82,6 +90,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* ann
     connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_onProductsSelectionChanged()));
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_onProductDoubleClicked()));
     connect(detailsLinkLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_showDetails(const QString&)));
+    connect(temperatureWidget, &TempCalcWidget::si_settingsChanged, this, &InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged);
 
     static const QString linkText = QString("<a href=\"%1\" style=\"color: %2\">%3</a>").arg(DETAILS_LINK).arg(Theme::linkColorLabelStr()).arg(tr("Show primers details"));
     detailsLinkLabel->setText(linkText);
@@ -99,6 +108,9 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* ann
 InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
     if (nullptr != pcrTask) {
         pcrTask->cancel();
+    }
+    if (annotatedDnaView != nullptr) {
+        AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName() + ID_POSTFIX, temperatureCalculator->getSettings());
     }
 }
 
@@ -264,6 +276,13 @@ void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
     PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer());
     QObjectScopedPointer<PrimersDetailsDialog> dlg = new PrimersDetailsDialog(this, calc.generateReport());
     dlg->exec();
+}
+
+void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
+    auto tempCalcSettings = temperatureWidget->getSettings();
+    delete temperatureCalculator;
+    temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
+
 }
 
 }  // namespace U2

@@ -28,6 +28,7 @@ namespace U2 {
 
 class ADVSequenceObjectContext;
 class AnnotatedDNAView;
+class BaseTempCalc;
 class InSilicoPcrTask;
 class PrimerGroupBox;
 
@@ -54,16 +55,18 @@ private slots:
     void sl_onProductsSelectionChanged();
     void sl_onProductDoubleClicked();
     void sl_showDetails(const QString& link);
+    void sl_temperatureSettingsChanged();
 
 private:
     static bool isDnaSequence(ADVSequenceObjectContext* sequenceContext);
     void showResults(InSilicoPcrTask* task);
 
 private:
-    AnnotatedDNAView* annotatedDnaView;
+    QPointer<AnnotatedDNAView> annotatedDnaView;
     InSilicoPcrTask* pcrTask;
     bool resultTableShown;
     PcrOptionsPanelSavableTab savableWidget;
+    BaseTempCalc* temperatureCalculator = nullptr;
 };
 
 }  // namespace U2

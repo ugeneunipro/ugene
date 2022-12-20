@@ -23,23 +23,32 @@
 #define _U2_TEMP_CALC_WIDGET_
 
 #include <QWidget>
+#include <QComboBox>
+#include <QStackedWidget>
 
-#include "ui_TempCalcWidget.h"
-
-//#include <U2Core/BaseTempCalc.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 struct TempCalcSettings;
 
-class TempCalcWidget : public QWidget, private Ui_TempCalcWidget {
+class U2VIEW_EXPORT TempCalcWidget : public QWidget {
     Q_OBJECT
 public:
-    TempCalcWidget(QWidget* parent, TempCalcSettings* currentSettings);
+    TempCalcWidget(QWidget* parent);
 
+    void init(TempCalcSettings* currentSettings);
     TempCalcSettings* getSettings() const;
+
+signals:
+    void si_settingsChanged();
+
+private:
+    QComboBox* cbAlgorithm = nullptr;
+    QStackedWidget* swSettings = nullptr;
+
 };
 
 }
 
-#endif // TEMPCALCWIDGET_H
+#endif // _U2_TEMP_CALC_WIDGET_

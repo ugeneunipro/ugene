@@ -30,6 +30,16 @@ namespace U2 {
 Primer3TempCalcWidget::Primer3TempCalcWidget(QWidget* parent, const QString& id) :
     BaseTempCalcWidget(parent, id) {
     setupUi(this);
+    connect(dsbDna, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbMonovalent, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbDivalent, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbDntp, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbDmso, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbDmsoFactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(dsbFormamide, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(sbNnMaxLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(cbTable, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
+    connect(cbSalt, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
 }
 
 TempCalcSettings* Primer3TempCalcWidget::getSettings() const {
