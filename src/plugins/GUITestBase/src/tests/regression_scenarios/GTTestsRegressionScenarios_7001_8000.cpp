@@ -3687,5 +3687,19 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7740) {
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Select root node.
+    TvNodeItem* rootNode = GTUtilsPhyTree::getRootNode(os);
+    GTUtilsPhyTree::clickNode(os, rootNode);
+
+    // Swap Siblings button must be disabled.
+    QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+    auto swapSiblingsButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Swap Siblings");
+    CHECK_SET_ERR(!swapSiblingsButton->isEnabled(), "Swap siblings must be disabled");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
