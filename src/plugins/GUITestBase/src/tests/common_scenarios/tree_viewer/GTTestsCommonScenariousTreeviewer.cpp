@@ -927,9 +927,9 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 GUI_TEST_CLASS_DEFINITION(test_0025) {
     //     for UGENE-4089
     //     1. Open or build the tree
-    //     Expected state: nothing is selected, collapse, swap and reroot actino are disabled
+    //     Expected state: nothing is selected, collapse, swap and re-root actions are disabled
     //     2. Select the root item
-    //     Expected state: only swap action is available
+    //     Expected state: all actions are still disabled.
     //     3. Select the other node in the middle of the tree
     //     Expected state: all three actions are enabled
     //     4. Click "Collapse"
@@ -953,7 +953,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     TvNodeItem* rootNode = GTUtilsPhyTree::getRootNode(os);
     GTUtilsPhyTree::clickNode(os, rootNode);
     CHECK_SET_ERR(!collapseButton->isEnabled(), "Collapse action is unexpectedly enabled for root node");
-    CHECK_SET_ERR(swapButton->isEnabled(), "Swap action is unexpectedly disabled for root node");
+    CHECK_SET_ERR(!swapButton->isEnabled(), "Swap action is unexpectedly enabled for root node");
     CHECK_SET_ERR(!rerootButton->isEnabled(), "Re-root action is unexpectedly enabled for root node");
 
     TvNodeItem* middleNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.023", "0.078");
@@ -970,7 +970,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     CHECK_SET_ERR(collapseButton->text() == "Collapse", "No Collapse action for leaf node");
 
     GTUtilsPhyTree::clickNode(os, middleNode);
-    CHECK_SET_ERR(collapseButton->text() == "Expand", "No Expand actionf for middle node");
+    CHECK_SET_ERR(collapseButton->text() == "Expand", "No Expand action for middle node");
     GTWidget::click(os, collapseButton);
     CHECK_SET_ERR(collapseButton->text() == "Collapse", "No Collapse action after expanding middle node");
 }
