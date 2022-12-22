@@ -554,11 +554,11 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Create annotation #1
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "x_grpA", "annA", "complement(10.. 20)"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpA", "annA", "complement(10.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // 3. Create annotations #2
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a_grpB", "annB", "complement(30.. 40)"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "grpB", "annB", "complement(30.. 40)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // 7. Drag&drop annotation #1 to group #2
@@ -578,10 +578,10 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
 
     // Expected: group moved successfully, no crash
     GTGlobals::FindOptions findOpt(false, Qt::MatchContains);
-    QTreeWidgetItem* itemGrpA = GTUtilsAnnotationsTreeView::findItem(os, "x_grpA", nullptr, findOpt);
-    CHECK_SET_ERR(itemGrpA != nullptr, QString("Can't find item x_grpA"));
+    QTreeWidgetItem* itemGrpA = GTUtilsAnnotationsTreeView::findItem(os, "grpA", nullptr, findOpt);
+    CHECK_SET_ERR(itemGrpA != nullptr, QString("Can't find item grpA"));
     QTreeWidgetItem* parentGrpA = itemGrpA->parent();
-    CHECK_SET_ERR(parentGrpA != nullptr, QString("Parent of the x_grpA was not found"));
+    CHECK_SET_ERR(parentGrpA != nullptr, QString("Parent of the grpA was not found"));
     annA = GTUtilsAnnotationsTreeView::findItem(os, "annA");
     annB = GTUtilsAnnotationsTreeView::findItem(os, "annB");
     grpA = annA->parent();

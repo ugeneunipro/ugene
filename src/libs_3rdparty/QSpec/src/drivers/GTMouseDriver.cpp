@@ -47,14 +47,12 @@ bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     DRIVER_CHECK(press(), "Mouse button was not be pressed");
     GTThread::waitForMainThread();
 
-#ifdef Q_OS_WIN
-    // TODO: check if the 'middle point' logic is still needed on Windows.
     QPoint middlePoint = (end + start) / 2;
-    bool useMiddlePoint = (end - middlePoint).manhattanLength() > 2 * QApplication::startDragDistance();
-    if (useMiddlePoint) {
-        DRIVER_CHECK(moveTo(middlePoint), QString("Mouse could not be moved to point (%1, %2)").arg(middlePoint.x()).arg(middlePoint.y()));
+    bool useMiddlePoint = (middlePoint - start).manhattanLength() > 2 * QApplication::startDragDistance();
+    if (!useMiddlePoint) {
+        middlePoint = start + QPoint(3 * QApplication::startDragDistance(), 3 * QApplication::startDragDistance());
     }
-#endif
+    DRIVER_CHECK(moveTo(middlePoint), QString("Mouse could not be moved to point (%1, %2)").arg(middlePoint.x()).arg(middlePoint.y()));
 
     DRIVER_CHECK(moveTo(end), QString("Mouse was not moved to the end point (%1, %2)").arg(end.x()).arg(end.y()));
     GTThread::waitForMainThread();
