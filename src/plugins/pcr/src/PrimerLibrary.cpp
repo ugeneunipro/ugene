@@ -103,7 +103,7 @@ void PrimerLibrary::release() {
 PrimerLibrary::PrimerLibrary(DbiConnection* connection)
     : connection(connection) {
     udrDbi = connection->dbi->getUdrDbi();
-    createTableIfNotExists();
+    createPrimerSettingsTableIfNotExists();
     initTemperatureCalculator();
 }
 
@@ -324,7 +324,7 @@ void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
     primer.tm = temperatureCalculator->getMeltingTemperature(primer.sequence.toLocal8Bit());
 }
 
-void PrimerLibrary::createTableIfNotExists() {
+void PrimerLibrary::createPrimerSettingsTableIfNotExists() {
     U2OpStatusImpl os;
     // This table appears in v46 and not exist in previous versions
     // need to create it

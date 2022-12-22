@@ -66,7 +66,20 @@ signals:
 private:
     static void initPrimerUdrs(U2OpStatus& os);
     void setTmAndGcOfPrimer(Primer& primer);
-    void createTableIfNotExists();
+    /**
+     * PrimerSettings table was added in v 46
+     * We need to create this table if it not exists
+     */
+    void createPrimerSettingsTableIfNotExists();
+    /**
+     * Init temperature calculator
+     * Read the calculator ID and check registry
+     * If the corresponding factory already in registry - take it and use to create calculator
+     * Also switch @initializedFromDb to true, beacuse it's required only once
+     * If it's not - create the default one
+     * This is required because some factory may be still not initialized 
+     * (if, for example, the initialization point in some other plugin, which is not loaded yet)
+     */
     void initTemperatureCalculator();
 
     PrimerLibrary(DbiConnection* connection);
@@ -76,6 +89,10 @@ private:
     static QMutex mutex;
 
     BaseTempCalc* temperatureCalculator = nullptr;
+    /**
+     * If false - try to initialize @temperatureCalculator from the database
+     * See @initTemperatureCalculator() for details
+     */
     bool initializedFromDb = false;
     DbiConnection* connection = nullptr;
     UdrDbi* udrDbi = nullptr;
