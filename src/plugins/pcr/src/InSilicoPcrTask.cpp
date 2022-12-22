@@ -54,6 +54,7 @@ InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings& _settings)
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
+    SAFE_POINT_EXT(settings.temperatureCalculator != nullptr, setError(L10N::nullPointerError("BaseTempCalc")), );
 }
 
 namespace {
@@ -272,7 +273,7 @@ InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, c
 
     InSilicoPcrProduct result;
     result.region = product;
-    result.ta = PrimerStatistics::getAnnealingTemperature(productSequence,
+    result.ta = settings.temperatureCalculator->getAnnealingTemperature(productSequence,
                                                           direction == U2Strand::Direct ? settings.forwardPrimer : settings.reversePrimer,
                                                           direction == U2Strand::Direct ? settings.reversePrimer : settings.forwardPrimer);
     result.forwardPrimerMatchLength = leftPrimer.region.length + leftPrimer.ledge;

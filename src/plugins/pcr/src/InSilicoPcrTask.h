@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/FindAlgorithmTask.h>
 
 #include <U2Core/GObjectReference.h>
@@ -42,8 +43,8 @@ public:
     uint maxProductSize;
     uint perfectMatch;
     bool useAmbiguousBases = true;
-
     QString sequenceName;
+    BaseTempCalc* temperatureCalculator = nullptr;
 
     static const qint64 MAX_SEQUENCE_LENGTH;
 };

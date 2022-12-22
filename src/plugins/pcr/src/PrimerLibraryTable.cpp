@@ -94,6 +94,10 @@ int PrimerLibraryModel::rowCount(const QModelIndex& parent) const {
     return primers.size();
 }
 
+const QList<Primer>& PrimerLibraryModel::getAllPrimers() const {
+    return primers;
+}
+
 Primer PrimerLibraryModel::getPrimer(const QModelIndex& index, U2OpStatus& os) const {
     CHECK_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError(L10N::internalError("Incorrect primer number")), Primer());
     return primers.at(index.row());
@@ -172,6 +176,10 @@ PrimerLibraryTable::PrimerLibraryTable(QWidget* parent)
     setModel(model);
 
     viewport()->installEventFilter(this);
+}
+
+const QList<Primer>& PrimerLibraryTable::getAllPrimers() const {
+    return model->getAllPrimers();
 }
 
 QList<Primer> PrimerLibraryTable::getSelection() const {

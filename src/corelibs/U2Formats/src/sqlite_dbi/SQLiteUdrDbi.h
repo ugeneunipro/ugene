@@ -41,6 +41,7 @@ public:
     void removeRecord(const UdrRecordId& recordId, U2OpStatus& os);
     InputStream* createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os);
     OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os);
+    void createTable(const UdrSchemaId& schemaId, U2OpStatus& os) override;
     void initSqlSchema(U2OpStatus& os);
 
     ModificationAction* getModificationAction(const U2DataId& id);

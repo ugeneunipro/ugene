@@ -79,6 +79,8 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
 
     forwardPrimerBox->setAnnotatedDnaView(annotatedDnaView);
     reversePrimerBox->setAnnotatedDnaView(annotatedDnaView);
+    forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
+    reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 
     connect(forwardPrimerBox, SIGNAL(si_primerChanged()), SLOT(sl_onPrimerChanged()));
     connect(reversePrimerBox, SIGNAL(si_primerChanged()), SLOT(sl_onPrimerChanged()));
@@ -112,6 +114,7 @@ InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
     if (annotatedDnaView != nullptr) {
         AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName() + ID_POSTFIX, temperatureCalculator->getSettings());
     }
+    delete temperatureCalculator;
 }
 
 AnnotatedDNAView* InSilicoPcrOptionPanelWidget::getDnaView() const {
@@ -178,6 +181,7 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
     settings.sequenceObject = GObjectReference(sequenceObject);
     settings.isCircular = sequenceObject->isCircular();
+    settings.temperatureCalculator = temperatureCalculator;
 
     pcrTask = new InSilicoPcrTask(settings);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
@@ -282,7 +286,8 @@ void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
     auto tempCalcSettings = temperatureWidget->getSettings();
     delete temperatureCalculator;
     temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
-
+    forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
+    reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 }
 
 }  // namespace U2

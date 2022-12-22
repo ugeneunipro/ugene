@@ -89,6 +89,13 @@ public:
      */
     virtual OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os) = 0;
 
+    /**
+     * Creates the new table of schema of the corresponding @schemaId
+     * If table already exists nothing happens
+     * Returns error to @os if problems have appeared.
+     */
+    virtual void createTable(const UdrSchemaId& schemaId, U2OpStatus& os) = 0;
+
     virtual ModificationAction* getModificationAction(const U2DataId& id) = 0;
 };
 

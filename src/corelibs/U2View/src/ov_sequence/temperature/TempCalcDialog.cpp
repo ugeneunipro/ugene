@@ -22,6 +22,9 @@
 #include "TempCalcDialog.h"
 #include "TempCalcWidget.h"
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
+#include <U2Core/AppContext.h>
 
 #include <QDialogButtonBox>
 #include <QLayout>
@@ -41,8 +44,9 @@ TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSetting
     layout()->addWidget(dbb);
 }
 
-TempCalcSettings* TempCalcDialog::getSettings() const {
-    return tempCalcWidget->getSettings();
+BaseTempCalc* TempCalcDialog::getTemperatureCalculator() const {
+    auto settings = tempCalcWidget->getSettings();
+    return AppContext::getTempCalcRegistry()->getById(settings->id)->createTempCalculator(settings);
 }
 
 }

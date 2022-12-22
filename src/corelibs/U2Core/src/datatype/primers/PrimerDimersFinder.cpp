@@ -41,9 +41,6 @@ QString DimerFinderResult::getFullReport() const {
 QString DimerFinderResult::getShortReport() const {
     return QString("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
 }
-QString DimerFinderResult::getReportWithMeltingTemp() const {
-    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 <b>Melting temperature:</b> %3&deg;C").arg(deltaG).arg(baseCounts).arg(PrimerStatistics::getMeltingTemperature(dimer.toUtf8())) + "<pre>" + dimersOverlap + "</pre>";
-}
 
 /************************************************************************/
 /* DrimersFinder */

@@ -557,9 +557,8 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
         connect(dialog, &QDialog::finished, this, [this](int result) {
             auto dialog = qobject_cast<TempCalcDialog*>(sender());
             if (result == QDialog::DialogCode::Accepted) {
-                auto tempCalcSettings = dialog->getSettings();
                 delete temperatureCalculator;
-                temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
+                temperatureCalculator = dialog->getTemperatureCalculator();
                 updateCommonStatisticsData(true);
             }
             dialog->deleteLater();

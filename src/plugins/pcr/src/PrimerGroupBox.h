@@ -23,6 +23,8 @@
 
 #include "ui_PrimerGroupBox.h"
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 namespace U2 {
 
 class ADVSequenceObjectContext;
@@ -38,6 +40,7 @@ public:
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
+    void setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator);
 
 signals:
     void si_primerChanged();
@@ -53,7 +56,7 @@ private slots:
     void sl_activeSequenceChanged();
 
 private:
-    static QString getTmString(const QString& sequence);
+    QString getTmString(const QString& sequence);
 
     void findPrimerAlternatives(const QString& primer);
     void cancelFindPrimerTask();
@@ -62,6 +65,7 @@ private:
 
     FindAlgorithmTask* findPrimerTask;
     AnnotatedDNAView* annotatedDnaView;
+    BaseTempCalc* temperatureCalculator;
 };
 
 }  // namespace U2

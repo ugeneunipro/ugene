@@ -79,7 +79,7 @@ double Primer3TempCalc::getMeltingTemperature(const QByteArray& sequence) {
                  p3Settings->dnaConc,
                  p3Settings->saltConc,
                  p3Settings->divalentConc,
-                 p3Settings->dnaConc,
+                 p3Settings->dntpConc,
                  p3Settings->dmsoConc,
                  p3Settings->dmsoFact,
                  p3Settings->formamideConc,

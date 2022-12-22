@@ -31,7 +31,6 @@ namespace U2 {
 struct U2CORE_EXPORT DimerFinderResult {
     QString getFullReport() const;
     QString getShortReport() const;
-    QString getReportWithMeltingTemp() const;
 
     QString dimersOverlap;
     double deltaG = 0.0;

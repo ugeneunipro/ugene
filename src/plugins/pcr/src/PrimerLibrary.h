@@ -23,6 +23,8 @@
 
 #include <QMutex>
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/UdrSchema.h>
@@ -31,6 +33,7 @@
 namespace U2 {
 
 class DbiConnection;
+struct TempCalcSettings;
 class UdrDbi;
 
 class PrimerLibrary : public QObject {
@@ -52,14 +55,19 @@ public:
     void addRawPrimer(Primer primer, U2OpStatus& os);
     void updateRawPrimer(Primer primer, U2OpStatus& os);
 
+    TempCalcSettings* getTemperatureSettings() const;
+    void setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator);
+
 signals:
     void si_primerAdded(const U2DataId& primerId);
     void si_primerChanged(const U2DataId& primerId);
     void si_primerRemoved(const U2DataId& primerId);
 
 private:
-    static void initPrimerUdr(U2OpStatus& os);
-    static void setTmAndGcOfPrimer(Primer& primer);
+    static void initPrimerUdrs(U2OpStatus& os);
+    void setTmAndGcOfPrimer(Primer& primer);
+    void createTableIfNotExists();
+    void initTemperatureCalculator();
 
     PrimerLibrary(DbiConnection* connection);
 
@@ -67,8 +75,10 @@ private:
     static QScopedPointer<PrimerLibrary> instance;
     static QMutex mutex;
 
-    DbiConnection* connection;
-    UdrDbi* udrDbi;
+    BaseTempCalc* temperatureCalculator = nullptr;
+    bool initializedFromDb = false;
+    DbiConnection* connection = nullptr;
+    UdrDbi* udrDbi = nullptr;
 };
 
 }  // namespace U2

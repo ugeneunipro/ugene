@@ -46,12 +46,16 @@ private slots:
     void sl_removePrimers();
     void sl_importPrimers();
     void sl_exportPrimers();
+    void sl_openTemperatureSettings();
     void sl_selectionChanged();
 
 private:
-    QPushButton* editPrimerButton;
-    QPushButton* removePrimersButton;
-    QPushButton* exportPrimersButton;
+    void updateTemperatureValues();
+
+    QPushButton* editPrimerButton = nullptr;
+    QPushButton* removePrimersButton = nullptr;
+    QPushButton* exportPrimersButton = nullptr;
+    QPushButton* temperatureButton = nullptr;
 };
 
 }  // namespace U2

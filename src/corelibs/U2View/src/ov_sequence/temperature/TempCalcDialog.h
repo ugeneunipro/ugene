@@ -37,7 +37,7 @@ class U2VIEW_EXPORT TempCalcDialog : public QDialog {
 public:
     TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings);
 
-    TempCalcSettings* getSettings() const;
+    BaseTempCalc* getTemperatureCalculator() const;
 
 private:
     TempCalcWidget* tempCalcWidget = nullptr;

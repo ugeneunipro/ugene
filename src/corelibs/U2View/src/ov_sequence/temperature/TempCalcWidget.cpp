@@ -45,22 +45,7 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
     auto layout = new QVBoxLayout(this);
     layout->addWidget(label);
     layout->addWidget(cbAlgorithm);
-    layout->addWidget(swSettings);
-    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
-    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TempCalcWidget::si_settingsChanged);
-    connect(swSettings, &QStackedWidget::currentChanged, this, [this](int index) {
-        //setSizePolicy() is required for widget resizing on @settingsWidget widget changed
-        for (int i = 0; i < swSettings->count(); i++) {
-            CHECK_CONTINUE(i != index);
-
-            swSettings->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        }
-        auto currentWidget = swSettings->widget(index);
-        SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), );
-
-        currentWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    });
-    
+    layout->addWidget(swSettings);    
     const auto& factories = AppContext::getTempCalcRegistry()->getAllEntries();
     for (auto tempCalcMethodFactory : qAsConst(factories)) {
         const auto& id = tempCalcMethodFactory->getId();
@@ -70,6 +55,26 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
         settingsWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         connect(settingsWidget, &BaseTempCalcWidget::si_settingsChanged, this, &TempCalcWidget::si_settingsChanged);
     }
+    swSettings->currentWidget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
+    connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TempCalcWidget::si_settingsChanged);
+    connect(swSettings, &QStackedWidget::currentChanged, this, [this](int index) {
+        //setSizePolicy() and adjustSize() are required for widget resizing on @settingsWidget widget changed
+        for (int i = 0; i < swSettings->count(); i++) {
+            CHECK_CONTINUE(i != index);
+
+            swSettings->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        }
+        auto currentWidget = swSettings->widget(index);
+        SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), );
+
+        currentWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        swSettings->adjustSize();
+        adjustSize();
+        parentWidget()->adjustSize();
+    });
+
 }
 
 void TempCalcWidget::init(TempCalcSettings* currentSettings) {

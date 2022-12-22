@@ -61,35 +61,6 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const Q
     return message;
 }
 
-double PrimerStatistics::getMeltingTemperature(const QByteArray& sequence) {
-    CHECK(validate(sequence), Primer::INVALID_TM);
-    PrimerStatisticsCalculator calc(sequence);
-    return calc.getTm();
-}
-
-double PrimerStatistics::getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer) {
-    if (PrimerStatistics::validate(initialPrimer)) {
-        return PrimerStatistics::getMeltingTemperature(initialPrimer);
-    }
-    if (PrimerStatistics::validate(alternativePrimer)) {
-        return PrimerStatistics::getMeltingTemperature(alternativePrimer);
-    }
-    return Primer::INVALID_TM;
-}
-
-double PrimerStatistics::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
-    CHECK(validate(product) == true, Primer::INVALID_TM);
-
-    double forwardTm = getMeltingTemperature(forwardPrimer, product.left(forwardPrimer.length()));
-    CHECK(forwardTm != Primer::INVALID_TM, Primer::INVALID_TM);
-    double reverseTm = getMeltingTemperature(reversePrimer, DNASequenceUtils::reverseComplement(product.right(reversePrimer.length())));
-    CHECK(reverseTm != Primer::INVALID_TM, Primer::INVALID_TM);
-
-    double primersTm = (forwardTm + reverseTm) / 2;
-    double productTm = getMeltingTemperature(product);
-    return 0.3 * primersTm + 0.7 * productTm - 14.9;
-}
-
 bool PrimerStatistics::validate(const QByteArray& primer) {
     return validate(QString(primer));
 }
