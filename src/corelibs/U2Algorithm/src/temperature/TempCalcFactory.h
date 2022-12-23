@@ -32,13 +32,37 @@ class BaseTempCalc;
 class BaseTempCalcWidget;
 struct TempCalcSettings;
 
+/**
+ * Factory, which creates temperature calculator and widget with the set of corresponding settings 
+ */
 class U2ALGORITHM_EXPORT TempCalcFactory {
 public:
     TempCalcFactory(const QString& id);
 
+    /**
+     * Create temperature calculator
+     * @settings pointer to the TempCalcSettings of the calculator, which should be created
+     * @return pointer to the temperature calculator
+     */
     virtual BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const = 0;
+    /**
+     * Create temperature calculator
+     * @mapSettings QMap of the corresponding settings.
+     * See TempCalcSettings::toVariantMap() and TempCalcSettings::fromVariantMap() for details
+     * @return pointer to the temperature calculator
+     */
     virtual BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const = 0;
+    /**
+     * Create temperature calculator with the default settings
+     * @return pointer to the temperature calculator
+     */
     virtual BaseTempCalc* createDefaultTempCalculator() const = 0;
+    /**
+     * Create widget to set manually settings and get TempCalcSettings from this widget
+     * @parent widget parent
+     * @id id of current temperature calculation method
+     * @return pointer to the temperature calculator
+     */
     virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const = 0;
 
     const QString& getId() const;

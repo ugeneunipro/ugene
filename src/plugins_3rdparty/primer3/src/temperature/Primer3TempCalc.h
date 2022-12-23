@@ -26,8 +26,6 @@
 
 #include <QMap>
 
-//#include <U2Core/global.h>
-
 namespace U2 {
 
 struct Primer3TempCalcSettings : public TempCalcSettings {

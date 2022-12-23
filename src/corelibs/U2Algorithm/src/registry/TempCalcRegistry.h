@@ -30,10 +30,28 @@
 
 namespace U2 {
 
+/**
+ * Registry for all methods of temperature calculation    
+ */
 class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
 public:
     bool registerEntry(TempCalcFactory* t) override;
+    /**
+     * Get the default temperature calculator
+     * Get the factory with the corresponding ID @saveId
+     * If @saveId is empty - get the first registred factory
+     * @return pointer to the temperature calculator
+     */
     BaseTempCalc* getDefaultTempCalculator(const QString& saveId = "") const;
+    /**
+     * Save calculation settings to this static object
+     * This is required if, for example, we need to store settings,
+     * which are stored in some other object, but this object should be destroyed
+     * (for example, if this object is some widget and should be closed).
+     * @saveId ID of the saved settings. If it is settings of some Sequence View you can use its AnnotatedDNAView name
+     * If @saveId is empty - get the first registred factory
+     * @return pointer to the temperature calculator
+     */
     void saveSettings(const QString& saveId, TempCalcSettings* settings);
 
 private:

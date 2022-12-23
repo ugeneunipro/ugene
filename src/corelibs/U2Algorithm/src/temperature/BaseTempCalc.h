@@ -30,8 +30,21 @@
 
 namespace U2 {
 
+/**
+ * Settings for the temperature calculations
+ */
 struct U2ALGORITHM_EXPORT TempCalcSettings {
+    /**
+     * Convert settings to variant map
+     * It's required it wee need to save this settings somewhere
+     * @return a map with the parameter id as a key and the corresponding parameter value as value
+     */
     virtual QMap<QString, QVariant> toVariantMap() const;
+    /**
+     * Load settings from variant map
+     * Variant map could be loaded from some store
+     * @mapSettings a map with the parameter id as a key and the corresponding parameter value as value
+     */
     virtual void fromVariantMap(const QMap<QString, QVariant>& mapSettings);
 
     QString id;
@@ -39,12 +52,30 @@ struct U2ALGORITHM_EXPORT TempCalcSettings {
     static const QString KEY_ID;
 };
 
+/**
+ * Temperature calculator
+ */
 class U2ALGORITHM_EXPORT BaseTempCalc {
 public:
     BaseTempCalc(TempCalcSettings* settings);
     ~BaseTempCalc();
 
+    /**
+     * Calculate melting temperature
+     * @sequence sequence, which melting temperature should be calculated
+     * @return the calculated temperaturev value
+     */
     virtual double getMeltingTemperature(const QByteArray& sequence) = 0;
+    /**
+     * Calculate annealing temperature of the product
+     * Use formula from "Rychlik W, Spencer WJ, Rhoads RE (1990)
+     * Optimization of the annealing temperature for DNA amplification in vitro.
+     * Nucleic Acids Res 18(21):6409–6412."
+     * @product the whole product (has forward and reverse primers on 5' ends of direct and reverse-complementary stand)
+     * @forwardPrimer forward primer, located on 3' end of the direct product stand
+     * @reversePrimer reverse primer, located on 3' end of the reverse-complementary product stand
+     * @return the annealing temperaturev value
+     */
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
     TempCalcSettings* getSettings() const;
 
@@ -54,6 +85,13 @@ protected:
 
 private:
     static bool isNucleotideSequence(const QByteArray& sequence);
+    /**
+     * Calculate melting temperature of @initialPrimer (if nucleotide)
+     * or @alternativePrimer (if @initialPrimer has symbols from the DNA extended alphabet)
+     * @initialPrimer calculate melting temperature of this primer (if nucleotide)
+     * @alternativePrimer calculate melting temperature of this primer (if @initialPrimer is not nucleotide)
+     * @return the calculated temperaturev value
+     */
     double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
 
 };
