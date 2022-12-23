@@ -32,12 +32,26 @@ namespace U2 {
 
 struct TempCalcSettings;
 
+/**
+ * Widget wich contains all BaseTempCalcWidget's
+ * Has combo box to switch settings and stacked widget, 
+ * wich contains all BaseTempCalcWidget's
+ */
 class U2VIEW_EXPORT TempCalcWidget : public QWidget {
     Q_OBJECT
 public:
     TempCalcWidget(QWidget* parent);
 
+    /**
+     * Initialize widget with @currentSettings
+     * @currentSettings settings to initialize widget
+     */
     void init(TempCalcSettings* currentSettings);
+    /**
+     * Get sequence object to the set settings
+     * Settings object will be got from the active BaseTempCalcWidget
+     * @return settings object
+     */
     TempCalcSettings* getSettings() const;
 
 signals:

@@ -30,12 +30,25 @@ namespace U2 {
 
 struct TempCalcSettings;
 
+/**
+ * Widget to set up settings for temperature calculations
+ * User can set up all settings manually using this widget
+ */
 class U2VIEW_EXPORT BaseTempCalcWidget : public QWidget {
     Q_OBJECT
 public:
     BaseTempCalcWidget(QWidget* parent, const QString& id);
 
+    /**
+     * Get settings, which were set up.
+     * Use this function when settings up is done.
+     * @return pointer to the settings object
+     */
     virtual TempCalcSettings* getSettings() const = 0;
+    /**
+     * Restore widget from the settings object.
+     * @settings pointer to the settings object.
+     */
     virtual void restoreFromSettings(TempCalcSettings* settings) = 0;
 
 signals:
