@@ -75,18 +75,23 @@ double Primer3TempCalc::getMeltingTemperature(const QByteArray& sequence) {
     auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
     SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), INVALID_TM);    
     
-    return seqtm(sequence,
-                 p3Settings->dnaConc,
-                 p3Settings->saltConc,
-                 p3Settings->divalentConc,
-                 p3Settings->dntpConc,
-                 p3Settings->dmsoConc,
-                 p3Settings->dmsoFact,
-                 p3Settings->formamideConc,
-                 p3Settings->nnMaxLen,
-                 static_cast<tm_method_type>(p3Settings->tmMethod),
-                 static_cast<salt_correction_type>(p3Settings->saltCorrections),
-                 INVALID_TM).Tm;
+    auto result = seqtm(sequence,
+                        p3Settings->dnaConc,
+                        p3Settings->saltConc,
+                        p3Settings->divalentConc,
+                        p3Settings->dntpConc,
+                        p3Settings->dmsoConc,
+                        p3Settings->dmsoFact,
+                        p3Settings->formamideConc,
+                        p3Settings->nnMaxLen,
+                        static_cast<tm_method_type>(p3Settings->tmMethod),
+                        static_cast<salt_correction_type>(p3Settings->saltCorrections),
+                        INVALID_TM).Tm;
+    if (result == OLIGOTM_ERROR) {
+        result = INVALID_TM;
+    }
+
+    return result;
 }
 
 }

@@ -79,8 +79,9 @@ const QString SequenceInfo::STAT_GROUP_ID = "stat_group";
 
 SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView), 
-      savableWidget(this, GObjectViewUtils::findViewByName(_annotatedDnaView->getName())),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(_annotatedDnaView->getName())) {
+      annotatedDnaViewName(annotatedDnaView->getName()),
+      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
+      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(annotatedDnaViewName)) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
@@ -92,9 +93,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 }
 
 SequenceInfo::~SequenceInfo() {
-    if (annotatedDnaView != nullptr) {
-        AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaView->getName(), temperatureCalculator->getSettings());
-    }
+    AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
     delete temperatureCalculator;
 }
 
@@ -272,7 +271,10 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValid), availableSpace, true);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, 
+                                  getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", 
+                                           isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM),
+                                  availableSpace, true);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";

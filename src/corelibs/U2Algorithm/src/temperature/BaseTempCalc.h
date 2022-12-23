@@ -79,9 +79,9 @@ public:
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
     TempCalcSettings* getSettings() const;
 
+    static constexpr double INVALID_TM = -999999.0;
 protected:
     TempCalcSettings* settings = nullptr;
-    static constexpr double INVALID_TM = -1.0;
 
 private:
     static bool isNucleotideSequence(const QByteArray& sequence);

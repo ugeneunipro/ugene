@@ -54,11 +54,12 @@ double RoughTempCalc::getMeltingTemperature(const QByteArray& sequence) {
         case 'N':
             break;
         default:
-            FAIL("Unexpected character", INVALID_TM);
+            return INVALID_TM;
         }
     }
 
     double result = 0.0;
+    // for the formulas details see here: https://openwetware.org/wiki/Primer_Tm_estimation_methods
     if (sequence.length() < 14) {
         result = (nA + nT) * 2 + (nG + nC) * 4;
     } else {

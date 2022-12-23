@@ -132,6 +132,9 @@ private:
     StatisticsCache<QMap<QByteArray, qint64>>* getCodonsOccurrenceCache() const;
 
     QPointer<AnnotatedDNAView> annotatedDnaView;
+    // This field is required because we need to save some settings in the destructor,
+    // but @annotatedDnaView is dead up to this time
+    QString annotatedDnaViewName;
 
     ShowHideSubgroupWidget* statsWidget = nullptr;
     QLabel* statisticLabel = nullptr;

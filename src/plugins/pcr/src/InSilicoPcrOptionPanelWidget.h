@@ -66,6 +66,8 @@ private:
     InSilicoPcrTask* pcrTask;
     bool resultTableShown;
     PcrOptionsPanelSavableTab savableWidget;
+    // Required, because @annotatedDnaView is already dead in the destructor
+    QString tempCalcId;
     BaseTempCalc* temperatureCalculator = nullptr;
 };
 
