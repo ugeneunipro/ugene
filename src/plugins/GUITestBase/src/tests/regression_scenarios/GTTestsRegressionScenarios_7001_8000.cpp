@@ -3701,5 +3701,19 @@ GUI_TEST_CLASS_DEFINITION(test_7740) {
     CHECK_SET_ERR(!swapSiblingsButton->isEnabled(), "Swap siblings must be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7744) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Select "GC Deviation (G-C)/(G+C)"  or "AT Deviation (A-T)/(A+T)" graph
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Deviation (G-C)/(G+C)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"AT Deviation (A-T)/(A+T)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
