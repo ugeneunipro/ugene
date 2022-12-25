@@ -28,7 +28,6 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -37,13 +36,9 @@
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
-#include <U2Core/ZlibAdapter.h>
-
-#include <U2Formats/DocumentFormatUtils.h>
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
@@ -54,7 +49,6 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "CoreLib.h"
 #include "GenericReadActor.h"
 
 namespace U2 {
@@ -208,9 +202,8 @@ LoadMSATask::LoadMSATask(const QString& _url, const QString& _datasetName, DbiDa
 }
 
 void LoadMSATask::prepare() {
-    int memUseMB = 0;
     QFileInfo file(url);
-    memUseMB = file.size() / (1024 * 1024);
+    int memUseMB = file.size() / (1024 * 1024);
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE || iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
         memUseMB *= 2.5;  // Need to calculate compress level
@@ -363,7 +356,6 @@ void LoadSeqTask::run() {
     if (types.contains(GObjectTypes::SEQUENCE)) {
         QList<GObject*> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         QList<GObject*> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         for (GObject* go : qAsConst(seqObjs)) {
             SAFE_POINT(go != nullptr, "Invalid object encountered!", );
             if (!selector->objectMatches(static_cast<U2SequenceObject*>(go))) {
@@ -374,38 +366,24 @@ void LoadSeqTask::run() {
             m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
             m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-            QList<GObject*> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(go, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allLoadedAnnotations, UOF_LoadedOnly);
-            if (!annotations.isEmpty()) {
-                QList<SharedAnnotationData> l;
-                for (GObject* annGObj : qAsConst(annotations)) {
-                    AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annGObj);
-                    foreach (Annotation* a, att->getAnnotations()) {
-                        l << a->getData();
+            QList<GObject*> relatedAnnotationObjects = GObjectUtils::findObjectsRelatedToObjectByRole(go,
+                                                                                                      GObjectTypes::ANNOTATION_TABLE,
+                                                                                                      ObjectRole_Sequence,
+                                                                                                      annObjs,
+                                                                                                      UOF_LoadedOnly);
+            if (!relatedAnnotationObjects.isEmpty()) {
+                QList<SharedAnnotationData> mergedAnnotations;
+                for (GObject* annGObj : qAsConst(relatedAnnotationObjects)) {
+                    auto annotationObject = qobject_cast<AnnotationTableObject*>(annGObj);
+                    QList<Annotation*> annotations = annotationObject->getAnnotations();
+                    for (Annotation* a : qAsConst(annotations)) {
+                        mergedAnnotations << a->getData();
                     }
-                    annObjs.removeAll(annGObj);
                 }
-                const SharedDbiDataHandler tableId = storage->putAnnotationTable(l);
+                SharedDbiDataHandler tableId = storage->putAnnotationTable(mergedAnnotations);
                 m.insert(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), qVariantFromValue<SharedDbiDataHandler>(tableId));
             }
             results.append(m);
-        }
-
-        // if there are annotations that are not connected to a sequence -> put them  independently
-        for (GObject* annObj : qAsConst(annObjs)) {
-            AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annObj);
-            if (att->findRelatedObjectsByRole(ObjectRole_Sequence).isEmpty()) {
-                SAFE_POINT(nullptr != att, "Invalid annotation table object encountered!", );
-                QVariantMap m;
-                m.insert(BaseSlots::URL_SLOT().getId(), url);
-
-                QList<SharedAnnotationData> l;
-                foreach (Annotation* a, att->getAnnotations()) {
-                    l << a->getData();
-                }
-                const SharedDbiDataHandler tableId = storage->putAnnotationTable(l);
-                m.insert(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), qVariantFromValue<SharedDbiDataHandler>(tableId));
-                results.append(m);
-            }
         }
     } else {
         // TODO merge seqs from alignment

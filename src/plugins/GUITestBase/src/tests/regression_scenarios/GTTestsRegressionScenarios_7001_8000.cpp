@@ -3643,6 +3643,21 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
                       .arg(positionStr, coverageStr));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7712) {
+    class FilterShortScaffoldsWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTUtilsWizard::setInputFiles(os, {{testDir + "_common_data/genbank/1anot.gen"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7715) {
     // Open COI.aln.
     //     Expected: no log messages
