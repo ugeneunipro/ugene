@@ -3653,6 +3653,8 @@ GUI_TEST_CLASS_DEFINITION(test_7712) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
