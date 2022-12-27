@@ -135,6 +135,8 @@ protected:
 
     const DNATranslation* aminoTT = nullptr;
     const DNATranslation* complTT = nullptr;
+
+    QByteArray alphabetCharacterHit = QByteArray();
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */

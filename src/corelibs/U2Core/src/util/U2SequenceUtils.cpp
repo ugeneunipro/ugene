@@ -463,23 +463,13 @@ void U2SequenceImporter::startSequence(U2OpStatus& os,
 
 void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
     CHECK(len > 0, );
-    // derive common alphabet
-    const DNAAlphabet* blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
-    CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
-
-    const DNAAlphabet* oldAl = U2AlphabetUtils::getById(sequence.alphabet);
-    const DNAAlphabet* resAl = blockAl;
-    if (oldAl != nullptr) {
-        if (oldAl->getType() == DNAAlphabet_AMINO && resAl->getType() == DNAAlphabet_NUCL) {
-            resAl = oldAl;
-        } else if (resAl->getType() == DNAAlphabet_AMINO && oldAl->getType() == DNAAlphabet_NUCL) {
-            oldAl = resAl;
-        } else {
-            resAl = U2AlphabetUtils::deriveCommonAlphabet(blockAl, oldAl);
+    for (int i = 0; i < len; i++) {
+        if (Q_UNLIKELY(!alphabetCharacterHit.contains(data[i]))) {
+            alphabetCharacterHit.append(data[i]);
         }
-        CHECK_EXT(resAl != nullptr, os.setError(U2SequenceUtils::tr("Failed to derive sequence alphabet!")), );
     }
-
+    const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(alphabetCharacterHit);
+    CHECK_EXT(resAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
     if (resAl != U2AlphabetUtils::getById(sequence.alphabet)) {
         sequence.alphabet.id = resAl->getId();
         if (sequenceCreated) {
