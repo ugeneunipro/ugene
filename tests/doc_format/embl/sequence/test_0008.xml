@@ -7,7 +7,7 @@
 
     <find-object-by-name index="kkk" doc="doc" name="AB000264" type="OT_SEQUENCE"/>
 
-    <check-sequence-alphabet-by-id obj="kkk" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="kkk" value="AMINO_EXTENDED_ALPHABET"/>
 
 
 </multi-test>

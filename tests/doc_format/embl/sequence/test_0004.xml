@@ -7,7 +7,7 @@
 
     <find-object-by-name index="obj3" doc="doc" name="AB000265" type="OT_SEQUENCE"/>
 
-    <check-sequence-alphabet-by-id obj="obj3" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj3" value="NUCL_DNA_EXTENDED_ALPHABET"/>
     <check-sequence-size obj="obj3" value="129"/>
 
 </multi-test>

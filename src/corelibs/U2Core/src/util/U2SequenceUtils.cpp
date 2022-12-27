@@ -464,11 +464,17 @@ void U2SequenceImporter::startSequence(U2OpStatus& os,
 void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
     CHECK(len > 0, );
     for (int i = 0; i < len; i++) {
-        if (Q_UNLIKELY(!alphabetCharacterHit.contains(data[i]))) {
-            alphabetCharacterHit.append(data[i]);
+        if (Q_UNLIKELY(!alphabetCharacterHit[data[i]])) {
+            alphabetCharacterHit[data[i]] = true;
         }
     }
-    const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(alphabetCharacterHit);
+    QByteArray bytes;
+    for (int i = 0; i < alphabetCharacterHit.size(); i++) {
+        if (Q_UNLIKELY(alphabetCharacterHit[i])) {
+            bytes.append(QChar(i));
+        }
+    }
+    const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(bytes);
     CHECK_EXT(resAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
     if (resAl != U2AlphabetUtils::getById(sequence.alphabet)) {
         sequence.alphabet.id = resAl->getId();

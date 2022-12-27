@@ -7,6 +7,6 @@
 
     <find-object-by-name index="obj2" doc="doc" name="B" type="OT_SEQUENCE"/>
 
-    <check-sequence-alphabet-by-id obj="obj2" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="RAW_ALPHABET"/>
 
 </multi-test>
