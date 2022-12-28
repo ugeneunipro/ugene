@@ -3581,7 +3581,7 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     // Click OK.
     //     The Workflow window appears.
     // Set _common_data/bwa/control-chr21.fastq and nrsf-chr21.fastq as input to the "Read File URL(s)" element.
-    // Set _common_data/bwa/NC_000021.gbk.fa as the "Reference genome" of the "Map Reads with BWA" element.
+    // Set _common_data/bwa/NC_000021.gbk.min.fa as the "Reference genome" of the "Map Reads with BWA" element.
     // Run workflow.
     //     Expected: the workflow task finished successfully with one output file "output.sam".
     // Open the output.sam
@@ -3618,7 +3618,7 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     GTUtilsWorkflowDesigner::click(os, "Map Reads with BWA");
     GTUtilsWorkflowDesigner::setParameter(os,
                                           "Reference genome",
-                                          testDir + "_common_data/bwa/NC_000021.gbk.fa",
+                                          testDir + "_common_data/bwa/NC_000021.gbk.min.fa",
                                           GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -3638,8 +3638,8 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     auto toInt = [](QString str) {
         return str.remove(' ').toInt();
     };
-    CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
-                  QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
+    CHECK_SET_ERR(toInt(positionStr) == 1'558'217 && toInt(coverageStr) == 750,
+                  QString("The first well-covered region: expected 1 558 217 -- 750, current %1 -- %2")
                       .arg(positionStr, coverageStr));
 }
 
