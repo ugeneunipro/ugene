@@ -185,6 +185,7 @@ void GTest_RunCMDLine::prepare() {
 
     QString argsStr = args.join(" ");
     coreLog.trace("Starting UGENE with arguments: " + argsStr);
+    proc->setProcessChannelMode(QProcess::MergedChannels);
     proc->start(ugeneclPath, args);
 }
 
@@ -198,7 +199,12 @@ static QString getErrorMsg(const QString& str) {
 }
 
 Task::ReportResult GTest_RunCMDLine::report() {
-    if (hasError() || isCanceled()) {
+    if (hasError()) {
+        return ReportResult_Finished;
+    }
+    if (isCanceled()) {
+        cmdLog.trace(QString("Before canceling, the process '%1' gave the following:\n").arg(args.join(" ")) +
+                     proc->readAllStandardOutput());
         return ReportResult_Finished;
     }
     if (proc->state() != QProcess::NotRunning) {
