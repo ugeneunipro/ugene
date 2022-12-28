@@ -163,6 +163,7 @@ void ReadAssemblyTask::prepare() {
     conf.useImporters = true;
     conf.excludeHiddenFormats = false;
     QList<FormatDetectionResult> fs = DocumentUtils::detectFormat(url, conf);
+    
     foreach (const FormatDetectionResult& f, fs) {
         if (nullptr != f.format) {
             if (isConvertingFormat(f.format->getFormatId())) {
