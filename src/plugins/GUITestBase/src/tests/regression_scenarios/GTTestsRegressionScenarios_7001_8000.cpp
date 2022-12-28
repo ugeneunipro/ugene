@@ -2931,6 +2931,47 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7629) {
+    // 1. Open sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 2. Copy 1001 symbol
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1001));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy selected sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 3. Paste it to project filter
+    // Expected: no crash, here is info message in log and warning message box
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Pattern was truncated to 1000 symbols."));
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "The search pattern is too long. Pattern was truncated to 1000 symbols.", 90000);
+
+    // 4. Copy region with acceptable length 1000 symbols
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy selected sequence"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // 5. Paste it to project filter
+    // Expected: no crash, no error in log
+    GTLogTracer logTracer2;
+    GTUtilsTaskTreeView::openView(os);
+    GTLineEdit::clear(os, nameFilterEdit);
+    GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Filtering project content");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer2.hasErrors(), "Log should not contain errors");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7630) {
     // Open CVU55762.gb and murine.gb in separate sequence mode.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
@@ -3157,7 +3198,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
     // Duplicate _common_data/ugenedb/chrM.sorted.bam.ugenedb.
     QString origFilePath = testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb";
     GTFile::copy(os, origFilePath, sandBoxDir + "/chrM.sorted.bam.ugenedb");
-    
+
     // Open duplicate.
     GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3173,7 +3214,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
     // Click the cross in the search field in the project view.
     // Filter clearing has the same result
     GTUtilsProjectTreeView::filterProject(os, "");
-     
+
     // Close the chrM tab.
     GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
 
@@ -3186,7 +3227,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
 
     // Rename the file back to "chrM.sorted.bam.ugenedb".
     f.rename(sandBoxDir + "/chrM.sorted.bam.ugenedb");
-    
+
     // Open it in UGENE again.
     GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3414,12 +3455,12 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
     // because the file from the issue was almoust 100 Mb size
-    
+
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Call the Primer3 dialog 
+    // Call the Primer3 dialog
     // In the Primer3 Designer dialog select PT - PCR tab
     // Check in main checkbox and set Exon range : 1424 - 1606
     // Click Pick primers button
@@ -3644,6 +3685,40 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsLog::checkContainsMessage(os, ltConnect, false);
     GTUtilsLog::checkContainsMessage(os, ltSize, false);
     GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7740) {
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Select root node.
+    TvNodeItem* rootNode = GTUtilsPhyTree::getRootNode(os);
+    GTUtilsPhyTree::clickNode(os, rootNode);
+
+    // Swap Siblings button must be disabled.
+    QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+    auto swapSiblingsButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Swap Siblings");
+    CHECK_SET_ERR(!swapSiblingsButton->isEnabled(), "Swap siblings must be disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7744) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Select "GC Deviation (G-C)/(G+C)"  or "AT Deviation (A-T)/(A+T)" graph
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Deviation (G-C)/(G+C)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"AT Deviation (A-T)/(A+T)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7748) {
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", testDir + "_common_data/fasta/broken", "empty_name_multi.fa"));
+    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 }
 
 }  // namespace GUITest_regression_scenarios

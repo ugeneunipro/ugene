@@ -36,7 +36,7 @@ namespace U2 {
 
 ServiceRegistryImpl::~ServiceRegistryImpl() {
     for (Service* service : qAsConst(services)) {
-        U2_ASSERT(service->isDisabled());
+        SAFE_POINT(service->isDisabled(), "Service should be disabled.", );
         if (service->isDisabled()) {
             delete service;
         }

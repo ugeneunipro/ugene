@@ -51,7 +51,11 @@
           <number>5</number>
          </property>
          <item>
-          <widget class="U2::SearchBox" name="nameFilterEdit"/>
+          <widget class="U2::SearchBox" name="nameFilterEdit">
+           <property name="maxLength">
+            <number>1000</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

@@ -54,7 +54,7 @@ public:
 
 private:
     void windowStrategyWithoutMemorize(QVector<float>& res, const QByteArray& seq, qint64 startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus& os);
-    void sequenceStrategyWithMemorize(QVector<float>& res, const QByteArray& seq, const U2Region& vr, qint64 window, qint64 step, U2OpStatus& os);
+    void sequenceStrategyWithMemorize(QVector<float>& res, const QByteArray& seq, const U2Region& visualRegion, qint64 window, qint64 step, U2OpStatus& os);
     QPair<int, int> matchOnStep(const QByteArray& seq, int begin, int end);
 
     QPair<char, char> p;

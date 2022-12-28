@@ -1113,6 +1113,7 @@ void TreeViewerUI::sl_swapTriggered() {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
         if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
             auto phyNode = nodeItem->getPhyNode();
+            SAFE_POINT(phyNode != nullptr, "Can't swap siblings of the root node with no phyNode!", );
             phyNode->invertOrderOrChildBranches();
             phyObject->onTreeChanged();
             break;
@@ -1622,7 +1623,10 @@ void TreeViewerUI::updateActionsState() {
 
     bool treeIsRooted = getTreeLayout() != UNROOTED_LAYOUT;
     bool treeIsCircular = getTreeLayout() == CIRCULAR_LAYOUT;
-    treeViewer->swapAction->setEnabled(thereIsSelection && treeIsRooted && (!treeIsCircular || !isOnlyLeafSelected()));
+    treeViewer->swapAction->setEnabled(thereIsSelection &&
+                                       treeIsRooted &&
+                                       (!treeIsCircular || !isOnlyLeafSelected()) &&
+                                       !root->isSelected());
     treeViewer->rerootAction->setEnabled(thereIsSelection && !rootIsSelected && treeIsRooted);
 }
 
