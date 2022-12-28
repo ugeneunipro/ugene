@@ -19,11 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <GTGlobals.h>
 #include <api/GTUtils.h>
-#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
@@ -36,38 +33,17 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
 #include <runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
-#include <utils/GTUtilsDialog.h>
 #include <utils/GTUtilsToolTip.h>
 
-#include <QDialogButtonBox>
 #include <QFileDialog>
-#include <QHeaderView>
-#include <QMainWindow>
-#include <QMenu>
-#include <QPlainTextEdit>
-#include <QPushButton>
-#include <QTableWidget>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/U2ObjectDbi.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
-#include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/AnnotationsTreeView.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_2001_3000.h"
@@ -86,7 +62,6 @@
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
-#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
@@ -95,14 +70,12 @@
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
@@ -124,6 +97,7 @@
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastDbCmdDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
@@ -2678,31 +2652,11 @@ GUI_TEST_CLASS_DEFINITION(test_2470) {
     QList<QTreeWidgetItem*> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     GTUtilsAnnotationsTreeView::selectItems(os, blastResultItems);
 
-    class OkClicker : public Filler {
-    public:
-        OkClicker(HI::GUITestOpStatus& _os, const QString& dbPath, const QString& outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
-        }
-        void run() override {
-            QWidget* w = GTWidget::getActiveModalWidget(os);
-
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
-            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
-
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        };
-
-    private:
-        const QString dbPath;
-        const QString outputPath;
-    };
-
     GTUtilsDialog::waitForDialog(os,
-                                 new OkClicker(os,
-                                               testDir + "_common_data/scenarios/_regression/2470/nice_base.nhr",
-                                               testDir + "_common_data/scenarios/sandbox/2470_fetched.fa"));
+                                 new BlastDbCmdDialogFiller(
+                                     os,
+                                     testDir + "_common_data/scenarios/_regression/2470/nice_base.nhr",
+                                     testDir + "_common_data/scenarios/sandbox/2470_fetched.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
