@@ -24,17 +24,20 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileStorageUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/BAMUtils.h>
 
@@ -181,6 +184,8 @@ void ReadAssemblyTask::prepare() {
 
             QVariantMap hints;
             hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+            QString destination = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + fi.baseName(), "_");
+            hints.insert(ImportHint_DestinationUrl, destination);
             importTask = f.importer->createImportTask(f, false, hints);
             addSubTask(importTask);
             return;

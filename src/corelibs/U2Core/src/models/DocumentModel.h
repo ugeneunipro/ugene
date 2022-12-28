@@ -134,6 +134,9 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 /** Set of hints that can be processed during objects conversion */
 #define ObjectConvertion_UseGenbankHeader "use-genbank-header"
 
+/** Set of hints for formats with importers */
+#define ImportHint_DestinationUrl "import-hint-destination-url"
+
 class U2CORE_EXPORT DocumentFormat : public QObject {
     Q_OBJECT
 public:

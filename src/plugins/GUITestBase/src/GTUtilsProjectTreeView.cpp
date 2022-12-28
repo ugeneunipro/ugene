@@ -225,9 +225,9 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus& os, const QString& itemN
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTUtilsProjectTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName, Qt::MouseButton button) {
+void GTUtilsProjectTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName, Qt::MouseButton button, const GTGlobals::FindOptions& itemOptions) {
     QModelIndex parentIndex = findIndex(os, parentName);
-    QModelIndex itemIndex = findIndex(os, itemName, parentIndex);
+    QModelIndex itemIndex = findIndex(os, itemName, parentIndex, itemOptions);
     scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
 
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));

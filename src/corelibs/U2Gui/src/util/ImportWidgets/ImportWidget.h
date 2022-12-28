@@ -27,7 +27,6 @@
 namespace U2 {
 
 #define ImportHint_FormatId "import-hint-format-id"
-#define ImportHint_DestinationUrl "import-hint-destination-url"
 
 class SaveDocumentController;
 

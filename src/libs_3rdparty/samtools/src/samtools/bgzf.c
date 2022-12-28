@@ -210,7 +210,7 @@ bgzf_open(const char* __restrict path, const char* __restrict mode)
 #ifdef _WIN32
 		oflag |= O_BINARY;
 #endif
-		fd = ugene_custom_open(path, oflag);
+        fd = open(path, oflag);
 		if (fd == -1) return 0;
         fp = open_read(fd);
 #endif

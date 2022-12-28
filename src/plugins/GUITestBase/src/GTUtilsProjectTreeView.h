@@ -65,7 +65,7 @@ public:
     static void doubleClickItem(HI::GUITestOpStatus& os, const QModelIndex& itemIndex);
     static void doubleClickItem(HI::GUITestOpStatus& os, const QString& itemName);
     static void click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton button = Qt::LeftButton);
-    static void click(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName, Qt::MouseButton button = Qt::LeftButton);
+    static void click(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName, Qt::MouseButton button = Qt::LeftButton, const GTGlobals::FindOptions& itemOptions = {});
 
     static void callContextMenu(HI::GUITestOpStatus& os, const QString& itemName);
     static void callContextMenu(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName);

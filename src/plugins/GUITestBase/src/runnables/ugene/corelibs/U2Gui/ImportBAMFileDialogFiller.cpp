@@ -55,8 +55,7 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario
 void ImportBAMFileFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (!referenceFolderPath.isEmpty()) {
-        GTFileDialogUtils* ob = new GTFileDialogUtils(os, referenceFolderPath, referenceFileName);
-        GTUtilsDialog::waitForDialog(os, ob);
+        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, referenceFolderPath, referenceFileName));
         GTWidget::click(os, GTWidget::findWidget(os, "refUrlButton", dialog));
     }
 

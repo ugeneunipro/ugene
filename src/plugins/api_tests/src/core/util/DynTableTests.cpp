@@ -62,8 +62,13 @@ IMPLEMENT_TEST(DynTableTests, bigTable) {
     }
 }
 
+IMPLEMENT_TEST(DynTableTests, acceptableDimensions) {
+    CHECK_EQUAL(false, DynTable::isAcceptableMatrixDimensions(23171, 23171), "Not acceptable dimensions");
+    CHECK_EQUAL(true, DynTable::isAcceptableMatrixDimensions(23170, 23170), "Acceptable dimensions");
+}
+
 IMPLEMENT_TEST(DynTableTests, fullMatch) {
-    CHECK_EQUAL(3, getLastLen("ABC", "ABC", false), "Match length");
+   CHECK_EQUAL(3, getLastLen("ABC", "ABC", false), "Match length");
 }
 
 IMPLEMENT_TEST(DynTableTests, fullMismatch) {
