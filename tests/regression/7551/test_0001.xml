@@ -2,7 +2,7 @@
 <multi-test>
     <run-cmdline
         task="!common_data_dir!/regression/7551/test_0001.uwl"
-        in="!common_data_dir!/clustal/COI.aln"
+        in="!common_data_dir!/apr/DNA.apr"
         message="Unsupported document format:"
     />
 </multi-test>

@@ -163,7 +163,6 @@ void ReadAssemblyTask::prepare() {
     conf.useImporters = true;
     conf.excludeHiddenFormats = false;
     QList<FormatDetectionResult> fs = DocumentUtils::detectFormat(url, conf);
-
     foreach (const FormatDetectionResult& f, fs) {
         if (nullptr != f.format) {
             if (isConvertingFormat(f.format->getFormatId())) {
@@ -178,17 +177,19 @@ void ReadAssemblyTask::prepare() {
                 break;
             }
         } else if (nullptr != f.importer) {
-            U2OpStatusImpl os;
-            U2DbiRef dbiRef = ctx->getDataStorage()->createTmpDbi(os);
-            SAFE_POINT_OP(os, );
+            if(f.importer->getSupportedObjectTypes().contains(GObjectTypes::ASSEMBLY)) {
+                U2OpStatusImpl os;
+                U2DbiRef dbiRef = ctx->getDataStorage()->createTmpDbi(os);
+                SAFE_POINT_OP(os, );
 
-            QVariantMap hints;
-            hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
-            QString destination = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + fi.baseName(), "_");
-            hints.insert(ImportHint_DestinationUrl, destination);
-            importTask = f.importer->createImportTask(f, false, hints);
-            addSubTask(importTask);
-            return;
+                QVariantMap hints;
+                hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
+                QString destination = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/" + fi.baseName(), "_");
+                hints.insert(ImportHint_DestinationUrl, destination);
+                importTask = f.importer->createImportTask(f, false, hints);
+                addSubTask(importTask);
+                return;
+            }
         }
     }
 
