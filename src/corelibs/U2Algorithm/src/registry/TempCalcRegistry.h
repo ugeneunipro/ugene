@@ -44,6 +44,11 @@ public:
      */
     BaseTempCalc* getDefaultTempCalculator(const QString& saveId = "") const;
     /**
+     * Get the default temperature calculator settings 
+     * @return pointer to the temperature calculator settings
+     */
+    TempCalcSettings* getDefaultTempCalcSettings() const;
+    /**
      * Save calculation settings to this static object
      * This is required if, for example, we need to store settings,
      * which are stored in some other object, but this object should be destroyed

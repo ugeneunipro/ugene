@@ -47,9 +47,13 @@ BaseTempCalc* Primer3TempCalcFactory::createTempCalculator(QMap<QString, QVarian
 }
 
 BaseTempCalc* Primer3TempCalcFactory::createDefaultTempCalculator() const {
+    return createTempCalculator(createDefaultTempCalcSettings());
+}
+
+TempCalcSettings* Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
     auto p3Settings = new Primer3TempCalcSettings;
     p3Settings->id = ID;
-    return createTempCalculator(p3Settings);
+    return p3Settings;
 }
 
 BaseTempCalcWidget* Primer3TempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {

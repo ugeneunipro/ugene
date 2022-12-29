@@ -58,6 +58,11 @@ public:
      */
     virtual BaseTempCalc* createDefaultTempCalculator() const = 0;
     /**
+     * Create the default settings of the default temperature calculator 
+     * @return pointer to the temperature calculator settings
+     */
+    virtual TempCalcSettings* createDefaultTempCalcSettings() const = 0;
+    /**
      * Create widget to set manually settings and get TempCalcSettings from this widget
      * @parent widget parent
      * @id id of current temperature calculation method

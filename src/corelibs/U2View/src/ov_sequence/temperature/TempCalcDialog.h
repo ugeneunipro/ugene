@@ -42,10 +42,16 @@ public:
     TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings);
 
     /**
-    * Create temperature calculator according to settings from @tempCalcWidget
-    * @return pointed to the created temperature calculator
-    */
+     * Create temperature calculator according to settings from @tempCalcWidget
+     * @return pointed to the created temperature calculator
+     */
     BaseTempCalc* getTemperatureCalculator() const;
+
+    /**
+     * Get settings from the inner widget
+     * @return pointed to the temperature calculator settings
+     */
+    TempCalcSettings* getTemperatureCalculatorSettings() const;
 
 private:
     TempCalcWidget* tempCalcWidget = nullptr;

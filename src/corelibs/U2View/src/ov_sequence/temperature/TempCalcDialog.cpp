@@ -49,4 +49,8 @@ BaseTempCalc* TempCalcDialog::getTemperatureCalculator() const {
     return AppContext::getTempCalcRegistry()->getById(settings->id)->createTempCalculator(settings);
 }
 
+TempCalcSettings* TempCalcDialog::getTemperatureCalculatorSettings() const {
+    return tempCalcWidget->getSettings();
+}
+
 }

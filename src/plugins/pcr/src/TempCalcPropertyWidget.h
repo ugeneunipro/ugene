@@ -19,28 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
-#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#ifndef _U2_TEMP_CALC_PROPERTY_WIDGET_H_
+#define _U2_TEMP_CALC_PROPERTY_WIDGET_H_
 
-#include <U2Algorithm/TempCalcFactory.h>
+#include <U2Lang/ConfigurationEditor.h>
 
-#include <U2Core/global.h>
+#include <QLineEdit>
+#include <QToolButton>
 
 namespace U2 {
 
-class U2VIEW_EXPORT RoughTempCalcFactory : public TempCalcFactory {
+struct TempCalcSettings;
+
+class TempCalcPropertyWidget : public PropertyWidget {
+    Q_OBJECT
 public:
-    RoughTempCalcFactory();
+    TempCalcPropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
+    ~TempCalcPropertyWidget();
 
-    BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
-    BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const override;
-    BaseTempCalc* createDefaultTempCalculator() const override;
-    TempCalcSettings* createDefaultTempCalcSettings() const override;
-    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
+    QVariant value() override;
 
-    static const QString ID;
+public slots:
+    void setValue(const QVariant& value) override;
 
+private slots:
+//    void sl_textEdited();
+    void sl_showDialog();
+
+private:
+    QLineEdit* lineEdit = nullptr;
+    QToolButton* toolButton = nullptr;
+    TempCalcSettings* tempSettings = nullptr;
 };
+
+
+
 
 }
 

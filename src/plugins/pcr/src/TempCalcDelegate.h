@@ -19,26 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
-#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#ifndef _U2_TEMP_CALC_DELEGATE_H_
+#define _U2_TEMP_CALC_DELEGATE_H_
 
-#include <U2Algorithm/TempCalcFactory.h>
+#include <U2Lang/ConfigurationEditor.h>
 
-#include <U2Core/global.h>
+#include <QToolButton>
 
 namespace U2 {
 
-class U2VIEW_EXPORT RoughTempCalcFactory : public TempCalcFactory {
+class TempCalcDelegate : public PropertyDelegate {
+    Q_OBJECT
 public:
-    RoughTempCalcFactory();
+    TempCalcDelegate(QObject* parent = nullptr);
 
-    BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
-    BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const override;
-    BaseTempCalc* createDefaultTempCalculator() const override;
-    TempCalcSettings* createDefaultTempCalcSettings() const override;
-    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
+    QVariant getDisplayValue(const QVariant& value) const override;
+    PropertyDelegate* clone() override;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    static const QString ID;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+
+private slots:
+    void sl_commit();
 
 };
 

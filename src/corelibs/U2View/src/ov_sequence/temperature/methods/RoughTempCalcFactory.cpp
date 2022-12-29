@@ -42,9 +42,13 @@ BaseTempCalc* RoughTempCalcFactory::createTempCalculator(QMap<QString, QVariant>
 }
 
 BaseTempCalc* RoughTempCalcFactory::createDefaultTempCalculator() const {
+    return createTempCalculator(createDefaultTempCalcSettings());
+}
+
+TempCalcSettings* RoughTempCalcFactory::createDefaultTempCalcSettings() const {
     auto settings = new TempCalcSettings;
     settings->id = ID;
-    return createTempCalculator(settings);
+    return settings;
 }
 
 BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {

@@ -41,6 +41,10 @@ BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator(const QString& saveId) 
     return savedFactory->createTempCalculator(savedSettings.value(saveId));
 }
 
+TempCalcSettings* TempCalcRegistry::getDefaultTempCalcSettings() const {
+    return defaultFactory->createDefaultTempCalcSettings();
+}
+
 void TempCalcRegistry::saveSettings(const QString& saveId, TempCalcSettings* settings) {
     savedSettings.insert(saveId, settings->toVariantMap());
 }

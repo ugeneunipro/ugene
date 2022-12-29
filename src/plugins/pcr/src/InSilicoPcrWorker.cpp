@@ -45,6 +45,7 @@
 
 #include "InSilicoPcrWorkflowTask.h"
 #include "PrimersGrouperWorker.h"
+#include "TempCalcDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -59,6 +60,7 @@ const QString PERFECT_ATTR_ID = "perfect-match";
 const QString MAX_PRODUCT_ATTR_ID = "max-product";
 const QString USE_AMBIGUOUS_BASES_ID = "use-ambiguous-bases";
 const QString EXTRACT_ANNOTATIONS_ATTR_ID = "extract-annotations";
+const QString TEMPERATURE_SETTINGS_ID = "temperature-settings";
 
 const char* PAIR_NUMBER_PROP_ID = "pair-number";
 }  // namespace
@@ -100,6 +102,7 @@ void InSilicoPcrWorkerFactory::init() {
         Descriptor maxProductDesc(MAX_PRODUCT_ATTR_ID, InSilicoPcrWorker::tr("Max product size"), InSilicoPcrWorker::tr("Maximum size of amplified region."));
         Descriptor useAmbiguousBases(USE_AMBIGUOUS_BASES_ID, InSilicoPcrWorker::tr("Use ambiguous bases"), InSilicoPcrWorker::tr("Search for ambiguous bases (as \"N\") if checked."));
         Descriptor annotationsDesc(EXTRACT_ANNOTATIONS_ATTR_ID, InSilicoPcrWorker::tr("Extract annotations"), InSilicoPcrWorker::tr("Extract annotations within a product region."));
+        Descriptor temperatureDesc(TEMPERATURE_SETTINGS_ID, InSilicoPcrWorker::tr("Temperature settings"), InSilicoPcrWorker::tr("Set up temperature calculation method."));
 
         attributes << new Attribute(primersDesc, BaseTypes::STRING_TYPE(), true);
         attributes << new Attribute(reportDesc, BaseTypes::STRING_TYPE(), true, "report.html");
@@ -108,6 +111,7 @@ void InSilicoPcrWorkerFactory::init() {
         attributes << new Attribute(maxProductDesc, BaseTypes::NUM_TYPE(), false, 5000);
         attributes << new Attribute(useAmbiguousBases, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(annotationsDesc, BaseTypes::NUM_TYPE(), false, ExtractProductSettings::Inner);
+        attributes << new Attribute(temperatureDesc, BaseTypes::STRING_LIST_TYPE(), false);
     }
     QMap<QString, PropertyDelegate*> delegates;
     {
@@ -137,6 +141,9 @@ void InSilicoPcrWorkerFactory::init() {
             values[InSilicoPcrWorker::tr("All intersected")] = ExtractProductSettings::All;
             values[InSilicoPcrWorker::tr("None")] = ExtractProductSettings::None;
             delegates[EXTRACT_ANNOTATIONS_ATTR_ID] = new ComboBoxDelegate(values);
+        }
+        {
+            delegates[TEMPERATURE_SETTINGS_ID] = new TempCalcDelegate;
         }
     }
 
