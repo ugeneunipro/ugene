@@ -211,7 +211,7 @@ void MSAEditor::sl_buildTree() {
 bool MSAEditor::onObjectRemoved(GObject* obj) {
     bool result = GObjectView::onObjectRemoved(obj);
 
-    for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
+    for (int i = 0; i < getUI()->getChildrenCount(); i++) {
         obj->disconnect(getMaEditorWgt(i)->getSequenceArea());
         obj->disconnect(getMaEditorWgt(i)->getConsensusArea());
         obj->disconnect(getMaEditorWgt(i)->getEditorNameList());
@@ -313,7 +313,7 @@ void MSAEditor::fillMenu(QMenu* m, const QString& type) {
     GObjectView::buildMenu(m, type);
 }
 
-void MSAEditor::addCopyPasteMenu(QMenu* m, uint uiIndex) {
+void MSAEditor::addCopyPasteMenu(QMenu* m, int uiIndex) {
     MaEditor::addCopyPasteMenu(m, uiIndex);
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
@@ -386,7 +386,7 @@ void MSAEditor::addExportMenu(QMenu* m) {
     em->addAction(saveScreenshotAction);
 }
 
-void MSAEditor::addAppearanceMenu(QMenu* m, uint uiIndex) {
+void MSAEditor::addAppearanceMenu(QMenu* m, int uiIndex) {
     QMenu* appearanceMenu = m->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MSAE_MENU_APPEARANCE);
 
@@ -414,7 +414,7 @@ void MSAEditor::addAppearanceMenu(QMenu* m, uint uiIndex) {
     appearanceMenu->addAction(multilineViewAction);
 }
 
-void MSAEditor::addColorsMenu(QMenu* m, uint index) {
+void MSAEditor::addColorsMenu(QMenu* m, int index) {
     QMenu* colorsSchemeMenu = m->addMenu(tr("Colors"));
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
@@ -513,7 +513,7 @@ QWidget* MSAEditor::createWidget() {
 void MSAEditor::initChildrenActionsAndSignals() {
     MaEditorWgt* child;
 
-    for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
+    for (int i = 0; i < getUI()->getChildrenCount(); i++) {
         child = getUI()->getUI(i);
         connect(child, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
         connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
@@ -593,7 +593,7 @@ void MSAEditor::initActions() {
 void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
     QMenu m;
     MaEditorWgt* sender = qobject_cast<MaEditorWgt*>(QObject::sender());
-    uint uiIndex = getUI()->getUIIndex(sender);
+    int uiIndex = getUI()->getUIIndex(sender);
 
     addAppearanceMenu(&m, uiIndex);
     addNavigationMenu(&m);

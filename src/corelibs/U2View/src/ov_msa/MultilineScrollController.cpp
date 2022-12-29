@@ -102,7 +102,7 @@ void MultilineScrollController::setEnable(bool enable) {
 bool MultilineScrollController::eventFilter(QObject* object, QEvent* event) {
     if (event->type() == QEvent::Wheel && maEditor->getMultilineMode()) {
         if (object == vScrollBar) {
-            //return vertEventFilter((QWheelEvent *) event);
+            // return vertEventFilter((QWheelEvent *) event);
             return true;
         }
     }
@@ -115,9 +115,9 @@ bool MultilineScrollController::vertEventFilter(QWheelEvent* event) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0
-                            : event->angleDelta().y() == 0
-                                  ? 0
-                                  : inverted * (event->angleDelta().y() > 0 ? 1 : -1);
+                        : event->angleDelta().y() == 0
+                            ? 0
+                            : inverted * (event->angleDelta().y() > 0 ? 1 : -1);
 
         if (direction == 0) {
             return false;
@@ -162,7 +162,8 @@ void MultilineScrollController::vertScroll(const Directions& directions, bool by
             scroller->verticalScrollBar()->setValue(0);
         } else if (directions.testFlag(SliderMaximum)) {
             scroller->verticalScrollBar()->setValue(scroller->verticalScrollBar()->maximum());
-            int evenBase = maEditor->getAlignmentLen() / ui->getSequenceAreaBaseLen() * ui->getSequenceAreaBaseLen() - ui->getSequenceAreaBaseLen() * (ui->getChildrenCount() - 1);
+            int seqAreaBaseLength = ui->getSequenceAreaBaseLen(0);
+            int evenBase = maEditor->getAlignmentLen() / seqAreaBaseLength * seqAreaBaseLength - seqAreaBaseLength * (ui->getChildrenCount() - 1);
             setFirstVisibleBase(evenBase);
             vScrollBar->setValue(vScrollBar->maximum());
         } else {
@@ -180,8 +181,8 @@ int MultilineScrollController::getViewHeight() {
 void MultilineScrollController::sl_vScrollValueChanged() {
     if (maEditor->getMultilineMode()) {
         // TODO:ichebyki
-        //int v = vScrollBar->value();
-        //setMultilineHScrollbarValue(v);
+        // int v = vScrollBar->value();
+        // setMultilineHScrollbarValue(v);
     } else {
         int v = vScrollBar->value();
         ui->getUI(0)->getScrollController()->setHScrollbarValue(v);
@@ -192,7 +193,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
     int baseNumber = maPoint.x();
     int viewRowIndex = maPoint.y();
     QList<int> widgetIndex;
-    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getChildrenCount(); i++) {
         if (!ui->getUI(i)->visibleRegion().isEmpty()) {
             widgetIndex.append(i);
         }
@@ -202,8 +203,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
     int height = ui->getChildrenScrollArea()->height();
     U2Region rowRegion;
     int indexFound = -1;
-    for (int atIndex = 0; atIndex < widgetIndex.length(); atIndex++) {
-        int i = widgetIndex.at(atIndex);
+    for (int i : qAsConst(widgetIndex)) {
         indexFound = -1;
 
         if (baseNumber >= ui->getFirstVisibleBase(i) && baseNumber <= ui->getLastVisibleBase(i)) {
@@ -251,7 +251,7 @@ void MultilineScrollController::scrollToViewRow(QPoint maPoint) {
 void MultilineScrollController::scrollToBase(QPoint maPoint) {
     int baseNumber = maPoint.x();
     QList<int> widgetIndex;
-    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getChildrenCount(); i++) {
         if (!ui->getUI(i)->visibleRegion().isEmpty()) {
             widgetIndex.append(i);
         }
@@ -259,8 +259,7 @@ void MultilineScrollController::scrollToBase(QPoint maPoint) {
 
     const int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
     int indexFound = -1;
-    for (int atIndex = 0; atIndex < widgetIndex.length(); atIndex++) {
-        int i = widgetIndex.at(atIndex);
+    for (int i : qAsConst(widgetIndex)) {
         if (baseNumber >= ui->getFirstVisibleBase(i) && baseNumber <= ui->getLastVisibleBase(i)) {
             indexFound = i;
         }
@@ -314,10 +313,10 @@ void MultilineScrollController::centerPoint(const QPoint& maPoint) {
 }
 
 void MultilineScrollController::setMultilineVScrollbarBase(int base) {
-    const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
-    const int lineHeight = ui->getUI(0)->height();
-    const int vScrollValue = ((double)base * columnWidth / sequenceAreaWidth) * lineHeight;
+    int columnWidth = maEditor->getColumnWidth();
+    int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
+    int lineHeight = ui->getUI(0)->height();
+    int vScrollValue = ((double)base * columnWidth / sequenceAreaWidth) * lineHeight;
     setMultilineVScrollbarValue(vScrollValue);
 }
 
@@ -333,12 +332,12 @@ void MultilineScrollController::setMultilineVScrollbarValue(int value) {
     }
 
     // TODO:ichebyki
-    const int alignmentLength = maEditor->getAlignmentLen();
-    const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
-    const int restWidth = (alignmentLength * columnWidth) % sequenceAreaWidth;
-    const int scrollAreaHeight = childrenScrollArea->height();
-    const int lineHeight = ui->getUI(0)->height();
+    int alignmentLength = maEditor->getAlignmentLen();
+    int columnWidth = maEditor->getColumnWidth();
+    int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
+    int restWidth = (alignmentLength * columnWidth) % sequenceAreaWidth;
+    int scrollAreaHeight = childrenScrollArea->height();
+    int lineHeight = ui->getUI(0)->height();
     double a = (value + scrollAreaHeight) / lineHeight;
     double b = a - (restWidth > 0 ? 1 : 0);
     double c = b * sequenceAreaWidth;
@@ -356,7 +355,7 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
         ui->setUpdatesEnabled(false);
 
         int length = ui->getLastVisibleBase(0) + 1 - ui->getFirstVisibleBase(0);
-        for (uint i = 0; i < ui->getChildrenCount(); i++) {
+        for (int i = 0; i < ui->getChildrenCount(); i++) {
             ui->getUI(i)->getScrollController()->setFirstVisibleBase(firstVisibleBase);
             firstVisibleBase += length;
         }
@@ -377,10 +376,10 @@ void MultilineScrollController::setCenterVisibleBase(int firstVisibleBase) {
             ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
         }
     } else {
-        //int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
+        // int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase - visibleLength / 2);
         ui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
         ui->getScrollController()->setFirstVisibleBase(firstVisibleBase - visibleLength / 2);
-        //hScrollBar->setValue(x);
+        // hScrollBar->setValue(x);
     }
 }
 
@@ -397,7 +396,6 @@ void MultilineScrollController::setFirstVisibleMaRow(int maRowIndex) {
 }
 
 void MultilineScrollController::scrollSmoothly(const Directions& directions) {
-    QAbstractSlider::SliderAction horizontalAction = QAbstractSlider::SliderNoAction;
     QAbstractSlider::SliderAction verticalAction = QAbstractSlider::SliderNoAction;
 
     if (directions.testFlag(Up)) {
@@ -406,14 +404,6 @@ void MultilineScrollController::scrollSmoothly(const Directions& directions) {
     if (directions.testFlag(Down)) {
         verticalAction = QAbstractSlider::SliderSingleStepAdd;
     }
-
-    if (directions.testFlag(Left)) {
-        horizontalAction = QAbstractSlider::SliderSingleStepSub;
-    }
-    if (directions.testFlag(Right)) {
-        horizontalAction = QAbstractSlider::SliderSingleStepAdd;
-    }
-
     if (verticalAction != vScrollBar->getRepeatAction()) {
         vScrollBar->setupRepeatAction(verticalAction, 500, 50);
     }
@@ -431,11 +421,8 @@ void MultilineScrollController::scrollStep(MultilineScrollController::Direction 
         case Down:
             vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
             break;
-        case Left:
-        case Right:
         default:
-            FAIL("An unknown direction", );
-            break;
+            FAIL("Unsupported direction: " + QString::number(direction), );
     }
 }
 
@@ -520,7 +507,7 @@ GScrollBar* MultilineScrollController::getVerticalScrollBar() const {
 
 void MultilineScrollController::sl_zoomScrollBars() {
     zoomVerticalScrollBarPrivate();
-    //emit si_visibleAreaChanged();
+    // emit si_visibleAreaChanged();
 }
 void MultilineScrollController::sl_updateScrollBars() {
     updateVerticalScrollBarPrivate();
@@ -529,7 +516,7 @@ void MultilineScrollController::sl_updateScrollBars() {
 
 void MultilineScrollController::updateChildrenScrollBarsPeivate() {
     int val;
-    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getChildrenCount(); i++) {
         GScrollBar* hbar = ui->getUI(i)->getScrollController()->getHorizontalScrollBar();
         if (i == 0) {
             val = hbar->value();

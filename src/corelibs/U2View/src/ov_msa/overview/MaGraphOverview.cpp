@@ -312,7 +312,7 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     newVisibleRange.moveCenter(newPos);
 
-    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+    auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
     if (mui != nullptr) {
         if (mui->getMultilineMode()) {
             // value = <overview-rect>.X / <overview>.width * <alignment-len>
@@ -320,8 +320,9 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
             if (newVisibleRange.right() >= width()) {
                 mui->getScrollController()->scrollToEnd(MultilineScrollController::Down);
             } else {
-                int rest = editor->getAlignmentLen() % mui->getSequenceAreaBaseLen();
-                int evenLength = (editor->getAlignmentLen() / mui->getSequenceAreaBaseLen() + (rest > 0 ? 1 : 0)) * mui->getSequenceAreaBaseLen();
+                int sequenceAreaBaseLen = mui->getSequenceAreaBaseLen(0);
+                int rest = editor->getAlignmentLen() % sequenceAreaBaseLen;
+                int evenLength = (editor->getAlignmentLen() / sequenceAreaBaseLen + (rest > 0 ? 1 : 0)) * sequenceAreaBaseLen;
                 int newVScrollBarBase = newVisibleRange.x() * (double)evenLength / (double)width();
                 mui->getScrollController()->setMultilineVScrollbarBase(newVScrollBarBase);
             }

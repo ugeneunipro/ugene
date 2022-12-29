@@ -46,7 +46,7 @@ MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, PhyTreeObject*
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
     if (editor != nullptr && isSyncModeEnabled()) {
-        MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
+        auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
         if (msaEditorUi != nullptr) {
             msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
         }
@@ -92,7 +92,8 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     MaCollapseModel* collapseModel = editor->getCollapseModel();
     connect(collapseModel, SIGNAL(si_toggled()), this, SLOT(sl_alignmentCollapseModelChanged()));
 
-    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
+    SAFE_POINT(msaEditorUi != nullptr, "MSAEditorTreeViewer::createWidget: msaEditorUi is null!", nullptr);
     MSAEditorSequenceArea* msaSequenceArea = msaEditorUi->getSequenceArea();
     connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList&)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList&)));
 
@@ -163,7 +164,8 @@ bool MSAEditorTreeViewer::enableSyncMode() {
 }
 
 void MSAEditorTreeViewer::disableSyncMode() {
-    MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
+    SAFE_POINT(msaEditorUi != nullptr, "MSAEditorTreeViewer::disableSyncMode msaEditorUi is null!", );
     // Reset the MSA state back to the original from 'Free'.
     msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
 
@@ -245,7 +247,8 @@ void MSAEditorTreeViewer::sl_syncModeActionTriggered() {
 
 void MSAEditorTreeViewer::orderAlignmentByTree() {
     QList<QStringList> groupList = msaTreeViewerUi->getGroupingStateForMsa();
-    MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
+    SAFE_POINT(msaEditorUi != nullptr, "MSAEditorTreeViewer::orderAlignmentByTree: msaEditorUi is null", );
     msaEditorUi->getSequenceArea()->enableFreeRowOrderMode(this, groupList);
 }
 

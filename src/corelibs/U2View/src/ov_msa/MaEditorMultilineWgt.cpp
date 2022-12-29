@@ -177,70 +177,56 @@ MaEditor* MaEditorMultilineWgt::getEditor() const {
     return editor;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const {
-    if (index >= getChildrenCount()) {
-        return 0;
-    }
-
-    return getUI(index)->getSequenceArea()->width();
+int MaEditorMultilineWgt::getSequenceAreaWidth(int index) const {
+    MaEditorWgt* ui = getUI(index);
+    return ui == nullptr ? 0 : ui->getSequenceArea()->width();
 }
 
-int MaEditorMultilineWgt::getFirstVisibleBase(uint index) const {
-    if (index >= getChildrenCount()) {
-        return 0;
-    }
-    return getUI(index)->getSequenceArea()->getFirstVisibleBase();
+int MaEditorMultilineWgt::getFirstVisibleBase(int index) const {
+    MaEditorWgt* ui = getUI(index);
+    return ui == nullptr ? 0 : ui->getSequenceArea()->getFirstVisibleBase();
 }
 
-int MaEditorMultilineWgt::getLastVisibleBase(uint index) const {
-    if (index >= getChildrenCount()) {
-        return 0;
-    }
-    return getUI(index)->getSequenceArea()->getLastVisibleBase(false);
+int MaEditorMultilineWgt::getLastVisibleBase(int index) const {
+    MaEditorWgt* ui = getUI(index);
+    return ui == nullptr ? 0 : ui->getSequenceArea()->getLastVisibleBase(false);
 }
 
-int MaEditorMultilineWgt::getSequenceAreaBaseLen(uint index) const {
-    if (index >= getChildrenCount()) {
-        return 0;
-    }
+int MaEditorMultilineWgt::getSequenceAreaBaseLen(int index) const {
+    CHECK(index >= 0 && index < getChildrenCount(), 0);
     return getLastVisibleBase(index) - getFirstVisibleBase(index) + 1;
 }
 
-int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const {
-    if (index >= getChildrenCount()) {
-        return 0;
-    }
-
-    const U2Region region = getUI(index)->getDrawHelper()->getVisibleBases(
-        getUI(index)->getSequenceArea()->width());
-    const U2Region region2 = getUI(index)->getBaseWidthController()->getBasesScreenRange(region);
-
-    return region2.length - region2.startPos;
+int MaEditorMultilineWgt::getSequenceAreaBaseWidth(int index) const {
+    CHECK(index >= 0 && index < getChildrenCount(), 0);
+    MaEditorWgt* ui = getUI(index);
+    SAFE_POINT(ui != nullptr, "UI is nullptr for a valid index", 0);
+    U2Region visibleBasesRegion = ui->getDrawHelper()->getVisibleBases(ui->getSequenceArea()->width());
+    U2Region visibleScreenRegion = ui->getBaseWidthController()->getBasesScreenRange(visibleBasesRegion);
+    return (int)visibleScreenRegion.length;
 }
 
 int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const {
     int length = 0;
-
-    for (uint i = 0; i < getChildrenCount(); i++) {
-        length += getSequenceAreaBaseLen();
+    for (int i = 0; i < getChildrenCount(); i++) {
+        length += getSequenceAreaBaseLen(i);
     }
-
     return length;
 }
 
 int MaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const {
     int width = 0;
-
-    for (uint i = 0; i < getChildrenCount(); i++) {
-        width += getSequenceAreaBaseWidth();
+    for (int i = 0; i < getChildrenCount(); i++) {
+        width += getSequenceAreaBaseWidth(i);
     }
-
     return width;
 }
 
 void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
-    for (uint i = 0; i < uiChildCount; i++) {
-        getUI(i)->getSequenceArea()->sl_toggleSequenceRowOrder(isOrderBySequence);
+    for (int i = 0; i < uiChildCount; i++) {
+        MaEditorWgt* ui = getUI(i);
+        SAFE_POINT(ui != nullptr, "UI widget is nullptr! Index: " + QString::number(i), );
+        ui->getSequenceArea()->sl_toggleSequenceRowOrder(isOrderBySequence);
     }
 }
 
@@ -256,18 +242,19 @@ QScrollArea* MaEditorMultilineWgt::getChildrenScrollArea() const {
     return scrollArea;
 }
 
-MaEditorWgt* MaEditorMultilineWgt::getUI(uint index) const {
-    if (index < uiChildCount && index < uiChildLength) {
-        return uiChild[index];
-    }
-    return nullptr;
+MaEditorWgt* MaEditorMultilineWgt::getUI(int index) const {
+    return index < uiChildCount && index < uiChildLength
+               ? uiChild[index]
+               : nullptr;
 }
 
-uint MaEditorMultilineWgt::getUIIndex(MaEditorWgt* _ui) const {
-    if (_ui == nullptr) {
-        return 0;
-    }
-    for (uint index = 0; index < uiChildCount && index < uiChildLength; index++) {
+void MaEditorMultilineWgt::updateSize() {
+    // Do nothing by default.
+}
+
+int MaEditorMultilineWgt::getUIIndex(MaEditorWgt* _ui) const {
+    CHECK(_ui != nullptr, 0);
+    for (int index = 0; index < uiChildCount && index < uiChildLength; index++) {
         if (_ui == uiChild[index]) {
             return index;
         }

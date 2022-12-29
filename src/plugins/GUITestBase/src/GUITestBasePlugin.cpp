@@ -124,13 +124,6 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
     return resultLabelList;
 }
 
-/** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
-static QStringList nightly_msa_mm(QString mode, const QStringList& labelList = QStringList()) {
-    QStringList resultLabelList = labelList;
-    resultLabelList << "MSA_" + mode << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
-    return resultLabelList;
-}
-
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));

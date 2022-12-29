@@ -144,7 +144,7 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
 }
 
 void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getUI()->getMainSplitter();
+    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 

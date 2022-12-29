@@ -54,10 +54,10 @@ public:
     MaEditorOverviewArea* getOverview();
     MaEditorStatusBar* getStatusBar();
 
-    MaEditorWgt* getUI(uint index = 0) const override;
-    void updateSize(bool recurse = true) override;
+    MaEditorWgt* getUI(int index) const override;
+    void updateSize() override;
 
-    void addPhylTreeWidget(MSAEditorMultiTreeViewer* multiTreeViewer);
+    void addPhylTreeWidget(MSAEditorMultiTreeViewer* newMultiTreeViewer);
     void delPhylTreeWidget();
     MSAEditorMultiTreeViewer* getPhylTreeWidget() const {
         return multiTreeViewer;
@@ -83,18 +83,17 @@ public slots:
     void sl_goto() override;
 
 protected:
-    void initScrollArea(QScrollArea* _scrollArea = nullptr) override;
-    void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) override;
-    void initStatusBar(MaEditorStatusBar* _statusBar = nullptr) override;
-    void initChildrenArea(QGroupBox* _uiChildrenArea) override;
+    void initScrollArea() override;
+    void initOverviewArea() override;
+    void initStatusBar() override;
+    void initChildrenArea() override;
     void createChildren() override;
     void updateChildren() override;
     MaEditorWgt* createChild(MaEditor* editor,
                              MaEditorOverviewArea* overviewArea,
                              MaEditorStatusBar* statusBar) override;
     void deleteChild(int index) override;
-    void addChild(MaEditorWgt* child, int index = -1) override;
-    bool updateChildrenCount() override;
+    void addChild(MaEditorWgt* child) override;
 
 private:
     MSAEditorMultiTreeViewer* multiTreeViewer;

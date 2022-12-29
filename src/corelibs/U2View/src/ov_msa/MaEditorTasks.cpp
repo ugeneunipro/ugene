@@ -49,7 +49,6 @@
 #include "MSAEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorState.h"
-#include "ov_mca/McaEditor.h"
 
 namespace U2 {
 
@@ -333,9 +332,9 @@ ExtractConsensusTask::~ExtractConsensusTask() {
 
 void ExtractConsensusTask::run() {
     CHECK(ma->getUI(), );
-    CHECK(ma->getMaEditorWgt(), );
-    CHECK(ma->getMaEditorWgt()->getConsensusArea(), );
-    CHECK(ma->getMaEditorWgt()->getConsensusArea()->getConsensusCache(), );
+    CHECK(ma->getMaEditorWgt(0), );
+    CHECK(ma->getMaEditorWgt(0)->getConsensusArea(), );
+    CHECK(ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusCache(), );
 
     const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
