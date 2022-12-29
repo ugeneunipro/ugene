@@ -314,16 +314,4 @@ void TvBranchItem::setDist(double d) {
     distance = d;
 }
 
-TvBranchItem* TvBranchItem::findParentBranchOfPhyNode(PhyNode* phyNode) {
-    CHECK(nodeItem, nullptr);
-    if (nodeItem->getPhyNode() == phyNode) {
-        return this;
-    }
-    auto result = nodeItem->getLeftBranchItem()->findParentBranchOfPhyNode(phyNode);
-    if (!result) {
-        result = nodeItem->getRightBranchItem()->findParentBranchOfPhyNode(phyNode);
-    }
-    return result;
-}
-
 }  // namespace U2
