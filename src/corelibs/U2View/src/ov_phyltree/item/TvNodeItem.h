@@ -42,7 +42,7 @@ class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
     TvNodeItem(const QString& nodeName = nullptr);
 
-    bool isPathToRootSelected() const;
+    bool isSelectionRoot() const;
 
     void toggleCollapsedState();
 

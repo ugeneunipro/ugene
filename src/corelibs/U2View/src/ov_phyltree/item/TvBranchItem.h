@@ -24,6 +24,7 @@
 
 #include <QAbstractGraphicsShapeItem>
 
+#include <U2Core/PhyTree.h>
 #include <U2Core/global.h>
 
 #include "../TreeSettings.h"
@@ -83,6 +84,9 @@ public:
     void initDistanceText(const QString& text = "");
 
     QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
+
+    /** Finds parent branch item of the phyNode in the branch sub-tree. Return null if node is not found. */
+    TvBranchItem* findParentBranchOfPhyNode(PhyNode* phyNode);
 
     /** Spacing between branch line and branch label. */
     static constexpr int TEXT_SPACING = 8;

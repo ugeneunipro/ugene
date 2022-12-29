@@ -445,7 +445,7 @@ static OptionsMap createDefaultTreeOptionsSettings() {
 
     for (int i = 0; i < OPTION_ENUM_END; i++) {
         auto option = static_cast<TreeViewOption>(i);
-        SAFE_POINT(settings.keys().contains(option), "Not all options have been initialized", settings);
+        SAFE_POINT(settings.contains(option), "Not all options have been initialized", settings);
     }
     return settings;
 }
@@ -1065,7 +1065,11 @@ void TreeViewerUI::resizeEvent(QResizeEvent* e) {
 void TreeViewerUI::fitIntoView() {
     // First hide all fixed size items, so they do not affect current size estimation.
     QList<QGraphicsItem*> fixedSizeItems = getFixedSizeItems();
+    QSet<QGraphicsItem*> fixedSizeSelectedItems;
     for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
+        if (item->isSelected()) {
+            fixedSizeSelectedItems << item;  // Invisible item loosing isSelected flag, so keep it in a special collection and restore later.
+        }
         item->setVisible(false);
     }
 
@@ -1084,6 +1088,9 @@ void TreeViewerUI::fitIntoView() {
     updateFixedSizeItemScales();
     for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
         item->setVisible(true);
+        if (fixedSizeSelectedItems.contains(item)) {
+            item->setSelected(true);
+        }
     }
 
     // Re-apply margins with fixed size items visible.
@@ -1111,8 +1118,8 @@ void TreeViewerUI::sl_swapTriggered() {
     QList<QGraphicsItem*> graphItems = items();
     for (auto graphItem : qAsConst(graphItems)) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
-            auto phyNode = nodeItem->getPhyNode();
+        if (nodeItem != nullptr && nodeItem->isSelectionRoot()) {
+            PhyNode* phyNode = nodeItem->getPhyNode();
             SAFE_POINT(phyNode != nullptr, "Can't swap siblings of the root node with no phyNode!", );
             phyNode->invertOrderOrChildBranches();
             phyObject->onTreeChanged();
@@ -1137,7 +1144,7 @@ void TreeViewerUI::sl_rerootTriggered() {
     QList<QGraphicsItem*> childItems = items();
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+        if (nodeItem != nullptr && nodeItem->isSelectionRoot()) {
             auto phyNode = nodeItem->getPhyNode();
             phyObject->rerootPhyTree(phyNode);
             break;
@@ -1149,7 +1156,7 @@ void TreeViewerUI::collapseSelected() {
     QList<QGraphicsItem*> childItems = items();
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+        if (nodeItem != nullptr && nodeItem->isSelectionRoot()) {
             nodeItem->toggleCollapsedState();
             break;
         }
@@ -1162,7 +1169,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
     TvBranchItem* branch = root;
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+        if (nodeItem != nullptr && nodeItem->isSelectionRoot()) {
             branch = dynamic_cast<TvBranchItem*>(nodeItem->parentItem());
             break;
         }
@@ -1210,7 +1217,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
 bool TreeViewerUI::isSelectedCollapsed() {
     foreach (QGraphicsItem* graphItem, items()) {
         auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isPathToRootSelected()) {
+        if (nodeItem != nullptr && nodeItem->isSelectionRoot()) {
             return nodeItem->isCollapsed();
         }
     }
