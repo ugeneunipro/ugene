@@ -24,7 +24,6 @@
 
 #include <QAbstractGraphicsShapeItem>
 
-#include <U2Core/PhyTree.h>
 #include <U2Core/global.h>
 
 #include "../TreeSettings.h"
