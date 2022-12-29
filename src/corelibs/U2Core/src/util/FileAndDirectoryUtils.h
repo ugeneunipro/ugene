@@ -42,7 +42,16 @@ public:
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString detectFormat(const QString& url);
     static bool isFileEmpty(const QString& url);
-    static void dumpStringToFile(QFile* f, QString& str);  // Be aware: string will be cleared after dumping
+
+    /** Appends string to the file if string size is >=32k. Clears the string object if it was written to the file. */
+    static void dumpStringToFile(QFile* f, QString& str);
+
+    /**
+     * Stores given text to the file. Overwrites any existing file.
+     * Returns 'true' if the file was saved or 'false' on error.
+     */
+    static bool storeTextToFile(const QString& filePath, const QString& text);
+
     static QString getAbsolutePath(const QString& filePath);
     static bool isDirectoryWritable(const QString& path);
 

@@ -23,6 +23,7 @@
 
 #include <QDir>
 #include <QTemporaryFile>
+#include <QTextStream>
 
 #include <U2Core/Log.h>
 #include <U2Core/TmpDirChecker.h>
@@ -127,11 +128,19 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString& url) {
 }
 
 void FileAndDirectoryUtils::dumpStringToFile(QFile* f, QString& str) {
-    if (Q_LIKELY(f == nullptr || str.length() <= MIN_LENGTH_TO_WRITE)) {
-        return;
-    }
+    CHECK(f != nullptr && str.length() >= MIN_LENGTH_TO_WRITE, );
     f->write(str.toLocal8Bit());
     str.clear();
+}
+
+bool FileAndDirectoryUtils::storeTextToFile(const QString& filePath, const QString& text) {
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly)) {
+        return false;
+    }
+    QTextStream out(&file);
+    out << text;
+    return true;
 }
 
 QString FileAndDirectoryUtils::getAbsolutePath(const QString& filePath) {
