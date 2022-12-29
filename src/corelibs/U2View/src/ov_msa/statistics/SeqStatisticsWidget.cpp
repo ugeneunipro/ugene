@@ -24,7 +24,6 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LabelClickTransmitter.h>
@@ -38,7 +37,7 @@
 namespace U2 {
 
 static inline QVBoxLayout* initLayout(QWidget* w) {
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -68,22 +67,17 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
 }
 
 void SeqStatisticsWidget::copySettings() {
-    MsaEditorWgt* msaEditorUi = qobject_cast<MsaEditorWgt*>(msa->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(msa->getUI()->getUI());
     const MsaEditorAlignmentDependentWidget* similarityWidget = msaEditorUi->getSimilarityWidget();
     statisticsIsShown = false;
-    if (nullptr != similarityWidget) {
-        const SimilarityStatisticsSettings* s = static_cast<const SimilarityStatisticsSettings*>(similarityWidget->getSettings());
-        if (nullptr != s) {
-            settings = new SimilarityStatisticsSettings(*s);
-        } else {
-            settings = new SimilarityStatisticsSettings();
-        }
+    if (similarityWidget != nullptr) {
+        auto s = similarityWidget->getSettings();
+        settings = s != nullptr ? new SimilarityStatisticsSettings(*s) : new SimilarityStatisticsSettings();
         statisticsIsShown = !similarityWidget->isHidden();
     } else {
         settings = new SimilarityStatisticsSettings();
         settings->excludeGaps = false;
         settings->autoUpdate = true;
-        settings->ma = msa->getMaObject();
         settings->usePercents = true;
         settings->ui = msaEditorUi;
     }

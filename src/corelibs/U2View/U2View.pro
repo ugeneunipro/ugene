@@ -100,7 +100,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaMultilineScrollArea.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MsaRowHeightController.h \
-           src/ov_msa/MsaUpdatedWidgetInterface.h \
            src/ov_msa/MultilineScrollController.h \
            src/ov_msa/RowHeightController.h \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \

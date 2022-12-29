@@ -116,7 +116,6 @@ void MsaEditorWgt::refreshSimilarityColumn() {
 void MsaEditorWgt::showSimilarity() {
     if (nullptr == similarityStatistics) {
         SimilarityStatisticsSettings settings;
-        settings.ma = getEditor()->getMaObject();
         settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
         settings.ui = this;
 
