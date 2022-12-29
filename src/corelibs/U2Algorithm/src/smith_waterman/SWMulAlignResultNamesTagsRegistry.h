@@ -124,8 +124,7 @@ inline QBitArray* SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicabilit
 
 inline void SWMulAlignResultNamesTagsRegistry::resetCounters() {
     foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
-        SWMulAlignExternalPropTag* externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag*>(tag);
-        if (nullptr != externalPropertyTag) {
+        if (auto externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag*>(tag)) {
             if (SWMulAlignExternalPropTag::COUNTER == externalPropertyTag->getType()) {
                 externalPropertyTag->resetCounter();
             }

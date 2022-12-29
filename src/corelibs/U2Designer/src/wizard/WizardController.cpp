@@ -250,20 +250,20 @@ void WizardController::sl_customButtonClicked(int which) {
     if (QWizard::CustomButton1 == which) {
         run();
     } else if (QWizard::CustomButton2 == which) {
-        QWizard* w = dynamic_cast<QWizard*>(sender());
-        CHECK(nullptr != w, );
+        auto w = dynamic_cast<QWizard*>(sender());
+        CHECK(w != nullptr, );
         defaults(w->currentPage());
     }
 }
 
 void WizardController::sl_pageChanged(int num) {
-    CHECK(-1 != num, );
+    CHECK(num != -1, );
 
-    QWizard* wizard = dynamic_cast<QWizard*>(sender());
-    CHECK(nullptr != wizard, );
+    auto wizard = dynamic_cast<QWizard*>(sender());
+    CHECK(wizard != nullptr, );
 
     QWizardPage* page = wizard->currentPage();
-    CHECK(nullptr != page, );
+    CHECK(page != nullptr, );
 
     page->cleanupPage();
     page->initializePage();
@@ -275,8 +275,8 @@ bool WizardController::eventFilter(QObject* watched, QEvent* event) {
     if (event->type() == QEvent::Close) {  // if close button is pressed
         rejected = true;
     } else if (event->type() == QEvent::KeyPress) {  // if ESC is pressed
-        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
-        CHECK(nullptr != keyEvent, QObject::eventFilter(watched, event));
+        auto keyEvent = dynamic_cast<QKeyEvent*>(event);
+        CHECK(keyEvent != nullptr, QObject::eventFilter(watched, event));
 
         if ((keyEvent->key() == Qt::Key_Escape) && (keyEvent->modifiers() == Qt::NoModifier)) {
             rejected = true;

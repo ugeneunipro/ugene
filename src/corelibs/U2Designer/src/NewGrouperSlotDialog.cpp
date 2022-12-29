@@ -91,8 +91,8 @@ ActionDialog* ActionDialog::getActionDialog(QWidget* parent, GrouperSlotAction* 
         return new StringActionDialog(parent, action);
     } else if (BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type ||
                BaseTypes::ANNOTATION_TABLE_TYPE() == type) {
-        GrouperSlotsCfgModel* m = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
-        assert(nullptr != m);
+        auto m = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
+        SAFE_POINT(m != nullptr, "getActionDialog: m is null", nullptr);
         QStringList mergeSeqSlots = m->getMergeSeqSlotsNames();
         return new AnnsActionDialog(parent, action, mergeSeqSlots);
     }

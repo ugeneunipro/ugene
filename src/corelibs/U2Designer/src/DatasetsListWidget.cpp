@@ -117,8 +117,8 @@ void DatasetsListWidget::sl_newDataset() {
 
 void DatasetsListWidget::sl_renameDataset() {
     GCOUNTER(cvar, "WD::Dataset::Rename Dataset");
-    QAction* a = dynamic_cast<QAction*>(sender());
-    CHECK(nullptr != a, );
+    auto a = dynamic_cast<QAction*>(sender());
+    CHECK(a != nullptr, );
 
     int idx = a->property("idx").toInt();
     CHECK(idx < tabs->count(), );
