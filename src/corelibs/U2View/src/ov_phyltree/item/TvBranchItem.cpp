@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QStack>
 
+#include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../TreeViewerUtils.h"
