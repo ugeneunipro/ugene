@@ -31,7 +31,6 @@
 #include "RowHeightController.h"
 #include "ScrollController.h"
 #include "ov_msa/MSAEditorOverviewArea.h"
-#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
 #include "ov_msa/MaEditorNameList.h"
@@ -50,11 +49,11 @@ MultilineScrollController::MultilineScrollController(MaEditor* maEditor, MaEdito
       savedFirstVisibleMaRowOffset(0) {
 }
 
-void MultilineScrollController::init(GScrollBar* vScrollBar,
+void MultilineScrollController::init(GScrollBar* _vScrollBar,
                                      QScrollArea* childrenArea) {
     this->childrenScrollArea = childrenArea;
 
-    this->vScrollBar = vScrollBar;
+    vScrollBar = _vScrollBar;
     vScrollBar->setValue(0);
     vScrollBar->setSingleStep(maEditor->getRowHeight());
     vScrollBar->setPageStep(childrenScrollArea->height());
@@ -302,8 +301,8 @@ void MultilineScrollController::centerViewRow(QPoint maPoint) {
     const U2Region rowGlobalRange = ui->getUI(0)
                                         ->getRowHeightController()
                                         ->getGlobalYRegionByViewRowIndex(viewRowIndex);
-    const U2Region visibleRange = getVerticalRangeToDrawIn(childrenScrollArea->width());
-    const int newScreenYOffset = rowGlobalRange.startPos - visibleRange.length / 2;
+    U2Region visibleRange = getVerticalRangeToDrawIn(childrenScrollArea->width());
+    int newScreenYOffset = int(rowGlobalRange.startPos - visibleRange.length / 2);
     vScrollBar->setValue(newScreenYOffset);
 }
 
@@ -316,7 +315,7 @@ void MultilineScrollController::setMultilineVScrollbarBase(int base) {
     int columnWidth = maEditor->getColumnWidth();
     int sequenceAreaWidth = ui->getSequenceAreaBaseWidth(0);
     int lineHeight = ui->getUI(0)->height();
-    int vScrollValue = ((double)base * columnWidth / sequenceAreaWidth) * lineHeight;
+    int vScrollValue = int(((double)base * columnWidth / sequenceAreaWidth) * lineHeight);
     setMultilineVScrollbarValue(vScrollValue);
 }
 

@@ -52,7 +52,7 @@ public:
 
     MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* ui);
 
-    void init(GScrollBar* vScrollBar, QScrollArea* childrenArea);
+    void init(GScrollBar* _vScrollBar, QScrollArea* childrenArea);
 
     // enable/disable multiline scroll controller while switching multiline mode
     void setEnable(bool enable = true);

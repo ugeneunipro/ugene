@@ -6186,7 +6186,7 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     auto algoCombo = GTWidget::findComboBox(os, "algoComboBox");
     GTComboBox::selectItemByText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
-    CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
+    CHECK_SET_ERR(num1 == "100%", "unexpected similarity value an line 1: " + num1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1673) {

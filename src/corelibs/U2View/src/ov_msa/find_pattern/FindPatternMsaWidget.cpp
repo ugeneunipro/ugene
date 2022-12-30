@@ -912,7 +912,7 @@ void FindPatternMsaWidget::selectCurrentResult() {
     const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
 
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(msaEditor->getUI());
-    SAFE_POINT(mui = nullptr, "FindPatternMsaWidget: MsaEditorMultilineWgt is not found", );
+    SAFE_POINT(mui != nullptr, "FindPatternMsaWidget: MsaEditorMultilineWgt is not found", );
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
     MaEditorSequenceArea* seqArea = mui->getUI(0)->getSequenceArea();
     seqArea->setSelectionRect(selection);
