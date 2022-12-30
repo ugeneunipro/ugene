@@ -3,6 +3,6 @@
             task="!common_data_dir!cmdline/pcr/pcr.uwl"
             in="!common_data_dir!gff/ucsc_example.gff"
             primers="!common_data_dir!cmdline/pcr/primers_anns_1.fa"
-            message="doesn't contain a valid sequence."
+            message="Nothing to write"
     />
 </multi-test>

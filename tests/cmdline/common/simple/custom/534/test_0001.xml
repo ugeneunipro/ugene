@@ -4,7 +4,7 @@
 
 
     <run-cmdline
-            task="!common_data_dir!cmdline/custom/534/remote.uwl"
+            task="!common_data_dir!cmdline/custom/534/run-remote-blast.uwl"
             in="!common_data_dir!genbank/PBR322_blast_annotations.gb"
             working-dir="534"
             out="!tmp_data_dir!custom_534_0001_tmp.gb"
