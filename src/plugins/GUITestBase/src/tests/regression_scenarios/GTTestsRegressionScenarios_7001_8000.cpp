@@ -3472,8 +3472,7 @@ GUI_TEST_CLASS_DEFINITION(test_7671) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: no crash
-
+    // Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7680) {
@@ -3641,6 +3640,26 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
     CHECK_SET_ERR(toInt(positionStr) == 45'890'375 && toInt(coverageStr) == 2'316,
                   QString("The first well-covered region: expected 45 890 375 -- 2 316, current %1 -- %2")
                       .arg(positionStr, coverageStr));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7712) {
+    class FilterShortScaffoldsWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+            GTUtilsWizard::setInputFiles(os, {{testDir + "_common_data/genbank/1anot.gen"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString notification = GTUtilsDashboard::getJoinedNotificationsString(os);
+    CHECK_SET_ERR(notification.contains("Nothing to write"), "Unexpected notification message: " + notification);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7715) {

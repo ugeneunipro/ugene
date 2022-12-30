@@ -1,5 +1,5 @@
 #@UGENE_WORKFLOW
-#Finds annotations for DNA sequence in remote database: NCBI BLSAT or CDD. Result annotations store to file in genbank format. Source data can be of any format containing sequences or alignments
+#Finds annotations for DNA sequence in remote database: NCBI BLAST or CDD. Result annotations store to file in genbank format. Source data can be of any format containing sequences or alignments
 
 
 
