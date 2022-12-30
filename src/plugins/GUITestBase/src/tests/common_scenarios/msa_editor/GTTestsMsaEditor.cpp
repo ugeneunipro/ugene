@@ -571,7 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // CHANGES: default names used
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Create bookmark. Do not rename the new bookmark..
+    // Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
     int endBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
 
@@ -3544,18 +3544,18 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     QString val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     QString val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
-    CHECK_SET_ERR(val1 == "0%", "1: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val1 == "0%", "1: unexpected value 1: " + val1);
+    CHECK_SET_ERR(val2 == "20%", "1: unexpected value 2: " + val2);
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
     auto column = GTUtilsMSAEditorSequenceArea::getSimilarityColumn(os, 0);
-    CHECK_SET_ERR(!column->isVisible(), "similarity column unexpectidly found");
+    CHECK_SET_ERR(!column->isVisible(), "similarity column unexpectedly found");
     //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
-    CHECK_SET_ERR(val1 == "0%", "2: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val1 == "0%", "2: unexpected value 1: " + val1);
+    CHECK_SET_ERR(val2 == "20%", "2: unexpected value 2: " + val2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065) {

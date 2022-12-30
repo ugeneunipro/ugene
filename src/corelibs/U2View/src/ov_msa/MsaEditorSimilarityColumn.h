@@ -59,7 +59,7 @@ class U2VIEW_EXPORT MsaEditorSimilarityColumn : public MaEditorNameList {
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:
-    MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* settings);
+    MsaEditorSimilarityColumn(MsaEditorWgt* ui, const SimilarityStatisticsSettings* settings);
     ~MsaEditorSimilarityColumn() override;
 
     void setSettings(const SimilarityStatisticsSettings* settings);
@@ -79,7 +79,7 @@ public:
     QString getTextForRow(int maRowIndex) override;
 
 protected:
-    QString getSeqName(int sequenceIndex) const;
+    void updateScrollBar() override;
 
 signals:
     void si_dataStateChanged(const DataState& newState);
@@ -109,6 +109,9 @@ public:
 
     void prepare() override;
 
+protected:
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+
 private:
     SimilarityStatisticsSettings s;
     QString resultText;
@@ -121,20 +124,14 @@ public:
 
     void setSettings(const SimilarityStatisticsSettings* _settings);
     void cancelPendingTasks();
-    const DataState& getDataState() const;
     const SimilarityStatisticsSettings* getSettings() const;
-
-private slots:
-    void sl_onDataStateChanged(const DataState& newState);
 
 private:
     void createWidgetUI();
     void createHeaderWidget();
 
     MaUtilsWidget* headerWidget = nullptr;
-    QLabel statusBar;
-    QLabel nameWidget;
-    QPushButton updateButton;
+    QLabel* nameWidget = nullptr;
     MsaEditorSimilarityColumn* contentWidget;
     const SimilarityStatisticsSettings* settings;
     DataState state = DataIsOutdated;

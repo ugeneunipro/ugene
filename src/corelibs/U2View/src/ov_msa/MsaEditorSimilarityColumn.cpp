@@ -39,8 +39,8 @@
 
 namespace U2 {
 
-MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
-    : MaEditorNameList(ui, nhBar),
+MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, const SimilarityStatisticsSettings* _settings)
+    : MaEditorNameList(ui, new QScrollBar(Qt::Horizontal)),
       newSettings(*_settings),
       curSettings(*_settings) {
     updateDistanceMatrix();
@@ -88,9 +88,8 @@ QString MsaEditorSimilarityColumn::getTextForRow(int s) {
     return QString("%1").arg(sim) + units;
 }
 
-QString MsaEditorSimilarityColumn::getSeqName(int sequenceIndex) const {
-    const MultipleAlignment& ma = editor->getMaObject()->getMultipleAlignment();
-    return ma->getRowNames().at(sequenceIndex);
+void MsaEditorSimilarityColumn::updateScrollBar() {
+    // Override default behaviour and do nothing (keep the scrollbar invisible).
 }
 
 void MsaEditorSimilarityColumn::setSettings(const SimilarityStatisticsSettings* settings) {
@@ -129,7 +128,7 @@ void MsaEditorSimilarityColumn::updateDistanceMatrix() {
     createDistanceMatrixTaskRunner.cancel();
 
     auto createDistanceMatrixTask = new CreateDistanceMatrixTask(newSettings);
-    connect(new TaskSignalMapper(createDistanceMatrixTask), SIGNAL(si_taskFinished(Task*)), this, SLOT(sl_createMatrixTaskFinished(Task*)));
+    connect(new TaskSignalMapper(createDistanceMatrixTask), &TaskSignalMapper::si_taskFinished, this, &MsaEditorSimilarityColumn::sl_createMatrixTaskFinished);
 
     state = DataIsBeingUpdated;
     createDistanceMatrixTaskRunner.run(createDistanceMatrixTask);
@@ -170,6 +169,7 @@ CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSet
     : BackgroundTask<MSADistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
       s(_s) {
     SAFE_POINT(s.ui != nullptr, "Incorrect MSAEditorUI in MsaEditorSimilarityColumnTask ctor!", );
+    result = nullptr;
     setVerboseLogMode(true);
 }
 
@@ -187,26 +187,28 @@ void CreateDistanceMatrixTask::prepare() {
     addSubTask(algo);
 }
 
+QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask) {
+    CHECK(!subTask->isCanceled() && !subTask->hasError(), {});
+    auto algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
+    result = new MSADistanceMatrix(algo->getMatrix());
+    return {};
+}
+
 MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorSimilarityColumn* _contentWidget)
     : contentWidget(_contentWidget) {
     SAFE_POINT(_contentWidget != nullptr, "Argument is NULL in constructor MsaEditorAlignmentDependentWidget()", );
 
     dataIsOutdatedMessage = QString("<FONT COLOR=#FF0000>%1</FONT>").arg(tr("Data is outdated"));
-    dataIsValidMessage = QString("<FONT COLOR=#00FF00>%1</FONT>").arg(tr("Data us valid"));
+    dataIsValidMessage = QString("<FONT COLOR=#00FF00>%1</FONT>").arg(tr("Data is valid"));
     dataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data is being updated"));
 
     settings = &contentWidget->getSettings();
     MSAEditor* editor = settings->ui->getEditor();
     connect(editor->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
-    connect(contentWidget, &MsaEditorSimilarityColumn::si_dataStateChanged, this, &MsaEditorAlignmentDependentWidget::sl_onDataStateChanged);
-    connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget.setFont(font); });
+    connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 
     createWidgetUI();
     setSettings(settings);
-}
-
-const DataState& MsaEditorAlignmentDependentWidget::getDataState() const {
-    return state;
 }
 
 const SimilarityStatisticsSettings* MsaEditorAlignmentDependentWidget::getSettings() const {
@@ -218,23 +220,25 @@ void MsaEditorAlignmentDependentWidget::createWidgetUI() {
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
+    nameWidget = new QLabel(contentWidget->getHeaderText());
+    nameWidget->setObjectName("Distance column name");
+
     createHeaderWidget();
 
     mainLayout->addWidget(headerWidget);
     mainLayout->addWidget(contentWidget->getWidget());
-    nameWidget.setText(contentWidget->getHeaderText());
-    nameWidget.setObjectName("Distance column name");
 
     this->setLayout(mainLayout);
 }
+
 void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
     auto headerLayout = new QVBoxLayout();
     headerLayout->setMargin(0);
     headerLayout->setSpacing(0);
 
-    nameWidget.setAlignment(Qt::AlignCenter);
-    nameWidget.setFont(settings->ui->getEditor()->getFont());
-    headerLayout->addWidget(&nameWidget);
+    nameWidget->setAlignment(Qt::AlignCenter);
+    nameWidget->setFont(settings->ui->getEditor()->getFont());
+    headerLayout->addWidget(nameWidget);
 
     state = DataIsValid;
     headerWidget = new MaUtilsWidget(settings->ui, settings->ui->getHeaderWidget());
@@ -244,29 +248,11 @@ void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
 void MsaEditorAlignmentDependentWidget::setSettings(const SimilarityStatisticsSettings* _settings) {
     settings = _settings;
     contentWidget->setSettings(settings);
-    nameWidget.setText(contentWidget->getHeaderText());
+    nameWidget->setText(contentWidget->getHeaderText());
 }
 
 void MsaEditorAlignmentDependentWidget::cancelPendingTasks() {
     contentWidget->cancelPendingTasks();
-}
-
-void MsaEditorAlignmentDependentWidget::sl_onDataStateChanged(const DataState& newState) {
-    state = DataIsValid;
-    switch (newState) {
-        case DataIsValid:
-            statusBar.setText(dataIsValidMessage);
-            updateButton.setEnabled(false);
-            break;
-        case DataIsBeingUpdated:
-            statusBar.setText(dataIsBeingUpdatedMessage);
-            updateButton.setEnabled(false);
-            break;
-        case DataIsOutdated:
-            statusBar.setText(dataIsOutdatedMessage);
-            updateButton.setEnabled(true);
-            break;
-    }
 }
 
 }  // namespace U2
