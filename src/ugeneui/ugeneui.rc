@@ -26,7 +26,7 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "Unipro, Russia"
-            VALUE "FileDescription",  "Graphical interface of UGENE"
+            VALUE "FileDescription",  "UGENE"
             VALUE "FileVersion",      TOSTRING(UGENE_VER_MAJOR.UGENE_VER_MINOR.0)
             VALUE "OriginalFilename", "ugeneui"
             VALUE "ProductName",      "Unipro UGENE"
