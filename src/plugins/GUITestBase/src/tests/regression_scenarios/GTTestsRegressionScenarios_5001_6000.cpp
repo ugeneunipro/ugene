@@ -2696,6 +2696,35 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5660) {
+    // Open document test/_common_data/clustal/1000_sequences.aln.fa
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTUtilsProject::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln.fa");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Statistics->generate distance matrix
+    // Expected: HTML content is too large to be safely displayed in UGENE.
+    class ClickOkButtonScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new ClickOkButtonScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_STATISTICS", "Generate distance matrix"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: task report contains "HTML content is too large to be safely displayed in UGENE."
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_SET_ERR(activeWindow->windowTitle() == "Distance matrix for Multiple alignment", "Unexpected active window name");
+
+    auto textBrowser = GTWidget::findTextBrowser(os, "textBrowser", activeWindow);
+    QString text = textBrowser->toHtml();
+    CHECK_SET_ERR(text.contains("HTML content is too large to be safely displayed in UGENE."), text);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5663) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
