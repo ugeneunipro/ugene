@@ -358,7 +358,7 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     s->applySettings(highlightingSettings);
 
     MaEditorMultilineWgt* mui = msa->getMaEditorMultilineWgt();
-    for (uint i = 0; i < mui->getChildrenCount(); i++) {
+    for (int i = 0; i < mui->getChildrenCount(); i++) {
         MaEditorSequenceArea* sequence = msa->getMaEditorWgt(i)->getSequenceArea();
         sequence->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
     }

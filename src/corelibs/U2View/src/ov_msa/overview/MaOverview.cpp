@@ -120,8 +120,9 @@ void MaOverview::setVisibleRangeForEmptyAlignment() {
 }
 
 void MaOverview::recalculateScale() {
-    stepX = static_cast<double>(editor->getMaEditorWgt()->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
-    stepY = static_cast<double>(editor->getMaEditorWgt()->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
+    MaEditorWgt* maEditorWgt = editor->getMaEditorWgt(0);
+    stepX = static_cast<double>(maEditorWgt->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
+    stepY = static_cast<double>(maEditorWgt->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }
 
 int MaOverview::getContentWidgetWidth() const {

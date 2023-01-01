@@ -363,10 +363,10 @@ bool TophatSamples::rename(QLineEdit* nameEdit) {
 }
 
 void TophatSamples::sl_remove() {
-    QToolButton* toolButton = dynamic_cast<QToolButton*>(sender());
-    SAFE_POINT(nullptr != toolButton, "NULL button", );
+    auto toolButton = dynamic_cast<QToolButton*>(sender());
+    SAFE_POINT(toolButton != nullptr, "NULL button", );
     QWidget* sampleWidget = toolButton->parentWidget();
-    CHECK(nullptr != sampleWidget, );
+    CHECK(sampleWidget != nullptr, );
     CHECK(order.contains(sampleWidget), );
 
     // remove
@@ -399,8 +399,8 @@ void TophatSamples::sl_add() {
 }
 
 void TophatSamples::sl_selectionChanged() {
-    QListWidget* selectedList = dynamic_cast<QListWidget*>(sender());
-    CHECK(nullptr != selectedList, );
+    auto selectedList = dynamic_cast<QListWidget*>(sender());
+    CHECK(selectedList != nullptr, );
     CHECK(selectedList->selectedItems().size() > 0, );
 
     QWidget* sampleWidget = selectedList->parentWidget();

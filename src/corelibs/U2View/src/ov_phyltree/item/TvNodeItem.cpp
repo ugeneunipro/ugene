@@ -101,12 +101,13 @@ void TvNodeItem::toggleCollapsedState() {
     }
 }
 
-bool TvNodeItem::isPathToRootSelected() const {
-    CHECK(isSelected(), false);
+bool TvNodeItem::isSelectionRoot() const {
+    CHECK(isSelected(), false);  // The node itself must be selected.
 
     auto branchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(branchItem != nullptr, true);
+    CHECK(branchItem != nullptr, true);  // If node is a root node -> return true.
 
+    // If node is not a root node -> check that its parent branch is not selected.
     auto parentBranchItem = dynamic_cast<TvBranchItem*>(branchItem->parentItem());
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }

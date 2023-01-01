@@ -139,16 +139,9 @@ public:
         return ui;
     }
 
-    virtual MaEditorWgt* getMaEditorWgt(uint index = 0) const {
-        SAFE_POINT(false, "The function getMaEditorWgt(index) must be overrided", nullptr);
-        Q_UNUSED(index);
-        return nullptr;
-    };
+    virtual MaEditorWgt* getMaEditorWgt(int) const = 0;
 
-    virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const {
-        SAFE_POINT(false, "The function getMaEditorMultilineWgt(index) must be overrided", nullptr);
-        return nullptr;
-    };
+    virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const = 0;
 
     virtual OptionsPanel* getOptionsPanel() {
         return optionsPanel;
@@ -292,7 +285,7 @@ protected:
     virtual void initFont();
     void updateResizeMode();
 
-    virtual void addCopyPasteMenu(QMenu* m, uint uiIndex);
+    virtual void addCopyPasteMenu(QMenu* m, int uiIndex);
     virtual void addEditMenu(QMenu* m) = 0;
     virtual void addExportMenu(QMenu* m);
     void addLoadMenu(QMenu* m);

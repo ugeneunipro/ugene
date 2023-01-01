@@ -1095,7 +1095,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened, url: " + url);
 
     QByteArray data(10000, 0);
-    int bytesRead = io->readBlock(data.data(), data.size());
+    qint64 bytesRead = io->readBlock(data.data(), data.size());
     CHECK_SET_ERR(bytesRead > 100, "Expected at least some data to be read from url: " + url + ", error: " + io->errorString());
     CHECK_SET_ERR(!data.contains("Page not found"), "External Tools page is not found");
 }
@@ -1311,7 +1311,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     // Do it twice, for two different ids
     QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    for (auto id : qAsConst(ensembleIds)) {
+    for (const auto& id : qAsConst(ensembleIds)) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {id});
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
@@ -4977,7 +4977,7 @@ GUI_TEST_CLASS_DEFINITION(test_6742) {
 }
 GUI_TEST_CLASS_DEFINITION(test_6746) {
     // 1. Open "COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open "Search in Alignment" options panel tab.
@@ -6171,7 +6171,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
-    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+    CHECK_SET_ERR(errors.empty(), "Unexpected errors");
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
                   "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));

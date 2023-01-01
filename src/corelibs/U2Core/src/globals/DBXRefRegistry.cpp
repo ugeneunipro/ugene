@@ -77,8 +77,8 @@ QScriptValue DBXRefInfo::toScriptValue(QScriptEngine* engine, DBXRefInfo const& 
 }
 
 void DBXRefInfo::fromScriptValue(const QScriptValue& object, DBXRefInfo& out) {
-    DBXRefInfo* info = dynamic_cast<DBXRefInfo*>(object.toQObject());
-    out = nullptr != info ? *info : DBXRefInfo();
+    auto info = dynamic_cast<DBXRefInfo*>(object.toQObject());
+    out = info != nullptr ? *info : DBXRefInfo();
 }
 
 void DBXRefInfo::setupToEngine(QScriptEngine* engine) {

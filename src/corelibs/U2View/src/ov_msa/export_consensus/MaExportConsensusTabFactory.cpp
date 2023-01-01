@@ -81,7 +81,7 @@ QWidget* McaExportConsensusTabFactory::createWidget(GObjectView* objView, const 
     widget->setLayout(layout);
 
     MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget(widget);
-    consensusModeWgt->init(ma->getMaObject(), ma->getMaEditorWgt()->getConsensusArea());
+    consensusModeWgt->init(ma->getMaObject(), ma->getMaEditorWgt(0)->getConsensusArea());
     ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
 
     MaExportConsensusWidget* exportWidget = new MaExportConsensusWidget(ma, widget);

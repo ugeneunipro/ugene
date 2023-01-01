@@ -403,8 +403,8 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus& os, b
     MaEditorNameList* nameListArea = GTUtilsMsaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getUI()->getUI()->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
-    const MultipleSequenceAlignmentObject* msaObject = editor->getMaObject();
+    QList<int> visibleRowsIndexes = editor->getUI()->getUI(0)->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
+    MultipleSequenceAlignmentObject* msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
     for (int rowIndex : qAsConst(visibleRowsIndexes)) {
@@ -516,8 +516,7 @@ int GTUtilsMSAEditorSequenceArea::getLength(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getNumVisibleBases"
 int GTUtilsMSAEditorSequenceArea::getNumVisibleBases(GUITestOpStatus& os) {
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-
-    return msaEditArea->getEditor()->getUI()->getUI()->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
+    return msaEditArea->getEditor()->getUI()->getUI(0)->getDrawHelper()->getVisibleBasesCount(msaEditArea->width());
 }
 #undef GT_METHOD_NAME
 

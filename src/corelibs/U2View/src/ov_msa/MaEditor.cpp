@@ -420,7 +420,7 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getMaEditorWgt(), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getMaEditorWgt(0), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -479,8 +479,7 @@ void MaEditor::updateResizeMode() {
     resizeMode = zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
-void MaEditor::addCopyPasteMenu(QMenu* m, uint uiIndex) {
-    Q_UNUSED(uiIndex);
+void MaEditor::addCopyPasteMenu(QMenu* m, int) {
     QMenu* cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
@@ -489,7 +488,7 @@ void MaEditor::addExportMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
     em->addAction(exportHighlightedAction);
-    if (!getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
+    if (!getMaEditorWgt(0)->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
         getReferenceRowId() != U2MsaRow::INVALID_ROW_ID) {
         exportHighlightedAction->setEnabled(true);
     } else {
@@ -547,7 +546,7 @@ void MaEditor::updateFontMetrics() {
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
-    if (getMaEditorWgt()->getSequenceArea()->isPosInRange(firstPos)) {
+    if (getMaEditorWgt(0)->getSequenceArea()->isPosInRange(firstPos)) {
         getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleBase(firstPos);
         getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleMaRow(firstSeq);
     }
@@ -595,7 +594,7 @@ QList<qint64> MaEditor::getMaRowIds() const {
 }
 
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
-    getMaEditorWgt()->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
+    getMaEditorWgt(0)->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const {
@@ -612,7 +611,7 @@ void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
 }
 
 void MaEditor::sl_onClearActionTriggered() {
-    MaEditorSequenceArea* sequenceArea = getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = getMaEditorWgt(0)->getSequenceArea();
     if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
         sequenceArea->exitFromEditCharacterMode();
         return;
@@ -633,7 +632,7 @@ void MaEditor::sl_gotoSelectedRead() {
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
-    MaEditorSequenceArea* sequenceArea = getMaEditorWgt()->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = getMaEditorWgt(0)->getSequenceArea();
     if (sequenceArea->isPositionCentered(posToCenter)) {
         posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
     }

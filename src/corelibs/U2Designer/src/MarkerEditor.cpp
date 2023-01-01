@@ -76,7 +76,7 @@ void MarkerEditor::setConfiguration(Actor* actor) {
         }
     }
 
-    if (nullptr == mAttr) {
+    if (mAttr == nullptr) {
         return;
     }
 

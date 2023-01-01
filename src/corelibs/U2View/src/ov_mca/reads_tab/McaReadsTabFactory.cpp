@@ -57,7 +57,7 @@ QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMa
     widget->setLayout(layout);
 
     auto alternativeMutationsWgt = new McaAlternativeMutationsWidget(widget);
-    auto ui = ma->getMaEditorWgt();
+    auto ui = ma->getMaEditorWgt(0);
     SAFE_POINT(ui != nullptr, "UI isn't found", nullptr);
 
     alternativeMutationsWgt->init(ma->getMaObject(), ui->getSequenceArea(), ui->getStatusBar());

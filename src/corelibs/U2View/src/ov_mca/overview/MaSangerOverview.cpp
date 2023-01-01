@@ -133,10 +133,10 @@ void MaSangerOverview::sl_resetCaches() {
 }
 
 void MaSangerOverview::sl_screenMoved() {
-    const int screenYPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition().y();
-    const int screenHeight = editor->getMaEditorWgt()->getSequenceArea()->height();
-    const int mappedTopPosition = screenYPosition / stepY;
-    const int mappedBottomPosition = (screenYPosition + screenHeight) / stepY;
+    int screenYPosition = editor->getMaEditorWgt(0)->getScrollController()->getScreenPosition().y();
+    int screenHeight = editor->getMaEditorWgt(0)->getSequenceArea()->height();
+    int mappedTopPosition = screenYPosition / stepY;
+    int mappedBottomPosition = (screenYPosition + screenHeight) / stepY;
 
     if (mappedTopPosition < getScrollBarValue()) {
         vScrollBar->setValue(mappedTopPosition);
@@ -214,8 +214,8 @@ void MaSangerOverview::drawVisibleRange(QPainter& painter) {
     } else {
         recalculateScale();
 
-        const QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
-        const QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
+        QPoint screenPosition = editor->getMaEditorWgt(0)->getScrollController()->getScreenPosition();
+        QSize screenSize = editor->getMaEditorWgt(0)->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
@@ -268,8 +268,8 @@ void MaSangerOverview::drawReads() {
     for (int viewRowIndex = 0; viewRowIndex < rowsCount; viewRowIndex++) {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
         const MultipleChromatogramAlignmentRow row = mca->getMcaRow(maRowIndex);
-        const U2Region coreRegion = row->getCoreRegion();
-        const U2Region positionRegion = editor->getMaEditorWgt()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
+        U2Region coreRegion = row->getCoreRegion();
+        U2Region positionRegion = editor->getMaEditorWgt(0)->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 
         QRect readRect;
         readRect.setX(qRound(positionRegion.startPos / stepX));
@@ -304,10 +304,10 @@ void MaSangerOverview::moveVisibleRange(QPoint pos) {
         vScrollBar->triggerAction(QScrollBar::SliderSingleStepAdd);
     }
 
-    const int newHScrollBarValue = newVisibleRange.x() * stepX;
-    editor->getMaEditorWgt()->getScrollController()->setHScrollbarValue(newHScrollBarValue);
-    const int newVScrollBarValue = (newVisibleRange.y() - getReferenceHeight() + getScrollBarValue()) * stepY;
-    editor->getMaEditorWgt()->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    int newHScrollBarValue = newVisibleRange.x() * stepX;
+    editor->getMaEditorWgt(0)->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    int newVScrollBarValue = (newVisibleRange.y() - getReferenceHeight() + getScrollBarValue()) * stepY;
+    editor->getMaEditorWgt(0)->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 }  // namespace U2

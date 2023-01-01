@@ -3740,5 +3740,26 @@ GUI_TEST_CLASS_DEFINITION(test_7748) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7751) {
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Select any inner node
+    GTUtilsPhyTree::clickNode(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026"));
+
+    QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+    auto swapSiblingsButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Swap Siblings");
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+
+    // Click Swapping Siblings button on the toolbar
+    GTWidget::click(os, swapSiblingsButton);
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.026", "0.009");
+
+    GTWidget::click(os, swapSiblingsButton);
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
