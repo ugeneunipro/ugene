@@ -1264,12 +1264,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1610"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1611"/>
         <source>Expand</source>
         <translation>Раскрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1613"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1614"/>
         <source>Collapse</source>
         <translation>Скрыть</translation>
     </message>
@@ -8484,41 +8484,64 @@ Please, load the corresponding plugins.</source>
         <translation>Изображение дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1226"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1227"/>
         <source>Image is too large. Please zoom out.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1231"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1232"/>
         <source>Failed to copy image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1256"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1280"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1286"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1257"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1281"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1287"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1256"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1257"/>
         <source>Selected dir is read only: %1</source>
         <translation>Указанная директория доступна только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1280"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1281"/>
         <source>Failed to generate SVG image.</source>
         <translation>Невозможно создать SVG изображение.</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1286"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1287"/>
         <source>Failed to open file for writing: %1</source>
         <translation>Невозможно открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1366"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1367"/>
         <source>Failed to build tree layout.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::WebWindow</name>
+    <message>
+        <location filename="../src/WebWindow.cpp" line="64"/>
+        <source>HTML content is too large to be safely displayed in UGENE.</source>
+        <translation>Результат слишком большой для отображения в UGENE.</translation>
+    </message>
+    <message>
+        <location filename="../src/WebWindow.cpp" line="65"/>
+        <source>Save HTML document to %1 file  %2</source>
+        <translation>Сохранить документ в %1 файл %2</translation>
+    </message>
+    <message>
+        <location filename="../src/WebWindow.cpp" line="70"/>
+        <source>HTML Files</source>
+        <translation>HTML файлы</translation>
+    </message>
+    <message>
+        <location filename="../src/WebWindow.cpp" line="72"/>
+        <source>Save as</source>
+        <translation>Сохранить как</translation>
     </message>
 </context>
 <context>
