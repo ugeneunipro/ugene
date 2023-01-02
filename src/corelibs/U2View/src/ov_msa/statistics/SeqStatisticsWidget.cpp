@@ -67,7 +67,7 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
 }
 
 void SeqStatisticsWidget::copySettings() {
-    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(msa->getUI()->getUI());
+    auto msaEditorUi = qobject_cast<MsaEditorWgt*>(msa->getUI()->getUI(0));
     const MsaEditorAlignmentDependentWidget* similarityWidget = msaEditorUi->getSimilarityWidget();
     statisticsIsShown = false;
     if (similarityWidget != nullptr) {
@@ -152,10 +152,9 @@ void SeqStatisticsWidget::sl_onUnitsChanged(bool) {
 }
 
 void SeqStatisticsWidget::sl_onAutoUpdateChanged(int state) {
-    bool autoUpdateEnabled = Qt::Checked == state;
-    settings->autoUpdate = autoUpdateEnabled;
-    ui.updateButton->setEnabled(!autoUpdateEnabled);
-    ui.dataState->setEnabled(!autoUpdateEnabled);
+    settings->autoUpdate = state == Qt::Checked;
+    ui.updateButton->setEnabled(!settings->autoUpdate);
+    ui.dataState->setEnabled(!settings->autoUpdate);
     msa->getUI()->setSimilaritySettings(settings);
 }
 

@@ -2101,44 +2101,44 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002) {
     */
 }
 GUI_TEST_CLASS_DEFINITION(statistics_test_0003) {
-    //    1. Open data/samples/CLUSTALW/COI.aln
+    // 1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open export statistics option panel tab
+    // 2. Open export statistics option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
-    //    3. check showDistancesColumn checkbox
+    // 3. check showDistancesColumn checkbox
     auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    //    4. Add Phaneroptera_falcata as reference
+    // 4. Add Phaneroptera_falcata as reference
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    //    5. delete symbol at point (0,0)
+    // 5. delete symbol at point (0,0)
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Expected state: similarity changed, updateButton ins disablec
+    // Expected state: similarity changed, updateButton is disabled.
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(1)Unexpected similarity at line 1: %1").arg(s0));
     QString s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     CHECK_SET_ERR(s1 == "69%", QString("(1)Unexpected similarity at line 2: %1").arg(s1));
 
     auto updateButton = GTWidget::findWidget(os, "updateButton");
-    CHECK_SET_ERR(!updateButton->isEnabled(), "updateButton is unexpectidly enabled");
-    //    6. Undo. Uncheck automatic update checkbox
+    CHECK_SET_ERR(!updateButton->isEnabled(), "updateButton is unexpectedly enabled");
+    // 6. Undo. Uncheck automatic update checkbox
     GTWidget::click(os, GTAction::button(os, "msa_action_undo"));
     auto autoUpdateCheck = GTWidget::findCheckBox(os, "autoUpdateCheck");
     GTCheckBox::setChecked(os, autoUpdateCheck, false);
-    //    5. delete symbol at point (0,0)
+    // 5. Delete symbol at point (0,0)
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Expected state: similarity not changed
+    // Expected state: similarity not changed.
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(2)Unexpected similarity at line 1: %1").arg(s0));
     s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     CHECK_SET_ERR(s1 == "18%", QString("(2)Unexpected similarity at line 2: %1").arg(s1));
-    //    6. Press autoUpdate button
+    // 6. Press autoUpdate button.
     GTWidget::click(os, updateButton);
-    //    Expected state: similarity updated
+    // Expected state: similarity is updated.
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(3)Unexpected similarity at line 1: %1").arg(s0));
     s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);

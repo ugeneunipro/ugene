@@ -94,6 +94,7 @@ void MsaEditorSimilarityColumn::updateScrollBar() {
 
 void MsaEditorSimilarityColumn::setSettings(const SimilarityStatisticsSettings* settings) {
     SAFE_POINT(settings != nullptr, "Settings can't be nullptr!", );
+    curSettings.autoUpdate = settings->autoUpdate;
     if (curSettings.algoId != settings->algoId) {
         state = DataIsOutdated;
     }
