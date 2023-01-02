@@ -25,8 +25,6 @@
 #include <QPushButton>
 #include <QTabWidget>
 
-#include "../MsaUpdatedWidgetInterface.h"
-
 namespace U2 {
 
 class MSADistanceMatrix;

@@ -21,6 +21,7 @@
 
 #include "MsaEditorTreeTabArea.h"
 
+#include <QAction>
 #include <QPainter>
 #include <QTabBar>
 #include <QVBoxLayout>
@@ -29,6 +30,8 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2View/MSAEditor.h>
 
 namespace U2 {
 
