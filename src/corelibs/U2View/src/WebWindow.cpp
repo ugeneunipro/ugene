@@ -49,7 +49,6 @@ static constexpr int MAX_SUPPORTED_TAGS_IN_HTML_CONTENT = 1'000'000;
 
 WebWindow::WebWindow(const QString& title, const QString& htmlContent)
     : MWMDIWindow(title) {
-    setObjectName("WebWindow");
     auto layout = new QVBoxLayout();
     layout->setMargin(0);
     setLayout(layout);
