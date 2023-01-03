@@ -70,9 +70,9 @@ void ImportBAMFileFiller::commonScenario() {
         GTCheckBox::setChecked(os, importUnmapped, importUnmapped);
     }
 
-    auto deselectAll = GTWidget::findToolButton(os, "selectNoneToolButton", dialog);
     if (deselectAll) {
-        GTWidget::click(os, deselectAll);
+        auto deselectAllButton = GTWidget::findToolButton(os, "selectNoneToolButton", dialog);
+        GTWidget::click(os, deselectAllButton);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -3667,13 +3667,23 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     // Check the box "Deselect all", "Import unmapped reads" and import the file.
     // Expected state: UGENE not crashed
     GTLogTracer l;
+    qint64 expectedReads = 10;
+
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714.ugenedb", "", "", true, true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    qint64 assemblyReads1 = GTUtilsAssemblyBrowser::getReadsCount(os);
+    CHECK_SET_ERR(assemblyReads1 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads1));
+
+    GTUtilsMdi::closeActiveWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714_1.ugenedb", "", "", true, true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    qint64 assemblyReads2 = GTUtilsAssemblyBrowser::getReadsCount(os);
+    CHECK_SET_ERR(assemblyReads2 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads2));
 
     GTUtilsLog::check(os, l);
 }
