@@ -34,12 +34,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, int timeoutMs)
+ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, bool deselectAll, int timeoutMs)
     : Filler(os, "Import BAM File"),
       referenceFolderPath(referenceFolderPath),
       referenceFileName(referenceFileName),
       destinationUrl(destinationUrl),
-      importUnmappedReads(importUnmappedReads) {
+      importUnmappedReads(importUnmappedReads),
+      deselectAll(deselectAll) {
     settings.timeout = timeoutMs;
 }
 
@@ -48,7 +49,8 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario
       referenceFolderPath(""),
       referenceFileName(""),
       destinationUrl(""),
-      importUnmappedReads(false) {
+      importUnmappedReads(false),
+      deselectAll(false) {
     settings.timeout = 120000;
 }
 
@@ -66,6 +68,11 @@ void ImportBAMFileFiller::commonScenario() {
     auto importUnmapped = GTWidget::findCheckBox(os, "importUnmappedBox", dialog);
     if (importUnmapped->isChecked() != importUnmappedReads) {
         GTCheckBox::setChecked(os, importUnmapped, importUnmapped);
+    }
+
+    auto deselectAll = GTWidget::findToolButton(os, "selectNoneToolButton", dialog);
+    if (deselectAll) {
+        GTWidget::click(os, deselectAll);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

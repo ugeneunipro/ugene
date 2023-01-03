@@ -3662,6 +3662,22 @@ GUI_TEST_CLASS_DEFINITION(test_7712) {
     CHECK_SET_ERR(notification.contains("Nothing to write"), "Unexpected notification message: " + notification);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7714) {
+    // Open the file 1.bam.
+    // Check the box "Deselect all", "Import unmapped reads" and import the file.
+    // Expected state: UGENE not crashed
+    GTLogTracer l;
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714.ugenedb", "", "", true, true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714_1.ugenedb", "", "", true, true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::check(os, l);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7715) {
     // Open COI.aln.
     //     Expected: no log messages
