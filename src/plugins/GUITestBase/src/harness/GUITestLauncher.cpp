@@ -324,7 +324,13 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString& te
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutputDir + "/logs/" + getTestOutputFileName(testName, testRunIteration));
 
-    QString iniFilePath = testOutputDir + "/inis/" + QString(testName).replace(':', '_') + "_r_" + QString::number(testRunIteration) + "_UGENE.ini";
+    // Some variable in UGENE are computed relative to the ini file folder (like MSA color schema dir).
+    // Use different folder for different runs.
+    QString iniFileDir = testOutputDir + "/inis/";
+    if (testRunIteration > 0) {
+        iniFileDir += QString::number(testRunIteration) + "/";
+    }
+    QString iniFilePath = iniFileDir + QString(testName).replace(':', '_') + "_r_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
         QFile::copy(iniFileTemplate, iniFilePath);
     }
