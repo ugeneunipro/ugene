@@ -307,13 +307,6 @@ Default: 64.</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QCheckBox" name="colorspaceCheckBox">
-        <property name="text">
-         <string>Colorspace (--color)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="nomaqroundCheckBox">
         <property name="toolTip">
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -413,7 +406,6 @@ bowtie is somewhat slower when --best is specified.
   <tabstop>seedCheckBox</tabstop>
   <tabstop>seedSpinBox</tabstop>
   <tabstop>threadsSpinBox</tabstop>
-  <tabstop>colorspaceCheckBox</tabstop>
   <tabstop>nomaqroundCheckBox</tabstop>
   <tabstop>nofwCheckBox</tabstop>
   <tabstop>norcCheckBox</tabstop>
