@@ -207,6 +207,7 @@ protected slots:
 
 protected:
     QWidget* createWidget() override;
+    void onAfterViewWindowInit() override;
 
     void initActions() override;
     bool eventFilter(QObject* o, QEvent* e) override;
