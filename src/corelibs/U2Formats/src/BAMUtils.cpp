@@ -171,7 +171,7 @@ static void checkFileReadState(int read, U2OpStatus& os, const QString& fileName
     if (read == READ_ERROR_CODE) {
         os.setError(SAMTOOLS_ERROR_MESSAGE != nullptr ? SAMTOOLS_ERROR_MESSAGE : readsError(fileName));
     } else if (read < -1) {
-        os.setError(truncatedError(fileName));
+        os.setError(truncatedError(fileName) + ", code: " + QString::number(read));
     }
 }
 
@@ -819,14 +819,17 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
         void* aux = nullptr;
         in = samOpen(fileUrl1, readMode, aux);
         SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
-        SAMTOOL_CHECK(in->header != nullptr, headerError(fileUrl1), false);
 
         out = samOpen(fileUrl2, readMode, aux);
         SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
-        SAMTOOL_CHECK(out->header != nullptr, headerError(fileUrl2), false);
+
+        if (in->header != out->header) {
+            SAMTOOL_CHECK(out->header != nullptr, headerError(fileUrl2), false);
+            SAMTOOL_CHECK(in->header != nullptr, headerError(fileUrl1), false);
+        }
     }
 
-    if (in->header->target_len && out->header->target_len) {
+    if (in->header != nullptr && in->header->target_len && out->header->target_len) {
         // if there are headers
         if (*(in->header->target_len) != *(out->header->target_len)) {
             os.setError(QString("Different target length of files. %1 and %2").arg(qint64(in->header->target_len)).arg(qint64(out->header->target_len)));
@@ -837,37 +840,24 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
 
     bam1_t* b1 = bam_init1();
     bam1_t* b2 = bam_init1();
-    {
-        int r1 = 0;
-        int r2 = 0;
-        while ((r1 = samread(in, b1)) >= 0) {  // read one alignment from file1
-            if ((r2 = samread(out, b2)) >= 0) {  // read one alignment from file2
-                if (b1->data_len != b2->data_len) {
-                    os.setError("Different alignment of reads");
-                    break;
-                }
-            } else {
-                checkFileReadState(r2, os, fileUrl2);
-                os.setError("Different number of reads in files");
-                break;
-            }
-        }
 
-        checkFileReadState(r1, os, fileUrl1);
-        if (!os.hasError() && (r2 = samread(out, b2)) >= 0) {
-            os.setError("Different number of reads in files");
-        }
-        bam_destroy1(b1);
-        bam_destroy1(b2);
+    QVector<int> length1;
+    QVector<int> length2;
+    while (samread(in, b1) >= 0) {
+        length1 << b1->data_len;
     }
+    while (samread(out, b2) >= 0) {
+        length2 << b2->data_len;
+    }
+    if (length1 != length2) {
+        os.setError(QString("Different number of reads in files: %1 vs %2").arg(length1.size()).arg(length2.size()));
+    }
+    bam_destroy1(b1);
+    bam_destroy1(b2);
 
     closeFiles(in, out);
 
-    if (os.hasError()) {
-        return false;
-    }
-
-    return true;
+    return !os.hasError();
 }
 
 namespace {
