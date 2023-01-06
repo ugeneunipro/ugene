@@ -39,7 +39,6 @@ public:
     QString file1Url;
     QString file2Url;
     QString file3Url;
-    bool isBam;
 };
 
 class Bowtie2Tests {

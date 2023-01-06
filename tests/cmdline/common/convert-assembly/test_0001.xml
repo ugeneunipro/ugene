@@ -7,7 +7,6 @@
             out_format="sam"
     />
 
-    <compare-sam-by-length file2="sam/example.sam" file1="convert_assembly_0001.sam" isbam="1"/>
-
+    <compare-sam-by-length file1="convert_assembly_0001.sam" file2="sam/example.sam"/>
 
 </multi-test>

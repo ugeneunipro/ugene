@@ -810,17 +810,18 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
 }
 
 // the function assumes the equal order of alignments in files
-bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os, bool isBAM) {
+bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os) {
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
 
-    const char* readMode = isBAM ? "rb" : "r";
+    const char* readMode1 = fileUrl1.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
+    const char* readMode2 = fileUrl2.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
     {
         void* aux = nullptr;
-        in = samOpen(fileUrl1, readMode, aux);
+        in = samOpen(fileUrl1, readMode1, aux);
         SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
 
-        out = samOpen(fileUrl2, readMode, aux);
+        out = samOpen(fileUrl2, readMode2, aux);
         SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
 
         if (in->header != out->header) {
@@ -843,11 +844,15 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
 
     QVector<int> length1;
     QVector<int> length2;
-    while (samread(in, b1) >= 0) {
+    int r1, r2;
+    while ((r1 = samread(in, b1)) >= 0) {
         length1 << b1->data_len;
     }
-    while (samread(out, b2) >= 0) {
+    while ((r2 = samread(out, b2)) >= 0) {
         length2 << b2->data_len;
+    }
+    if (r1 != r2) {
+        os.setError(QString("Different samread result codes at the end of files: %1 vs %2").arg(r1).arg(r2));
     }
     if (length1 != length2) {
         os.setError(QString("Different number of reads in files: %1 vs %2").arg(length1.size()).arg(length2.size()));

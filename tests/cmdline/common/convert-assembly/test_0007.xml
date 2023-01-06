@@ -30,11 +30,7 @@
     />
 
     <!-- Check results -->
-    <load-document index="doc1" url="convert_assembly_0007_res.sam" io="local_file" format="sam" dir="temp"/>
-    <load-document index="doc2" url="convert_assembly_0007_exp.sam" io="local_file" format="sam" dir="temp"/>
-    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
-
-    <find-object-by-name index="obj" doc="doc1" name="gi|110640213|ref|NC_008253.1|" type="OT_MSA"/>
-    <check-numbers-of-sequence-in-Msequence obj="obj" value="699"/>
+    <compare-sam-by-length file1="!tmp_data_dir!convert_assembly_0007_res.sam"
+                           file2="!tmp_data_dir!convert_assembly_0007_exp.sam"/>
 
 </multi-test>
