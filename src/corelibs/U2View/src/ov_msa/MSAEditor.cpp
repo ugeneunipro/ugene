@@ -511,11 +511,6 @@ QWidget* MSAEditor::createWidget() {
 }
 
 void MSAEditor::onAfterViewWindowInit() {
-    if (getAlignmentLen() != 0) {
-        // Set cursor to the first cell in the alignment (via selection).
-        QList<QRect> defaultSelection = {{0, 0, 1, 1}};
-        selectionController->setSelection(defaultSelection);
-    }
     getUI()->getUI(0)->getSequenceArea()->setFocus();
 }
 
