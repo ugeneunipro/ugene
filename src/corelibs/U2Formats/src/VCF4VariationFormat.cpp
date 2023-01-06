@@ -34,13 +34,13 @@ VCF4VariationFormat::VCF4VariationFormat(QObject* p)
     columnRoles.insert(4, ColumnRole_ObsData);
     columnRoles.insert(7, ColumnRole_Info);
 
-    maxColumnNumber = columnRoles.keys().last();
+    maxColumnIndex = columnRoles.keys().last();
 
     indexing = AbstractVariationFormat::OneBased;
 }
 
 bool VCF4VariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return columnCount >= maxColumnNumber + 1;
+    return columnCount >= maxColumnIndex + 1;
 }
 
 }  // namespace U2

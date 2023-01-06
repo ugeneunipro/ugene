@@ -68,8 +68,8 @@ void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "checkProjectViewIsClosed"
 void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus& os) {
-    QWidget* documentTreeWidget = nullptr;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+    QWidget* documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget != nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
     }

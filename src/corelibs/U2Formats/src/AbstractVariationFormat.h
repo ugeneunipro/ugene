@@ -61,10 +61,12 @@ public:
 
 protected:
     bool isSupportHeader;
+    /** Write only columns up to 'maxColumnIndex'. */
+    bool useOnlyBaseColumns = false;
 
     QMap<int, ColumnRole> columnRoles;
 
-    int maxColumnNumber = 0;
+    int maxColumnIndex = 0;
 
     PositionIndexing indexing;
 

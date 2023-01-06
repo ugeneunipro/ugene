@@ -31,6 +31,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include <QToolBar>
+#include <QToolButton>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
@@ -930,24 +931,40 @@ void TestViewController::sl_setEnvAction() {
     // todo: create custom utility class for properties like this
     QObjectScopedPointer<QDialog> d = new QDialog(this);
     d->setMinimumWidth(400);
-    d->setWindowTitle(tr("env_mb_title"));
+    d->setWindowTitle(tr("Set Environment"));
     QVBoxLayout* vl = new QVBoxLayout();
     d->setLayout(vl);
 
-    QFormLayout* fl = new QFormLayout();
-    vl->addLayout(fl);
+    QGridLayout* gl = new QGridLayout();
+    vl->addLayout(gl);
 
     QMap<QString, QLineEdit*> valsByName;
+    int row = 0;
     foreach (const QString& name, vars.keys()) {
         QString val = vars.value(name);
         QLineEdit* le = new QLineEdit(val, d.data());
         le->setObjectName(name + "_EditBox");
+        le->setMinimumWidth(300);
         QLabel* la = new QLabel(name + ":");
         la->setObjectName(name + "_Label");
         la->setBuddy(le);
         valsByName[name] = le;
-        fl->addRow(la, le);
+        gl->addWidget(la, row, 0);
+        gl->addWidget(le, row, 1);
+        if (name.endsWith("_DIR")) {
+            auto fileOpenButton = new QToolButton();
+            fileOpenButton->setText("...");
+            gl->addWidget(fileOpenButton, row, 2);
+            connect(fileOpenButton, &QToolButton::clicked, this, [le] {
+                QString dir = U2FileDialog::getExistingDirectory();
+                if (!dir.isEmpty()) {
+                    le->setText(dir);
+                }
+            });
+        }
+        row++;
     }
+
     vl->addItem(new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding));
     QHBoxLayout* hl = new QHBoxLayout();
     vl->addLayout(hl);

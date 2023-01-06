@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>174</width>
-    <height>37</height>
+    <height>49</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,13 +23,6 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
-   <item>
-    <widget class="QCheckBox" name="colorspaceCheckBox">
-     <property name="text">
-      <string>Colorspace</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>
