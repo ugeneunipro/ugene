@@ -243,7 +243,7 @@ bool BaseWorker::canTaskBeCanceled(Task* /*workerTask*/) const {
 
 Task* BaseWorker::tick(bool& canResultBeCanceled) {
     Task* result = tick();
-    if (nullptr != result) {
+    if (result != nullptr) {
         canResultBeCanceled = canTaskBeCanceled(result);
     }
 

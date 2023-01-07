@@ -28,8 +28,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Log.h>
 #include <U2Core/TaskSignalMapper.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -88,19 +86,15 @@ QString QDSiteconActor::getText() const {
             break;
     }
 
-    QString doc = tr("Searches transcription factor binding sites (TFBS) %1."
-                     "<br>Recognize sites with %2, process %3.")
-                      .arg(modelName)
-                      .arg(scoreStr)
-                      .arg(strandName);
-
-    return doc;
-    return QString();
+    return tr("Searches transcription factor binding sites (TFBS) %1."
+              "<br>Recognize sites with %2, process %3.")
+        .arg(modelName)
+        .arg(scoreStr)
+        .arg(strandName);
 }
 
 Task* QDSiteconActor::getAlgorithmTask(const QVector<U2Region>& location) {
-    Task* t = nullptr;
-    assert(!location.isEmpty());
+    SAFE_POINT(!location.isEmpty(), "QDSiteconActor::getAlgorithmTask: Location is empty", new FailTask("Location is empty"));
 
     const QString& urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
     const QStringList& urls = WorkflowUtils::expandToUrls(urlStr);
@@ -140,14 +134,14 @@ Task* QDSiteconActor::getAlgorithmTask(const QVector<U2Region>& location) {
         }
     }
 
-    t = new QDSiteconTask(urls, settings, dnaSeq, location);
+    auto t = new QDSiteconTask(urls, settings, dnaSeq, location);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
     return t;
 }
 
 void QDSiteconActor::sl_onAlgorithmTaskFinished(Task* t) {
-    QDSiteconTask* st = qobject_cast<QDSiteconTask*>(t);
-    assert(st);
+    auto st = qobject_cast<QDSiteconTask*>(t);
+    SAFE_POINT(st != nullptr, "Not a QDSiteconTask", );
     foreach (const SiteconSearchResult& res, st->getResults()) {
         const SharedAnnotationData ad = res.toAnnotation("");
         QDResultUnit ru(new QDResultUnitData);
@@ -166,7 +160,7 @@ QDSiteconActorPrototype::QDSiteconActorPrototype() {
                                                    " In case several profiles were supplied, searches with all profiles one by one and outputs merged set of annotations."));
 
     {
-        Descriptor scd(SCORE_ATTR, QDSiteconActor::tr("Min score"), QApplication::translate("SiteconSearchDialog", "Recognition quality percentage threshold. If you need to switch off this filter choose <b>the lowest</b> value</i></p>.", 0));
+        Descriptor scd(SCORE_ATTR, QDSiteconActor::tr("Min score"), QApplication::translate("SiteconSearchDialog", "Recognition quality percentage threshold. If you need to switch off this filter choose <b>the lowest</b> value</i></p>.", nullptr));
         Descriptor e1d(E1_ATTR, QDSiteconActor::tr("Min Err1"), QDSiteconActor::tr("Alternative setting for filtering results, minimal value of Error type I."
                                                                                    "<br>Note that all thresholds (by score, by err1 and by err2) are applied when filtering results."));
         Descriptor e2d(E2_ATTR, QDSiteconActor::tr("Max Err2"), QDSiteconActor::tr("Alternative setting for filtering results, max value of Error type II."
@@ -229,8 +223,8 @@ QList<Task*> QDSiteconTask::onSubTaskFinished(Task* subTask) {
             }
         }
     } else {
-        SiteconSearchTask* searchTask = qobject_cast<SiteconSearchTask*>(subTask);
-        assert(searchTask);
+        auto searchTask = qobject_cast<SiteconSearchTask*>(subTask);
+        SAFE_POINT(searchTask != nullptr, "Not a SiteconSearchTask", {});
         results.append(searchTask->takeResults());
     }
     return st;
@@ -245,8 +239,8 @@ SiteconReadMultiTask::SiteconReadMultiTask(const QStringList& urls)
 
 QList<Task*> SiteconReadMultiTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> stub;
-    SiteconReadTask* rt = qobject_cast<SiteconReadTask*>(subTask);
-    assert(rt);
+    auto rt = qobject_cast<SiteconReadTask*>(subTask);
+    SAFE_POINT(rt != nullptr, "Not a SiteconReadTask", {});
     models.append(rt->getResult());
     return stub;
 }
