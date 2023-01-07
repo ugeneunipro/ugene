@@ -246,7 +246,6 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
     }
 
     // scroll right
-    GTWidget::setFocus(os, msaSeqArea);
     for (int i = 0; i < 20 && !msaSeqArea->isPositionVisible(position.x(), false); i++) {
         GTKeyboardDriver::keyClick(Qt::Key_PageDown);
     }
