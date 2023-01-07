@@ -1,7 +1,3 @@
 <suite name="SecStructPredict plugin tests">
     <test-dir test-ext="*.xml" path="sec_struct_predict" test-format="XML"/>
-    <excluded test="psipred/test_0001.xml" reason="crash on mac"/>
-    <excluded test="psipred/test_0002.xml" reason="crash on mac"/>
-    <excluded test="psipred/test_0003.xml" reason="crash on mac"/>
-    <excluded test="psipred/test_0004.xml" reason="crash on mac"/>
 </suite>
