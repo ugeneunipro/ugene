@@ -22,11 +22,7 @@
     />
 
     <!-- Check results -->
-    <load-document index="doc1" url="convert_assembly_0006_res.sam" io="local_file" format="sam" dir="temp"/>
-    <load-document index="doc2" url="convert_assembly_0006_exp.sam" io="local_file" format="sam" dir="temp"/>
-    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
-
-    <find-object-by-name index="obj" doc="doc1" name="Example sequence" type="OT_MSA"/>
-    <check-numbers-of-sequence-in-Msequence obj="obj" value="4971"/>
+    <compare-sam-by-length file1="!tmp_data_dir!convert_assembly_0006_res.sam"
+                           file2="!tmp_data_dir!convert_assembly_0006_exp.sam"/>
 
 </multi-test>

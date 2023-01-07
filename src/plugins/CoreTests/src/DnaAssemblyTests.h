@@ -62,7 +62,6 @@ class GTest_AssemblycompareTwoSAMbyLength : public XmlTest {
     ReportResult report();
     QString file1Url;
     QString file2Url;
-    bool isBam;
 };
 
 class DnaAssemblyTests {
