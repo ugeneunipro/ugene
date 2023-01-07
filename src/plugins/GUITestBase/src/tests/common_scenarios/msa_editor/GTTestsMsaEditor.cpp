@@ -4038,16 +4038,16 @@ GUI_TEST_CLASS_DEFINITION(test_0090) {
 
     // Check that sequence area cell contains a text character up until the cell size is > 7px.
     // 7px is a hardcoded constant in the MA editor.
-    const int minWidthToShowText = 7;
+    int minWidthToShowText = 7;
     QRect prevRect(0, 0, 10000, 10000);
     while (true) {
-        QRect globalRect = GTUtilsMSAEditorSequenceArea::getPositionRect(os, QPoint(0, 0));
-        // TODO: using '-1' due to the bug in getPositionRect or in rendering:
-        //  the cellImageRect contains border-line pixels from the next base.
-        QRect cellImageRect(0, 0, globalRect.width() - 1, globalRect.height() - 1);
+        QRect globalRect = GTUtilsMSAEditorSequenceArea::getPositionRect(os, QPoint(1, 1));  // Using 1,1 but not 0,0 because 0,0 has a focus frame drawing artifacts.
+        QRect msaAreaCellRect(sequenceAreaWidget->mapFromGlobal(globalRect.topLeft()), sequenceAreaWidget->mapFromGlobal(globalRect.bottomRight()));
+        // Using '-1' because cellImageRect may contain border-line pixels from the next base.
+        QRect msaAreaCellRectToCheck(msaAreaCellRect.x(), msaAreaCellRect.y(), msaAreaCellRect.width() - 1, msaAreaCellRect.height() - 1);
         QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
-        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
-        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FF99B1");
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, msaAreaCellRectToCheck);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FCFF92");
         bool hasTextInTheCell = !hasOnlyBgColor;
         if (globalRect.width() >= minWidthToShowText) {
             CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");

@@ -510,6 +510,10 @@ QWidget* MSAEditor::createWidget() {
     return ui;
 }
 
+void MSAEditor::onAfterViewWindowInit() {
+    getUI()->getUI(0)->getSequenceArea()->setFocus();
+}
+
 void MSAEditor::initChildrenActionsAndSignals() {
     MaEditorWgt* child;
 

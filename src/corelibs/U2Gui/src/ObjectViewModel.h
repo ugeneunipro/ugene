@@ -140,8 +140,10 @@ protected:
 
 class GObjectViewCloseInterface;
 class OptionsPanel;
+class GObjectViewWindow;
 
 class U2GUI_EXPORT GObjectView : public QObject {
+    friend class GObjectViewWindow;
     Q_OBJECT
 public:
     GObjectView(GObjectViewFactoryId factoryId, const QString& viewName, QObject* p = nullptr);
@@ -233,6 +235,12 @@ protected:
 
     /** Calls 'buildActionMenu' with a menu type wrapped with the QList<>. */
     void buildActionMenu(QMenu* menu, const QString& menuType);
+
+    /**
+     * Called by GObjectViewWindow after view widget & layout initialization is finished.
+     * Default implementation does nothing.
+     */
+    virtual void onAfterViewWindowInit();
 
 signals:
     /**
