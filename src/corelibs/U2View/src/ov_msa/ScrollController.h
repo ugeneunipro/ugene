@@ -99,10 +99,10 @@ public:
     /** Called right after zoom-on/out/reset or any other font change operation to update internal scrollbars scales. */
     void updateScrollBarsOnFontOrZoomChange();
     void setHScrollBarVisible(bool visible);
-    bool getHScrollBarVisible();
+    bool getHScrollBarVisible() const;
 
     void setVScrollBarVisible(bool visible);
-    bool getVScrollBarVisible();
+    bool getVScrollBarVisible() const;
 
 signals:
     void si_visibleAreaChanged();
@@ -130,13 +130,13 @@ private:
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 
-    MaEditor* maEditor;
-    MaEditorWgt* ui;
-    GScrollBar* hScrollBar;
-    GScrollBar* vScrollBar;
+    MaEditor* maEditor = nullptr;
+    MaEditorWgt* ui = nullptr;
+    GScrollBar* hScrollBar = nullptr;
+    GScrollBar* vScrollBar = nullptr;
 
-    int savedFirstVisibleMaRow;
-    int savedFirstVisibleMaRowOffset;
+    int savedFirstVisibleMaRow = 0;
+    int savedFirstVisibleMaRowOffset = 0;
 
     bool hScrollBarVisible = true;
     bool vScrollBarVisible = true;
