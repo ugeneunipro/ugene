@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>453</height>
+    <width>900</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>562</width>
-    <height>400</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>800</width>
-    <height>514</height>
+    <width>900</width>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -34,8 +28,8 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_5">
+   <item row="0" column="0" colspan="2">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="2" column="0">
       <widget class="QCheckBox" name="withAnnotationsBox">
@@ -104,14 +98,20 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="translationBox">
      <property name="title">
       <string>Convertion options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
+      <item row="0" column="0">
        <widget class="QRadioButton" name="directStrandButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Save direct strand</string>
         </property>
@@ -120,31 +120,62 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="0" column="1">
        <widget class="QRadioButton" name="complementStrandButton">
         <property name="text">
          <string>Save complement strand</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="0" column="2">
        <widget class="QRadioButton" name="bothStrandsButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Save both strands</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
        <widget class="QCheckBox" name="translateButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Translate to amino alphabet</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="QCheckBox" name="allTFramesButton">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
          <string>Save all amino frames</string>
@@ -154,46 +185,55 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="translationTableCombo">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="translationTableButton">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="translationTableButton">
-        <property name="enabled">
-         <bool>false</bool>
         </property>
         <property name="text">
          <string>Use custom translation table</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QComboBox" name="translationTableCombo">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" colspan="2">
     <widget class="QGroupBox" name="backTranslationBox">
      <property name="title">
       <string>Back translation options</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
        <widget class="QCheckBox" name="backTranslateButton">
         <property name="text">
          <string>Translate back to nucleic alphabet</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
         <item>
          <widget class="QRadioButton" name="mostFrequentlyButton">
@@ -220,7 +260,7 @@
         </item>
        </layout>
       </item>
-      <item>
+      <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
         <item>
          <widget class="QLabel" name="organismLabel">
@@ -238,10 +278,16 @@
            <bool>false</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
           <property name="frame">
            <bool>true</bool>
@@ -253,19 +299,12 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0" colspan="2">
     <widget class="QGroupBox" name="saveModeBox">
      <property name="title">
       <string>Merge options</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,1">
-      <item row="0" column="1">
-       <widget class="QRadioButton" name="mergeButton">
-        <property name="text">
-         <string>Merge sequences</string>
-        </property>
-       </widget>
-      </item>
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QRadioButton" name="separateButton">
         <property name="text">
@@ -276,53 +315,56 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="merge_gap_label">
-          <property name="text">
-           <string>Add gap symbols between sequences</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="mergeSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="maximum">
-           <number>100000</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="mergeButton">
+        <property name="text">
+         <string>Merge sequences</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>283</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="merge_gap_label">
+        <property name="text">
+         <string>Add gap symbols between sequences</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QSpinBox" name="mergeSpinBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
+   <item row="4" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -351,7 +393,6 @@
   <tabstop>organismCombo</tabstop>
   <tabstop>separateButton</tabstop>
   <tabstop>mergeButton</tabstop>
-  <tabstop>mergeSpinBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
