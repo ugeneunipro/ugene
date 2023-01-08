@@ -35,14 +35,13 @@ namespace U2 {
 #define SIMPLE_ATTR "simple"
 #define MIN_LEN_ATTR "min_length"
 #define MAX_LEN_ATTR "max_length"
-#define TRANSL_ATTR "transl"
 #define DATABASE_ATTR "db"
 #define EVALUE_ATTR "e-value"
 #define INDEX_ATTR "index"
 #define SEQUENCE_ATTR "seq"
 #define SHORTSEQ_ATTR "short_seq"
 #define HITS_ATTR "hits"
-#define ALG_ATTR "alg"
+#define PROGRAM_ATTR "alg"
 #define FILTERS_ATTR "filters"
 #define GAP_ATTR "gap_costs"
 #define MATCHSCORE_ATTR "match_scores"
@@ -98,8 +97,8 @@ public:
 };
 
 void addParametr(QString& str, const QString& paramName, const QString& param);
-void addParametr(QString& str, const QString& paramName, const double param);
-void addParametr(QString& str, const QString& paramName, const int param);
+void addParametr(QString& str, const QString& paramName, double param);
+void addParametr(QString& str, const QString& paramName, int param);
 
 }  // namespace U2
 

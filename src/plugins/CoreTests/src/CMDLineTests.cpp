@@ -214,12 +214,13 @@ Task::ReportResult GTest_RunCMDLine::report() {
         if (!output.contains(expectedMessage, Qt::CaseSensitive)) {
             stateInfo.setError(QString("Expected message not found in output"));
         }
-        return ReportResult_Finished;
     }
     if (!unexpectedMessage.isEmpty()) {
         if (output.contains(unexpectedMessage, Qt::CaseSensitive)) {
             stateInfo.setError(QString("Unexpected message is found in output"));
         }
+    }
+    if (!expectedMessage.isEmpty() || !unexpectedMessage.isEmpty()) {
         return ReportResult_Finished;
     }
 

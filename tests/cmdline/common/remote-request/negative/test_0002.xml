@@ -9,5 +9,7 @@
                  hits="10"
                  short="true"
                  blast-output="!tmp_data_dir!blast.xml"
-                 message="Required parameter has no datasets specified: Input file(s)"/>
+                 message="Required parameter has no datasets specified: Input file(s)"
+                 nomessage="RemoteBLASTTask"
+    />
 </multi-test>

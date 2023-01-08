@@ -8,10 +8,6 @@
     <excluded test="remote-request/circular/test_0004.xml" reason="UGENE-3695"/>
     <excluded test="remote-request/circular/test_0005.xml" reason="UGENE-3695"/>
     <excluded test="remote-request/circular/test_0006.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/negative/test_0002.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0005.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0006.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0007.xml" reason="too_long"/>
     <excluded test="remote-request/test_0002.xml" reason="too_long"/>
     <excluded test="remote-request/test_0003.xml" reason="too_long"/>
     <excluded test="remote-request/test_0004.xml" reason="too_long"/>

@@ -5,8 +5,10 @@
                  alg="ncbi-blastp"
                  db="nr"
                  eval="10"
-                 hits="asdd"
+                 hits="0"
                  short="true"
                  blast-output="!tmp_data_dir!blast.xml"
-                 message="Incorrect value"/>
+                 message="Incorrect 'hits' parameter value"
+                 nomessage="RemoteBLASTTask"
+    />
 </multi-test>

@@ -37,9 +37,9 @@ void GTest_RemoteBLAST::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
 
-    algoritm = el.attribute(ALG_ATTR);
+    algoritm = el.attribute(PROGRAM_ATTR);
     if (algoritm.isEmpty()) {
-        failMissingValue(ALG_ATTR);
+        failMissingValue(PROGRAM_ATTR);
         return;
     }
 
