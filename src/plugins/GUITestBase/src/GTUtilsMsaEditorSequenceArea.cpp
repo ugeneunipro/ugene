@@ -177,9 +177,10 @@ void GTUtilsMSAEditorSequenceArea::selectArea(
 
     switch (method) {
         case GTGlobals::UseKey:
-            clickToPosition(os, p1);
-            GTKeyboardDriver::keyPress(Qt::Key_Shift);
-            clickToPosition(os, p2);
+            clickToPosition(os, p1);  // Make initial selection.
+            moveMouseToPosition(os, p2);  // Scroll to the end.
+            GTKeyboardDriver::keyPress(Qt::Key_Shift);  // Make the final selection.
+            GTMouseDriver::click();
             GTKeyboardDriver::keyRelease(Qt::Key_Shift);
             break;
         case GTGlobals::UseMouse:
@@ -231,43 +232,58 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
                  .arg(msaSeqArea->getEditor()->getAlignmentLen())
                  .arg(msaSeqArea->getViewRowCount()));
 
-    // scroll down
-    auto vBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0));
+    // Scroll down with a vertical scroll bar first.
+    MaEditorWgt* msaWidget = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    auto verticalScrollBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll", msaWidget);
 
     QStyleOptionSlider vScrollBarOptions;
-    vScrollBarOptions.initFrom(vBar);
+    vScrollBarOptions.initFrom(verticalScrollBar);
 
-    while (!msaSeqArea->isRowVisible(position.y(), false)) {
-        const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
-        const QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
+    for (int clickCount = 0; !msaSeqArea->isRowVisible(position.y(), false); clickCount++) {
+        CHECK_SET_ERR_RESULT(clickCount <= 20, "Too many clicks on verticalScrollBar to get to the desired position. Use another method in GUI tests", );
+        // Make 1 click to the slider (1-base shift), so scroll bar will have a focus.
+        // After that use PageUp/PageDown to scroll faster (1-page shift).
+        if (clickCount == 0) {
+            QRect sliderSpaceRect = verticalScrollBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, verticalScrollBar);
+            QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
 
-        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click();
+            GTMouseDriver::moveTo(verticalScrollBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
+            GTMouseDriver::click();
+        } else {
+            GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+        }
     }
 
-    // scroll right
-    auto hBar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll", GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0));
+    // Scroll right with a horizontal scroll bar next.
+    auto horizontalScrollBar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll", msaWidget);
 
     QStyleOptionSlider hScrollBarOptions;
-    hScrollBarOptions.initFrom(hBar);
+    hScrollBarOptions.initFrom(horizontalScrollBar);
 
-    while (!msaSeqArea->isPositionVisible(position.x(), false)) {
-        const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
-        const QPoint leftEdge(sliderSpaceRect.x(), sliderSpaceRect.height() / 2);
-        const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
+    for (int clickCount = 0; !msaSeqArea->isPositionVisible(position.x(), false); clickCount++) {
+        CHECK_SET_ERR_RESULT(clickCount <= 20, "Too many clicks on horizontalScrollBar to get to the desired position. Use another method in GUI tests", );
+        // Make 1 click to the slider (1-base shift), so scroll bar will have a focus.
+        // After that use PageUp/PageDown to scroll faster (1-page shift).
+        if (clickCount == 0) {
+            QRect sliderSpaceRect = horizontalScrollBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, horizontalScrollBar);
+            QPoint leftEdge(sliderSpaceRect.x(), sliderSpaceRect.height() / 2);
+            QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        int firstBase = msaSeqArea->getFirstVisibleBase();
-        int lastBase = msaSeqArea->getLastVisibleBase(false);
-        QPoint p;
-        if (position.x() >= lastBase) {
-            p = hBar->mapToGlobal(rightEdge) + QPoint(3, 0);
-        } else if (position.x() <= firstBase) {
-            p = hBar->mapToGlobal(leftEdge) - QPoint(3, 0);
+            int firstBase = msaSeqArea->getFirstVisibleBase();
+            int lastBase = msaSeqArea->getLastVisibleBase(false);
+            QPoint p;
+            if (position.x() >= lastBase) {
+                p = horizontalScrollBar->mapToGlobal(rightEdge) + QPoint(3, 0);
+            } else if (position.x() <= firstBase) {
+                p = horizontalScrollBar->mapToGlobal(leftEdge) - QPoint(3, 0);
+            } else {
+                p = horizontalScrollBar->mapToGlobal(rightEdge) - QPoint(1, 0);
+            }
+            GTMouseDriver::moveTo(p);
+            GTMouseDriver::click();
         } else {
-            p = hBar->mapToGlobal(rightEdge) - QPoint(1, 0);
+            GTKeyboardDriver::keyClick(Qt::Key_PageDown);
         }
-        GTMouseDriver::moveTo(p);
-        GTMouseDriver::click();
     }
 
     SAFE_POINT(msaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );

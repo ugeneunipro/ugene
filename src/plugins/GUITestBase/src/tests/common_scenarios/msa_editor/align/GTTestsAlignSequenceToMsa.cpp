@@ -22,9 +22,6 @@
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTMenu.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <utils/GTKeyboardUtils.h>
@@ -52,20 +49,21 @@ namespace GUITest_common_scenarios_align_sequences_to_msa {
 using namespace HI;
 
 static void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect& selectionRect, const QString& expectedContent) {
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, selectionRect.center().x()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    int onScreenSelectionStartX = selectionRect.x() + 1;
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, onScreenSelectionStartX));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
     GTKeyboardUtils::copy();
 
-    const QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Try to delete the MSA object during aligning
-    // Expected state: the sequences are locked and and can not be deleted
+    // Expected state: the sequences are locked and can not be deleted
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -91,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Try to delete the MSA object during aligning
-    // Expected state: the MSA object is locked and and can not be deleted
+    // Expected state: the MSA object is locked and can not be deleted
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -208,8 +206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList fileList = {"tub1.txt", "tub3.txt"};
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
-    GTUtilsDialog::waitForDialog(os, ob);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList));
 
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);

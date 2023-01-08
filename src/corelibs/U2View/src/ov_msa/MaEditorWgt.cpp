@@ -104,19 +104,24 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
-    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
-    shBar->setObjectName("horizontal_sequence_scroll");
-    shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar* nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
-    nameListHorizontalScrollBar->setObjectName("horizontal_names_scroll");
-    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
-    cvBar->setObjectName("vertical_sequence_scroll");
+    auto horizontalSequenceScrollBar = new GScrollBar(Qt::Horizontal);
+    horizontalSequenceScrollBar->setObjectName("horizontal_sequence_scroll");
+    horizontalSequenceScrollBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    horizontalSequenceScrollBar->setFocusPolicy(Qt::StrongFocus);
 
-    initSeqArea(shBar, cvBar);
-    scrollController->init(shBar, cvBar);
+    auto horizontalNameListScrollBar = new QScrollBar(Qt::Horizontal);
+    horizontalNameListScrollBar->setObjectName("horizontal_names_scroll");
+    horizontalNameListScrollBar->setFocusPolicy(Qt::StrongFocus);
+
+    auto verticalSequenceScrollbar = new GScrollBar(Qt::Vertical);
+    verticalSequenceScrollbar->setObjectName("vertical_sequence_scroll");
+    verticalSequenceScrollbar->setFocusPolicy(Qt::StrongFocus);
+
+    initSeqArea(horizontalSequenceScrollBar, verticalSequenceScrollbar);
+    scrollController->init(horizontalSequenceScrollBar, verticalSequenceScrollbar);
     sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-    initNameList(nameListHorizontalScrollBar);
+    initNameList(horizontalNameListScrollBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
@@ -151,9 +156,9 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     seqAreaLayout->addWidget(offsetsViewController->leftWidget, 1, 0);
     seqAreaLayout->addWidget(sequenceArea, 1, 1);
     seqAreaLayout->addWidget(offsetsViewController->rightWidget, 1, 2);
-    seqAreaLayout->addWidget(cvBar, 1, 3);
+    seqAreaLayout->addWidget(verticalSequenceScrollbar, 1, 3);
 
-    seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
+    seqAreaLayout->addWidget(horizontalSequenceScrollBar, 2, 0, 1, 3);
 
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
@@ -170,12 +175,12 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     nameAreaLayout->setSpacing(0);
     nameAreaLayout->addWidget(consensusLabel);
     nameAreaLayout->addWidget(nameList);
-    nameAreaLayout->addWidget(nameListHorizontalScrollBar);
+    nameAreaLayout->addWidget(horizontalNameListScrollBar);
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
-    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
+    horizontalNameListScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15);  // Splitter uses min-size to collapse a widget
 
