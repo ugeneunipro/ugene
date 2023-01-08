@@ -119,7 +119,7 @@ bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
         QNetworkRequest netRequest(urlString);
         reply = netManager->get(netRequest);
     }
-    coreLog.details(tr("Downloading from %1").arg(reply->url().toString()));
+    coreLog.details(tr("GET %1").arg(reply->url().toString()));
     connect(reply, SIGNAL(readyRead()), this, SLOT(add_data()), Qt::DirectConnection);
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(progress(qint64, qint64)), Qt::DirectConnection);  //+
     connect(reply, SIGNAL(finished()), this, SLOT(done()), Qt::DirectConnection);

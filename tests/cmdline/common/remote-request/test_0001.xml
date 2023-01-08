@@ -9,7 +9,9 @@
                  hits="20"
                  short="true"
                  blast-output="!tmp_data_dir!blast_01.xml"
+                 message="NCBI BLAST to view results in web browser"
     />
+
     <load-document index="doc1" url="blast-search0001_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
     <load-document index="doc2" url="cmdline/remote-request/01.gb" io="local_file" format="genbank"/>
 

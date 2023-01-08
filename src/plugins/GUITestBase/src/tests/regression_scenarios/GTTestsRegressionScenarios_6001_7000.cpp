@@ -1255,7 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     // Run the workflow and wait for the expected message.
     GTLogTracer logTracer;
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsLog::checkMessageWithWait(os, logTracer, "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
