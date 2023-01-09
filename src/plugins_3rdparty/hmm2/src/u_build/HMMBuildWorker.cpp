@@ -244,7 +244,8 @@ bool HMMBuildWorker::isReady() const {
 
 Task* HMMBuildWorker::tick() {
     if (calSettings.seed < 0) {
-        algoLog.error(tr("Incorrect value for seed parameter"));
+        setDone();
+        nextTick = nullptr;
         return new FailTask(tr("Incorrect value for seed parameter"));
     }
 
