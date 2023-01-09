@@ -673,6 +673,10 @@ QList<SharedAnnotationData>& U2SequenceImporter::getCaseAnnotations() {
     return annList;
 }
 
+void U2SequenceImporter::resetAlphabetCharacterHit() {
+    alphabetCharacterHit = QBitArray(256);
+}
+
 qint64 U2SequenceImporter::getCurrentLength() const {
     return currentLength;
 }

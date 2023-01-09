@@ -155,6 +155,10 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
             fullSequenceSize += gapSize;
         }
 
+        if (!merge) {
+            seqImporter.resetAlphabetCharacterHit();
+        }
+
         // tolerate blank lines between records
         char ch;
         bool b;
