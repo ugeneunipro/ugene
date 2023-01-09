@@ -22,6 +22,7 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
+#include <QScreen>
 
 #include "GTMouseDriver.h"
 
@@ -48,9 +49,16 @@ bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     GTThread::waitForMainThread();
 
     QPoint middlePoint = (end + start) / 2;
-    bool useMiddlePoint = (middlePoint - start).manhattanLength() > 2 * QApplication::startDragDistance();
-    if (!useMiddlePoint) {
+    bool isMiddlePointValid = (middlePoint - start).manhattanLength() > 2 * QApplication::startDragDistance();
+    if (!isMiddlePointValid) {
         middlePoint = start + QPoint(3 * QApplication::startDragDistance(), 3 * QApplication::startDragDistance());
+        QRect screenRect = QGuiApplication::primaryScreen()->geometry();
+        if (middlePoint.x() > screenRect.right()) {
+            middlePoint.setX(start.x() - 3 * QApplication::startDragDistance());
+        }
+        if (middlePoint.y() > screenRect.bottom()) {
+            middlePoint.setY(start.y() - 3 * QApplication::startDragDistance());
+        }
     }
     DRIVER_CHECK(moveTo(middlePoint), QString("Mouse could not be moved to point (%1, %2)").arg(middlePoint.x()).arg(middlePoint.y()));
 
