@@ -158,7 +158,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
     connect(translationTableButton, SIGNAL(clicked()), SLOT(sl_translationTableEnabler()));
 
     int height = layout()->minimumSize().height();
-    setMaximumHeight(height);
+    setFixedHeight(height);
 }
 
 void ExportSequencesDialog::sl_formatChanged(const QString& newFormatId) {
