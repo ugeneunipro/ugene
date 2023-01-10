@@ -180,6 +180,7 @@ void TestViewController::setupMDIToolbar(QToolBar* tb) {
 void TestViewController::setupViewMenu(QMenu* m) {
     m->addAction(addTestSuiteAction);
     m->addAction(removeTestSuiteAction);
+    m->addAction(refreshAction);
     m->addAction(setEnvAction);
     m->addAction(runAllSuitesAction);
     m->addAction(runSelectedSuitesAction);
