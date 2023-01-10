@@ -790,7 +790,7 @@ void TestViewController::sl_runAllSuitesAction() {
 }
 
 void TestViewController::sl_runSelectedSuitesAction() {
-    assert(task == nullptr);
+    CHECK(task != nullptr, );
     GTestEnvironment* env = service->getEnv();
     if (env->containsEmptyVars()) {
         QMessageBox::critical(this, tr("error"), tr("Not all environment variables set"));
@@ -799,10 +799,8 @@ void TestViewController::sl_runSelectedSuitesAction() {
     QList<GTestState*> testsToRun;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
-        assert(item->isSuite());
-        bool runAll = false;
-        if (item->isSelected())
-            runAll = true;
+        SAFE_POINT(item->isSuite(), "Top level item is not a test suite!", );
+        bool runAll = item->isSelected();
         testsToRun += getSubTestToRun(item, runAll);
     }
     if (!testsToRun.isEmpty()) {
@@ -993,13 +991,10 @@ void TestViewController::sl_report() {
     TestViewReporter::saveReportToFileAndOpenBrowser(tree, time);
 }
 
-void TestViewController::sl_treeDoubleClicked(QTreeWidgetItem* i, int col) {
-    Q_UNUSED(col);
-    Q_UNUSED(i);
-    /*    TVItem* item = (TVItem*)i;
-    TVTSItem* sItem = item!=NULL && item->isSuite() ? (TVTSItem*)item : NULL;
-    TVTestItem* tItem = item!=NULL && item->isTest() ? (TVTestItem*)item : NULL;
-    //TODO:*/
+void TestViewController::sl_treeDoubleClicked(QTreeWidgetItem* i, int) {
+    auto tvItem = static_cast<TVItem*>(i);
+    CHECK(tvItem->isTest(), )
+    emit sl_runSelectedSuitesAction();
 }
 
 void TestViewController::sl_testStateChanged(GTestState* ts) {
