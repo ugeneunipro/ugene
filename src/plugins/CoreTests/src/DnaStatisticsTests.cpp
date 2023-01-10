@@ -21,6 +21,8 @@
 
 #include "DnaStatisticsTests.h"
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Location.h>
@@ -33,6 +35,7 @@ namespace U2 {
 const QString GTest_DnaStatisticsTest::DOC_NAME_ATTR = "doc-name";
 const QString GTest_DnaStatisticsTest::SEQ_NAME_ATTR = "seq-name";
 const QString GTest_DnaStatisticsTest::REGIONS_ATTR = "regions";
+const QString GTest_DnaStatisticsTest::TEMPERATURE_CALCULATION_ATTR = "temperature-calculation";
 
 const QString GTest_DnaStatisticsTest::EXPECTED_LENGTH = "expected-length";
 const QString GTest_DnaStatisticsTest::EXPECTED_GC_CONTENT = "expected-gc-content";
@@ -50,6 +53,11 @@ const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_MASS = "expected-ds-od2
 
 const QString GTest_DnaStatisticsTest::EXPECTED_ISOELECTRIC_POINT = "expected-isoelectric-point";
 
+
+GTest_DnaStatisticsTest::~GTest_DnaStatisticsTest() {
+    delete temperatureCalculator;
+}
+
 void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
     task = nullptr;
 
@@ -61,14 +69,40 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
     CHECK_OP(stateInfo, );
     seqName = element.attribute(SEQ_NAME_ATTR);
 
-    checkNecessaryAttributeExistence(element, REGIONS_ATTR);
-    CHECK_OP(stateInfo, );
-    const QString regionsString = element.attribute(REGIONS_ATTR);
-    CHECK_EXT(!regionsString.isEmpty(), emptyValue(REGIONS_ATTR), );
-    U2Location location;
-    Genbank::LocationParser::parseLocation(regionsString.toLatin1().constData(), regionsString.length(), location);
-    regions = location->regions;
-    CHECK_EXT(!regions.isEmpty(), setError(QString("Can't convert string '%1' to regions list").arg(regionsString)), );
+    {
+        checkNecessaryAttributeExistence(element, REGIONS_ATTR);
+        CHECK_OP(stateInfo, );
+
+        const QString regionsString = element.attribute(REGIONS_ATTR);
+        CHECK_EXT(!regionsString.isEmpty(), emptyValue(REGIONS_ATTR), );
+
+        U2Location location;
+        Genbank::LocationParser::parseLocation(regionsString.toLatin1().constData(), regionsString.length(), location);
+        regions = location->regions;
+        CHECK_EXT(!regions.isEmpty(), setError(QString("Can't convert string '%1' to regions list").arg(regionsString)), );
+    }
+
+    {
+        checkNecessaryAttributeExistence(element, TEMPERATURE_CALCULATION_ATTR);
+        CHECK_OP(stateInfo, );
+
+        const QString temperatureCalculationSting = element.attribute(TEMPERATURE_CALCULATION_ATTR);
+        CHECK_EXT(!temperatureCalculationSting.isEmpty(), emptyValue(TEMPERATURE_CALCULATION_ATTR), );
+
+        auto settingsStringList = temperatureCalculationSting.split(";");
+        QVariantMap resultMap;
+        for (const auto& setting : qAsConst(settingsStringList)) {
+            auto keyAndValue = setting.split(",");
+            CHECK_EXT(keyAndValue.size() == 2, setError(QString("Incorrect value %1").arg(setting)), );
+
+            resultMap.insert(keyAndValue.first(), keyAndValue.last());
+        }
+        CHECK_EXT(!resultMap.isEmpty(), setError("No temperature settings"), );
+        CHECK_EXT(resultMap.keys().contains(TempCalcSettings::KEY_ID), setError("No ID were set"), );
+
+        temperatureCalculator = AppContext::getTempCalcRegistry()->getTempCalculatorBySettingsMap(resultMap);
+        CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings"), );
+    }
 
     if (element.hasAttribute(EXPECTED_LENGTH)) {
         expectedStats.length = getInt64(element, EXPECTED_LENGTH);
@@ -138,8 +172,7 @@ void GTest_DnaStatisticsTest::prepare() {
     U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(loadedDocument->findGObjectByName(seqName));
     CHECK_EXT(nullptr != sequenceObject, setError(QString("Sequence object '%1' not found in document '%2'").arg(seqName).arg(docName)), );
 
-    //TODO
-    //task = new DNAStatisticsTask(sequenceObject->getAlphabet(), sequenceObject->getEntityRef(), regions);
+    task = new DNAStatisticsTask(sequenceObject->getAlphabet(), sequenceObject->getEntityRef(), regions, temperatureCalculator);
     addSubTask(task);
 }
 

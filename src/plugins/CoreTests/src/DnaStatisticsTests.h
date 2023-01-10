@@ -23,6 +23,8 @@
 
 #include <QDomElement>
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
@@ -36,7 +38,9 @@ class DNAStatisticsTask;
 
 class GTest_DnaStatisticsTest : public XmlTest {
     Q_OBJECT
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaStatisticsTest, "dna-statistics")
+        SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaStatisticsTest, "dna-statistics")
+
+    ~GTest_DnaStatisticsTest();
 
 private:
     void prepare() override;
@@ -48,6 +52,7 @@ private:
     QString docName;
     QString seqName;
     QVector<U2Region> regions;
+    BaseTempCalc* temperatureCalculator = nullptr;
 
     // expected values
     DNAStatistics expectedStats;
@@ -55,7 +60,16 @@ private:
     // attribute names
     static const QString DOC_NAME_ATTR;
     static const QString SEQ_NAME_ATTR;
-    static const QString REGIONS_ATTR;  // 0-based, GenBank-like format without 'join' word: 1..20,40..60
+    /** 
+     * 0-based, GenBank-like format without 'join' word: 1..20,40..60
+     */
+    static const QString REGIONS_ATTR;
+    /**
+     * Semicolon separated list of comma separated pairs,
+     * where the first value is a key (see @TempCalcSettings and its heirs)
+     * and the second value is the value of the corresponding parameter.
+     */
+    static const QString TEMPERATURE_CALCULATION_ATTR;
 
     static const QString EXPECTED_LENGTH;
     static const QString EXPECTED_GC_CONTENT;
