@@ -29,24 +29,25 @@
 
 namespace U2 {
 
-class InSilicoPcrTaskSettings {
-public:
-    InSilicoPcrTaskSettings();
+struct InSilicoPcrTaskSettings {
+    InSilicoPcrTaskSettings() = default;
+    ~InSilicoPcrTaskSettings() = default;
+    Q_DISABLE_COPY_MOVE(InSilicoPcrTaskSettings)
 
     QByteArray sequence;
     GObjectReference sequenceObject;
-    bool isCircular;
+    bool isCircular = false;
     QByteArray forwardPrimer;
     QByteArray reversePrimer;
-    uint forwardMismatches;
-    uint reverseMismatches;
-    uint maxProductSize;
-    uint perfectMatch;
+    uint forwardMismatches = 0;
+    uint reverseMismatches = 0;
+    uint maxProductSize = 0;
+    uint perfectMatch = 0;
     bool useAmbiguousBases = true;
     QString sequenceName;
     BaseTempCalc* temperatureCalculator = nullptr;
 
-    static const qint64 MAX_SEQUENCE_LENGTH;
+    static constexpr qint64 MAX_SEQUENCE_LENGTH = 500 * 1024 * 1024;  // 500 Mb;
 };
 
 struct InSilicoPcrProduct {
@@ -75,7 +76,8 @@ struct InSilicoPcrProduct {
 class InSilicoPcrTask : public Task {
     Q_OBJECT
 public:
-    InSilicoPcrTask(const InSilicoPcrTaskSettings& settings);
+    InSilicoPcrTask(InSilicoPcrTaskSettings* settings);
+    ~InSilicoPcrTask();
 
     // Task
     void prepare();
@@ -83,7 +85,7 @@ public:
     QString generateReport() const;
 
     const QList<InSilicoPcrProduct>& getResults() const;
-    const InSilicoPcrTaskSettings& getSettings() const;
+    const InSilicoPcrTaskSettings* getSettings() const;
 
 private:
     struct PrimerBind {
@@ -110,7 +112,7 @@ private:
     // it takes ~6 minutes to process matrix 50x50 results with default algorithm settings in release build
     static constexpr int MAX_RESULTS_FOR_PRIMERS_PER_STRAND = 50;
 
-    InSilicoPcrTaskSettings settings;
+    const InSilicoPcrTaskSettings* settings = nullptr;
     FindAlgorithmTask* forwardSearch;
     FindAlgorithmTask* reverseSearch;
     QList<InSilicoPcrProduct> results;

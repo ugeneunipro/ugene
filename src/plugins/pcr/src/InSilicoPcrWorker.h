@@ -93,7 +93,7 @@ protected:
 private:
     void fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os);
     Primer createPrimer(GObject* object, bool& skipped, U2OpStatus& os);
-    int createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber);
+    int createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber);
     QByteArray createReport() const;
     QVariant fetchSequence(Document* doc);
     QVariant fetchAnnotations(Document* doc);

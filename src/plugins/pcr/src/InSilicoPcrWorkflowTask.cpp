@@ -23,11 +23,15 @@
 
 namespace U2 {
 
-InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings& pcrSettings, const ExtractProductSettings& _productSettings)
-    : Task(tr("In silico PCR workflow task"), TaskFlags_NR_FOSE_COSC), productSettings(_productSettings) {
+InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSettings, const ExtractProductSettings& _productSettings)
+    : Task(tr("In silico PCR workflow task"), TaskFlags_NR_FOSE_COSC), productSettings(_productSettings), temperatureCalculator(pcrSettings->temperatureCalculator) {
     pcrTask = new InSilicoPcrTask(pcrSettings);
     addSubTask(pcrTask);
     pcrTask->setSubtaskProgressWeight((float)0.7);
+}
+
+InSilicoPcrWorkflowTask::~InSilicoPcrWorkflowTask() {
+    delete temperatureCalculator;
 }
 
 QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task* subTask) {
@@ -57,7 +61,7 @@ QList<InSilicoPcrWorkflowTask::Result> InSilicoPcrWorkflowTask::takeResult() {
     return result;
 }
 
-const InSilicoPcrTaskSettings& InSilicoPcrWorkflowTask::getPcrSettings() const {
+const InSilicoPcrTaskSettings* InSilicoPcrWorkflowTask::getPcrSettings() const {
     return pcrTask->getSettings();
 }
 

@@ -167,20 +167,20 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
-    InSilicoPcrTaskSettings settings;
-    settings.forwardPrimer = forwardPrimerBox->getPrimer();
-    settings.reversePrimer = reversePrimerBox->getPrimer();
-    settings.forwardMismatches = forwardPrimerBox->getMismatches();
-    settings.reverseMismatches = reversePrimerBox->getMismatches();
-    settings.maxProductSize = uint(maxProduct);
-    settings.perfectMatch = uint(perfectMatch);
-    settings.useAmbiguousBases = useAmbiguousBasesCheckBox->isChecked();
+    auto settings = new InSilicoPcrTaskSettings;
+    settings->forwardPrimer = forwardPrimerBox->getPrimer();
+    settings->reversePrimer = reversePrimerBox->getPrimer();
+    settings->forwardMismatches = forwardPrimerBox->getMismatches();
+    settings->reverseMismatches = reversePrimerBox->getMismatches();
+    settings->maxProductSize = uint(maxProduct);
+    settings->perfectMatch = uint(perfectMatch);
+    settings->useAmbiguousBases = useAmbiguousBasesCheckBox->isChecked();
     U2OpStatusImpl os;
-    settings.sequence = sequenceObject->getWholeSequenceData(os);
+    settings->sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
-    settings.sequenceObject = GObjectReference(sequenceObject);
-    settings.isCircular = sequenceObject->isCircular();
-    settings.temperatureCalculator = temperatureCalculator;
+    settings->sequenceObject = GObjectReference(sequenceObject);
+    settings->isCircular = sequenceObject->isCircular();
+    settings->temperatureCalculator = temperatureCalculator;
 
     pcrTask = new InSilicoPcrTask(settings);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
@@ -205,7 +205,7 @@ void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
 }
 
 void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
-    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings().sequenceObject);
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings()->sequenceObject);
     CHECK(nullptr != sequenceContext, );
 
     productsTable->showProducts(task->getResults(), sequenceContext);
@@ -242,7 +242,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
         setResultTableShown(false);
     }
     CHECK(nullptr != pcrTask, );
-    bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings().sequenceObject;
+    bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings()->sequenceObject;
     if (taskChanged) {
         pcrTask->cancel();
     }

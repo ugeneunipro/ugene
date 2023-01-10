@@ -23,6 +23,8 @@
 
 #include <QTextStream>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -111,7 +113,7 @@ void InSilicoPcrWorkerFactory::init() {
         attributes << new Attribute(maxProductDesc, BaseTypes::NUM_TYPE(), false, 5000);
         attributes << new Attribute(useAmbiguousBases, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(annotationsDesc, BaseTypes::NUM_TYPE(), false, ExtractProductSettings::Inner);
-        attributes << new Attribute(temperatureDesc, BaseTypes::STRING_LIST_TYPE(), false);
+        attributes << new Attribute(temperatureDesc, BaseTypes::MAP_TYPE(), false);
     }
     QMap<QString, PropertyDelegate*> delegates;
     {
@@ -261,8 +263,8 @@ QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
         int pairNumber = pcrTask->property(PAIR_NUMBER_PROP_ID).toInt();
         SAFE_POINT_EXT(pairNumber >= 0 && pairNumber < primers.size(), os.setError(L10N::internalError("Out of range")), result);
 
-        InSilicoPcrTaskSettings settings = pcrTask->getPcrSettings();
-        tableRow.sequenceName = settings.sequenceName;
+        const InSilicoPcrTaskSettings* settings = pcrTask->getPcrSettings();
+        tableRow.sequenceName = settings->sequenceName;
         QList<InSilicoPcrWorkflowTask::Result> pcrResults = pcrTask->takeResult();
         tableRow.productsNumber[pairNumber] = pcrResults.size();
 
@@ -278,7 +280,7 @@ QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
             QVariantMap data;
             data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = sequence;
             data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = annotations;
-            int metadataId = createMetadata(settings, pcrResult.product.region, pairNumber);
+            int metadataId = createMetadata(settings->sequence.length(), pcrResult.product.region, pairNumber);
             result << Message(output->getBusType(), data, metadataId);
         }
     }
@@ -306,10 +308,10 @@ QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
     return qVariantFromValue<SharedDbiDataHandler>(annsId);
 }
 
-int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber) {
+int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber) {
     MessageMetadata oldMetadata = context->getMetadataStorage().get(output->getContextMetadataId());
     QString primerName = primers[pairNumber].first.name;
-    QString suffix = "_" + ExtractProductTask::getProductName(primerName, settings.sequence.length(), productRegion, true);
+    QString suffix = "_" + ExtractProductTask::getProductName(primerName, sequenceLength, productRegion, true);
     QString newUrl = GUrlUtils::insertSuffix(oldMetadata.getFileUrl(), suffix);
 
     MessageMetadata metadata(newUrl, oldMetadata.getDatasetName());
@@ -348,21 +350,30 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
     productSettings.targetDbiRef = context->getDataStorage()->getDbiRef();
     productSettings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(getValue<int>(EXTRACT_ANNOTATIONS_ATTR_ID));
 
-    InSilicoPcrTaskSettings pcrSettings;
-    pcrSettings.sequence = seq->getWholeSequenceData(os);
-    CHECK_OP(os, nullptr);
-    pcrSettings.isCircular = seq->isCircular();
-    pcrSettings.forwardMismatches = getValue<int>(MISMATCHES_ATTR_ID);
-    pcrSettings.reverseMismatches = pcrSettings.forwardMismatches;
-    pcrSettings.maxProductSize = getValue<int>(MAX_PRODUCT_ATTR_ID);
-    pcrSettings.useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
-    pcrSettings.perfectMatch = getValue<int>(PERFECT_ATTR_ID);
-    pcrSettings.sequenceName = seq->getSequenceName();
 
     QList<Task*> tasks;
     for (int i = 0; i < primers.size(); i++) {
-        pcrSettings.forwardPrimer = primers[i].first.sequence.toLocal8Bit();
-        pcrSettings.reversePrimer = primers[i].second.sequence.toLocal8Bit();
+        auto pcrSettings = new InSilicoPcrTaskSettings;
+        pcrSettings->sequence = seq->getWholeSequenceData(os);
+        CHECK_OP(os, nullptr);
+
+        pcrSettings->isCircular = seq->isCircular();
+        pcrSettings->forwardPrimer = primers[i].first.sequence.toLocal8Bit();
+        pcrSettings->reversePrimer = primers[i].second.sequence.toLocal8Bit();
+        pcrSettings->forwardMismatches = getValue<int>(MISMATCHES_ATTR_ID);
+        pcrSettings->reverseMismatches = pcrSettings->forwardMismatches;
+        pcrSettings->maxProductSize = getValue<int>(MAX_PRODUCT_ATTR_ID);
+        pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
+        pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
+        pcrSettings->sequenceName = seq->getSequenceName();
+        auto tempSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+        if (tempSettings.isEmpty()) {
+            pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->getDefaultTempCalculator();
+        } else {
+            auto settingsId = tempSettings.value(TempCalcSettings::KEY_ID).toString();
+            pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->getById(settingsId)->createTempCalculator(tempSettings);
+        }
+
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
         tasks << pcrTask;

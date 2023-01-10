@@ -65,7 +65,7 @@ private:
 
     FindAlgorithmTask* findPrimerTask;
     AnnotatedDNAView* annotatedDnaView;
-    BaseTempCalc* temperatureCalculator;
+    BaseTempCalc* temperatureCalculator = nullptr;
 };
 
 }  // namespace U2
