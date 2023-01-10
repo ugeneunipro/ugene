@@ -45,6 +45,18 @@ TempCalcSettings* TempCalcRegistry::getDefaultTempCalcSettings() const {
     return defaultFactory->createDefaultTempCalcSettings();
 }
 
+BaseTempCalc* TempCalcRegistry::getTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const {
+    BaseTempCalc* result = nullptr;
+    if (settingsMap.isEmpty()) {
+        result = getDefaultTempCalculator();
+    } else {
+        auto settingsId = settingsMap.value(TempCalcSettings::KEY_ID).toString();
+        result = getById(settingsId)->createTempCalculator(settingsMap);
+    }
+
+    return result;
+}
+
 void TempCalcRegistry::saveSettings(const QString& saveId, TempCalcSettings* settings) {
     savedSettings.insert(saveId, settings->toVariantMap());
 }

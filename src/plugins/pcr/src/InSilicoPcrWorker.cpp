@@ -322,7 +322,7 @@ int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& produc
 Task* InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, nullptr);
     reported = true;
-    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
+    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID), getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
 }
 
 Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
@@ -366,13 +366,7 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
         pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
         pcrSettings->sequenceName = seq->getSequenceName();
-        auto tempSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
-        if (tempSettings.isEmpty()) {
-            pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->getDefaultTempCalculator();
-        } else {
-            auto settingsId = tempSettings.value(TempCalcSettings::KEY_ID).toString();
-            pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->getById(settingsId)->createTempCalculator(tempSettings);
-        }
+        pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->getTempCalculatorBySettingsMap(getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
 
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
@@ -387,8 +381,19 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& _primersUrl)
-    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl), primersUrl(_primersUrl) {
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table, 
+                                             const QList<QPair<Primer, Primer>>& primers, 
+                                             const QString& reportUrl, 
+                                             const QString& _primersUrl, 
+                                             const QVariantMap& tempSettings)
+    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), 
+      primers(primers), 
+      reportUrl(reportUrl), 
+      primersUrl(_primersUrl),
+      temperatureCalculator(AppContext::getTempCalcRegistry()->getTempCalculatorBySettingsMap(tempSettings)) {}
+
+InSilicoPcrReportTask::~InSilicoPcrReportTask() {
+    delete temperatureCalculator;
 }
 
 void InSilicoPcrReportTask::run() {
@@ -438,7 +443,7 @@ QString InSilicoPcrReportTask::primerDetails() {
     QByteArray result;
     for (int i = 0; i < primers.size(); i++) {
         QPair<Primer, Primer> pair = primers[i];
-        PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit());
+        PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit(), temperatureCalculator);
         if (!calc.getInitializationError().isEmpty()) {
             setError(tr("An error '%1' has occurred during processing file with primers '%2'").arg(calc.getInitializationError()).arg(primersUrl));
             return "";

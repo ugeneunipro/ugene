@@ -29,6 +29,9 @@
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+
+class BaseTempCalc;
+
 namespace LocalWorkflow {
 
 class FindPrimerPairsPromter : public PrompterBase<FindPrimerPairsPromter> {
@@ -65,6 +68,8 @@ class FindPrimerPairsWorkerFactory : public DomainFactory {
 public:
     const static QString ACTOR_ID;
     const static QString OUT_FILE;
+    const static QString TEMPERATURE_SETTINGS_ID;
+
     FindPrimerPairsWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
@@ -78,7 +83,8 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences);
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, BaseTempCalc* temperatureCalculator);
+    ~FindPrimersTask();
 
     void run();
     QString getReport() const {
@@ -95,6 +101,7 @@ private:
 
 private:
     QList<DNASequence> sequences;
+    BaseTempCalc* temperatureCalculator = nullptr;
     QString report;
     QString outputUrl;
     QStringList rows;

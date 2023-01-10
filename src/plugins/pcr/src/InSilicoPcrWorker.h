@@ -58,7 +58,9 @@ public:
         QMap<int, int> productsNumber;  // pair number -> products count
     };
 
-    InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl);
+    InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl, const QVariantMap& tempSettings);
+    ~InSilicoPcrReportTask();
+
     void run();
 
 private:
@@ -75,6 +77,7 @@ private:
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
     QString primersUrl;
+    BaseTempCalc* temperatureCalculator = nullptr;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {

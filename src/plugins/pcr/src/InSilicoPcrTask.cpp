@@ -245,7 +245,7 @@ QString InSilicoPcrTask::generateReport() const {
         spaces += "&nbsp;";
     }
     if (PrimerStatistics::validate(settings->forwardPrimer) && PrimerStatistics::validate(settings->reversePrimer)) {
-        PrimersPairStatistics calc(settings->forwardPrimer, settings->reversePrimer);
+        PrimersPairStatistics calc(settings->forwardPrimer, settings->reversePrimer, settings->temperatureCalculator);
         return tr("Products found: %1").arg(results.size()) +
                "<br>" +
                spaces +

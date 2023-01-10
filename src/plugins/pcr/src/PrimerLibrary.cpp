@@ -113,17 +113,17 @@ PrimerLibrary::~PrimerLibrary() {
 }
 
 void PrimerLibrary::initPrimerUdrs(U2OpStatus& os) {
-    auto registerUdrSchema = [](U2OpStatus& os, const UdrSchemaId& id, const QList<QPair<QByteArray, UdrSchema::DataType>>& fields) {
+    auto registerUdrSchema = [](U2OpStatus& state, const UdrSchemaId& id, const QList<QPair<QByteArray, UdrSchema::DataType>>& fields) {
         CHECK(AppContext::getUdrSchemaRegistry()->getSchemaById(id) == nullptr, );
 
         QScopedPointer<UdrSchema> primerSchema(new UdrSchema(id));
         for (const auto& field : qAsConst(fields)) {
-            primerSchema->addField(UdrSchema::FieldDesc(field.first, field.second), os);
-            CHECK_OP(os, );
+            primerSchema->addField(UdrSchema::FieldDesc(field.first, field.second), state);
+            CHECK_OP(state, );
         }
 
-        AppContext::getUdrSchemaRegistry()->registerSchema(primerSchema.data(), os);
-        if (!os.hasError()) {
+        AppContext::getUdrSchemaRegistry()->registerSchema(primerSchema.data(), state);
+        if (!state.hasError()) {
             primerSchema.take();
         }
     };
@@ -234,12 +234,12 @@ void PrimerLibrary::setTemperatureCalculator(BaseTempCalc* newTemperatureCalcula
     auto records = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
     CHECK_OP(os, );
 
-    auto addAllFromSettingsMap = [this](const QVariantMap& settingsMap, U2OpStatus& state) {
-        auto keys = settingsMap.keys();
+    auto addAllFromSettingsMap = [this](const QVariantMap& settings, U2OpStatus& state) {
+        auto keys = settings.keys();
         for (const auto& key : qAsConst(keys)) {
             QList<UdrValue> values;
             values << UdrValue(key);
-            values << UdrValue(settingsMap.value(key).toString());
+            values << UdrValue(settings.value(key).toString());
             udrDbi->addRecord(PRIMER_SETTINGS_UDR_ID, values, state);
             CHECK_OP(state, );
         }
@@ -315,13 +315,13 @@ void PrimerLibrary::setTemperatureCalculator(BaseTempCalc* newTemperatureCalcula
 
 void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
     if (PrimerStatistics::validate(primer.sequence)) {
-        PrimerStatisticsCalculator calc(primer.sequence.toLocal8Bit());
+        PrimerStatisticsCalculator calc(primer.sequence.toLocal8Bit(), temperatureCalculator);
         primer.gc = calc.getGC();
+        primer.tm = calc.getTm();
     } else {
         primer.gc = Primer::INVALID_GC;
+        primer.tm = BaseTempCalc::INVALID_TM;
     }
-
-    primer.tm = temperatureCalculator->getMeltingTemperature(primer.sequence.toLocal8Bit());
 }
 
 void PrimerLibrary::createPrimerSettingsTableIfNotExists() {

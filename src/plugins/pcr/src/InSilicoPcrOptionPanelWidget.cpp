@@ -137,7 +137,7 @@ void InSilicoPcrOptionPanelWidget::sl_onPrimerChanged() {
     }
 
     bool isCriticalError = false;
-    QString message = PrimerStatistics::checkPcrPrimersPair(forward, reverse, isCriticalError);
+    QString message = PrimerStatistics::checkPcrPrimersPair(forward, reverse, temperatureCalculator, isCriticalError);
     detailsLinkLabel->setVisible(!isCriticalError);
 
     findProductButton->setEnabled(true);
@@ -276,7 +276,7 @@ void InSilicoPcrOptionPanelWidget::sl_onProductDoubleClicked() {
 
 void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
     SAFE_POINT(DETAILS_LINK == link, "Incorrect link", );
-    PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer());
+    PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer(), temperatureCalculator);
     QObjectScopedPointer<PrimersDetailsDialog> dlg = new PrimersDetailsDialog(this, calc.generateReport());
     dlg->exec();
 }

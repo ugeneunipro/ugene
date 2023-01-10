@@ -21,6 +21,8 @@
 
 #include "FindPrimerPairsWorker.h"
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileFilters.h>
@@ -40,6 +42,8 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
+
+#include "TempCalcDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -84,7 +88,9 @@ Task* FindPrimerPairsWorker::tick() {
     }
     if (!inPort->hasMessage() && inPort->isEnded()) {
         QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
-        Task* t = new FindPrimersTask(reportFileUrl, data);
+        auto tempSettings = getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID);
+        BaseTempCalc* tempCalc = AppContext::getTempCalcRegistry()->getTempCalculatorBySettingsMap(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
+        Task* t = new FindPrimersTask(reportFileUrl, data, tempCalc);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     }
@@ -111,6 +117,8 @@ void FindPrimerPairsWorker::sl_onTaskFinished(Task* t) {
 /************************************************************************/
 const QString FindPrimerPairsWorkerFactory::ACTOR_ID("find-primers");
 const QString FindPrimerPairsWorkerFactory::OUT_FILE("output-file");
+const QString FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID("temperature-settings");
+
 
 void FindPrimerPairsWorkerFactory::init() {
     QList<PortDescriptor*> p;
@@ -133,8 +141,14 @@ void FindPrimerPairsWorkerFactory::init() {
                               FindPrimerPairsWorker::tr("Output report file"),
                               FindPrimerPairsWorker::tr("Path to the report output file."));
 
+    Descriptor temperatureDesc(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID,
+                               FindPrimerPairsWorker::tr("Temperature settings"), 
+                               FindPrimerPairsWorker::tr("Set up temperature calculation method."));
+
+
     QList<Attribute*> attrs;
     attrs << new Attribute(reportFileDesc, BaseTypes::STRING_TYPE(), true);
+    attrs << new Attribute(temperatureDesc, BaseTypes::MAP_TYPE(), false);
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
@@ -145,6 +159,7 @@ void FindPrimerPairsWorkerFactory::init() {
     tags.set("extensions", {"html"});
 
     delegates[OUT_FILE] = new URLDelegate(tags, "");
+    delegates[TEMPERATURE_SETTINGS_ID] = new TempCalcDelegate;
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FindPrimerPairsPromter());
@@ -159,8 +174,14 @@ void FindPrimerPairsWorkerFactory::init() {
 /************************************************************************/
 /* FindPrimersTask */
 /************************************************************************/
-FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences)
-    : Task(tr("FindPrimersTask"), TaskFlag_None), sequences(sequences), outputUrl(outputFileUrl) {
+FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, BaseTempCalc* _temperatureCalculator)
+    : Task(tr("FindPrimersTask"), TaskFlag_None),
+      sequences(sequences),
+      outputUrl(outputFileUrl),
+      temperatureCalculator(_temperatureCalculator) {}
+
+FindPrimersTask::~FindPrimersTask() {
+    delete temperatureCalculator;
 }
 
 void FindPrimersTask::run() {
@@ -171,7 +192,7 @@ void FindPrimersTask::run() {
         if (isCanceled()) {
             return;
         }
-        PrimerStatisticsCalculator calc(sequences.at(i).constData());
+        PrimerStatisticsCalculator calc(sequences.at(i).constData(), temperatureCalculator);
         if (calc.getFirstError().isEmpty()) {
             correctPrimers.append(sequences.at(i));
         }
@@ -187,7 +208,7 @@ void FindPrimersTask::run() {
             QByteArray forwardPrimer = correctPrimers.at(i).constData();
             QByteArray reversePrimer = correctPrimers.at(j).constData();
 
-            PrimersPairStatistics calc(forwardPrimer, reversePrimer);
+            PrimersPairStatistics calc(forwardPrimer, reversePrimer, temperatureCalculator);
 
             if (calc.getFirstError().isEmpty()) {
                 QString newRow = createRow(correctPrimers.at(i).getName(), correctPrimers.at(j).getName(), calc.getForwardCalculator().getTm(), calc.getReverseCalculator().getTm());

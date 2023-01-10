@@ -49,6 +49,13 @@ public:
      */
     TempCalcSettings* getDefaultTempCalcSettings() const;
     /**
+     * Get the temperature calculator settings by temperature settings,
+     * which are stored as a variant map
+     * @settingsMap map settings
+     * @return pointer to the temperature calculator settings
+     */
+    BaseTempCalc* getTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const;
+    /**
      * Save calculation settings to this static object
      * This is required if, for example, we need to store settings,
      * which are stored in some other object, but this object should be destroyed

@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, BaseTempCalc* temperatureCalculator, bool& isCriticalError) {
     QString message;
     isCriticalError = false;
     bool forwardIsValid = validate(forward);
@@ -56,7 +56,7 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const Q
         return message;
     }
 
-    PrimersPairStatistics calc(forward, reverse);
+    PrimersPairStatistics calc(forward, reverse, temperatureCalculator);
     message = calc.getFirstError();
     return message;
 }
@@ -92,10 +92,14 @@ const int PrimerStatisticsCalculator::CLAMP_BOTTOM = 1;
 const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
-PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& sequence,
-                                                       Direction direction,
+PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& _sequence,
+                                                       BaseTempCalc* _temperatureCalculator,
+                                                       Direction _direction,
                                                        const qreal _energyThreshold)
-    : sequence(sequence), direction(direction), energyThreshold(_energyThreshold),
+    : sequence(_sequence), 
+      temperatureCalculator(_temperatureCalculator), 
+      direction(_direction), 
+      energyThreshold(_energyThreshold),
       nA(0), nC(0), nG(0), nT(0), maxRun(0) {
     CHECK(!sequence.isEmpty(), );
 
@@ -147,12 +151,7 @@ double PrimerStatisticsCalculator::getGC() const {
 }
 
 double PrimerStatisticsCalculator::getTm() const {
-    CHECK(nA + nT + nG + nC > 0, 0.0);
-    if (sequence.length() < 14) {
-        return (nA + nT) * 2 + (nG + nC) * 4;
-    }
-
-    return 64.9 + 41 * (nG + nC - 16.4) / double(nA + nT + nG + nC);
+    return temperatureCalculator->getMeltingTemperature(sequence);
 }
 
 int PrimerStatisticsCalculator::getGCClamp() const {
@@ -264,9 +263,9 @@ const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalc
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }  // namespace
 
-PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse)
-    : forward(_forward, PrimerStatisticsCalculator::Forward),
-      reverse(_reverse, PrimerStatisticsCalculator::Reverse) {
+PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse, BaseTempCalc* temperatureCalculator)
+    : forward(_forward, temperatureCalculator, PrimerStatisticsCalculator::Forward),
+      reverse(_reverse, temperatureCalculator, PrimerStatisticsCalculator::Reverse) {
     initializationError = forward.getInitializationError().isEmpty() ? reverse.getInitializationError() : forward.getInitializationError();
     if (!initializationError.isEmpty()) {
         return;
