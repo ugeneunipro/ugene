@@ -45,13 +45,13 @@ PropertyDelegate* TempCalcDelegate::clone() {
     return new TempCalcDelegate(parent());
 }
 
-QWidget* TempCalcDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const {
+QWidget* TempCalcDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
     auto editor = new TempCalcPropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }
 
-PropertyWidget* TempCalcDelegate::createWizardWidget(U2OpStatus& os, QWidget* parent) const {
+PropertyWidget* TempCalcDelegate::createWizardWidget(U2OpStatus&, QWidget* parent) const {
     return new TempCalcPropertyWidget(parent);
 }
 
