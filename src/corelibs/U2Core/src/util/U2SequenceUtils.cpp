@@ -454,6 +454,8 @@ void U2SequenceImporter::startSequence(U2OpStatus& os,
     isUnfinishedRegion = false;
     annList.clear();
 
+    alphabetCharacterHit = QBitArray(256);
+
     if (!lazyMode) {
         con.dbi->getSequenceDbi()->createSequenceObject(sequence, folder, os);
         CHECK_OP(os, );
@@ -471,7 +473,7 @@ void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) 
     QByteArray bytes;
     for (int i = 0; i < alphabetCharacterHit.size(); i++) {
         if (Q_UNLIKELY(alphabetCharacterHit[i])) {
-            bytes.append(QChar(i));
+            bytes.append(i);
         }
     }
     const DNAAlphabet* resAl = U2AlphabetUtils::findBestAlphabet(bytes);
@@ -671,10 +673,6 @@ bool U2SequenceImporter::isCaseAnnotationsModeOn() const {
 
 QList<SharedAnnotationData>& U2SequenceImporter::getCaseAnnotations() {
     return annList;
-}
-
-void U2SequenceImporter::resetAlphabetCharacterHit() {
-    alphabetCharacterHit = QBitArray(256);
 }
 
 qint64 U2SequenceImporter::getCurrentLength() const {

@@ -102,7 +102,6 @@ public:
     void setCaseAnnotationsMode(CaseAnnotationsMode mode);
     bool isCaseAnnotationsModeOn() const;
     QList<SharedAnnotationData>& getCaseAnnotations();
-    void resetAlphabetCharacterHit();
 
     virtual qint64 getCurrentLength() const;
 
