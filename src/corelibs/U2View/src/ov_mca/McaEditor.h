@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,10 +82,12 @@ public:
         return gotoSelectedReadAction;
     }
 
-    MaEditorWgt* getMaEditorWgt(uint index = 0) const override {
+    MaEditorWgt* getMaEditorWgt(int index) const override {
         SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
         return qobject_cast<McaEditorWgt*>(ui);
     }
+
+    MaEditorMultilineWgt* getMaEditorMultilineWgt() const override;
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;

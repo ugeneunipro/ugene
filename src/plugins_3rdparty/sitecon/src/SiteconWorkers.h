@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,24 +82,23 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    SiteconSearchWorker(Actor* a)
-        : BaseWorker(a, false),  // FIXME??
-          modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
-    }
-    virtual void init();
-    virtual bool isReady() const;
-    virtual Task* tick();
-    virtual void cleanup() {
-    }
+    SiteconSearchWorker(Actor* a);
+
+    void init() override;
+    bool isReady() const override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished(Task*);
 
 protected:
-    IntegralBus *modelPort, *dataPort, *output;
+    IntegralBus* modelPort = nullptr;
+    IntegralBus* dataPort = nullptr;
+    IntegralBus* output = nullptr;
     QString resultName;
     QList<SiteconModel> models;
-    int strand;
+    int strand = 0;
     SiteconSearchCfg cfg;
 };
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -339,7 +339,7 @@ BaseEntrezRequestTask::~BaseEntrezRequestTask() {
 
 void BaseEntrezRequestTask::sl_onError() {
     loop->exit();
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     CHECK(reply != nullptr, )
     stateInfo.setError(reply->errorString());
 }
@@ -355,8 +355,8 @@ void BaseEntrezRequestTask::onProxyAuthenticationRequired(const QNetworkProxy& p
 }
 
 void BaseEntrezRequestTask::createLoopAndNetworkManager(const QString& queryString) {
-    SAFE_POINT(nullptr == networkManager, "Attempting to initialize network manager twice", );
-    networkManager = new QNetworkAccessManager;
+    SAFE_POINT(networkManager == nullptr, "Attempting to initialize network manager twice", );
+    networkManager = new QNetworkAccessManager();
     connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(sl_replyFinished(QNetworkReply*)));
 
     NetworkConfiguration* nc = AppContext::getAppSettings()->getNetworkConfiguration();
@@ -364,8 +364,8 @@ void BaseEntrezRequestTask::createLoopAndNetworkManager(const QString& queryStri
     networkManager->setProxy(proxy);
     connect(networkManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 
-    SAFE_POINT(nullptr == loop, "Attempting to initialize loop twice", );
-    loop = new QEventLoop;
+    SAFE_POINT(loop == nullptr, "Attempting to initialize loop twice", );
+    loop = new QEventLoop();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -388,32 +388,30 @@ void LoadDataFromEntrezTask::run() {
     ioLog.trace("Load data from Entrez started...");
 
     // Step one: download the file
-    QString traceFetchUrl = QString(EntrezUtils::NCBI_EFETCH_URL).arg(db).arg(accNumber).arg(format);
+    QString traceFetchUrl = EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format);
 
     createLoopAndNetworkManager(traceFetchUrl);
 
     ioLog.details(tr("Downloading file %1").arg(traceFetchUrl));
-    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format));
+    QUrl requestUrl(traceFetchUrl);
     runRequest(requestUrl);
     loop->exec();
+    CHECK(!isCanceled(), );
+    ioLog.trace("Download finished.");
 
-    if (!isCanceled()) {
-        ioLog.trace("Download finished.");
-
-        QByteArray result = downloadReply->readAll();
-        if (((result.size() < 100) && result.contains("Nothing has been found")) || (result.contains("ID list is empty! In it there are neither IDs nor accessions"))) {
-            setError(tr("Sequence with ID=%1 is not found.").arg(accNumber));
-            return;
-        }
-
-        QFile downloadedFile(fullPath);
-        if (!downloadedFile.open(QIODevice::WriteOnly)) {
-            stateInfo.setError("Cannot open file to write!");
-            return;
-        }
-        downloadedFile.write(result);
-        downloadedFile.close();
+    QByteArray result = downloadReply->readAll();
+    if ((result.size() < 100 && result.contains("Nothing has been found")) || result.contains("ID list is empty! In it there are neither IDs nor accessions")) {
+        setError(tr("Sequence with ID=%1 is not found.").arg(accNumber));
+        return;
     }
+
+    QFile downloadedFile(fullPath);
+    if (!downloadedFile.open(QIODevice::WriteOnly)) {
+        stateInfo.setError("Cannot open file to write!");
+        return;
+    }
+    downloadedFile.write(result);
+    downloadedFile.close();
 }
 
 void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
@@ -448,7 +446,7 @@ void LoadDataFromEntrezTask::sl_replyFinished(QNetworkReply* reply) {
             return;
         }
         QXmlInputSource source(reply);
-        ESearchResultHandler* handler = new ESearchResultHandler;
+        auto handler = new ESearchResultHandler();
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
         bool ok = xmlReader.parse(source);
@@ -517,7 +515,7 @@ void EntrezQueryTask::sl_replyFinished(QNetworkReply* reply) {
 void EntrezQueryTask::runRequest(const QUrl& requestUrl) {
     ioLog.trace(QString("Sending request: %1").arg(query));
     queryReply = networkManager->get(QNetworkRequest(requestUrl));
-    connect(queryReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(sl_onError()));
+    connect(queryReply, &QNetworkReply::errorOccurred, this, &EntrezQueryTask::sl_onError);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -541,7 +539,7 @@ bool ESearchResultHandler::startElement(const QString& namespaceURI, const QStri
 bool ESearchResultHandler::endElement(const QString& namespaceURI, const QString& localName, const QString& qName) {
     Q_UNUSED(namespaceURI);
     Q_UNUSED(localName);
-    if ("Id" == qName) {
+    if (qName == "Id") {
         idList.append(curText);
     }
     return true;
@@ -583,19 +581,19 @@ bool ESummaryResultHandler::startElement(const QString& namespaceURI, const QStr
 bool ESummaryResultHandler::endElement(const QString& namespaceURI, const QString& localName, const QString& qName) {
     Q_UNUSED(namespaceURI);
     Q_UNUSED(localName);
-    if ("DocSum" == qName) {
+    if (qName == "DocSum") {
         results.append(currentSummary);
         currentSummary = EntrezSummary();
-    } else if ("Id" == qName) {
+    } else if (qName == "Id") {
         currentSummary.id = curText;
-    } else if ("Item" == qName) {
+    } else if (qName == "Item") {
         QString itemName = curAttributes.value("Name");
 
-        if ("Caption" == itemName) {
+        if (itemName == "Caption") {
             currentSummary.name = curText;
-        } else if ("Title" == itemName) {
+        } else if (itemName == "Title") {
             currentSummary.title = curText;
-        } else if ("Length" == itemName) {
+        } else if (itemName == "Length") {
             currentSummary.size = curText.toInt();
         }
     }

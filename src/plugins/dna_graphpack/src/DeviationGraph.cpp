@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,9 +94,9 @@ void DeviationGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float>& res,
 }
 QPair<int, int> DeviationGraphAlgorithm::matchOnStep(const QByteArray& seqArr, int begin, int end) {
     const char* seq = seqArr.constData();
-    assert(begin >= 0 && end <= seqArr.size());
-
     QPair<int, int> res(0, 0);
+    SAFE_POINT(begin >= 0 && end <= seqArr.size(), "Invalid match range", res);
+
     for (int j = begin; j < end; ++j) {
         char c = seq[j];
         if (c == p.first) {
@@ -109,29 +109,33 @@ QPair<int, int> DeviationGraphAlgorithm::matchOnStep(const QByteArray& seqArr, i
     }
     return res;
 }
-void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float>& res, const QByteArray& seq, const U2Region& vr, qint64 window, qint64 step, U2OpStatus& os) {
-    int rsize = window / step;
-    RollingArray<int> raF(rsize);
-    RollingArray<int> raS(rsize);
-    int endPos = vr.endPos();
-    int globalCountF = 0;
-    int globalCountS = 0;
-    int nextI = 0;
-    int firstValue = vr.startPos + window - step;
-    for (int i = vr.startPos; i < endPos; i = nextI) {
+void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float>& res,
+                                                           const QByteArray& seq,
+                                                           const U2Region& visualRegion,
+                                                           qint64 window,
+                                                           qint64 step,
+                                                           U2OpStatus& os) {
+    SAFE_POINT(window / step < (qint64)INT_MAX, "Invalid steps per window", );
+    int stepsPerWindow = int(window / step);
+    RollingArray<int> c1Counts(stepsPerWindow);
+    RollingArray<int> c2Counts(stepsPerWindow);
+    int endPos = qMin(visualRegion.endPos(), seq.size() - window);
+    int c1Count = 0;
+    int c2Count = 0;
+    int firstPos = visualRegion.startPos + window - step;
+    for (int pos = visualRegion.startPos; pos < endPos; pos += step) {
         CHECK_OP(os, );
-        nextI = i + step;
-        QPair<int, int> result = matchOnStep(seq, i, nextI);
-        globalCountF += result.first;
-        globalCountS += result.second;
-        raF.push_back_pop_front(result.first);
-        raS.push_back_pop_front(result.second);
-        if (i >= firstValue) {
-            int vF = raF.get(0);
-            int vS = raS.get(0);
-            res.append((globalCountF - globalCountS) / qMax(0.001f, (float)(globalCountF + globalCountS)));
-            globalCountF -= vF;
-            globalCountS -= vS;
+        QPair<int, int> result = matchOnStep(seq, pos, pos + step);
+        c1Count += result.first;
+        c2Count += result.second;
+        c1Counts.push_back_pop_front(result.first);
+        c2Counts.push_back_pop_front(result.second);
+        if (pos >= firstPos) {
+            int c1Count0 = c1Counts.get(0);
+            int c2Count0 = c2Counts.get(0);
+            res.append((c1Count - c2Count) / qMax(0.001f, (float)(c1Count + c2Count)));
+            c1Count -= c1Count0;
+            c2Count -= c2Count0;
         }
     }
 }

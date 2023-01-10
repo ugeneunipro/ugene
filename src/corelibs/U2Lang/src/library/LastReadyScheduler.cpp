@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ inline qint64 LastReadyScheduler::lastTaskTimeSec() const {
 }
 
 inline void LastReadyScheduler::measuredTick() {
-    CHECK(nullptr != lastWorker, );
+    CHECK(lastWorker != nullptr, );
     lastWorker->deleteBackupMessagesFromPreviousTick();
 
     lastTask = lastWorker->tick(canLastTaskBeCanceled);
@@ -88,7 +88,7 @@ inline void LastReadyScheduler::measuredTick() {
     delete timeUpdater;
     timeUpdater = nullptr;
 
-    if (nullptr != lastTask) {
+    if (lastTask != nullptr) {
         timeUpdater = new ElapsedTimeUpdater(actorId(), context->getMonitor(), lastTask);
         timeUpdater->start(1000);
 

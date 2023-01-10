@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,12 +34,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, int timeoutMs)
+ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, bool deselectAll, int timeoutMs)
     : Filler(os, "Import BAM File"),
       referenceFolderPath(referenceFolderPath),
       referenceFileName(referenceFileName),
       destinationUrl(destinationUrl),
-      importUnmappedReads(importUnmappedReads) {
+      importUnmappedReads(importUnmappedReads),
+      deselectAll(deselectAll) {
     settings.timeout = timeoutMs;
 }
 
@@ -48,15 +49,15 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario
       referenceFolderPath(""),
       referenceFileName(""),
       destinationUrl(""),
-      importUnmappedReads(false) {
+      importUnmappedReads(false),
+      deselectAll(false) {
     settings.timeout = 120000;
 }
 
 void ImportBAMFileFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (!referenceFolderPath.isEmpty()) {
-        GTFileDialogUtils* ob = new GTFileDialogUtils(os, referenceFolderPath, referenceFileName);
-        GTUtilsDialog::waitForDialog(os, ob);
+        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, referenceFolderPath, referenceFileName));
         GTWidget::click(os, GTWidget::findWidget(os, "refUrlButton", dialog));
     }
 
@@ -67,6 +68,11 @@ void ImportBAMFileFiller::commonScenario() {
     auto importUnmapped = GTWidget::findCheckBox(os, "importUnmappedBox", dialog);
     if (importUnmapped->isChecked() != importUnmappedReads) {
         GTCheckBox::setChecked(os, importUnmapped, importUnmapped);
+    }
+
+    if (deselectAll) {
+        auto deselectAllButton = GTWidget::findToolButton(os, "selectNoneToolButton", dialog);
+        GTWidget::click(os, deselectAllButton);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

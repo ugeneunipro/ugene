@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,13 @@ VCF4VariationFormat::VCF4VariationFormat(QObject* p)
     columnRoles.insert(4, ColumnRole_ObsData);
     columnRoles.insert(7, ColumnRole_Info);
 
-    maxColumnNumber = columnRoles.keys().last();
+    maxColumnIndex = columnRoles.keys().last();
 
     indexing = AbstractVariationFormat::OneBased;
 }
 
 bool VCF4VariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return columnCount >= maxColumnNumber + 1;
+    return columnCount >= maxColumnIndex + 1;
 }
 
 }  // namespace U2

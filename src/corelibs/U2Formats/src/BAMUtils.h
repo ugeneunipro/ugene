@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ public:
 
     static void writeObjects(const QList<GObject*>& objects, const QString& url, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX);
 
-    static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os, bool isBAM = false);
+    static bool isEqualByLength(const QString& fileUrl1, const QString& fileUrl2, U2OpStatus& os);
 
     /**
      * Returns the list of names of references (despite "*") found among reads.

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -184,6 +184,10 @@ QString SiteconSearchPrompter::composeRichDoc() {
     return doc;
 }
 
+SiteconSearchWorker::SiteconSearchWorker(Actor* a)
+    : BaseWorker(a, false) {
+}
+
 void SiteconSearchWorker::init() {
     modelPort = ports.value(MODEL_PORT);
     dataPort = ports.value(BasePorts::IN_SEQ_PORT_ID());
@@ -209,19 +213,28 @@ bool SiteconSearchWorker::isReady() const {
     return modelHasMes || (modelEnded && (dataHasMes || dataEnded));
 }
 
+void SiteconSearchWorker::cleanup() {
+    // Do nothing.
+}
+
 Task* SiteconSearchWorker::tick() {
     if (cfg.minPSUM > 100 || cfg.minPSUM < 60) {
+        setDone();
         return new FailTask(tr("Min score can not be less 60% or more 100%"));
     }
     if (cfg.minE1 > 1 || cfg.minE1 < 0) {
+        setDone();
         return new FailTask(tr("Min Err1 can not be less 0 or more 1"));
     }
     if (cfg.maxE2 > 1 || cfg.maxE2 < 0) {
+        setDone();
         return new FailTask(tr("Max Err2 can not be less 0 or more 1"));
     }
-    if (!(strand == 1 || strand == 0 || strand == -1)) {
+    if (strand != 1 && strand != 0 && strand != -1) {
+        setDone();
         return new FailTask(tr("Search in strand can only be 0(both) or 1(direct) or -1(complement)"));
     }
+
     while (modelPort->hasMessage()) {
         models << modelPort->get().getData().toMap().value(SiteconWorkerFactory::SITECON_SLOT.getId()).value<SiteconModel>();
     }
@@ -256,15 +269,14 @@ Task* SiteconSearchWorker::tick() {
             }
             QList<Task*> subtasks;
             foreach (const SiteconModel& model, models) {
-                SiteconSearchTask* sst = new SiteconSearchTask(model, seq.seq, config, 0);
+                auto sst = new SiteconSearchTask(model, seq.seq, config, 0);
                 subtasks << sst;
             }
-            Task* t = new MultiTask(tr("Find TFBS in %1").arg(seq.getName()), subtasks);
+            auto t = new MultiTask(tr("Find TFBS in %1").arg(seq.getName()), subtasks);
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
-        QString err = tr("Bad sequence supplied to SiteconSearch: %1").arg(seq.getName());
-        return new FailTask(err);
+        return new FailTask(tr("Bad sequence supplied to SiteconSearch: %1").arg(seq.getName()));
     }
     if (dataPort->isEnded()) {
         setDone();

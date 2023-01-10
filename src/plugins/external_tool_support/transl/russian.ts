@@ -596,11 +596,6 @@
         <source>Form</source>
         <translation>Форма</translation>
     </message>
-    <message>
-        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="29"/>
-        <source>Colorspace</source>
-        <translation>Цвета</translation>
-    </message>
 </context>
 <context>
     <name>BowtieSettings</name>
@@ -762,11 +757,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/bowtie/BowtieSettings.ui" line="300"/>
         <source>Flags</source>
         <translation>Флаги</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
-        <source>Colorspace (--color)</source>
-        <translation>Цвета (--color)</translation>
     </message>
     <message>
         <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
@@ -6919,16 +6909,6 @@ bowtie медленнее, когда указан режим --best.</translati
         <location filename="../src/bowtie/BowtieWorker.cpp" line="209"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Сообщить о всех допустимых выравниваниях для рида или пары.</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="212"/>
-        <source>Colorspace</source>
-        <translation>Цвета</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="213"/>
-        <source>When -C is specified, read sequences are treated as colors. Colors may be encoded either as numbers                               (0=blue, 1=green, 2=orange, 3=red) or as characters A/C/G/T (A=blue, C=green, G=orange, T=red).</source>
-        <translation>Когда -С указано, последовательности рассматриваются как цвета. Цвета могут быть закодированы либо как номера (0 = синий, 1 = зеленый, 2 = оранжевый, 3 = красный) или символов A / C / G / T (A = синий, С = зеленый, G = оранжевый, Т = красный).</translation>
     </message>
     <message>
         <location filename="../src/bowtie/BowtieWorker.cpp" line="252"/>

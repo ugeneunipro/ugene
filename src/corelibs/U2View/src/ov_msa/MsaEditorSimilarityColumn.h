@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,138 +30,114 @@
 #include <U2Core/Task.h>
 
 #include "MaEditorNameList.h"
-#include "MsaUpdatedWidgetInterface.h"
 
 namespace U2 {
 
 class CreateDistanceMatrixTask;
 class MSADistanceMatrix;
 class MaUtilsWidget;
+class MsaEditorWgt;
 class Task;
 
-class SimilarityStatisticsSettings : public UpdatedWidgetSettings {
-public:
-    SimilarityStatisticsSettings()
-        : usePercents(false), excludeGaps(false) {
-    }
-    QString algoId;  // selected algorithm
-    bool usePercents;
-    bool excludeGaps;
+enum DataState {
+    DataIsOutdated,
+    DataIsValid,
+    DataIsBeingUpdated
 };
 
-class U2VIEW_EXPORT MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetInterface {
+class SimilarityStatisticsSettings {
+public:
+    MsaEditorWgt* ui = nullptr;
+    bool autoUpdate = true;
+    /** Selected algorithm. */
+    QString algoId;
+    bool usePercents = false;
+    bool excludeGaps = false;
+};
+
+class U2VIEW_EXPORT MsaEditorSimilarityColumn : public MaEditorNameList {
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:
-    MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings);
-    virtual ~MsaEditorSimilarityColumn();
+    MsaEditorSimilarityColumn(MsaEditorWgt* ui, const SimilarityStatisticsSettings* settings);
+    ~MsaEditorSimilarityColumn() override;
 
-    void setSettings(const UpdatedWidgetSettings* _settings);
+    void setSettings(const SimilarityStatisticsSettings* settings);
 
     void cancelPendingTasks();
 
-    const UpdatedWidgetSettings& getSettings() const {
-        return curSettings;
-    }
-    QWidget* getWidget() {
-        return this;
-    }
-    void updateWidget() {
-        updateDistanceMatrix();
-    }
+    const SimilarityStatisticsSettings& getSettings() const;
+
+    QWidget* getWidget();
+
+    void updateWidget();
+
     QString getHeaderText() const;
 
-    DataState getState() {
-        return state;
-    }
-
-    void setMatrix(MSADistanceMatrix* _matrix) {
-        matrix = _matrix;
-    }
+    void setMatrix(MSADistanceMatrix* matrix);
 
     QString getTextForRow(int maRowIndex) override;
 
 protected:
-    QString getSeqName(int s);
-    void updateScrollBar();
+    void updateScrollBar() override;
 
 signals:
-    void si_dataStateChanged(DataState newState);
-private slots:
+    void si_dataStateChanged(const DataState& newState);
 
-    void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
+public:
+    void onAlignmentChanged();
+
+private slots:
     void sl_createMatrixTaskFinished(Task*);
 
 private:
     void updateDistanceMatrix();
 
-    MSADistanceMatrix* matrix;
+    MSADistanceMatrix* matrix = nullptr;
     SimilarityStatisticsSettings newSettings;
     SimilarityStatisticsSettings curSettings;
 
     BackgroundTaskRunner<MSADistanceMatrix*> createDistanceMatrixTaskRunner;
 
-    DataState state;
-    bool autoUpdate;
+    DataState state = DataIsOutdated;
 };
 
 class CreateDistanceMatrixTask : public BackgroundTask<MSADistanceMatrix*> {
     Q_OBJECT
 public:
-    CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s);
+    explicit CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s);
 
-    virtual void prepare();
+    void prepare() override;
 
-    MSADistanceMatrix* getResult() const {
-        return resMatrix;
-    }
-
-    QList<Task*> onSubTaskFinished(Task* subTask);
+protected:
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     SimilarityStatisticsSettings s;
     QString resultText;
-    MSADistanceMatrix* resMatrix;
 };
 
 class MsaEditorAlignmentDependentWidget : public QWidget {
     Q_OBJECT
 public:
-    MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface* _contentWidget);
+    explicit MsaEditorAlignmentDependentWidget(MsaEditorSimilarityColumn* _contentWidget);
 
-    void setSettings(const UpdatedWidgetSettings* _settings);
+    void setSettings(const SimilarityStatisticsSettings* _settings);
     void cancelPendingTasks();
-    const DataState& getDataState() const {
-        return state;
-    }
-    const UpdatedWidgetSettings* getSettings() const {
-        return settings;
-    }
-
-private slots:
-    void sl_onAlignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo);
-    void sl_onUpdateButonPressed();
-    void sl_onDataStateChanged(DataState newState);
-    void sl_onFontChanged(const QFont&);
+    const SimilarityStatisticsSettings* getSettings() const;
 
 private:
     void createWidgetUI();
     void createHeaderWidget();
 
-    MaUtilsWidget* headerWidget;
-    QLabel statusBar;
-    QLabel nameWidget;
-    QPushButton updateButton;
-    UpdatedWidgetInterface* contentWidget;
-    const UpdatedWidgetSettings* settings;
-    DataState state;
-    QWidget* updateBar;
-
-    bool automaticUpdating;
-
-    QString DataIsOutdatedMessage;
-    QString DataIsValidMessage;
-    QString DataIsBeingUpdatedMessage;
+    MaUtilsWidget* headerWidget = nullptr;
+    QLabel* nameWidget = nullptr;
+    MsaEditorSimilarityColumn* contentWidget;
+    const SimilarityStatisticsSettings* settings;
+    DataState state = DataIsOutdated;
+    QString dataIsOutdatedMessage;
+    QString dataIsValidMessage;
+    QString dataIsBeingUpdatedMessage;
 };
 }  // namespace U2
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <QScrollArea>
 #include <QSplitter>
+#include <QTimer>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
@@ -272,6 +273,9 @@ bool GObjectView::containsDocumentObjects(Document* doc) const {
     return false;
 }
 
+void GObjectView::onAfterViewWindowInit() {
+}
+
 void GObjectView::setName(const QString& newName) {
     QString oldName = viewName;
     if (oldName == newName) {
@@ -392,6 +396,9 @@ GObjectViewWindow::GObjectViewWindow(GObjectView* v, const QString& _viewName, b
 
     // Set the icon
     setWindowIcon(viewWidget->windowIcon());
+
+    // Notify widget after it was registered as a window.
+    QTimer::singleShot(0, v, [v] { v->onAfterViewWindowInit(); });
 }
 
 void GObjectViewWindow::setPersistent(bool v) {

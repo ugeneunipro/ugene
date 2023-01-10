@@ -2,11 +2,12 @@
     <run-cmdline task="remote-request"
                  in="!common_data_dir!cmdline/1-cys.fa"
                  out="!tmp_data_dir!blast-searchn0005_tmp.gbk"
-                 alg="ncbi-blastp"
+                 alg="123"
                  db="nr"
                  eval="10"
                  hits="10"
-                 short="123"
                  blast-output="!tmp_data_dir!blast.xml"
-                 message="Incorrect value"/>
+                 message="Incorrect 'alg' parameter value"
+                 nomessage="RemoteBLASTTask"
+    />
 </multi-test>

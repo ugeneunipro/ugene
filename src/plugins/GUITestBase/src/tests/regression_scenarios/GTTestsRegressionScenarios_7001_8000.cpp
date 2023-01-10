@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3198,7 +3198,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
     // Duplicate _common_data/ugenedb/chrM.sorted.bam.ugenedb.
     QString origFilePath = testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb";
     GTFile::copy(os, origFilePath, sandBoxDir + "/chrM.sorted.bam.ugenedb");
-    
+
     // Open duplicate.
     GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3214,7 +3214,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
     // Click the cross in the search field in the project view.
     // Filter clearing has the same result
     GTUtilsProjectTreeView::filterProject(os, "");
-     
+
     // Close the chrM tab.
     GTMenu::clickMainMenuItem(os, {"Actions", "Close active view"}, GTGlobals::UseKey);
 
@@ -3227,7 +3227,7 @@ GUI_TEST_CLASS_DEFINITION(test_7661) {
 
     // Rename the file back to "chrM.sorted.bam.ugenedb".
     f.rename(sandBoxDir + "/chrM.sorted.bam.ugenedb");
-    
+
     // Open it in UGENE again.
     GTFileDialog::openFile(os, sandBoxDir, "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3455,12 +3455,12 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
     // because the file from the issue was almoust 100 Mb size
-    
+
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Call the Primer3 dialog 
+    // Call the Primer3 dialog
     // In the Primer3 Designer dialog select PT - PCR tab
     // Check in main checkbox and set Exon range : 1424 - 1606
     // Click Pick primers button
@@ -3472,8 +3472,7 @@ GUI_TEST_CLASS_DEFINITION(test_7671) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: no crash
-
+    // Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7680) {
@@ -3643,6 +3642,52 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
                       .arg(positionStr, coverageStr));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7712) {
+    class FilterShortScaffoldsWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+            GTUtilsWizard::setInputFiles(os, {{testDir + "_common_data/genbank/1anot.gen"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString notification = GTUtilsDashboard::getJoinedNotificationsString(os);
+    CHECK_SET_ERR(notification.contains("Nothing to write"), "Unexpected notification message: " + notification);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7714) {
+    // Open the file 1.bam.
+    // Check the box "Deselect all", "Import unmapped reads" and import the file.
+    // Expected state: UGENE not crashed
+    GTLogTracer l;
+    qint64 expectedReads = 10;
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714.ugenedb", "", "", true, true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    qint64 assemblyReads1 = GTUtilsAssemblyBrowser::getReadsCount(os);
+    CHECK_SET_ERR(assemblyReads1 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads1));
+
+    GTUtilsMdi::closeActiveWindow(os);
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714_1.ugenedb", "", "", true, true));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    qint64 assemblyReads2 = GTUtilsAssemblyBrowser::getReadsCount(os);
+    CHECK_SET_ERR(assemblyReads2 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads2));
+
+    GTUtilsLog::check(os, l);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7715) {
     // Open COI.aln.
     //     Expected: no log messages
@@ -3699,6 +3744,47 @@ GUI_TEST_CLASS_DEFINITION(test_7740) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     auto swapSiblingsButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Swap Siblings");
     CHECK_SET_ERR(!swapSiblingsButton->isEnabled(), "Swap siblings must be disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7744) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Select "GC Deviation (G-C)/(G+C)"  or "AT Deviation (A-T)/(A+T)" graph
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Deviation (G-C)/(G+C)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"AT Deviation (A-T)/(A+T)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsDialog::checkNoActiveWaiters(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7748) {
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", testDir + "_common_data/fasta/broken", "empty_name_multi.fa"));
+    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.sam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7751) {
+    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Select any inner node
+    GTUtilsPhyTree::clickNode(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026"));
+
+    QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
+    auto swapSiblingsButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Swap Siblings");
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+
+    // Click Swapping Siblings button on the toolbar
+    GTWidget::click(os, swapSiblingsButton);
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.026", "0.009");
+
+    GTWidget::click(os, swapSiblingsButton);
+    CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
 }
 
 }  // namespace GUITest_regression_scenarios

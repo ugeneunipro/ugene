@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,10 +61,12 @@ public:
 
 protected:
     bool isSupportHeader;
+    /** Write only columns up to 'maxColumnIndex'. */
+    bool useOnlyBaseColumns = false;
 
     QMap<int, ColumnRole> columnRoles;
 
-    int maxColumnNumber = 0;
+    int maxColumnIndex = 0;
 
     PositionIndexing indexing;
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,8 @@ MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel* markerModel, QWidget
 }
 
 void MarkerEditorWidget::sl_onAddButtonClicked() {
-    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    auto model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    SAFE_POINT(model != nullptr, "MarkerEditorWidget: model is null", );
     QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(true, nullptr, model, this);
     const int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -74,7 +75,8 @@ void MarkerEditorWidget::sl_onEditButtonClicked() {
         return;
     }
 
-    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    auto model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    SAFE_POINT(model != nullptr, "sl_onEditButtonClicked: model is null", );
     QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(false, model->getMarker(selected.first().row()), model, this);
     const int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -114,7 +116,9 @@ void MarkerEditorWidget::sl_onItemSelected(const QModelIndex&) {
 }
 
 bool MarkerEditorWidget::checkEditMarkerGroupResult(const QString& oldName, Marker* newMarker, QString& message) {
-    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    auto model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    SAFE_POINT(model != nullptr, "checkEditMarkerGroupResult: model is null", false);
+
     QList<Marker*>& markers = model->getMarkers();
 
     if (oldName != newMarker->getName()) {
@@ -130,7 +134,8 @@ bool MarkerEditorWidget::checkEditMarkerGroupResult(const QString& oldName, Mark
 }
 
 bool MarkerEditorWidget::checkAddMarkerGroupResult(Marker* newMarker, QString& message) {
-    Workflow::MarkerGroupListCfgModel* model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    auto model = dynamic_cast<Workflow::MarkerGroupListCfgModel*>(markerTable->model());
+    SAFE_POINT(model != nullptr, "checkAddMarkerGroupResult: model is null", false);
     QList<Marker*>& markers = model->getMarkers();
 
     foreach (Marker* m, markers) {

@@ -1270,6 +1270,7 @@ libGLESv2.dll
 libcrypto-1_1-x64.dll
 libssl-1_1-x64.dll
 msvcp140.dll
+msvcp140_1.dll
 platforms
 platforms/qwindows.dll
 plugins

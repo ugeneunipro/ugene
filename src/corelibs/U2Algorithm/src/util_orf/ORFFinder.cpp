@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ void ORFFindAlgorithm::find(
     int seqPointer = 0;
     QByteArray sequence("");
 
-    DNATranslation3to1Impl* aTT = dynamic_cast<DNATranslation3to1Impl*>(cfg.proteinTT);
+    auto aTT = dynamic_cast<DNATranslation3to1Impl*>(cfg.proteinTT);
     SAFE_POINT(aTT != nullptr, "Cannot convert DNATranslation to DNATranslation3to1Impl!", );
     bool mustFit = cfg.mustFit;
     bool mustInit = cfg.mustInit;
@@ -349,7 +349,7 @@ void ORFFindAlgorithm::checkStopCodonOnJunction(const U2SequenceObject& dnaSeq, 
 
     qint64 seqLen = dnaSeq.getSequenceLength();
     int regLen = cfg.searchRegion.length;
-    DNATranslation3to1Impl* aTT = dynamic_cast<DNATranslation3to1Impl*>(cfg.proteinTT);
+    auto aTT = dynamic_cast<DNATranslation3to1Impl*>(cfg.proteinTT);
     CHECK_EXT(aTT != nullptr, os.setError("Cannot convert DNATranslation to DNATranslation3to1Impl!"), );
     if (strand == ORFAlgorithmStrand_Direct) {
         int end = cfg.searchRegion.endPos();

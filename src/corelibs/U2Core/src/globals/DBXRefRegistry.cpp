@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,8 +77,8 @@ QScriptValue DBXRefInfo::toScriptValue(QScriptEngine* engine, DBXRefInfo const& 
 }
 
 void DBXRefInfo::fromScriptValue(const QScriptValue& object, DBXRefInfo& out) {
-    DBXRefInfo* info = dynamic_cast<DBXRefInfo*>(object.toQObject());
-    out = nullptr != info ? *info : DBXRefInfo();
+    auto info = dynamic_cast<DBXRefInfo*>(object.toQObject());
+    out = info != nullptr ? *info : DBXRefInfo();
 }
 
 void DBXRefInfo::setupToEngine(QScriptEngine* engine) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,8 +44,8 @@ static QMap<Descriptor, DataTypePtr> getBusMap(Port* inPort) {
     {
         Port* src = links.keys().first();
         assert(src->isOutput());
-        IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(src);
-        assert(nullptr != bus);
+        auto bus = dynamic_cast<IntegralBusPort*>(src);
+        SAFE_POINT(bus != nullptr, "getBusMap: bus is null", {});
         DataTypePtr type = bus->getType();
         busMap = type->getDatatypesMap();
     }
@@ -207,8 +207,8 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
             GrouperOutSlot newSlot(outSlotName, inSlotId);
             newSlot.setAction(action);
 
-            GrouperSlotsCfgModel* model = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
-            assert(nullptr != model);
+            auto model = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
+            SAFE_POINT(model != nullptr, "sl_onAddButtonClicked: model is null", );
             model->addGrouperSlot(newSlot);
         }
     }
@@ -225,7 +225,7 @@ void GrouperEditorWidget::sl_onEditButtonClicked() {
     QModelIndex leftIdx = selected.first();
     QModelIndex rightIdx = leftIdx.child(leftIdx.row(), 1);
 
-    GrouperSlotsCfgModel* model = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
+    auto model = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
     SAFE_POINT(model != nullptr, "GrouperSlotsCfgModel is null", );
     QString outSlotName = model->data(leftIdx).toString();
     QString inSlotId = GrouperOutSlot::readable2busMap(model->data(rightIdx).toString());

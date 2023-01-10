@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,12 +101,13 @@ void TvNodeItem::toggleCollapsedState() {
     }
 }
 
-bool TvNodeItem::isPathToRootSelected() const {
-    CHECK(isSelected(), false);
+bool TvNodeItem::isSelectionRoot() const {
+    CHECK(isSelected(), false);  // The node itself must be selected.
 
     auto branchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(branchItem != nullptr, true);
+    CHECK(branchItem != nullptr, true);  // If node is a root node -> return true.
 
+    // If node is not a root node -> check that its parent branch is not selected.
     auto parentBranchItem = dynamic_cast<TvBranchItem*>(branchItem->parentItem());
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }

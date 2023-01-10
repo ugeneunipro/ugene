@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,6 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment* env, QString& path) {
         envVarName = "WORKFLOW_OUTPUT_DIR";
         prefix = WORKFLOW_OUTPUT_DIR_PREFIX;
     } else {
-        algoLog.details(QString("There are no known prefixes in the path: '%1', the path was not modified").arg(path));
         return;
     }
 

@@ -100,8 +100,8 @@ const QString GenecutOPWidget::GENECUT_USER_PASSWORD_SETTINGS = "/genecut/passwo
 
 GenecutOPWidget::GenecutOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
-      annDnaView(_annDnaView),
-      apiServer(qgetenv("UGENE_GENECUT_USE_TEST_API_SERVER") == "1" ? "http://genecut-test.unipro.ru/" : "http://genecut.unipro.ru/")/*,
+      apiServer(qgetenv("UGENE_GENECUT_USE_TEST_API_SERVER") == "1" ? "http://genecut-test.unipro.ru/" : "http://genecut.unipro.ru/"),
+      annDnaView(_annDnaView)/*,
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName()))*/ {
     setupUi(this);
     lbLoginWarning->clear();

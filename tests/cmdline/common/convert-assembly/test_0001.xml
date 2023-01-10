@@ -7,11 +7,6 @@
             out_format="sam"
     />
 
-    <load-document index="doc1" url="convert_assembly_0001.sam" io="local_file" format="sam" dir="temp"/>
-    <load-document index="doc2" url="sam/example.sam" io="local_file" format="sam"/>
-    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
-
-    <find-object-by-name index="obj" doc="doc1" name="chr20" type="OT_MSA"/>
-    <check-numbers-of-sequence-in-Msequence obj="obj" value="2"/>
+    <compare-sam-by-length file1="convert_assembly_0001.sam" file2="sam/example.sam"/>
 
 </multi-test>

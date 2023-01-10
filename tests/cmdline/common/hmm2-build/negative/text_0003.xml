@@ -4,6 +4,6 @@
                  out="!tmp_data_dir!hmm2-buildn0003_tmp.hmm"
                  seed="-6"
                  calibrate="true"
-                 message="Incorrect value"/>
+                 message="Incorrect value for seed parameter"/>
 
 </multi-test>

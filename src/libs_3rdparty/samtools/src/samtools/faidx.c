@@ -94,6 +94,11 @@ faidx_t *fai_build_core(RAZF *rz)
 				}
 				name[l_name++] = c;
 			}
+            if (l_name == 0) {
+                fprintf(stderr, "[fai_build_core] reference sequence has no name\n");
+                fai_destroy(idx);
+                return 0;
+            }
 			name[l_name] = '\0';
 			if (ret == 0) {
 				fprintf(stderr, "[fai_build_core] the last entry has no sequence\n");

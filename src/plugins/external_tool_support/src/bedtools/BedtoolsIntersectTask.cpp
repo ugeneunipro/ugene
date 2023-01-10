@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,17 +80,17 @@ void BedtoolsIntersectTask::prepare() {
         }
     }
 
-    const QStringList args = getParameters();
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new BedtoolsIntersectLogParser(settings.out));
+    QStringList args = getParameters();
+    auto etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new BedtoolsIntersectLogParser(settings.out));
     setListenerForTask(etTask);
     addSubTask(etTask);
 }
 
-const QStringList BedtoolsIntersectTask::getParameters() const {
+QStringList BedtoolsIntersectTask::getParameters() const {
     QStringList res;
 
     res << "intersect";
-
+    res << "-nonamecheck";
     res << "-a" << QFileInfo(settings.inputA).absoluteFilePath();
     res << "-b" << settings.inputB;
 
@@ -129,8 +129,8 @@ void BedtoolsIntersectAnnotationsByEntityTask::prepare() {
     QDir().mkpath(tmpDir);
 
     {
-        QTemporaryFile* a = new QTemporaryFile(tmpDir + "A-XXXXXX.gff", this);
-        QTemporaryFile* b = new QTemporaryFile(tmpDir + "B-XXXXXX.gff", this);
+        auto a = new QTemporaryFile(tmpDir + "A-XXXXXX.gff", this);
+        auto b = new QTemporaryFile(tmpDir + "B-XXXXXX.gff", this);
 
         a->open();
         tmpUrlA = a->fileName();
@@ -156,10 +156,10 @@ void BedtoolsIntersectAnnotationsByEntityTask::prepare() {
 QList<Task*> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
 
-    const QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("intersect_annotations") + QDir::separator();
+    QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("intersect_annotations") + QDir::separator();
 
     if (subTask == saveAnnotationsTask) {
-        QTemporaryFile* outputFile = new QTemporaryFile(tmpDir + "Intersect-XXXXXX.gff", this);
+        auto outputFile = new QTemporaryFile(tmpDir + "Intersect-XXXXXX.gff", this);
         outputFile->open();
         tmpUrlResult = outputFile->fileName();
         outputFile->close();
@@ -182,7 +182,7 @@ QList<Task*> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task* s
         CHECK_EXT(resultDoc != nullptr, setError(tr("Result document is NULL")), res);
         result = resultDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         CHECK_EXT(!result.isEmpty(), setError(tr("No annotation tables resultDoc")), res);
-        AnnotationTableObject* ato = qobject_cast<AnnotationTableObject*>(result.first());
+        auto ato = qobject_cast<AnnotationTableObject*>(result.first());
         renameAnnotationsFromBed(ato->getRootGroup());
     }
     return res;

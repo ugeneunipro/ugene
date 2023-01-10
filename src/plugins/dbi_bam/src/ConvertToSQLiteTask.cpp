@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -553,7 +553,7 @@ void ConvertToSQLiteTask::packReads() {
 
 void ConvertToSQLiteTask::updateAttributes() {
     DbiConnection connection(dstDbiRef, stateInfo);
-    SAFE_POINT_EXT(!stateInfo.hasError(), throw Exception(getError()), );
+    CHECK(!hasError(), throw Exception(getError()));
     U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     CHECK(nullptr != attributeDbi, );
 
@@ -589,7 +589,7 @@ qint64 ConvertToSQLiteTask::importSortedReads(SamReader* samReader, BamReader* b
 
     totalReadsImported += importMappedSortedReads(bamReader, reader, iterator.data(), ioAdapter);
 
-    if (bamInfo.isUnmappedSelected() && !iterator.isNull()) {
+    if (bamInfo.isUnmappedSelected()) {
         totalReadsImported += importUnmappedSortedReads(bamReader, reader, iterator, ioAdapter);
     }
 

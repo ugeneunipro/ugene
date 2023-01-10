@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -140,8 +140,10 @@ protected:
 
 class GObjectViewCloseInterface;
 class OptionsPanel;
+class GObjectViewWindow;
 
 class U2GUI_EXPORT GObjectView : public QObject {
+    friend class GObjectViewWindow;
     Q_OBJECT
 public:
     GObjectView(GObjectViewFactoryId factoryId, const QString& viewName, QObject* p = nullptr);
@@ -233,6 +235,12 @@ protected:
 
     /** Calls 'buildActionMenu' with a menu type wrapped with the QList<>. */
     void buildActionMenu(QMenu* menu, const QString& menuType);
+
+    /**
+     * Called by GObjectViewWindow after view widget & layout initialization is finished.
+     * Default implementation does nothing.
+     */
+    virtual void onAfterViewWindowInit();
 
 signals:
     /**

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -208,7 +208,7 @@ const QString& BestPositionFindTask::getSequenceId() const {
 }
 
 AbstractAlignmentTask* SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
-    AlignSequencesToAlignmentTaskSettings* addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
+    auto addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
     SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
                nullptr);

@@ -4,6 +4,6 @@
                  in="!common_data_dir!cmdline/DNA.fa"
                  offset="sss"
                  out="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/result_4.fa"
-                 message="Incorrect value for 'offset', null or default value passed to schema"
+                 message="Incorrect value for 'offset', null or default value passed"
     />
 </multi-test>

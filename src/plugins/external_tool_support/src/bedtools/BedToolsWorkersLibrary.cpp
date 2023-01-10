@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -38,7 +37,6 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/DbiDataStorage.h>
@@ -68,7 +66,8 @@ static const QString FILTER_ID("filter-id");
 /* SlopbedPrompter */
 /************************************************************************/
 QString SlopbedPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    SAFE_POINT(input != nullptr, "Not an IntegralBusPort", "")
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -133,7 +132,8 @@ void SlopbedWorkerFactory::init() {
         Descriptor filterAttr(FILTER_ID, SlopbedWorker::tr("Filter start>end fields"), SlopbedWorker::tr("Remove lines with start position greater than end position"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
@@ -435,7 +435,8 @@ QString getParameterByMode(GenomecovMode mode) {
 /* GenomecovPrompter */
 /************************************************************************/
 QString GenomecovPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    SAFE_POINT(input != nullptr, "Not a IntegralBusPort", "");
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -524,7 +525,8 @@ void GenomecovWorkerFactory::init() {
         Descriptor trackoptsAttrDesc(TRACKOPTS_ID, GenomecovWorker::tr("Trackopts"), GenomecovWorker::tr("Writes additional track line definition parameters in the first line. (-trackopts)"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+
+        auto customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
@@ -643,7 +645,7 @@ QVariantMap GenomecovWorker::getCustomParameters() const {
     if (max != INT_MAX) {
         res["-max"] = max;
     }
-    const float scale = getValue<float>(SCALE_ID);
+    float scale = getValue<float>(SCALE_ID);
     if (scale != 1.0) {
         res["-scale"] = scale;
     }
@@ -782,6 +784,7 @@ Task* BedtoolsIntersectWorker::tick() {
     storeMessages(inputB, storeB);
 
     if (inputA->isEnded() && inputB->isEnded()) {
+        setDone();
         return createTask();
     }
 
@@ -806,7 +809,7 @@ void BedtoolsIntersectWorker::sl_taskFinished(Task* task) {
     if (task->isCanceled() || task->hasError()) {
         return;
     }
-    BedtoolsIntersectAnnotationsByEntityTask* intersectTask = qobject_cast<BedtoolsIntersectAnnotationsByEntityTask*>(task);
+    auto intersectTask = qobject_cast<BedtoolsIntersectAnnotationsByEntityTask*>(task);
     if (intersectTask == nullptr) {
         return;
     }
@@ -816,7 +819,7 @@ void BedtoolsIntersectWorker::sl_taskFinished(Task* task) {
     CHECK_EXT(!objList.isEmpty(), output->setEnded(), );
 
     foreach (GObject* gObj, objList) {
-        AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(gObj);
+        auto obj = qobject_cast<AnnotationTableObject*>(gObj);
         CHECK_EXT(obj != nullptr, output->setEnded(), );
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(obj);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
@@ -836,7 +839,7 @@ Task* BedtoolsIntersectWorker::createTask() {
     settings.entitiesA = getAnnotationsEntityRefFromMessages(storeA, IN_PORT_A_ID);
     settings.entitiesB = getAnnotationsEntityRefFromMessages(storeB, IN_PORT_B_ID);
 
-    BedtoolsIntersectAnnotationsByEntityTask* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    auto t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
     t->addListeners(createLogListeners());
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
     return t;
@@ -921,11 +924,11 @@ void BedtoolsIntersectWorkerFactory::init() {
 
         attribs << new Attribute(reportDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::Report_OverlapedA));
 
-        Attribute* uniqueAttr = new Attribute(uniqueDesc, BaseTypes::BOOL_TYPE(), /*required*/ false, QVariant(true));
+        auto uniqueAttr = new Attribute(uniqueDesc, BaseTypes::BOOL_TYPE(), /*required*/ false, QVariant(true));
         uniqueAttr->addRelation(new VisibilityRelation(REPORT, QVariantList() << BedtoolsIntersectSettings::Report_OverlapedA));
         attribs << uniqueAttr;
 
-        Attribute* minOverlapAttr = new Attribute(minOverlapDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP * 100));
+        auto minOverlapAttr = new Attribute(minOverlapDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP * 100));
         minOverlapAttr->addRelation(new VisibilityRelation(REPORT, QVariantList() << BedtoolsIntersectSettings::Report_Intervals << BedtoolsIntersectSettings::Report_OverlapedA));
         minOverlapAttr->addRelation(new VisibilityRelation(UNIQUE, QVariantList() << false));
         attribs << minOverlapAttr;
@@ -970,7 +973,7 @@ QString BedtoolsIntersectPrompter::composeRichDoc() {
                               .arg(a)
                               .arg(b));
 
-    BedtoolsIntersectSettings::Report r = (BedtoolsIntersectSettings::Report)target->getParameter(REPORT)->getAttributePureValue().toInt();
+    auto r = (BedtoolsIntersectSettings::Report)target->getParameter(REPORT)->getAttributePureValue().toInt();
     QString reportHyperlinkText;
     switch (r) {
         case BedtoolsIntersectSettings::Report_Intervals:

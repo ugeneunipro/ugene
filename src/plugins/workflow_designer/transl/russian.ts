@@ -5605,37 +5605,37 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::ReadAssemblyTask</name>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="144"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="147"/>
         <source>Read assembly from %1</source>
         <translation>Прочитать сборку из %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="155"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="158"/>
         <source>File &apos;%1&apos; does not exist</source>
         <translation>Файл &apos;%1&apos; не существует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="191"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="196"/>
         <source>Unsupported document format: %1</source>
         <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="202"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="207"/>
         <source>Can not read assemblies from the file: %1</source>
         <translation>Невозможно прочитать сборки из файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="226"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="231"/>
         <source>Reading assembly from %1 [%2]</source>
         <translation>Чтение сборки из %1 [%2]</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="261"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="266"/>
         <source>No assemblies in the file: %1</source>
         <translation>Нет сборок в файле: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="266"/>
+        <location filename="../src/tasks/ReadAssemblyTask.cpp" line="271"/>
         <source>Incorrect assembly object in %1</source>
         <translation>Некорректная сборка в %1</translation>
     </message>

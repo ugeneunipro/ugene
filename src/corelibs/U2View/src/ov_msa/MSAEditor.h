@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -140,17 +140,16 @@ public:
         return getMaEditorMultilineWgt();
     }
 
-    MaEditorWgt* getMaEditorWgt(uint index = 0) const override {
+    MaEditorWgt* getMaEditorWgt(int index = 0) const override {
         return qobject_cast<MsaEditorWgt*>(getUI()->getUI(index));
     }
 
     // Return multiline widget (parent of the all sequences' widget
-    // Can be nuulptr if widget is not yet created, but is used in for example
+    // Can be nullptr if widget is not yet created, but is used in for example
     // in font metric calculating in MaEditor
     // Don't want to update MaEditor
     MaEditorMultilineWgt* getMaEditorMultilineWgt() const override {
-        MsaEditorMultilineWgt* res = qobject_cast<MsaEditorMultilineWgt*>(ui);
-        return res;
+        return qobject_cast<MsaEditorMultilineWgt*>(ui);
     }
 
     void initChildrenActionsAndSignals() override;
@@ -208,19 +207,20 @@ protected slots:
 
 protected:
     QWidget* createWidget() override;
+    void onAfterViewWindowInit() override;
 
     void initActions() override;
     bool eventFilter(QObject* o, QEvent* e) override;
     bool onObjectRemoved(GObject* obj) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
-    void addCopyPasteMenu(QMenu* m, uint uiIndex) override;
+    void addCopyPasteMenu(QMenu* m, int uiIndex) override;
     void addEditMenu(QMenu* m) override;
     void addSortMenu(QMenu* m);
     void addAlignMenu(QMenu* m);
     void addExportMenu(QMenu* m) override;
-    void addAppearanceMenu(QMenu* m, uint uiIndex);
-    void addColorsMenu(QMenu* m, uint index);
+    void addAppearanceMenu(QMenu* m, int uiIndex);
+    void addColorsMenu(QMenu* m, int index);
     void addHighlightingMenu(QMenu* m);
     void addNavigationMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
@@ -275,7 +275,7 @@ public:
     QAction* convertRawToAminoAction = nullptr;
 
 private:
-    MsaEditorWgt* createChildWidget(uint index,
+    MsaEditorWgt* createChildWidget(int index,
                                     MaEditorOverviewArea* overview = nullptr,
                                     MaEditorStatusBar* statusbar = nullptr);
 

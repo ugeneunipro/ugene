@@ -1,9 +1,4 @@
 <suite name="Regression suite">
 
-    <test-dir test-ext="*.xml" path="regression" test-format="XML" exclude="1785/test_0001.xml"/>
-    <excluded test="1441/test_0002.xml" reason="need a bug"/>
-    <excluded test="1785/test_0001.xml" reason="reason"/>
-    <excluded test="1195/test_0001.xml" reason="Test is too slow (up to 8 mins)"/>
-    <excluded test="4182/test_0001.xml" reason="These tests consume too much memory. One is ignored"/>
-    <excluded test="4182/test_0002.xml" reason="These tests consume too much memory. One is ignored"/>
+    <test-dir test-ext="*.xml" path="regression" test-format="XML"/>
 </suite>

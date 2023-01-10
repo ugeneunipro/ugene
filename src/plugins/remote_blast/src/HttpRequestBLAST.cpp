@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/NetworkConfiguration.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "HttpRequest.h"
 #include "RemoteBLASTTask.h"
@@ -28,7 +29,7 @@ namespace U2 {
 
 const QString HttpRequestBLAST::host = "https://blast.ncbi.nlm.nih.gov/Blast.cgi?";
 
-QString HttpRequestBLAST::runHttpRequest(QString request) {
+QString HttpRequestBLAST::runHttpRequest(const QString& request) {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
     IOAdapter* io = iof->createIOAdapter();
     if (!io->open(request, IOAdapterMode_Read)) {
@@ -36,7 +37,7 @@ QString HttpRequestBLAST::runHttpRequest(QString request) {
         return "";
     }
     int offs = 0;
-    int read = 0;
+    int read;
     int CHUNK_SIZE = 1024;
     QByteArray response(CHUNK_SIZE, 0);
     do {
@@ -51,7 +52,7 @@ QString HttpRequestBLAST::runHttpRequest(QString request) {
     QString error = io->errorString();
     io->close();
     if (read < 0) {
-        error = tr("Cannot load a page. %1").arg(error);
+        taskLog.error(tr("Cannot load a page. %1").arg(error));
         return "";
     }
     response.truncate(offs);
@@ -94,30 +95,28 @@ void HttpRequestBLAST::sendRequest(const QString& params, const QString& query) 
         return;
     }
     taskLog.trace(QString("NCBI BLAST Request ID: %1").arg(requestID));
-    QString roe = buf.readLine().split('=')[1];
+    QString estimatedRunTimeValue = buf.readLine().split('=')[1];
     bool isOk;
-    int rtoe = roe.toInt(&isOk);
+    int estimatedRunTimeSeconds = estimatedRunTimeValue.toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot get the waiting time");
         return;
     }
-    taskLog.trace(QString("NCBI BLAST Request Time of Execution in seconds: %1").arg(rtoe));
-    taskLog.trace(QString("NCBI BLAST to view results in web browser: %1").arg(host + "CMD=Get&RID=" + requestID));
+    taskLog.info(QString("NCBI BLAST estimated search time: %1 seconds.").arg(estimatedRunTimeSeconds));
+    taskLog.info(QString("NCBI BLAST to view results in web browser: %1").arg(host + "CMD=Get&RID=" + requestID));
     request = host + "CMD=Get&FORMAT_TYPE=XML&RID=";
     request.append(requestID);
     buf.close();
-    RemoteBlastHttpRequestTask* rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
-    int progr, timeout;
-    progr = 50;
-    timeout = (rtoe + 5) * 20;  // REAL timeout = 50*(rtoe + 5) * 20 = 1000*(rtoe + 5) msec
-    int slowdown = 1;
+    auto rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
+    SAFE_POINT(rTask != nullptr, "Not a RemoteBlastHttpRequestTask", );
+    int checkTimeSeconds = qMax(5, estimatedRunTimeSeconds / 10);
     rTask->resetProgress();
-
+    rTask->setTimeOut(10 * estimatedRunTimeSeconds);
+    int iteration = 0;
+    int startTime = QDateTime::currentSecsSinceEpoch();
     do {
-        for (int i = 0; i < (progr / slowdown); i++) {
-            if (rTask->isCanceled())
-                return;
-            Waiter::await(timeout * slowdown);
+        if (iteration > 0) {
+            QThread::sleep(checkTimeSeconds);
             rTask->updateProgress();
         }
         response = runHttpRequest(request);
@@ -131,9 +130,7 @@ void HttpRequestBLAST::sendRequest(const QString& params, const QString& query) 
             req2.remove("amp;");
             response = runHttpRequest(req2);
         }
-        if (slowdown < 32) {
-            slowdown *= 2;  // If attempt was unsuccessful, progress bar slows down
-        }
+        iteration++;
     } while (response.indexOf("Status=WAITING") != -1 && rTask->isTimeOut());
 
     if (response.indexOf("Status=WAITING") != -1 || response.indexOf("<BlastOutput>") == -1 || response.indexOf("</BlastOutput>") == -1) {
@@ -146,6 +143,7 @@ void HttpRequestBLAST::sendRequest(const QString& params, const QString& query) 
         return;
     }
 
+    taskLog.details(tr("NCBI BLAST received result in %1 seconds").arg(QDateTime::currentSecsSinceEpoch() - startTime));
     output = response.toLatin1();
     parseResult(response.toLatin1());
 }
@@ -167,69 +165,67 @@ void HttpRequestBLAST::parseResult(const QByteArray& buf) {
         parseHit(hits.at(i));
     }
 
-    RemoteBlastHttpRequestTask* rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
+    auto rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
+    SAFE_POINT(rTask != nullptr, "Not a RemoteBlastHttpRequestTask", );
     for (int i = rTask->getProgress(); i < 100; i++) {
         rTask->updateProgress();
     }
 }
 
 void HttpRequestBLAST::parseHit(const QDomNode& xml) {
-    QString id, def, accession;
-
     QDomElement tmp = xml.lastChildElement("Hit_id");
-    id = tmp.text();
+    QString id = tmp.text();
     tmp = xml.lastChildElement("Hit_def");
-    def = tmp.text();
+    QString def = tmp.text();
     tmp = xml.lastChildElement("Hit_accession");
-    accession = tmp.text();
+    QString accession = tmp.text();
 
-    QString hitLen;
     tmp = xml.lastChildElement("Hit_len");
-    hitLen = tmp.text();
+    QString hitLen = tmp.text();
 
     QDomNodeList nodes = xml.childNodes();
     for (int i = 0; i < nodes.count(); i++) {
         if (nodes.at(i).isElement()) {
             if (nodes.at(i).toElement().tagName() == "Hit_hsps") {
                 QDomNodeList hsps = nodes.at(i).childNodes();
-                for (int j = 0; j < hsps.count(); j++)
-                    if (hsps.at(j).toElement().tagName() == "Hsp")
+                for (int j = 0; j < hsps.count(); j++) {
+                    if (hsps.at(j).toElement().tagName() == "Hsp") {
                         parseHsp(hsps.at(j), id, def, accession, hitLen);
+                    }
+                }
             }
         }
     }
 }
 
 void HttpRequestBLAST::parseHsp(const QDomNode& xml, const QString& id, const QString& def, const QString& accession, const QString& hitLen) {
-    SharedAnnotationData ad(new AnnotationData);
+    SharedAnnotationData ad(new AnnotationData());
     bool isOk;
-    int from = -1, to = -1, align_len = -1, gaps = -1, identities = -1;
 
     QDomElement elem = xml.lastChildElement("Hsp_bit-score");
     if (!elem.isNull()) {
-        ad->qualifiers.push_back(U2Qualifier("bit-score", elem.text()));
+        ad->qualifiers << U2Qualifier("bit-score", elem.text());
     }
 
     elem = xml.lastChildElement("Hsp_score");
     if (!elem.isNull()) {
-        ad->qualifiers.push_back(U2Qualifier("score", elem.text()));
+        ad->qualifiers << U2Qualifier("score", elem.text());
     }
 
     elem = xml.lastChildElement("Hsp_evalue");
     if (!elem.isNull()) {
-        ad->qualifiers.push_back(U2Qualifier("E-value", elem.text()));
+        ad->qualifiers << U2Qualifier("E-value", elem.text());
     }
 
     elem = xml.lastChildElement("Hsp_query-from");
-    QString fr = elem.text();
-    from = elem.text().toInt(&isOk);
+    int from = elem.text().toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot get the location");
         return;
     }
 
     elem = xml.lastChildElement("Hsp_query-to");
-    to = elem.text().toInt(&isOk);
+    int to = elem.text().toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot get the location");
         return;
@@ -237,12 +233,12 @@ void HttpRequestBLAST::parseHsp(const QDomNode& xml, const QString& id, const QS
 
     elem = xml.lastChildElement("Hsp_hit-from");
     if (!elem.isNull()) {
-        ad->qualifiers.push_back(U2Qualifier("hit-from", elem.text()));
+        ad->qualifiers << U2Qualifier("hit-from", elem.text());
     }
 
     elem = xml.lastChildElement("Hsp_hit-to");
     if (!elem.isNull()) {
-        ad->qualifiers.push_back(U2Qualifier("hit-to", elem.text()));
+        ad->qualifiers << U2Qualifier("hit-to", elem.text());
     }
 
     elem = xml.lastChildElement("Hsp_hit-frame");
@@ -251,26 +247,26 @@ void HttpRequestBLAST::parseHsp(const QDomNode& xml, const QString& id, const QS
         error = tr("Cannot get the location");
         return;
     }
-    QString frame_txt = (frame < 0) ? "complement" : "direct";
-    ad->qualifiers.push_back(U2Qualifier("source_frame", frame_txt));
+    QString frameQualifierValue = frame < 0 ? "complement" : "direct";
+    ad->qualifiers << U2Qualifier("source_frame", frameQualifierValue);
     ad->setStrand(frame < 0 ? U2Strand::Complementary : U2Strand::Direct);
 
     elem = xml.lastChildElement("Hsp_identity");
-    identities = elem.text().toInt(&isOk);
+    int identities = elem.text().toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot get the identity");
         return;
     }
 
     elem = xml.lastChildElement("Hsp_gaps");
-    gaps = elem.text().toInt(&isOk);
+    int gaps = elem.text().toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot evaluate the gaps");
         return;
     }
 
     elem = xml.lastChildElement("Hsp_align-len");
-    align_len = elem.text().toInt(&isOk);
+    int align_len = elem.text().toInt(&isOk);
     if (!isOk) {
         error = tr("Cannot get the alignment length");
         return;
@@ -293,19 +289,19 @@ void HttpRequestBLAST::parseHsp(const QDomNode& xml, const QString& id, const QS
         if (gaps != -1) {
             float percent = (float)gaps / (float)align_len * 100.;
             QString str = QString::number(gaps) + "/" + QString::number(align_len) + " (" + QString::number(percent, 'g', 4) + "%)";
-            ad->qualifiers.push_back(U2Qualifier("gaps", str));
+            ad->qualifiers << U2Qualifier("gaps", str);
         }
         if (identities != -1) {
             float percent = (float)identities / (float)align_len * 100.;
             QString str = QString::number(identities) + '/' + QString::number(align_len) + " (" + QString::number(percent, 'g', 4) + "%)";
-            ad->qualifiers.push_back(U2Qualifier("identities", str));
+            ad->qualifiers << U2Qualifier("identities", str);
         }
     }
 
-    ad->qualifiers.push_back(U2Qualifier("id", id));
-    ad->qualifiers.push_back(U2Qualifier("def", def));
-    ad->qualifiers.push_back(U2Qualifier("accession", accession));
-    ad->qualifiers.push_back(U2Qualifier("hit_len", hitLen));
+    ad->qualifiers << U2Qualifier("id", id);
+    ad->qualifiers << U2Qualifier("def", def);
+    ad->qualifiers << U2Qualifier("accession", accession);
+    ad->qualifiers << U2Qualifier("hit_len", hitLen);
     ad->name = "blast result";
     result.append(ad);
 }

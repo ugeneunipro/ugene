@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,13 +121,6 @@ static QStringList labels(const QStringList& labelList) {
 static QStringList nightly(const QStringList& labelList = QStringList()) {
     QStringList resultLabelList = labelList;
     resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
-    return resultLabelList;
-}
-
-/** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
-static QStringList nightly_msa_mm(QString mode, const QStringList& labelList = QStringList()) {
-    QStringList resultLabelList = labelList;
-    resultLabelList << "MSA_" + mode << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
     return resultLabelList;
 }
 
@@ -1399,6 +1392,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5640);
     REGISTER_TEST(GUITest_regression_scenarios::test_5657);
     REGISTER_TEST(GUITest_regression_scenarios::test_5659);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5660);
     REGISTER_TEST(GUITest_regression_scenarios::test_5663);
     REGISTER_TEST(GUITest_regression_scenarios::test_5665);
     REGISTER_TEST(GUITest_regression_scenarios::test_5681);
@@ -1830,8 +1824,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7686);
     REGISTER_TEST(GUITest_regression_scenarios::test_7697);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_7712);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7714);
     REGISTER_TEST(GUITest_regression_scenarios::test_7715);
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7744);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7748);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7751);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

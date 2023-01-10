@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -120,8 +121,8 @@ public:
 
 private:
     virtual void sl_finished() {
-        BackgroundTask<Result>* senderr = dynamic_cast<BackgroundTask<Result>*>(sender());
-        assert(senderr);
+        auto senderr = dynamic_cast<BackgroundTask<Result>*>(sender());
+        SAFE_POINT(senderr != nullptr, "sender is not BackgroundTask", );
         if (task != senderr) {
             return;
         }

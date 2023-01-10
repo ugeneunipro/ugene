@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,14 +35,13 @@ namespace U2 {
 #define SIMPLE_ATTR "simple"
 #define MIN_LEN_ATTR "min_length"
 #define MAX_LEN_ATTR "max_length"
-#define TRANSL_ATTR "transl"
 #define DATABASE_ATTR "db"
 #define EVALUE_ATTR "e-value"
 #define INDEX_ATTR "index"
 #define SEQUENCE_ATTR "seq"
 #define SHORTSEQ_ATTR "short_seq"
 #define HITS_ATTR "hits"
-#define ALG_ATTR "alg"
+#define PROGRAM_ATTR "alg"
 #define FILTERS_ATTR "filters"
 #define GAP_ATTR "gap_costs"
 #define MATCHSCORE_ATTR "match_scores"
@@ -98,8 +97,8 @@ public:
 };
 
 void addParametr(QString& str, const QString& paramName, const QString& param);
-void addParametr(QString& str, const QString& paramName, const double param);
-void addParametr(QString& str, const QString& paramName, const int param);
+void addParametr(QString& str, const QString& paramName, double param);
+void addParametr(QString& str, const QString& paramName, int param);
 
 }  // namespace U2
 

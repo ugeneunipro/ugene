@@ -1,17 +1,15 @@
-<!--https://ugene.dev/tracker/browse/UGENE-2777-->
+<!-- circ-circ [joining] -->
+<!-- Use megablast -->
 <multi-test>
-    <run-cmdline task="remote-request"
-                 in="!common_data_dir!fasta/fa2.fa"
-                 out="!tmp_data_dir!blast-search0003_tmp.gbk"
-                 alg="ncbi-blastp"
-                 db="nr"
-                 eval="10"
-                 hits="30"
-                 short="false"
-                 blast-output="!tmp_data_dir!blast_03.xml"
+    <run-cmdline
+            task="remote-request"
+            in="!common_data_dir!cmdline/remote-request/pIB2_circ.gb"
+            out="!tmp_data_dir!remote-request-circ-0001.gb"
+            alg="ncbi-blastn"
+            megablast="true"
     />
-    <load-document index="doc1" url="blast-search0003_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
-    <load-document index="doc2" url="cmdline/remote-request/03.gb" io="local_file" format="genbank"/>
+    <load-document index="doc1" url="remote-request-circ-0001.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/remote-request/circular/01.gb" io="local_file" format="genbank"/>
 
     <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
     <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
