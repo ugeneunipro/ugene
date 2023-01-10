@@ -75,14 +75,14 @@ void TempCalcPropertyWidget::sl_showDialog() {
     auto dialog = new TempCalcDialog(this, tempSettings);
     dialog->open();
     connect(dialog, &QDialog::finished, this, [this](int result) {
-        auto dialog = qobject_cast<TempCalcDialog*>(sender());
+        auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
         if (result == QDialog::DialogCode::Accepted) {
             delete tempSettings;
-            tempSettings = dialog->getTemperatureCalculatorSettings();
+            tempSettings = senderDialog->getTemperatureCalculatorSettings();
             lineEdit->setText(tempSettings->id);
             emit si_valueChanged(value());
         }
-        dialog->deleteLater();
+        senderDialog->deleteLater();
     });
 
 }
