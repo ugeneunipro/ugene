@@ -790,7 +790,6 @@ void TestViewController::sl_runAllSuitesAction() {
 }
 
 void TestViewController::sl_runSelectedSuitesAction() {
-    CHECK(task != nullptr, );
     GTestEnvironment* env = service->getEnv();
     if (env->containsEmptyVars()) {
         QMessageBox::critical(this, tr("error"), tr("Not all environment variables set"));
@@ -994,7 +993,7 @@ void TestViewController::sl_report() {
 void TestViewController::sl_treeDoubleClicked(QTreeWidgetItem* i, int) {
     auto tvItem = static_cast<TVItem*>(i);
     CHECK(tvItem->isTest(), )
-    emit sl_runSelectedSuitesAction();
+    sl_runSelectedSuitesAction();
 }
 
 void TestViewController::sl_testStateChanged(GTestState* ts) {
