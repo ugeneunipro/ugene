@@ -234,14 +234,14 @@ void PrimerLibrary::setTemperatureCalculator(BaseTempCalc* newTemperatureCalcula
     auto records = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
     CHECK_OP(os, );
 
-    auto addAllFromSettingsMap = [this](const QVariantMap& settingsMap, U2OpStatus& os) {
+    auto addAllFromSettingsMap = [this](const QVariantMap& settingsMap, U2OpStatus& state) {
         auto keys = settingsMap.keys();
         for (const auto& key : qAsConst(keys)) {
             QList<UdrValue> values;
             values << UdrValue(key);
             values << UdrValue(settingsMap.value(key).toString());
-            udrDbi->addRecord(PRIMER_SETTINGS_UDR_ID, values, os);
-            CHECK_OP(os, );
+            udrDbi->addRecord(PRIMER_SETTINGS_UDR_ID, values, state);
+            CHECK_OP(state, );
         }
     };
 
