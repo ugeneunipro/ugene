@@ -557,13 +557,13 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
         auto dialog = new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings());
         dialog->open();
         connect(dialog, &QDialog::finished, this, [this](int result) {
-            auto dialog = qobject_cast<TempCalcDialog*>(sender());
+            auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
             if (result == QDialog::DialogCode::Accepted) {
                 delete temperatureCalculator;
-                temperatureCalculator = dialog->getTemperatureCalculator();
+                temperatureCalculator = senderDialog->getTemperatureCalculator();
                 updateCommonStatisticsData(true);
             }
-            dialog->deleteLater();
+            senderDialog->deleteLater();
         });
     }
 }
