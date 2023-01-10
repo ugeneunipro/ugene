@@ -151,12 +151,12 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
     auto dialog = new TempCalcDialog(this, library->getTemperatureSettings());
     dialog->open();
     connect(dialog, &QDialog::finished, this, [this, library](int result) {
-        auto dialog = qobject_cast<TempCalcDialog*>(sender());
+        auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
         if (result == QDialog::DialogCode::Accepted) {
-            library->setTemperatureCalculator(dialog->getTemperatureCalculator());
+            library->setTemperatureCalculator(senderDialog->getTemperatureCalculator());
             updateTemperatureValues();
         }
-        dialog->deleteLater();
+        senderDialog->deleteLater();
     });
 
 }
