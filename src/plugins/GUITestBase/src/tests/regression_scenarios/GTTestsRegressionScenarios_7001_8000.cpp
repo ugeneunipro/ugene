@@ -112,6 +112,8 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -2896,6 +2898,23 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     documents = AppContext::getProject()->getDocuments();
     CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");
     CHECK_SET_ERR(documents.contains(initialCoiNwkDocument), "Expected initial tree document to be present in the project and re-used in MSA editor");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7617) {
+    //1. Build dotplot for human_T1.fa
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
+
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
+    GTUtilsDialog::checkNoActiveWaiters(os);
+
+    //2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    //Expected state: no crash, no errors in the log
+    GTLogTracer lt;
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7623) {
