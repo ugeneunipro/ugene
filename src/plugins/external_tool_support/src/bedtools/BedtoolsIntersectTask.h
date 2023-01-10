@@ -92,7 +92,7 @@ public:
     void prepare();
 
 protected:
-    const QStringList getParameters() const;
+    QStringList getParameters() const;
 
 private:
     BedtoolsIntersectFilesSettings settings;
