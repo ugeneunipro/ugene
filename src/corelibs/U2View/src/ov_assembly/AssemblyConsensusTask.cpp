@@ -21,6 +21,7 @@
 
 #include "AssemblyConsensusTask.h"
 
+#include <U2Core/AppResources.h>
 #include <U2Core/Log.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -31,6 +32,7 @@ namespace U2 {
 AssemblyConsensusTask::AssemblyConsensusTask(const AssemblyConsensusTaskSettings& settings_)
     : BackgroundTask<ConsensusInfo>(tr("Calculate assembly consensus"), TaskFlag_None), settings(settings_) {
     tpm = Progress_Manual;
+    addTaskResource(TaskResourceUsage(PLUGIN_STATIC_LOCK_RESOURCE_1, 1, true));
 }
 
 static void doCalculation(const AssemblyConsensusTaskSettings& settings, U2OpStatus& os, ConsensusInfo& result) {
@@ -65,6 +67,7 @@ void AssemblyConsensusTask::run() {
 AssemblyConsensusWorker::AssemblyConsensusWorker(ConsensusSettingsQueue* settingsQueue_)
     : Task(tr("Assembly consensus worker"), TaskFlag_None), settingsQueue(settingsQueue_) {
     tpm = Progress_Manual;
+    addTaskResource(TaskResourceUsage(PLUGIN_STATIC_LOCK_RESOURCE_1, 1, true));
 }
 
 void AssemblyConsensusWorker::run() {

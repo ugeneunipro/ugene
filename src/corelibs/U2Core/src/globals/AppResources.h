@@ -45,6 +45,12 @@ namespace U2 {
 */
 #define RESOURCE_PROJECT 5
 
+/**
+ * This resourse strictly connected to some plugin, but should be used in UGENE core,
+ * so we need to pre-define it here.
+ */
+#define PLUGIN_STATIC_LOCK_RESOURCE_1 69
+
 #define LOG_TRACE(METHOD) \
     coreLog.trace(QString("AppResource %1 ::" #METHOD " %2, available %3").arg(name).arg(n).arg(available()));
 

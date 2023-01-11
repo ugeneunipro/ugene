@@ -2322,6 +2322,32 @@ GUI_TEST_CLASS_DEFINITION(test_7511) {
     GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7515) {
+    // Tools->NGS data analysis->Extract consensus from assemblies...
+    // Set _common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam as input and run.
+    // Repeat steps _common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam.sorted.bam.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // These runs ares VERY time-consuming and, as far as crash happens in several seconds after the second calculation starts,
+    // there is no need to wait untill it ends, so we can wait a bit and cancel it
+    // Expected: no crash or freeze.
+    //GTGlobals::sleep(20000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+    //GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::activateWindow(os, "Extract");
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_7517) {
     // Check that MCA editor does not crash when closed in "replace-character" mode.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");

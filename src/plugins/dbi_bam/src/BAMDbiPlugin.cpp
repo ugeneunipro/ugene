@@ -78,6 +78,9 @@ BAMDbiPlugin::BAMDbiPlugin()
     AppContext::getDbiRegistry()->registerDbiFactory(new SamtoolsBasedDbiFactory());
 
     AppContext::getDocumentFormatRegistry()->getImportSupport()->addDocumentImporter(new BAMImporter());
+
+    auto samtoolsLock = new AppResourceSemaphore(SAMTOOLS_STATIC_LOCK_RESOURCE, 1, tr("Samtools lock"));
+    AppContext::getAppSettings()->getAppResourcePool()->registerResource(samtoolsLock);
 }
 
 //////////////////////////////////////////////////////////////////////////

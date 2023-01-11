@@ -21,6 +21,7 @@
 
 #include "CalculateCoveragePerBaseTask.h"
 
+#include <U2Core/AppResources.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -39,6 +40,8 @@ CalculateCoveragePerBaseOnRegionTask::CalculateCoveragePerBaseOnRegionTask(const
       results(new QVector<CoveragePerBaseInfo>) {
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );
     SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
+
+    addTaskResource(TaskResourceUsage(PLUGIN_STATIC_LOCK_RESOURCE_1, 1, true));
 }
 
 CalculateCoveragePerBaseOnRegionTask::~CalculateCoveragePerBaseOnRegionTask() {

@@ -24,6 +24,7 @@
 
 #include <time.h>
 
+#include <U2Core/AppResources.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/Log.h>
@@ -36,6 +37,13 @@ namespace U2 {
 
 class CloneObjectTask;
 class LoadDocumentTask;
+
+/**
+ * BAM DBI Plugin has a strong dependency from samtools, which, on the other hand,
+ * has an undefined behaviour in case of selevar parallel calculations.
+ * So, we need to have a resource locker to prevent multiple simultaneous runs of samtools.
+ */
+#define SAMTOOLS_STATIC_LOCK_RESOURCE PLUGIN_STATIC_LOCK_RESOURCE_1
 
 namespace BAM {
 
