@@ -454,7 +454,7 @@ void U2SequenceImporter::startSequence(U2OpStatus& os,
     isUnfinishedRegion = false;
     annList.clear();
 
-    alphabetCharacterHit = QBitArray(256);
+    alphabetCharacterHit.reset();
 
     if (!lazyMode) {
         con.dbi->getSequenceDbi()->createSequenceObject(sequence, folder, os);
@@ -466,13 +466,11 @@ void U2SequenceImporter::startSequence(U2OpStatus& os,
 void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
     CHECK(len > 0, );
     for (int i = 0; i < len; i++) {
-        if (Q_UNLIKELY(!alphabetCharacterHit[data[i]])) {
-            alphabetCharacterHit[data[i]] = true;
-        }
+        alphabetCharacterHit.set(data[i], true);
     }
     QByteArray bytes;
     for (int i = 0; i < alphabetCharacterHit.size(); i++) {
-        if (Q_UNLIKELY(alphabetCharacterHit[i])) {
+        if (alphabetCharacterHit[i]) {
             bytes.append(i);
         }
     }

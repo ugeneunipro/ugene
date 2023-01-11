@@ -22,6 +22,8 @@
 #ifndef _U2_SEQUENCE_UTILS_H_
 #define _U2_SEQUENCE_UTILS_H_
 
+#include <bitset>
+
 #include <U2Core/AnnotationData.h>
 #include <U2Core/FormatSettings.h>
 #include <U2Core/U2DbiUtils.h>
@@ -136,7 +138,7 @@ protected:
     const DNATranslation* aminoTT = nullptr;
     const DNATranslation* complTT = nullptr;
 
-    QBitArray alphabetCharacterHit = QBitArray(256);
+    std::bitset<256> alphabetCharacterHit;
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */
