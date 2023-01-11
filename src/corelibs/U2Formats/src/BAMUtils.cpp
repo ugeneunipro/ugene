@@ -239,13 +239,8 @@ static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
 }
 
 static void closeFiles(samfile_t* in, samfile_t* out) {
-    if (in != nullptr) {
-        samclose(in);
-    }
-
-    if (nullptr != out) {
-        samclose(out);
-    }
+    samclose(in);
+    samclose(out);
 }
 
 static samfile_t* openSamWithFai(const QString& samUrl, U2OpStatus& os) {
