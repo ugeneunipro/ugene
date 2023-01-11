@@ -61,8 +61,8 @@ extern "C" {
 
 	  @return       SAM/BAM file handler
 	 */
-	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
-	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
+//	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
+//	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
 
 	/*!
 	  @abstract     Close a SAM/BAM handler
