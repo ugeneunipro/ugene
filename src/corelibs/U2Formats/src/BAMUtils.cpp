@@ -89,14 +89,11 @@ static void closeFileIfOpen(FILE* file) {
     }
 }
 
-#define TYPE_BAM 1
-#define TYPE_READ 2
-
-
 /** Version the original samopen() function with a correct handling of unicode in faiUrl and non-UGENE use cases removed. */
 static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl, bam_header_t* bamHeader) {
-    samfile_t* fp;
-    fp = (samfile_t*)calloc(1, sizeof(samfile_t));
+    int TYPE_BAM = 1;
+    int TYPE_READ = 2;
+    auto fp = (samfile_t*)calloc(1, sizeof(samfile_t));
     if (strchr(mode, 'r')) {  // read
         fp->type |= TYPE_READ;
         if (strchr(mode, 'b')) {  // binary
@@ -146,7 +143,8 @@ static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl,
         fp->header = bam_header_dup(bamHeader);
         if (strchr(mode, 'b')) {  // binary
             char bmode[3];
-            int i, compress_level = -1;
+            int compress_level = -1;
+            int i;
             for (i = 0; mode[i]; ++i) {
                 if (mode[i] >= '0' && mode[i] <= '9') {
                     break;
@@ -184,10 +182,8 @@ static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl,
             }
             // write header
             if (strchr(mode, 'h')) {
-                int i;
-                bam_header_t* alt;
                 // parse the header text
-                alt = bam_header_init();
+                bam_header_t* alt = bam_header_init();
                 alt->l_text = fp->header->l_text;
                 alt->text = fp->header->text;
                 sam_header_parse(alt);
@@ -200,7 +196,7 @@ static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl,
                         fprintf(stderr, "[samopen] inconsistent number of target sequences. Output the text header.\n");
                     }
                 } else {  // then dump ->target_{name,len}
-                    for (i = 0; i < fp->header->n_targets; ++i) {
+                    for (int i = 0; i < fp->header->n_targets; ++i) {
                         fprintf(fp->x.tamw, "@SQ\tSN:%s\tLN:%d\n", fp->header->target_name[i], fp->header->target_len[i]);
                     }
                 }
