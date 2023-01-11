@@ -23,7 +23,6 @@
 
 #include <QDialogButtonBox>
 #include <QDomDocument>
-#include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QMap>
@@ -32,7 +31,6 @@
 #include <QTextStream>
 #include <QToolBar>
 #include <QToolButton>
-#include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
@@ -188,20 +186,20 @@ void TestViewController::setupViewMenu(QMenu* m) {
     m->addAction(report);
     m->addAction(selectAllAction);
 
-    QMenu* ExcludMenu = new QMenu("Exclud Actions", m);
-    ExcludMenu->setObjectName("exclud_actions_menu");
-    ExcludMenu->addAction(setTestsEnabledAction);
-    ExcludMenu->addAction(setTestsDisabledAction);
-    ExcludMenu->addAction(setTestsChangeExcludedAction);
-    ExcludMenu->addAction(saveSelectedSuitesAction);
-    m->addMenu(ExcludMenu);
+    auto excludeMenu = new QMenu("Exclude actions", m);
+    excludeMenu->setObjectName("exclude_actions_menu");
+    excludeMenu->addAction(setTestsEnabledAction);
+    excludeMenu->addAction(setTestsDisabledAction);
+    excludeMenu->addAction(setTestsChangeExcludedAction);
+    excludeMenu->addAction(saveSelectedSuitesAction);
+    m->addMenu(excludeMenu);
 }
 
 TVTSItem* TestViewController::findTestSuiteItem(GTestSuite* ts) const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->type == TVItem_TestSuite);
-        TVTSItem* tsi = static_cast<TVTSItem*>(item);
+        auto tsi = static_cast<TVTSItem*>(item);
         if (tsi->ts == ts) {
             return tsi;
         }
@@ -211,9 +209,9 @@ TVTSItem* TestViewController::findTestSuiteItem(GTestSuite* ts) const {
 
 TVTestItem* TestViewController::findTestViewItem(GTestRef* testRef) const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->type == TVItem_TestSuite);
-        TVTSItem* sItem = static_cast<TVTSItem*>(item);
+        auto sItem = static_cast<TVTSItem*>(item);
         TVTestItem* rezult = findTestViewItemRecursive(testRef, sItem);
         if (rezult)
             return rezult;
@@ -222,9 +220,9 @@ TVTestItem* TestViewController::findTestViewItem(GTestRef* testRef) const {
 }
 TVTestItem* TestViewController::findTestViewItemRecursive(GTestRef* testRef, TVItem* sItem) const {
     for (int j = 0, m = sItem->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(sItem->child(j));
+        auto item = static_cast<TVItem*>(sItem->child(j));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
+            auto tItem = static_cast<TVTestItem*>(item);
             if (tItem->testState->getTestRef() == testRef) {
                 return tItem;
             }
@@ -240,9 +238,9 @@ TVTestItem* TestViewController::findTestViewItemRecursive(GTestRef* testRef, TVI
 
 TVTSItem* TestViewController::getFolder(TVItem* element, const QString* firstDirName) const {
     for (int j = 0, m = element->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(element->child(j));
+        auto item = static_cast<TVItem*>(element->child(j));
         if (item->isSuite()) {
-            TVTSItem* ditem = static_cast<TVTSItem*>(item);
+            auto ditem = static_cast<TVTSItem*>(item);
             if (ditem->name == firstDirName) {
                 return ditem;
             }
@@ -253,7 +251,7 @@ TVTSItem* TestViewController::getFolder(TVItem* element, const QString* firstDir
 
 //<-----------------------------------------------------------------------------------
 void TestViewController::addTestSuite(GTestSuite* ts) {
-    TVTSItem* tsi = new TVTSItem(ts);
+    auto tsi = new TVTSItem(ts);
     // add to tree Excluded Tests
     QMap<GTestRef*, QString> exCopy = ts->getExcludedTests();
     QMap<QString, GTestRef*> excludedSorted;  //<test_ShortName, test> sorted by name
@@ -272,7 +270,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
             if (curDir) {  // find if dir already exist
                 addFolderTests(curDir, t, &otherPath, true);
             } else {
-                TVTSItem* newDir = new TVTSItem(firstDirName);
+                auto newDir = new TVTSItem(firstDirName);
                 tsi->addChild(newDir);
                 addFolderTests(newDir, t, &otherPath, true);
             }
@@ -289,7 +287,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
             if (curDir) {  // find if dir already exist
                 addFolderTests(curDir, t, &otherPath, false);
             } else {
-                TVTSItem* newDir = new TVTSItem(firstDirName);
+                auto newDir = new TVTSItem(firstDirName);
                 tsi->addChild(newDir);
                 addFolderTests(newDir, t, &otherPath, false);
             }
@@ -310,8 +308,8 @@ void TestViewController::addFolderTests(TVTSItem* tsi, GTestRef* testRef, const 
         if (curDir) {  // find if dir already exist
             addFolderTests(curDir, testRef, &otherPath, haveExcludedTests);
         } else {
-            TVTSItem* newDir = new TVTSItem(firstDirName);
-            newDir->excludedTests = haveExcludedTests;
+            auto newDir = new TVTSItem(firstDirName);
+            newDir->isExcluded = haveExcludedTests;
             tsi->addChild(newDir);
             addFolderTests(newDir, testRef, &otherPath, haveExcludedTests);
         }
@@ -319,13 +317,13 @@ void TestViewController::addFolderTests(TVTSItem* tsi, GTestRef* testRef, const 
     tsi->updateVisual();
 }
 
-void TestViewController::addTest(TVTSItem* tsi, GTestRef* testRef, QString excludeReason) {
-    GTestState* testState = new GTestState(testRef);
+void TestViewController::addTest(TVTSItem* tsi, GTestRef* testRef, const QString& excludeReason) {
+    auto testState = new GTestState(testRef);
     connect(testState, SIGNAL(si_stateChanged(GTestState*)), SLOT(sl_testStateChanged(GTestState*)));
-    TVTestItem* ti = new TVTestItem(testState);
+    auto ti = new TVTestItem(testState);
     ti->excludeReason = excludeReason;
     if (!excludeReason.isEmpty()) {
-        ti->excludedTests = true;
+        ti->isExcluded = true;
     }
     ti->updateVisual();
     tsi->addChild(ti);
@@ -371,7 +369,7 @@ QList<TVTSItem*> TestViewController::getSelectedSuiteItems() const {
     QList<TVTSItem*> res;
     QList<QTreeWidgetItem*> items = tree->selectedItems();
     foreach (QTreeWidgetItem* i, items) {
-        TVItem* item = static_cast<TVItem*>(i);
+        auto item = static_cast<TVItem*>(i);
         if (item->isSuite()) {
             res.append(static_cast<TVTSItem*>(item));
         }
@@ -383,7 +381,7 @@ QList<TVTestItem*> TestViewController::getSelectedTestItems() const {
     QList<TVTestItem*> res;
     QList<QTreeWidgetItem*> items = tree->selectedItems();
     foreach (QTreeWidgetItem* i, items) {
-        TVItem* item = static_cast<TVItem*>(i);
+        auto item = static_cast<TVItem*>(i);
         if (item->isTest()) {
             res.append(static_cast<TVTestItem*>(item));
         }
@@ -391,7 +389,7 @@ QList<TVTestItem*> TestViewController::getSelectedTestItems() const {
     return res;
 }
 
-bool TestViewController::allSuitesIsInRoot(const QList<TVTSItem*> suites) const {
+bool TestViewController::allSuitesIsInRoot(const QList<TVTSItem*>& suites) const {
     if (suites.isEmpty())
         return false;
     bool rezult = true;
@@ -414,16 +412,16 @@ void TestViewController::updateState() {
     stopSuitesActions->setEnabled(task != nullptr);
 
     if (tree->currentItem() != nullptr) {
-        TVItem* i = static_cast<TVItem*>(tree->currentItem());
+        auto i = static_cast<TVItem*>(tree->currentItem());
         contextInfoEdit->setText(i->getRichDesc());
-        TVTestItem* testItem = dynamic_cast<TVTestItem*>(i);
+        auto testItem = dynamic_cast<TVTestItem*>(i);
         if (testItem != nullptr) {
             testEdit->setText(testItem->getTestContent());
         }
     }
 }
 
-void TestViewController::addTestSuiteList(QString url) {
+void TestViewController::addTestSuiteList(const QString& url) {
     // QString dir = AppContext::getSettings()->getValue(SETTINGS_ROOT + "lastDir", QString()).toString();
     if (url.isEmpty())
         return;
@@ -485,10 +483,10 @@ void TestViewController::sl_removeTestSuiteAction() {
         return;
     }
     for (int i = tree->topLevelItemCount() - 1, n = 0; i >= n; i--) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         if (item->isSelected()) {
-            TVTSItem* sItem = static_cast<TVTSItem*>(item);
+            auto sItem = static_cast<TVTSItem*>(item);
             service->removeTestSuite(sItem->ts);
         }
     }
@@ -498,7 +496,7 @@ void TestViewController::sl_selectAllSuiteAction() {
         return;
     }
     for (int i = tree->topLevelItemCount() - 1, n = 0; i >= n; i--) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         item->setSelected("true");
     }
@@ -509,7 +507,7 @@ void TestViewController::sl_setTestsEnabledAction() {
     CHECK(task == nullptr, );
 
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         bool allSelected = false;
         bool newState = false;
@@ -522,7 +520,7 @@ void TestViewController::sl_setTestsDisabledAction() {
     CHECK(task == nullptr, );
 
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         bool allSelected = false;
         bool newState = true;
@@ -535,7 +533,7 @@ void TestViewController::sl_setTestsChangeExcludedAction() {
     CHECK(task == nullptr, );
 
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         bool allSelected = false;
         if (item->isSelected())
@@ -549,7 +547,7 @@ void TestViewController::sl_saveSelectedSuitesAction() {
         QList<GTestState*> testsToRun;
         QMap<GTestRef*, QString> testsToEx;
         QMap<GTestRef*, QString> oldToAdd;
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         bool runAll = false;
         bool mustBeSaved = false;
@@ -557,7 +555,7 @@ void TestViewController::sl_saveSelectedSuitesAction() {
             runAll = true;
         testsToRun += getSubTestToRun(item, runAll);
         testsToEx.unite(getSubRefToExclude(item, runAll));
-        TVTSItem* tlItem = static_cast<TVTSItem*>(item);
+        auto tlItem = static_cast<TVTSItem*>(item);
         if (testsToEx.isEmpty() && testsToRun.isEmpty()) {
             // in current suite no selected elements
         } else {
@@ -703,18 +701,18 @@ QStringList TestViewController::findAllTestFilesInDir(const QString& dirPath, co
 }
 void TestViewController::setExcludedState(TVItem* sItem, bool allSelected, bool newState) {
     for (int j = 0, m = sItem->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(sItem->child(j));
+        auto item = static_cast<TVItem*>(sItem->child(j));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
+            auto tItem = static_cast<TVTestItem*>(item);
             if (tItem->isSelected() || allSelected) {
-                tItem->excludedTests = newState;
+                tItem->isExcluded = newState;
                 tItem->updateVisual();
-                TVTSItem* temp_parent = static_cast<TVTSItem*>(tItem->parent());
+                auto temp_parent = static_cast<TVTSItem*>(tItem->parent());
                 temp_parent->updateVisual();
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem2 = static_cast<TVTSItem*>(item);
+            auto tItem2 = static_cast<TVTSItem*>(item);
             if (tItem2->isSelected()) {
                 setExcludedState(tItem2, true, newState);
             } else {
@@ -736,12 +734,12 @@ void TestViewController::setExcludedState(TVItem* sItem, bool allSelected, QStri
     }
 
     for (int j = 0, m = sItem->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(sItem->child(j));
+        auto item = static_cast<TVItem*>(sItem->child(j));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
+            auto tItem = static_cast<TVTestItem*>(item);
             if (tItem->isSelected() || allSelected) {
-                tItem->excludedTests = !tItem->excludedTests;
-                if (tItem->excludedTests) {
+                tItem->isExcluded = !tItem->isExcluded;
+                if (tItem->isExcluded) {
                     if (!allSelected && reason == NO_REASON) {
                         QObjectScopedPointer<ExcludeReasonDialog> dlg = new ExcludeReasonDialog;
                         const int rc = dlg->exec();
@@ -755,12 +753,12 @@ void TestViewController::setExcludedState(TVItem* sItem, bool allSelected, QStri
                     tItem->excludeReason = reason;
                 }
                 tItem->updateVisual();
-                TVTSItem* temp_parent = static_cast<TVTSItem*>(tItem->parent());
+                auto temp_parent = static_cast<TVTSItem*>(tItem->parent());
                 temp_parent->updateVisual();
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem2 = static_cast<TVTSItem*>(item);
+            auto tItem2 = static_cast<TVTSItem*>(item);
             if (tItem2->isSelected()) {
                 setExcludedState(tItem2, true, reason);
             } else {
@@ -779,7 +777,7 @@ void TestViewController::sl_runAllSuitesAction() {
     }
     QList<GTestState*> testsToRun;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
         bool runAll = true;
         testsToRun += getSubTestToRun(item, runAll);
@@ -797,7 +795,7 @@ void TestViewController::sl_runSelectedSuitesAction() {
     }
     QList<GTestState*> testsToRun;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         SAFE_POINT(item->isSuite(), "Top level item is not a test suite!", );
         bool runAll = item->isSelected();
         testsToRun += getSubTestToRun(item, runAll);
@@ -810,26 +808,16 @@ void TestViewController::sl_runSelectedSuitesAction() {
 QList<GTestState*> TestViewController::getSubTestToRun(TVItem* sItem, bool runAll) const {
     QList<GTestState*> testsToRun;
     for (int j = 0, m = sItem->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(sItem->child(j));
+        auto item = static_cast<TVItem*>(sItem->child(j));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
-            if (!tItem->excludedTests) {
-                if (tItem->isSelected() || runAll) {
-                    testsToRun.append(tItem->testState);
-                }
-            } else {
-                teamcityLog.info(QString("##teamcity[testStarted name='%1 : %2']").arg(tItem->testState->getTestRef()->getSuite()->getName(), tItem->testState->getTestRef()->getShortName()));
-                teamcityLog.info(QString("##teamcity[testIgnored name='%1 : %2' message='%3']").arg(tItem->testState->getTestRef()->getSuite()->getName(), tItem->testState->getTestRef()->getShortName(), tItem->excludeReason));
-                teamcityLog.info(QString("##teamcity[testFinished name='%1 : %2']").arg(tItem->testState->getTestRef()->getSuite()->getName(), tItem->testState->getTestRef()->getShortName()));
+            auto tItem = static_cast<TVTestItem*>(item);
+            if (!tItem->isExcluded && (tItem->isSelected() || runAll)) {
+                testsToRun.append(tItem->testState);
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem2 = static_cast<TVTSItem*>(item);
-            if (tItem2->isSelected()) {
-                testsToRun += getSubTestToRun(tItem2, true);
-            } else {
-                testsToRun += getSubTestToRun(tItem2, runAll);
-            }
+            auto tItem2 = static_cast<TVTSItem*>(item);
+            testsToRun += getSubTestToRun(tItem2, tItem2->isSelected() || runAll);
         }
     }
     return testsToRun;
@@ -837,17 +825,17 @@ QList<GTestState*> TestViewController::getSubTestToRun(TVItem* sItem, bool runAl
 QMap<GTestRef*, QString> TestViewController::getSubRefToExclude(TVItem* sItem, bool runAll) const {
     QMap<GTestRef*, QString> testsToEx;
     for (int j = 0, m = sItem->childCount(); j < m; j++) {
-        TVItem* item = static_cast<TVItem*>(sItem->child(j));
+        auto item = static_cast<TVItem*>(sItem->child(j));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
-            if (tItem->excludedTests) {
+            auto tItem = static_cast<TVTestItem*>(item);
+            if (tItem->isExcluded) {
                 if (tItem->isSelected() || runAll) {
                     testsToEx.insert(tItem->testState->getTestRef(), tItem->excludeReason);
                 }
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem2 = static_cast<TVTSItem*>(item);
+            auto tItem2 = static_cast<TVTSItem*>(item);
             if (tItem2->isSelected()) {
                 testsToEx.unite(getSubRefToExclude(tItem2, true));
             } else {
@@ -877,7 +865,7 @@ void TestViewController::createAndRunTask(const QList<GTestState*>& testsToRun) 
     if (!ok || numberTestsToRun <= 0) {
         numberTestsToRun = 5;
     }
-    TestRunnerTask* ttask = new TestRunnerTask(testsToRun, service->getEnv(), numberTestsToRun);
+    auto ttask = new TestRunnerTask(testsToRun, service->getEnv(), numberTestsToRun);
 
     togglePopupMenuItems(false);
     task = ttask;
@@ -930,20 +918,20 @@ void TestViewController::sl_setEnvAction() {
     QObjectScopedPointer<QDialog> d = new QDialog(this);
     d->setMinimumWidth(400);
     d->setWindowTitle(tr("Set Environment"));
-    QVBoxLayout* vl = new QVBoxLayout();
+    auto vl = new QVBoxLayout();
     d->setLayout(vl);
 
-    QGridLayout* gl = new QGridLayout();
+    auto gl = new QGridLayout();
     vl->addLayout(gl);
 
     QMap<QString, QLineEdit*> valsByName;
     int row = 0;
     foreach (const QString& name, vars.keys()) {
         QString val = vars.value(name);
-        QLineEdit* le = new QLineEdit(val, d.data());
+        auto le = new QLineEdit(val, d.data());
         le->setObjectName(name + "_EditBox");
         le->setMinimumWidth(300);
-        QLabel* la = new QLabel(name + ":");
+        auto la = new QLabel(name + ":");
         la->setObjectName(name + "_Label");
         la->setBuddy(le);
         valsByName[name] = le;
@@ -964,9 +952,9 @@ void TestViewController::sl_setEnvAction() {
     }
 
     vl->addItem(new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding));
-    QHBoxLayout* hl = new QHBoxLayout();
+    auto hl = new QHBoxLayout();
     vl->addLayout(hl);
-    QDialogButtonBox* dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     d->connect(dbb, SIGNAL(accepted()), SLOT(accept()));
     d->connect(dbb, SIGNAL(rejected()), SLOT(reject()));
     vl->addWidget(dbb);
@@ -1000,12 +988,12 @@ void TestViewController::sl_testStateChanged(GTestState* ts) {
     TVTestItem* tItem = findTestViewItem(ts->getTestRef());
     assert(tItem);
     tItem->updateVisual();
-    TVTSItem* temp_parent = static_cast<TVTSItem*>(tItem->parent());
+    auto temp_parent = static_cast<TVTSItem*>(tItem->parent());
     temp_parent->updateVisual();
 }
 
 void TestViewController::sl_saveTest() {
-    TVTestItem* i = dynamic_cast<TVTestItem*>(tree->currentItem());
+    auto i = dynamic_cast<TVTestItem*>(tree->currentItem());
     QString url = i->testState->getTestRef()->getURL();
     QFile f(url);
     bool ok = f.open(QIODevice::WriteOnly);
@@ -1029,7 +1017,7 @@ TVTSItem::TVTSItem(GTestSuite* _ts)
     : TVItem(TVItem_TestSuite), ts(_ts) {
     name = "/";
     updateVisual();
-    if (ts->getExcludedTests().size() != 0) {
+    if (!ts->getExcludedTests().empty()) {
         setForeground(0, QBrush(QColor(Qt::darkYellow)));
     }
 }
@@ -1102,12 +1090,12 @@ void TVTSItem::getTestsState(int* rPassed, int* rFailed, int* rNone, int* exclud
     int failed = 0;
     int exclud = 0;
     for (int i = 0; i < childCount(); i++) {
-        TVItem* item = static_cast<TVItem*>(child(i));
+        auto item = static_cast<TVItem*>(child(i));
         if (item->isTest()) {
             total++;
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
+            auto tItem = static_cast<TVTestItem*>(item);
             GTestState* testState = tItem->testState;
-            if (tItem->excludedTests) {
+            if (tItem->isExcluded) {
                 exclud++;
             } else if (testState->isFailed()) {
                 failed++;
@@ -1116,7 +1104,7 @@ void TVTSItem::getTestsState(int* rPassed, int* rFailed, int* rNone, int* exclud
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem = static_cast<TVTSItem*>(item);
+            auto tItem = static_cast<TVTSItem*>(item);
             tItem->getTestsState(rPassed, rFailed, rNone, excluded);
         }
     }
@@ -1124,8 +1112,6 @@ void TVTSItem::getTestsState(int* rPassed, int* rFailed, int* rNone, int* exclud
     *rFailed = *rFailed + failed;
     *excluded = *excluded + exclud;
     *rNone = (((*rNone + total) - passed) - failed) - exclud;
-
-    return;
 }
 
 QString TVTSItem::getURL() const {
@@ -1159,7 +1145,7 @@ void TVTestItem::updateVisual() {
     QString name = testState->getTestRef()->getShortName().section('/', -1);
     setText(0, name);
     setToolTip(0, testState->getTestRef()->getURL());
-    if (this->excludedTests) {
+    if (this->isExcluded) {
         setText(1, QString("excluded(%1)").arg(this->excludeReason));
         this->setForeground(1, Qt::blue);
         this->setIcon(0, ICON_NOTRUN_TEST);
@@ -1194,7 +1180,7 @@ QString TVTestItem::getRichDesc() const {
     return text;
 }
 
-QString TVTestItem::getTestContent() {
+QString TVTestItem::getTestContent() const {
     QString text;
 
     QFile myFile(testState->getTestRef()->getURL());

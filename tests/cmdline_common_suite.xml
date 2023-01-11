@@ -1,4 +1,7 @@
 <suite test-timeout="1800" name="CMDLine ugene common tests">
     <env-var value="cmdline/_proto" name="PROTOTYPE"/>
     <test-dir test-ext="*.xml" path="cmdline/common" test-format="XML"/>
+
+    <excluded test="workflow_samples/raw_ngs/test_0001.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
+    <excluded test="workflow_samples/raw_ngs/test_0002.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
 </suite>
