@@ -283,7 +283,7 @@ static QString truncatedError(const QString& file) {
 
 static void checkFileReadState(int read, U2OpStatus& os, const QString& fileName) {
     if (read == READ_ERROR_CODE) {
-        os.setError(SAMTOOLS_ERROR_MESSAGE != nullptr ? SAMTOOLS_ERROR_MESSAGE : readsError(fileName));
+        os.setError(readsError(fileName));
     } else if (read < -1) {
         os.setError(truncatedError(fileName) + ", code: " + QString::number(read));
     }
