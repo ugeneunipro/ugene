@@ -92,37 +92,6 @@ static void closeFileIfOpen(FILE* file) {
 #define TYPE_BAM 1
 #define TYPE_READ 2
 
-bam_header_t* bam_header_dup(const bam_header_t* h0) {
-    bam_header_t* h;
-    int i;
-    h = bam_header_init();
-    *h = *h0;
-    h->hash = h->dict = h->rg2lib = nullptr;
-    h->text = (char*)calloc(h->l_text + 1, 1);
-    memcpy(h->text, h0->text, h->l_text);
-    h->target_len = (uint32_t*)calloc(h->n_targets, 4);
-    h->target_name = (char**)calloc(h->n_targets, sizeof(void*));
-    for (i = 0; i < h->n_targets; ++i) {
-        h->target_len[i] = h0->target_len[i];
-        h->target_name[i] = strdup(h0->target_name[i]);
-    }
-    return h;
-}
-static void append_header_text(bam_header_t* header, char* text, int len) {
-    int x = header->l_text + 1;
-    int y = header->l_text + len + 1;  // 1 byte null
-    if (text == nullptr) {
-        return;
-    }
-    kroundup32(x);
-    kroundup32(y);
-    if (x < y) {
-        header->text = (char*)realloc(header->text, y);
-    }
-    strncpy(header->text + header->l_text, text, len);  // we cannot use strcpy() here.
-    header->l_text += len;
-    header->text[header->l_text] = 0;
-}
 
 /** Version the original samopen() function with a correct handling of unicode in faiUrl and non-UGENE use cases removed. */
 static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl, bam_header_t* bamHeader) {

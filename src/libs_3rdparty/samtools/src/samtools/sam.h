@@ -97,6 +97,10 @@ extern "C" {
 
 	char *samfaipath(const char *fn_ref);
 
+    bam_header_t *bam_header_dup(const bam_header_t *h0);
+
+    void append_header_text(bam_header_t *header, char* text, int len);
+
 #ifdef __cplusplus
 }
 #endif

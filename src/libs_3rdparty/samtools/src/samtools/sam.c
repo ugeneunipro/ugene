@@ -24,7 +24,8 @@ bam_header_t *bam_header_dup(const bam_header_t *h0)
 	}
 	return h;
 }
-static void append_header_text(bam_header_t *header, char* text, int len)
+
+void append_header_text(bam_header_t *header, char* text, int len)
 {
 	int x = header->l_text + 1;
 	int y = header->l_text + len + 1; // 1 byte null
