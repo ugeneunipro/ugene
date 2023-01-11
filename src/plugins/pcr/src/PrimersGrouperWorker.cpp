@@ -228,7 +228,7 @@ void PrimerGrouperTask::findCompatibleGroups() {
     }
 
     if (!compatiblePrimersGroups.isEmpty()) {
-        std::sort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
+        std::stable_sort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
         createReport(compatiblePrimersGroups);
         writeReportToFile();
     }

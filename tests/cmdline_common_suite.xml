@@ -2,6 +2,8 @@
     <env-var value="cmdline/_proto" name="PROTOTYPE"/>
     <test-dir test-ext="*.xml" path="cmdline/common" test-format="XML"/>
 
+    <excluded test="external-tool-support/tcoffee/align_without_params.xml" platform="mac" reason="T-Coffee does't work when run from a folder with spaces like 'Unipro UGENE App."/>
+
     <excluded test="workflow_samples/raw_ngs/test_0001.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
     <excluded test="workflow_samples/raw_ngs/test_0002.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
 </suite>
