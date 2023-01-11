@@ -2338,9 +2338,8 @@ GUI_TEST_CLASS_DEFINITION(test_7515) {
     // These runs ares VERY time-consuming and, as far as crash happens in several seconds after the second calculation starts,
     // there is no need to wait untill it ends, so we can wait a bit and cancel it
     // Expected: no crash or freeze.
-    //GTGlobals::sleep(20000);
+    GTGlobals::sleep(20000);
     GTUtilsWorkflowDesigner::stopWorkflow(os);
-    //GTUtilsMdi::closeActiveWindow(os);
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::activateWindow(os, "Extract");
