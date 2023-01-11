@@ -184,6 +184,8 @@ private:
 
     bool clearedByRepitSel;
     QByteArray seqXCache, seqYCache;  // cached sequence, used only during DP computation
+    QString seqXCachedName;
+    QString seqYCachedName;
 
     void pixMapUpdate();
 

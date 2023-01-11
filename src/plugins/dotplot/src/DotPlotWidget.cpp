@@ -446,10 +446,12 @@ void DotPlotWidget::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
     bool needed = false;
     foreach (ADVSequenceObjectContext* deleted, w->getSequenceContexts()) {
         if (deleted == sequenceX) {
+            seqXCachedName = sequenceX->getSequenceObject()->getSequenceName();
             sequenceX = nullptr;
             needed = true;
         }
         if (deleted == sequenceY) {
+            seqYCachedName = sequenceY->getSequenceObject()->getSequenceName();
             sequenceY = nullptr;
             needed = true;
         }
@@ -543,15 +545,14 @@ bool DotPlotWidget::sl_showSaveFileDialog() {
         return false;
     }
     SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", false);
-    SAFE_POINT(sequenceX, "sequenceX is NULL", false);
-    SAFE_POINT(sequenceY, "sequenceY is NULL", false);
-
+    const QString xName = sequenceX == nullptr ? seqXCachedName : sequenceX->getSequenceObject()->getSequenceName();
+    const QString yName = sequenceY == nullptr ? seqYCachedName : sequenceY->getSequenceObject()->getSequenceName();
     dotPlotTask = new SaveDotPlotTask(
         lod.url,
         dpDirectResultListener->dotPlotList,
         dpRevComplResultsListener->dotPlotList,
-        sequenceX->getSequenceObject(),
-        sequenceY->getSequenceObject(),
+        xName,
+        yName,
         minLen,
         identity);
     ts->registerTopLevelTask(dotPlotTask);
@@ -784,9 +785,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 // ask user if he wants to save dotplot first
 void DotPlotWidget::sl_showDeleteDialog(bool isCancelable) {
     int answer = 0;
-    if (sequenceX == nullptr || sequenceY == nullptr) {
-        answer = QMessageBox::No;
-    } else if (isCancelable) {
+    if (isCancelable) {
         answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
     } else {
         answer = QMessageBox::information(this, tr("Save dot-plot"), tr("Save dot-plot data before closing?"), QMessageBox::Yes, QMessageBox::No);

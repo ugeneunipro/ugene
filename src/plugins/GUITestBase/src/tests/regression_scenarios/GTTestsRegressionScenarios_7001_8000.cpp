@@ -2906,9 +2906,11 @@ GUI_TEST_CLASS_DEFINITION(test_7617) {
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
 
     GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_7617", GTFileDialogUtils::Save));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
     //2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    //3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
     //Expected state: no crash, no errors in the log
     GTLogTracer lt;
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
