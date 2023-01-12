@@ -3787,5 +3787,24 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7753) {
+    //1. Open "data/samples/Assembly/chrM.sorted.bam".
+    //2. Import with default settings.
+    class DeleteFileBeforeImport : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    QDir().mkpath(sandBoxDir + "test_7753");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandBoxDir + "test_7753/chrM.sorted.bam");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
+    GTFileDialog::openFile(os, sandBoxDir + "test_7753/chrM.sorted.bam");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandBoxDir + "test_7753/chrM.sorted.bam").absoluteFilePath()));
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

@@ -90,7 +90,8 @@ Task::ReportResult AddDocumentTask::report() {
             p->addDocument(document);
         }
     } else if (!stateInfo.isCanceled()) {
-        stateInfo.setError(stateInfo.getError() + tr("Document was removed"));
+        QString previousError = stateInfo.getError().isEmpty() ? "" : stateInfo.getError() + " ";
+        stateInfo.setError(previousError + tr("Document was removed."));
     }
     return ReportResult_Finished;
 }
