@@ -7,7 +7,6 @@
 #ifdef _USE_KNETFILE
 #include "knetfile.h"
 #endif
-#include "ugene_custom_io.h"
 
 /*!
   @header
@@ -485,7 +484,7 @@ int bam_index_build2(const char *fn, const char *_fnidx)
 		fnidx = (char*)calloc(strlen(fn) + 5, 1);
 		strcpy(fnidx, fn); strcat(fnidx, ".bai");
 	} else fnidx = strdup(_fnidx);
-	fpidx = ugene_custom_fopen(fnidx, "wb");
+	fpidx = fopen(fnidx, "wb");
 	if (fpidx == 0) {
 		fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
 		free(fnidx);

@@ -28,7 +28,6 @@
 extern "C" {
 #include <bam2bcf.h>
 }
-#include <U2Core/Log.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2SafePoints.h>
 

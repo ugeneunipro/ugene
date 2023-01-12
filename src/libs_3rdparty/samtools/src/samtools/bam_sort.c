@@ -74,7 +74,6 @@ static void swap_header_text(bam_header_t *h1, bam_header_t *h2)
 #define MERGE_RG     1
 #define MERGE_UNCOMP 2
 #define MERGE_LEVEL1 4
-#define MERGE_FORCE  8
 
 /*!
   @abstract    Merge multiple sorted BAM.
@@ -253,52 +252,6 @@ int bam_merge_core(int by_qname, const char *out, const char *headers, int n, ch
 	bam_close(fpout);
 	free(fp); free(heap); free(iter);
 	return 0;
-}
-
-int bam_merge(int argc, char *argv[])
-{
-	int c, is_by_qname = 0, flag = 0, ret = 0;
-	char *fn_headers = NULL, *reg = 0;
-
-	while (0) {
-    //while ((c = getopt(argc, argv, "h:nru1R:f")) >= 0) {
-		switch (c) {
-		case 'r': flag |= MERGE_RG; break;
-		case 'f': flag |= MERGE_FORCE; break;
-		case 'h': fn_headers = strdup(optarg); break;
-		case 'n': is_by_qname = 1; break;
-		case '1': flag |= MERGE_LEVEL1; break;
-		case 'u': flag |= MERGE_UNCOMP; break;
-		case 'R': reg = strdup(optarg); break;
-		}
-	}
-	if (optind + 2 >= argc) {
-		fprintf(stderr, "\n");
-		fprintf(stderr, "Usage:   samtools merge [-nr] [-h inh.sam] <out.bam> <in1.bam> <in2.bam> [...]\n\n");
-		fprintf(stderr, "Options: -n       sort by read names\n");
-		fprintf(stderr, "         -r       attach RG tag (inferred from file names)\n");
-		fprintf(stderr, "         -u       uncompressed BAM output\n");
-		fprintf(stderr, "         -f       overwrite the output BAM if exist\n");
-		fprintf(stderr, "         -1       compress level 1\n");
-		fprintf(stderr, "         -R STR   merge file in the specified region STR [all]\n");
-		fprintf(stderr, "         -h FILE  copy the header in FILE to <out.bam> [in1.bam]\n\n");
-		fprintf(stderr, "Note: Samtools' merge does not reconstruct the @RG dictionary in the header. Users\n");
-		fprintf(stderr, "      must provide the correct header with -h, or uses Picard which properly maintains\n");
-		fprintf(stderr, "      the header dictionary in merging.\n\n");
-		return 1;
-	}
-	if (!(flag & MERGE_FORCE) && strcmp(argv[optind], "-")) {
-		FILE *fp = fopen(argv[optind], "rb");
-		if (fp != NULL) {
-			fclose(fp);
-			fprintf(stderr, "[%s] File '%s' exists. Please apply '-f' to overwrite. Abort.\n", __func__, argv[optind]);
-			return 1;
-		}
-	}
-	if (bam_merge_core(is_by_qname, argv[optind], fn_headers, argc - optind - 1, argv + optind + 1, flag, reg) < 0) ret = 1;
-	free(reg);
-	free(fn_headers);
-	return ret;
 }
 
 typedef bam1_t *bam1_p;
