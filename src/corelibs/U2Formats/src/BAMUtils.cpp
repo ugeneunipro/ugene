@@ -44,8 +44,6 @@ extern "C" {
 #include <SamtoolsAdapter.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -854,8 +852,19 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     if (r1 != r2) {
         os.setError(QString("Different samread result codes at the end of files: %1 vs %2").arg(r1).arg(r2));
     }
-    if (length1 != length2) {
+    std::sort(length1.begin(), length1.end());
+    std::sort(length2.begin(), length2.end());
+    if (length1.size() != length2.size()) {
         os.setError(QString("Different number of reads in files: %1 vs %2").arg(length1.size()).arg(length2.size()));
+    } else if (length1 != length2) {
+        QString reads1;
+        QString reads2;
+        for (int i = 0; i < length1.size(); i++) {
+            QString sep = i > 0 ? ", " : "";
+            reads1 += sep + QString::number(length1[i]);
+            reads2 += sep + QString::number(length2[i]);
+        }
+        os.setError(QString("Different reads in files: count: %1, 1:'%2' vs 2:'%3'").arg(length1.size()).arg(reads1).arg(reads2));
     }
     bam_destroy1(b1);
     bam_destroy1(b2);

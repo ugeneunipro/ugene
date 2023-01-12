@@ -28,7 +28,7 @@
             trim_reads2_out_dir="!tmp_data_dir!rna2"
     />
 
-    <compare-sam-by-length file1="rna2/tophat_out/accepted_hits.bam" file2="cmdline/workflow_samples/raw_ngs/accepted_hits2.bam" isbam="1"/>
+    <compare-sam-by-length file1="!tmp_data_dir!rna2/tophat_out/in.bam" file2="!common_data_dir!cmdline/workflow_samples/raw_ngs/accepted_hits2.bam"/>
 
 
     <remove-temp-dir url="rna2"/>
