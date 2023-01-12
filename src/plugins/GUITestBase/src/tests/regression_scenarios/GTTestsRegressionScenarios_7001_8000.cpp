@@ -3789,7 +3789,9 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
 
 GUI_TEST_CLASS_DEFINITION(test_7753) {
     //1. Open "data/samples/Assembly/chrM.sorted.bam".
-    //2. Import with default settings.
+    //2. Delete bam file
+    //3. Press 'imort' button in dialog
+    //Expected state: you got message box with error and error in log
     class DeleteFileBeforeImport : public CustomScenario {
         void run(GUITestOpStatus& os) override {
             QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
