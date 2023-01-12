@@ -2917,6 +2917,8 @@ GUI_TEST_CLASS_DEFINITION(test_7617) {
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    QFile f(sandBoxDir + "test_7617");
+    CHECK_SET_ERR(f.exists() && f.size() != 0, "Result file is not exists or empty");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7623) {
