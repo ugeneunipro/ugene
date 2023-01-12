@@ -609,35 +609,6 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5138_1) {
-    // 1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/msa/big_aln.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Do MSA area context menu->Statistics->generate distance matrix
-    //     Expected state: notification about low memory has appeared
-    Runnable* dis = new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/matrix.html");
-    GTUtilsDialog::waitForDialog(os, dis);
-    Runnable* pop = new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseKey);
-    GTUtilsDialog::waitForDialog(os, pop);
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5138_2) {
-    //    1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5138", "big_5138.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Do MSA area context menu->Statistics->generate grid profile
-    //    Expected state: notification about low memory has appeared
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate grid profile"}, GTGlobals::UseKey));
-    GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, true, GenerateAlignmentProfileDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/stat.html"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_5149) {
     // Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

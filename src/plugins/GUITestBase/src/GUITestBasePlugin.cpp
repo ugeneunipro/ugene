@@ -279,15 +279,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7700);
 
-    // Memory allocation related tests. Test only 32-bit platforms.
-    // These tests should be rewritten to check 64-bit memory allocation.
-
-#ifdef Q_PROCESSOR_X86_32
-    REGISTER_TEST(GUITest_regression_scenarios::test_4563);
-    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
-#endif
-
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
     //////////////////////////////////////////////////////////////////////////
