@@ -61,8 +61,8 @@ extern "C" {
 
 	  @return       SAM/BAM file handler
 	 */
-	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
-	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
+//	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
+//	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
 
 	/*!
 	  @abstract     Close a SAM/BAM handler
@@ -96,6 +96,10 @@ extern "C" {
 	int sampileup(samfile_t *fp, int mask, bam_pileup_f func, void *data);
 
 	char *samfaipath(const char *fn_ref);
+
+    bam_header_t *bam_header_dup(const bam_header_t *h0);
+
+    void append_header_text(bam_header_t *header, char* text, int len);
 
 #ifdef __cplusplus
 }

@@ -325,7 +325,7 @@ extern "C" {
 	  @discussion Each line in this file consists of chromosome name and
 	  the length of chromosome.
 	 */
-	bam_header_t *sam_header_read2(const char *fn_list);
+	bam_header_t *sam_header_read2_fd(int fd);
 
 	/*!
 	  @abstract       Read header from a SAM file (if present)
