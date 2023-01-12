@@ -410,23 +410,3 @@ void bam_sort_core(int is_by_qname, const char *fn, const char *prefix, size_t m
 {
 	bam_sort_core_ext(is_by_qname, fn, prefix, max_mem, 0, 0);
 }
-
-int bam_sort(int argc, char *argv[])
-{
-	size_t max_mem = 500000000;
-    int is_by_qname = 0, is_stdout = 0;
-	//int c;
-    //while ((c = getopt(argc, argv, "nom:")) >= 0) {
-	//	switch (c) {
-	//	case 'o': is_stdout = 1; break;
-	//	case 'n': is_by_qname = 1; break;
-	//	case 'm': max_mem = atol(optarg); break;
-	//	}
-	//}
-	if (optind + 2 > argc) {
-		fprintf(stderr, "Usage: samtools sort [-on] [-m <maxMem>] <in.bam> <out.prefix>\n");
-		return 1;
-	}
-	bam_sort_core_ext(is_by_qname, argv[optind], argv[optind+1], max_mem, is_stdout, 0);
-	return 0;
-}
