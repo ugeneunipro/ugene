@@ -3799,13 +3799,14 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
         }
     };
     GTLogTracer logTracer;
+    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
     QDir().mkpath(sandBoxDir + "test_7753");
-    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandBoxDir + "test_7753/chrM.sorted.bam");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
-    GTFileDialog::openFile(os, sandBoxDir + "test_7753/chrM.sorted.bam");
+    GTFileDialog::openFile(os, sandboxFilePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandBoxDir + "test_7753/chrM.sorted.bam").absoluteFilePath()));
+    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
 }
 
 }  // namespace GUITest_regression_scenarios
