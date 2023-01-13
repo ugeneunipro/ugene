@@ -407,20 +407,9 @@ bam_index_t *bam_index_load_local(const char *_fn)
 	} else return 0;
 }
 
-static void download_from_remote(const char *) {
-}
-
 bam_index_t *bam_index_load(const char *fn)
 {
-	bam_index_t *idx;
-	idx = bam_index_load_local(fn);
-	if (idx == 0 && (strstr(fn, "ftp://") == fn || strstr(fn, "http://") == fn)) {
-		char *fnidx = calloc(strlen(fn) + 5, 1);
-		strcat(strcpy(fnidx, fn), ".bai");
-		fprintf(stderr, "[bam_index_load] attempting to download the remote index file.\n");
-		download_from_remote(fnidx);
-		idx = bam_index_load_local(fn);
-	}
+	bam_index_t *idx = bam_index_load_local(fn);
 	if (idx == 0) fprintf(stderr, "[bam_index_load] fail to load BAM index.\n");
 	return idx;
 }
