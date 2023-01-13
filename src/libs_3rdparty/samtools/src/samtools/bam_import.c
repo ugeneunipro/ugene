@@ -116,7 +116,8 @@ static bam_header_t *hash2header(const kh_ref_t *hash)
 	bam_init_header_hash(header);
 	return header;
 }
-bam_header_t *sam_header_read2(const char *fn)
+
+bam_header_t *sam_header_read2_fd(int fd)
 {
 	bam_header_t *header;
 	int c, dret, ret, error = 0;
@@ -125,8 +126,8 @@ bam_header_t *sam_header_read2(const char *fn)
 	kstring_t *str;
 	kh_ref_t *hash;
 	khiter_t k;
-	if (fn == 0) return 0;
-	fp = (strcmp(fn, "-") == 0)? gzdopen(fileno(stdin), "r") : gzopen(fn, "r");
+	if (fd == 0) return 0;
+	fp = gzdopen(fd, "r");
 	if (fp == 0) return 0;
 	hash = kh_init(ref);
 	ks = ks_init(fp);
@@ -155,6 +156,7 @@ bam_header_t *sam_header_read2(const char *fn)
 	kh_destroy(ref, hash);
 	return header;
 }
+
 static inline uint8_t *alloc_data(bam1_t *b, int size)
 {
 	if (b->m_data < size) {

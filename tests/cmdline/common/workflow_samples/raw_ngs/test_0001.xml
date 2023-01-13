@@ -18,8 +18,7 @@
             trim_reads1_out_dir="!tmp_data_dir!rna1"
     />
 
-    <compare-sam-by-length file1="rna1/tophat_out/accepted_hits.bam" file2="cmdline/workflow_samples/raw_ngs/accepted_hits.bam" isbam="1"/>
-
-
+    <compare-sam-by-length file1="!tmp_data_dir!rna1/tophat_out/in_1.bam" file2="!common_data_dir!cmdline/workflow_samples/raw_ngs/accepted_hits.bam"/>
     <remove-temp-dir url="rna1"/>
+
 </multi-test>

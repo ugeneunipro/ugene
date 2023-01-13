@@ -178,35 +178,3 @@ void bam_rmdup_core(samfile_t *in, samfile_t *out)
 
 void bam_rmdupse_core(samfile_t *in, samfile_t *out, int force_se);
 
-int bam_rmdup(int argc, char *argv[])
-{
-	int c, is_se = 0, force_se = 0;
-	samfile_t *in, *out;
-#ifdef _MSC_VER
-    while ((c = getopt()) >= 0) { //this code never been called so it just fix for compilation
-#else
-    while ((c = getopt(argc, argv, "sS")) >= 0) {
-#endif
-		switch (c) {
-		case 's': is_se = 1; break;
-		case 'S': force_se = is_se = 1; break;
-		}
-	}
-	if (optind + 2 > argc) {
-		fprintf(stderr, "\n");
-		fprintf(stderr, "Usage:  samtools rmdup [-sS] <input.srt.bam> <output.bam>\n\n");
-		fprintf(stderr, "Option: -s    rmdup for SE reads\n");
-		fprintf(stderr, "        -S    treat PE reads as SE in rmdup (force -s)\n\n");
-		return 1;
-	}
-	in = samopen(argv[optind], "rb", 0);
-	out = samopen(argv[optind+1], "wb", in->header);
-	if (in == 0 || out == 0) {
-		fprintf(stderr, "[bam_rmdup] fail to read/write input files\n");
-		return 1;
-	}
-	if (is_se) bam_rmdupse_core(in, out, force_se);
-	else bam_rmdup_core(in, out);
-	samclose(in); samclose(out);
-	return 0;
-}

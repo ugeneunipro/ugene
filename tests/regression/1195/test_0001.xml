@@ -1,3 +1,10 @@
 <multi-test>
-    <run-cmdline genome-aligner="" reference="!workflow_samples!../samples/FASTA/human_T1.fa" short-reads="!common_data_dir!reads/shortreads15Mb.fasta" result="!tmp_data_dir!1195.ugenedb" nomessage="ERROR" lockForLogListening="true"/>
+    <run-cmdline genome-aligner=""
+                 reference="!workflow_samples!../samples/FASTA/human_T1.fa"
+                 short-reads="!common_data_dir!reads/shortreads15Mb.fasta"
+                 result="!tmp_data_dir!1195.ugenedb"
+                 message="The aligning is finished"
+                 nomessage="ERROR"
+                 lockForLogListening="true"
+    />
 </multi-test>

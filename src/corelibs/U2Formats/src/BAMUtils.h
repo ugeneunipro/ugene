@@ -57,7 +57,7 @@ public:
 
     static bool hasValidBamIndex(const QString& bamUrl);
 
-    static bool hasValidFastaIndex(const GUrl& fastaUrl);
+    static bool hasValidFastaIndex(const QString& fastaUrl);
 
     static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
 

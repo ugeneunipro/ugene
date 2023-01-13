@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>666</height>
+    <width>750</width>
+    <height>674</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
+    <width>750</width>
     <height>400</height>
    </size>
   </property>
@@ -112,7 +112,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>156</height>
+       <height>0</height>
       </size>
      </property>
      <property name="title">
@@ -232,7 +232,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>156</height>
+       <height>0</height>
       </size>
      </property>
      <property name="title">
@@ -247,7 +247,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QRadioButton" name="mostFrequentlyButton">
           <property name="enabled">
@@ -270,6 +270,19 @@
            <string>Frequency distribution</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -311,7 +324,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>124</height>
+       <height>0</height>
       </size>
      </property>
      <property name="title">
