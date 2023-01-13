@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include <stdint.h>
 #include "kstring.h"
 
 int ksprintf(kstring_t *s, const char *fmt, ...)

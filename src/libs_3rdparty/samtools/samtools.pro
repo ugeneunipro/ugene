@@ -5,6 +5,7 @@ HEADERS += src/SamtoolsAdapter.h \
            src/samtools/bam.h \
            src/samtools/bam2bcf.h \
            src/samtools/bam_endian.h \
+           src/samtools/bcf.h \
            src/samtools/bgzf.h \
            src/samtools/errmod.h \
            src/samtools/faidx.h \
@@ -15,8 +16,7 @@ HEADERS += src/SamtoolsAdapter.h \
            src/samtools/kstring.h \
            src/samtools/razf.h \
            src/samtools/sam.h \
-           src/samtools/sam_header.h \
-           src/samtools/bcftools/bcf.h
+           src/samtools/sam_header.h
 
 win32 : HEADERS += src/samtools/win32/stdint.h \
                    src/samtools/win32/unistd.h \
@@ -31,7 +31,6 @@ SOURCES += src/SamtoolsAdapter.cpp \
            src/samtools/bam_lpileup.c \
            src/samtools/bam_pileup.c \
            src/samtools/bam_sort.c \
-           src/samtools/bgzf.c \
            src/samtools/errmod.c \
            src/samtools/faidx.c \
            src/samtools/kaln.c \

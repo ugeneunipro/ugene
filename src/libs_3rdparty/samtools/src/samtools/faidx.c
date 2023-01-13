@@ -30,9 +30,6 @@ extern int fseeko(FILE *stream, off_t offset, int whence);
 #define razf_seek(fp, offset, whence) fseeko(fp, offset, whence)
 #define razf_tell(fp) ftello(fp)
 #endif
-#ifdef _USE_KNETFILE
-#include "knetfile.h"
-#endif
 
 struct __faidx_t {
 	RAZF *rz;
@@ -144,7 +141,7 @@ void fai_save(const faidx_t *fai, FILE *fp)
     if (fai == NULL){
         return;
     }
-    
+
 	for (i = 0; i < fai->n; ++i) {
 		faidx1_t x;
 		k = kh_get(s, fai->hash, fai->name[i]);
@@ -226,47 +223,6 @@ int fai_build(const char *fn)
 	return 0;
 }
 
-#ifdef _USE_KNETFILE
-FILE *download_and_open(const char *fn)
-{
-    const int buf_size = 1 * 1024 * 1024;
-    uint8_t *buf;
-    FILE *fp;
-    knetFile *fp_remote;
-    const char *url = fn;
-    const char *p;
-    int l = strlen(fn);
-    for (p = fn + l - 1; p >= fn; --p)
-        if (*p == '/') break;
-    fn = p + 1;
-
-    // First try to open a local copy
-    fp = fopen(fn, "r");
-    if (fp)
-        return fp;
-
-    // If failed, download from remote and open
-    fp_remote = knet_open(url, "rb");
-    if (fp_remote == 0) {
-        fprintf(stderr, "[download_from_remote] fail to open remote file %s\n",url);
-        return NULL;
-    }
-    if ((fp = fopen(fn, "wb")) == 0) {
-        fprintf(stderr, "[download_from_remote] fail to create file in the working directory %s\n",fn);
-        knet_close(fp_remote);
-        return NULL;
-    }
-    buf = (uint8_t*)calloc(buf_size, 1);
-    while ((l = knet_read(fp_remote, buf, buf_size)) != 0)
-        fwrite(buf, 1, l, fp);
-    free(buf);
-    fclose(fp);
-    knet_close(fp_remote);
-
-    return fopen(fn, "r");
-}
-#endif
-
 faidx_t *fai_load(const char *fn)
 {
 	char *str;
@@ -274,21 +230,7 @@ faidx_t *fai_load(const char *fn)
 	faidx_t *fai;
 	str = (char*)calloc(strlen(fn) + 5, 1);
 	sprintf(str, "%s.fai", fn);
-
-#ifdef _USE_KNETFILE
-    if (strstr(fn, "ftp://") == fn || strstr(fn, "http://") == fn)
-    {
-        fp = download_and_open(str);
-        if ( !fp )
-        {
-            fprintf(stderr, "[fai_load] failed to open remote FASTA index %s\n", str);
-            free(str);
-            return 0;
-        }
-    }
-    else
-#endif
-        fp = fopen(str, "rb");
+    fp = fopen(str, "rb");
 	if (fp == 0) {
 		fprintf(stderr, "[fai_load] build FASTA index.\n");
 		fai_build(fn);
@@ -376,36 +318,7 @@ char *fai_fetch(const faidx_t *fai, const char *str, int *len)
 	return s;
 }
 
-int faidx_main(int argc, char *argv[])
-{
-	if (argc == 1) {
-		fprintf(stderr, "Usage: faidx <in.fasta> [<reg> [...]]\n");
-		return 1;
-	} else {
-		if (argc == 2) fai_build(argv[1]);
-		else {
-			int i, j, k, l;
-			char *s;
-			faidx_t *fai;
-			fai = fai_load(argv[1]);
-			if (fai == 0) return 1;
-			for (i = 2; i != argc; ++i) {
-				printf(">%s\n", argv[i]);
-				s = fai_fetch(fai, argv[i], &l);
-				for (j = 0; j < l; j += 60) {
-					for (k = 0; k < 60 && k < l - j; ++k)
-						putchar(s[j + k]);
-					putchar('\n');
-				}
-				free(s);
-			}
-			fai_destroy(fai);
-		}
-	}
-	return 0;
-}
-
-int faidx_fetch_nseq(const faidx_t *fai) 
+int faidx_fetch_nseq(const faidx_t *fai)
 {
 	return fai->n;
 }
@@ -428,7 +341,7 @@ char *faidx_fetch_seq(const faidx_t *fai, char *c_name, int p_beg_i, int p_end_i
     if(p_end_i < 0) p_end_i = 0;
     else if(val.len <= p_end_i) p_end_i = val.len - 1;
 
-    // Now retrieve the sequence 
+    // Now retrieve the sequence
 	l = 0;
 	seq = (char*)malloc(p_end_i - p_beg_i + 2);
 	razf_seek(fai->rz, val.offset + p_beg_i / val.line_blen * val.line_len + p_beg_i % val.line_blen, SEEK_SET);
@@ -439,6 +352,3 @@ char *faidx_fetch_seq(const faidx_t *fai, char *c_name, int p_beg_i, int p_end_i
 	return seq;
 }
 
-#ifdef FAIDX_MAIN
-int main(int argc, char *argv[]) { return faidx_main(argc, argv); }
-#endif

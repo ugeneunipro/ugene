@@ -29,10 +29,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include "bgzf.h"
 
 #include "khash.h"
@@ -115,11 +113,7 @@ int bgzf_check_bgzf(const char *fn)
         return -1;
     }
 
-#ifdef _USE_KNETFILE
-    n = knet_read(fp->x.fpr, buf, 10);
-#else
     n = fread(buf, 1, 10, fp->file);
-#endif
     bgzf_close(fp);
 
     if ( n!=10 ) 
@@ -146,21 +140,13 @@ static
 BGZF*
 open_read(int fd)
 {
-#ifdef _USE_KNETFILE
-    knetFile *file = knet_dopen(fd, "r");
-#else
     FILE* file = fdopen(fd, "r");
-#endif
     BGZF* fp;
 	if (file == 0) return 0;
 	fp = bgzf_read_init();
     fp->file_descriptor = fd;
     fp->open_mode = 'r';
-#ifdef _USE_KNETFILE
-    fp->x.fpr = file;
-#else
     fp->file = file;
-#endif
     return fp;
 }
 
@@ -177,11 +163,7 @@ open_write(int fd, int compress_level) // compress_level==-1 for the default lev
     fp->owned_file = 0;
 	fp->compress_level = compress_level < 0? Z_DEFAULT_COMPRESSION : compress_level; // Z_DEFAULT_COMPRESSION==-1
 	if (fp->compress_level > 9) fp->compress_level = Z_DEFAULT_COMPRESSION;
-#ifdef _USE_KNETFILE
-    fp->x.fpw = file;
-#else
     fp->file = file;
-#endif
     fp->uncompressed_block_size = DEFAULT_BLOCK_SIZE;
     fp->uncompressed_block = NULL;
     fp->compressed_block_size = MAX_BLOCK_SIZE;
@@ -198,14 +180,6 @@ bgzf_open(const char* __restrict path, const char* __restrict mode)
 {
     BGZF* fp = NULL;
     if (strchr(mode, 'r') || strchr(mode, 'R')) { /* The reading mode is preferred. */
-#ifdef _USE_KNETFILE
-		knetFile *file = knet_open(path, mode);
-		if (file == 0) return 0;
-		fp = bgzf_read_init();
-		fp->file_descriptor = -1;
-		fp->open_mode = 'r';
-		fp->x.fpr = file;
-#else
 		int fd, oflag = O_RDONLY;
 #ifdef _WIN32
 		oflag |= O_BINARY;
@@ -213,7 +187,6 @@ bgzf_open(const char* __restrict path, const char* __restrict mode)
         fd = open(path, oflag);
 		if (fd == -1) return 0;
         fp = open_read(fd);
-#endif
     } else if (strchr(mode, 'w') || strchr(mode, 'W')) {
 		int fd, compress_level = -1, oflag = O_WRONLY | O_CREAT | O_TRUNC;
 #ifdef _WIN32
@@ -429,11 +402,7 @@ static int load_block_from_cache(BGZF *fp, int64_t block_address)
 	fp->block_address = block_address;
 	fp->block_length = p->size;
 	memcpy(fp->uncompressed_block, p->block, MAX_BLOCK_SIZE);
-#ifdef _USE_KNETFILE
-	knet_seek(fp->x.fpr, p->end_offset, SEEK_SET);
-#else
 	fseeko(fp->file, p->end_offset, SEEK_SET);
-#endif
 	return p->size;
 }
 
@@ -469,15 +438,9 @@ bgzf_read_block(BGZF* fp)
 {
     bgzf_byte_t header[BLOCK_HEADER_LENGTH];
 	int count, size = 0, block_length, remaining;
-#ifdef _USE_KNETFILE
-    int64_t block_address = knet_tell(fp->x.fpr);
-	if (load_block_from_cache(fp, block_address)) return 0;
-    count = knet_read(fp->x.fpr, header, sizeof(header));
-#else
     int64_t block_address = ftello(fp->file);
 	if (load_block_from_cache(fp, block_address)) return 0;
     count = fread(header, 1, sizeof(header), fp->file);
-#endif
     if (count == 0) {
         fp->block_length = 0;
         return 0;
@@ -496,11 +459,7 @@ bgzf_read_block(BGZF* fp)
     bgzf_byte_t* compressed_block = (bgzf_byte_t*) fp->compressed_block;
     memcpy(compressed_block, header, BLOCK_HEADER_LENGTH);
     remaining = block_length - BLOCK_HEADER_LENGTH;
-#ifdef _USE_KNETFILE
-    count = knet_read(fp->x.fpr, &compressed_block[BLOCK_HEADER_LENGTH], remaining);
-#else
     count = fread(&compressed_block[BLOCK_HEADER_LENGTH], 1, remaining, fp->file);
-#endif
     }
     if (count != remaining) {
         report_error(fp, "read failed");
@@ -552,11 +511,7 @@ bgzf_read(BGZF* fp, void* data, int length)
         bytes_read += copy_length;
     }
     if (fp->block_offset == fp->block_length) {
-#ifdef _USE_KNETFILE
-        fp->block_address = knet_tell(fp->x.fpr);
-#else
         fp->block_address = ftello(fp->file);
-#endif
         fp->block_offset = 0;
         fp->block_length = 0;
     }
@@ -569,11 +524,7 @@ int bgzf_flush(BGZF* fp)
         int count, block_length;
 		block_length = deflate_block(fp, fp->block_offset);
         if (block_length < 0) return -1;
-#ifdef _USE_KNETFILE
-        count = fwrite(fp->compressed_block, 1, block_length, fp->x.fpw);
-#else
         count = fwrite(fp->compressed_block, 1, block_length, fp->file);
-#endif
         if (count != block_length) {
             report_error(fp, "write failed");
             return -1;
@@ -627,30 +578,15 @@ int bgzf_close(BGZF* fp)
         if (bgzf_flush(fp) != 0) return -1;
 		{ // add an empty block
 			int count, block_length = deflate_block(fp, 0);
-#ifdef _USE_KNETFILE
-			count = fwrite(fp->compressed_block, 1, block_length, fp->x.fpw);
-#else
 			count = fwrite(fp->compressed_block, 1, block_length, fp->file);
-#endif
 		}
-#ifdef _USE_KNETFILE
-        if (fflush(fp->x.fpw) != 0) {
-#else
         if (fflush(fp->file) != 0) {
-#endif
             report_error(fp, "flush failed");
             return -1;
         }
     }
     if (fp->owned_file) {
-#ifdef _USE_KNETFILE
-		int ret;
-		if (fp->open_mode == 'w') ret = fclose(fp->x.fpw);
-		else ret = knet_close(fp->x.fpr);
-        if (ret != 0) return -1;
-#else
         if (fclose(fp->file) != 0) return -1;
-#endif
     }
     free(fp->uncompressed_block);
     free(fp->compressed_block);
@@ -669,17 +605,10 @@ int bgzf_check_EOF(BGZF *fp)
 	static uint8_t magic[28] = "\037\213\010\4\0\0\0\0\0\377\6\0\102\103\2\0\033\0\3\0\0\0\0\0\0\0\0\0";
 	uint8_t buf[28];
 	off_t offset;
-#ifdef _USE_KNETFILE
-	offset = knet_tell(fp->x.fpr);
-	if (knet_seek(fp->x.fpr, -28, SEEK_END) != 0) return -1;
-	knet_read(fp->x.fpr, buf, 28);
-	knet_seek(fp->x.fpr, offset, SEEK_SET);
-#else
 	offset = ftello(fp->file);
 	if (fseeko(fp->file, -28, SEEK_END) != 0) return -1;
 	fread(buf, 1, 28, fp->file);
 	fseeko(fp->file, offset, SEEK_SET);
-#endif
 	return (memcmp(magic, buf, 28) == 0)? 1 : 0;
 }
 
@@ -698,11 +627,7 @@ int64_t bgzf_seek(BGZF* fp, int64_t pos, int where)
     }
     block_offset = pos & 0xFFFF;
     block_address = (pos >> 16) & 0xFFFFFFFFFFFFLL;
-#ifdef _USE_KNETFILE
-    if (knet_seek(fp->x.fpr, block_address, SEEK_SET) != 0) {
-#else
     if (fseeko(fp->file, block_address, SEEK_SET) != 0) {
-#endif
         report_error(fp, "seek failed");
         return -1;
     }

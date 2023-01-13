@@ -28,23 +28,11 @@
 #ifndef BCF_H
 #define BCF_H
 
-#define BCF_VERSION "0.1.17-dev (r973:277)"
-
 #include <stdint.h>
 #include <3rdparty/zlib/zlib.h>
 
-#ifndef BCF_LITE
 #include "bgzf.h"
 typedef BGZF *bcfFile;
-#else
-typedef gzFile bcfFile;
-#define bgzf_open(fn, mode) gzopen(fn, mode)
-#define bgzf_fdopen(fd, mode) gzdopen(fd, mode)
-#define bgzf_close(fp) gzclose(fp)
-#define bgzf_read(fp, buf, len) gzread(fp, buf, len)
-#define bgzf_write(fp, buf, len)
-#define bgzf_flush(fp)
-#endif
 
 /*
   A member in the structs below is said to "primary" if its content
@@ -175,16 +163,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-static inline uint32_t bcf_str2int(const char *str, int l)
-{
-	int i;
-	uint32_t x = 0;
-	for (i = 0; i < l && i < 4; ++i) {
-		if (str[i] == 0) return x;
-		x = x<<8 | str[i];
-	}
-	return x;
-}
 
 #endif

@@ -1,5 +1,4 @@
 #include <math.h>
-#include <float.h>
 #include "errmod.h"
 #include "ksort.h"
 #ifdef _MSC_VER
