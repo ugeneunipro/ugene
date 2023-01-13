@@ -2943,7 +2943,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     // 1. Create a workflow: Read assembly.
     // 2. Set an input file: that copied chrM.sam.
     // 3. Run the workflow.
-    // Expected state: there are warnings about header in log and dashboard.
+    // Expected state: there are warnings about header in the log.
 
     QString dirPath = sandBoxDir + "test_3589_" + QDateTime::currentDateTime().toString("yyyy.MM.dd_HH.mm.ss") + "/";
     QDir().mkpath(dirPath);
@@ -2959,10 +2959,8 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.getJoinedErrorString().contains("There is no header in the SAM file"), "No warnings about header");
-    int errorsCount = GTUtilsLog::getErrors(os, l).size();
-    // Initial warning and dashboard problem
-    CHECK_SET_ERR(errorsCount == 2, "Invalid errors count. Expected 2, got: " + QString::number(errorsCount) + "\nErrors: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(GTLogTracer::checkMessage("There is no header in the SAM file"), "No warnings about header");
+    GTUtilsLog::checkNoErrorsInLog(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3603) {

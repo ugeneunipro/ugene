@@ -175,10 +175,10 @@ void PrepareToImportTask::checkReferenceFile() {
 
     if (!BAMUtils::hasValidFastaIndex(refUrl)) {
         if (needToCopyFasta()) {
-            bool copied = QFile::copy(refUrl, getFastaUrl());
-            CHECK_EXT(copied, setError(getCopyError(refUrl, getFastaUrl())), );
-
-            refUrl = getFastaUrl();
+            QString fastaUrl = getFastaUrl();
+            bool copied = QFile::copy(refUrl, fastaUrl);
+            CHECK_EXT(copied, setError(getCopyError(refUrl, fastaUrl)), );
+            refUrl = fastaUrl;
         }
     }
 }
