@@ -31,6 +31,7 @@ SOURCES += src/SamtoolsAdapter.cpp \
            src/samtools/bam_lpileup.c \
            src/samtools/bam_pileup.c \
            src/samtools/bam_sort.c \
+           src/samtools/bgzf.c \
            src/samtools/errmod.c \
            src/samtools/faidx.c \
            src/samtools/kaln.c \
