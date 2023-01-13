@@ -47,8 +47,6 @@ public:
     static const QBitArray WHITES;
     static const QBitArray LINE_BREAKS;
     static const QBitArray BINARY;
-    static const QBitArray LESS_THAN;
-    static const QBitArray GREATER_THAN;
 
     static const QByteArray UPPER_CASE_MAP;
     static const QByteArray LOWER_CASE_MAP;
