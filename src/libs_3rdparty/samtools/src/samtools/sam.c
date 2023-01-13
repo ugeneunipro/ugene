@@ -1,5 +1,4 @@
 #include <string.h>
-#include <unistd.h>
 #include "faidx.h"
 #include "sam.h"
 

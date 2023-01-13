@@ -7,7 +7,6 @@ U2_DISABLE_WARNINGS
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include "bam.h"
 #include "ksort.h"
 
