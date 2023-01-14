@@ -371,7 +371,7 @@ QString TaskSchedulerImpl::tryLockResources(Task* task, bool prepareStage, bool&
     // to work but there are child tasks with locked threads waiting for instructions from the WD scheduler.
     bool isThreadResourceNeeded = !prepareStage && !task->hasFlags(TaskFlag_RunMessageLoopOnly);
     if (isThreadResourceNeeded) {
-        if (!threadsResource->tryAcquire()) {
+        if (!threadsResource->tryAcquire(1)) {
             return tr("Waiting for resource '%1', count: %2").arg(threadsResource->name).arg(1);
         }
         isThreadResourceAcquired = true;
@@ -396,10 +396,10 @@ QString TaskSchedulerImpl::tryLockResources(Task* task, bool prepareStage, bool&
 
         bool resourceAcquired = appRes->tryAcquire(taskRes.resourceUse);
         if (!resourceAcquired) {
-            if (appRes->maxTaskUse() < taskRes.resourceUse) {
+            if (appRes->getMaximumUsage() < taskRes.resourceUse) {
                 QString error = tr("Not enough resources for the task, resource name: '%1' max: %2%3 requested: %4%5")
                                     .arg(appRes->name)
-                                    .arg(appRes->maxTaskUse())
+                                    .arg(appRes->getMaximumUsage())
                                     .arg(appRes->suffix)
                                     .arg(taskRes.resourceUse)
                                     .arg(appRes->suffix);
@@ -433,7 +433,7 @@ QString TaskSchedulerImpl::tryLockResources(Task* task, bool prepareStage, bool&
         taskRes.locked = false;
     }
     if (isThreadResourceAcquired) {
-        threadsResource->release();
+        threadsResource->release(1);
     }
 
     hasLockedResourcesAfterCall = false;
@@ -447,7 +447,7 @@ void TaskSchedulerImpl::releaseResources(TaskInfo* ti, bool prepareStage) {
     }
     bool isThreadResourceUsed = !prepareStage && !ti->task->hasFlags(TaskFlag_RunMessageLoopOnly);
     if (isThreadResourceUsed) {
-        threadsResource->release();
+        threadsResource->release(1);
     }
     TaskResources& tres = getTaskResources(ti->task);
     for (int i = 0, n = tres.size(); i < n; i++) {

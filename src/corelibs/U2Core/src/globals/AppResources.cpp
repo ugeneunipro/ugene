@@ -32,7 +32,6 @@
 #include <U2Test/GTest.h>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-#    include <stdio.h>
 #    include <unistd.h>  //for sysconf(3)
 #endif
 #if defined(Q_OS_LINUX)
@@ -94,8 +93,8 @@ AppResourcePool::AppResourcePool() {
     memResource = new AppResourceSemaphore(RESOURCE_MEMORY, maxMem, tr("Memory"), tr("Mb"));
     registerResource(memResource);
 
-    projectResouce = new AppResourceSemaphore(RESOURCE_PROJECT, 1, tr("Project"));
-    registerResource(projectResouce);
+    projectResource = new AppResourceSemaphore(RESOURCE_PROJECT, 1, tr("Project"));
+    registerResource(projectResource);
 
     listenLogInGTest = new AppResourceReadWriteLock(RESOURCE_LISTEN_LOG_IN_TESTS, "LogInTests");
     registerResource(listenLogInGTest);
@@ -106,9 +105,8 @@ AppResourcePool::~AppResourcePool() {
 }
 
 int AppResourcePool::getTotalPhysicalMemory() {
-    int totalPhysicalMemory = defaultMemoryLimitMb;
-
 #if defined(Q_OS_WIN32)
+    int totalPhysicalMemory = defaultMemoryLimitMb;
     MEMORYSTATUSEX memory_status;
     ZeroMemory(&memory_status, sizeof(MEMORYSTATUSEX));
     memory_status.dwLength = sizeof(memory_status);
@@ -124,11 +122,12 @@ int AppResourcePool::getTotalPhysicalMemory() {
 
     // Assume that page size is always a multiple of 1024, so it can be
     // divided without losing any precision.  On the other hand, number
-    // of pages would hardly overflow `long' when multiplied by a small
+    // of pages would hardly overflow 'long' when multiplied by a small
     // number (number of pages / 1024), so we should be safe here.
-    totalPhysicalMemory = (int)(numpages * (pagesize / 1024) / 1024);
+    int totalPhysicalMemory = (int)(numpages * (pagesize / 1024) / 1024);
 
 #elif defined(Q_OS_DARWIN)
+    int totalPhysicalMemory = defaultMemoryLimitMb;
     QProcess p;
     p.start("sysctl", QStringList() << "-n"
                                     << "hw.memsize");
@@ -148,9 +147,9 @@ int AppResourcePool::getTotalPhysicalMemory() {
 }
 
 void AppResourcePool::setIdealThreadCount(int n) {
-    SAFE_POINT(n > 0 && n <= threadResource->maxUse(), QString("Invalid ideal threads count: %1").arg(n), );
+    SAFE_POINT(n > 0 && n <= threadResource->getMaximumUsage(), QString("Invalid ideal threads count: %1").arg(n), );
 
-    n = qBound(1, n, threadResource->maxUse());
+    n = qBound(1, n, threadResource->getMaximumUsage());
     idealThreadCount = n;
     AppContext::getSettings()->setValue(SETTINGS_ROOT + "idealThreadCount", idealThreadCount);
 }
@@ -158,15 +157,17 @@ void AppResourcePool::setIdealThreadCount(int n) {
 void AppResourcePool::setMaxThreadCount(int n) {
     SAFE_POINT(n >= 1, QString("Invalid max threads count: %1").arg(n), );
 
-    threadResource->setMaxUse(qMax(idealThreadCount, n));
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxThreadCount", threadResource->maxUse());
+    threadResource->setMaximumUsage(qMax(idealThreadCount, n));
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxThreadCount", threadResource->getMaximumUsage());
 }
 
-void AppResourcePool::setMaxMemorySizeInMB(int n) {
-    SAFE_POINT(n >= MIN_MEMORY_SIZE, QString("Invalid max memory size: %1").arg(n), );
+static constexpr int MIN_MAXIMUM_MEMORY_SIZE_MB = 200;
 
-    memResource->setMaxUse(qMax(n, MIN_MEMORY_SIZE));
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxMem", memResource->maxUse());
+void AppResourcePool::setMaxMemorySizeInMB(int n) {
+    int maxMemorySize = qMax(n, MIN_MAXIMUM_MEMORY_SIZE_MB);
+    memResource->setMaximumUsage(maxMemorySize);
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxMem", maxMemorySize);
+    SAFE_POINT(n >= MIN_MAXIMUM_MEMORY_SIZE_MB, "Invalid max memory size: " + QString::number(n), );
 }
 
 size_t AppResourcePool::getCurrentAppMemory() {
@@ -188,10 +189,8 @@ size_t AppResourcePool::getCurrentAppMemory() {
     p.close();
     bool ok = false;
     qlonglong output_mem = ps_vsize.toLongLong(&ok);
-    if (ok) {
-        return output_mem;
-    }
-#elif defined(Q_OS_DARWIN)
+    return ok ? output_mem : 0;
+// #elif defined(Q_OS_DARWIN)
 //    qint64 pid = QCoreApplication::applicationPid();
 
 //    QProcess p;
@@ -205,8 +204,9 @@ size_t AppResourcePool::getCurrentAppMemory() {
 //    if (ok) {
 //        return output_mem * 1024 * 1024;
 //    }
+#else
+    return 0;
 #endif
-    return -1;
 }
 
 void AppResourcePool::registerResource(AppResource* r) {
@@ -229,17 +229,177 @@ AppResourcePool* AppResourcePool::instance() {
     return AppContext::getAppSettings() ? AppContext::getAppSettings()->getAppResourcePool() : nullptr;
 }
 
-MemoryLocker& MemoryLocker::operator=(MemoryLocker& other) {
-    MemoryLocker tmp(other);
-    qSwap(os, tmp.os);
-    qSwap(preLockMB, tmp.preLockMB);
-    qSwap(lockedMB, tmp.lockedMB);
-    qSwap(needBytes, tmp.needBytes);
-    qSwap(memoryLockType, tmp.memoryLockType);
-    qSwap(resource, tmp.resource);
-    qSwap(errorMessage, tmp.errorMessage);
+////////////////////////////////////////////////
+///////////// AppResource
 
-    return *this;
+AppResource::AppResource(int id, int _maxUse, const QString& _name, const QString& _suffix)
+    : name(_name), suffix(_suffix), resourceId(id), maximumUsage(_maxUse) {
+}
+
+int AppResource::getMaximumUsage() const {
+    return maximumUsage;
+}
+
+int AppResource::getResourceId() const {
+    return resourceId;
+}
+
+////////////////////////////////////////////////
+///////////// AppResourceReadWriteLock
+
+AppResourceReadWriteLock::AppResourceReadWriteLock(int id, const QString& _name, const QString& _suffix)
+    : AppResource(id, Write, _name, _suffix) {
+    resource = new QReadWriteLock();
+}
+
+AppResourceReadWriteLock::~AppResourceReadWriteLock() {
+    delete resource;
+}
+
+void AppResourceReadWriteLock::acquire(int type) {
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), );
+    if (type == UseType::Write) {
+        resource->lockForWrite();
+    } else {
+        resource->lockForRead();
+    }
+}
+
+bool AppResourceReadWriteLock::tryAcquire(int type) {
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), false);
+    return type == UseType::Write ? resource->tryLockForWrite() : resource->tryLockForRead();
+}
+
+bool AppResourceReadWriteLock::tryAcquire(int type, int timeout) {
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), false);
+    return type == UseType::Write ? resource->tryLockForWrite(timeout) : resource->tryLockForRead(timeout);
+}
+
+void AppResourceReadWriteLock::release(int) {
+    resource->unlock();
+}
+
+int AppResourceReadWriteLock::available() const {
+    return -1;
+}
+
+////////////////////////////////////////////////
+///////////// AppResourceReadWriteLock
+
+AppResourceSemaphore::AppResourceSemaphore(int id, int _maxUse, const QString& _name, const QString& _suffix)
+    : AppResource(id, _maxUse, _name, _suffix) {
+    resource = new QSemaphore(_maxUse);
+}
+
+AppResourceSemaphore::~AppResourceSemaphore() {
+    delete resource;
+}
+
+void AppResourceSemaphore::acquire(int n) {
+    LOG_TRACE(acquire);
+    resource->acquire(n);
+}
+
+bool AppResourceSemaphore::tryAcquire(int n) {
+    LOG_TRACE(tryAcquire);
+    return resource->tryAcquire(n);
+}
+
+bool AppResourceSemaphore::tryAcquire(int n, int timeout) {
+    LOG_TRACE(tryAcquire_timeout);
+    return resource->tryAcquire(n, timeout);
+}
+
+void AppResourceSemaphore::release(int n) {
+    LOG_TRACE(release);
+    SAFE_POINT(n >= 0, QString("AppResource %1 release %2 < 0 called").arg(name).arg(n), );
+    resource->release(n);
+    // QSemaphore allow to create resources by releasing, we do not want to get such behavior
+    int avail = resource->available();
+    SAFE_POINT(avail <= maximumUsage, "Invalid result available resource value: " + QString::number(avail), );
+}
+
+int AppResourceSemaphore::available() const {
+    return resource->available();
+}
+
+void AppResourceSemaphore::setMaximumUsage(int n) {
+    LOG_TRACE(setMaximumUsage);
+    int diff = n - maximumUsage;
+    if (diff > 0) {
+        // adding resources
+        resource->release(diff);
+        maximumUsage += diff;
+    } else {
+        diff = -diff;
+        // safely remove resources
+        for (int i = diff; i > 0; i--) {
+            bool ok = resource->tryAcquire(i, 0);
+            if (ok) {
+                // successfully acquired i resources
+                maximumUsage -= i;
+                break;
+            }
+        }
+    }
+}
+
+////////////////////////////////////////////////
+///////////// MemoryLocker
+
+MemoryLocker::MemoryLocker(U2OpStatus& os, int preLockMB)
+    : os(&os),
+      preLockMB(preLockMB > 0 ? preLockMB : 0) {
+    resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
+    tryAcquire(0);
+}
+
+MemoryLocker::MemoryLocker(int preLockMB)
+    : preLockMB(preLockMB > 0 ? preLockMB : 0) {
+    resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
+    tryAcquire(0);
+}
+
+MemoryLocker::~MemoryLocker() {
+    release();
+}
+
+bool MemoryLocker::tryAcquire(qint64 bytes) {
+    needBytes += bytes;
+
+    int needMB = needBytes / (1000 * 1000) + preLockMB;
+    if (needMB > lockedMB) {
+        int diff = needMB - lockedMB;
+        CHECK_EXT(resource != nullptr, if (os) os->setError("MemoryLocker - Resource error"), false);
+        bool ok = resource->tryAcquire(diff);
+        if (ok) {
+            lockedMB = needMB;
+        } else {
+            errorMessage = QString("MemoryLocker - Not enough memory error, %1 megabytes are required").arg(needMB);
+            if (nullptr != os) {
+                os->setError(errorMessage);
+            }
+        }
+        return ok;
+    }
+    return true;
+}
+
+void MemoryLocker::release() {
+    CHECK_EXT(resource != nullptr, if (os) os->setError("MemoryLocker - Resource error"), );
+    if (lockedMB > 0) {
+        resource->release(lockedMB);
+    }
+    lockedMB = 0;
+    needBytes = 0;
+}
+
+bool MemoryLocker::hasError() const {
+    return !errorMessage.isEmpty();
+}
+
+const QString& MemoryLocker::getError() const {
+    return errorMessage;
 }
 
 }  // namespace U2
