@@ -37,10 +37,6 @@
 #include <stdio.h>
 #include <3rdparty/zlib/zlib.h>
 
-#ifdef _USE_KNETFILE
-#include "knetfile.h"
-#endif
-
 #if ZLIB_VERNUM < 0x1221
 #define _RZ_READONLY
 struct _gz_header_s;
@@ -80,14 +76,7 @@ typedef struct RandomAccessZFile  {
 	char mode; /* 'w' : write mode; 'r' : read mode */
 	int file_type;
 	/* plain file or rz file, razf_read support plain file as input too, in this case, razf_read work as buffered fread */
-#ifdef _USE_KNETFILE
-    union {
-        knetFile *fpr;
-        int fpw;
-    } x;
-#else
 	int filedes; /* the file descriptor */
-#endif
 	z_stream *stream;
 	ZBlockIndex *index;
 	int64_t in, out, end, src_end;

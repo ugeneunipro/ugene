@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include <bam.h>
 #include "errmod.h"
-#include "bcftools/bcf.h"
-
-#define B2B_INDEL_NULL 10000
+#include "bcf.h"
 
 typedef struct __bcf_callaux_t {
 	int capQ, min_baseQ;

@@ -3,8 +3,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <assert.h>
 #ifdef _WIN32
 #include <fcntl.h>
 #endif

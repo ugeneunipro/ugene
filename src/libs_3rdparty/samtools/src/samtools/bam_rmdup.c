@@ -4,7 +4,6 @@ U2_DISABLE_WARNINGS
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 #include "sam.h"
 
 typedef bam1_t *bam1_p;
@@ -175,6 +174,3 @@ void bam_rmdup_core(samfile_t *in, samfile_t *out)
 	free(stack.a);
 	bam_destroy1(b);
 }
-
-void bam_rmdupse_core(samfile_t *in, samfile_t *out, int force_se);
-
