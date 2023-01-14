@@ -257,7 +257,7 @@ AppResourceReadWriteLock::~AppResourceReadWriteLock() {
 }
 
 void AppResourceReadWriteLock::acquire(int type) {
-    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), );
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "AppResourceReadWriteLock::acquire. Invalid lock type: " + QString::number(type), );
     if (type == UseType::Write) {
         resource->lockForWrite();
     } else {
@@ -266,12 +266,12 @@ void AppResourceReadWriteLock::acquire(int type) {
 }
 
 bool AppResourceReadWriteLock::tryAcquire(int type) {
-    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), false);
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "AppResourceReadWriteLock::tryAcquire. Invalid lock type: " + QString::number(type), false);
     return type == UseType::Write ? resource->tryLockForWrite() : resource->tryLockForRead();
 }
 
 bool AppResourceReadWriteLock::tryAcquire(int type, int timeout) {
-    SAFE_POINT(type == UseType::Read || type == UseType::Write, "Invalid lock type: " + QString::number(type), false);
+    SAFE_POINT(type == UseType::Read || type == UseType::Write, "AppResourceReadWriteLock::tryAcquire(timeout). Invalid lock type: " + QString::number(type), false);
     return type == UseType::Write ? resource->tryLockForWrite(timeout) : resource->tryLockForRead(timeout);
 }
 

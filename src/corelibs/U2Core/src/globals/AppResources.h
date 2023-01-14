@@ -94,8 +94,8 @@ public:
     ~AppResourceReadWriteLock() override;
 
     enum UseType {
-        Read = 1,
-        Write = 2,
+        Read = 0,
+        Write = 1,
     };
 
     void acquire(int n) override;

@@ -386,7 +386,7 @@ QString TaskSchedulerImpl::tryLockResources(Task* task, bool prepareStage, bool&
             SAFE_POINT(prepareStage ? !taskRes.locked : taskRes.locked, QString("Task %1 lock state is not correct.").arg(task->getTaskName()), L10N::internalError());
             continue;
         }
-        SAFE_POINT(!prepareStage || taskRes.resourceId != RESOURCE_THREAD, QString("Task %1 resouce id belongs to wrong thread.").arg(task->getTaskName()), L10N::internalError());
+        SAFE_POINT(!prepareStage || taskRes.resourceId != RESOURCE_THREAD, QString("Task %1 resource id belongs to wrong thread.").arg(task->getTaskName()), L10N::internalError());
         AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
         if (!appRes) {
             task->setError(tr("No required resources for the task, resource id: '%1'").arg(taskRes.resourceId));
