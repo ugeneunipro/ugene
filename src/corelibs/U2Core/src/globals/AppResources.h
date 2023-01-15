@@ -34,24 +34,21 @@
 namespace U2 {
 
 /** Thread resource - number of threads */
-#define RESOURCE_THREAD 1
+#define UGENE_RESOURCE_ID_THREAD "Threads"
 
 /** Memory resource - amount of memory in megabytes */
-#define RESOURCE_MEMORY 2
+#define UGENE_RESOURCE_ID_MEMORY "Memory"
 
 /**
     Project resource. There is 1 project active in the system and if the resource is locked
     no project load/unload operation is possible
 */
-#define RESOURCE_PROJECT 5
-
-#define LOG_TRACE(METHOD) \
-    coreLog.trace(QString("AppResource %1 ::" #METHOD " %2, available %3").arg(name).arg(n).arg(available()));
+#define UGENE_RESOURCE_ID_PROJECT "Project"
 
 /** Abstraction of a unique logical resource with max capacity. */
 class U2CORE_EXPORT AppResource {
 public:
-    AppResource(int id, int maxUse, const QString& name, const QString& suffix = "");
+    AppResource(const QString& resourceId, int capacity, const QString& units = "");
     virtual ~AppResource() = default;
 
     AppResource(const AppResource& other) = delete;
@@ -68,28 +65,23 @@ public:
     /** Returns available amount of the resource. If returns -1 the method is not supported. */
     virtual int available() const = 0;
 
-    int getMaximumUsage() const;
+    int getCapacity() const;
 
-    int getResourceId() const;
+    /** Unique resource id. */
+    const QString id;
 
-    /** Visual resource name. */
-    const QString name;
-
-    /** Visual resource suffix (units): Mb, Kb, threads, etc…. */
-    const QString suffix;
+    /** Visual resource units: Mb, Kb, threads, etc…. */
+    const QString units;
 
 protected:
-    /** Unique resource id. */
-    int resourceId = -1;
-
     /** Maximum limit available for acquire for the resource. */
-    int maximumUsage = -1;
+    int capacity = -1;
 };
 
 /** Resource based on QReadWriteLock. The resource must be acquire with either UseType::Read or UseType::Write. */
 class U2CORE_EXPORT AppResourceReadWriteLock : public AppResource {
 public:
-    AppResourceReadWriteLock(int id, const QString& name, const QString& suffix = "");
+    AppResourceReadWriteLock(const QString& resourceId);
 
     ~AppResourceReadWriteLock() override;
 
@@ -112,10 +104,10 @@ private:
     QReadWriteLock* resource = nullptr;
 };
 
-/** Resource based on QSemaphore (counter). The resource may be acquired up to maxUse times. */
+/** Resource based on QSemaphore (counter). The resource may be acquired up to 'capacity' times. */
 class U2CORE_EXPORT AppResourceSemaphore : public AppResource {
 public:
-    AppResourceSemaphore(int id, int maxUse, const QString& name, const QString& suffix = "");
+    AppResourceSemaphore(const QString& resourceId, int capacity = 1, const QString& units = "");
 
     ~AppResourceSemaphore() override;
 
@@ -129,7 +121,7 @@ public:
 
     int available() const override;
 
-    void setMaximumUsage(int n);
+    void setCapacity(int n);
 
 private:
     QSemaphore* resource = nullptr;
@@ -141,28 +133,26 @@ public:
     AppResourcePool();
     ~AppResourcePool() override;
 
-    int getIdealThreadCount() const {
-        return idealThreadCount;
-    }
+    int getIdealThreadCount() const;
+
     void setIdealThreadCount(int n);
 
-    int getMaxThreadCount() const {
-        return threadResource->getMaximumUsage();
-    }
-    void setMaxThreadCount(int n);
+    int getMaxThreadCount() const;
 
-    int getMaxMemorySizeInMB() const {
-        return memResource->getMaximumUsage();
-    }
+    void setMaxThreadCount(int n) const;
+
+    int getMaxMemorySizeInMB() const;
+
     void setMaxMemorySizeInMB(int m);
 
     static size_t getCurrentAppMemory();
 
     void registerResource(AppResource* r);
 
-    void unregisterResource(int id);
+    void unregisterResource(const QString& id);
 
-    AppResource* getResource(int id) const;
+    /** Returns registered resource with the given id or nullptr if resource is not found. */
+    AppResource* getResource(const QString& id) const;
 
     static AppResourcePool* instance();
 
@@ -173,7 +163,7 @@ public:
 private:
     static const int defaultMemoryLimitMb = 8 * 1024;
 
-    QHash<int, AppResource*> resources;
+    QHash<QString, AppResource*> resources;
 
     int idealThreadCount = 0;
 

@@ -135,13 +135,14 @@ Service* ServiceRegistryImpl::findServiceReadyToEnable() const {
 
 /// RegisterServiceTask
 
-AbstractServiceTask::AbstractServiceTask(QString taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
+AbstractServiceTask::AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
     : Task(taskName, flag), sr(_sr), s(_s) {
     SAFE_POINT_EXT(sr, stateInfo.setError("Pointer to ServiceRegistryImpl is null"), );
     SAFE_POINT_EXT(s, stateInfo.setError("Pointer to Service is null"), );
 
     if (lockServiceResource) {
-        addTaskResource(TaskResourceUsage(s->getType().id, 1, true));
+        QString serviceResourceId = Service::getServiceResourceId(s->getType());
+        addTaskResource(TaskResourceUsage(serviceResourceId, 1, true));
     }
 }
 

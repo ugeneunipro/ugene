@@ -392,7 +392,7 @@ Task::ReportResult ExportProjectTask::report() {
 // tests
 
 void GTest_LoadProject::init(XMLTestFormat*, const QDomElement& el) {
-    addTaskResource(TaskResourceUsage(RESOURCE_PROJECT, 1, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_PROJECT, 1, true));
     projContextName = el.attribute("index");
     if (!el.attribute("load_from_temp").isEmpty()) {
         url = env->getVar("TEMP_DATA_DIR") + "/" + el.attribute("url");

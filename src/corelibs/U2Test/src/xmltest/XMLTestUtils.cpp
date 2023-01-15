@@ -197,7 +197,7 @@ void XMLMultiTest::init(XMLTestFormat* tf, const QDomElement& el) {
     }
     if (!hasError()) {
         auto lockTime = lockForLogListening ? AppResourceReadWriteLock::Write : AppResourceReadWriteLock::Read;
-        addTaskResource(TaskResourceUsage(RESOURCE_LISTEN_LOG_IN_TESTS, lockTime, true));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_TEST_LOG_LISTENER, lockTime, true));
         for (Task* t : qAsConst(subs)) {
             addSubTask(t);
         }

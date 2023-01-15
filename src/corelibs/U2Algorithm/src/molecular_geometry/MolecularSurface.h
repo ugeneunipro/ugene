@@ -87,7 +87,7 @@ public:
 
 class U2ALGORITHM_EXPORT MolecularSurfaceFactory {
 public:
-    virtual ~MolecularSurfaceFactory();
+    virtual ~MolecularSurfaceFactory() = default;
     virtual MolecularSurface* createInstance() const = 0;
     virtual bool hasConstraints(const BioStruct3D&) const {
         return false;

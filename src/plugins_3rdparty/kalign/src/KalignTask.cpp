@@ -77,7 +77,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSett
     tpm = Task::Progress_Manual;
     quint64 mem = inputMA->getRowCount() * sizeof(float);
     quint64 profileMem = (ma->getLength() + 2) * 22 * sizeof(float);  // the size of profile that is built during kalign
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
 }
 
 void KalignTask::_run() {

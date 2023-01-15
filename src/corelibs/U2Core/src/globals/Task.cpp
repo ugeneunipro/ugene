@@ -26,6 +26,10 @@
 
 namespace U2 {
 
+TaskResourceUsage::TaskResourceUsage(const QString& _resourceId, int _usage, bool prepareStage)
+    : resourceId(_resourceId), resourceUse(_usage), prepareStageLock(prepareStage) {
+}
+
 void TaskStateInfo::addWarning(const QString& warning) {
     QWriteLocker w(&lock);
     warnings << warning;

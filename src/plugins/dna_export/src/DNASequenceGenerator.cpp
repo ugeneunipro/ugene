@@ -408,7 +408,7 @@ GenerateDNASequenceTask::GenerateDNASequenceTask(const QMap<char, qreal>& baseCo
 void GenerateDNASequenceTask::prepare() {
     int memUseMB = window / MBYTE_TO_BYTE;
     coreLog.trace(QString("Generate DNA sequence task: Memory resource %1").arg(memUseMB));
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB));
 }
 
 void GenerateDNASequenceTask::run() {

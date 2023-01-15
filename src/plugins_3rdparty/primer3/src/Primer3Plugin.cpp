@@ -63,7 +63,7 @@ Primer3Plugin::Primer3Plugin()
         viewCtx->init();
     }
 
-    auto p3Lock = new AppResourceSemaphore(PRIMER3_STATIC_LOCK_RESOURCE, 1, tr("Primer3 lock"));
+    auto p3Lock = new AppResourceSemaphore(UGENE_PRIMER3_SINGLE_THREAD_RESOURCE_ID, 1, tr("Primer3 lock"));
     AppContext::getAppSettings()->getAppResourcePool()->registerResource(p3Lock);
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();

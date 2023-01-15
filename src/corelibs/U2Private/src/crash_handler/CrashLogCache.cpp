@@ -39,11 +39,11 @@ QString CrashLogCache::formMemInfo() {
     AppResourcePool* pool = AppResourcePool::instance();
     CHECK(pool, QString());
 
-    size_t memoryBytes = pool->getCurrentAppMemory();
+    size_t memoryBytes = AppResourcePool::getCurrentAppMemory();
     QString memInfo = QString("AppMemory: %1Mb").arg(memoryBytes / (1000 * 1000));
-    AppResource* mem = pool->getResource(RESOURCE_MEMORY);
+    AppResource* mem = pool->getResource(UGENE_RESOURCE_ID_MEMORY);
     if (mem) {
-        memInfo += QString("; Locked memory AppResource: %1/%2").arg(mem->getMaximumUsage() - mem->available()).arg(mem->getMaximumUsage());
+        memInfo += QString("; Locked memory AppResource: %1/%2").arg(mem->getCapacity() - mem->available()).arg(mem->getCapacity());
     }
 
     int currentMemory = 0, maxMemory = 0;

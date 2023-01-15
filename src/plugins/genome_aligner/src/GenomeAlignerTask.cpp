@@ -126,7 +126,7 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings& _settin
     if (!justBuildIndex) {
         memUseMB += readMemSize;
     }
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, true));
 }
 
 GenomeAlignerTask::~GenomeAlignerTask() {

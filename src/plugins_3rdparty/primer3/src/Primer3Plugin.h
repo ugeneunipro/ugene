@@ -36,7 +36,7 @@ namespace U2 {
  * Primer3Task should lock this resource before run and unlock after finish
  * It's required because the original "primer3" tool doesn't support parallel calculations
  */
-#define PRIMER3_STATIC_LOCK_RESOURCE 15162342
+#define UGENE_PRIMER3_SINGLE_THREAD_RESOURCE_ID "Primer 3 single thread"
 
 class Primer3ADVContext;
 class XMLTestFactory;
@@ -45,7 +45,7 @@ class Primer3Plugin : public Plugin {
     Q_OBJECT
 public:
     Primer3Plugin();
-    ~Primer3Plugin();
+    ~Primer3Plugin() override;
 
 private:
     Primer3ADVContext* viewCtx = nullptr;

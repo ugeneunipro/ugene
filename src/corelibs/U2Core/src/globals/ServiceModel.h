@@ -52,10 +52,13 @@ typedef QFlags<ServiceFlag> ServiceFlags;
 
 class U2CORE_EXPORT Service : public QObject {
     friend class ServiceRegistry;
-    friend class ServiceLock;
     Q_OBJECT
 public:
-    Service(ServiceType t, const QString& _name, const QString& _desc, const QList<ServiceType>& parentServices = QList<ServiceType>(), ServiceFlags flags = ServiceFlag_None);
+    Service(const ServiceType& t,
+            const QString& _name,
+            const QString& _desc,
+            const QList<ServiceType>& parentServices = QList<ServiceType>(),
+            ServiceFlags flags = ServiceFlag_None);
 
     const QList<ServiceType>& getParentServiceTypes() const {
         return parentServices;
@@ -88,6 +91,9 @@ public:
     ServiceFlags getFlags() const {
         return flags;
     }
+
+    /** Returns unique resource identifier for the service type. */
+    static QString getServiceResourceId(const ServiceType& serviceType);
 
 protected:
     /// returns NULL if no actions are required to enable service

@@ -45,6 +45,9 @@
 // clang-format on
 #endif
 
+#define LOG_TRACE(METHOD) \
+    coreLog.trace(QString("AppResource %1 ::" #METHOD " %2, available %3").arg(id).arg(n).arg(available()));
+
 namespace U2 {
 
 #if defined(Q_OS_LINUX)
@@ -83,20 +86,20 @@ AppResourcePool::AppResourcePool() {
     idealThreadCount = s->getValue(SETTINGS_ROOT + "idealThreadCount", QThread::idealThreadCount()).toInt();
 
     int maxThreadCount = s->getValue(SETTINGS_ROOT + "maxThreadCount", 1000).toInt();
-    threadResource = new AppResourceSemaphore(RESOURCE_THREAD, maxThreadCount, tr("Threads"));
+    threadResource = new AppResourceSemaphore(UGENE_RESOURCE_ID_THREAD, maxThreadCount);
     registerResource(threadResource);
 
     int totalPhysicalMemory = getTotalPhysicalMemory();
     int maxMem = s->getValue(SETTINGS_ROOT + "maxMem", totalPhysicalMemory).toInt();
     maxMem = maxMem > x64MaxMemoryLimitMb ? x64MaxMemoryLimitMb : maxMem;
 
-    memResource = new AppResourceSemaphore(RESOURCE_MEMORY, maxMem, tr("Memory"), tr("Mb"));
+    memResource = new AppResourceSemaphore(UGENE_RESOURCE_ID_MEMORY, maxMem, tr("Mb"));
     registerResource(memResource);
 
-    projectResource = new AppResourceSemaphore(RESOURCE_PROJECT, 1, tr("Project"));
+    projectResource = new AppResourceSemaphore(UGENE_RESOURCE_ID_PROJECT, 1);
     registerResource(projectResource);
 
-    listenLogInGTest = new AppResourceReadWriteLock(RESOURCE_LISTEN_LOG_IN_TESTS, "LogInTests");
+    listenLogInGTest = new AppResourceReadWriteLock(UGENE_RESOURCE_ID_TEST_LOG_LISTENER);
     registerResource(listenLogInGTest);
 }
 
@@ -104,8 +107,20 @@ AppResourcePool::~AppResourcePool() {
     qDeleteAll(resources.values());
 }
 
+int AppResourcePool::getIdealThreadCount() const {
+    return idealThreadCount;
+}
+
+int AppResourcePool::getMaxThreadCount() const {
+    return threadResource->getCapacity();
+}
+
+int AppResourcePool::getMaxMemorySizeInMB() const {
+    return memResource->getCapacity();
+}
+
 int AppResourcePool::getTotalPhysicalMemory() {
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
     int totalPhysicalMemory = defaultMemoryLimitMb;
     MEMORYSTATUSEX memory_status;
     ZeroMemory(&memory_status, sizeof(MEMORYSTATUSEX));
@@ -147,25 +162,22 @@ int AppResourcePool::getTotalPhysicalMemory() {
 }
 
 void AppResourcePool::setIdealThreadCount(int n) {
-    SAFE_POINT(n > 0 && n <= threadResource->getMaximumUsage(), QString("Invalid ideal threads count: %1").arg(n), );
-
-    n = qBound(1, n, threadResource->getMaximumUsage());
+    SAFE_POINT(n >= 1 && n <= threadResource->getCapacity(), QString("Invalid ideal threads count: %1").arg(n), );
     idealThreadCount = n;
     AppContext::getSettings()->setValue(SETTINGS_ROOT + "idealThreadCount", idealThreadCount);
 }
 
-void AppResourcePool::setMaxThreadCount(int n) {
+void AppResourcePool::setMaxThreadCount(int n) const {
     SAFE_POINT(n >= 1, QString("Invalid max threads count: %1").arg(n), );
-
-    threadResource->setMaximumUsage(qMax(idealThreadCount, n));
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxThreadCount", threadResource->getMaximumUsage());
+    threadResource->setCapacity(qMax(idealThreadCount, n));
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxThreadCount", threadResource->getCapacity());
 }
 
 static constexpr int MIN_MAXIMUM_MEMORY_SIZE_MB = 200;
 
 void AppResourcePool::setMaxMemorySizeInMB(int n) {
     int maxMemorySize = qMax(n, MIN_MAXIMUM_MEMORY_SIZE_MB);
-    memResource->setMaximumUsage(maxMemorySize);
+    memResource->setCapacity(maxMemorySize);
     AppContext::getSettings()->setValue(SETTINGS_ROOT + "maxMem", maxMemorySize);
     SAFE_POINT(n >= MIN_MAXIMUM_MEMORY_SIZE_MB, "Invalid max memory size: " + QString::number(n), );
 }
@@ -210,18 +222,17 @@ size_t AppResourcePool::getCurrentAppMemory() {
 }
 
 void AppResourcePool::registerResource(AppResource* r) {
-    SAFE_POINT(nullptr != r, "", );
-    SAFE_POINT(!resources.contains(r->getResourceId()), QString("Duplicate resource: %1").arg(r->getResourceId()), );
-
-    resources[r->getResourceId()] = r;
+    SAFE_POINT(r != nullptr, "registerResource: resource is null!", );
+    SAFE_POINT(!resources.contains(r->id), QString("Duplicate resource: %1").arg(r->id), );
+    resources[r->id] = r;
 }
 
-void AppResourcePool::unregisterResource(int id) {
+void AppResourcePool::unregisterResource(const QString& id) {
     CHECK(resources.contains(id), );
     delete resources.take(id);
 }
 
-AppResource* AppResourcePool::getResource(int id) const {
+AppResource* AppResourcePool::getResource(const QString& id) const {
     return resources.value(id, nullptr);
 }
 
@@ -232,23 +243,19 @@ AppResourcePool* AppResourcePool::instance() {
 ////////////////////////////////////////////////
 ///////////// AppResource
 
-AppResource::AppResource(int id, int _maxUse, const QString& _name, const QString& _suffix)
-    : name(_name), suffix(_suffix), resourceId(id), maximumUsage(_maxUse) {
+AppResource::AppResource(const QString& _id, int _capacity, const QString& _units)
+    : id(_id), units(_units), capacity(_capacity) {
 }
 
-int AppResource::getMaximumUsage() const {
-    return maximumUsage;
-}
-
-int AppResource::getResourceId() const {
-    return resourceId;
+int AppResource::getCapacity() const {
+    return capacity;
 }
 
 ////////////////////////////////////////////////
 ///////////// AppResourceReadWriteLock
 
-AppResourceReadWriteLock::AppResourceReadWriteLock(int id, const QString& _name, const QString& _suffix)
-    : AppResource(id, Write, _name, _suffix) {
+AppResourceReadWriteLock::AppResourceReadWriteLock(const QString& id)
+    : AppResource(id, Write) {
     resource = new QReadWriteLock();
 }
 
@@ -286,9 +293,9 @@ int AppResourceReadWriteLock::available() const {
 ////////////////////////////////////////////////
 ///////////// AppResourceReadWriteLock
 
-AppResourceSemaphore::AppResourceSemaphore(int id, int _maxUse, const QString& _name, const QString& _suffix)
-    : AppResource(id, _maxUse, _name, _suffix) {
-    resource = new QSemaphore(_maxUse);
+AppResourceSemaphore::AppResourceSemaphore(const QString& id, int capacity, const QString& _units)
+    : AppResource(id, capacity, _units) {
+    resource = new QSemaphore(capacity);
 }
 
 AppResourceSemaphore::~AppResourceSemaphore() {
@@ -312,24 +319,24 @@ bool AppResourceSemaphore::tryAcquire(int n, int timeout) {
 
 void AppResourceSemaphore::release(int n) {
     LOG_TRACE(release);
-    SAFE_POINT(n >= 0, QString("AppResource %1 release %2 < 0 called").arg(name).arg(n), );
+    SAFE_POINT(n >= 0, QString("AppResource %1 release %2 < 0 called").arg(id).arg(n), );
     resource->release(n);
     // QSemaphore allow to create resources by releasing, we do not want to get such behavior
     int avail = resource->available();
-    SAFE_POINT(avail <= maximumUsage, "Invalid result available resource value: " + QString::number(avail), );
+    SAFE_POINT(avail <= capacity, "Invalid result available resource value: " + QString::number(avail), );
 }
 
 int AppResourceSemaphore::available() const {
     return resource->available();
 }
 
-void AppResourceSemaphore::setMaximumUsage(int n) {
-    LOG_TRACE(setMaximumUsage);
-    int diff = n - maximumUsage;
+void AppResourceSemaphore::setCapacity(int n) {
+    LOG_TRACE(setCapacity);
+    int diff = n - capacity;
     if (diff > 0) {
         // adding resources
         resource->release(diff);
-        maximumUsage += diff;
+        capacity += diff;
     } else {
         diff = -diff;
         // safely remove resources
@@ -337,7 +344,7 @@ void AppResourceSemaphore::setMaximumUsage(int n) {
             bool ok = resource->tryAcquire(i, 0);
             if (ok) {
                 // successfully acquired i resources
-                maximumUsage -= i;
+                capacity -= i;
                 break;
             }
         }
@@ -350,13 +357,13 @@ void AppResourceSemaphore::setMaximumUsage(int n) {
 MemoryLocker::MemoryLocker(U2OpStatus& os, int preLockMB)
     : os(&os),
       preLockMB(preLockMB > 0 ? preLockMB : 0) {
-    resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
+    resource = AppResourcePool::instance()->getResource(UGENE_RESOURCE_ID_MEMORY);
     tryAcquire(0);
 }
 
 MemoryLocker::MemoryLocker(int preLockMB)
     : preLockMB(preLockMB > 0 ? preLockMB : 0) {
-    resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
+    resource = AppResourcePool::instance()->getResource(UGENE_RESOURCE_ID_MEMORY);
     tryAcquire(0);
 }
 

@@ -48,9 +48,8 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
     tpm = Progress_Manual;
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != nullptr);
 
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                      FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr),
-                                      true));
+    int usageInMb = FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr);
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, usageInMb, true));
 }
 
 void FindAlgorithmTask::run() {
