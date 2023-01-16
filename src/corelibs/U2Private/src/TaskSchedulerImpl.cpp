@@ -459,8 +459,9 @@ QString TaskSchedulerImpl::tryLockResources(TaskInfo* ti, const TaskResourceStag
             }
             taskRes.locked = false;
         }
-        if (isThreadResourceNeeded) {
+        if (ti->hasLockedThreadResource) {
             threadsResource->release(1);
+            ti->hasLockedThreadResource = false;
         }
     }
     return stateMessage;
