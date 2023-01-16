@@ -92,9 +92,6 @@ public:
         return flags;
     }
 
-    /** Returns unique resource identifier for the service type. */
-    static QString getServiceResourceId(const ServiceType& serviceType);
-
 protected:
     /// returns NULL if no actions are required to enable service
     virtual Task* createServiceEnablingTask() {
@@ -134,15 +131,15 @@ public:
 
     /// registers the service in a registry and initiates enabling task if all parent services are enabled
     /// if service started successfully - checks all child services if new services can be started
-    virtual Task* registerServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* registerServiceTask(Service* s) = 0;
 
     /// unregisters the service in a registry.
     /// if the service is enabled -> initiates service disabling task first
-    virtual Task* unregisterServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* unregisterServiceTask(Service* s) = 0;
 
-    virtual Task* enableServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* enableServiceTask(Service* s) = 0;
 
-    virtual Task* disableServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* disableServiceTask(Service* s) = 0;
 
 protected:
     void _setServiceState(Service* s, ServiceState state);

@@ -126,7 +126,7 @@ MolecularSurfaceCalcTask::MolecularSurfaceCalcTask(const QString& surfaceTypeNam
     qint64 memUseMB = (molSurface->estimateMemoryUsage(atoms.size())) / 1024 / 1024;
     algoLog.trace(QString("Estimated memory usage: %1 MB").arg(memUseMB));
 
-    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Prepare));
 
     tpm = Progress_Manual;
 }

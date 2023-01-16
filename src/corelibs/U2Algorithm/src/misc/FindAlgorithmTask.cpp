@@ -49,7 +49,7 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != nullptr);
 
     int usageInMb = FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr);
-    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, usageInMb, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, usageInMb, TaskResourceStage::Prepare));
 }
 
 void FindAlgorithmTask::run() {

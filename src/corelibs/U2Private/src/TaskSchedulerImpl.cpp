@@ -80,6 +80,7 @@ TaskSchedulerImpl::TaskSchedulerImpl(AppResourcePool* rp) {
 
     stateChangesObserved = false;
     threadsResource = resourcePool->getResource(UGENE_RESOURCE_ID_THREAD);
+    SAFE_POINT(threadsResource != nullptr, "Thread resource is not defined", );
 
     createSleepPreventer();
 }
@@ -171,8 +172,8 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             continue;
         }
 
-        if (ti->selfRunFinished && ti->hasLockedRunResources) {
-            releaseResources(ti, false);  // release resources for RUN stage
+        if (ti->selfRunFinished) {
+            releaseResources(ti, TaskResourceStage::Run);  // release resources for RUN stage
         }
 
         // update state desc
@@ -203,7 +204,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         QCoreApplication::processEvents();
 #endif
 
-        releaseResources(ti, true);  // release resources for PREPARE stage
+        releaseResources(ti, TaskResourceStage::Prepare);  // release resources for PREPARE stage
 
         Task* task = ti->task;
         priorityQueue.removeAt(i);
@@ -317,10 +318,10 @@ void TaskSchedulerImpl::runReady() {
         if (!ready) {
             continue;
         }
-        QString noResMessage = tryLockResources(ti->task, false, ti->hasLockedRunResources);
-        if (!noResMessage.isEmpty()) {
-            setTaskStateDesc(ti->task, noResMessage);
-            continue;
+        QString failedToLockStateMessage = tryLockResources(ti, TaskResourceStage::Run);
+        if (!failedToLockStateMessage.isEmpty()) {
+            setTaskStateDesc(ti->task, failedToLockStateMessage);
+            continue;  // The task will be processed later, if the task has no error.
         }
         if (state == Task::State_Prepared) {
             promoteTask(ti, Task::State_Running);
@@ -344,7 +345,7 @@ void TaskSchedulerImpl::runThread(TaskInfo* ti) {
     SAFE_POINT(ti->task->getState() == Task::State_Running, QString("Task %1 state is not 'running'.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->task->getFlags().testFlag(TaskFlag_NoRun), QString("Task %1 with flag 'NoRun'.").arg(ti->task->getTaskName()), );
     SAFE_POINT(ti->task->hasFlags(TaskFlag_RunBeforeSubtasksFinished) || ti->numFinishedSubtasks == ti->task->getSubtasks().size(),
-               QString("There are unfinishd subtasks but task %1 have flag 'RunBeforeSubtasksFinished'.").arg(ti->task->getTaskName()), );
+               QString("There are unfinished subtasks but task %1 have flag 'RunBeforeSubtasksFinished'.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->task->isCanceled(), QString("Task %1 is cancelled.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->task->hasError(), QString("Task %1 has errors.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->selfRunFinished, QString("Task %1 already run.").arg(ti->task->getTaskName()), );
@@ -355,115 +356,139 @@ void TaskSchedulerImpl::runThread(TaskInfo* ti) {
     ti->thread->start();
 }
 
-QString TaskSchedulerImpl::tryLockResources(Task* task, bool prepareStage, bool& hasLockedResourcesAfterCall) {
-    QString errorString = QString();
-
-    if (prepareStage) {  // task must be New
-        SAFE_POINT(task->getState() == Task::State_New, "Attempt to lock prepare-stage resources for non-NEW task!", L10N::internalError());
+QString TaskSchedulerImpl::tryLockResources(TaskInfo* ti, const TaskResourceStage& stage) {
+    SAFE_POINT(!ti->task->hasError(), "Can't lock resources for task with an error", ti->task->getError());
+    CHECK(!ti->task->getTaskResources().isEmpty(), "");
+    QString stateMessage;
+    Task* task = ti->task;
+    if (stage == TaskResourceStage::Prepare) {
+        // This method can only be called for a 'New' task for the prepare-stage lock.
+        if (task->getState() != Task::State_New) {
+            stateMessage = L10N::internalError("Attempt to lock prepare-stage resources for non-NEW task!");
+            task->setError(stateMessage);
+            FAIL(stateMessage, stateMessage);
+        }
     } else {  // task must be Prepared or Running. Task can be 'Running' if it has subtasks
-        SAFE_POINT(task->getState() == Task::State_Running || task->getState() == Task::State_Prepared,
-                   QString("Attempt to lock run-stage for task in state: %1!").arg(task->getState()),
-                   L10N::internalError());
+        bool isPreparedOrRunning = task->getState() == Task::State_Prepared || task->getState() == Task::State_Running;
+        if (!isPreparedOrRunning) {
+            stateMessage = L10N::internalError(QString("Attempt to lock run-stage for task in state: %1!").arg(task->getState()));
+            task->setError(stateMessage);
+            FAIL(stateMessage, stateMessage);
+        }
     }
-    bool isThreadResourceAcquired = false;
+
+    // Perform some validation checks first before making any locks.
+    QVector<TaskResourceUsage>& tres = getTaskResources(task);
+    for (auto& taskRes : tres) {
+        if (taskRes.stage == stage) {
+            if (taskRes.locked) {
+                stateMessage = L10N::internalError(QString("Task %1 resource %2 is already locked.").arg(task->getTaskName()).arg(taskRes.resourceId));
+                task->setError(stateMessage);
+                FAIL(stateMessage, stateMessage);
+            }
+        } else {
+            // Make some resource state validation check: 'prepare' stage resources must be locked during 'run' stage and
+            // 'run' stage resources must be unlocked during 'prepare' stage.
+            bool isPrepareStageAndRunResourceIsLocked = stage == TaskResourceStage::Prepare && taskRes.stage == TaskResourceStage::Run && taskRes.locked;
+            bool isRunStageAndPrepareResourceIsUnlocked = stage == TaskResourceStage::Run && taskRes.stage == TaskResourceStage::Prepare && !taskRes.locked;
+            if (isPrepareStageAndRunResourceIsLocked || isRunStageAndPrepareResourceIsUnlocked) {
+                stateMessage = L10N::internalError(QString("Task %1 resource %2 lock state is not correct.").arg(task->getTaskName()).arg(taskRes.resourceId));
+                task->setError(stateMessage);
+                FAIL(stateMessage, stateMessage);
+            }
+        }
+    }
+    // Start making real locks below.
+
     // TaskFlag_RunMessageLoopOnly is not a computational task but a message loop (WD scheduling) task.
     // We can't reserve threads for TaskFlag_RunMessageLoopOnly because it may lead to deadlocks when no thread is available for the WD scheduler
     // to work but there are child tasks with locked threads waiting for instructions from the WD scheduler.
-    bool isThreadResourceNeeded = !prepareStage && !task->hasFlags(TaskFlag_RunMessageLoopOnly);
+    bool isThreadResourceNeeded = stage == TaskResourceStage::Run && !task->hasFlags(TaskFlag_RunMessageLoopOnly) && !ti->hasLockedThreadResource;
     if (isThreadResourceNeeded) {
-        if (!threadsResource->tryAcquire(1)) {
-            return tr("Waiting for resource '%1', count: %2").arg(threadsResource->id).arg(1);
+        ti->hasLockedThreadResource = threadsResource->tryAcquire(1);
+        if (!ti->hasLockedThreadResource) {
+            return tr("Waiting for resource '%1', count: 1").arg(threadsResource->id);
         }
-        isThreadResourceAcquired = true;
     }
 
-    QVector<TaskResourceUsage>& tres = getTaskResources(task);
-    QVector<int> lockedResourceCount(tres.size());
-
-    for (int i = 0, n = tres.size(); i < n; i++) {
-        TaskResourceUsage& taskRes = tres[i];
-        if (taskRes.prepareStageLock != prepareStage) {
-            SAFE_POINT(prepareStage ? !taskRes.locked : taskRes.locked, QString("Task %1 lock state is not correct.").arg(task->getTaskName()), L10N::internalError());
+    bool allLocksAreSuccessful = true;
+    for (auto& taskRes : tres) {
+        if (taskRes.stage != stage) {
             continue;
         }
-        SAFE_POINT(!prepareStage || taskRes.resourceId != UGENE_RESOURCE_ID_THREAD, QString("Task %1 resource id belongs to wrong thread.").arg(task->getTaskName()), L10N::internalError());
         AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
-        if (!appRes) {
-            task->setError(tr("No required resources for the task, resource id: '%1'").arg(taskRes.resourceId));
-            errorString = tr("Unable to run test because required resource not found");
-            break;
-        }
-
-        bool resourceAcquired = appRes->tryAcquire(taskRes.resourceUse);
-        if (!resourceAcquired) {
-            if (appRes->getCapacity() < taskRes.resourceUse) {
-                QString error = tr("Not enough resources for the task, resource: '%1' max: %2%3 requested: %4%5")
-                                    .arg(appRes->id)
-                                    .arg(appRes->getCapacity())
-                                    .arg(appRes->units)
-                                    .arg(taskRes.resourceUse)
-                                    .arg(appRes->units);
-                if (!taskRes.errorMessage.isEmpty()) {
-                    coreLog.error(error);
-                    error = taskRes.errorMessage;
-                }
-                task->setError(error);
+        if (appRes == nullptr) {
+            if (AppResource::isDynamicResourceId(taskRes.resourceId)) {
+                // TODO: support ReadWrite type of dynamic resources.
+                //  Currently it is unsafe because with the RW resource & read-locks the resource ownership must be propagated to the last active task.
+                appRes = new AppResourceSemaphore(taskRes.resourceId, taskRes.resourceUse);
+                resourcePool->registerResource(appRes);
+                ti->dynamicAppResourceIds << taskRes.resourceId;
+            } else {
+                stateMessage = tr("Task resource not found: '%1'").arg(taskRes.resourceId);
+                allLocksAreSuccessful = false;
+                break;
             }
-            errorString = tr("Waiting for resource '%1', count: %2%3").arg(appRes->id).arg(taskRes.resourceUse).arg(appRes->units);
+        }
+
+        if (!appRes->tryAcquire(taskRes.resourceUse)) {
+            if (appRes->getCapacity() < taskRes.resourceUse) {
+                stateMessage = tr("Not enough resources for the task, resource: '%1' max: %2%3 requested: %4%5")
+                                   .arg(appRes->id)
+                                   .arg(appRes->getCapacity())
+                                   .arg(appRes->units)
+                                   .arg(taskRes.resourceUse)
+                                   .arg(appRes->units);
+                task->setError(stateMessage);
+            }
+            allLocksAreSuccessful = false;
             break;
-        } else {
-            taskRes.locked = true;
-            lockedResourceCount[i] = taskRes.resourceUse;
+        }
+        taskRes.locked = true;
+    }
+
+    if (!allLocksAreSuccessful) {
+        // There was an error during locking: unlock everything and return the error.
+        for (auto& taskRes : tres) {
+            AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
+            if (appRes != nullptr && taskRes.locked) {
+                appRes->release(taskRes.resourceUse);
+            }
+            if (ti->dynamicAppResourceIds.removeOne(taskRes.resourceId)) {
+                resourcePool->unregisterResource(taskRes.resourceId);
+            }
+            taskRes.locked = false;
+        }
+        if (isThreadResourceNeeded) {
+            threadsResource->release(1);
         }
     }
-
-    if (errorString.isNull()) {
-        hasLockedResourcesAfterCall = true;
-        return errorString;
-    }
-
-    // releasing all locked resources
-    for (int i = 0; i < tres.size(); i++) {
-        TaskResourceUsage& taskRes = tres[i];
-
-        AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
-        if (appRes && taskRes.locked) {
-            appRes->release(lockedResourceCount[i]);
-        }
-        taskRes.locked = false;
-    }
-    if (isThreadResourceAcquired) {
-        threadsResource->release(1);
-    }
-
-    hasLockedResourcesAfterCall = false;
-    return errorString;
+    return stateMessage;
 }
 
-void TaskSchedulerImpl::releaseResources(TaskInfo* ti, bool prepareStage) {
-    SAFE_POINT(ti->task->getState() == (prepareStage ? Task::State_Finished : Task::State_Running), "Releasing task resources in illegal state!", );
-    if (!(prepareStage ? ti->hasLockedPrepareResources : ti->hasLockedRunResources)) {
-        return;
-    }
-    bool isThreadResourceUsed = !prepareStage && !ti->task->hasFlags(TaskFlag_RunMessageLoopOnly);
-    if (isThreadResourceUsed) {
+void TaskSchedulerImpl::releaseResources(TaskInfo* ti, const TaskResourceStage& stage) {
+    bool isPrepareStage = stage == TaskResourceStage::Prepare;
+    SAFE_POINT(ti->task->getState() == (isPrepareStage ? Task::State_Finished : Task::State_Running), "Releasing task resources in illegal state!", );
+    if (stage == TaskResourceStage::Run && ti->hasLockedThreadResource) {
         threadsResource->release(1);
+        ti->hasLockedThreadResource = false;
     }
     QVector<TaskResourceUsage>& tres = getTaskResources(ti->task);
-    for (int i = 0, n = tres.size(); i < n; i++) {
-        TaskResourceUsage& taskRes = tres[i];
-        if (taskRes.prepareStageLock != prepareStage) {
-            SAFE_POINT(prepareStage ? !taskRes.locked : taskRes.locked, QString("Task %1 lock state is not correct.").arg(ti->task->getTaskName()), );
+    for (auto& taskRes : tres) {
+        if (taskRes.stage != stage) {
+            // Make extra state validation to detect errors earlier.
+            bool isPrepareStageAndRunResourceIsUnlocked = isPrepareStage && taskRes.stage == TaskResourceStage::Run && !taskRes.locked;
+            SAFE_POINT(!isPrepareStage || isPrepareStageAndRunResourceIsUnlocked, QString("Task %1 lock state is not correct.").arg(ti->task->getTaskName()), );
             continue;
         }
-        AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
-        appRes->release(taskRes.resourceUse);
-        taskRes.locked = false;
-    }
-    if (prepareStage) {
-        ti->hasLockedPrepareResources = false;
-    } else {
-        ti->hasLockedRunResources = false;
+        if (taskRes.locked) {
+            AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
+            appRes->release(taskRes.resourceUse);
+            taskRes.locked = false;
+        }
+        if (ti->dynamicAppResourceIds.removeOne(taskRes.resourceId)) {
+            resourcePool->unregisterResource(taskRes.resourceId);
+        }
     }
 }
 
@@ -546,25 +571,23 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task* task, TaskInfo* pti) {
     if (pti != nullptr && (pti->task->isCanceled() || pti->task->hasError())) {  // canceled tasks are not processed
         task->cancel();
     }
-
-    // check if there are enough resources;
-    bool runPrepare = !task->isCanceled() && !task->hasError();
-    bool lr = false;
-    if (runPrepare) {
-        QString noResMessage = tryLockResources(task, true, lr);
-        if (!noResMessage.isEmpty()) {
-            setTaskStateDesc(task, noResMessage);
-            if (!task->hasError()) {
-                return false;  // call again
-            } else {
-                runPrepare = false;  // resource lock error
+    auto ti = new TaskInfo(task, pti);
+    bool lockResources = !task->getStateInfo().isCoR();
+    if (lockResources) {
+        QString failedToLockStateMessage = tryLockResources(ti, TaskResourceStage::Prepare);
+        if (!failedToLockStateMessage.isEmpty()) {
+            setTaskStateDesc(task, failedToLockStateMessage);
+            if (!(task->isCanceled() || task->hasError())) {
+                // Cleanup and return 'false': the task will be processed later again as 'New'.
+                delete ti;
+                return false;
             }
+            // Otherwise, the task will be processed as 'failed' or 'canceled' below until it is marked as 'finished'.
         }
     }
-
-    auto ti = new TaskInfo(task, pti);
-    ti->hasLockedPrepareResources = lr;
     priorityQueue.append(ti);
+
+    bool runPrepare = !task->getStateInfo().isCoR();
     if (runPrepare) {
         setTaskInsidePrepare(task, true);
         try {
@@ -575,6 +598,7 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task* task, TaskInfo* pti) {
         setTaskInsidePrepare(task, false);
         ti->wasPrepared = true;
     }
+
     promoteTask(ti, Task::State_Prepared);
 
     int nParallel = task->getNumParallelSubtasks();
@@ -664,9 +688,8 @@ static QString state2String(Task::State state) {
         case Task::State_Finished:
             return TaskSchedulerImpl::tr("Finished");
         default:
-            SAFE_POINT(false, "Unexpected task state.", L10N::internalError());
+            FAIL("Unexpected task state.", L10N::internalError());
     }
-    return TaskSchedulerImpl::tr("Invalid name");
 }
 
 void TaskSchedulerImpl::checkSerialPromotion(TaskInfo* pti, Task* subtask) {

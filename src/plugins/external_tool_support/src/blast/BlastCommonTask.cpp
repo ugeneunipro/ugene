@@ -63,7 +63,7 @@ BlastCommonTask::BlastCommonTask(const BlastTaskSettings& _settings)
     for (const QByteArray& querySequence : qAsConst(settings.querySequences)) {
         querySequences << (settings.isSequenceCircular ? U2PseudoCircularization::createSequenceWithCircularOverlaps(querySequence) : querySequence);
     }
-    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_THREAD, settings.numberOfProcessors));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_THREAD, settings.numberOfProcessors, TaskResourceStage::Run));
     if (settings.querySequenceObject != nullptr) {
         TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST. The sequence is no more available."));
     }

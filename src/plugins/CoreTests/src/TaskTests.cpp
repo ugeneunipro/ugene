@@ -24,6 +24,8 @@
 #include <QThread>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/Task.h>
 
 namespace U2 {
@@ -636,6 +638,80 @@ Task::ReportResult GTest_Wait::report() {
     return ReportResult_Finished;
 }
 
+/// Check dynamic resources
+struct ResourceCheckerTaskSettings {
+    QString resourceId;
+    TaskResourceStage stage = TaskResourceStage::Prepare;
+};
+
+class ResourceCheckerTask : public Task {
+public:
+    ResourceCheckerTask(const ResourceCheckerTaskSettings& _settings)
+        : Task("ResourceCheckerTask", TaskFlag_RunInMainThread), settings(_settings) {
+        resourcePool = AppContext::getAppSettings()->getAppResourcePool();
+    }
+
+    void prepare() override {
+        auto resource = resourcePool->getResource(settings.resourceId);
+        if (settings.stage == TaskResourceStage::Prepare) {
+            if (resource == nullptr) {
+                setError("prepare: resource is not registered");
+            } else if (resource->available() > 0) {
+                setError("prepare: resource has free capacity");
+            }
+        } else if (resource != nullptr) {
+            setError("prepare: resource must not be registered");
+        }
+    }
+
+    void run() override {
+        CHECK(!hasError(), );
+        auto resource = resourcePool->getResource(settings.resourceId);
+        if (resource == nullptr) {
+            setError("run: resource is not registered");
+        } else if (resource->available() > 0) {
+            setError("run: resource has free capacity");
+        }
+    }
+
+    ReportResult report() override {
+        CHECK(!hasError(), ReportResult_Finished);
+        auto resource = resourcePool->getResource(settings.resourceId);
+        if (settings.stage == TaskResourceStage::Prepare) {
+            if (resource == nullptr) {
+                setError("report: resource is not registered");
+            } else if (resource->available() > 0) {
+                setError("report: resource has free capacity");
+            }
+        } else if (resource != nullptr) {
+            setError("report: resource must not be registered");
+        }
+        return ReportResult_Finished;
+    }
+
+    AppResourcePool* resourcePool = nullptr;
+    ResourceCheckerTaskSettings settings;
+};
+
+void GTest_TaskCheckDynamicResources::init(U2::XMLTestFormat*, const QDomElement& el) {
+    QString lockStageAttr = "lock_stage";
+    QString stage = el.attribute(lockStageAttr);
+    if (stage.isEmpty()) {
+        failMissingValue(lockStageAttr);
+        return;
+    }
+    if (stage != "prepare" && stage != "run") {
+        wrongValue(lockStageAttr);
+        return;
+    }
+    ResourceCheckerTaskSettings settings;
+    settings.resourceId = AppResource::buildDynamicResourceId("GTest_TaskCheckDynamicResources");
+    settings.stage = stage == "prepare" ? TaskResourceStage::Prepare : TaskResourceStage::Run;
+    auto task = new ResourceCheckerTask(settings);
+    task->addTaskResource(TaskResourceUsage(settings.resourceId, 1, settings.stage));
+    addSubTask(task);
+}
+
 QList<XMLTestFactory*> TaskTests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_TaskStateOrder::createFactory());
@@ -646,6 +722,7 @@ QList<XMLTestFactory*> TaskTests::createTestFactories() {
     res.append(GTest_TaskCheckFlag::createFactory());
     res.append(GTest_TaskExec::createFactory());
     res.append(GTest_Wait::createFactory());
+    res.append(GTest_TaskCheckDynamicResources::createFactory());
     return res;
 }
 

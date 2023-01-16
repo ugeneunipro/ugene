@@ -73,6 +73,15 @@ public:
     /** Visual resource units: Mb, Kb, threads, etc…. */
     const QString units;
 
+    /**
+     * Returns true if the resource id can be considered as 'dynamic'.
+     * Dynamic resources are automatically registered & unregistered in the resource pool by TaskScheduler.
+     */
+    static bool isDynamicResourceId(const QString& resourceId);
+
+    /** Builds dynamic resource id from a domain local resource id. */
+    static QString buildDynamicResourceId(const QString& resourceId);
+
 protected:
     /** Maximum limit available for acquire for the resource. */
     int capacity = -1;
@@ -149,6 +158,7 @@ public:
 
     void registerResource(AppResource* r);
 
+    /** Removes resource from the registry and physically deletes the resource object using 'delete' operator. */
     void unregisterResource(const QString& id);
 
     /** Returns registered resource with the given id or nullptr if resource is not found. */

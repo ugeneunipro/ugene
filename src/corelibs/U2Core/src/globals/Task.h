@@ -34,14 +34,22 @@
 
 namespace U2 {
 
+/** Constants to describe resource locking stage. */
+enum class U2CORE_EXPORT TaskResourceStage {
+    /** Resource must be locked before task->prepare() & released after successful task->report(). */
+    Prepare = 1,
+    /** Resource must be locked before task->run() & released after task->run(). */
+    Run = 2,
+};
+
 struct U2CORE_EXPORT TaskResourceUsage {
-    TaskResourceUsage(const QString& resourceId, int usage, bool prepareStage = false);
+    TaskResourceUsage(const QString& resourceId, int usage, const TaskResourceStage& stage);
     TaskResourceUsage(const TaskResourceUsage& r) = default;
     TaskResourceUsage& operator=(const TaskResourceUsage& r) = default;
 
     QString resourceId;
     int resourceUse = 0;
-    bool prepareStageLock = false;
+    TaskResourceStage stage = TaskResourceStage::Prepare;
 
     bool locked = false;
 

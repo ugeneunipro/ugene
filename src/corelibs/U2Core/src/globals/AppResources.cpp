@@ -245,10 +245,22 @@ AppResourcePool* AppResourcePool::instance() {
 
 AppResource::AppResource(const QString& _id, int _capacity, const QString& _units)
     : id(_id), units(_units), capacity(_capacity) {
+    SAFE_POINT(!isDynamicResourceId(id) || capacity == 1, "Dynamic resources must have capacity = 1", )
 }
 
 int AppResource::getCapacity() const {
     return capacity;
+}
+
+static QString DYNAMIC_RESOURCE_PREFIX("dynamic:");
+
+bool AppResource::isDynamicResourceId(const QString& resourceId) {
+    return resourceId.startsWith(DYNAMIC_RESOURCE_PREFIX);
+}
+
+QString AppResource::buildDynamicResourceId(const QString& resourceId) {
+    SAFE_POINT(!resourceId.startsWith(DYNAMIC_RESOURCE_PREFIX), "Illegal non-dynamic resource id: " + resourceId, resourceId);
+    return DYNAMIC_RESOURCE_PREFIX + resourceId;
 }
 
 ////////////////////////////////////////////////
