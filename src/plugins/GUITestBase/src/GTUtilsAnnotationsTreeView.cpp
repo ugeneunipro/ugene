@@ -218,7 +218,8 @@ QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus& os,
         QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(parentItem);
         for (QTreeWidgetItem* item : qAsConst(treeItems)) {
             QString treeItemName = item->text(0);
-            if (treeItemName == itemName) {
+            if ((options.matchPolicy == Qt::MatchExactly && treeItemName == itemName) ||
+                (options.matchPolicy == Qt::MatchContains && treeItemName.contains(itemName))) {
                 if (expandParent && item->parent() != nullptr) {
                     GTTreeWidget::expand(os, item->parent());
                 }

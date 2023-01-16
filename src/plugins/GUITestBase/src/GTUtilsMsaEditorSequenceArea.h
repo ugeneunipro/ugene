@@ -24,10 +24,9 @@
 
 #include <GTGlobals.h>
 
-#include "U2View/MsaEditorSimilarityColumn.h"
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
-
+#include "U2View/MsaEditorSimilarityColumn.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
 namespace U2 {
@@ -37,8 +36,8 @@ public:
     // The "index" is line index while multiline mode
     static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os, int index = 0, bool checkError = true);
     static MSAEditorConsensusArea* getConsensusArea(GUITestOpStatus& os, int index = 0, bool checkError = true);
-    static MsaEditorSimilarityColumn* getSimilarityColumn(GUITestOpStatus& os, int index = 0);
-    static QScrollBar* getHorizontalNamesScroll(GUITestOpStatus& os, int index = 0);
+    static MsaEditorSimilarityColumn *getSimilarityColumn(GUITestOpStatus &os, int index = 0);
+    static QScrollBar *getHorizontalNamesScroll(GUITestOpStatus &os, int index = 0);
     static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus& os, int multilineIndex, const QRect& expectedRect);

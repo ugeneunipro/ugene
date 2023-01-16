@@ -3513,7 +3513,7 @@ GUI_TEST_CLASS_DEFINITION(test_7671) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: no crash
+    // Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7680) {
