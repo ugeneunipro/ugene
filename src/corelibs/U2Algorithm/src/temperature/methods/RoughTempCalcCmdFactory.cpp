@@ -49,7 +49,7 @@ TempCalcSettings* RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const
     return settings;
 }
 
-BaseTempCalcWidget* RoughTempCalcCmdFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
+BaseTempCalcWidget* RoughTempCalcCmdFactory::createTempCalcSettingsWidget(QWidget*, const QString&) const {
     return nullptr;
 }
 
