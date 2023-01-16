@@ -60,6 +60,8 @@ HEADERS += src/misc/BitsTable.h \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.h \
            src/temperature/BaseTempCalc.h \
            src/temperature/TempCalcFactory.h \
+           src/temperature/methods/RoughTempCalc.h \
+           src/temperature/methods/RoughTempCalcCmdFactory.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.h \
@@ -162,6 +164,8 @@ SOURCES += src/misc/BitsTable.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.cpp \
            src/temperature/BaseTempCalc.cpp \
            src/temperature/TempCalcFactory.cpp \
+           src/temperature/methods/RoughTempCalc.cpp \
+           src/temperature/methods/RoughTempCalcCmdFactory.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.cpp \

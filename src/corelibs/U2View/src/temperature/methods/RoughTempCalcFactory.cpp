@@ -1,4 +1,3 @@
-#include "RoughTempCalcFactory.h"
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
@@ -20,36 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include "RoughTempCalc.h"
-
+#include "RoughTempCalcFactory.h"
 #include "RoughTempCalcWidget.h"
 
 namespace U2 {
 
-const QString RoughTempCalcFactory::ID = "Rough";
 
-RoughTempCalcFactory::RoughTempCalcFactory() 
-    : TempCalcFactory(ID) {}
+RoughTempCalcFactory::RoughTempCalcFactory()
+    : RoughTempCalcCmdFactory() {}
 
-BaseTempCalc* RoughTempCalcFactory::createTempCalculator(TempCalcSettings* settings) const {
-    return new RoughTempCalc(settings);
-}
-
-BaseTempCalc* RoughTempCalcFactory::createTempCalculator(QMap<QString, QVariant> mapSettings) const {
-    auto settings = new TempCalcSettings;
-    settings->fromVariantMap(mapSettings);
-    return new RoughTempCalc(settings);
-}
-
-BaseTempCalc* RoughTempCalcFactory::createDefaultTempCalculator() const {
-    return createTempCalculator(createDefaultTempCalcSettings());
-}
-
-TempCalcSettings* RoughTempCalcFactory::createDefaultTempCalcSettings() const {
-    auto settings = new TempCalcSettings;
-    settings->id = ID;
-    return settings;
-}
 
 BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
     return new RoughTempCalcWidget(parent, id);

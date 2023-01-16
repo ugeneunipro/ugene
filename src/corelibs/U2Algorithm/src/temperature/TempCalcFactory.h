@@ -72,7 +72,7 @@ public:
 
     const QString& getId() const;
 
-private:
+protected:
     const QString id;
 };
 

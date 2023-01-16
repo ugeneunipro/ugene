@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
-#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#ifndef _U2_ROUGHT_MELT_TEMP_CALC_CMD_FACTORY_
+#define _U2_ROUGHT_MELT_TEMP_CALC_CMD_FACTORY_
 
 #include <U2Algorithm/TempCalcFactory.h>
 
@@ -28,9 +28,12 @@
 
 namespace U2 {
 
-class U2VIEW_EXPORT RoughTempCalcFactory : public TempCalcFactory {
+/**
+ * This implementation is intended to be used from ugenecl, because it doesn't have any dependencies from QtWidgets
+ */
+class U2ALGORITHM_EXPORT RoughTempCalcCmdFactory : public TempCalcFactory {
 public:
-    RoughTempCalcFactory();
+    RoughTempCalcCmdFactory();
 
     BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
     BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const override;

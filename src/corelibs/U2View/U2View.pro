@@ -215,12 +215,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/sequence_info/SequenceInfo.h \
            src/ov_sequence/sequence_info/SequenceInfoFactory.h \
            src/ov_sequence/sequence_info/StatisticsCache.h \
-           src/ov_sequence/temperature/methods/RoughTempCalc.h \
-           src/ov_sequence/temperature/methods/RoughTempCalcFactory.h \
-           src/ov_sequence/temperature/methods/RoughTempCalcWidget.h \
-           src/ov_sequence/temperature/BaseTempCalcWidget.h \
-           src/ov_sequence/temperature/TempCalcDialog.h \
-           src/ov_sequence/temperature/TempCalcWidget.h \
            src/ov_sequence/view_rendering/DetViewMultiLineRenderer.h \
            src/ov_sequence/view_rendering/DetViewRenderer.h \
            src/ov_sequence/view_rendering/DetViewSingleLineRenderer.h \
@@ -236,6 +230,11 @@ HEADERS += src/LicenseDialog.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
            src/phyltree/TextSettingsDialog.h \
            src/phyltree/TreeSettingsDialog.h \
+           src/temperature/methods/RoughTempCalcFactory.h \
+           src/temperature/methods/RoughTempCalcWidget.h \
+           src/temperature/BaseTempCalcWidget.h \
+           src/temperature/TempCalcDialog.h \
+           src/temperature/TempCalcWidget.h \
            src/util_dna_assembly/BuildIndexDialog.h \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.h \
            src/util_dna_assembly/DnaAssemblyDialog.h \
@@ -499,12 +498,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/sequence_info/DinuclOccurTask.cpp \
            src/ov_sequence/sequence_info/SequenceInfo.cpp \
            src/ov_sequence/sequence_info/SequenceInfoFactory.cpp \
-           src/ov_sequence/temperature/methods/RoughTempCalc.cpp \
-           src/ov_sequence/temperature/methods/RoughTempCalcFactory.cpp \
-           src/ov_sequence/temperature/methods/RoughTempCalcWidget.cpp \
-           src/ov_sequence/temperature/BaseTempCalcWidget.cpp \
-           src/ov_sequence/temperature/TempCalcDialog.cpp \
-           src/ov_sequence/temperature/TempCalcWidget.cpp \
            src/ov_sequence/view_rendering/DetViewMultiLineRenderer.cpp \
            src/ov_sequence/view_rendering/DetViewRenderer.cpp \
            src/ov_sequence/view_rendering/DetViewSingleLineRenderer.cpp \
@@ -520,6 +513,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \
            src/phyltree/TextSettingsDialog.cpp \
            src/phyltree/TreeSettingsDialog.cpp \
+           src/temperature/methods/RoughTempCalcFactory.cpp \
+           src/temperature/methods/RoughTempCalcWidget.cpp \
+           src/temperature/BaseTempCalcWidget.cpp \
+           src/temperature/TempCalcDialog.cpp \
+           src/temperature/TempCalcWidget.cpp \
            src/util_dna_assembly/BuildIndexDialog.cpp \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.cpp \
            src/util_dna_assembly/DnaAssemblyDialog.cpp \

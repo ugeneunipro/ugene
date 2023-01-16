@@ -20,7 +20,8 @@
  */
 
 #include "RoughTempCalcWidget.h"
-#include "RoughTempCalc.h"
+
+#include <U2Algorithm/BaseTempCalc.h>
 
 namespace U2 {
 

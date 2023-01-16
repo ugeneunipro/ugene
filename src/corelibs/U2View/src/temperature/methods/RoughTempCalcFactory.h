@@ -19,24 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROUGHT_TEMP_CALC_WIDGET_
-#define _U2_ROUGHT_TEMP_CALC_WIDGET_
+#ifndef _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
+#define _U2_ROUGHT_MELT_TEMP_CALC_FACTORY_
 
-#include "ov_sequence/temperature/BaseTempCalcWidget.h"
+#include <U2Algorithm/RoughTempCalcCmdFactory.h>
 
 namespace U2 {
 
-class RoughTempCalcWidget : public BaseTempCalcWidget {
-    Q_OBJECT
+class U2VIEW_EXPORT RoughTempCalcFactory : public RoughTempCalcCmdFactory {
 public:
-    RoughTempCalcWidget(QWidget* parent, const QString& id);
+    RoughTempCalcFactory();
 
-    TempCalcSettings* getSettings() const override;
-    void restoreFromSettings(TempCalcSettings* settings) override;
+    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 
-private:
 };
 
 }
 
-#endif // _U2_ROUGHT_TEMP_CALC_WIDGET_
+#endif

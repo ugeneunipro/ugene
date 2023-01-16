@@ -33,12 +33,14 @@
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
+#include <U2Algorithm/RoughTempCalcCmdFactory.h>
 #include <U2Algorithm/SWResultFilterRegistry.h>
 #include <U2Algorithm/SecStructPredictAlgRegistry.h>
 #include <U2Algorithm/SmithWatermanTaskFactoryRegistry.h>
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 #include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
+#include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
@@ -113,6 +115,12 @@ static void registerCoreServices() {
     Q_UNUSED(sr);
     Q_UNUSED(ts);
     // unlike ugene's UI Main.cpp we don't create PluginViewerImpl, ProjectViewImpl
+}
+
+static void initTemperatureCalculators() {
+    auto tcr = AppContext::getTempCalcRegistry();
+
+    tcr->registerEntry(new RoughTempCalcCmdFactory);
 }
 
 static bool openDocs() {
@@ -369,6 +377,10 @@ int main(int argc, char** argv) {
 
     auto dashboardInfoRegistry = new DashboardInfoRegistry;
     appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
+
+    auto tcr = new TempCalcRegistry;
+    appContext->setTempCalcRegistry(tcr);
+    initTemperatureCalculators();
 
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
