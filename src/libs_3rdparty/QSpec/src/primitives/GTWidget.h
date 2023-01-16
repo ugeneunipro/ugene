@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_GTWIDGET_H_
-#define _HI_GUI_GTWIDGET_H_
+#pragma once
 
 #include <functional>
 #include <utils/GTThread.h>
@@ -31,30 +30,30 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QCoreApplication>
+#include <QDialogButtonBox>
 #include <QGraphicsView>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QMdiArea>
 #include <QMenu>
 #include <QPlainTextEdit>
 #include <QPointer>
+#include <QProgressBar>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSlider>
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTableWidget>
+#include <QTextBrowser>
 #include <QTextEdit>
 #include <QToolBar>
 #include <QToolButton>
 #include <QTreeView>
 #include <QTreeWidget>
 #include <QWidget>
-#include <QMdiArea>
-#include <QTextBrowser>
-#include <QDialogButtonBox>
-#include <QProgressBar>
 
 #include "GTGlobals.h"
 #include "GTMainWindow.h"
@@ -303,5 +302,3 @@ public:
 };
 
 }  // namespace HI
-
-#endif
