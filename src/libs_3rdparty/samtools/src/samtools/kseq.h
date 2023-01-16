@@ -46,9 +46,6 @@ U2_DISABLE_WARNINGS
 		type_t f;								\
 	} kstream_t;
 
-#define ks_eof(ks) ((ks)->is_eof && (ks)->begin >= (ks)->end)
-#define ks_rewind(ks) ((ks)->is_eof = (ks)->begin = (ks)->end = 0)
-
 #define __KS_BASIC(type_t, __bufsize)								\
 	static inline kstream_t *ks_init(type_t f)						\
 	{																\

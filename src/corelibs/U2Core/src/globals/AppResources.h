@@ -34,361 +34,171 @@
 namespace U2 {
 
 /** Thread resource - number of threads */
-#define RESOURCE_THREAD 1
+#define UGENE_RESOURCE_ID_THREAD "Threads"
 
 /** Memory resource - amount of memory in megabytes */
-#define RESOURCE_MEMORY 2
+#define UGENE_RESOURCE_ID_MEMORY "Memory"
 
 /**
     Project resource. There is 1 project active in the system and if the resource is locked
     no project load/unload operation is possible
 */
-#define RESOURCE_PROJECT 5
+#define UGENE_RESOURCE_ID_PROJECT "Project"
 
-#define LOG_TRACE(METHOD) \
-    coreLog.trace(QString("AppResource %1 ::" #METHOD " %2, available %3").arg(name).arg(n).arg(available()));
-
+/** Abstraction of a unique logical resource with max capacity. */
 class U2CORE_EXPORT AppResource {
 public:
-    // TaskMemory will be released after Task is finished,
-    // SystemMemory will be released only on UGENE shutdown. Example: SQLite buffer memory lock
-    enum MemoryLockType {
-        TaskMemory,
-        SystemMemory
-    };
+    AppResource(const QString& resourceId, int capacity, const QString& units = "");
+    virtual ~AppResource() = default;
 
-    AppResource(int id, int _maxUse, const QString& _name, const QString& _suffix = QString())
-        : name(_name), suffix(_suffix), resourceId(id), _maxUse(_maxUse), systemUse(0) {
-    }
+    AppResource(const AppResource& other) = delete;
+    AppResource& operator=(const AppResource& other) = delete;
 
-    virtual ~AppResource() {
-    }
+    virtual void acquire(int n) = 0;
 
-    virtual void acquire(int n = 1, MemoryLockType lt = TaskMemory) = 0;
-    virtual bool tryAcquire(int n = 1, MemoryLockType lt = TaskMemory) = 0;
+    virtual bool tryAcquire(int n) = 0;
 
-    virtual bool tryAcquire(int n, int timeout, MemoryLockType lt = TaskMemory) = 0;
+    virtual bool tryAcquire(int n, int timeout) = 0;
 
-    virtual void release(int n = 1, MemoryLockType lt = TaskMemory) = 0;
+    virtual void release(int n) = 0;
 
+    /** Returns available amount of the resource. If returns -1 the method is not supported. */
     virtual int available() const = 0;
 
-    // total maximum usage of resource
-    int maxUse() const {
-        return _maxUse;
-    }
+    int getCapacity() const;
 
-    // total maximum usage of resource without system memory
-    int maxTaskUse() const {
-        SAFE_POINT_EXT(systemUse >= 0, , _maxUse);
-        return _maxUse - systemUse;
-    }
-    int getResourceId() const {
-        return resourceId;
-    }
+    /** Unique resource id. */
+    const QString id;
 
-    QString name;
-    QString suffix;
+    /** Visual resource units: Mb, Kb, threads, etc…. */
+    const QString units;
 
 protected:
-    int resourceId;
-    int _maxUse;
-    int systemUse;
-
-private:
-    AppResource(const AppResource& other);
-    AppResource& operator=(const AppResource& other);
+    /** Maximum limit available for acquire for the resource. */
+    int capacity = -1;
 };
 
+/** Resource based on QReadWriteLock. The resource must be acquire with either UseType::Read or UseType::Write. */
 class U2CORE_EXPORT AppResourceReadWriteLock : public AppResource {
 public:
-    AppResourceReadWriteLock(int id, const QString& _name, const QString& _suffix = QString())
-        : AppResource(id, Write, _name, _suffix), resource(nullptr) {
-        resource = new QReadWriteLock;
-    }
+    AppResourceReadWriteLock(const QString& resourceId);
 
-    virtual ~AppResourceReadWriteLock() {
-        delete resource;
-        resource = nullptr;
-    }
+    ~AppResourceReadWriteLock() override;
 
     enum UseType {
-        Read,
-        Write
+        Read = 0,
+        Write = 1,
     };
 
-    // for TaskScheduler
-    virtual void acquire(int n, MemoryLockType lt = TaskMemory) {
-        Q_UNUSED(lt);
-        switch (n) {
-            case Read:
-                resource->lockForRead();
-                break;
-            case Write:
-                resource->lockForWrite();
-                break;
-            default:
-                break;
-        }
-    }
+    void acquire(int n) override;
 
-    virtual bool tryAcquire(int n, MemoryLockType lt = TaskMemory) {
-        Q_UNUSED(lt);
-        switch (n) {
-            case Read:
-                return resource->tryLockForRead();
-            case Write:
-                return resource->tryLockForWrite();
-            default:
-                return false;
-        }
-    }
-    virtual bool tryAcquire(int n, int timeout, MemoryLockType lt = TaskMemory) {
-        Q_UNUSED(lt);
-        switch (n) {
-            case Read:
-                return resource->tryLockForRead(timeout);
-            case Write:
-                return resource->tryLockForWrite(timeout);
-            default:
-                return false;
-        }
-    }
+    bool tryAcquire(int n) override;
 
-    virtual void release(int n, MemoryLockType lt = TaskMemory) {
-        Q_UNUSED(n);
-        Q_UNUSED(lt);
-        resource->unlock();
-    }
+    bool tryAcquire(int n, int timeout) override;
 
-    virtual int available() const {
-        return -1;
-    }
+    void release(int) override;
+
+    int available() const override;
 
 private:
-    QReadWriteLock* resource;
+    QReadWriteLock* resource = nullptr;
 };
 
+/** Resource based on QSemaphore (counter). The resource may be acquired up to 'capacity' times. */
 class U2CORE_EXPORT AppResourceSemaphore : public AppResource {
 public:
-    AppResourceSemaphore(int id, int _maxUse, const QString& _name, const QString& _suffix = QString())
-        : AppResource(id, _maxUse, _name, _suffix), resource(nullptr) {
-        resource = new QSemaphore(_maxUse);
-    }
-    virtual ~AppResourceSemaphore() {
-        delete resource;
-        resource = nullptr;
-    }
+    AppResourceSemaphore(const QString& resourceId, int capacity = 1, const QString& units = "");
 
-    void acquire(int n = 1, MemoryLockType lt = TaskMemory) {
-        LOG_TRACE(acquire);
-        resource->acquire(n);
-        if (lt == AppResource::SystemMemory) {
-            systemUse += n;
-        }
-    }
+    ~AppResourceSemaphore() override;
 
-    bool tryAcquire(int n = 1, MemoryLockType lt = TaskMemory) {
-        LOG_TRACE(tryAcquire);
-        bool acquired = resource->tryAcquire(n);
-        if (acquired && (lt == AppResource::SystemMemory)) {
-            systemUse += n;
-        }
-        return acquired;
-    }
+    void acquire(int n) override;
 
-    bool tryAcquire(int n, int timeout, MemoryLockType lt = TaskMemory) {
-        LOG_TRACE(tryAcquire_timeout);
-        bool acquired = resource->tryAcquire(n, timeout);
-        if (acquired && (lt == AppResource::SystemMemory)) {
-            systemUse += n;
-        }
-        return acquired;
-    }
+    bool tryAcquire(int n) override;
 
-    void release(int n = 1, MemoryLockType lt = TaskMemory) {
-        LOG_TRACE(release);
-        SAFE_POINT(n >= 0, QString("AppResource %1 release %2 < 0 called").arg(name).arg(n), );
-        resource->release(n);
-        if (lt == AppResource::SystemMemory) {
-            systemUse -= n;
-            SAFE_POINT_EXT(systemUse >= 0, , );
-        }
+    bool tryAcquire(int n, int timeout) override;
 
-        // QSemaphore allow to create resources by releasing, we do not want to get such behavior
-        int avail = resource->available();
-        SAFE_POINT_EXT(avail <= _maxUse, , );
-    }
+    void release(int n) override;
 
-    int available() const {
-        return resource->available();
-    }
+    int available() const override;
 
-    void setMaxUse(int n) {
-        LOG_TRACE(setMaxUse);
-        int diff = n - _maxUse;
-        if (diff > 0) {
-            // adding resources
-            resource->release(diff);
-            _maxUse += diff;
-        } else {
-            diff = -diff;
-            // safely remove resources
-            for (int i = diff; i > 0; i--) {
-                bool ok = resource->tryAcquire(i, 0);
-                if (ok) {
-                    // successfully acquired i resources
-                    _maxUse -= i;
-                    if (_maxUse < systemUse) {
-                        resource->release(systemUse - _maxUse);
-                        _maxUse = systemUse;
-                    }
-                    break;
-                }
-            }
-        }
-    }
+    void setCapacity(int n);
 
 private:
-    QSemaphore* resource;
+    QSemaphore* resource = nullptr;
 };
-
-#define MIN_MEMORY_SIZE 200
 
 class U2CORE_EXPORT AppResourcePool : public QObject {
     Q_OBJECT
 public:
     AppResourcePool();
-    virtual ~AppResourcePool();
+    ~AppResourcePool() override;
 
-    int getIdealThreadCount() const {
-        return idealThreadCount;
-    }
+    int getIdealThreadCount() const;
+
     void setIdealThreadCount(int n);
 
-    int getMaxThreadCount() const {
-        return threadResource->maxUse();
-    }
-    void setMaxThreadCount(int n);
+    int getMaxThreadCount() const;
 
-    int getMaxMemorySizeInMB() const {
-        return memResource->maxUse();
-    }
+    void setMaxThreadCount(int n) const;
+
+    int getMaxMemorySizeInMB() const;
+
     void setMaxMemorySizeInMB(int m);
 
     static size_t getCurrentAppMemory();
 
     void registerResource(AppResource* r);
-    void unregisterResource(int id);
 
-    AppResource* getResource(int id) const;
+    void unregisterResource(const QString& id);
+
+    /** Returns registered resource with the given id or nullptr if resource is not found. */
+    AppResource* getResource(const QString& id) const;
 
     static AppResourcePool* instance();
 
     static int getTotalPhysicalMemory();
 
     static const int x64MaxMemoryLimitMb = 2 * 1024 * 1024;  // 2Tb
+
 private:
     static const int defaultMemoryLimitMb = 8 * 1024;
 
-    QHash<int, AppResource*> resources;
+    QHash<QString, AppResource*> resources;
 
-    int idealThreadCount;
+    int idealThreadCount = 0;
 
-    AppResourceSemaphore* threadResource;
-    AppResourceSemaphore* memResource;
-    AppResourceSemaphore* projectResouce;
-    AppResourceReadWriteLock* listenLogInGTest;
+    AppResourceSemaphore* threadResource = nullptr;
+    AppResourceSemaphore* memResource = nullptr;
+    AppResourceSemaphore* projectResource = nullptr;
+    AppResourceReadWriteLock* listenLogInGTest = nullptr;
 };
 
-class MemoryLocker {
+class U2CORE_EXPORT MemoryLocker {
 public:
-    MemoryLocker(U2OpStatus& os, int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
-        : os(&os),
-          preLockMB(preLockMB > 0 ? preLockMB : 0),
-          lockedMB(0),
-          needBytes(0),
-          resource(nullptr),
-          memoryLockType(memoryLockType) {
-        resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
-        tryAcquire(0);
-    }
+    MemoryLocker(U2OpStatus& os, int preLockMB = 10);
 
-    MemoryLocker(int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
-        : os(nullptr),
-          preLockMB(preLockMB > 0 ? preLockMB : 0),
-          lockedMB(0),
-          needBytes(0),
-          resource(nullptr),
-          memoryLockType(memoryLockType) {
-        resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
-        tryAcquire(0);
-    }
+    MemoryLocker(int preLockMB = 10);
 
-    MemoryLocker(MemoryLocker& other) {
-        resource = other.resource;
-        memoryLockType = other.memoryLockType;
-        os = nullptr;
-        preLockMB = other.preLockMB;
-        lockedMB = other.lockedMB;
-        other.lockedMB = 0;
-        needBytes = other.needBytes;
-        other.needBytes = 0;
-        resource = nullptr;
-        errorMessage = "";
-    }
+    virtual ~MemoryLocker();
 
-    MemoryLocker& operator=(MemoryLocker& other);
+    MemoryLocker(const MemoryLocker& other) = delete;
 
-    virtual ~MemoryLocker() {
-        release();
-    }
+    MemoryLocker& operator=(const MemoryLocker& other) = delete;
 
-    bool tryAcquire(qint64 bytes) {
-        needBytes += bytes;
+    bool tryAcquire(qint64 bytes);
 
-        int needMB = needBytes / (1000 * 1000) + preLockMB;
-        if (needMB > lockedMB) {
-            int diff = needMB - lockedMB;
-            CHECK_EXT(nullptr != resource, if (os) os->setError("MemoryLocker - Resource error"), false);
-            bool ok = resource->tryAcquire(diff, memoryLockType);
-            if (ok) {
-                lockedMB = needMB;
-            } else {
-                errorMessage = QString("MemoryLocker - Not enough memory error, %1 megabytes are required").arg(needMB);
-                if (nullptr != os) {
-                    os->setError(errorMessage);
-                }
-            }
-            return ok;
-        }
-        return true;
-    }
+    void release();
 
-    void release() {
-        CHECK_EXT(nullptr != resource, if (os) os->setError("MemoryLocker - Resource error"), );
-        if (lockedMB > 0) {
-            resource->release(lockedMB, memoryLockType);
-        }
-        lockedMB = 0;
-        needBytes = 0;
-    }
+    bool hasError() const;
 
-    bool hasError() {
-        return !errorMessage.isEmpty();
-    }
-
-    const QString& getError() {
-        return errorMessage;
-    }
+    const QString& getError() const;
 
 private:
-    U2OpStatus* os;
-    int preLockMB;
-    int lockedMB;
-    qint64 needBytes;
-    AppResource* resource;
-    AppResource::MemoryLockType memoryLockType;
+    U2OpStatus* os = nullptr;
+    int preLockMB = 0;
+    int lockedMB = 0;
+    qint64 needBytes = 0;
+    AppResource* resource = nullptr;
     QString errorMessage;
 };
 

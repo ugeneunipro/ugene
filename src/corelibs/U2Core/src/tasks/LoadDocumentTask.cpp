@@ -316,7 +316,7 @@ void LoadDocumentTask::prepare() {
 
     int memUseMB = calculateMemory();
     if (memUseMB > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, false));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, false));
     }
 }
 

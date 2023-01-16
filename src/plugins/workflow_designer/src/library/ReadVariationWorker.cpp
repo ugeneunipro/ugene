@@ -120,7 +120,7 @@ void ReadVariationTask::prepare() {
     coreLog.trace(QString("load document:Memory resource %1").arg(memUseMB));
 
     if (memUseMB > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, false));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, false));
     }
 }
 

@@ -93,7 +93,7 @@ private:
 class AbstractServiceTask : public Task {
     Q_OBJECT
 protected:
-    AbstractServiceTask(QString taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource);
+    AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource);
 
     ServiceRegistryImpl* sr;
     Service* s;

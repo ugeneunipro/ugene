@@ -126,7 +126,7 @@ MolecularSurfaceCalcTask::MolecularSurfaceCalcTask(const QString& surfaceTypeNam
     qint64 memUseMB = (molSurface->estimateMemoryUsage(atoms.size())) / 1024 / 1024;
     algoLog.trace(QString("Estimated memory usage: %1 MB").arg(memUseMB));
 
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, true));
 
     tpm = Progress_Manual;
 }
@@ -149,9 +149,6 @@ Task::ReportResult MolecularSurfaceCalcTask::report() {
     algoLog.trace(QString("Number of atoms: %1, number of faces: %2").arg(atoms.size()).arg(numFaces));
     algoLog.trace(QString("Used memory: %1 MB").arg(((qint64)numFaces * sizeof(double) * 3 * 6) / 1024 / 1024));
     return ReportResult_Finished;
-}
-
-MolecularSurfaceFactory::~MolecularSurfaceFactory() {
 }
 
 }  // namespace U2

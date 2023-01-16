@@ -33,8 +33,6 @@ static QBitArray getBinary();
 static QByteArray getUpperCaseMap();
 static QByteArray getLowerCaseMap();
 static QByteArray getSpaceLine();
-static QBitArray getLessThan();
-static QBitArray getGreaterThan();
 static QBitArray getQualNameAllowedSymbols();
 
 const QBitArray TextUtils::ALPHAS = getAlphas();
@@ -46,8 +44,6 @@ const QBitArray TextUtils::BINARY = getBinary();
 const QByteArray TextUtils::UPPER_CASE_MAP = getUpperCaseMap();
 const QByteArray TextUtils::LOWER_CASE_MAP = getLowerCaseMap();
 const QByteArray TextUtils::SPACE_LINE = getSpaceLine();
-const QBitArray TextUtils::LESS_THAN = getLessThan();
-const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
 
 // TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
@@ -101,18 +97,6 @@ QBitArray getLines() {
     return res;
 }
 
-QBitArray getLessThan() {
-    QBitArray res = getEmptyBitMap();
-    res['<'] = true;
-    return res;
-}
-
-QBitArray getGreaterThan() {
-    QBitArray res = getEmptyBitMap();
-    res['>'] = true;
-    return res;
-}
-
 QBitArray TextUtils::createBitMap(char c1) {
     QBitArray res = getEmptyBitMap();
     res[quint8(c1)] = true;
@@ -161,9 +145,14 @@ static QByteArray getLowerCaseMap() {
     return b;
 }
 
+/**
+ * Returns array of spaces with a length of 4K+1 ending with 0 (the last byte).
+ * The constData() method from the returned array can be safely used as a 0-terminated 1-byte string of length 4k.
+ */
 static QByteArray getSpaceLine() {
-    QByteArray res(4096, ' ');
-    res[4096] = '\0';
+    int spaceCount = 4096;
+    QByteArray res(spaceCount + 1, ' ');
+    res[spaceCount] = '\0';
     return res;
 }
 

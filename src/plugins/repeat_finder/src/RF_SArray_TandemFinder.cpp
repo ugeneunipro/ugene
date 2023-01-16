@@ -226,7 +226,7 @@ ConcreteTandemFinder::ConcreteTandemFinder(QString taskName, const char* _sequen
         suffArrMemory = seqSize * sizeof(quint32) * 2;
     }
     suffArrMemory = qMax(suffArrMemory / (1024 * 1024), 1);  // in Mb
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, suffArrMemory, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, suffArrMemory, true));
 }
 
 void ConcreteTandemFinder::prepare() {

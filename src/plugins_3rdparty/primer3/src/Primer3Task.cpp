@@ -397,7 +397,7 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
 
-    addTaskResource(TaskResourceUsage(PRIMER3_STATIC_LOCK_RESOURCE, 1));
+    addTaskResource(TaskResourceUsage(UGENE_PRIMER3_SINGLE_THREAD_RESOURCE_ID, 1));
 }
 
 void Primer3Task::run() {

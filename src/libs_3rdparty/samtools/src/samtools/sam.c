@@ -1,8 +1,6 @@
 #include <string.h>
-#include <unistd.h>
 #include "faidx.h"
 #include "sam.h"
-#include "ugene_custom_io.h"
 
 #define TYPE_BAM  1
 #define TYPE_READ 2

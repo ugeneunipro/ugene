@@ -33,7 +33,7 @@
 namespace U2 {
 
 /** Tests that need to verify log uses this resource */
-#define RESOURCE_LISTEN_LOG_IN_TESTS 1000001
+#define UGENE_RESOURCE_ID_TEST_LOG_LISTENER "Test logs listener"
 
 class U2TEST_EXPORT GTestEnvironment {
 public:

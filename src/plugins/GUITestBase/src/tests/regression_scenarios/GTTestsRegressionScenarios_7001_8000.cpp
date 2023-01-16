@@ -112,6 +112,8 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -567,15 +569,13 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
     QTreeWidgetItem* grpA = annA->parent();
     QTreeWidgetItem* grpB = annB->parent();
     QPoint pointA = GTUtilsAnnotationsTreeView::getItemCenter(os, "annA");
-    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     QPoint pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
-    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointA, pointGrpB);
 
     // 8. Drag&drop group #1 to group #2
+    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
-    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
 
     // Expected: group moved successfully, no crash
@@ -2898,6 +2898,27 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     CHECK_SET_ERR(documents.contains(initialCoiNwkDocument), "Expected initial tree document to be present in the project and re-used in MSA editor");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7617) {
+    //1. Build dotplot for human_T1.fa
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
+
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_7617", GTFileDialogUtils::Save));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
+    //2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    //3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
+    //Expected state: no crash, no errors in the log
+    GTLogTracer lt;
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    QFile f(sandBoxDir + "test_7617");
+    CHECK_SET_ERR(f.exists() && f.size() != 0, "Result file is not exists or empty");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTLogTracer logTracer;
 
@@ -3785,6 +3806,28 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTWidget::click(os, swapSiblingsButton);
     CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
     GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7753) {
+    //1. Open "data/samples/Assembly/chrM.sorted.bam".
+    //2. Delete bam file
+    //3. Press 'imort' button in dialog
+    //Expected state: you got message box with error and error in log
+    class DeleteFileBeforeImport : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
+    QDir().mkpath(sandBoxDir + "test_7753");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
+    GTFileDialog::openFile(os, sandboxFilePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
 }
 
 }  // namespace GUITest_regression_scenarios
