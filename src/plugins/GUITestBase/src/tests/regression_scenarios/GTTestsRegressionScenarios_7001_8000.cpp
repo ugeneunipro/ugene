@@ -3792,7 +3792,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     QPoint p;
     int seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     int uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    int seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    int seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     int baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     int length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
 
@@ -3822,7 +3822,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
@@ -3850,19 +3850,21 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
 
     delta = QPoint(0, 0);
-    if (length * baseWidth + 50 < uiWidth) {
-        delta = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
-    } else if (length * baseWidth < uiWidth) {
-        delta = QPoint(seqAreaWidth - length * baseWidth, 0);
-    } else if (length * baseWidth - 50 < uiWidth) {
-        delta = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    int fullLength = length * baseWidth;
+    int extLength = 50;
+    if (fullLength + 50 < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
+    } else if (length * baseWidth < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength, 0);
+    } else if (fullLength - extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength + extLength, 0);
     } else {
-        delta = QPoint(uiWidth - seqAreaWidth - 50, 0);
+        delta = QPoint(uiWidth - seqAreaWidth - extLength, 0);
     }
     GT_DEBUG_MESSAGE(true,
                      QString("#2.1 seqAreaBaseWidth=%1, uiWidth=%2, seqAreaWidth=%3, baseWidth=%4, length=%5, delta=%6")
@@ -3880,7 +3882,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
@@ -3913,7 +3915,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
 
@@ -3937,7 +3939,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
@@ -3961,7 +3963,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
 
@@ -3991,7 +3993,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
     uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
-    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
     baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
     length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
     GT_DEBUG_MESSAGE(true,
