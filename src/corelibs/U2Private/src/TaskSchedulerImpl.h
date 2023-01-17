@@ -78,6 +78,7 @@ public:
 
     QMutex pauseLocker;
 
+    bool isUserRunFinished = false;
 signals:
     /** Signal emitted by TaskFlag_RunMessageLoopOnly tasks only when new sub-tasks are added during the 'run' method execution. */
     void si_processMySubtasks();

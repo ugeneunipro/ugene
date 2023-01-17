@@ -152,7 +152,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
 
         // Once thread is finished set 'selfRunFinished' to true.
         // Important: update selfRunFinished from the main thread only to avoid concurrency issues.
-        if (state == Task::State_Running && ti->thread != nullptr && ti->thread->isFinished()) {
+        if (state == Task::State_Running && ti->thread != nullptr && ti->thread->isUserRunFinished) {
             ti->selfRunFinished = true;
         }
 
@@ -277,7 +277,7 @@ void TaskSchedulerImpl::unregisterFinishedTopLevelTasks() {
 void TaskSchedulerImpl::processNewSubtasks() {
     for (int i = 0, n = tasksWithNewSubtasks.size(); i < n; i++) {
         TaskInfo* ti = tasksWithNewSubtasks[i];
-        SAFE_POINT(ti->newSubtasks.size() > 0, QString("No new subtasks to process for %1.").arg(ti->task->getTaskName()), );
+        SAFE_POINT(!ti->newSubtasks.empty(), QString("No new subtasks to process for %1.").arg(ti->task->getTaskName()), );
 
         int nParallel = ti->task->getNumParallelSubtasks();
         int nNew = ti->newSubtasks.size();
@@ -355,7 +355,7 @@ void TaskSchedulerImpl::runThread(TaskInfo* ti) {
     SAFE_POINT(!ti->task->isCanceled(), QString("Task %1 is cancelled.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->task->hasError(), QString("Task %1 has errors.").arg(ti->task->getTaskName()), );
     SAFE_POINT(!ti->selfRunFinished, QString("Task %1 already run.").arg(ti->task->getTaskName()), );
-    SAFE_POINT(ti->hasLockedThreadResource, QString("Task %1 has no locked thread resource.").arg(ti->task->getTaskName()), );
+    SAFE_POINT(ti->hasLockedThreadResource || ti->task->hasFlags(TaskFlag_RunMessageLoopOnly), QString("Task %1 has no locked thread resource.").arg(ti->task->getTaskName()), );
     const auto& resourceList = ti->task->getTaskResources();
     if (!resourceList.isEmpty()) {
         for (const auto& resource : qAsConst(resourceList)) {
@@ -1092,6 +1092,7 @@ void TaskThread::run() {
             onBadAlloc(ti->task);
         }
     }
+    isUserRunFinished = true;
     if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
         int timerId = startTimer(1);
         exec();
