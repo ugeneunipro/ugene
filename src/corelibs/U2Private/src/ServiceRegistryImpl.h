@@ -93,7 +93,7 @@ private:
 class AbstractServiceTask : public Task {
     Q_OBJECT
 protected:
-    AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s);
+    AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource);
 
     ServiceRegistryImpl* sr;
     Service* s;
@@ -112,7 +112,7 @@ public:
 class EnableServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    EnableServiceTask(ServiceRegistryImpl* sr, Service* s);
+    EnableServiceTask(ServiceRegistryImpl* sr, Service* s, bool lockServiceResource = true);
 
     void prepare() override;
 
@@ -132,7 +132,7 @@ public:
 class DisableServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    DisableServiceTask(ServiceRegistryImpl* sr, Service* s, bool manual);
+    DisableServiceTask(ServiceRegistryImpl* sr, Service* s, bool manual, bool lockServiceResource = true);
 
     ReportResult report() override;
 

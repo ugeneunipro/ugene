@@ -136,18 +136,20 @@ Service* ServiceRegistryImpl::findServiceReadyToEnable() const {
 
 /// RegisterServiceTask
 
-AbstractServiceTask::AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s)
+AbstractServiceTask::AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
     : Task(taskName, flag), sr(_sr), s(_s) {
     SAFE_POINT_EXT(sr, stateInfo.setError("Pointer to ServiceRegistryImpl is null"), );
     SAFE_POINT_EXT(s, stateInfo.setError("Pointer to Service is null"), );
 
-    // Do not run service tasks (register/unregister/enable/disable) in parallel.
-    QString serviceResourceId = AppResource::buildDynamicResourceId("Service: " + s->getName());
-    addTaskResource(TaskResourceUsage(serviceResourceId, 1, TaskResourceStage::Prepare));
+    if (lockServiceResource) {
+        // Do not run service tasks (register/unregister/enable/disable) in parallel.
+        QString serviceResourceId = AppResource::buildDynamicResourceId("Service: " + s->getName());
+        addTaskResource(TaskResourceUsage(serviceResourceId, 1, TaskResourceStage::Prepare));
+    }
 }
 
 RegisterServiceTask::RegisterServiceTask(ServiceRegistryImpl* _sr, Service* _s)
-    : AbstractServiceTask(tr("Register '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s) {
+    : AbstractServiceTask(tr("Register '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, true) {
 }
 
 void RegisterServiceTask::prepare() {
@@ -163,7 +165,7 @@ void RegisterServiceTask::prepare() {
     }
 
     sr->services.append(s);
-    addSubTask(new EnableServiceTask(sr, s));
+    addSubTask(new EnableServiceTask(sr, s, false));
 }
 
 Task::ReportResult RegisterServiceTask::report() {
@@ -173,8 +175,8 @@ Task::ReportResult RegisterServiceTask::report() {
 
 /// EnableServiceTask
 
-EnableServiceTask::EnableServiceTask(ServiceRegistryImpl* _sr, Service* _s)
-    : AbstractServiceTask(tr("Enable '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s) {
+EnableServiceTask::EnableServiceTask(ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
+    : AbstractServiceTask(tr("Enable '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, lockServiceResource) {
 }
 
 static bool findCircular(ServiceRegistryImpl* sr, Service* s, int currentDepth) {
@@ -250,14 +252,14 @@ Task::ReportResult EnableServiceTask::report() {
 
 /// UnregisterServiceTask
 UnregisterServiceTask::UnregisterServiceTask(ServiceRegistryImpl* _sr, Service* _s)
-    : AbstractServiceTask(tr("Unregister '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s) {
+    : AbstractServiceTask(tr("Unregister '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, true) {
 }
 
 void UnregisterServiceTask::prepare() {
     sr->activeServiceTasks.push_back(this);
     CHECK_EXT(sr->services.contains(s), stateInfo.setError(tr("Service is not registered")), );
     if (s->isEnabled()) {
-        addSubTask(new DisableServiceTask(sr, s, false));
+        addSubTask(new DisableServiceTask(sr, s, false, false));
     }
 }
 
@@ -274,8 +276,8 @@ Task::ReportResult UnregisterServiceTask::report() {
 }
 
 /// DisableServiceTask
-DisableServiceTask::DisableServiceTask(ServiceRegistryImpl* _sr, Service* _s, bool _manual)
-    : AbstractServiceTask(tr("Disable '%1' service").arg(_s->getName()), TaskFlags_NR_FOSCOE, _sr, _s), manual(_manual) {
+DisableServiceTask::DisableServiceTask(ServiceRegistryImpl* _sr, Service* _s, bool _manual, bool lockServiceResource)
+    : AbstractServiceTask(tr("Disable '%1' service").arg(_s->getName()), TaskFlags_NR_FOSCOE, _sr, _s, lockServiceResource), manual(_manual) {
 }
 
 static QList<Service*> getDirectChilds(ServiceRegistryImpl* sr, ServiceType st);
